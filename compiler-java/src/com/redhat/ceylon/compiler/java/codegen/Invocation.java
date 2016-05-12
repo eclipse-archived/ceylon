@@ -430,6 +430,10 @@ abstract class SimpleInvocation extends Invocation {
         return isParameterVariadicStar(argIndex) || isParameterVariadicPlus(argIndex);
     }
 
+    protected final boolean isParameterJavaVariadic(int argIndex) {
+        return isParameterSequenced(argIndex) && isJavaVariadicMethod();
+    }
+
     protected abstract Type getParameterType(int argIndex);
 
     //protected abstract String getParameterName(int argIndex);
@@ -481,7 +485,19 @@ abstract class SimpleInvocation extends Invocation {
         return false;
     }
 
-    protected boolean isJavaMethod() {
+    protected boolean isJavaVariadicMethod() {
+        if(isJavaMethod())
+            return true;
+        if(getPrimaryDeclaration() instanceof Function) {
+            Declaration refinedDeclaration = JvmBackendUtil.getTopmostRefinedDeclaration(getPrimaryDeclaration());
+            // variadic params are not propagated to constructors
+            if(refinedDeclaration instanceof Function)
+                return gen.isJavaMethod((Function) refinedDeclaration);
+        }
+        return false;
+    }
+    
+    private boolean isJavaMethod() {
         if(getPrimaryDeclaration() instanceof Function) {
             return gen.isJavaMethod((Function) getPrimaryDeclaration());
         } else if (getPrimaryDeclaration() instanceof Class) {
@@ -743,7 +759,7 @@ abstract class DirectInvocation extends SimpleInvocation {
     protected Type getParameterType(int argIndex) {
         int flags = AbstractTransformer.TP_TO_BOUND;
         if(isParameterSequenced(argIndex)
-                && isJavaMethod()
+                && isJavaVariadicMethod()
                 && isSpread())
             flags |= AbstractTransformer.TP_SEQUENCED_TYPE;
         return gen.expressionGen().getTypeForParameter(getParameter(argIndex), appliedReference(), flags);
@@ -1692,7 +1708,12 @@ class NamedArgumentInvocation extends Invocation {
             if (Decl.withinClassOrInterface(getPrimaryDeclaration())) {
                 // a member method
                 thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() ? JT_COMPANION : 0));
-                defaultedParameterInstance = gen.naming.makeThis();
+                if (Decl.withinInterface(getPrimaryDeclaration())
+                        && getPrimaryDeclaration().isShared()) {
+                    defaultedParameterInstance = gen.naming.makeQuotedThis();
+                } else {
+                    defaultedParameterInstance = gen.naming.makeThis();
+                }
             } else {
                 // a local or toplevel function
                 thisType = gen.naming.makeName((TypedDeclaration)getPrimaryDeclaration(), Naming.NA_WRAPPER);

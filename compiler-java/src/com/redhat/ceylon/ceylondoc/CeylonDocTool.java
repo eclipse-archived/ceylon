@@ -397,7 +397,8 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     }
 
     @Override
-    public void initialize(CeylonTool mainTool) {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
         TypeCheckerBuilder builder = new TypeCheckerBuilder();
         for(File src : sourceFolders){
             builder.addSrcDirectory(src);

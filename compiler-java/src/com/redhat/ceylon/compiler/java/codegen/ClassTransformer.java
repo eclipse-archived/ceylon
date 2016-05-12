@@ -4186,11 +4186,22 @@ public class ClassTransformer extends AbstractTransformer {
         final Tree.Block block = def.getBlock();
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
+        Substitution substitution = null;
+        JCStatement varDef = null;
+        Parameter lastParameter = Decl.getLastParameterFromFirstParameterList(model);
+        if(lastParameter != null
+                && Decl.isJavaVariadicIncludingInheritance(lastParameter)){
+            SyntheticName alias = naming.alias(lastParameter.getName());
+            substitution = naming.addVariableSubst(lastParameter.getModel(), alias.getName());
+            varDef = substituteSequentialForJavaVariadic(alias, lastParameter);
+        }
         try {
             statementGen().noExpressionlessReturn = Decl.isMpl(model) || Strategy.useBoxedVoid(model);
             body = statementGen().transformBlock(block);
         } finally {
             statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
+            if(substitution != null)
+                substitution.close();
         }
         // We void methods need to have their Callables return null
         // so adjust here.
@@ -4203,7 +4214,29 @@ public class ClassTransformer extends AbstractTransformer {
                 body = body.append(make().Return(makeErroneous(block, "compiler bug: non-void method doesn't definitely return")));
             }
         }
+        if(varDef != null)
+            body = body.prepend(varDef);
         return body;
+    }
+
+    private JCStatement substituteSequentialForJavaVariadic(SyntheticName alias, Parameter lastParameter) {
+        JCExpression seqType = makeJavaType(lastParameter.getType());
+        Type seqElemType = typeFact().getIteratedType(lastParameter.getType());
+        JCExpression init;
+        if(CodegenUtil.isUnBoxed(lastParameter.getModel())){
+            JCIdent name = makeQuotedIdent(lastParameter.getName());
+            // due to backwards-compat, we had a method named sequentialWrapperBoxed int[] -> Sequential<Character>
+            // so the new one has a special name
+            init = seqElemType.getUnderlyingType() != null && seqElemType.getUnderlyingType().equals("int")
+                    ? utilInvocation().sequentialWrapperBoxedForInteger(name)
+                    : utilInvocation().sequentialWrapperBoxed(name);
+        }else{
+            JCExpression typeArg = makeJavaType(seqElemType, JT_TYPE_ARGUMENT);
+            // make a defensive copy
+            init = utilInvocation().sequentialWrapperCopy(typeArg, makeReifiedTypeArgument(seqElemType), 
+                    makeQuotedIdent(lastParameter.getName()));
+        }
+        return make().VarDef(make().Modifiers(FINAL), alias.asName(), seqType , init);
     }
 
     List<JCStatement> transformSpecifiedMethodBody(Tree.MethodDeclaration  def, SpecifierExpression specifierExpression) {
@@ -4284,7 +4317,24 @@ public class ClassTransformer extends AbstractTransformer {
                     || getReturnTypeOfCallable(term.getTypeModel()).isNothing());
             bodyExpr = expressionGen().transformInvocation(invocation);
         } else {
+            Substitution substitution = null;
+            JCStatement varDef = null;
+            // Handle implementations of Java variadic methods
+            Parameter lastParameter = Decl.getLastParameterFromFirstParameterList(model);
+            if(lastParameter != null
+                    && Decl.isJavaVariadicIncludingInheritance(lastParameter)){
+                SyntheticName alias = naming.alias(lastParameter.getName());
+                substitution = naming.addVariableSubst(lastParameter.getModel(), alias.getName());
+                varDef = substituteSequentialForJavaVariadic(alias, lastParameter);
+            }
+
             bodyExpr = expressionGen().transformExpression(model, term);
+            
+            if(varDef != null){
+                // Turn into Let for java variadic methods
+                bodyExpr = make().LetExpr(List.of(varDef), bodyExpr);
+                substitution.close();
+            }
             // The innermost of an MPL method declared void needs to return null
             returnNull = Decl.isUnboxedVoid(model) && Decl.isMpl(model);
         }

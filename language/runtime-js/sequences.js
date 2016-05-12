@@ -7,11 +7,13 @@ function $arr$(a,t,seq) {
 }
 ex$.$arr$=$arr$;
 
-Array.prototype.$sa$=function $sa$(t,ne) {
-    if (this.length===0)return empty();
+function $arr$sa$(arr,t,ne) {
+    if (arr.length===0)return empty();
     if (t===null || t===undefined)t={t:Anything};
-    return ArraySequence($arr$(this,t,ne),{Element$ArraySequence:t});
+    return ArraySequence($arr$(arr,t,ne),{Element$ArraySequence:t});
 }
+ex$.$arr$sa$=$arr$sa$;
+
 Array.prototype.equals=function arrayEquals(o) {
   if (o===undefined||o===null||typeof(o.length)!='number')return false;
   if (o.length===this.length) {

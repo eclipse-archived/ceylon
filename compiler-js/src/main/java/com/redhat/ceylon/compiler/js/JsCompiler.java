@@ -250,8 +250,7 @@ public class JsCompiler {
             
             //Output all the require calls for any imports
             final Visitor importVisitor = new Visitor() {
-                private final String BIN_VERSION = Versions.JS_BINARY_MAJOR_VERSION +
-                        "." + Versions.JS_BINARY_MINOR_VERSION;
+                private final String BIN_VERSION = Versions.JS_BINARY_MAJOR_VERSION + ".";
                 public void visit(Tree.Import that) {
                     ImportableScope scope =
                             that.getImportMemberOrTypeList().getImportList().getImportedScope();
@@ -269,7 +268,7 @@ public class JsCompiler {
                     if (that.getImportPath() != null && that.getImportPath().getModel() instanceof Module) {
                         Module m = (Module)that.getImportPath().getModel();
                         //Binary version check goes here now
-                        String binVersion = m.getJsMajor() +"."+ m.getJsMinor();
+                        String binVersion = m.getJsMajor() + ".";
                         if (m.getJsMajor() == 0) {
                             //Check if it's something we're compiling
                             for (PhasedUnit pu : tc.getPhasedUnits().getPhasedUnits()) {
@@ -294,10 +293,11 @@ public class JsCompiler {
                                 if (js != null) {
                                     Map<String,Object> json = JsModuleSourceMapper.loadJsonModel(js);
                                     binVersion = json.get("$mod-bin").toString();
+                                    binVersion = binVersion.substring(0, binVersion.indexOf('.') + 1);
                                 }
                             }
                         }
-                        if (!BIN_VERSION.equals(binVersion)) {
+                        if (!BIN_VERSION.startsWith(binVersion)) {
                             that.addError(
                                     "version '"+ m.getVersion() + "' of module '" + m.getNameAsString() + 
                                     "' was compiled by an incompatible version of the compiler (binary version " +

@@ -458,6 +458,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
 
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
         if (system && local) {
             throw new IllegalArgumentException(Messages.msg(bundle, "conflicting.destinations"));
         }

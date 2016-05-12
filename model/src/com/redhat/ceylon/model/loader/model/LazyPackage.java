@@ -51,6 +51,10 @@ public class LazyPackage extends Package {
     // FIXME: redo this method better: https://github.com/ceylon/ceylon-spec/issues/90
     @Override
     public Declaration getDirectMember(String name, List<Type> signature, boolean ellipsis) {
+        return getDirectMember(name, signature, ellipsis, true);
+    }
+    
+    private Declaration getDirectMember(String name, List<Type> signature, boolean ellipsis, boolean tryAlternates) {
 //        System.err.println("getMember "+name+" "+signature+" "+ellipsis);
         boolean canCache = (signature == null && !ellipsis);
         if(canCache){
@@ -62,7 +66,7 @@ public class LazyPackage extends Package {
 
             }
         }
-        Declaration ret = getDirectMemberMemoised(name, signature, ellipsis, Backends.ANY);
+        Declaration ret = getDirectMemberMemoised(name, signature, ellipsis, Backends.ANY, tryAlternates);
         if(canCache){
             cache.put(name, ret);
         }
@@ -73,10 +77,10 @@ public class LazyPackage extends Package {
     public Declaration getDirectMemberForBackend(String name, Backends backends) {
         // FIXME: do we want to cache those calls too? If yes we need to add the backend type in the cache key
         // and invalidate properly in flushCache()
-        return getDirectMemberMemoised(name, null, false, backends);
+        return getDirectMemberMemoised(name, null, false, backends, true);
     }
     
-    private Declaration getDirectMemberMemoised(String name, List<Type> signature, boolean ellipsis, Backends backends) {
+    private Declaration getDirectMemberMemoised(String name, List<Type> signature, boolean ellipsis, Backends backends, boolean tryAlternates) {
         synchronized(modelLoader.getLock()){
 
             String pkgName = getQualifiedNameString();
@@ -119,6 +123,7 @@ public class LazyPackage extends Package {
             d = getDirectMemberFromSource(name, backends);
             
             if (d == null
+                    && tryAlternates
                     && Character.isLowerCase(name.codePointAt(0))
                     && Character.isUpperCase(Character.toUpperCase(name.codePointAt(0)))) {
                 // Might be trying to get an annotation constructor for a Java annotation type
@@ -126,12 +131,33 @@ public class LazyPackage extends Package {
                 // - urlDecoder -> UrlDecover and url -> Url
                 // - urlDecoder -> URLDecoder and url -> URL
                 for(String annotationName : Arrays.asList(NamingBase.capitalize(name), NamingBase.getReverseJavaBeanName(name), NamingBase.capitalize(name).replaceFirst("__(CONSTRUCTOR|TYPE|PACKAGE|FIELD|METHOD|ANNOTATION_TYPE|LOCAL_VARIABLE|PARAMETER|SETTER|GETTER)$", ""))){
-                    Declaration possibleAnnotationType = getDirectMember(annotationName, signature, ellipsis);
+                    Declaration possibleAnnotationType = getDirectMember(annotationName, signature, ellipsis, false);
                     if (possibleAnnotationType != null
                             && possibleAnnotationType instanceof LazyInterface
                             && ((LazyInterface)possibleAnnotationType).isAnnotationType()) {
                         // addMember() will have added a Function if we found an annotation type
                         // so now we can look for the constructor again
+                        d = !backends.none()
+                                ? lookupMemberForBackend(compiledDeclarations, name, backends)
+                                : lookupMember(compiledDeclarations, name, signature, ellipsis);
+                    }
+                }
+            }
+            if (d == null
+                    && tryAlternates
+                    && Character.isUpperCase(name.codePointAt(0))
+                    && Character.isLowerCase(Character.toLowerCase(name.codePointAt(0)))) {
+                // Might be trying to get a lowercase type with an upper-case pretend name
+                // So try to find the type type with two strategies:
+                // - UrlDecoder -> urlDecover and Url -> url
+                // - URLDecoder -> urlDecoder and URL -> url
+                for(String typeName : Arrays.asList(NamingBase.getJavaBeanName(name))){
+                    Declaration possibleLowercaseType = getDirectMember(typeName, signature, ellipsis, false);
+                    if (possibleLowercaseType != null
+                            && (possibleLowercaseType instanceof LazyInterface
+                                    || possibleLowercaseType instanceof LazyClass)) {
+                        // addMember() will have added the proper named type if we found an type
+                        // so now we can look for the type again
                         d = !backends.none()
                                 ? lookupMemberForBackend(compiledDeclarations, name, backends)
                                 : lookupMember(compiledDeclarations, name, signature, ellipsis);

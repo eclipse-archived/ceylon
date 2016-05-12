@@ -26,6 +26,7 @@ import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 
@@ -148,7 +149,25 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     }
     
     @Test
+    public void testBug6234() {
+        assertErrors("bug62xx/Bug6234", 
+                new CompilerError(15, "forward declaration may not occur in declaration section: 'count'"));
+    }
+    
+    @Test
     public void testBug6239() {
         compareWithJavaSource("bug62xx/Bug6239");
     }
+    
+    @Test
+    public void testBug6253() {
+        compile("bug62xx/Bug6253.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6253run");
+    }
+    
+    @Test
+    public void testBug6267() {
+        compareWithJavaSource("bug62xx/Bug6267");
+    }
+    
 }

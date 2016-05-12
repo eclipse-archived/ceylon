@@ -260,7 +260,8 @@ public class MetamodelGenerator {
         }
         if (tp.getSatisfiedTypes() != null && !tp.getSatisfiedTypes().isEmpty()) {
             encodeTypes(tp.getSatisfiedTypes(), map, KEY_SATISFIES, from);
-        } else if (tp.getCaseTypes() != null && !tp.getCaseTypes().isEmpty()) {
+        }
+        if (tp.getCaseTypes() != null && !tp.getCaseTypes().isEmpty()) {
             encodeTypes(tp.getCaseTypes(), map, "of", from);
         }
         if (tp.getDefaultTypeArgument() != null) {

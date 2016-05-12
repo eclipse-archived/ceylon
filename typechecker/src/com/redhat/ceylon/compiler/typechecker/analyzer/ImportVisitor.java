@@ -16,16 +16,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.ImportList;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -44,12 +46,12 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  */
 public class ImportVisitor extends Visitor {
     
-    private TypecheckerUnit unit;
+    private Unit unit;
 
     public ImportVisitor() {
     }
     
-    public ImportVisitor(TypecheckerUnit unit) {
+    public ImportVisitor(Unit unit) {
         this.unit = unit;
     }
     
@@ -289,6 +291,14 @@ public class ImportVisitor extends Visitor {
         }        
         Declaration d = 
                 importedPackage.getMember(name, null, false);
+        if(d == null){
+            String newName;
+            if(JvmBackendUtil.isInitialLowerCase(name))
+                newName = NamingBase.capitalize(name);
+            else
+                newName = NamingBase.getJavaBeanName(name);
+            d = importedPackage.getMember(newName, null, false);
+        }
         if (d==null) {
             String correction = 
                     correct(importedPackage, unit, name);
@@ -349,6 +359,14 @@ public class ImportVisitor extends Visitor {
             i.setAlias(name(alias.getIdentifier()));
         }
         Declaration m = td.getMember(name, null, false);
+        if(m == null){
+            String newName;
+            if(JvmBackendUtil.isInitialLowerCase(name))
+                newName = NamingBase.capitalize(name);
+            else
+                newName = NamingBase.getJavaBeanName(name);
+            m = td.getMember(newName, null, false);
+        }
         if (m==null) {
             String correction = 
                     correct(td, null, unit, name);

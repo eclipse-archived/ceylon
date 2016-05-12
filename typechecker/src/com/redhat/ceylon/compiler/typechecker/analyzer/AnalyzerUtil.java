@@ -26,18 +26,20 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.util.NormalizedLevenshtein;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -71,20 +73,28 @@ public class AnalyzerUtil {
     
     static TypedDeclaration getTypedMember(TypeDeclaration td, 
             String name, List<Type> signature, boolean ellipsis, 
-            Unit unit) {
+            Unit unit, Scope scope) {
         Declaration member = 
                 td.getMember(name, unit, signature, ellipsis);
         if (member instanceof TypedDeclaration) {
             return (TypedDeclaration) member;
         }
         else {
+            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && !JvmBackendUtil.isInitialLowerCase(name)){
+                name = NamingBase.getJavaBeanName(name);
+                member = td.getMember(name, unit, signature, ellipsis);
+                if (member instanceof TypedDeclaration) {
+                    return (TypedDeclaration) member;
+                }
+            }
             return null;
         }
     }
 
     static TypeDeclaration getTypeMember(TypeDeclaration td, 
             String name, List<Type> signature, boolean ellipsis, 
-            Unit unit) {
+            Unit unit, Scope scope) {
         Declaration member = 
                 td.getMember(name, unit, signature, ellipsis);
         if (member instanceof TypeDeclaration) {
@@ -95,6 +105,19 @@ public class AnalyzerUtil {
                     (TypedDeclaration) member);
         }
         else {
+            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && JvmBackendUtil.isInitialLowerCase(name)){
+                name = NamingBase.capitalize(name);
+                member = 
+                        td.getMember(name, unit, signature, ellipsis);
+                if (member instanceof TypeDeclaration) {
+                    return (TypeDeclaration) member;
+                }
+                else if (member instanceof TypedDeclaration) {
+                    return anonymousType(name, 
+                            (TypedDeclaration) member);
+                }
+            }
             return null;
         }
     }
@@ -109,6 +132,26 @@ public class AnalyzerUtil {
             return (TypedDeclaration) result;
         }
         else {
+            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && !JvmBackendUtil.isInitialLowerCase(name)){
+                name = NamingBase.getJavaBeanName(name);
+                // This method is used for base members, not qualified members
+                // so we don't look for members but we look on the scope, which
+                // may contain values with the modified case. For example, given
+                // import Foo { ... } which contains a \iBAR we map to "bar",
+                // if we look on the scope for "bar" we may find one that is not
+                // the one we wanted to import, so try imports first.
+                result = unit.getImportedDeclaration(name, 
+                        signature, ellipsis);
+                if(result instanceof TypedDeclaration)
+                    return (TypedDeclaration) result;
+                result = 
+                        scope.getMemberOrParameter(unit, 
+                                name, signature, ellipsis);
+                if (result instanceof TypedDeclaration) {
+                    return (TypedDeclaration) result;
+                }
+            }
             return null;
         }
     }
@@ -127,6 +170,35 @@ public class AnalyzerUtil {
                     (TypedDeclaration) result);
         }
         else {
+            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && JvmBackendUtil.isInitialLowerCase(name)){
+                name = NamingBase.capitalize(name);
+                // This method is used for base members, not qualified members
+                // so we don't look for members but we look on the scope, which
+                // may contain values with the modified case. For example, given
+                // import Foo { ... } which contains a \iBAR we map to "bar",
+                // if we look on the scope for "bar" we may find one that is not
+                // the one we wanted to import, so try imports first.
+                result = unit.getImportedDeclaration(name, 
+                        signature, ellipsis);
+                if (result instanceof TypeDeclaration) {
+                    return (TypeDeclaration) result;
+                }
+                else if (result instanceof TypedDeclaration) {
+                    return anonymousType(name, 
+                            (TypedDeclaration) result);
+                }
+                result = 
+                        scope.getMemberOrParameter(unit, 
+                                name, signature, ellipsis);
+                if (result instanceof TypeDeclaration) {
+                    return (TypeDeclaration) result;
+                }
+                else if (result instanceof TypedDeclaration) {
+                    return anonymousType(name, 
+                            (TypedDeclaration) result);
+                }
+            }
         	return null;
         }
     }
@@ -1198,8 +1270,7 @@ public class AnalyzerUtil {
         return type;
     }
 
-    static Package importedPackage(Tree.ImportPath path, 
-            TypecheckerUnit unit) {
+    static Package importedPackage(Tree.ImportPath path, Unit unit) {
         if (path!=null && 
                 !path.getIdentifiers().isEmpty()) {
             String nameToImport = 
@@ -1254,9 +1325,7 @@ public class AnalyzerUtil {
                         if (!isForBackend(Backend.Java.asSet(), 
                                           path.getUnit()
                                               .getSupportedBackends()) &&
-                                unit.getModuleSourceMapper()
-                                    .getJdkProvider()
-                                    .isJDKPackage(nameToImport)) {
+                                unit.isJdkPackage(nameToImport)) {
                             return null;
                         }
                     }

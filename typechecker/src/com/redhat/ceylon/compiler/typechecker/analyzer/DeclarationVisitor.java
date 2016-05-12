@@ -37,7 +37,6 @@ import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -94,25 +93,19 @@ public abstract class DeclarationVisitor extends Visitor {
     private static final Constructor[] NO_CONSTRUCTORS = new Constructor[0];
     
     private final Package pkg;
-    private final String filename;
     private Scope scope;
-    private TypecheckerUnit unit;
+    private Unit unit;
     private ParameterList parameterList;
     private Declaration declaration;
-    private String fullPath; 
-    private String relativePath;
     private boolean dynamic;
     
-    public DeclarationVisitor(Package pkg, String filename,
-            String fullPath, String relativePath) {
+    public DeclarationVisitor(Unit unit) {
+        this.unit = unit;
+        this.pkg = unit.getPackage();
         scope = pkg;
-        this.pkg = pkg;
-        this.filename = filename;
-        this.fullPath = fullPath;
-        this.relativePath = relativePath;
     }
 
-    public TypecheckerUnit getCompilationUnit() {
+    public Unit getCompilationUnit() {
         return unit;
     }
     
@@ -723,13 +716,7 @@ public abstract class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.CompilationUnit that) {
-        unit = createUnit();
-        //that.setModelNode(unit);
-        unit.setPackage(pkg);
-        unit.setFilename(filename);
-        unit.setFullPath(fullPath);
-        unit.setRelativePath(relativePath);
-        unit.setSupportedBackends(that.getUnit().getSupportedBackends());
+//        unit.setSupportedBackends(that.getUnit().getSupportedBackends());
         pkg.removeUnit(unit);
         pkg.addUnit(unit);
         super.visit(that);
@@ -785,8 +772,6 @@ public abstract class DeclarationVisitor extends Visitor {
         }
     }
     
-    protected abstract TypecheckerUnit createUnit();
-
     @Override
     public void visit(Tree.ImportMemberOrTypeList that) {
         ImportList il = new ImportList();
@@ -1922,9 +1907,12 @@ public abstract class DeclarationVisitor extends Visitor {
                             (Tree.ExistsOrNonemptyCondition) c;
                     Tree.Statement s = enc.getVariable();
                     if (s instanceof Tree.Variable) {
-                        Tree.Variable v = (Tree.Variable) s;
-                        t = v.getType();
-                        id = v.getIdentifier();
+                        Tree.Variable v = 
+                                (Tree.Variable) s;
+                        if (v!=null) {
+                            t = v.getType();
+                            id = v.getIdentifier();
+                        }
                     }
                 }
                 else if (c instanceof Tree.IsCondition) {
@@ -2640,7 +2628,7 @@ public abstract class DeclarationVisitor extends Visitor {
                                 outerType.getTypeModel()
                                     .getDeclaration();
                         return AnalyzerUtil.getTypeMember(
-                                dec, name, null, false, unit);
+                                dec, name, null, false, unit, scope);
                     }
                 }
                 @Override

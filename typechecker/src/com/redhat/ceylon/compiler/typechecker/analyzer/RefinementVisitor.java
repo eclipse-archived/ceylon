@@ -37,7 +37,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -1915,7 +1914,7 @@ public class RefinementVisitor extends Visitor {
             typeParams = null;
         }
         int i=0;
-        TypecheckerUnit unit = that.getUnit();
+        Unit unit = that.getUnit();
         for (ParameterList pl: sm.getParameterLists()) {
             ParameterList l = new ParameterList();
             Tree.ParameterList tpl = 

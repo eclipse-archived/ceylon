@@ -30,7 +30,7 @@ function unflatten(ff, $$$mptypes) {
         } else {
           var s=[];
           for (var i=cut;i<seq.size;i++)s.push(seq.$_get(i));
-          a.push(s.$sa$(last.$t));
+          a.push($arr$sa$(s,last.$t));
         }
         if ($mptypes)a.push($mptypes);
         return ff.apply(0,a);

@@ -728,6 +728,46 @@ public class RecoveryTests extends CompilerTests {
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryAssertVariable_");
     }
     
+    @Test
+    public void testRcvExpressionRecoveryMeta1(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryMeta1.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.exprRecoveryMeta1",
+                "refers to a declaration with compiler errors",
+                1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.exprRecoveryMeta1_");
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryMeta2(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryMeta2.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.exprRecoveryMeta2",
+                "refers to a declaration with compiler errors",
+                1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.exprRecoveryMeta2_");
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryMetaDecl1(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryMetaDecl1.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.exprRecoveryMetaDecl1",
+                "refers to a declaration with compiler errors",
+                1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.exprRecoveryMetaDecl1_");
+    }
+    
+    @Test
+    public void testRcvExpressionRecoveryMetaDecl2(){
+        compileAndRunWithUnresolvedCompilationError(
+                "expression/ExpressionRecoveryMetaDecl2.ceylon",
+                "com.redhat.ceylon.compiler.java.test.recovery.expression.exprRecoveryMetaDecl2",
+                "refers to a declaration with compiler errors",
+                1);
+        checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.exprRecoveryMetaDecl2_");
+    }
+    
     
     private void compile(int expectedErrors, String... ceylon){
         DiagnosticCollector<JavaFileObject> errorCollector = new DiagnosticCollector<JavaFileObject>();

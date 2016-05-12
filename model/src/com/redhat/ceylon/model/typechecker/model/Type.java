@@ -46,8 +46,6 @@ import com.redhat.ceylon.model.typechecker.util.TypePrinter;
  */
 public class Type extends Reference {
     
-    private static final Type NullType = new Type();
-    
     private TypeDeclaration declaration;
     private String underlyingType;
     private boolean isRaw;
@@ -69,34 +67,25 @@ public class Type extends Reference {
     public boolean isCovariant(TypeParameter param) {
         SiteVariance override = 
                 varianceOverrides.get(param);
-        if (override==null) {
-            return param.isCovariant();
-        }
-        else {
-            return override==OUT;
-        }
+        return override==null ? 
+                param.isCovariant() : 
+                override==OUT;
     }
     
     public boolean isContravariant(TypeParameter param) {
         SiteVariance override = 
                 varianceOverrides.get(param);
-        if (override==null) {
-            return param.isContravariant();
-        }
-        else {
-            return override==IN;
-        }
+        return override==null ? 
+                param.isContravariant() : 
+                override==IN;
     }
     
     public boolean isInvariant(TypeParameter param) {
         SiteVariance override = 
                 varianceOverrides.get(param);
-        if (override==null) {
-            return param.isInvariant();
-        }
-        else {
-            return false;
-        }
+        return override==null ? 
+                param.isInvariant() : 
+                false;
     }
     
     public void setVariance(TypeParameter param, 
@@ -172,8 +161,10 @@ public class Type extends Reference {
      * given type? 
      */
     public boolean isExactly(Type type) {
-        return type!=null && resolveAliases()
-                .isExactlyInternal(type.resolveAliases());
+        return type!=null && 
+                resolveAliases()
+                    .isExactlyInternal(
+                            type.resolveAliases());
     }
     
     private boolean isExactlyInternal(Type type) {
@@ -551,8 +542,10 @@ public class Type extends Reference {
      * Is this type a subtype of the given type? 
      */
     public boolean isSubtypeOf(Type type) {
-        return type!=null && resolveAliases()
-                .isSubtypeOfInternal(type.resolveAliases());
+        return type!=null && 
+                resolveAliases()
+                    .isSubtypeOfInternal(
+                            type.resolveAliases());
     }
 
     /**
@@ -609,7 +602,7 @@ public class Type extends Reference {
                 return true;
             }
             else if (isIntersection()) {
-                if (type.isClassOrInterface()) {
+                if (type.isDeclaredType()) {
                     TypeDeclaration otherDec = 
                             type.getDeclaration();
                     Type pst = getSupertype(otherDec);
@@ -1444,7 +1437,7 @@ public class Type extends Reference {
         if (canCache) {
             TypeCache cache = dec.getUnit().getCache();
             Type ret = cache.get(this, dec);
-            if(ret != null) return ret == NullType ? null : ret;
+            if(ret != null) return ret == TypeCache.NULL_VALUE ? null : ret;
         }
         
         while (dec.isAlias()) {
@@ -1477,7 +1470,7 @@ public class Type extends Reference {
         
         if (canCache) {
             TypeCache cache = dec.getUnit().getCache();
-            cache.put(this, dec, superType == null ? NullType : superType);
+            cache.put(this, dec, superType == null ? TypeCache.NULL_VALUE : superType);
         }
         return superType;
     }
@@ -1724,6 +1717,9 @@ public class Type extends Reference {
                     if (rd.equals(prd)) {
                         result = principalInstantiation(rd, 
                                 possibleResult, result, unit);
+                        if (result == null) {
+                            return null;
+                        }
                         lowerBound = c.isMemberLookup() ? 
                                 intersectionType(result, 
                                         lowerBound, unit) : 
@@ -4127,6 +4123,10 @@ public class Type extends Reference {
     
     public boolean isEntry() {
         return getDeclaration().isEntry();
+    }
+    
+    boolean isDeclaredType() {
+        return isClassOrInterface() || isTypeParameter();
     }
     
     public int getMemoisedHashCode() {

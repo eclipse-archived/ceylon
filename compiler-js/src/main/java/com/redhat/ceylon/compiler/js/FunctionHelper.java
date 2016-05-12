@@ -506,11 +506,13 @@ public class FunctionHelper {
                         (Tree.BaseTypeExpression)that.getPrimary());
                 if (hasTargs) {
                     if (that.getDirectlyInvoked()) {
-                        gen.out(gen.qualifiedPath(that, cd), "_", gen.getNames().name(cd));
+                        gen.out(gen.qualifiedPath(that, cd), gen.getNames().constructorSeparator(cd),
+                                gen.getNames().name(cd));
                     } else {
                         BmeGenerator.printGenericMethodReference(gen,
                                 (Tree.BaseTypeExpression)that.getPrimary(), "0",
-                                gen.qualifiedPath(that, cd) + "_" + gen.getNames().name(cd));
+                                gen.qualifiedPath(that, cd) + gen.getNames().constructorSeparator(cd) +
+                                gen.getNames().name(cd));
                     }
                 } else {
                     gen.qualify(that, cd);

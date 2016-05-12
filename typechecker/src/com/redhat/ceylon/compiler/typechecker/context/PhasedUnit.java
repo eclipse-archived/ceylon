@@ -60,7 +60,7 @@ public class PhasedUnit {
     
     private Tree.CompilationUnit rootNode;
     private Package pkg;
-    private TypecheckerUnit unit;
+    private Unit unit;
     //must be the non qualified file name
     private String fileName;
     private WeakReference<ModuleManager> moduleManagerRef;
@@ -175,7 +175,9 @@ public class PhasedUnit {
                 moduleVisited = true;
                 processLiterals();
                 moduleVisitor = 
-                        new ModuleVisitor(moduleManagerRef.get(), moduleManagerUtilRef.get(), 
+                        new ModuleVisitor(
+                                moduleManagerRef.get(), 
+                                moduleManagerUtilRef.get(), 
                                 pkg);
                 moduleVisitor.setCompleteOnlyAST(!isAllowedToChangeModel(null));
                 rootNode.visit(moduleVisitor);
@@ -189,8 +191,11 @@ public class PhasedUnit {
         return moduleManagerUtilRef.get();
     }
     
-    protected TypecheckerUnit createUnit() {
-        return new TypecheckerUnit(moduleManagerRef.get().getModules().getListOfModules(),
+    protected Unit createUnit() {
+        return new TypecheckerUnit(
+                moduleManagerRef.get()
+                    .getModules()
+                    .getListOfModules(),
         		moduleManagerUtilRef.get());
     }
     
@@ -334,9 +339,17 @@ public class PhasedUnit {
                 processLiterals();
                 scanningDeclarations = true;
                 //System.out.println("Scan declarations for " + fileName);
-                DeclarationVisitor dv = createDeclarationVisitor();
+                DeclarationVisitor dv = new DeclarationVisitor(unit) {
+                    @Override
+                    protected boolean shouldIgnoreOverload(Declaration overload, Declaration declaration) {
+                        return PhasedUnit.this.shouldIgnoreOverload(overload, declaration);
+                    }
+                    @Override
+                    protected boolean isAllowedToChangeModel(Declaration declaration) {
+                        return PhasedUnit.this.isAllowedToChangeModel(declaration);
+                    }
+                };
                 rootNode.visit(dv);
-                unit = dv.getCompilationUnit();
 
                 rootNode.visit(new LocalDeclarationVisitor());
 
@@ -347,26 +360,6 @@ public class PhasedUnit {
         finally {
             TypeCache.setEnabled(enabled);
         }
-    }
-
-    protected DeclarationVisitor createDeclarationVisitor() {
-        return new DeclarationVisitor(pkg, 
-                fileName,
-                unitFile.getPath(), 
-                pathRelativeToSrcDir) {
-            @Override
-            protected boolean shouldIgnoreOverload(Declaration overload, Declaration declaration) {
-                return PhasedUnit.this.shouldIgnoreOverload(overload, declaration);
-            }
-            @Override
-            protected TypecheckerUnit createUnit() {
-                return PhasedUnit.this.createUnit();
-            }
-            @Override
-            protected boolean isAllowedToChangeModel(Declaration declaration) {
-                return PhasedUnit.this.isAllowedToChangeModel(declaration);
-            }
-        };
     }
 
     private void processLiterals() {
@@ -474,7 +467,7 @@ public class PhasedUnit {
         return pkg;
     }
     
-    public TypecheckerUnit getUnit() {
+    public Unit getUnit() {
         return unit;
     }
 

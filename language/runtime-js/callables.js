@@ -199,7 +199,7 @@ function JsCallableList(list,fun,$mpt,$et) {
     while((item=iter.next())!==finished()){
       rval[i++] = fun(item,a);
     }
-    return rval.$sa$($et||{t:Anything});
+    return $arr$sa$(rval,$et||{t:Anything});
   };
 }
 JsCallableList.$crtmm$={tp:{Return$Callable:{dv:'out'}, Arguments$Callable:{dv:'in'}},pa:1,mod:$CCMM$,d:['$','Callable']};

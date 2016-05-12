@@ -153,9 +153,9 @@ shared native final class String(characters)
      the given [[objects]], using this string as a separator."
     shared native String join({Object*} objects) {
         value result = StringBuilder();
-        objects.map(Object.string)
-               .interpose(this)
-               .each(result.append);
+        value strings = objects.map(Object.string);
+        result.appendAll(empty then strings 
+            else strings.interpose(this));
         return result.string;
     }
     
@@ -365,6 +365,7 @@ shared native final class String(characters)
      UTF-16 encoding. Use of [[longerThan]] or 
      [[shorterThan]] is highly recommended."
     see (`function longerThan`, `function shorterThan`)
+    aliased ("length")
     shared actual native Integer size;
     
     "The index of the last character in the string, or 

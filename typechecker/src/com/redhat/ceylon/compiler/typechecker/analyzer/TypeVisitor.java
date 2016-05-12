@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeSpecifier;
@@ -71,7 +70,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  */
 public class TypeVisitor extends Visitor {
     
-    private TypecheckerUnit unit;
+    private Unit unit;
 
     private boolean inDelegatedConstructor;
     private boolean inTypeLiteral;
@@ -80,7 +79,7 @@ public class TypeVisitor extends Visitor {
     public TypeVisitor() {
     }
     
-    public TypeVisitor(TypecheckerUnit unit) {
+    public TypeVisitor(Unit unit) {
         this.unit = unit;
     }
     
@@ -481,7 +480,7 @@ public class TypeVisitor extends Visitor {
                 String name = name(id);
                 TypeDeclaration type = 
                         getTypeMember(d, name, 
-                                null, false, unit);
+                                null, false, unit, that.getScope());
                 if (type==null) {
                     Scope scope = that.getScope();
                     if (!isNativeForWrongBackend(
@@ -1367,55 +1366,53 @@ public class TypeVisitor extends Visitor {
         for (Tree.StaticType ct: cts) {
             inheritedType(ct);
             Type type = ct.getTypeModel();
-            if (type!=null) {
-                if (!isTypeUnknown(type)) {
-                    if (type.isUnion() || 
-                        type.isIntersection() ||
-                        type.isNothing()) {
-                        //union/intersection types don't have equals()
+            if (!isTypeUnknown(type)) {
+                if (type.isUnion() || 
+                    type.isIntersection() ||
+                    type.isNothing()) {
+                    //union/intersection types don't have equals()
+                    if (td instanceof TypeParameter) {
+                        ct.addError("enumerated bound must be a class or interface type");
+                    }
+                    else {
+                        ct.addError("case type must be a class, interface, or self type");
+                    }
+                }
+                else {
+                    TypeDeclaration ctd = type.getDeclaration();
+                    if (ctd.equals(td)) {
+                        ct.addError("directly enumerates itself: '" + 
+                                td.getName() + "'");
+                    }
+                    else if (type.isClassOrInterface()) {
+                        caseTypes.add(type);
+                    }
+                    else if (type.isTypeParameter()) {
+                        if (td instanceof TypeParameter) {
+                            caseTypes.add(type);
+                        }
+                        else {
+                            TypeParameter tp = 
+                                    (TypeParameter) ctd;
+                            td.setSelfType(type);
+                            if (tp.isSelfType()) {
+                                ct.addError("type parameter may not act as self type for two different types");
+                            }
+                            else {
+                                tp.setSelfTypedDeclaration(td);
+                                caseTypes.add(type);
+                            }
+                            if (cts.size()>1) {
+                                ct.addError("a type may not have more than one self type");
+                            }
+                        }
+                    }
+                    else {
                         if (td instanceof TypeParameter) {
                             ct.addError("enumerated bound must be a class or interface type");
                         }
                         else {
                             ct.addError("case type must be a class, interface, or self type");
-                        }
-                    }
-                    else {
-                        TypeDeclaration ctd = type.getDeclaration();
-                        if (ctd.equals(td)) {
-                            ct.addError("directly enumerates itself: '" + 
-                                    td.getName() + "'");
-                        }
-                        else if (type.isClassOrInterface()) {
-                            caseTypes.add(type);
-                        }
-                        else if (type.isTypeParameter()) {
-                            if (td instanceof TypeParameter) {
-                                caseTypes.add(type);
-                            }
-                            else {
-                                TypeParameter tp = 
-                                        (TypeParameter) ctd;
-                                td.setSelfType(type);
-                                if (tp.isSelfType()) {
-                                    ct.addError("type parameter may not act as self type for two different types");
-                                }
-                                else {
-                                    tp.setSelfTypedDeclaration(td);
-                                    caseTypes.add(type);
-                                }
-                                if (cts.size()>1) {
-                                    ct.addError("a type may not have more than one self type");
-                                }
-                            }
-                        }
-                        else {
-                            if (td instanceof TypeParameter) {
-                                ct.addError("enumerated bound must be a class or interface type");
-                            }
-                            else {
-                                ct.addError("case type must be a class, interface, or self type");
-                            }
                         }
                     }
                 }

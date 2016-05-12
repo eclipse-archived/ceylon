@@ -97,6 +97,12 @@ public class InteropTests extends CompilerTests {
     }
 
     @Test
+    public void testIopVariadicImplementations(){
+        compile("TypesJava.java");
+        compareWithJavaSource("VariadicImplementations");
+    }
+    
+    @Test
     public void testIopImplementOverloadedConstructors(){
         compile("JavaWithOverloadedMembers.java");
         compareWithJavaSource("ImplementOverloadedConstructors");
@@ -763,5 +769,19 @@ public class InteropTests extends CompilerTests {
     public void testBug6244(){
         compile("Bug6244Java.java");
         compile("Bug6244.ceylon");
+    }
+    
+    @Test
+    public void testSdkBug571() throws Throwable{
+        compile("SdkBug571.ceylon");
+        runInJBossModules("run", 
+                "com.redhat.ceylon.compiler.java.test.interop",
+                Arrays.asList("--run=com.redhat.ceylon.compiler.java.test.interop::sdkBug571_run"));
+    }
+
+    @Test
+    public void testIopBug6099(){
+        compile("Bug6099Java.java");
+        compile("Bug6099.ceylon");
     }
 }

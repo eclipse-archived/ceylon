@@ -75,7 +75,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -139,7 +138,7 @@ public class ExpressionVisitor extends Visitor {
     private Node ifStatementOrExpression;
     private Node switchStatementOrExpression;
     
-    private TypecheckerUnit unit;
+    private Unit unit;
     
     private Tree.IfClause ifClause() {
         if (ifStatementOrExpression 
@@ -198,7 +197,7 @@ public class ExpressionVisitor extends Visitor {
     public ExpressionVisitor() {
     }
     
-    public ExpressionVisitor(TypecheckerUnit unit) {
+    public ExpressionVisitor(Unit unit) {
         this.unit = unit;
     }
     
@@ -1999,7 +1998,9 @@ public class ExpressionVisitor extends Visitor {
                 if (type instanceof Tree.VoidModifier && 
                         !isSatementExpression(e)) {
                     se.addError("function is declared void so specified expression must be a statement: '" +
-                            m.getName() + "' is declared 'void'");
+                            m.getName() + 
+                            "' is declared 'void'",
+                            210);
                 }
             }
         }
@@ -2076,8 +2077,31 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.Declaration that) {
+    @Override public void visit(Tree.CaseTypes that) {
         super.visit(that);
+        if (that.getTypes().size()==1) {
+            Tree.Type type = that.getTypes().get(0);
+            Type ct = type.getTypeModel();
+            if (!isTypeUnknown(ct)) {
+                TypeDeclaration ctd = ct.getDeclaration();
+                if (ctd.isSelfType()) {
+                    TypeDeclaration td = 
+                            (TypeDeclaration) 
+                            that.getScope();
+                    Type t = td.getType();
+                    for (Type bound: ct.getSatisfiedTypes()) {
+                        if (!t.isSubtypeOf(bound)) {
+                            type.addError("type does not satisfy upper bound of self type: '" + 
+                                    td.getName() + 
+                                    "' is not a subtype of upper bound '" + 
+                                    bound.asString(unit) + 
+                                    "' of its self type '" + 
+                                    ctd.getName() + "'");
+                        }
+                    }
+                }
+            }
+        }
     }
     
     @Override public void visit(Tree.TypedDeclaration that) {
@@ -5319,6 +5343,28 @@ public class ExpressionVisitor extends Visitor {
             checkAssignable(rhst, obt, 
                     that.getRightTerm(), 
                     "operand expression must be of type Object");
+            if (intersectionType(lhst, rhst, unit).isNothing()) {
+                Interface ld = unit.getListDeclaration();
+                Interface sd = unit.getSetDeclaration();
+                Interface md = unit.getMapDeclaration();
+                Class id = unit.getIntegerDeclaration();
+                Class fd = unit.getFloatDeclaration();
+                if (!(lhst.getSupertype(ld)!=null &&
+                      rhst.getSupertype(ld)!=null) &&
+                    !(lhst.getSupertype(sd)!=null &&
+                      rhst.getSupertype(sd)!=null) &&
+                    !(lhst.getSupertype(md)!=null &&
+                      rhst.getSupertype(md)!=null) &&
+                    !(lhst.getDeclaration().equals(id) &&
+                      rhst.getDeclaration().equals(fd)) &&
+                    !(lhst.getDeclaration().equals(fd) &&
+                      rhst.getDeclaration().equals(id))) {
+                    that.addUsageWarning(Warning.disjointEquals, 
+                            "tests equality for operands with disjoint types: '" +
+                            lhst.asString(unit) + "' and '" +
+                            rhst.asString(unit) + "' are disjoint");
+                }
+            }
         }
         that.setTypeModel(unit.getBooleanType());
     }
@@ -5583,6 +5629,19 @@ public class ExpressionVisitor extends Visitor {
 	            		unit.getCategoryDeclaration(),
 	            		that.getRightTerm(), 
 	            		"operand expression must be a category");
+                Type et = unit.getIteratedType(rhst);
+	            if (et!=null) {
+                    if (intersectionType(lhst, et, unit).isNothing()) {
+                        Class sd = unit.getStringDeclaration();
+                        if (!lhst.getDeclaration().equals(sd) ||
+                            !rhst.getDeclaration().equals(sd)) {
+                            that.addUsageWarning(Warning.disjointContainment, 
+                                    "tests containment with disjoint element types: '" +
+                                    lhst.asString(unit) + "' and '" +
+                                    et.asString(unit) + "' are disjoint");
+                        }
+                    }
+	            }
             }
             if (ct!=null) {
                 Type at = 
@@ -6518,12 +6577,12 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         member = getTypedMember(d, name, 
-                                signature, spread, unit);
+                                signature, spread, unit, scope);
                     }
                 }
                 else {
                     member = getTypedMember(d, name, 
-                            signature, spread, unit);
+                            signature, spread, unit, scope);
                 }
                 ambiguous = member==null && 
                         d.isMemberAmbiguous(name, unit, 
@@ -7284,12 +7343,12 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         type = getTypeMember(d, name, 
-                                signature, spread, unit);
+                                signature, spread, unit, scope);
                     }
                 }
                 else {
                     type = getTypeMember(d, name, 
-                            signature, spread, unit);
+                            signature, spread, unit, scope);
                 }
                 ambiguous = type==null && 
                         d.isMemberAmbiguous(name, unit, 
@@ -9262,7 +9321,8 @@ public class ExpressionVisitor extends Visitor {
             	String container = "type '" + qtd.getName(unit) + "'";
             	TypedDeclaration member = 
             	        getTypedMember(qtd, name, 
-            	                null, false, unit);
+            	                null, false, unit, 
+            	                that.getScope());
             	if (member==null) {
             		if (qtd.isMemberAmbiguous(name, unit, null, false)) {
             			that.addError("method or attribute is ambiguous: '" +
@@ -9519,7 +9579,8 @@ public class ExpressionVisitor extends Visitor {
             } else {
                 that.addError("illegal reference to native declaration '" +
                         dec.getName(unit) + "': declaration '" +
-                        d.getName(unit) + "' is not native (mark it or the module native)");
+                        d.getName(unit) + "' is not native (mark it or the module native)",
+                        20010);
             }
         }
         if (dec.isNative()) {

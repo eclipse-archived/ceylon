@@ -2931,7 +2931,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             Type type = invocation.getParameterType(argIndex);
             if (invocation.isParameterSequenced(argIndex)
                     // Java methods need their underlying type preserved
-                    && !invocation.isJavaMethod()) {
+                    && !invocation.isJavaVariadicMethod()) {
                 if (!invocation.isArgumentSpread(argIndex)) {
                     // If the parameter is sequenced and the argument is not ...
                     // then the expected type of the *argument* is the type arg to Iterator
@@ -3078,8 +3078,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // for Java methods of variadic primitives, it's better to wrap them ourselves into an array
                 // to avoid ambiguity of foo(1,2) for foo(int...) and foo(Object...) methods
                 if(!wrapIntoArray
-                        && invocation.isParameterSequenced(argIndex)
-                        && invocation.isJavaMethod()
+                        && invocation.isParameterJavaVariadic(argIndex)
                         && boxingStrategy == BoxingStrategy.UNBOXED
                         && willEraseToPrimitive(typeFact().getDefiniteType(parameterType))
                         && !invocation.isSpread())
@@ -3092,7 +3091,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 result, argIndex);
                         break;
                     }
-                    if(invocation.isJavaMethod()){
+                    if(invocation.isJavaVariadicMethod()){
                         // if it's a java method we need a special wrapping
                         exprAndType = transformSpreadArgument(invocation,
                                 numArguments, argIndex, boxingStrategy,
@@ -3118,7 +3117,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     }
                 } else if (!invocation.isParameterSequenced(argIndex)
                         // if it's sequenced, Java and there's no spread at all, pass it along
-                        || (invocation.isParameterSequenced(argIndex) && invocation.isJavaMethod() && !invocation.isSpread())) {
+                        || (invocation.isParameterJavaVariadic(argIndex)  && !invocation.isSpread())) {
                     exprAndType = transformArgument(invocation, argIndex,
                             boxingStrategy);
                     // Callable has a variadic 1-param method that if you invoke it with a Java Object[] will confuse javac and give
@@ -3132,7 +3131,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                             exprAndType = new ExpressionAndType(make().TypeCast(makeJavaType(typeFact().getObjectType()), exprAndType.expression),
                                     exprAndType.type);
                         }
-                    }else if(invocation.isParameterSequenced(argIndex) && invocation.isJavaMethod() && !invocation.isSpread()){
+                    }else if(invocation.isParameterJavaVariadic(argIndex) && !invocation.isSpread()){
                         // in fact, the very same problem happens when passing null or object arrays to a java variadic method
                         Type argumentType = invocation.getArgumentType(argIndex);
                         if(isJavaObjectArray(argumentType)
@@ -3250,7 +3249,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         final JCExpression expr;
         final JCExpression type;
         // optimise "*javaArray.iterable" into "javaArray" for java variadic parameters, since we can pass them just along
-        if(invocation.isJavaMethod()
+        if(invocation.isJavaVariadicMethod()
                 && numArguments == argIndex+1
                 && !invocation.isArgumentComprehension(argIndex)){
             Expression argumentExpression = invocation.getArgumentExpression(argIndex);
@@ -3291,7 +3290,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 x = x.prepend(argExpr);
             }
         }
-        if(invocation.isJavaMethod()){
+        if(invocation.isJavaVariadicMethod()){
             // collect all the initial arguments and wrap into a Java array
             // first arg is the spread part
             JCExpression last = x.head;
@@ -3405,7 +3404,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression argType = makeJavaType(paramType, boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
             
             JCExpression expr;
-            if(invocation.isJavaMethod()){
+            if(invocation.isJavaVariadicMethod()){
                 // no need to handle leading arguments since that is handled by transformSpreadArgument
                 // if ever we have leading arguments we never end up in this method
                 expr = sequenceToJavaArray(invocation, tupleElement, paramType, boxingStrategy, paramType, List.<JCExpression>nil());
@@ -3514,11 +3513,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression transformInvocation(Invocation invocation, CallBuilder callBuilder,
             TransformedInvocationPrimary transformedPrimary) {
         invocation.location(callBuilder);
+        boolean needsCast = false;
         if (Decl.isConstructorPrimary(invocation.getPrimary())) {
             Tree.StaticMemberOrTypeExpression qte = (Tree.StaticMemberOrTypeExpression)invocation.getPrimary();
             // instantiator
             Constructor ctor = Decl.getConstructor(qte.getDeclaration());
             if (Strategy.generateInstantiator(ctor)) {
+                needsCast = Strategy.isInstantiatorUntyped(ctor);
                 if (qte instanceof Tree.QualifiedMemberExpression
                         && ((Tree.QualifiedMemberExpression)qte).getPrimary() instanceof Tree.QualifiedTypeExpression
                         && isCeylonCallable(getReturnTypeOfCallable(invocation.getPrimary().getTypeModel()))) {
@@ -3583,7 +3584,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else {
             callBuilder.invoke(naming.makeQuotedQualIdent(transformedPrimary.expr, transformedPrimary.selector));
         }
-        return callBuilder.build();
+        JCExpression result = callBuilder.build();
+        if (needsCast) {
+            result = make().TypeCast(makeJavaType(invocation.getReturnType()), result);
+        }
+        return result;
     }
 
     private JCExpression transformQualifiedInstantiation(Invocation invocation, CallBuilder callBuilder,
@@ -5857,7 +5862,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
             @Override
             JCExpression makeIteratorType(ExpressionTransformer gen, Type iterType) {
-                return gen.makeJavaType(iterType);
+                return gen.makeJavaType(iterType, JT_NO_PRIMITIVES);
             }
 
             @Override

@@ -826,7 +826,7 @@ public class Util {
                 new CharArrayBuilder(initialElements.length+INIT_ARRAY_SIZE);
         int i=0;
         for(;i<initialElements.length;i++) {
-            builder.appendCodepoint((char) initialElements[i]);
+            builder.appendCodepoint(initialElements[i]);
             
         }
         Iterator<? extends ceylon.language.Character> iterator = sequence.iterator();
@@ -1022,14 +1022,31 @@ public class Util {
         return new Tuple<T,T,Sequential<? extends T>>($reifiedT, elements);
     }
 
+    /**
+     * Return a {@link Sequential} for the given elements
+     * (subsequent changes to the array will not be visible in 
+     * the returned {@link Sequential}).
+     * @param $reifiedT The reified type parameter
+     * @param elements The elements
+     * @return A Sequential
+     */
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static <T> Sequential<T> 
+    sequentialWrapperCopy(TypeDescriptor $reifiedT, T[] elements) {
+        if (elements.length == 0) {
+            return (Sequential) empty_.get_();
+        }
+        return new Tuple<T,T,Sequential<? extends T>>($reifiedT, elements,
+                (Sequential<? extends T>) empty_.get_(), true);
+    }
+
     /** 
-     * <p>Return a {@link Sequential Sequential&lt;String&gt;} wrapping the 
+     * <p>Return a {@link Sequential Sequential&lt;String&gt;} copying the 
      * given {@code java.lang.String[]} elements
-     * (subsequent changes to the array will be visible in 
+     * (subsequent changes to the array will not be visible in 
      * the returned {@link Sequential}).</p>
      * 
-     * <p>Used to obtain a {@code Sequential<String>} from a {@code java.lang.String[]} 
-     * obtained from an annotation.</p>
+     * <p>Used to obtain a {@code Sequential<String>} from a {@code java.lang.String[]}.</p>
      */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.String> 
@@ -1048,13 +1065,87 @@ public class Util {
     }
 
     /** 
-     * <p>Return a {@link Sequential Sequential&lt;Integer&gt;} wrapping the 
-     * given {@code long[]} elements
-     * (subsequent changes to the array will be visible in 
+     * <p>Return a {@link Sequential Sequential&lt;Byte&gt;} copying the 
+     * given {@code byte[]} elements
+     * (subsequent changes to the array will not be visible in 
      * the returned {@link Sequential}).</p>
      * 
-     * <p>Used to obtain a {@code Sequential<Integer>} from a {@code long[]} 
-     * obtained from an annotation.</p>
+     * <p>Used to obtain a {@code Sequential<Byte>} from a {@code byte[]}.</p>
+     */
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static Sequential<? extends ceylon.language.Integer> 
+    sequentialWrapperBoxed(byte[] elements) {
+        if (elements.length == 0) {
+            return (Sequential)empty_.get_();
+
+        }
+        int total = elements.length;
+        java.lang.Object[] newArray = new java.lang.Object[total];
+        int i = 0;
+        for(byte element : elements) {
+            newArray[i++] = ceylon.language.Byte.instance(element);
+        }
+        return new Tuple(ceylon.language.Byte.$TypeDescriptor$, newArray);
+    }
+
+    /** 
+     * <p>Return a {@link Sequential Sequential&lt;Integer&gt;} copying the 
+     * given {@code short[]} elements
+     * (subsequent changes to the array will not be visible in 
+     * the returned {@link Sequential}).</p>
+     * 
+     * <p>Used to obtain a {@code Sequential<Integer>} from a {@code short[]}.</p>
+     */
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static Sequential<? extends ceylon.language.Integer> 
+    sequentialWrapperBoxed(short[] elements) {
+        if (elements.length == 0) {
+            return (Sequential)empty_.get_();
+
+        }
+        int total = elements.length;
+        java.lang.Object[] newArray = new java.lang.Object[total];
+        int i = 0;
+        for(short element : elements) {
+            newArray[i++] = ceylon.language.Integer.instance(element);
+        }
+        return new Tuple(ceylon.language.Integer.$TypeDescriptor$, newArray);
+    }
+
+    /** 
+     * <p>Return a {@link Sequential Sequential&lt;Integer&gt;} copying the 
+     * given {@code int[]} elements
+     * (subsequent changes to the array will not be visible in 
+     * the returned {@link Sequential}).</p>
+     * 
+     * <p>WARNING: if you use this method for anything else than interop you're likely doind it wrong
+     * and want #sequentialWrapperBoxed instead</p>
+     * 
+     * <p>Used to obtain a {@code Sequential<Integer>} from a {@code int[]}.</p>
+     */
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static Sequential<? extends ceylon.language.Integer> 
+    sequentialWrapperBoxedForInteger(int[] elements) {
+        if (elements.length == 0) {
+            return (Sequential)empty_.get_();
+
+        }
+        int total = elements.length;
+        java.lang.Object[] newArray = new java.lang.Object[total];
+        int i = 0;
+        for(int element : elements) {
+            newArray[i++] = ceylon.language.Integer.instance(element);
+        }
+        return new Tuple(ceylon.language.Integer.$TypeDescriptor$, newArray);
+    }
+
+    /** 
+     * <p>Return a {@link Sequential Sequential&lt;Integer&gt;} copying the 
+     * given {@code long[]} elements
+     * (subsequent changes to the array will not be visible in 
+     * the returned {@link Sequential}).</p>
+     * 
+     * <p>Used to obtain a {@code Sequential<Integer>} from a {@code long[]}.</p>
      */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Integer> 
@@ -1073,10 +1164,53 @@ public class Util {
     }
 
     /** 
-     * <p>Return a {@link Sequential Sequential&lt;Character&gt;} wrapping the 
+     * <p>Return a {@link Sequential Sequential&lt;Character&gt;} copying the 
+     * given {@code char[]} elements
+     * (subsequent changes to the array will not be visible in 
+     * the returned {@link Sequential}).</p>
+     * 
+     * <p>Used to obtain a {@code Sequential<Character>} from a {@code char[]}.</p>
+     */
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static Sequential<? extends ceylon.language.Character> 
+    sequentialWrapperBoxed(char[] elements) {
+        if (elements.length == 0) {
+            return (Sequential)empty_.get_();
+
+        }
+        int total = Character.codePointCount(elements, 0, elements.length);
+        java.lang.Object[] newArray = new java.lang.Object[total];
+        int i = 0;
+        char lastHighSurrogate = 0;
+        for(char element : elements) {
+            if(lastHighSurrogate != 0){
+                if(Character.isLowSurrogate(element)){
+                    newArray[i++] = ceylon.language.Character.instance(Character.toCodePoint(lastHighSurrogate, element));
+                    lastHighSurrogate = 0;
+                }else{
+                    throw new AssertionError("Illegal low surrogate value "+element+" after high surrogate value "+lastHighSurrogate);
+                }
+            }else if(Character.isHighSurrogate(element)){
+                lastHighSurrogate = element;
+            }else if(Character.isLowSurrogate(element)){
+                throw new AssertionError("Illegal low surrogate value "+element+" after no high surrogate value");
+            }else{
+                newArray[i++] = ceylon.language.Character.instance(element);
+            }
+        }
+        if(lastHighSurrogate != 0)
+            throw new AssertionError("Missing low surrogate value after high surrogate value "+lastHighSurrogate);
+        return new Tuple(ceylon.language.Character.$TypeDescriptor$, newArray);
+    }
+
+    /** 
+     * <p>Return a {@link Sequential Sequential&lt;Character&gt;} copying the 
      * given {@code int[]} elements
      * (subsequent changes to the array will be visible in 
      * the returned {@link Sequential}).</p>
+     * 
+     * <p>WARNING: if you use this method for interop you're likely doind it wrong
+     * and want #sequentialWrapperBoxedForInteger instead</p>
      * 
      * <p>Used to obtain a {@code Sequential<Character>} from a {@code int[]} 
      * obtained from an annotation.</p>
@@ -1098,13 +1232,12 @@ public class Util {
     }
 
     /** 
-     * <p>Return a {@link Sequential Sequential&lt;Boolean&gt;} wrapping the 
+     * <p>Return a {@link Sequential Sequential&lt;Boolean&gt;} copying the 
      * given {@code boolean[]} elements
-     * (subsequent changes to the array will be visible in 
+     * (subsequent changes to the array will not be visible in 
      * the returned {@link Sequential}).</p>
      * 
-     * <p>Used to obtain a {@code Sequential<Boolean>} from a {@code boolean[]} 
-     * obtained from an annotation.</p>
+     * <p>Used to obtain a {@code Sequential<Boolean>} from a {@code boolean[]}.</p>
      */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Boolean> 
@@ -1123,13 +1256,36 @@ public class Util {
     }
 
     /** 
-     * <p>Return a {@link Sequential Sequential&lt;Float&gt;} wrapping the 
-     * given {@code double[]} elements
-     * (subsequent changes to the array will be visible in 
+     * <p>Return a {@link Sequential Sequential&lt;Float&gt;} copying the 
+     * given {@code float[]} elements
+     * (subsequent changes to the array will not be visible in 
      * the returned {@link Sequential}).</p>
      * 
-     * <p>Used to obtain a {@code Sequential<String>} from a {@code double[]} 
-     * obtained from an annotation.</p>
+     * <p>Used to obtain a {@code Sequential<String>} from a {@code float[]} .</p>
+     */
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static Sequential<? extends ceylon.language.Float> 
+    sequentialWrapperBoxed(float[] elements) {
+        if (elements.length == 0) {
+            return (Sequential)empty_.get_();
+
+        }
+        int total = elements.length;
+        java.lang.Object[] newArray = new java.lang.Object[total];
+        int i = 0;
+        for(float element : elements) {
+            newArray[i++] = ceylon.language.Float.instance(element);
+        }
+        return new Tuple(ceylon.language.Float.$TypeDescriptor$, newArray);
+    }
+
+    /** 
+     * <p>Return a {@link Sequential Sequential&lt;Float&gt;} copying the 
+     * given {@code double[]} elements
+     * (subsequent changes to the array will not be visible in 
+     * the returned {@link Sequential}).</p>
+     * 
+     * <p>Used to obtain a {@code Sequential<String>} from a {@code double[]} .</p>
      */
     @SuppressWarnings({"unchecked","rawtypes"})
     public static Sequential<? extends ceylon.language.Float> 

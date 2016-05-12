@@ -30,6 +30,7 @@ class DeclarationErrorVisitor extends Visitor {
     private static final int MISSING_PL_FUNCTION_DECL = 1000;
     private static final int NO_CONSTRUCTORS = 1001;
     private static final int PL_AND_CONSTRUCTORS = 1002;
+    private static final int FORWARD_DECL_NOT_IN_DECL_SECTION = 1450;
     
     private TransformationPlan plan;
     private final ExpressionErrorVisitor expressionVisitor;
@@ -119,7 +120,10 @@ class DeclarationErrorVisitor extends Visitor {
                     } else {
                         plan = new ThrowerCatchallConstructor(that, message);
                     }
-                } 
+                }
+                else if (message.getCode() == FORWARD_DECL_NOT_IN_DECL_SECTION) {
+                    plan = Errors.GENERATE; 
+                }
                 else {
                     plan = new Drop(that, message);
                 } 

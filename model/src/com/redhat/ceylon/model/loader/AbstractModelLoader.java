@@ -2655,29 +2655,33 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
 
+        Set<String> fieldNames = new HashSet<String>();
+        // collect field names first
+        for(FieldMirror fieldMirror : classMirror.getDirectFields()){
+            if(!keepField(fieldMirror, isCeylon, isFromJDK))
+                continue;
+            // do not change the name case here otherwise it will appear taken by itself
+            fieldNames.add(fieldMirror.getName());
+        }
+
         // now handle fields
         for(FieldMirror fieldMirror : classMirror.getDirectFields()){
-            // We skip members marked with @Ignore
-            if(fieldMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
-                continue;
-            if(skipPrivateMember(fieldMirror))
-                continue;
-            if(isCeylon && fieldMirror.isStatic())
-                continue;
-            // FIXME: temporary, because some private classes from the jdk are
-            // referenced in private methods but not available
-            if(isFromJDK && !fieldMirror.isPublic() && !fieldMirror.isProtected())
+            if(!keepField(fieldMirror, isCeylon, isFromJDK))
                 continue;
             String name = fieldMirror.getName();
+            if(!JvmBackendUtil.isInitialLowerCase(name)){
+                String newName = NamingBase.getJavaBeanName(name);
+                if(!fieldNames.contains(newName)
+                        && !addingFieldWouldConflictWithMember(klass, newName)
+                        && !methods.containsKey(newName))
+                    name = newName;
+            }
             // skip the field if "we've already got one"
-            boolean conflicts = klass.getDirectMember(name, null, false) != null
-                    || "equals".equals(name)
-                    || "string".equals(name)
-                    || "hash".equals(name);
+            boolean conflicts = addingFieldWouldConflictWithMember(klass, name);
             if (!conflicts) {
-                Declaration decl = addValue(klass, fieldMirror.getName(), fieldMirror, isCeylon, isNativeHeaderMember);
+                Declaration decl = addValue(klass, name, fieldMirror, isCeylon, isNativeHeaderMember);
                 if (isCeylon && shouldCreateNativeHeader(decl, klass)) {
-                    Declaration hdr = addValue(klass, fieldMirror.getName(), fieldMirror, true, true);
+                    Declaration hdr = addValue(klass, name, fieldMirror, true, true);
                     setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
                     initNativeHeader(hdr, decl);
                 } else if (isCeylon && shouldLinkNatives(decl)) {
@@ -2823,6 +2827,28 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
             }
         }
+    }
+
+    private boolean addingFieldWouldConflictWithMember(ClassOrInterface klass, String name) {
+        return klass.getDirectMember(name, null, false) != null
+                || "equals".equals(name)
+                || "string".equals(name)
+                || "hash".equals(name);
+    }
+    
+    private boolean keepField(FieldMirror fieldMirror, boolean isCeylon, boolean isFromJDK) {
+        // We skip members marked with @Ignore
+        if(fieldMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
+            return false;
+        if(skipPrivateMember(fieldMirror))
+            return false;
+        if(isCeylon && fieldMirror.isStatic())
+            return false;
+        // FIXME: temporary, because some private classes from the jdk are
+        // referenced in private methods but not available
+        if(isFromJDK && !fieldMirror.isPublic() && !fieldMirror.isProtected())
+            return false;
+        return true;
     }
 
     private boolean propertiesMatch(ClassOrInterface klass, MethodMirror getter, MethodMirror setter) {
@@ -3280,8 +3306,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(methodName.equals("hash")
                 || methodName.equals("string"))
             method.setName(methodName+"_method");
-        else
-            method.setName(JvmBackendUtil.strip(methodName, isCeylon, method.isShared()));
+        else{
+            String ceylonName = JvmBackendUtil.strip(methodName, isCeylon, method.isShared());
+            if(!JvmBackendUtil.isInitialLowerCase(ceylonName))
+                ceylonName = NamingBase.getJavaBeanName(ceylonName);
+            method.setName(ceylonName);
+        }
         method.setDefaultedAnnotation(methodMirror.isDefault());
 
         // type params first
@@ -3735,9 +3765,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }
                 }else{
                     if(isOverridingMethod(methodMirror)){
-                        decl.setActual(true);
                         Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), false);
-                        decl.setRefinedDeclaration(refined);
+                        if(refined instanceof FieldValue == false){
+                            decl.setActual(true);
+                            decl.setRefinedDeclaration(refined);
+                        }
                     }
                 }
                 
@@ -4234,7 +4266,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void markUnboxed(TypedDeclaration decl, MethodMirror methodMirror, TypeMirror type) {
         boolean unboxed = false;
         if(type.isPrimitive() 
-                || type.getKind() == TypeKind.ARRAY
+                || isPrimitiveArray(type)
                 || sameType(type, STRING_TYPE)
                 || (methodMirror != null && methodMirror.isDeclaredVoid())) {
             unboxed = true;
@@ -4242,7 +4274,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         decl.setUnboxed(unboxed);
     }
     
-
+    private boolean isPrimitiveArray(TypeMirror type) {
+        if(type.getKind() == TypeKind.ARRAY){
+            TypeMirror componentType = type.getComponentType();
+            // byte[][] is not primitive, it's a ObjectArray<ByteArray>
+            return componentType.isPrimitive() || sameType(type, STRING_TYPE);
+        }
+        return false;
+    }
+    
     private void markSmall(FunctionOrValue value, TypeMirror type) {
         if (!(value.isMember() && value.getName().equals("hash"))) {
             value.setSmall(sameType(type, PRIM_INT_TYPE) && !value.getType().isCharacter()

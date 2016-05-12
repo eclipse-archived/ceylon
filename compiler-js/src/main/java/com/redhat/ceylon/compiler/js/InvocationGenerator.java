@@ -401,7 +401,7 @@ public class InvocationGenerator {
                             argvars.add(argvar);
                             gen.out(argvar, "=");
                         }
-                        gen.out("[");
+                        gen.out(gen.getClAlias(), "$arr$sa$([");
                     }
                     opened=true;
                 } else if (generateVars) {

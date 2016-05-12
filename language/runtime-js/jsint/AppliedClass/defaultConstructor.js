@@ -1,7 +1,7 @@
 if (this.$defcons$===undefined) {
   var mm=getrtmm$$(this.tipo);
-  var fn=mm.d[mm.d.length-1]+'_$c$';
-  var cn=this.tipo[fn];
+  var fn=mm.d[mm.d.length-1];
+  var cn=this.tipo[fn+'$c_$c$'] || this.tipo[fn+'_$c$'];
   var fc=false;
   if (!cn) {
     var m2=get_model(mm);

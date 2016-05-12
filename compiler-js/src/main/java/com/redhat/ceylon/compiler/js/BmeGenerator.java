@@ -45,7 +45,7 @@ public class BmeGenerator {
                 Constructor cd = TypeUtils.getConstructor(decl);
                 Declaration cdc = (Declaration)cd.getContainer();
                 if (!gen.qualify(bme, cd)) {
-                    gen.out(gen.getNames().name(cdc), "_");
+                    gen.out(gen.getNames().name(cdc), gen.getNames().constructorSeparator(decl));
                 }
                 if (decl instanceof Value) {
                     gen.out(gen.getNames().name(decl));
@@ -188,7 +188,8 @@ public class BmeGenerator {
 
     static void generateQte(final Tree.QualifiedTypeExpression that, final GenerateJsVisitor gen) {
         Tree.Primary prim = that.getPrimary();
-        final boolean dyncall = gen.isInDynamicBlock() && that.getDeclaration() == null;
+        final Declaration d = that.getDeclaration();
+        final boolean dyncall = gen.isInDynamicBlock() && d == null;
         if (that.getMemberOperator() instanceof Tree.SpreadOp) {
             SequenceGenerator.generateSpread(that, gen);
         } else if ((that.getDirectlyInvoked() && that.getMemberOperator() instanceof Tree.SafeMemberOp==false
@@ -206,16 +207,17 @@ public class BmeGenerator {
             }
             if (dyncall) {
                 gen.out(".", that.getIdentifier().getText());
-            } else if (TypeUtils.isConstructor(that.getDeclaration())) {
-                gen.out("_", gen.getNames().name(that.getDeclaration()));
+            } else if (TypeUtils.isConstructor(d)) {
+                gen.out(gen.getNames().constructorSeparator(d),
+                        gen.getNames().name(d));
             } else {
-                gen.out(".", gen.getNames().name(that.getDeclaration()));
+                gen.out(".", gen.getNames().name(d));
             }
         } else {
             final boolean parens = that.getDirectlyInvoked() &&
                     prim instanceof Tree.BaseTypeExpression;
             if (parens)gen.out("(");
-            FunctionHelper.generateCallable(that, gen.getNames().name(that.getDeclaration()), gen);
+            FunctionHelper.generateCallable(that, gen.getNames().name(d), gen);
             if (parens)gen.out(")");
         }
     }

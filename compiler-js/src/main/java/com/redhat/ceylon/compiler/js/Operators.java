@@ -307,7 +307,7 @@ public class Operators {
                     ltmp, ".equals(", rtmp, "))||", ltmp, "!==", rtmp, ")");
         } else {
             final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
-            simpleBinaryOp(that, usenat?"!(":"(!", usenat?"==":".equals(", usenat?")":"))", gen);
+            simpleBinaryOp(that, usenat?"!((":"(!", usenat?")==(":".equals(", usenat?"))":"))", gen);
         }
     }
 
@@ -317,8 +317,8 @@ public class Operators {
             nativeBinaryOp(that, "equals", "===", null, gen);
         } else {
             final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
-            simpleBinaryOp(that, usenat?"((":null, usenat?").valueOf()==(":".equals(",
-                    usenat?").valueOf())":")", gen);
+            simpleBinaryOp(that, usenat?"((":null, usenat?")==(":".equals(",
+                    usenat?"))":")", gen);
         }
     }
 

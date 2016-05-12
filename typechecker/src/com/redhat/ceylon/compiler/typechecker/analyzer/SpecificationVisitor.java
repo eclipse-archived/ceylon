@@ -44,8 +44,6 @@ public class SpecificationVisitor extends Visitor {
     
     private final Declaration declaration;
     
-    private SpecificationState specified = 
-            new SpecificationState(false, false);
     private boolean specificationDisabled = false;
     private boolean withinDeclaration = false;
     private int loopDepth = 0;
@@ -63,6 +61,13 @@ public class SpecificationVisitor extends Visitor {
     private Parameter parameter = null;
     private boolean usedInDeclarationSection = false;
     private boolean definedInDeclarationSection = false;
+    
+    private boolean definitely = false;
+    private boolean possibly = false;
+    private boolean possiblyExited = false;
+    private boolean definitelyExited = false;
+    private boolean definitelyByLoopBreaks = true;
+    private boolean possiblyByLoopBreaks = false;
     
     @Override
     public void visit(Tree.ExtendedType that) {
@@ -95,23 +100,6 @@ public class SpecificationVisitor extends Visitor {
             }
         }
     }
-
-    class SpecificationState {
-        boolean definitely;
-        boolean possibly;
-        boolean possiblyExited;
-        boolean definitelyExited;
-        boolean definitelyByLoopBreaks;
-        boolean possiblyByLoopBreaks;
-        SpecificationState(boolean definitely, boolean possibly) {
-            this.definitely = definitely;
-            this.possibly = possibly;
-            this.possiblyExited = false;
-            this.definitelyExited = false;
-            this.definitelyByLoopBreaks = true;
-            this.possiblyByLoopBreaks = false;
-        }
-    }
     
     public SpecificationVisitor(Declaration declaration) {
         this.declaration = declaration;
@@ -121,44 +109,21 @@ public class SpecificationVisitor extends Visitor {
         declared = true;
     }
     
-    private boolean beginDeclarationScope() {
-        return declared;
-    }
-    
-    private void endDeclarationScope(boolean d) {
-        declared = d;
-    }
-    
-    private boolean beginDisabledSpecificationScope() {
-        boolean ca = specificationDisabled;
-        specificationDisabled = true;
-        return ca;
-    }
-    
-    private void endDisabledSpecificationScope(boolean ca) {
-        specificationDisabled = ca;
-    }
-    
     private void specify() {
-        specified.definitely = true;
-        specified.possibly = true;
+        definitely = true;
+        possibly = true;
     }
     
     private void exit() {
-        specified.possiblyExited = true;
-        specified.definitelyExited = true;
+        possiblyExited = true;
+        definitelyExited = true;
     }
     
-    private SpecificationState beginSpecificationScope() {
-        SpecificationState as = specified;
-        specified = 
-                new SpecificationState(specified.definitely, 
-                        specified.possibly);
-        return as;
-    }
-    
-    private void endSpecificationScope(SpecificationState as) {
-        specified = as;
+    private void beginSpecificationScope() {
+        possiblyExited = false;
+        definitelyExited = false;
+        definitelyByLoopBreaks = true;
+        possiblyByLoopBreaks = false;
     }
     
     private boolean isVariable() {
@@ -284,7 +249,7 @@ public class SpecificationVisitor extends Visitor {
                     }
                 }
             }
-            else if (!specified.definitely || 
+            else if (!definitely || 
                     declaration.isFormal()) {
                 //you are allowed to refer to formal
                 //declarations in a class declaration
@@ -324,7 +289,7 @@ public class SpecificationVisitor extends Visitor {
                         declaration.getName() + "'"); 
             }
             if (inAnonFunctionOrComprehension && 
-                specified.definitely && 
+                definitely && 
                 isVariable()) {
                 that.addError("variable member may not be captured by comprehension or function in extends clause: '"+
                         declaration.getName() + "'");
@@ -354,9 +319,20 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.LogicalOp that) {
         that.getLeftTerm().visit(this);
-        SpecificationState ss = beginSpecificationScope();
+        boolean odefinitely = definitely;
+        boolean opossibly = possibly;
+        boolean opossiblyExited = possiblyExited;
+        boolean odefinitelyExited = definitelyExited;
+        boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
+        boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+        beginSpecificationScope();
         that.getRightTerm().visit(this);
-        endSpecificationScope(ss);
+        definitely = odefinitely;
+        possibly = opossibly;
+        possiblyExited = opossiblyExited;
+        definitelyExited = odefinitelyExited;
+        definitelyByLoopBreaks = odefinitelyByLoopBreaks;
+        possiblyByLoopBreaks = opossiblyByLoopBreaks;
     }
     
     @Override
@@ -364,17 +340,37 @@ public class SpecificationVisitor extends Visitor {
         //TODO: reproduce the logic for IfStatement!
         Tree.IfClause ifClause = that.getIfClause();
         if (ifClause!=null) {
-            SpecificationState ss = 
-                    beginSpecificationScope();
+            boolean odefinitely = definitely;
+            boolean opossibly = possibly;
+            boolean opossiblyExited = possiblyExited;
+            boolean odefinitelyExited = definitelyExited;
+            boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
+            boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+            beginSpecificationScope();
             ifClause.visit(this);
-            endSpecificationScope(ss);
+            definitely = odefinitely;
+            possibly = opossibly;
+            possiblyExited = opossiblyExited;
+            definitelyExited = odefinitelyExited;
+            definitelyByLoopBreaks = odefinitelyByLoopBreaks;
+            possiblyByLoopBreaks = opossiblyByLoopBreaks;
         }
         Tree.ElseClause elseClause = that.getElseClause();
         if (elseClause!=null) {
-            SpecificationState ss = 
-                    beginSpecificationScope();
+            boolean odefinitely = definitely;
+            boolean opossibly = possibly;
+            boolean opossiblyExited = possiblyExited;
+            boolean odefinitelyExited = definitelyExited;
+            boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
+            boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+            beginSpecificationScope();
             elseClause.visit(this);
-            endSpecificationScope(ss);
+            definitely = odefinitely;
+            possibly = opossibly;
+            possiblyExited = opossiblyExited;
+            definitelyExited = odefinitelyExited;
+            definitelyByLoopBreaks = odefinitelyByLoopBreaks;
+            possiblyByLoopBreaks = opossiblyByLoopBreaks;
         }
     }
     
@@ -391,18 +387,38 @@ public class SpecificationVisitor extends Visitor {
         if (switchCaseList!=null) {
             for (Tree.CaseClause caseClause: 
                     switchCaseList.getCaseClauses()) {
-                SpecificationState ss = 
-                        beginSpecificationScope();
+                boolean odefinitely = definitely;
+                boolean opossibly = possibly;
+                boolean opossiblyExited = possiblyExited;
+                boolean odefinitelyExited = definitelyExited;
+                boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
+                boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+                beginSpecificationScope();
                 caseClause.visit(this);
-                endSpecificationScope(ss);
+                definitely = odefinitely;
+                possibly = opossibly;
+                possiblyExited = opossiblyExited;
+                definitelyExited = odefinitelyExited;
+                definitelyByLoopBreaks = odefinitelyByLoopBreaks;
+                possiblyByLoopBreaks = opossiblyByLoopBreaks;
             }
             Tree.ElseClause elseClause = 
                     switchCaseList.getElseClause();
             if (elseClause!=null) {
-                SpecificationState ss = 
-                        beginSpecificationScope();
+                boolean odefinitely = definitely;
+                boolean opossibly = possibly;
+                boolean opossiblyExited = possiblyExited;
+                boolean odefinitelyExited = definitelyExited;
+                boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
+                boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+                beginSpecificationScope();
                 elseClause.visit(this);
-                endSpecificationScope(ss);
+                definitely = odefinitely;
+                possibly = opossibly;
+                possiblyExited = opossiblyExited;
+                definitelyExited = odefinitelyExited;
+                definitelyByLoopBreaks = odefinitelyByLoopBreaks;
+                possiblyByLoopBreaks = opossiblyByLoopBreaks;
             }
         }
     }
@@ -417,26 +433,50 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.FunctionArgument that) {
-        boolean c = beginDisabledSpecificationScope();
+        boolean c = specificationDisabled;
+        specificationDisabled = true;
         boolean oicoaf = inAnonFunctionOrComprehension;
         inAnonFunctionOrComprehension = declared&&inExtends;
-        SpecificationState ss = beginSpecificationScope();
+        boolean odefinitely = definitely;
+        boolean opossibly = possibly;
+        boolean opossiblyExited = possiblyExited;
+        boolean odefinitelyExited = definitelyExited;
+        boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
+        boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+        beginSpecificationScope();
         super.visit(that);
-        endSpecificationScope(ss);
+        definitely = odefinitely;
+        possibly = opossibly;
+        possiblyExited = opossiblyExited;
+        definitelyExited = odefinitelyExited;
+        definitelyByLoopBreaks = odefinitelyByLoopBreaks;
+        possiblyByLoopBreaks = opossiblyByLoopBreaks;
         inAnonFunctionOrComprehension = oicoaf;
-        endDisabledSpecificationScope(c);
+        specificationDisabled = c;
     }
     
     @Override
     public void visit(Tree.ObjectExpression that) {
-        boolean c = beginDisabledSpecificationScope();
+        boolean c = specificationDisabled;
+        specificationDisabled = true;
         boolean oicoaf = inAnonFunctionOrComprehension;
         inAnonFunctionOrComprehension = declared&&inExtends;
-        SpecificationState ss = beginSpecificationScope();
+        boolean odefinitely = definitely;
+        boolean opossibly = possibly;
+        boolean opossiblyExited = possiblyExited;
+        boolean odefinitelyExited = definitelyExited;
+        boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
+        boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+        beginSpecificationScope();
         super.visit(that);
-        endSpecificationScope(ss);
+        definitely = odefinitely;
+        possibly = opossibly;
+        possiblyExited = opossiblyExited;
+        definitelyExited = odefinitelyExited;
+        definitelyByLoopBreaks = odefinitelyByLoopBreaks;
+        possiblyByLoopBreaks = opossiblyByLoopBreaks;
         inAnonFunctionOrComprehension = oicoaf;
-        endDisabledSpecificationScope(c);
+        specificationDisabled = c;
     }
     
     @Override
@@ -520,10 +560,10 @@ public class SpecificationVisitor extends Visitor {
         Scope scope = that.getScope();
         if (scope instanceof Constructor) {
             if (definitelyInitedBy.contains(delegatedConstructor)) {
-                specified.definitely = true;
+                definitely = true;
             }
             if (possiblyInitedBy.contains(delegatedConstructor)) {
-                specified.possibly = true;
+                possibly = true;
             }
             delegatedConstructor = null;
         }
@@ -574,16 +614,16 @@ public class SpecificationVisitor extends Visitor {
         
         if (scope instanceof Constructor) {
             Constructor c = (Constructor) scope;
-            if (specified.definitely) {
+            if (definitely) {
                 definitelyInitedBy.add(c);
             }
-            if (specified.possibly) {
+            if (possibly) {
                 possiblyInitedBy.add(c);
             }
         }
         if (isNonPartialConstructor(scope) &&
                 declaration.getContainer()==scope.getContainer()) {
-            if (!specified.definitely) {
+            if (!definitely) {
                 initedByEveryConstructor = false;
             }
         }
@@ -1000,7 +1040,7 @@ public class SpecificationVisitor extends Visitor {
                         lastContinue==null ||
                   endsInBreak && allOuterLoopsBreak &&
                           lastContinue==null)) {
-            if (specified.definitely) {
+            if (definitely) {
                 bme.addError(longdesc() + 
                         " is aready definitely specified: '" + 
                         declaration.getName() + "'", 
@@ -1029,8 +1069,8 @@ public class SpecificationVisitor extends Visitor {
                         803);
             }
         }
-        else if (specified.possibly && constant) {
-            if (specified.definitely) {
+        else if (possibly && constant) {
+            if (definitely) {
                 bme.addError(longdesc() + 
                         " is aready definitely specified: '" + 
                         declaration.getName() + "'", 
@@ -1061,12 +1101,12 @@ public class SpecificationVisitor extends Visitor {
         if (that.getDeclarationModel()==declaration) {
             loopDepth = 0;
             brokenLoopDepth = 0;
-            beginDisabledSpecificationScope();
+            specificationDisabled = true;
             withinDeclaration = true;
             declare();
             super.visit(that);
             withinDeclaration = false;
-            endDisabledSpecificationScope(false);
+            specificationDisabled = false;
             loopDepth = 0;
             brokenLoopDepth = 0;
         }
@@ -1083,23 +1123,32 @@ public class SpecificationVisitor extends Visitor {
                     !((Value) scope).isTransient();
             boolean c = false;
             if (!constructor) {
-                c = beginDisabledSpecificationScope();
+                c = specificationDisabled;
+                specificationDisabled = true;
             }
-            boolean d = beginDeclarationScope();
-            SpecificationState as; 
-            if (!valueWithInitializer) {
-                as = beginSpecificationScope();
+            boolean d = declared;
+            if (valueWithInitializer) {
+                super.visit(that);
             }
             else {
-                as = null;
+                boolean odefinitely = definitely;
+                boolean opossibly = possibly;
+                boolean opossiblyExited = possiblyExited;
+                boolean odefinitelyExited = definitelyExited;
+                boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
+                boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+                beginSpecificationScope();
+                super.visit(that);
+                definitely = odefinitely;
+                possibly = opossibly;
+                possiblyExited = opossiblyExited;
+                definitelyExited = odefinitelyExited;
+                definitelyByLoopBreaks = odefinitelyByLoopBreaks;
+                possiblyByLoopBreaks = opossiblyByLoopBreaks;
             }
-            super.visit(that);
+            declared = d;
             if (!constructor) {
-                endDisabledSpecificationScope(c);
-            }
-            endDeclarationScope(d);
-            if (!valueWithInitializer) {
-                endSpecificationScope(as);
+                specificationDisabled = c;
             }
             loopDepth = l;
             brokenLoopDepth = bl;
@@ -1121,7 +1170,7 @@ public class SpecificationVisitor extends Visitor {
         if (declaration.getContainer()==c.getContainer() &&
                 that==lastConstructor && 
                 initedByEveryConstructor) {
-            specified.definitely = true;
+            definitely = true;
         }
     }
 
@@ -1137,7 +1186,7 @@ public class SpecificationVisitor extends Visitor {
         if (declaration.getContainer()==e.getContainer() &&
                 that==lastConstructor && 
                 initedByEveryConstructor) {
-            specified.definitely = true;
+            definitely = true;
         }
     }
 
@@ -1146,12 +1195,12 @@ public class SpecificationVisitor extends Visitor {
         if (that.getDeclarationModel()==declaration) {
             loopDepth = 0;
             brokenLoopDepth = 0;
-            beginDisabledSpecificationScope();
+            specificationDisabled = true;
             withinDeclaration = true;
             super.visit(that);
             declare();
             withinDeclaration = false;
-            endDisabledSpecificationScope(false);
+            specificationDisabled = false;
             loopDepth = 0;
             brokenLoopDepth = 0;
         }
@@ -1160,14 +1209,25 @@ public class SpecificationVisitor extends Visitor {
             int bl = brokenLoopDepth;
             loopDepth = 0;
             brokenLoopDepth = 0;
-            boolean c = beginDisabledSpecificationScope();
-            boolean d = beginDeclarationScope();
-            SpecificationState as = 
-                    beginSpecificationScope();
+            boolean c = specificationDisabled;
+            specificationDisabled = true;
+            boolean d = declared;
+            boolean odefinitely = definitely;
+            boolean opossibly = possibly;
+            boolean opossiblyExited = possiblyExited;
+            boolean odefinitelyExited = definitelyExited;
+            boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
+            boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+            beginSpecificationScope();
             super.visit(that);
-            endDisabledSpecificationScope(c);
-            endDeclarationScope(d);
-            endSpecificationScope(as);
+            specificationDisabled = c;
+            declared = d;
+            definitely = odefinitely;
+            possibly = opossibly;
+            possiblyExited = opossiblyExited;
+            definitelyExited = odefinitelyExited;
+            definitelyByLoopBreaks = odefinitelyByLoopBreaks;
+            possiblyByLoopBreaks = opossiblyByLoopBreaks;
             loopDepth = l;
             brokenLoopDepth = bl;
         }
@@ -1494,7 +1554,7 @@ public class SpecificationVisitor extends Visitor {
                 !declaration.isFormal() && 
                 !isNativeHeader(declaration) &&
                 !isLate() &&
-                !specified.definitely;
+                !definitely;
     }
     
     private boolean isCapturedDeclarationUninitialized() {
@@ -1505,7 +1565,7 @@ public class SpecificationVisitor extends Visitor {
                 !declaration.isFormal() && 
                 !isNativeHeader(declaration) &&
                 !isLate() &&
-                !specified.definitely;
+                !definitely;
     }
     
     @Override
@@ -1526,11 +1586,11 @@ public class SpecificationVisitor extends Visitor {
     public void visit(Tree.Break that) {
         super.visit(that);
         exit();
-        if (!specified.definitely) {
-            specified.definitelyByLoopBreaks = false;
+        if (!definitely) {
+            definitelyByLoopBreaks = false;
         }
-        if (specified.possibly) {
-            specified.possiblyByLoopBreaks = true;
+        if (possibly) {
+            possiblyByLoopBreaks = true;
         }
     }
 
@@ -1558,8 +1618,14 @@ public class SpecificationVisitor extends Visitor {
             }
         }
         
-        boolean d = beginDeclarationScope();
-        SpecificationState as = beginSpecificationScope();
+        boolean d = declared;
+        boolean odefinitely = definitely;
+        boolean opossibly = possibly;
+        boolean opossiblyExited = possiblyExited;
+        boolean odefinitelyExited = definitelyExited;
+        boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
+        boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+        beginSpecificationScope();
         if (ifClause!=null) {
             Tree.Block block = ifClause.getBlock();
             if (block!=null) {
@@ -1567,20 +1633,25 @@ public class SpecificationVisitor extends Visitor {
             }
         }
         boolean definitelyAssignedByIfClause = 
-                specified.definitely || 
-                specified.definitelyExited;
+                definitely || 
+                definitelyExited;
         boolean possiblyAssignedByIfClause = 
-                specified.possibly;
+                possibly;
         boolean possiblyExitedFromIfClause = 
-                specified.possiblyExited;
+                possiblyExited;
         boolean definitelyExitedFromIfClause = 
-                specified.definitelyExited;
+                definitelyExited;
         boolean definitelySpecifiedByExitsFromIfClause = 
-                specified.definitelyByLoopBreaks;
+                definitelyByLoopBreaks;
         boolean possiblySpecifiedByExitsFromIfClause = 
-                specified.possiblyByLoopBreaks;
-        endDeclarationScope(d);
-        endSpecificationScope(as);
+                possiblyByLoopBreaks;
+        declared = d;
+        definitely = odefinitely;
+        possibly = opossibly;
+        possiblyExited = opossiblyExited;
+        definitelyExited = odefinitelyExited;
+        definitelyByLoopBreaks = odefinitelyByLoopBreaks;
+        possiblyByLoopBreaks = opossiblyByLoopBreaks;
         
         boolean definitelyAssignedByElseClause;
         boolean possiblyAssignedByElseClause;
@@ -1590,24 +1661,35 @@ public class SpecificationVisitor extends Visitor {
         boolean possiblySpecifiedByExitsFromElseClause;
         Tree.ElseClause elseClause = that.getElseClause();
         if (elseClause!=null) {
-            d = beginDeclarationScope();
-            as = beginSpecificationScope();
+            d = declared;
+            boolean pdefinitely = definitely;
+            boolean ppossibly = possibly;
+            boolean ppossiblyExited = possiblyExited;
+            boolean pdefinitelyExited = definitelyExited;
+            boolean pdefinitelyByLoopBreaks = definitelyByLoopBreaks;
+            boolean ppossiblyByLoopBreaks = possiblyByLoopBreaks;
+            beginSpecificationScope();
             elseClause.visit(this);
             definitelyAssignedByElseClause = 
-                    specified.definitely || 
-                    specified.definitelyExited;
+                    definitely || 
+                    definitelyExited;
             possiblyAssignedByElseClause = 
-                    specified.possibly;
+                    possibly;
             definitelyExitedFromElseClause =
-                    specified.definitelyExited;
+                    definitelyExited;
             possiblyExitedFromElseClause = 
-                    specified.possiblyExited;
+                    possiblyExited;
             definitelySpecifiedByExitsFromElseClause = 
-                    specified.definitelyByLoopBreaks;
+                    definitelyByLoopBreaks;
             possiblySpecifiedByExitsFromElseClause = 
-                    specified.possiblyByLoopBreaks;
-            endDeclarationScope(d);
-            endSpecificationScope(as);
+                    possiblyByLoopBreaks;
+            declared = d;
+            definitely = pdefinitely;
+            possibly = ppossibly;
+            possiblyExited = ppossiblyExited;
+            definitelyExited = pdefinitelyExited;
+            definitelyByLoopBreaks = pdefinitelyByLoopBreaks;
+            possiblyByLoopBreaks = ppossiblyByLoopBreaks;
         }
         else {
             definitelyAssignedByElseClause = false;
@@ -1619,54 +1701,54 @@ public class SpecificationVisitor extends Visitor {
         }
         
         if (isAlwaysSatisfied(conditionList)) {
-            specified.definitely = specified.definitely || 
+            definitely = definitely || 
                     definitelyAssignedByIfClause;
-            specified.possibly = specified.possibly || 
+            possibly = possibly || 
                     possiblyAssignedByIfClause && 
                     !definitelyExitedFromIfClause;
-            specified.definitelyExited = specified.definitelyExited || 
+            definitelyExited = definitelyExited || 
                     definitelyExitedFromIfClause;
-            specified.possiblyExited = specified.possiblyExited || 
+            possiblyExited = possiblyExited || 
                     possiblyExitedFromIfClause;
-            specified.definitelyByLoopBreaks = specified.definitelyByLoopBreaks && 
+            definitelyByLoopBreaks = definitelyByLoopBreaks && 
                     definitelySpecifiedByExitsFromIfClause;
-            specified.possiblyByLoopBreaks = specified.possiblyByLoopBreaks || 
+            possiblyByLoopBreaks = possiblyByLoopBreaks || 
                     possiblySpecifiedByExitsFromIfClause;
         } 
         else if (isNeverSatisfied(conditionList)) {
-            specified.definitely = specified.definitely || 
+            definitely = definitely || 
                     definitelyAssignedByElseClause;
-            specified.possibly = specified.possibly || 
+            possibly = possibly || 
                     possiblyAssignedByElseClause && 
                     !definitelyExitedFromElseClause;
-            specified.definitelyExited = specified.definitelyExited || 
+            definitelyExited = definitelyExited || 
                     definitelyExitedFromElseClause;
-            specified.possiblyExited = specified.possiblyExited || 
+            possiblyExited = possiblyExited || 
                     possiblyExitedFromElseClause;
-            specified.definitelyByLoopBreaks = specified.definitelyByLoopBreaks && 
+            definitelyByLoopBreaks = definitelyByLoopBreaks && 
                     definitelySpecifiedByExitsFromElseClause;
-            specified.possiblyByLoopBreaks = specified.possiblyByLoopBreaks || 
+            possiblyByLoopBreaks = possiblyByLoopBreaks || 
                     possiblySpecifiedByExitsFromElseClause;
         }
         else {
-            specified.definitely = specified.definitely || 
+            definitely = definitely || 
                     definitelyAssignedByIfClause && 
                     definitelyAssignedByElseClause;
-            specified.possibly = specified.possibly || 
+            possibly = possibly || 
                     possiblyAssignedByIfClause && 
                     !definitelyExitedFromIfClause || 
                     possiblyAssignedByElseClause && 
                     !definitelyExitedFromElseClause;
-            specified.definitelyExited = specified.definitelyExited || 
+            definitelyExited = definitelyExited || 
                     definitelyExitedFromIfClause &&
                     definitelyExitedFromElseClause;
-            specified.possiblyExited = specified.possiblyExited || 
+            possiblyExited = possiblyExited || 
                     possiblyExitedFromIfClause || 
                     possiblyExitedFromElseClause;
-            specified.definitelyByLoopBreaks = specified.definitelyByLoopBreaks && 
+            definitelyByLoopBreaks = definitelyByLoopBreaks && 
                     definitelySpecifiedByExitsFromIfClause && 
                     definitelySpecifiedByExitsFromElseClause;
-            specified.possiblyByLoopBreaks = specified.possiblyByLoopBreaks || 
+            possiblyByLoopBreaks = possiblyByLoopBreaks || 
                     possiblySpecifiedByExitsFromIfClause ||
                     possiblySpecifiedByExitsFromIfClause;
         }
@@ -1680,28 +1762,39 @@ public class SpecificationVisitor extends Visitor {
             lastContinueStatement=null;
         }
         
-        boolean d = beginDeclarationScope();
-        SpecificationState as = beginSpecificationScope();
+        boolean d = declared;
+        boolean odefinitely = definitely;
+        boolean opossibly = possibly;
+        boolean opossiblyExited = possiblyExited;
+        boolean odefinitelyExited = definitelyExited;
+        boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
+        boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+        beginSpecificationScope();
         Tree.TryClause tryClause = that.getTryClause();
         if (tryClause!=null ) {
             tryClause.visit(this);
         }
         boolean definitelyAssignedByTryClause = 
-                specified.definitely || 
-                specified.definitelyExited;
+                definitely || 
+                definitelyExited;
         boolean possiblyAssignedByTryClause = 
-                specified.possibly;
+                possibly;
         boolean possiblyExitedFromTryClause = 
-                specified.possiblyExited;
+                possiblyExited;
         boolean definitelySpecifiedByExitsFromTryClause = 
-                specified.definitelyByLoopBreaks;
+                definitelyByLoopBreaks;
         boolean possiblySpecifiedByExitsFromTryClause = 
-                specified.possiblyByLoopBreaks;
-        endDeclarationScope(d);
-        endSpecificationScope(as);
-        specified.possibly = specified.possibly || 
+                possiblyByLoopBreaks;
+        declared = d;
+        definitely = odefinitely;
+        possibly = opossibly;
+        possiblyExited = opossiblyExited;
+        definitelyExited = odefinitelyExited;
+        definitelyByLoopBreaks = odefinitelyByLoopBreaks;
+        possiblyByLoopBreaks = opossiblyByLoopBreaks;
+        possibly = possibly || 
                 possiblyAssignedByTryClause;
-        specified.possiblyExited = specified.possiblyExited || 
+        possiblyExited = possiblyExited || 
                 possiblyExitedFromTryClause;
         
         boolean definitelyAssignedByEveryCatchClause = true;
@@ -1711,33 +1804,44 @@ public class SpecificationVisitor extends Visitor {
         boolean specifiedByExitsFromEveryCatchClause = true;
         boolean specifiedByExitsFromSomeCatchClause = false;
         for (Tree.CatchClause cc: that.getCatchClauses()) {
-            d = beginDeclarationScope();
-            as = beginSpecificationScope();
+            d = declared;
+            boolean pdefinitely = definitely;
+            boolean ppossibly = possibly;
+            boolean ppossiblyExited = possiblyExited;
+            boolean pdefinitelyExited = definitelyExited;
+            boolean pdefinitelyByLoopBreaks = definitelyByLoopBreaks;
+            boolean ppossiblyByLoopBreaks = possiblyByLoopBreaks;
+            beginSpecificationScope();
             cc.visit(this);
             definitelyAssignedByEveryCatchClause = 
                     definitelyAssignedByEveryCatchClause && 
-                    (specified.definitely || specified.definitelyExited);
+                    (definitely || definitelyExited);
             possiblyAssignedBySomeCatchClause = 
                     possiblyAssignedBySomeCatchClause || 
-                    specified.possibly;
+                    possibly;
             definitelyExitedFromEveryCatchClause = 
                     definitelyExitedFromEveryCatchClause &&
-                    specified.definitelyExited;
+                    definitelyExited;
             possiblyExitedFromSomeCatchClause = 
                     possiblyExitedFromSomeCatchClause || 
-                    specified.possiblyExited;
+                    possiblyExited;
             specifiedByExitsFromEveryCatchClause = 
                     specifiedByExitsFromEveryCatchClause && 
-                    specified.definitelyByLoopBreaks;
+                    definitelyByLoopBreaks;
             specifiedByExitsFromSomeCatchClause =
                     specifiedByExitsFromSomeCatchClause ||
-                    specified.possiblyByLoopBreaks;
-            endDeclarationScope(d);
-            endSpecificationScope(as);
+                    possiblyByLoopBreaks;
+            declared = d;
+            definitely = pdefinitely;
+            possibly = ppossibly;
+            possiblyExited = ppossiblyExited;
+            definitelyExited = pdefinitelyExited;
+            definitelyByLoopBreaks = pdefinitelyByLoopBreaks;
+            possiblyByLoopBreaks = ppossiblyByLoopBreaks;
         }
-        specified.possibly = specified.possibly || 
+        possibly = possibly || 
                 possiblyAssignedBySomeCatchClause;
-        specified.possiblyExited = specified.possiblyExited || 
+        possiblyExited = possiblyExited || 
                 possiblyExitedFromSomeCatchClause;
         
         boolean definitelyAssignedByFinallyClause;
@@ -1749,24 +1853,35 @@ public class SpecificationVisitor extends Visitor {
         Tree.FinallyClause finallyClause = 
                 that.getFinallyClause();
         if (finallyClause!=null) {
-            d = beginDeclarationScope();
-            as = beginSpecificationScope();
+            d = declared;
+            boolean pdefinitely = definitely;
+            boolean ppossibly = possibly;
+            boolean ppossiblyExited = possiblyExited;
+            boolean pdefinitelyExited = definitelyExited;
+            boolean pdefinitelyByLoopBreaks = definitelyByLoopBreaks;
+            boolean ppossiblyByLoopBreaks = possiblyByLoopBreaks;
+            beginSpecificationScope();
             finallyClause.visit(this);
             definitelyAssignedByFinallyClause = 
-                    specified.definitely || 
-                    specified.definitelyExited;
+                    definitely || 
+                    definitelyExited;
             possiblyAssignedByFinallyClause = 
-                    specified.possibly;
+                    possibly;
             definitelyExitedFromFinallyClause = 
-                    specified.definitelyExited;
+                    definitelyExited;
             possiblyExitedFromFinallyClause = 
-                    specified.possiblyExited;
+                    possiblyExited;
             definitelySpecifiedByExitsFromFinallyClause = 
-                    specified.definitelyByLoopBreaks;
+                    definitelyByLoopBreaks;
             possiblySpecifiedByExitsFromFinallyClause =
-                    specified.possiblyByLoopBreaks;
-            endDeclarationScope(d);
-            endSpecificationScope(as);
+                    possiblyByLoopBreaks;
+            declared = d;
+            definitely = pdefinitely;
+            possibly = ppossibly;
+            possiblyExited = ppossiblyExited;
+            definitelyExited = pdefinitelyExited;
+            definitelyByLoopBreaks = pdefinitelyByLoopBreaks;
+            possiblyByLoopBreaks = ppossiblyByLoopBreaks;
         }
         else {
             definitelyAssignedByFinallyClause = false;
@@ -1776,21 +1891,21 @@ public class SpecificationVisitor extends Visitor {
             definitelySpecifiedByExitsFromFinallyClause = true;
             possiblySpecifiedByExitsFromFinallyClause = false;
         }
-        specified.possibly = specified.possibly || 
+        possibly = possibly || 
                 possiblyAssignedByFinallyClause;
-        specified.definitely = specified.definitely || 
+        definitely = definitely || 
                 definitelyAssignedByFinallyClause || 
                 definitelyAssignedByTryClause && 
                 definitelyAssignedByEveryCatchClause;
-        specified.definitelyExited = specified.definitelyExited &&
+        definitelyExited = definitelyExited &&
                 definitelyExitedFromFinallyClause;
-        specified.possiblyExited = specified.possiblyExited || 
+        possiblyExited = possiblyExited || 
                 possiblyExitedFromFinallyClause;
-        specified.definitelyByLoopBreaks = specified.definitelyByLoopBreaks || 
+        definitelyByLoopBreaks = definitelyByLoopBreaks || 
                 definitelySpecifiedByExitsFromFinallyClause || 
                 specifiedByExitsFromEveryCatchClause && 
                 definitelySpecifiedByExitsFromTryClause;
-        specified.possiblyByLoopBreaks = specified.possiblyByLoopBreaks ||
+        possiblyByLoopBreaks = possiblyByLoopBreaks ||
                 possiblySpecifiedByExitsFromFinallyClause ||
                 specifiedByExitsFromSomeCatchClause ||
                 possiblySpecifiedByExitsFromTryClause;
@@ -1821,76 +1936,98 @@ public class SpecificationVisitor extends Visitor {
                 that.getSwitchCaseList();
         for (Tree.CaseClause cc: 
                 switchCaseList.getCaseClauses()) {
-            boolean d = beginDeclarationScope();
-            SpecificationState as = beginSpecificationScope();
+            boolean d = declared;
+            boolean odefinitely = definitely;
+            boolean opossibly = possibly;
+            boolean opossiblyExited = possiblyExited;
+            boolean odefinitelyExited = definitelyExited;
+            boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
+            boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+            beginSpecificationScope();
             cc.visit(this);
             definitelyAssignedByEveryCaseClause = 
                     definitelyAssignedByEveryCaseClause && 
-                    (specified.definitely || specified.definitelyExited);
+                    (definitely || definitelyExited);
             possiblyAssignedBySomeCaseClause = 
                     possiblyAssignedBySomeCaseClause || 
-                    specified.possibly;
+                    possibly;
             definitelyExitedFromEveryCaseClause = 
                     definitelyExitedFromEveryCaseClause &&
-                    specified.definitelyExited;
+                    definitelyExited;
             possiblyExitedFromSomeCaseClause = 
                     possiblyExitedFromSomeCaseClause || 
-                    specified.possiblyExited;
+                    possiblyExited;
             specifiedByExitsFromEveryCaseClause = 
                     specifiedByExitsFromEveryCaseClause && 
-                    specified.definitelyByLoopBreaks;
+                    definitelyByLoopBreaks;
             specifiedByExitsFromSomeCaseClause = 
                     specifiedByExitsFromSomeCaseClause ||
-                    specified.possiblyByLoopBreaks;
+                    possiblyByLoopBreaks;
             possiblyAssignedAndNotDefinitelyExitedFromSomeCaseClause =
                     possiblyAssignedAndNotDefinitelyExitedFromSomeCaseClause ||
-                    specified.possibly && !specified.definitelyExited;
-            endDeclarationScope(d);
-            endSpecificationScope(as);
+                    possibly && !definitelyExited;
+            declared = d;
+            definitely = odefinitely;
+            possibly = opossibly;
+            possiblyExited = opossiblyExited;
+            definitelyExited = odefinitelyExited;
+            definitelyByLoopBreaks = odefinitelyByLoopBreaks;
+            possiblyByLoopBreaks = opossiblyByLoopBreaks;
         }
         
         Tree.ElseClause elseClause = 
                 switchCaseList.getElseClause();
         if (elseClause!=null) {
-            boolean d = beginDeclarationScope();
-            SpecificationState as = beginSpecificationScope();
+            boolean d = declared;
+            boolean odefinitely = definitely;
+            boolean opossibly = possibly;
+            boolean opossiblyExited = possiblyExited;
+            boolean odefinitelyExited = definitelyExited;
+            boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
+            boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+            beginSpecificationScope();
             elseClause.visit(this);
             definitelyAssignedByEveryCaseClause = 
                     definitelyAssignedByEveryCaseClause && 
-                    (specified.definitely || specified.definitelyExited);
+                    (definitely || definitelyExited);
             possiblyAssignedBySomeCaseClause = 
                     possiblyAssignedBySomeCaseClause || 
-                    specified.possibly;
+                    possibly;
             definitelyExitedFromEveryCaseClause = 
                     definitelyExitedFromEveryCaseClause &&
-                    specified.definitelyExited;
+                    definitelyExited;
             possiblyExitedFromSomeCaseClause = 
                     possiblyExitedFromSomeCaseClause || 
-                    specified.possiblyExited;
+                    possiblyExited;
             specifiedByExitsFromEveryCaseClause = 
                     specifiedByExitsFromEveryCaseClause && 
-                    specified.definitelyByLoopBreaks;
+                    definitelyByLoopBreaks;
             specifiedByExitsFromSomeCaseClause = 
                     specifiedByExitsFromSomeCaseClause ||
-                    specified.possiblyByLoopBreaks;
+                    possiblyByLoopBreaks;
             possiblyAssignedAndNotDefinitelyExitedFromSomeCaseClause =
                     possiblyAssignedAndNotDefinitelyExitedFromSomeCaseClause ||
-                    specified.possibly && !specified.definitelyExited;
-            endDeclarationScope(d);
-            endSpecificationScope(as);
+                    possibly && !definitelyExited;
+            declared = d;
+            definitely = odefinitely;
+            possibly = opossibly;
+            possiblyExited = opossiblyExited;
+            definitelyExited = odefinitelyExited;
+            definitelyByLoopBreaks = odefinitelyByLoopBreaks;
+            possiblyByLoopBreaks = opossiblyByLoopBreaks;
         }
 
-        specified.possibly = specified.possibly || 
+        possibly = possibly || 
                 possiblyAssignedAndNotDefinitelyExitedFromSomeCaseClause;
-        specified.definitely = specified.definitely || 
+        definitely = definitely || 
                 definitelyAssignedByEveryCaseClause;
-        specified.definitelyExited = specified.definitelyExited && 
+        definitelyExited = definitelyExited && 
                 definitelyExitedFromEveryCaseClause;
-        specified.possiblyExited = specified.possiblyExited || 
+        possiblyExited = possiblyExited || 
                 possiblyExitedFromSomeCaseClause;
-        specified.definitelyByLoopBreaks = specified.definitelyByLoopBreaks && 
+        definitelyByLoopBreaks = definitelyByLoopBreaks && 
                 specifiedByExitsFromEveryCaseClause;
-        specified.possiblyByLoopBreaks = specified.possiblyByLoopBreaks && 
+        possiblyByLoopBreaks = possiblyByLoopBreaks && 
                 specifiedByExitsFromSomeCaseClause;
         
         checkDeclarationSection(that);
@@ -1906,8 +2043,14 @@ public class SpecificationVisitor extends Visitor {
             conditionList.visit(this);
         }
         
-        boolean d = beginDeclarationScope();
-        SpecificationState as = beginSpecificationScope();
+        boolean d = declared;
+        boolean odefinitely = definitely;
+        boolean opossibly = possibly;
+        boolean opossiblyExited = possiblyExited;
+        boolean odefinitelyExited = definitelyExited;
+        boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
+        boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+        beginSpecificationScope();
         Tree.Block block = whileClause.getBlock();
         if (block!=null) {
             if (isVariable() || isLate()) {
@@ -1932,23 +2075,28 @@ public class SpecificationVisitor extends Visitor {
         }
         
         boolean definitelyAssignedByWhileClause = 
-                specified.definitely || 
-                specified.definitelyExited;
+                definitely || 
+                definitelyExited;
         boolean possiblyAssignedByWhileClause = 
-                specified.possibly;
+                possibly;
         boolean definitelySpecifiedByLoopBreaks = 
-                specified.definitelyByLoopBreaks;
+                definitelyByLoopBreaks;
         boolean possiblySpecifiedByLoopBreaks = 
-                specified.possiblyByLoopBreaks;
+                possiblyByLoopBreaks;
         
-        endDeclarationScope(d);
-        endSpecificationScope(as);
+        declared = d;
+        definitely = odefinitely;
+        possibly = opossibly;
+        possiblyExited = opossiblyExited;
+        definitelyExited = odefinitelyExited;
+        definitelyByLoopBreaks = odefinitelyByLoopBreaks;
+        possiblyByLoopBreaks = opossiblyByLoopBreaks;
         
         if (isAlwaysSatisfied(conditionList)) {
-            specified.definitely = specified.definitely ||
+            definitely = definitely ||
                     definitelySpecifiedByLoopBreaks ||
                     definitelyAssignedByWhileClause;
-            specified.possibly = specified.possibly || 
+            possibly = possibly || 
                     possiblyAssignedByWhileClause ||
                     possiblySpecifiedByLoopBreaks;
         }
@@ -1956,7 +2104,7 @@ public class SpecificationVisitor extends Visitor {
             //nothing to do
         }
         else {
-            specified.possibly = specified.possibly || 
+            possibly = possibly || 
                     possiblyAssignedByWhileClause ||
                     possiblySpecifiedByLoopBreaks;
         }
@@ -1966,8 +2114,14 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ForStatement that) {
-        boolean d = beginDeclarationScope();
-        SpecificationState as = beginSpecificationScope();
+        boolean d = declared;
+        boolean odefinitely = definitely;
+        boolean opossibly = possibly;
+        boolean opossiblyExited = possiblyExited;
+        boolean odefinitelyExited = definitelyExited;
+        boolean odefinitelyByLoopBreaks = definitelyByLoopBreaks;
+        boolean opossiblyByLoopBreaks = possiblyByLoopBreaks;
+        beginSpecificationScope();
         boolean atLeastOneIteration = false;
         Tree.ForClause forClause = that.getForClause();
         Tree.Block block = forClause.getBlock();
@@ -1994,38 +2148,54 @@ public class SpecificationVisitor extends Visitor {
         }
         atLeastOneIteration = isAtLeastOne(forClause);
         boolean possiblyAssignedByForClause = 
-                specified.possibly;
+                possibly;
         boolean definitelyAssignedByForClause = 
-                specified.definitely;
+                definitely;
         boolean possiblyExitedFromForClause = 
-                specified.possiblyExited;
+                possiblyExited;
         boolean definitelyExitedFromForClause = 
-                specified.definitelyExited;
+                definitelyExited;
         boolean definitelySpecifiedByLoopBreaks = 
-                specified.definitelyByLoopBreaks;
+                definitelyByLoopBreaks;
         boolean possiblySpecifiedByLoopBreaks = 
-                specified.possiblyByLoopBreaks;
+                possiblyByLoopBreaks;
         
-        endDeclarationScope(d);
-        endSpecificationScope(as);
+        declared = d;
+        definitely = odefinitely;
+        possibly = opossibly;
+        possiblyExited = opossiblyExited;
+        definitelyExited = odefinitelyExited;
+        definitelyByLoopBreaks = odefinitelyByLoopBreaks;
+        possiblyByLoopBreaks = opossiblyByLoopBreaks;
 
         boolean definitelyAssignedByElseClause;
         boolean possiblyAssignedByElseClause;
         boolean definitelyExitedFromElseClause;
         Tree.ElseClause elseClause = that.getElseClause();
         if (elseClause!=null) {
-            d = beginDeclarationScope();
-            as = beginSpecificationScope();
+            d = declared;
+            boolean pdefinitely = definitely;
+            boolean ppossibly = possibly;
+            boolean ppossiblyExited = possiblyExited;
+            boolean pdefinitelyExited = definitelyExited;
+            boolean pdefinitelyByLoopBreaks = definitelyByLoopBreaks;
+            boolean ppossiblyByLoopBreaks = possiblyByLoopBreaks;
+            beginSpecificationScope();
             elseClause.visit(this);
             definitelyAssignedByElseClause = 
-                    specified.definitely || 
-                    specified.definitelyExited;
+                    definitely || 
+                    definitelyExited;
             possiblyAssignedByElseClause = 
-                    specified.possibly;
+                    possibly;
             definitelyExitedFromElseClause =
-                    specified.definitelyExited;
-            endDeclarationScope(d);
-            endSpecificationScope(as);
+                    definitelyExited;
+            declared = d;
+            definitely = pdefinitely;
+            possibly = ppossibly;
+            possiblyExited = ppossiblyExited;
+            definitelyExited = pdefinitelyExited;
+            definitelyByLoopBreaks = pdefinitelyByLoopBreaks;
+            possiblyByLoopBreaks = ppossiblyByLoopBreaks;
         }
         else {
             definitelyAssignedByElseClause = false;
@@ -2033,7 +2203,7 @@ public class SpecificationVisitor extends Visitor {
             definitelyExitedFromElseClause = false;
         }
 
-        specified.definitely = specified.definitely || 
+        definitely = definitely || 
                 !possiblyExitedFromForClause && 
                  definitelyAssignedByElseClause ||
                 atLeastOneIteration && 
@@ -2041,7 +2211,7 @@ public class SpecificationVisitor extends Visitor {
                 definitelySpecifiedByLoopBreaks ||
                 definitelyAssignedByElseClause && 
                 definitelySpecifiedByLoopBreaks;
-        specified.possibly = specified.possibly || 
+        possibly = possibly || 
                 possiblyAssignedByForClause &&
                 !definitelyExitedFromForClause || 
                 possiblyAssignedByElseClause &&

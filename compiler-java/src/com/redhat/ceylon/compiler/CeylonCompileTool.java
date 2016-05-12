@@ -380,7 +380,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     }
     
     @Override
-    public void initialize(CeylonTool mainTool) throws IOException {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
         compiler = new Main("ceylon compile");
         helper.options.clear();
         Options options = Options.instance(new Context());

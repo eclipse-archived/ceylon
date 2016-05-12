@@ -64,7 +64,7 @@ public class SequenceGenerator {
                 lazyEnumeration(positionalArguments, that, that.getTypeModel(), spread, gen);
                 return;
             } else if (that.getTypeModel().isSequential()) {
-                gen.out("[");
+                gen.out(gen.getClAlias(), "$arr$sa$([");
             } else {
                 gen.out(gen.getClAlias(), "$arr$([");
                 wantsIter = true;
@@ -165,12 +165,8 @@ public class SequenceGenerator {
     }
     /** Closes a native array and invokes reifyCeylonType (rt$) with the specified type parameters. */
     static void closeSequenceWithReifiedType(final Node that, final Map<TypeParameter,Type> types,
-            final GenerateJsVisitor gen, boolean wantsIterable) {
-        if(wantsIterable) {
-            gen.out("],");
-        } else {
-            gen.out("].$sa$(");
-        }
+            final GenerateJsVisitor gen, final boolean wantsIterable) {
+        gen.out("],");
         boolean nonempty=false;
         Type elem = null;
         for (Map.Entry<TypeParameter,Type> e : types.entrySet()) {

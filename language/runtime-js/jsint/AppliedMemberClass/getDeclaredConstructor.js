@@ -10,8 +10,9 @@ function(nm,$m){
     mtn+='$'+startingType.declaration.name;
     startingType=startingType.container;
   }
-  var fn=mtn+"_"+nm;
-  var cn=this.tipo[fn];
+  var fnOld=mtn+"_"+nm;
+  var fnNew=mtn+"$c_"+nm;
+  var cn=this.tipo[fnNew]||this.tipo[fnOld];
   if (cn) {
     mm=getrtmm$$(cn);
     if (mm.d[mm.d.length-2]==='$cn' && mm.ps!==undefined) {

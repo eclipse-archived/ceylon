@@ -32,11 +32,10 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Element;
-import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -169,8 +168,17 @@ class Strategy {
     }
     
     public static boolean hasDefaultParameterOverload(Parameter param) {
-        return param.isDefaulted() || 
-                (param.isSequenced() && !param.isAtLeastOne());
+        return param.isDefaulted() 
+                || isCeylonVariadicNeedingEmpty(param);
+    }
+    
+    private static boolean isCeylonVariadicNeedingEmpty(Parameter param){
+        if(!param.isSequenced() || param.isAtLeastOne())
+            return false;
+        // make sure it's not a Java variadic
+        if(Decl.isJavaVariadicIncludingInheritance(param))
+            return false;
+        return true;
     }
     
     public static boolean hasEmptyDefaultArgument(Parameter param) {

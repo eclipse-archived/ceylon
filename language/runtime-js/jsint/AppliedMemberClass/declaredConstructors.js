@@ -8,10 +8,9 @@ if (this.$constrs$===undefined) {
     mtn+='$'+startingType.declaration.name;
     startingType=startingType.container;
   }
-  var prefix=mtn+"_";
   var ccc=[];
   for (k in this.tipo) {
-    if (k.startsWith(prefix)) {
+    if (k.startsWith(mtn+'$c_') || k.startsWith(mtn+'_')) {
       mm=getrtmm$$(this.tipo[k]);
       if (mm.d[mm.d.length-2]!=='$cn')continue;
       if (mm.ps===undefined) {
@@ -31,7 +30,7 @@ if (this.$constrs$===undefined) {
   var targ={t:'u',l:[
     {t:FunctionModel$meta$model,a:{Type$FunctionModel:this.$$targs$$.Type$AppliedMemberClass,Arguments:{t:Nothing}}},
     {t:ValueModel$meta$model,a:{Type$ValueModel:this.$$targs$$.Type$AppliedMemberClass}}]};
-  this.$constrs$=ccc.$sa$(targ);
+  this.$constrs$=$arr$sa$(ccc,targ);
 }
 return this.$constrs$;
 

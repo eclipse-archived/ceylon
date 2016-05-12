@@ -2077,7 +2077,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCExpression makeIndexableType() {
-            return makeJavaType(javaArrayType);
+            return makeJavaType(javaArrayType, JT_NO_PRIMITIVES);
         }
         
         @Override
@@ -3658,7 +3658,9 @@ public class StatementTransformer extends AbstractTransformer {
                     null);
         } else {
             // we must unerase the exception to Throwable
-            Type exceptionType = expr.getTypeModel().getSupertype(t.getUnit().getThrowableDeclaration());
+        	Type exprType = expr.getTypeModel();
+        	TypeDeclaration throwable = t.getUnit().getThrowableDeclaration();
+        	Type exceptionType = exprType.isNothing() ? throwable.getType() : exprType.getSupertype(throwable); 
             exception = gen().expressionGen().transformExpression(expr, BoxingStrategy.UNBOXED, exceptionType);
         }
         return make().Throw(exception);
