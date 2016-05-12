@@ -36,6 +36,10 @@ public class TypecheckerUnit extends Unit {
         setPackage(thePackage);
     }
 
+    public void setJavaLangPackage(Package javaLangPackage) {
+    	this.javaLangPackage = javaLangPackage;
+    }
+    
     /** 
      * Override this because it's possible to see java.lang.Iterable 
      * (for example) without a dependency on java.base when importing 
