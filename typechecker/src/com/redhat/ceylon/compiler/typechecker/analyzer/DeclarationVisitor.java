@@ -909,6 +909,12 @@ public abstract class DeclarationVisitor extends Visitor {
             that.addError("class may not be both formal and final: '" + 
                     name(identifier) + "'");
         }
+        if (hasAnnotation(that.getAnnotationList(), "service", that.getUnit())) {
+            if (!c.getTypeParameters().isEmpty()) {
+                that.addError("service class may not be generic",
+                        1603);
+            }
+        }
     }
     
     @Override
@@ -2328,7 +2334,19 @@ public abstract class DeclarationVisitor extends Visitor {
                     getAnnotationSequenceArgument(aliased);
             model.setAliases(aliases);
         }
-        buildAnnotations(al, model.getAnnotations());        
+        if (hasAnnotation(al, "service", unit)) {
+            if (!(model instanceof Class 
+                    && model.isToplevel()
+                    && model.isShared())) {
+                that.addError("declaration is not a shared top level class, and may not be annotated service",
+                        1601);
+            }
+            if (((Class)model).isAbstract()) {
+                that.addError("declaration is an abstract class, and may not be annotated service",
+                        1601);
+            }
+        }
+        buildAnnotations(al, model.getAnnotations());
     }
 
     public static void setVisibleScope(Declaration model) {

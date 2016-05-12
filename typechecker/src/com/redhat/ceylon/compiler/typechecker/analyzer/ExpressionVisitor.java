@@ -68,6 +68,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -2197,6 +2198,47 @@ public class ExpressionVisitor extends Visitor {
                         checkClassAliasParameters(alias, that, ie);
                     }
                 }
+            }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.Annotation that) {
+        super.visit(that);
+        Tree.BaseMemberExpression p = 
+                (Tree.BaseMemberExpression) 
+                    that.getPrimary();
+        if (p.getDeclaration() != null 
+                && p.getDeclaration().equals(that.getUnit().getLanguageModuleDeclaration("service"))) {
+            Declaration d = null;
+            if (that.getPositionalArgumentList() != null) {
+                Tree.PositionalArgument argument = that.getPositionalArgumentList().getPositionalArguments().get(0);
+                if (argument instanceof Tree.ListedArgument) {
+                    d = ((Tree.MetaLiteral)((Tree.ListedArgument)argument).getExpression().getTerm()).getDeclaration();
+                }
+            } else if (that.getNamedArgumentList() != null) {
+                Tree.NamedArgument namedArgument = that.getNamedArgumentList().getNamedArguments().get(0);
+                if (namedArgument instanceof Tree.SpecifiedArgument) {
+                    d = ((Tree.MetaLiteral)((Tree.SpecifiedArgument)namedArgument).getSpecifierExpression().getExpression().getTerm()).getDeclaration(); 
+                }
+            }
+            if (d instanceof ClassOrInterface) {
+                ClassOrInterface service = (ClassOrInterface)d;
+                Class c = (Class)returnDeclaration;
+                if (!c.getType().getFullType().isSubtypeOf(that.getUnit().getCallableDeclaration().appliedType(null, Arrays.asList(
+                        that.getUnit().getAnythingType(), that.getUnit().getEmptyType())))) {
+                    that.addError("service class have a parameter list or default constructor and be instantiable with an empty argument list",
+                            1604);
+                }
+                if (c.inherits(service)) {
+                    ModelUtil.getModule(c).addService(service, c);
+                } else {
+                    that.addError("service class does not implement service '" + service + "'",
+                            1604);
+                }
+            } else {
+                that.addError("service must be an interface or class",
+                        1604);
             }
         }
     }
