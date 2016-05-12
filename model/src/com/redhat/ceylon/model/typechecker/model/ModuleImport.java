@@ -89,9 +89,7 @@ public class ModuleImport implements Annotated {
         if (export) sb.append("shared ");
         if (optional) sb.append("optional ");
         if (!nativeBackends.none()) {
-            sb.append("native(")
-              .append(nativeBackends)
-              .append(") ");
+            sb.append(nativeBackends);
         }
         sb.append("import ");
         if (namespace != null) {
