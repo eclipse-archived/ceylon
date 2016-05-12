@@ -1050,11 +1050,11 @@ public abstract class CompilerTests {
 
     }
 
-    protected void runInMainApi(String rep, ModuleSpec module, String mainJavaClassName, List<String> moduleArgs) throws Throwable {
-        runInMainApi(rep, module, Collections.<ModuleSpec>emptyList(), mainJavaClassName, moduleArgs);
+    protected void runInMainApi(String rep, ModuleSpec module, String mainJavaClassName, List<String> moduleArgs, boolean debug) throws Throwable {
+        runInMainApi(rep, module, Collections.<ModuleSpec>emptyList(), mainJavaClassName, moduleArgs, debug);
     }
     
-    protected void runInMainApi(String rep, ModuleSpec module, List<ModuleSpec> extraModules, String mainJavaClassName, List<String> moduleArgs) throws Throwable {
+    protected void runInMainApi(String rep, ModuleSpec module, List<ModuleSpec> extraModules, String mainJavaClassName, List<String> moduleArgs, boolean debug) throws Throwable {
         /* Run this in its own process because jbmoss modules assumes it
          * owns the VM, and in particular because it likes to call 
          * System.exit() (which will break subsequent tests) while it 
@@ -1064,8 +1064,12 @@ public abstract class CompilerTests {
         ArrayList<String> a = new ArrayList<String>();
         String java = System.getProperty("java.home")+"/bin/java";
         a.add(java);
+        if (debug) {
+            a.add("-Xdebug");
+            a.add("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9090");
+        }
         a.add("-cp");
-        a.add(mainApiClasspath(rep, module, extraModules));
+        a.add(mainApiClasspath(rep, module, extraModules, debug));
         a.add("com.redhat.ceylon.compiler.java.runtime.Main");
         a.add(module.toString());
         a.add(mainJavaClassName);
@@ -1078,7 +1082,7 @@ public abstract class CompilerTests {
     }
     
     protected int runInMainApi(String rep, ModuleSpec module, String mainJavaClassName, List<String> moduleArgs,
-            File errFile, File outFile) throws Throwable {
+            File errFile, File outFile, boolean debug) throws Throwable {
         /* Run this in its own process because jbmoss modules assumes it
          * owns the VM, and in particular because it likes to call 
          * System.exit() (which will break subsequent tests) while it 
@@ -1088,8 +1092,12 @@ public abstract class CompilerTests {
         ArrayList<String> a = new ArrayList<String>();
         String java = System.getProperty("java.home")+"/bin/java";
         a.add(java);
+        if (debug) {
+            a.add("-Xdebug");
+            a.add("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9090");
+        }
         a.add("-cp");
-        a.add(mainApiClasspath(rep, module));
+        a.add(mainApiClasspath(rep, module, debug));
         a.add("com.redhat.ceylon.compiler.java.runtime.Main");
         a.add(module.toString());
         a.add(mainJavaClassName);
@@ -1109,20 +1117,20 @@ public abstract class CompilerTests {
         Process p = pb.start();
         return p.waitFor();
     }
-    protected String mainApiClasspath(String rep, ModuleSpec module) throws IOException, InterruptedException {
-        return mainApiClasspath(rep, module, Collections.<ModuleSpec>emptyList(), false);
+    protected String mainApiClasspath(String rep, ModuleSpec module, boolean debug) throws IOException, InterruptedException {
+        return mainApiClasspath(rep, module, Collections.<ModuleSpec>emptyList(), false, debug);
     }
-    protected String mainApiClasspath(String rep, ModuleSpec module, List<ModuleSpec> extraModules) throws IOException, InterruptedException {
-        return mainApiClasspath(rep, module, extraModules, false);
+    protected String mainApiClasspath(String rep, ModuleSpec module, List<ModuleSpec> extraModules, boolean debug) throws IOException, InterruptedException {
+        return mainApiClasspath(rep, module, extraModules, false, debug);
     }
-    protected String mainApiClasspath(String rep, ModuleSpec module, List<ModuleSpec> extraModules, boolean distDowngrade) throws IOException, InterruptedException {
-        return mainApiClasspath(rep, module, extraModules, distDowngrade, 0, null);
+    protected String mainApiClasspath(String rep, ModuleSpec module, List<ModuleSpec> extraModules, boolean distDowngrade, boolean debug) throws IOException, InterruptedException {
+        return mainApiClasspath(rep, module, extraModules, distDowngrade, 0, null, debug);
     }
-    protected String mainApiClasspath(String rep, ModuleSpec module, List<ModuleSpec> extraModules, int expectedSc, File err1) throws IOException, InterruptedException {
-        return mainApiClasspath(rep, module, extraModules, false, expectedSc, err1);
+    protected String mainApiClasspath(String rep, ModuleSpec module, List<ModuleSpec> extraModules, int expectedSc, File err1, boolean debug) throws IOException, InterruptedException {
+        return mainApiClasspath(rep, module, extraModules, false, expectedSc, err1, debug);
     }
     protected String mainApiClasspath(String rep, ModuleSpec module, List<ModuleSpec> extraModules,
-            boolean distDowngrade, int expectedSc, File err1) throws IOException, InterruptedException {
+            boolean distDowngrade, int expectedSc, File err1, boolean debug) throws IOException, InterruptedException {
         
         File dir = new File("build/mainapi");
         dir.mkdirs();
@@ -1143,6 +1151,9 @@ public abstract class CompilerTests {
             a.add(extraModule.toString());
         System.err.println(a);
         ProcessBuilder pb = new ProcessBuilder(a);
+        if (debug) {
+            pb.environment().put("JAVA_OPTS", "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9090");
+        }
         pb.redirectOutput(out);
         pb.redirectError(err);
         Process p = pb.start();

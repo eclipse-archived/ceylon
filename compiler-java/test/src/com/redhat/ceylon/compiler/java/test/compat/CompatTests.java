@@ -117,7 +117,7 @@ public class CompatTests extends CompilerTests {
     public void runCompiled120CarIn121MainApi() throws Throwable {
         runInMainApi("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
                 new ModuleSpec("compiled120", "1.0.0"), "compiled120.runOnLatest_", 
-                Arrays.asList(Versions.CEYLON_VERSION_NUMBER));
+                Arrays.asList(Versions.CEYLON_VERSION_NUMBER), false);
     }
     
     @Test
@@ -139,7 +139,7 @@ public class CompatTests extends CompilerTests {
         		Arrays.asList("--flat-classpath", "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules"),
         		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
         runInMainApi("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                new ModuleSpec("depends120", "1.0.0"), "depends120.run_", Arrays.asList(Versions.CEYLON_VERSION_NUMBER));
+                new ModuleSpec("depends120", "1.0.0"), "depends120.run_", Arrays.asList(Versions.CEYLON_VERSION_NUMBER), false);
     }
     
     @Test
@@ -275,7 +275,7 @@ public class CompatTests extends CompilerTests {
         File err = File.createTempFile("compattest", "out");
         try {
             mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                    new ModuleSpec("compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err);
+                    new ModuleSpec("compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err, false);
             assertFileContainsLine(err, "Module ceylon.language/1.2.99 not found in the following repositories:");
         } finally {
             err.delete();
@@ -324,7 +324,7 @@ public class CompatTests extends CompilerTests {
     public void classpathCompiled1299With121NoDowngrade() throws Throwable {
         File err = File.createTempFile("compattest", "out");
         mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                new ModuleSpec("compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err);
+                new ModuleSpec("compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err, false);
         assertFileContainsLine(err, "Module ceylon.language/1.2.99 not found in the following repositories:");
     }
     
@@ -332,7 +332,7 @@ public class CompatTests extends CompilerTests {
     public void classpathCompiled1299With121Downgrade() throws Throwable {
         // TODO pass --dist-downgrade to ceylon classpath and check it works
         mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                new ModuleSpec("compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), true);
+                new ModuleSpec("compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), true, false);
     }
     
     @Test
@@ -340,7 +340,7 @@ public class CompatTests extends CompilerTests {
         File err = File.createTempFile("compattest", "out");
         try {
             mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                    new ModuleSpec("compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err);
+                    new ModuleSpec("compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err, false);
             assertFileContainsLine(err, "Module ceylon.language/1.2.99 not found in the following repositories:");
         } finally {
             err.delete();
@@ -398,7 +398,7 @@ public class CompatTests extends CompilerTests {
     public void runCompiled121Depends120In121MainApi() throws Throwable {
         runInMainApi("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
                 new ModuleSpec("compiled121depends120", "1.0.0"), "compiled121depends120.runOnLatest_", 
-                Arrays.asList(Versions.CEYLON_VERSION_NUMBER));
+                Arrays.asList(Versions.CEYLON_VERSION_NUMBER), false);
     }
     
     @Test
