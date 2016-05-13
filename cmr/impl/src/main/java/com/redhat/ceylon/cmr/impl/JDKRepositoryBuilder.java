@@ -17,6 +17,8 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import java.io.File;
+
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 
@@ -27,12 +29,19 @@ import com.redhat.ceylon.cmr.api.RepositoryBuilder;
  */
 public class JDKRepositoryBuilder implements RepositoryBuilder {
 
+    @Override
+    public String absolute(File cwd, String token) {
+        return null;
+    }
+
+    @Override
     public CmrRepository buildRepository(String token) throws Exception {
         return buildRepository(token, EMPTY_CONFIG);
     }
 
+    @Override
     public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
-        if (token.equals("jdk") || token.equals("jdk:")) {
+        if (token.equals("jdk") || token.equals("jdk:") || token.equals("jdk:/#")) {
             return new JDKRepository();
         } else {
             return null;

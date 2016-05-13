@@ -17,10 +17,12 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import java.io.File;
 import java.lang.reflect.Method;
 
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
 
 /**
@@ -30,12 +32,36 @@ import com.redhat.ceylon.common.log.Logger;
  */
 public class MavenRepositoryBuilder implements RepositoryBuilder {
 
+    @Override
+    public String absolute(File cwd, String token) {
+        if (token.equals("aether") || token.equals("aether:") || token.equals("aether:/#")
+                || token.equals("mvn") || token.equals("mvn:") || token.equals("mvn:/#")) {
+            return token;
+        } else if (token.startsWith("aether:")) {
+            return absolute(cwd, token, "aether:");
+        } else if (token.startsWith("mvn:")) {
+            return absolute(cwd, token, "mvn:");
+        } else {
+            return null;
+        }
+    }
+
+    private String absolute(File cwd, String token, String prefix) {
+        token = token.substring(prefix.length());
+        File f = FileUtil.absoluteFile(FileUtil.applyCwd(cwd, new File(token)));
+        token = f.getAbsolutePath();
+        return prefix + token;
+    }
+
+    @Override
     public CmrRepository buildRepository(String token) throws Exception {
         return buildRepository(token, EMPTY_CONFIG);
     }
 
+    @Override
     public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
-        if (token.equals("aether") || token.equals("aether:") || token.equals("mvn") || token.equals("mvn:")) {
+        if (token.equals("aether") || token.equals("aether:") || token.equals("aether:/#")
+                || token.equals("mvn") || token.equals("mvn:") || token.equals("mvn:/#")) {
             return createMavenRepository(token, null, config);
         } else if (token.startsWith("aether:")) {
             return createMavenRepository(token, "aether:", config);

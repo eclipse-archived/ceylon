@@ -17,6 +17,8 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import java.io.File;
+
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 
@@ -27,10 +29,21 @@ import com.redhat.ceylon.cmr.api.RepositoryBuilder;
  */
 public class RemoteRepositoryBuilder implements RepositoryBuilder {
 
+    @Override
+    public String absolute(File cwd, String token) {
+        if (token.startsWith("http:") || token.startsWith("https:")) {
+            return token;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public CmrRepository buildRepository(String token) throws Exception {
         return buildRepository(token, EMPTY_CONFIG);
     }
 
+    @Override
     public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         if (token.startsWith("http:") || token.startsWith("https:")) {
             RemoteContentStore cs = new RemoteContentStore(token, config.log, config.offline, config.timeout, config.proxy);

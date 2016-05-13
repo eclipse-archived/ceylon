@@ -16,6 +16,7 @@
 
 package com.redhat.ceylon.cmr.api;
 
+import java.io.File;
 import java.net.Proxy;
 
 import com.redhat.ceylon.common.log.Logger;
@@ -50,6 +51,18 @@ public interface RepositoryBuilder {
     }
     
     public static final RepositoryBuilderConfig EMPTY_CONFIG = new RepositoryBuilderConfig(null, false, 0, null);
+    
+    /**
+     * If the token is path based this method will return the token
+     * with any path elements made absolute using the folder being
+     * passed as the current working directory. Returns null if the
+     * token wasn't meant for this repository
+     *
+     * @param cwd the folder to use as the current working directory
+     * @param token the token to make absolute
+     * @return boolean if token is accepted or not
+     */
+    String absolute(File cwd, String token);
     
     /**
      * Build repository.

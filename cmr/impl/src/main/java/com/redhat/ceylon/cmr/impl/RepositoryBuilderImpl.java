@@ -17,6 +17,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import java.io.File;
 import java.net.Proxy;
 import java.util.ServiceLoader;
 
@@ -70,6 +71,17 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         }
         
         return localBuilder.buildRepository(token, config);
+    }
+
+    @Override
+    public String absolute(File cwd, String token) {
+        for (RepositoryBuilder builder : builders) {
+            String abstoken = builder.absolute(cwd, token);
+            if (abstoken != null) {
+                return abstoken;
+            }
+        }
+        return localBuilder.absolute(cwd, token);
     }
     
 }

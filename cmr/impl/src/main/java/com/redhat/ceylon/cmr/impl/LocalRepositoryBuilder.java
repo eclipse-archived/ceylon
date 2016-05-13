@@ -22,6 +22,7 @@ import java.net.URI;
 
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
+import com.redhat.ceylon.common.FileUtil;
 
 /**
  * Repository builder for local uses of the DefaultRepository
@@ -30,10 +31,18 @@ import com.redhat.ceylon.cmr.api.RepositoryBuilder;
  */
 public class LocalRepositoryBuilder implements RepositoryBuilder {
 
+    @Override
+    public String absolute(File cwd, String token) {
+        File f = FileUtil.absoluteFile(FileUtil.applyCwd(cwd, new File(token)));
+        return f.getAbsolutePath();
+    }
+
+    @Override
     public CmrRepository buildRepository(String token) throws Exception {
         return buildRepository(token, EMPTY_CONFIG);
     }
 
+    @Override
     public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         final File file = (token.startsWith("file:") ? new File(new URI(token)) : new File(token));
         if (file.exists() == false)

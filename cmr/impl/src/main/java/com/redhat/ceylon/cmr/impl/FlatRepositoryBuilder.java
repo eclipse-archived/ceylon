@@ -21,6 +21,7 @@ import java.io.File;
 
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
+import com.redhat.ceylon.common.FileUtil;
 
 /**
  * Repository builder for FlatRepository
@@ -29,10 +30,24 @@ import com.redhat.ceylon.cmr.api.RepositoryBuilder;
  */
 public class FlatRepositoryBuilder implements RepositoryBuilder {
 
+    @Override
+    public String absolute(File cwd, String token) {
+        if (token.startsWith("flat:")) {
+            token = token.substring(5);
+            File f = FileUtil.absoluteFile(FileUtil.applyCwd(cwd, new File(token)));
+            token = f.getAbsolutePath();
+            return "flat:" + token;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public CmrRepository buildRepository(String token) throws Exception {
         return buildRepository(token, EMPTY_CONFIG);
     }
 
+    @Override
     public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         if (token.startsWith("flat:")) {
             return createFlatRepository(token);
