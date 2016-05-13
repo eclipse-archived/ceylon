@@ -14,17 +14,6 @@ public class TypecheckerUnit extends Unit {
         this.moduleSourceMapper = moduleSourceMapper;
     }
     
-    public TypecheckerUnit(Iterable<Module> modules, 
-            ModuleSourceMapper moduleSourceMapper){
-    	this.moduleSourceMapper = moduleSourceMapper;
-        for (Module module: modules) {
-            if ("java.base".equals(module.getNameAsString())) {
-                javaLangPackage = module.getPackage("java.lang");
-                break;
-            }
-        }
-    }
-    
     public TypecheckerUnit(
             String theFilename,
             String theRelativePath,
@@ -36,6 +25,10 @@ public class TypecheckerUnit extends Unit {
         setPackage(thePackage);
     }
 
+    public void setJavaLangPackage(Package javaLangPackage) {
+    	this.javaLangPackage = javaLangPackage;
+    }
+    
     /** 
      * Override this because it's possible to see java.lang.Iterable 
      * (for example) without a dependency on java.base when importing 
