@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
+import static com.redhat.ceylon.model.typechecker.util.ModuleManager.MODULE_FILE;
+import static com.redhat.ceylon.model.typechecker.util.ModuleManager.PACKAGE_FILE;
 
 import java.lang.ref.WeakReference;
 import java.util.EnumSet;
@@ -275,8 +277,8 @@ public class PhasedUnit {
                                 "identical source files: " +
                                 unit.getFullPath() + " and " + 
                                 u.getFullPath();
-                        if (u.getFilename().equals(ModuleManager.MODULE_FILE) ||
-                            u.getFilename().equals(ModuleManager.PACKAGE_FILE)) {
+                        if (u.getFilename().equals(MODULE_FILE) ||
+                            u.getFilename().equals(PACKAGE_FILE)) {
                             errorMessage += " (a module/package descriptor should be defined only once, even in case of multiple source directories)";
                         }
                         rootNode.addError(errorMessage);                        
@@ -337,11 +339,13 @@ public class PhasedUnit {
                 //System.out.println("Scan declarations for " + fileName);
                 DeclarationVisitor dv = new DeclarationVisitor(unit) {
                     @Override
-                    protected boolean shouldIgnoreOverload(Declaration overload, Declaration declaration) {
+                    protected boolean shouldIgnoreOverload
+                    (Declaration overload, Declaration declaration) {
                         return PhasedUnit.this.shouldIgnoreOverload(overload, declaration);
                     }
                     @Override
-                    protected boolean isAllowedToChangeModel(Declaration declaration) {
+                    protected boolean isAllowedToChangeModel
+                    (Declaration declaration) {
                         return PhasedUnit.this.isAllowedToChangeModel(declaration);
                     }
                 };
