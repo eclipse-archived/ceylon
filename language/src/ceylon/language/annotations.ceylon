@@ -346,6 +346,9 @@ shared final annotation class ServiceAnnotation(contract)
     ClassOrInterfaceDeclaration contract;
 }
 
-"Annotation mark a class as providing a service"
+"Annotation marking a class as implementing a service. 
+ 
+ Service implementations can be found at runtime using 
+ [[Module.findServices|ceylon.language.meta.declaration::Module.findServiceProviders]]."
 shared annotation ServiceAnnotation service(ClassOrInterfaceDeclaration contract) 
         => ServiceAnnotation(contract);

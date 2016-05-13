@@ -1,4 +1,5 @@
 import ceylon.language.meta.declaration { Package, Import, Module }
+import ceylon.language.meta.model { ClassOrInterface }
 import ceylon.language{AnnotationType = Annotation}
 
 shared native class Modulo(shared Anything meta) satisfies Module {
@@ -15,4 +16,5 @@ shared native class Modulo(shared Anything meta) satisfies Module {
     shared actual native Boolean annotated<Annotation>()
             given Annotation satisfies AnnotationType;
     string = "module " + name + "/" + version;
+    shared actual {Service*} findServiceProviders<Service>(ClassOrInterface<Service> service) => empty;
 }
