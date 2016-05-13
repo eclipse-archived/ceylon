@@ -1,4 +1,5 @@
 com.redhat.ceylon.cmr.impl.RemoteRepositoryBuilder
 com.redhat.ceylon.cmr.impl.JDKRepositoryBuilder
 com.redhat.ceylon.cmr.impl.MavenRepositoryBuilder
+com.redhat.ceylon.cmr.impl.NpmRepositoryBuilder
 com.redhat.ceylon.cmr.impl.FlatRepositoryBuilder
