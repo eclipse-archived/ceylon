@@ -66,7 +66,7 @@ public class PhasedUnit {
     //must be the non qualified file name
     private String fileName;
     private WeakReference<ModuleManager> moduleManagerRef;
-    private WeakReference<ModuleSourceMapper> moduleManagerUtilRef;
+    private WeakReference<ModuleSourceMapper> moduleSourceMapperRef;
     private final String pathRelativeToSrcDir;
     private VirtualFile unitFile;
     private List<CommonToken> tokens;
@@ -108,7 +108,7 @@ public class PhasedUnit {
         this.moduleManagerRef = 
                 new WeakReference<ModuleManager>
                     (moduleManager);
-        this.moduleManagerUtilRef = 
+        this.moduleSourceMapperRef = 
                 new WeakReference<ModuleSourceMapper>
                     (moduleManagerUtil);
         this.tokens = tokenStream;
@@ -131,9 +131,9 @@ public class PhasedUnit {
         this.moduleManagerRef = 
                 new WeakReference<ModuleManager>
                     (other.moduleManagerRef.get());
-        this.moduleManagerUtilRef = 
+        this.moduleSourceMapperRef = 
                 new WeakReference<ModuleSourceMapper>
-                    (other.moduleManagerUtilRef.get());
+                    (other.moduleSourceMapperRef.get());
         this.pathRelativeToSrcDir = other.pathRelativeToSrcDir;
         this.unitFile = other.unitFile;
         this.tokens = other.tokens;
@@ -179,7 +179,7 @@ public class PhasedUnit {
                 moduleVisitor = 
                         new ModuleVisitor(
                                 moduleManagerRef.get(), 
-                                moduleManagerUtilRef.get(), 
+                                moduleSourceMapperRef.get(), 
                                 pkg);
                 moduleVisitor.setCompleteOnlyAST(!isAllowedToChangeModel(null));
                 rootNode.visit(moduleVisitor);
@@ -190,11 +190,11 @@ public class PhasedUnit {
     }
 
     protected ModuleSourceMapper getModuleSourceMapper() {
-        return moduleManagerUtilRef.get();
+        return moduleSourceMapperRef.get();
     }
     
     protected TypecheckerUnit createUnit() {
-        return new TypecheckerUnit(moduleManagerUtilRef.get());
+        return new TypecheckerUnit(moduleSourceMapperRef.get());
     }
     
     public void visitRemainingModulePhase() {
@@ -303,7 +303,7 @@ public class PhasedUnit {
                         String moduleName = 
                                 formatPath(importPath.getIdentifiers());
                         ModuleSourceMapper moduleManagerUtil = 
-                                moduleManagerUtilRef.get();
+                                moduleSourceMapperRef.get();
                         if (moduleManagerUtil != null) {
                             for (Module otherModule: 
                                     moduleManagerUtil.getCompiledModules()) {
