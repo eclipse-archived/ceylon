@@ -62,27 +62,6 @@ class Entry<out Key,out Item>(key, item)
     "A description of the entry in the form `key->item`. If 
      [[item]] is `null`, its string representation is the 
      string `\"<null>\"`."
-    shared actual String string {
-        StringBuilder sb = StringBuilder();
-        variable value k = key.string;
-        Boolean pk = key is Entry<Anything,Anything>;
-        Boolean pi = item is Entry<Anything,Anything>;
-        if (pk) {
-            sb.append("(");
-        }
-        sb.append(key.string);
-        if (pk) {
-            sb.append(")");
-        }
-        sb.append("->");
-        
-        if (pi) {
-            sb.append("(");
-        }
-        sb.append(stringify(item));
-        if (pi) {
-            sb.append(")");
-        }
-        return sb.string;
-    }
+    shared actual String string 
+            => "``key``->``stringify(item)``";
 }

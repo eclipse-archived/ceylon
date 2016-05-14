@@ -240,7 +240,4 @@ shared void entriesAndRanges() {
     } else { fail("forItem [2]"); }
     check(e1.count(forItem((String s) => s<"a"))==2, "forItem [3]");
     check(e1.map(forKey((Integer k) => k.string.repeat(3))).sequence() == {"000","111","222","333"}.sequence(), "forKey [3]");
-    
-    check("1->(2->3)" == (1->(2->3)).string);
-    check("(1->2)->3" == ((1->2)->3).string);
 }
