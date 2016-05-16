@@ -2304,7 +2304,7 @@ public abstract class AbstractTransformer implements Transformation {
         ListBuffer<JCExpression> typeArgs = null;
         if(index >= firstQualifyingTypeWithTypeParameters) {
             int taFlags = flags;
-            if (qualifyingTypes != null && index < qualifyingTypes.size()) {
+            if (qualifyingTypes != null && index < qualifyingTypes.size()-1) {
                 // The qualifying types before the main one should
                 // have type parameters with proper variance
                 taFlags &= ~(JT_EXTENDS | JT_SATISFIES);
