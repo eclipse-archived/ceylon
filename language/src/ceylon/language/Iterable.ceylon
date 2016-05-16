@@ -1686,7 +1686,20 @@ shared interface Iterable<out Element=Anything,
             given Group satisfies Object
             => summarize<Group,ElementEntry<Element>>
                     (grouping, ElementEntry)
-               .mapItems((_, item) => item.reversed);
+                .mapItems((_, elements) {
+                    //TODO: give Array a special-purpose 
+                    //      constructor for this
+                    value size = elements.size;
+                    value array = Array.ofSize {
+                        size = size;
+                        element = elements.first;
+                    };
+                    variable value i = size;
+                    for (element in elements) {
+                        array.set(--i, element);
+                    }
+                    return ArraySequence(array);
+                });
     
     "Efficiently [[group]] and [[fold]] the elements of this
      stream in a single step.
