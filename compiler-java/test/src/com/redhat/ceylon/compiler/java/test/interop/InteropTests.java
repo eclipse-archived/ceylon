@@ -784,4 +784,10 @@ public class InteropTests extends CompilerTests {
         compile("Bug6099Java.java");
         compile("Bug6099.ceylon");
     }
+    
+    @Test
+    public void testIopBug6123(){
+        compile("Bug6123Java.java");
+        compile("Bug6123.ceylon");
+    }
 }
