@@ -582,6 +582,10 @@ public class TypePrinter {
         }
     }
 
+    protected boolean printTypeParameters(Type pt) {
+        return printTypeParameters();
+    }
+    
     protected String getSimpleProducedTypeName(Type pt, 
             Unit unit) {
         StringBuilder ptn = new StringBuilder();
@@ -612,7 +616,7 @@ public class TypePrinter {
         List<Type> args = pt.getTypeArgumentList();
         List<TypeParameter> params = ptd.getTypeParameters();
         if (!pt.isTypeConstructor() && 
-                printTypeParameters() && 
+                printTypeParameters(pt) && 
                 !args.isEmpty()) {
             ptn.append(lt());
             boolean first = true;
