@@ -18,6 +18,7 @@ import java.util.Set;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.js.JsCompiler;
+import com.redhat.ceylon.compiler.js.loader.JsonModule;
 import com.redhat.ceylon.compiler.js.loader.MetamodelVisitor;
 import com.redhat.ceylon.compiler.js.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
@@ -136,6 +137,17 @@ public class JsOutput {
 
     public String getLanguageModuleAlias() {
         return clalias;
+    }
+
+    public void requireFromNpm(final Module mod, final JsIdentifierNames names) {
+        final String modAlias = names.moduleAlias(mod);
+        final String path = mod.getNameAsString() + "/" + ((JsonModule)mod).getNpmPath();
+        if (requires.put(path, modAlias) == null) {
+            out("var ", modAlias, "=require('", path, "');\n");
+            if (modAlias != null && !modAlias.isEmpty()) {
+                out(clalias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "');\n");
+            }
+        }
     }
 
     public void require(final Module mod, final JsIdentifierNames names) {
