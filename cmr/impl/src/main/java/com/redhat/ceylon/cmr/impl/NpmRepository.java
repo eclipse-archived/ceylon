@@ -68,7 +68,7 @@ public class NpmRepository extends AbstractRepository {
             File dir = kid.getContent(File.class);
             File json = new File(dir, "package.json");
             if (json.exists() && json.isFile() && json.canRead()) {
-                //TODO parse json, get "main", that's the file we need
+                //Parse json, get "main", that's the file we need
                 try (FileReader reader = new FileReader(json)){
                     @SuppressWarnings("unchecked")
                     Map<String,Object> descriptor = (Map<String,Object>)JSONValue.parse(reader);
