@@ -63,12 +63,10 @@ public class JsonModule extends Module {
         if (model != null) {
             if (!loaded) {
                 loaded=true;
-                ArrayList<JsonPackage> pks = new ArrayList<>(model.size());
                 for (Map.Entry<String, Object> e : model.entrySet()) {
                     if (!e.getKey().startsWith("$mod-")) {
                         JsonPackage p = new JsonPackage(e.getKey());
                         p.setModule(this);
-                        pks.add(p);
                         getPackages().add(p);
                     }
                 }
@@ -86,7 +84,6 @@ public class JsonModule extends Module {
         if ("default".equals(name)) {
             name = "";
         }
-
         // search direct packages
         Package p = getDirectPackage(name);
         if (p != null) {
@@ -105,6 +102,22 @@ public class JsonModule extends Module {
 
         // not found
         return null;
+    }
+
+    @Override
+    public Package getDirectPackage(String name) {
+        Package pkg = super.getDirectPackage(name);
+        if (pkg == null && npmPath != null) {
+            String modName = getNameAsString();
+            if (getNameAsString().indexOf('-') > 0) {
+                modName = modName.replace('-', '.');
+            }
+            if (modName.equals(name)) {
+                pkg = new NpmPackage(this, name);
+                getPackages().add(pkg);
+            }
+        }
+        return pkg;
     }
 
     private Package getPackageFromImport(String name, Module module, Set<Module> visited) {
