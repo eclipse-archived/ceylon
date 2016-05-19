@@ -161,6 +161,11 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                     return;
                 }
             }
+            if ("npm".equals(artifact.namespace())) {
+                final String npmPath = artifact.artifact().getName();
+                ((JsonModule)module).setNpmPath(npmPath);
+                return;
+            }
         }
         super.resolveModule(artifact, module, moduleImport, dependencyTree,
                 phasedUnitsOfDependencies, forCompiledModule);
