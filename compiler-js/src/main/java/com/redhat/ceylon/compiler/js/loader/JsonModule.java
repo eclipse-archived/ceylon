@@ -18,6 +18,7 @@ public class JsonModule extends Module {
 
     private Map<String,Object> model;
     private boolean loaded = false;
+    private String npmPath;
 
     public void setModel(Map<String, Object> value) {
         if (model != null) {
@@ -137,6 +138,13 @@ public class JsonModule extends Module {
         ArrayList<ModuleImport> r = new ArrayList<>(s.size());
         r.addAll(s);
         return r;
+    }
+
+    public void setNpmPath(String value) {
+        npmPath = value;
+    }
+    public String getNpmPath() {
+        return npmPath;
     }
 
 }
