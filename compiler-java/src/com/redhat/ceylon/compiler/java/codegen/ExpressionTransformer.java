@@ -2924,7 +2924,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else {
                 expr = transformExpression(spec.getExpression(), 
                         CodegenUtil.getBoxingStrategy(param.getParameterModel().getModel()), 
-                        param.getParameterModel().getType());
+                        param.getParameterModel().getModel().getTypedReference().getFullType());
             }
             if(classParameter)
                 withinDefaultParameterExpression(oldWithinDefaultParameterExpression);
