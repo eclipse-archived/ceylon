@@ -160,6 +160,7 @@ public abstract class AbstractTransformer implements Transformation {
                     && (pt == type
                         || type == null
                         || type.getDeclaration() == null 
+                        || type.getDeclaration().isToplevel() 
                         || !type.getDeclaration().isStaticallyImportable());
         }
     };
