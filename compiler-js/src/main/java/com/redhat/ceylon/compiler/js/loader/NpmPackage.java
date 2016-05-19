@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -31,14 +32,17 @@ public class NpmPackage extends LazyPackage {
         Declaration d = decs.get(name);
         if (d == null) {
             if (Character.isUpperCase(name.charAt(0))) {
+                d = new Class();
+                ((Class)d).setDynamic(true);
             } else {
                 d = new Function();
-                d.setName(name);
-                d.setUnit(this.getUnit());
-                System.out.println("QUE SI TENGO " + name + " sig " + signature);
+                ((Function)d).setDynamicallyTyped(true);
             }
+            d.setName(name);
+            d.setUnit(this.getUnit());
             d.setShared(true);
             d.setContainer(this);
+            decs.put(name, d);
         }
         return d;
     }
