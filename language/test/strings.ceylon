@@ -665,5 +665,9 @@ shared void strings() {
     check(if (exists first="abcd".sublistFrom(2).sublistFrom(1).first) then first=='d' else false, "string sublist");
     check(!"abcd".sublistFrom(4).first exists, "string sublist");
     check(!"abcd".sublistFrom(2).sublistFrom(2).first exists, "string sublist");
-
+    
+    check("".indexesWhere((c) => true).size == 0);
+    check("12345".indexesWhere((c) => true).size == 5);
+    check(String("a".cycled.take(1M)).indexesWhere((c) => true).size == 1M);
+    check("\{ELEPHANT}".indexesWhere((c) => true).size == 1); // non-BMP character
 }
