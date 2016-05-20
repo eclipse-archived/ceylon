@@ -110,6 +110,9 @@ public class MetamodelGenerator {
                     continue;
                 }
                 String impath = String.format("%s/%s", mi.getModule().getNameAsString(), mi.getModule().getVersion());
+                if (mi.getNamespace() != null) {
+                    impath = mi.getNamespace() + ":" + impath;
+                }
                 if (mi.isOptional() || mi.isExport() || mi.isNative()) {
                     Map<String,Object> optimp = new HashMap<>(3);
                     optimp.put("path",impath);
