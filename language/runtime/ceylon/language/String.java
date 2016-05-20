@@ -2312,21 +2312,16 @@ public final class String
                     int index = 0;
                     @Override
                     public java.lang.Object next() {
-                        if (offset>=value.length()) {
-                            return finished_.get_();
-                        }
                         while (true) {
-                            int cp = value.codePointAt(offset);
-                            offset+=java.lang.Character.charCount(cp);
                             if (offset>=value.length()) {
                                 return finished_.get_();
                             }
-                            else {
-                                if (fun.$call$(Character.instance(cp)).booleanValue()) {
-                                    return Integer.instance(index++);
-                                }
-                                index++;
+                            int cp = value.codePointAt(offset);
+                            offset+=java.lang.Character.charCount(cp);
+                            if (fun.$call$(Character.instance(cp)).booleanValue()) {
+                                return Integer.instance(index++);
                             }
+                            index++;
                         }
                     }
                 };
