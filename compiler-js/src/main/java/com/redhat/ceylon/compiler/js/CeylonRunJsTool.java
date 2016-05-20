@@ -493,7 +493,13 @@ public class CeylonRunJsTool extends RepoUsingTool {
 
     // Make sure JS and JS_MODEL artifacts exist and try to obtain the RESOURCES as well
     protected File getArtifact(RepositoryManager repoman, String modName, String modVersion, boolean optional) {
-        ArtifactContext ac = new ArtifactContext(null, modName, modVersion, ArtifactContext.JS, ArtifactContext.JS_MODEL, ArtifactContext.RESOURCES);
+        final int colonIdx = modName.indexOf(':');
+        String namespace = null;
+        if (colonIdx > 0) {
+            namespace = modName.substring(0,colonIdx);
+            modName = modName.substring(colonIdx + 1);
+        }
+        ArtifactContext ac = new ArtifactContext(namespace, modName, modVersion, ArtifactContext.JS, ArtifactContext.JS_MODEL, ArtifactContext.RESOURCES);
         ac.setIgnoreDependencies(true);
         ac.setThrowErrorIfMissing(false);
         List<ArtifactResult> results = repoman.getArtifactResults(ac);
@@ -501,6 +507,8 @@ public class CeylonRunJsTool extends RepoUsingTool {
         ArtifactResult model = getArtifactType(results, ArtifactContext.JS_MODEL);
         if (code == null || model == null) {
             if (optional) {
+                return null;
+            } else if (code != null && "npm".equals(namespace)) {
                 return null;
             }
             throw new CeylonRunJsException("Cannot find module " + ModuleUtil.makeModuleName(modName, modVersion) + " in specified module repositories");
