@@ -43,6 +43,7 @@
         <pathelement path="${ceylon.module-resolver-webdav.lib}"/>
         <pathelement path="${ceylon.module-resolver-javascript.lib}"/>
         <pathelement path="${ceylon.classfile.lib}"/>
+        <pathelement path="${json.lib}"/>
     </path>
 
     <path id="test.build.classpath">
