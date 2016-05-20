@@ -67,6 +67,9 @@ public class NpmRepositoryBuilder implements RepositoryBuilder {
             if (nodePath == null || nodePath.isEmpty()) {
                 File local = new File("node_modules");
                 nodePath = local.getAbsolutePath();
+                if (!local.exists()) {
+                    local.mkdirs();
+                }
             }
         }
 
