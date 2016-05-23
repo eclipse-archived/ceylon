@@ -34,7 +34,7 @@ public class IssuesTests_6000_6499 extends CompilerTests {
 
     @Override
     protected ModuleWithArtifact getDestModuleWithArtifact(String main){
-        return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues", "1");
+        return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug62xx", "1");
     }
     
     @Override
@@ -179,6 +179,13 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     @Test
     public void testBug6267() {
         compareWithJavaSource("bug62xx/Bug6267");
+    }
+    
+    @Test
+    public void testBug6272() {
+        assertErrors("bug62xx/Bug6272",
+                new CompilerError(8, "argument of unknown type assigned to inferred type parameter: 'Item' of 'HashMap'"),
+                new CompilerError(8, "function or value does not exist: 'bar'"));
     }
     
     @Test
