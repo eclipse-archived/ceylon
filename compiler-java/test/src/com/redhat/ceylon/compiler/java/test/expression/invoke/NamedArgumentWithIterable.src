@@ -368,7 +368,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable arg$11$argthis$ = this;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable arg$11$argthis$ = .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentWithIterable.this;
                 long arg$11$0 = 1L;
                 .ceylon.language.Iterable arg$11$1 = arg$11$argthis$.defaulted$b(arg$11$0);
                 defaulted$priv$(arg$11$0, arg$11$1);

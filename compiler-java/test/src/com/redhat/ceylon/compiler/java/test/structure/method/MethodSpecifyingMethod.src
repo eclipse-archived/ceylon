@@ -65,7 +65,7 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod arg$3$argthis$ = this;
+                .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod arg$3$argthis$ = .com.redhat.ceylon.compiler.java.test.structure.method.MethodSpecifierMethod.this;
                 long arg$3$0 = arg$3$argthis$.oneDefaultedParam$i();
             }
             returning oneDefaultedParam$priv$(arg$3$0);
