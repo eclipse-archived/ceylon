@@ -90,6 +90,7 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCPrimitiveTypeTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCReturn;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCSwitch;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCThrow;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
@@ -3425,6 +3426,7 @@ public class ClassTransformer extends AbstractTransformer {
         boolean createField = Strategy.createField(parameter, model) && !lazy;
         boolean concrete = Decl.withinInterface(decl)
                 && decl.getSpecifierOrInitializerExpression() != null;
+        JCThrow err = null;
         if (!lazy && 
                 (concrete || 
                         (!Decl.isFormal(decl) 
@@ -3440,10 +3442,17 @@ public class ClassTransformer extends AbstractTransformer {
             
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
-                Value declarationModel = model;
-                initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
-                        CodegenUtil.getBoxingStrategy(declarationModel), 
-                        nonWideningType);
+                Tree.Expression expression = decl.getSpecifierOrInitializerExpression().getExpression();
+                HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getTerm());
+                if (error != null) {
+                    initialValue = null;
+                    err = makeThrowUnresolvedCompilationError(error.getErrorMessage().getMessage());
+                } else {
+                    Value declarationModel = model;
+                    initialValue = expressionGen().transformExpression(expression, 
+                            CodegenUtil.getBoxingStrategy(declarationModel), 
+                            nonWideningType);
+                }
             }
 
             int flags = 0;
@@ -3469,13 +3478,15 @@ public class ClassTransformer extends AbstractTransformer {
                         annos = annos.prependList(makeAtNoInitCheck());
                     }
                     // fields should be ignored, they are accessed by the getters
-                    classBuilder.field(modifiers, attrName, type, initialValue, !useField, annos);
-                    if (model.isLate() && CodegenUtil.needsLateInitField(model, typeFact())) {
-                        classBuilder.field(PRIVATE | Flags.VOLATILE | Flags.TRANSIENT, Naming.getInitializationFieldName(attrName), 
-                                make().Type(syms().booleanType), 
-                                make().Literal(false), false, makeAtIgnore());
+                    if (err == null) {
+                        classBuilder.field(modifiers, attrName, type, initialValue, !useField, annos);
+                        if (model.isLate() && CodegenUtil.needsLateInitField(model, typeFact())) {
+                            classBuilder.field(PRIVATE | Flags.VOLATILE | Flags.TRANSIENT, Naming.getInitializationFieldName(attrName), 
+                                    make().Type(syms().booleanType), 
+                                    make().Literal(false), false, makeAtIgnore());
+                        }
                     }
-                }        
+                }
             }
             
             // A shared attribute might be initialized in a for statement, so
@@ -3492,7 +3503,11 @@ public class ClassTransformer extends AbstractTransformer {
             if (!withinInterface || model.isShared()) {
                 // Generate getter in main class or interface (when shared)
                 at(decl.getType());
-                classBuilder.attribute(makeGetter(decl, false, lazy));
+                AttributeDefinitionBuilder getter = makeGetter(decl, false, lazy);
+                if (err != null) {
+                    getter.getterBlock(make().Block(0, List.<JCStatement>of(err)));
+                }
+                classBuilder.attribute(getter);
             }
             if (withinInterface && lazy) {
                 // Generate getter in companion class
