@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
-import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
@@ -12,17 +11,6 @@ public class TypecheckerUnit extends Unit {
 
     public TypecheckerUnit(ModuleSourceMapper moduleSourceMapper) {
         this.moduleSourceMapper = moduleSourceMapper;
-    }
-    
-    public TypecheckerUnit(Iterable<Module> modules, 
-            ModuleSourceMapper moduleSourceMapper){
-    	this.moduleSourceMapper = moduleSourceMapper;
-        for (Module module: modules) {
-            if ("java.base".equals(module.getNameAsString())) {
-                javaLangPackage = module.getPackage("java.lang");
-                break;
-            }
-        }
     }
     
     public TypecheckerUnit(
@@ -36,6 +24,10 @@ public class TypecheckerUnit extends Unit {
         setPackage(thePackage);
     }
 
+    public void setJavaLangPackage(Package javaLangPackage) {
+    	this.javaLangPackage = javaLangPackage;
+    }
+    
     /** 
      * Override this because it's possible to see java.lang.Iterable 
      * (for example) without a dependency on java.base when importing 

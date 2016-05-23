@@ -116,6 +116,7 @@ import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -491,6 +492,13 @@ public class CeylonEnter extends Enter {
 
     private void typeCheck() {
         final java.util.List<PhasedUnit> listOfUnits = phasedUnits.getPhasedUnits();
+        
+        Module jdk = modelLoader.getJDKBaseModule();
+        Package javaLangPackage = jdk.getPackage("java.lang");
+        for (PhasedUnit pu : listOfUnits) {
+        	pu.getUnit().setJavaLangPackage(javaLangPackage);
+        }
+        
         // Delegate to an external typechecker (e.g. the IDE build)
         compilerDelegate.typeCheck(listOfUnits);
 
@@ -504,6 +512,7 @@ public class CeylonEnter extends Enter {
         int i=1;
         // This phase is proper to the Java backend 
         ForcedCaptureVisitor fcv = new ForcedCaptureVisitor();
+        
         for (PhasedUnit pu : listOfUnits) {
             if(sp != null)
                 progressPreparation(1, i++, size, pu);

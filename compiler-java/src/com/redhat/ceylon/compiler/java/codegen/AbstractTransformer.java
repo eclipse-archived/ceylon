@@ -125,6 +125,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.util.TypePrinter;
 
 /**
@@ -132,14 +133,38 @@ import com.redhat.ceylon.model.typechecker.util.TypePrinter;
  */
 public abstract class AbstractTransformer implements Transformation {
 
-    private final static TypePrinter typeSerialiser = new TypePrinter(
-            true,//printAbbreviated 
-            true,//printTypeParameters 
-            false,//printTypeParameterDetail 
-            true,//printQualifyingType 
-            false,//escapeLowercased 
-            true,//printFullyQualified 
-            true);//printQualifier
+    // the @TypeInfo of a static inner class should not include type arguments
+    // for the qualifying classes. See #2388
+    static class TypeSerializer extends TypePrinter {
+        TypeSerializer() {
+            super(
+                true,//printAbbreviated 
+                true,//printTypeParameters 
+                false,//printTypeParameterDetail 
+                true,//printQualifyingType 
+                false,//escapeLowercased 
+                true,//printFullyQualified 
+                true);//printQualifier
+        }
+        /** The type being serialized */
+        private Type type;
+        public String serialize(Type pt, Unit unit) {
+            this.type = pt;
+            String result = super.print(pt, unit);
+            this.type = null;
+            return result;
+        }
+        @Override
+        protected boolean printTypeParameters(Type pt) {
+            return super.printTypeParameters() 
+                    && (pt == type
+                        || type == null
+                        || type.getDeclaration() == null 
+                        || type.getDeclaration().isToplevel() 
+                        || !type.getDeclaration().isStaticallyImportable());
+        }
+    };
+    private final TypeSerializer typeSerialiser = new TypeSerializer(); 
 
     private Context context;
     private TreeMaker make;
@@ -2304,7 +2329,7 @@ public abstract class AbstractTransformer implements Transformation {
         ListBuffer<JCExpression> typeArgs = null;
         if(index >= firstQualifyingTypeWithTypeParameters) {
             int taFlags = flags;
-            if (qualifyingTypes != null && index < qualifyingTypes.size()) {
+            if (qualifyingTypes != null && index < qualifyingTypes.size()-1) {
                 // The qualifying types before the main one should
                 // have type parameters with proper variance
                 taFlags &= ~(JT_EXTENDS | JT_SATISFIES);
@@ -3630,7 +3655,7 @@ public abstract class AbstractTransformer implements Transformation {
     private String serialiseTypeSignature(Type type){
         // resolve aliases
         type = type.resolveAliases();
-        return typeSerialiser.print(type, typeFact);
+        return typeSerialiser.serialize(type, typeFact);
     }
     
     /*

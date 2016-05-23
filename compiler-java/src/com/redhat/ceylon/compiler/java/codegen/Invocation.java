@@ -1712,7 +1712,7 @@ class NamedArgumentInvocation extends Invocation {
                         && getPrimaryDeclaration().isShared()) {
                     defaultedParameterInstance = gen.naming.makeQuotedThis();
                 } else {
-                    defaultedParameterInstance = gen.naming.makeThis();
+                    defaultedParameterInstance = gen.naming.makeQualifiedThis(gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() ? JT_COMPANION : 0)));
                 }
             } else {
                 // a local or toplevel function

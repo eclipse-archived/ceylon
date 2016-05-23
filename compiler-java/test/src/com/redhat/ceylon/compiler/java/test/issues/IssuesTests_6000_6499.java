@@ -66,6 +66,11 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     }
     
     @Test
+    public void testBug6096() {
+        compareWithJavaSource("bug60xx/Bug6096");
+    }
+    
+    @Test
     public void testBug6129() {
         compareWithJavaSource("bug61xx/Bug6129");
     }
@@ -121,6 +126,12 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     }
     
     @Test
+    public void testBug6207() {
+        compile("bug62xx/Bug6207.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6207");
+    }
+    
+    @Test
     public void testBug6213A() {
         compareWithJavaSource("bug62xx/Bug6213A");
     }
@@ -168,6 +179,16 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     @Test
     public void testBug6267() {
         compareWithJavaSource("bug62xx/Bug6267");
+    }
+    
+    @Test
+    public void testBug6277() {
+        compareWithJavaSource("bug62xx/Bug6277");
+    }
+    
+    @Test
+    public void testBug6283() {
+        compareWithJavaSource("bug62xx/Bug6283");
     }
     
 }

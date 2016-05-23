@@ -128,7 +128,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass arg$3$argthis$ = this;
+                .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass arg$3$argthis$ = .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass.this;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$3$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
                 long arg$3$0 = arg$3$argthis$.methodWithOverloads$a(arg$3$reified$0);
                 long arg$3$1 = arg$3$argthis$.methodWithOverloads$b(arg$3$reified$0, arg$3$0);
@@ -140,7 +140,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass arg$4$argthis$ = this;
+                .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass arg$4$argthis$ = .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass.this;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
                 long arg$4$0 = arg$4$argthis$.methodWithOverloads$a(arg$4$reified$0);
                 long arg$4$1 = arg$4$argthis$.methodWithOverloads$b(arg$4$reified$0, arg$4$0);

@@ -425,11 +425,7 @@ public abstract class Declaration
     }
     
     Type getMemberContainerType() {
-        if (isMember() 
-                // static inner classes in Java have no container type,
-                // but Java enums are fake inner classes that require their
-                // container type
-                && (!isStaticallyImportable() || isJavaEnum())) {
+        if (isMember()) {
             ClassOrInterface container = 
                     (ClassOrInterface) 
                         getContainer();

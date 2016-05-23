@@ -83,7 +83,7 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$3$argthis$ = this;
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced arg$3$argthis$ = .com.redhat.ceylon.compiler.java.test.expression.invoke.DefaultedAndSequenced.this;
                 .java.lang.String arg$3$0 = "";
                 long arg$3$1 = arg$3$argthis$.m$i(arg$3$0);
                 .ceylon.language.Sequential arg$3$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();

@@ -66,7 +66,7 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         final Summand a = (Summand)(.java.lang.Object)(
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095 arg$4$argthis$ = this;
+                .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095 arg$4$argthis$ = .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1095.this;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$0 = $reified$Summand;
                 .ceylon.language.Iterable arg$4$0 = arg$4$argthis$.defaultedSum$dummy(arg$4$reified$0);
             }

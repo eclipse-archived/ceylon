@@ -190,7 +190,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> arg$11$argthis$ = this;
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> arg$11$argthis$ = .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T>.this;
                 long arg$11$0 = arg$11$argthis$.m2$i();
             }
             returning m2(arg$11$0);
@@ -199,7 +199,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> arg$12$argthis$ = this;
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> arg$12$argthis$ = .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T>.this;
                 long arg$12$0 = arg$12$argthis$.m3$i();
                 long arg$12$1 = arg$12$argthis$.m3$n(arg$12$0);
             }
@@ -208,7 +208,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> arg$13$argthis$ = this;
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> arg$13$argthis$ = .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T>.this;
                 long arg$13$0 = 5L;
                 long arg$13$1 = arg$13$argthis$.m3$n(arg$13$0);
             }
@@ -233,7 +233,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> arg$16$argthis$ = this;
+                .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T> arg$16$argthis$ = .com.redhat.ceylon.compiler.java.test.structure.nesting.C<T>.this;
                 long arg$16$1 = 5L;
                 long arg$16$0 = arg$16$argthis$.m3$i();
             }
