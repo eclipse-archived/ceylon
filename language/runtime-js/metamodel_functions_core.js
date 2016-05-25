@@ -31,7 +31,7 @@ function pushTypes(list, types,targ$2) {
     } else {
       nt=typeLiteral$meta({Type$typeLiteral:t},targ$2);
     }
-    if (nt && !list.contains(nt))list.push(nt);
+    if (nt && !$arr$cnt(list,nt))list.push(nt);
   }
   return list;
 }

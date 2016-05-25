@@ -3,7 +3,7 @@ function(e,from,len){
   if (len===undefined)len=this.size;
   var r=[];
   for (var i=from;i<len;i++) {
-    if (this.$_get(i).equals(e))r.push(i);
+    if ($eq$(this.$_get(i),e))r.push(i);
   }
   return r.length>0?$arr$(r,{t:Integer}):empty();
 }

@@ -11,7 +11,7 @@ function(e,from,len){
     }
   } else {
     for (var i=from;i<lim;i++) {
-      if (this.arr$[i]!==null && e.equals(this.arr$[i])) count++;
+      if (this.arr$[i]!==null && $eq$(e,this.arr$[i])) count++;
     }
   }
   return count;

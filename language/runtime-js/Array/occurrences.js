@@ -8,7 +8,7 @@ function(e,from,len){
     }
   } else {
     for (var i=from;i<len;i++) {
-      if (this.arr$[i]!==null && this.arr$[i].equals(e))r.push(i);
+      if (this.arr$[i]!==null && $eq$(this.arr$[i],e))r.push(i);
     }
   }
   return r.length>0?$arr$(r,{t:Integer}):empty();
