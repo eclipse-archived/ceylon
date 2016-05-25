@@ -13,16 +13,19 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.resolver.javascript.JavaScriptResolver;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 
 public class NpmRepository extends AbstractRepository {
+    private Logger log;
 
     public static final String NAMESPACE = "npm";
     
-    public NpmRepository(OpenNode root) {
+    public NpmRepository(OpenNode root, Logger log) {
         super(root);
+        this.log = log;
     }
 
     @Override
@@ -40,9 +43,13 @@ public class NpmRepository extends AbstractRepository {
         if (kid == null) {
             try {
                 final File parent = getRoot().getContent(File.class).getParentFile();
-                System.out.println("installing " + name + "@" + context.getVersion() + " in " + parent);
-                ProcessBuilder pb = new ProcessBuilder().command("/usr/local/bin/npm", "install", name + "@" + context.getVersion())
-                    .directory(parent).inheritIO();
+                if (log != null) log.debug("Installing NPM module " + name + "@" + context.getVersion() + " in " + parent);
+                ProcessBuilder pb = new ProcessBuilder()
+                        .command("/usr/local/bin/npm", "install", name + "@" + context.getVersion())
+                        .directory(parent)
+                        .inheritIO();
+                
+                // Do we need this?
                 String path = pb.environment().get("PATH");
                 if (path == null) {
                     path = "/usr/local/bin";
@@ -50,7 +57,12 @@ public class NpmRepository extends AbstractRepository {
                     path = path + ":/usr/local/bin";
                 }
                 pb.environment().put("PATH", path);
-                pb.start().waitFor();
+                
+                Process p = pb.start();
+                p.waitFor();
+                if (p.exitValue() != 0) {
+                    throw new RepositoryException("NPM installer failed with exit code: " + p.exitValue());
+                }
                 kid = getRoot().addNode(name);
             } catch (InterruptedException | IOException ex) {
                 throw new RepositoryException("Error running NPM installer", ex);

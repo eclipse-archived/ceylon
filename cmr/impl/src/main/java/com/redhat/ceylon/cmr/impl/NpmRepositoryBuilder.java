@@ -22,6 +22,7 @@ import java.io.File;
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.log.Logger;
 
 /**
  * Repository builder for AetherRepository
@@ -52,15 +53,15 @@ public class NpmRepositoryBuilder implements RepositoryBuilder {
     @Override
     public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         if (token.equals("npm:") || token.equals("npm:/#")) {
-            return createNpmRepository("npm:");
+            return createNpmRepository("npm:", config.log);
         } else if (token.startsWith("npm:")) {
-            return createNpmRepository(token);
+            return createNpmRepository(token, config.log);
         } else {
             return null;
         }
     }
     
-    private CmrRepository createNpmRepository(String token) {
+    private CmrRepository createNpmRepository(String token, Logger log) {
         String nodePath = token.substring(4);
         if (nodePath.isEmpty()) {
             nodePath = System.getenv("NODE_PATH");
@@ -74,6 +75,6 @@ public class NpmRepositoryBuilder implements RepositoryBuilder {
         }
 
         FileContentStore cs = new FileContentStore(new File(nodePath));
-        return new NpmRepository(cs.createRoot());
+        return new NpmRepository(cs.createRoot(), log);
     }
 }
