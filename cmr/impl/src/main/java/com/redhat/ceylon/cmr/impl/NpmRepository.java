@@ -10,13 +10,12 @@ import java.util.Map;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.resolver.javascript.JavaScriptResolver;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.RepositoryException;
-
-import net.minidev.json.JSONValue;
 
 public class NpmRepository extends AbstractRepository {
 
@@ -54,8 +53,7 @@ public class NpmRepository extends AbstractRepository {
                 pb.start().waitFor();
                 kid = getRoot().addNode(name);
             } catch (InterruptedException | IOException ex) {
-                System.out.println("npm died or something");
-                ex.printStackTrace();
+                throw new RepositoryException("Error running NPM installer", ex);
             }
         }
         return Collections.singletonList(name);
@@ -70,8 +68,7 @@ public class NpmRepository extends AbstractRepository {
             if (json.exists() && json.isFile() && json.canRead()) {
                 //Parse json, get "main", that's the file we need
                 try (FileReader reader = new FileReader(json)){
-                    @SuppressWarnings("unchecked")
-                    Map<String,Object> descriptor = (Map<String,Object>)JSONValue.parse(reader);
+                    Map<String,Object> descriptor = JavaScriptResolver.readNpmDescriptor(json);
                     Object main = descriptor.get("main");
                     if (main instanceof String) {
                         File mainFile = new File(dir, (String)main);
@@ -81,12 +78,12 @@ public class NpmRepository extends AbstractRepository {
                             return new String[]{ mainFile.getName() };
                         }
                     } else {
-                        System.out.println("WTF 'main' is " + main);
+                        throw new RepositoryException("Unexpected value for 'main' in NPM descriptor " + json);
                     }
                 }
             }
         } catch (IOException ex) {
-            System.out.println("Trying to read package.json");
+            throw new RepositoryException("Error reading NPM descriptor", ex);
         }
         return new String[0];
     }
