@@ -36,6 +36,7 @@ public abstract class Declaration
     private static final int PROTECTED = 1<<8;
     private static final int PACKAGE = 1<<9;
     private static final int STATIC = 1<<10;
+    private static final int DROPPED = 1<<30;
     
 	private String name;
 	protected int flags;
@@ -212,6 +213,23 @@ public abstract class Declaration
     
     public void setNativeBackends(Backends backends) {
     	this.nativeBackends=backends;
+    }
+    
+    /** 
+     * true if the JVM backend has not emitted code for this declaration
+     * due to an error in this declaration
+     */
+    public boolean isDropped() {
+        return (flags&DROPPED)!=0;
+    }
+    
+    public void setDropped(boolean dropped) {
+        if (dropped) {
+            flags|=DROPPED;
+        }
+        else {
+            flags&=(~DROPPED);
+        }
     }
 
     public Backends getScopedBackends() {
