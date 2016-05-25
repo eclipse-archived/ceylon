@@ -295,31 +295,35 @@ public class Operators {
     }
 
     static void notEqual(Tree.NotEqualOp that, GenerateJsVisitor gen) {
-        if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
-            //Try to use equals() if it exists
-            String ltmp = gen.getNames().createTempVariable();
-            String rtmp = gen.getNames().createTempVariable();
-            gen.out("(", ltmp, "=");
-            gen.box(that.getLeftTerm());
-            gen.out(",", rtmp, "=");
-            gen.box(that.getRightTerm());
-            gen.out(",(", gen.getClAlias(), "nn$(", ltmp,")&&", ltmp, ".equals&&!",
-                    ltmp, ".equals(", rtmp, "))||", ltmp, "!==", rtmp, ")");
-        } else {
-            final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
-            simpleBinaryOp(that, usenat?"!((":"(!", usenat?")==(":".equals(", usenat?"))":"))", gen);
-        }
+        gen.out("!");
+        builtInBinaryOp(that, "$eq$", gen);
     }
 
     static void equal(Tree.EqualOp that, GenerateJsVisitor gen) {
         if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             //Try to use equals() if it exists
-            nativeBinaryOp(that, "equals", "===", null, gen);
+            builtInBinaryOp(that, "$eq$", gen);
         } else {
             final boolean usenat = gen.canUseNativeComparator(that.getLeftTerm(), that.getRightTerm());
-            simpleBinaryOp(that, usenat?"((":null, usenat?")==(":".equals(",
-                    usenat?"))":")", gen);
+            if (usenat) {
+                gen.out("(");
+                that.getLeftTerm().visit(gen);
+                gen.out("==");
+                that.getRightTerm().visit(gen);
+                gen.out(")");
+            } else {
+                builtInBinaryOp(that, "$eq$", gen);
+            }
         }
+    }
+
+    static void builtInBinaryOp(final Tree.BinaryOperatorExpression that, final String builtInOp,
+            final GenerateJsVisitor gen) {
+        gen.out(gen.getClAlias(), builtInOp, "(");
+        gen.box(that.getLeftTerm());
+        gen.out(",");
+        gen.box(that.getRightTerm());
+        gen.out(")");
     }
 
     static void nativeBinaryOp(final Tree.BinaryOperatorExpression that,

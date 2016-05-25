@@ -3144,8 +3144,9 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     public void visit(final Tree.InOp that) {
+        out(getClAlias(), "$cnt$(");
         box(that.getRightTerm());
-        out(".contains(");
+        out(",");
         if (!isNaturalLiteral(that.getLeftTerm())) {
             box(that.getLeftTerm());
         }
