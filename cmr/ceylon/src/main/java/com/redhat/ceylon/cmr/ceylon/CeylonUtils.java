@@ -13,6 +13,7 @@ import java.util.List;
 import com.redhat.ceylon.cmr.api.ArtifactCreator;
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.Overrides;
+import com.redhat.ceylon.cmr.api.RepositoryBuilder.RepositoryBuilderConfig;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
@@ -572,7 +573,8 @@ public class CeylonUtils {
                 try {
                     String path = builder.repositoryBuilder().absolute(cwd, repoInfo.getUrl());
                     if(!avoidRepository(path)){
-                        CmrRepository repo = builder.repositoryBuilder().buildRepository(path);
+                        RepositoryBuilderConfig cfg = new RepositoryBuilderConfig(log, isOffline(config), getTimeout(config), getProxy(config));
+                        CmrRepository repo = builder.repositoryBuilder().buildRepository(path, cfg);
                         builder.addRepository(repo);
                     }
                 } catch (Exception e) {
@@ -593,7 +595,8 @@ public class CeylonUtils {
                 }
                 String path = builder.repositoryBuilder().absolute(cwd, repoUrl);
                 if(!avoidRepository(path)){
-                    CmrRepository repo = builder.repositoryBuilder().buildRepository(path);
+                    RepositoryBuilderConfig cfg = new RepositoryBuilderConfig(log, isOffline(config), getTimeout(config), getProxy(config));
+                    CmrRepository repo = builder.repositoryBuilder().buildRepository(path, cfg);
                     builder.addRepository(repo);
                 }
             } catch (Exception e) {
