@@ -1070,5 +1070,11 @@ public class RecoveryTests extends CompilerTests {
         assertNotNull(moduleClass);
         car.close();
     }
+    
+    @Test
+    public void bug6077() {
+        assertErrors("Bug6077",
+                new CompilerError(22, "actual member does not refine any inherited member: 'n' in 'Bug6077'"));
+    }
 
 }
