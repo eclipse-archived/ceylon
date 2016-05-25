@@ -86,7 +86,7 @@ function $init$tpl$(){
       }
       tuple.iterator.$crtmm$=Tuple.$$.prototype.iterator.$crtmm$;
       //That stupid last "||false" is needed otherwise this returns undefined
-      tuple.contains=function(i) { return this.elem$.contains(i) || (this.sp$&&this.sp$.contains(i)) || false; }
+      tuple.contains=function(i) { return $arr$cnt(this.elem$,i) || (this.sp$&&this.sp$.contains(i)) || false; }
       tuple.contains.$crtmm$=Tuple.$$.prototype.contains.$crtmm$;
       tuple.count=function(f){
         var c=0;
@@ -243,7 +243,7 @@ function $init$tpl$(){
           var ni=oi.next();
           var nt=ot.next();
           while (ni!==finished()) {
-            if (!ni.equals(nt))return false;
+            if (!$eq$(ni,nt))return false;
             ni=oi.next();
             nt=ot.next();
           }
