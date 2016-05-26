@@ -4354,7 +4354,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                         make().TypeApply(make().QualIdent(syms().ceylonAbstractIterableType.tsym),
                                 List.of(makeJavaType(resultElementType, JT_TYPE_ARGUMENT), makeJavaType(resultAbsentType, JT_TYPE_ARGUMENT))),
                         List.of(makeReifiedTypeArgument(resultElementType), makeReifiedTypeArgument(resultAbsentType)), 
-                        make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(iteratorMdb.build())));
+                        make().AnonymousClassDef(make().Modifiers(0), List.<JCTree>of(iteratorMdb.build(), 
+                                makeWriteReplaceStreamMeterializer().build())));
             } finally {
                 expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
             }
@@ -6115,7 +6116,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 List.<JCExpression>of(makeReifiedTypeArgument(iteratedType), 
                                         makeReifiedTypeArgument(absentIterType)), 
                     make().AnonymousClassDef(make().Modifiers(0), 
-                            List.<JCTree>of(getIterator)));
+                            List.<JCTree>of(getIterator, makeWriteReplaceStreamMeterializer().build())));
             return iterable;
         }
 
