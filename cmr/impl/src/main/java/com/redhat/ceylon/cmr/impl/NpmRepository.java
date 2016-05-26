@@ -45,7 +45,7 @@ public class NpmRepository extends AbstractRepository {
                 final File parent = getRoot().getContent(File.class).getParentFile();
                 if (log != null) log.debug("Installing NPM module " + name + "@" + context.getVersion() + " in " + parent);
                 ProcessBuilder pb = new ProcessBuilder()
-                        .command("/usr/local/bin/npm", "install", name + "@" + context.getVersion())
+                        .command("npm", "install", "-q", name + "@" + context.getVersion())
                         .directory(parent)
                         .inheritIO();
                 
