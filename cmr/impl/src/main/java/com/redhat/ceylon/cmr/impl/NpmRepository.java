@@ -118,7 +118,6 @@ public class NpmRepository extends AbstractRepository {
         private NpmArtifactResult(CmrRepository repository, RepositoryManager manager, String name, String version, Node node) {
             super(repository, name, version);
             this.node = node;
-            System.out.println("NPM artifact " + repository + ", " + name + " , " + version + ": " + node);
         }
 
         @Override
