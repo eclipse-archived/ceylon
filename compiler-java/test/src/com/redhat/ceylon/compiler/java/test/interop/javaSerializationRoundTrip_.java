@@ -23,16 +23,16 @@ public class javaSerializationRoundTrip_ {
         Class cls = Class.forName("com.redhat.ceylon.compiler.java.test.interop.javaSerialization_");
         Method meth = cls.getMethod("javaSerialization");
         final Object o = meth.invoke(null);
-        System.err.println(o);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(os);
         oos.writeObject(o);
         oos.close();
+        System.err.println("wrote: "+o);
         
         ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
         ObjectInputStream ois = new ObjectInputStream(is);
         final Object read = ois.readObject();
-        System.err.println(read);
+        System.err.println("read: " +read);
         cls = Class.forName("com.redhat.ceylon.compiler.java.test.interop.javaSerializationCompare_");
         meth = cls.getMethod("javaSerializationCompare", Object.class, Object.class);
         meth.invoke(null, o, read);
