@@ -52,6 +52,10 @@ public class Bug2164 implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
     }
     public static final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Bug2164.a_ a_ = null;
@@ -111,6 +115,10 @@ public class Bug2164 implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         };
     }

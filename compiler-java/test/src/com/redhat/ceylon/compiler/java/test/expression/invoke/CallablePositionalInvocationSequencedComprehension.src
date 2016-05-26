@@ -25,6 +25,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                                 
                                 }
                             }
+                            
+                            .java.lang.Object writeReplace() {
+                                return sequence();
+                            }
                         }.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -49,6 +53,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence());
         foo.$callvariadic$(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
@@ -81,6 +89,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.sequence());
         bar.$callvariadic$(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -99,6 +111,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                                     return null;
                                 
                                 }
+                            }
+                            
+                            .java.lang.Object writeReplace() {
+                                return sequence();
                             }
                         }.iterator();
                     }
@@ -124,6 +140,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence());
         bar.$callvariadic$(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
@@ -156,6 +176,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.sequence());
         final .ceylon.language.Callable<? extends .java.lang.Object> mCallableFoo = foo;
         mCallableFoo.$callvariadic$(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
@@ -175,6 +199,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                                     return null;
                                 
                                 }
+                            }
+                            
+                            .java.lang.Object writeReplace() {
+                                return sequence();
                             }
                         }.iterator();
                     }
@@ -200,6 +228,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence());
         mCallableFoo.$callvariadic$(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
@@ -232,6 +264,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.sequence());
         final .ceylon.language.Callable<? extends .java.lang.Object> mCallableBar = bar;
         mCallableBar.$callvariadic$(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
@@ -251,6 +287,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                                     return null;
                                 
                                 }
+                            }
+                            
+                            .java.lang.Object writeReplace() {
+                                return sequence();
                             }
                         }.iterator();
                     }
@@ -276,6 +316,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence());
         mCallableBar.$callvariadic$(.ceylon.language.String.instance("a"), new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
@@ -307,6 +351,10 @@ final class callablePositionalInvocationSequencedComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence());
     }

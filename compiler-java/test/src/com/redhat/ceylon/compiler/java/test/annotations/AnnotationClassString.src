@@ -236,6 +236,10 @@ final class AnnotationClassStringIterableDefaulted implements .com.redhat.ceylon
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
     }
     

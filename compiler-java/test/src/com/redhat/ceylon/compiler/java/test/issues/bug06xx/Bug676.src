@@ -29,6 +29,10 @@ final class bug676_ {
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }).getLast()) != null) {
             final long l$2 = l$1.longValue();
         }

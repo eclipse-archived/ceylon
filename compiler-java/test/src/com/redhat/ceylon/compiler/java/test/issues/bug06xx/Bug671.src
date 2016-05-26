@@ -23,6 +23,10 @@ public final class bug671_ {
                         
                         }
                     }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
+                    }
                 };
             }
             returning new .ceylon.language.Array<.ceylon.language.Integer>(arg$0$reified$0, arg$0$0);

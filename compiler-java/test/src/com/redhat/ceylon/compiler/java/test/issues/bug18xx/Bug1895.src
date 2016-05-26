@@ -22,6 +22,10 @@ final class bug1895_ {
                         
                         }
                     }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
+                    }
                 };
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
@@ -41,6 +45,10 @@ final class bug1895_ {
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         );
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> ignore2 = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
@@ -58,6 +66,10 @@ final class bug1895_ {
                             return null;
                         
                         }
+                    }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
                     }
                 };
                 final .ceylon.language.Integer spread$1$arg$0 = .ceylon.language.Integer.instance(1L);
@@ -78,6 +90,10 @@ final class bug1895_ {
                             return spread$1$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );

@@ -47,6 +47,10 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         });
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
@@ -89,6 +93,10 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         });
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
@@ -130,6 +138,10 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         });
     }
@@ -180,6 +192,10 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         });
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
@@ -226,6 +242,10 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         });
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
@@ -271,6 +291,10 @@ class ForIfIsIntersection implements .com.redhat.ceylon.compiler.java.runtime.mo
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         });
     }

@@ -75,6 +75,10 @@ final class spreadMethodReference_ {
                                 }
                             };
                         }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
+                        }
                     }.sequence();
                 }
             };
@@ -105,6 +109,10 @@ final class spreadMethodReference_ {
                                     return spread$7$element$;
                                 }
                             };
+                        }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
                         }
                     }.sequence();
                 }
@@ -137,6 +145,10 @@ final class spreadMethodReference_ {
                                 }
                             };
                         }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
+                        }
                     }.sequence();
                 );
             }
@@ -161,6 +173,10 @@ final class spreadMethodReference_ {
                                     return spread$10$element$;
                                 }
                             };
+                        }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
                         }
                     }.sequence();
                 }

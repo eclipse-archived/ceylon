@@ -55,6 +55,10 @@ class ForIfExistsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.sequence();
     }
     

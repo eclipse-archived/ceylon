@@ -52,35 +52,10 @@ final class bug6143_ {
                     }
                 };
             }
-        }.sequence();
-        sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
-            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
-                    {
-                        $iterator$0 = jlist.iterator();
-                    }
-                    private final .java.util.Iterator<.ceylon.language.String> $iterator$0;
-                    private .ceylon.language.String element;
-                    private boolean element$exhausted$;
-                    
-                    private final boolean element() {
-                        element$exhausted$ = !$iterator$0.hasNext();
-                        if (element$exhausted$) {
-                            return false;
-                        } else {
-                            element = .com.redhat.ceylon.compiler.java.Util.checkNull($iterator$0.next());
-                            return true;
-                        }
-                    }
-                    
-                    public final .java.lang.Object next() {
-                        if (this.element()) {
-                            final .ceylon.language.String element = this.element;
-                            return .ceylon.language.String.instance(element.toString() + "");
-                        } else return .ceylon.language.finished_.get_();
-                    }
-                };
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence();
         sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
@@ -111,6 +86,46 @@ final class bug6143_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
+        }.sequence();
+        sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                    {
+                        $iterator$0 = jlist.iterator();
+                    }
+                    private final .java.util.Iterator<.ceylon.language.String> $iterator$0;
+                    private .ceylon.language.String element;
+                    private boolean element$exhausted$;
+                    
+                    private final boolean element() {
+                        element$exhausted$ = !$iterator$0.hasNext();
+                        if (element$exhausted$) {
+                            return false;
+                        } else {
+                            element = .com.redhat.ceylon.compiler.java.Util.checkNull($iterator$0.next());
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.element()) {
+                            final .ceylon.language.String element = this.element;
+                            return .ceylon.language.String.instance(element.toString() + "");
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence();
         final .ceylon.language.String[] jarray = new .ceylon.language.String[1];
@@ -160,36 +175,10 @@ final class bug6143_ {
                     }
                 };
             }
-        }.sequence();
-        sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
-            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
-                    {
-                        $iterator$0 = 0;
-                    }
-                    private int $iterator$0;
-                    private final .ceylon.language.String[] $array$0 = jarray;
-                    private .java.lang.String element;
-                    private boolean element$exhausted$;
-                    
-                    private final boolean element() {
-                        element$exhausted$ = $iterator$0 >= $array$0.length;
-                        if (element$exhausted$) {
-                            return false;
-                        } else {
-                            element = .com.redhat.ceylon.compiler.java.Util.checkNull($array$0[$iterator$0++]).toString();
-                            return true;
-                        }
-                    }
-                    
-                    public final .java.lang.Object next() {
-                        if (this.element()) {
-                            final .java.lang.String element = this.element;
-                            return .ceylon.language.String.instance(element + "");
-                        } else return .ceylon.language.finished_.get_();
-                    }
-                };
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence();
         sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
@@ -221,6 +210,47 @@ final class bug6143_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
+        }.sequence();
+        sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
+                    {
+                        $iterator$0 = 0;
+                    }
+                    private int $iterator$0;
+                    private final .ceylon.language.String[] $array$0 = jarray;
+                    private .java.lang.String element;
+                    private boolean element$exhausted$;
+                    
+                    private final boolean element() {
+                        element$exhausted$ = $iterator$0 >= $array$0.length;
+                        if (element$exhausted$) {
+                            return false;
+                        } else {
+                            element = .com.redhat.ceylon.compiler.java.Util.checkNull($array$0[$iterator$0++]).toString();
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.element()) {
+                            final .java.lang.String element = this.element;
+                            return .ceylon.language.String.instance(element + "");
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence();
         final int[] jintarray = new int[1];
@@ -270,36 +300,10 @@ final class bug6143_ {
                     }
                 };
             }
-        }.sequence();
-        sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
-            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                    {
-                        $iterator$0 = 0;
-                    }
-                    private int $iterator$0;
-                    private final int[] $array$0 = jintarray;
-                    private long element;
-                    private boolean element$exhausted$;
-                    
-                    private final boolean element() {
-                        element$exhausted$ = $iterator$0 >= $array$0.length;
-                        if (element$exhausted$) {
-                            return false;
-                        } else {
-                            element = $array$0[$iterator$0++];
-                            return true;
-                        }
-                    }
-                    
-                    public final .java.lang.Object next() {
-                        if (this.element()) {
-                            final long element = this.element;
-                            return .ceylon.language.Integer.instance(element + 1L);
-                        } else return .ceylon.language.finished_.get_();
-                    }
-                };
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence();
         sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
@@ -331,6 +335,47 @@ final class bug6143_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
+        }.sequence();
+        sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = 0;
+                    }
+                    private int $iterator$0;
+                    private final int[] $array$0 = jintarray;
+                    private long element;
+                    private boolean element$exhausted$;
+                    
+                    private final boolean element() {
+                        element$exhausted$ = $iterator$0 >= $array$0.length;
+                        if (element$exhausted$) {
+                            return false;
+                        } else {
+                            element = $array$0[$iterator$0++];
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.element()) {
+                            final long element = this.element;
+                            return .ceylon.language.Integer.instance(element + 1L);
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence();
     }

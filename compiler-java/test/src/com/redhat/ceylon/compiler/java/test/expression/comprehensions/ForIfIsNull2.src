@@ -47,6 +47,10 @@ class ForIfIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         });
     }
     

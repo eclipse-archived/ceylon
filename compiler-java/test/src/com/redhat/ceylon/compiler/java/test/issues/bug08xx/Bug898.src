@@ -21,6 +21,10 @@ public final class bug898_ {
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
         final .ceylon.language.Iterable<? extends .ceylon.language.Empty, ? extends .java.lang.Object> barInferred = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Empty, .java.lang.Object>(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
             
@@ -34,6 +38,10 @@ public final class bug898_ {
                     return null;
                 
                 }
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         };
         final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, ? extends .java.lang.Object> geeForced = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
@@ -55,12 +63,20 @@ public final class bug898_ {
                             
                             }
                         }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
+                        }
                     };
                 
                 default: 
                     return null;
                 
                 }
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         };
         final .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, ? extends .java.lang.Object> geeInferred = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
@@ -82,12 +98,20 @@ public final class bug898_ {
                             
                             }
                         }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
+                        }
                     };
                 
                 default: 
                     return null;
                 
                 }
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         };
     }

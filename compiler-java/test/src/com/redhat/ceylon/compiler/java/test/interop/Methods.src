@@ -226,6 +226,10 @@ final class variadicMethods_ {
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
         java.variadicJavaString(.com.redhat.ceylon.compiler.java.Util.toJavaStringArray(vals.sequence()));
         java.variadicCeylonString(.ceylon.language.String.instance("a"), box.<.ceylon.language.String>box(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("b")), .ceylon.language.String.instance("c"));
@@ -378,6 +382,10 @@ final class variadicMethods_ {
                             }
                         };
                     }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
+                    }
                 }.sequence();
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object>toArray($ceylontmp$17$0, new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$17$0.getSize())]);
@@ -411,6 +419,10 @@ final class variadicMethods_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence()));
     }
@@ -507,6 +519,10 @@ final class comprehensions_ {
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.sequence()));
         java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -537,6 +553,10 @@ final class comprehensions_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence(), 1.0));
         java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
@@ -569,6 +589,10 @@ final class comprehensions_ {
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.sequence()));
         java.variadicFloat(.com.redhat.ceylon.compiler.java.Util.toFloatArray((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -600,6 +624,10 @@ final class comprehensions_ {
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.sequence(), 1.0));
     }
 }
@@ -630,6 +658,10 @@ final class moreOverloads_ {
                             return null;
                         
                         }
+                    }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
                     }
                 }.sequence();
             }

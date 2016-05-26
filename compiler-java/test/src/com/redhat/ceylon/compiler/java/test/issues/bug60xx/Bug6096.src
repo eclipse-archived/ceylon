@@ -41,6 +41,11 @@ final class bug6096_ {
                 
                 }
             }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         })).doubleValue();
         final double z = 1L * ((.ceylon.language.Float)(
             let
@@ -59,6 +64,11 @@ final class bug6096_ {
                             return null;
                         
                         }
+                    }
+                    
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    .java.lang.Object writeReplace() {
+                        return sequence();
                     }
                 };
             }
@@ -81,6 +91,11 @@ final class bug6096_ {
                             return null;
                         
                         }
+                    }
+                    
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    .java.lang.Object writeReplace() {
+                        return sequence();
                     }
                 };
             }

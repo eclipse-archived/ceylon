@@ -40,6 +40,10 @@ final class bug1652_ {
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
         .java.lang.Object elem$4;
         .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$5 = v3.iterator();
@@ -62,6 +66,10 @@ final class bug1652_ {
                     return null;
                 
                 }
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         };
         .java.lang.Object elem$6;

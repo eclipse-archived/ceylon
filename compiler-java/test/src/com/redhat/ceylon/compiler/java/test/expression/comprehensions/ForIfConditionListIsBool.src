@@ -53,6 +53,10 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.sequence();
     }
     
@@ -103,6 +107,10 @@ class ForIfConditionListIsBool implements .com.redhat.ceylon.compiler.java.runti
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence();
     }

@@ -199,6 +199,10 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         );
         (
@@ -232,6 +236,10 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         );
         (
@@ -263,6 +271,10 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                             return spread$31$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );
@@ -296,6 +308,10 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         );
         (
@@ -328,6 +344,10 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         );
         (
@@ -359,6 +379,10 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                             return spread$34$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );
@@ -395,6 +419,10 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         );
         (
@@ -429,6 +457,10 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                             return spread$38$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );
@@ -466,6 +498,10 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         );
         (
@@ -501,6 +537,10 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                             return spread$42$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );
@@ -566,6 +606,10 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         );
         (
@@ -596,6 +640,10 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
                             return spread$46$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );

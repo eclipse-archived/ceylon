@@ -617,6 +617,10 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         );
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spreadMemberOnThis = (
@@ -641,6 +645,10 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         );
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spreadMemberOnSuper = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
@@ -660,6 +668,10 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.sequence();
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spreadMemberOnSuperOf = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
@@ -677,6 +689,10 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                         return spread$9$element$;
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence();
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> intSequence = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
@@ -701,6 +717,10 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                             return spread$10$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );
@@ -727,6 +747,10 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                             return spread$11$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );
@@ -759,6 +783,10 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         );
         spreadInvoke = (
@@ -783,6 +811,10 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                             return spread$14$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );
@@ -815,6 +847,10 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         );
         spreadInvoke = (
@@ -838,6 +874,10 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                             return spread$17$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );
@@ -865,6 +905,10 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.sequence();
         spreadInvoke = (
             let
@@ -887,6 +931,10 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                             return spread$20$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );
@@ -914,6 +962,10 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.sequence();
         final .ceylon.language.Sequential<? extends .ceylon.language.String> empty = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
         final .ceylon.language.Sequential<? extends .ceylon.language.String> upperCasedEmpty = (
@@ -937,6 +989,10 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                             return spread$23$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );

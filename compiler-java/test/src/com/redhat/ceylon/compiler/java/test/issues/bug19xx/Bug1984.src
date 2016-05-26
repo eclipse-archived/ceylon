@@ -52,6 +52,10 @@ class Bug1984 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.sequence();
     }
     

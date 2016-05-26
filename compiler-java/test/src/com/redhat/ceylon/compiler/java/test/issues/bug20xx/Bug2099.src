@@ -50,6 +50,10 @@ class Bug2099_C implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
     }
     
@@ -75,6 +79,10 @@ class Bug2099_C implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                     return null;
                 
                 }
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         };
     }
@@ -116,6 +124,10 @@ class Bug2099_D implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                         
                         }
                     }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
+                    }
                 };
             }
         }
@@ -146,6 +158,10 @@ class Bug2099_D implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                             return null;
                         
                         }
+                    }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
                     }
                 };
             }
@@ -178,6 +194,10 @@ class Bug2099_D implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
                             return null;
                         
                         }
+                    }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
                     }
                 };
             }

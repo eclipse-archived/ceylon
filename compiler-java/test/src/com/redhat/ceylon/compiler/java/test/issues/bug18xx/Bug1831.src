@@ -46,6 +46,10 @@ final class f_ {
                                 }
                             };
                         }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
+                        }
                     }.sequence();
                 );
             }
@@ -65,6 +69,10 @@ final class f_ {
                             return spread$0$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );
@@ -93,6 +101,10 @@ final class f_ {
                                 }
                             };
                         }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
+                        }
                     }.sequence();
                 );
             }
@@ -112,6 +124,10 @@ final class f_ {
                             return spread$2$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );
@@ -143,6 +159,10 @@ final class f_ {
                                         }
                                     };
                                 }
+                                
+                                .java.lang.Object writeReplace() {
+                                    return sequence();
+                                }
                             }.sequence();
                         );
                         final long spread$5$arg$0 = 1L;
@@ -164,6 +184,10 @@ final class f_ {
                                 }
                             };
                         }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
+                        }
                     }.sequence();
                 );
             }
@@ -183,6 +207,10 @@ final class f_ {
                             return spread$4$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );

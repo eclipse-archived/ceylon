@@ -73,6 +73,10 @@ final class existsCond_ {
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         });
     }
 }

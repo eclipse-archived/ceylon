@@ -41,6 +41,10 @@ class Bug919 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                                         
                                         }
                                     }
+                                    
+                                    .java.lang.Object writeReplace() {
+                                        return sequence();
+                                    }
                                 };
                             
                             case 1: 
@@ -59,6 +63,10 @@ class Bug919 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                                             return null;
                                         
                                         }
+                                    }
+                                    
+                                    .java.lang.Object writeReplace() {
+                                        return sequence();
                                     }
                                 };
                             
@@ -82,12 +90,20 @@ class Bug919 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                                         
                                         }
                                     }
+                                    
+                                    .java.lang.Object writeReplace() {
+                                        return sequence();
+                                    }
                                 };
                             
                             default: 
                                 return null;
                             
                             }
+                        }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
                         }
                     };
                 
@@ -117,6 +133,10 @@ class Bug919 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                                         
                                         }
                                     }
+                                    
+                                    .java.lang.Object writeReplace() {
+                                        return sequence();
+                                    }
                                 };
                             
                             case 1: 
@@ -135,6 +155,10 @@ class Bug919 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                                             return null;
                                         
                                         }
+                                    }
+                                    
+                                    .java.lang.Object writeReplace() {
+                                        return sequence();
                                     }
                                 };
                             
@@ -158,12 +182,20 @@ class Bug919 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                                         
                                         }
                                     }
+                                    
+                                    .java.lang.Object writeReplace() {
+                                        return sequence();
+                                    }
                                 };
                             
                             default: 
                                 return null;
                             
                             }
+                        }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
                         }
                     };
                 
@@ -174,6 +206,10 @@ class Bug919 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                     return null;
                 
                 }
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         };
         final .ceylon.language.Sequence t4 = new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$)), .ceylon.language.empty_.get_(), new .ceylon.language.Tuple<.ceylon.language.Sequence<? extends .ceylon.language.String>, .ceylon.language.Sequence<? extends .ceylon.language.String>, .ceylon.language.Sequential<? extends .ceylon.language.Sequence<? extends .ceylon.language.String>>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, new .ceylon.language.Tuple<.ceylon.language.String, .ceylon.language.String, .ceylon.language.Sequential<? extends .ceylon.language.String>>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.String.instance("c"), (.ceylon.language.Sequential).ceylon.language.empty_.get_()), (.ceylon.language.Sequential).ceylon.language.empty_.get_()));
@@ -211,6 +247,10 @@ public final class bug919_2_ {
                             
                             }
                         }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
+                        }
                     };
                 
                 case 1: 
@@ -220,6 +260,10 @@ public final class bug919_2_ {
                     return null;
                 
                 }
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         });
         .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug919_3_.bug919_3((.ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)new .ceylon.language.Tuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Empty.$TypeDescriptor$), new .ceylon.language.Tuple<.ceylon.language.Empty, .ceylon.language.Empty, .ceylon.language.Sequential<? extends .ceylon.language.Empty>>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.empty_.get_(), (.ceylon.language.Sequential).ceylon.language.empty_.get_()), new .ceylon.language.Tuple<.ceylon.language.Empty, .ceylon.language.Empty, .ceylon.language.Sequential<? extends .ceylon.language.Empty>>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.empty_.get_(), (.ceylon.language.Sequential).ceylon.language.empty_.get_())));
@@ -254,6 +298,10 @@ public final class bug919_2_ {
                                         
                                         }
                                     }
+                                    
+                                    .java.lang.Object writeReplace() {
+                                        return sequence();
+                                    }
                                 };
                             
                             case 1: 
@@ -272,6 +320,10 @@ public final class bug919_2_ {
                                             return null;
                                         
                                         }
+                                    }
+                                    
+                                    .java.lang.Object writeReplace() {
+                                        return sequence();
                                     }
                                 };
                             
@@ -295,12 +347,20 @@ public final class bug919_2_ {
                                         
                                         }
                                     }
+                                    
+                                    .java.lang.Object writeReplace() {
+                                        return sequence();
+                                    }
                                 };
                             
                             default: 
                                 return null;
                             
                             }
+                        }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
                         }
                     };
                 
@@ -330,6 +390,10 @@ public final class bug919_2_ {
                                         
                                         }
                                     }
+                                    
+                                    .java.lang.Object writeReplace() {
+                                        return sequence();
+                                    }
                                 };
                             
                             case 1: 
@@ -348,6 +412,10 @@ public final class bug919_2_ {
                                             return null;
                                         
                                         }
+                                    }
+                                    
+                                    .java.lang.Object writeReplace() {
+                                        return sequence();
                                     }
                                 };
                             
@@ -371,12 +439,20 @@ public final class bug919_2_ {
                                         
                                         }
                                     }
+                                    
+                                    .java.lang.Object writeReplace() {
+                                        return sequence();
+                                    }
                                 };
                             
                             default: 
                                 return null;
                             
                             }
+                        }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
                         }
                     };
                 
@@ -387,6 +463,10 @@ public final class bug919_2_ {
                     return null;
                 
                 }
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         });
     }

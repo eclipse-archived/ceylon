@@ -50,6 +50,10 @@ final class keywordInForLoop_ {
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.iterator();
         loop_2: while (!((elem$12 = $byte$iterator$$13.next()) instanceof .ceylon.language.Finished)) {
             final .java.lang.String $byte = ((.ceylon.language.String)elem$12).toString();
@@ -73,6 +77,10 @@ final class keywordInForLoop_ {
                     return null;
                 
                 }
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.iterator();
         loop_3: while (!((elem$14 = $byte$iterator$$15.next()) instanceof .ceylon.language.Finished)) {
@@ -98,6 +106,10 @@ final class keywordInForLoop_ {
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.iterator();
         loop_4: while (!((elem$16 = $byte$iterator$$17.next()) instanceof .ceylon.language.Finished)) {
             final long $byte = ((.ceylon.language.Integer)elem$16).longValue();
@@ -121,6 +133,10 @@ final class keywordInForLoop_ {
                     return null;
                 
                 }
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.iterator();
         loop_5: while (!((elem$18 = $byte$iterator$$19.next()) instanceof .ceylon.language.Finished)) {
@@ -151,6 +167,10 @@ final class keywordInForLoop_ {
                     return null;
                 
                 }
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.iterator();
         loop_7: while (!((elem$23 = elem$23$iterator$.next()) instanceof .ceylon.language.Finished)) {

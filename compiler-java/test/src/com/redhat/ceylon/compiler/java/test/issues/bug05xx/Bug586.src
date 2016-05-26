@@ -29,6 +29,10 @@ final class bug586_ {
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         ).getFirst();
     }

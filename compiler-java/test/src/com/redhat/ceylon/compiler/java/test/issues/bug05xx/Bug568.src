@@ -29,6 +29,10 @@ final class bug568_ {
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         );
         final boolean isTuple$4 = iterable$3 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$3).$getArray$() != null;

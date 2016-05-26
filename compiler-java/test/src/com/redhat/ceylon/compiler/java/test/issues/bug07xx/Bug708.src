@@ -933,6 +933,10 @@ final class bug708extra4_ {
                             }
                         };
                     }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
+                    }
                 }.sequence();
             );
             $initException$ = null;

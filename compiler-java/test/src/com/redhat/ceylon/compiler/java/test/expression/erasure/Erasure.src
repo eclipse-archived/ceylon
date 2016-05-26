@@ -636,6 +636,10 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         );
         .ceylon.language.Sequential spreadInvocation = null;
@@ -661,6 +665,10 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
                             return spread$42$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );
@@ -692,6 +700,10 @@ class Test implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
                             return spread$44$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );

@@ -64,6 +64,10 @@ final class comp2_ {
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
     }
 }

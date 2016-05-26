@@ -105,6 +105,10 @@ final class javaIterableInForComprehension_ {
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         });
         .com.redhat.ceylon.compiler.java.test.interop.assertSameElements_.<.java.lang.String>assertSameElements(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), jstrings, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -134,6 +138,10 @@ final class javaIterableInForComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         });
         .com.redhat.ceylon.compiler.java.test.interop.assertSameElements_.<.ceylon.language.Integer>assertSameElements(.ceylon.language.Integer.$TypeDescriptor$, ints, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
@@ -165,6 +173,10 @@ final class javaIterableInForComprehension_ {
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         });
         .com.redhat.ceylon.compiler.java.test.interop.assertSameElements_.<.java.lang.Integer>assertSameElements(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Integer.class), jints, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Integer, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Integer.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -194,6 +206,10 @@ final class javaIterableInForComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         });
         .com.redhat.ceylon.compiler.java.test.interop.assertSameElements_.<.ceylon.language.String>assertSameElements(.ceylon.language.String.$TypeDescriptor$, strings, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
@@ -225,6 +241,10 @@ final class javaIterableInForComprehension_ {
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         });
         .com.redhat.ceylon.compiler.java.test.interop.assertSameElements_.<.java.lang.String>assertSameElements(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), jstrings, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -254,6 +274,10 @@ final class javaIterableInForComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         });
         if (((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
@@ -297,6 +321,10 @@ final class javaIterableInForComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence())) {
         } else {
@@ -366,6 +394,10 @@ final class javaIterableInForComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.sequence())) {
         } else {

@@ -85,6 +85,10 @@ class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.run
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         });
     }
     

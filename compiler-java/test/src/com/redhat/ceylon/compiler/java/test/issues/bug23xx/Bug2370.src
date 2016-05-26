@@ -412,6 +412,10 @@ class Bug2370C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         );
         return null;

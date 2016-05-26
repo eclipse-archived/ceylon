@@ -30,6 +30,10 @@ final class bug568_ {
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         ).iterator();
         loop_0: while (!((elem$0 = s$iterator$$1.next()) instanceof .ceylon.language.Finished)) {

@@ -29,6 +29,10 @@ public final class bug2291_ {
                         
                         }
                     }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
+                    }
                 };
             }
         }

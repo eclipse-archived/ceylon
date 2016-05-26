@@ -28,6 +28,10 @@ final class bug1918_ {
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
         .java.lang.Object current$1;
         if ((current$1 = valList.getFirst()) != null) {

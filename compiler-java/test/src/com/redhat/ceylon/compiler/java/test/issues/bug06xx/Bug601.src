@@ -63,6 +63,10 @@ final class bug601_ {
                                     
                                     }
                                 }
+                                
+                                .java.lang.Object writeReplace() {
+                                    return sequence();
+                                }
                             };
                         
                         case 1: 
@@ -79,12 +83,20 @@ final class bug601_ {
                                     
                                     }
                                 }
+                                
+                                .java.lang.Object writeReplace() {
+                                    return sequence();
+                                }
                             };
                         
                         default: 
                             return null;
                         
                         }
+                    }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
                     }
                 };
             }
@@ -114,6 +126,10 @@ final class bug601_ {
                                     
                                     }
                                 }
+                                
+                                .java.lang.Object writeReplace() {
+                                    return sequence();
+                                }
                             };
                         
                         case 1: 
@@ -130,12 +146,20 @@ final class bug601_ {
                                     
                                     }
                                 }
+                                
+                                .java.lang.Object writeReplace() {
+                                    return sequence();
+                                }
                             };
                         
                         default: 
                             return null;
                         
                         }
+                    }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
                     }
                 };
             }
@@ -182,6 +206,10 @@ final class bug601_ {
                                         }
                                     };
                                 }
+                                
+                                .java.lang.Object writeReplace() {
+                                    return sequence();
+                                }
                             };
                         
                         case 1: 
@@ -198,12 +226,20 @@ final class bug601_ {
                                     
                                     }
                                 }
+                                
+                                .java.lang.Object writeReplace() {
+                                    return sequence();
+                                }
                             };
                         
                         default: 
                             return null;
                         
                         }
+                    }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
                     }
                 };
             }

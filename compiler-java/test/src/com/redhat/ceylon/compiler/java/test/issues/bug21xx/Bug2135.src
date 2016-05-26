@@ -103,12 +103,22 @@ public final class bug2135_ {
                                         }
                                     };
                                 }
+                                
+                                @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                                .java.lang.Object writeReplace() {
+                                    return sequence();
+                                }
                             };
                         
                         default: 
                             return null;
                         
                         }
+                    }
+                    
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    .java.lang.Object writeReplace() {
+                        return sequence();
                     }
                 };
                 .java.lang.String arg$1$1 = .ceylon.language.printAll_.printAll$separator(arg$1$0);
@@ -183,6 +193,11 @@ public final class bug2135_ {
                     }
                 };
             }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
         if (iter.sequence().equals(.ceylon.language.empty_.get_())) {
         } else {
@@ -239,6 +254,11 @@ public final class bug2135_ {
                     }
                 };
             }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
         if (iter2.sequence().equals(.ceylon.language.empty_.get_())) {
         } else {
@@ -294,6 +314,11 @@ public final class bug2135_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         };
         if (iter3.sequence().equals(.ceylon.language.empty_.get_())) {
@@ -370,6 +395,11 @@ public final class bug2135_ {
                     }
                 };
             }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
         if (iter4.sequence().equals(.ceylon.language.empty_.get_())) {
         } else {
@@ -417,6 +447,11 @@ public final class bug2135_ {
                     }
                 };
             }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
         if (iter5.sequence().equals(.ceylon.language.empty_.get_())) {
         } else {
@@ -463,6 +498,11 @@ public final class bug2135_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         };
         if (iter6.sequence().equals((.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("1")}))) {

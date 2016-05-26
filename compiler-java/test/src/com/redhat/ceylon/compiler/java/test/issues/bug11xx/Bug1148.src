@@ -56,6 +56,10 @@ public final class bug1148_ {
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
     }
     

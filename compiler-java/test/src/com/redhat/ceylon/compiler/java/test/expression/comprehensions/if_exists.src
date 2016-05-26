@@ -34,6 +34,10 @@ final class ifFor_ {
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> c2 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
@@ -74,6 +78,10 @@ final class ifFor_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         };
     }

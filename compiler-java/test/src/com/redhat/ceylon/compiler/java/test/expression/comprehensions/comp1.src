@@ -39,6 +39,10 @@ final class comp1_ {
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
             $initException$ = null;
             $init$value = true;

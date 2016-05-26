@@ -28,6 +28,10 @@ final class bug2348_ {
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         ));
         .ceylon.language.print_.print((
@@ -53,6 +57,10 @@ final class bug2348_ {
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
         ));
         .ceylon.language.print_.print((
@@ -76,6 +84,10 @@ final class bug2348_ {
                             return spread$2$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         ));
@@ -101,6 +113,10 @@ final class bug2348_ {
                             return spread$3$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         ));
@@ -133,6 +149,10 @@ final class bug2348_ {
                                             return spread$5$element$;
                                         }
                                     };
+                                }
+                                
+                                .java.lang.Object writeReplace() {
+                                    return sequence();
                                 }
                             }.sequence();
                         }

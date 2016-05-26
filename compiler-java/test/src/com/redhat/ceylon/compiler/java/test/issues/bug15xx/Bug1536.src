@@ -36,6 +36,10 @@ final class bug1536_ {
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
     }
 }

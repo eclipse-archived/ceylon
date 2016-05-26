@@ -33,6 +33,10 @@ final class bug1011_ {
                                                     
                                                     }
                                                 }
+                                                
+                                                .java.lang.Object writeReplace() {
+                                                    return sequence();
+                                                }
                                             }.iterator();
                                         }
                                         private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -58,12 +62,20 @@ final class bug1011_ {
                                         }
                                     };
                                 }
+                                
+                                .java.lang.Object writeReplace() {
+                                    return sequence();
+                                }
                             };
                         
                         default: 
                             return null;
                         
                         }
+                    }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
                     }
                 };
                 .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1011_.bug1011(arg$0$0);
@@ -199,10 +211,18 @@ final class foo_ {
                                                             }
                                                         };
                                                     }
+                                                    
+                                                    .java.lang.Object writeReplace() {
+                                                        return sequence();
+                                                    }
                                                 }.sequence()));
                                             } else return .ceylon.language.finished_.get_();
                                         }
                                     };
+                                }
+                                
+                                .java.lang.Object writeReplace() {
+                                    return sequence();
                                 }
                             };
                         
@@ -210,6 +230,10 @@ final class foo_ {
                             return null;
                         
                         }
+                    }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
                     }
                 };
             }
@@ -288,10 +312,18 @@ final class foo_ {
                                         }
                                     };
                                 }
+                                
+                                .java.lang.Object writeReplace() {
+                                    return sequence();
+                                }
                             }.sequence()));
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         });
         (
@@ -381,10 +413,18 @@ final class foo_ {
                                                             }
                                                         };
                                                     }
+                                                    
+                                                    .java.lang.Object writeReplace() {
+                                                        return sequence();
+                                                    }
                                                 }.sequence()));
                                             } else return .ceylon.language.finished_.get_();
                                         }
                                     };
+                                }
+                                
+                                .java.lang.Object writeReplace() {
+                                    return sequence();
                                 }
                             };
                         
@@ -392,6 +432,10 @@ final class foo_ {
                             return null;
                         
                         }
+                    }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
                     }
                 };
             }
@@ -479,10 +523,18 @@ final class foo_ {
                                                     }
                                                 };
                                             }
+                                            
+                                            .java.lang.Object writeReplace() {
+                                                return sequence();
+                                            }
                                         }.sequence()));
                                     } else return .ceylon.language.finished_.get_();
                                 }
                             };
+                        }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
                         }
                     };
                 
@@ -490,6 +542,10 @@ final class foo_ {
                     return null;
                 
                 }
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         });
         final .java.lang.Object v1 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Entry<? extends Item, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet<? extends Key>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key)), .ceylon.language.Null.$TypeDescriptor$){
@@ -565,10 +621,18 @@ final class foo_ {
                                         }
                                     };
                                 }
+                                
+                                .java.lang.Object writeReplace() {
+                                    return sequence();
+                                }
                             }.sequence()));
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         };
         final .java.lang.Object v2 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Set.class, $reified$Key)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, $reified$Item, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.LazySet.class, $reified$Key))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, true){
@@ -653,10 +717,18 @@ final class foo_ {
                                                     }
                                                 };
                                             }
+                                            
+                                            .java.lang.Object writeReplace() {
+                                                return sequence();
+                                            }
                                         }.sequence()));
                                     } else return .ceylon.language.finished_.get_();
                                 }
                             };
+                        }
+                        
+                        .java.lang.Object writeReplace() {
+                            return sequence();
                         }
                     };
                 
@@ -664,6 +736,10 @@ final class foo_ {
                     return null;
                 
                 }
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         };
         return (.ceylon.language.Map<? extends Item, ? extends .ceylon.language.Set<? extends Key>>)(.java.lang.Object).ceylon.language.nothing_.get_();

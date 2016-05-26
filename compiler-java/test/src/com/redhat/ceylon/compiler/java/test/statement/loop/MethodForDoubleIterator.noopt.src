@@ -26,6 +26,10 @@ class MethodForDoubleIterator implements .com.redhat.ceylon.compiler.java.runtim
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.iterator();
         loop_0: while (!((elem$0 = elem$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
             final long i = ((.ceylon.language.Integer)((.ceylon.language.Entry)elem$0).getKey()).longValue();

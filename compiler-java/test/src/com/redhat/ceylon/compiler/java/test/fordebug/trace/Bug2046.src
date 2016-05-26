@@ -36,6 +36,11 @@ public final class bug2046_ {
                         
                         }
                     }
+                    
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    .java.lang.Object writeReplace() {
+                        return sequence();
+                    }
                 };
                 .java.lang.String arg$0$1 = .ceylon.language.printAll_.printAll$separator(arg$0$0);
                 .ceylon.language.printAll_.printAll(arg$0$0, arg$0$1);

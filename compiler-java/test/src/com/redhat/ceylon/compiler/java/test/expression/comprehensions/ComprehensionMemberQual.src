@@ -34,6 +34,10 @@ class ComprehensionMemberQualClass implements .com.redhat.ceylon.compiler.java.r
                                 
                                 }
                             }
+                            
+                            .java.lang.Object writeReplace() {
+                                return sequence();
+                            }
                         }.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -58,6 +62,10 @@ class ComprehensionMemberQualClass implements .com.redhat.ceylon.compiler.java.r
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         };
     }
@@ -100,6 +108,10 @@ class ComprehensionMemberQualClass implements .com.redhat.ceylon.compiler.java.r
                                     
                                     }
                                 }
+                                
+                                .java.lang.Object writeReplace() {
+                                    return sequence();
+                                }
                             }.iterator();
                         }
                         private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -124,6 +136,10 @@ class ComprehensionMemberQualClass implements .com.redhat.ceylon.compiler.java.r
                             } else return .ceylon.language.finished_.get_();
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             };
         }
@@ -175,6 +191,10 @@ final class ComprehensionMemberQualInterfaceFormal$impl implements .java.io.Seri
                                 
                                 }
                             }
+                            
+                            .java.lang.Object writeReplace() {
+                                return sequence();
+                            }
                         }.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -199,6 +219,10 @@ final class ComprehensionMemberQualInterfaceFormal$impl implements .java.io.Seri
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         };
     }
@@ -242,6 +266,10 @@ final class ComprehensionMemberQualInterfaceNonshared$impl implements .java.io.S
                                 
                                 }
                             }
+                            
+                            .java.lang.Object writeReplace() {
+                                return sequence();
+                            }
                         }.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -266,6 +294,10 @@ final class ComprehensionMemberQualInterfaceNonshared$impl implements .java.io.S
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         };
     }
@@ -311,6 +343,10 @@ final class comprehensionMemberQualLocal_ {
                                         
                                         }
                                     }
+                                    
+                                    .java.lang.Object writeReplace() {
+                                        return sequence();
+                                    }
                                 }.iterator();
                             }
                             private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -335,6 +371,10 @@ final class comprehensionMemberQualLocal_ {
                                 } else return .ceylon.language.finished_.get_();
                             }
                         };
+                    }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
                     }
                 };
             }
@@ -380,6 +420,10 @@ final class comprehensionMemberQualLocal_ {
                                         
                                         }
                                     }
+                                    
+                                    .java.lang.Object writeReplace() {
+                                        return sequence();
+                                    }
                                 }.iterator();
                             }
                             private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -404,6 +448,10 @@ final class comprehensionMemberQualLocal_ {
                                 } else return .ceylon.language.finished_.get_();
                             }
                         };
+                    }
+                    
+                    .java.lang.Object writeReplace() {
+                        return sequence();
                     }
                 };
             }

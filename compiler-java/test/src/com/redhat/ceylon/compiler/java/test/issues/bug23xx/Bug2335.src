@@ -34,6 +34,10 @@ public class Bug2335 implements .com.redhat.ceylon.compiler.java.runtime.model.R
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         };
         final .ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D> ds = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D>)(.ceylon.language.Sequence)(
             let
@@ -56,6 +60,10 @@ public class Bug2335 implements .com.redhat.ceylon.compiler.java.runtime.model.R
                             return spread$0$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );
@@ -80,6 +88,10 @@ public class Bug2335 implements .com.redhat.ceylon.compiler.java.runtime.model.R
                             return spread$1$element$;
                         }
                     };
+                }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
                 }
             }.sequence();
         );

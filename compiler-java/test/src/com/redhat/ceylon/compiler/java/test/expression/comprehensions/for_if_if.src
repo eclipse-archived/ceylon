@@ -61,6 +61,10 @@ final class forIfIf_ {
                         }
                     };
                 }
+                
+                .java.lang.Object writeReplace() {
+                    return sequence();
+                }
             }.sequence();
             $initException$ = null;
             $init$value = true;

@@ -36,6 +36,10 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.iterator();
         loop_1: while (!((elem$3 = s$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
             final .java.lang.String s = ((.ceylon.language.String)elem$3).toString();
@@ -59,6 +63,10 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
                     return null;
                 
                 }
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.iterator();
         loop_2: while (!((elem$5 = s$iterator$$6.next()) instanceof .ceylon.language.Finished)) {
@@ -84,6 +92,10 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.iterator();
         loop_3: while (!((elem$7 = n$iterator$$8.next()) instanceof .ceylon.language.Finished)) {
             final long n = ((.ceylon.language.Integer)elem$7).longValue();
@@ -107,6 +119,10 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
                     return null;
                 
                 }
+            }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
             }
         }.iterator();
         loop_4: while (!((elem$9 = n$iterator$$10.next()) instanceof .ceylon.language.Finished)) {

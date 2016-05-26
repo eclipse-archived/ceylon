@@ -23,6 +23,10 @@ final class bug2012_ {
                 
                 }
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         }.iterator();
         loop_0: while (!((elem$0 = truth$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
             final boolean truth = ((.ceylon.language.Boolean)elem$0).booleanValue();

@@ -102,6 +102,10 @@ final class bug1165_ {
                                                             
                                                             }
                                                         }
+                                                        
+                                                        .java.lang.Object writeReplace() {
+                                                            return sequence();
+                                                        }
                                                     };
                                                 }
                                                 returning new B(arg$4$0);
@@ -114,6 +118,10 @@ final class bug1165_ {
                                             return null;
                                         
                                         }
+                                    }
+                                    
+                                    .java.lang.Object writeReplace() {
+                                        return sequence();
                                     }
                                 };
                             }

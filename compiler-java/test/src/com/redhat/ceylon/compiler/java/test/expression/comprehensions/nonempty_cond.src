@@ -57,6 +57,10 @@ final class nonemptyCond_ {
                     }
                 };
             }
+            
+            .java.lang.Object writeReplace() {
+                return sequence();
+            }
         });
     }
 }
