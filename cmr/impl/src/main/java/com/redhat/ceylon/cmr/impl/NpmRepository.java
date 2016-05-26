@@ -65,7 +65,7 @@ public class NpmRepository extends AbstractRepository {
                 }
                 kid = getRoot().addNode(name);
             } catch (InterruptedException | IOException ex) {
-                throw new RepositoryException("Error running NPM installer", ex);
+                throw new RepositoryException("Error running NPM installer (make sure 'npm' is installed and available in your PATH)", ex);
             }
         }
         return Collections.singletonList(name);
