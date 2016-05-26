@@ -43,6 +43,12 @@ public class IssuesTests_5500_5999 extends CompilerTests {
     }
 
     @Test
+    public void testBug5866() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug58xx.bug5866",
+                "bug58xx/bug5866.ceylon");
+    }
+    
+    @Test
     public void testBug5868() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug58xx.bug5868",
                 "bug58xx/bug5868.ceylon");
