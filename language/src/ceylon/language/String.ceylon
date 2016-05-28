@@ -103,7 +103,7 @@ shared native final class String(characters)
      (e.g. `tr-TR`)."
     shared native String titlecased
             => if (exists first = this[0])
-            then first.titlecased + this[1...]
+            then first.titlecased.string + this[1...]
             else "";
     
     "Split the string into tokens, using the given 
