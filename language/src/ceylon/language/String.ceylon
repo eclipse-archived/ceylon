@@ -93,6 +93,19 @@ shared native final class String(characters)
      \{LATIN SMALL LETTER SHARP S} is SS."
     shared native String uppercased;
     
+    "This string, with the first character in 
+     [[titlecase|Character.titlecased]]. For example, 
+     `\"ceylon\".titlecased` is `\"Ceylon\"`.
+     
+     Conversion of lowercase characters to titlecase is
+     performed according to a locale-independent mapping
+     that produces incorrect results in certain locales
+     (e.g. `tr-TR`)."
+    shared native String titlecased
+            => if (exists first = this[0])
+            then first.titlecased + this[1...]
+            else "";
+    
     "Split the string into tokens, using the given 
      [[predicate function|splitting]] to determine which 
      characters are separator characters.

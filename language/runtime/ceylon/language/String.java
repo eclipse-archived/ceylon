@@ -125,6 +125,17 @@ public final class String
         return instance(buf.toString());
     }
 
+    public java.lang.String getTitlecased() {
+        return getTitlecased(value);
+    }
+
+    @Ignore
+    public static java.lang.String getTitlecased(java.lang.String value) {
+        int first = value.codePointAt(0);
+        return java.lang.Character.toTitleCase(first) 
+                + value.substring(java.lang.Character.charCount(first));
+    }
+
     public java.lang.String getUppercased() {
         return getUppercased(value);
     }
