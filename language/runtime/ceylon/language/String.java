@@ -131,8 +131,10 @@ public final class String
 
     @Ignore
     public static java.lang.String getTitlecased(java.lang.String value) {
+        if (value.isEmpty()) return "";
         int first = value.codePointAt(0);
-        return java.lang.Character.toTitleCase(first) 
+        return java.lang.String.valueOf(java.lang.Character.toChars(
+                    java.lang.Character.toTitleCase(first)))
                 + value.substring(java.lang.Character.charCount(first));
     }
 
