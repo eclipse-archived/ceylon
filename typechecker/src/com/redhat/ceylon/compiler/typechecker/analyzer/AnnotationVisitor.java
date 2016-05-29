@@ -820,7 +820,8 @@ public class AnnotationVisitor extends Visitor {
         }*/
         if (dec!=null) {
             if (!dec.isAnnotation()) {
-                primary.addError("not an annotation constructor");
+                primary.addError("not an annotation constructor: '" 
+                        + dec.getName(that.getUnit()) + "'");
             }
             else {
                 checkAnnotationArguments(null, 
