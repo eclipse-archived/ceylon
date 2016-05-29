@@ -1136,6 +1136,9 @@ public class TypeVisitor extends Visitor {
     private static void inheritedType(Tree.StaticType st) {
         if (st instanceof Tree.SimpleType) {
             ((Tree.SimpleType) st).setInherited(true);
+            if (st instanceof Tree.QualifiedType) {
+                inheritedType(((Tree.QualifiedType) st).getOuterType());
+            }
         }
     }
 

@@ -52,3 +52,12 @@ void check() {
     value bar1 = `Foo<String>.bar`;
     value bar2 = `new Foo.bar`;
 }
+
+class A1<T> given T satisfies [Object+] { shared new (){} }
+class A2<T> given T satisfies [Object+] { shared new init(){} }
+
+@error class B1<T>() extends A1<T>() given T satisfies [Object*] {}
+
+@error class B2<T>() extends A2<T>.init() given T satisfies [Object*]{}
+
+
