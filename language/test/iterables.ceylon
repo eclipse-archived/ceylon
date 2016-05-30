@@ -404,15 +404,13 @@ shared void testIterables() {
     
     try {
         String string;
-        for(value ignore in {finished})
-        {
+        for(value ignore in {finished}) {
             string = "";
             break;
         }
+        fail("nonempty Iterable with initial 'finished' should have thrown");
         print(string.size);
     } catch (AssertionError e) {
-        if (e.message != "nonempty Iterable with initial 'finished' element") {
-            throw;
-        }
+        check(e.message == "nonempty Iterable with initial 'finished' element", "iterate {finished}");
     }
 }
