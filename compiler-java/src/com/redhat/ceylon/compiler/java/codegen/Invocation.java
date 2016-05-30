@@ -84,7 +84,8 @@ abstract class Invocation {
                         || primaryDeclaration.getName().equals("set"))) {
                 return false;
             } else {
-                return Decl.isValueTypeDecl(qmePrimary)
+                return ((Tree.QualifiedMemberOrTypeExpression) primary).getMemberOperator() instanceof Tree.MemberOp
+                        && Decl.isValueTypeDecl(qmePrimary)
                         && (CodegenUtil.isUnBoxed(qmePrimary) || gen.isJavaArray(qmePrimary.getTypeModel()));
             }
         } else {
