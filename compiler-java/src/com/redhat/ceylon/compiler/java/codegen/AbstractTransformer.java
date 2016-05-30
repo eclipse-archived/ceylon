@@ -3955,7 +3955,7 @@ public abstract class AbstractTransformer implements Transformation {
                                         make().Literal(list.size()),// numMethods
                                         make().Literal(spread)),// spread), 
                                         make().AnonymousClassDef(make().Modifiers(FINAL), 
-                                                List.<JCTree>of(mdb.build(), makeWriteReplaceStreamMeterializer().build())));
+                                                List.<JCTree>of(mdb.build())));
             } else {
                 // use a LazyInvokingIterable
                 ListBuffer<JCTree> methods = new ListBuffer<JCTree>();
@@ -4001,13 +4001,6 @@ public abstract class AbstractTransformer implements Transformation {
         } finally {
             expressionGen().withinSyntheticClassBody(old);
         }
-    }
-
-    protected MethodDefinitionBuilder makeWriteReplaceStreamMeterializer() {
-        MethodDefinitionBuilder wr = MethodDefinitionBuilder.systemMethod(this, "writeReplace");
-        wr.resultType(make().Type(syms().objectType), null);
-        wr.body(make().Return(make().Apply(null, makeUnquotedIdent("sequence"), List.<JCExpression>nil())));
-        return wr;
     }
 
     /**
