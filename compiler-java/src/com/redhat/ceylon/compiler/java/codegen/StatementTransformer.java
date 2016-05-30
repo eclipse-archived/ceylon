@@ -4921,7 +4921,22 @@ public class StatementTransformer extends AbstractTransformer {
                     }
                     fullGetExpr = make().Apply(null, tupleAccessExpr, List.of(idxExpr));
                     if (isVariadicVariable(p)) {
-                        fullGetExpr = make().Apply(null, makeQualIdent(fullGetExpr, "sequence"), List.<JCExpression>nil());
+                        Tree.Variable vp = ((Tree.VariablePattern)p).getVariable();
+                        Type vt = vp.getDeclarationModel().getType();
+                        Naming.SyntheticName tail = naming.alias("tail");
+                        int minLength = p.getUnit().getTupleMinimumLength(vt);
+                        if (minLength > 0) {
+                            // defend against tuples containing finished
+                            JCStatement v = makeVar(tail, makeJavaType(typeFact().getSequentialType(ot), JT_RAW), make().Apply(null, makeQualIdent(fullGetExpr, "sequence"), List.<JCExpression>nil()));
+                            JCStatement c = make().If(make().Apply(null,
+                                    naming.makeSelect(tail.makeIdent(), "shorterThan"), List.<JCExpression>of(make().Literal(minLength))),
+                                    makeThrowAssertionException(make().Literal("length of " + vp.getDeclarationModel().getName() + " is less than minimum length of its static type " + vt.asString())), 
+                                    null);
+                            fullGetExpr = make().LetExpr(List.<JCStatement>of(v, c), 
+                                    make().TypeCast(makeJavaType(vt), tail.makeIdent()));
+                        } else {
+                            fullGetExpr = make().Apply(null, makeQualIdent(fullGetExpr, "sequence"), List.<JCExpression>nil());
+                        }
                     }
                 } else {
                     fullGetExpr = null;
