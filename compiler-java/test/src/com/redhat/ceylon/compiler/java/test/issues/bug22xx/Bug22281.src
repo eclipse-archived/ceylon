@@ -112,8 +112,8 @@ final class bug2228Test_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$args$9 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                bug2228Test($reified$T, $ceylontmp$args$9);
+                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$args$10 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                bug2228Test($reified$T, $ceylontmp$args$10);
             }
             returning null;
         );
@@ -131,25 +131,25 @@ final class bug2228Test_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object[]")
     final .ceylon.language.Sequential<? extends .java.lang.Object> args) {
         .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("Testing with ").append(((.ceylon.language.meta.model.Type<? extends T>)(.ceylon.language.meta.model.Type<? extends T>).ceylon.language.meta.typeLiteral_.typeLiteral($reified$T)).toString()).toString()));
-        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$5 = args;
-        final boolean isTuple$6 = iterable$5 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$5).$getArray$() != null;
-        .java.lang.Object elem$0 = null;
-        int i$7 = 0;
-        final int length$8;
-        if (isTuple$6) {
-            length$8 = (int)iterable$5.getSize();
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$6 = args;
+        final boolean isTuple$7 = iterable$6 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$6).$getArray$() != null;
+        .java.lang.Object elem$1 = null;
+        int i$8 = 0;
+        final int length$9;
+        if (isTuple$7) {
+            length$9 = (int)iterable$6.getSize();
         } else {
-            length$8 = 0;
+            length$9 = 0;
         }
-        .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$1 = isTuple$6 ? null : iterable$5.iterator();
-        loop_0: while (isTuple$6 ? i$7 < length$8 : !((elem$0 = arg$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$6) elem$0 = iterable$5.getFromFirst(i$7++);
-            final .java.lang.Object arg = elem$0;
+        .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$2 = isTuple$7 ? null : iterable$6.iterator();
+        loop_0: while (isTuple$7 ? i$8 < length$9 : !((elem$1 = arg$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$7) elem$1 = iterable$6.getFromFirst(i$8++);
+            final .java.lang.Object arg = elem$1;
             .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append(" value ").append(arg.toString()).toString()));
-            final T arg$4;
-            .java.lang.Object arg$3 = null;
-            if (.com.redhat.ceylon.compiler.java.Util.isReified(arg$3 = arg, $reified$T)) {
-                arg$4 = (T)arg$3;
+            final T arg$5;
+            .java.lang.Object arg$4 = null;
+            if (.com.redhat.ceylon.compiler.java.Util.isReified(arg$4 = arg, $reified$T)) {
+                arg$5 = (T)arg$4;
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is T arg"));
             }

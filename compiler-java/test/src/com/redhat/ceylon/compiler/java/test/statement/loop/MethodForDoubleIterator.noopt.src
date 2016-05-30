@@ -6,8 +6,9 @@ class MethodForDoubleIterator implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     public final void m() {
-        .java.lang.Object elem$0;
-        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>> elem$0$iterator$ = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+        boolean loopentered$0 = false;
+        .java.lang.Object elem$1;
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>> elem$1$iterator$ = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.String>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
             @.java.lang.Override
             protected final .java.lang.Object $evaluate$(int $index$) {
@@ -31,12 +32,14 @@ class MethodForDoubleIterator implements .com.redhat.ceylon.compiler.java.runtim
                 return sequence();
             }
         }.iterator();
-        loop_0: while (!((elem$0 = elem$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
-            final long i = ((.ceylon.language.Integer)((.ceylon.language.Entry)elem$0).getKey()).longValue();
-            final .java.lang.String s = ((.ceylon.language.String)((.ceylon.language.Entry)elem$0).getItem()).toString();
+        loop_0: while (!((elem$1 = elem$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$0 = true;
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Entry)elem$1).getKey()).longValue();
+            final .java.lang.String s = ((.ceylon.language.String)((.ceylon.language.Entry)elem$1).getItem()).toString();
             if (i > 5L) {
             }
         }
+        if (!loopentered$0) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
     }
     
     @.java.lang.Override

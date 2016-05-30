@@ -9,28 +9,28 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$6 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                f1$canonical$($ceylontmp$ns$6);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$7 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f1$canonical$($ceylontmp$ns$7);
             }
             returning null;
         );
     }
     
     private void f1$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$2 = ns;
-        final boolean isTuple$3 = iterable$2 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$2).$getArray$() != null;
-        .java.lang.Object elem$0 = null;
-        int i$4 = 0;
-        final int length$5;
-        if (isTuple$3) {
-            length$5 = (int)iterable$2.getSize();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$3 = ns;
+        final boolean isTuple$4 = iterable$3 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$3).$getArray$() != null;
+        .java.lang.Object elem$1 = null;
+        int i$5 = 0;
+        final int length$6;
+        if (isTuple$4) {
+            length$6 = (int)iterable$3.getSize();
         } else {
-            length$5 = 0;
+            length$6 = 0;
         }
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$1 = isTuple$3 ? null : iterable$2.iterator();
-        loop_0: while (isTuple$3 ? i$4 < length$5 : !((elem$0 = n$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$3) elem$0 = iterable$2.getFromFirst(i$4++);
-            final long n = ((.ceylon.language.Integer)elem$0).longValue();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$2 = isTuple$4 ? null : iterable$3.iterator();
+        loop_0: while (isTuple$4 ? i$5 < length$6 : !((elem$1 = n$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$4) elem$1 = iterable$3.getFromFirst(i$5++);
+            final long n = ((.ceylon.language.Integer)elem$1).longValue();
         }
     }
     
@@ -48,28 +48,28 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$13 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                f2$canonical$(i, $ceylontmp$ns$13);
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$15 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f2$canonical$(i, $ceylontmp$ns$15);
             }
             returning null;
         );
     }
     
     private void f2$canonical$(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$9 = ns;
-        final boolean isTuple$10 = iterable$9 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$9).$getArray$() != null;
-        .java.lang.Object elem$7 = null;
-        int i$11 = 0;
-        final int length$12;
-        if (isTuple$10) {
-            length$12 = (int)iterable$9.getSize();
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$11 = ns;
+        final boolean isTuple$12 = iterable$11 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$11).$getArray$() != null;
+        .java.lang.Object elem$9 = null;
+        int i$13 = 0;
+        final int length$14;
+        if (isTuple$12) {
+            length$14 = (int)iterable$11.getSize();
         } else {
-            length$12 = 0;
+            length$14 = 0;
         }
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$8 = isTuple$10 ? null : iterable$9.iterator();
-        loop_1: while (isTuple$10 ? i$11 < length$12 : !((elem$7 = n$iterator$$8.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$10) elem$7 = iterable$9.getFromFirst(i$11++);
-            final long n = ((.ceylon.language.Integer)elem$7).longValue();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$10 = isTuple$12 ? null : iterable$11.iterator();
+        loop_1: while (isTuple$12 ? i$13 < length$14 : !((elem$9 = n$iterator$$10.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$12) elem$9 = iterable$11.getFromFirst(i$13++);
+            final long n = ((.ceylon.language.Integer)elem$9).longValue();
         }
     }
     
@@ -87,28 +87,28 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
         (
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$os$20 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                f3$canonical$($ceylontmp$os$20);
+                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$os$23 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f3$canonical$($ceylontmp$os$23);
             }
             returning null;
         );
     }
     
     private void f3$canonical$(final .ceylon.language.Sequential<? extends .java.lang.Object> os) {
-        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$16 = os;
-        final boolean isTuple$17 = iterable$16 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$16).$getArray$() != null;
-        .java.lang.Object elem$14 = null;
-        int i$18 = 0;
-        final int length$19;
-        if (isTuple$17) {
-            length$19 = (int)iterable$16.getSize();
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$19 = os;
+        final boolean isTuple$20 = iterable$19 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$19).$getArray$() != null;
+        .java.lang.Object elem$17 = null;
+        int i$21 = 0;
+        final int length$22;
+        if (isTuple$20) {
+            length$22 = (int)iterable$19.getSize();
         } else {
-            length$19 = 0;
+            length$22 = 0;
         }
-        .ceylon.language.Iterator<? extends .java.lang.Object> o$iterator$$15 = isTuple$17 ? null : iterable$16.iterator();
-        loop_2: while (isTuple$17 ? i$18 < length$19 : !((elem$14 = o$iterator$$15.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$17) elem$14 = iterable$16.getFromFirst(i$18++);
-            final .java.lang.Object o = elem$14;
+        .ceylon.language.Iterator<? extends .java.lang.Object> o$iterator$$18 = isTuple$20 ? null : iterable$19.iterator();
+        loop_2: while (isTuple$20 ? i$21 < length$22 : !((elem$17 = o$iterator$$18.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$20) elem$17 = iterable$19.getFromFirst(i$21++);
+            final .java.lang.Object o = elem$17;
         }
     }
     
