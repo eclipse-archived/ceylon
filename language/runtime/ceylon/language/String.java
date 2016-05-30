@@ -1057,7 +1057,10 @@ public final class String
     }
     
     @Override
-    public boolean startsWith(@Name("substring") List<?> substring) {
+    public boolean startsWith(
+            @Name("substring")
+            @TypeInfo("ceylon.language.List<ceylon.language.Anything>")
+            List<?> substring) {
         if (substring instanceof String) {
             return value.startsWith(((String)substring).value);
         }
@@ -1078,7 +1081,10 @@ public final class String
     }
     
     @Override
-    public boolean endsWith(@Name("substring") List<?> substring) {
+    public boolean endsWith(
+            @Name("substring")
+            @TypeInfo("ceylon.language.List<ceylon.language.Anything>")
+            List<?> substring) {
         if (substring instanceof String) {
             return value.endsWith(((String)substring).value);
         }
