@@ -10,20 +10,20 @@ final class methodIfIsAnythingSeq_ {
         .java.lang.Object args$1;
         if ((args$1 = args) instanceof .ceylon.language.Sequential) {
             final .ceylon.language.Sequential<? extends .java.lang.Object> args$2 = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)args$1;
-            final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$5 = args$2;
-            final boolean isTuple$6 = iterable$5 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$5).$getArray$() != null;
-            .java.lang.Object elem$3 = null;
-            int i$7 = 0;
-            final int length$8;
-            if (isTuple$6) {
-                length$8 = (int)iterable$5.getSize();
+            final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$6 = args$2;
+            final boolean isTuple$7 = iterable$6 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$6).$getArray$() != null;
+            .java.lang.Object elem$4 = null;
+            int i$8 = 0;
+            final int length$9;
+            if (isTuple$7) {
+                length$9 = (int)iterable$6.getSize();
             } else {
-                length$8 = 0;
+                length$9 = 0;
             }
-            .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$4 = isTuple$6 ? null : iterable$5.iterator();
-            loop_0: while (isTuple$6 ? i$7 < length$8 : !((elem$3 = arg$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
-                if (isTuple$6) elem$3 = iterable$5.getFromFirst(i$7++);
-                final .java.lang.Object arg = elem$3;
+            .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$5 = isTuple$7 ? null : iterable$6.iterator();
+            loop_0: while (isTuple$7 ? i$8 < length$9 : !((elem$4 = arg$iterator$$5.next()) instanceof .ceylon.language.Finished)) {
+                if (isTuple$7) elem$4 = iterable$6.getFromFirst(i$8++);
+                final .java.lang.Object arg = elem$4;
             }
         }
     }

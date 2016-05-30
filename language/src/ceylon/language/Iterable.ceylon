@@ -1,10 +1,9 @@
 """Abstract supertype of [[categories|Category]] whose
    elements may be iterated. Iterable categories are often
-   called _streams_. A stream need not be finite, but its
-   elements must be countable. That is, for any given
-   element of the stream, every [[Iterator]] of the stream 
-   must eventually return the element, even if the iterator
-   itself is not exhaustible.
+   called _streams_. A stream is a source of [[Iterator]]s,
+   which produce the elements of the stream. A given element 
+   may occur more than once in a stream, that is, it may be 
+   produced more than once by a given iterator of the stream. 
    
    A stream may have null elements. That is, an iterator for
    the stream may produce the value [[null]] one or more
@@ -13,28 +12,48 @@
    `true`. Thus, a stream is a `Category` of its non-null
    elements.
    
-   A given stream might not have a well-defined order, and
-   so the order in which elements are produced by the
-   stream's iterator may not be _stable_. That is, the order
-   may be different for two different iterators of the
-   stream. However, a stream has a well-defined set of
-   elements, and any two iterators for an immutable finite
-   stream should eventually return the same elements.
-   Furthermore, any two iterators for an immutable finite
-   stream should eventually return exactly the same number
-   of elements, which must be the [[size]] of the stream.
+   A _finite_ stream is a stream whose iterators are 
+   _exhaustible_, that is, they eventually stop producing
+   elements. A stream need not be finite, but its elements 
+   must be countable. That is, for any given element of the 
+   stream, every [[Iterator]] of the stream must eventually 
+   return the element, even if the iterator itself is not 
+   exhaustible. It is possible for a given element to occur 
+   a (countably) infinite number of times in a nonfinite 
+   stream. It may not, in general, be possible to even 
+   determine if an insteance of `Iterable` is finite.
    
-   A given stream may not be _finite_, in which case an
-   iterator for the stream is never exhaustible, and certain
-   operations of this interface either never terminate or
-   result in an [[AssertionError]]. It may not, in general,
-   be possible to even determine if an `Iterable` is finite.
+   For a nonfinite stream, certain operations of this 
+   interface either never terminate or result in an 
+   [[AssertionError]].
    
-   The type `Iterable<Element,Null>`, usually abbreviated
-   `{Element*}`, represents a possibly-empty iterable
-   container. The type `Iterable<Element,Nothing>`, usually
-   abbreviated `{Element+}`, represents a nonempty iterable
-   container.
+   A stream may be _mutable_, in which case two distinct 
+   iterators for the stream might not produce exactly the 
+   same elements. Furthermore, even an immutable stream 
+   might not have a well-defined order, and so the order in 
+   which elements are produced by the stream's iterator may 
+   not be _stable_. That is, the order may be different for 
+   two distinct iterators of the stream.
+   
+   However, a stream has a well-defined set of elements, and
+   so any two iterators for an immutable finite stream 
+   should eventually return the same elements. Furthermore, 
+   any two iterators for an immutable finite stream should 
+   eventually return exactly the same total number of 
+   elements, which must be the [[size]] of the stream. For
+   an immutable nonfinite stream, every element returned by
+   a given iterator must eventually be returned by any other
+   iterator of the stream.
+   
+   A stream may be known to be _nonempty_:
+   
+   - The type `Iterable<Element,Null>`, usually abbreviated
+     `{Element*}`, represents a possibly-empty stream. 
+   - The type `Iterable<Element,Nothing>`, usually 
+     abbreviated `{Element+}`, represents a nonempty stream. 
+   
+   Every iterator for a nonempty stream must produce at 
+   least one element.
    
    A value list in braces produces a new instance of 
    `Iterable`:
@@ -143,7 +162,10 @@ shared interface Iterable<out Element=Anything,
         satisfies Category<>
         given Absent satisfies Null {
     
-    "An iterator for the elements belonging to this stream."
+    "An iterator for the elements belonging to this stream.
+     
+     If this is a nonempty stream with type `{Element+}`,
+     the iterator must produce at least one element."
     shared formal Iterator<Element> iterator();
     
     "Returns `true` if the iterator for this stream produces

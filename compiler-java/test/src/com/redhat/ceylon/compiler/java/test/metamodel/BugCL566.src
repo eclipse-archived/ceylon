@@ -43,20 +43,20 @@ public final class bugCl566_ {
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void bugCl566() {
-        final .ceylon.language.Iterable<? extends .ceylon.language.meta.declaration.ValueDeclaration, ? extends .java.lang.Object> iterable$2 = (.ceylon.language.Iterable<? extends .ceylon.language.meta.declaration.ValueDeclaration, ? extends .java.lang.Object>)(.ceylon.language.Iterable)((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.BugCl566.class)).<.ceylon.language.meta.declaration.ValueDeclaration>declaredMemberDeclarations(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$);
-        final boolean isTuple$3 = iterable$2 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$2).$getArray$() != null;
-        .java.lang.Object elem$0 = null;
-        int i$4 = 0;
-        final int length$5;
-        if (isTuple$3) {
-            length$5 = (int)iterable$2.getSize();
+        final .ceylon.language.Iterable<? extends .ceylon.language.meta.declaration.ValueDeclaration, ? extends .java.lang.Object> iterable$3 = (.ceylon.language.Iterable<? extends .ceylon.language.meta.declaration.ValueDeclaration, ? extends .java.lang.Object>)(.ceylon.language.Iterable)((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.BugCl566.class)).<.ceylon.language.meta.declaration.ValueDeclaration>declaredMemberDeclarations(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$);
+        final boolean isTuple$4 = iterable$3 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$3).$getArray$() != null;
+        .java.lang.Object elem$1 = null;
+        int i$5 = 0;
+        final int length$6;
+        if (isTuple$4) {
+            length$6 = (int)iterable$3.getSize();
         } else {
-            length$5 = 0;
+            length$6 = 0;
         }
-        .ceylon.language.Iterator<? extends .ceylon.language.meta.declaration.ValueDeclaration> option$iterator$$1 = isTuple$3 ? null : iterable$2.iterator();
-        loop_0: while (isTuple$3 ? i$4 < length$5 : !((elem$0 = option$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$3) elem$0 = iterable$2.getFromFirst(i$4++);
-            final .ceylon.language.meta.declaration.ValueDeclaration option = (.ceylon.language.meta.declaration.ValueDeclaration)elem$0;
+        .ceylon.language.Iterator<? extends .ceylon.language.meta.declaration.ValueDeclaration> option$iterator$$2 = isTuple$4 ? null : iterable$3.iterator();
+        loop_0: while (isTuple$4 ? i$5 < length$6 : !((elem$1 = option$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$4) elem$1 = iterable$3.getFromFirst(i$5++);
+            final .ceylon.language.meta.declaration.ValueDeclaration option = (.ceylon.language.meta.declaration.ValueDeclaration)elem$1;
             .ceylon.language.print_.print(option);
         }
         if (((.ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration>)(.ceylon.language.Sequential)((.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.BugCl566.class)).<.ceylon.language.meta.declaration.ValueDeclaration>declaredMemberDeclarations(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$)).getSize() == 1L) {

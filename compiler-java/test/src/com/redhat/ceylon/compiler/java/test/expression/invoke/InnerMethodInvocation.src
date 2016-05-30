@@ -21,22 +21,22 @@ public final class innerMethodInvocation_ {
             }
         }
         final fib_ fib = new fib_();
-        final long $ceylontmp$first$2 = 0L;
-        final long $ceylontmp$last$3 = 50L;
-        final boolean $ceylontmp$increasing$4 = .ceylon.language.Integer.offset($ceylontmp$last$3, $ceylontmp$first$2) >= 0;
-        final long $ceylontmp$incr$5 = $ceylontmp$increasing$4 ? 1L : -1L;
-        long n$8 = $ceylontmp$first$2;
-        long $ceylontmp$element$7 = $ceylontmp$first$2;
-        boolean $ceylontmp$f$6 = false;
+        final long $ceylontmp$first$3 = 0L;
+        final long $ceylontmp$last$4 = 50L;
+        final boolean $ceylontmp$increasing$5 = .ceylon.language.Integer.offset($ceylontmp$last$4, $ceylontmp$first$3) >= 0;
+        final long $ceylontmp$incr$6 = $ceylontmp$increasing$5 ? 1L : -1L;
+        long n$9 = $ceylontmp$first$3;
+        long $ceylontmp$element$8 = $ceylontmp$first$3;
+        boolean $ceylontmp$f$7 = false;
         loop_0: do {
-            if ($ceylontmp$f$6) $ceylontmp$element$7 += $ceylontmp$incr$5;
-            $ceylontmp$f$6 = true;
-            n$8 = $ceylontmp$element$7;
-            final long n = n$8;
-            $ceylontmp$continue$1: do {
+            if ($ceylontmp$f$7) $ceylontmp$element$8 += $ceylontmp$incr$6;
+            $ceylontmp$f$7 = true;
+            n$9 = $ceylontmp$element$8;
+            final long n = n$9;
+            $ceylontmp$continue$2: do {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("n! = " + .ceylon.language.Integer.toString(fib.fib(n))));
             }             while (false);
-        }         while ($ceylontmp$increasing$4 ? n$8 - $ceylontmp$last$3 != 0L : n$8 - $ceylontmp$last$3 != 0L);
+        }         while ($ceylontmp$increasing$5 ? n$9 - $ceylontmp$last$4 != 0L : n$9 - $ceylontmp$last$4 != 0L);
     }
     
     public static void main(.java.lang.String[] args) {

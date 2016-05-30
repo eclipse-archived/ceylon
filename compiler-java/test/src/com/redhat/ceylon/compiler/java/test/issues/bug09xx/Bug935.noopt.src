@@ -8,10 +8,10 @@ final class bug_935_collectMatches_ {
     static <Element>.ceylon.language.Sequence bug_935_collectMatches(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Sequential<? extends Element> data, final .ceylon.language.Callable<? extends .ceylon.language.Integer> search) {
         final VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>> ok = new VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>>((.ceylon.language.Sequential<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
         final VariableBox<.ceylon.language.Sequential<? extends Element>> ko = new VariableBox<.ceylon.language.Sequential<? extends Element>>((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
-        .java.lang.Object elem$0;
-        .ceylon.language.Iterator<? extends Element> element$iterator$$1 = data.iterator();
-        loop_0: while (!((elem$0 = element$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
-            final Element element = (Element)elem$0;
+        .java.lang.Object elem$1;
+        .ceylon.language.Iterator<? extends Element> element$iterator$$2 = data.iterator();
+        loop_0: while (!((elem$1 = element$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+            final Element element = (Element)elem$1;
             final long result = search.$call$((.java.lang.Object)element).longValue();
             if (result > 0L) {
                 ok.ref = (.ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, $reified$Element), new .java.lang.Object[]{(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, $reified$Element), new .java.lang.Object[]{
@@ -43,10 +43,10 @@ final class bug_935_test_ {
             }
         });
         .ceylon.language.print_.print(.ceylon.language.String.instance("Uppercase letters: "));
-        .java.lang.Object elem$3;
-        .ceylon.language.Iterator<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> result$iterator$$4 = ((.ceylon.language.Sequential<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Sequential)results.getFromFirst(0L)).iterator();
-        loop_1: while (!((elem$3 = result$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
-            final .ceylon.language.Sequence result = (.ceylon.language.Sequence)elem$3;
+        .java.lang.Object elem$5;
+        .ceylon.language.Iterator<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> result$iterator$$6 = ((.ceylon.language.Sequential<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Sequential)results.getFromFirst(0L)).iterator();
+        loop_1: while (!((elem$5 = result$iterator$$6.next()) instanceof .ceylon.language.Finished)) {
+            final .ceylon.language.Sequence result = (.ceylon.language.Sequence)elem$5;
             .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("Size: ").append(((.ceylon.language.Integer)result.getFromFirst(0L)).toString()).append(", for: \'").append(((.ceylon.language.String)result.getFromFirst(1L)).toString()).append("\'").toString()));
         }
     }

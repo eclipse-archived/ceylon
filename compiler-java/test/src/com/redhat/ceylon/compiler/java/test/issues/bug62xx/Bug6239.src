@@ -8,54 +8,54 @@ public final class bug6239_ {
     public static void bug6239() {
         final long x;
         long x$0 = 0L;
-        final long $ceylontmp$first$2 = 0L;
-        final long $ceylontmp$last$3 = 3L;
-        final boolean $ceylontmp$increasing$4 = .ceylon.language.Integer.offset($ceylontmp$last$3, $ceylontmp$first$2) >= 0;
-        final long $ceylontmp$incr$5 = $ceylontmp$increasing$4 ? 1L : -1L;
-        long j$8 = $ceylontmp$first$2;
-        long $ceylontmp$element$7 = $ceylontmp$first$2;
-        boolean $ceylontmp$f$6 = false;
+        final long $ceylontmp$first$3 = 0L;
+        final long $ceylontmp$last$4 = 3L;
+        final boolean $ceylontmp$increasing$5 = .ceylon.language.Integer.offset($ceylontmp$last$4, $ceylontmp$first$3) >= 0;
+        final long $ceylontmp$incr$6 = $ceylontmp$increasing$5 ? 1L : -1L;
+        long j$9 = $ceylontmp$first$3;
+        long $ceylontmp$element$8 = $ceylontmp$first$3;
+        boolean $ceylontmp$f$7 = false;
         loop_0: do {
-            if ($ceylontmp$f$6) $ceylontmp$element$7 += $ceylontmp$incr$5;
-            $ceylontmp$f$6 = true;
-            j$8 = $ceylontmp$element$7;
-            final long j = j$8;
-            $ceylontmp$continue$1: do {
+            if ($ceylontmp$f$7) $ceylontmp$element$8 += $ceylontmp$incr$6;
+            $ceylontmp$f$7 = true;
+            j$9 = $ceylontmp$element$8;
+            final long j = j$9;
+            $ceylontmp$continue$2: do {
                 x$0 = 10L + j;
-                final long x$9 = x$0;
+                final long x$10 = x$0;
                 if (1L == 1L) {
                     break loop_0;
                 } else {
                     return;
                 }
             }             while (false);
-        }         while ($ceylontmp$increasing$4 ? j$8 - $ceylontmp$last$3 != 0L : j$8 - $ceylontmp$last$3 != 0L);
+        }         while ($ceylontmp$increasing$5 ? j$9 - $ceylontmp$last$4 != 0L : j$9 - $ceylontmp$last$4 != 0L);
         x = x$0;
         final long y;
-        long y$11 = 0L;
-        final long $ceylontmp$first$13 = 0L;
-        final long $ceylontmp$last$14 = 3L;
-        final boolean $ceylontmp$increasing$15 = .ceylon.language.Integer.offset($ceylontmp$last$14, $ceylontmp$first$13) >= 0;
-        final long $ceylontmp$incr$16 = $ceylontmp$increasing$15 ? 1L : -1L;
-        long j$19 = $ceylontmp$first$13;
-        long $ceylontmp$element$18 = $ceylontmp$first$13;
-        boolean $ceylontmp$f$17 = false;
+        long y$12 = 0L;
+        final long $ceylontmp$first$15 = 0L;
+        final long $ceylontmp$last$16 = 3L;
+        final boolean $ceylontmp$increasing$17 = .ceylon.language.Integer.offset($ceylontmp$last$16, $ceylontmp$first$15) >= 0;
+        final long $ceylontmp$incr$18 = $ceylontmp$increasing$17 ? 1L : -1L;
+        long j$21 = $ceylontmp$first$15;
+        long $ceylontmp$element$20 = $ceylontmp$first$15;
+        boolean $ceylontmp$f$19 = false;
         loop_1: do {
-            if ($ceylontmp$f$17) $ceylontmp$element$18 += $ceylontmp$incr$16;
-            $ceylontmp$f$17 = true;
-            j$19 = $ceylontmp$element$18;
-            final long j = j$19;
-            $ceylontmp$continue$12: do {
+            if ($ceylontmp$f$19) $ceylontmp$element$20 += $ceylontmp$incr$18;
+            $ceylontmp$f$19 = true;
+            j$21 = $ceylontmp$element$20;
+            final long j = j$21;
+            $ceylontmp$continue$14: do {
                 if (1L == 0L) {
-                    y$11 = 9L;
-                    final long y$21 = y$11;
+                    y$12 = 9L;
+                    final long y$23 = y$12;
                     break loop_1;
                 } else {
                     return;
                 }
             }             while (false);
-        }         while ($ceylontmp$increasing$15 ? j$19 - $ceylontmp$last$14 != 0L : j$19 - $ceylontmp$last$14 != 0L);
-        y = y$11;
+        }         while ($ceylontmp$increasing$17 ? j$21 - $ceylontmp$last$16 != 0L : j$21 - $ceylontmp$last$16 != 0L);
+        y = y$12;
     }
     
     public static void main(.java.lang.String[] args) {

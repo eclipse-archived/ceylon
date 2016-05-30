@@ -296,4 +296,10 @@ public class LazyPackage extends Package {
             }
         }
     }
+    
+    public void addLazyUnit(Unit unit) {
+        synchronized(modelLoader.getLock()){
+            lazyUnits.add(unit);
+        }
+    }
 }
