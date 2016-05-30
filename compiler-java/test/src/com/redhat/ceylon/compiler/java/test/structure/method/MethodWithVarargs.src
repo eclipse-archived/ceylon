@@ -162,10 +162,6 @@ class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.mode
                 
                 }
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }}, .ceylon.language.empty_.get_()));
         f3((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),

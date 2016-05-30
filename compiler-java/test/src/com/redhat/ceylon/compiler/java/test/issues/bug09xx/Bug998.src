@@ -28,10 +28,6 @@ class Bug998 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                                 
                                 }
                             }
-                            
-                            .java.lang.Object writeReplace() {
-                                return sequence();
-                            }
                         }.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -56,10 +52,6 @@ class Bug998 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence();
     }

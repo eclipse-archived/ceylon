@@ -86,10 +86,6 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence();
     }
     
@@ -173,10 +169,6 @@ class ForIfConditionListIsIs implements .com.redhat.ceylon.compiler.java.runtime
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence();
     }

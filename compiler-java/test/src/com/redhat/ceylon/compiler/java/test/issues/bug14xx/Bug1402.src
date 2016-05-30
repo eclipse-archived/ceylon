@@ -50,10 +50,6 @@ class Bug1402Child extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.
                 
                 }
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         } : new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
             @.java.lang.Override
@@ -72,10 +68,6 @@ class Bug1402Child extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.
                     return null;
                 
                 }
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }).sequence()));
     }

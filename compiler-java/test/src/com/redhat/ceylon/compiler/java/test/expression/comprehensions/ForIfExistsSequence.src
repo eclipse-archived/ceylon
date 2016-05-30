@@ -51,10 +51,6 @@ class ForIfExistsSequence implements .com.redhat.ceylon.compiler.java.runtime.mo
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence();
     }
     

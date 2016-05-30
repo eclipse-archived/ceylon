@@ -59,20 +59,12 @@ final class bug973_ff_ {
                                             }
                                         };
                                     }
-                                    
-                                    .java.lang.Object writeReplace() {
-                                        return sequence();
-                                    }
                                 };
                             
                             default: 
                                 return null;
                             
                             }
-                        }
-                        
-                        .java.lang.Object writeReplace() {
-                            return sequence();
                         }
                     };
                 }

@@ -127,10 +127,6 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
                                 
                                 }
                             }
-                            
-                            .java.lang.Object writeReplace() {
-                                return sequence();
-                            }
                         }.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -155,10 +151,6 @@ class MethodSpecifierMethod implements .com.redhat.ceylon.compiler.java.runtime.
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence());
     }

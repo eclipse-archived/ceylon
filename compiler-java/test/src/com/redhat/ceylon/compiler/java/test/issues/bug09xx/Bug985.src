@@ -37,10 +37,6 @@ class Bug985 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                         
                         }
                     }
-                    
-                    .java.lang.Object writeReplace() {
-                        return sequence();
-                    }
                 };
             }
             returning <.ceylon.language.Integer>array$priv$(arg$2$reified$0, arg$2$0);

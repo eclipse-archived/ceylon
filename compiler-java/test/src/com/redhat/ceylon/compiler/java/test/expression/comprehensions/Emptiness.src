@@ -19,10 +19,6 @@ final class emptiness_ {
                 
                 }
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> nonEmpty = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
             
@@ -36,10 +32,6 @@ final class emptiness_ {
                     return null;
                 
                 }
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         };
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> maybeEmptyCompIter = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
@@ -72,10 +64,6 @@ final class emptiness_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> nonEmptyCompIter = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -106,10 +94,6 @@ final class emptiness_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         };
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> maybeEmptyCompSeq = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
@@ -142,10 +126,6 @@ final class emptiness_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence();
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> nonEmptyCompSeq = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -176,10 +156,6 @@ final class emptiness_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence();
         (
@@ -221,20 +197,12 @@ final class emptiness_ {
                                         }
                                     };
                                 }
-                                
-                                .java.lang.Object writeReplace() {
-                                    return sequence();
-                                }
                             };
                         
                         default: 
                             return null;
                         
                         }
-                    }
-                    
-                    .java.lang.Object writeReplace() {
-                        return sequence();
                     }
                 };
                 .com.redhat.ceylon.compiler.java.test.expression.comprehensions.emptinessMaybeEmpty_.emptinessMaybeEmpty(arg$4$0);
@@ -280,20 +248,12 @@ final class emptiness_ {
                                         }
                                     };
                                 }
-                                
-                                .java.lang.Object writeReplace() {
-                                    return sequence();
-                                }
                             };
                         
                         default: 
                             return null;
                         
                         }
-                    }
-                    
-                    .java.lang.Object writeReplace() {
-                        return sequence();
                     }
                 };
                 .com.redhat.ceylon.compiler.java.test.expression.comprehensions.emptinessNonEmpty_.emptinessNonEmpty(arg$6$0);
@@ -353,10 +313,6 @@ final class emptinessParameterised_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         };
         final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends Element>, ? extends Absent> c2 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Sequence<? extends Element>, Absent>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, $reified$Element, $reified$Element), $reified$Absent){
@@ -419,10 +375,6 @@ final class emptinessParameterised_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
         final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> c3 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Element, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Element, .ceylon.language.Object.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
             
@@ -469,10 +421,6 @@ final class emptinessParameterised_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
         final .ceylon.language.Sequential<? extends Element> c4 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<Element, Absent>($reified$Element, $reified$Absent){
             
@@ -503,10 +451,6 @@ final class emptinessParameterised_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence();
     }

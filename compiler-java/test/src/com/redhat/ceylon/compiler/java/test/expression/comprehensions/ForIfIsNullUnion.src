@@ -51,10 +51,6 @@ class ForIfIsNullUnion implements .com.redhat.ceylon.compiler.java.runtime.model
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         });
     }
     

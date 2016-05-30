@@ -51,10 +51,6 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         });
     }
     
@@ -103,10 +99,6 @@ class ForIfIsNotObject implements .com.redhat.ceylon.compiler.java.runtime.model
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         });
     }

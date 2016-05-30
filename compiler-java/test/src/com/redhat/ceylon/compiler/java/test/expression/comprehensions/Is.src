@@ -124,10 +124,6 @@ final class isCond_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence();
         foos = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
@@ -174,10 +170,6 @@ final class isCond_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence();
         .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> commons = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
@@ -219,10 +211,6 @@ final class isCond_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence();
         commons = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
@@ -266,10 +254,6 @@ final class isCond_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence();
         .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface> barIs = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
@@ -312,10 +296,6 @@ final class isCond_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence();
         final .ceylon.language.Sequential<? extends .java.lang.Object> nowt = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
@@ -357,10 +337,6 @@ final class isCond_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence();
     }

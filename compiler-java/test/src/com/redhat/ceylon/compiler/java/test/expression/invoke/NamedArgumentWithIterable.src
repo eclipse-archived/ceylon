@@ -33,10 +33,6 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                 
                 }
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
     }
     
@@ -92,10 +88,6 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                         
                         }
                     }
-                    
-                    .java.lang.Object writeReplace() {
-                        return sequence();
-                    }
                 };
                 m$priv$(arg$2$0, arg$2$1);
             }
@@ -119,10 +111,6 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                             return null;
                         
                         }
-                    }
-                    
-                    .java.lang.Object writeReplace() {
-                        return sequence();
                     }
                 };
                 m$priv$(arg$3$0, arg$3$1);
@@ -155,20 +143,12 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                                     
                                     }
                                 }
-                                
-                                .java.lang.Object writeReplace() {
-                                    return sequence();
-                                }
                             };
                         
                         default: 
                             return null;
                         
                         }
-                    }
-                    
-                    .java.lang.Object writeReplace() {
-                        return sequence();
                     }
                 };
                 m$priv$(arg$4$0, arg$4$1);
@@ -199,10 +179,6 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                             return null;
                         
                         }
-                    }
-                    
-                    .java.lang.Object writeReplace() {
-                        return sequence();
                     }
                 };
                 m$priv$(arg$5$0, arg$5$1);
@@ -241,20 +217,12 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                                     
                                     }
                                 }
-                                
-                                .java.lang.Object writeReplace() {
-                                    return sequence();
-                                }
                             };
                         
                         default: 
                             return null;
                         
                         }
-                    }
-                    
-                    .java.lang.Object writeReplace() {
-                        return sequence();
                     }
                 };
                 m$priv$(arg$6$0, arg$6$1);
@@ -289,10 +257,6 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                                                     
                                                     }
                                                 }
-                                                
-                                                .java.lang.Object writeReplace() {
-                                                    return sequence();
-                                                }
                                             }.iterator();
                                         }
                                         private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -318,20 +282,12 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                                         }
                                     };
                                 }
-                                
-                                .java.lang.Object writeReplace() {
-                                    return sequence();
-                                }
                             };
                         
                         default: 
                             return null;
                         
                         }
-                    }
-                    
-                    .java.lang.Object writeReplace() {
-                        return sequence();
                     }
                 };
                 m$priv$(arg$7$0, arg$7$1);
@@ -372,10 +328,6 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                                                     
                                                     }
                                                 }
-                                                
-                                                .java.lang.Object writeReplace() {
-                                                    return sequence();
-                                                }
                                             }.iterator();
                                         }
                                         private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -401,20 +353,12 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                                         }
                                     };
                                 }
-                                
-                                .java.lang.Object writeReplace() {
-                                    return sequence();
-                                }
                             };
                         
                         default: 
                             return null;
                         
                         }
-                    }
-                    
-                    .java.lang.Object writeReplace() {
-                        return sequence();
                     }
                 };
                 m$priv$(arg$9$0, arg$9$1);
@@ -455,10 +399,6 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                         
                         }
                     }
-                    
-                    .java.lang.Object writeReplace() {
-                        return sequence();
-                    }
                 };
                 m2$priv$(arg$12$0, arg$12$1);
             }
@@ -486,10 +426,6 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
                             return null;
                         
                         }
-                    }
-                    
-                    .java.lang.Object writeReplace() {
-                        return sequence();
                     }
                 };
                 m3$priv$(arg$13$0, arg$13$1);

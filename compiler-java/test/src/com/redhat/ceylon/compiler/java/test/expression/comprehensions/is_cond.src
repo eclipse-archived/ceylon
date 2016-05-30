@@ -57,10 +57,6 @@ final class isCond_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         });
     }
 }

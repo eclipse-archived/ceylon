@@ -46,10 +46,6 @@ final class bug1652_ {
                 
                 }
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
         boolean loopentered$6 = false;
         .java.lang.Object elem$7;
@@ -75,10 +71,6 @@ final class bug1652_ {
                     return null;
                 
                 }
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         };
         boolean loopentered$9 = false;

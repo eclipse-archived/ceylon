@@ -24,10 +24,6 @@ final class bug2012_ {
                 
                 }
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.iterator();
         loop_0: while (!((elem$1 = truth$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
             loopentered$0 = true;

@@ -101,10 +101,6 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                                 
                                 }
                             }
-                            
-                            .java.lang.Object writeReplace() {
-                                return sequence();
-                            }
                         }.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -130,10 +126,6 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence());
         m3$priv$("foo", (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -152,10 +144,6 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                                     return null;
                                 
                                 }
-                            }
-                            
-                            .java.lang.Object writeReplace() {
-                                return sequence();
                             }
                         }.iterator();
                     }
@@ -182,10 +170,6 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence());
         m$priv$("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -204,10 +188,6 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                                     return null;
                                 
                                 }
-                            }
-                            
-                            .java.lang.Object writeReplace() {
-                                return sequence();
                             }
                         }.iterator();
                     }
@@ -234,10 +214,6 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence()));
         m3$priv$("foo", .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -256,10 +232,6 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                                     return null;
                                 
                                 }
-                            }
-                            
-                            .java.lang.Object writeReplace() {
-                                return sequence();
                             }
                         }.iterator();
                     }
@@ -286,10 +258,6 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence())));
         m$priv$("foo", .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
@@ -310,10 +278,6 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                                     return null;
                                 
                                 }
-                            }
-                            
-                            .java.lang.Object writeReplace() {
-                                return sequence();
                             }
                         }.iterator();
                     }
@@ -340,10 +304,6 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence()));
         m3$priv$("foo", .com.redhat.ceylon.compiler.java.Util.asSequence(.com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
@@ -364,10 +324,6 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                                     return null;
                                 
                                 }
-                            }
-                            
-                            .java.lang.Object writeReplace() {
-                                return sequence();
                             }
                         }.iterator();
                     }
@@ -393,10 +349,6 @@ class SequencedParameterInvocation implements .com.redhat.ceylon.compiler.java.r
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence())));
         m2$priv$("foo", (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedParameterInvocation.$TypeDescriptor$, new .java.lang.Object[]{

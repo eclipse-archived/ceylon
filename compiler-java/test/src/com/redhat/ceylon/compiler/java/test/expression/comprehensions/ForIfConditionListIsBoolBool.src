@@ -84,10 +84,6 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence();
     }
     
@@ -169,10 +165,6 @@ class ForIfConditionListIsBoolBool implements .com.redhat.ceylon.compiler.java.r
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence();
     }

@@ -28,10 +28,6 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                     
                     }
                 }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
-                }
             }.contains($ceylontmp$0);
         );
         final .ceylon.language.Sequential<? extends .ceylon.language.String> empty = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
@@ -59,10 +55,6 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                                     return spread$1$element$;
                                 }
                             };
-                        }
-                        
-                        .java.lang.Object writeReplace() {
-                            return sequence();
                         }
                     }.sequence();
                 );
@@ -95,10 +87,6 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                                 }
                             };
                         }
-                        
-                        .java.lang.Object writeReplace() {
-                            return sequence();
-                        }
                     }.sequence();
                 );
             }
@@ -125,10 +113,6 @@ class Bug404 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                             return spread$5$element$;
                         }
                     };
-                }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
                 }
             }.sequence();
         );

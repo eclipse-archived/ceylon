@@ -25,10 +25,6 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                 
                 }
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
         final .ceylon.language.Empty empty = .ceylon.language.empty_.get_();
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterableComp = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
@@ -61,10 +57,6 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
         final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceComp = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
@@ -95,10 +87,6 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence();
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterableComp2 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, true){
@@ -140,20 +128,12 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                                 }
                             };
                         }
-                        
-                        .java.lang.Object writeReplace() {
-                            return sequence();
-                        }
                     };
                 
                 default: 
                     return null;
                 
                 }
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         };
         final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceComp2 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("a")}, new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
@@ -186,10 +166,6 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence());
         final .ceylon.language.Sequence<? extends .ceylon.language.String> triplet = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.String.instance("hello"),
@@ -211,10 +187,6 @@ class SequenceLiteral implements .com.redhat.ceylon.compiler.java.runtime.model.
                     return null;
                 
                 }
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         };
     }

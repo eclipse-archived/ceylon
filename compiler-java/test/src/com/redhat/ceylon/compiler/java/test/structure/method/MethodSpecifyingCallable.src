@@ -229,10 +229,6 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                                 
                                 }
                             }
-                            
-                            .java.lang.Object writeReplace() {
-                                return sequence();
-                            }
                         }.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -257,10 +253,6 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence());
     }
@@ -307,10 +299,6 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                                 
                                 }
                             }
-                            
-                            .java.lang.Object writeReplace() {
-                                return sequence();
-                            }
                         }.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -335,10 +323,6 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence());
     }

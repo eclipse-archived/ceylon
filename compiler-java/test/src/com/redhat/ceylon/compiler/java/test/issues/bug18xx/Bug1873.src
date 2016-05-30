@@ -22,10 +22,6 @@ final class bug1873_ {
                 
                 }
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
         final .ceylon.language.Sequence<? extends .ceylon.language.String> strs2 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)(
             let
@@ -48,10 +44,6 @@ final class bug1873_ {
                             return spread$0$element$;
                         }
                     };
-                }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
                 }
             }.sequence();
         );

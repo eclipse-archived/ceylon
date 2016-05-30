@@ -31,10 +31,6 @@ final class bug1548_ {
                 
                 }
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
         final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .java.lang.Object>, ? extends .java.lang.Object> funcs = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Callable<? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
             
@@ -102,10 +98,6 @@ final class bug1548_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         };
     }

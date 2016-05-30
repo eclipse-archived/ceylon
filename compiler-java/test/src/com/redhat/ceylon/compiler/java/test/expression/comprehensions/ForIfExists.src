@@ -51,10 +51,6 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence();
     }
     
@@ -103,10 +99,6 @@ class ForIfExists implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence();
     }

@@ -99,11 +99,6 @@ final class sequenceDefaults_String_ {
                 
                 }
             }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
     }
     
@@ -190,11 +185,6 @@ final class sequenceArguments_String_ {
                     return null;
                 
                 }
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         });
     }

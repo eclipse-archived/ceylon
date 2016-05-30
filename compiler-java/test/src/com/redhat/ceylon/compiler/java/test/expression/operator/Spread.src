@@ -28,10 +28,6 @@ final class spread_ {
                         }
                     };
                 }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
-                }
             }.sequence();
         );
         final .ceylon.language.Sequence<? extends .ceylon.language.String> ini2 = (.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)(
@@ -58,10 +54,6 @@ final class spread_ {
                         }
                     };
                 }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
-                }
             }.sequence();
         );
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> seq2 = seq;
@@ -86,10 +78,6 @@ final class spread_ {
                             return spread$2$element$;
                         }
                     };
-                }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
                 }
             }.sequence();
         );
@@ -117,10 +105,6 @@ final class spread_ {
                         }
                     };
                 }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
-                }
             }.sequence();
         );
         final .ceylon.language.List<? extends .ceylon.language.String> seq3 = seq;
@@ -145,10 +129,6 @@ final class spread_ {
                             return spread$4$element$;
                         }
                     };
-                }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
                 }
             }.sequence();
         );
@@ -175,10 +155,6 @@ final class spread_ {
                             return spread$5$element$;
                         }
                     };
-                }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
                 }
             }.sequence();
         );

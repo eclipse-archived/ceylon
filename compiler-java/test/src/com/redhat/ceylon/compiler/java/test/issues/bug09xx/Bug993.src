@@ -127,10 +127,6 @@ class Bug993BottomFromInterface implements .com.redhat.ceylon.compiler.java.runt
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
     }
     
@@ -224,10 +220,6 @@ class Bug993BottomFromClass extends .com.redhat.ceylon.compiler.java.test.issues
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         };
     }
@@ -334,10 +326,6 @@ final class Bug993BottomInterface$impl implements .java.io.Serializable {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         };
     }

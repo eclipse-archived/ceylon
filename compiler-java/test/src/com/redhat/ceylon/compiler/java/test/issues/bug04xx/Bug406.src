@@ -31,10 +31,6 @@ class Bug406 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                         }
                     };
                 }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
-                }
             }.sequence();
         );
         .ceylon.language.String s1s$2;

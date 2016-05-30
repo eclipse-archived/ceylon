@@ -53,10 +53,6 @@ final class bug1877_ {
                 
                 }
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.iterator());
         final .ceylon.language.Sequence<? extends .ceylon.language.Callable<? extends .java.lang.Object>> t2 = (.ceylon.language.Sequence<? extends .ceylon.language.Callable<? extends .java.lang.Object>>)(.ceylon.language.Sequence)((.ceylon.language.Sequence<? extends .ceylon.language.Callable<? extends .java.lang.Object>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
             
@@ -108,10 +104,6 @@ final class bug1877_ {
                     return null;
                 
                 }
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.iterator());
         final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .java.lang.Object>> fa = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Bug1877.$TypeDescriptor$), "Anything()(Bug1877)", (short)-1){

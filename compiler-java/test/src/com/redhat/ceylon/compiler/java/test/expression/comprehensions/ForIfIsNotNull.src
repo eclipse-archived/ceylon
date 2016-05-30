@@ -47,10 +47,6 @@ class ForIfIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         });
     }
     
@@ -99,10 +95,6 @@ class ForIfIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.model.R
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         });
     }

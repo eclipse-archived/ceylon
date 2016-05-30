@@ -53,10 +53,6 @@ final class forIfIsBooleanConditions_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence();
     }
 }

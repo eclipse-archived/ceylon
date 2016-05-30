@@ -112,10 +112,6 @@ final class erasureCasting_ {
                         }
                     };
                 }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
-                }
             }.sequence();
         );
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> nonEmptyIntegerSequence = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
@@ -139,10 +135,6 @@ final class erasureCasting_ {
                             return spread$11$element$;
                         }
                     };
-                }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
                 }
             }.sequence();
         );
@@ -175,10 +167,6 @@ final class erasureCasting_ {
                             return spread$15$element$;
                         }
                     };
-                }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
                 }
             }.sequence();
         );
@@ -220,10 +208,6 @@ final class erasureCasting_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence();
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> integerSequential = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
@@ -254,10 +238,6 @@ final class erasureCasting_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence();
         final .ceylon.language.Sequence tupleOfSequentialSomething = (.ceylon.language.Sequence)(.java.lang.Object).ceylon.language.nothing_.get_();

@@ -57,10 +57,6 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                                     
                                     }
                                 }
-                                
-                                .java.lang.Object writeReplace() {
-                                    return sequence();
-                                }
                             }.iterator();
                         }
                         private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> $iterator$0;
@@ -101,10 +97,6 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                         }
                     };
                 }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
-                }
             }.sequence();
             .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface z$10;
             if ((z$10 = x$2.method(x$2)) != null) {
@@ -128,10 +120,6 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                                         return null;
                                     
                                     }
-                                }
-                                
-                                .java.lang.Object writeReplace() {
-                                    return sequence();
                                 }
                             }.iterator();
                         }
@@ -172,10 +160,6 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                             } else return .ceylon.language.finished_.get_();
                         }
                     };
-                }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
                 }
             }.sequence();
             final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface elseOp1 = (
@@ -227,10 +211,6 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                         }
                     };
                 }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
-                }
             }.sequence();
             final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface> comprehensionNoCheck = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                 
@@ -261,10 +241,6 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
                             } else return .ceylon.language.finished_.get_();
                         }
                     };
-                }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
                 }
             }.sequence();
             return .com.redhat.ceylon.compiler.java.Util.checkNull(x$2.getProp1()).getProp1();

@@ -33,11 +33,6 @@ public final class utilCalls_ {
                                 
                                 }
                             }
-                            
-                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                            .java.lang.Object writeReplace() {
-                                return sequence();
-                            }
                         }.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -63,11 +58,6 @@ public final class utilCalls_ {
                     }
                 };
             }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence();
         final .ceylon.language.Iterable it1 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
             
@@ -86,11 +76,6 @@ public final class utilCalls_ {
                 
                 }
             }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
         final .ceylon.language.Iterable it2 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.java.lang.Object, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, true){
             
@@ -108,11 +93,6 @@ public final class utilCalls_ {
                     return null;
                 
                 }
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         };
         final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> it3 = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
@@ -133,11 +113,6 @@ public final class utilCalls_ {
                                     return null;
                                 
                                 }
-                            }
-                            
-                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                            .java.lang.Object writeReplace() {
-                                return sequence();
                             }
                         }.iterator();
                     }
@@ -164,11 +139,6 @@ public final class utilCalls_ {
                     }
                 };
             }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
         final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer> entry = new .ceylon.language.Entry<.ceylon.language.Integer, .ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
         final .ceylon.language.Range<.ceylon.language.Integer> range = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L));
@@ -190,11 +160,6 @@ public final class utilCalls_ {
                         
                         }
                     }
-                    
-                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                    .java.lang.Object writeReplace() {
-                        return sequence();
-                    }
                 };
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
@@ -215,11 +180,6 @@ public final class utilCalls_ {
                             return spread$2$element$;
                         }
                     };
-                }
-                
-                @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                .java.lang.Object writeReplace() {
-                    return sequence();
                 }
             }.sequence();
         );

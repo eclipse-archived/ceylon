@@ -27,10 +27,6 @@ final class variadicArraysMethods_ {
                 
                 }
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
         java.variadicObjectArray((
             let

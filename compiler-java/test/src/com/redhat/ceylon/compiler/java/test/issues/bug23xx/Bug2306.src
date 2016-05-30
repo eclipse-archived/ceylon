@@ -49,10 +49,6 @@ final class bug2306_ {
                 
                 }
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
         ((.ceylon.language.Callable<? extends .ceylon.language.Integer>)(.ceylon.language.Callable)fns.getFirst()).$call$();
         ((.ceylon.language.Callable<? extends .ceylon.language.Integer>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Box2306<.ceylon.language.Callable<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){

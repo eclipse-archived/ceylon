@@ -122,10 +122,6 @@ final class bug2150_ {
                             }
                         };
                     }
-                    
-                    .java.lang.Object writeReplace() {
-                        return sequence();
-                    }
                 }.getFirst();
             }
             returning $ceylontmp$0 != null ? $ceylontmp$0 : .ceylon.language.Boolean.instance(false);
@@ -157,10 +153,6 @@ final class bug2150_ {
                             }
                         };
                     }
-                    
-                    .java.lang.Object writeReplace() {
-                        return sequence();
-                    }
                 }.getFirst();
             }
             returning $ceylontmp$1 != null ? $ceylontmp$1 : .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_.get_();
@@ -191,10 +183,6 @@ final class bug2150_ {
                                 } else return .ceylon.language.finished_.get_();
                             }
                         };
-                    }
-                    
-                    .java.lang.Object writeReplace() {
-                        return sequence();
                     }
                 }.getFirst();
             }

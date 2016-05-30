@@ -85,10 +85,6 @@ final class javaArrayInForComprehension_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "abc == {for (s in (toArray<ObjectArray<String>,String>(abc))) s}.sequence()"));
@@ -122,10 +118,6 @@ final class javaArrayInForComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence())) {
         } else {
@@ -161,10 +153,6 @@ final class javaArrayInForComprehension_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "yesNo == {for (s in (toArray<BooleanArray,Boolean>(yesNo))) s}.sequence()"));
@@ -198,10 +186,6 @@ final class javaArrayInForComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence())) {
         } else {
@@ -237,10 +221,6 @@ final class javaArrayInForComprehension_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "_123 == {for (s in (toArray<ShortArray,Integer>(_123))) s}.sequence()"));
@@ -274,10 +254,6 @@ final class javaArrayInForComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence())) {
         } else {
@@ -313,10 +289,6 @@ final class javaArrayInForComprehension_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "_123 == {for (s in (toArray<LongArray,Integer>(_123))) s}.sequence()"));
@@ -350,10 +322,6 @@ final class javaArrayInForComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence())) {
         } else {
@@ -389,10 +357,6 @@ final class javaArrayInForComprehension_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "_789 == {for (s in (toArray<DoubleArray,Float>(_789))) s}.sequence()"));
@@ -426,10 +390,6 @@ final class javaArrayInForComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence())) {
         } else {
@@ -465,10 +425,6 @@ final class javaArrayInForComprehension_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "_123 == {for (s in (toArray<IntArray,Integer>(_123) of Ints)) s}.sequence()"));
@@ -503,10 +459,6 @@ final class javaArrayInForComprehension_ {
                     }
                 };
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         }.sequence())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "abc == {for (s in (toArray<ObjectArray<String>,String>(abc) of Strings)) s}.sequence()"));
@@ -540,10 +492,6 @@ final class javaArrayInForComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence())) {
         } else {
@@ -589,10 +537,6 @@ final class javaArrayInForComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence())) {
         } else {
@@ -640,10 +584,6 @@ final class javaArrayInForComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence())) {
         } else {
@@ -716,10 +656,6 @@ final class javaArrayInForComprehension_ {
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         }.sequence())) {
         } else {

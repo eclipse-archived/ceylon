@@ -65,10 +65,6 @@ final class bug934_ {
                 
                 }
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         })));
     }
 }

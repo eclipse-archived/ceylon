@@ -102,10 +102,6 @@ public final class bug1923_ implements .java.io.Serializable, .com.redhat.ceylon
                                 }
                             };
                         }
-                        
-                        .java.lang.Object writeReplace() {
-                            return sequence();
-                        }
                     }.sequence();
                 }
             };

@@ -26,11 +26,6 @@ class Bug1942 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                                 
                                 }
                             }
-                            
-                            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-                            .java.lang.Object writeReplace() {
-                                return sequence();
-                            }
                         }.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
@@ -76,11 +71,6 @@ class Bug1942 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
-            }
-            
-            @.com.redhat.ceylon.compiler.java.metadata.Ignore
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         };
     }

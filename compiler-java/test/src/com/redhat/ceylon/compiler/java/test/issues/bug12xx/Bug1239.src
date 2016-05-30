@@ -59,10 +59,6 @@ final class bug1239_ {
                     
                     }
                 }
-                
-                .java.lang.Object writeReplace() {
-                    return sequence();
-                }
             });
             $initException$ = null;
             $init$value = true;

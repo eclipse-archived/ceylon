@@ -22,10 +22,6 @@ class Bug1888 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 
                 }
             }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
-            }
         };
     }
     private .java.lang.String cycled;
@@ -51,10 +47,6 @@ class Bug1888 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                     return null;
                 
                 }
-            }
-            
-            .java.lang.Object writeReplace() {
-                return sequence();
             }
         };
     }
