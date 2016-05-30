@@ -790,7 +790,13 @@ public final class String
         }
         if (sublist instanceof String) {
             String string = (String) sublist;
-            int start = value.offsetByCodePoints(0, (int)from);
+            int start;
+            try {
+                start = value.offsetByCodePoints(0, (int)from);
+            }
+            catch (IndexOutOfBoundsException iobe) {
+                return null;
+            }
             int index = value.indexOf(string.value, start);
             if (index >= 0) {
                 return Integer.instance(from + 
@@ -3423,5 +3429,88 @@ public final class String
             Callable<? extends Result> arg1) {
         return $ceylon$language$List$impl().mapElements(arg0, arg1);
     }
+    
+    @Ignore
+    public final long indexOf(java.lang.String string) {
+        return indexOf(value, string);
+    }
+    
+    @Ignore
+    public final long indexOf$from(java.lang.String string) {
+        return 0;
+    }
+    
+    @TypeInfo("ceylon.language::Integer")
+    public final long indexOf(@Name("string")
+    @TypeInfo("ceylon.language::String")
+    final java.lang.String string, @Name("from")
+    @Defaulted
+    @TypeInfo("ceylon.language::Integer")
+    final long from) {
+        return indexOf(value, string, from);
+    }
+    
+    public static long indexOf(java.lang.String value, java.lang.String string) {
+        return value.indexOf(string);
+    }
+    
+    public static long indexOf(java.lang.String value, java.lang.String string, long from) {
+        if (from>value.length()) {
+            return -1;
+        }
+        if (from<0) {
+            from = 0;
+        }
+        int start;
+        try {
+            start = value.offsetByCodePoints(0, (int)from);
+        }
+        catch (IndexOutOfBoundsException iobe) {
+            return -1;
+        }
+        return value.indexOf(string, start);
+    }
+    
+    @Ignore
+    public final long lastIndexOf(java.lang.String string) {
+        return lastIndexOf(value, string);
+    }
+    
+    @Ignore
+    public final long lastIndexOf$from(java.lang.String string) {
+        return Long.MAX_VALUE;
+    }
+    
+    @TypeInfo("ceylon.language::Integer")
+    public final long lastIndexOf(@Name("string")
+    @TypeInfo("ceylon.language::String")
+    java.lang.String string, @Name("to")
+    @Defaulted
+    @TypeInfo("ceylon.language::Integer")
+    final long to) {
+        return lastIndexOf(value, string, to);
+    }
+    
+    public static long lastIndexOf(java.lang.String value, java.lang.String string) {
+        return value.lastIndexOf(string);
+    }
+    
+    public static long lastIndexOf(java.lang.String value, java.lang.String string, long to) {
+        if (to>value.length()) {
+            return lastIndexOf(value, string);
+        }
+        if (to<0) {
+            return -1;
+        }
+        int start;
+        try {
+            start = value.offsetByCodePoints(0, (int)to);
+        }
+        catch (IndexOutOfBoundsException iobe) {
+            return lastIndexOf(value, string);
+        }
+        return value.lastIndexOf(string, start);
+    }
+    
 
 }

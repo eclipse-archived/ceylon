@@ -789,6 +789,50 @@ shared native final class String(characters)
         Integer end = size)
             => this[from:end-from];
     
+    "The first index greater than or equal to the given 
+     [[start index|from]] at which the given substring 
+     occurs in this string, if any, or `-1` otherwise.
+     
+     For any `string` and `substring`, and for every index 
+     `from`:
+     
+         string.indexOf(substring, from) 
+            == string.firstInclusion(substring, from) 
+                    else -1
+         
+     _Note: this operation is provided to ease migration of
+     code written in other languages. It is more idiomatic 
+     to use [[firstInclusion]] where reasonable._"
+    see (`function firstInclusion`)
+    shared native Integer indexOf(
+        "The substring to find within this string"
+        String string,
+        "The inclusive start index"
+        Integer from = 0)
+            => firstInclusion(string, from) else -1;
+    
+    "The last index smaller than or equal to the given 
+     [[end index|to]] at which the given substring occurs in 
+     this string, if any, or `-1` otherwise.
+     
+     For any `string` and `substring`, and for every index 
+     `from`:
+     
+         string.lastIndexOf(substring, from) 
+            == string.lastInclusion(substring, string.size-from) 
+                    else -1
+         
+     _Note: this operation is provided to ease migration of
+     code written in other languages. It is more idiomatic 
+     to use [[lastInclusion]] where reasonable._"
+    see (`function lastInclusion`)
+    shared native Integer lastIndexOf(
+        "The substring to find within this string"
+        String string,
+        "The inclusive start index"
+        Integer to = size)
+            => lastInclusion(string, size-to) else -1;
+    
     "Determines if this string occurs after the given string
      in lexicographic order, returning `false` if the two
      strings are equal."
