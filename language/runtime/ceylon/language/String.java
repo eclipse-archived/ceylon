@@ -125,6 +125,7 @@ public final class String
         return instance(buf.toString());
     }
 
+    @Transient
     public java.lang.String getTitlecased() {
         return getTitlecased(value);
     }
