@@ -303,7 +303,8 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
                     // We also assume our own errors are not abnormal
                     && !ex.getClass().getName().startsWith("com.redhat.ceylon.")
                     // And neither are CCEs from the javac code abnormal
-                    && !(ex instanceof ClassCastException && ex.getMessage() != null && ex.getMessage().contains("com.redhat.ceylon.langtools."))) {
+                    && !(ex instanceof ClassCastException && ex.getMessage() != null && ex.getMessage().contains("com.redhat.ceylon.langtools."))
+                    && !(ex instanceof NullPointerException) ) {
                 return true;
             }
             return false;
