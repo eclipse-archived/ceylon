@@ -460,7 +460,7 @@ public class JsCompiler {
     /** Closes all output writers and puts resulting artifacts in the output repo. */
     protected int finish() throws IOException {
         int result = 0;
-        String outDir = opts.getOutRepo();
+        String outDir = CeylonUtils.resolveRepoUrl(opts.getOutRepo());
         if(!isURL(outDir)){
             File root = new File(outDir);
             if (root.exists()) {
