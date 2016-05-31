@@ -170,5 +170,21 @@ shared void tuples() {
     
     check(if (exists r=tuple.locate(identity)) then r==1->true else false, "tuple.locate");
     check(if (exists r=tuple.locateLast(identity)) then r==1->true else false, "tuple.locateLast");
-
+    
+    try {
+        value a = [finished, finished, finished];
+        value [b, *c] = a;
+        fail("Spread of tuple with initial 'finished' should have thrown");
+    } catch (AssertionError e) {
+        check(e.message == "length of c is less than minimum length of its static type Finished[2]", "deconstruct [finished] 1");
+    }
+    
+    try {
+        value a = [finished, 1, finished];
+        value [b, *c] = a;
+        fail("Deconstruct of tuple with initial 'finished' should have thrown");
+        print(c[1].string);
+    } catch (AssertionError e) {
+        check(e.message == "length of c is less than minimum length of its static type [Integer, Finished]", "deconstruct [finished] 2");
+    }
 }

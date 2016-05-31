@@ -556,18 +556,6 @@ public class CeylonUtils {
                     || (skipRemoteRepositories && isRemote(path));
         }
 
-        private String resolveRepoUrl(Repositories repositories, String repoUrl) {
-            if (repoUrl.startsWith("+")) {
-                // The token is the name of a repository defined in the Ceylon configuration file
-                String path = repoUrl.substring(1);
-                Repositories.Repository repo = repositories.getRepository(path);
-                if (repo != null) {
-                    repoUrl = repo.getUrl();
-                }
-            }
-            return repoUrl;
-        }
-        
         private void addRepo(RepositoryManagerBuilder builder, Repositories.Repository repoInfo) {
             if (repoInfo != null) {
                 try {
@@ -585,14 +573,7 @@ public class CeylonUtils {
 
         private void addRepo(RepositoryManagerBuilder builder, Repositories repositories, String repoUrl) {
             try {
-                if (repoUrl.startsWith("+")) {
-                    // The token is the name of a repository defined in the Ceylon configuration file
-                    String path = repoUrl.substring(1);
-                    Repositories.Repository repo = repositories.getRepository(path);
-                    if (repo != null) {
-                        repoUrl = repo.getUrl();
-                    }
-                }
+                repoUrl = resolveRepoUrl(repositories, repoUrl);
                 String path = builder.repositoryBuilder().absolute(cwd, repoUrl);
                 if(!avoidRepository(path)){
                     RepositoryBuilderConfig cfg = new RepositoryBuilderConfig(log, isOffline(config), getTimeout(config), getProxy(config));
@@ -712,6 +693,40 @@ public class CeylonUtils {
         } catch (MalformedURLException e) {
             return false;
         }
+    }
+
+    /**
+     * Resolves a repository URL that can possibly contain a +-reference
+     * to a system repository or a user repository definition in the
+     * configuration file to one that is either a plain file system path
+     * or a remote URL
+     * @param repoUrl The repository URL to resolve
+     * @return The resolved repository URL
+     */
+    public static String resolveRepoUrl(String repoUrl) {
+        Repositories repositories = Repositories.get();
+        return resolveRepoUrl(repositories, repoUrl);
+    }
+
+    /**
+     * Resolves a repository URL that can possibly contain a +-reference
+     * to a system repository or a user repository definition in the
+     * configuration file to one that is either a plain file system path
+     * or a remote URL
+     * @param repositories The Repositories object to resolve from
+     * @param repoUrl The repository URL to resolve
+     * @return The resolved repository URL
+     */
+    public static String resolveRepoUrl(Repositories repositories, String repoUrl) {
+        if (repoUrl.startsWith("+")) {
+            // The token is the name of a repository defined in the Ceylon configuration file
+            String path = repoUrl.substring(1);
+            Repositories.Repository repo = repositories.getRepository(path);
+            if (repo != null) {
+                repoUrl = repo.getUrl();
+            }
+        }
+        return repoUrl;
     }
 }
 

@@ -329,3 +329,10 @@ function $cnt$(a,b) {
   return a.contains&&a.contains(b);
 }
 ex$.$cnt$=$cnt$;
+//Check spread destructuring
+function $cksprdstr$(min,t,v,loc,f,s) {
+  s=s.sequence();
+  if (s.shorterThan(min))throwexc(AssertionError('length of ' + v + ' is less than minimum length of its static type ' + t),loc,f);
+  return s;
+}
+ex$.$cksprdstr$=$cksprdstr$;

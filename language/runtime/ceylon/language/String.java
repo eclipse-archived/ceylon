@@ -124,21 +124,7 @@ public final class String
             buf.append(s.value);
         return instance(buf.toString());
     }
-
-    @Transient
-    public java.lang.String getTitlecased() {
-        return getTitlecased(value);
-    }
-
-    @Ignore
-    public static java.lang.String getTitlecased(java.lang.String value) {
-        if (value.isEmpty()) return "";
-        int first = value.codePointAt(0);
-        return java.lang.String.valueOf(java.lang.Character.toChars(
-                    java.lang.Character.toTitleCase(first)))
-                + value.substring(java.lang.Character.charCount(first));
-    }
-
+    
     public java.lang.String getUppercased() {
         return getUppercased(value);
     }
