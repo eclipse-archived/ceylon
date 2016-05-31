@@ -460,13 +460,8 @@ public class JsCompiler {
     /** Closes all output writers and puts resulting artifacts in the output repo. */
     protected int finish() throws IOException {
         int result = 0;
-        final String outDir;
-        if (outRepo.getRepositories().size() == 1 && !outRepo.getRepositories().get(0).getRoot().isRemote()) {
-            outDir = ((File)outRepo.getRepositories().get(0).getRoot().getContent(File.class)).getAbsolutePath();
-        } else {
-            outDir = opts.getOutRepo();
-        }
-        if (!isURL(outDir)) {
+        String outDir = opts.getOutRepo();
+        if(!isURL(outDir)){
             File root = new File(outDir);
             if (root.exists()) {
                 if (!(root.isDirectory() && root.canWrite())) {
