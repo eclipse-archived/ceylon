@@ -46,6 +46,9 @@ function validate$typeparams(t,tparms,types) {
       var _tp = tparms[tp];
       var _ta = _type===nothingType$meta$model()?{t:Nothing}:_type.tipo;
       t.a[tp]= _ta.t ? _ta : {t:_type.tipo};
+      if (_type.$targs && !t.a[tp].a) {
+        t.a[tp].a=_type.$targs;
+      }
       if ((_tp.sts && _tp.sts.length>0) || (_tp.of && _tp.of.length > 0)) {
         var restraints=(_tp.sts && _tp.sts.length>0)?_tp.sts:_tp.of;
         for (var j=0; j<restraints.length;j++) {
