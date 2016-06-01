@@ -392,6 +392,11 @@ public class ClassDefinitionBuilder {
         this.satisfies.add(gen.makeSerializableType());
         return this;
     }
+    
+    public ClassDefinitionBuilder objectProxy() {
+        this.satisfies.add(gen.makeObjectProxyType());
+        return this;
+    }
 
     public ClassDefinitionBuilder satisfies(java.util.List<Type> satisfies) {
         this.satisfies.addAll(transformTypesList(satisfies));

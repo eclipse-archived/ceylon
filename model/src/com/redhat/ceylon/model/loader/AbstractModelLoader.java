@@ -211,6 +211,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final TypeMirror CEYLON_ANNOTATED_TYPE = simpleCeylonObjectType("ceylon.language.Annotated");
     private static final TypeMirror CEYLON_BASIC_TYPE = simpleCeylonObjectType("ceylon.language.Basic");
     private static final TypeMirror CEYLON_REIFIED_TYPE_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
+    private static final TypeMirror CEYLON_OBJECT_PROXY_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.language.ObjectProxy");
     private static final TypeMirror CEYLON_SERIALIZABLE_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.serialization.Serializable");
     private static final TypeMirror CEYLON_TYPE_DESCRIPTOR_TYPE = simpleCeylonObjectType("com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor");
     
@@ -4679,6 +4680,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // ignore generated interfaces
                 if(sameType(iface, CEYLON_REIFIED_TYPE_TYPE) 
                         || sameType(iface, CEYLON_SERIALIZABLE_TYPE)
+                        || sameType(iface, CEYLON_OBJECT_PROXY_TYPE)
                         || (classMirror.getAnnotation(CEYLON_CEYLON_ANNOTATION) != null && sameType(iface, JAVA_IO_SERIALIZABLE_TYPE_TYPE)))
                     continue;
                 try{

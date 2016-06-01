@@ -4727,6 +4727,10 @@ public abstract class AbstractTransformer implements Transformation {
         return makeJavaType(syms().ceylonSerializableType.tsym);
     }
     
+    public JCExpression makeObjectProxyType(){
+        return makeJavaType(syms().ceylonObjectProxyType.tsym);
+    }
+    
     public JCExpression makeNothingTypeDescriptor() {
         return make().Select(makeTypeDescriptorType(), 
                 names().fromString("NothingType"));

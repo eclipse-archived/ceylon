@@ -285,6 +285,7 @@ public class Symtab {
     public final Type ceylonMetamodelType;
     public final Type ceylonTypeDescriptorType;
     public final Type ceylonReifiedTypeType;
+    public final Type ceylonObjectProxyType;
     public final Type ceylonSerializationType;
     public final Type ceylonSerializableType;
     public final Type ceylonReachableReferenceType;
@@ -730,6 +731,7 @@ public class Symtab {
         ceylonMetamodelType = enterClass("com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel");
         ceylonTypeDescriptorType = enterClass("com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor");
         ceylonReifiedTypeType = enterClass("com.redhat.ceylon.compiler.java.runtime.model.ReifiedType");
+        ceylonObjectProxyType = enterClass("com.redhat.ceylon.compiler.java.language.ObjectProxy");
         ceylonSerializationType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.$Serialization$");
         ceylonSerializableType = enterClass("com.redhat.ceylon.compiler.java.runtime.serialization.Serializable");
         ceylonReachableReferenceType = enterClass("ceylon.language.serialization.ReachableReference");

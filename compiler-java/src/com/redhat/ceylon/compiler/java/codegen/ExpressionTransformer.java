@@ -91,6 +91,7 @@ import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -4079,7 +4080,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression ret = checkForQualifiedMemberExpressionOptimisation(expr);
         if(ret != null)
             return ret;
-        if (isSuperOrSuperOf(expr.getPrimary())
+        /*if (isSuperOrSuperOf(expr.getPrimary())
                 && getClassOrInterfaceContainer(expr) instanceof Interface
                 && ((Interface)getClassOrInterfaceContainer(expr)).isUseDefaultMethods()) {
             if (expr.getPrimary().getTypeModel().isObject()) {
@@ -4094,7 +4095,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     return make().Apply(null, naming.makeSelect(make().QualIdent(syms().systemType.tsym), "identityHashCode"), List.<JCExpression>of(makeEffectiveThis(expr)));
                 }
             }
-        }
+        }*/
         if (expr.getPrimary() instanceof Tree.BaseTypeExpression) {
             Tree.BaseTypeExpression primary = (Tree.BaseTypeExpression)expr.getPrimary();
             return transformMemberReference(expr, primary);
@@ -4626,7 +4627,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     /**
-     * 
+     * Transform a {@code super} or {@code (super of X)}. This is complicated by:
+     * <ul>
+     * <li>The {@code X} in {@code (super of X)} needn't be a direct supertype 
+     *   (but in Java's {@code Y.super.foo()}, {@code Y} must be a supertype)
+     * <li>The supertype might be an interface with a companion class.
+     * </ul> 
      * @param superOfQualifiedExpr
      * @param inheritedFrom The class or interface the declaration is being inherited from 
      * (may be indirect).
@@ -4634,72 +4640,125 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression widenSuper(
             Tree.Term superOfQualifiedExpr,
             TypeDeclaration inheritedFrom) {
-        JCExpression result;
-        TypeDeclaration direct = findDirectSuper(superOfQualifiedExpr, inheritedFrom);
-        if (direct instanceof Class) {
-            if(isWithinSyntheticClassBody()){
-                // super refers to the closest ClassOrInterface
-                Scope scope = superOfQualifiedExpr.getScope();
-                while (!(scope instanceof Package)) {
-                    if (scope instanceof ClassOrInterface) {
-                        break;
-                    }
-                    scope = scope.getContainer();
-                }
-                if(direct instanceof ClassOrInterface)
-                    result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
-                else
-                    result = naming.makeSuper();
-            }else{
-                result = naming.makeSuper();
-            }
-        } else if (direct instanceof Interface) {
-            Interface iface = (Interface)inheritedFrom;
+        JCExpression result = null;
+        final TypeDeclaration direct = findDirectSuper(superOfQualifiedExpr, inheritedFrom);
+        if (direct instanceof Interface
+                && !((Interface)direct).isUseDefaultMethods()) {
             JCExpression qualifier = null;
-            //if (iface.isUseDefaultMethods()) {
-            //    return makeJavaType(iface.getType(), JT_RAW);
-            //}
             if (direct instanceof LazyInterface
                     && !((LazyInterface)direct).isCeylon()) {
                 result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
             } else if (needDollarThis(superOfQualifiedExpr.getScope())) {
                 qualifier = naming.makeQuotedThis();
-                if (iface.equals(typeFact().getIdentifiableDeclaration())) {
+                if (inheritedFrom.equals(typeFact().getIdentifiableDeclaration())) {
                     result = naming.makeQualifiedSuper(qualifier);
+                } else if (inheritedFrom instanceof Interface){
+                    result = naming.makeCompanionAccessorCall(qualifier, (Interface)inheritedFrom);
                 } else {
-                    result = naming.makeCompanionAccessorCall(qualifier, iface);
+                    result = naming.makeSuper();
                 }
             } else {
-                if (iface.equals(typeFact().getIdentifiableDeclaration())) {
+                if (direct instanceof Interface && inheritedFrom.equals(typeFact().getIdentifiableDeclaration())) {
+                    qualifier = makeObjectProxyType();
                     result = naming.makeQualifiedSuper(qualifier);
                 } else if (((Interface) direct).isUseDefaultMethods()) {
                     if (isWithinSyntheticClassBody()) {
-                        // TODO make an access method
-                        Scope s = superOfQualifiedExpr.getScope();
-                        while (!(s instanceof Package)) {
-                            if (s instanceof ClassOrInterface) {
-                                break;
-                            }
-                            s = s.getContainer();
-                        }
-                        result = naming.makeQualIdent(naming.makeQualifiedThis(makeJavaType(((ClassOrInterface)s).getType(), JT_RAW)), "access");
+                        // make an access method
+                    }
+                    result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
+                } else if (inheritedFrom instanceof Interface){
+                    if (useMethod(superOfQualifiedExpr, (Interface)inheritedFrom)) {
+                        result = make().Apply(null, naming.makeQualIdent(receiver.qualifier(), naming.getCompanionAccessorName((Interface)inheritedFrom)), List.<JCExpression>nil());
                     } else {
-                        result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
+                        result = naming.makeCompanionFieldName((Interface)inheritedFrom);
                     }
                 } else {
-                    if (useMethod(superOfQualifiedExpr, iface)) {
-                        result = make().Apply(null, naming.makeQualIdent(receiver.qualifier(), naming.getCompanionAccessorName(iface)), List.<JCExpression>nil());
-                    } else {
-                        result = naming.makeCompanionFieldName(iface);
-                    }
+                    result = naming.makeSuper();
                 }
             }
             
-            if (Decl.isAncestorLocal(iface)) {
-                result = make().TypeCast(makeJavaType(iface.getType(), JT_COMPANION), result);
+            if (Decl.isAncestorLocal(inheritedFrom)) {
+                result = make().TypeCast(makeJavaType(inheritedFrom.getType(), JT_COMPANION), result);
             }
-            
-        } else {
+        } else if (inheritedFrom instanceof ClassOrInterface) {
+            // must either be a class or an interface using default methods
+            Scope scope = superOfQualifiedExpr.getScope();
+            while (!(scope instanceof Package)) {
+                if (scope instanceof ClassOrInterface) {
+                    break;
+                }
+                scope = scope.getContainer();
+            }
+            // if inheritedFrom instanceof Interface and uses companions, then...
+            // otherwise we need direct
+            if (direct instanceof Class) {
+                if(isWithinSyntheticClassBody()){
+                    // super refers to the closest ClassOrInterface
+                    if(direct instanceof ClassOrInterface)
+                        result = naming.makeQualifiedSuper(makeJavaType(((ClassOrInterface)scope).getType(), JT_RAW));
+                    else
+                        result = naming.makeSuper();
+                }else{
+                    if (scope instanceof Interface
+                            //&& ((Interface)scope).getSatisfiedTypes().isEmpty()
+                            ) {
+                        if (direct.isObject()
+                                && ((Interface)scope).getSatisfiedTypes().isEmpty()
+                                && ((Interface)scope).isUseDefaultMethods()) {
+                            // Can't use Object.super from within an interface in java 
+                            result = naming.makeQualifiedSuper(makeObjectProxyType());
+                        } else if (direct instanceof Interface) {
+                            result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
+                        } else {
+                            result = naming.makeSuper();
+                        }
+                    } else if (direct instanceof Interface) {
+                        result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
+                    } else {
+                        result = naming.makeSuper();
+                    }
+                }
+            } else if (direct instanceof Interface) {
+                Interface iface = (Interface)direct;
+                JCExpression qualifier = null;
+                //if (iface.isUseDefaultMethods()) {
+                //    return makeJavaType(iface.getType(), JT_RAW);
+                //}
+                if (direct instanceof LazyInterface
+                        && !((LazyInterface)direct).isCeylon()) {
+                    result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
+                } else if (needDollarThis(superOfQualifiedExpr.getScope())) {
+                    qualifier = naming.makeQuotedThis();
+                    if (iface.equals(typeFact().getIdentifiableDeclaration())) {
+                        result = naming.makeQualifiedSuper(qualifier);
+                    } else {
+                        result = naming.makeCompanionAccessorCall(qualifier, iface);
+                    }
+                } else {
+                    if (iface.equals(typeFact().getIdentifiableDeclaration())) {
+                        qualifier = makeObjectProxyType();
+                        result = naming.makeQualifiedSuper(qualifier);
+                    } else if ((inheritedFrom instanceof Interface == false || ((Interface)inheritedFrom).isUseDefaultMethods())
+                            && ((Interface) direct).isUseDefaultMethods()) {
+                        if (isWithinSyntheticClassBody()) {
+                            // make an access method
+                        }
+                        result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
+                    } else {
+                        if (useMethod(superOfQualifiedExpr, iface)) {
+                            result = make().Apply(null, naming.makeQualIdent(receiver.qualifier(), naming.getCompanionAccessorName(iface)), List.<JCExpression>nil());
+                        } else {
+                            result = naming.makeCompanionFieldName((Interface)inheritedFrom);
+                        }
+                    }
+                }
+                
+                if (Decl.isAncestorLocal(iface)) {
+                    result = make().TypeCast(makeJavaType(iface.getType(), JT_COMPANION), result);
+                }
+            }
+        } 
+        if (result == null) {
             result = makeErroneous(superOfQualifiedExpr, "compiler bug: " + (inheritedFrom == null ? "null" : inheritedFrom.getClass().getName()) + " is an unhandled case in widen()");
         }
         return result;
@@ -4712,17 +4771,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         TypeDeclaration x = null;
         TypeDeclaration td = (TypeDeclaration)s;
-        if (td.getExtendedType().getDeclaration().inherits(inheritedFrom)) {
-            x = td.getExtendedType().getDeclaration();
-        } else {
-            if (td.getSatisfiedTypes() != null) {
-                for (Type st : td.getSatisfiedTypes()) {
-                    if (st.getDeclaration().inherits(inheritedFrom)) {
-                        x = st.getDeclaration();
-                        break;
-                    }
+        if (td.getSatisfiedTypes() != null) {
+            for (Type st : td.getSatisfiedTypes()) {
+                if (st.getDeclaration().inherits(inheritedFrom)) {
+                    x = st.getDeclaration();
+                    break;
                 }
             }
+        }
+        if (x == null && td.getExtendedType().getDeclaration().inherits(inheritedFrom)) {
+            x = td.getExtendedType().getDeclaration();
         }
         return x;
     }

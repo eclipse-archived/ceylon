@@ -19,7 +19,7 @@
  */
 @noanno
 interface SuperInterface {
-    shared Integer i {
+    /*shared Integer i {
         return 2;
     }
     assign i {
@@ -27,12 +27,13 @@ interface SuperInterface {
     }
     shared default Integer m(){
         return 2;
-    }
+    }*/
 }
 
 @noanno
 class SuperInterface_Sub() satisfies SuperInterface {
-    shared actual Integer m() {
+    /*share
+    d actual Integer m() {
         super.i++;
         ++super.i;
         super.i+=1;
@@ -40,7 +41,7 @@ class SuperInterface_Sub() satisfies SuperInterface {
     }
     shared Integer m2() {
         return super.i + super.m();
-    }
+    }*/
     shared actual String string {
         return super.string;
     }
@@ -48,7 +49,7 @@ class SuperInterface_Sub() satisfies SuperInterface {
 
 @noanno
 interface SuperInterface_SubInterface satisfies SuperInterface {
-    shared actual Integer m() {
+    /*shared actual Integer m() {
         super.i++;
         ++super.i;
         super.i+=1;
@@ -56,7 +57,7 @@ interface SuperInterface_SubInterface satisfies SuperInterface {
     }
     shared Integer m2() {
         return super.i + super.m();
-    }
+    }*/
     shared actual String string {
         return super.string;
     }

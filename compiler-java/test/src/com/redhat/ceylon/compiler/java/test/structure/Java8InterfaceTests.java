@@ -110,6 +110,11 @@ public class Java8InterfaceTests extends CompilerTests {
     }
     
     @Test
+    public void super_() {
+        compareWithJavaSource("iface/Super");
+    }
+    
+    @Test
     public void superWithinSyntheticClass() {
         compareWithJavaSource("iface/SuperWithinSyntheticClass");
     }

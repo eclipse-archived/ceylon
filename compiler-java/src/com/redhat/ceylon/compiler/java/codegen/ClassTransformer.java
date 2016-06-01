@@ -2383,6 +2383,12 @@ public class ClassTransformer extends AbstractTransformer {
         // Generate the inner members list for model loading
         addAtMembers(classBuilder, model, def);
         addAtLocalDeclarations(classBuilder, def);
+        
+        if (model.isUseDefaultMethods()
+                && (model.getSatisfiedTypes().isEmpty()
+                        || model.getSatisfiedTypes().contains(typeFact().getIdentifiableType()))) {
+            classBuilder.objectProxy();
+        }
     }
 
     private void addAmbiguousMembers(ClassDefinitionBuilder classBuilder, Interface model) {
