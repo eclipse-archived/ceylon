@@ -34,8 +34,9 @@ function validate$params(ps,t,msg,nothrow) {
 }
 function validate$typeparams(t,tparms,types) {
   if (tparms) {
-    if (types===undefined||types.size<1)
-      throw TypeApplicationException$meta$model("Missing type arguments");
+    var tparmsSize=Object.keys(tparms).length;
+    if (types===undefined||types.size!=tparmsSize)
+      throw TypeApplicationException$meta$model("Not enough type arguments provided: "+(types?types.size:0)+", but requires exactly "+tparmsSize);
     if (!types.$_get)types=types.sequence();
     var i=0;
     t.a={};
