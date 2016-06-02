@@ -4306,7 +4306,6 @@ public class ClassTransformer extends AbstractTransformer {
                 if (Decl.equal(refinedDeclaration, methodModel)
                         || (!Decl.withinInterface(methodModel) && haveBody)
                         || Decl.withinInterface(methodModel) && daoKind != DaoKind.COMPANION) {
-                    
                     if (daoKind != DaoKind.COMPANION || 
                             haveBody) {
                         lb.append(makeDefaultParameterOverload( 

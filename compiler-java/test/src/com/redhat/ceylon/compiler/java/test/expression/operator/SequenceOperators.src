@@ -855,10 +855,9 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                             spread$19$element$ = (
                                 let
                                 {
-                                    .ceylon.language.List<? extends .ceylon.language.Character> arg$18$callable$ = (.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$19$element$;
                                     .ceylon.language.Integer arg$18$0 = .ceylon.language.Integer.instance(0L);
                                 }
-                                returning arg$18$callable$.get(arg$18$0);
+                                returning ((.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$19$element$).get(arg$18$0);
                             );
                         }
                         return spread$19$element$;
@@ -904,10 +903,9 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                             spread$22$element$ = (
                                 let
                                 {
-                                    .ceylon.language.List<? extends .ceylon.language.Character> arg$21$callable$ = (.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$22$element$;
                                     .ceylon.language.Integer arg$21$0 = .ceylon.language.Integer.instance(0L);
                                 }
-                                returning arg$21$callable$.get(arg$21$0);
+                                returning ((.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$22$element$).get(arg$21$0);
                             );
                         }
                         return spread$22$element$;

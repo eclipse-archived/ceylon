@@ -162,7 +162,7 @@ public abstract class CompilerTests {
                 "-cacherep", cacheDir,
                 "-g", 
                 "-cp", getClassPathAsPath(),
-                "-target", "8",
+                //"-target", "8",
                 "-suppress-warnings", "compilerAnnotation"));
     }
 
@@ -210,11 +210,11 @@ public abstract class CompilerTests {
         return (CeyloncFileManager)compiler.getStandardFileManager(diagnosticListener, null, null);
 	}
 	
-	//protected void compareWithJavaSource(String name) {
-	//	compareWithJavaSource(name+".src", name+".ceylon");
-	//}
+	protected void compareWithJavaSource(String name) {
+		compareWithJavaSource(name+".src", name+".ceylon");
+	}
     
-    List<String> optsForJava8Interfaces() {
+    /*List<String> optsForJava8Interfaces() {
         ArrayList<String> opts = new ArrayList<String>(defaultOptions);
         opts.add("-target");
         opts.add("8");
@@ -226,7 +226,7 @@ public abstract class CompilerTests {
     //@Override
     public void  compareWithJavaSource(String source) {
         compareWithJavaSource(optsForJava8Interfaces(), source+".src", source+".ceylon");
-    }
+    }*/
 	
     protected void compareWithJavaSourceNoOpt(String name) {
         List<String> options = new ArrayList<String>();
@@ -536,7 +536,7 @@ public abstract class CompilerTests {
 //            expectedSrc = compiledSrc;
 //        }
         
-//        Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
+        Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
     }
 
     protected void assertCompilesOk(ErrorCollector collector, ExitState exitState)

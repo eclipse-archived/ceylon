@@ -1,4 +1,4 @@
-@noanno
+/*@noanno
 interface Super {
     shared actual String string => super.string;
 }
@@ -61,4 +61,20 @@ shared interface AttributeValueProvider {
     
     string => attributeValue else super.string;
     
+}*/
+@compileUsing:"companion"
+interface I {
+    shared String s => "";
+}
+interface I2 satisfies I {
+    // should we have bridges here?
+    // there's nowhere to store the companion instance though
+    // so we need a method to obtain a companion instance
+    // and then a class needs tp implement that accessor
+    // for each interface in its hierarchy... hmm.
+}
+class C() satisfies I2 {
+    void m() {
+        String s = super.s;
+    }
 }

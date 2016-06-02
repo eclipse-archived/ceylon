@@ -261,13 +261,13 @@ class SuperOfBottomLeftClass extends .com.redhat.ceylon.compiler.java.test.expre
     
     @.java.lang.Override
     public long getA() {
-        return $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.getA() + super.getA();
+        return super.getA();
     }
     
     @.java.lang.Override
     public void setA(final long a) {
-        $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.setA(a);
-        $com$redhat$ceylon$compiler$java$test$expression$operator$SuperOfLeft$this$.setA(a);
+        super.setA(a);
+        super.setA(a);
     }
     
     @.java.lang.Override
