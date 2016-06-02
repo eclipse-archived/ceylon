@@ -1,0 +1,181 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class MethodWithVarargs implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodWithVarargs() {
+    }
+    
+    public final void f1() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$7 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f1$canonical$($ceylontmp$ns$7);
+            }
+            returning null;
+        );
+    }
+    
+    private void f1$canonical$(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$3 = ns;
+        final boolean isTuple$4 = iterable$3 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$3).$getArray$() != null;
+        .java.lang.Object elem$1 = null;
+        int i$5 = 0;
+        final int length$6;
+        if (isTuple$4) {
+            length$6 = (int)iterable$3.getSize();
+        } else {
+            length$6 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$2 = isTuple$4 ? null : iterable$3.iterator();
+        loop_0: while (isTuple$4 ? i$5 < length$6 : !((elem$1 = n$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$4) elem$1 = iterable$3.getFromFirst(i$5++);
+            final long n = ((.ceylon.language.Integer)elem$1).longValue();
+        }
+    }
+    
+    public final void f1(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
+        (
+            let
+            {
+                f1$canonical$(ns);
+            }
+            returning null;
+        );
+    }
+    
+    public final void f2(final long i) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$ns$15 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f2$canonical$(i, $ceylontmp$ns$15);
+            }
+            returning null;
+        );
+    }
+    
+    private void f2$canonical$(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$11 = ns;
+        final boolean isTuple$12 = iterable$11 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$11).$getArray$() != null;
+        .java.lang.Object elem$9 = null;
+        int i$13 = 0;
+        final int length$14;
+        if (isTuple$12) {
+            length$14 = (int)iterable$11.getSize();
+        } else {
+            length$14 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$10 = isTuple$12 ? null : iterable$11.iterator();
+        loop_1: while (isTuple$12 ? i$13 < length$14 : !((elem$9 = n$iterator$$10.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$12) elem$9 = iterable$11.getFromFirst(i$13++);
+            final long n = ((.ceylon.language.Integer)elem$9).longValue();
+        }
+    }
+    
+    public final void f2(final long i, final .ceylon.language.Sequential<? extends .ceylon.language.Integer> ns) {
+        (
+            let
+            {
+                f2$canonical$(i, ns);
+            }
+            returning null;
+        );
+    }
+    
+    public final void f3() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$os$23 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                f3$canonical$($ceylontmp$os$23);
+            }
+            returning null;
+        );
+    }
+    
+    private void f3$canonical$(final .ceylon.language.Sequential<? extends .java.lang.Object> os) {
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$19 = os;
+        final boolean isTuple$20 = iterable$19 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$19).$getArray$() != null;
+        .java.lang.Object elem$17 = null;
+        int i$21 = 0;
+        final int length$22;
+        if (isTuple$20) {
+            length$22 = (int)iterable$19.getSize();
+        } else {
+            length$22 = 0;
+        }
+        .ceylon.language.Iterator<? extends .java.lang.Object> o$iterator$$18 = isTuple$20 ? null : iterable$19.iterator();
+        loop_2: while (isTuple$20 ? i$21 < length$22 : !((elem$17 = o$iterator$$18.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$20) elem$17 = iterable$19.getFromFirst(i$21++);
+            final .java.lang.Object o = elem$17;
+        }
+    }
+    
+    public final void f3(final .ceylon.language.Sequential<? extends .java.lang.Object> os) {
+        (
+            let
+            {
+                f3$canonical$(os);
+            }
+            returning null;
+        );
+    }
+    
+    private final void m$priv$() {
+        f1((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(3L)}, .ceylon.language.empty_.get_()));
+        f2(1L, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(3L)}, .ceylon.language.empty_.get_()));
+        f1();
+        f2(1L);
+        f1((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(3L)}));
+        f2(1L, (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(3L)}));
+        f3((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(3L)}, .ceylon.language.empty_.get_()));
+        f3((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Integer.instance(1L);
+                
+                case 1: 
+                    return .ceylon.language.Integer.instance(2L);
+                
+                case 2: 
+                    return .ceylon.language.Integer.instance(3L);
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        }}, .ceylon.language.empty_.get_()));
+        f3((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.Integer.instance(2L),
+                .ceylon.language.Integer.instance(3L)}));
+        f3((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.Integer.instance(1L),
+                .ceylon.language.String.instance("foo"),
+                .ceylon.language.Float.instance(5.0)}, .ceylon.language.empty_.get_()));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodWithVarargs.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodWithVarargs.class);
+}

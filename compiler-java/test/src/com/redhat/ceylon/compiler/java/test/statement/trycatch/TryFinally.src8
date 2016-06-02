@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.statement.trycatch;
+
+class TryFinally implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    TryFinally() {
+    }
+    
+    private final void t$priv$() {
+    }
+    
+    private final void f$priv$() {
+    }
+    
+    private final void m$priv$() {
+        try {
+            t$priv$();
+        } finally {
+            f$priv$();
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.trycatch.TryFinally.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.trycatch.TryFinally.class);
+}

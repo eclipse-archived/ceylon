@@ -33,6 +33,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
  */
 public class PackageIssuesTests extends CompilerTests {
     
+    public PackageIssuesTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     private String testDir;
     
     @Override

@@ -1,0 +1,199 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+interface I1 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract long i1();
+    
+    public default long m1() {
+        return (
+            let
+            {
+                long $ceylontmp$n$0 = m1$n();
+            }
+            returning m1$canonical$($ceylontmp$n$0);
+        );
+    }
+    
+    public default long m1$n() {
+        return i1();
+    }
+    
+    private default long m1$canonical$(final long n) {
+        return n + this.i1();
+    }
+    
+    public default long m1(final long n) {
+        return m1$canonical$(n);
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.I1.class);
+}
+class CI1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .java.io.Serializable {
+    
+    CI1() {
+    }
+    
+    @.java.lang.Override
+    public final long i1() {
+        return 1L;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.CI1.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.CI1.class);
+}
+interface I2 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract long i2();
+    
+    public default long m2() {
+        return (
+            let
+            {
+                long $ceylontmp$n$1 = m2$n();
+            }
+            returning m2$canonical$($ceylontmp$n$1);
+        );
+    }
+    
+    public default long m2$n() {
+        return i2();
+    }
+    
+    private default long m2$canonical$(final long n) {
+        return n + this.i2();
+    }
+    
+    public default long m2(final long n) {
+        return m2$canonical$(n);
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.I2.class);
+}
+interface I3 extends .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2 {
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.I3.class);
+}
+interface I4 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract long i4();
+    
+    public default long m4() {
+        return (
+            let
+            {
+                long $ceylontmp$n$2 = m4$n();
+            }
+            returning m4$canonical$($ceylontmp$n$2);
+        );
+    }
+    
+    public default long m4$n() {
+        return i4();
+    }
+    
+    private default long m4$canonical$(final long n) {
+        return n;
+    }
+    
+    public default long m4(final long n) {
+        return m4$canonical$(n);
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.I4.class);
+}
+class CI3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I1, .com.redhat.ceylon.compiler.java.test.structure.concrete.I2, .java.io.Serializable {
+    
+    CI3() {
+    }
+    
+    @.java.lang.Override
+    public final long i1() {
+        return 1L;
+    }
+    
+    @.java.lang.Override
+    public final long i2() {
+        return 2L;
+    }
+    
+    public final long m2() {
+        return (
+            let
+            {
+                long $ceylontmp$n$3 = m2$n();
+            }
+            returning m2$canonical$($ceylontmp$n$3);
+        );
+    }
+    
+    private long m2$canonical$(final long n) {
+        return 2L;
+    }
+    
+    @.java.lang.Override
+    public final long m2(final long n) {
+        return m2$canonical$(n);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.CI3.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.CI3.class);
+}
+abstract class A7 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.I3, .com.redhat.ceylon.compiler.java.test.structure.concrete.I4, .java.io.Serializable {
+    
+    A7() {
+    }
+    
+    @.java.lang.Override
+    public final long i1() {
+        return 1L;
+    }
+    
+    public final long m4() {
+        return (
+            let
+            {
+                long $ceylontmp$n$4 = m4$n();
+            }
+            returning m4$canonical$($ceylontmp$n$4);
+        );
+    }
+    
+    private long m4$canonical$(final long n) {
+        return 5L;
+    }
+    
+    @.java.lang.Override
+    public final long m4(final long n) {
+        return m4$canonical$(n);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.A7.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.A7.class);
+}
+class CA7 extends .com.redhat.ceylon.compiler.java.test.structure.concrete.A7 {
+    
+    CA7() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public final long i2() {
+        return 2L;
+    }
+    
+    @.java.lang.Override
+    public final long i4() {
+        return 4L;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.CA7.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.CA7.class);
+}

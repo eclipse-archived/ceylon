@@ -32,6 +32,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class IssuesTests_6000_6499 extends CompilerTests {
 
+    public IssuesTests_6000_6499(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Override
     protected ModuleWithArtifact getDestModuleWithArtifact(String main){
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug62xx", "1");

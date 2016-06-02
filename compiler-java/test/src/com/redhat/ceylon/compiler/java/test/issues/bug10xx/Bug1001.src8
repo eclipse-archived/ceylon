@@ -1,0 +1,197 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
+
+final class bug1001Foo_ {
+    
+    private bug1001Foo_() {
+    }
+    
+    static long bug1001Foo() {
+        return 0L;
+    }
+}
+@.ceylon.language.SharedAnnotation$annotation$
+public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug1001() {
+        super();
+        this.paramMethodRefCaptured = null;
+        this.paramMethodRefCaptured2 = null;
+        this.initLateMethodRefCaptured$priv$ = null;
+    }
+    
+    public Bug1001(final .ceylon.language.Callable<? extends .ceylon.language.Integer> paramUnusedMethodRef, final .ceylon.language.Callable<? extends .ceylon.language.Integer> paramMethodRef, final .ceylon.language.Callable<? extends .ceylon.language.Integer> paramMethodRefCaptured, final .ceylon.language.Callable<? extends .java.lang.Object> paramMethodRefCaptured2) {
+        this.paramMethodRefCaptured = paramMethodRefCaptured;
+        this.paramMethodRefCaptured2 = paramMethodRefCaptured2;
+        
+        final class initUnusedMethodRef_ {
+            
+            private initUnusedMethodRef_() {
+                this.initUnusedMethodRef$priv$ = null;
+            }
+            private .ceylon.language.Callable<? extends .ceylon.language.Integer> initUnusedMethodRef$priv$;
+            
+            private final long initUnusedMethodRef$priv$() {
+                if (initUnusedMethodRef$priv$ == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return initUnusedMethodRef$priv$.$call$().longValue();
+            }
+        }
+        final initUnusedMethodRef_ initUnusedMethodRef = new initUnusedMethodRef_();
+        
+        final class initLateMethodRef_ {
+            
+            private initLateMethodRef_() {
+                this.initLateMethodRef$priv$ = null;
+            }
+            private .ceylon.language.Callable<? extends .ceylon.language.Integer> initLateMethodRef$priv$;
+            
+            private final long initLateMethodRef$priv$() {
+                if (initLateMethodRef$priv$ == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return initLateMethodRef$priv$.$call$().longValue();
+            }
+        }
+        final initLateMethodRef_ initLateMethodRef = new initLateMethodRef_();
+        initLateMethodRef.initLateMethodRef$priv$ = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> initLateCallableAttrib;
+        initLateCallableAttrib = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
+            }
+        };
+        this.initLateMethodRefCaptured$priv$ = null;
+        initLateMethodRefCaptured$priv$ = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
+            }
+        };
+        .ceylon.language.print_.print((
+            let
+            {
+                paramMethodRefCaptured2(0L);
+            }
+            returning null;
+        ));
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(initLateMethodRef.initLateMethodRef$priv$()));
+        .ceylon.language.print_.print(initLateCallableAttrib.$call$());
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(initLateMethodRefCaptured$priv$()));
+        .ceylon.language.print_.print(paramMethodRef.$call$());
+    }
+    private final .ceylon.language.Callable<? extends .ceylon.language.Integer> paramMethodRefCaptured;
+    
+    private final long paramMethodRefCaptured$priv$() {
+        return paramMethodRefCaptured.$call$().longValue();
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> paramMethodRefCaptured2;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    public final void paramMethodRefCaptured2(final long i) {
+        paramMethodRefCaptured2.$call$(.ceylon.language.Integer.instance(i));
+    }
+    private .ceylon.language.Callable<? extends .ceylon.language.Integer> initLateMethodRefCaptured$priv$;
+    
+    private final long initLateMethodRefCaptured$priv$() {
+        if (initLateMethodRefCaptured$priv$ == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return initLateMethodRefCaptured$priv$.$call$().longValue();
+    }
+    
+    private final void m$priv$() {
+        
+        final class localUnusedMethodRef_ {
+            
+            private localUnusedMethodRef_() {
+                this.localUnusedMethodRef = null;
+            }
+            private .ceylon.language.Callable<? extends .ceylon.language.Integer> localUnusedMethodRef;
+            
+            long localUnusedMethodRef() {
+                if (localUnusedMethodRef == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return localUnusedMethodRef.$call$().longValue();
+            }
+        }
+        final localUnusedMethodRef_ localUnusedMethodRef = new localUnusedMethodRef_();
+        
+        final class localLateMethodRef_ {
+            
+            private localLateMethodRef_() {
+                this.localLateMethodRef = null;
+            }
+            private .ceylon.language.Callable<? extends .ceylon.language.Integer> localLateMethodRef;
+            
+            long localLateMethodRef() {
+                if (localLateMethodRef == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return localLateMethodRef.$call$().longValue();
+            }
+        }
+        final localLateMethodRef_ localLateMethodRef = new localLateMethodRef_();
+        localLateMethodRef.localLateMethodRef = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Integer> localLateCallableAttrib;
+        localLateCallableAttrib = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
+            }
+        };
+        
+        final class localLateMethodRefCaptured_ {
+            
+            private localLateMethodRefCaptured_() {
+                this.localLateMethodRefCaptured = null;
+            }
+            private .ceylon.language.Callable<? extends .ceylon.language.Integer> localLateMethodRefCaptured;
+            
+            long localLateMethodRefCaptured() {
+                if (localLateMethodRefCaptured == null) throw new .com.redhat.ceylon.compiler.java.language.UninitializedMethodError(); else return localLateMethodRefCaptured.$call$().longValue();
+            }
+        }
+        final localLateMethodRefCaptured_ localLateMethodRefCaptured = new localLateMethodRefCaptured_();
+        localLateMethodRefCaptured.localLateMethodRefCaptured = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Integer()", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer $call$() {
+                return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1001Foo_.bug1001Foo());
+            }
+        };
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(localLateMethodRef.localLateMethodRef()));
+        .ceylon.language.print_.print(localLateCallableAttrib.$call$());
+        .ceylon.language.print_.print(.ceylon.language.Integer.instance(localLateMethodRefCaptured.localLateMethodRefCaptured()));
+        final long x = initLateMethodRefCaptured$priv$();
+        final long y = paramMethodRefCaptured$priv$();
+        
+        final class n_ {
+            
+            private n_() {
+            }
+            
+            void n() {
+                final long y = localLateMethodRefCaptured.localLateMethodRefCaptured();
+            }
+        }
+        final n_ n = new n_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1001.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1001.class);
+}
+final class bug1001bar_ {
+    
+    private bug1001bar_() {
+    }
+    
+    static void bug1001bar(final .com.redhat.ceylon.compiler.java.test.issues.bug10xx.Bug1001 bug) {
+        bug.paramMethodRefCaptured2(0L);
+    }
+}

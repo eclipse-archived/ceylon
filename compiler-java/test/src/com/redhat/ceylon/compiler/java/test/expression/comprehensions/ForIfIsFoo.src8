@@ -1,0 +1,111 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+class ForIfIsFoo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ForIfIsFoo() {
+    }
+    
+    public final void m(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$){
+                    {
+                        $iterator$0 = xs.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
+                    private .java.lang.Object x;
+                    private boolean x$exhausted$;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
+                            return false;
+                        } else {
+                            x = $ceylontmp$item$0;
+                            return true;
+                        }
+                    }
+                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo x$2;
+                    
+                    private final boolean $next$1() {
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
+                            final .java.lang.Object x = this.x;
+                            .java.lang.Object x$1 = null;
+                            if ((x$1 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo) {
+                                x$2 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x$1;
+                                break ifcomp_1;
+                            }
+                        }
+                        return !x$exhausted$;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.$next$1()) {
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo x$2 = this.x$2;
+                            final .java.lang.Object x = this.x;
+                            return x$2.foo();
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+    }
+    
+    public final void mvar(final .ceylon.language.Sequential<? extends .java.lang.Object> ys) {
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$){
+                    {
+                        $iterator$0 = ys.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
+                    private .java.lang.Object y;
+                    private boolean y$exhausted$;
+                    
+                    private final boolean y() {
+                        final .java.lang.Object $ceylontmp$item$3 = $iterator$0.next();
+                        y$exhausted$ = $ceylontmp$item$3 == .ceylon.language.finished_.get_();
+                        if (y$exhausted$) {
+                            return false;
+                        } else {
+                            y = $ceylontmp$item$3;
+                            return true;
+                        }
+                    }
+                    private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo x$5;
+                    
+                    private final boolean $next$1() {
+                        ifcomp_1: while (true) {
+                            if (!this.y()) break ifcomp_1;
+                            final .java.lang.Object y = this.y;
+                            .java.lang.Object x$4 = null;
+                            if ((x$4 = y) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo) {
+                                x$5 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x$4;
+                                break ifcomp_1;
+                            }
+                        }
+                        return !y$exhausted$;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.$next$1()) {
+                            final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo x$5 = this.x$5;
+                            final .java.lang.Object y = this.y;
+                            return x$5.foo();
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        });
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsFoo.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsFoo.class);
+}

@@ -1,0 +1,166 @@
+package com.redhat.ceylon.compiler.java.test.structure.nesting;
+
+interface Objects$objects_o$DummyI {
+}
+interface Objects$ObjectsI {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Objects$ObjectsI$impl();
+}
+class Objects implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Objects() {
+        final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_ objects_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_();
+    }
+    
+    abstract class Dummy implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        Dummy() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy.class));
+        }
+    }
+    
+    final class objects_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
+        
+        private objects_o_() {
+            super();
+        }
+        
+        class DummyC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            DummyC() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_.DummyC.class));
+            }
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.objects_o_.class));
+        }
+    }
+    
+    class ObjectsC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        ObjectsC() {
+            final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_ objectsc_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_();
+        }
+        
+        final class objectsc_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
+            
+            private objectsc_o_() {
+                super();
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.objectsc_o_.class));
+            }
+        }
+        
+        class ObjectsCC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            ObjectsCC() {
+                final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_ objectscc_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_();
+            }
+            
+            final class objectscc_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
+                
+                private objectscc_o_() {
+                    super();
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.objectscc_o_.class));
+                }
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.ObjectsCC.class));
+            }
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsC.class));
+        }
+    }
+    
+    final class ObjectsI$impl implements .java.io.Serializable {
+        
+        ObjectsI$impl(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI $this) {
+            this.$this = $this;
+        }
+        private final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI $this;
+        
+        class ObjectsIC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            ObjectsIC() {
+                final .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_ objectsic_o = new .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_();
+            }
+            
+            final class objectsic_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
+                
+                private objectsic_o_() {
+                    super();
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.objectsic_o_.class));
+                }
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects$ObjectsI.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.ObjectsI$impl.ObjectsIC.class));
+            }
+        }
+    }
+    
+    private final void local$priv$() {
+        
+        final class local_o_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
+            
+            private local_o_() {
+                super();
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("local")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(local_o_.class));
+            }
+        }
+        final local_o_ local_o = new local_o_();
+        try {
+            
+            final class local_o2_ extends .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.Dummy implements .java.io.Serializable {
+                
+                private local_o2_() {
+                    super();
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("local")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(local_o2_.class));
+                }
+            }
+            final local_o2_ local_o2 = new local_o2_();
+        } finally {
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.nesting.Objects.class);
+}

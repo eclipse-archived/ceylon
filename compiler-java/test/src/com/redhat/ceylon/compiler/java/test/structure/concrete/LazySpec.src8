@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+public interface LazySpec extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public default .java.lang.Object a() {
+        return this.b();
+    }
+    
+    public abstract .java.lang.Object b();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpec.class);
+}
+public interface LazySpecSub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpec {
+    
+    @.java.lang.Override
+    public default .java.lang.Object a() {
+        return .ceylon.language.nothing_.get_();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpecSub.class);
+}

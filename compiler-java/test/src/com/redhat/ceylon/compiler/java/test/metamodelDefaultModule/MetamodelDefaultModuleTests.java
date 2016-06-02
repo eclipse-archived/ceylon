@@ -25,6 +25,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class MetamodelDefaultModuleTests extends CompilerTests {
 
+    public MetamodelDefaultModuleTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Test
     public void testBugCL257() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.metamodelDefaultModule.bug257", "bug257.ceylon");

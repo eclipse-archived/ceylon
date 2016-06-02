@@ -1,0 +1,36 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+final class bug676_ {
+    
+    private bug676_() {
+    }
+    
+    static void bug676() {
+        .ceylon.language.Integer l$1;
+        if ((l$1 = new .ceylon.language.Array<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$), new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.null_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 4, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Integer.instance(1L);
+                
+                case 1: 
+                    return .ceylon.language.Integer.instance(2L);
+                
+                case 2: 
+                    return null;
+                
+                case 3: 
+                    return .ceylon.language.Integer.instance(3L);
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        }).getLast()) != null) {
+            final long l$2 = l$1.longValue();
+        }
+    }
+}

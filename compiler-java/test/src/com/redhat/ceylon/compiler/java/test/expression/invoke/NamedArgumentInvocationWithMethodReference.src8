@@ -1,0 +1,51 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class NamedArgumentInvocationWithMethodReference implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    NamedArgumentInvocationWithMethodReference() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void m$priv$() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void m2$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
+    final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void test$priv$() {
+        (
+            let
+            {
+                .ceylon.language.Callable<? extends .java.lang.Object> arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .java.lang.Object $call$() {
+                        return (
+                            let
+                            {
+                                .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationWithMethodReference.this.m$priv$();
+                            }
+                            returning null;
+                        );
+                    }
+                };
+                m2$priv$(arg$0$0);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationWithMethodReference.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.NamedArgumentInvocationWithMethodReference.class);
+}

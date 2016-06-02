@@ -10,8 +10,8 @@ import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
 
 public class ReportingTests extends CompilerTests {
     
-    public ReportingTests() {
-        super();
+    public ReportingTests(String[] compilerArgs) {
+        super(compilerArgs);
         defaultOptions.clear();
         defaultOptions.addAll(Arrays.asList("-out", destDir, "-cacherep", cacheDir, "-g", 
                 "-cp", getClassPathAsPath()));

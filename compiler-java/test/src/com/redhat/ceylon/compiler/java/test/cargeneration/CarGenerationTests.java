@@ -45,6 +45,10 @@ import com.redhat.ceylon.javax.tools.Diagnostic;
 
 public class CarGenerationTests extends CompilerTests {
     
+    public CarGenerationTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Test
     public void testCarResourceSimple() throws IOException{
         List<String> options = new LinkedList<String>();

@@ -36,6 +36,10 @@ import com.redhat.ceylon.tools.test.AbstractToolTests;
 
 public class HelpToolTests extends AbstractToolTests {
 
+    public HelpToolTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Test
     public void testHelp() {
         ToolModel<CeylonHelpTool> model = pluginLoader.loadToolModel("help");

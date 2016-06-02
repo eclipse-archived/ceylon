@@ -42,6 +42,10 @@ import com.redhat.ceylon.model.cmr.JDKUtils;
 
 public class MiscTests extends CompilerTests {
 
+    public MiscTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Test
     public void testDefaultedModel() throws Exception{
         compile("defaultedmodel/DefineDefaulted.ceylon");

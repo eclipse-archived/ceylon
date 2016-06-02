@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+interface RNParameters<Element, Absent> extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$Element();
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$Absent();
+    
+    public abstract .java.lang.Object m(final .java.lang.Object p);
+    
+    public default .java.lang.Object m2(final .java.lang.Object p) {
+        return null;
+    }
+}
+class RNParametersImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.RNParameters<Element, .java.lang.Object>, .java.io.Serializable {
+    
+    RNParametersImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        this.$reified$Element = $reified$Element;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$Element() {
+        return $reified$Element;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$klass$RNParameters$Absent() {
+        return .ceylon.language.Null.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object m(final .java.lang.Object p) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.RNParametersImpl.class, $reified$Element);
+    }
+}

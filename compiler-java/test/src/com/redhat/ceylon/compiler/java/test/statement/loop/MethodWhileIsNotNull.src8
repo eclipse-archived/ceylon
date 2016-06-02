@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodWhileIsNotNull implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodWhileIsNotNull() {
+    }
+    
+    public final void m(final .java.lang.Object x) {
+        loop_0: while (true) {
+            if (!(x == null)) {
+                .ceylon.language.print_.print(.ceylon.language.String.instance(x.toString()));
+            } else {
+                break loop_0;
+            }
+        }
+    }
+    
+    public final void mvar(final .java.lang.Object y) {
+        loop_1: while (true) {
+            .java.lang.Object x$1;
+            if (!((x$1 = y) == null)) {
+                final .java.lang.Object x$2 = x$1;
+                .ceylon.language.print_.print(.ceylon.language.String.instance(x$2.toString()));
+            } else {
+                break loop_1;
+            }
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsNotNull.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileIsNotNull.class);
+}

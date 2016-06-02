@@ -1,0 +1,72 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+final class bug1593_noArguments_ {
+    
+    private bug1593_noArguments_() {
+    }
+    
+    static void bug1593_noArguments() {
+    }
+}
+final class bug1593_anything_ {
+    
+    private bug1593_anything_() {
+    }
+    private static final .java.lang.Object value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (
+                let
+                {
+                    .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_noArguments_.bug1593_noArguments();
+                }
+                returning null;
+            );
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .java.lang.Object get_() {
+        if (bug1593_anything_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1593_anything\' before it was set");
+        }
+    }
+}
+final class bug1593_empty_ {
+    
+    private bug1593_empty_() {
+    }
+    private static final .ceylon.language.Empty value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = .ceylon.language.empty_.get_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.Empty get_() {
+        if (bug1593_empty_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1593_empty\' before it was set");
+        }
+    }
+}

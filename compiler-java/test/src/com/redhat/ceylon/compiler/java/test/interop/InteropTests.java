@@ -42,6 +42,10 @@ import com.redhat.ceylon.model.cmr.JDKUtils;
 
 public class InteropTests extends CompilerTests {
 
+    public InteropTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Override
     protected ModuleWithArtifact getDestModuleWithArtifact(String main) {
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.interop", "1");

@@ -1,0 +1,61 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertConditionListBoolBoolIs implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AssertConditionListBoolBoolIs() {
+    }
+    
+    private final boolean m$priv$(final .java.lang.Object x, final long z) {
+        .java.lang.String $ceylontmp$assert$0 = null;
+        final long x$2;
+        if (z < 10L) {
+            if (z > 0L) {
+                .java.lang.Object x$1 = null;
+                if ((x$1 = x) instanceof .ceylon.language.Integer) {
+                    x$2 = ((.ceylon.language.Integer)x$1).longValue();
+                } else {
+                    x$2 = 0L;
+                    $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tunviolated ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tviolated ") + "is Integer x";
+                }
+            } else {
+                x$2 = 0L;
+                $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tviolated ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer x";
+            }
+        } else {
+            x$2 = 0L;
+            $ceylontmp$assert$0 = .java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer x";
+        }
+        if ($ceylontmp$assert$0 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$0);
+        return x$2 == 1L;
+    }
+    
+    private final boolean mvar$priv$(final .java.lang.Object x, final long z) {
+        .java.lang.String $ceylontmp$assert$3 = null;
+        final long y$5;
+        if (z < 10L) {
+            if (z > 0L) {
+                .java.lang.Object y$4 = null;
+                if ((y$4 = x) instanceof .ceylon.language.Integer) {
+                    y$5 = ((.ceylon.language.Integer)y$4).longValue();
+                } else {
+                    y$5 = 0L;
+                    $ceylontmp$assert$3 = .java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tunviolated ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tviolated ") + "is Integer y = x";
+                }
+            } else {
+                y$5 = 0L;
+                $ceylontmp$assert$3 = .java.lang.System.lineSeparator() + "\tunviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tviolated ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x";
+            }
+        } else {
+            y$5 = 0L;
+            $ceylontmp$assert$3 = .java.lang.System.lineSeparator() + "\tviolated " + "z < 10" + (.java.lang.System.lineSeparator() + "\tuntested ") + "z > 0" + (.java.lang.System.lineSeparator() + "\tuntested ") + "is Integer y = x";
+        }
+        if ($ceylontmp$assert$3 != null) throw new .ceylon.language.AssertionError("Assertion failed" + $ceylontmp$assert$3);
+        return y$5 == 1L;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListBoolBoolIs.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.AssertConditionListBoolBoolIs.class);
+}

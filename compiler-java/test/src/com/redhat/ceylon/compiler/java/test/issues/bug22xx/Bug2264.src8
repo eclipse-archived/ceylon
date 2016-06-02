@@ -1,0 +1,43 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("xInt")
+public final class xInt_ {
+    
+    private xInt_() {
+    }
+    private static long value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = 2L;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = 0L;
+            $init$value = false;
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public static long get_() {
+        if (xInt_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'xInt\' before it was set");
+        }
+    }
+    
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("xInt")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long xInt) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = xInt;
+    }
+}

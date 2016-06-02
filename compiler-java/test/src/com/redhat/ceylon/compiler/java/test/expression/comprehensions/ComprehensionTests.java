@@ -29,6 +29,11 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class ComprehensionTests extends CompilerTests {
 
+    public ComprehensionTests(String[] compilerArgs) {
+        super(compilerArgs);
+        // TODO Auto-generated constructor stub
+    }
+
     @Override
     protected ModuleWithArtifact getDestModuleWithArtifact(String main){
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.expression.comprehensions", "1.0");

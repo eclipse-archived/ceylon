@@ -28,6 +28,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class ExpressionTests extends CompilerTests {
 	
+    public ExpressionTests(String[] args) {
+        super(args);
+    }
+
     @Override
     protected ModuleWithArtifact getDestModuleWithArtifact(String main){
         int p = main.lastIndexOf('.');

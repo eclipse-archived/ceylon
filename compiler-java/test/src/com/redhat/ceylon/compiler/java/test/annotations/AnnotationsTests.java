@@ -30,6 +30,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 
 public class AnnotationsTests extends CompilerTests {
+    public AnnotationsTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Override
     protected ModuleWithArtifact getDestModuleWithArtifact(String main){
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.annotations", "1.2.3");

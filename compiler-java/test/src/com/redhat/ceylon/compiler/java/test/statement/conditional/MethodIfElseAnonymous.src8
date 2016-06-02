@@ -1,0 +1,26 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+final class methodIfElseAnonymous_ {
+    
+    private methodIfElseAnonymous_() {
+    }
+    
+    static void methodIfElseAnonymous() {
+        final .ceylon.language.Boolean foo = .ceylon.language.Boolean.instance(true);
+        .java.lang.Object foo$1;
+        if (.ceylon.language.true_.get_().equals(foo$1 = foo)) {
+            final boolean foo$3 = ((.ceylon.language.Boolean)foo$1).booleanValue();
+            final boolean yyy = foo$3;
+        } else {
+            final .ceylon.language.Boolean foo$2 = (.ceylon.language.Boolean)foo$1;
+            final .ceylon.language.Boolean xxx = foo$2;
+        }
+        final .java.lang.Object bar = .ceylon.language.Boolean.instance(true);
+        .java.lang.Object bar$5;
+        if (.ceylon.language.true_.get_().equals(bar$5 = bar)) {
+            final boolean bar$6 = ((.ceylon.language.Boolean)bar$5).booleanValue();
+            final boolean yyy = bar$6;
+        } else {
+        }
+    }
+}

@@ -30,6 +30,10 @@ public class StatementTests extends CompilerTests {
     //
     // Method attributes and variables
     
+    public StatementTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Test
     public void testAtrMethodAttribute(){
         compareWithJavaSource("attribute/MethodAttribute");

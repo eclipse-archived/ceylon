@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.structure.importIt;
+
+class ImportTypeMultiple implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ImportTypeMultiple() {
+    }
+    
+    private final void m$priv$() {
+        new .com.redhat.ceylon.compiler.java.test.structure.importIt.pkg.C1();
+        new .com.redhat.ceylon.compiler.java.test.structure.importIt.pkg.C2();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.importIt.ImportTypeMultiple.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.importIt.ImportTypeMultiple.class);
+}

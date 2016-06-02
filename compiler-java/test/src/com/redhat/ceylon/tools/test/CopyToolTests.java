@@ -33,6 +33,10 @@ import com.redhat.ceylon.tools.plugin.CeylonPluginTool;
 
 public class CopyToolTests extends AbstractToolTests {
 
+    public CopyToolTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Test
     public void testNoArgs() throws Exception {
         ToolModel<CeylonCopyTool> model = pluginLoader.loadToolModel("copy");

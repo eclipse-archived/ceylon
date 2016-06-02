@@ -1,0 +1,95 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+interface TypeParamRename<T, U> extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$T();
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$U();
+    
+    public default U m(final T t1) {
+        return (
+            let
+            {
+                T $ceylontmp$t2$0 = m$t2(t1);
+            }
+            returning m$canonical$(t1, $ceylontmp$t2$0);
+        );
+    }
+    
+    public default T m$t2(final T t1) {
+        return null;
+    }
+    
+    private default U m$canonical$(final T t1, final T t2) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    public default U m(final T t1, final T t2) {
+        return m$canonical$(t1, t2);
+    }
+    
+    public default <V, W>W m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$W) {
+        return (
+            let
+            {
+                V $ceylontmp$v$1 = m2$v($reified$V, $reified$W);
+            }
+            returning m2$canonical$($reified$V, $reified$W, $ceylontmp$v$1);
+        );
+    }
+    
+    public default <V, W>V m2$v(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$W) {
+        return null;
+    }
+    
+    private default <V, W>W m2$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$W, final V v) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    public default <V, W>W m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$W, final V v) {
+        return m2$canonical$($reified$V, $reified$W, v);
+    }
+}
+class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<X, Y>, .java.io.Serializable {
+    
+    TypeParamRenameKls(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y) {
+        this.$reified$X = $reified$X;
+        this.$reified$Y = $reified$Y;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$U() {
+        return $reified$Y;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$T() {
+        return $reified$X;
+    }
+    
+    public <A, B>B m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B) {
+        return (
+            let
+            {
+                A $ceylontmp$v$2 = m2$v($reified$A, $reified$B);
+            }
+            returning m2$canonical$($reified$A, $reified$B, $ceylontmp$v$2);
+        );
+    }
+    
+    private <A, B>B m2$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B, final A v) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    @.java.lang.Override
+    public <A, B>B m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B, final A v) {
+        return m2$canonical$($reified$A, $reified$B, v);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRenameKls.class, $reified$X, $reified$Y);
+    }
+}

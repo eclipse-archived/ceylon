@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+final class thenElseOptimization_ {
+    
+    private thenElseOptimization_() {
+    }
+    
+    static void thenElseOptimization(final boolean b) {
+        final long thenElse0 = b ? 2L : 3L;
+        final .java.lang.String thenElse1 = b ? "true" : "false";
+        final .java.lang.Object thenElse2 = b ? .ceylon.language.String.instance("true") : .ceylon.language.Integer.instance(2L);
+        final .ceylon.language.String thenElse3 = b ? .ceylon.language.String.instance("true") : null;
+        final boolean thenElse4 = b ? true : false;
+        final .ceylon.language.Boolean thenElse5 = b ? .ceylon.language.Boolean.instance(true) : null;
+    }
+}

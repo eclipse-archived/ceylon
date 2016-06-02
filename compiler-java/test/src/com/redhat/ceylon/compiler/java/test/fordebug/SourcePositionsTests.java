@@ -26,6 +26,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class SourcePositionsTests extends CompilerTests {
 	
+    public SourcePositionsTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Test
     @Ignore
     public void testSimplePositions(){

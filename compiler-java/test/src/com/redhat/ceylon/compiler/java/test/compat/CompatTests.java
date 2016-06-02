@@ -18,6 +18,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class CompatTests extends CompilerTests {
 
+    public CompatTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     /** The location of the ceylon 1.2.0 distribution (as downloaded). */
     private static String ceylon120Dist;
     

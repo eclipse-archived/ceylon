@@ -1,0 +1,58 @@
+package com.redhat.ceylon.compiler.java.test.expression.comprehensions;
+
+final class forIfIsBooleanConditions_ {
+    
+    private forIfIsBooleanConditions_() {
+    }
+    
+    static void forIfIsBooleanConditions(final .ceylon.language.Sequential<? extends .java.lang.Object> xs) {
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> z = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = xs.iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
+                    private .java.lang.Object x;
+                    private boolean x$exhausted$;
+                    
+                    private final boolean x() {
+                        final .java.lang.Object $ceylontmp$item$0 = $iterator$0.next();
+                        x$exhausted$ = $ceylontmp$item$0 == .ceylon.language.finished_.get_();
+                        if (x$exhausted$) {
+                            return false;
+                        } else {
+                            x = $ceylontmp$item$0;
+                            return true;
+                        }
+                    }
+                    private long y$2;
+                    
+                    private final boolean $next$1() {
+                        ifcomp_1: while (true) {
+                            if (!this.x()) break ifcomp_1;
+                            final .java.lang.Object x = this.x;
+                            .java.lang.Object y$1 = null;
+                            if ((y$1 = x) instanceof .ceylon.language.Integer) {
+                                y$2 = ((.ceylon.language.Integer)y$1).longValue();
+                                if (y$2 > 0L) {
+                                    break ifcomp_1;
+                                }
+                            }
+                        }
+                        return !x$exhausted$;
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.$next$1()) {
+                            final long y$2 = this.y$2;
+                            final .java.lang.Object x = this.x;
+                            return .ceylon.language.Integer.instance(y$2 + 1L);
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
+    }
+}

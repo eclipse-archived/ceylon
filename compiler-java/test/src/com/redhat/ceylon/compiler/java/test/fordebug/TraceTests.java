@@ -11,6 +11,10 @@ import com.redhat.ceylon.compiler.java.test.fordebug.Tracer.Step;
 
 public class TraceTests extends DebuggerTests {
     
+    public TraceTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Override
     protected String transformDestDir(String name) {
         return name + "-trace";

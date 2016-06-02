@@ -33,6 +33,10 @@ import com.redhat.ceylon.tools.info.CeylonInfoTool;
 
 public class InfoToolTests extends AbstractToolTests {
 
+    public InfoToolTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Test
     public void testNoArgs() throws Exception {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");

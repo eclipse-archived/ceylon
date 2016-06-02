@@ -1,0 +1,194 @@
+package com.redhat.ceylon.compiler.java.test.expression.selfref;
+
+class OuterReferenceSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    OuterReferenceSuper() {
+    }
+    
+    public final boolean superTest() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReferenceSuper.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReferenceSuper.class);
+}
+interface OuterReference$InnerIface {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.InnerIface$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$OuterReference$InnerIface$impl();
+}
+interface OuterReference$m$LocalIface {
+    
+    public .java.lang.Object LocalIface$impl();
+}
+class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReferenceSuper {
+    
+    OuterReference() {
+        super();
+    }
+    
+    private final boolean $default$InnerClass$b() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
+    }
+    
+    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        InnerClass() {
+            (
+                let
+                {
+                    boolean $ceylontmp$b$0 = $default$InnerClass$b();
+                    this($ceylontmp$b$0);
+                }
+                returning null;
+            );
+        }
+        
+        InnerClass(final boolean b) {
+        }
+        
+        private final boolean m$priv$() {
+            return (
+                let
+                {
+                    boolean $ceylontmp$b$1 = m$b();
+                }
+                returning m$priv$$canonical$($ceylontmp$b$1);
+            );
+        }
+        
+        private final boolean m$b() {
+            return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
+        }
+        
+        private boolean m$priv$$canonical$(final boolean b) {
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
+            return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.test();
+        }
+        
+        private final boolean m$priv$(final boolean b) {
+            return m$priv$$canonical$(b);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.InnerClass.class));
+        }
+    }
+    
+    final class InnerIface$impl implements .java.io.Serializable {
+        
+        InnerIface$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$InnerIface $this) {
+            this.$this = $this;
+        }
+        private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$InnerIface $this;
+        
+        private boolean m$priv$() {
+            return (
+                let
+                {
+                    boolean $ceylontmp$b$2 = m$b();
+                }
+                returning m$priv$$canonical$($ceylontmp$b$2);
+            );
+        }
+        
+        private final boolean m$b() {
+            return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
+        }
+        
+        private boolean m$priv$$canonical$(final boolean b) {
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
+            return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.test();
+        }
+        
+        private boolean m$priv$(final boolean b) {
+            return m$priv$$canonical$(b);
+        }
+    }
+    
+    private final void m$priv$() {
+        
+        final class LocalClass$impl implements .java.io.Serializable {
+            
+            private final boolean $default$b() {
+                return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
+            }
+        }
+        
+        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            LocalClass() {
+                (
+                    let
+                    {
+                        LocalClass$impl $ceylontmp$impl$3 = new LocalClass$impl();
+                        boolean $ceylontmp$b$4 = $ceylontmp$impl$3.$default$b();
+                        this($ceylontmp$b$4);
+                    }
+                    returning null;
+                );
+            }
+            
+            LocalClass(final boolean b) {
+                .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
+                .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.test();
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class));
+            }
+        }
+        
+        final class LocalIface$impl implements .java.io.Serializable {
+            
+            LocalIface$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$m$LocalIface $this) {
+                this.$this = $this;
+            }
+            private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference$m$LocalIface $this;
+            
+            private void m$priv$() {
+                (
+                    let
+                    {
+                        boolean $ceylontmp$b$5 = m$b();
+                        m$priv$$canonical$($ceylontmp$b$5);
+                    }
+                    returning null;
+                );
+            }
+            
+            private final boolean m$b() {
+                return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
+            }
+            
+            private void m$priv$$canonical$(final boolean b) {
+                .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.superTest();
+                .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.this.test();
+            }
+            
+            private void m$priv$(final boolean b) {
+                (
+                    let
+                    {
+                        m$priv$$canonical$(b);
+                    }
+                    returning null;
+                );
+            }
+        }
+    }
+    
+    public final boolean test() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterReference.class);
+}

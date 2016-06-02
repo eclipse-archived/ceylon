@@ -1,0 +1,131 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+final class concreteMethodBySpecificationMethod_ {
+    
+    private concreteMethodBySpecificationMethod_() {
+    }
+    
+    static long concreteMethodBySpecificationMethod() {
+        return 1L;
+    }
+}
+interface ConcreteMethodBySpecification extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract long mFormal(final long i);
+    
+    public default long mSharedFn() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.concreteMethodBySpecificationMethod_.concreteMethodBySpecificationMethod();
+    }
+    
+    public default long mSharedMem() {
+        return (
+            let
+            {
+                long $ceylontmp$i$0 = mSharedMem$i();
+            }
+            returning mSharedMem$canonical$($ceylontmp$i$0);
+        );
+    }
+    
+    public default long mSharedMem$i() {
+        return 1L;
+    }
+    
+    private default long mSharedMem$canonical$(final long i) {
+        return this.mFormal(i);
+    }
+    
+    public default long mSharedMem(final long i) {
+        return mSharedMem$canonical$(i);
+    }
+    
+    public default long mDefaultFn() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.concreteMethodBySpecificationMethod_.concreteMethodBySpecificationMethod();
+    }
+    
+    public default long mDefaultMem() {
+        return (
+            let
+            {
+                long $ceylontmp$i$1 = mDefaultMem$i();
+            }
+            returning mDefaultMem$canonical$($ceylontmp$i$1);
+        );
+    }
+    
+    public default long mDefaultMem$i() {
+        return 1L;
+    }
+    
+    private default long mDefaultMem$canonical$(final long i) {
+        return this.mFormal(i);
+    }
+    
+    public default long mDefaultMem(final long i) {
+        return mDefaultMem$canonical$(i);
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification.class);
+}
+interface ConcreteMethodBySpecificationSub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification {
+    
+    public default long mSharedSup() {
+        return (
+            let
+            {
+                long $ceylontmp$i$2 = mSharedSup$i();
+            }
+            returning mSharedSup$canonical$($ceylontmp$i$2);
+        );
+    }
+    
+    public default long mSharedSup$i() {
+        return 1L;
+    }
+    
+    private default long mSharedSup$canonical$(final long i) {
+        return this.mFormal(i);
+    }
+    
+    public default long mSharedSup(final long i) {
+        return mSharedSup$canonical$(i);
+    }
+    
+    public default long mDefaultSup() {
+        return (
+            let
+            {
+                long $ceylontmp$i$3 = mDefaultSup$i();
+            }
+            returning mDefaultSup$canonical$($ceylontmp$i$3);
+        );
+    }
+    
+    public default long mDefaultSup$i() {
+        return 1L;
+    }
+    
+    private default long mDefaultSup$canonical$(final long i) {
+        return this.mFormal(i);
+    }
+    
+    public default long mDefaultSup(final long i) {
+        return mDefaultSup$canonical$(i);
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub.class);
+}
+class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub, .java.io.Serializable {
+    
+    ConcreteMethodBySpecificationImpl() {
+    }
+    
+    @.java.lang.Override
+    public final long mFormal(final long i) {
+        return i;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationImpl.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationImpl.class);
+}

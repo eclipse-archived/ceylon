@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
+
+interface Bug143Writer extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract .java.lang.Object write(final .java.lang.String string);
+    
+    public default void writeLine(final .java.lang.String string) {
+        this.write(string);
+        this.write(.ceylon.language.operatingSystem_.get_().getNewline());
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug143Writer.class);
+}
+class Bug143ToFunctionWriter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug143Writer, .java.io.Serializable {
+    
+    protected Bug143ToFunctionWriter() {
+        super();
+        this.write = null;
+    }
+    
+    Bug143ToFunctionWriter(final .ceylon.language.Callable<? extends .java.lang.Object> write) {
+        this.write = write;
+    }
+    private final .ceylon.language.Callable<? extends .java.lang.Object> write;
+    
+    @.java.lang.Override
+    public final .java.lang.Object write(final .java.lang.String string) {
+        return write.$call$(.ceylon.language.String.instance(string));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug143ToFunctionWriter.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug143ToFunctionWriter.class);
+}

@@ -30,6 +30,10 @@ public class StructureTests extends CompilerTests {
     //
     // Packages
     
+    public StructureTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Test
     public void testPkgPackage(){
         compareWithJavaSource("pkg/pkg");

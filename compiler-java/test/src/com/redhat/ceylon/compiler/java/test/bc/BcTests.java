@@ -50,6 +50,10 @@ import com.redhat.ceylon.javax.tools.JavaCompiler.CompilationTask;
 
 public class BcTests extends CompilerTests {
     
+    public BcTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     private final String providerModuleSrc = "provider/module.ceylon";
     private final String providerPackageSrc = "provider/package.ceylon";
     private final String clientModuleSrc = "client/module.ceylon";

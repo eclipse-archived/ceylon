@@ -1,0 +1,27 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfConditionListBoolBool implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodIfConditionListBoolBool() {
+    }
+    
+    private final boolean m$priv$(final long x) {
+        boolean $ceylontmp$if$0 = false;
+        if (x > 0L) {
+            if (x < 10L) {
+                $ceylontmp$if$0 = true;
+            }
+        }
+        if ($ceylontmp$if$0) {
+            return x == 1L;
+        } else {
+            return false;
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListBoolBool.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfConditionListBoolBool.class);
+}

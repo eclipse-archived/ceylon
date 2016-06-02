@@ -34,6 +34,11 @@ import com.redhat.ceylon.tools.classpath.CeylonClasspathTool;
 
 public class ClasspathToolTests extends AbstractToolTests {
 
+    public ClasspathToolTests(String[] compilerArgs) {
+        super(compilerArgs);
+        // TODO Auto-generated constructor stub
+    }
+
     @Test
     public void testNoArgs() throws Exception {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");

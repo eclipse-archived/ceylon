@@ -1,0 +1,41 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class callableArgumentBinary_f_ {
+    
+    private callableArgumentBinary_f_() {
+    }
+    
+    static void callableArgumentBinary_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    }
+}
+final class callableArgumentBinary_bar_ {
+    
+    private callableArgumentBinary_bar_() {
+    }
+    
+    static void callableArgumentBinary_bar(final long i, final .java.lang.String s) {
+    }
+}
+final class callableArgumentBinary_m_ {
+    
+    private callableArgumentBinary_m_() {
+    }
+    
+    static void callableArgumentBinary_m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentBinary_f_.callableArgumentBinary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), "Anything(Integer, String)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                final .java.lang.String $ceylontmp$s = ((.ceylon.language.String)$param$1).toString();
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentBinary_bar_.callableArgumentBinary_bar($ceylontmp$i, $ceylontmp$s);
+                    }
+                    returning null;
+                );
+            }
+        });
+    }
+}

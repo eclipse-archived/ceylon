@@ -1,0 +1,26 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+class MethodWhileExistsSequence implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodWhileExistsSequence() {
+    }
+    
+    public final long mvar(final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x) {
+        loop_0: while (true) {
+            .ceylon.language.Integer y$0;
+            if ((y$0 = x.getFromFirst(0L)) != null) {
+                final long y$1 = y$0.longValue();
+                return y$1;
+            } else {
+                break loop_0;
+            }
+        }
+        return 0L;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileExistsSequence.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.MethodWhileExistsSequence.class);
+}

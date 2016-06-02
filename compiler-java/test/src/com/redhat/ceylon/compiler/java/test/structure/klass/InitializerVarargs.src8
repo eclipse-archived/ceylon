@@ -1,0 +1,43 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class InitializerVarargs implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    InitializerVarargs(final .java.lang.String f) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$fs$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                this(f, $ceylontmp$fs$0);
+            }
+            returning null;
+        );
+    }
+    
+    protected InitializerVarargs() {
+        super();
+    }
+    
+    InitializerVarargs(final .java.lang.String f, final .ceylon.language.Sequential<? extends .ceylon.language.String> fs) {
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$4 = fs;
+        final boolean isTuple$5 = iterable$4 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$4).$getArray$() != null;
+        .java.lang.Object elem$2 = null;
+        int i$6 = 0;
+        final int length$7;
+        if (isTuple$5) {
+            length$7 = (int)iterable$4.getSize();
+        } else {
+            length$7 = 0;
+        }
+        .ceylon.language.Iterator<? extends .ceylon.language.String> ff$iterator$$3 = isTuple$5 ? null : iterable$4.iterator();
+        loop_0: while (isTuple$5 ? i$6 < length$7 : !((elem$2 = ff$iterator$$3.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$5) elem$2 = iterable$4.getFromFirst(i$6++);
+            final .java.lang.String ff = ((.ceylon.language.String)elem$2).toString();
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.InitializerVarargs.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InitializerVarargs.class);
+}

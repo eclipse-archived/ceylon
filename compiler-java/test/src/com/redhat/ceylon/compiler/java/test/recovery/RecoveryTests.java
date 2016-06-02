@@ -60,6 +60,10 @@ import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
 
 public class RecoveryTests extends CompilerTests {
     
+    public RecoveryTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     protected void compileAndRunWithUnresolvedCompilationError(
             String ceylon,
             String main, 

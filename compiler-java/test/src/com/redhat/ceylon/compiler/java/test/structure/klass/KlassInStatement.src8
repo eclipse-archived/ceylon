@@ -1,0 +1,36 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class KlassInStatement implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    KlassInStatement() {
+    }
+    
+    private final void m$priv$() {
+        if (true) {
+            final long i = 1L;
+            
+            class KlassInStatement1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                
+                KlassInStatement1() {
+                }
+                
+                @.java.lang.Override
+                public final .java.lang.String toString() {
+                    return .ceylon.language.Integer.toString(i);
+                }
+                
+                @.java.lang.Override
+                public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                    return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassInStatement.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(KlassInStatement1.class));
+                }
+            }
+            final .java.lang.String s = new KlassInStatement1().toString();
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.KlassInStatement.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.KlassInStatement.class);
+}

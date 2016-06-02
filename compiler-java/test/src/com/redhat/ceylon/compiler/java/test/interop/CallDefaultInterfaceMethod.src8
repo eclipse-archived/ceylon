@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class callDefaultInterfaceMethod_ {
+    
+    private callDefaultInterfaceMethod_() {
+    }
+    
+    static void callDefaultInterfaceMethod(final .java.lang.Iterable<.java.lang.Object> iterable) {
+        iterable.forEach((.java.util.function.Consumer<.java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_());
+    }
+}

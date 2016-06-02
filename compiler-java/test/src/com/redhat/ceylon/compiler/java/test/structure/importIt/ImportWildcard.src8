@@ -1,0 +1,22 @@
+package com.redhat.ceylon.compiler.java.test.structure.importIt;
+
+class ImportWildcard implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    ImportWildcard() {
+    }
+    
+    private final void m$priv$() {
+        new .com.redhat.ceylon.compiler.java.test.structure.importIt.pkg.C1();
+        new .com.redhat.ceylon.compiler.java.test.structure.importIt.pkg.C2();
+        boolean b = .com.redhat.ceylon.compiler.java.test.structure.importIt.pkg.f1_.get_();
+        b = .com.redhat.ceylon.compiler.java.test.structure.importIt.pkg.f2_.get_();
+        .com.redhat.ceylon.compiler.java.test.structure.importIt.pkg.m1_.m1();
+        .com.redhat.ceylon.compiler.java.test.structure.importIt.pkg.m2_.m2();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.importIt.ImportWildcard.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.importIt.ImportWildcard.class);
+}

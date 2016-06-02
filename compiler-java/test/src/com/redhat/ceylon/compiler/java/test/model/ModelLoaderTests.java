@@ -110,12 +110,27 @@ public class ModelLoaderTests extends CompilerTests {
     
     @Parameters
     public static Iterable<Object[]> testParameters() {
-        return Arrays.asList(new Object[]{true}, new Object[]{false});
+        // Tediously compute the cartesian product of superclass's parameters and our own
+        ArrayList<Object[]> result = new ArrayList<Object[]>();
+        for (Object[] parentsArgs : CompilerTests.testParameters()) {
+            
+            Object[] args = new Object[parentsArgs.length+1];
+            System.arraycopy(parentsArgs, 0, args, 0, parentsArgs.length);
+            args[args.length-1] = true;
+            result.add(args);
+            
+            args = new Object[parentsArgs.length+1];
+            System.arraycopy(parentsArgs, 0, args, 0, parentsArgs.length);
+            args[args.length-1] = false;
+            result.add(args);
+        }
+        return result;
     }
     
     private final boolean simpleAnnotationModels;
     
-    public ModelLoaderTests(boolean simpleAnnotationModels) {
+    public ModelLoaderTests(String[] args, boolean simpleAnnotationModels) {
+        super(args);
         this.simpleAnnotationModels = simpleAnnotationModels;
     }
     

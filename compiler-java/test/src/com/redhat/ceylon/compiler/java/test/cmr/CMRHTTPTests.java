@@ -48,6 +48,10 @@ import com.sun.net.httpserver.HttpServer;
 
 public class CMRHTTPTests extends CompilerTests {
 
+    public CMRHTTPTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     interface ExpectedError {}
     
     enum TimeoutIn implements ExpectedError {

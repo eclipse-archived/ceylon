@@ -1,0 +1,56 @@
+package com.redhat.ceylon.compiler.java.test.structure.toplevel;
+
+final class toplevelAttributeLateInit_ {
+    
+    private toplevelAttributeLateInit_() {
+    }
+    
+    static void toplevelAttributeLateInit() {
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.set_(0L);
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.set_(0L);
+    }
+}
+final class toplevelAttributeLate_ {
+    
+    private toplevelAttributeLate_() {
+    }
+    private static long value;
+    private static volatile boolean $init$value = false;
+    
+    public static long get_() {
+        if (toplevelAttributeLate_.$init$value) {
+            return value;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'toplevelAttributeLate\'");
+        }
+    }
+    
+    public static void set_(final long toplevelAttributeLate) {
+        if (!toplevelAttributeLate_.$init$value) {
+            value = toplevelAttributeLate;
+            toplevelAttributeLate_.$init$value = true;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+}
+final class toplevelAttributeLateVariable_ {
+    
+    private toplevelAttributeLateVariable_() {
+    }
+    private static long value;
+    private static volatile boolean $init$value = false;
+    
+    public static long get_() {
+        if (toplevelAttributeLateVariable_.$init$value) {
+            return value;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'toplevelAttributeLateVariable\'");
+        }
+    }
+    
+    public static void set_(final long toplevelAttributeLateVariable) {
+        value = toplevelAttributeLateVariable;
+        toplevelAttributeLateVariable_.$init$value = true;
+    }
+}

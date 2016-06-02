@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+interface InterfaceWithConcreteMembers extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public default long foo(final boolean b) {
+        return 1L;
+    }
+    
+    public default long foo2(final boolean b) {
+        return 1L;
+    }
+    
+    public default long getBar() {
+        return 1L;
+    }
+    
+    public default long getBar2() {
+        return 1L;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers.class);
+}
+class InterfaceWithConcreteMembersImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembers, .java.io.Serializable {
+    
+    InterfaceWithConcreteMembersImpl() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembersImpl.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.InterfaceWithConcreteMembersImpl.class);
+}

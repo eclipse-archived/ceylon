@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+final class bug1806_ {
+    
+    private bug1806_() {
+    }
+    
+    static void bug1806() {
+        final long x = new .java.lang.StringBuilder().length();
+    }
+}

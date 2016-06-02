@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
+
+final class bug2383_ {
+    
+    private bug2383_() {
+    }
+    
+    static <Type>Type bug2383(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Type, final .ceylon.language.Summable<Type> summable) {
+        return summable.plus((Type)(.ceylon.language.Summable)summable);
+    }
+}

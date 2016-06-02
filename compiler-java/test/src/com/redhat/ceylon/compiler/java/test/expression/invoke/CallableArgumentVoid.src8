@@ -1,0 +1,103 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class CallableArgumentAnything implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    CallableArgumentAnything() {
+    }
+    
+    private final void f$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> g) {
+        g.$call$();
+    }
+    
+    private final void m$priv$() {
+    }
+    
+    public .java.lang.Object m2() {
+        return null;
+    }
+    
+    public .java.lang.Object m3() {
+        return .ceylon.language.Integer.instance(1L);
+    }
+    
+    private final void callsite$priv$() {
+        f$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this.m$priv$();
+                    }
+                    returning null;
+                );
+            }
+        });
+        f$priv$((
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything $instance$ = .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return (
+                        let
+                        {
+                            $instance$.m$priv$();
+                        }
+                        returning null;
+                    );
+                }
+            };
+        ));
+        f$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this.m2();
+            }
+        });
+        f$priv$((
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything $instance$ = .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return $instance$.m2();
+                }
+            };
+        ));
+        f$priv$(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$() {
+                return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this.m3();
+            }
+        });
+        f$priv$((
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything $instance$ = .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.this;
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return $instance$.m3();
+                }
+            };
+        ));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentAnything.class);
+}

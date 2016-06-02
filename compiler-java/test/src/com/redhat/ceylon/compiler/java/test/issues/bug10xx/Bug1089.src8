@@ -1,0 +1,60 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug10xx;
+
+final class bug1089_ {
+    
+    private bug1089_() {
+    }
+    
+    static void bug1089() {
+        if ((
+            let
+            {
+                int middle$1 = 0;
+            }
+            returning 0 <= middle$1 && middle$1 < 2;
+        )) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<=0<2"));
+        }
+        if ((
+            let
+            {
+                int middle$3 = 1;
+            }
+            returning 0 < middle$3 && middle$3 < 2;
+        )) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<1<2"));
+        }
+        if ((
+            let
+            {
+                int middle$5 = 1;
+            }
+            returning 0 <= middle$5 && middle$5 < 2;
+        )) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<=1<2"));
+        }
+        if ((
+            let
+            {
+                int middle$7 = 1;
+            }
+            returning 0 < middle$7 && middle$7 <= 2;
+        )) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<1<=2"));
+        }
+        if ((
+            let
+            {
+                int middle$9 = 1;
+            }
+            returning 0 <= middle$9 && middle$9 <= 2;
+        )) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0<=1<=2"));
+        }
+    }
+}

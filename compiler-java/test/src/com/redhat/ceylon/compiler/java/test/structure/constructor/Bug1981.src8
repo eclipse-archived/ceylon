@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class Bug1981 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1981(final .java.lang.String name$param$) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$qname$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug1981.Bug1981$qname(name$param$);
+                this(name$param$, $ceylontmp$qname$0);
+            }
+            returning null;
+        );
+    }
+    
+    protected Bug1981() {
+        super();
+    }
+    
+    public static final .java.lang.String Bug1981$qname(final .java.lang.String name$param$) {
+        return name$param$;
+    }
+    
+    public Bug1981(final .java.lang.String name$param$, final .java.lang.String qname$param$) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug1981.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug1981.class);
+}

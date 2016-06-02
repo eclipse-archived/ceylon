@@ -1,0 +1,171 @@
+package com.redhat.ceylon.compiler.java.test.structure.mcr;
+
+interface InterfaceDefaultMemberClassWithMemberSubclass {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceDefaultMemberClassWithMemberSubclass$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Default Default$new$(final long i);
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Formal Formal$new$(final long i);
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Shared Shared$new$(final long i);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass.class);
+}
+final class InterfaceDefaultMemberClassWithMemberSubclass$impl implements .java.io.Serializable {
+    
+    InterfaceDefaultMemberClassWithMemberSubclass$impl(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass $this;
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Default Default$new$(final long i) {
+        return new Default(i);
+    }
+    
+    public class Default implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Default(final long i) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Default.class));
+        }
+    }
+    
+    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Formal(final long i) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Formal.class));
+        }
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Shared Shared$new$(final long i) {
+        return new Shared(i);
+    }
+    
+    public class Shared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Shared(final long i) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Shared.class));
+        }
+    }
+    
+    class NonShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        NonShared(final long i) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.NonShared.class));
+        }
+    }
+    
+    class DefaultSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Default {
+        
+        DefaultSub(final long i) {
+            super(i);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.DefaultSub.class));
+        }
+    }
+    
+    class FormalSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Formal {
+        
+        FormalSub(final long i) {
+            super(i);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.FormalSub.class));
+        }
+    }
+    
+    class SharedSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Shared {
+        
+        SharedSub(final long i) {
+            super(i);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.SharedSub.class));
+        }
+    }
+    
+    class NonSharedSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.NonShared {
+        
+        NonSharedSub(final long i) {
+            super(i);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.NonSharedSub.class));
+        }
+    }
+    
+    private void m$priv$() {
+        
+        class LocalDefaultSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Default {
+            
+            LocalDefaultSub(final long i) {
+                super(i);
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalDefaultSub.class));
+            }
+        }
+        
+        class LocalFormalSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Formal {
+            
+            LocalFormalSub(final long i) {
+                super(i);
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalFormalSub.class));
+            }
+        }
+        
+        class LocalSharedSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.Shared {
+            
+            LocalSharedSub(final long i) {
+                super(i);
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalSharedSub.class));
+            }
+        }
+        
+        class LocalNonSharedSub extends .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass$impl.NonShared {
+            
+            LocalNonSharedSub(final long i) {
+                super(i);
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceDefaultMemberClassWithMemberSubclass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalNonSharedSub.class));
+            }
+        }
+    }
+}

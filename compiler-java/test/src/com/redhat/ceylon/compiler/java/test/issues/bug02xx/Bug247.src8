@@ -1,0 +1,51 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
+
+final class bug247_ {
+    
+    private bug247_() {
+    }
+    
+    static void bug247() {
+        (
+            let
+            {
+                long $ceylontmp$op$0 = .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.get_() + 1L;
+                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.set_($ceylontmp$op$0);
+            }
+            returning $ceylontmp$op$0;
+        );
+    }
+}
+final class bug247_toplevel_ {
+    
+    private bug247_toplevel_() {
+    }
+    private static long value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = 0L;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = 0L;
+            $init$value = false;
+        }
+    }
+    
+    public static long get_() {
+        if (bug247_toplevel_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug247_toplevel\' before it was set");
+        }
+    }
+    
+    public static void set_(final long bug247_toplevel) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = bug247_toplevel;
+    }
+}

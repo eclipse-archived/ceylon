@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
+
+final class bug508_ {
+    
+    private bug508_() {
+    }
+    
+    static void bug508() {
+        
+        final class callFunction_ {
+            
+            private callFunction_() {
+            }
+            
+            void callFunction(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+                .ceylon.language.print_.print(f.$call$((.java.lang.Object).ceylon.language.Integer.instance(0L)));
+            }
+        }
+        final callFunction_ callFunction = new callFunction_();
+        
+        final class f_ {
+            
+            private f_() {
+            }
+            
+            .java.lang.String f(final long i) {
+                return .ceylon.language.Integer.toString(i + 12L);
+            }
+        }
+        final f_ f = new f_();
+        callFunction.callFunction(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "String(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.String.instance(f.f($ceylontmp$i));
+            }
+        });
+    }
+}

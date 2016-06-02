@@ -1,0 +1,12 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+final class bug1953_ {
+    
+    private bug1953_() {
+    }
+    
+    static void bug1953() {
+        final .java.lang.Object x = .ceylon.language.nothing_.get_();
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> it = ((.ceylon.language.String)((.ceylon.language.Entry)x).getKey()).split();
+    }
+}

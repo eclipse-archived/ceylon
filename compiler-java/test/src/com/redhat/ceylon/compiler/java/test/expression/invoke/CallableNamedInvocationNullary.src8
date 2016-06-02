@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class callableNamedInvocationNullary_f_ {
+    
+    private callableNamedInvocationNullary_f_() {
+    }
+    
+    static void callableNamedInvocationNullary_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+        foo.$call$();
+    }
+}

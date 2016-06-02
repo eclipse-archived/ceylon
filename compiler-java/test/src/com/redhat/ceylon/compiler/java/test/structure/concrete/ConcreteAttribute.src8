@@ -1,0 +1,164 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+interface ConcreteAttribute<A> extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$A();
+    
+    private default A getANonShared$priv$() {
+        return null;
+    }
+    
+    public default A getAShared() {
+        return getANonShared$priv$();
+    }
+    
+    public abstract A getAFormal();
+    
+    public abstract A getAVariableFormal();
+    
+    public abstract void setAVariableFormal(final A aVariableFormal);
+    
+    public default A getADefault() {
+        return null;
+    }
+}
+final class concreteAttributeCallsite_ {
+    
+    private concreteAttributeCallsite_() {
+    }
+    
+    static void concreteAttributeCallsite(final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute a) {
+        .java.lang.Object v = null;
+        v = a.getAShared();
+        v = a.getAFormal();
+        v = a.getAVariableFormal();
+        a.setAVariableFormal(null);
+        a.setAVariableFormal(.ceylon.language.Integer.instance(1L));
+        a.setAVariableFormal(.ceylon.language.Float.instance(1.0));
+        v = a.getADefault();
+    }
+}
+class ConcreteAttributeGetterImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<B>, .java.io.Serializable {
+    
+    ConcreteAttributeGetterImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B) {
+        this.$reified$B = $reified$B;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$A() {
+        return $reified$B;
+    }
+    
+    @.java.lang.Override
+    public final B getAFormal() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final B getAVariableFormal() {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final void setAVariableFormal(final B aVariableFormal) {
+    }
+    
+    @.java.lang.Override
+    public final B getADefault() {
+        return null;
+    }
+    
+    public final void setADefault(final B aDefault) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttributeGetterImpl.class, $reified$B);
+    }
+}
+final class concreteAttributeGetterImplCallsite_ {
+    
+    private concreteAttributeGetterImplCallsite_() {
+    }
+    
+    static void concreteAttributeGetterImplCallsite(final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttributeGetterImpl a) {
+        .java.lang.Object v = null;
+        v = a.getAShared();
+        v = a.getAFormal();
+        v = a.getAVariableFormal();
+        a.setAVariableFormal(null);
+        a.setAVariableFormal(.ceylon.language.Integer.instance(1L));
+        a.setAVariableFormal(.ceylon.language.Float.instance(1.0));
+        v = a.getADefault();
+        a.setADefault(null);
+        a.setADefault(.ceylon.language.Integer.instance(1L));
+        a.setADefault(.ceylon.language.Float.instance(1.0));
+    }
+}
+class ConcreteAttributeValueImpl<C> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttribute<C>, .java.io.Serializable {
+    
+    ConcreteAttributeValueImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C) {
+        this.$reified$C = $reified$C;
+        this.aFormal = null;
+        this.aVariableFormal = null;
+        this.aDefault = null;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$A() {
+        return $reified$C;
+    }
+    private final C aFormal;
+    
+    @.java.lang.Override
+    public final C getAFormal() {
+        return aFormal;
+    }
+    private C aVariableFormal;
+    
+    @.java.lang.Override
+    public final C getAVariableFormal() {
+        return aVariableFormal;
+    }
+    
+    @.java.lang.Override
+    public final void setAVariableFormal(final C aVariableFormal) {
+        this.aVariableFormal = aVariableFormal;
+    }
+    private C aDefault;
+    
+    @.java.lang.Override
+    public final C getADefault() {
+        return aDefault;
+    }
+    
+    public final void setADefault(final C aDefault) {
+        this.aDefault = aDefault;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttributeValueImpl.class, $reified$C);
+    }
+}
+final class concreteAttributeValueImplCallsite_ {
+    
+    private concreteAttributeValueImplCallsite_() {
+    }
+    
+    static void concreteAttributeValueImplCallsite(final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteAttributeValueImpl a) {
+        .java.lang.Object v = null;
+        v = a.getAShared();
+        v = a.getAFormal();
+        v = a.getAVariableFormal();
+        a.setAVariableFormal(null);
+        a.setAVariableFormal(.ceylon.language.Integer.instance(1L));
+        a.setAVariableFormal(.ceylon.language.Float.instance(1.0));
+        v = a.getADefault();
+        a.setADefault(null);
+        a.setADefault(.ceylon.language.Integer.instance(1L));
+        a.setADefault(.ceylon.language.Float.instance(1.0));
+    }
+}

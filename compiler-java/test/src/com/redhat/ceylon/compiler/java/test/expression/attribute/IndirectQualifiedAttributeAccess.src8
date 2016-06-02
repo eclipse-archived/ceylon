@@ -1,0 +1,29 @@
+package com.redhat.ceylon.compiler.java.test.expression.attribute;
+
+class IndirectQualifiedAttributeAccess implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    IndirectQualifiedAttributeAccess() {
+        this.b = true;
+        this.q = new .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess();
+    }
+    private final boolean b;
+    
+    private final boolean getB$priv$() {
+        return b;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess q;
+    
+    private final .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess getQ$priv$() {
+        return q;
+    }
+    
+    private final boolean test$priv$() {
+        return getQ$priv$().getB$priv$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess.class);
+}

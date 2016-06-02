@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class callableNamedInvocationUnary_f_ {
+    
+    private callableNamedInvocationUnary_f_() {
+    }
+    
+    static void callableNamedInvocationUnary_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+        (
+            let
+            {
+                .ceylon.language.String arg$0$0 = .ceylon.language.String.instance("");
+                foo.$call$(arg$0$0);
+            }
+            returning null;
+        );
+    }
+}

@@ -28,6 +28,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class NativeTests extends CompilerTests {
 	
+    public NativeTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     private void testNative(String test) {
         testNative("simple", test);
     }

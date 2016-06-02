@@ -1,0 +1,93 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.interop::JavaNestingInterface<ceylon.language::String>"})
+class JNI_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface<.ceylon.language.String>, .java.io.Serializable {
+    
+    JNI_Impl() {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.JNI_Impl.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JNI_Impl.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.interop::JavaNestingInterface.InnerInterface<ceylon.language::String>"})
+class JNI_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerInterface<.ceylon.language.String>, .java.io.Serializable {
+    
+    JNI_InnerInterface_Impl() {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.JNI_InnerInterface_Impl.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JNI_InnerInterface_Impl.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.interop::JavaNesting.InnerStatic.InnerInterface<ceylon.language::String>"})
+class JN_IS_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerStatic.InnerInterface<.ceylon.language.String>, .java.io.Serializable {
+    
+    JN_IS_InnerInterface_Impl() {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.JN_IS_InnerInterface_Impl.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JN_IS_InnerInterface_Impl.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.interop::JavaNesting.InnerInterface<ceylon.language::String>"})
+class JN_InnerInterface_Impl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface<.ceylon.language.String>, .java.io.Serializable {
+    
+    JN_InnerInterface_Impl() {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.JN_InnerInterface_Impl.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.JN_InnerInterface_Impl.class);
+}
+final class nesting_ {
+    
+    private nesting_() {
+    }
+    
+    static void nesting() {
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface<.ceylon.language.String> jni = new .com.redhat.ceylon.compiler.java.test.interop.JNI_Impl();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerStatic<.ceylon.language.String> jni_is = new .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerStatic<.ceylon.language.String>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerStatic<.ceylon.language.String>.Inner2<.ceylon.language.Integer> jni_is_i2 = jni_is.new Inner2<.ceylon.language.Integer>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerStatic<.ceylon.language.String>.Inner2<.ceylon.language.Integer>.Inner3<.ceylon.language.Boolean> jni_is_i2_i3 = jni_is_i2.new Inner3<.ceylon.language.Boolean>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerStatic.InnerStatic2<.ceylon.language.Integer> jni_is_is2 = new .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerStatic.InnerStatic2<.ceylon.language.Integer>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerStatic.InnerStatic2<.ceylon.language.Integer>.Inner3<.ceylon.language.Boolean> jni_is_is2_i3 = jni_is_is2.new Inner3<.ceylon.language.Boolean>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerInterface<.ceylon.language.String> jni_ii = new .com.redhat.ceylon.compiler.java.test.interop.JNI_InnerInterface_Impl();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerInterface.Inner2<.ceylon.language.Integer> jni_ii_i2 = new .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerInterface.Inner2<.ceylon.language.Integer>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerInterface.Inner2<.ceylon.language.Integer>.Inner3<.ceylon.language.Boolean> jni_ii_i2_i3 = jni_ii_i2.new Inner3<.ceylon.language.Boolean>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerInterface.Inner2.InnerStatic3<.ceylon.language.Boolean> jni_ii_i2_is3 = new .com.redhat.ceylon.compiler.java.test.interop.JavaNestingInterface.InnerInterface.Inner2.InnerStatic3<.ceylon.language.Boolean>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting<.ceylon.language.String> jn = new .com.redhat.ceylon.compiler.java.test.interop.JavaNesting<.ceylon.language.String>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting<.ceylon.language.String>.Inner<.ceylon.language.Integer> jn_i = jn.new Inner<.ceylon.language.Integer>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting<.ceylon.language.String>.Inner<.ceylon.language.Integer>.Inner2<.ceylon.language.Boolean> jn_i_i2 = jn_i.new Inner2<.ceylon.language.Boolean>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerStatic<.ceylon.language.String> jn_is = new .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerStatic<.ceylon.language.String>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerStatic<.ceylon.language.String>.Inner2<.ceylon.language.Integer> jn_is_i2 = jn_is.new Inner2<.ceylon.language.Integer>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerStatic<.ceylon.language.String>.Inner2<.ceylon.language.Integer>.Inner3<.ceylon.language.Boolean> jn_is_i2_i3 = jn_is_i2.new Inner3<.ceylon.language.Boolean>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerStatic.InnerStatic2<.ceylon.language.String> jn_is_is2 = new .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerStatic.InnerStatic2<.ceylon.language.String>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerStatic.InnerStatic2<.ceylon.language.String>.Inner3<.ceylon.language.Integer> jn_is_is2_i3 = jn_is_is2.new Inner3<.ceylon.language.Integer>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerStatic.InnerInterface<.ceylon.language.String> jn_is_ii = new .com.redhat.ceylon.compiler.java.test.interop.JN_IS_InnerInterface_Impl();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface<.ceylon.language.String> jn_ii = new .com.redhat.ceylon.compiler.java.test.interop.JN_InnerInterface_Impl();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface.Inner2<.ceylon.language.String> jn_ii_i2 = new .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface.Inner2<.ceylon.language.String>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface.Inner2<.ceylon.language.String>.Inner3<.ceylon.language.Integer> jn_ii_i2_i3 = jn_ii_i2.new Inner3<.ceylon.language.Integer>();
+        final .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface.Inner2.InnerStatic3<.ceylon.language.Boolean> jn_ii_i2_is3 = new .com.redhat.ceylon.compiler.java.test.interop.JavaNesting.InnerInterface.Inner2.InnerStatic3<.ceylon.language.Boolean>();
+    }
+}

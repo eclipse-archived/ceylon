@@ -48,6 +48,10 @@ import com.redhat.ceylon.tools.test.AbstractToolTests;
 
 public class NewProjectToolTests extends AbstractToolTests {
 
+    public NewProjectToolTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     private List<String> args(String... args) {
         List<String> ret = new ArrayList<String>(args.length+2);
         for(String s : args)

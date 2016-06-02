@@ -20,6 +20,10 @@
 
 package com.redhat.ceylon.tools.test;
 
+import java.util.Arrays;
+
+import org.junit.runners.Parameterized.Parameters;
+
 import com.redhat.ceylon.common.tool.ToolFactory;
 import com.redhat.ceylon.common.tool.ToolLoader;
 import com.redhat.ceylon.common.tools.CeylonTool;
@@ -32,6 +36,15 @@ import com.redhat.ceylon.tools.TestingToolLoader;
  */
 public class AbstractToolTests extends CompilerTests {
     
+    public AbstractToolTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+    @Parameters
+    public static Iterable<Object[]> testParameters() {
+        return Arrays.<Object[]>asList(
+                new Object[]{new String[]{"-target", "7", "-source", "7"}});
+    }
+
     protected final ToolFactory pluginFactory = new ToolFactory();
     protected final ToolLoader pluginLoader = new TestingToolLoader(null, true);
 

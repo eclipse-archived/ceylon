@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug14xx;
+
+interface Bug1450<Element> extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1450$Element();
+    
+    public default .ceylon.language.Sequence<? extends Element> getTuple() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+}
+class Bug1450_Single<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1450<Element>, .java.io.Serializable {
+    
+    protected Bug1450_Single(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
+        super();
+        this.$reified$Element = $reified$Element;
+    }
+    
+    Bug1450_Single(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final Element element) {
+        this.$reified$Element = $reified$Element;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1450$Element() {
+        return $reified$Element;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1450_Single.class, $reified$Element);
+    }
+}

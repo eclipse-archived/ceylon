@@ -1,0 +1,89 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360;
+
+class Bug1360 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug1360() {
+    }
+    
+    private final void f$priv$() {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$priv$0 = f$priv();
+                f$priv$$canonical$($ceylontmp$priv$0);
+            }
+            returning null;
+        );
+    }
+    
+    private final .java.lang.String f$priv() {
+        return "";
+    }
+    
+    private void f$priv$$canonical$(final .java.lang.String priv) {
+    }
+    
+    private final void f$priv$(final .java.lang.String priv) {
+        (
+            let
+            {
+                f$priv$$canonical$(priv);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.Bug1360.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.Bug1360.class);
+}
+interface I<T> extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug13xx$bug1360$I$T();
+    
+    public default void $main() {
+        (
+            let
+            {
+                T[] $ceylontmp$s$1 = main$s();
+                $main$canonical$($ceylontmp$s$1);
+            }
+            returning null;
+        );
+    }
+    
+    public default T[] main$s() {
+        return (T[])(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    private default void $main$canonical$(final T[] s) {
+    }
+    
+    public default void $main(final T[] s) {
+        (
+            let
+            {
+                $main$canonical$(s);
+            }
+            returning null;
+        );
+    }
+}
+class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.I<.java.lang.String>, .java.io.Serializable {
+    
+    C() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug13xx$bug1360$I$T() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.C.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.bug1360.C.class);
+}

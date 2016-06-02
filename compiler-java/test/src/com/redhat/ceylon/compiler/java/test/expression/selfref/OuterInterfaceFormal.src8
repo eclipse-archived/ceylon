@@ -1,0 +1,47 @@
+package com.redhat.ceylon.compiler.java.test.expression.selfref;
+
+interface OuterInterfaceFormal<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl<T> $com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterfaceFormal$impl();
+    
+    public abstract .java.lang.Object m();
+    
+    public abstract .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl<T>.Formal Formal$new$();
+}
+final class OuterInterfaceFormal$impl<T> implements .java.io.Serializable {
+    
+    OuterInterfaceFormal$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal<T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public abstract class Formal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Formal() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal.class, .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.Formal.class));
+        }
+    }
+    
+    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        InnerClass() {
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.this.$this.m();
+            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.this.$this.Formal$new$();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal.class, .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterfaceFormal$impl.InnerClass.class));
+        }
+    }
+}

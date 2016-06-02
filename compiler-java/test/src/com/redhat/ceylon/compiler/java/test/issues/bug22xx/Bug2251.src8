@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+public final class bug2251_ {
+    
+    private bug2251_() {
+    }
+    
+    public static void bug2251() {
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> a = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> b = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)a;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2251_.bug2251();
+    }
+}

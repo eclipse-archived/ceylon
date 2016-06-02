@@ -25,6 +25,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class SerializableTests extends CompilerTests {
 
+    public SerializableTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Override
     protected String transformDestDir(String name) {
         return name + "-ser";

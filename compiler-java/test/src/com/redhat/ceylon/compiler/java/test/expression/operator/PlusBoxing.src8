@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.java.test.expression.operator;
+
+final class plusBoxing_ {
+    
+    private plusBoxing_() {
+    }
+    
+    static <T extends .ceylon.language.Summable<T>>void plusBoxing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long $int, final double $float, final .ceylon.language.Summable<.ceylon.language.Integer> intSelf, final .ceylon.language.Summable<.ceylon.language.Float> floatSelf, final T tp, final .ceylon.language.Summable<T> tpSelf) {
+        long i = 0L;
+        double f = 0.0;
+        T t = null;
+        i = $int + $int;
+        f = $float + $float;
+        f = $int + $float;
+        f = $float + $int;
+        i = ((.ceylon.language.Integer)intSelf).longValue() + $int;
+        f = ((.ceylon.language.Float)floatSelf).doubleValue() + $float;
+        t = ((T)tp).plus((T)tp);
+        t = ((T)tpSelf).plus((T)t);
+    }
+}

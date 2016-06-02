@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.statement.attribute;
+
+class MethodAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodAttribute() {
+    }
+    
+    private final void m$priv$() {
+        final .java.lang.String f;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.attribute.MethodAttribute.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.attribute.MethodAttribute.class);
+}

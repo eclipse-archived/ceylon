@@ -1,0 +1,110 @@
+package com.redhat.ceylon.compiler.java.test.expression.instantiation;
+
+class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    DefaultedVariableAttribute() {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$firstName$0 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$default$firstName();
+                .ceylon.language.String $ceylontmp$lastName$1 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$default$lastName($ceylontmp$firstName$0);
+                this($ceylontmp$firstName$0, $ceylontmp$lastName$1);
+            }
+            returning null;
+        );
+    }
+    
+    DefaultedVariableAttribute(final .ceylon.language.String firstName$param$) {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$lastName$2 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$default$lastName(firstName$param$);
+                this(firstName$param$, $ceylontmp$lastName$2);
+            }
+            returning null;
+        );
+    }
+    
+    DefaultedVariableAttribute(.ceylon.language.String firstName$param$, .ceylon.language.String lastName$param$) {
+        this.firstName = firstName$param$;
+        this.lastName = lastName$param$;
+    }
+    
+    public static .ceylon.language.String $default$firstName() {
+        return null;
+    }
+    
+    public static .ceylon.language.String $default$lastName(final .ceylon.language.String firstName$param$) {
+        return null;
+    }
+    private .ceylon.language.String firstName;
+    
+    private final .ceylon.language.String getFirstName$priv$() {
+        return firstName;
+    }
+    
+    private final void setFirstName$priv$(final .ceylon.language.String firstName) {
+        this.firstName = firstName;
+    }
+    private .ceylon.language.String lastName;
+    
+    private final .ceylon.language.String getLastName$priv$() {
+        return lastName;
+    }
+    
+    private final void setLastName$priv$(final .ceylon.language.String lastName) {
+        this.lastName = lastName;
+    }
+    
+    public final .java.lang.String getFullName() {
+        return .ceylon.language.String.join(" ", new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+            
+            @.java.lang.Override
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return (
+                        let
+                        {
+                            .ceylon.language.String $ceylontmp$3 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.this.getFirstName$priv$();
+                        }
+                        returning $ceylontmp$3 != null ? $ceylontmp$3 : .ceylon.language.String.instance("");
+                    );
+                
+                case 1: 
+                    return (
+                        let
+                        {
+                            .ceylon.language.String $ceylontmp$4 = .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.this.getLastName$priv$();
+                        }
+                        returning $ceylontmp$4 != null ? $ceylontmp$4 : .ceylon.language.String.instance("");
+                    );
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        });
+    }
+    
+    public final void setFullName(final .java.lang.String fullName) {
+        final .ceylon.language.Iterator<? extends .ceylon.language.String> tokens = .ceylon.language.String.split(fullName).iterator();
+        .java.lang.Object first$6;
+        if ((first$6 = tokens.next()) instanceof .ceylon.language.String) {
+            final .java.lang.String first$7 = ((.ceylon.language.String)first$6).toString();
+            setFirstName$priv$(.ceylon.language.String.instance(first$7));
+        }
+        .java.lang.Object last$9;
+        if ((last$9 = tokens.next()) instanceof .ceylon.language.String) {
+            final .java.lang.String last$10 = ((.ceylon.language.String)last$9).toString();
+            setLastName$priv$(.ceylon.language.String.instance(last$10));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.DefaultedVariableAttribute.class);
+}

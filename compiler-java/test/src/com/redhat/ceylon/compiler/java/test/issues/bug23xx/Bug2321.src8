@@ -1,0 +1,39 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug23xx;
+
+public final class bug2321_ {
+    
+    private bug2321_() {
+    }
+    
+    public static void bug2321() {
+        final .ceylon.language.Callable<? extends .ceylon.language.String> f1 = (.ceylon.language.Callable<? extends .ceylon.language.String>)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$)), "String([String, Integer])", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequence $instance$ = (.ceylon.language.Sequence)$param$0;
+                return (.ceylon.language.String)$instance$.getFirst();
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.String> f2 = (.ceylon.language.Callable<? extends .ceylon.language.String>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$)), "String(Tuple<Anything,String,[]>)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequence<? extends .java.lang.Object> $instance$ = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$param$0;
+                return (.ceylon.language.String)$instance$.getFirst();
+            }
+        };
+        final .ceylon.language.Callable<? extends .ceylon.language.Comparison> f = .ceylon.language.byIncreasing_.<.ceylon.language.Sequence<? extends .java.lang.Object>, .ceylon.language.String>byIncreasing(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(true, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$), .ceylon.language.String.$TypeDescriptor$, (.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(true, false, -1, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$)), "String([String, Anything*])", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Sequence<? extends .java.lang.Object> $instance$ = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.ceylon.language.Sequence)$param$0;
+                return (.ceylon.language.String)$instance$.getFirst();
+            }
+        });
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2321_.bug2321();
+    }
+}

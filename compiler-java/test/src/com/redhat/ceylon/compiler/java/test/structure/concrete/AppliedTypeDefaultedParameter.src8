@@ -1,0 +1,90 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+interface AppliedTypeDefaultedParameter<T, U> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<T, U> $com$redhat$ceylon$compiler$java$test$structure$concrete$AppliedTypeDefaultedParameter$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<T, U>.Member Member$new$(final T t);
+    
+    public abstract T $default$Member$t();
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<T, U>.Member Member$new$();
+}
+final class AppliedTypeDefaultedParameter$impl<T, U> implements .java.io.Serializable {
+    
+    AppliedTypeDefaultedParameter$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter<T, U> $this) {
+        this.$reified$T = $reified$T;
+        this.$reified$U = $reified$U;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter<T, U> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+        this.$reified$U = $reified$U;
+        this.$reified$T = $reified$T;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<T, U>.Member Member$new$(final T t) {
+        return new Member(t);
+    }
+    
+    public final T $default$Member$t() {
+        return null;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<T, U>.Member Member$new$() {
+        return (
+            let
+            {
+                T $ceylontmp$t$0 = $default$Member$t();
+            }
+            returning new Member($ceylontmp$t$0);
+        );
+    }
+    
+    public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Member(final T t) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter.class, .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl.this.$reified$T, .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl.this.$reified$U), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl.Member.class));
+        }
+    }
+}
+class AppliedTypeDefaultedParameterSub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter<.ceylon.language.String, .ceylon.language.String>, .java.io.Serializable {
+    
+    AppliedTypeDefaultedParameterSub() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$concrete$AppliedTypeDefaultedParameter$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<.ceylon.language.String, .ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<.ceylon.language.String, .ceylon.language.String> $com$redhat$ceylon$compiler$java$test$structure$concrete$AppliedTypeDefaultedParameter$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<.ceylon.language.String, .ceylon.language.String> $com$redhat$ceylon$compiler$java$test$structure$concrete$AppliedTypeDefaultedParameter$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$AppliedTypeDefaultedParameter$this$;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.String $default$Member$t() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$AppliedTypeDefaultedParameter$this$.$default$Member$t();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<.ceylon.language.String, .ceylon.language.String>.Member Member$new$() {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$AppliedTypeDefaultedParameter$this$.Member$new$();
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameter$impl<.ceylon.language.String, .ceylon.language.String>.Member Member$new$(final .ceylon.language.String t) {
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$AppliedTypeDefaultedParameter$this$.Member$new$(t);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameterSub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.AppliedTypeDefaultedParameterSub.class);
+}

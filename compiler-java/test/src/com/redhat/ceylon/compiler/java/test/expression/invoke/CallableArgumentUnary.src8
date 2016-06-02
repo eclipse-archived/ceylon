@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class callableArgumentUnary_f_ {
+    
+    private callableArgumentUnary_f_() {
+    }
+    
+    static void callableArgumentUnary_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    }
+}
+final class callableArgumentUnary_bar_ {
+    
+    private callableArgumentUnary_bar_() {
+    }
+    
+    static void callableArgumentUnary_bar(final long i) {
+    }
+}
+final class callableArgumentUnary_m_ {
+    
+    private callableArgumentUnary_m_() {
+    }
+    
+    static void callableArgumentUnary_m() {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentUnary_f_.callableArgumentUnary_f(new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Anything(Integer)", (short)-1){
+            
+            @.java.lang.Override
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final long $ceylontmp$i = ((.ceylon.language.Integer)$param$0).longValue();
+                return (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentUnary_bar_.callableArgumentUnary_bar($ceylontmp$i);
+                    }
+                    returning null;
+                );
+            }
+        });
+    }
+}

@@ -11,6 +11,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class OptimizationTests extends CompilerTests {
     
+    public OptimizationTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Override
     protected String transformDestDir(String name) {
         return name + "-optim";

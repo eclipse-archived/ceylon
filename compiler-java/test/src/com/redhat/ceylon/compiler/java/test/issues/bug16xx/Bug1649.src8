@@ -1,0 +1,53 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
+
+interface Bug1649Superinterface extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract .java.lang.Object defaultedVar();
+    
+    public default .java.lang.Object defaultedVar$var() {
+        return .ceylon.language.nothing_.get_();
+    }
+    
+    public abstract .java.lang.Object defaultedVar(final .java.lang.Object var);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Superinterface.class);
+}
+interface Bug1649Subinterface extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Superinterface {
+    
+    public default .java.lang.Object defaultedVar() {
+        return (
+            let
+            {
+                .java.lang.Object $ceylontmp$var$0 = defaultedVar$var();
+            }
+            returning defaultedVar$canonical$($ceylontmp$var$0);
+        );
+    }
+    
+    private default .java.lang.Object defaultedVar$canonical$(final .java.lang.Object var) {
+        return this.refinedDelegate();
+    }
+    
+    @.java.lang.Override
+    public default .java.lang.Object defaultedVar(final .java.lang.Object var) {
+        return defaultedVar$canonical$(var);
+    }
+    
+    public abstract .java.lang.Object refinedDelegate();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface.class);
+}
+class Bug1649Clazz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface, .java.io.Serializable {
+    
+    Bug1649Clazz() {
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object refinedDelegate() {
+        return .ceylon.language.nothing_.get_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Clazz.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Clazz.class);
+}

@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class AssertExists implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    AssertExists() {
+    }
+    
+    public final long m(final .ceylon.language.Integer x) {
+        final long x$2;
+        .ceylon.language.Integer x$1 = null;
+        if ((x$1 = x) != null) {
+            x$2 = x$1.longValue();
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists x"));
+        }
+        return x$2;
+    }
+    
+    public final long m2(final .ceylon.language.Integer x) {
+        final long y$5;
+        .ceylon.language.Integer y$4 = null;
+        if ((y$4 = x) != null) {
+            y$5 = y$4.longValue();
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists y = x"));
+        }
+        return y$5;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.AssertExists.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.AssertExists.class);
+}

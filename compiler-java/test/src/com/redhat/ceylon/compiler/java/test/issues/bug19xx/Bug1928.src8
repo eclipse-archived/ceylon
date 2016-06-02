@@ -1,0 +1,14 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+interface Bug1928<T, A extends .ceylon.language.Sequential<? extends .java.lang.Object>> extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug19xx$Bug1928$T();
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug19xx$Bug1928$A();
+    
+    public abstract T a();
+    
+    private default void m$priv$(final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1928 x) {
+        final long i = ((.ceylon.language.String)x.a()).getSize();
+    }
+}

@@ -15,6 +15,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class DebuggerTests extends CompilerTests {
     
+    public DebuggerTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     protected String getClassPathAsPath(ModuleWithArtifact... modules) {
         List<File> files = getClassPathAsFiles(modules);
         files.add(new File(System.getProperty("user.home"), ".ceylon/repo/ceylon/language/" + Versions.CEYLON_VERSION_NUMBER + "/ceylon.language-" + Versions.CEYLON_VERSION_NUMBER + ".car"));

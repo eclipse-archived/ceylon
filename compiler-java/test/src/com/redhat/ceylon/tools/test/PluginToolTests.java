@@ -32,6 +32,10 @@ import com.redhat.ceylon.tools.plugin.CeylonPluginTool;
 
 public class PluginToolTests extends AbstractToolTests {
 
+    public PluginToolTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Test
     public void testNoArgs() throws Exception {
         ToolModel<CeylonPluginTool> model = pluginLoader.loadToolModel("plugin");

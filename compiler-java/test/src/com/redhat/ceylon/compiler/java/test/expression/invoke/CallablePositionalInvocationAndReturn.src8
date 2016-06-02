@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class testCallable_ {
+    
+    private testCallable_() {
+    }
+    
+    static .java.lang.String testCallable(final .ceylon.language.Callable<? extends .ceylon.language.String> f) {
+        return f.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)).toString();
+    }
+}

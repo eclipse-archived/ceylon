@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+public class CtorContainingObjectDecl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public CtorContainingObjectDecl() {
+        
+        final class foo_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            private foo_() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorContainingObjectDecl.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(foo_.class));
+            }
+        }
+        final foo_ foo = new foo_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorContainingObjectDecl();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorContainingObjectDecl.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorContainingObjectDecl.class);
+}

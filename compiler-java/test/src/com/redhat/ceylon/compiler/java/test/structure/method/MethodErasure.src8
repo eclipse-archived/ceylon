@@ -1,0 +1,37 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class MethodErasure implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodErasure() {
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return "foo";
+    }
+    
+    @.java.lang.Override
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$1 = 0L;
+            }
+            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
+        );
+    }
+    
+    private final .java.lang.String hashCode$priv$() {
+        return "bar";
+    }
+    
+    private final long toString$priv$() {
+        return 0L;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.MethodErasure.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.MethodErasure.class);
+}

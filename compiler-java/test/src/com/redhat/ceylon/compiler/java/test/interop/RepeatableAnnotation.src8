@@ -1,0 +1,16 @@
+package com.redhat.ceylon.compiler.java.test.interop;
+
+@.com.redhat.ceylon.compiler.java.test.interop.JavaRepeatableContainer({
+        @.com.redhat.ceylon.compiler.java.test.interop.JavaRepeatable("foo"),
+        @.com.redhat.ceylon.compiler.java.test.interop.JavaRepeatable("bar")})
+class RepeatableAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    RepeatableAnnotation() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.RepeatableAnnotation.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.RepeatableAnnotation.class);
+}

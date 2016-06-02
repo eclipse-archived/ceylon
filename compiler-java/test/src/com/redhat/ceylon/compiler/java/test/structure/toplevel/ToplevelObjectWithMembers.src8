@@ -1,0 +1,82 @@
+package com.redhat.ceylon.compiler.java.test.structure.toplevel;
+
+final class topLevelObjectWithMembers_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private topLevelObjectWithMembers_() {
+        final boolean val = true;
+        this.valShared = true;
+        this.valCaptured = true;
+        boolean var = false;
+        this.varShared = false;
+        this.varCaptured = false;
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.get_();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.class);
+    private final boolean valShared;
+    
+    public final boolean getValShared() {
+        return valShared;
+    }
+    private final boolean valCaptured;
+    
+    private final boolean getValCaptured$priv$() {
+        return valCaptured;
+    }
+    private boolean varShared;
+    
+    public final boolean getVarShared() {
+        return varShared;
+    }
+    
+    public final void setVarShared(final boolean varShared) {
+        this.varShared = varShared;
+    }
+    private boolean varCaptured;
+    
+    private final boolean getVarCaptured$priv$() {
+        return varCaptured;
+    }
+    
+    private final void setVarCaptured$priv$(final boolean varCaptured) {
+        this.varCaptured = varCaptured;
+    }
+    
+    private final boolean y$priv$() {
+        return getValCaptured$priv$();
+    }
+    
+    public final boolean yShared() {
+        return getVarCaptured$priv$();
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_ get_() {
+        if (topLevelObjectWithMembers_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelObjectWithMembers\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.$TypeDescriptor$;
+    }
+}

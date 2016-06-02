@@ -1,0 +1,121 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+class Bug667TopClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug667TopClass() {
+    }
+    
+    public .ceylon.language.String getGet() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667TopClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667TopClass.class);
+}
+class Bug667BottomClass extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667TopClass {
+    
+    protected Bug667BottomClass() {
+        super();
+        this.n = null;
+    }
+    
+    Bug667BottomClass(final .java.lang.Object n) {
+        super();
+        this.n = n;
+    }
+    private final .java.lang.Object n;
+    
+    private final .java.lang.Object getN$priv$() {
+        return n;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.String getGet() {
+        return (.ceylon.language.String)(.java.lang.Object)getN$priv$();
+    }
+    
+    public final .ceylon.language.String perhaps() {
+        return (.ceylon.language.String)(.java.lang.Object)getN$priv$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667BottomClass.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667BottomClass.class);
+}
+interface Bug667Interface<T> extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$T();
+    
+    public default T getGet() {
+        throw new .ceylon.language.Exception(null, null);
+    }
+}
+class Bug667Class<Nada> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String>, .java.io.Serializable {
+    
+    protected Bug667Class(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Nada) {
+        super();
+        this.$reified$Nada = $reified$Nada;
+        this.n = null;
+    }
+    
+    Bug667Class(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Nada, final Nada n) {
+        this.$reified$Nada = $reified$Nada;
+        this.n = n;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Nada;
+    private final Nada n;
+    
+    private final Nada getN$priv$() {
+        return n;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$T() {
+        return .ceylon.language.String.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.String getGet() {
+        return (.ceylon.language.String)getN$priv$();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Class.class, $reified$Nada);
+    }
+}
+final class bug667Method_ {
+    
+    private bug667Method_() {
+    }
+    
+    static <Nada>void bug667Method(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Nada, final Nada n) {
+        
+        final class x_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug667Interface<.ceylon.language.String> {
+            
+            private x_() {
+            }
+            
+            @.java.lang.Override
+            public final .ceylon.language.String getGet() {
+                return (.ceylon.language.String)n;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug667Interface$T() {
+                return .ceylon.language.String.$TypeDescriptor$;
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug667Method_.class, $reified$Nada), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(x_.class));
+            }
+        }
+        final x_ x = new x_();
+    }
+}

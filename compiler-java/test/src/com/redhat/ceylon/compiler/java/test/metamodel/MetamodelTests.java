@@ -31,6 +31,10 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 
 public class MetamodelTests extends CompilerTests {
 
+    public MetamodelTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Override
     protected ModuleWithArtifact getDestModuleWithArtifact(String main){
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.metamodel", "123");

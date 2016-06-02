@@ -26,6 +26,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class StructureTests3 extends CompilerTests {
     
+    public StructureTests3(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Override
     protected String transformDestDir(String name) {
         return name + "-3";

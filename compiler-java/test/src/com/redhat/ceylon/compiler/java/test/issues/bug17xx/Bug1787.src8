@@ -1,0 +1,51 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug17xx;
+
+final class bug1787_ {
+    
+    private bug1787_() {
+    }
+    
+    static void bug1787() {
+        final .ceylon.language.String arg1$2;
+        .java.lang.Object arg1$1 = null;
+        if ((arg1$1 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.getProperties()).get(.ceylon.language.String.instance(""))) == null || arg1$1 instanceof .ceylon.language.String) {
+            arg1$2 = (.ceylon.language.String)arg1$1;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is String? arg1 = System.properties.get(\"\")"));
+        }
+        final .java.lang.Object arg1b$5;
+        .java.lang.Object arg1b$4 = null;
+        if (!((arg1b$4 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.getProperties()).get(.ceylon.language.String.instance("")))) == null || arg1b$4 instanceof .ceylon.language.String)) {
+            arg1b$5 = arg1b$4;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is String? arg1b = System.properties.get(\"\")"));
+        }
+        final .java.lang.Object arg2$8;
+        .java.lang.Object arg2$7 = null;
+        if ((arg2$7 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.getProperties()).get(.ceylon.language.String.instance(""))) != null) {
+            arg2$8 = arg2$7;
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists arg2 = System.properties.get(\"\")"));
+        }
+        .java.lang.Object arg3$10;
+        if ((arg3$10 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.getProperties()).get(.ceylon.language.String.instance(""))) == null || arg3$10 instanceof .ceylon.language.String) {
+            final .ceylon.language.String arg3$11 = (.ceylon.language.String)arg3$10;
+        }
+        .java.lang.Object arg3b$13;
+        if (!((arg3b$13 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.getProperties()).get(.ceylon.language.String.instance("")))) == null || arg3b$13 instanceof .ceylon.language.String)) {
+            final .java.lang.Object arg3b$14 = arg3b$13;
+        }
+        .java.lang.Object arg3$16;
+        if ((arg3$16 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.getProperties()).get(.ceylon.language.String.instance(""))) != null) {
+            final .java.lang.Object arg3$17 = arg3$16;
+        }
+        final boolean b1 = (
+            let
+            {
+                .java.lang.Object $ceylontmp$18 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.getProperties()).get(.ceylon.language.String.instance(""));
+            }
+            returning $ceylontmp$18 == null || $ceylontmp$18 instanceof .ceylon.language.String;
+        );
+        final boolean b2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.lang.System.getProperties()).get(.ceylon.language.String.instance("")) != null;
+    }
+}

@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
+
+class Bug597 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super, .java.io.Serializable {
+    
+    Bug597() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug597.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug597.class);
+}
+public interface Super extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public default .java.lang.String getFoo() {
+        return "foo";
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.Super.class);
+}

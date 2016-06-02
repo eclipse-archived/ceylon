@@ -1,0 +1,23 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class InitializerIfElseIf implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    InitializerIfElseIf() {
+        boolean b = false;
+        if (true) {
+            b = true;
+        } else {
+            if (false) {
+                b = false;
+            } else {
+                b = true;
+            }
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.InitializerIfElseIf.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.InitializerIfElseIf.class);
+}

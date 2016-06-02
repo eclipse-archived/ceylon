@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+public interface TestListener extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public default .java.lang.Object mDefault() {
+        return (
+            let
+            {
+                this.l$priv$();
+            }
+            returning null;
+        );
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public default void mShared() {
+        this.l$priv$();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private default void l$priv$() {
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.TestListener.class);
+}

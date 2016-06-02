@@ -103,6 +103,10 @@ public class CMRTests extends CompilerTests {
     //
     // Modules
     
+    public CMRTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Test
     public void testMdlByName() throws IOException{
         List<String> options = new LinkedList<String>();

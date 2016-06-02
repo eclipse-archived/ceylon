@@ -42,6 +42,10 @@ import com.redhat.ceylon.compiler.SystemErrorException;
 
 public class CompilerToolTests extends AbstractToolTests {
     
+    public CompilerToolTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     private List<String> options(String... strings){
         List<String> ret = new ArrayList<String>(strings.length+5);
         for(String s : strings)

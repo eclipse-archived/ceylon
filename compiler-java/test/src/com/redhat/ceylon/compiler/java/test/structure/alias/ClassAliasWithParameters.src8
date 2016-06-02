@@ -1,0 +1,71 @@
+package com.redhat.ceylon.compiler.java.test.structure.alias;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+public class ClassAliasWithParameters_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public ClassAliasWithParameters_Foo(final long i) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo.$default$s(i);
+                this(i, $ceylontmp$s$0);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected ClassAliasWithParameters_Foo() {
+        super();
+    }
+    
+    public ClassAliasWithParameters_Foo(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String s) {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static .java.lang.String $default$s(final long i) {
+        return "foo";
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::ClassAliasWithParameters_Foo")
+public final class ClassAliasWithParameters {
+    
+    private ClassAliasWithParameters() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo ClassAliasWithParameters$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String s) {
+        throw new .ceylon.language.Exception();
+    }
+}
+final class classAliasWithParametersMethod_ {
+    
+    private classAliasWithParametersMethod_() {
+    }
+    
+    static void classAliasWithParametersMethod() {
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo foo = new .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo(1L, "a");
+    }
+}

@@ -1,0 +1,1435 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+interface Concrete<A> extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$A();
+    
+    private default void mNonShared$priv$() {
+        (
+            let
+            {
+                A $ceylontmp$a$0 = mNonShared$a();
+                .ceylon.language.Sequential<? extends A> $ceylontmp$aseq$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                mNonShared$priv$$canonical$($ceylontmp$a$0, $ceylontmp$aseq$1);
+            }
+            returning null;
+        );
+    }
+    
+    private default A mNonShared$a() {
+        return null;
+    }
+    
+    private default void mNonShared$priv$(final A a) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends A> $ceylontmp$aseq$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                mNonShared$priv$$canonical$(a, $ceylontmp$aseq$2);
+            }
+            returning null;
+        );
+    }
+    
+    private default void mNonShared$priv$$canonical$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
+    }
+    
+    private default void mNonShared$priv$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
+        (
+            let
+            {
+                mNonShared$priv$$canonical$(a, aseq);
+            }
+            returning null;
+        );
+    }
+    
+    public default void mShared() {
+        (
+            let
+            {
+                A $ceylontmp$a$3 = mShared$a();
+                .ceylon.language.Sequential<? extends A> $ceylontmp$aseq$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                mShared$canonical$($ceylontmp$a$3, $ceylontmp$aseq$4);
+            }
+            returning null;
+        );
+    }
+    
+    public default A mShared$a() {
+        return null;
+    }
+    
+    public default void mShared(final A a) {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends A> $ceylontmp$aseq$5 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                mShared$canonical$(a, $ceylontmp$aseq$5);
+            }
+            returning null;
+        );
+    }
+    
+    private default void mShared$canonical$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
+        this.mNonShared$priv$();
+    }
+    
+    public default void mShared(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
+        (
+            let
+            {
+                mShared$canonical$(a, aseq);
+            }
+            returning null;
+        );
+    }
+    
+    public abstract .java.lang.Object mFormal();
+    
+    public default A mFormal$a() {
+        return null;
+    }
+    
+    public abstract .java.lang.Object mFormal(final A a);
+    
+    public abstract .java.lang.Object mFormal(final A a, final .ceylon.language.Sequential<? extends A> aseq);
+    
+    public default .java.lang.Object mDefault() {
+        return (
+            let
+            {
+                A $ceylontmp$a$6 = mDefault$a();
+                .ceylon.language.Sequential<? extends A> $ceylontmp$aseq$7 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mDefault$canonical$($ceylontmp$a$6, $ceylontmp$aseq$7);
+        );
+    }
+    
+    public default A mDefault$a() {
+        return null;
+    }
+    
+    public default .java.lang.Object mDefault(final A a) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends A> $ceylontmp$aseq$8 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mDefault$canonical$(a, $ceylontmp$aseq$8);
+        );
+    }
+    
+    private default .java.lang.Object mDefault$canonical$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
+        return null;
+    }
+    
+    public default .java.lang.Object mDefault(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
+        return mDefault$canonical$(a, aseq);
+    }
+}
+final class concreteCallsites_ {
+    
+    private concreteCallsites_() {
+    }
+    
+    static void concreteCallsites(final .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete conc) {
+        conc.mShared();
+        conc.mShared(null);
+        conc.mShared(.ceylon.language.Integer.instance(1L));
+        conc.mShared(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$9$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$9$argthis$ = arg$9$callable$;
+                .java.lang.Object arg$9$0 = arg$9$argthis$.mShared$a();
+                .ceylon.language.Sequential arg$9$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$9$callable$.mShared(arg$9$0, arg$9$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$10$callable$ = conc;
+                .java.lang.Object arg$10$0 = null;
+                .ceylon.language.Sequential arg$10$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$10$callable$.mShared(arg$10$0, arg$10$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$11$callable$ = conc;
+                .java.lang.Object arg$11$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$11$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$11$callable$.mShared(arg$11$0, arg$11$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$12$callable$ = conc;
+                .java.lang.Object arg$12$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$12$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$12$callable$.mShared(arg$12$0, arg$12$1);
+            }
+            returning null;
+        );
+        conc.mFormal();
+        conc.mFormal(null);
+        conc.mFormal(.ceylon.language.Integer.instance(1L));
+        conc.mFormal(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$13$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$13$argthis$ = arg$13$callable$;
+                .java.lang.Object arg$13$0 = arg$13$argthis$.mFormal$a();
+                .ceylon.language.Sequential arg$13$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$13$callable$.mFormal(arg$13$0, arg$13$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$14$callable$ = conc;
+                .java.lang.Object arg$14$0 = null;
+                .ceylon.language.Sequential arg$14$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$14$callable$.mFormal(arg$14$0, arg$14$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$15$callable$ = conc;
+                .java.lang.Object arg$15$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$15$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$15$callable$.mFormal(arg$15$0, arg$15$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$16$callable$ = conc;
+                .java.lang.Object arg$16$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$16$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$16$callable$.mFormal(arg$16$0, arg$16$1);
+            }
+            returning null;
+        );
+        conc.mDefault();
+        conc.mDefault(null);
+        conc.mDefault(.ceylon.language.Integer.instance(1L));
+        conc.mDefault(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$17$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$17$argthis$ = arg$17$callable$;
+                .java.lang.Object arg$17$0 = arg$17$argthis$.mDefault$a();
+                .ceylon.language.Sequential arg$17$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$17$callable$.mDefault(arg$17$0, arg$17$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$18$callable$ = conc;
+                .java.lang.Object arg$18$0 = null;
+                .ceylon.language.Sequential arg$18$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$18$callable$.mDefault(arg$18$0, arg$18$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$19$callable$ = conc;
+                .java.lang.Object arg$19$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$19$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$19$callable$.mDefault(arg$19$0, arg$19$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$20$callable$ = conc;
+                .java.lang.Object arg$20$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$20$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$20$callable$.mDefault(arg$20$0, arg$20$1);
+            }
+            returning null;
+        );
+    }
+}
+class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<B>, .java.io.Serializable {
+    
+    ConcreteImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B) {
+        this.$reified$B = $reified$B;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$A() {
+        return $reified$B;
+    }
+    
+    public final .java.lang.Object mFormal() {
+        return (
+            let
+            {
+                B $ceylontmp$b$21 = mFormal$a();
+                .ceylon.language.Sequential<? extends B> $ceylontmp$bseq$22 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mFormal$canonical$($ceylontmp$b$21, $ceylontmp$bseq$22);
+        );
+    }
+    
+    public final .java.lang.Object mFormal(final B b) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends B> $ceylontmp$bseq$23 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mFormal$canonical$(b, $ceylontmp$bseq$23);
+        );
+    }
+    
+    private .java.lang.Object mFormal$canonical$(final B b, final .ceylon.language.Sequential<? extends B> bseq) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object mFormal(final B b, final .ceylon.language.Sequential<? extends B> bseq) {
+        return mFormal$canonical$(b, bseq);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl.class, $reified$B);
+    }
+}
+final class concreteImplCallsites_ {
+    
+    private concreteImplCallsites_() {
+    }
+    
+    static void concreteImplCallsites(final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl conc) {
+        conc.mShared();
+        conc.mShared(null);
+        conc.mShared(.ceylon.language.Integer.instance(1L));
+        conc.mShared(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$24$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$24$argthis$ = arg$24$callable$;
+                .java.lang.Object arg$24$0 = arg$24$argthis$.mShared$a();
+                .ceylon.language.Sequential arg$24$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$24$callable$.mShared(arg$24$0, arg$24$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$25$callable$ = conc;
+                .java.lang.Object arg$25$0 = null;
+                .ceylon.language.Sequential arg$25$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$25$callable$.mShared(arg$25$0, arg$25$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$26$callable$ = conc;
+                .java.lang.Object arg$26$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$26$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$26$callable$.mShared(arg$26$0, arg$26$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$27$callable$ = conc;
+                .java.lang.Object arg$27$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$27$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$27$callable$.mShared(arg$27$0, arg$27$1);
+            }
+            returning null;
+        );
+        conc.mFormal();
+        conc.mFormal(null);
+        conc.mFormal(.ceylon.language.Integer.instance(1L));
+        conc.mFormal(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl arg$28$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl arg$28$argthis$ = arg$28$callable$;
+                .java.lang.Object arg$28$0 = arg$28$argthis$.mFormal$a();
+                .ceylon.language.Sequential arg$28$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$28$callable$.mFormal(arg$28$0, arg$28$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl arg$29$callable$ = conc;
+                .java.lang.Object arg$29$0 = null;
+                .ceylon.language.Sequential arg$29$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$29$callable$.mFormal(arg$29$0, arg$29$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl arg$30$callable$ = conc;
+                .java.lang.Object arg$30$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$30$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$30$callable$.mFormal(arg$30$0, arg$30$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImpl arg$31$callable$ = conc;
+                .java.lang.Object arg$31$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$31$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$31$callable$.mFormal(arg$31$0, arg$31$1);
+            }
+            returning null;
+        );
+        conc.mDefault();
+        conc.mDefault(null);
+        conc.mDefault(.ceylon.language.Integer.instance(1L));
+        conc.mDefault(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$32$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$32$argthis$ = arg$32$callable$;
+                .java.lang.Object arg$32$0 = arg$32$argthis$.mDefault$a();
+                .ceylon.language.Sequential arg$32$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$32$callable$.mDefault(arg$32$0, arg$32$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$33$callable$ = conc;
+                .java.lang.Object arg$33$0 = null;
+                .ceylon.language.Sequential arg$33$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$33$callable$.mDefault(arg$33$0, arg$33$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$34$callable$ = conc;
+                .java.lang.Object arg$34$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$34$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$34$callable$.mDefault(arg$34$0, arg$34$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$35$callable$ = conc;
+                .java.lang.Object arg$35$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$35$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$35$callable$.mDefault(arg$35$0, arg$35$1);
+            }
+            returning null;
+        );
+    }
+}
+class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<C>, .java.io.Serializable {
+    
+    ConcreteImplWithDefault(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C) {
+        this.$reified$C = $reified$C;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$A() {
+        return $reified$C;
+    }
+    
+    public final .java.lang.Object mFormal() {
+        return (
+            let
+            {
+                C $ceylontmp$c$36 = mFormal$a();
+                .ceylon.language.Sequential<? extends C> $ceylontmp$cseq$37 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mFormal$canonical$($ceylontmp$c$36, $ceylontmp$cseq$37);
+        );
+    }
+    
+    public final .java.lang.Object mFormal(final C c) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends C> $ceylontmp$cseq$38 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mFormal$canonical$(c, $ceylontmp$cseq$38);
+        );
+    }
+    
+    private .java.lang.Object mFormal$canonical$(final C c, final .ceylon.language.Sequential<? extends C> cseq) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object mFormal(final C c, final .ceylon.language.Sequential<? extends C> cseq) {
+        return mFormal$canonical$(c, cseq);
+    }
+    
+    public final .java.lang.Object mDefault() {
+        return (
+            let
+            {
+                C $ceylontmp$c$39 = mDefault$a();
+                .ceylon.language.Sequential<? extends C> $ceylontmp$cseq$40 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mDefault$canonical$($ceylontmp$c$39, $ceylontmp$cseq$40);
+        );
+    }
+    
+    public final .java.lang.Object mDefault(final C c) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends C> $ceylontmp$cseq$41 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mDefault$canonical$(c, $ceylontmp$cseq$41);
+        );
+    }
+    
+    private .java.lang.Object mDefault$canonical$(final C c, final .ceylon.language.Sequential<? extends C> cseq) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object mDefault(final C c, final .ceylon.language.Sequential<? extends C> cseq) {
+        return mDefault$canonical$(c, cseq);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault.class, $reified$C);
+    }
+}
+final class concreteImplWithDefaultCallsites_ {
+    
+    private concreteImplWithDefaultCallsites_() {
+    }
+    
+    static void concreteImplWithDefaultCallsites(final .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault conc) {
+        conc.mShared();
+        conc.mShared(null);
+        conc.mShared(.ceylon.language.Integer.instance(1L));
+        conc.mShared(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$42$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$42$argthis$ = arg$42$callable$;
+                .java.lang.Object arg$42$0 = arg$42$argthis$.mShared$a();
+                .ceylon.language.Sequential arg$42$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$42$callable$.mShared(arg$42$0, arg$42$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$43$callable$ = conc;
+                .java.lang.Object arg$43$0 = null;
+                .ceylon.language.Sequential arg$43$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$43$callable$.mShared(arg$43$0, arg$43$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$44$callable$ = conc;
+                .java.lang.Object arg$44$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$44$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$44$callable$.mShared(arg$44$0, arg$44$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$45$callable$ = conc;
+                .java.lang.Object arg$45$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$45$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$45$callable$.mShared(arg$45$0, arg$45$1);
+            }
+            returning null;
+        );
+        conc.mFormal();
+        conc.mFormal(null);
+        conc.mFormal(.ceylon.language.Integer.instance(1L));
+        conc.mFormal(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault arg$46$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault arg$46$argthis$ = arg$46$callable$;
+                .java.lang.Object arg$46$0 = arg$46$argthis$.mFormal$a();
+                .ceylon.language.Sequential arg$46$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$46$callable$.mFormal(arg$46$0, arg$46$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault arg$47$callable$ = conc;
+                .java.lang.Object arg$47$0 = null;
+                .ceylon.language.Sequential arg$47$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$47$callable$.mFormal(arg$47$0, arg$47$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault arg$48$callable$ = conc;
+                .java.lang.Object arg$48$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$48$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$48$callable$.mFormal(arg$48$0, arg$48$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault arg$49$callable$ = conc;
+                .java.lang.Object arg$49$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$49$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$49$callable$.mFormal(arg$49$0, arg$49$1);
+            }
+            returning null;
+        );
+        conc.mDefault();
+        conc.mDefault(null);
+        conc.mDefault(.ceylon.language.Integer.instance(1L));
+        conc.mDefault(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault arg$50$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault arg$50$argthis$ = arg$50$callable$;
+                .java.lang.Object arg$50$0 = arg$50$argthis$.mDefault$a();
+                .ceylon.language.Sequential arg$50$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$50$callable$.mDefault(arg$50$0, arg$50$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault arg$51$callable$ = conc;
+                .java.lang.Object arg$51$0 = null;
+                .ceylon.language.Sequential arg$51$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$51$callable$.mDefault(arg$51$0, arg$51$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault arg$52$callable$ = conc;
+                .java.lang.Object arg$52$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$52$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$52$callable$.mDefault(arg$52$0, arg$52$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteImplWithDefault arg$53$callable$ = conc;
+                .java.lang.Object arg$53$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$53$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$53$callable$.mDefault(arg$53$0, arg$53$1);
+            }
+            returning null;
+        );
+    }
+}
+abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<D>, .java.io.Serializable {
+    
+    Abstract(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$D) {
+        this.$reified$D = $reified$D;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$D;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$A() {
+        return $reified$D;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.Abstract.class, $reified$D);
+    }
+}
+final class abstractCallsites_ {
+    
+    private abstractCallsites_() {
+    }
+    
+    static void abstractCallsites(final .com.redhat.ceylon.compiler.java.test.structure.concrete.Abstract conc) {
+        conc.mShared();
+        conc.mShared(null);
+        conc.mShared(.ceylon.language.Integer.instance(1L));
+        conc.mShared(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$54$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$54$argthis$ = arg$54$callable$;
+                .java.lang.Object arg$54$0 = arg$54$argthis$.mShared$a();
+                .ceylon.language.Sequential arg$54$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$54$callable$.mShared(arg$54$0, arg$54$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$55$callable$ = conc;
+                .java.lang.Object arg$55$0 = null;
+                .ceylon.language.Sequential arg$55$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$55$callable$.mShared(arg$55$0, arg$55$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$56$callable$ = conc;
+                .java.lang.Object arg$56$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$56$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$56$callable$.mShared(arg$56$0, arg$56$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$57$callable$ = conc;
+                .java.lang.Object arg$57$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$57$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$57$callable$.mShared(arg$57$0, arg$57$1);
+            }
+            returning null;
+        );
+        conc.mFormal();
+        conc.mFormal(null);
+        conc.mFormal(.ceylon.language.Integer.instance(1L));
+        conc.mFormal(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$58$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$58$argthis$ = arg$58$callable$;
+                .java.lang.Object arg$58$0 = arg$58$argthis$.mFormal$a();
+                .ceylon.language.Sequential arg$58$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$58$callable$.mFormal(arg$58$0, arg$58$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$59$callable$ = conc;
+                .java.lang.Object arg$59$0 = null;
+                .ceylon.language.Sequential arg$59$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$59$callable$.mFormal(arg$59$0, arg$59$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$60$callable$ = conc;
+                .java.lang.Object arg$60$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$60$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$60$callable$.mFormal(arg$60$0, arg$60$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$61$callable$ = conc;
+                .java.lang.Object arg$61$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$61$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$61$callable$.mFormal(arg$61$0, arg$61$1);
+            }
+            returning null;
+        );
+        conc.mDefault();
+        conc.mDefault(null);
+        conc.mDefault(.ceylon.language.Integer.instance(1L));
+        conc.mDefault(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$62$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$62$argthis$ = arg$62$callable$;
+                .java.lang.Object arg$62$0 = arg$62$argthis$.mDefault$a();
+                .ceylon.language.Sequential arg$62$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$62$callable$.mDefault(arg$62$0, arg$62$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$63$callable$ = conc;
+                .java.lang.Object arg$63$0 = null;
+                .ceylon.language.Sequential arg$63$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$63$callable$.mDefault(arg$63$0, arg$63$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$64$callable$ = conc;
+                .java.lang.Object arg$64$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$64$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$64$callable$.mDefault(arg$64$0, arg$64$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$65$callable$ = conc;
+                .java.lang.Object arg$65$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$65$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$65$callable$.mDefault(arg$65$0, arg$65$1);
+            }
+            returning null;
+        );
+    }
+}
+class AbstractSub<E> extends .com.redhat.ceylon.compiler.java.test.structure.concrete.Abstract<E> {
+    
+    AbstractSub(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E) {
+        super($reified$E);
+        this.$reified$E = $reified$E;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$E;
+    
+    public final .java.lang.Object mFormal() {
+        return (
+            let
+            {
+                E $ceylontmp$e$66 = mFormal$a();
+                .ceylon.language.Sequential<? extends E> $ceylontmp$eseq$67 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mFormal$canonical$($ceylontmp$e$66, $ceylontmp$eseq$67);
+        );
+    }
+    
+    public final .java.lang.Object mFormal(final E e) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends E> $ceylontmp$eseq$68 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mFormal$canonical$(e, $ceylontmp$eseq$68);
+        );
+    }
+    
+    private .java.lang.Object mFormal$canonical$(final E e, final .ceylon.language.Sequential<? extends E> eseq) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object mFormal(final E e, final .ceylon.language.Sequential<? extends E> eseq) {
+        return mFormal$canonical$(e, eseq);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub.class, $reified$E);
+    }
+}
+final class abstractSubCallsites_ {
+    
+    private abstractSubCallsites_() {
+    }
+    
+    static void abstractSubCallsites(final .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub conc) {
+        conc.mShared();
+        conc.mShared(null);
+        conc.mShared(.ceylon.language.Integer.instance(1L));
+        conc.mShared(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$69$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$69$argthis$ = arg$69$callable$;
+                .java.lang.Object arg$69$0 = arg$69$argthis$.mShared$a();
+                .ceylon.language.Sequential arg$69$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$69$callable$.mShared(arg$69$0, arg$69$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$70$callable$ = conc;
+                .java.lang.Object arg$70$0 = null;
+                .ceylon.language.Sequential arg$70$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$70$callable$.mShared(arg$70$0, arg$70$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$71$callable$ = conc;
+                .java.lang.Object arg$71$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$71$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$71$callable$.mShared(arg$71$0, arg$71$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$72$callable$ = conc;
+                .java.lang.Object arg$72$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$72$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$72$callable$.mShared(arg$72$0, arg$72$1);
+            }
+            returning null;
+        );
+        conc.mFormal();
+        conc.mFormal(null);
+        conc.mFormal(.ceylon.language.Integer.instance(1L));
+        conc.mFormal(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub arg$73$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub arg$73$argthis$ = arg$73$callable$;
+                .java.lang.Object arg$73$0 = arg$73$argthis$.mFormal$a();
+                .ceylon.language.Sequential arg$73$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$73$callable$.mFormal(arg$73$0, arg$73$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub arg$74$callable$ = conc;
+                .java.lang.Object arg$74$0 = null;
+                .ceylon.language.Sequential arg$74$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$74$callable$.mFormal(arg$74$0, arg$74$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub arg$75$callable$ = conc;
+                .java.lang.Object arg$75$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$75$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$75$callable$.mFormal(arg$75$0, arg$75$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractSub arg$76$callable$ = conc;
+                .java.lang.Object arg$76$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$76$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$76$callable$.mFormal(arg$76$0, arg$76$1);
+            }
+            returning null;
+        );
+        conc.mDefault();
+        conc.mDefault(null);
+        conc.mDefault(.ceylon.language.Integer.instance(1L));
+        conc.mDefault(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$77$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$77$argthis$ = arg$77$callable$;
+                .java.lang.Object arg$77$0 = arg$77$argthis$.mDefault$a();
+                .ceylon.language.Sequential arg$77$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$77$callable$.mDefault(arg$77$0, arg$77$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$78$callable$ = conc;
+                .java.lang.Object arg$78$0 = null;
+                .ceylon.language.Sequential arg$78$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$78$callable$.mDefault(arg$78$0, arg$78$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$79$callable$ = conc;
+                .java.lang.Object arg$79$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$79$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$79$callable$.mDefault(arg$79$0, arg$79$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$80$callable$ = conc;
+                .java.lang.Object arg$80$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$80$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$80$callable$.mDefault(arg$80$0, arg$80$1);
+            }
+            returning null;
+        );
+    }
+}
+abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete<F>, .java.io.Serializable {
+    
+    AbstractImpl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F) {
+        this.$reified$F = $reified$F;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$A() {
+        return $reified$F;
+    }
+    
+    public final .java.lang.Object mFormal() {
+        return (
+            let
+            {
+                F $ceylontmp$f$81 = mFormal$a();
+                .ceylon.language.Sequential<? extends F> $ceylontmp$fseq$82 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mFormal$canonical$($ceylontmp$f$81, $ceylontmp$fseq$82);
+        );
+    }
+    
+    public final .java.lang.Object mFormal(final F f) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends F> $ceylontmp$fseq$83 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mFormal$canonical$(f, $ceylontmp$fseq$83);
+        );
+    }
+    
+    private .java.lang.Object mFormal$canonical$(final F f, final .ceylon.language.Sequential<? extends F> fseq) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object mFormal(final F f, final .ceylon.language.Sequential<? extends F> fseq) {
+        return mFormal$canonical$(f, fseq);
+    }
+    
+    public .java.lang.Object mDefault() {
+        return (
+            let
+            {
+                F $ceylontmp$f$84 = mDefault$a();
+                .ceylon.language.Sequential<? extends F> $ceylontmp$fseq$85 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mDefault$canonical$($ceylontmp$f$84, $ceylontmp$fseq$85);
+        );
+    }
+    
+    public .java.lang.Object mDefault(final F f) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends F> $ceylontmp$fseq$86 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mDefault$canonical$(f, $ceylontmp$fseq$86);
+        );
+    }
+    
+    private .java.lang.Object mDefault$canonical$(final F f, final .ceylon.language.Sequential<? extends F> fseq) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.Object mDefault(final F f, final .ceylon.language.Sequential<? extends F> fseq) {
+        return mDefault$canonical$(f, fseq);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl.class, $reified$F);
+    }
+}
+final class abstractImpl_ {
+    
+    private abstractImpl_() {
+    }
+    
+    static void abstractImpl(final .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl conc) {
+        conc.mShared();
+        conc.mShared(null);
+        conc.mShared(.ceylon.language.Integer.instance(1L));
+        conc.mShared(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$87$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$87$argthis$ = arg$87$callable$;
+                .java.lang.Object arg$87$0 = arg$87$argthis$.mShared$a();
+                .ceylon.language.Sequential arg$87$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$87$callable$.mShared(arg$87$0, arg$87$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$88$callable$ = conc;
+                .java.lang.Object arg$88$0 = null;
+                .ceylon.language.Sequential arg$88$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$88$callable$.mShared(arg$88$0, arg$88$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$89$callable$ = conc;
+                .java.lang.Object arg$89$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$89$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$89$callable$.mShared(arg$89$0, arg$89$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$90$callable$ = conc;
+                .java.lang.Object arg$90$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$90$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$90$callable$.mShared(arg$90$0, arg$90$1);
+            }
+            returning null;
+        );
+        conc.mFormal();
+        conc.mFormal(null);
+        conc.mFormal(.ceylon.language.Integer.instance(1L));
+        conc.mFormal(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl arg$91$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl arg$91$argthis$ = arg$91$callable$;
+                .java.lang.Object arg$91$0 = arg$91$argthis$.mFormal$a();
+                .ceylon.language.Sequential arg$91$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$91$callable$.mFormal(arg$91$0, arg$91$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl arg$92$callable$ = conc;
+                .java.lang.Object arg$92$0 = null;
+                .ceylon.language.Sequential arg$92$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$92$callable$.mFormal(arg$92$0, arg$92$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl arg$93$callable$ = conc;
+                .java.lang.Object arg$93$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$93$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$93$callable$.mFormal(arg$93$0, arg$93$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl arg$94$callable$ = conc;
+                .java.lang.Object arg$94$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$94$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$94$callable$.mFormal(arg$94$0, arg$94$1);
+            }
+            returning null;
+        );
+        conc.mDefault();
+        conc.mDefault(null);
+        conc.mDefault(.ceylon.language.Integer.instance(1L));
+        conc.mDefault(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl arg$95$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl arg$95$argthis$ = arg$95$callable$;
+                .java.lang.Object arg$95$0 = arg$95$argthis$.mDefault$a();
+                .ceylon.language.Sequential arg$95$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$95$callable$.mDefault(arg$95$0, arg$95$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl arg$96$callable$ = conc;
+                .java.lang.Object arg$96$0 = null;
+                .ceylon.language.Sequential arg$96$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$96$callable$.mDefault(arg$96$0, arg$96$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl arg$97$callable$ = conc;
+                .java.lang.Object arg$97$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$97$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$97$callable$.mDefault(arg$97$0, arg$97$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl arg$98$callable$ = conc;
+                .java.lang.Object arg$98$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$98$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$98$callable$.mDefault(arg$98$0, arg$98$1);
+            }
+            returning null;
+        );
+    }
+}
+class AbstractImplSub<G> extends .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl<G> {
+    
+    AbstractImplSub(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G) {
+        super($reified$G);
+        this.$reified$G = $reified$G;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G;
+    
+    public final .java.lang.Object mDefault() {
+        return (
+            let
+            {
+                G $ceylontmp$g$99 = mDefault$a();
+                .ceylon.language.Sequential<? extends G> $ceylontmp$gseq$100 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mDefault$canonical$($ceylontmp$g$99, $ceylontmp$gseq$100);
+        );
+    }
+    
+    public final .java.lang.Object mDefault(final G g) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends G> $ceylontmp$gseq$101 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning mDefault$canonical$(g, $ceylontmp$gseq$101);
+        );
+    }
+    
+    private .java.lang.Object mDefault$canonical$(final G g, final .ceylon.language.Sequential<? extends G> gseq) {
+        return null;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.Object mDefault(final G g, final .ceylon.language.Sequential<? extends G> gseq) {
+        return mDefault$canonical$(g, gseq);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub.class, $reified$G);
+    }
+}
+final class abstractImplSubCallsites_ {
+    
+    private abstractImplSubCallsites_() {
+    }
+    
+    static void abstractImplSubCallsites(final .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub conc) {
+        conc.mShared();
+        conc.mShared(null);
+        conc.mShared(.ceylon.language.Integer.instance(1L));
+        conc.mShared(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$102$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$102$argthis$ = arg$102$callable$;
+                .java.lang.Object arg$102$0 = arg$102$argthis$.mShared$a();
+                .ceylon.language.Sequential arg$102$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$102$callable$.mShared(arg$102$0, arg$102$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$103$callable$ = conc;
+                .java.lang.Object arg$103$0 = null;
+                .ceylon.language.Sequential arg$103$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$103$callable$.mShared(arg$103$0, arg$103$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$104$callable$ = conc;
+                .java.lang.Object arg$104$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$104$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$104$callable$.mShared(arg$104$0, arg$104$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete arg$105$callable$ = conc;
+                .java.lang.Object arg$105$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$105$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$105$callable$.mShared(arg$105$0, arg$105$1);
+            }
+            returning null;
+        );
+        conc.mFormal();
+        conc.mFormal(null);
+        conc.mFormal(.ceylon.language.Integer.instance(1L));
+        conc.mFormal(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl arg$106$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl arg$106$argthis$ = arg$106$callable$;
+                .java.lang.Object arg$106$0 = arg$106$argthis$.mFormal$a();
+                .ceylon.language.Sequential arg$106$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$106$callable$.mFormal(arg$106$0, arg$106$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl arg$107$callable$ = conc;
+                .java.lang.Object arg$107$0 = null;
+                .ceylon.language.Sequential arg$107$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$107$callable$.mFormal(arg$107$0, arg$107$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl arg$108$callable$ = conc;
+                .java.lang.Object arg$108$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$108$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$108$callable$.mFormal(arg$108$0, arg$108$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImpl arg$109$callable$ = conc;
+                .java.lang.Object arg$109$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$109$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$109$callable$.mFormal(arg$109$0, arg$109$1);
+            }
+            returning null;
+        );
+        conc.mDefault();
+        conc.mDefault(null);
+        conc.mDefault(.ceylon.language.Integer.instance(1L));
+        conc.mDefault(.ceylon.language.Float.instance(1.0));
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub arg$110$callable$ = conc;
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub arg$110$argthis$ = arg$110$callable$;
+                .java.lang.Object arg$110$0 = arg$110$argthis$.mDefault$a();
+                .ceylon.language.Sequential arg$110$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$110$callable$.mDefault(arg$110$0, arg$110$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub arg$111$callable$ = conc;
+                .java.lang.Object arg$111$0 = null;
+                .ceylon.language.Sequential arg$111$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$111$callable$.mDefault(arg$111$0, arg$111$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub arg$112$callable$ = conc;
+                .java.lang.Object arg$112$0 = .ceylon.language.Integer.instance(1L);
+                .ceylon.language.Sequential arg$112$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$112$callable$.mDefault(arg$112$0, arg$112$1);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.concrete.AbstractImplSub arg$113$callable$ = conc;
+                .java.lang.Object arg$113$0 = .ceylon.language.Float.instance(1.0);
+                .ceylon.language.Sequential arg$113$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                arg$113$callable$.mDefault(arg$113$0, arg$113$1);
+            }
+            returning null;
+        );
+    }
+}

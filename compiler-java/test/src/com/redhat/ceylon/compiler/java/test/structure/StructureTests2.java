@@ -31,6 +31,10 @@ import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 
 public class StructureTests2 extends CompilerTests {
     
+    public StructureTests2(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Override
     protected String transformDestDir(String name) {
         return name + "-2";

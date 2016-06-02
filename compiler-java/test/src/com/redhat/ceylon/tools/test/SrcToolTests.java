@@ -38,6 +38,10 @@ import com.redhat.ceylon.tools.src.CeylonSrcTool;
 
 public class SrcToolTests extends AbstractToolTests {
 
+    public SrcToolTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Override
     protected String getPackagePath() {
         return super.getPackagePath() + "/test_mod_source";

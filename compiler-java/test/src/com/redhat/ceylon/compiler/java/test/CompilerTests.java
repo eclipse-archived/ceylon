@@ -49,6 +49,9 @@ import java.util.regex.Matcher;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.common.Constants;
@@ -89,8 +92,16 @@ import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.tools.jigsaw.CeylonJigsawTool;
 
+@RunWith(Parameterized.class)
 public abstract class CompilerTests {
 
+    @Parameters
+    public static Iterable<Object[]> testParameters() {
+        return Arrays.asList(
+                new Object[]{new String[]{"-target", "7", "-source", "7"}}, 
+                new Object[]{new String[]{"-target", "8", "-source", "8"}});
+    }
+    
     protected final static String dir = "test/src";
     protected final static String destDirGeneral = "build/test-cars";
     protected final static String cacheDirGeneral = "build/test-cache";
@@ -99,6 +110,7 @@ public abstract class CompilerTests {
     protected final String cacheDir;
     protected final String moduleName;
     protected final List<String> defaultOptions;
+    protected final boolean eight;
 
     private static final String jbmv = Versions.DEPENDENCY_JBOSS_MODULES_VERSION;
     
@@ -140,10 +152,18 @@ public abstract class CompilerTests {
         }
     } 
 
-    public CompilerTests() {
+    public CompilerTests(String[] compilerArgs) {
         // for comparing with java source
         Package pakage = getClass().getPackage();
         moduleName = pakage.getName();
+        boolean e = false;
+        for (int ii = 0; ii < compilerArgs.length-1; ii++) {
+            if (compilerArgs[ii].equals("-target")
+                    && compilerArgs[ii+1].equals("8")) {
+                e = true;
+            }
+        }
+        eight = e;
         
         
         int lastDot = moduleName.lastIndexOf('.');
@@ -164,6 +184,7 @@ public abstract class CompilerTests {
                 "-cp", getClassPathAsPath(),
                 //"-target", "8",
                 "-suppress-warnings", "compilerAnnotation"));
+        defaultOptions.addAll(Arrays.asList(compilerArgs));
     }
 
     public static String getClassPathAsPath() {
@@ -211,7 +232,13 @@ public abstract class CompilerTests {
 	}
 	
 	protected void compareWithJavaSource(String name) {
-		compareWithJavaSource(name+".src", name+".ceylon");
+	    String src = name+".src";
+	    if (eight) {
+	        src = name+".src8";
+	    } else {
+	        src = name+".src";
+	    }
+		compareWithJavaSource(src, name+".ceylon");
 	}
     
     /*List<String> optsForJava8Interfaces() {

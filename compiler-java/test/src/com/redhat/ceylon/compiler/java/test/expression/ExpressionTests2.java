@@ -26,6 +26,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class ExpressionTests2 extends CompilerTests {
     
+    public ExpressionTests2(String[] args) {
+        super(args);
+    }
+
     @Override
     protected String transformDestDir(String name) {
         return name + "-2";

@@ -1,0 +1,189 @@
+package com.redhat.ceylon.compiler.java.test.structure.alias;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Members({
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.MemberClassAlias3.class),
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.MemberClassAlias2.class),
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.MemberClassAlias1.class),
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.Member.class)})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "C",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+public class MemberClassAliasWithTypeParameters_Foo<C> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Jpa
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected MemberClassAliasWithTypeParameters_Foo(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C) {
+        super();
+        this.$reified$C = $reified$C;
+        this.c = null;
+    }
+    
+    public MemberClassAliasWithTypeParameters_Foo(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C, @.com.redhat.ceylon.compiler.java.metadata.Name("c")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("C")
+    final C c) {
+        this.$reified$C = $reified$C;
+        this.c = c;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$C;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final C c;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("C")
+    private final C getC$priv$() {
+        return c;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <T>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<T> Member$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        return new Member<T>($reified$T, t);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.class)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public class Member<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Member(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+        final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+        final T t) {
+            this.$reified$T = $reified$T;
+        }
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.class, .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.this.$reified$C), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.Member.class, $reified$T));
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public <S>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<S> MemberClassAlias1$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$S, final S s) {
+        return new Member<S>($reified$S, s);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "C",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {}),
+            @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+                    value = "S",
+                    variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+                    satisfies = {},
+                    caseTypes = {})})
+    public <C, S>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<S> MemberClassAlias1$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("S")
+    final S s) {
+        throw new .ceylon.language.Exception();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasWithTypeParameters_Foo<C>.Member<S>")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.class)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "S",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public final class MemberClassAlias1<S> {
+        
+        private MemberClassAlias1() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> MemberClassAlias2$new$(final .ceylon.language.Integer s) {
+        return new Member<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, s);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "C",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public <C>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> MemberClassAlias2$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final .ceylon.language.Integer s) {
+        throw new .ceylon.language.Exception();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasWithTypeParameters_Foo<C>.Member<ceylon.language::Integer>")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.class)
+    public final class MemberClassAlias2 {
+        
+        private MemberClassAlias2() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<C> MemberClassAlias3$new$(final C s) {
+        return new Member<C>($reified$C, s);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "C",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    public <C>.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<C> MemberClassAlias3$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("C")
+    final C s) {
+        throw new .ceylon.language.Exception();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasWithTypeParameters_Foo<C>.Member<C>")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.class)
+    public final class MemberClassAlias3 {
+        
+        private MemberClassAlias3() {
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void test$priv$() {
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> m1 = MemberClassAlias1$new$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<.ceylon.language.Integer> m2 = MemberClassAlias2$new$(.ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<C>.Member<C> m3 = MemberClassAlias3$new$(getC$priv$());
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo.class, $reified$C);
+    }
+}
+final class memberClassAliasWithTypeParametersMethod_ {
+    
+    private memberClassAliasWithTypeParametersMethod_() {
+    }
+    
+    static void memberClassAliasWithTypeParametersMethod() {
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>.Member<.ceylon.language.Integer> foo1 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).<.ceylon.language.Integer>MemberClassAlias1$new$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>.Member<.ceylon.language.Integer> foo2 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).MemberClassAlias2$new$(.ceylon.language.Integer.instance(1L));
+        final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>.Member<.ceylon.language.Integer> foo3 = new .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithTypeParameters_Foo<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L)).MemberClassAlias3$new$(.ceylon.language.Integer.instance(1L));
+    }
+}

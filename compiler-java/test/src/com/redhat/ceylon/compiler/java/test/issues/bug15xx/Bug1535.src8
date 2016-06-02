@@ -1,0 +1,96 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+public final class bug1535_ {
+    
+    private bug1535_() {
+    }
+    
+    public static <Value extends .ceylon.language.Summable<Value>>Value bug1535(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, final .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> values) {
+        .java.lang.Object floats$1;
+        if (.com.redhat.ceylon.compiler.java.Util.isReified(floats$1 = (.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$))) {
+            final .ceylon.language.Iterable floats$21 = (.ceylon.language.Iterable)floats$1;
+            double product = 0.0;
+            boolean loopentered$22 = false;
+            .java.lang.Object elem$23;
+            .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$24 = floats$21.iterator();
+            loop_0: while (!((elem$23 = val$iterator$$24.next()) instanceof .ceylon.language.Finished)) {
+                loopentered$22 = true;
+                final .java.lang.Object val = elem$23;
+                (
+                    let
+                    {
+                        .ceylon.language.Float $ceylontmp$op$25 = .ceylon.language.Float.instance(product).plus((.ceylon.language.Float)val);
+                        product = $ceylontmp$op$25.doubleValue();
+                    }
+                    returning $ceylontmp$op$25;
+                );
+            }
+            if (!loopentered$22) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+            final .java.lang.Object result$28;
+            .java.lang.Object result$27 = null;
+            if ((result$27 = .ceylon.language.Float.instance(product)) instanceof .ceylon.language.Summable && .com.redhat.ceylon.compiler.java.Util.isReified(result$27, $reified$Value)) {
+                result$28 = result$27;
+            } else {
+                throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Value result=product"));
+            }
+            return (Value)result$28;
+        } else {
+            .java.lang.Object ints$3;
+            if (.com.redhat.ceylon.compiler.java.Util.isReified(ints$3 = (.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Iterable.class, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$))) {
+                final .ceylon.language.Iterable ints$13 = (.ceylon.language.Iterable)ints$3;
+                long product = 0L;
+                boolean loopentered$14 = false;
+                .java.lang.Object elem$15;
+                .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$16 = ints$13.iterator();
+                loop_1: while (!((elem$15 = val$iterator$$16.next()) instanceof .ceylon.language.Finished)) {
+                    loopentered$14 = true;
+                    final .java.lang.Object val = elem$15;
+                    (
+                        let
+                        {
+                            .ceylon.language.Integer $ceylontmp$op$17 = .ceylon.language.Integer.instance(product).plus((.ceylon.language.Integer)val);
+                            product = $ceylontmp$op$17.longValue();
+                        }
+                        returning $ceylontmp$op$17;
+                    );
+                }
+                if (!loopentered$14) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+                final .java.lang.Object result$20;
+                .java.lang.Object result$19 = null;
+                if ((result$19 = .ceylon.language.Integer.instance(product)) instanceof .ceylon.language.Summable && .com.redhat.ceylon.compiler.java.Util.isReified(result$19, $reified$Value)) {
+                    result$20 = result$19;
+                } else {
+                    throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Value result=product"));
+                }
+                return (Value)result$20;
+            } else {
+                Value sum = (Value)((.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values).getFirst();
+                final .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> iterable$8 = ((.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values).getRest();
+                final boolean isArray$9 = iterable$8 instanceof .ceylon.language.Array;
+                final boolean isTuple$10 = iterable$8 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$8).$getArray$() != null;
+                .java.lang.Object elem$5 = null;
+                int i$11 = 0;
+                final int length$12;
+                if (isArray$9 || isTuple$10) {
+                    length$12 = (int)iterable$8.getSize();
+                } else {
+                    length$12 = 0;
+                }
+                .ceylon.language.Iterator<? extends Value> val$iterator$$6 = isTuple$10 || isArray$9 ? null : iterable$8.iterator();
+                loop_2: while (isTuple$10 || isArray$9 ? i$11 < length$12 : !((elem$5 = val$iterator$$6.next()) instanceof .ceylon.language.Finished)) {
+                    if (isArray$9 || isTuple$10) elem$5 = iterable$8.getFromFirst(i$11++);
+                    final Value val = (Value)elem$5;
+                    (
+                        let
+                        {
+                            Value $ceylontmp$op$7 = ((Value)sum).plus((Value)val);
+                            sum = $ceylontmp$op$7;
+                        }
+                        returning $ceylontmp$op$7;
+                    );
+                }
+                return (Value)sum;
+            }
+        }
+    }
+}

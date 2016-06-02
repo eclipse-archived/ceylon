@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug05xx;
+
+final class bug594_ {
+    
+    private bug594_() {
+    }
+    
+    static <T>void bug594(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+        final .java.lang.Object s = .ceylon.language.String.instance("s");
+        final .ceylon.language.String s2 = .ceylon.language.String.instance("s");
+        .java.lang.Object s$1;
+        if ((s$1 = s) == null || s$1 instanceof .ceylon.language.String) {
+            final .ceylon.language.String s$2 = (.ceylon.language.String)s$1;
+        }
+        if (t == null || t instanceof .ceylon.language.String) {
+        }
+    }
+}

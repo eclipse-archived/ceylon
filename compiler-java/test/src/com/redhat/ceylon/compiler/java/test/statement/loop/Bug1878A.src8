@@ -1,0 +1,55 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop;
+
+final class bug1878A_ {
+    
+    private bug1878A_() {
+    }
+    
+    static boolean bug1878A() {
+        final long $ceylontmp$first$2 = 1L;
+        final long $ceylontmp$last$3 = 1L;
+        final boolean $ceylontmp$increasing$4 = .ceylon.language.Integer.offset($ceylontmp$last$3, $ceylontmp$first$2) >= 0;
+        final long $ceylontmp$incr$5 = $ceylontmp$increasing$4 ? 1L : -1L;
+        long _$8 = $ceylontmp$first$2;
+        long $ceylontmp$element$7 = $ceylontmp$first$2;
+        boolean $ceylontmp$f$6 = false;
+        loop_0: do {
+            if ($ceylontmp$f$6) $ceylontmp$element$7 += $ceylontmp$incr$5;
+            $ceylontmp$f$6 = true;
+            _$8 = $ceylontmp$element$7;
+            final long _ = _$8;
+            $ceylontmp$continue$1: do {
+                return false;
+            }             while (false);
+        }         while ($ceylontmp$increasing$4 ? _$8 - $ceylontmp$last$3 != 0L : _$8 - $ceylontmp$last$3 != 0L);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug1878A2_ {
+    
+    private bug1878A2_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    static boolean bug1878A2() {
+        final long $ceylontmp$step$18 = 2L;
+        if ($ceylontmp$step$18 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        final long $ceylontmp$first$11 = 1L;
+        final long $ceylontmp$last$12 = 1L;
+        final boolean $ceylontmp$increasing$13 = $ceylontmp$step$18 == 1 ? .ceylon.language.Integer.offset($ceylontmp$last$12, $ceylontmp$first$11) >= 0 : .ceylon.language.Integer.offsetSign($ceylontmp$last$12, $ceylontmp$first$11) >= 0;
+        final long $ceylontmp$incr$14 = $ceylontmp$step$18 == 1 ? $ceylontmp$increasing$13 ? $ceylontmp$step$18 : -1L : $ceylontmp$increasing$13 ? $ceylontmp$step$18 : -$ceylontmp$step$18;
+        long _$17 = $ceylontmp$first$11;
+        long $ceylontmp$element$16 = $ceylontmp$first$11;
+        boolean $ceylontmp$f$15 = false;
+        loop_1: do {
+            if ($ceylontmp$f$15 && $ceylontmp$step$18 == 1L) $ceylontmp$step$18 == 1 ? $ceylontmp$element$16 += $ceylontmp$incr$14 : ($ceylontmp$element$16 = .ceylon.language.Integer.neighbour($ceylontmp$element$16, $ceylontmp$incr$14));
+            $ceylontmp$f$15 = true;
+            _$17 = $ceylontmp$element$16;
+            final long _ = _$17;
+            $ceylontmp$continue$10: do {
+                return false;
+            }             while (false);
+        }         while ($ceylontmp$step$18 == 1L ? $ceylontmp$step$18 == 1 ? $ceylontmp$increasing$13 ? _$17 - $ceylontmp$last$12 != 0L : _$17 - $ceylontmp$last$12 != 0L : $ceylontmp$increasing$13 ? .ceylon.language.Integer.offsetSign(_$17, $ceylontmp$last$12) <= 0L && .ceylon.language.Integer.offsetSign(_$17, $ceylontmp$first$11) >= 0L : .ceylon.language.Integer.offsetSign(_$17, $ceylontmp$last$12) >= 0L && .ceylon.language.Integer.offsetSign(_$17, $ceylontmp$first$11) <= 0L : $ceylontmp$step$18 == 1 ? $ceylontmp$increasing$13 ? $ceylontmp$element$16 - $ceylontmp$last$12 != 0L : $ceylontmp$element$16 - $ceylontmp$last$12 != 0L : $ceylontmp$increasing$13 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$16, $ceylontmp$last$12) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$16, $ceylontmp$first$11) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$16, $ceylontmp$last$12) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$16, $ceylontmp$first$11) <= 0L);
+    }
+}

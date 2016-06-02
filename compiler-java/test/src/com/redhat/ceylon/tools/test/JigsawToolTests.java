@@ -33,6 +33,10 @@ import com.redhat.ceylon.tools.jigsaw.CeylonJigsawTool;
 
 public class JigsawToolTests extends AbstractToolTests {
 
+    public JigsawToolTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Test
     public void testNoArgs() throws Exception {
         ToolModel<CeylonJigsawTool> model = pluginLoader.loadToolModel("jigsaw");

@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug03xx.$assert;
+
+public final class volatile_ {
+    
+    private volatile_() {
+    }
+    
+    public static void $volatile(final boolean assertion) {
+        (
+            let
+            {
+                .java.lang.String $ceylontmp$message$0 = .com.redhat.ceylon.compiler.java.test.issues.bug03xx.$assert.volatile_.volatile$message(assertion);
+                $volatile(assertion, $ceylontmp$message$0);
+            }
+            returning null;
+        );
+    }
+    
+    public static final .java.lang.String volatile$message(final boolean assertion) {
+        return "";
+    }
+    
+    public static void $volatile(final boolean assertion, final .java.lang.String message) {
+    }
+}
+final class m_ {
+    
+    private m_() {
+    }
+    
+    static void m() {
+        .com.redhat.ceylon.compiler.java.test.issues.bug03xx.$assert.volatile_.$volatile(true);
+    }
+}

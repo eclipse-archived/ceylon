@@ -30,6 +30,10 @@ import com.redhat.ceylon.common.tool.ToolModel;
 
 public class DocToolTests extends AbstractToolTests {
     
+    public DocToolTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     private List<String> options(String... strings){
         List<String> ret = new ArrayList<String>(strings.length+4);
         for(String s : strings)

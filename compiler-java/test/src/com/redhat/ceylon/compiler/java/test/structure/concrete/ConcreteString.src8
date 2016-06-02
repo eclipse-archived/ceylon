@@ -1,0 +1,165 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+interface ConcreteString extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public default void presentYourself() {
+        if (this.equals(this)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "equals(this)"));
+        }
+        if (2L == this.hashCode()) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == hash"));
+        }
+        if ("foo".equals(this.toString())) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foo\" == string"));
+        }
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.concrete::ConcreteString"})
+class ConcreteStringC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString, .java.io.Serializable {
+    
+    ConcreteStringC() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public final .java.lang.String toString() {
+        return "foo";
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$4 = 2L;
+            }
+            returning $ceylontmp$hash$4 ^ $ceylontmp$hash$4 >>> 32;
+        );
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteStringC.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteStringC.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+interface ConcreteString2 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public default void presentYourself() {
+        if (this.equals(this)) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "equals(this)"));
+        }
+        if (3L == this.hashCode()) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "3 == hash"));
+        }
+        if ("bar".equals(this.toString())) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"bar\" == string"));
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public default .java.lang.String toString() {
+        return "bar";
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public default int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$9 = 3L;
+            }
+            returning $ceylontmp$hash$9 ^ $ceylontmp$hash$9 >>> 32;
+        );
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.concrete::ConcreteString2"})
+class ConcreteStringC2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2, .java.io.Serializable {
+    
+    ConcreteStringC2() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public final .java.lang.String toString() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2.super.toString();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$11 = .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2.super.hashCode();
+            }
+            returning $ceylontmp$hash$11 ^ $ceylontmp$hash$11 >>> 32;
+        );
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteStringC2.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteStringC2.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class concreteString_ {
+    
+    private concreteString_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void concreteString() {
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteStringC().presentYourself();
+        new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteStringC2().presentYourself();
+    }
+}

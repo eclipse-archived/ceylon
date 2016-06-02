@@ -19,8 +19,11 @@
  */
 package com.redhat.ceylon.compiler.java.test.quoting;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runners.Parameterized.Parameters;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
@@ -29,6 +32,16 @@ public class QuotingTests extends CompilerTests {
     //
     // Packages
     
+    public QuotingTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+    
+    @Parameters
+    public static Iterable<Object[]> testParameters() {
+        return Arrays.<Object[]>asList(
+                new Object[]{new String[]{"-target", "7", "-source", "7"}});
+    }
+
     @Test
     public void testKeywordInPackage(){
         compareWithJavaSource("goto/KeywordInPackage");

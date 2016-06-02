@@ -1,0 +1,15 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+public interface Bug963<Element> extends .ceylon.language.List<Element> {
+    
+    public default .ceylon.language.List$impl<? extends Element> $ceylon$language$List$impl() {
+        return new .ceylon.language.List$impl<Element>(this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug963$Element(), this);
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug963$Element();
+    
+    @.java.lang.Override
+    public default long getSize() {
+        return this.$ceylon$language$List$impl().getSize();
+    }
+}

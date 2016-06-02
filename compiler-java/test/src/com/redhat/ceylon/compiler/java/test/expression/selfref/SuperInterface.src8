@@ -1,0 +1,106 @@
+package com.redhat.ceylon.compiler.java.test.expression.selfref;
+
+interface SuperInterface extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public default long getI() {
+        return 2L;
+    }
+    
+    public default void setI(final long i) {
+    }
+    
+    public default long m() {
+        return 2L;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.class);
+}
+class SuperInterface_Sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface, .java.io.Serializable {
+    
+    SuperInterface_Sub() {
+    }
+    
+    @.java.lang.Override
+    public final long m() {
+        (
+            let
+            {
+                long $ceylontmp$opV$1 = .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.getI();
+                .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.setI($ceylontmp$opV$1 + 1);
+            }
+            returning $ceylontmp$opV$1;
+        );
+        (
+            let
+            {
+                long $ceylontmp$opV$3 = .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.getI() + 1;
+                .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.setI($ceylontmp$opV$3);
+            }
+            returning $ceylontmp$opV$3;
+        );
+        (
+            let
+            {
+                long $ceylontmp$opV$5 = .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.getI() + 1L;
+                .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.setI($ceylontmp$opV$5);
+            }
+            returning $ceylontmp$opV$5;
+        );
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.getI() + .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.m();
+    }
+    
+    public final long m2() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.getI() + .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.m();
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.toString();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_Sub.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_Sub.class);
+}
+interface SuperInterface_SubInterface extends .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface {
+    
+    @.java.lang.Override
+    public default long m() {
+        (
+            let
+            {
+                long $ceylontmp$opV$7 = .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.getI();
+                .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.setI($ceylontmp$opV$7 + 1);
+            }
+            returning $ceylontmp$opV$7;
+        );
+        (
+            let
+            {
+                long $ceylontmp$opV$9 = .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.getI() + 1;
+                .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.setI($ceylontmp$opV$9);
+            }
+            returning $ceylontmp$opV$9;
+        );
+        (
+            let
+            {
+                long $ceylontmp$opV$11 = .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.getI() + 1L;
+                .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.setI($ceylontmp$opV$11);
+            }
+            returning $ceylontmp$opV$11;
+        );
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.getI() + .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.m();
+    }
+    
+    public default long m2() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.getI() + .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.m();
+    }
+    
+    @.java.lang.Override
+    public default .java.lang.String toString() {
+        return .com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface.super.toString();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.SuperInterface_SubInterface.class);
+}

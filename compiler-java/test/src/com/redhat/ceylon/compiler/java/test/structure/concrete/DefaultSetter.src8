@@ -1,0 +1,215 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+interface DefaultSetter$I {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$impl();
+    
+    public abstract long getAFormal();
+    
+    public abstract void setAFormal(final long aFormal);
+    
+    public long getADefault();
+    
+    public void setADefault(final long aDefault);
+}
+interface DefaultSetter$ISub extends .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.ISub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$ISub$impl();
+    
+    @.java.lang.Override
+    public long getAFormal();
+    
+    @.java.lang.Override
+    public void setAFormal(final long aFormal);
+    
+    public long inc();
+}
+class DefaultSetter implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    DefaultSetter() {
+        this.a = 0L;
+    }
+    private long a;
+    
+    private final long getA$priv$() {
+        return a;
+    }
+    
+    private final void setA$priv$(final long a) {
+        this.a = a;
+    }
+    
+    final class I$impl implements .java.io.Serializable {
+        
+        I$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I $this) {
+            this.$this = $this;
+        }
+        private final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I $this;
+        
+        public final long getADefault() {
+            return .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.this.getA$priv$();
+        }
+        
+        public final void setADefault(final long aDefault) {
+            .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.this.setA$priv$(aDefault);
+        }
+    }
+    
+    abstract class Abstract implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I, .java.io.Serializable {
+        
+        Abstract() {
+            this.$com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl(this);
+        }
+        protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$impl() {
+            return $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$;
+        }
+        
+        @.java.lang.Override
+        public long getADefault() {
+            return $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$.getADefault();
+        }
+        
+        @.java.lang.Override
+        public void setADefault(final long aDefault) {
+            $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$.setADefault(aDefault);
+        }
+        
+        @.java.lang.Override
+        public long getAFormal() {
+            return getADefault();
+        }
+        
+        @.java.lang.Override
+        public void setAFormal(final long aFormal) {
+            setADefault(aFormal);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.Abstract.class));
+        }
+    }
+    
+    class Concrete implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$I, .java.io.Serializable {
+        
+        Concrete() {
+            this.$com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl(this);
+        }
+        protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$impl() {
+            return $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$;
+        }
+        
+        @.java.lang.Override
+        public long getADefault() {
+            return $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$.getADefault();
+        }
+        
+        @.java.lang.Override
+        public void setADefault(final long aDefault) {
+            $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$.setADefault(aDefault);
+        }
+        
+        @.java.lang.Override
+        public final long getAFormal() {
+            return 1L;
+        }
+        
+        @.java.lang.Override
+        public final void setAFormal(final long aFormal) {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.Concrete.class));
+        }
+    }
+    
+    final class ISub$impl implements .java.io.Serializable {
+        
+        ISub$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$ISub $this) {
+            this.$this = $this;
+        }
+        private final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$ISub $this;
+        
+        public final long getAFormal() {
+            return $this.getADefault();
+        }
+        
+        public final void setAFormal(final long aFormal) {
+            $this.setADefault(aFormal);
+        }
+        
+        public long inc() {
+            return (
+                let
+                {
+                    long $ceylontmp$op$0 = $this.getAFormal();
+                    $this.setAFormal($ceylontmp$op$0 + 1);
+                }
+                returning $ceylontmp$op$0;
+            );
+        }
+    }
+    
+    class Sub implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter$ISub, .java.io.Serializable {
+        
+        Sub() {
+            this.$com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$ISub$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.ISub$impl(this);
+            this.$com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$ = new .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl(this);
+        }
+        protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.ISub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$ISub$this$;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.ISub$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$ISub$impl() {
+            return $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$ISub$this$;
+        }
+        
+        @.java.lang.Override
+        public long getAFormal() {
+            return $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$ISub$this$.getAFormal();
+        }
+        
+        @.java.lang.Override
+        public void setAFormal(final long aFormal) {
+            $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$ISub$this$.setAFormal(aFormal);
+        }
+        
+        @.java.lang.Override
+        public final long inc() {
+            return $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$ISub$this$.inc();
+        }
+        protected final .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.I$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$impl() {
+            return $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$;
+        }
+        
+        @.java.lang.Override
+        public long getADefault() {
+            return $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$.getADefault();
+        }
+        
+        @.java.lang.Override
+        public void setADefault(final long aDefault) {
+            $com$redhat$ceylon$compiler$java$test$structure$concrete$DefaultSetter$I$this$.setADefault(aDefault);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.Sub.class));
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.DefaultSetter.class);
+}

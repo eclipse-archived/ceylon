@@ -28,6 +28,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class Java8InterfaceTests extends CompilerTests {
     
+    public Java8InterfaceTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     List<String> optsForJava8Interfaces() {
         ArrayList<String> opts = new ArrayList<String>(defaultOptions);
         opts.add("-target");

@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+class Bug620<T extends .ceylon.language.Numeric<T>> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug620(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    private final void m$priv$(final .ceylon.language.Numeric<T> init) {
+        T n = (T)(.ceylon.language.Numeric)init;
+        n = ((T)n).plus((T)n);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug620.class, $reified$T);
+    }
+}

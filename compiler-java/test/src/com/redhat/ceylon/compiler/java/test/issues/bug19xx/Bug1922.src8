@@ -1,0 +1,56 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug19xx;
+
+final class random_ extends .java.util.Random implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private random_() {
+        super();
+    }
+    
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_.get_();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_.class);
+    
+    @.java.lang.Override
+    public final boolean nextBoolean() {
+        return super.nextBoolean();
+    }
+    
+    @.java.lang.Override
+    public final float nextFloat() {
+        return super.nextFloat();
+    }
+    
+    @.java.lang.Override
+    public final int next(final int i) {
+        return super.next(i);
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    static .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_ get_() {
+        if (random_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'random\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_.$TypeDescriptor$;
+    }
+}

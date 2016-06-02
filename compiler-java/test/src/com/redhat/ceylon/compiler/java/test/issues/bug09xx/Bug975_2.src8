@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+final class bug975_2_dontSort_ {
+    
+    private bug975_2_dontSort_() {
+    }
+    
+    static <Element extends .ceylon.language.Comparable<? super Element>>.ceylon.language.Sequential<? extends Element> bug975_2_dontSort(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> elements) {
+        return ((.ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object>)(.ceylon.language.Iterable)elements).sequence();
+    }
+}
+final class bug975_2_test_ {
+    
+    private bug975_2_test_() {
+    }
+    
+    static void bug975_2_test() {
+        .com.redhat.ceylon.compiler.java.test.issues.bug09xx.bug975_2_dontSort_.<.ceylon.language.Comparable>bug975_2_dontSort(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, (.ceylon.language.Iterable).ceylon.language.empty_.get_());
+    }
+}

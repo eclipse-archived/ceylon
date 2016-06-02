@@ -1,0 +1,48 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+public interface Bug965_Interface extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public default boolean $isFoo() {
+        return false;
+    }
+    
+    public default boolean $getFoo() {
+        return false;
+    }
+    
+    public default boolean foo() {
+        return false;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface.class);
+}
+public class Bug965_Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Interface, .java.io.Serializable {
+    
+    public Bug965_Class() {
+    }
+    
+    @.java.lang.Override
+    public final boolean $isFoo() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final boolean $getFoo() {
+        return true;
+    }
+    
+    @.java.lang.Override
+    public final boolean foo() {
+        return true;
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Class();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Class.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug965_Class.class);
+}

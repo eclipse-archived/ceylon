@@ -1,0 +1,414 @@
+package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
+
+class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected OptimizedForWithRange() {
+        super();
+        this.start = 0L;
+        this.end = 0L;
+    }
+    
+    OptimizedForWithRange(final long start, final long end) {
+        this.start = start;
+        this.end = end;
+    }
+    private final long start;
+    
+    private final long getStart$priv$() {
+        return start;
+    }
+    private final long end;
+    
+    private final long getEnd$priv$() {
+        return end;
+    }
+    
+    private final void literals$priv$() {
+        long sum = 0L;
+        final long $ceylontmp$first$2 = 1L;
+        final long $ceylontmp$last$3 = 10L;
+        final boolean $ceylontmp$increasing$4 = .ceylon.language.Integer.offset($ceylontmp$last$3, $ceylontmp$first$2) >= 0;
+        final long $ceylontmp$incr$5 = $ceylontmp$increasing$4 ? 1L : -1L;
+        long i$8 = $ceylontmp$first$2;
+        long $ceylontmp$element$7 = $ceylontmp$first$2;
+        boolean $ceylontmp$f$6 = false;
+        loop_0: do {
+            if ($ceylontmp$f$6) $ceylontmp$element$7 += $ceylontmp$incr$5;
+            $ceylontmp$f$6 = true;
+            i$8 = $ceylontmp$element$7;
+            final long i = i$8;
+            $ceylontmp$continue$1: do {
+                sum += i;
+            }             while (false);
+        }         while ($ceylontmp$increasing$4 ? i$8 - $ceylontmp$last$3 != 0L : i$8 - $ceylontmp$last$3 != 0L);
+        final int $ceylontmp$first$11 = 97;
+        final int $ceylontmp$last$12 = 122;
+        final boolean $ceylontmp$increasing$13 = .ceylon.language.Character.offset($ceylontmp$last$12, $ceylontmp$first$11) >= 0;
+        boolean $ceylontmp$18 = .ceylon.language.Character.offsetSign($ceylontmp$first$11, .ceylon.language.Character.getSuccessor($ceylontmp$first$11)) > 0L && .ceylon.language.Character.offsetSign(.ceylon.language.Character.getPredecessor($ceylontmp$last$12), $ceylontmp$last$12) > 0L;
+        final long $ceylontmp$incr$14 = $ceylontmp$increasing$13 ? 1 : -1;
+        int c$17 = $ceylontmp$first$11;
+        int $ceylontmp$element$16 = $ceylontmp$first$11;
+        boolean $ceylontmp$f$15 = false;
+        loop_1: do {
+            if ($ceylontmp$f$15) $ceylontmp$element$16 = .ceylon.language.Character.neighbour($ceylontmp$element$16, $ceylontmp$incr$14);
+            $ceylontmp$f$15 = true;
+            c$17 = $ceylontmp$element$16;
+            final int c = c$17;
+            $ceylontmp$continue$10: do {
+                sum += .ceylon.language.Character.getInteger(c);
+            }             while (false);
+        }         while ($ceylontmp$increasing$13 ? c$17 - $ceylontmp$last$12 != 0 : c$17 - $ceylontmp$last$12 != 0);
+    }
+    
+    private final void expressions$priv$() {
+        long sum = 0L;
+        final long $ceylontmp$first$21 = getStart$priv$();
+        final long $ceylontmp$last$22 = getEnd$priv$();
+        final boolean $ceylontmp$increasing$23 = .ceylon.language.Integer.offset($ceylontmp$last$22, $ceylontmp$first$21) >= 0;
+        final long $ceylontmp$incr$24 = $ceylontmp$increasing$23 ? 1L : -1L;
+        long i$27 = $ceylontmp$first$21;
+        long $ceylontmp$element$26 = $ceylontmp$first$21;
+        boolean $ceylontmp$f$25 = false;
+        loop_2: do {
+            if ($ceylontmp$f$25) $ceylontmp$element$26 += $ceylontmp$incr$24;
+            $ceylontmp$f$25 = true;
+            i$27 = $ceylontmp$element$26;
+            final long i = i$27;
+            $ceylontmp$continue$20: do {
+                sum += i;
+            }             while (false);
+        }         while ($ceylontmp$increasing$23 ? i$27 - $ceylontmp$last$22 != 0L : i$27 - $ceylontmp$last$22 != 0L);
+        final long $ceylontmp$first$30 = getStart$priv$() + 10L;
+        final long $ceylontmp$last$31 = getEnd$priv$() + 10L;
+        final boolean $ceylontmp$increasing$32 = .ceylon.language.Integer.offset($ceylontmp$last$31, $ceylontmp$first$30) >= 0;
+        final long $ceylontmp$incr$33 = $ceylontmp$increasing$32 ? 1L : -1L;
+        long i$36 = $ceylontmp$first$30;
+        long $ceylontmp$element$35 = $ceylontmp$first$30;
+        boolean $ceylontmp$f$34 = false;
+        loop_3: do {
+            if ($ceylontmp$f$34) $ceylontmp$element$35 += $ceylontmp$incr$33;
+            $ceylontmp$f$34 = true;
+            i$36 = $ceylontmp$element$35;
+            final long i = i$36;
+            $ceylontmp$continue$29: do {
+                sum += i;
+            }             while (false);
+        }         while ($ceylontmp$increasing$32 ? i$36 - $ceylontmp$last$31 != 0L : i$36 - $ceylontmp$last$31 != 0L);
+    }
+    
+    private final void by$priv$() {
+        long sum = 0L;
+        final long $ceylontmp$step$46 = 3L;
+        if ($ceylontmp$step$46 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        final long $ceylontmp$first$39 = 1L;
+        final long $ceylontmp$last$40 = 10L;
+        final boolean $ceylontmp$increasing$41 = $ceylontmp$step$46 == 1 ? .ceylon.language.Integer.offset($ceylontmp$last$40, $ceylontmp$first$39) >= 0 : .ceylon.language.Integer.offsetSign($ceylontmp$last$40, $ceylontmp$first$39) >= 0;
+        final long $ceylontmp$incr$42 = $ceylontmp$step$46 == 1 ? $ceylontmp$increasing$41 ? $ceylontmp$step$46 : -1L : $ceylontmp$increasing$41 ? $ceylontmp$step$46 : -$ceylontmp$step$46;
+        long i$45 = $ceylontmp$first$39;
+        long $ceylontmp$element$44 = $ceylontmp$first$39;
+        boolean $ceylontmp$f$43 = false;
+        loop_4: do {
+            if ($ceylontmp$f$43 && $ceylontmp$step$46 == 1L) $ceylontmp$step$46 == 1 ? $ceylontmp$element$44 += $ceylontmp$incr$42 : ($ceylontmp$element$44 = .ceylon.language.Integer.neighbour($ceylontmp$element$44, $ceylontmp$incr$42));
+            $ceylontmp$f$43 = true;
+            i$45 = $ceylontmp$element$44;
+            final long i = i$45;
+            $ceylontmp$continue$38: do {
+                sum += i;
+            }             while (false);
+            if ($ceylontmp$step$46 != 1L) $ceylontmp$step$46 == 1 ? $ceylontmp$element$44 += $ceylontmp$incr$42 : ($ceylontmp$element$44 = .ceylon.language.Integer.neighbour($ceylontmp$element$44, $ceylontmp$incr$42));
+        }         while ($ceylontmp$step$46 == 1L ? $ceylontmp$step$46 == 1 ? $ceylontmp$increasing$41 ? i$45 - $ceylontmp$last$40 != 0L : i$45 - $ceylontmp$last$40 != 0L : $ceylontmp$increasing$41 ? .ceylon.language.Integer.offsetSign(i$45, $ceylontmp$last$40) <= 0L && .ceylon.language.Integer.offsetSign(i$45, $ceylontmp$first$39) >= 0L : .ceylon.language.Integer.offsetSign(i$45, $ceylontmp$last$40) >= 0L && .ceylon.language.Integer.offsetSign(i$45, $ceylontmp$first$39) <= 0L : $ceylontmp$step$46 == 1 ? $ceylontmp$increasing$41 ? $ceylontmp$element$44 - $ceylontmp$last$40 != 0L : $ceylontmp$element$44 - $ceylontmp$last$40 != 0L : $ceylontmp$increasing$41 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$44, $ceylontmp$last$40) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$44, $ceylontmp$first$39) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$44, $ceylontmp$last$40) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$44, $ceylontmp$first$39) <= 0L);
+        final long $ceylontmp$step$56 = 3L;
+        if ($ceylontmp$step$56 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));
+        final long $ceylontmp$first$49 = 1L;
+        final long $ceylontmp$last$50 = 10L;
+        final boolean $ceylontmp$increasing$51 = $ceylontmp$step$56 == 1 ? .ceylon.language.Integer.offset($ceylontmp$last$50, $ceylontmp$first$49) >= 0 : .ceylon.language.Integer.offsetSign($ceylontmp$last$50, $ceylontmp$first$49) >= 0;
+        final long $ceylontmp$incr$52 = $ceylontmp$step$56 == 1 ? $ceylontmp$increasing$51 ? $ceylontmp$step$56 : -1L : $ceylontmp$increasing$51 ? $ceylontmp$step$56 : -$ceylontmp$step$56;
+        long i$55 = $ceylontmp$first$49;
+        long $ceylontmp$element$54 = $ceylontmp$first$49;
+        boolean $ceylontmp$f$53 = false;
+        loop_5: do {
+            if ($ceylontmp$f$53 && $ceylontmp$step$56 == 1L) $ceylontmp$step$56 == 1 ? $ceylontmp$element$54 += $ceylontmp$incr$52 : ($ceylontmp$element$54 = .ceylon.language.Integer.neighbour($ceylontmp$element$54, $ceylontmp$incr$52));
+            $ceylontmp$f$53 = true;
+            i$55 = $ceylontmp$element$54;
+            final long i = i$55;
+            $ceylontmp$continue$48: do {
+                sum += i;
+            }             while (false);
+            if ($ceylontmp$step$56 != 1L) $ceylontmp$step$56 == 1 ? $ceylontmp$element$54 += $ceylontmp$incr$52 : ($ceylontmp$element$54 = .ceylon.language.Integer.neighbour($ceylontmp$element$54, $ceylontmp$incr$52));
+        }         while ($ceylontmp$step$56 == 1L ? $ceylontmp$step$56 == 1 ? $ceylontmp$increasing$51 ? i$55 - $ceylontmp$last$50 != 0L : i$55 - $ceylontmp$last$50 != 0L : $ceylontmp$increasing$51 ? .ceylon.language.Integer.offsetSign(i$55, $ceylontmp$last$50) <= 0L && .ceylon.language.Integer.offsetSign(i$55, $ceylontmp$first$49) >= 0L : .ceylon.language.Integer.offsetSign(i$55, $ceylontmp$last$50) >= 0L && .ceylon.language.Integer.offsetSign(i$55, $ceylontmp$first$49) <= 0L : $ceylontmp$step$56 == 1 ? $ceylontmp$increasing$51 ? $ceylontmp$element$54 - $ceylontmp$last$50 != 0L : $ceylontmp$element$54 - $ceylontmp$last$50 != 0L : $ceylontmp$increasing$51 ? .ceylon.language.Integer.offsetSign($ceylontmp$element$54, $ceylontmp$last$50) <= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$54, $ceylontmp$first$49) >= 0L : .ceylon.language.Integer.offsetSign($ceylontmp$element$54, $ceylontmp$last$50) >= 0L && .ceylon.language.Integer.offsetSign($ceylontmp$element$54, $ceylontmp$first$49) <= 0L);
+    }
+    
+    private final void disabled$priv$() {
+        long sum = 0L;
+        boolean loopentered$57 = false;
+        .java.lang.Object elem$58;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$59 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L)).iterator();
+        loop_6: while (!((elem$58 = i$iterator$$59.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$57 = true;
+            final long i = ((.ceylon.language.Integer)elem$58).longValue();
+            sum += i;
+        }
+        if (!loopentered$57) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        final long $ceylontmp$first$62 = 1L;
+        final long $ceylontmp$last$63 = 10L;
+        final boolean $ceylontmp$increasing$64 = .ceylon.language.Integer.offset($ceylontmp$last$63, $ceylontmp$first$62) >= 0;
+        final long $ceylontmp$incr$65 = $ceylontmp$increasing$64 ? 1L : -1L;
+        long i$68 = $ceylontmp$first$62;
+        long $ceylontmp$element$67 = $ceylontmp$first$62;
+        boolean $ceylontmp$f$66 = false;
+        loop_7: do {
+            if ($ceylontmp$f$66) $ceylontmp$element$67 += $ceylontmp$incr$65;
+            $ceylontmp$f$66 = true;
+            i$68 = $ceylontmp$element$67;
+            final long i = i$68;
+            $ceylontmp$continue$61: do {
+                sum += i;
+            }             while (false);
+        }         while ($ceylontmp$increasing$64 ? i$68 - $ceylontmp$last$63 != 0L : i$68 - $ceylontmp$last$63 != 0L);
+    }
+    
+    private final void flow$priv$() {
+        long sum = 0L;
+        final long $ceylontmp$first$71 = 1L;
+        final long $ceylontmp$last$72 = 10L;
+        final boolean $ceylontmp$increasing$73 = .ceylon.language.Integer.offset($ceylontmp$last$72, $ceylontmp$first$71) >= 0;
+        final long $ceylontmp$incr$74 = $ceylontmp$increasing$73 ? 1L : -1L;
+        long withElse$77 = $ceylontmp$first$71;
+        long $ceylontmp$element$76 = $ceylontmp$first$71;
+        boolean $ceylontmp$f$75 = false;
+        loop_8: do {
+            if ($ceylontmp$f$75) $ceylontmp$element$76 += $ceylontmp$incr$74;
+            $ceylontmp$f$75 = true;
+            withElse$77 = $ceylontmp$element$76;
+            final long withElse = withElse$77;
+            $ceylontmp$continue$70: do {
+                sum += withElse;
+            }             while (false);
+        }         while ($ceylontmp$increasing$73 ? withElse$77 - $ceylontmp$last$72 != 0L : withElse$77 - $ceylontmp$last$72 != 0L);
+        sum = 0L;
+        final long $ceylontmp$first$80 = 10L;
+        final long $ceylontmp$last$81 = 1L;
+        final boolean $ceylontmp$increasing$82 = .ceylon.language.Integer.offset($ceylontmp$last$81, $ceylontmp$first$80) >= 0;
+        final long $ceylontmp$incr$83 = $ceylontmp$increasing$82 ? 1L : -1L;
+        long breaks$86 = $ceylontmp$first$80;
+        long $ceylontmp$element$85 = $ceylontmp$first$80;
+        boolean $ceylontmp$f$84 = false;
+        loop_9: do {
+            if ($ceylontmp$f$84) $ceylontmp$element$85 += $ceylontmp$incr$83;
+            $ceylontmp$f$84 = true;
+            breaks$86 = $ceylontmp$element$85;
+            final long breaks = breaks$86;
+            $ceylontmp$continue$79: do {
+                sum += breaks;
+                break loop_9;
+            }             while (false);
+        }         while ($ceylontmp$increasing$82 ? breaks$86 - $ceylontmp$last$81 != 0L : breaks$86 - $ceylontmp$last$81 != 0L);
+        boolean doforelse$87 = true;
+        final long $ceylontmp$first$90 = 10L;
+        final long $ceylontmp$last$91 = 1L;
+        final boolean $ceylontmp$increasing$92 = .ceylon.language.Integer.offset($ceylontmp$last$91, $ceylontmp$first$90) >= 0;
+        final long $ceylontmp$incr$93 = $ceylontmp$increasing$92 ? 1L : -1L;
+        long breaksWithElse$96 = $ceylontmp$first$90;
+        long $ceylontmp$element$95 = $ceylontmp$first$90;
+        boolean $ceylontmp$f$94 = false;
+        loop_10: do {
+            if ($ceylontmp$f$94) $ceylontmp$element$95 += $ceylontmp$incr$93;
+            $ceylontmp$f$94 = true;
+            breaksWithElse$96 = $ceylontmp$element$95;
+            final long breaksWithElse = breaksWithElse$96;
+            $ceylontmp$continue$89: do {
+                sum += breaksWithElse;
+                doforelse$87 = false;
+                break loop_10;
+            }             while (false);
+        }         while ($ceylontmp$increasing$92 ? breaksWithElse$96 - $ceylontmp$last$91 != 0L : breaksWithElse$96 - $ceylontmp$last$91 != 0L);
+        if (doforelse$87) {
+            sum = 0L;
+        }
+        boolean doforelse$97 = true;
+        final long $ceylontmp$first$100 = 10L;
+        final long $ceylontmp$last$101 = 1L;
+        final boolean $ceylontmp$increasing$102 = .ceylon.language.Integer.offset($ceylontmp$last$101, $ceylontmp$first$100) >= 0;
+        final long $ceylontmp$incr$103 = $ceylontmp$increasing$102 ? 1L : -1L;
+        long breaksWithElse$106 = $ceylontmp$first$100;
+        long $ceylontmp$element$105 = $ceylontmp$first$100;
+        boolean $ceylontmp$f$104 = false;
+        loop_11: do {
+            if ($ceylontmp$f$104) $ceylontmp$element$105 += $ceylontmp$incr$103;
+            $ceylontmp$f$104 = true;
+            breaksWithElse$106 = $ceylontmp$element$105;
+            final long breaksWithElse = breaksWithElse$106;
+            $ceylontmp$continue$99: do {
+                sum += breaksWithElse;
+                if (breaksWithElse == 5L) {
+                    doforelse$97 = false;
+                    break loop_11;
+                }
+            }             while (false);
+        }         while ($ceylontmp$increasing$102 ? breaksWithElse$106 - $ceylontmp$last$101 != 0L : breaksWithElse$106 - $ceylontmp$last$101 != 0L);
+        if (doforelse$97) {
+            sum = 0L;
+        }
+        final long $ceylontmp$first$110 = 10L;
+        final long $ceylontmp$last$111 = 1L;
+        final boolean $ceylontmp$increasing$112 = .ceylon.language.Integer.offset($ceylontmp$last$111, $ceylontmp$first$110) >= 0;
+        final long $ceylontmp$incr$113 = $ceylontmp$increasing$112 ? 1L : -1L;
+        long returns$116 = $ceylontmp$first$110;
+        long $ceylontmp$element$115 = $ceylontmp$first$110;
+        boolean $ceylontmp$f$114 = false;
+        loop_12: do {
+            if ($ceylontmp$f$114) $ceylontmp$element$115 += $ceylontmp$incr$113;
+            $ceylontmp$f$114 = true;
+            returns$116 = $ceylontmp$element$115;
+            final long returns = returns$116;
+            $ceylontmp$continue$109: do {
+                sum += returns;
+                break loop_12;
+            }             while (false);
+        }         while ($ceylontmp$increasing$112 ? returns$116 - $ceylontmp$last$111 != 0L : returns$116 - $ceylontmp$last$111 != 0L);
+        boolean doforelse$117 = true;
+        final long $ceylontmp$first$120 = 10L;
+        final long $ceylontmp$last$121 = 1L;
+        final boolean $ceylontmp$increasing$122 = .ceylon.language.Integer.offset($ceylontmp$last$121, $ceylontmp$first$120) >= 0;
+        final long $ceylontmp$incr$123 = $ceylontmp$increasing$122 ? 1L : -1L;
+        long returnsWithElse$126 = $ceylontmp$first$120;
+        long $ceylontmp$element$125 = $ceylontmp$first$120;
+        boolean $ceylontmp$f$124 = false;
+        loop_13: do {
+            if ($ceylontmp$f$124) $ceylontmp$element$125 += $ceylontmp$incr$123;
+            $ceylontmp$f$124 = true;
+            returnsWithElse$126 = $ceylontmp$element$125;
+            final long returnsWithElse = returnsWithElse$126;
+            $ceylontmp$continue$119: do {
+                sum += returnsWithElse;
+                doforelse$117 = false;
+                break loop_13;
+            }             while (false);
+        }         while ($ceylontmp$increasing$122 ? returnsWithElse$126 - $ceylontmp$last$121 != 0L : returnsWithElse$126 - $ceylontmp$last$121 != 0L);
+        if (doforelse$117) {
+            sum = 0L;
+        }
+        boolean doforelse$127 = true;
+        final long $ceylontmp$first$130 = 10L;
+        final long $ceylontmp$last$131 = 1L;
+        final boolean $ceylontmp$increasing$132 = .ceylon.language.Integer.offset($ceylontmp$last$131, $ceylontmp$first$130) >= 0;
+        final long $ceylontmp$incr$133 = $ceylontmp$increasing$132 ? 1L : -1L;
+        long returnsWithElse$136 = $ceylontmp$first$130;
+        long $ceylontmp$element$135 = $ceylontmp$first$130;
+        boolean $ceylontmp$f$134 = false;
+        loop_14: do {
+            if ($ceylontmp$f$134) $ceylontmp$element$135 += $ceylontmp$incr$133;
+            $ceylontmp$f$134 = true;
+            returnsWithElse$136 = $ceylontmp$element$135;
+            final long returnsWithElse = returnsWithElse$136;
+            $ceylontmp$continue$129: do {
+                sum += returnsWithElse;
+                if (returnsWithElse == 5L) {
+                    doforelse$127 = false;
+                    break loop_14;
+                }
+            }             while (false);
+        }         while ($ceylontmp$increasing$132 ? returnsWithElse$136 - $ceylontmp$last$131 != 0L : returnsWithElse$136 - $ceylontmp$last$131 != 0L);
+        if (doforelse$127) {
+            sum = 0L;
+        }
+        final long $ceylontmp$first$140 = 10L;
+        final long $ceylontmp$last$141 = 1L;
+        final boolean $ceylontmp$increasing$142 = .ceylon.language.Integer.offset($ceylontmp$last$141, $ceylontmp$first$140) >= 0;
+        final long $ceylontmp$incr$143 = $ceylontmp$increasing$142 ? 1L : -1L;
+        long throws$146 = $ceylontmp$first$140;
+        long $ceylontmp$element$145 = $ceylontmp$first$140;
+        boolean $ceylontmp$f$144 = false;
+        loop_15: do {
+            if ($ceylontmp$f$144) $ceylontmp$element$145 += $ceylontmp$incr$143;
+            $ceylontmp$f$144 = true;
+            throws$146 = $ceylontmp$element$145;
+            final long $throws = throws$146;
+            $ceylontmp$continue$139: do {
+                sum += $throws;
+                break loop_15;
+            }             while (false);
+        }         while ($ceylontmp$increasing$142 ? throws$146 - $ceylontmp$last$141 != 0L : throws$146 - $ceylontmp$last$141 != 0L);
+        boolean doforelse$147 = true;
+        final long $ceylontmp$first$150 = 10L;
+        final long $ceylontmp$last$151 = 1L;
+        final boolean $ceylontmp$increasing$152 = .ceylon.language.Integer.offset($ceylontmp$last$151, $ceylontmp$first$150) >= 0;
+        final long $ceylontmp$incr$153 = $ceylontmp$increasing$152 ? 1L : -1L;
+        long throwsWithElse$156 = $ceylontmp$first$150;
+        long $ceylontmp$element$155 = $ceylontmp$first$150;
+        boolean $ceylontmp$f$154 = false;
+        loop_16: do {
+            if ($ceylontmp$f$154) $ceylontmp$element$155 += $ceylontmp$incr$153;
+            $ceylontmp$f$154 = true;
+            throwsWithElse$156 = $ceylontmp$element$155;
+            final long throwsWithElse = throwsWithElse$156;
+            $ceylontmp$continue$149: do {
+                sum += throwsWithElse;
+                doforelse$147 = false;
+                break loop_16;
+            }             while (false);
+        }         while ($ceylontmp$increasing$152 ? throwsWithElse$156 - $ceylontmp$last$151 != 0L : throwsWithElse$156 - $ceylontmp$last$151 != 0L);
+        if (doforelse$147) {
+            sum = 0L;
+        }
+        boolean doforelse$157 = true;
+        final long $ceylontmp$first$160 = 10L;
+        final long $ceylontmp$last$161 = 1L;
+        final boolean $ceylontmp$increasing$162 = .ceylon.language.Integer.offset($ceylontmp$last$161, $ceylontmp$first$160) >= 0;
+        final long $ceylontmp$incr$163 = $ceylontmp$increasing$162 ? 1L : -1L;
+        long throwsWithElse$166 = $ceylontmp$first$160;
+        long $ceylontmp$element$165 = $ceylontmp$first$160;
+        boolean $ceylontmp$f$164 = false;
+        loop_17: do {
+            if ($ceylontmp$f$164) $ceylontmp$element$165 += $ceylontmp$incr$163;
+            $ceylontmp$f$164 = true;
+            throwsWithElse$166 = $ceylontmp$element$165;
+            final long throwsWithElse = throwsWithElse$166;
+            $ceylontmp$continue$159: do {
+                sum += throwsWithElse;
+                if (throwsWithElse == 5L) {
+                    doforelse$157 = false;
+                    break loop_17;
+                }
+            }             while (false);
+        }         while ($ceylontmp$increasing$162 ? throwsWithElse$166 - $ceylontmp$last$161 != 0L : throwsWithElse$166 - $ceylontmp$last$161 != 0L);
+        if (doforelse$157) {
+            sum = 0L;
+        }
+    }
+    
+    private final void captured$priv$() {
+        final long $ceylontmp$first$170 = 0L;
+        final long $ceylontmp$last$171 = 10L;
+        final boolean $ceylontmp$increasing$172 = .ceylon.language.Integer.offset($ceylontmp$last$171, $ceylontmp$first$170) >= 0;
+        final long $ceylontmp$incr$173 = $ceylontmp$increasing$172 ? 1L : -1L;
+        long i$176 = $ceylontmp$first$170;
+        long $ceylontmp$element$175 = $ceylontmp$first$170;
+        boolean $ceylontmp$f$174 = false;
+        loop_18: do {
+            if ($ceylontmp$f$174) $ceylontmp$element$175 += $ceylontmp$incr$173;
+            $ceylontmp$f$174 = true;
+            i$176 = $ceylontmp$element$175;
+            final long i = i$176;
+            $ceylontmp$continue$169: do {
+                
+                final class x_ {
+                    
+                    private x_() {
+                    }
+                    
+                    long x() {
+                        return i + 10L;
+                    }
+                }
+                final x_ x = new x_();
+            }             while (false);
+        }         while ($ceylontmp$increasing$172 ? i$176 - $ceylontmp$last$171 != 0L : i$176 - $ceylontmp$last$171 != 0L);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.loop.optim.OptimizedForWithRange.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.OptimizedForWithRange.class);
+}

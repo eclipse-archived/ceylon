@@ -1,0 +1,14 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
+
+interface Bug911 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    private default .java.lang.String getText$priv$() {
+        return "bar";
+    }
+    
+    @.java.lang.Override
+    public default .java.lang.String toString() {
+        return getText$priv$();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug911.class);
+}

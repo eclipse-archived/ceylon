@@ -1,0 +1,49 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+class SequencedTypeParamInvocation<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SequencedTypeParamInvocation(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public final void algo() {
+        (
+            let
+            {
+                .ceylon.language.Sequential<? extends T> $ceylontmp$strings$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                algo$canonical$($ceylontmp$strings$0);
+            }
+            returning null;
+        );
+    }
+    
+    private void algo$canonical$(final .ceylon.language.Sequential<? extends T> strings) {
+    }
+    
+    public final void algo(final .ceylon.language.Sequential<? extends T> strings) {
+        (
+            let
+            {
+                algo$canonical$(strings);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedTypeParamInvocation.class, $reified$T);
+    }
+}
+final class sequencedTypeParamInvocationMethod_ {
+    
+    private sequencedTypeParamInvocationMethod_() {
+    }
+    
+    static void sequencedTypeParamInvocationMethod() {
+        new .com.redhat.ceylon.compiler.java.test.expression.invoke.SequencedTypeParamInvocation<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$).algo((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
+                .ceylon.language.String.instance("x"),
+                .ceylon.language.String.instance("y")}, .ceylon.language.empty_.get_()));
+    }
+}

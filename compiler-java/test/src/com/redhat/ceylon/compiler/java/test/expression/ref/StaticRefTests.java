@@ -26,6 +26,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class StaticRefTests extends CompilerTests {
     
+    public StaticRefTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Test
     public void testRefAttributeRef() {
         compareWithJavaSource("AttributeRef");

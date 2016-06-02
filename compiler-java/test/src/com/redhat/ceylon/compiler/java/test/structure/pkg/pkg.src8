@@ -1,0 +1,15 @@
+package com.redhat.ceylon.compiler.java.test.structure.pkg;
+
+public final class pkg_ {
+    
+    private pkg_() {
+    }
+    
+    public static void pkg() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.pkg.pkg_.pkg();
+    }
+}

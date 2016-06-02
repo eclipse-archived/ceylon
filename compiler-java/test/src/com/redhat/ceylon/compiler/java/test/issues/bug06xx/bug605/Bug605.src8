@@ -1,0 +1,134 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605;
+
+final class equals_ {
+    
+    private equals_() {
+    }
+    
+    static .java.lang.String $equals(final .java.lang.Object o) {
+        return "";
+    }
+}
+final class bug605test_ {
+    
+    private bug605test_() {
+    }
+    
+    static void bug605test() {
+        final long i = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.hash_.get_();
+        final .java.lang.String s = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.string_.get_();
+        final .java.lang.String q = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.equals_.$equals(.ceylon.language.String.instance(""));
+    }
+}
+final class bug605mth_ {
+    
+    private bug605mth_() {
+    }
+    
+    static void bug605mth() {
+        
+        final class hash$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+            
+            private hash$getter$_() {
+            }
+            
+            public long get_() {
+                return 1L;
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.GetterLong hash$getter$_ = new hash$getter$_();
+        
+        final class string$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private string$getter$_() {
+            }
+            
+            public .java.lang.String get_() {
+                return "hello";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> string$getter$_ = new string$getter$_();
+        
+        final class equals_ {
+            
+            private equals_() {
+            }
+            
+            .java.lang.String $equals(final .java.lang.Object o) {
+                return "";
+            }
+        }
+        final equals_ equals = new equals_();
+        final long i = hash$getter$_.get_();
+        final .java.lang.String s = string$getter$_.get_();
+        final .java.lang.String q = equals.$equals(.ceylon.language.String.instance(""));
+    }
+}
+class Bug605cls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug605cls() {
+    }
+    
+    private final void mth$priv$() {
+        
+        final class hash$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+            
+            private hash$getter$_() {
+            }
+            
+            public long get_() {
+                return 1L;
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.GetterLong hash$getter$_ = new hash$getter$_();
+        
+        final class string$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private string$getter$_() {
+            }
+            
+            public .java.lang.String get_() {
+                return "hello";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> string$getter$_ = new string$getter$_();
+        
+        final class equals_ {
+            
+            private equals_() {
+            }
+            
+            .java.lang.String $equals(final .java.lang.Object o) {
+                return "";
+            }
+        }
+        final equals_ equals = new equals_();
+        final long i = hash$getter$_.get_();
+        final .java.lang.String s = string$getter$_.get_();
+        final .java.lang.String q = equals.$equals(.ceylon.language.String.instance(""));
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.Bug605cls.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug605.Bug605cls.class);
+}
+final class hash_ {
+    
+    private hash_() {
+    }
+    
+    public static long get_() {
+        return 1L;
+    }
+}
+final class string_ {
+    
+    private string_() {
+    }
+    
+    public static .java.lang.String get_() {
+        return "hello";
+    }
+}

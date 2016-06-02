@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.java.test.statement.conditional;
+
+class MethodIfElse implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodIfElse() {
+    }
+    
+    public final long m() {
+        if (true) {
+            return 1L;
+        } else {
+            return 2L;
+        }
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfElse.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.conditional.MethodIfElse.class);
+}

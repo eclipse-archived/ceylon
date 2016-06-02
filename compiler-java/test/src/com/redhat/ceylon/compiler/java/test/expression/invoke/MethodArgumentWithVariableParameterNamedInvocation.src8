@@ -1,0 +1,94 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class methodArgumentWithVariableParameter_ {
+    
+    private methodArgumentWithVariableParameter_() {
+    }
+    
+    static void methodArgumentWithVariableParameter(final .ceylon.language.Callable<? extends .java.lang.Object> f) {
+    }
+}
+final class methodArgumentWithVariableParameter_fn_ {
+    
+    private methodArgumentWithVariableParameter_fn_() {
+    }
+    
+    static void methodArgumentWithVariableParameter_fn() {
+        (
+            let
+            {
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                        long x = ((.ceylon.language.Integer)$param$0).longValue();
+                        x = 0L;
+                        (
+                            let
+                            {
+                                long $ceylontmp$op$1 = x;
+                                x = $ceylontmp$op$1 + 1;
+                            }
+                            returning $ceylontmp$op$1;
+                        );
+                        (
+                            let
+                            {
+                                long $ceylontmp$op$2 = x + 1L;
+                                x = $ceylontmp$op$2;
+                            }
+                            returning $ceylontmp$op$2;
+                        );
+                        return .ceylon.language.Integer.instance(x);
+                    }
+                };
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.methodArgumentWithVariableParameter_.methodArgumentWithVariableParameter(arg$0$0);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .ceylon.language.Callable arg$3$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                        long y$param$ = ((.ceylon.language.Integer)$param$0).longValue();
+                        final .com.redhat.ceylon.compiler.java.language.VariableBoxLong y = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(y$param$);
+                        
+                        final class fn_ {
+                            
+                            private fn_() {
+                            }
+                            
+                            long fn() {
+                                y.ref = 0L;
+                                (
+                                    let
+                                    {
+                                        long $ceylontmp$op$4 = y.ref;
+                                        y.ref = $ceylontmp$op$4 + 1;
+                                    }
+                                    returning $ceylontmp$op$4;
+                                );
+                                (
+                                    let
+                                    {
+                                        long $ceylontmp$op$5 = y.ref + 1L;
+                                        y.ref = $ceylontmp$op$5;
+                                    }
+                                    returning $ceylontmp$op$5;
+                                );
+                                return y.ref;
+                            }
+                        }
+                        final fn_ fn = new fn_();
+                        return .ceylon.language.Integer.instance(fn.fn());
+                    }
+                };
+                .com.redhat.ceylon.compiler.java.test.expression.invoke.methodArgumentWithVariableParameter_.methodArgumentWithVariableParameter(arg$3$0);
+            }
+            returning null;
+        );
+    }
+}

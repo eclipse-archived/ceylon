@@ -1,0 +1,74 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+public abstract class Bug673_Event implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug673_Event() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event.class);
+}
+public abstract class Bug673_GridEvent extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event {
+    
+    public Bug673_GridEvent() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridEvent.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridEvent.class);
+}
+public abstract class Bug673_StoreEvent extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event {
+    
+    public Bug673_StoreEvent() {
+        super();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_StoreEvent.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_StoreEvent.class);
+}
+public interface Bug673_EventObserver<Evento extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$Evento();
+    
+    public default .java.lang.Object on(final Evento event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action) {
+        return null;
+    }
+}
+public interface Bug673_GridBehavior extends .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_EventObserver<.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event> {
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug673_EventObserver$Evento() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_StoreEvent.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridEvent.$TypeDescriptor$);
+    }
+    
+    @.java.lang.Override
+    public default .java.lang.Object on(final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_Event event, final .ceylon.language.Callable<? extends .ceylon.language.Boolean> action) {
+        throw new .ceylon.language.Exception(null, null);
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior.class);
+}
+public class Bug673_PaisController implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_GridBehavior, .java.io.Serializable {
+    
+    public Bug673_PaisController() {
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_PaisController();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_PaisController.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug673_PaisController.class);
+}

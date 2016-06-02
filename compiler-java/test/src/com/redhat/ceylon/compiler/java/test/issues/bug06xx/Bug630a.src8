@@ -1,0 +1,35 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug06xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+interface Bug630 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public default int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$1 = 42L;
+            }
+            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
+        );
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public default boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object other) {
+        return false;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630.class);
+}

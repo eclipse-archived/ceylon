@@ -1,0 +1,26 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
+
+final class bug2253_ {
+    
+    private bug2253_() {
+    }
+    
+    static void bug2253(final .java.lang.Object thing) {
+        .java.lang.Object thing$1;
+        if ((thing$1 = thing) instanceof .ceylon.language.String) {
+            final .java.lang.String thing$5 = ((.ceylon.language.String)thing$1).toString();
+            .ceylon.language.print_.print(.ceylon.language.String.instance("string"));
+        } else {
+            final .java.nio.file.AccessMode thing$2 = (.java.nio.file.AccessMode)thing$1;
+            {
+                .java.nio.file.AccessMode sel$3 = (.java.nio.file.AccessMode)thing$2;
+                if (sel$3 == .java.nio.file.AccessMode.EXECUTE) {
+                    .ceylon.language.print_.print(.ceylon.language.String.instance("a"));
+                } else {
+                    final .java.nio.file.AccessMode thing$4 = (.java.nio.file.AccessMode)sel$3;
+                    .ceylon.language.print_.print(.ceylon.language.String.instance("not a"));
+                }
+            }
+        }
+    }
+}

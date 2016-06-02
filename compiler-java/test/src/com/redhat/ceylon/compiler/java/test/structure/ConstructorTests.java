@@ -7,6 +7,9 @@ import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class ConstructorTests extends CompilerTests {
+    public ConstructorTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
     @Override
     protected String transformDestDir(String name) {
         return name + "-4";

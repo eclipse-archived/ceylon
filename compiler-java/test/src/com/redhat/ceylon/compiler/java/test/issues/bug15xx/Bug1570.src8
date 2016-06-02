@@ -1,0 +1,38 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
+
+public interface Bug1570$If<T> {
+}
+interface Bug1570<T> {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug15xx$Bug1570$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl<T>.In In$new$();
+}
+final class Bug1570$impl<T> implements .java.io.Serializable {
+    
+    Bug1570$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570<T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl<T>.In In$new$() {
+        return new In();
+    }
+    
+    public class In implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$If<T>, .java.io.Serializable {
+        
+        protected In() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570.class, .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1570$impl.In.class));
+        }
+    }
+}

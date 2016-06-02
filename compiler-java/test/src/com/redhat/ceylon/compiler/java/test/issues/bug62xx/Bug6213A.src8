@@ -1,0 +1,34 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug62xx;
+
+interface LLVMCodeTarget6213A extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public default <T>T call(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning call$canonical$($reified$T, name, $ceylontmp$args$0);
+        );
+    }
+    
+    private default <T>T call$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name, final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    public default <T>T call(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name, final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+        return call$canonical$($reified$T, name, args);
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug62xx.LLVMCodeTarget6213A.class);
+}
+class LLVMFunction6213A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug62xx.LLVMCodeTarget6213A, .java.io.Serializable {
+    
+    LLVMFunction6213A() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug62xx.LLVMFunction6213A.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug62xx.LLVMFunction6213A.class);
+}

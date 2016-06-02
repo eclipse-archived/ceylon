@@ -1,0 +1,47 @@
+package com.redhat.ceylon.compiler.java.test.expression.instantiation;
+
+class SetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    SetterLocalInstantiation() {
+        
+        final class i$getter$_ implements .com.redhat.ceylon.compiler.java.language.GetterLong {
+            
+            private i$getter$_() {
+            }
+            
+            public long get_() {
+                return 0L;
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.GetterLong i$getter$_ = new i$getter$_();
+        
+        final class i$setter$_ {
+            
+            private i$setter$_() {
+            }
+            private long value;
+            
+            public void set_(final long i) {
+                
+                class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+                    
+                    LocalClass() {
+                    }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.instantiation.SetterLocalInstantiation.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("i")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class));
+                    }
+                }
+                final LocalClass l = new LocalClass();
+            }
+        }
+        final i$setter$_ i$setter$_ = new i$setter$_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.instantiation.SetterLocalInstantiation.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.instantiation.SetterLocalInstantiation.class);
+}

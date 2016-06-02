@@ -32,6 +32,10 @@ import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 
 public class IssuesTests_0500_0999 extends CompilerTests {
 
+    public IssuesTests_0500_0999(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Override
     protected ModuleWithArtifact getDestModuleWithArtifact(String main){
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues", "1");

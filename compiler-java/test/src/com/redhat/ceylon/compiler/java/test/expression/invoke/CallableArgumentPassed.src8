@@ -1,0 +1,19 @@
+package com.redhat.ceylon.compiler.java.test.expression.invoke;
+
+final class callableArgumentPassed_f_ {
+    
+    private callableArgumentPassed_f_() {
+    }
+    
+    static void callableArgumentPassed_f(final .ceylon.language.Callable<? extends .java.lang.Object> foo) {
+    }
+}
+final class callableArgumentPassed_m_ {
+    
+    private callableArgumentPassed_m_() {
+    }
+    
+    static void callableArgumentPassed_m(final .ceylon.language.Callable<? extends .java.lang.Object> bar) {
+        .com.redhat.ceylon.compiler.java.test.expression.invoke.callableArgumentPassed_f_.callableArgumentPassed_f(bar);
+    }
+}

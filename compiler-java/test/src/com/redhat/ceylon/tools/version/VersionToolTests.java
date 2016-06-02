@@ -14,6 +14,10 @@ import com.redhat.ceylon.tools.test.AbstractToolTests;
 
 public class VersionToolTests extends AbstractToolTests {
     
+    public VersionToolTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Test
     public void testAll() throws Exception {
         ToolModel<CeylonVersionTool> model = pluginLoader.loadToolModel("version");

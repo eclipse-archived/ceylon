@@ -1,0 +1,33 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug12xx;
+
+interface Bug1241$I<L> {
+}
+public class Bug1241 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug1241() {
+    }
+    
+    class A<L> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1241$I<L>, .java.io.Serializable {
+        
+        A(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$L) {
+            this.$reified$L = $reified$L;
+        }
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$L;
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1241.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1241.A.class, $reified$L));
+        }
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1241();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1241.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1241.class);
+}

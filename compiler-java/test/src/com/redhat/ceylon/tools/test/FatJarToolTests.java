@@ -37,6 +37,10 @@ import com.redhat.ceylon.tools.fatjar.CeylonFatJarTool;
 
 public class FatJarToolTests extends AbstractToolTests {
 
+    public FatJarToolTests(String[] compilerArgs) {
+        super(compilerArgs);
+    }
+
     @Test
     public void testNoArgs() throws Exception {
         ToolModel<CeylonFatJarTool> model = pluginLoader.loadToolModel("fat-jar");

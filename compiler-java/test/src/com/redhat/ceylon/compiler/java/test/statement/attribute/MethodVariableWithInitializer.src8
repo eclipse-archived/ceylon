@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.statement.attribute;
+
+class MethodVariableWithInitializer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    MethodVariableWithInitializer() {
+    }
+    
+    public final void m() {
+        .java.lang.String f = "";
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.statement.attribute.MethodVariableWithInitializer.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.attribute.MethodVariableWithInitializer.class);
+}

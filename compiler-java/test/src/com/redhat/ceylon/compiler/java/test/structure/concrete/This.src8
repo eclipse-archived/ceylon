@@ -1,0 +1,78 @@
+package com.redhat.ceylon.compiler.java.test.structure.concrete;
+
+interface This {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.concrete.This$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$This$impl();
+    
+    public abstract long m1();
+    
+    public long m2();
+    
+    public abstract long m2$i1();
+    
+    public long m2(final long i1);
+    
+    public abstract long m2$i2(final long i1);
+    
+    public long m2(final long i1, final long i2);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.This.class);
+}
+final class This$impl implements .java.io.Serializable {
+    
+    This$impl(.com.redhat.ceylon.compiler.java.test.structure.concrete.This $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.concrete.This $this;
+    
+    public long m2() {
+        return (
+            let
+            {
+                long $ceylontmp$i1$0 = m2$i1();
+                long $ceylontmp$i2$1 = m2$i2($ceylontmp$i1$0);
+            }
+            returning m2$canonical$($ceylontmp$i1$0, $ceylontmp$i2$1);
+        );
+    }
+    
+    public final long m2$i1() {
+        return $this.m1();
+    }
+    
+    public long m2(final long i1) {
+        return (
+            let
+            {
+                long $ceylontmp$i2$2 = m2$i2(i1);
+            }
+            returning m2$canonical$(i1, $ceylontmp$i2$2);
+        );
+    }
+    
+    public final long m2$i2(final long i1) {
+        return $this.m1();
+    }
+    
+    private long m2$canonical$(final long i1, final long i2) {
+        return $this.m1() + $this.m1() + i1 + i2;
+    }
+    
+    public long m2(final long i1, final long i2) {
+        return m2$canonical$(i1, i2);
+    }
+    
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        Inner() {
+        }
+        
+        private final void m3$priv$() {
+            $this.m2(1L, 2L);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.concrete.This.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.This$impl.Inner.class));
+        }
+    }
+}

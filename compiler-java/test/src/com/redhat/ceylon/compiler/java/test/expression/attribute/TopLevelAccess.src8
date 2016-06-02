@@ -1,0 +1,94 @@
+package com.redhat.ceylon.compiler.java.test.expression.attribute;
+
+class TopLevelAccess implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    TopLevelAccess() {
+    }
+    
+    private final void m$priv$() {
+        final boolean bb1 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b1_.get_();
+        final boolean bb2 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b2_.get_();
+        final boolean bb3 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b3_.get_();
+        final boolean bb4 = .com.redhat.ceylon.compiler.java.test.expression.attribute.b4_.get_();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.attribute.TopLevelAccess.class);
+}
+final class b1_ {
+    
+    private b1_() {
+    }
+    private static final boolean value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = true;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = false;
+            $init$value = false;
+        }
+    }
+    
+    public static boolean get_() {
+        if (b1_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'b1\' before it was set");
+        }
+    }
+}
+public final class b2_ {
+    
+    private b2_() {
+    }
+    private static final boolean value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = true;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = false;
+            $init$value = false;
+        }
+    }
+    
+    public static boolean get_() {
+        if (b2_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'b2\' before it was set");
+        }
+    }
+}
+final class b3_ {
+    
+    private b3_() {
+    }
+    
+    public static boolean get_() {
+        return true;
+    }
+}
+public final class b4_ {
+    
+    private b4_() {
+    }
+    
+    public static boolean get_() {
+        return true;
+    }
+}

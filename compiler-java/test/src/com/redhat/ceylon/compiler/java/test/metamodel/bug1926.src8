@@ -1,0 +1,17 @@
+package com.redhat.ceylon.compiler.java.test.metamodel;
+
+public final class bug1926_ {
+    
+    private bug1926_() {
+    }
+    
+    public static void bug1926() {
+        final .ceylon.language.meta.model.Function q = (.ceylon.language.meta.model.Function<? extends .java.lang.Object, ? super .ceylon.language.Empty>)(.ceylon.language.meta.model.Function).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.metamodel", "123"), "com.redhat.ceylon.compiler.java.test.metamodel", "123").findPackage("com.redhat.ceylon.compiler.java.test.metamodel").getFunction("bug1926").apply(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$);
+        final .ceylon.language.meta.model.Type<? extends .java.lang.Object> s = ((.ceylon.language.meta.model.Functional)q).getParameterTypes().getFromFirst(0L);
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.metamodel.bug1926_.bug1926();
+    }
+}
