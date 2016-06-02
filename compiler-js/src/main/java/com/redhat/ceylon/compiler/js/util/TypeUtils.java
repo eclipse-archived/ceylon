@@ -112,6 +112,9 @@ public class TypeUtils {
                 t = (TypeDeclaration)t.getContainer();
             }
             gen.out(qualifiedTypeContainer(node, imported, t, gen));
+            boolean isAnonCallable = t.isAnonymous() && t.getExtendedType() != null &&
+                    t.getExtendedType().getDeclaration() != null &&
+                    t.getExtendedType().getDeclaration().equals(t.getUnit().getCallableDeclaration());
             boolean _init = (!imported && pt.getDeclaration().isDynamic()) || t.isAnonymous();
             if (_init && !pt.getDeclaration().isToplevel()) {
                 Declaration dynintc = ModelUtil.getContainingClassOrInterface(node.getScope());
@@ -120,12 +123,17 @@ public class TypeUtils {
                     _init=false;
                 }
             }
-            if (_init) {
+            if (_init && !isAnonCallable) {
                 gen.out("$init$");
             }
 
             if (!outputTypeList(null, pt, gen, skipSelfDecl)) {
-                if (t.isAnonymous()) {
+                if (isAnonCallable) {
+                    gen.out("{t:");
+                    outputQualifiedTypename(node, true, pt.getExtendedType(), gen, skipSelfDecl);
+                    gen.out("}");
+                    return;
+                } else if (t.isAnonymous()) {
                     gen.out(gen.getNames().objectName(t));
                 } else {
                     gen.out(gen.getNames().name(t));
