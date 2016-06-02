@@ -313,8 +313,14 @@ public class JsCompiler {
             }
 
             //Then generate the JS code
+            List<PhasedUnit> ultimas = new ArrayList<>(4);
             if (srcFiles == null && !phasedUnits.isEmpty()) {
                 for (PhasedUnit pu: phasedUnits) {
+                    if ("package.ceylon".equals(pu.getUnitFile().getName()) ||
+                            "module.ceylon".equals(pu.getUnitFile().getName())) {
+                        ultimas.add(pu);
+                        continue;
+                    }
                     exitCode = compileUnit(pu, names);
                     generatedCode = true;
                     if (exitCode != 0) {
@@ -366,6 +372,10 @@ public class JsCompiler {
                         for (PhasedUnit pu : phasedUnits) {
                             File unitFile = getFullPath(pu);
                             if (path.equals(unitFile)) {
+                                if (path.getName().equals("package.ceylon") || path.getName().equals("module.ceylon")) {
+                                    ultimas.add(pu);
+                                    continue;
+                                }
                                 exitCode = compileUnit(pu, names);
                                 generatedCode = true;
                                 if (exitCode != 0) {
@@ -381,6 +391,18 @@ public class JsCompiler {
                         }
                     }
                 }
+            }
+            for (PhasedUnit pu: ultimas) {
+                exitCode = compileUnit(pu, names);
+                generatedCode = true;
+                if (exitCode != 0) {
+                    return false;
+                }
+                if (stopOnError()) {
+                    logger.error("Errors found. Compilation stopped.");
+                    break;
+                }
+                getOutput(pu).addSource(getFullPath(pu));
             }
             if(!generatedCode){
                 logger.error("No source units found to compile");
