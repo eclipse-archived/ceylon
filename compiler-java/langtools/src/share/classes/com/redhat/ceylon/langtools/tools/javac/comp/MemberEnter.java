@@ -51,6 +51,7 @@ import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.TYPEVAR;
 import static com.redhat.ceylon.langtools.tools.javac.tree.JCTree.Tag.*;
 import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticFlag;
 import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticPosition;
+import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage.Language;
 
 /** This is the second phase of Enter, in which classes are completed
  *  by entering their members into the class scope using
@@ -88,6 +89,8 @@ public class MemberEnter extends JCTree.Visitor implements Completer {
     private final Lint lint;
     private final TypeEnvs typeEnvs;
 
+    private SourceLanguage sourceLanguage;
+
     public static MemberEnter instance(Context context) {
         MemberEnter instance = context.get(memberEnterKey);
         if (instance == null)
@@ -117,6 +120,7 @@ public class MemberEnter extends JCTree.Visitor implements Completer {
         typeEnvs = TypeEnvs.instance(context);
         allowTypeAnnos = source.allowTypeAnnotations();
         allowRepeatedAnnos = source.allowRepeatedAnnotations();
+        sourceLanguage = SourceLanguage.instance(context);
     }
 
     /** Switch: support type annotations.
@@ -456,7 +460,19 @@ public class MemberEnter extends JCTree.Visitor implements Completer {
             (types.supertype(tree.sym.type).tsym.flags() & Flags.ENUM) == 0) {
             addEnumMembers(tree, env);
         }
+        boolean isCeylon = false;
+        for (List<JCAnnotation> ann = tree.mods.annotations; ann.head!= null; ann=ann.tail) {
+            if (ann.head.annotationType.toString().equals(".com.redhat.ceylon.compiler.java.metadata.Ceylon")) {
+                isCeylon = true;
+            }
+        }
+        if (isCeylon) {
+            sourceLanguage.push(Language.CEYLON);
+        }
         memberEnter(tree.defs, env);
+        if(isCeylon) {
+            sourceLanguage.pop();
+        }
     }
 
     /** Add the implicit members for an enum type
