@@ -30,6 +30,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runners.Parameterized.Parameters;
 
 import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
@@ -44,6 +45,12 @@ public class MiscTests extends CompilerTests {
 
     public MiscTests(String[] compilerArgs) {
         super(compilerArgs);
+    }
+    
+    @Parameters
+    public static Iterable<Object[]> testParameters() {
+        return Arrays.<Object[]>asList(
+                new Object[]{new String[]{"-target", "7", "-source", "7"}});
     }
 
     @Test
@@ -85,7 +92,16 @@ public class MiscTests extends CompilerTests {
     }
 
     @Test
-    public void compileRuntime(){
+    public void compileRuntime7(){
+        compileRuntime("-source", "7", "-target", "7");
+    }
+    
+    @Test
+    public void compileRuntime8(){
+        compileRuntime("-source", "8", "-target", "8");
+    }
+    
+    private void compileRuntime(String... options){
         cleanCars("build/classes-runtime");
         
         java.util.List<File> sourceFiles = new ArrayList<File>();
@@ -195,12 +211,14 @@ public class MiscTests extends CompilerTests {
         Iterable<? extends JavaFileObject> compilationUnits1 =
             fileManager.getJavaFileObjectsFromFiles(sourceFiles);
         String compilerSourcePath = ceylonSourcePath + File.pathSeparator + javaSourcePath;
+        ArrayList<String> compilerOptions = new ArrayList<String>(Arrays.asList("-sourcepath", compilerSourcePath, 
+                "-d", "build/classes-runtime", "-Xbootstrapceylon",
+                "-cp", getClassPathAsPathExcludingLanguageModule(),
+                "-suppress-warnings", "ceylonNamespace"
+                /*, "-verbose"*/));
+        compilerOptions.addAll(Arrays.asList(options));
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, null, 
-                Arrays.asList("-sourcepath", compilerSourcePath, 
-                              "-d", "build/classes-runtime", "-Xbootstrapceylon",
-                              "-cp", getClassPathAsPathExcludingLanguageModule(),
-                              "-suppress-warnings", "ceylonNamespace"
-                              /*, "-verbose"*/), 
+                compilerOptions, 
                 null, compilationUnits1);
         Boolean result = task.call();
         Assert.assertEquals("Compilation failed", Boolean.TRUE, result);
