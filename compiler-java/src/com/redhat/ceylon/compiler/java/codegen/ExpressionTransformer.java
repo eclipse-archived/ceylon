@@ -1784,7 +1784,8 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     JCExpression makeOuterExpr(Type outerClass) {
         final TypeDeclaration outerDeclaration = outerClass.getDeclaration();
-        if (outerDeclaration instanceof Interface) {
+        if (outerDeclaration instanceof Interface
+                && !((Interface)outerDeclaration).isUseDefaultMethods()) {
             return makeQualifiedDollarThis(outerClass);
         }
         return naming.makeQualifiedThis(makeJavaType(outerClass));
