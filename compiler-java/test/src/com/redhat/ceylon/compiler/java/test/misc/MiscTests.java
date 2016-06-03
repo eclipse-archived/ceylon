@@ -93,21 +93,23 @@ public class MiscTests extends CompilerTests {
 
     @Test
     public void compileRuntime7(){
-        compileRuntime("-source", "7", "-target", "7");
+        String javaSourcePath = "../language/runtime-jdk7";
+        compileRuntime(javaSourcePath, "-source", "7", "-target", "7");
     }
     
     @Test
     public void compileRuntime8(){
-        compileRuntime("-source", "8", "-target", "8");
+        String javaSourcePath = "../language/runtime-jdk8";
+        compileRuntime(javaSourcePath, "-source", "8", "-target", "8");
     }
     
-    private void compileRuntime(String... options){
+    private void compileRuntime(String javaSourcePath, String... options){
         cleanCars("build/classes-runtime");
         
         java.util.List<File> sourceFiles = new ArrayList<File>();
         
         String ceylonSourcePath = "../language/src";
-        String javaSourcePath = "../language/runtime";
+        
         
         String[] ceylonPackages = {"ceylon.language", "ceylon.language.meta", 
                 "ceylon.language.impl", "ceylon.language.meta.declaration", 
