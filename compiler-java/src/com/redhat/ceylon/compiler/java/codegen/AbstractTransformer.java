@@ -5318,7 +5318,10 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     protected JCMethodInvocation makeReifiedTypeArgumentAccessorInvocation(TypeParameter tp) {
-        return make().Apply(null, naming.makeQualIdent(expressionGen().receiver.qualifier(), naming.getTypeArgumentMethodName(tp)), List.<JCExpression>nil());
+        //return make().Apply(null, naming.makeQualIdent(expressionGen().receiver.qualifier(), naming.getTypeArgumentMethodName(tp)), List.<JCExpression>nil());
+        return make().Apply(null, naming.makeQualIdent(naming.makeQualifiedThis(
+                makeJavaType(((ClassOrInterface)tp.getContainer()).getType(), JT_RAW)), 
+                naming.getTypeArgumentMethodName(tp)), List.<JCExpression>nil());
     }
     
     private JCExpression makeTupleTypeDescriptor(Type pt, boolean firstElementOptional) {
