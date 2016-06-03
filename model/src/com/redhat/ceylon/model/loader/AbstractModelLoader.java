@@ -325,6 +325,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     /**
+     * To be redefined by subclasses if they compile a mix of Java + Ceylon files at the same go
+     */
+    protected boolean hasJavaAndCeylonSources() {
+        return false;
+    }
+
+    /**
      * To be redefined by subclasses if they don't need local declarations.
      */
     protected boolean needsLocalDeclarations(){
@@ -1673,6 +1680,54 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             return languageDeclaration;
                     }
 
+                    String modulePackagePrefix = module.getNameAsString()+".";
+                    if(hasJavaAndCeylonSources()
+                            && container == null 
+                            && typeName.startsWith(modulePackagePrefix)){
+                        // perhaps it's a java source file depending on a ceylon source file, in which
+                        // case try to resolve it from source
+                        int lastDot = typeName.length();
+                        // FIXME: deal with escapes too
+                        List<String> qualified = null;
+                        while((lastDot = lastIndexOf(typeName, "$.", lastDot-1)) != -1){
+                            String packagePart = typeName.substring(0, lastDot);
+                            String namePart = typeName.substring(lastDot+1);
+                            int namePartDot = indexOf(namePart, "$.");
+                            if(namePartDot != -1)
+                                namePart = namePart.substring(0, namePartDot);
+                            if(packagePart.startsWith(modulePackagePrefix) || packagePart.equals(module.getNameAsString())){
+                                Package pkg = module.getPackage(packagePart);
+                                if(pkg instanceof LazyPackage){
+                                    Declaration memberFromSource = ((LazyPackage) pkg).getDirectMemberFromSource(namePart, Backends.JAVA);
+                                    if(memberFromSource != null){
+                                        if(qualified != null){
+                                            for(String path : qualified){
+                                                memberFromSource = memberFromSource.getDirectMember(path, null, false);
+                                                if(memberFromSource == null){
+                                                    // give up
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        return memberFromSource;
+                                    }else{
+                                        // we did find a package, let's not look further up
+                                        break;
+                                    }
+                                }
+                                // no package, try further up
+                                if(qualified == null)
+                                    qualified = new LinkedList<String>();
+                                qualified.add(0, namePart);
+                            }else{
+                                // we've gone too far up
+                                break;
+                            }
+                        }
+                        // at this point we're left with either the default package, or we looked up past
+                        // the module package
+                        // FIXME: support the default package
+                    }
                     throw new ModelResolutionException("Failed to resolve "+typeName);
                 }
                 // we only allow source loading when it's java code we're compiling in the same go
@@ -1686,6 +1741,36 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
+    private int indexOf(String string, String elements) {
+        int smallerIndex = -1;
+        for(int i=0;i<elements.length();i++){
+            char sep = elements.charAt(i);
+            int index = string.indexOf(sep);
+            // keep it if we have no previous result
+            if(smallerIndex == -1)
+                smallerIndex = index;
+            else if(index != -1 && index < smallerIndex)
+                // or keep it if we found something before our last find
+                smallerIndex = index;
+        }
+        return smallerIndex;
+    }
+    
+    private int lastIndexOf(String string, String elements, int startFrom) {
+        int largerIndex = -1;
+        for(int i=0;i<elements.length();i++){
+            char sep = elements.charAt(i);
+            int index = string.lastIndexOf(sep, startFrom);
+            // keep it if we have no previous result
+            if(largerIndex == -1)
+                largerIndex = index;
+            else if(index > largerIndex)
+                // or keep it if we found something after our last find
+                largerIndex = index;
+        }
+        return largerIndex;
+    }
+    
     private Type newUnknownType() {
         return new UnknownType(typeFactory).getType();
     }
