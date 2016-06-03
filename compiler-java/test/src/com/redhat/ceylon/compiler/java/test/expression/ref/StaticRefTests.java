@@ -23,11 +23,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
-public class StaticRefTests extends CompilerTests {
+public class StaticRefTests extends JdkVersionDependentTests {
     
-    public StaticRefTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public StaticRefTests(String target, String source) {
+        super(target, source);
     }
 
     @Test

@@ -5,10 +5,11 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
-public class ConstructorTests extends CompilerTests {
-    public ConstructorTests(String[] compilerArgs) {
-        super(compilerArgs);
+public class ConstructorTests extends JdkVersionDependentTests {
+    public ConstructorTests(String target, String source) {
+        super(target, source);
     }
     @Override
     protected String transformDestDir(String name) {

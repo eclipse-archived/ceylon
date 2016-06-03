@@ -45,8 +45,8 @@ import com.redhat.ceylon.tools.test.AbstractToolTests;
 
 public class DocToolToolTests extends AbstractToolTests {
 
-    public DocToolToolTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public DocToolToolTests() {
+        super();
     }
 
     private File dir;

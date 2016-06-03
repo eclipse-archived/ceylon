@@ -30,8 +30,8 @@ import com.redhat.ceylon.common.tool.ToolModel;
 
 public class DocToolTests extends AbstractToolTests {
     
-    public DocToolTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public DocToolTests() {
+        super();
     }
 
     private List<String> options(String... strings){

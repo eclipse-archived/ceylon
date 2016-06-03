@@ -26,12 +26,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
-public class ComprehensionTests extends CompilerTests {
+public class ComprehensionTests extends JdkVersionDependentTests {
 
-    public ComprehensionTests(String[] compilerArgs) {
-        super(compilerArgs);
-        // TODO Auto-generated constructor stub
+    public ComprehensionTests(String target, String source) {
+        super(target, source);
     }
 
     @Override

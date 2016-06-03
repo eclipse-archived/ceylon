@@ -29,9 +29,9 @@ interface IBug2062<Element> extends .com.redhat.ceylon.compiler.java.language.Ob
                 .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element> $ceylontmp$ifResult$4;
                 {
                     .ceylon.language.Sequence sel$5 = other.getElements();
-                    if (.com.redhat.ceylon.compiler.java.Util.isReified(sel$5, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2062$Element()))) {
+                    if (.com.redhat.ceylon.compiler.java.Util.isReified(sel$5, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2062$Element()))) {
                         final .ceylon.language.Sequence otherElems$7 = (.ceylon.language.Sequence)sel$5;
-                        $ceylontmp$ifResult$4 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>)this.<.java.lang.Object>child(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Other, this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2062$Element()), (.ceylon.language.Sequence<? extends .java.lang.Object>)otherElems$7);
+                        $ceylontmp$ifResult$4 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>)this.<.java.lang.Object>child(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Other, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2062$Element()), (.ceylon.language.Sequence<? extends .java.lang.Object>)otherElems$7);
                     } else {
                         final .ceylon.language.Sequence<? extends Other> otherElems$6 = (.ceylon.language.Sequence)sel$5;
                         $ceylontmp$ifResult$4 = this;
@@ -47,7 +47,7 @@ interface IBug2062<Element> extends .com.redhat.ceylon.compiler.java.language.Ob
                 .ceylon.language.Sequential<? extends Other> others$10;
                 if ((others$10 = other.getElements()) instanceof .ceylon.language.Sequence) {
                     final .ceylon.language.Sequence<? extends Other> others$11 = (.ceylon.language.Sequence<? extends Other>)(.ceylon.language.Sequence)others$10;
-                    $ceylontmp$ifResult$8 = (.ceylon.language.meta.model.Interface<? extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062.class, this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2062$Element()));
+                    $ceylontmp$ifResult$8 = (.ceylon.language.meta.model.Interface<? extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062.class, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2062$Element()));
                 } else {
                     $ceylontmp$ifResult$8 = (.ceylon.language.meta.model.Class<? extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SBug2062<? extends Other>, ? super .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends Other>>>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.SBug2062.class, $reified$Other));
                 }
@@ -60,9 +60,9 @@ interface IBug2062<Element> extends .com.redhat.ceylon.compiler.java.language.Ob
                 .java.lang.Object $ceylontmp$ifResult$12;
                 {
                     .ceylon.language.Sequence sel$13 = other.getElements();
-                    if (.com.redhat.ceylon.compiler.java.Util.isReified(sel$13, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2062$Element()))) {
+                    if (.com.redhat.ceylon.compiler.java.Util.isReified(sel$13, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2062$Element()))) {
                         final .ceylon.language.Sequence otherElems$15 = (.ceylon.language.Sequence)sel$13;
-                        $ceylontmp$ifResult$12 = (.ceylon.language.meta.model.Interface<? extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062.class, this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2062$Element()));
+                        $ceylontmp$ifResult$12 = (.ceylon.language.meta.model.Interface<? extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062.class, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2062$Element()));
                     } else {
                         final .ceylon.language.Sequence<? extends Other> otherElems$14 = (.ceylon.language.Sequence)sel$13;
                         $ceylontmp$ifResult$12 = (.ceylon.language.meta.model.Class<? extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SBug2062<? extends Other>, ? super .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends Other>>>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.SBug2062.class, $reified$Other));

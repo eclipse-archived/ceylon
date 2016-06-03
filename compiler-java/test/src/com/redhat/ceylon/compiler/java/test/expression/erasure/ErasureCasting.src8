@@ -30,7 +30,7 @@ interface EC_DoubleParameters<T1, T2> extends .com.redhat.ceylon.compiler.java.t
     
     @.java.lang.Override
     public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_Parameterised$T() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(this.$reified$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_DoubleParameters$T1(), this.$reified$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_DoubleParameters$T2());
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_DoubleParameters.this.$reified$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_DoubleParameters$T1(), .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_DoubleParameters.this.$reified$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_DoubleParameters$T2());
     }
     
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$expression$erasure$EC_DoubleParameters$T1();

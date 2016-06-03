@@ -15,11 +15,12 @@ import org.junit.Test;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
-public class CompatTests extends CompilerTests {
+public class CompatTests extends JdkVersionDependentTests {
 
-    public CompatTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public CompatTests(String target, String source) {
+        super(target, source);
     }
 
     /** The location of the ceylon 1.2.0 distribution (as downloaded). */

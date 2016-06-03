@@ -65,6 +65,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
@@ -106,13 +107,13 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 @RunWith(Parameterized.class)
-public class ModelLoaderTests extends CompilerTests {
+public class ModelLoaderTests extends JdkVersionDependentTests {
     
-    @Parameters
+    @Parameters(name="simpleModels={2}, -target {0}")
     public static Iterable<Object[]> testParameters() {
         // Tediously compute the cartesian product of superclass's parameters and our own
         ArrayList<Object[]> result = new ArrayList<Object[]>();
-        for (Object[] parentsArgs : CompilerTests.testParameters()) {
+        for (Object[] parentsArgs : JdkVersionDependentTests.testParameters()) {
             
             Object[] args = new Object[parentsArgs.length+1];
             System.arraycopy(parentsArgs, 0, args, 0, parentsArgs.length);
@@ -129,8 +130,8 @@ public class ModelLoaderTests extends CompilerTests {
     
     private final boolean simpleAnnotationModels;
     
-    public ModelLoaderTests(String[] args, boolean simpleAnnotationModels) {
-        super(args);
+    public ModelLoaderTests(String target, String source, boolean simpleAnnotationModels) {
+        super(target, source);
         this.simpleAnnotationModels = simpleAnnotationModels;
     }
     

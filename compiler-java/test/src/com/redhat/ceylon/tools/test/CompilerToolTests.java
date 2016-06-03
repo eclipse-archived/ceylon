@@ -42,8 +42,8 @@ import com.redhat.ceylon.compiler.SystemErrorException;
 
 public class CompilerToolTests extends AbstractToolTests {
     
-    public CompilerToolTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public CompilerToolTests() {
+        super();
     }
 
     private List<String> options(String... strings){

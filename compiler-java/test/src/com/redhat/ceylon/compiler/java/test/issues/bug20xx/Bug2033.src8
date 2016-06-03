@@ -140,7 +140,7 @@ public interface List2<Element> extends .com.redhat.ceylon.compiler.java.test.is
     
     @.java.lang.Override
     public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable2$Element() {
-        return this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$List2$Element();
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List2.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$List2$Element();
     }
     
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$List2$Element();
@@ -223,11 +223,11 @@ public interface MutableList<Element> extends .com.redhat.ceylon.compiler.java.t
     
     @.java.lang.Override
     public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$ListMutator$Element() {
-        return this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MutableList$Element();
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.MutableList.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MutableList$Element();
     }
     
     public default .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<? extends Element> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$List$impl() {
-        return new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<Element>(this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MutableList$Element(), (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<Element>)(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List)this);
+        return new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.List$impl<Element>(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.MutableList.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MutableList$Element(), (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List<Element>)(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.List)this);
     }
     
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MutableList$Element();
@@ -245,17 +245,17 @@ public interface MutableList2<Element> extends .com.redhat.ceylon.compiler.java.
     
     @.java.lang.Override
     public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$List2$Element() {
-        return this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MutableList2$Element();
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.MutableList2.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MutableList2$Element();
     }
     
     @.java.lang.Override
     public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$Iterable2$Element() {
-        return this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MutableList2$Element();
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.MutableList2.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MutableList2$Element();
     }
     
     @.java.lang.Override
     public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$ListMutator2$Element() {
-        return this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MutableList2$Element();
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.MutableList2.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MutableList2$Element();
     }
     
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MutableList2$Element();
@@ -279,7 +279,7 @@ interface MweList1<T> extends .com.redhat.ceylon.compiler.java.test.issues.bug20
     
     @.java.lang.Override
     public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MutableList$Element() {
-        return this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MweList1$T();
+        return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.MweList1.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MweList1$T();
     }
     
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$MweList1$T();

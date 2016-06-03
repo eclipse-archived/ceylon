@@ -41,6 +41,7 @@ import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
@@ -54,10 +55,10 @@ import com.redhat.ceylon.langtools.tools.javac.util.Position.LineMap;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 
 
-public class IssuesTests_1500_1999 extends CompilerTests {
+public class IssuesTests_1500_1999 extends JdkVersionDependentTests {
 
-    public IssuesTests_1500_1999(String[] compilerArgs) {
-        super(compilerArgs);
+    public IssuesTests_1500_1999(String target, String source) {
+        super(target, source);
     }
 
     @Override

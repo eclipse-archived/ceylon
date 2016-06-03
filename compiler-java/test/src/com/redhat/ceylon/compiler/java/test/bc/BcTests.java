@@ -41,6 +41,7 @@ import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.CompilerTests.ModuleWithArtifact;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.javax.tools.JavaCompiler;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
@@ -48,10 +49,10 @@ import com.redhat.ceylon.javax.tools.StandardJavaFileManager;
 import com.redhat.ceylon.javax.tools.ToolProvider;
 import com.redhat.ceylon.javax.tools.JavaCompiler.CompilationTask;
 
-public class BcTests extends CompilerTests {
+public class BcTests extends JdkVersionDependentTests {
     
-    public BcTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public BcTests(String target, String source) {
+        super(target, source);
     }
 
     private final String providerModuleSrc = "provider/module.ceylon";

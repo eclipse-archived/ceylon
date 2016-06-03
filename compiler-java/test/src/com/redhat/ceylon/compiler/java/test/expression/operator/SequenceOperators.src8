@@ -959,7 +959,7 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
 public interface List2<Element> extends .ceylon.language.List<Element> {
     
     public default .ceylon.language.List$impl<? extends Element> $ceylon$language$List$impl() {
-        return new .ceylon.language.List$impl<Element>(this.$reified$com$redhat$ceylon$compiler$java$test$expression$operator$List2$Element(), this);
+        return new .ceylon.language.List$impl<Element>(.com.redhat.ceylon.compiler.java.test.expression.operator.List2.this.$reified$com$redhat$ceylon$compiler$java$test$expression$operator$List2$Element(), this);
     }
     
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$expression$operator$List2$Element();

@@ -38,12 +38,13 @@ import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 
-public class InteropTests extends CompilerTests {
+public class InteropTests extends JdkVersionDependentTests {
 
-    public InteropTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public InteropTests(String target, String source) {
+        super(target, source);
     }
 
     @Override

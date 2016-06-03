@@ -15,8 +15,8 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class DebuggerTests extends CompilerTests {
     
-    public DebuggerTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public DebuggerTests() {
+        super();
     }
 
     protected String getClassPathAsPath(ModuleWithArtifact... modules) {

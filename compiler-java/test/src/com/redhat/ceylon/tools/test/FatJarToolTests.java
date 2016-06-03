@@ -37,8 +37,8 @@ import com.redhat.ceylon.tools.fatjar.CeylonFatJarTool;
 
 public class FatJarToolTests extends AbstractToolTests {
 
-    public FatJarToolTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public FatJarToolTests() {
+        super();
     }
 
     @Test

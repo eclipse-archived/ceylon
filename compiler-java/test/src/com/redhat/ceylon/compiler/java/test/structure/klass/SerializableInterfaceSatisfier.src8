@@ -14,7 +14,7 @@ interface SerializableSubInterface<S> extends .com.redhat.ceylon.compiler.java.t
     
     @.java.lang.Override
     public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$T() {
-        return this.$reified$com$redhat$ceylon$compiler$java$test$structure$klass$SerializableSubInterface$S();
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubInterface.this.$reified$com$redhat$ceylon$compiler$java$test$structure$klass$SerializableSubInterface$S();
     }
     
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$klass$SerializableSubInterface$S();

@@ -92,16 +92,8 @@ import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.tools.jigsaw.CeylonJigsawTool;
 
-@RunWith(Parameterized.class)
 public abstract class CompilerTests {
 
-    @Parameters
-    public static Iterable<Object[]> testParameters() {
-        return Arrays.asList(
-                new Object[]{new String[]{"-target", "7", "-source", "7"}}, 
-                new Object[]{new String[]{"-target", "8", "-source", "8"}});
-    }
-    
     protected final static String dir = "test/src";
     protected final static String destDirGeneral = "build/test-cars";
     protected final static String cacheDirGeneral = "build/test-cache";
@@ -110,7 +102,6 @@ public abstract class CompilerTests {
     protected final String cacheDir;
     protected final String moduleName;
     protected final List<String> defaultOptions;
-    protected final boolean eight;
 
     private static final String jbmv = Versions.DEPENDENCY_JBOSS_MODULES_VERSION;
     
@@ -152,18 +143,10 @@ public abstract class CompilerTests {
         }
     } 
 
-    public CompilerTests(String[] compilerArgs) {
+    public CompilerTests() {
         // for comparing with java source
         Package pakage = getClass().getPackage();
         moduleName = pakage.getName();
-        boolean e = false;
-        for (int ii = 0; ii < compilerArgs.length-1; ii++) {
-            if (compilerArgs[ii].equals("-target")
-                    && compilerArgs[ii+1].equals("8")) {
-                e = true;
-            }
-        }
-        eight = e;
         
         
         int lastDot = moduleName.lastIndexOf('.');
@@ -184,7 +167,6 @@ public abstract class CompilerTests {
                 "-cp", getClassPathAsPath(),
                 //"-target", "8",
                 "-suppress-warnings", "compilerAnnotation"));
-        defaultOptions.addAll(Arrays.asList(compilerArgs));
     }
 
     public static String getClassPathAsPath() {
@@ -231,29 +213,16 @@ public abstract class CompilerTests {
         return (CeyloncFileManager)compiler.getStandardFileManager(diagnosticListener, null, null);
 	}
 	
-	protected void compareWithJavaSource(String name) {
-	    String src = name+".src";
-	    if (eight) {
-	        src = name+".src8";
-	    } else {
-	        src = name+".src";
-	    }
-		compareWithJavaSource(src, name+".ceylon");
-	}
-    
-    /*List<String> optsForJava8Interfaces() {
-        ArrayList<String> opts = new ArrayList<String>(defaultOptions);
-        opts.add("-target");
-        opts.add("8");
-        opts.add("-source");
-        opts.add("8");
-        return opts;
+    protected String getSrcName(String name) {
+        return name + ".src";
+    }
+    protected String getCeylonSourceName(String name) {
+        return name + ".ceylon";
     }
     
-    //@Override
-    public void  compareWithJavaSource(String source) {
-        compareWithJavaSource(optsForJava8Interfaces(), source+".src", source+".ceylon");
-    }*/
+	protected void compareWithJavaSource(String name) {
+	    compareWithJavaSource(getSrcName(name), getCeylonSourceName(name));
+	}
 	
     protected void compareWithJavaSourceNoOpt(String name) {
         List<String> options = new ArrayList<String>();
@@ -261,7 +230,7 @@ public abstract class CompilerTests {
         for (String option : defaultOptions) {
             options.add(option);
         }
-        compareWithJavaSource(options, name+".noopt.src", name+".ceylon");
+        compareWithJavaSource(options, getSrcName(name)+".noopt", getCeylonSourceName(name));
     }
 
 	@Before
@@ -558,10 +527,10 @@ public abstract class CompilerTests {
         // THIS IS FOR INTERNAL USE ONLY!!!
         // Can be used to do batch updating of known correct tests
         // Uncomment only when you know what you're doing!
-//        if (expectedSrc != null && compiledSrc != null && !expectedSrc.equals(compiledSrc)) {
-//            writeFile(expectedSrcFile, compiledSrc);
-//            expectedSrc = compiledSrc;
-//        }
+        //if (expectedSrc != null && compiledSrc != null && !expectedSrc.equals(compiledSrc)) {
+        //    writeFile(expectedSrcFile, compiledSrc);
+        //    expectedSrc = compiledSrc;
+        //}
         
         Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
     }

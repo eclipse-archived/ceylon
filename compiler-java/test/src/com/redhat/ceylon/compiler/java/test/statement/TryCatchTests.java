@@ -3,11 +3,12 @@ package com.redhat.ceylon.compiler.java.test.statement;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
-public class TryCatchTests extends CompilerTests {
+public class TryCatchTests extends JdkVersionDependentTests {
 
-    public TryCatchTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public TryCatchTests(String target, String source) {
+        super(target, source);
     }
 
     @Override

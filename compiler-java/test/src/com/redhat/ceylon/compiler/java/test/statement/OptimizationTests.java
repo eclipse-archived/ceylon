@@ -8,11 +8,12 @@ import org.junit.Test;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
-public class OptimizationTests extends CompilerTests {
+public class OptimizationTests extends JdkVersionDependentTests {
     
-    public OptimizationTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public OptimizationTests(String target, String source) {
+        super(target, source);
     }
 
     @Override

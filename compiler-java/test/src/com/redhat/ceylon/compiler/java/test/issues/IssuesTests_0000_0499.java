@@ -29,13 +29,14 @@ import org.junit.Test;
 
 import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 
-public class IssuesTests_0000_0499 extends CompilerTests {
+public class IssuesTests_0000_0499 extends JdkVersionDependentTests {
 
-    public IssuesTests_0000_0499(String[] compilerArgs) {
-        super(compilerArgs);
+    public IssuesTests_0000_0499(String target, String source) {
+        super(target, source);
     }
 
     @Override

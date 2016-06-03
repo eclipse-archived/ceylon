@@ -27,17 +27,18 @@ import org.junit.Test;
 import org.junit.runners.Parameterized.Parameters;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
-public class Java8InterfaceTests extends CompilerTests {
+public class Java8InterfaceTests extends JdkVersionDependentTests {
     
-    public Java8InterfaceTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public Java8InterfaceTests(String target, String source) {
+        super(target, source);
     }
     
-    @Parameters
+    @Parameters(name="-target {0}")
     public static Iterable<Object[]> testParameters() {
         return Arrays.<Object[]>asList(
-                new Object[]{new String[]{"-target", "8", "-source", "8"}});
+                new Object[]{"8", "8"});
     }
 
     List<String> optsForJava8Interfaces() {

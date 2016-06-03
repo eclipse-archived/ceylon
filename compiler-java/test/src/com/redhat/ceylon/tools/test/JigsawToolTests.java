@@ -33,8 +33,8 @@ import com.redhat.ceylon.tools.jigsaw.CeylonJigsawTool;
 
 public class JigsawToolTests extends AbstractToolTests {
 
-    public JigsawToolTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public JigsawToolTests() {
+        super();
     }
 
     @Test

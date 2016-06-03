@@ -22,11 +22,12 @@ package com.redhat.ceylon.compiler.java.test.metamodelDefaultModule;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
-public class MetamodelDefaultModuleTests extends CompilerTests {
+public class MetamodelDefaultModuleTests extends JdkVersionDependentTests {
 
-    public MetamodelDefaultModuleTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public MetamodelDefaultModuleTests(String target, String source) {
+        super(target, source);
     }
 
     @Test

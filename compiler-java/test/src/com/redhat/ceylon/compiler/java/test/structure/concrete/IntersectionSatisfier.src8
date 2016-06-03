@@ -12,7 +12,7 @@ interface IntersectionSatisfier_I1<T> extends .com.redhat.ceylon.compiler.java.t
     
     @.java.lang.Override
     public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_X$T() {
-        return this.$reified$com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$T();
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.IntersectionSatisfier_I1.this.$reified$com$redhat$ceylon$compiler$java$test$structure$concrete$IntersectionSatisfier_I1$T();
     }
     
     @.java.lang.Override

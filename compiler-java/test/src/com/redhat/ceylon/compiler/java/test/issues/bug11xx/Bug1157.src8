@@ -8,7 +8,7 @@ interface Bug1157_AnnoSub<Value extends .com.redhat.ceylon.compiler.java.test.is
     
     @.java.lang.Override
     public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1157_Anno$Value() {
-        return this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1157_AnnoSub$Value();
+        return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1157_AnnoSub.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1157_AnnoSub$Value();
     }
     
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug11xx$Bug1157_AnnoSub$Value();

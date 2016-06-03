@@ -22,12 +22,13 @@ package com.redhat.ceylon.compiler.java.test.issues;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
 
-public class IssuesTests_5500_5999 extends CompilerTests {
+public class IssuesTests_5500_5999 extends JdkVersionDependentTests {
 
-    public IssuesTests_5500_5999(String[] compilerArgs) {
-        super(compilerArgs);
+    public IssuesTests_5500_5999(String target, String source) {
+        super(target, source);
     }
 
     @Override

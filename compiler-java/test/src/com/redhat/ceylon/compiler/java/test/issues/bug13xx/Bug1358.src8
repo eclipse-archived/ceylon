@@ -39,7 +39,7 @@ public interface Bug1358InterfaceImpl<Element> extends .com.redhat.ceylon.compil
     
     @.java.lang.Override
     public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1358$Element() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1358InterfaceImpl$Element(), .ceylon.language.Integer.$TypeDescriptor$);
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358InterfaceImpl.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1358InterfaceImpl$Element(), .ceylon.language.Integer.$TypeDescriptor$);
     }
     
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug13xx$Bug1358InterfaceImpl$Element();

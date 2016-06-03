@@ -38,8 +38,8 @@ import com.redhat.ceylon.tools.src.CeylonSrcTool;
 
 public class SrcToolTests extends AbstractToolTests {
 
-    public SrcToolTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public SrcToolTests() {
+        super();
     }
 
     @Override

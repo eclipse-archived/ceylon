@@ -20,12 +20,12 @@ interface Bug1419Attr<Container, Get, Set> extends .com.redhat.ceylon.compiler.j
     
     @.java.lang.Override
     public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419Mem$Container() {
-        return this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419Attr$Container();
+        return .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419Attr$Container();
     }
     
     @.java.lang.Override
     public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419Mem$Member() {
-        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Val.class, this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419Attr$Get(), this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419Attr$Set());
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Val.class, .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419Attr$Get(), .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419Attr$Set());
     }
     
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug14xx$Bug1419Attr$Container();

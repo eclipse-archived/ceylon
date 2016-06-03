@@ -24,14 +24,15 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
-public class StatementTests extends CompilerTests {
+public class StatementTests extends JdkVersionDependentTests {
     
     //
     // Method attributes and variables
     
-    public StatementTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public StatementTests(String target, String source) {
+        super(target, source);
     }
 
     @Test

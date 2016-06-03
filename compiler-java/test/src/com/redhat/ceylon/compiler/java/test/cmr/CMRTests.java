@@ -103,8 +103,8 @@ public class CMRTests extends CompilerTests {
     //
     // Modules
     
-    public CMRTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public CMRTests() {
+        super();
     }
 
     @Test

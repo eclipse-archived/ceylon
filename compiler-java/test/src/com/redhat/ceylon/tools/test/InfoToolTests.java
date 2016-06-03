@@ -33,8 +33,8 @@ import com.redhat.ceylon.tools.info.CeylonInfoTool;
 
 public class InfoToolTests extends AbstractToolTests {
 
-    public InfoToolTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public InfoToolTests() {
+        super();
     }
 
     @Test

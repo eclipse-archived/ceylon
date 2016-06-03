@@ -26,15 +26,16 @@ import java.util.List;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
 /**
  * Special issue with source path mimicking a one-package qualified name 
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
-public class PackageIssuesTests extends CompilerTests {
+public class PackageIssuesTests extends JdkVersionDependentTests {
     
-    public PackageIssuesTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public PackageIssuesTests(String target, String source) {
+        super(target, source);
     }
 
     private String testDir;

@@ -32,14 +32,8 @@ public class QuotingTests extends CompilerTests {
     //
     // Packages
     
-    public QuotingTests(String[] compilerArgs) {
-        super(compilerArgs);
-    }
-    
-    @Parameters
-    public static Iterable<Object[]> testParameters() {
-        return Arrays.<Object[]>asList(
-                new Object[]{new String[]{"-target", "7", "-source", "7"}});
+    public QuotingTests() {
+        super();
     }
 
     @Test

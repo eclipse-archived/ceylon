@@ -55,8 +55,8 @@ public class ImportJarToolTests extends AbstractToolTests {
     private final File destDir;
     private final File cacheDir;
     
-    public ImportJarToolTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public ImportJarToolTests() {
+        super();
         String destDirGeneral = "build/test-cars";
         String cacheDirGeneral = "build/test-cache";
         

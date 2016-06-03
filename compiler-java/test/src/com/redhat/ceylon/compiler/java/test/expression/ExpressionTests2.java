@@ -23,11 +23,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
-public class ExpressionTests2 extends CompilerTests {
+public class ExpressionTests2 extends JdkVersionDependentTests {
     
-    public ExpressionTests2(String[] args) {
-        super(args);
+    public ExpressionTests2(String target, String source) {
+        super(target, source);
     }
 
     @Override

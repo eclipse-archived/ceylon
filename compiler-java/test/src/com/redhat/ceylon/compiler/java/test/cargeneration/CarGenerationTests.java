@@ -40,13 +40,14 @@ import org.junit.Test;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.javax.tools.Diagnostic;
 
-public class CarGenerationTests extends CompilerTests {
+public class CarGenerationTests extends JdkVersionDependentTests {
     
-    public CarGenerationTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public CarGenerationTests(String target, String source) {
+        super(target, source);
     }
 
     @Test

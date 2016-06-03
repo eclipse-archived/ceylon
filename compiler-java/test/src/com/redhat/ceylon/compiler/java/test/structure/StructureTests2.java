@@ -27,12 +27,13 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 
-public class StructureTests2 extends CompilerTests {
+public class StructureTests2 extends JdkVersionDependentTests {
     
-    public StructureTests2(String[] compilerArgs) {
-        super(compilerArgs);
+    public StructureTests2(String target, String source) {
+        super(target, source);
     }
 
     @Override

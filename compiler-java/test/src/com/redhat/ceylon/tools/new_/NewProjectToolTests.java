@@ -48,8 +48,8 @@ import com.redhat.ceylon.tools.test.AbstractToolTests;
 
 public class NewProjectToolTests extends AbstractToolTests {
 
-    public NewProjectToolTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public NewProjectToolTests() {
+        super();
     }
 
     private List<String> args(String... args) {

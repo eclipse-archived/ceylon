@@ -25,11 +25,12 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
-public class NativeTests extends CompilerTests {
+public class NativeTests extends JdkVersionDependentTests {
 	
-    public NativeTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public NativeTests(String target, String source) {
+        super(target, source);
     }
 
     private void testNative(String test) {

@@ -41,7 +41,7 @@ interface Bug1625_2<T> extends .com.redhat.ceylon.compiler.java.language.ObjectP
     public abstract .java.lang.Object f(final T t);
     
     public default .ceylon.language.Sequential<? extends T> f$ts(final T t) {
-        return (.ceylon.language.Sequence<? extends T>).ceylon.language.Tuple.instance(this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1625_2$T(), new .java.lang.Object[]{t});
+        return (.ceylon.language.Sequence<? extends T>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_2.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug16xx$Bug1625_2$T(), new .java.lang.Object[]{t});
     }
     
     public abstract .java.lang.Object f(final T t, final .ceylon.language.Sequential<? extends T> ts);

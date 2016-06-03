@@ -6,12 +6,13 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
 
-public class ReportingTests extends CompilerTests {
+public class ReportingTests extends JdkVersionDependentTests {
     
-    public ReportingTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public ReportingTests(String target, String source) {
+        super(target, source);
         defaultOptions.clear();
         defaultOptions.addAll(Arrays.asList("-out", destDir, "-cacherep", cacheDir, "-g", 
                 "-cp", getClassPathAsPath()));

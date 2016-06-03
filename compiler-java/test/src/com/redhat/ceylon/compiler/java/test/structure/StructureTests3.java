@@ -23,11 +23,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
-public class StructureTests3 extends CompilerTests {
+public class StructureTests3 extends JdkVersionDependentTests {
     
-    public StructureTests3(String[] compilerArgs) {
-        super(compilerArgs);
+    public StructureTests3(String target, String source) {
+        super(target, source);
     }
 
     @Override

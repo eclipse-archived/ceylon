@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug61xx;
+
+interface Bug6178 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    private default void method$priv$() {
+        (
+            let
+            {
+                boolean $ceylontmp$boolean$0 = method$boolean();
+                method$priv$$canonical$($ceylontmp$boolean$0);
+            }
+            returning null;
+        );
+    }
+    
+    private default boolean method$boolean() {
+        return false;
+    }
+    
+    private default void method$priv$$canonical$(final boolean $boolean) {
+    }
+    
+    private default void method$priv$(final boolean $boolean) {
+        (
+            let
+            {
+                method$priv$$canonical$($boolean);
+            }
+            returning null;
+        );
+    }
+    
+    private default void callMethod$priv$() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug61xx.Bug6178 arg$1$argthis$ = .com.redhat.ceylon.compiler.java.test.issues.bug61xx.Bug6178.this;
+                boolean arg$1$0 = arg$1$argthis$.method$boolean();
+                method$priv$(arg$1$0);
+            }
+            returning null;
+        );
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug61xx.Bug6178.class);
+}

@@ -27,11 +27,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 
-public class AnnotationsTests extends CompilerTests {
-    public AnnotationsTests(String[] compilerArgs) {
-        super(compilerArgs);
+public class AnnotationsTests extends JdkVersionDependentTests {
+    public AnnotationsTests(String target, String source) {
+        super(target, source);
     }
 
     @Override

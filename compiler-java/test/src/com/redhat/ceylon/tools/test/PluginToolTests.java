@@ -32,8 +32,8 @@ import com.redhat.ceylon.tools.plugin.CeylonPluginTool;
 
 public class PluginToolTests extends AbstractToolTests {
 
-    public PluginToolTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public PluginToolTests() {
+        super();
     }
 
     @Test

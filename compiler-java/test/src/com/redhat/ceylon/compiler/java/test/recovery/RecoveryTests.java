@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.java.metadata.CompileTimeError;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.javax.tools.Diagnostic;
 import com.redhat.ceylon.javax.tools.DiagnosticCollector;
@@ -58,10 +59,10 @@ import com.redhat.ceylon.javax.tools.DiagnosticListener;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
 
-public class RecoveryTests extends CompilerTests {
+public class RecoveryTests extends JdkVersionDependentTests {
     
-    public RecoveryTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public RecoveryTests(String target, String source) {
+        super(target, source);
     }
 
     protected void compileAndRunWithUnresolvedCompilationError(

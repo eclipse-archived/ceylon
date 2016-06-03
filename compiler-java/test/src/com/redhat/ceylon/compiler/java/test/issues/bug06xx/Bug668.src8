@@ -17,7 +17,7 @@ public interface Bug668_Y<Element> extends .com.redhat.ceylon.compiler.java.test
     
     @.java.lang.Override
     public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_X$Element() {
-        return this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$Element();
+        return .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug668_Y.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$Element();
     }
     
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug06xx$Bug668_Y$Element();

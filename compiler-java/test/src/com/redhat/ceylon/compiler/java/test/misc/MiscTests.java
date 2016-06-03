@@ -43,14 +43,8 @@ import com.redhat.ceylon.model.cmr.JDKUtils;
 
 public class MiscTests extends CompilerTests {
 
-    public MiscTests(String[] compilerArgs) {
-        super(compilerArgs);
-    }
-    
-    @Parameters
-    public static Iterable<Object[]> testParameters() {
-        return Arrays.<Object[]>asList(
-                new Object[]{new String[]{"-target", "7", "-source", "7"}});
+    public MiscTests() {
+        super();
     }
 
     @Test

@@ -14,8 +14,8 @@ import com.redhat.ceylon.tools.test.AbstractToolTests;
 
 public class VersionToolTests extends AbstractToolTests {
     
-    public VersionToolTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public VersionToolTests() {
+        super();
     }
 
     @Test

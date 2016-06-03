@@ -36,13 +36,14 @@ import com.redhat.ceylon.tools.TestingToolLoader;
  */
 public class AbstractToolTests extends CompilerTests {
     
-    public AbstractToolTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public AbstractToolTests() {
+        super();
     }
-    @Parameters
+    
+    @Parameters(name="-target {0}")
     public static Iterable<Object[]> testParameters() {
         return Arrays.<Object[]>asList(
-                new Object[]{new String[]{"-target", "7", "-source", "7"}});
+                new Object[]{"7", "7"});
     }
 
     protected final ToolFactory pluginFactory = new ToolFactory();

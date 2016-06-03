@@ -33,8 +33,8 @@ import com.redhat.ceylon.tools.plugin.CeylonPluginTool;
 
 public class CopyToolTests extends AbstractToolTests {
 
-    public CopyToolTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public CopyToolTests() {
+        super();
     }
 
     @Test

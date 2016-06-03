@@ -23,15 +23,16 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 import com.redhat.ceylon.javax.tools.Diagnostic;
 
-public class StructureTests extends CompilerTests {
+public class StructureTests extends JdkVersionDependentTests {
     
     //
     // Packages
     
-    public StructureTests(String[] compilerArgs) {
-        super(compilerArgs);
+    public StructureTests(String target, String source) {
+        super(target, source);
     }
 
     @Test
