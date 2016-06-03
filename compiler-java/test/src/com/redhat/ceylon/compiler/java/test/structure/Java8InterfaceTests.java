@@ -20,9 +20,11 @@
 package com.redhat.ceylon.compiler.java.test.structure;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.runners.Parameterized.Parameters;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
@@ -30,6 +32,12 @@ public class Java8InterfaceTests extends CompilerTests {
     
     public Java8InterfaceTests(String[] compilerArgs) {
         super(compilerArgs);
+    }
+    
+    @Parameters
+    public static Iterable<Object[]> testParameters() {
+        return Arrays.<Object[]>asList(
+                new Object[]{new String[]{"-target", "8", "-source", "8"}});
     }
 
     List<String> optsForJava8Interfaces() {
@@ -122,4 +130,10 @@ public class Java8InterfaceTests extends CompilerTests {
     public void superWithinSyntheticClass() {
         compareWithJavaSource("iface/SuperWithinSyntheticClass");
     }
+    
+    @Test
+    public void outer() {
+        compareWithJavaSource("iface/Outer");
+    }
+    
 }
