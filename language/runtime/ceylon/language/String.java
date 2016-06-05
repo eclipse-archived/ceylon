@@ -1347,7 +1347,7 @@ public final class String
     public static java.lang.String measure(java.lang.String value, 
             long from, long length) {
         long len = value.length();
-        if (len==0 || from>=len || length<=0) {
+        if (len==0 || from>=len || length<=0 || from+length<=0) {
             return "";
         }
         if (from<0) {
