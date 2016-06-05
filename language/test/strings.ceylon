@@ -54,8 +54,11 @@ shared void strings() {
     
     check("http://foo.com".spanFrom(4)=="://foo.com", "string spanFrom 0");
     check("http://foo.com".spanTo(3)=="http", "string spanTo 0");
+    check(hello.span(-1,-2)=="", "string span -3");
     check(hello.span(-2,-1)=="", "string span -2");
     check(hello.span(-2,0)=="h", "string span -1");
+    check(hello.span(0,0)=="h", "string span 0");
+    check(hello.span(0,-1)=="h", "string span 0");
     check(hello.span(1,3)=="ell", "string span 1");
     check(hello.spanFrom(1)=="ello", "string spanFrom 2");
     check(hello.spanFrom(10)=="", "string spanFrom 3");
@@ -66,11 +69,16 @@ shared void strings() {
     check(hello.span(2,1)=="le", "string span 5");
     check(hello.span(20,10)=="", "string span 6");
     
+    check(hello.measure(-3,2)=="", "string measure -2");
+    check(hello.measure(-3,3)=="", "string measure -1");
+    check(hello.measure(0,0)=="", "string measure 0");
     check(hello.measure(1,3)=="ell", "string measure 1");
     check(hello.measure(1,5)=="ello", "string measure 2");
     check(hello.measure(1,0)=="", "string measure 3");
     check(hello.measure(1,10)=="ello", "string measure 4");
     check(hello.measure(10,20)=="", "string measure 5 expected empty string got ``hello.measure(10,20)``");
+    check(hello.measure(5,2)=="", "string measure 6");
+    check(hello.measure(2,-1)=="", "string measure 7");
     
     check("".span(1,3)=="", "empty string span 1 expected empty string got ``"".span(1,3)``");
     check("".spanFrom(0)=="", "empty string spanFrom 0");
