@@ -49,6 +49,7 @@ import java.util.Map;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
+import com.redhat.ceylon.compiler.js.GenerateJsVisitor;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
@@ -1124,8 +1125,14 @@ public class JsonPackage extends LazyPackage {
         @SuppressWarnings("unchecked")
         final Map<String,Object> map = model == null ? null : (Map<String,Object>)model.get(name);
         if (map == null) {
-            if ("Nothing".equals(name) && isLanguagePackage()) {
-                return nothing;
+            if ("Nothing".equals(name)) {
+                if (isLanguagePackage()) {
+                    return nothing;
+                } else if (getModule().getJsMajor()<9 ||
+                        (getModule().getJsMajor()==9 && getModule().getJsMinor()<1)) {
+                    //Older versions wrongly referenced a local Nothing, maintain backwards compat
+                    return nothing;
+                }
             } else if ("$U".equals(name)) {
                 return unknown;
             }
