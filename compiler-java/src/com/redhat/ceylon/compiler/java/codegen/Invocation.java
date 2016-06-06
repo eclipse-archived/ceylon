@@ -1703,22 +1703,23 @@ class NamedArgumentInvocation extends Invocation {
         // handle type parameters correctly
         // we used to use thisType = gen.getThisType(getPrimaryDeclaration());
         final JCExpression thisType;
-        Reference target = ((Tree.MemberOrTypeExpression)getPrimary()).getTarget();
         if (getPrimary() instanceof Tree.BaseMemberExpression
                 && !gen.expressionGen().isWithinSyntheticClassBody()) {
             if (Decl.withinClassOrInterface(getPrimaryDeclaration())) {
                 // a member method
-                int flags = JT_NO_PRIMITIVES | 
-                        ((getPrimaryDeclaration().isInterfaceMember() 
-                                && !getPrimaryDeclaration().isShared() 
-                                && !((Interface)getPrimaryDeclaration().getContainer()).isUseDefaultMethods()) ? JT_COMPANION : 0);
-                thisType = gen.makeJavaType(target.getQualifyingType(), flags);
+                Scope t = Decl.getFirstDeclarationContainer(getPrimary().getScope());
+                while (!(t instanceof TypeDeclaration)) {
+                    t = Decl.getFirstDeclarationContainer(t);
+                }
+                Type qt = ((TypeDeclaration)t).getType();
+                int flags = JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() ? JT_COMPANION : 0);
+                thisType = gen.makeJavaType(qt, flags);
                 if (Decl.withinInterface(getPrimaryDeclaration())
                         && !((Interface)getPrimaryDeclaration().getContainer()).isUseDefaultMethods()
                         && getPrimaryDeclaration().isShared()) {
                     defaultedParameterInstance = gen.naming.makeQuotedThis();
                 } else {
-                    defaultedParameterInstance = gen.naming.makeQualifiedThis(gen.makeJavaType(target.getQualifyingType(), flags));
+                    defaultedParameterInstance = gen.naming.makeQualifiedThis(gen.makeJavaType(qt, flags));
                 }
             } else {
                 // a local or toplevel function
@@ -1735,11 +1736,9 @@ class NamedArgumentInvocation extends Invocation {
                     gen.makeJavaType(declaration.getType(), JT_COMPANION), 
                     List.<JCExpression>nil(), null);
         } else {
-            if (isOnValueType()) {
-                thisType = gen.makeJavaType(target.getQualifyingType());
-            } else {
-                thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES);
-            }
+            Reference target = ((Tree.MemberOrTypeExpression)getPrimary()).getTarget();
+            int flags = isOnValueType() ? 0 : JT_NO_PRIMITIVES;
+            thisType = gen.makeJavaType(target.getQualifyingType(), flags);
             defaultedParameterInstance = callVarName != null ? callVarName.makeIdent() : gen.naming.makeThis();
         }
         JCVariableDecl thisDecl = gen.makeVar(varBaseName.suffixedBy(Suffix.$argthis$), 
