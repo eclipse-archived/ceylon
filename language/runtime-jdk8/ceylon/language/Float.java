@@ -49,6 +49,36 @@ public final class Float
         return value;
     }
     
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Summable$Other() {
+        return Float.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Numeric$Other() {
+        return Float.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Number$Other() {
+        return Float.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Comparable$Other() {
+        return Float.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Exponentiable$Other() {
+        return Float.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Exponentiable$This() {
+        return Integer.$TypeDescriptor$;
+    }
+    
     @Override
     public Float plus(@Name("other") Float other) {
         return instance(value + other.value);

@@ -48,6 +48,31 @@ public final class Byte implements
     }
     
     @Ignore
+    public TypeDescriptor $reified$ceylon$language$Binary$Other() {
+        return Byte.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Enumerable$Other() {
+        return Byte.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Ordinal$Other() {
+        return Byte.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Invertible$Other() {
+        return Byte.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Summable$Other() {
+        return Byte.$TypeDescriptor$;
+    }
+    
+    @Ignore
     public byte byteValue() {
         return value;
     }

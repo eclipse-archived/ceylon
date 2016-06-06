@@ -55,6 +55,17 @@ public final class String
             TypeDescriptor.klass(String.class);
     
     @Ignore
+    public TypeDescriptor $reified$ceylon$language$Comparable$Other() {
+        return String.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$SearchableList$Element() {
+        return Character.$TypeDescriptor$;
+    }
+    
+    
+    @Ignore
     public final java.lang.String value;
     
     
@@ -1420,6 +1431,12 @@ public final class String
     public static List<? extends Character> sublistTo(
             final java.lang.String value, final long to) {
         return new BaseCharacterList() {
+            public TypeDescriptor $reified$ceylon$language$Collection$Element() {
+                return Character.$TypeDescriptor$;
+            }
+            public TypeDescriptor $reified$ceylon$language$Correspondence$Item() {
+                return Character.$TypeDescriptor$;
+            }
             @Override
             public Character getFromFirst(long index) {
                 if (index>to) {
@@ -1502,6 +1519,12 @@ public final class String
     public static List<? extends Character> sublistFrom(
             final java.lang.String value, final long from) {
         return new BaseCharacterList() {
+            public TypeDescriptor $reified$ceylon$language$Collection$Element() {
+                return Character.$TypeDescriptor$;
+            }
+            public TypeDescriptor $reified$ceylon$language$Correspondence$Item() {
+                return Character.$TypeDescriptor$;
+            }
             int start;
             {
                 if (from<=0) {

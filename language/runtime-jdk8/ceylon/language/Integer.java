@@ -50,6 +50,41 @@ public final class Integer
     }
 
     @Ignore
+    public TypeDescriptor $reified$ceylon$language$Summable$Other() {
+        return Integer.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Numeric$Other() {
+        return Integer.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Comparable$Other() {
+        return Integer.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Integral$Other() {
+        return Integer.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Binary$Other() {
+        return Integer.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Exponentiable$Other() {
+        return Integer.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Exponentiable$This() {
+        return Integer.$TypeDescriptor$;
+    }
+    
+    @Ignore
     public long longValue() {
         return value;
     }

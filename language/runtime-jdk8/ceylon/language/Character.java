@@ -35,6 +35,21 @@ public final class Character
     int character) {
         this.codePoint = character;
     }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Comparable$Other() {
+        return Character.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Enumerable$Other() {
+        return Character.$TypeDescriptor$;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$Ordinal$Other() {
+        return Character.$TypeDescriptor$;
+    }
 
     @Ignore
     public static Character instance(int c) {
