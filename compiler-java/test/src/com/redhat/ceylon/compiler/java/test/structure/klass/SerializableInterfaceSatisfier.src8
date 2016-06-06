@@ -7,7 +7,7 @@ interface SerializableInterface<T> extends .com.redhat.ceylon.compiler.java.lang
     public abstract T formalMethod();
     
     public default T defaultMethod() {
-        return this.formalMethod();
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface.this.formalMethod();
     }
 }
 interface SerializableSubInterface<S> extends .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface<S> {

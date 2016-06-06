@@ -7,15 +7,15 @@ interface ConcreteString extends .com.redhat.ceylon.compiler.java.language.Objec
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public default void presentYourself() {
-        if (this.equals(this)) {
+        if (.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString.this.equals(this)) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "equals(this)"));
         }
-        if (2L == this.hashCode()) {
+        if (2L == .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString.this.hashCode()) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "2 == hash"));
         }
-        if ("foo".equals(this.toString())) {
+        if ("foo".equals(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString.this.toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"foo\" == string"));
         }
@@ -69,15 +69,15 @@ interface ConcreteString2 extends .com.redhat.ceylon.compiler.java.language.Obje
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public default void presentYourself() {
-        if (this.equals(this)) {
+        if (.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2.this.equals(this)) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "equals(this)"));
         }
-        if (3L == this.hashCode()) {
+        if (3L == .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2.this.hashCode()) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "3 == hash"));
         }
-        if ("bar".equals(this.toString())) {
+        if ("bar".equals(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2.this.toString())) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"bar\" == string"));
         }

@@ -19,7 +19,7 @@ interface I1 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     }
     
     private default long m1$canonical$(final long n) {
-        return n + this.i1();
+        return n + .com.redhat.ceylon.compiler.java.test.structure.concrete.I1.this.i1();
     }
     
     public default long m1(final long n) {

@@ -966,7 +966,7 @@ public interface List2<Element> extends .ceylon.language.List<Element> {
     
     @.java.lang.Override
     public default Element getFromFirst(final long i) {
-        return this.get(.ceylon.language.Integer.instance(i));
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.List2.this.get(.ceylon.language.Integer.instance(i));
     }
 }
 public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.expression.operator.List2<.ceylon.language.String>, .java.io.Serializable {

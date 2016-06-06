@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.structure.concrete;
 public interface LazySpec extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     
     public default .java.lang.Object a() {
-        return this.b();
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.LazySpec.this.b();
     }
     
     public abstract .java.lang.Object b();

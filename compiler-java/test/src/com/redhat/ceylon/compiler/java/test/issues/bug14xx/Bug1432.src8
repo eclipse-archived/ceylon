@@ -5,8 +5,8 @@ interface Bug143Writer extends .com.redhat.ceylon.compiler.java.language.ObjectP
     public abstract .java.lang.Object write(final .java.lang.String string);
     
     public default void writeLine(final .java.lang.String string) {
-        this.write(string);
-        this.write(.ceylon.language.operatingSystem_.get_().getNewline());
+        .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug143Writer.this.write(string);
+        .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug143Writer.this.write(.ceylon.language.operatingSystem_.get_().getNewline());
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug143Writer.class);
 }

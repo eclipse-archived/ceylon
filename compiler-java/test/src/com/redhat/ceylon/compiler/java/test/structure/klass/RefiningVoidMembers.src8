@@ -176,7 +176,7 @@ interface RefiningAnythingMembersInterface<T> extends .com.redhat.ceylon.compile
     }
     
     public default T defaultReturnsT() {
-        return this.getDefaultGetterT();
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.RefiningAnythingMembersInterface.this.getDefaultGetterT();
     }
     
     public abstract .java.lang.Object getFormalGetterAnything();

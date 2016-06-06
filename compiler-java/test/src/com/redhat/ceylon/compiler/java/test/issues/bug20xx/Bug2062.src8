@@ -16,7 +16,7 @@ interface IBug2062<Element> extends .com.redhat.ceylon.compiler.java.language.Ob
                 .ceylon.language.Sequential<? extends Other> others$2;
                 if ((others$2 = other.getElements()) instanceof .ceylon.language.Sequence) {
                     final .ceylon.language.Sequence<? extends Other> others$3 = (.ceylon.language.Sequence<? extends Other>)(.ceylon.language.Sequence)others$2;
-                    $ceylontmp$ifResult$0 = this.<Other>child($reified$Other, others$3);
+                    $ceylontmp$ifResult$0 = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062.this.<Other>child($reified$Other, others$3);
                 } else {
                     $ceylontmp$ifResult$0 = this;
                 }
@@ -31,7 +31,7 @@ interface IBug2062<Element> extends .com.redhat.ceylon.compiler.java.language.Ob
                     .ceylon.language.Sequence sel$5 = other.getElements();
                     if (.com.redhat.ceylon.compiler.java.Util.isReified(sel$5, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequence.class, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2062$Element()))) {
                         final .ceylon.language.Sequence otherElems$7 = (.ceylon.language.Sequence)sel$5;
-                        $ceylontmp$ifResult$4 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>)this.<.java.lang.Object>child(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Other, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2062$Element()), (.ceylon.language.Sequence<? extends .java.lang.Object>)otherElems$7);
+                        $ceylontmp$ifResult$4 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>).com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062.this.<.java.lang.Object>child(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.intersection($reified$Other, .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062.this.$reified$com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2062$Element()), (.ceylon.language.Sequence<? extends .java.lang.Object>)otherElems$7);
                     } else {
                         final .ceylon.language.Sequence<? extends Other> otherElems$6 = (.ceylon.language.Sequence)sel$5;
                         $ceylontmp$ifResult$4 = this;

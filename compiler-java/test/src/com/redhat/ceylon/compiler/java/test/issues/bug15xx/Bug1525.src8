@@ -14,7 +14,7 @@ public interface TestListener extends .com.redhat.ceylon.compiler.java.language.
         return (
             let
             {
-                this.l$priv$();
+                .com.redhat.ceylon.compiler.java.test.issues.bug15xx.TestListener.this.l$priv$();
             }
             returning null;
         );
@@ -23,7 +23,7 @@ public interface TestListener extends .com.redhat.ceylon.compiler.java.language.
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public default void mShared() {
-        this.l$priv$();
+        .com.redhat.ceylon.compiler.java.test.issues.bug15xx.TestListener.this.l$priv$();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")

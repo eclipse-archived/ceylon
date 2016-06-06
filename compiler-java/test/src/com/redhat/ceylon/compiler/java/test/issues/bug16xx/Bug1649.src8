@@ -24,7 +24,7 @@ interface Bug1649Subinterface extends .com.redhat.ceylon.compiler.java.test.issu
     }
     
     private default .java.lang.Object defaultedVar$canonical$(final .java.lang.Object var) {
-        return this.refinedDelegate();
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1649Subinterface.this.refinedDelegate();
     }
     
     @.java.lang.Override

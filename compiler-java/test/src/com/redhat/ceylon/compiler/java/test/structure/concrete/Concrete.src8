@@ -72,7 +72,7 @@ interface Concrete<A> extends .com.redhat.ceylon.compiler.java.language.ObjectPr
     }
     
     private default void mShared$canonical$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
-        this.mNonShared$priv$();
+        .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete.this.mNonShared$priv$();
     }
     
     public default void mShared(final A a, final .ceylon.language.Sequential<? extends A> aseq) {

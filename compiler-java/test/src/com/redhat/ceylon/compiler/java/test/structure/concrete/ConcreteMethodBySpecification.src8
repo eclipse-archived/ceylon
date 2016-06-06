@@ -32,7 +32,7 @@ interface ConcreteMethodBySpecification extends .com.redhat.ceylon.compiler.java
     }
     
     private default long mSharedMem$canonical$(final long i) {
-        return this.mFormal(i);
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification.this.mFormal(i);
     }
     
     public default long mSharedMem(final long i) {
@@ -58,7 +58,7 @@ interface ConcreteMethodBySpecification extends .com.redhat.ceylon.compiler.java
     }
     
     private default long mDefaultMem$canonical$(final long i) {
-        return this.mFormal(i);
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecification.this.mFormal(i);
     }
     
     public default long mDefaultMem(final long i) {
@@ -83,7 +83,7 @@ interface ConcreteMethodBySpecificationSub extends .com.redhat.ceylon.compiler.j
     }
     
     private default long mSharedSup$canonical$(final long i) {
-        return this.mFormal(i);
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub.this.mFormal(i);
     }
     
     public default long mSharedSup(final long i) {
@@ -105,7 +105,7 @@ interface ConcreteMethodBySpecificationSub extends .com.redhat.ceylon.compiler.j
     }
     
     private default long mDefaultSup$canonical$(final long i) {
-        return this.mFormal(i);
+        return .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteMethodBySpecificationSub.this.mFormal(i);
     }
     
     public default long mDefaultSup(final long i) {
