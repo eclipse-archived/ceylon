@@ -16,6 +16,7 @@ import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder.RepositoryBuilderConfig;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.api.SourceArtifactCreator;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
 import com.redhat.ceylon.cmr.impl.FileContentStore;
@@ -647,7 +648,7 @@ public class CeylonUtils {
      * @param log           The CMR logger to use for printing progress info.
      * @throws IOException
      */
-    public static ArtifactCreator makeSourceArtifactCreator(RepositoryManager repoManager,
+    public static SourceArtifactCreator makeSourceArtifactCreator(RepositoryManager repoManager,
                                                                 Iterable<? extends File> sourcePaths, String moduleName, String moduleVersion,
                                                                 boolean verbose, Logger log) throws IOException {
         return new SourceArtifactCreatorImpl(repoManager, sourcePaths, moduleName, moduleVersion, verbose, log);

@@ -85,6 +85,7 @@ public class MetamodelGenerator {
 
     private final Map<String, Object> model = new HashMap<>();
     private static final Map<String,Object> unknownTypeMap = new HashMap<>();
+    private static final Map<String,Object> nothingTypeMap = new HashMap<>();
     private final Module module;
 
     public MetamodelGenerator(Module module) {
@@ -137,6 +138,10 @@ public class MetamodelGenerator {
         }
         if (unknownTypeMap.isEmpty()) {
             unknownTypeMap.put(KEY_NAME, "$U");
+        }
+        if (nothingTypeMap.isEmpty()) {
+            nothingTypeMap.put(KEY_NAME, "Nothing");
+            nothingTypeMap.put(KEY_PACKAGE, "$");
         }
     }
 
@@ -194,6 +199,8 @@ public class MetamodelGenerator {
     private Map<String, Object> typeMap(Type pt, Declaration from) {
         if (ModelUtil.isTypeUnknown(pt)) {
             return unknownTypeMap;
+        } else if (pt.isNothing()) {
+            return nothingTypeMap;
         }
         Map<String, Object> m = new HashMap<>();
         if (pt.isUnion() || pt.isIntersection()) {

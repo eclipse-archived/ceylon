@@ -196,6 +196,7 @@
             <include name="com/redhat/ceylon/compiler/java/test/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/interop/mixed/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/interop/Bug*" />
+            <exclude name="com/redhat/ceylon/compiler/java/test/interop/Interdep*" />
             <exclude name="com/redhat/ceylon/compiler/java/test/interop/JavaRepeatable.java" />
             <exclude name="com/redhat/ceylon/compiler/java/test/cmr/modules/bug1062/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/recovery/modules/bug1411/**" />
@@ -205,6 +206,7 @@
             <include name="com/redhat/ceylon/itest/**" />
             <include name="com/redhat/ceylon/ant/**" />
             <include name="com/redhat/ceylon/ceylondoc/test/**" />
+            <exclude name="com/redhat/ceylon/compiler/java/test/recovery/bug6290/**"/>
         </javac>
         <copy todir="${build.classes}">
             <fileset dir="${test.src}">

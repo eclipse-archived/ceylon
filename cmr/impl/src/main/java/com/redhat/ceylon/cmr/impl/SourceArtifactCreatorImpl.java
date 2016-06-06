@@ -5,15 +5,18 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.api.ArtifactCreator;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.api.SourceArtifactCreator;
+import com.redhat.ceylon.cmr.api.SourceStream;
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
@@ -23,7 +26,7 @@ import com.redhat.ceylon.common.log.Logger;
  * 
  * @author Enrique Zamudio
  */
-public class SourceArtifactCreatorImpl implements ArtifactCreator {
+public class SourceArtifactCreatorImpl implements SourceArtifactCreator {
 
     private final ArtifactContext srcContext;
     private final RepositoryManager repoManager;
@@ -44,19 +47,21 @@ public class SourceArtifactCreatorImpl implements ArtifactCreator {
     private void setupSrcOutput() throws IOException {
     }
 
-    public Set<String> copy(Collection<String> sources) throws IOException {
+    
+    /** Copy the specified source streams, avoiding duplicate entries. */
+    public Set<String> copyStreams(Collection<SourceStream> sourceStreams) throws IOException {
         final Set<String> copiedFiles = new HashSet<String>();
         File outputSrcFile = File.createTempFile("ceylon-", ".src");
         try (JarOutputStream srcOutputStream = new JarOutputStream(new FileOutputStream(outputSrcFile))) {
-            final Set<String> uniqueSources = new HashSet<String>(sources);
+            final Set<SourceStream> uniqueSources = new HashSet<SourceStream>(sourceStreams);
             final Set<String> folders = new HashSet<String>();
-            for (String prefixedSourceFile : uniqueSources) {
+            for (SourceStream sourceStream : uniqueSources) {
                 // must remove the prefix first
-                String sourceFile = JarUtils.toPlatformIndependentPath(sourcePaths, prefixedSourceFile);
+                String sourceFile = sourceStream.getSourceRelativePath();
                 if (!copiedFiles.contains(sourceFile)) {
                     srcOutputStream.putNextEntry(new ZipEntry(sourceFile));
                     try {
-                        InputStream inputStream = new FileInputStream(prefixedSourceFile);
+                        InputStream inputStream = sourceStream.getInputStream();
                         try {
                             JarUtils.copy(inputStream, srcOutputStream);
                         } finally {
@@ -81,6 +86,36 @@ public class SourceArtifactCreatorImpl implements ArtifactCreator {
             FileUtil.deleteQuietly(outputSrcFile);
         }
         return copiedFiles;
+        
+    }
+
+    public Set<String> copy(Collection<String> sources) throws IOException {
+        List<SourceStream> sourceStreams = new ArrayList<>(sources.size());
+        for (final String prefixedSourceFile : sources) {
+            // must remove the prefix first
+            sourceStreams.add(new SourceStream() {
+                @Override
+                public String getSourceRelativePath() {
+                    return JarUtils.toPlatformIndependentPath(sourcePaths, prefixedSourceFile);
+                }
+                
+                @Override
+                public InputStream getInputStream() throws IOException {
+                    return new FileInputStream(prefixedSourceFile);
+                }
+                
+                @Override
+                public boolean equals(Object obj) {
+                    return prefixedSourceFile.equals(obj);
+                }
+                
+                @Override
+                public int hashCode() {
+                    return prefixedSourceFile.hashCode();
+                }
+            });
+        }
+        return copyStreams(sourceStreams);
     }
 
     public Iterable<? extends File> getPaths() {

@@ -174,7 +174,7 @@ public class LazyPackage extends Package {
                 || backends.supports(d.getNativeBackends());
     }
 
-    private Declaration getDirectMemberFromSource(String name, Backends backends) {
+    public Declaration getDirectMemberFromSource(String name, Backends backends) {
         for (Declaration d: super.getMembers()) {
             if (com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable(d) /* && d.isShared() */ 
             && com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed(name, d)

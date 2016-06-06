@@ -153,6 +153,7 @@ public class CeylonEnter extends Enter {
     private TaskListener taskListener;
     private SourceLanguage sourceLanguage;
     private StatusPrinter sp;
+    private boolean hasJavaAndCeylonSources;
 
     
     protected CeylonEnter(Context context) {
@@ -211,15 +212,16 @@ public class CeylonEnter extends Enter {
         }
         timer.startTask("Enter on Java trees");
         // enter java trees first to set up their ClassSymbol objects for ceylon trees to use during type-checking
-        if(isBootstrap){
-            super.main(trees);
-        }else if(!javaTrees.isEmpty()){
+        if(!javaTrees.isEmpty()){
             setupImportedPackagesForJavaTrees(javaTrees);
-            super.main(javaTrees);
+            hasJavaAndCeylonSources = true;
+        }
+        if(isBootstrap || hasJavaAndCeylonSources){
+            super.main(trees);
         }
         // now we can type-check the Ceylon code
         completeCeylonTrees(trees);
-        if(isBootstrap){
+        if(isBootstrap || hasJavaAndCeylonSources){
             // bootstrapping the language module is a bit more complex
             resetAndRunEnterAgain(trees);
         }else{
@@ -275,7 +277,12 @@ public class CeylonEnter extends Enter {
         
         timer.startTask("Enter on Java+Ceylon trees");
         // now do Enter on all the java+ceylon code
-        super.main(trees);
+        try {
+            sourceLanguage.push(Language.CEYLON);
+            super.main(trees);
+        } finally {
+            sourceLanguage.pop();
+        }
         timer.endTask();
     }
 
@@ -834,5 +841,9 @@ public class CeylonEnter extends Enter {
     
     public boolean hasRun(){
         return hasRun;
+    }
+
+    public boolean isCompilingJavaAndCeylonSources() {
+        return hasJavaAndCeylonSources;
     }
 }

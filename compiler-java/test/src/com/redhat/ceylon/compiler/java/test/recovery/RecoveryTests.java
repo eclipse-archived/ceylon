@@ -44,6 +44,9 @@ import ceylon.language.Callable;
 
 import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError;
+import com.redhat.ceylon.compiler.java.launcher.Main;
+import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
+import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.redhat.ceylon.compiler.java.metadata.CompileTimeError;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
@@ -1076,5 +1079,14 @@ public class RecoveryTests extends CompilerTests {
         assertErrors("Bug6077",
                 new CompilerError(22, "actual member does not refine any inherited member: 'n' in 'Bug6077'"));
     }
+    
+    @Test
+    public void bug6290() {
+        String[] src = new String[]{"bug6290/Bug6290.java", "bug6290/module.ceylon"};
+        ExitState result = getCompilerTask(defaultOptions, null, src).call2();
+        Assert.assertEquals(Main.Result.ABNORMAL, result.javacExitCode);
+        Assert.assertEquals(CeylonState.ERROR, result.ceylonState);
+    }
+
 
 }

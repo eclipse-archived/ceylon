@@ -1345,20 +1345,32 @@ public final class String
 
     @Ignore
     public static java.lang.String measure(java.lang.String value, 
-            final long from, final long length) {
-        long len = getSize(value);
-        if (from >= len || length <= 0) {
+            long from, long length) {
+        long len = value.length();
+        if (len==0 || from>=len || length<=0 || from+length<=0) {
             return "";
         }
-        long resultLength;
-        if (from + length > len) {
-            resultLength = len - from;
+        if (from<0) {
+            length += from;
+            from = 0;
         }
-        else {
-            resultLength = length;
+        int start;
+        try {
+            start = value.offsetByCodePoints(0, Util.toInt(from));
         }
-        int start = value.offsetByCodePoints(0, Util.toInt(from));
-        int end = value.offsetByCodePoints(start, Util.toInt(resultLength));
+        catch (IndexOutOfBoundsException ioobe) {
+            return "";
+        }
+        if (start+length>=len) {
+            return value.substring(start);
+        }
+        int end;
+        try {
+            end = value.offsetByCodePoints(start, Util.toInt(length));
+        }
+        catch (IndexOutOfBoundsException ioobe) {
+            return value.substring(start);
+        }
         return value.substring(start, end);
     }
 
@@ -1405,11 +1417,17 @@ public final class String
         if (from <= 0) {
             return value;
         }
-        long len = getSize(value);
+        long len = value.length();
         if (len == 0 || from >= len) {
             return "";
         }
-        int start = value.offsetByCodePoints(0, Util.toInt(from));
+        int start;
+        try {
+            start = value.offsetByCodePoints(0, Util.toInt(from));
+        }
+        catch (IndexOutOfBoundsException ioobe) {
+            return "";
+        }
         return value.substring(start);
     }
     
@@ -1604,14 +1622,20 @@ public final class String
     @Ignore
     public static java.lang.String spanTo(java.lang.String value, 
             final long to) {
-        long len = getSize(value);
-        if (len == 0 || to < 0) {
+        long len = value.length();
+        if (len==0 || to<0) {
             return "";
         }
-        if (to >= len) {
+        if (to>=len) {
             return value;
         }
-        int end = value.offsetByCodePoints(0, Util.toInt(to+1));
+        int end;
+        try {
+            end = value.offsetByCodePoints(0, Util.toInt(to+1));
+        }
+        catch (IndexOutOfBoundsException ioobe) {
+            return value;
+        }
         return value.substring(0, end);
     }
     
@@ -1619,7 +1643,7 @@ public final class String
     @Ignore
     public static java.lang.String span(java.lang.String value, 
             long from, long to) {
-        long len = getSize(value);
+        long len = value.length();
         if (len == 0) {
             return "";
         }
@@ -1633,13 +1657,25 @@ public final class String
             return "";
         }
         long begin = from < 0 ? 0 : from;
-        int start = value.offsetByCodePoints(0, Util.toInt(begin));
+        int start;
+        try {
+            start = value.offsetByCodePoints(0, Util.toInt(begin));
+        }
+        catch (IndexOutOfBoundsException ioobe) {
+            return "";
+        }
         java.lang.String result;
         if (to >= len) {
             result = value.substring(start);
         }
         else {
-            int end = value.offsetByCodePoints(start, Util.toInt(to+1 - begin));
+            int end;
+            try {
+                end = value.offsetByCodePoints(start, Util.toInt(to+1 - begin));
+            }
+            catch (IndexOutOfBoundsException ioobe) {
+                return value.substring(start);
+            }
             result = value.substring(start, end);
         }
         return reverse ? getReversed(result) : result;

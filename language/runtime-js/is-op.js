@@ -4,6 +4,8 @@ function is$(obj,type,containers){
       return isOfTypes(obj, type);
     } else if (type.t===Finished) {
       return obj===finished();
+    } else if (type.t===$_String && typeof(obj)==='string') {
+      return true;
     }
     if(obj===null||obj===undefined){
       return type.t===Null||type.t===Anything;

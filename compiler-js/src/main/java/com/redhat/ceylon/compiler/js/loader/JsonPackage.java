@@ -162,9 +162,6 @@ public class JsonPackage extends LazyPackage {
     private void loadDeclarations() {
         if (loaded) return;
         loaded = true;
-        //Ugly ass hack - add Nothing to the model
-        nothing.setContainer(this);
-        nothing.setUnit(u2);
         if (!isShared()) {
             setShared(model.remove("$pkg-shared") != null);
         }
@@ -243,7 +240,7 @@ public class JsonPackage extends LazyPackage {
             }
         }
         //This is to avoid circularity
-        if (!(getModule().getLanguageModule()==getModule() && ("Nothing".equals(name) || "Anything".equals(name)))) {
+        if (!(isLanguagePackage() && ("Nothing".equals(name) || "Anything".equals(name)))) {
             if (cls.getExtendedType() == null) {
                 if (m.containsKey("super")) {
                     Type father = getTypeFromJson((Map<String,Object>)m.get("super"),
@@ -1127,8 +1124,7 @@ public class JsonPackage extends LazyPackage {
         @SuppressWarnings("unchecked")
         final Map<String,Object> map = model == null ? null : (Map<String,Object>)model.get(name);
         if (map == null) {
-            if ("Nothing".equals(name)) {
-                //Load Nothing from language module, regardless of what this package is
+            if ("Nothing".equals(name) && isLanguagePackage()) {
                 return nothing;
             } else if ("$U".equals(name)) {
                 return unknown;

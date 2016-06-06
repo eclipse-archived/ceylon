@@ -795,4 +795,9 @@ public class InteropTests extends CompilerTests {
     public void testIopBug6289(){
         compareWithJavaSource("Bug6289");
     }
+
+    @Test
+    public void testIopInterdep(){
+        compile("InterdepJava.java", "Interdep.ceylon");
+    }
 }

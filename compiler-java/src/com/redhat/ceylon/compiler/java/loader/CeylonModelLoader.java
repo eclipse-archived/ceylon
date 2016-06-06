@@ -98,6 +98,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     private AnnotationLoader annotationLoader;
     private ModuleSourceMapper moduleSourceMapper;
 	private String jdkProviderSpec;
+    private Boolean hasJavaAndCeylonSources;
     
     public static AbstractModelLoader instance(Context context) {
         AbstractModelLoader instance = context.get(AbstractModelLoader.class);
@@ -776,5 +777,13 @@ public class CeylonModelLoader extends AbstractModelLoader {
     @Override
     protected String getAlternateJdkModuleSpec() {
     	return jdkProviderSpec;
+    }
+    
+    @Override
+    protected boolean hasJavaAndCeylonSources() {
+        // let's not reload this every time
+        if(hasJavaAndCeylonSources == null)
+            hasJavaAndCeylonSources = ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().isCompilingJavaAndCeylonSources();
+        return hasJavaAndCeylonSources;
     }
 }
