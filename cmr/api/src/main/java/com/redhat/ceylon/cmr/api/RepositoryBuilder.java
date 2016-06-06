@@ -50,7 +50,7 @@ public interface RepositoryBuilder {
         }
     }
     
-    public static final RepositoryBuilderConfig EMPTY_CONFIG = new RepositoryBuilderConfig(null, false, 0, null);
+    public static final RepositoryBuilderConfig EMPTY_CONFIG = new RepositoryBuilderConfig(null, false, -1, null);
     
     /**
      * If the token is path based this method will return the token
