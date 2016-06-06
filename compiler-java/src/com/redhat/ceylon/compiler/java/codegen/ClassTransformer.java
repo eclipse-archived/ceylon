@@ -4200,7 +4200,9 @@ public class ClassTransformer extends AbstractTransformer {
             }
         } else if (Decl.withinInterface(model)
                 && ((Interface)model.getContainer()).isUseDefaultMethods()){// Is within interface
-            ListBuffer<MethodDefinitionBuilder> lb = makeStaticMethodAndDefaultBridge(def, body, model);
+            ListBuffer<MethodDefinitionBuilder> lb = makeStaticMethodAndDefaultBridge(def, 
+                    transformMplBodyUnlessSpecifier(def, model, body), 
+                    model);
             result = lb.toList();
         }
         return result;

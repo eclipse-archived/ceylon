@@ -5179,7 +5179,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         @Override
         public JCExpression qualify(Declaration decl) {
             if (iface.isMember(decl) || iface.isInherited(decl)) {
-                return naming.makeThis();
+                return naming.makeQualifiedThis(makeJavaType(iface.getType(), JT_RAW));
             }
             return null;
         }
