@@ -206,10 +206,14 @@ public class Unit {
     
     public Map<String, DeclarationWithProximity> 
     getMatchingImportedDeclarations(String startingWith, 
-            int proximity) {
+            int proximity, Cancellable canceller) {
         Map<String, DeclarationWithProximity> result = 
                 new TreeMap<String, DeclarationWithProximity>();
         for (Import i: new ArrayList<Import>(getImports())) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                return Collections.emptyMap();
+            }
             if (i.getAlias()!=null && 
                     !i.isAmbiguous() &&
                     isNameMatching(startingWith, i)) {
@@ -226,10 +230,14 @@ public class Unit {
     
     public Map<String, DeclarationWithProximity> 
     getMatchingImportedDeclarations(TypeDeclaration td, 
-            String startingWith, int proximity) {
+            String startingWith, int proximity, Cancellable canceller) {
         Map<String, DeclarationWithProximity> result = 
                 new TreeMap<String, DeclarationWithProximity>();
         for (Import i: new ArrayList<Import>(getImports())) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                return Collections.emptyMap();
+            }
             TypeDeclaration itd = i.getTypeDeclaration();
             if (i.getAlias()!=null && 
                     !i.isAmbiguous() &&

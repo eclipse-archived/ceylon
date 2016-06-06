@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.util.NormalizedLevenshtein;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase;
+import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -293,14 +294,22 @@ public class AnalyzerUtil {
     }
     
     public static String correct(Scope scope, Unit unit, String name) {
+        return correct(scope, unit, name, null);
+    }
+    
+    public static String correct(Scope scope, Unit unit, String name, Cancellable canceller) {
         return realName(best(name, 
-                scope.getMatchingDeclarations(unit, "", 0, null)),
+                scope.getMatchingDeclarations(unit, "", 0, canceller)),
                 unit);
     }
     
     public static String correct(TypeDeclaration type, Scope scope, Unit unit, String name) {
+        return correct(type, scope, unit, name, null);
+    }
+    
+    public static String correct(TypeDeclaration type, Scope scope, Unit unit, String name, Cancellable canceller) {
         return realName(best(name, 
-                type.getMatchingMemberDeclarations(unit, scope, "", 0)),
+                type.getMatchingMemberDeclarations(unit, scope, "", 0, canceller)),
                 unit);
     }
     

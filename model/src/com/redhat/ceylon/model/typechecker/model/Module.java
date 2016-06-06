@@ -192,7 +192,7 @@ public class Module
         for (Package p: getAllVisiblePackages()) {
             if (canceller != null
                     && canceller.isCancelled()) {
-                break;
+                return Collections.emptyMap();
             }
             boolean isLanguagePackage = 
                     p.isLanguagePackage();
@@ -200,6 +200,10 @@ public class Module
                     p.isDefaultPackage();
             if (!isDefaultPackage) {
                 for (Declaration d: p.getMembers()) {
+                    if (canceller != null
+                            && canceller.isCancelled()) {
+                        return Collections.emptyMap();
+                    }
                     try {
                         if (isResolvable(d) && 
                                 d.isShared() && 

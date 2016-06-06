@@ -7,6 +7,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberForBackend;
 import static java.util.Collections.emptyList;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -232,6 +233,11 @@ public abstract class Element {
     			    .getMatchingDeclarations(unit, 
     			            startingWith, proximity+1, canceller);
         for (Declaration d: getMembers()) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                return Collections.emptyMap();
+            }
+            
             if (isResolvable(d) && !isOverloadedVersion(d)){
                 if(isNameMatching(startingWith, d)) {
                     result.put(d.getName(unit), 

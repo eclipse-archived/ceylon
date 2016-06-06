@@ -69,15 +69,15 @@ public class UnionType extends TypeDeclaration {
     @Override
     public Map<String, DeclarationWithProximity> 
     getMatchingMemberDeclarations(Unit unit, Scope scope, 
-            String startingWith, int proximity) {
+            String startingWith, int proximity, Cancellable canceller) {
     	Map<String, DeclarationWithProximity> result = 
     	        super.getMatchingMemberDeclarations(unit, 
-    	                scope, startingWith, proximity);
+    	                scope, startingWith, proximity, canceller);
 		TypeDeclaration d = 
 		        getCaseTypes().get(0).getDeclaration();
 		Iterator<Map.Entry<String, DeclarationWithProximity>> iter = 
 		        d.getMatchingMemberDeclarations(unit, scope, 
-		                startingWith, proximity)
+		                startingWith, proximity, canceller)
 		                    .entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry<String, DeclarationWithProximity> e = 

@@ -8,6 +8,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberForBackend;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -225,10 +226,10 @@ public class Package
                 getMatchingDirectDeclarations(startingWith, 
                         //package toplevels - just less than 
                         //explicitly imported declarations
-                        proximity+1);
+                        proximity+1, canceller);
         if (unit!=null) {
             result.putAll(unit.getMatchingImportedDeclarations(
-                    startingWith, proximity));
+                    startingWith, proximity, canceller));
         }
         Map<String,DeclarationWithProximity> importables = 
                 getModule()
@@ -265,10 +266,14 @@ public class Package
 
     public Map<String,DeclarationWithProximity> 
     getMatchingDirectDeclarations(String startingWith, 
-            int proximity) {
+            int proximity, Cancellable canceller) {
         Map<String,DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                return Collections.emptyMap();
+            }
             if (isResolvable(d) && 
                     !isOverloadedVersion(d) && 
                     isNameMatching(startingWith, d)) {
@@ -282,10 +287,14 @@ public class Package
 
     public Map<String,DeclarationWithProximity> 
     getImportableDeclarations(Unit unit, String startingWith, 
-            List<Import> imports, int proximity) {
+            List<Import> imports, int proximity, Cancellable canceller) {
         Map<String,DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                return Collections.emptyMap();
+            }
             if (isResolvable(d) && d.isShared() && 
                     !isOverloadedVersion(d) &&
                     isNameMatching(startingWith, d)) {

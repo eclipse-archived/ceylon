@@ -92,7 +92,7 @@ public class ImportList implements Scope {
                 return unit.getPackage().getMatchingDeclarations(unit, startingWith, proximity, canceller);
             }
             else {
-                return importedScope.getImportableDeclarations(unit, startingWith, imports, proximity);
+                return importedScope.getImportableDeclarations(unit, startingWith, imports, proximity, canceller);
             }
         }
         else {

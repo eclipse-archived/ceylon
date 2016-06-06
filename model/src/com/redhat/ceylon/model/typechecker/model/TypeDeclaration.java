@@ -857,11 +857,15 @@ public abstract class TypeDeclaration extends Declaration
     
     public Map<String,DeclarationWithProximity> 
     getImportableDeclarations(Unit unit, String startingWith, 
-            List<Import> imports, int proximity) {
+            List<Import> imports, int proximity, Cancellable canceller) {
         //TODO: fix copy/paste from below!
         Map<String,DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
         for (Declaration dec: getMembers()) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                return Collections.emptyMap();
+            }
             if (isResolvable(dec) && 
                     dec.isShared() && 
             		!isOverloadedVersion(dec) &&
@@ -892,9 +896,13 @@ public abstract class TypeDeclaration extends Declaration
                         startingWith, proximity, canceller);
         //Inherited declarations hide outer and imported declarations
         result.putAll(getMatchingMemberDeclarations(unit, 
-                null, startingWith, proximity));
+                null, startingWith, proximity, canceller));
         //Local declarations always hide inherited declarations, even if non-shared
         for (Declaration dec: getMembers()) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                return Collections.emptyMap();
+            }
             if (isResolvable(dec) && 
                     !isOverloadedVersion(dec) ) {
                 if (isNameMatching(startingWith, dec)) {
@@ -916,7 +924,7 @@ public abstract class TypeDeclaration extends Declaration
 
     public Map<String,DeclarationWithProximity> 
     getMatchingMemberDeclarations(Unit unit, Scope scope, 
-            String startingWith, int proximity) {
+            String startingWith, int proximity, Cancellable canceller) {
         Map<String,DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
         for (Type st: getSatisfiedTypes()) {
@@ -924,7 +932,7 @@ public abstract class TypeDeclaration extends Declaration
                     st.getDeclaration()
                         .getMatchingMemberDeclarations(unit, 
                                 scope, startingWith, 
-                                proximity+1));
+                                proximity+1, canceller));
         }
         Type et = getExtendedType();
         if (et!=null) {
@@ -932,9 +940,13 @@ public abstract class TypeDeclaration extends Declaration
                     et.getDeclaration()
                         .getMatchingMemberDeclarations(unit, 
                                 scope, startingWith, 
-                                proximity+1));
+                                proximity+1, canceller));
         }
         for (Declaration member: getMembers()) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                return Collections.emptyMap();
+            }
             if (isResolvable(member) && 
                     !isOverloadedVersion(member) &&
                 (member.isShared() || 
@@ -957,7 +969,7 @@ public abstract class TypeDeclaration extends Declaration
         //premature optimization so that we don't have to 
         //call d.getName(unit) on *every* member
         result.putAll(unit.getMatchingImportedDeclarations(
-                this, startingWith, proximity));
+                this, startingWith, proximity, canceller));
         return result;
     }
 
