@@ -25,7 +25,7 @@ import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.log.Logger;
 
 /**
- * Repository builder for AetherRepository
+ * Repository builder for NpmRepository
  *
  * @author Tako Schotanus (tako@ceylon-lang.org)
  */
@@ -53,28 +53,39 @@ public class NpmRepositoryBuilder implements RepositoryBuilder {
     @Override
     public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         if (token.equals("npm:") || token.equals("npm:/#")) {
-            return createNpmRepository("npm:", config.log);
+            return createNpmRepository("npm:", config.log, config.offline);
         } else if (token.startsWith("npm:")) {
-            return createNpmRepository(token, config.log);
+            return createNpmRepository(token, config.log, config.offline);
         } else {
             return null;
         }
     }
     
-    private CmrRepository createNpmRepository(String token, Logger log) {
+    private CmrRepository createNpmRepository(String token, Logger log, boolean offline) {
+        File local = new File("node_modules");
+        
         String nodePath = token.substring(4);
         if (nodePath.isEmpty()) {
             nodePath = System.getenv("NODE_PATH");
             if (nodePath == null || nodePath.isEmpty()) {
-                File local = new File("node_modules");
                 nodePath = local.getAbsolutePath();
-                if (!local.exists()) {
-                    local.mkdirs();
-                }
             }
         }
 
-        FileContentStore cs = new FileContentStore(new File(nodePath));
-        return new NpmRepository(cs.createRoot(), log);
+        File[] roots = FileUtil.pathToFileArray(nodePath);
+        
+        // If we have a single root to look up NPM modules we assume
+        // we can use it for output as well. If we have several we
+        // take the output to be "node_modules"
+        // TODO: is this heuristic correct/useful?
+        File out;
+        if (roots.length > 1) {
+            out = local;
+        } else {
+            out = roots[0];
+        }
+        
+        NpmContentStore cs = new NpmContentStore(roots, out, log, offline);
+        return new NpmRepository(cs.createRoot());
     }
 }
