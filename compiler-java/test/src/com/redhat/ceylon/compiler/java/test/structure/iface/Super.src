@@ -1,217 +1,77 @@
 package com.redhat.ceylon.compiler.java.test.structure.iface;
 
-interface Super extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+interface I {
     
-    @.java.lang.Override
-    public default .java.lang.String toString() {
-        return .com.redhat.ceylon.compiler.java.language.ObjectProxy.super.toString();
-    }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.Super.class);
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.iface.I$impl $com$redhat$ceylon$compiler$java$test$structure$iface$I$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public .java.lang.String getS();
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.I.class);
 }
-interface SuperEmpty extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.SuperEmpty.class);
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+final class I$impl implements .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    I$impl(.com.redhat.ceylon.compiler.java.test.structure.iface.I $this) {
+        this.$this = $this;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.test.structure.iface.I $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .java.lang.String getS() {
+        return "";
+    }
 }
-interface SuperIdentifiable extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::I"})
+interface I2 extends .com.redhat.ceylon.compiler.java.test.structure.iface.I {
     
-    @.java.lang.Override
-    public default .java.lang.String toString() {
-        return .com.redhat.ceylon.compiler.java.language.ObjectProxy.super.toString();
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public default .com.redhat.ceylon.compiler.java.test.structure.iface.I$impl $com$redhat$ceylon$compiler$java$test$structure$iface$I$impl() {
+        return new .com.redhat.ceylon.compiler.java.test.structure.iface.I$impl(this);
     }
-    
-    @.java.lang.Override
-    public default int hashCode() {
-        return (int)(
-            let
-            {
-                long $ceylontmp$hash$1 = .com.redhat.ceylon.compiler.java.language.ObjectProxy.super.hashCode();
-            }
-            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
-        );
-    }
-    
-    @.java.lang.Override
-    public default boolean equals(final .java.lang.Object other) {
-        return .com.redhat.ceylon.compiler.java.language.ObjectProxy.super.equals(other);
-    }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiable.class);
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.I2.class);
 }
-class SuperClassNoExtends implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.SuperEmpty, .java.io.Serializable {
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::I2"})
+class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.I2, .java.io.Serializable {
     
-    SuperClassNoExtends() {
+    C() {
+        this.$com$redhat$ceylon$compiler$java$test$structure$iface$I$this$ = new .com.redhat.ceylon.compiler.java.test.structure.iface.I$impl(this);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .com.redhat.ceylon.compiler.java.test.structure.iface.I$impl $com$redhat$ceylon$compiler$java$test$structure$iface$I$this$;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.iface.I$impl $com$redhat$ceylon$compiler$java$test$structure$iface$I$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$iface$I$this$;
     }
     
     @.java.lang.Override
-    public final .java.lang.String toString() {
-        return super.toString();
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .java.lang.String getS() {
+        return $com$redhat$ceylon$compiler$java$test$structure$iface$I$this$.getS();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void m$priv$() {
+        final .java.lang.String s = $com$redhat$ceylon$compiler$java$test$structure$iface$I$this$.getS();
     }
     
     @.java.lang.Override
-    public final int hashCode() {
-        return (int)(
-            let
-            {
-                long $ceylontmp$hash$3 = super.hashCode();
-            }
-            returning $ceylontmp$hash$3 ^ $ceylontmp$hash$3 >>> 32;
-        );
-    }
-    
-    @.java.lang.Override
-    public final boolean equals(final .java.lang.Object other) {
-        return super.equals(other);
-    }
-    
-    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.structure.iface.SuperClassNoExtends.$TypeDescriptor$;
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.C.$TypeDescriptor$;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.SuperClassNoExtends.class);
-}
-abstract class SuperClassExtendsObject extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.SuperEmpty, .java.io.Serializable {
-    
-    SuperClassExtendsObject() {
-        super();
-    }
-    
-    @.java.lang.Override
-    public final .java.lang.String toString() {
-        return super.toString();
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.structure.iface.SuperClassExtendsObject.$TypeDescriptor$;
-    }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.SuperClassExtendsObject.class);
-}
-class SuperClassExtendsBasic extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.SuperEmpty, .java.io.Serializable {
-    
-    SuperClassExtendsBasic() {
-        super();
-    }
-    
-    @.java.lang.Override
-    public final .java.lang.String toString() {
-        return super.toString();
-    }
-    
-    @.java.lang.Override
-    public final int hashCode() {
-        return (int)(
-            let
-            {
-                long $ceylontmp$hash$5 = super.hashCode();
-            }
-            returning $ceylontmp$hash$5 ^ $ceylontmp$hash$5 >>> 32;
-        );
-    }
-    
-    @.java.lang.Override
-    public final boolean equals(final .java.lang.Object other) {
-        return super.equals(other);
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.structure.iface.SuperClassExtendsBasic.$TypeDescriptor$;
-    }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.SuperClassExtendsBasic.class);
-}
-class SuperIdentifiableClassNoExtends implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiable, .java.io.Serializable {
-    
-    SuperIdentifiableClassNoExtends() {
-    }
-    
-    @.java.lang.Override
-    public final .java.lang.String toString() {
-        return .com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiable.super.toString();
-    }
-    
-    @.java.lang.Override
-    public final int hashCode() {
-        return (int)(
-            let
-            {
-                long $ceylontmp$hash$7 = .com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiable.super.hashCode();
-            }
-            returning $ceylontmp$hash$7 ^ $ceylontmp$hash$7 >>> 32;
-        );
-    }
-    
-    @.java.lang.Override
-    public final boolean equals(final .java.lang.Object other) {
-        return .com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiable.super.equals(other);
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiableClassNoExtends.$TypeDescriptor$;
-    }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiableClassNoExtends.class);
-}
-class SuperIdentifiableExtendsObject extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiable, .java.io.Serializable {
-    
-    SuperIdentifiableExtendsObject() {
-        super();
-    }
-    
-    @.java.lang.Override
-    public final .java.lang.String toString() {
-        return .com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiable.super.toString();
-    }
-    
-    @.java.lang.Override
-    public final int hashCode() {
-        return (int)(
-            let
-            {
-                long $ceylontmp$hash$9 = .com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiable.super.hashCode();
-            }
-            returning $ceylontmp$hash$9 ^ $ceylontmp$hash$9 >>> 32;
-        );
-    }
-    
-    @.java.lang.Override
-    public final boolean equals(final .java.lang.Object other) {
-        return .com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiable.super.equals(other);
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiableExtendsObject.$TypeDescriptor$;
-    }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiableExtendsObject.class);
-}
-class SuperIdentifiableExtendsBasic extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiable, .java.io.Serializable {
-    
-    SuperIdentifiableExtendsBasic() {
-        super();
-    }
-    
-    @.java.lang.Override
-    public final .java.lang.String toString() {
-        return .com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiable.super.toString();
-    }
-    
-    @.java.lang.Override
-    public final int hashCode() {
-        return (int)(
-            let
-            {
-                long $ceylontmp$hash$11 = .com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiable.super.hashCode();
-            }
-            returning $ceylontmp$hash$11 ^ $ceylontmp$hash$11 >>> 32;
-        );
-    }
-    
-    @.java.lang.Override
-    public final boolean equals(final .java.lang.Object other) {
-        return .com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiable.super.equals(other);
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiableExtendsBasic.$TypeDescriptor$;
-    }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.SuperIdentifiableExtendsBasic.class);
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.C.class);
 }

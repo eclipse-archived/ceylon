@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.iface;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
-interface NamedArgumentInvocation {
+interface NamedArgumentInvocation extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public default long f() {
@@ -88,7 +88,7 @@ interface NamedArgumentInvocationSub extends .com.redhat.ceylon.compiler.java.te
             let
             {
                 .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub arg$2$callable$ = this;
-                .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub arg$2$argthis$ = this;
+                .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub arg$2$argthis$ = .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub.this;
                 long arg$2$0 = arg$2$argthis$.g$i();
             }
             returning arg$2$callable$.g$priv$(arg$2$0);

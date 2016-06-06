@@ -86,7 +86,7 @@ public interface Middle<A> extends .com.redhat.ceylon.compiler.java.test.structu
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public default .com.redhat.ceylon.compiler.java.test.structure.iface.Top$impl<? extends A> $com$redhat$ceylon$compiler$java$test$structure$iface$Top$impl() {
-        return new .com.redhat.ceylon.compiler.java.test.structure.iface.Top$impl<A>(this.$reified$com$redhat$ceylon$compiler$java$test$structure$iface$Middle$A(), this);
+        return new .com.redhat.ceylon.compiler.java.test.structure.iface.Top$impl<A>(.com.redhat.ceylon.compiler.java.test.structure.iface.Middle.this.$reified$com$redhat$ceylon$compiler$java$test$structure$iface$Middle$A(), this);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

@@ -7,7 +7,7 @@ package com.redhat.ceylon.compiler.java.test.structure.iface;
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
         satisfies = {},
         caseTypes = {})})
-interface InterfaceWithConcreteMethods<T> {
+interface InterfaceWithConcreteMethods<T> extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$InterfaceWithConcreteMethods$T();
@@ -79,9 +79,9 @@ interface InterfaceWithConcreteMethods<T> {
         (
             let
             {
-                long $ceylontmp$i$3 = shared$i(this);
-                long $ceylontmp$j$4 = shared$j(this, $ceylontmp$i$3);
-                shared$canonical$(this, $ceylontmp$i$3, $ceylontmp$j$4);
+                long $ceylontmp$i$3 = shared$i();
+                long $ceylontmp$j$4 = shared$j($ceylontmp$i$3);
+                shared$canonical$($ceylontmp$i$3, $ceylontmp$j$4);
             }
             returning null;
         );
@@ -89,7 +89,7 @@ interface InterfaceWithConcreteMethods<T> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public default long shared$i() {
-        return <T>shared$i(this);
+        return 0L;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -97,8 +97,8 @@ interface InterfaceWithConcreteMethods<T> {
         (
             let
             {
-                long $ceylontmp$j$5 = shared$j(this, i);
-                shared$canonical$(this, i, $ceylontmp$j$5);
+                long $ceylontmp$j$5 = shared$j(i);
+                shared$canonical$(i, $ceylontmp$j$5);
             }
             returning null;
         );
@@ -106,7 +106,11 @@ interface InterfaceWithConcreteMethods<T> {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public default long shared$j(final long i) {
-        return <T>shared$j(this, i);
+        return i;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private default void shared$canonical$(final long i, final long j) {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -121,70 +125,7 @@ interface InterfaceWithConcreteMethods<T> {
         (
             let
             {
-                shared$canonical$(this, i, j);
-            }
-            returning null;
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static <T>void shared(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this) {
-        (
-            let
-            {
-                long $ceylontmp$i$6 = shared$i($this);
-                long $ceylontmp$j$7 = shared$j($this, $ceylontmp$i$6);
-                shared$canonical$($this, $ceylontmp$i$6, $ceylontmp$j$7);
-            }
-            returning null;
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static <T>long shared$i(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this) {
-        return 0L;
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static <T>void shared(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this, final long i) {
-        (
-            let
-            {
-                long $ceylontmp$j$8 = shared$j($this, i);
-                shared$canonical$($this, i, $ceylontmp$j$8);
-            }
-            returning null;
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static <T>long shared$j(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this, final long i) {
-        return i;
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static <T>void shared$canonical$(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this, final long i, final long j) {
-    }
-    
-    @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
-            value = "T",
-            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
-            satisfies = {},
-            caseTypes = {})})
-    public static <T>void shared(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
-    .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("j")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long j) {
-        (
-            let
-            {
-                shared$canonical$($this, i, j);
+                shared$canonical$(i, j);
             }
             returning null;
         );
@@ -195,16 +136,16 @@ interface InterfaceWithConcreteMethods<T> {
         return (
             let
             {
-                long $ceylontmp$i$9 = default$i(this);
-                long $ceylontmp$j$10 = default$j(this, $ceylontmp$i$9);
+                long $ceylontmp$i$6 = default$i();
+                long $ceylontmp$j$7 = default$j($ceylontmp$i$6);
             }
-            returning $default$canonical$(this, $ceylontmp$i$9, $ceylontmp$j$10);
+            returning $default$canonical$($ceylontmp$i$6, $ceylontmp$j$7);
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public default long default$i() {
-        return <T>default$i(this);
+        return 0L;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -212,15 +153,20 @@ interface InterfaceWithConcreteMethods<T> {
         return (
             let
             {
-                long $ceylontmp$j$11 = default$j(this, i);
+                long $ceylontmp$j$8 = default$j(i);
             }
-            returning $default$canonical$(this, i, $ceylontmp$j$11);
+            returning $default$canonical$(i, $ceylontmp$j$8);
         );
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public default long default$j(final long i) {
-        return <T>default$j(this, i);
+        return i;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private default .java.lang.Object $default$canonical$(final long i, final long j) {
+        return null;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -235,66 +181,7 @@ interface InterfaceWithConcreteMethods<T> {
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long j) {
-        return $default$canonical$(this, i, j);
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static <T>.java.lang.Object $default(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this) {
-        return (
-            let
-            {
-                long $ceylontmp$i$12 = default$i($this);
-                long $ceylontmp$j$13 = default$j($this, $ceylontmp$i$12);
-            }
-            returning $default$canonical$($this, $ceylontmp$i$12, $ceylontmp$j$13);
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static <T>long default$i(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this) {
-        return 0L;
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static <T>.java.lang.Object $default(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this, final long i) {
-        return (
-            let
-            {
-                long $ceylontmp$j$14 = default$j($this, i);
-            }
-            returning $default$canonical$($this, i, $ceylontmp$j$14);
-        );
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public static <T>long default$j(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this, final long i) {
-        return i;
-    }
-    
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static <T>.java.lang.Object $default$canonical$(.com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this, final long i, final long j) {
-        return null;
-    }
-    
-    @.ceylon.language.SharedAnnotation$annotation$
-    @.ceylon.language.DefaultAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Anything",
-            declaredVoid = true)
-    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
-            value = "T",
-            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
-            satisfies = {},
-            caseTypes = {})})
-    public static <T>.java.lang.Object $default(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
-    .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteMethods<T> $this, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("j")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    final long j) {
-        return $default$canonical$($this, i, j);
+        return $default$canonical$(i, j);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

@@ -1,27 +1,19 @@
 package com.redhat.ceylon.compiler.java.test.structure.iface;
 
-interface Qualifiers {
+interface Qualifiers extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     
     private default long getX$priv$() {
         return 1L;
     }
     
     public default long getY() {
-        return getY(this);
-    }
-    
-    public static long getY(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this) {
         return 2L;
     }
     
     public abstract long getZ();
     
     public default long getSum() {
-        return getSum(this);
-    }
-    
-    public static long getSum(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this) {
-        return $this.getX$priv$() + $this.getY() + $this.getZ();
+        return getX$priv$() + getY() + getZ();
     }
     
     private default long getSum2$priv$() {
@@ -29,59 +21,33 @@ interface Qualifiers {
     }
     
     public default long i() {
-        return i(this);
-    }
-    
-    public static long i(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this) {
         return 1L;
     }
     
     public default long j() {
-        return j(this);
-    }
-    
-    public static long j(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this) {
-        return $this.i();
+        return this.i();
     }
     
     public default long k() {
         return (
             let
             {
-                long $ceylontmp$n$0 = k$n(this);
+                long $ceylontmp$n$0 = k$n();
             }
-            returning k$canonical$(this, $ceylontmp$n$0);
+            returning k$canonical$($ceylontmp$n$0);
         );
     }
     
     public default long k$n() {
-        return k$n(this);
+        return j();
     }
     
-    public default long k(final long n) {
-        return k$canonical$(this, n);
-    }
-    
-    public static long k(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this) {
-        return (
-            let
-            {
-                long $ceylontmp$n$1 = k$n($this);
-            }
-            returning k$canonical$($this, $ceylontmp$n$1);
-        );
-    }
-    
-    public static long k$n(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this) {
-        return $this.j();
-    }
-    
-    private static long k$canonical$(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this, final long n) {
+    private default long k$canonical$(final long n) {
         return n;
     }
     
-    public static long k(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers $this, final long n) {
-        return k$canonical$($this, n);
+    public default long k(final long n) {
+        return k$canonical$(n);
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers.class);
 }
@@ -91,40 +57,22 @@ interface QualifiersSub extends .com.redhat.ceylon.compiler.java.test.structure.
         return (
             let
             {
-                long $ceylontmp$m$2 = n$m(this);
+                long $ceylontmp$m$1 = n$m();
             }
-            returning n$canonical$(this, $ceylontmp$m$2);
+            returning n$canonical$($ceylontmp$m$1);
         );
     }
     
     public default long n$m() {
-        return n$m(this);
+        return k();
+    }
+    
+    private default long n$canonical$(final long m) {
+        return this.i() + this.j() + m;
     }
     
     public default long n(final long m) {
-        return n$canonical$(this, m);
-    }
-    
-    public static long n(.com.redhat.ceylon.compiler.java.test.structure.iface.QualifiersSub $this) {
-        return (
-            let
-            {
-                long $ceylontmp$m$3 = n$m($this);
-            }
-            returning n$canonical$($this, $ceylontmp$m$3);
-        );
-    }
-    
-    public static long n$m(.com.redhat.ceylon.compiler.java.test.structure.iface.QualifiersSub $this) {
-        return $this.k();
-    }
-    
-    private static long n$canonical$(.com.redhat.ceylon.compiler.java.test.structure.iface.QualifiersSub $this, final long m) {
-        return $this.i() + $this.j() + m;
-    }
-    
-    public static long n(.com.redhat.ceylon.compiler.java.test.structure.iface.QualifiersSub $this, final long m) {
-        return n$canonical$($this, m);
+        return n$canonical$(m);
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.QualifiersSub.class);
 }

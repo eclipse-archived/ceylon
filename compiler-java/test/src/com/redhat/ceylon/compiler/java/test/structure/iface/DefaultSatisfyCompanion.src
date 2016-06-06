@@ -53,7 +53,7 @@ interface DefaultSatisfyCompanion2<U> extends .com.redhat.ceylon.compiler.java.t
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public default .com.redhat.ceylon.compiler.java.test.structure.iface.DefaultSatisfyCompanion$impl<U> $com$redhat$ceylon$compiler$java$test$structure$iface$DefaultSatisfyCompanion$impl() {
-        return new .com.redhat.ceylon.compiler.java.test.structure.iface.DefaultSatisfyCompanion$impl<U>(this.$reified$com$redhat$ceylon$compiler$java$test$structure$iface$DefaultSatisfyCompanion2$U(), this);
+        return new .com.redhat.ceylon.compiler.java.test.structure.iface.DefaultSatisfyCompanion$impl<U>(.com.redhat.ceylon.compiler.java.test.structure.iface.DefaultSatisfyCompanion2.this.$reified$com$redhat$ceylon$compiler$java$test$structure$iface$DefaultSatisfyCompanion2$U(), this);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -66,22 +66,7 @@ interface DefaultSatisfyCompanion2<U> extends .com.redhat.ceylon.compiler.java.t
             value = "ceylon.language::Anything",
             declaredVoid = true)
     public default .java.lang.Object m() {
-        return m(this);
-    }
-    
-    @.ceylon.language.SharedAnnotation$annotation$
-    @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Anything",
-            declaredVoid = true)
-    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
-            value = "U",
-            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
-            satisfies = {},
-            caseTypes = {})})
-    public static <U>.java.lang.Object m(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
-    .com.redhat.ceylon.compiler.java.test.structure.iface.DefaultSatisfyCompanion2<U> $this) {
-        $this.$com$redhat$ceylon$compiler$java$test$structure$iface$DefaultSatisfyCompanion$impl().m();
+        this.$com$redhat$ceylon$compiler$java$test$structure$iface$DefaultSatisfyCompanion$impl().m();
         return null;
     }
 }
@@ -97,6 +82,7 @@ class DefaultSatisfyCompanion3<X> implements .com.redhat.ceylon.compiler.java.ru
     DefaultSatisfyCompanion3(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
         this.$reified$X = $reified$X;
+        this.$com$redhat$ceylon$compiler$java$test$structure$iface$DefaultSatisfyCompanion$this$ = new .com.redhat.ceylon.compiler.java.test.structure.iface.DefaultSatisfyCompanion$impl<X>($reified$X, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
@@ -105,6 +91,14 @@ class DefaultSatisfyCompanion3<X> implements .com.redhat.ceylon.compiler.java.ru
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$DefaultSatisfyCompanion2$U() {
         return $reified$X;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .com.redhat.ceylon.compiler.java.test.structure.iface.DefaultSatisfyCompanion$impl<X> $com$redhat$ceylon$compiler$java$test$structure$iface$DefaultSatisfyCompanion$this$;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.iface.DefaultSatisfyCompanion$impl<X> $com$redhat$ceylon$compiler$java$test$structure$iface$DefaultSatisfyCompanion$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$iface$DefaultSatisfyCompanion$this$;
     }
     
     @.java.lang.Override
