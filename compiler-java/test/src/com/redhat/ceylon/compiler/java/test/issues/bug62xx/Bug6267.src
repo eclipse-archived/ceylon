@@ -41,7 +41,7 @@ public final class Sub6267$impl implements .java.io.Serializable {
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug62xx.Bug6267 arg$0$callable$ = $this;
-                .com.redhat.ceylon.compiler.java.test.issues.bug62xx.Bug6267 arg$0$argthis$ = $this;
+                .com.redhat.ceylon.compiler.java.test.issues.bug62xx.Sub6267 arg$0$argthis$ = $this;
                 .java.lang.String arg$0$0 = "Join \'if\' statements at \'else\'";
                 .java.lang.Object arg$0$1 = arg$0$argthis$.newProposal$region(arg$0$0);
                 arg$0$callable$.newProposal(arg$0$0, arg$0$1);

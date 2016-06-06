@@ -1,0 +1,30 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug62xx;
+
+public interface Bug6267 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public abstract .java.lang.Object newProposal(final .java.lang.String desc);
+    
+    public default .java.lang.Object newProposal$region(final .java.lang.String desc) {
+        return null;
+    }
+    
+    public abstract .java.lang.Object newProposal(final .java.lang.String desc, final .java.lang.Object region);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug62xx.Bug6267.class);
+}
+public interface Sub6267 extends .com.redhat.ceylon.compiler.java.test.issues.bug62xx.Bug6267 {
+    
+    public default void m() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug62xx.Bug6267 arg$0$callable$ = this;
+                .com.redhat.ceylon.compiler.java.test.issues.bug62xx.Sub6267 arg$0$argthis$ = .com.redhat.ceylon.compiler.java.test.issues.bug62xx.Sub6267.this;
+                .java.lang.String arg$0$0 = "Join \'if\' statements at \'else\'";
+                .java.lang.Object arg$0$1 = arg$0$argthis$.newProposal$region(arg$0$0);
+                arg$0$callable$.newProposal(arg$0$0, arg$0$1);
+            }
+            returning null;
+        );
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug62xx.Sub6267.class);
+}
