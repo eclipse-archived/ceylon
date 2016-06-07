@@ -1,0 +1,94 @@
+package com.redhat.ceylon.compiler.java.test.structure.iface;
+
+public interface Iterable<Element, Absent> extends .ceylon.language.Category<.java.lang.Object> {
+    
+    public default .ceylon.language.Category$impl<? super .java.lang.Object> $ceylon$language$Category$impl() {
+        return new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Iterable$Element();
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Iterable$Absent();
+}
+public interface Collection<Element> extends .com.redhat.ceylon.compiler.java.test.structure.iface.Iterable<Element, .java.lang.Object> {
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Iterable$Element() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.Collection.this.$reified$com$redhat$ceylon$compiler$java$test$structure$iface$Collection$Element();
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Iterable$Absent() {
+        return .ceylon.language.Null.$TypeDescriptor$;
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Collection$Element();
+}
+public interface Ranged<Index, Element, Subrange extends .com.redhat.ceylon.compiler.java.test.structure.iface.Ranged<? super Index, Element, ? extends Subrange>> extends .com.redhat.ceylon.compiler.java.test.structure.iface.Iterable<Element, .java.lang.Object> {
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Iterable$Element() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.Ranged.this.$reified$com$redhat$ceylon$compiler$java$test$structure$iface$Ranged$Element();
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Iterable$Absent() {
+        return .ceylon.language.Null.$TypeDescriptor$;
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Ranged$Index();
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Ranged$Element();
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Ranged$Subrange();
+}
+public interface List<Element> extends .com.redhat.ceylon.compiler.java.test.structure.iface.Collection<Element>, .com.redhat.ceylon.compiler.java.test.structure.iface.Ranged<.ceylon.language.Integer, Element, .com.redhat.ceylon.compiler.java.test.structure.iface.List<? extends Element>> {
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Iterable$Element() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.List.this.$reified$com$redhat$ceylon$compiler$java$test$structure$iface$List$Element();
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Iterable$Absent() {
+        return .ceylon.language.Null.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Collection$Element() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.List.this.$reified$com$redhat$ceylon$compiler$java$test$structure$iface$List$Element();
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Ranged$Index() {
+        return .ceylon.language.Integer.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Ranged$Element() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.List.this.$reified$com$redhat$ceylon$compiler$java$test$structure$iface$List$Element();
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Ranged$Subrange() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.List.class, .com.redhat.ceylon.compiler.java.test.structure.iface.List.this.$reified$com$redhat$ceylon$compiler$java$test$structure$iface$List$Element());
+    }
+    
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$List$Element();
+    
+    public default .java.lang.Object m() {
+        
+        final class o_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            private o_() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.List.class, .com.redhat.ceylon.compiler.java.test.structure.iface.List.this.$reified$com$redhat$ceylon$compiler$java$test$structure$iface$List$Element()), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("m")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class));
+            }
+        }
+        final o_ o = new o_();
+        return o;
+    }
+}

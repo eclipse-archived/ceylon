@@ -5295,7 +5295,14 @@ public abstract class AbstractTransformer implements Transformation {
             Scope container = tp.getContainer();
             if(container instanceof Interface
                     && ((Interface)container).isUseDefaultMethods()){
-                return makeReifiedTypeArgumentAccessorInvocation(tp); 
+                JCExpression qualifier;
+                if (!qualified) {
+                    qualifier = naming.makeQualifiedThis(
+                        makeJavaType(((ClassOrInterface)tp.getContainer()).getType(), JT_RAW));
+                } else {
+                    qualifier = naming.makeUnquotedIdent("$outer");
+                }
+                return makeReifiedTypeArgumentAccessorInvocation(qualifier, tp); 
             }
             String name = naming.getTypeArgumentDescriptorName(tp);
             if(!qualified || isTypeParameterSubstituted(tp))
@@ -5317,10 +5324,9 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
 
-    protected JCMethodInvocation makeReifiedTypeArgumentAccessorInvocation(TypeParameter tp) {
+    protected JCMethodInvocation makeReifiedTypeArgumentAccessorInvocation(JCExpression qualifier, TypeParameter tp) {
         //return make().Apply(null, naming.makeQualIdent(expressionGen().receiver.qualifier(), naming.getTypeArgumentMethodName(tp)), List.<JCExpression>nil());
-        return make().Apply(null, naming.makeQualIdent(naming.makeQualifiedThis(
-                makeJavaType(((ClassOrInterface)tp.getContainer()).getType(), JT_RAW)), 
+        return make().Apply(null, naming.makeQualIdent(qualifier, 
                 naming.getTypeArgumentMethodName(tp)), List.<JCExpression>nil());
     }
     

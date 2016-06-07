@@ -512,6 +512,7 @@ public class Naming extends NamingBase implements LocalId {
             }
             typeDeclarationBuilder.append(className);
             if (Decl.isCeylon(iface)
+                && !iface.isUseDefaultMethods()
                 && ((decl instanceof Class || decl instanceof Constructor || decl instanceof TypeAlias|| scope instanceof Constructor) 
                         || flags.contains(DeclNameFlag.COMPANION))) {
                 typeDeclarationBuilder.append(IMPL_POSTFIX);

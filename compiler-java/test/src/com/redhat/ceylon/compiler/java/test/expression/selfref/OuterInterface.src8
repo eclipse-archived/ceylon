@@ -1,50 +1,35 @@
 package com.redhat.ceylon.compiler.java.test.expression.selfref;
 
-interface OuterInterface<T> {
+interface OuterInterface<T> extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     
-    public .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl<T> $com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterface$impl();
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterface$T();
     
-    public void sharedFinal();
-    
-    public .java.lang.Object sharedDefault();
-    
-    public abstract .java.lang.Object sharedFormal();
-}
-final class OuterInterface$impl<T> implements .java.io.Serializable {
-    
-    OuterInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> $this) {
-        this.$reified$T = $reified$T;
-        this.$this = $this;
-    }
-    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
-    private final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> $this;
-    
-    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-        this.$reified$T = $reified$T;
+    private default void private$priv$() {
     }
     
-    private void private$priv$() {
+    public default void sharedFinal() {
     }
     
-    public void sharedFinal() {
-    }
-    
-    public .java.lang.Object sharedDefault() {
+    public default .java.lang.Object sharedDefault() {
         return null;
     }
     
-    class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    public abstract .java.lang.Object sharedFormal();
+    
+    public static class InnerClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
-        InnerClass() {
+        InnerClass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> $outer) {
+            this.$outer = $outer;
         }
+        protected final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> $outer;
         
         private final void m3$priv$() {
-            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this.$com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterface$impl().private$priv$();
-            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this.sharedFinal();
-            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this.sharedDefault();
-            .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this.sharedFormal();
-            final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> o = .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$this;
-            o.$com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterface$impl().private$priv$();
+            $outer.private$priv$();
+            $outer.sharedFinal();
+            $outer.sharedDefault();
+            $outer.sharedFormal();
+            final .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface<T> o = $outer;
+            o.private$priv$();
             o.sharedFinal();
             o.sharedDefault();
             o.sharedFormal();
@@ -52,7 +37,7 @@ final class OuterInterface$impl<T> implements .java.io.Serializable {
         
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface.class, .com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface$impl.InnerClass.class));
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface.class, $outer.$reified$com$redhat$ceylon$compiler$java$test$expression$selfref$OuterInterface$T()), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.OuterInterface.InnerClass.class));
         }
     }
 }

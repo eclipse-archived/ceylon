@@ -137,4 +137,18 @@ public class Java8InterfaceTests extends JdkVersionDependentTests {
         compareWithJavaSource("iface/Outer");
     }
     
+    @Test
+    public void higherOrder() {
+        compareWithJavaSource("iface/InterfaceWithHigherOrder");
+    }
+    
+    @Test
+    public void list() {
+        compareWithJavaSource("iface/List");
+    }
+    
+    @Test
+    public void classMembers() {
+        compareWithJavaSource("iface/ClassMembers");
+    }
 }

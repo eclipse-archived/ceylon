@@ -456,6 +456,24 @@ public class ClassTransformer extends AbstractTransformer {
                 transformClassAlias((Tree.ClassDeclaration)def, classBuilder);
             }
             
+            if (cls.isInterfaceMember()
+                    && ((Interface)cls.getContainer()).isToplevel()
+                    && ((Interface)cls.getContainer()).isUseDefaultMethods()) {
+                Interface outer = (Interface)cls.getContainer();
+                for (TypeParameter tp : outer.getTypeParameters()) {
+                    classBuilder.typeParameter(tp);
+                }
+                classBuilder.field(PROTECTED | FINAL, "$outer", makeJavaType(outer.getType()), null, false);
+            
+                ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(this, "$outer");
+                pdb.type(makeJavaType(outer.getType()), null);
+                classBuilder.getInitBuilder().parameter(pdb);
+                classBuilder.getInitBuilder().init(make().Exec(make().Assign(
+                        naming.makeQualIdent(naming.makeQualifiedThis(null/*makeJavaType(cls.getType(), JT_RAW)*/), 
+                                "$outer"), naming.makeUnquotedIdent("$outer"))));
+                
+            }
+            
             addMissingUnrefinedMembers(def, cls, classBuilder);
         }
         
@@ -1390,7 +1408,8 @@ public class ClassTransformer extends AbstractTransformer {
             return;
         }
         ParameterList parameterList = ctor != null ? ctor.getFirstParameterList() : cls.getParameterList();
-        if (Decl.withinInterface(cls)) {
+        if (Decl.withinInterface(cls)
+                && !((Interface)cls.getContainer()).isUseDefaultMethods()) {
             DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(DaoKind.ABSTRACT, cls, ctor, instantiatorDeclCb.isCompanionBuilder());
             MethodDefinitionBuilder instBuilder = overloaded.makeOverload(
                     MethodDefinitionBuilder.systemMethod(ClassTransformer.this, naming.getInstantiatorMethodName(cls)),
@@ -1401,6 +1420,7 @@ public class ClassTransformer extends AbstractTransformer {
             instantiatorDeclCb.method(instBuilder);
         }
         if (!Decl.withinInterface(cls)
+                || ((Interface)cls.getContainer()).isUseDefaultMethods()
                 || !cls.isFormal()) {
             DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(!cls.isFormal() ? DaoKind.THIS : DaoKind.ABSTRACT, 
                     cls, ctor, instantiatorImplCb.isCompanionBuilder());
@@ -5475,6 +5495,10 @@ public class ClassTransformer extends AbstractTransformer {
             // and the instantiator method needs the abstract bit
             if(klass.isFormal() && klass.isAlias())
                 modifiers |= ABSTRACT;
+            if (klass.getContainer() instanceof Interface
+                    && ((Interface)klass.getContainer()).isUseDefaultMethods()) {
+                modifiers |= DEFAULT;
+            }
             return modifiers;
             
         }
@@ -5521,6 +5545,11 @@ public class ClassTransformer extends AbstractTransformer {
             Type type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
             type = type.resolveAliases();
             // fetch the type parameters from the klass we're instantiating itself if any
+            if (klass.isInterfaceMember()
+                    && ((Interface)klass.getContainer()).isUseDefaultMethods()) {
+                args.append(naming.makeThis());
+            }
+            
             for(Type pt : type.getTypeArgumentList()){
                 args.append(makeReifiedTypeArgument(pt));
             }
