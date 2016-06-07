@@ -14,6 +14,7 @@ import java.util.Set;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.VersionComparator;
+import com.redhat.ceylon.cmr.impl.JDKRepository;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -104,7 +105,8 @@ public class ModuleValidator {
                 Module jdkModule = moduleManagerUtil.getJdkModule();
                 List<Module> modules = new ArrayList<Module>(compiledModules.size()+2);
                 if(jdkModule != null){
-                	resolveModuleIfRequired(jdkModule, true, null, ImportDepth.First, dependencyTree, searchedArtifacts);
+                    ModuleImport synthimp = new ModuleImport(JDKRepository.NAMESPACE, jdkModule, false, false);
+                    resolveModuleIfRequired(jdkModule, true, synthimp, ImportDepth.First, dependencyTree, searchedArtifacts);
                 }
                 // we must resolve the language module first because it contains definitions that must be in the classpath
                 // before any other JVM class is loaded, including the module descriptor annotations themselves
