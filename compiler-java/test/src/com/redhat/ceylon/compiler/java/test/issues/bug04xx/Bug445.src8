@@ -1,22 +1,33 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug04xx;
 
-interface Bug445<T> extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+interface Bug445<T> {
     
-    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug04xx$Bug445$T();
+    public .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445$impl<T> $com$redhat$ceylon$compiler$java$test$issues$bug04xx$Bug445$impl();
+}
+final class Bug445$impl<T> implements .java.io.Serializable {
     
-    public static class Inner<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    Bug445$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445<T> $this) {
+        this.$reified$T = $reified$T;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445<T> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
-        Inner(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445<T> $outer) {
-            this.$outer = $outer;
+        Inner() {
         }
-        protected final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445<T> $outer;
         
         private final void t$priv$(final T t) {
         }
         
         @.java.lang.Override
         public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445.class, $outer.$reified$com$redhat$ceylon$compiler$java$test$issues$bug04xx$Bug445$T()), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445.Inner.class));
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445.class, .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445$impl.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug445$impl.Inner.class));
         }
     }
 }

@@ -1788,12 +1788,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && !((Interface)outerDeclaration).isUseDefaultMethods()) {
             return makeQualifiedDollarThis(outerClass);
         }
-        else if (outerDeclaration instanceof Interface
-                && ((Interface)outerDeclaration).isUseDefaultMethods()
-                && ((Interface)outerDeclaration).isToplevel()) {
-            return naming.makeUnquotedIdent("$outer");
-        }
-        return naming.makeQualifiedThis(makeJavaType(outerClass, JT_RAW));
+        return naming.makeQualifiedThis(makeJavaType(outerClass));
     }
 
     //
@@ -5384,13 +5379,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             scope = scope.getContainer();
         }
         if(!needsQualified)
-            return interf.isUseDefaultMethods() && scope instanceof Interface && ((Interface)scope).isUseDefaultMethods() ? naming.makeUnquotedIdent("$outer") : naming.makeQuotedThis();
+            return interf.isUseDefaultMethods() && scope instanceof Interface && ((Interface)scope).isUseDefaultMethods() ? naming.makeThis() : naming.makeQuotedThis();
         interf = (Interface) scope;
-        if (interf.isUseDefaultMethods()) {
-            return makeUnquotedIdent("$outer");
-        } else {
-            return makeQualifiedDollarThis(interf.getType());
-        }
+        return makeQualifiedDollarThis(interf.getType());
     }
     
     private JCExpression makeQualifiedDollarThis(Type targetType){
@@ -5416,8 +5407,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             while (scope != null){
                 // Is it being used in an interface (=> impl)
                 if(scope instanceof Interface
+                        && !((Interface) scope).isUseDefaultMethods()
                         && ((Interface) scope).getType().isSubtypeOf(scope.getDeclaringType(decl))) {
-                    return ((Interface)scope).isUseDefaultMethods() || decl.isShared();
+                    return decl.isShared();
                 }
                 scope = scope.getContainer();
             }

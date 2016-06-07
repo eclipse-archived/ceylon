@@ -123,8 +123,7 @@ public class InterfaceVisitor extends Visitor {
     @Override
     public void visit(Tree.ClassOrInterface that){
         ClassOrInterface model = that.getDeclarationModel();
-        // TODO Also need to catch Callables, Iterables, comprehensions and
-        // object expressions
+        
         if (model instanceof Interface &&
                 model.isToplevel() &&
                 target.compareTo(Target.JDK1_8) >= 0 && 
@@ -132,8 +131,7 @@ public class InterfaceVisitor extends Visitor {
             // We might change this back if we find locals which capture the outer
             ((Interface)model).setUseDefaultMethods(true);
         }
-        if (model instanceof Interface
-                && !model.isToplevel()
+        if (!model.isToplevel()
                 && declaration instanceof Interface) {
             ((Interface)declaration).setUseDefaultMethods(false);
         }
@@ -158,7 +156,7 @@ public class InterfaceVisitor extends Visitor {
         }
     }
     
-    /*@Override
+    @Override
     public void visit(Tree.TypedDeclaration that){
         Declaration declarationModel = that.getDeclarationModel();
         if (declarationModel.isParameter()
@@ -175,7 +173,7 @@ public class InterfaceVisitor extends Visitor {
             ((Interface)declaration).setUseDefaultMethods(false);
         }
         super.visit(that);
-    }*/
+    }
 
     private boolean hasCompilerAnnotation(List<CompilerAnnotation> compilerAnnotations, String name, String value) {
         for (Tree.CompilerAnnotation ca : compilerAnnotations) {

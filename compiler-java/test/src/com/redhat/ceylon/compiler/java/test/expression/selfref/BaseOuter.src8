@@ -1,8 +1,20 @@
 package com.redhat.ceylon.compiler.java.test.expression.selfref;
 
-public interface BaseOuter extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+public interface BaseOuter {
     
-    public default .java.lang.Object getInverse() {
+    public .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter$impl $com$redhat$ceylon$compiler$java$test$expression$selfref$BaseOuter$impl();
+    
+    public .java.lang.Object getInverse();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter.class);
+}
+public final class BaseOuter$impl implements .java.io.Serializable {
+    
+    public BaseOuter$impl(.com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter $this;
+    
+    public final .java.lang.Object getInverse() {
         
         final class inverse_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
@@ -10,11 +22,11 @@ public interface BaseOuter extends .com.redhat.ceylon.compiler.java.language.Obj
             }
             
             public final .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter item() {
-                return .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter.this;
+                return .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter$impl.this.$this;
             }
             
             public final .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter item2() {
-                return .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter.this;
+                return .com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter$impl.this.$this;
             }
             
             @.java.lang.Override
@@ -25,7 +37,6 @@ public interface BaseOuter extends .com.redhat.ceylon.compiler.java.language.Obj
         final inverse_ inverse = new inverse_();
         return inverse;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.selfref.BaseOuter.class);
 }
 public abstract class BaseOuterClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     

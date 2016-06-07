@@ -1,8 +1,20 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug09xx;
 
-public interface Bug904 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+public interface Bug904 {
     
-    public default .java.lang.Object getInverse() {
+    public .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug904$impl $com$redhat$ceylon$compiler$java$test$issues$bug09xx$Bug904$impl();
+    
+    public .java.lang.Object getInverse();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug904.class);
+}
+public final class Bug904$impl implements .java.io.Serializable {
+    
+    public Bug904$impl(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug904 $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug904 $this;
+    
+    public final .java.lang.Object getInverse() {
         
         final class inverse_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
             
@@ -10,7 +22,7 @@ public interface Bug904 extends .com.redhat.ceylon.compiler.java.language.Object
             }
             
             public final .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug904 item() {
-                return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug904.this;
+                return .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug904$impl.this.$this;
             }
             
             @.java.lang.Override
@@ -21,5 +33,4 @@ public interface Bug904 extends .com.redhat.ceylon.compiler.java.language.Object
         final inverse_ inverse = new inverse_();
         return inverse;
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug904.class);
 }
