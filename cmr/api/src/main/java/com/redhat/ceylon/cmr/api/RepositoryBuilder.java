@@ -62,7 +62,7 @@ public interface RepositoryBuilder {
      * @param token the token to make absolute
      * @return boolean if token is accepted or not
      */
-    String absolute(File cwd, String token);
+    String absolute(File cwd, String token) throws Exception;
     
     /**
      * Build repository.

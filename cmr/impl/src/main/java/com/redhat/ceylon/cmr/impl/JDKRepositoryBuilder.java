@@ -31,7 +31,11 @@ public class JDKRepositoryBuilder implements RepositoryBuilder {
 
     @Override
     public String absolute(File cwd, String token) {
-        return null;
+        if (token.equals("jdk") || token.equals("jdk:") || token.equals("jdk:/#")) {
+            return token;
+        } else {
+            return null;
+        }
     }
 
     @Override

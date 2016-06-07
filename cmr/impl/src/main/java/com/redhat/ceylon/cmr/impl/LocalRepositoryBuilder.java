@@ -19,6 +19,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
@@ -32,9 +33,10 @@ import com.redhat.ceylon.common.FileUtil;
 public class LocalRepositoryBuilder implements RepositoryBuilder {
 
     @Override
-    public String absolute(File cwd, String token) {
-        File f = FileUtil.absoluteFile(FileUtil.applyCwd(cwd, new File(token)));
-        return f.getAbsolutePath();
+    public String absolute(File cwd, String token) throws URISyntaxException {
+        final File file = (token.startsWith("file:") ? new File(new URI(token)) : new File(token));
+        File absfile = FileUtil.absoluteFile(FileUtil.applyCwd(cwd, file));
+        return absfile.getAbsolutePath();
     }
 
     @Override

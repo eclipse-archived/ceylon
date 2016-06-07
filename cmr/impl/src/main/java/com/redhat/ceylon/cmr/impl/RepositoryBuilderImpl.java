@@ -74,7 +74,7 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
     }
 
     @Override
-    public String absolute(File cwd, String token) {
+    public String absolute(File cwd, String token) throws Exception {
         for (RepositoryBuilder builder : builders) {
             String abstoken = builder.absolute(cwd, token);
             if (abstoken != null) {
