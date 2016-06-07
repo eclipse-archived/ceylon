@@ -190,7 +190,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         // special case for the java modules, which we only get when using the wrong version
         String name = moduleImport.getModule().getNameAsString();
         JdkProvider jdkProvider = getJdkProvider();
-        if(jdkProvider.isJDKModule(name)){
+        if(jdkProvider != null && jdkProvider.isJDKModule(name)){
             error = "imported module '" + name + "' depends on JDK version '\"" + 
                     moduleImport.getModule().getVersion() +
                     "\"' and you're compiling with Java " + jdkProvider.getJDKVersion();
