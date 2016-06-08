@@ -319,24 +319,31 @@ public class JsCompiler {
             }
 
             //Then generate the JS code
-            List<PhasedUnit> ultimas = new ArrayList<>(4);
+            List<PhasedUnit> pkgs = new ArrayList<>(4);
             if (srcFiles == null && !phasedUnits.isEmpty()) {
                 for (PhasedUnit pu: phasedUnits) {
-                    if ("package.ceylon".equals(pu.getUnitFile().getName()) ||
-                            "module.ceylon".equals(pu.getUnitFile().getName())) {
-                        ultimas.add(pu);
+                    if ("module.ceylon".equals(pu.getUnitFile().getName())) {
+                        final int t = compileUnit(pu);
+                        generatedCode = true;
+                        if (t != 0) {
+                            return false;
+                        }
+                    }
+                }
+                for (PhasedUnit pu: phasedUnits) {
+                    if ("package.ceylon".equals(pu.getUnitFile().getName())) {
+                        pkgs.add(pu);
+                        continue;
+                    } else if ("module.ceylon".equals(pu.getUnitFile().getName())) {
                         continue;
                     }
-                    exitCode = compileUnit(pu, names);
+                    final int t = compileUnit(pu);
                     generatedCode = true;
-                    if (exitCode != 0) {
+                    if (t == 1) {
                         return false;
-                    }
-                    if (stopOnError()) {
-                        logger.error("Errors found. Compilation stopped.");
+                    } else if (t == 2) {
                         break;
                     }
-                    getOutput(pu).addSource(getFullPath(pu));
                 }
             } else if(srcFiles != null && !srcFiles.isEmpty()
                          // For the specific case of the Stitcher
@@ -349,6 +356,16 @@ public class JsCompiler {
                     lastUnit = phasedUnits.get(0);
                 }
                 
+                for (PhasedUnit pu: phasedUnits) {
+                    if ("module.ceylon".equals(pu.getUnitFile().getName())) {
+                        final int t = compileUnit(pu);
+                        generatedCode = true;
+                        if (t != 0) {
+                            return false;
+                        }
+                    }
+                }
+
                 for (File path : srcFiles) {
                     if (path.getPath().endsWith(ArtifactContext.JS)) {
                         //Just output the file
@@ -378,37 +395,33 @@ public class JsCompiler {
                         for (PhasedUnit pu : phasedUnits) {
                             File unitFile = getFullPath(pu);
                             if (path.equals(unitFile)) {
-                                if (path.getName().equals("package.ceylon") || path.getName().equals("module.ceylon")) {
-                                    ultimas.add(pu);
+                                if (path.getName().equals("package.ceylon")) {
+                                    pkgs.add(pu);
+                                    continue;
+                                } else if (path.getName().equals("module.ceylon")) {
                                     continue;
                                 }
-                                exitCode = compileUnit(pu, names);
+                                final int t = compileUnit(pu);
                                 generatedCode = true;
-                                if (exitCode != 0) {
+                                if (t == 1) {
                                     return false;
+                                } else if (t == 2) {
+                                    break;
                                 }
-                                if (stopOnError()) {
-                                    logger.error("Errors found. Compilation stopped.");
-                                    return false;
-                                }
-                                getOutput(pu).addSource(unitFile);
                                 lastUnit = pu;
                             }
                         }
                     }
                 }
             }
-            for (PhasedUnit pu: ultimas) {
-                exitCode = compileUnit(pu, names);
+            for (PhasedUnit pu: pkgs) {
+                final int t = compileUnit(pu);
                 generatedCode = true;
-                if (exitCode != 0) {
+                if (t == 1) {
                     return false;
-                }
-                if (stopOnError()) {
-                    logger.error("Errors found. Compilation stopped.");
+                } else if (t == 2) {
                     break;
                 }
-                getOutput(pu).addSource(getFullPath(pu));
             }
             if(!generatedCode){
                 logger.error("No source units found to compile");
@@ -420,6 +433,19 @@ public class JsCompiler {
             }
         }
         return errCount == 0 && exitCode == 0;
+    }
+
+    private int compileUnit(PhasedUnit pu) throws IOException {
+        exitCode = compileUnit(pu, names);
+        if (exitCode != 0) {
+            return 1;
+        }
+        if (stopOnError()) {
+            logger.error("Errors found. Compilation stopped.");
+            return 2;
+        }
+        getOutput(pu).addSource(getFullPath(pu));
+        return 0;
     }
 
     VirtualFile findFile(File path) {
