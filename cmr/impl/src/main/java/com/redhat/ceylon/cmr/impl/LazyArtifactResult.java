@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.ImportType;
@@ -23,6 +24,7 @@ public class LazyArtifactResult extends AbstractArtifactResult {
         this.manager = manager;
         this.namespace = namespace;
         this.importType = importType;
+        assert(ModuleUtil.validNamespace(namespace));
     }
 
     private synchronized ArtifactResult getDelegate() {

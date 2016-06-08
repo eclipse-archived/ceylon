@@ -125,5 +125,11 @@ public abstract class ModuleUtil {
             return uri;
         }
     }
+    
+    // Only non-empty strings of lowercase letters are considered valid namespaces
+    // Additionally <code>null</code> is considered valid as well (being the same as "ceylon")
+    public static boolean validNamespace(String namespace) {
+        return namespace == null || validNS.matcher(namespace).matches();
+    }
 
 }

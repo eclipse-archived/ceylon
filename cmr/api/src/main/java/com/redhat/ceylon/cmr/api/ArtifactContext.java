@@ -25,6 +25,7 @@ import java.util.Objects;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -103,6 +104,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
         this.namespace = namespace;
         this.name = name;
         this.version = version;
+        assert(ModuleUtil.validNamespace(namespace));
     }
 
     public ArtifactContext(String namespace, String name, String version, String... suffixes) {

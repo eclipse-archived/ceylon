@@ -16,6 +16,8 @@
 
 package com.redhat.ceylon.cmr.api;
 
+import com.redhat.ceylon.common.ModuleUtil;
+
 /**
  * Module info.
  *
@@ -34,6 +36,7 @@ public final class ModuleDependencyInfo implements Comparable<ModuleDependencyIn
         this.version = version;
         this.optional = optional;
         this.shared = shared;
+        assert(ModuleUtil.validNamespace(namespace));
     }
 
     public String getNamespace() {
