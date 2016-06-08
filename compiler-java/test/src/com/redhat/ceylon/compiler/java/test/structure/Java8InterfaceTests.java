@@ -137,4 +137,8 @@ public class Java8InterfaceTests extends JdkVersionDependentTests {
         compareWithJavaSource("iface/Outer");
     }
     
+    @Test
+    public void localClasses() {
+        compareWithJavaSource("iface/LocalClasses");
+    }
 }
