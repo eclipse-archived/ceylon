@@ -100,8 +100,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.LanguageAnnotation;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
-import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
-import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -3041,6 +3039,12 @@ public abstract class AbstractTransformer implements Transformation {
                 spec = List.<JCExpression>of(dependencyName, dependencyVersion);
             else
                 spec = List.<JCExpression>of(dependencyName);
+            
+            if (dependency.getNamespace() != null) {
+                JCExpression dependencyNamespace = make().Assign(naming.makeUnquotedIdent("namespace"),
+                        make().Literal(dependency.getNamespace()));
+                spec = spec.append(dependencyNamespace);
+            }
             
             if (Util.getAnnotation(dependency, "shared") != null) {
                 JCExpression exported = make().Assign(naming.makeUnquotedIdent("export"), make().Literal(true));
