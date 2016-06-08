@@ -53,11 +53,7 @@ public class ValueDeclarationImpl
         this.type = Metamodel.getMetamodel(declaration.getType());
     }
 
-    @Override
-    @Ignore
-    public ValueDeclaration$impl $ceylon$language$meta$declaration$ValueDeclaration$impl() {
-        return null;
-    }
+    
     
 //    @Override
 //    @Ignore

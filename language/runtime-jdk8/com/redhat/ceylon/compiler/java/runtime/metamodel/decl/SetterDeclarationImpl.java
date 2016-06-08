@@ -52,12 +52,6 @@ public class SetterDeclarationImpl
         }
     }
     
-    @Ignore
-    @Override
-    public SetterDeclaration$impl $ceylon$language$meta$declaration$SetterDeclaration$impl() {
-        return null;
-    }
-
     @Override
     @Ignore
     public Annotation[] $getJavaAnnotations$() {

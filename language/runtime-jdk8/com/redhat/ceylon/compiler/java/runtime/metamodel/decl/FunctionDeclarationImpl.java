@@ -66,12 +66,6 @@ public class FunctionDeclarationImpl
     }
 
     @Override
-    @Ignore
-    public FunctionalDeclaration$impl $ceylon$language$meta$declaration$FunctionalDeclaration$impl() {
-        return null;
-    }
-
-    @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::FunctionOrValueDeclaration>")
     public Sequential<? extends ceylon.language.meta.declaration.FunctionOrValueDeclaration> getParameterDeclarations(){
         return parameterList;

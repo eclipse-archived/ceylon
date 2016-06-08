@@ -90,6 +90,11 @@ public final class Array<Element>
     /** The element type, for switching */
     private final ArrayType elementType;
 
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$SearchableList$Element() {
+        return $reifiedElement;
+    }
+    
     
     @Ignore
     public Array(final TypeDescriptor $reifiedElement, 

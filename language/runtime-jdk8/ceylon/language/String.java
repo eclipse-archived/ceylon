@@ -55,6 +55,11 @@ public final class String
             TypeDescriptor.klass(String.class);
     
     @Ignore
+    public TypeDescriptor $reified$ceylon$language$Summable$Other() {
+        return String.$TypeDescriptor$;
+    }
+    
+    @Ignore
     public TypeDescriptor $reified$ceylon$language$Comparable$Other() {
         return String.$TypeDescriptor$;
     }

@@ -90,12 +90,6 @@ public abstract class ClassDeclarationImpl
     }
     
     @Override
-    @Ignore
-    public ClassDeclaration$impl $ceylon$language$meta$declaration$ClassDeclaration$impl() {
-        return null;
-    }
-
-    @Override
     public boolean getAnonymous(){
         return declaration.isAnonymous();
     }

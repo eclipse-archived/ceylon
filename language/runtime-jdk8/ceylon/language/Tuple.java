@@ -224,6 +224,10 @@ public final class Tuple<Element, First extends Element,
         return instance($reifiedElement, elements, empty_.get_());
     }
     
+    public TypeDescriptor $reified$ceylon$language$Sequence$Element() {
+        return $getReifiedElement$();
+    }
+    
     @Ignore
     protected TypeDescriptor $getReifiedElement$() {
         return ((TypeDescriptor.Class)$getType$()).getSequenceElement();
@@ -835,7 +839,7 @@ public final class Tuple<Element, First extends Element,
     @Override @Ignore
     public Sequential<? extends Element> trim(Callable<? extends Boolean> f) {
         if (!rest.getEmpty()) {
-            return Sequenece.super.trim(f);
+            return Sequence.super.trim(f);
         }
         int size = array.length;
         int j = 0;
@@ -1148,12 +1152,6 @@ public final class Tuple<Element, First extends Element,
             }
         }
         return null;
-    }
-
-    @Override @Ignore
-    public Iterable<? extends Entry<? extends Integer, ? extends Element>, ? extends java.lang.Object> 
-    locations(Callable<? extends Boolean> f) {
-        return $ceylon$language$Iterable$impl().locations(f);
     }
 
     @Override @Ignore
