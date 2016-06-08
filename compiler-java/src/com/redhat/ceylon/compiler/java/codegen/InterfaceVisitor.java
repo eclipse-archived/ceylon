@@ -131,7 +131,8 @@ public class InterfaceVisitor extends Visitor {
             // We might change this back if we find locals which capture the outer
             ((Interface)model).setUseDefaultMethods(true);
         }
-        if (!model.isToplevel()
+        if (!(model.isToplevel()
+                || Decl.isLocal(model))
                 && declaration instanceof Interface) {
             ((Interface)declaration).setUseDefaultMethods(false);
         }
@@ -155,7 +156,7 @@ public class InterfaceVisitor extends Visitor {
             ((Interface)model).setCompanionClassNeeded(isInterfaceWithCode(model) && !((Interface)model).isUseDefaultMethods());
         }
     }
-    
+    /*
     @Override
     public void visit(Tree.TypedDeclaration that){
         Declaration declarationModel = that.getDeclarationModel();
@@ -168,12 +169,12 @@ public class InterfaceVisitor extends Visitor {
                 || that instanceof Tree.AttributeSetterDefinition
                 || that instanceof Tree.AttributeDeclaration && ((Tree.AttributeDeclaration)that).getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression)
                 //&& !declarationModel.getContainer().equals(declaration)
-                && Decl.isLocal(declarationModel)
+                && declarationModel.isInterfaceMember()
                 && declaration instanceof Interface) {
             ((Interface)declaration).setUseDefaultMethods(false);
         }
         super.visit(that);
-    }
+    }*/
 
     private boolean hasCompilerAnnotation(List<CompilerAnnotation> compilerAnnotations, String name, String value) {
         for (Tree.CompilerAnnotation ca : compilerAnnotations) {
