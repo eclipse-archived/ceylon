@@ -1,9 +1,12 @@
 package com.redhat.ceylon.common;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 public abstract class ModuleUtil {
 
+    private static final Pattern validNS = Pattern.compile("[a-z]+");
+    
     private ModuleUtil() {
     }
 
@@ -95,11 +98,11 @@ public abstract class ModuleUtil {
         int p = uri.indexOf(':');
         if (p > 0) {
             String prefix = uri.substring(0, p);
-            if (prefix.indexOf('.') > 0) {
-                // Prefix has dots in it so it's really a maven import
-                return "maven";
-            } else {
+            if (validNamespace(prefix)) {
                 return prefix;
+            } else {
+                // Prefix is invalid so it's considered a maven import
+                return "maven";
             }
         } else {
             return null;
@@ -115,11 +118,11 @@ public abstract class ModuleUtil {
         int p = uri.indexOf(':');
         if (p > 0) {
             String prefix = uri.substring(0, p);
-            if (prefix.indexOf('.') > 0) {
-                // Prefix has dots in it so it's really a maven import
-                return uri;
-            } else {
+            if (validNamespace(prefix)) {
                 return uri.substring(p + 1);
+            } else {
+                // Prefix is invalid so it's considered a maven import
+                return uri;
             }
         } else {
             return uri;
