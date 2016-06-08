@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug2228Shit_ {
     
@@ -37,7 +39,9 @@ final class bug2228Shit_ {
                         .ceylon.language.String.instance("a")})}, .ceylon.language.empty_.get_()));
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug2228Method_ {
     
@@ -100,7 +104,9 @@ final class bug2228Method_ {
         .com.redhat.ceylon.compiler.java.test.issues.bug22xx.bug2228Shit_.<.ceylon.language.Sequential<? extends .ceylon.language.Integer>, .ceylon.language.Integer>bug2228Shit(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Integer.$TypeDescriptor$), .ceylon.language.Integer.$TypeDescriptor$);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug2228Test_ {
     

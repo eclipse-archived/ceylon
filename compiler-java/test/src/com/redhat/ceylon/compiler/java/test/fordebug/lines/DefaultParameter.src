@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
  // line 1
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 1
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon( // line 1
+        major = 8, // line 1
+        minor = 1) // line 1
 @.com.redhat.ceylon.compiler.java.metadata.Method // line 1
 public final class foo_ {
     

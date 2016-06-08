@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Bar")
 @.com.redhat.ceylon.compiler.java.metadata.LocalContainer(
         path = {"bug2284"},
@@ -8,7 +10,9 @@ package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "2")
 interface bug2284$bug2284$2$bug2284$1$bug2284$4$Bar_ {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Bar")
 @.com.redhat.ceylon.compiler.java.metadata.LocalContainer(
         path = {"bug2284"},
@@ -16,7 +20,9 @@ interface bug2284$bug2284$2$bug2284$1$bug2284$4$Bar_ {
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
 interface bug2284$bug2284$2$bug2284$1$bug2284$0$Bar_ {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
         "::bug2284$bug2284$2$bug2284$1$bug2284$0$Bar_",

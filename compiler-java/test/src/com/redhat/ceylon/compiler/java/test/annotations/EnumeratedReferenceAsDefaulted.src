@@ -125,7 +125,9 @@ final class enumeratedReference_z_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X(y);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiationTree({
         @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(

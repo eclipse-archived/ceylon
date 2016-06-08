@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
         "1C",
@@ -13,7 +15,9 @@ final class bug5897_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug5897() {
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
         @.com.redhat.ceylon.compiler.java.metadata.Name("C")
         @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = C.D.class)})
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
@@ -28,7 +32,9 @@ final class bug5897_ {
                 return new D($name$);
             }
             
-            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("create")
             class D$create {
@@ -37,7 +43,9 @@ final class bug5897_ {
                 }
             }
             
-            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
             @.ceylon.language.SharedAnnotation$annotation$
             @.com.redhat.ceylon.compiler.java.metadata.Container(klass = C.class)
             @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
@@ -65,7 +73,9 @@ final class bug5897_ {
         final C c = new C();
         final C.D d = (C.D)c.D$new$((C.D$create)null);
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
         @.com.redhat.ceylon.compiler.java.metadata.Name("C2")
         @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = C2.D.class)})
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
@@ -80,7 +90,9 @@ final class bug5897_ {
                 return new D($name$);
             }
             
-            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("create")
             class D$create {
@@ -89,7 +101,9 @@ final class bug5897_ {
                 }
             }
             
-            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
             @.ceylon.language.SharedAnnotation$annotation$
             @.com.redhat.ceylon.compiler.java.metadata.Container(klass = C2.class)
             @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
