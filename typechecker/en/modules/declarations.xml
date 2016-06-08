@@ -2058,6 +2058,11 @@ shared class Branch<Element>(String name, Node<Element> left, Node<Element> righ
             </listitem>
             </itemizedlist>
             
+            <comment><para>Note: this means that the callable type of a function
+            lists the parameter lists in reverse order of the function declaration.
+            A function <literal>C f(A a)(B b)</literal> has the callable type
+            <literal>C(B)(A)</literal>, not <literal>C(A)(B)</literal>.</para></comment>
+            
             <comment><para>Note: the identification of <literal>void</literal> with
             <literal>Anything</literal> instead of <literal>Null</literal> or some other
             unit type will probably be contraversial. This approach allows a 
