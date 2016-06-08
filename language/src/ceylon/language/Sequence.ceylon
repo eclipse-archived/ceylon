@@ -75,13 +75,83 @@ shared sealed interface Sequence<out Element=Anything>
     "A sequence containing the elements of this sequence in
      reverse order to the order in which they occur in this
      sequence."
-    shared default actual [Element+] reversed => Reverse();
+    shared default actual [Element+] reversed {
+        class Reverse() 
+                extends Object() 
+                satisfies [Element+] {
+            
+            size => outer.size;
+            first => outer.last;
+            last => outer.first;
+            rest => size==1 then [] else outer[size-2..0]; //TODO optimize!
+            
+            reversed => outer;
+            
+            getFromFirst(Integer index) 
+                    => outer.getFromFirst(size-1-index);
+            
+            measure(Integer from, Integer length) 
+                    => if (length>0)
+            then let (start = size-1-from)
+            outer[start..start-length+1]
+            else [];
+            
+            span(Integer from, Integer to) 
+                    => outer[to..from];
+            
+            spanFrom(Integer from) 
+                    => let (endIndex = size-1)
+            if (from<=endIndex)
+            then outer[endIndex-from..0]
+            else [];
+            
+            spanTo(Integer to)
+                    => if (to>=0) 
+            then let (endIndex = size-1) 
+            outer[endIndex..endIndex-to]
+            else [];
+            
+            iterator() 
+                    => let (outerList = outer) 
+            object satisfies Iterator<Element> {
+                variable value index = outerList.size-1;
+                next() => index<0 
+                then finished 
+                else outerList.getElement(index--);
+                string => "``outer.string``.iterator()";
+            };
+            
+        }
+        return Reverse();
+    }
     
     "Produces a sequence formed by repeating the elements of
      this sequence the given [[number of times|times]], or
      the [[empty sequence|empty]] if `times<=0`."
-    shared default actual Element[] repeat(Integer times) 
-            => times>0 then Repeat(times) else [];
+    shared default actual Element[] repeat(Integer times) {
+        class Repeat(Integer times)
+                extends Object()
+                satisfies [Element+] {
+            
+            assert (times>0);
+            
+            last => outer.last;
+            
+            first => outer.first;
+            size => outer.size*times;
+            rest => sublistFrom(1).sequence(); //TODO!
+            
+            getFromFirst(Integer index)
+                    => let (size = outer.size)
+            if (index<size*times)
+            then outer.getFromFirst(index%size)
+            else null;
+            
+            iterator() => CycledIterator(outer,times);
+            
+        } 
+        return times>0 then Repeat(times) else [];
+    }
     
     "This nonempty sequence."
     shared actual default [Element+] clone() => this;
@@ -240,75 +310,6 @@ shared sealed interface Sequence<out Element=Anything>
             assert (is Element null);
             return null; 
         }
-    }
-    
-    class Reverse() 
-            extends Object() 
-            satisfies [Element+] {
-        
-        size => outer.size;
-        first => outer.last;
-        last => outer.first;
-        rest => size==1 then [] else outer[size-2..0]; //TODO optimize!
-        
-        reversed => outer;
-        
-        getFromFirst(Integer index) 
-                => outer.getFromFirst(size-1-index);
-        
-        measure(Integer from, Integer length) 
-                => if (length>0)
-                    then let (start = size-1-from)
-                        outer[start..start-length+1]
-                    else [];
-        
-        span(Integer from, Integer to) 
-                => outer[to..from];
-        
-        spanFrom(Integer from) 
-                => let (endIndex = size-1)
-                    if (from<=endIndex)
-                        then outer[endIndex-from..0]
-                        else [];
-        
-        spanTo(Integer to)
-                => if (to>=0) 
-                    then let (endIndex = size-1) 
-                        outer[endIndex..endIndex-to]
-                    else [];
-        
-        iterator() 
-                => let (outerList = outer) 
-            object satisfies Iterator<Element> {
-                variable value index = outerList.size-1;
-                next() => index<0 
-                    then finished 
-                    else outerList.getElement(index--);
-                string => "``outer.string``.iterator()";
-            };
-        
-    }
-    
-    class Repeat(Integer times)
-            extends Object()
-            satisfies [Element+] {
-        
-        assert (times>0);
-        
-        last => outer.last;
-        
-        first => outer.first;
-        size => outer.size*times;
-        rest => sublistFrom(1).sequence(); //TODO!
-        
-        getFromFirst(Integer index)
-                => let (size = outer.size)
-                    if (index<size*times)
-                        then outer.getFromFirst(index%size)
-                        else null;
-        
-        iterator() => CycledIterator(outer,times);
-        
     }
     
 }

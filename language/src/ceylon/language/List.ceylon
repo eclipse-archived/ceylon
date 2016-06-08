@@ -899,7 +899,7 @@ class Sublist<Element>(List<Element> self, Integer to)
     
     sublistTo(Integer to) 
             => if (to<0) then [] 
-    else if (to<this.to) then Sublist(list, to) 
+    else if (to<this.to) then Sublist(self, to) 
     else this;
     
     getFromFirst(Integer index)
