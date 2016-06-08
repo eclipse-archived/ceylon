@@ -1060,7 +1060,9 @@ public abstract class AbstractTransformer implements Transformation {
                 found[0] = currentType;
                 // stop there
                 return null;
-            }else if(found[0].isExactly(currentType)){
+            }else if(found[0].isExactly(currentType)
+                    || (found[0].isIterable() && currentType.isIterable()
+                    && found[0].getTypeArgumentList().get(0).isExactly(currentType.getTypeArgumentList().get(0)))){
                 // we already found the same type, ignore it and stop there
                 return null;
             }else{
