@@ -466,7 +466,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         final Set<String> loadedDependencies = new HashSet<>();
         loadedDependencies.add(module);
         loadDependencies(localRepos, getRepositoryManager(), jsmod, loadedDependencies);
-        customizeDependencies(localRepos, getRepositoryManager());
+        customizeDependencies(localRepos, getRepositoryManager(), loadedDependencies);
 
         final ProcessBuilder proc = buildProcess(modname, version, func, args, exepath, localRepos, output);
         final Process nodeProcess = proc.start();
@@ -546,7 +546,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         return file;
     }
 
-    protected void customizeDependencies(List<File> localRepos, RepositoryManager repoman) throws IOException {
+    protected void customizeDependencies(List<File> localRepos, RepositoryManager repoman, Set<String> loadedDependencies) throws IOException {
     }
 
     // use to test and debug:
