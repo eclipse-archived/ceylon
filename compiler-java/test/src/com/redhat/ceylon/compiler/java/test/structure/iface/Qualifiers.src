@@ -25,7 +25,7 @@ interface Qualifiers extends .com.redhat.ceylon.compiler.java.language.ObjectPro
     }
     
     public default long j() {
-        return this.i();
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.Qualifiers.this.i();
     }
     
     public default long k() {
@@ -68,7 +68,7 @@ interface QualifiersSub extends .com.redhat.ceylon.compiler.java.test.structure.
     }
     
     private default long n$canonical$(final long m) {
-        return this.i() + this.j() + m;
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.QualifiersSub.this.i() + .com.redhat.ceylon.compiler.java.test.structure.iface.QualifiersSub.this.j() + m;
     }
     
     public default long n(final long m) {
