@@ -105,7 +105,7 @@ public class ModuleValidator {
                 Module jdkModule = moduleManagerUtil.getJdkModule();
                 List<Module> modules = new ArrayList<Module>(compiledModules.size()+2);
                 if(jdkModule != null){
-                    ModuleImport synthimp = new ModuleImport(JDKRepository.NAMESPACE, jdkModule, false, false);
+                    ModuleImport synthimp = new ModuleImport(null, jdkModule, false, false);
                     resolveModuleIfRequired(jdkModule, true, synthimp, ImportDepth.First, dependencyTree, searchedArtifacts);
                 }
                 // we must resolve the language module first because it contains definitions that must be in the classpath
