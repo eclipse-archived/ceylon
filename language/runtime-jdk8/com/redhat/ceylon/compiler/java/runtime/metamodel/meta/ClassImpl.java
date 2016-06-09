@@ -72,6 +72,14 @@ public class ClassImpl<Type, Arguments extends Sequential<? extends Object>>
         this.instance = instance;
     }
 
+    public TypeDescriptor $reified$ceylon$language$meta$model$Class$Arguments() {
+        return $reifiedArguments;
+    }
+    
+    public TypeDescriptor $reified$ceylon$language$meta$model$Class$Type() {
+        return $reifiedType;
+    }
+    
     @Override
     @TypeInfo("ceylon.language.meta.declaration::ClassDeclaration")
     public ceylon.language.meta.declaration.ClassDeclaration getDeclaration() {

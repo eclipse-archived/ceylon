@@ -71,6 +71,18 @@ public class AttributeImpl<Container, Get, Set>
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(AttributeImpl.class, super.$reifiedContainer, $reifiedGet, $reifiedSet);
     }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Attribute$Set() {
+        return $reifiedSet;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Attribute$Get() {
+        return $reifiedGet;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Attribute$Container() {
+        return $reifiedContainer;
+    }
 
     @Override
     @Ignore

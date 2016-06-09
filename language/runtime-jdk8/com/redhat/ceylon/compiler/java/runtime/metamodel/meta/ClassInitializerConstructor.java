@@ -13,6 +13,7 @@ import ceylon.language.meta.declaration.TypeParameter;
 import ceylon.language.meta.model.CallableConstructor;
 import ceylon.language.meta.model.ClassModel;
 
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ClassDeclarationImpl;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
@@ -209,5 +210,13 @@ public class ClassInitializerConstructor<Type, Arguments extends Sequential<? ex
     @Override
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(ClassInitializerConstructor.class, clazz.$reifiedType, clazz.$reifiedArguments);
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$CallableConstructor$Arguments() {
+        return clazz.$reifiedArguments;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$CallableConstructor$Type() {
+        return clazz.$reifiedType;
     }
 }

@@ -32,13 +32,6 @@ public class ClassWithInitializerDeclarationImpl
     public ClassWithInitializerDeclarationImpl(com.redhat.ceylon.model.typechecker.model.Class declaration) {
         super(declaration);
     }
-
-    @Override
-    @Ignore
-    public ceylon.language.meta.declaration.ClassWithInitializerDeclaration$impl 
-    $ceylon$language$meta$declaration$ClassWithInitializerDeclaration$impl() {
-        return new ceylon.language.meta.declaration.ClassWithInitializerDeclaration$impl(this);
-    }
     
     @Ignore
     @Override

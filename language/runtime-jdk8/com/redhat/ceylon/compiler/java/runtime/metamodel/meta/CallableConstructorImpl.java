@@ -249,6 +249,16 @@ public class CallableConstructorImpl<Type, Arguments extends Sequential<? extend
         return TypeDescriptor.klass(CallableConstructorImpl.class, $reified$Type, $reified$Arguments);
     }
     
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$CallableConstructor$Arguments() {
+        return $reified$Arguments;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$CallableConstructor$Type() {
+        return $reified$Type;
+    }
+    
     public String toString() {
         return appliedClass.toString() + "." + freeConstructor.getName();
     }

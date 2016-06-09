@@ -44,6 +44,18 @@ public class MemberClassImpl<Container, Type, Arguments extends Sequential<? ext
         this.$reifiedArguments = $reifiedArguments;
         this.$reifiedContainer = $reifiedContainer;
     }
+    
+    public TypeDescriptor $reified$ceylon$language$meta$model$MemberClass$Arguments() {
+        return $reifiedArguments;
+    }
+    
+    public TypeDescriptor $reified$ceylon$language$meta$model$MemberClass$Container() {
+        return $reifiedContainer;
+    }
+    
+    public TypeDescriptor $reified$ceylon$language$meta$model$MemberClass$Type() {
+        return $reifiedType;
+    }
 
     private Sequential<? extends ceylon.language.meta.model.Type<? extends Object>> parameterTypes;
 

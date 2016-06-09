@@ -35,6 +35,11 @@ public class UnionTypeImpl<Union>
     }
     
     @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$UnionType$Union() {
+        return $reifiedUnion;
+    }
+    
+    @Ignore
     public final TypeDescriptor $reifiedUnion;
     
     public final com.redhat.ceylon.model.typechecker.model.Type model;

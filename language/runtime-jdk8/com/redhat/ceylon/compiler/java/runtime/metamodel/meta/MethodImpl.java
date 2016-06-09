@@ -66,7 +66,19 @@ public class MethodImpl<Container, Type, Arguments extends Sequential<? extends 
         List<com.redhat.ceylon.model.typechecker.model.Type> parameterProducedTypes = Metamodel.getParameterProducedTypes(parameters, appliedFunction);
         this.parameterTypes = ModelUtil.isConstructor(declaration.declaration)  ? null : Metamodel.getAppliedMetamodelSequential(parameterProducedTypes);
     }
-
+    
+    public TypeDescriptor $reified$ceylon$language$meta$model$Method$Arguments() {
+        return $reifiedArguments;
+    }
+    
+    public TypeDescriptor $reified$ceylon$language$meta$model$Method$Container() {
+        return $reifiedContainer;
+    }
+    
+    public TypeDescriptor $reified$ceylon$language$meta$model$Method$Type() {
+        return $reifiedType;
+    }
+    
     @Override
     @TypeInfo("ceylon.language::Map<ceylon.language.meta.declaration::TypeParameter,ceylon.language.meta.model::Type<ceylon.language::Anything>>")
     public ceylon.language.Map<? extends ceylon.language.meta.declaration.TypeParameter, ? extends ceylon.language.meta.model.Type<?>> getTypeArguments() {

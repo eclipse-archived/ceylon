@@ -78,6 +78,14 @@ public class MemberInterfaceImpl<Container, Type>
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(MemberInterfaceImpl.class, $reifiedContainer, $reifiedType);
     }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$MemberInterface$Type() {
+        return $reifiedType;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$MemberInterface$Container() {
+        return $reifiedContainer;
+    }
 
     @Override
     @Ignore

@@ -18,6 +18,7 @@ import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.model.Member;
 import ceylon.language.meta.model.MemberClass;
 import ceylon.language.meta.model.MemberClassValueConstructor;
+import ceylon.language.meta.model.Value;
 import ceylon.language.meta.model.ValueConstructor;
 
 
@@ -39,6 +40,7 @@ public class MemberClassValueConstructorImpl<Container, Get>
 //    private final ceylon.language.meta.model.Type<? extends Get> closedType;
     @Ignore
     protected final TypeDescriptor $reifiedGet;
+    
     
     @Ignore
     public MemberClassValueConstructorImpl(TypeDescriptor $reifiedContainer,
@@ -87,6 +89,30 @@ public class MemberClassValueConstructorImpl<Container, Get>
     @Override
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(MemberClassValueConstructorImpl.class, super.$reifiedContainer, $reifiedGet);
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Member$Kind() {
+        return ceylon.language.meta.model.ValueConstructor.$TypeDescriptor$;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Qualified$Container() {
+        return $reifiedContainer;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Qualified$Kind() {
+        return ceylon.language.meta.model.ValueConstructor.$TypeDescriptor$;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Member$Container() {
+        return $reifiedContainer;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$MemberClassValueConstructor$Type() {
+        return $reifiedGet;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$MemberClassValueConstructor$Container() {
+        return $reifiedContainer;
     }
 
     @Override

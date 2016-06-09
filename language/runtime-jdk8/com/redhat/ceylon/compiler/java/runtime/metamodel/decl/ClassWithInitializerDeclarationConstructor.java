@@ -193,19 +193,7 @@ public class ClassWithInitializerDeclarationConstructor
     public int hashCode() {
         return getContainer().hashCode() ^ getName().hashCode();
     }
-
-    @Ignore
-    @Override
-    public CallableConstructorDeclaration$impl $ceylon$language$meta$declaration$CallableConstructorDeclaration$impl() {
-        return null;
-    }
     
-    @Ignore
-    @Override
-    public FunctionalDeclaration$impl $ceylon$language$meta$declaration$FunctionalDeclaration$impl() {
-        return null;
-    }
-
     @Override
     public Object invoke(Sequential<? extends Type<? extends Object>> typeArguments) {
         return invoke(typeArguments, empty_.get_());

@@ -33,6 +33,11 @@ public class IntersectionTypeImpl<Intersection>
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(IntersectionTypeImpl.class, $reifiedIntersection);
     }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$IntersectionType$Intersection() {
+        return $reifiedIntersection;
+    }
         
     @Ignore
     public final TypeDescriptor $reifiedIntersection;

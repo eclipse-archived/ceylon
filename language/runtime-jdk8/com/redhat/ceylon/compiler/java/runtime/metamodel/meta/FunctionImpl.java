@@ -539,4 +539,14 @@ public class FunctionImpl<Type, Arguments extends Sequential<? extends Object>>
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(FunctionImpl.class, $reifiedType, $reifiedArguments);
     }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Function$Arguments() {
+        return $reifiedArguments;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Function$Type() {
+        return $reifiedType;
+    }
 }

@@ -58,6 +58,37 @@ public class MemberClassInitializerConstructor<Container, Type, Arguments extend
     }
     
     @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Member$Kind() {
+        return $reifiedKind;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Qualified$Kind() {
+        return $reifiedKind;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Qualified$Container() {
+        return $reifiedContainer;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Member$Container() {
+        return $reifiedContainer;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$MemberClassCallableConstructor$Container() {
+        return $reifiedContainer;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$MemberClassCallableConstructor$Type() {
+        return $reifiedType;
+    }
+    
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$MemberClassCallableConstructor$Arguments() {
+        return $reifiedArguments;
+    }
+    
+    @Ignore
     public MemberClassInitializerConstructor(TypeDescriptor $reifiedContainer,
             TypeDescriptor $reifiedType, TypeDescriptor $reifiedArguments,
             MemberClassImpl<Container, Type, ?> clazz) {

@@ -498,6 +498,10 @@ extends BaseIterable<ceylon.language.Byte, ceylon.language.Null> {
             return (Iterator)ceylon.language.emptyIterator_.get_();
         }
         return new Iterator<ceylon.language.Byte>() {
+            @Override
+            public TypeDescriptor $reified$ceylon$language$Iterator$Element() {
+                throw Util.makeJavaArrayWrapperException();
+            }
             
             private int index = ByteArrayIterable.this.start;
             

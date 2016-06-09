@@ -31,6 +31,10 @@ public class InterfaceImpl<Type>
         this.instance = instance;
     }
     
+    public TypeDescriptor $reified$ceylon$language$meta$model$Interface$Type() {
+        return $reifiedType;
+    }
+    
     @Override
     @TypeInfo("ceylon.language.meta.declaration::InterfaceDeclaration")
     public ceylon.language.meta.declaration.InterfaceDeclaration getDeclaration() {

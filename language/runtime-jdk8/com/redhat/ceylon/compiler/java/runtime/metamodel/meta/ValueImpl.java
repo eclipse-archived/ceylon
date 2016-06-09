@@ -72,6 +72,14 @@ public class ValueImpl<Get, Set>
         
         initField(instance, producedType);
     }
+    
+    public TypeDescriptor $reified$ceylon$language$meta$model$Value$Set() {
+        return $reifiedSet;
+    }
+    
+    public TypeDescriptor $reified$ceylon$language$meta$model$Value$Get() {
+        return $reifiedGet;
+    }
 
     private void initField(Object instance, Type valueType) {
         com.redhat.ceylon.model.typechecker.model.Value decl = (com.redhat.ceylon.model.typechecker.model.Value) declaration.declaration;

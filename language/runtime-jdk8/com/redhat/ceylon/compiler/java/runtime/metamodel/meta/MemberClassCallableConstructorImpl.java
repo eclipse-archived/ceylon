@@ -53,6 +53,35 @@ public class MemberClassCallableConstructorImpl<Container, Type, Arguments exten
     public final MemberClassImpl<Container, Type, ?> clazz;
     
     @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Member$Kind() {
+        return $reifiedKind;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Member$Container() {
+        return $reifiedContainer;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$MemberClassCallableConstructor$Arguments() {
+        return $reifiedArguments;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$MemberClassCallableConstructor$Type() {
+        return $reifiedType;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$MemberClassCallableConstructor$Container() {
+        return $reifiedContainer;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Qualified$Container() {
+        return $reifiedContainer;
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Qualified$Kind() {
+        return $reifiedKind;
+    }
+    
+    @Ignore
     @Override
     public TypeDescriptor $getType$() {
         return TypeDescriptor.klass(MemberClassCallableConstructorImpl.class, super.$reifiedContainer, $reifiedType, $reifiedArguments);

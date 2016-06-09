@@ -19,23 +19,10 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 })
 public class FileResource implements Resource {
 
-    @Ignore
-    protected final ceylon.language.Resource$impl $ceylon$language$Resource$this;
     private final File file;
 
     public FileResource(File file) {
         this.file = file;
-        $ceylon$language$Resource$this = new ceylon.language.Resource$impl(this);
-    }
-
-    @Ignore @Override
-    public ceylon.language.Resource$impl $ceylon$language$Resource$impl() {
-        return $ceylon$language$Resource$this;
-    }
-
-    @Override
-    public java.lang.String getName() {
-        return $ceylon$language$Resource$this.getName();
     }
 
     @Override
@@ -70,16 +57,6 @@ public class FileResource implements Resource {
             throw new ceylon.language.Exception(new ceylon.language.String(
                     "Reading file resource " + getUri()), ex);
         }
-    }
-
-    @Override
-    public java.lang.String textContent$encoding() {
-        return $ceylon$language$Resource$this.textContent$encoding();
-    }
-    
-    @Override
-    public String toString() {
-        return $ceylon$language$Resource$this.toString();
     }
 
 }

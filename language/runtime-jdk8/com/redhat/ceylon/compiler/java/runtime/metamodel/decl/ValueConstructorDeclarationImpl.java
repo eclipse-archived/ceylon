@@ -150,11 +150,6 @@ public class ValueConstructorDeclarationImpl
     public int hashCode() {
         return getContainer().hashCode() ^ getName().hashCode();
     }
-
-    @Override
-    public ValueConstructorDeclaration$impl $ceylon$language$meta$declaration$ValueConstructorDeclaration$impl() {
-        return null;
-    }
     
     @Override
     @TypeInfo("ceylon.language.meta.model::Value<Get>")

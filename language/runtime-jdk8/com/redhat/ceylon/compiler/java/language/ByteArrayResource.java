@@ -19,25 +19,17 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 })
 public class ByteArrayResource implements Resource {
     
-    @Ignore
-    protected final ceylon.language.Resource$impl $ceylon$language$Resource$this;
     private final byte[] contents;
     private URI uri;
 
     public ByteArrayResource(byte[] contents, URI uri) {
         this.contents = contents;
         this.uri = uri;
-        $ceylon$language$Resource$this = new ceylon.language.Resource$impl(this);
-    }
-
-    @Ignore @Override
-    public ceylon.language.Resource$impl $ceylon$language$Resource$impl() {
-        return $ceylon$language$Resource$this;
     }
 
     @Override
     public java.lang.String getName() {
-        String name = $ceylon$language$Resource$this.getName();
+        String name = Resource.super.getName();
         int p = name.lastIndexOf('!');
         if (p >= 0) {
             name = name.substring(p + 1);
@@ -77,15 +69,5 @@ public class ByteArrayResource implements Resource {
             throw new ceylon.language.Exception(new ceylon.language.String(
                     "Reading file resource " + getUri()), ex);
         }
-    }
-
-    @Override
-    public java.lang.String textContent$encoding() {
-        return $ceylon$language$Resource$this.textContent$encoding();
-    }
-    
-    @Override
-    public String toString() {
-        return $ceylon$language$Resource$this.toString();
     }
 }

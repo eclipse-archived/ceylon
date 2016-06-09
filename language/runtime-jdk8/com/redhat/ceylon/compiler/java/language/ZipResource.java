@@ -21,8 +21,6 @@ import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 })
 public class ZipResource implements Resource {
 
-    @Ignore
-    protected final ceylon.language.Resource$impl $ceylon$language$Resource$this;
     private final File zipFile;
     private final String path;
     private long size = -1;
@@ -31,18 +29,12 @@ public class ZipResource implements Resource {
     public ZipResource(File zip, String path) {
         this.zipFile = zip;
         this.path = path;
-        $ceylon$language$Resource$this = new ceylon.language.Resource$impl(this);
         fullPath = zip.toURI() + "!" + path;
-    }
-
-    @Ignore @Override
-    public ceylon.language.Resource$impl $ceylon$language$Resource$impl() {
-        return $ceylon$language$Resource$this;
     }
 
     @Override
     public java.lang.String getName() {
-        String name = $ceylon$language$Resource$this.getName();
+        String name = Resource.super.getName();
         int p = name.lastIndexOf('!');
         if (p >= 0) {
             name = name.substring(p + 1);
@@ -75,11 +67,6 @@ public class ZipResource implements Resource {
     }
 
     @Override
-    public java.lang.String textContent$encoding() {
-        return $ceylon$language$Resource$this.textContent$encoding();
-    }
-
-    @Override
     public java.lang.String textContent(java.lang.String enc) {
         try (ZipFile zip = new ZipFile(zipFile)) {
             final ZipEntry e = zip.getEntry(path);
@@ -99,9 +86,4 @@ public class ZipResource implements Resource {
         }
     }
     
-    @Override
-    public String toString() {
-        return $ceylon$language$Resource$this.toString();
-    }
-
 }

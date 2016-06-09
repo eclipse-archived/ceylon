@@ -76,6 +76,10 @@ public class ValueConstructorImpl<Get>
         initField(instance, producedType);
         this.clazz = clazz;
     }
+    
+    public TypeDescriptor $reified$ceylon$language$meta$model$ValueConstructor$Type() {
+        return $reifiedGet;
+    }
 
     @Override
     public ceylon.language.meta.model.Class<Get,?> getType() {

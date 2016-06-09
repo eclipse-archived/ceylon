@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.ConstructorName;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Jpa;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.CallableConstructorDeclarationImpl;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ClassDeclarationImpl;
@@ -256,6 +257,14 @@ public class ConstructorDispatch<Type, Arguments extends Sequential<? extends Ob
             }
         }
         }
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Applicable$Arguments() {
+        throw new RuntimeException();
+    }
+    @Ignore
+    public TypeDescriptor $reified$ceylon$language$meta$model$Applicable$Type() {
+        throw new RuntimeException();
     }
     /*
      * This one came from AppliedClass
