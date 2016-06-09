@@ -373,7 +373,7 @@ public class ClassTransformer extends AbstractTransformer {
             ClassDefinitionBuilder classBuilder,
             TypeParameter tp, Type ta) {
         MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, naming.getTypeArgumentMethodName(tp));
-        mdb.isOverride(true);
+        mdb.isOverride(!tp.getContainer().equals(typeFact().getConstrainedAnnotationDeclaration()));
         long mods = PUBLIC;
         if (model instanceof Interface) {
             mods |= DEFAULT;
