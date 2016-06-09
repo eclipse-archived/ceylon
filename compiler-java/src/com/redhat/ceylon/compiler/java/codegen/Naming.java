@@ -202,6 +202,10 @@ public class Naming extends NamingBase implements LocalId {
         } else {
             name = decl.getName();
         }
+        if (Decl.avoidInterfaceAccessMethod(decl)) {
+            name = decl.getQualifiedNameString().replace(".", "$").replace("::", "$")+"$"+name;
+        }
+        
         if (decl.isClassMember()
                 && "readResolve".equals(name)
                 && Strategy.addReadResolve((Class)decl.getContainer())) {

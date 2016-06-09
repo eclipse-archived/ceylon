@@ -32,6 +32,8 @@ import static com.redhat.ceylon.langtools.tools.javac.code.Flags.STATIC;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.TRANSIENT;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.VARARGS;
 
+import static com.redhat.ceylon.compiler.java.codegen.Decl.useDefaultMethod;
+
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -3861,11 +3863,6 @@ public class ClassTransformer extends AbstractTransformer {
         return result;
     }
     
-    boolean useDefaultMethod(Declaration d) {
-        return d.isInterfaceMember()
-                && ((Interface)d.getContainer()).isUseDefaultMethods();
-    }
-    
     private long transformMethodDeclFlags(Function def) {
         long result = 0;
 
@@ -3875,7 +3872,7 @@ public class ClassTransformer extends AbstractTransformer {
         } else if (Decl.isLocalNotInitializer(def)) {
             result |= def.isShared() ? PUBLIC : 0;
         } else {
-            result |= def.isShared() ? PUBLIC : PRIVATE;
+            result |= def.isShared() ? PUBLIC : Decl.avoidInterfaceAccessMethod(def) ? 0 : PRIVATE;
             result |= def.isFormal() && !def.isDefault() ? ABSTRACT : useDefaultMethod(def) ? Flags.DEFAULT : 0;
             result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface) ? FINAL : 0;
         }
@@ -3917,7 +3914,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         long result = 0;
 
-        result |= tdecl.isShared() ? PUBLIC : PRIVATE;
+        result |= tdecl.isShared() ? PUBLIC : Decl.avoidInterfaceAccessMethod(tdecl) ? 0: PRIVATE;
         result |= ((tdecl.isFormal() && !tdecl.isDefault()) && attrTx != AttrTx.COMPANION) ? ABSTRACT : useDefaultMethod(tdecl) ? DEFAULT : 0;
         result |= (!(tdecl.isFormal() || tdecl.isDefault() || Decl.withinInterface(tdecl)) || attrTx == AttrTx.COMPANION) && !useDefaultMethod(tdecl) ? FINAL : 0;
 

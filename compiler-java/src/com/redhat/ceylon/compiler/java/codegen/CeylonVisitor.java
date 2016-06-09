@@ -578,7 +578,7 @@ public class CeylonVisitor extends Visitor {
         } else if (Decl.withinInterface(decl)) {
             Value model = decl.getDeclarationModel();
             Interface iface = (Interface)model.getContainer();
-            if (!gen.classGen().useDefaultMethod(model)) {
+            if (!Decl.useDefaultMethod(model)) {
                 classBuilder.attribute(gen.classGen().transform(decl, AttrTx.THIS));
                 AttributeDefinitionBuilder adb = gen.classGen().transform(decl, AttrTx.COMPANION);
                 if (model.isShared()) {
@@ -623,7 +623,7 @@ public class CeylonVisitor extends Visitor {
         } else if (Decl.withinInterface(decl)) {
             Setter model = decl.getDeclarationModel();
             Interface iface = (Interface)model.getContainer();
-            if (!gen.classGen().useDefaultMethod(model)) {
+            if (!Decl.useDefaultMethod(model)) {
                 classBuilder.attribute(gen.classGen().transform(decl, AttrTx.THIS));
                 AttributeDefinitionBuilder adb = gen.classGen().transform(decl, AttrTx.COMPANION);
                 if (decl.getDeclarationModel().isShared()) {

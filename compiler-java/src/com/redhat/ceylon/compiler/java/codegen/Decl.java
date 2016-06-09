@@ -1048,4 +1048,25 @@ public class Decl {
         }
         return null;
     }
+    
+    public static boolean useDefaultMethod(Declaration d) {
+        return d.isInterfaceMember()
+                && ((Interface)d.getContainer()).isUseDefaultMethods();
+    }
+    
+    /**
+     * On the JVM a private interface members aren't properly supported 
+     * and {@code access$nnn()} methods generated for private members 
+     * captured by inner classes are considered invalid bytecode by the JVM.
+     * So in this case we avoid making the member {@code private} 
+     * (use package access instead), but this necessitates naming munging 
+     * to avoid a naming collision with a subinterface with the same named 
+     * member.
+     */
+    public static boolean avoidInterfaceAccessMethod(TypedDeclaration def) {
+        return def.isInterfaceMember()
+                    && !def.isShared()
+                    && def.isCaptured()
+                    && useDefaultMethod(def);
+    }
 }
