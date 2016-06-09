@@ -71,6 +71,12 @@ public class MavenRepository extends AbstractRepository {
             this.node = node;
         }
 
+        
+        @Override
+        public String namespace() {
+            return NAMESPACE;
+        }
+
         @Override
         public ArtifactResultType type() {
             return ArtifactResultType.MAVEN;

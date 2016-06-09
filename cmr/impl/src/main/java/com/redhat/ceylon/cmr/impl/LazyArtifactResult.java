@@ -17,12 +17,10 @@ public class LazyArtifactResult extends AbstractArtifactResult {
     private ArtifactResult delegate;
     private final ImportType importType;
     private RepositoryManager manager;
-    private String namespace;
 
     public LazyArtifactResult(RepositoryManager manager, String namespace, String name, String version, ImportType importType) {
-        super(null, name, version);
+        super(null, namespace, name, version);
         this.manager = manager;
-        this.namespace = namespace;
         this.importType = importType;
         assert(ModuleUtil.validNamespace(namespace));
     }
@@ -34,11 +32,6 @@ public class LazyArtifactResult extends AbstractArtifactResult {
             delegate = manager.getArtifactResult(context);
         }
         return delegate;
-    }
-
-    @Override
-    public String namespace() {
-        return namespace;
     }
 
     @Override

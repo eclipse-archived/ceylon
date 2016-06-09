@@ -466,13 +466,8 @@ class AetherUtils {
         private String repositoryDisplayString;
 
         protected MavenArtifactResult(CmrRepository repository, String name, String version, String repositoryDisplayString) {
-            super(repository, name, version);
+            super(repository, MavenRepository.NAMESPACE, name, version);
             this.repositoryDisplayString = repositoryDisplayString;
-        }
-
-        @Override
-        public String namespace() {
-            return MavenRepository.NAMESPACE;
         }
 
         @Override

@@ -45,13 +45,8 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
     private boolean resolved = false;
 
     protected AbstractCeylonArtifactResult(Repository repository, RepositoryManager manager, String name, String version) {
-        super(repository, name, version);
+        super(repository, null, name, version);
         this.manager = manager;
-    }
-
-    @Override
-    public String namespace() {
-        return null;
     }
 
     @Override

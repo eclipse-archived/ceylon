@@ -62,13 +62,8 @@ public class NpmRepository extends AbstractRepository {
         private Node node;
 
         private NpmArtifactResult(CmrRepository repository, RepositoryManager manager, String name, String version, Node node) {
-            super(repository, name, version);
+            super(repository, NAMESPACE, name, version);
             this.node = node;
-        }
-
-        @Override
-        public String namespace() {
-            return NAMESPACE;
         }
 
         @Override

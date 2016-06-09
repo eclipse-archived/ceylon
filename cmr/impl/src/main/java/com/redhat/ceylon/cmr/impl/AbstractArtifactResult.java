@@ -34,8 +34,9 @@ import com.redhat.ceylon.model.cmr.VisibilityType;
  */
 public abstract class AbstractArtifactResult implements ArtifactResult {
 
-    private String name;
-    private String version;
+    private final String namespace;
+    private final String name;
+    private final String version;
 
     private volatile File artifact;
     private volatile boolean checked;
@@ -44,24 +45,34 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     
     private Repository repository;
 
-    protected AbstractArtifactResult(Repository repository, String name, String version) {
+    protected AbstractArtifactResult(Repository repository, String namespace, String name, String version) {
         this.repository = repository;
+        this.namespace = namespace;
         this.name = name;
         this.version = version;
     }
 
+    @Override
+    public String namespace() {
+        return namespace;
+    }
+
+    @Override
     public String name() {
         return name;
     }
 
+    @Override
     public String version() {
         return version;
     }
 
+    @Override
     public ImportType importType() {
         return ImportType.UNDEFINED;
     }
 
+    @Override
     public VisibilityType visibilityType() {
         if (type() == ArtifactResultType.CEYLON) {
             File file = artifact();
@@ -72,6 +83,7 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
         return VisibilityType.LOOSE;
     }
 
+    @Override
     public File artifact() throws RepositoryException {
         if (artifact == null && checked == false) {
             checked = true;
@@ -82,6 +94,7 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
 
     protected abstract File artifactInternal();
 
+    @Override
     public PathFilter filter() {
         return filter;
     }
@@ -101,7 +114,7 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
         txt.append(name);
         txt.append("/");
         txt.append(version);
-        if (artifact() != null) {
+        if (artifact != null) {
             try {
                 String suffix = ArtifactContext.getSuffixFromFilename(artifact().getName());
                 txt.append(" (");

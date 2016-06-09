@@ -167,14 +167,9 @@ public class Main {
             public final boolean optional, shared;
 
             public Dependency(String name, String version, boolean optional, boolean shared) {
-                super(null, name, version);
+                super(null, null, name, version);
                 this.optional = optional;
                 this.shared = shared;
-            }
-
-            @Override
-            public String namespace() {
-                return null;
             }
 
             @Override
@@ -240,7 +235,7 @@ public class Main {
             public final List<Dependency> dependencies = new LinkedList<Dependency>();
 
             public Module(String name, String version, Type type, File jar) {
-                super(null, name, version);
+                super(null, null, name, version);
                 this.type = type;
                 this.jar = jar;
             }

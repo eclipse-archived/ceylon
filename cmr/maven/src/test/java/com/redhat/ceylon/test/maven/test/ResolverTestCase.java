@@ -79,15 +79,10 @@ public class ResolverTestCase extends AbstractAetherTest {
         private final File artifact;
 
         private TestArtifactResult(CmrRepository repository, String name, String version, File artifact) {
-            super(repository, name, version);
+            super(repository, repository.getNamespace(), name, version);
             this.artifact = artifact;
         }
 
-        @Override
-        public String namespace() {
-            return repository().getNamespace();
-        }
-        
         @Override
         protected File artifactInternal() {
             return artifact;
