@@ -15,9 +15,9 @@
  For example the expression
  
      mapPairs((Float x, Float y) => (x^2+y^2)^0.5, 
-             {1.0, 2.0, 1.0}, {1.0, 1.0, 2.0})
+             {3.0, 5.0, 6.0, 9.0}, {4.0, 12.0, 8.0, 12.0})
      
- evaluates to the stream `{ 1.0, 3.0, 3.0 }`."
+ evaluates to the stream `{ 5.0, 13.0, 10.0, 15.0 }`."
 tagged("Streams")
 shared Iterable<Result,FirstAbsent|SecondAbsent> 
 mapPairs<Result,First,Second,FirstAbsent,SecondAbsent>(
