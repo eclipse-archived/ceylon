@@ -585,6 +585,11 @@ void testIssues() {
   check(!t2 is [Integer, String, Boolean, Integer+], "c.l 624.6");
   check(!t3 is [Integer, String, Boolean, Integer*], "c.l 624.7");
   check(!t3 is [Integer, String, Boolean, Integer+], "c.l 624.8");
+  value big=#100000000;
+  check(big.clear(-1)==0, "#5799.1"); // 4294967296
+  check(big.clear(0) ==0, "#5799.2");  // 0
+  check(big.clear(31)==0, "#5799.3"); // 0
+  check(big.clear(32)==0, "#5799.4");
 }
 
 shared void test() {
