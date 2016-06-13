@@ -517,6 +517,9 @@ public class FunctionHelper {
                 } else {
                     gen.qualify(that, cd);
                     gen.out(gen.getNames().name(cd));
+                    if (cd.isValueConstructor()) {
+                        gen.out("()");
+                    }
                 }
             } else {
                 gen.out("function(x){return ");
