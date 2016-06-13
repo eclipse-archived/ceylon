@@ -344,6 +344,11 @@ class TestReturns {
   }
 }
 
+shared class C6311 of \iA {
+    shared String x = "x";
+    shared new \iA {}
+}
+
 @test
 shared void testConstructors() {
   value o=Outer1129();
@@ -463,4 +468,21 @@ shared void testConstructors() {
   check(TestReturns(false).count==2, "Constructor return 2");
   check(TestReturns(true).Inner.vc.count==3, "Constructor return 3");
   check(TestReturns(false).Inner.vc.count==4, "Constructor return 4");
+
+  C6311 c1 = C6311.A;
+  variable value checks=0;
+  switch (c1)
+  case (C6311.A) { checks=checks.or(1); } // works, but ===s the function instead of the actual value
+  switch (c1)
+  case (C6311.\iA) { checks=checks.or(2); } // doesn’t work
+  check(c1.x=="x", "#6311.1"); // prints null
+
+  // with \i, ()s are emitted
+  C6311 c2 = C6311.\iA;
+  switch (c2)
+  case (C6311.A) { checks=checks.or(4); } // doesn’t work
+  switch (c2)
+  case (C6311.\iA) { checks=checks.or(8); } // works properly
+  check(c2.x=="x", "#6311.2");
+  check(checks==15, "#6311.3 ``checks``");
 }
