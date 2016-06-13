@@ -302,9 +302,6 @@ ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$_apply=function(types
   var _t = {t:this.tipo};
   var _m = getrtmm$$(this.tipo);
   validate$typeparams(_t,_m.tp,types);
-  if (this.$_abstract || this.anonymous) {
-    throw InvocationException$meta$model(this.name+" class cannot be instantiated");
-  }
   if (!extendsType(_t, $mptypes.Type$apply))
     throw IncompatibleTypeException$meta$model("ClassOrInterface<"+this.name+"> is not compatible with expected type: ClassOrInterface<" + qname$($mptypes.Type$apply)+">. Try passing the type argument explicitly with: apply<" + this.name+">");
   if ($mptypes.Type$apply.a && !_t.a)_t.a=$mptypes.Type$apply.a;
