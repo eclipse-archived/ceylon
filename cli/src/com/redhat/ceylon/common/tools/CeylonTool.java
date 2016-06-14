@@ -502,7 +502,7 @@ public class CeylonTool implements Tool {
         } else {
             cwd = System.getProperty(Constants.PROP_CEYLON_CWD);
             if (cwd == null) {
-                cwd = System.getProperty("user.home");
+                cwd = System.getProperty("user.dir");
             }
         }
         System.setProperty(Constants.PROP_CEYLON_CWD, cwd);
