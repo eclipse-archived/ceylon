@@ -1559,12 +1559,6 @@ public class ClassTransformer extends AbstractTransformer {
         
         // Make sure top types satisfy reified type
         addReifiedTypeInterface(classBuilder, model);
-        
-        if (!model.isBasic() && !model.isObject()) {
-            classBuilder.method(makeBridgeAvoidingClassImplementation(model, "string"));
-            classBuilder.method(makeBridgeAvoidingClassImplementation(model, "hash"));
-            classBuilder.method(makeBridgeAvoidingClassImplementation(model, "equals"));
-        }
     }
 
     
@@ -2785,6 +2779,12 @@ public class ClassTransformer extends AbstractTransformer {
                     }
                 }
             }
+        }
+        
+        if (!model.isBasic() && !model.isObject()) {
+            classBuilder.method(makeBridgeAvoidingClassImplementation(model, "string"));
+            classBuilder.method(makeBridgeAvoidingClassImplementation(model, "hash"));
+            classBuilder.method(makeBridgeAvoidingClassImplementation(model, "equals"));
         }
     }
 
