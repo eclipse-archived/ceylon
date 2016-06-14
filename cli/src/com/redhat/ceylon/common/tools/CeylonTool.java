@@ -401,6 +401,7 @@ public class CeylonTool implements Tool {
                     oldConfig2 = setupConfig(tool);
                 }
                 syncCwd(tool);
+                setSystemCwd();
                 try {
                     run(model, tool);
                     result = SC_OK;
@@ -492,6 +493,19 @@ public class CeylonTool implements Tool {
                 cbt.setCwd(getCwd());
             }
         }
+    }
+    
+    private void setSystemCwd() {
+        String cwd = null;
+        if (getCwd() != null) {
+            cwd = getCwd().getAbsolutePath();
+        } else {
+            cwd = System.getProperty(Constants.PROP_CEYLON_CWD);
+            if (cwd == null) {
+                cwd = System.getProperty("user.home");
+            }
+        }
+        System.setProperty(Constants.PROP_CEYLON_CWD, cwd);
     }
 
     @Override

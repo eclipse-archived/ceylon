@@ -28,6 +28,7 @@ public abstract class Constants {
     public static final String PROP_CEYLON_CONFIG_FILE = "ceylon.config";
     public static final String PROP_CEYLON_USER_DIR = "ceylon.user.dir";
     public static final String PROP_CEYLON_SYSLIBS_DIR = "ceylon.system.libs";
+    public static final String PROP_CEYLON_CWD = "ceylon.cwd";
     
     public static final String PROP_CEYLON_SYSTEM_REPO = "ceylon.system.repo";
     public static final String PROP_CEYLON_USER_REPO = "ceylon.user.repo";
