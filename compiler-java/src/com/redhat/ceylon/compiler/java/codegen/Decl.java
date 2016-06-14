@@ -1069,4 +1069,19 @@ public class Decl {
                     && def.isCaptured()
                     && useDefaultMethod(def);
     }
+
+    public static Type satisfiesDirectly(TypeDeclaration model, Interface container) {
+        for (Type st : model.getSatisfiedTypes()) {
+            if (st.getDeclaration().equals(container)) {
+                return st;
+            }
+        }
+        return null;
+    }
+    
+    public static boolean isObjectMember(final TypedDeclaration model) {
+        return model != null && ("equals".equals(model.getName())
+                || "string".equals(model.getName())
+                || "hash".equals(model.getName()));
+    }
 }

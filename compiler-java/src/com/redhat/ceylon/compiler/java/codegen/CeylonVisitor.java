@@ -586,12 +586,12 @@ public class CeylonVisitor extends Visitor {
                 }
                 classBuilder.getCompanionBuilder(iface).attribute(adb);
             } else {
-                if (true/*model.isFormal() || !model.isShared()*/) {
+                if (!Decl.isObjectMember(model)) {
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.DEFAULT));
                 } else {
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.BRIDGE_TO_STATIC));
                     ExpressionTransformer eg = gen.expressionGen();
-                    eg.receiver = eg.new DollarThis(iface);
+                    eg.receiver = eg.new DollarThis2(iface);
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.STATIC));
                     eg.receiver = eg.receiver.parent;
                 }

@@ -1,0 +1,314 @@
+package com.redhat.ceylon.compiler.java.test.structure.iface;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+interface InheritFrom extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public default .java.lang.String toString() {
+        return "InheritFrom";
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+class InheritFromBasic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    InheritFromBasic() {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasic.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasic.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::InheritFrom"})
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.iface::InheritFromBasic")
+class InheritFromBasicIndirectly extends .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasic implements .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom {
+    
+    InheritFromBasicIndirectly() {
+        super();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasicIndirectly.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasicIndirectly.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+interface InheritFrom2 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public default .java.lang.String toString() {
+        return "InheritFrom2";
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public default boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object other) {
+        return true;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public default int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$1 = 42L;
+            }
+            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
+        );
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom2.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::InheritFrom2"})
+@.com.redhat.ceylon.compiler.java.metadata.Class(
+        identifiable = false,
+        basic = false,
+        extendsType = "ceylon.language::Object")
+class InheritFromObject extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom2, .java.io.Serializable {
+    
+    InheritFromObject() {
+        super();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromObject.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromObject.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Identifiable"})
+interface InheritFrom3 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public default .java.lang.String toString() {
+        return "InheritFrom3";
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public default boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object other) {
+        return true;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public default int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$3 = 42L;
+            }
+            returning $ceylontmp$hash$3 ^ $ceylontmp$hash$3 >>> 32;
+        );
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom3.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::InheritFrom3"})
+class InheritFromBasicWithIdentifiableClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom3, .java.io.Serializable {
+    
+    InheritFromBasicWithIdentifiableClass() {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasicWithIdentifiableClass.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasicWithIdentifiableClass.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+interface Itbl extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public default .java.lang.String toString() {
+        return "wtf";
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public default boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object other) {
+        return true;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.Itbl.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::Itbl"})
+interface L extends .com.redhat.ceylon.compiler.java.test.structure.iface.Itbl {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public default .java.lang.String toString() {
+        return "wtf2";
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public default boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object other) {
+        return true;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.L.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::L"})
+interface Sql extends .com.redhat.ceylon.compiler.java.test.structure.iface.L {
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.Sql.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({
+        "com.redhat.ceylon.compiler.java.test.structure.iface::Sql",
+        "com.redhat.ceylon.compiler.java.test.structure.iface::Itbl"})
+interface Sqc extends .com.redhat.ceylon.compiler.java.test.structure.iface.Sql, .com.redhat.ceylon.compiler.java.test.structure.iface.Itbl {
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.Sqc.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::Sqc"})
+@.com.redhat.ceylon.compiler.java.metadata.Class(
+        identifiable = false,
+        basic = false,
+        extendsType = "ceylon.language::Object")
+class As extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.Sqc, .java.io.Serializable {
+    
+    As() {
+        super();
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public final int hashCode() {
+        return (int)(
+            let
+            {
+                long $ceylontmp$hash$5 = 0L;
+            }
+            returning $ceylontmp$hash$5 ^ $ceylontmp$hash$5 >>> 32;
+        );
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.As.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.As.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class inheritFrom_ {
+    
+    private inheritFrom_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void inheritFrom() {
+        if ("InheritFrom".equals(new .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasicIndirectly().toString())) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"InheritFrom\" == InheritFromBasicIndirectly().string"));
+        }
+        if ("InheritFrom2".equals(new .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromObject().toString())) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"InheritFrom2\" == InheritFromObject().string"));
+        }
+        if (new .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromObject().equals(.ceylon.language.Integer.instance(1L))) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "InheritFromObject().equals(1)"));
+        }
+        if (42L == new .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromObject().hashCode()) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "42 == InheritFromObject().hash"));
+        }
+        if ("InheritFrom3".equals(new .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasicWithIdentifiableClass().toString())) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "\"InheritFrom3\" == InheritFromBasicWithIdentifiableClass().string"));
+        }
+        if (new .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasicWithIdentifiableClass().equals(.ceylon.language.Integer.instance(1L))) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "InheritFromBasicWithIdentifiableClass().equals(1)"));
+        }
+        if (42L == new .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasicWithIdentifiableClass().hashCode()) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "42 == InheritFromBasicWithIdentifiableClass().hash"));
+        }
+        .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.test.structure.iface.As());
+        if (new .com.redhat.ceylon.compiler.java.test.structure.iface.As().equals(new .com.redhat.ceylon.compiler.java.test.structure.iface.As())) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "As()==As()"));
+        }
+    }
+}

@@ -1768,7 +1768,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (isWithinSyntheticClassBody()) {
             return naming.makeQualifiedThis(makeJavaType(expr.getTypeModel()));
         } 
-        return naming.makeThis();//receiver.qualifier();
+        return receiver.qualifier();
     }
 
     public JCTree transform(Tree.Super expr) {
@@ -5180,6 +5180,23 @@ public class ExpressionTransformer extends AbstractTransformer {
         public JCExpression qualify(Declaration decl) {
             if (iface.isMember(decl) || iface.isInherited(decl)) {
                 return naming.makeQualifiedThis(makeJavaType(iface.getType(), JT_RAW));
+            }
+            return null;
+        }
+    }
+    class DollarThis2 extends Receiver {
+        private final Interface iface;
+        public DollarThis2(Interface iface) {
+            this.iface = iface;
+        }
+        @Override
+        public JCExpression qualifier() {
+            return naming.makeQuotedThis();
+        }
+        @Override
+        public JCExpression qualify(Declaration decl) {
+            if (iface.isMember(decl) || iface.isInherited(decl)) {
+                return naming.makeQuotedThis();
             }
             return null;
         }

@@ -1552,7 +1552,102 @@ public class ClassTransformer extends AbstractTransformer {
         
         // Make sure top types satisfy reified type
         addReifiedTypeInterface(classBuilder, model);
+        
+        if (!model.isBasic() && !model.isObject()) {
+            classBuilder.method(makeBridgeAvoidingClassImplementation(model, "string"));
+            classBuilder.method(makeBridgeAvoidingClassImplementation(model, "hash"));
+            classBuilder.method(makeBridgeAvoidingClassImplementation(model, "equals"));
+        }
     }
+
+    
+
+    /** 
+     * Methods inherited from a class overrule those inherited from an interface
+     * so add a bridge
+     */
+    protected MethodDefinitionBuilder makeBridgeAvoidingClassImplementation(
+            Class model,
+            String name) {
+        TypedDeclaration member = (TypedDeclaration)model.getMember(name, null, false);
+        if (requiresObjectMethodBridge(member)
+                /*|| (model.getDirectMember(member.getName(), null, false) == null
+                    && member.getContainer() instanceof Interface
+                    && ((Interface)member.getContainer()).isUseDefaultMethods()
+                    && Decl.satisfiesDirectly(model, (Interface)member.getContainer()) != null
+                    )*/) {
+        String selector = naming.selector(member);
+        MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(this, selector);
+        List<JCExpression> args = List.<JCExpression>nil();
+        if (member instanceof Function) {
+            
+            for (Parameter p : ((Function)member).getFirstParameterList().getParameters()) {
+                String pname = p.getName();
+                ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.explicitParameter(this, p);
+                pdb.type(makeJavaType(p.getType()), null);
+                method.parameter(pdb);
+                args = args.append(makeUnquotedIdent(pname));
+            }
+        }
+        
+        ClassOrInterface iface = (ClassOrInterface)member.getContainer();
+        Type stype = null;
+        boolean indirect = false;
+        for (Type st : model.getSatisfiedTypes()) {
+            if (st.getDeclaration().equals(iface)) {
+                stype = st;
+                break;
+            }
+        }
+        if (stype == null) {
+            indirect = true;
+            for (Type st : model.getSatisfiedTypes()) {
+                if (st.getDeclaration().inherits((iface))) {
+                    stype = iface.getType();// FIXME: For better BC this shoudld be the direct superinterface, and we bridge all the way up
+                    break;
+                }
+            }
+            if (stype == null
+                    && model.getExtendedType() != null
+                    && model.getExtendedType().getDeclaration().inherits((iface))) {
+                return null;//stype = model.getExtendedType();// FIXME: For better BC this shoudld be the direct superinterface, and we bridge all the way up
+            }
+        }
+        
+        if (stype == null) {
+            throw new BugException(null, "How does " + model.getName() + " inherit " + iface.getName());
+        }
+        JCStatement stmt;
+        if (indirect) {
+            stmt = make().Return(
+                    make().Apply(null, 
+                    naming.makeQualIdent(
+                            makeJavaType(stype, JT_RAW), selector),
+                            args.prepend(naming.makeQualifiedThis(makeJavaType(model.getType(), JT_RAW)))));
+        } else {
+            stmt = make().Return(
+                    make().Apply(null, 
+                    naming.makeQualIdent(
+                            naming.makeQualifiedSuper(makeJavaType(stype, JT_RAW)), selector),
+                            args));
+        }
+        
+        return method
+                .modifiers(PUBLIC)
+                .isOverride(true)
+                .resultType(makeJavaType(member.getType(), "hash".equals(member.getName()) ? JT_SMALL : 0), null)
+                .body(stmt);
+        }
+        return null;
+    }
+
+    protected boolean requiresObjectMethodBridge(TypedDeclaration member) {
+        return Decl.isObjectMember(member) 
+                && member.isInterfaceMember()
+                && ((Interface)member.getContainer()).isUseDefaultMethods()
+                && !willEraseToObject(((Interface)member.getContainer()).getType());
+    }
+
 
     private void transformClassOrCtorParameters(
             Tree.AnyClass def,
@@ -3725,12 +3820,12 @@ public class ClassTransformer extends AbstractTransformer {
                     // Generate getter in companion class
                     classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeGetter(decl, AttrTx.COMPANION, lazy));
                 } else if (useDefaultMethod(model)) {
-                    if (true/*model.isFormal() || !model.isShared()*/) {
+                    if (!Decl.isObjectMember(model)) {
                         classBuilder.attribute(makeGetter(decl, AttrTx.DEFAULT, lazy));
                     } else {
                         classBuilder.attribute(makeGetter(decl, AttrTx.BRIDGE_TO_STATIC, lazy));
                         ExpressionTransformer eg = expressionGen();
-                        eg.receiver = eg.new DollarThis(iface);
+                        eg.receiver = eg.new DollarThis2(iface);
                         classBuilder.attribute(makeGetter(decl, AttrTx.STATIC, lazy));
                         eg.receiver = eg.receiver.parent;
                     }
@@ -4140,8 +4235,13 @@ public class ClassTransformer extends AbstractTransformer {
                 && ((Interface)def.getDeclarationModel().getContainer()).isUseDefaultMethods()
                 && !(def.getDeclarationModel().isFormal() || ! def.getDeclarationModel().isShared());
         if (q) {
-            expressionGen().receiver = expressionGen().new DollarThis((Interface)def.getDeclarationModel().getContainer());
-        }
+            if (Decl.isObjectMember(def.getDeclarationModel())) {
+                expressionGen().receiver = expressionGen().new DollarThis2((Interface)def.getDeclarationModel().getContainer());        
+            } else {
+                expressionGen().receiver = expressionGen().new DollarThis((Interface)def.getDeclarationModel().getContainer());
+            }
+        } 
+            
         List<JCStatement> body = transformMethodBody(def);
         if (q) {
             expressionGen().receiver = expressionGen().receiver.parent;
@@ -4217,7 +4317,7 @@ public class ClassTransformer extends AbstractTransformer {
         boolean refinedResultType = !model.getType().isExactly(
                 ((TypedDeclaration)model.getRefinedDeclaration()).getType());
         ListBuffer<MethodDefinitionBuilder> lb;
-        if (true/*model.isFormal() || !model.isShared()*/) {
+        if (!Decl.isObjectMember(model)) {
             lb = transformMethod(model,
                     def,
                     true, true, true, body,
@@ -4258,7 +4358,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Transform the methods again, but at static methods with an explicit
             // $this parameter (and captured reified type parameters)
             ExpressionTransformer eg = expressionGen();
-            eg.receiver = eg.new DollarThis(iface);
+            eg.receiver = eg.new DollarThis2(iface);
             lb.addAll(transformMethod(model, 
                     def,
                     true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
