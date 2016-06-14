@@ -117,6 +117,7 @@ import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -268,6 +269,9 @@ public class ClassTransformer extends AbstractTransformer {
     private void multiplyInheritedInterfaces(TypeDeclaration model, HashSet<Interface> multiplyInherited, HashSet<Interface> singlyInherited) {
         for (Type t : model.getSatisfiedTypes()) {
             TypeDeclaration d = t.getDeclaration();
+            if (d instanceof InterfaceAlias) {
+                d = ((InterfaceAlias)d).getExtendedType().getDeclaration();
+            }
             if (d instanceof Interface) {
                 if (singlyInherited.contains(d)) {
                     singlyInherited.remove(d);
@@ -360,6 +364,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
         for (Tree.StaticType st : satisfiedTypes) {
             Type satType  = st.getTypeModel();
+            if (satType.getDeclaration() instanceof InterfaceAlias) {
+                satType = satType.getExtendedType();
+            }
             Interface iface = (Interface)satType.getDeclaration();
             if (!done.contains(iface) && iface.isUseDefaultMethods()) {
                 for (Map.Entry<TypeParameter, Type> tas : satType.getTypeArguments().entrySet()) {
