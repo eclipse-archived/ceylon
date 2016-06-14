@@ -586,7 +586,8 @@ public class CeylonVisitor extends Visitor {
                 }
                 classBuilder.getCompanionBuilder(iface).attribute(adb);
             } else {
-                if (!Decl.isObjectMember(model)) {
+                if (!Decl.isObjectMember(model)
+                        || model.isFormal()) {
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.DEFAULT));
                 } else {
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.BRIDGE_TO_STATIC));

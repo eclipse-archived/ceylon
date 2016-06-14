@@ -3827,7 +3827,8 @@ public class ClassTransformer extends AbstractTransformer {
                     // Generate getter in companion class
                     classBuilder.getCompanionBuilder((Interface)decl.getDeclarationModel().getContainer()).attribute(makeGetter(decl, AttrTx.COMPANION, lazy));
                 } else if (useDefaultMethod(model)) {
-                    if (!Decl.isObjectMember(model)) {
+                    if (!Decl.isObjectMember(model)
+                            || model.isFormal()) {
                         classBuilder.attribute(makeGetter(decl, AttrTx.DEFAULT, lazy));
                     } else {
                         classBuilder.attribute(makeGetter(decl, AttrTx.BRIDGE_TO_STATIC, lazy));
@@ -4324,7 +4325,8 @@ public class ClassTransformer extends AbstractTransformer {
         boolean refinedResultType = !model.getType().isExactly(
                 ((TypedDeclaration)model.getRefinedDeclaration()).getType());
         ListBuffer<MethodDefinitionBuilder> lb;
-        if (!Decl.isObjectMember(model)) {
+        if (!Decl.isObjectMember(model)
+                || model.isFormal()) {
             lb = transformMethod(model,
                     def,
                     true, true, true, body,
