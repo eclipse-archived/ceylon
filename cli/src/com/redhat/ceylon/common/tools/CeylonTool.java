@@ -537,6 +537,9 @@ public class CeylonTool implements Tool {
         if (OSUtil.isWindows()) {
             processBuilder.redirectOutput(Redirect.INHERIT);
         }
+        if (getCwd() != null) {
+            processBuilder.directory(getCwd());
+        }
         try {
             Process process = processBuilder.start();
             if (!OSUtil.isWindows()) {
