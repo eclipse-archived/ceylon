@@ -2504,20 +2504,20 @@ public final class Array<Element>
                 return Arrays.equals((Object[]) x, (Object[]) y);
             }
         }
-        return SearchableList.super.equals(that);
+        return List.equals(this, that);
     }
     
     @Override
     @Transient
     public int hashCode() {
         //TODO: optimize hash computation to avoid boxing!!
-        return SearchableList.super.hashCode();
+        return List.hashCode(this);
     }
     
     @Override
     @Transient
     public java.lang.String toString() {
-        return SearchableList.super.toString();
+        return Collection.toString(this);
     }
     
     @Ignore

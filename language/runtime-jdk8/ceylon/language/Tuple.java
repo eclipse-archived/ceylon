@@ -1180,5 +1180,13 @@ public final class Tuple<Element, First extends Element,
         sb.appendCharacter(']');
         return sb.toString();
     }
-
+    
+    /** jvm doesn't do virtual dispatch of java.lang.Object methods to interfaces*/
+    public boolean equals(java.lang.Object that) {
+        return List.equals(this, that);
+    }
+    /** jvm doesn't do virtual dispatch of java.lang.Object methods to interfaces*/
+    public int hashCode() {
+        return List.hashCode(this);
+    }
 }
