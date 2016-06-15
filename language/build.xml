@@ -181,7 +181,7 @@
             <fileset dir="${module.language.src}">
                 <include name="ceylon/language/**/*.ceylon"/>
             </fileset>
-            <fileset dir="${module.language.runtime}">
+            <fileset dir="${module.language.runtime}-jdk8">
                 <include name="**/*.java"/>
             </fileset>
         </zip>
@@ -217,196 +217,288 @@
         <delete file="${ceylon.repo.dir}/${ceylon.language.src}.sha1" />
     </target>
 
+    <macrodef name="compile-runtime">
+        <attribute name="jdk" default="7"/>
+        <sequential>
+            <!-- Short -->
+            <copy file="template-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+                tofile="runtime-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/ShortArray.java"
+                overwrite="true">
+              <filterset>
+                <filter token="Name" value="Short"/>
+                <filter token="Classname" value="ShortArray"/>
+                
+                <filter token="PrimitiveType" value="short"/>
+                
+                <filter token="BoxedType" value="ceylon.language.Integer"/>
+                <filter token="BoxedTypeName" value="ceylon.language::Integer"/>
+                <filter token="UnboxMethod" value="longValue"/>
+                
+                <filter token="JavaBoxedType" value="java.lang.Short"/>
+                <filter token="JavaBoxedTypeName" value="java.lang::Short"/>
+                
+                <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+                <filter token="OptionalStart" value="/*"/>
+                <filter token="OptionalEnd" value="*/"/>
+                <filter token="Optional" value="//"/>
+                <filter token="ArrayInstanceWrapper" value="NOTUSED"/>
+                <filter token="CeylonArrayGetter" value="NOTUSED"/>
+              </filterset>
+            </copy>
+            <!-- Int -->
+            <copy file="template-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+                tofile="runtime-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/IntArray.java"
+                overwrite="true">
+              <filterset>
+                <filter token="Name" value="Int"/>
+                <filter token="Classname" value="IntArray"/>
+                
+                <filter token="PrimitiveType" value="int"/>
+                
+                <filter token="BoxedType" value="ceylon.language.Integer"/>
+                <filter token="BoxedTypeName" value="ceylon.language::Integer"/>
+                <filter token="UnboxMethod" value="longValue"/>
+                
+                <filter token="JavaBoxedType" value="java.lang.Integer"/>
+                <filter token="JavaBoxedTypeName" value="java.lang::Integer"/>
+                
+                <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+                <filter token="OptionalStart" value=""/>
+                <filter token="OptionalEnd" value=""/>
+                <filter token="Optional" value=""/>
+                <filter token="ArrayInstanceWrapper" value="instanceForCodePoints"/>
+                <filter token="CeylonArrayGetter" value="getCodePointArray"/>
+                <filter token="CeylonArrayGetterType" value="ceylon.language.Character"/>
+                <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Character"/>
+              </filterset>
+            </copy>
+            <!-- Long -->
+            <copy file="template-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+                tofile="runtime-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/LongArray.java"
+                overwrite="true">
+              <filterset>
+                <filter token="Name" value="Long"/>
+                <filter token="Classname" value="LongArray"/>
+                <filter token="PrimitiveType" value="long"/>
+                <filter token="BoxedType" value="ceylon.language.Integer"/>
+                <filter token="BoxedTypeName" value="ceylon.language::Integer"/>
+                <filter token="UnboxMethod" value="longValue"/>
+                <filter token="JavaBoxedType" value="java.lang.Long"/>
+                <filter token="JavaBoxedTypeName" value="java.lang::Long"/>
+                
+                <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+                <filter token="OptionalStart" value=""/>
+                <filter token="OptionalEnd" value=""/>
+                <filter token="Optional" value=""/>
+                <filter token="ArrayInstanceWrapper" value="instanceForIntegers"/>
+                <filter token="CeylonArrayGetter" value="getIntegerArray"/>
+                <filter token="CeylonArrayGetterType" value="ceylon.language.Integer"/>
+                <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Integer"/>
+              </filterset>
+            </copy>
+            <!-- Byte -->
+            <copy file="template-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+                tofile="runtime-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/ByteArray.java"
+                overwrite="true">
+              <filterset>
+                <filter token="Name" value="Byte"/>
+                <filter token="Classname" value="ByteArray"/>
+                <filter token="PrimitiveType" value="byte"/>
+                <filter token="BoxedType" value="ceylon.language.Byte"/>
+                <filter token="BoxedTypeName" value="ceylon.language::Byte"/>
+                <filter token="JavaBoxedType" value="java.lang.Byte"/>
+                <filter token="JavaBoxedTypeName" value="java.lang::Byte"/>
+                <filter token="UnboxMethod" value="byteValue"/>
+                <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+                <filter token="OptionalStart" value=""/>
+                <filter token="OptionalEnd" value=""/>
+                <filter token="Optional" value=""/>
+                <filter token="ArrayInstanceWrapper" value="instanceForBytes"/>
+                <filter token="CeylonArrayGetter" value="getByteArray"/>
+                <filter token="CeylonArrayGetterType" value="ceylon.language.Byte"/>
+                <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Byte"/>
+              </filterset>
+            </copy>
+            <!-- Boolean -->
+            <copy file="template-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+                tofile="runtime-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/BooleanArray.java"
+                overwrite="true">
+              <filterset>
+                <filter token="Name" value="Boolean"/>
+                <filter token="Classname" value="BooleanArray"/>
+                <filter token="PrimitiveType" value="boolean"/>
+                <filter token="BoxedType" value="ceylon.language.Boolean"/>
+                <filter token="BoxedTypeName" value="ceylon.language::Boolean"/>
+                <filter token="JavaBoxedType" value="java.lang.Boolean"/>
+                <filter token="JavaBoxedTypeName" value="java.lang::Boolean"/>
+                <filter token="UnboxMethod" value="booleanValue"/>
+                <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+                <filter token="OptionalStart" value=""/>
+                <filter token="OptionalEnd" value=""/>
+                <filter token="Optional" value=""/>
+                <filter token="ArrayInstanceWrapper" value="instanceForBooleans"/>
+                <filter token="CeylonArrayGetter" value="getBooleanArray"/>
+                <filter token="CeylonArrayGetterType" value="ceylon.language.Boolean"/>
+                <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Boolean"/>
+              </filterset>
+            </copy>
+            <!-- Character -->
+            <copy file="template-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+                tofile="runtime-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/CharArray.java"
+                overwrite="true">
+              <filterset>
+                <filter token="Name" value="Char"/>
+                <filter token="Classname" value="CharArray"/>
+                <filter token="PrimitiveType" value="char"/>
+                <filter token="BoxedType" value="ceylon.language.Character"/>
+                <filter token="BoxedTypeName" value="ceylon.language::Character"/>
+                <filter token="JavaBoxedType" value="java.lang.Character"/>
+                <filter token="JavaBoxedTypeName" value="java.lang::Character"/>
+                <filter token="UnboxMethod" value="intValue"/>
+                <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+                <filter token="OptionalStart" value="/*"/>
+                <filter token="OptionalEnd" value="*/"/>
+                <filter token="Optional" value="//"/>
+                <filter token="ArrayInstanceWrapper" value="NOTUSED"/>
+                <filter token="CeylonArrayGetter" value="NOTUSED"/>
+              </filterset>
+            </copy>
+            <!-- Float -->
+            <copy file="template-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+                tofile="runtime-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/FloatArray.java"
+                overwrite="true">
+              <filterset>
+                <filter token="Name" value="Float"/>
+                <filter token="Classname" value="FloatArray"/>
+                <filter token="PrimitiveType" value="float"/>
+                <filter token="BoxedType" value="ceylon.language.Float"/>
+                <filter token="BoxedTypeName" value="ceylon.language::Float"/>
+                <filter token="JavaBoxedType" value="java.lang.Float"/>
+                <filter token="JavaBoxedTypeName" value="java.lang::Float"/>
+                <filter token="UnboxMethod" value="doubleValue"/>
+                <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+                <filter token="OptionalStart" value="/*"/>
+                <filter token="OptionalEnd" value="*/"/>
+                <filter token="Optional" value="//"/>
+                <filter token="ArrayInstanceWrapper" value="NOT USED"/>
+                <filter token="CeylonArrayGetter" value="NOT USED"/>
+                <filter token="CeylonArrayGetterType" value="NOT USED"/>
+                <filter token="CeylonArrayGetterTypeName" value="NOT USED"/>
+              </filterset>
+            </copy>
+            <!-- Double -->
+            <copy file="template-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
+                tofile="runtime-jdk@{jdk}/com/redhat/ceylon/compiler/java/language/DoubleArray.java"
+                overwrite="true">
+              <filterset>
+                <filter token="Name" value="Double"/>
+                <filter token="Classname" value="DoubleArray"/>
+                <filter token="PrimitiveType" value="double"/>
+                <filter token="BoxedType" value="ceylon.language.Float"/>
+                <filter token="BoxedTypeName" value="ceylon.language::Float"/>
+                <filter token="JavaBoxedType" value="java.lang.Double"/>
+                <filter token="JavaBoxedTypeName" value="java.lang::Double"/>
+                <filter token="UnboxMethod" value="doubleValue"/>
+                <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
+                <filter token="OptionalStart" value=""/>
+                <filter token="OptionalEnd" value=""/>
+                <filter token="Optional" value=""/>
+                <filter token="ArrayInstanceWrapper" value="instanceForFloats"/>
+                <filter token="CeylonArrayGetter" value="getFloatArray"/>
+                <filter token="CeylonArrayGetterType" value="ceylon.language.Float"/>
+                <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Float"/>
+              </filterset>
+            </copy>
+            
+            <!-- first removing any previous compiled artifact from
+                 the output repo because otherwise the build will fail -->
+            <delete file="${build.dist.repo}/${ceylon.language.car}" failonerror="false" />
+            <condition property="generateModuleInfo" value="${jigsaw}" else="no">
+                    <isset property="jigsaw"/>
+            </condition>
+            <!-- toplevel types -->
+            <ceylon-compile
+                    fork="true" inheritAll="true"
+                    verbose="false"
+                    encoding="UTF-8"
+                    noMtimeCheck="true"
+                    generateModuleInfo="${generateModuleInfo}"
+                    src="${module.language.src}:runtime-jdk@{jdk}"
+                    sysrep="${ceylon.repo.dir}"
+                    out="${build.dist.repo}">
+                <suppressWarning>ceylonNamespace</suppressWarning>
+                <suppressWarning>unusedDeclaration</suppressWarning>
+                <suppressWarning>unusedImport</suppressWarning>
+                <suppressWarning>expressionTypeNothing</suppressWarning>
+                <javacoption>-Xbootstrapceylon</javacoption>
+                <javacoption>-g</javacoption>
+            	<javacoption>-target=@{jdk}</javacoption>
+            	<javacoption>-source=@{jdk}</javacoption>
+                <files>
+                    <include name="**/*.ceylon"/>
+                    <include name="com/redhat/**/*.java"/>
+                    <!-- We swap the nativily implemented files for their Java counter parts -->
+                    <exclude name="ceylon/language/Array.ceylon"/>
+                    <include name="ceylon/language/Array.java"/>
+                    <exclude name="ceylon/language/Boolean.ceylon"/>
+                    <include name="ceylon/language/Boolean.java"/>
+                    <include name="ceylon/language/true_.java"/>
+                    <include name="ceylon/language/false_.java"/>
+                    <exclude name="ceylon/language/Byte.ceylon"/>
+                    <include name="ceylon/language/Byte.java"/>
+                    <exclude name="ceylon/language/Callable.ceylon"/>
+                    <include name="ceylon/language/Callable.java"/>
+                    <exclude name="ceylon/language/Character.ceylon"/>
+                    <include name="ceylon/language/Character.java"/>
+                    <exclude name="ceylon/language/className.ceylon"/>
+                    <include name="ceylon/language/className_.java"/>
+                    <exclude name="ceylon/language/Throwable.ceylon"/>
+                    <include name="ceylon/language/Throwable.java"/>
+                    <exclude name="ceylon/language/AssertionError.ceylon"/>
+                    <include name="ceylon/language/AssertionError.java"/>
+                    <exclude name="ceylon/language/Exception.ceylon"/>
+                    <include name="ceylon/language/Exception.java"/>
+                    <exclude name="ceylon/language/suppressedExceptions.ceylon"/>
+                    <include name="ceylon/language/suppressedExceptions_.java"/>
+                    <exclude name="ceylon/language/Float.ceylon"/>
+                    <include name="ceylon/language/Float.java"/>
+                    <exclude name="ceylon/language/Integer.ceylon"/>
+                    <include name="ceylon/language/Integer.java"/>
+                    <exclude name="ceylon/language/process.ceylon"/>
+                    <include name="ceylon/language/process_.java"/>
+                    <exclude name="ceylon/language/printStackTrace.ceylon"/>
+                    <include name="ceylon/language/printStackTrace_.java"/>
+                    <exclude name="ceylon/language/String.ceylon"/>
+                    <include name="ceylon/language/String.java"/>
+                    <exclude name="ceylon/language/Tuple.ceylon"/>
+                    <include name="ceylon/language/Tuple.java"/>
+                    <exclude name="ceylon/language/flatten.ceylon"/>
+                    <include name="ceylon/language/flatten_.java"/>
+                    <exclude name="ceylon/language/unflatten.ceylon"/>
+                    <include name="ceylon/language/unflatten_.java"/>
+                    
+                    <exclude name="ceylon/language/meta/annotations.ceylon"/>
+                    <include name="ceylon/language/meta/annotations_.java"/>
+                    <exclude name="ceylon/language/meta/classDeclaration.ceylon"/>
+                    <include name="ceylon/language/meta/classDeclaration_.java"/>
+                    <exclude name="ceylon/language/meta/modules.ceylon"/>
+                    <include name="ceylon/language/meta/modules_.java"/>
+                    <exclude name="ceylon/language/meta/type.ceylon"/>
+                    <include name="ceylon/language/meta/type_.java"/>
+                    <exclude name="ceylon/language/meta/typeLiteral.ceylon"/>
+                    <include name="ceylon/language/meta/typeLiteral_.java"/>
+                    
+                    <exclude name="ceylon/language/serialization/PartialImpl.ceylon"/>
+                    <include name="ceylon/language/serialization/PartialImpl.java"/>
+                    <exclude name="ceylon/language/impl/reach.ceylon"/>
+                    <include name="ceylon/language/impl/reach_.java"/>
+                </files>
+            </ceylon-compile>
+        </sequential>
+	</macrodef>
+	
     <target name="generate.sources.java">
-        <!-- Short -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/ShortArray.java"
-            overwrite="true">
-          <filterset>
-            <filter token="Name" value="Short"/>
-            <filter token="Classname" value="ShortArray"/>
-            
-            <filter token="PrimitiveType" value="short"/>
-            
-            <filter token="BoxedType" value="ceylon.language.Integer"/>
-            <filter token="BoxedTypeName" value="ceylon.language::Integer"/>
-            <filter token="UnboxMethod" value="longValue"/>
-            
-            <filter token="JavaBoxedType" value="java.lang.Short"/>
-            <filter token="JavaBoxedTypeName" value="java.lang::Short"/>
-            
-            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
-            <filter token="OptionalStart" value="/*"/>
-            <filter token="OptionalEnd" value="*/"/>
-          	<filter token="Optional" value="//"/>
-            <filter token="ArrayInstanceWrapper" value="NOTUSED"/>
-            <filter token="CeylonArrayGetter" value="NOTUSED"/>
-          </filterset>
-        </copy>
-        <!-- Int -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/IntArray.java"
-            overwrite="true">
-          <filterset>
-            <filter token="Name" value="Int"/>
-            <filter token="Classname" value="IntArray"/>
-            
-            <filter token="PrimitiveType" value="int"/>
-            
-            <filter token="BoxedType" value="ceylon.language.Integer"/>
-            <filter token="BoxedTypeName" value="ceylon.language::Integer"/>
-            <filter token="UnboxMethod" value="longValue"/>
-            
-            <filter token="JavaBoxedType" value="java.lang.Integer"/>
-            <filter token="JavaBoxedTypeName" value="java.lang::Integer"/>
-            
-            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
-            <filter token="OptionalStart" value=""/>
-            <filter token="OptionalEnd" value=""/>
-          	<filter token="Optional" value=""/>
-            <filter token="ArrayInstanceWrapper" value="instanceForCodePoints"/>
-            <filter token="CeylonArrayGetter" value="getCodePointArray"/>
-            <filter token="CeylonArrayGetterType" value="ceylon.language.Character"/>
-            <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Character"/>
-          </filterset>
-        </copy>
-        <!-- Long -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/LongArray.java"
-            overwrite="true">
-          <filterset>
-            <filter token="Name" value="Long"/>
-            <filter token="Classname" value="LongArray"/>
-            <filter token="PrimitiveType" value="long"/>
-            <filter token="BoxedType" value="ceylon.language.Integer"/>
-            <filter token="BoxedTypeName" value="ceylon.language::Integer"/>
-            <filter token="UnboxMethod" value="longValue"/>
-            <filter token="JavaBoxedType" value="java.lang.Long"/>
-            <filter token="JavaBoxedTypeName" value="java.lang::Long"/>
-            
-            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
-            <filter token="OptionalStart" value=""/>
-            <filter token="OptionalEnd" value=""/>
-          	<filter token="Optional" value=""/>
-            <filter token="ArrayInstanceWrapper" value="instanceForIntegers"/>
-            <filter token="CeylonArrayGetter" value="getIntegerArray"/>
-            <filter token="CeylonArrayGetterType" value="ceylon.language.Integer"/>
-            <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Integer"/>
-          </filterset>
-        </copy>
-        <!-- Byte -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/ByteArray.java"
-            overwrite="true">
-          <filterset>
-            <filter token="Name" value="Byte"/>
-            <filter token="Classname" value="ByteArray"/>
-            <filter token="PrimitiveType" value="byte"/>
-            <filter token="BoxedType" value="ceylon.language.Byte"/>
-            <filter token="BoxedTypeName" value="ceylon.language::Byte"/>
-            <filter token="JavaBoxedType" value="java.lang.Byte"/>
-            <filter token="JavaBoxedTypeName" value="java.lang::Byte"/>
-            <filter token="UnboxMethod" value="byteValue"/>
-            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
-            <filter token="OptionalStart" value=""/>
-            <filter token="OptionalEnd" value=""/>
-          	<filter token="Optional" value=""/>
-            <filter token="ArrayInstanceWrapper" value="instanceForBytes"/>
-            <filter token="CeylonArrayGetter" value="getByteArray"/>
-            <filter token="CeylonArrayGetterType" value="ceylon.language.Byte"/>
-            <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Byte"/>
-          </filterset>
-        </copy>
-        <!-- Boolean -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/BooleanArray.java"
-            overwrite="true">
-          <filterset>
-            <filter token="Name" value="Boolean"/>
-            <filter token="Classname" value="BooleanArray"/>
-            <filter token="PrimitiveType" value="boolean"/>
-            <filter token="BoxedType" value="ceylon.language.Boolean"/>
-            <filter token="BoxedTypeName" value="ceylon.language::Boolean"/>
-            <filter token="JavaBoxedType" value="java.lang.Boolean"/>
-            <filter token="JavaBoxedTypeName" value="java.lang::Boolean"/>
-            <filter token="UnboxMethod" value="booleanValue"/>
-            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
-            <filter token="OptionalStart" value=""/>
-            <filter token="OptionalEnd" value=""/>
-          	<filter token="Optional" value=""/>
-            <filter token="ArrayInstanceWrapper" value="instanceForBooleans"/>
-            <filter token="CeylonArrayGetter" value="getBooleanArray"/>
-            <filter token="CeylonArrayGetterType" value="ceylon.language.Boolean"/>
-            <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Boolean"/>
-          </filterset>
-        </copy>
-        <!-- Character -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/CharArray.java"
-            overwrite="true">
-          <filterset>
-            <filter token="Name" value="Char"/>
-            <filter token="Classname" value="CharArray"/>
-            <filter token="PrimitiveType" value="char"/>
-            <filter token="BoxedType" value="ceylon.language.Character"/>
-            <filter token="BoxedTypeName" value="ceylon.language::Character"/>
-            <filter token="JavaBoxedType" value="java.lang.Character"/>
-            <filter token="JavaBoxedTypeName" value="java.lang::Character"/>
-            <filter token="UnboxMethod" value="intValue"/>
-            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
-            <filter token="OptionalStart" value="/*"/>
-            <filter token="OptionalEnd" value="*/"/>
-          	<filter token="Optional" value="//"/>
-            <filter token="ArrayInstanceWrapper" value="NOTUSED"/>
-            <filter token="CeylonArrayGetter" value="NOTUSED"/>
-          </filterset>
-        </copy>
-        <!-- Float -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/FloatArray.java"
-            overwrite="true">
-          <filterset>
-            <filter token="Name" value="Float"/>
-            <filter token="Classname" value="FloatArray"/>
-            <filter token="PrimitiveType" value="float"/>
-            <filter token="BoxedType" value="ceylon.language.Float"/>
-            <filter token="BoxedTypeName" value="ceylon.language::Float"/>
-            <filter token="JavaBoxedType" value="java.lang.Float"/>
-            <filter token="JavaBoxedTypeName" value="java.lang::Float"/>
-            <filter token="UnboxMethod" value="doubleValue"/>
-            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
-            <filter token="OptionalStart" value="/*"/>
-            <filter token="OptionalEnd" value="*/"/>
-          	<filter token="Optional" value="//"/>
-            <filter token="ArrayInstanceWrapper" value="NOT USED"/>
-            <filter token="CeylonArrayGetter" value="NOT USED"/>
-            <filter token="CeylonArrayGetterType" value="NOT USED"/>
-            <filter token="CeylonArrayGetterTypeName" value="NOT USED"/>
-          </filterset>
-        </copy>
-        <!-- Double -->
-        <copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
-            tofile="runtime/com/redhat/ceylon/compiler/java/language/DoubleArray.java"
-            overwrite="true">
-          <filterset>
-            <filter token="Name" value="Double"/>
-            <filter token="Classname" value="DoubleArray"/>
-            <filter token="PrimitiveType" value="double"/>
-            <filter token="BoxedType" value="ceylon.language.Float"/>
-            <filter token="BoxedTypeName" value="ceylon.language::Float"/>
-            <filter token="JavaBoxedType" value="java.lang.Double"/>
-            <filter token="JavaBoxedTypeName" value="java.lang::Double"/>
-            <filter token="UnboxMethod" value="doubleValue"/>
-            <filter token="GeneratedWarning" value="THIS IS A GENERATED FILE - DO NOT EDIT"/>
-            <filter token="OptionalStart" value=""/>
-            <filter token="OptionalEnd" value=""/>
-          	<filter token="Optional" value=""/>
-            <filter token="ArrayInstanceWrapper" value="instanceForFloats"/>
-            <filter token="CeylonArrayGetter" value="getFloatArray"/>
-            <filter token="CeylonArrayGetterType" value="ceylon.language.Float"/>
-            <filter token="CeylonArrayGetterTypeName" value="ceylon.language::Float"/>
-          </filterset>
-        </copy>
+        
         <!-- Object -->
         <!--<copy file="template/com/redhat/ceylon/compiler/java/language/PrimitiveArray.java" 
             tofile="runtime/com/redhat/ceylon/compiler/java/language/ObjectArray.java">
@@ -433,88 +525,8 @@
     <!-- Rule to build runtime classes from their Java and Ceylon sources -->
     <target name="ceylon.language.java"
             depends="generate.sources.java">
-        <!-- first removing any previous compiled artifact from
-             the output repo because otherwise the build will fail -->
-        <delete file="${build.dist.repo}/${ceylon.language.car}" failonerror="false" />
-    	<condition property="generateModuleInfo" value="${jigsaw}" else="no">
-    	        <isset property="jigsaw"/>
-    	</condition>
-        <!-- toplevel types -->
-        <ceylon-compile
-            fork="true" inheritAll="true"
-            verbose="false"
-            encoding="UTF-8"
-            noMtimeCheck="true"
-        	generateModuleInfo="${generateModuleInfo}"
-            src="${module.language.src}:${runtime.src}"
-            sysrep="${ceylon.repo.dir}"
-            out="${build.dist.repo}">
-            <suppressWarning>ceylonNamespace</suppressWarning>
-            <suppressWarning>unusedDeclaration</suppressWarning>
-            <suppressWarning>unusedImport</suppressWarning>
-            <suppressWarning>expressionTypeNothing</suppressWarning>
-            <javacoption>-Xbootstrapceylon</javacoption>
-            <javacoption>-g</javacoption>
-            <files>
-                <include name="**/*.ceylon"/>
-                <include name="com/redhat/**/*.java"/>
-                <!-- We swap the nativily implemented files for their Java counter parts -->
-                <exclude name="ceylon/language/Array.ceylon"/>
-                <include name="ceylon/language/Array.java"/>
-                <exclude name="ceylon/language/Boolean.ceylon"/>
-                <include name="ceylon/language/Boolean.java"/>
-                <include name="ceylon/language/true_.java"/>
-                <include name="ceylon/language/false_.java"/>
-                <exclude name="ceylon/language/Byte.ceylon"/>
-                <include name="ceylon/language/Byte.java"/>
-                <exclude name="ceylon/language/Callable.ceylon"/>
-                <include name="ceylon/language/Callable.java"/>
-                <exclude name="ceylon/language/Character.ceylon"/>
-                <include name="ceylon/language/Character.java"/>
-                <exclude name="ceylon/language/className.ceylon"/>
-                <include name="ceylon/language/className_.java"/>
-                <exclude name="ceylon/language/Throwable.ceylon"/>
-                <include name="ceylon/language/Throwable.java"/>
-                <exclude name="ceylon/language/AssertionError.ceylon"/>
-                <include name="ceylon/language/AssertionError.java"/>
-                <exclude name="ceylon/language/Exception.ceylon"/>
-                <include name="ceylon/language/Exception.java"/>
-                <exclude name="ceylon/language/suppressedExceptions.ceylon"/>
-                <include name="ceylon/language/suppressedExceptions_.java"/>
-                <exclude name="ceylon/language/Float.ceylon"/>
-                <include name="ceylon/language/Float.java"/>
-                <exclude name="ceylon/language/Integer.ceylon"/>
-                <include name="ceylon/language/Integer.java"/>
-                <exclude name="ceylon/language/process.ceylon"/>
-                <include name="ceylon/language/process_.java"/>
-                <exclude name="ceylon/language/printStackTrace.ceylon"/>
-                <include name="ceylon/language/printStackTrace_.java"/>
-                <exclude name="ceylon/language/String.ceylon"/>
-                <include name="ceylon/language/String.java"/>
-                <exclude name="ceylon/language/Tuple.ceylon"/>
-                <include name="ceylon/language/Tuple.java"/>
-                <exclude name="ceylon/language/flatten.ceylon"/>
-                <include name="ceylon/language/flatten_.java"/>
-                <exclude name="ceylon/language/unflatten.ceylon"/>
-                <include name="ceylon/language/unflatten_.java"/>
-                
-                <exclude name="ceylon/language/meta/annotations.ceylon"/>
-                <include name="ceylon/language/meta/annotations_.java"/>
-                <exclude name="ceylon/language/meta/classDeclaration.ceylon"/>
-                <include name="ceylon/language/meta/classDeclaration_.java"/>
-                <exclude name="ceylon/language/meta/modules.ceylon"/>
-                <include name="ceylon/language/meta/modules_.java"/>
-                <exclude name="ceylon/language/meta/type.ceylon"/>
-                <include name="ceylon/language/meta/type_.java"/>
-                <exclude name="ceylon/language/meta/typeLiteral.ceylon"/>
-                <include name="ceylon/language/meta/typeLiteral_.java"/>
-                
-                <exclude name="ceylon/language/serialization/PartialImpl.ceylon"/>
-                <include name="ceylon/language/serialization/PartialImpl.java"/>
-                <exclude name="ceylon/language/impl/reach.ceylon"/>
-                <include name="ceylon/language/impl/reach_.java"/>
-            </files>
-        </ceylon-compile>
+    	<compile-runtime jdk="7"/>
+    	<!--<compile-runtime jdk="7"/>-->
     </target>
     
     <!-- generate the ceylon.language.js file -->

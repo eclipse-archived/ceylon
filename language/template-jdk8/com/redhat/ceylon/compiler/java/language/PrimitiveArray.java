@@ -32,19 +32,19 @@ import ceylon.language.finished_;
 import ceylon.language.impl.BaseIterable;
 
 /*
- * THIS IS A GENERATED FILE - DO NOT EDIT 
+ * @GeneratedWarning@ 
  */
 /**
  * A type representing Java primitive arrays of type 
- * {@code char[]}.
+ * {@code @PrimitiveType@[]}.
  *
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 /*
- * THIS IS A GENERATED FILE - DO NOT EDIT 
+ * @GeneratedWarning@ 
  */
 //This type is never actually instantiated, it is always
-//replaced by the Java object array type char[].
+//replaced by the Java object array type @PrimitiveType@[].
 //
 //The operations which call 
 //Util.makeJavaArrayWrapperException() are completely 
@@ -57,11 +57,11 @@ import ceylon.language.impl.BaseIterable;
 @Class
 @ValueType
 @Generated(value="ant")
-public final class CharArray implements ReifiedType {
+public final class @Classname@ implements ReifiedType {
     
     @Ignore
     public final static TypeDescriptor $TypeDescriptor$ = 
-    TypeDescriptor.klass(CharArray.class);
+    TypeDescriptor.klass(@Classname@.class);
     
     /**
      * Create a new array of the given {@code size}, with
@@ -72,7 +72,7 @@ public final class CharArray implements ReifiedType {
      * @param size the size of the array
      * @param element the initial value of the array elements
      */
-    public CharArray(
+    public @Classname@(
             /**
              * The size of the new array.
              */
@@ -80,9 +80,9 @@ public final class CharArray implements ReifiedType {
             /**
              * The initial value of the array elements.
              */
-            @TypeInfo("ceylon.language::Character") 
+            @TypeInfo("@BoxedTypeName@") 
             @Defaulted @Name("element") 
-            char element){
+            @PrimitiveType@ element){
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -95,7 +95,7 @@ public final class CharArray implements ReifiedType {
      * @param size the size of the array
      */
     @Ignore
-    public CharArray(
+    public @Classname@(
             /**
              * The size of the new array.
              */
@@ -105,7 +105,7 @@ public final class CharArray implements ReifiedType {
 
     @Ignore
     // For consistency with the rules for ValueTypes
-    public static CharArray instance(char[] value){
+    public static @Classname@ instance(@PrimitiveType@[] value){
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -118,12 +118,12 @@ public final class CharArray implements ReifiedType {
      * @throws ArrayIndexOutOfBoundsException if the index
      *         does not refer to an element of this array
      */
-    public char get(@Name("index") int index) {
+    public @PrimitiveType@ get(@Name("index") int index) {
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public static char get(char[] value, int index) {
+    public static @PrimitiveType@ get(@PrimitiveType@[] value, int index) {
         throw Util.makeJavaArrayWrapperException();
     }
 
@@ -148,13 +148,13 @@ public final class CharArray implements ReifiedType {
              * The new value of the array element.
              */
             @Name("element") 
-            char element) {
+            @PrimitiveType@ element) {
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public static void set(char[] value, int index, 
-            char element) {
+    public static void set(@PrimitiveType@[] value, int index, 
+            @PrimitiveType@ element) {
         throw Util.makeJavaArrayWrapperException();
     }
     
@@ -166,42 +166,42 @@ public final class CharArray implements ReifiedType {
 
     /**
      * A view of this array as a Ceylon
-     * {@code Array<java.lang::Character>}, where
-     * {@code java.lang::Character} is the Java wrapper type
+     * {@code Array<@JavaBoxedTypeName@>}, where
+     * {@code @JavaBoxedTypeName@} is the Java wrapper type
      * corresponding to the primitive type
-     * {@code char} of elements of this Java
+     * {@code @PrimitiveType@} of elements of this Java
      * array.
      */
-    @TypeInfo("ceylon.language::Array<java.lang::Character>")
-    public ceylon.language.Array<java.lang.Character> getArray(){
+    @TypeInfo("ceylon.language::Array<@JavaBoxedTypeName@>")
+    public ceylon.language.Array<@JavaBoxedType@> getArray(){
         throw Util.makeJavaArrayWrapperException();
     }
     
     @Ignore
-    public static ceylon.language.Array<java.lang.Character> 
-    getArray(char[] array){
+    public static ceylon.language.Array<@JavaBoxedType@> 
+    getArray(@PrimitiveType@[] array){
         return Array.instance(array);
     }
 
-    ///**
-    // * A view of this array as a Ceylon
-    // * {@code Array<@CeylonArrayGetterTypeName@>}
-    // * where {@code @CeylonArrayGetterTypeName@}
-    // * is the Ceylon type corresponding to the
-    // * primitive type {@code char}
-    // * of elements of this Java array.
-    // */
-    /*@TypeInfo("ceylon.language::Array<@CeylonArrayGetterTypeName@>")
+    @Optional@/**
+    @Optional@ * A view of this array as a Ceylon
+    @Optional@ * {@code Array<@CeylonArrayGetterTypeName@>}
+    @Optional@ * where {@code @CeylonArrayGetterTypeName@}
+    @Optional@ * is the Ceylon type corresponding to the
+    @Optional@ * primitive type {@code @PrimitiveType@}
+    @Optional@ * of elements of this Java array.
+    @Optional@ */
+    @OptionalStart@@TypeInfo("ceylon.language::Array<@CeylonArrayGetterTypeName@>")
     public ceylon.language.Array<@CeylonArrayGetterType@> 
-    NOTUSED(){
+    @CeylonArrayGetter@(){
         throw Util.makeJavaArrayWrapperException();
     }
     
     @Ignore
     public static ceylon.language.Array<@CeylonArrayGetterType@> 
-    NOTUSED(char[] array){
-        return Array.NOTUSED(array);
-    }*/
+    @CeylonArrayGetter@(@PrimitiveType@[] array){
+        return Array.@ArrayInstanceWrapper@(array);
+    }@OptionalEnd@
     
     /**
      * Efficiently copy a measure of this Java primitive 
@@ -215,7 +215,7 @@ public final class CharArray implements ReifiedType {
      *        within the {@code destination} array
      * @param length the number of elements to copy
      */
-    public void copyTo(@Name("destination") char[] destination, 
+    public void copyTo(@Name("destination") @PrimitiveType@[] destination, 
                        @Name("sourcePosition") @Defaulted int sourcePosition, 
                        @Name("destinationPosition") @Defaulted int destinationPosition, 
                        @Name("length") @Defaulted int length){
@@ -223,30 +223,30 @@ public final class CharArray implements ReifiedType {
     }
     
     @Ignore
-    public static void copyTo(char[] array, 
-            char[] destination){
+    public static void copyTo(@PrimitiveType@[] array, 
+            @PrimitiveType@[] destination){
         System.arraycopy(array, 0, destination, 0, array.length);
     }
 
     @Ignore
-    public static void copyTo(char[] array, 
-            char[] destination, 
+    public static void copyTo(@PrimitiveType@[] array, 
+            @PrimitiveType@[] destination, 
             int sourcePosition){
         System.arraycopy(array, sourcePosition, destination, 
                 0, array.length-sourcePosition);
     }
 
     @Ignore
-    public static void copyTo(char[] array, 
-            char[] destination, 
+    public static void copyTo(@PrimitiveType@[] array, 
+            @PrimitiveType@[] destination, 
             int sourcePosition, int destinationPosition){
         System.arraycopy(array, sourcePosition, destination, 
                 destinationPosition, array.length-sourcePosition);
     }
 
     @Ignore
-    public static void copyTo(char[] array, 
-            char[] destination, 
+    public static void copyTo(@PrimitiveType@[] array, 
+            @PrimitiveType@[] destination, 
             int sourcePosition, int destinationPosition, 
             int length){
         System.arraycopy(array, sourcePosition, destination, 
@@ -254,35 +254,35 @@ public final class CharArray implements ReifiedType {
     }
 
     @Ignore
-    public int copyTo$sourcePosition(char[] destination){
+    public int copyTo$sourcePosition(@PrimitiveType@[] destination){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public int copyTo$destinationPosition(char[] destination, 
+    public int copyTo$destinationPosition(@PrimitiveType@[] destination, 
             int sourcePosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public int copyTo$length(char[] destination, 
+    public int copyTo$length(@PrimitiveType@[] destination, 
             int sourcePosition, int destinationPosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public void copyTo(char[] destination){
+    public void copyTo(@PrimitiveType@[] destination){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public void copyTo(char[] destination, 
+    public void copyTo(@PrimitiveType@[] destination, 
                        int sourcePosition){
         throw Util.makeJavaArrayWrapperException();
     }
 
     @Ignore
-    public void copyTo(char[] destination, 
+    public void copyTo(@PrimitiveType@[] destination, 
                        int sourcePosition, 
                        int destinationPosition){
         throw Util.makeJavaArrayWrapperException();
@@ -300,7 +300,7 @@ public final class CharArray implements ReifiedType {
     }
 
     @Ignore
-    public static boolean equals(char[] value, 
+    public static boolean equals(@PrimitiveType@[] value, 
             java.lang.Object that) {
         return value.equals(that);
     }
@@ -311,7 +311,7 @@ public final class CharArray implements ReifiedType {
     }
 
     @Ignore
-    public static int hashCode(char[] value) {
+    public static int hashCode(@PrimitiveType@[] value) {
         return value.hashCode();
     }
 
@@ -321,43 +321,43 @@ public final class CharArray implements ReifiedType {
     }
 
     @Ignore
-    public static java.lang.String toString(char[] value) {
+    public static java.lang.String toString(@PrimitiveType@[] value) {
         return value.toString();
     }
     
     /**
      * A clone of this primitive Java array.
      */
-    public char[] $clone() {
+    public @PrimitiveType@[] $clone() {
         throw Util.makeJavaArrayWrapperException();
     }
     
     @Ignore
-    public static char[] $clone(char[] value) {
+    public static @PrimitiveType@[] $clone(@PrimitiveType@[] value) {
         return value.clone();
     }
     
     /**
-     * A Ceylon {@code Iterable<ceylon.language.Character>} containing the 
+     * A Ceylon {@code Iterable<@BoxedType@>} containing the 
      * elements of this primitive Java array.
      */
-    @TypeInfo("ceylon.language::Iterable<ceylon.language::Character,ceylon.language::Null>")
-    public ceylon.language.Iterable<ceylon.language.Character,ceylon.language.Null> getIterable() {
+    @TypeInfo("ceylon.language::Iterable<@BoxedTypeName@,ceylon.language::Null>")
+    public ceylon.language.Iterable<@BoxedType@,ceylon.language.Null> getIterable() {
         throw Util.makeJavaArrayWrapperException();
     }
     
     @Ignore
-    public static ceylon.language.Iterable<ceylon.language.Character,ceylon.language.Null> getIterable(char[] value) {
-        return new CharArrayIterable(value);
+    public static ceylon.language.Iterable<@BoxedType@,ceylon.language.Null> getIterable(@PrimitiveType@[] value) {
+        return new @Classname@Iterable(value);
     }
 }
 
 /* Implement Iterable */
-class CharArrayIterable 
-extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
+class @Classname@Iterable 
+extends BaseIterable<@BoxedType@, ceylon.language.Null> {
     
     /** The array over which we iterate */
-    private final char[] array;
+    private final @PrimitiveType@[] array;
     /** The index where iteration starts */
     private final int start;
     /** The step size of iteration */
@@ -366,14 +366,14 @@ extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
     private final int end;
     
     @Ignore
-    public CharArrayIterable(char[] array) {
+    public @Classname@Iterable(@PrimitiveType@[] array) {
         this(array, 0, array.length, 1);
     }
     
     @Ignore
-    private CharArrayIterable(char[] array, 
+    private @Classname@Iterable(@PrimitiveType@[] array, 
             int start, int end, int step) {
-        super(ceylon.language.Character.$TypeDescriptor$, Null.$TypeDescriptor$);
+        super(@BoxedType@.$TypeDescriptor$, Null.$TypeDescriptor$);
         if (start < 0) {
             throw new ceylon.language.AssertionError("start must be positive");
         }
@@ -395,9 +395,9 @@ extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
         Iterator<? extends Object> iter = arg0.iterator();
         Object item;
         while (!((item = iter.next()) instanceof Finished)) {
-            if (item instanceof ceylon.language.Character) {
+            if (item instanceof @BoxedType@) {
                 for (int ii = this.start; ii < this.end; ii+=this.step) {
-                    if (array[ii] == ((ceylon.language.Character)item).intValue()) {
+                    if (array[ii] == ((@BoxedType@)item).@UnboxMethod@()) {
                         return true;
                     }
                 }
@@ -412,9 +412,9 @@ extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
         Iterator<? extends Object> iter = arg0.iterator();
         Object item;
         OUTER: while (!((item = iter.next()) instanceof Finished)) {
-            if (item instanceof ceylon.language.Character) {
+            if (item instanceof @BoxedType@) {
                 for (int ii = this.start; ii < this.end; ii+=this.step) {
-                    if (array[ii] == ((ceylon.language.Character)item).intValue()) {
+                    if (array[ii] == ((@BoxedType@)item).@UnboxMethod@()) {
                         continue OUTER;
                     }
                 }
@@ -427,7 +427,7 @@ extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
     @Override
     public boolean any(Callable<? extends ceylon.language.Boolean> arg0) {
         for (int ii=this.start; ii < this.end; ii+=this.step) {
-            if (arg0.$call$(ceylon.language.Character.instance(array[ii])).booleanValue()) {
+            if (arg0.$call$(@BoxedType@.instance(array[ii])).booleanValue()) {
                 return true;
             }
         }
@@ -437,8 +437,8 @@ extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
     @Override
     public boolean contains(Object item) {
         for (int ii = this.start; ii < this.end; ii+=this.step) {
-            if (item instanceof ceylon.language.Character 
-                    && array[ii] == ((ceylon.language.Character)item).intValue()) {
+            if (item instanceof @BoxedType@ 
+                    && array[ii] == ((@BoxedType@)item).@UnboxMethod@()) {
                 return true;
             }
         }
@@ -454,7 +454,7 @@ extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
     }
     
     @Override
-    public Iterable<? extends ceylon.language.Character, ? extends Object> getCoalesced() {
+    public Iterable<? extends @BoxedType@, ? extends Object> getCoalesced() {
         return this;
     }
     
@@ -469,23 +469,23 @@ extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
     }
     
     @Override
-    public ceylon.language.Character getFirst() {
-        return this.getEmpty() ? null : ceylon.language.Character.instance(this.array[this.start]);
+    public @BoxedType@ getFirst() {
+        return this.getEmpty() ? null : @BoxedType@.instance(this.array[this.start]);
     }
     
     
     @Override
-    public ceylon.language.Character getLast() {
-        return this.getEmpty() ? null : ceylon.language.Character.instance(this.array[this.end-1]);
+    public @BoxedType@ getLast() {
+        return this.getEmpty() ? null : @BoxedType@.instance(this.array[this.end-1]);
     }
     
     @Override
-    public CharArrayIterable getRest() {
-        return new CharArrayIterable(this.array, this.start+1, this.end, this.step);
+    public @Classname@Iterable getRest() {
+        return new @Classname@Iterable(this.array, this.start+1, this.end, this.step);
     }
     
     @Override
-    public Sequential<? extends ceylon.language.Character> sequence() {
+    public Sequential<? extends @BoxedType@> sequence() {
         // Note: Sequential is immutable, and we don't know where the array
         // came from, so however we create the sequence we must take a copy
         //TODO: use a more efficient imple, like in List.sequence()
@@ -493,13 +493,13 @@ extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
     }
     
     @Override
-    public Iterator<? extends ceylon.language.Character> iterator() {
+    public Iterator<? extends @BoxedType@> iterator() {
         if (this.getEmpty()) {
             return (Iterator)ceylon.language.emptyIterator_.get_();
         }
-        return new Iterator<ceylon.language.Character>() {
+        return new Iterator<@BoxedType@>() {
             
-            private int index = CharArrayIterable.this.start;
+            private int index = @Classname@Iterable.this.start;
             
             @Override
             public TypeDescriptor $reified$ceylon$language$Iterator$Element() {
@@ -508,9 +508,9 @@ extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
             
             @Override
             public Object next() {
-                if (index < CharArrayIterable.this.end) {
-                    ceylon.language.Character result = ceylon.language.Character.instance(CharArrayIterable.this.array[index]);
-                    index += CharArrayIterable.this.step;
+                if (index < @Classname@Iterable.this.end) {
+                    @BoxedType@ result = @BoxedType@.instance(@Classname@Iterable.this.array[index]);
+                    index += @Classname@Iterable.this.step;
                     return result;
                 } else {
                     return finished_.get_();
@@ -530,30 +530,30 @@ extends BaseIterable<ceylon.language.Character, ceylon.language.Null> {
     }
     
     @Override
-    public CharArrayIterable by(long step) {
-        return new CharArrayIterable(this.array, 
+    public @Classname@Iterable by(long step) {
+        return new @Classname@Iterable(this.array, 
                 this.start, 
                 this.end, 
                 com.redhat.ceylon.compiler.java.Util.toInt(this.step*step));
     }
     
     @Override
-    public CharArrayIterable skip(long skip) {
+    public @Classname@Iterable skip(long skip) {
         if (skip <= 0) {
             return this;
         }
-        return new CharArrayIterable(this.array, 
+        return new @Classname@Iterable(this.array, 
                 com.redhat.ceylon.compiler.java.Util.toInt(this.start+skip*this.step), 
                 this.end, 
                 this.step);
     }
     
     @Override
-    public CharArrayIterable take(long take) {
+    public @Classname@Iterable take(long take) {
         if (take >= this.getSize()) {
             return this;
         }
-        return new CharArrayIterable(this.array, 
+        return new @Classname@Iterable(this.array, 
                 this.start, 
                 com.redhat.ceylon.compiler.java.Util.toInt(this.start+take*this.step), 
                 this.step);
