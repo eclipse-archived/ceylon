@@ -29,11 +29,11 @@ public class JavaCompilerImpl implements Compiler {
 
     // if this is not here, this task will be wrapped into a TaskListener that does not implement CeylonTaskListener
     @Trusted
-    private static class CompilationListenerAdapter implements DiagnosticListener<JavaFileObject>, CeylonTaskListener {
+    public static class CompilationListenerAdapter implements DiagnosticListener<JavaFileObject>, CeylonTaskListener {
 
         private CompilationListener listener;
 
-        CompilationListenerAdapter(CompilationListener listener) {
+        public CompilationListenerAdapter(CompilationListener listener) {
             this.listener = listener;
         }
 
