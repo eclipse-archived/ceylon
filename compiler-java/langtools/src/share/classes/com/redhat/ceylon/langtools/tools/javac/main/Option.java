@@ -34,7 +34,6 @@ import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -532,8 +531,9 @@ public enum Option {
         }
         @Override
         public boolean process(OptionHelper helper, String option) {
-            String s= option;
-            File f = new File(s);
+            String s = option;
+            String cwd = helper.get(CEYLONCWD);
+            File f = cwd != null ? FileUtil.applyCwd(new File(cwd), new File(s)) : new File(s);
             if (s.endsWith(".java")
                     || s.endsWith(".ceylon") // FIXME: Should be a FileManager query
             ) {

@@ -398,6 +398,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         if (cwd != null) {
             arguments.add("-cwd");
             arguments.add(cwd.getPath());
+            validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.CEYLONCWD, "-cwd", cwd.getPath());
         }
         
         if(jdkProvider != null){
