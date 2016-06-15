@@ -1,0 +1,31 @@
+package com.redhat.ceylon.compiler.java.test.structure.iface;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class emptyWithLeading_ {
+    
+    private emptyWithLeading_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void emptyWithLeading() {
+        if (((.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.empty_.get_().<.ceylon.language.String>withLeading(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("A"))).equals(new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.String.instance("A");
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        }.sequence())) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "[].withLeading(\"A\")=={\"A\"}.sequence()"));
+        }
+    }
+}

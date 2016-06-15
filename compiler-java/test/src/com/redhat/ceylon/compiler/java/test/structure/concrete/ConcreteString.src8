@@ -90,6 +90,16 @@ interface ConcreteString2 extends .com.redhat.ceylon.compiler.java.language.Obje
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public default .java.lang.String toString() {
+        return toString(this);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public static .java.lang.String toString(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2 $this) {
         return "bar";
     }
     
@@ -100,12 +110,22 @@ interface ConcreteString2 extends .com.redhat.ceylon.compiler.java.language.Obje
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public default int hashCode() {
+        return hashCode(this);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public static int hashCode(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2 $this) {
         return (int)(
             let
             {
-                long $ceylontmp$hash$9 = 3L;
+                long $ceylontmp$hash$11 = 3L;
             }
-            returning $ceylontmp$hash$9 ^ $ceylontmp$hash$9 >>> 32;
+            returning $ceylontmp$hash$11 ^ $ceylontmp$hash$11 >>> 32;
         );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -136,9 +156,9 @@ class ConcreteStringC2 implements .com.redhat.ceylon.compiler.java.runtime.model
         return (int)(
             let
             {
-                long $ceylontmp$hash$11 = .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2.super.hashCode();
+                long $ceylontmp$hash$13 = .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2.super.hashCode();
             }
-            returning $ceylontmp$hash$11 ^ $ceylontmp$hash$11 >>> 32;
+            returning $ceylontmp$hash$13 ^ $ceylontmp$hash$13 >>> 32;
         );
     }
     

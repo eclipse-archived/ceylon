@@ -118,6 +118,16 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Sequence$Element() {
         return $reified$Element;
     }
+    
+    @.java.lang.Override
+    public int hashCode() {
+        return .ceylon.language.List.hashCode(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug844_Tuple.this);
+    }
+    
+    @.java.lang.Override
+    public boolean equals(.java.lang.Object that) {
+        return .ceylon.language.List.equals(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug844_Tuple.this, that);
+    }
     private final First first;
     
     @.java.lang.Override

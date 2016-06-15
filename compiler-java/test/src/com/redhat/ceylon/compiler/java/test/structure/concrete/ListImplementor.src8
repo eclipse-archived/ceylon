@@ -28,6 +28,11 @@ class ListImplementor<X> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
+    public .java.lang.String toString() {
+        return .ceylon.language.Collection.toString(.com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor.this);
+    }
+    
+    @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.concrete.ListImplementor<X> $clone() {
         throw new .ceylon.language.Exception(null, null);
     }

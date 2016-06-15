@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.iface;
 
 interface Qualifiers extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     
-    private default long getX$priv$() {
+    default long getX$priv$() {
         return 1L;
     }
     

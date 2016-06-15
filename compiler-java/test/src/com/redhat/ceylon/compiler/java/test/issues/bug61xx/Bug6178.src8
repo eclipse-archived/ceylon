@@ -2,12 +2,12 @@ package com.redhat.ceylon.compiler.java.test.issues.bug61xx;
 
 interface Bug6178 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     
-    private default void method$priv$() {
+    default void com$redhat$ceylon$compiler$java$test$issues$bug61xx$Bug6178$method$method$priv$() {
         (
             let
             {
                 boolean $ceylontmp$boolean$0 = method$boolean();
-                method$priv$$canonical$($ceylontmp$boolean$0);
+                com$redhat$ceylon$compiler$java$test$issues$bug61xx$Bug6178$method$method$priv$$canonical$($ceylontmp$boolean$0);
             }
             returning null;
         );
@@ -17,14 +17,14 @@ interface Bug6178 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy 
         return false;
     }
     
-    private default void method$priv$$canonical$(final boolean $boolean) {
+    private default void com$redhat$ceylon$compiler$java$test$issues$bug61xx$Bug6178$method$method$priv$$canonical$(final boolean $boolean) {
     }
     
-    private default void method$priv$(final boolean $boolean) {
+    default void com$redhat$ceylon$compiler$java$test$issues$bug61xx$Bug6178$method$method$priv$(final boolean $boolean) {
         (
             let
             {
-                method$priv$$canonical$($boolean);
+                com$redhat$ceylon$compiler$java$test$issues$bug61xx$Bug6178$method$method$priv$$canonical$($boolean);
             }
             returning null;
         );
@@ -36,7 +36,7 @@ interface Bug6178 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy 
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug61xx.Bug6178 arg$1$argthis$ = .com.redhat.ceylon.compiler.java.test.issues.bug61xx.Bug6178.this;
                 boolean arg$1$0 = arg$1$argthis$.method$boolean();
-                method$priv$(arg$1$0);
+                com$redhat$ceylon$compiler$java$test$issues$bug61xx$Bug6178$method$method$priv$(arg$1$0);
             }
             returning null;
         );

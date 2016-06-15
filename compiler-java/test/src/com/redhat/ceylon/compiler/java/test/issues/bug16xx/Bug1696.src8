@@ -78,6 +78,11 @@ abstract class Bug1696MixinA2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
+    public .java.lang.String toString() {
+        return .ceylon.language.Iterable.super.toString();
+    }
+    
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinA2.class, $reified$T);
     }
@@ -123,6 +128,11 @@ abstract class Bug1696MixinB2<T> implements .com.redhat.ceylon.compiler.java.run
     }
     
     @.java.lang.Override
+    public .java.lang.String toString() {
+        return .ceylon.language.Iterable.super.toString();
+    }
+    
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinB2.class, $reified$T);
     }
@@ -160,6 +170,11 @@ abstract class Bug1696MixinC2<T> implements .com.redhat.ceylon.compiler.java.run
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Category$Element() {
         return .ceylon.language.Object.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return .ceylon.language.Iterable.super.toString();
     }
     
     @.java.lang.Override
@@ -210,6 +225,11 @@ abstract class Bug1696MixinD2<T> implements .com.redhat.ceylon.compiler.java.run
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Category$Element() {
         return .ceylon.language.Object.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return .ceylon.language.Iterable.super.toString();
     }
     
     @.java.lang.Override

@@ -16,6 +16,11 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.java.lang.Override
+    public .java.lang.String toString() {
+        return .ceylon.language.Iterable.super.toString();
+    }
+    
+    @.java.lang.Override
     public final .ceylon.language.Iterator iterator() {
         return (.ceylon.language.Iterator)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
@@ -39,6 +44,11 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Iterable$Absent() {
         return .ceylon.language.Null.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return .ceylon.language.Iterable.super.toString();
     }
     
     @.java.lang.Override

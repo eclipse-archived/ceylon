@@ -10,6 +10,15 @@ interface InheritFrom extends .com.redhat.ceylon.compiler.java.language.ObjectPr
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public default .java.lang.String toString() {
+        return toString(this);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public static .java.lang.String toString(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom $this) {
         return "InheritFrom";
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -40,6 +49,12 @@ class InheritFromBasicIndirectly extends .com.redhat.ceylon.compiler.java.test.s
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.String toString() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom.super.toString();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasicIndirectly.$TypeDescriptor$;
     }
@@ -56,6 +71,15 @@ interface InheritFrom2 extends .com.redhat.ceylon.compiler.java.language.ObjectP
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public default .java.lang.String toString() {
+        return toString(this);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public static .java.lang.String toString(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom2 $this) {
         return "InheritFrom2";
     }
     
@@ -64,6 +88,16 @@ interface InheritFrom2 extends .com.redhat.ceylon.compiler.java.language.ObjectP
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     public default boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object other) {
+        return equals(this, other);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public static boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom2 $this, @.com.redhat.ceylon.compiler.java.metadata.Name("other")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object other) {
         return true;
@@ -75,12 +109,21 @@ interface InheritFrom2 extends .com.redhat.ceylon.compiler.java.language.ObjectP
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public default int hashCode() {
+        return hashCode(this);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public static int hashCode(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom2 $this) {
         return (int)(
             let
             {
-                long $ceylontmp$hash$1 = 42L;
+                long $ceylontmp$hash$3 = 42L;
             }
-            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
+            returning $ceylontmp$hash$3 ^ $ceylontmp$hash$3 >>> 32;
         );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -96,6 +139,24 @@ class InheritFromObject extends .java.lang.Object implements .com.redhat.ceylon.
     
     InheritFromObject() {
         super();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.String toString() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom2.super.toString();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public int hashCode() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom2.super.hashCode();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean equals(.java.lang.Object other) {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom2.super.equals(other);
     }
     
     @.java.lang.Override
@@ -117,6 +178,15 @@ interface InheritFrom3 extends .com.redhat.ceylon.compiler.java.language.ObjectP
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public default .java.lang.String toString() {
+        return toString(this);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public static .java.lang.String toString(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom3 $this) {
         return "InheritFrom3";
     }
     
@@ -125,6 +195,16 @@ interface InheritFrom3 extends .com.redhat.ceylon.compiler.java.language.ObjectP
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     public default boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object other) {
+        return equals(this, other);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public static boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom3 $this, @.com.redhat.ceylon.compiler.java.metadata.Name("other")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object other) {
         return true;
@@ -136,12 +216,21 @@ interface InheritFrom3 extends .com.redhat.ceylon.compiler.java.language.ObjectP
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public default int hashCode() {
+        return hashCode(this);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public static int hashCode(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom3 $this) {
         return (int)(
             let
             {
-                long $ceylontmp$hash$3 = 42L;
+                long $ceylontmp$hash$7 = 42L;
             }
-            returning $ceylontmp$hash$3 ^ $ceylontmp$hash$3 >>> 32;
+            returning $ceylontmp$hash$7 ^ $ceylontmp$hash$7 >>> 32;
         );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -152,6 +241,24 @@ interface InheritFrom3 extends .com.redhat.ceylon.compiler.java.language.ObjectP
 class InheritFromBasicWithIdentifiableClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom3, .java.io.Serializable {
     
     InheritFromBasicWithIdentifiableClass() {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.String toString() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom3.super.toString();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public int hashCode() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom3.super.hashCode();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean equals(.java.lang.Object other) {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom3.super.equals(other);
     }
     
     @.java.lang.Override
@@ -173,6 +280,16 @@ interface Itbl extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public default .java.lang.String toString() {
+        return toString(this);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public static .java.lang.String toString(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.iface.Itbl $this) {
         return "wtf";
     }
     
@@ -182,6 +299,17 @@ interface Itbl extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     public default boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object other) {
+        return equals(this, other);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public static boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.iface.Itbl $this, @.com.redhat.ceylon.compiler.java.metadata.Name("other")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object other) {
         return true;
@@ -201,6 +329,16 @@ interface L extends .com.redhat.ceylon.compiler.java.test.structure.iface.Itbl {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public default .java.lang.String toString() {
+        return toString(this);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public static .java.lang.String toString(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.iface.L $this) {
         return "wtf2";
     }
     
@@ -210,6 +348,17 @@ interface L extends .com.redhat.ceylon.compiler.java.test.structure.iface.Itbl {
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     public default boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object other) {
+        return equals(this, other);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public static boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.structure.iface.L $this, @.com.redhat.ceylon.compiler.java.metadata.Name("other")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object other) {
         return true;
@@ -245,6 +394,18 @@ class As extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.r
         super();
     }
     
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.String toString() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.L.toString(.com.redhat.ceylon.compiler.java.test.structure.iface.As.this);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean equals(.java.lang.Object other) {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.L.equals(.com.redhat.ceylon.compiler.java.test.structure.iface.As.this, other);
+    }
+    
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
@@ -254,9 +415,9 @@ class As extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.r
         return (int)(
             let
             {
-                long $ceylontmp$hash$5 = 0L;
+                long $ceylontmp$hash$9 = 0L;
             }
-            returning $ceylontmp$hash$5 ^ $ceylontmp$hash$5 >>> 32;
+            returning $ceylontmp$hash$9 ^ $ceylontmp$hash$9 >>> 32;
         );
     }
     

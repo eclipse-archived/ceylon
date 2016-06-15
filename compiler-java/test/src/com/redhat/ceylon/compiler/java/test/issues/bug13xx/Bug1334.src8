@@ -298,12 +298,16 @@ interface Bug1334_11 extends .com.redhat.ceylon.compiler.java.language.ObjectPro
     
     @.java.lang.Override
     public default int hashCode() {
+        return hashCode(this);
+    }
+    
+    public static int hashCode(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_11 $this) {
         return (int)(
             let
             {
-                long $ceylontmp$hash$17 = 23L;
+                long $ceylontmp$hash$19 = 23L;
             }
-            returning $ceylontmp$hash$17 ^ $ceylontmp$hash$17 >>> 32;
+            returning $ceylontmp$hash$19 ^ $ceylontmp$hash$19 >>> 32;
         );
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_11.class);
@@ -312,6 +316,11 @@ class Bug1334_12 extends .java.lang.Object implements .com.redhat.ceylon.compile
     
     Bug1334_12() {
         super();
+    }
+    
+    @.java.lang.Override
+    public int hashCode() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1334_11.super.hashCode();
     }
     
     @.java.lang.Override

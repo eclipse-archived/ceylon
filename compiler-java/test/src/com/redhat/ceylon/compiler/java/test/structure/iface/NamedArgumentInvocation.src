@@ -43,13 +43,13 @@ interface NamedArgumentInvocation extends .com.redhat.ceylon.compiler.java.langu
 interface NamedArgumentInvocationSub extends .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocation {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private default long g$priv$() {
+    default long com$redhat$ceylon$compiler$java$test$structure$iface$NamedArgumentInvocationSub$g$g$priv$() {
         return (
             let
             {
                 long $ceylontmp$i$1 = g$i();
             }
-            returning g$priv$$canonical$($ceylontmp$i$1);
+            returning com$redhat$ceylon$compiler$java$test$structure$iface$NamedArgumentInvocationSub$g$g$priv$$canonical$($ceylontmp$i$1);
         );
     }
     
@@ -59,16 +59,16 @@ interface NamedArgumentInvocationSub extends .com.redhat.ceylon.compiler.java.te
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private default long g$priv$$canonical$(final long i) {
+    private default long com$redhat$ceylon$compiler$java$test$structure$iface$NamedArgumentInvocationSub$g$g$priv$$canonical$(final long i) {
         return i;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
-    private default long g$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    default long com$redhat$ceylon$compiler$java$test$structure$iface$NamedArgumentInvocationSub$g$g$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i) {
-        return g$priv$$canonical$(i);
+        return com$redhat$ceylon$compiler$java$test$structure$iface$NamedArgumentInvocationSub$g$g$priv$$canonical$(i);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -91,7 +91,7 @@ interface NamedArgumentInvocationSub extends .com.redhat.ceylon.compiler.java.te
                 .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub arg$2$argthis$ = .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub.this;
                 long arg$2$0 = arg$2$argthis$.g$i();
             }
-            returning arg$2$callable$.g$priv$(arg$2$0);
+            returning arg$2$callable$.com$redhat$ceylon$compiler$java$test$structure$iface$NamedArgumentInvocationSub$g$g$priv$(arg$2$0);
         );
         (
             let
@@ -100,7 +100,7 @@ interface NamedArgumentInvocationSub extends .com.redhat.ceylon.compiler.java.te
                 .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub arg$3$argthis$ = arg$3$callable$;
                 long arg$3$0 = arg$3$argthis$.g$i();
             }
-            returning arg$3$callable$.g$priv$(arg$3$0);
+            returning arg$3$callable$.com$redhat$ceylon$compiler$java$test$structure$iface$NamedArgumentInvocationSub$g$g$priv$(arg$3$0);
         );
         (
             let

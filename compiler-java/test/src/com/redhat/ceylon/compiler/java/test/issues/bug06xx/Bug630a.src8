@@ -11,12 +11,22 @@ interface Bug630 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public default int hashCode() {
+        return hashCode(this);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public static int hashCode(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630 $this) {
         return (int)(
             let
             {
-                long $ceylontmp$hash$1 = 42L;
+                long $ceylontmp$hash$2 = 42L;
             }
-            returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
+            returning $ceylontmp$hash$2 ^ $ceylontmp$hash$2 >>> 32;
         );
     }
     
@@ -26,6 +36,17 @@ interface Bug630 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     public default boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
+    final .java.lang.Object other) {
+        return equals(this, other);
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
+    public static boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("this")
+    .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug630 $this, @.com.redhat.ceylon.compiler.java.metadata.Name("other")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object other) {
         return false;

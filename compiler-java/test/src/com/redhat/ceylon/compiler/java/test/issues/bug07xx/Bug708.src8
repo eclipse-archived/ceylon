@@ -180,6 +180,24 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, $reified$T);
     }
     
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .java.lang.String toString() {
+        return .ceylon.language.Collection.toString(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map.this);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public int hashCode() {
+        return .ceylon.language.Map.super.hashCode();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public boolean equals(.java.lang.Object that) {
+        return .ceylon.language.Map.super.equals(that);
+    }
+    
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override

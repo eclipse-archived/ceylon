@@ -27,6 +27,11 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     @.java.lang.Override
+    public .java.lang.String toString() {
+        return .ceylon.language.Iterable.super.toString();
+    }
+    
+    @.java.lang.Override
     public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
         return getStrings$priv$().iterator();
     }
@@ -57,6 +62,21 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Set$Element() {
         return .ceylon.language.String.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return .ceylon.language.Collection.toString(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug979Set.this);
+    }
+    
+    @.java.lang.Override
+    public int hashCode() {
+        return .ceylon.language.Set.super.hashCode();
+    }
+    
+    @.java.lang.Override
+    public boolean equals(.java.lang.Object that) {
+        return .ceylon.language.Set.super.equals(that);
     }
     
     @.java.lang.Override

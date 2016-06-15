@@ -17,6 +17,11 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     @.java.lang.Override
+    public .java.lang.String toString() {
+        return .ceylon.language.Iterable.super.toString();
+    }
+    
+    @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
         return ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
     }

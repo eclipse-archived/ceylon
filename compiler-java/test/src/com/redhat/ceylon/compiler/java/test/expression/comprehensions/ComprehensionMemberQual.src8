@@ -196,11 +196,11 @@ interface ComprehensionMemberQualInterfaceFormal extends .com.redhat.ceylon.comp
 }
 interface ComprehensionMemberQualInterfaceNonshared extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     
-    private default long next$priv$() {
+    default long com$redhat$ceylon$compiler$java$test$expression$comprehensions$ComprehensionMemberQualInterfaceNonshared$next$next$priv$() {
         return 1L;
     }
     
-    private default long getI$priv$() {
+    default long getI$priv$() {
         return 1L;
     }
     
@@ -243,7 +243,7 @@ interface ComprehensionMemberQualInterfaceNonshared extends .com.redhat.ceylon.c
                     public final .java.lang.Object next() {
                         if (this.i()) {
                             final .ceylon.language.Integer i = this.i;
-                            return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceNonshared.this.next$priv$() + .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceNonshared.this.getI$priv$());
+                            return .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceNonshared.this.com$redhat$ceylon$compiler$java$test$expression$comprehensions$ComprehensionMemberQualInterfaceNonshared$next$next$priv$() + .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ComprehensionMemberQualInterfaceNonshared.this.getI$priv$());
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

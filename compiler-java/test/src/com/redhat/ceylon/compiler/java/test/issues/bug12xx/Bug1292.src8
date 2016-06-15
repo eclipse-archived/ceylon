@@ -25,6 +25,10 @@ interface Bug1292I extends .com.redhat.ceylon.compiler.java.language.ObjectProxy
     
     @.java.lang.Override
     public default boolean equals(final .java.lang.Object other) {
+        return equals(this, other);
+    }
+    
+    public static boolean equals(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I $this, final .java.lang.Object other) {
         return ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1292I.class);

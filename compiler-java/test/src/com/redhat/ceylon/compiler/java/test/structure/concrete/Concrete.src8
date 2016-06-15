@@ -4,13 +4,13 @@ interface Concrete<A> extends .com.redhat.ceylon.compiler.java.language.ObjectPr
     
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$A();
     
-    private default void mNonShared$priv$() {
+    default void com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$mNonShared$mNonShared$priv$() {
         (
             let
             {
                 A $ceylontmp$a$0 = mNonShared$a();
                 .ceylon.language.Sequential<? extends A> $ceylontmp$aseq$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                mNonShared$priv$$canonical$($ceylontmp$a$0, $ceylontmp$aseq$1);
+                com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$mNonShared$mNonShared$priv$$canonical$($ceylontmp$a$0, $ceylontmp$aseq$1);
             }
             returning null;
         );
@@ -20,25 +20,25 @@ interface Concrete<A> extends .com.redhat.ceylon.compiler.java.language.ObjectPr
         return null;
     }
     
-    private default void mNonShared$priv$(final A a) {
+    default void com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$mNonShared$mNonShared$priv$(final A a) {
         (
             let
             {
                 .ceylon.language.Sequential<? extends A> $ceylontmp$aseq$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                mNonShared$priv$$canonical$(a, $ceylontmp$aseq$2);
+                com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$mNonShared$mNonShared$priv$$canonical$(a, $ceylontmp$aseq$2);
             }
             returning null;
         );
     }
     
-    private default void mNonShared$priv$$canonical$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
+    private default void com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$mNonShared$mNonShared$priv$$canonical$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
     }
     
-    private default void mNonShared$priv$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
+    default void com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$mNonShared$mNonShared$priv$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
         (
             let
             {
-                mNonShared$priv$$canonical$(a, aseq);
+                com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$mNonShared$mNonShared$priv$$canonical$(a, aseq);
             }
             returning null;
         );
@@ -72,7 +72,7 @@ interface Concrete<A> extends .com.redhat.ceylon.compiler.java.language.ObjectPr
     }
     
     private default void mShared$canonical$(final A a, final .ceylon.language.Sequential<? extends A> aseq) {
-        .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete.this.mNonShared$priv$();
+        .com.redhat.ceylon.compiler.java.test.structure.concrete.Concrete.this.com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$mNonShared$mNonShared$priv$();
     }
     
     public default void mShared(final A a, final .ceylon.language.Sequential<? extends A> aseq) {

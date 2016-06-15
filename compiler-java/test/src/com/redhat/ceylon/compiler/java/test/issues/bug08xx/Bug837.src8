@@ -58,6 +58,16 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Sequence$Element() {
         return $reified$Element;
     }
+    
+    @.java.lang.Override
+    public int hashCode() {
+        return .ceylon.language.List.hashCode(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug837.this);
+    }
+    
+    @.java.lang.Override
+    public boolean equals(.java.lang.Object that) {
+        return .ceylon.language.List.equals(.com.redhat.ceylon.compiler.java.test.issues.bug08xx.Bug837.this, that);
+    }
     private final Element first;
     
     @.java.lang.Override

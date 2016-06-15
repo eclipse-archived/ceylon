@@ -51,6 +51,21 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Sequence$Element() {
         return $reified$Element;
     }
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return .ceylon.language.Sequence.super.toString();
+    }
+    
+    @.java.lang.Override
+    public int hashCode() {
+        return .ceylon.language.List.hashCode(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug966.this);
+    }
+    
+    @.java.lang.Override
+    public boolean equals(.java.lang.Object that) {
+        return .ceylon.language.List.equals(.com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug966.this, that);
+    }
     private final Element first;
     
     @.java.lang.Override

@@ -4,7 +4,7 @@ interface ConcreteAttribute<A> extends .com.redhat.ceylon.compiler.java.language
     
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteAttribute$A();
     
-    private default A getANonShared$priv$() {
+    default A getANonShared$priv$() {
         return null;
     }
     
