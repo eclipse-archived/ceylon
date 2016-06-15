@@ -110,7 +110,7 @@ public class JavaCompilerImpl implements Compiler {
         return state.ceylonState == CeylonState.OK;
     }
 
-    private List<String> translateOptions(CompilerOptions options) {
+    protected List<String> translateOptions(CompilerOptions options) {
         List<String> translatedOptions = new ArrayList<String>();
         // FIXME: translate every option
         if(options.isVerbose()) {
