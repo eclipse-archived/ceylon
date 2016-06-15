@@ -1,12 +1,31 @@
 interface NonSharedMethods {
-    void f() {
-        print("hello");
-    }
-    shared void x() {
-        f();
+    String f() => "hello";
+    
+    shared default String x() {
+        // capture of f by an inner class
+        object o {
+            shared void x() {
+                f();
+            }
+        }
+        return f();
     }
 }
-class C() satisfies NonSharedMethods {}
+interface NonSharedMethodsSub satisfies NonSharedMethods {
+    String f() => "bye";
+    
+    shared actual String x() {
+        
+        // capture of f by an inner class
+        object o {
+            shared void x() {
+                f();
+            }
+        }
+        return super.x() + f();
+    }
+}
+class NonSharedMethodsClass() satisfies NonSharedMethodsSub {}
 shared void nonSharedMethods() {
-    C().x();
+    assert("hellobye" == NonSharedMethodsClass().x());
 }

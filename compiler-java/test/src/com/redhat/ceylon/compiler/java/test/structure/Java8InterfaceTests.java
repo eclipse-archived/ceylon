@@ -147,4 +147,23 @@ public class Java8InterfaceTests extends JdkVersionDependentTests {
         compileAndRun("com.redhat.ceylon.compiler.java.test.structure.iface.nonSharedMethods",
                 "iface/NonSharedMethods.ceylon");
     }
+    
+    @Test
+    public void inheritFrom() {
+        compareWithJavaSource("iface/InheritFrom");
+        run("com.redhat.ceylon.compiler.java.test.structure.iface.inheritFrom");
+    }
+    
+    @Test
+    public void emptyWithLeading() {
+        //compareWithJavaSource("iface/EmptyWithLeading");
+        compile("iface/EmptyWithLeading.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.structure.iface.emptyWithLeading");
+    }
+    
+    @Test
+    public void memberTypeAlias() {
+        compareWithJavaSource("iface/MemberTypeAlias");
+    }
 }
+
