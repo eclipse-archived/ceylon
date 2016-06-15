@@ -85,6 +85,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.TuplePattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
@@ -127,6 +128,8 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  *
  */
 public class ExpressionVisitor extends Visitor {
+    
+    Cancellable cancellable;
     
     private Tree.Type returnType;
     private Declaration returnDeclaration;
@@ -194,11 +197,13 @@ public class ExpressionVisitor extends Visitor {
         return null;
     }
     
-    public ExpressionVisitor() {
+    public ExpressionVisitor(Cancellable cancellable) {
+        this.cancellable = cancellable;
     }
     
-    public ExpressionVisitor(Unit unit) {
+    public ExpressionVisitor(Unit unit, Cancellable cancellable) {
         this.unit = unit;
+        this.cancellable = cancellable;
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
@@ -6342,7 +6347,7 @@ public class ExpressionVisitor extends Visitor {
                     !isNativeForWrongBackend(
                             scope.getScopedBackends()) &&
                     error) {
-                String correction = correct(scope, unit, name);
+                String correction = correct(scope, unit, name, cancellable);
                 String message = correction==null ? "" :
                     " (did you mean '" + correction + "'?)";
                 that.addError(
@@ -6589,7 +6594,7 @@ public class ExpressionVisitor extends Visitor {
                                 signature, spread);
                 if (member==null) {
                     String correction =
-                            correct(d, scope, unit, name);
+                            correct(d, scope, unit, name, cancellable);
                     container += correction==null ? "" :
                         " (did you mean '" + correction + "'?)";
                 }
@@ -6990,7 +6995,7 @@ public class ExpressionVisitor extends Visitor {
                     !isNativeForWrongBackend(
                             scope.getScopedBackends())) {
                 String correction = 
-                        correct(scope, unit, name);
+                        correct(scope, unit, name, cancellable);
                 String message = correction==null ? "" :
                     " (did you mean '" + correction + "'?)";
                 that.addError(
@@ -7355,7 +7360,7 @@ public class ExpressionVisitor extends Visitor {
                                 signature, spread);
                 if (type==null) {
                     String correction =
-                            correct(d, scope, unit, name);
+                            correct(d, scope, unit, name, cancellable);
                     container += correction==null ? "" :
                         " (did you mean '" + correction + "'?)";
                 }

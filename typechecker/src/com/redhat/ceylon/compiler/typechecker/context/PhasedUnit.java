@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.util.ReferenceCounter;
 import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.UsageVisitor;
 import com.redhat.ceylon.model.typechecker.context.TypeCache;
+import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -370,15 +371,19 @@ public class PhasedUnit {
 	}
 
     public void scanTypeDeclarations() {
+        scanTypeDeclarations(null);
+    }
+    
+    public void scanTypeDeclarations(Cancellable cancellable) {
         Boolean enabled = 
                 TypeCache.setEnabled(false);
         try {
             if (!typeDeclarationsScanned) {
                 //System.out.println("Scan type declarations for " + fileName);
-                rootNode.visit(new ImportVisitor());
+                rootNode.visit(new ImportVisitor(cancellable));
                 rootNode.visit(new DefaultTypeArgVisitor());
                 rootNode.visit(new SupertypeVisitor(false)); //TODO: move to a new phase!
-                rootNode.visit(new TypeVisitor());
+                rootNode.visit(new TypeVisitor(cancellable));
                 typeDeclarationsScanned = true;
             }
         }
@@ -407,10 +412,14 @@ public class PhasedUnit {
     }
 
     public synchronized void analyseTypes() {
+        analyseTypes(null);
+    }
+    
+    public synchronized void analyseTypes(Cancellable cancellable) {
         if (!fullyTyped) {
             Type.resetDepth(-100);
             //System.out.println("Run analysis phase for " + fileName);
-            rootNode.visit(new ExpressionVisitor());
+            rootNode.visit(new ExpressionVisitor(cancellable));
             rootNode.visit(new VisibilityVisitor());
             rootNode.visit(new AnnotationVisitor());
             rootNode.visit(new TypeArgumentVisitor());

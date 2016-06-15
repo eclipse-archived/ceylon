@@ -293,21 +293,21 @@ public class AnalyzerUtil {
         return dwp==null ? null : dwp.getDeclaration().getName(unit);
     }
     
-    public static String correct(Scope scope, Unit unit, String name) {
-        return correct(scope, unit, name, null);
-    }
-    
     public static String correct(Scope scope, Unit unit, String name, Cancellable canceller) {
+        if (canceller != null 
+                && canceller.isCancelled()) {
+            return null;
+        }
         return realName(best(name, 
                 scope.getMatchingDeclarations(unit, "", 0, canceller)),
                 unit);
     }
     
-    public static String correct(TypeDeclaration type, Scope scope, Unit unit, String name) {
-        return correct(type, scope, unit, name, null);
-    }
-    
     public static String correct(TypeDeclaration type, Scope scope, Unit unit, String name, Cancellable canceller) {
+        if (canceller != null 
+                && canceller.isCancelled()) {
+            return null;
+        }
         return realName(best(name, 
                 type.getMatchingMemberDeclarations(unit, scope, "", 0, canceller)),
                 unit);

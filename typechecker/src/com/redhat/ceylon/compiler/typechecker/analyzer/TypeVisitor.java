@@ -33,6 +33,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeSpecifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -72,15 +73,18 @@ public class TypeVisitor extends Visitor {
     
     private Unit unit;
 
+    private Cancellable cancellable;
     private boolean inDelegatedConstructor;
     private boolean inTypeLiteral;
     private boolean inExtendsOrClassAlias;
     
-    public TypeVisitor() {
+    public TypeVisitor(Cancellable cancellable) {
+        this.cancellable = cancellable;
     }
     
-    public TypeVisitor(Unit unit) {
+    public TypeVisitor(Unit unit, Cancellable cancellable) {
         this.unit = unit;
+        this.cancellable = cancellable;
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
@@ -389,7 +393,7 @@ public class TypeVisitor extends Visitor {
             if (type==null) {
                 if (!isNativeForWrongBackend(
                         scope.getScopedBackends())) {
-                    String correction = correct(scope, unit, name);
+                    String correction = correct(scope, unit, name, cancellable);
                     String message = correction==null ? "" :
                         " (did you mean '" + correction + "'?)";
                     that.addError("type declaration does not exist: '" + 
@@ -492,7 +496,7 @@ public class TypeVisitor extends Visitor {
                         }
                         else {
                             String correction = 
-                                    correct(d, null, unit, name);
+                                    correct(d, null, unit, name, cancellable);
                             String message = correction==null ? "" :
                                 " (did you mean '" + correction + "'?)";
                             that.addError("member type declaration does not exist: '" + 

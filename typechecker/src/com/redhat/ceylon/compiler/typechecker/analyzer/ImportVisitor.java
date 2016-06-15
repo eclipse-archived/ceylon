@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase;
+import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.ImportList;
@@ -47,14 +48,17 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 public class ImportVisitor extends Visitor {
     
     private Unit unit;
+    private Cancellable cancellable;
 
-    public ImportVisitor() {
+    public ImportVisitor(Cancellable cancellable) {
+        this.cancellable = cancellable;
     }
     
-    public ImportVisitor(Unit unit) {
+    public ImportVisitor(Unit unit, Cancellable cancellable) {
         this.unit = unit;
+        this.cancellable = cancellable;
     }
-    
+
     @Override public void visit(Tree.CompilationUnit that) {
         unit = that.getUnit();
         super.visit(that);
@@ -301,7 +305,7 @@ public class ImportVisitor extends Visitor {
         }
         if (d==null) {
             String correction = 
-                    correct(importedPackage, unit, name);
+                    correct(importedPackage, unit, name, cancellable);
             String message = correction==null ? "" :
                 " (did you mean '" + correction + "'?)";
             id.addError("imported declaration not found: '" + 
@@ -369,7 +373,7 @@ public class ImportVisitor extends Visitor {
         }
         if (m==null) {
             String correction = 
-                    correct(td, null, unit, name);
+                    correct(td, null, unit, name, cancellable);
             String message = correction==null ? "" :
                 " (did you mean '" + correction + "'?)";
             id.addError("imported declaration not found: '" + 
