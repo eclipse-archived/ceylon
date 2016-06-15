@@ -17,6 +17,9 @@ public class JavaScriptCompilerImpl implements Compiler {
     public boolean compile(CompilerOptions options, 
                            CompilationListener listener) {
         CeylonCompileJsTool tool = new CeylonCompileJsTool();
+        if (options.getWorkingDirectory() != null) {
+            tool.setCwd(new File(options.getWorkingDirectory()));
+        }
         if(options.isVerbose())
             tool.setVerbose("");
         tool.setOffline(options.isOffline());

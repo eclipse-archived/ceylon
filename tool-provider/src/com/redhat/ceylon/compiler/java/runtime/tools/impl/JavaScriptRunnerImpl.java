@@ -32,6 +32,9 @@ public class JavaScriptRunnerImpl implements Runner {
             };
         };
 
+        if (options.getWorkingDirectory() != null) {
+            tool.setCwd(new File(options.getWorkingDirectory()));
+        }
         moduleSpec = ModuleUtil.makeModuleName(module, version);
         tool.setThrowOnError(true);
         tool.setModuleVersion(moduleSpec);
