@@ -28,6 +28,7 @@ public class JavaScriptCompilerImpl implements Compiler {
         tool.setSystemRepository(options.getSystemRepository());
         tool.setOut(options.getOutputRepository());
         tool.setSource(options.getSourcePath());
+        tool.setResource(options.getResourcePath());
         // just mix them all
         List<String> moduleOrFile = new ArrayList<String>();
         moduleOrFile.addAll(options.getModules());
