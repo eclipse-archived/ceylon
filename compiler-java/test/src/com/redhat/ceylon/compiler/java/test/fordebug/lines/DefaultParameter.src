@@ -14,7 +14,7 @@ public final class foo_ {
         ( // line 1
             let
             {
-                long $ceylontmp$integer$0 = .com.redhat.ceylon.compiler.java.test.fordebug.lines.foo_.foo$integer(); // line 2
+                final long $ceylontmp$integer$0 = .com.redhat.ceylon.compiler.java.test.fordebug.lines.foo_.foo$integer(); // line 2
                 foo($ceylontmp$integer$0); // line 3
             }
             returning null; // line 1

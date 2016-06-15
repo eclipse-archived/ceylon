@@ -27,7 +27,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Sequential<? extends T> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .ceylon.language.Sequential<? extends T> $ceylontmp$s$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 m2$canonical$(i, $ceylontmp$s$0);
             }
             returning null;
@@ -510,7 +510,7 @@ class SpreadArguments<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$44 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$44 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 m4$canonical$($ceylontmp$i$44);
             }
             returning null;

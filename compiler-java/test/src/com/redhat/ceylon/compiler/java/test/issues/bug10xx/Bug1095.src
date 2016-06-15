@@ -9,7 +9,7 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Value> $ceylontmp$values$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .ceylon.language.Sequential<? extends Value> $ceylontmp$values$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning variadicSum$canonical$($reified$Value, $ceylontmp$values$0);
         );
@@ -27,7 +27,7 @@ class Bug1095 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return (
             let
             {
-                .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> $ceylontmp$dummy$1 = defaultedSum$dummy($reified$Value);
+                final .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> $ceylontmp$dummy$1 = defaultedSum$dummy($reified$Value);
             }
             returning defaultedSum$canonical$($reified$Value, $ceylontmp$dummy$1);
         );

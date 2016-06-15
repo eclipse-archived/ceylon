@@ -103,8 +103,8 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
         return (
             let
             {
-                long $ceylontmp$i$0 = m1$i();
-                boolean $ceylontmp$b$1 = m1$b($ceylontmp$i$0);
+                final long $ceylontmp$i$0 = m1$i();
+                final boolean $ceylontmp$b$1 = m1$b($ceylontmp$i$0);
             }
             returning m1$canonical$($ceylontmp$i$0, $ceylontmp$b$1);
         );
@@ -114,7 +114,7 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
         return (
             let
             {
-                boolean $ceylontmp$b$2 = m1$b(i);
+                final boolean $ceylontmp$b$2 = m1$b(i);
             }
             returning m1$canonical$(i, $ceylontmp$b$2);
         );
@@ -133,8 +133,8 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
         return (
             let
             {
-                long $ceylontmp$i$3 = m2$i();
-                boolean $ceylontmp$b$4 = m2$b($ceylontmp$i$3);
+                final long $ceylontmp$i$3 = m2$i();
+                final boolean $ceylontmp$b$4 = m2$b($ceylontmp$i$3);
             }
             returning m2$canonical$($ceylontmp$i$3, $ceylontmp$b$4);
         );
@@ -144,7 +144,7 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
         return (
             let
             {
-                boolean $ceylontmp$b$5 = m2$b(i);
+                final boolean $ceylontmp$b$5 = m2$b(i);
             }
             returning m2$canonical$(i, $ceylontmp$b$5);
         );

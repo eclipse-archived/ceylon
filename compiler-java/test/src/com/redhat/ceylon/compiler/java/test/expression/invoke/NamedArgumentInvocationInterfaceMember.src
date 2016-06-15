@@ -22,7 +22,7 @@ final class NamedArgumentInvocationInterfaceMember$impl implements .java.io.Seri
             (
                 let
                 {
-                    long $ceylontmp$bar$0 = $default$Inner$bar(foo);
+                    final long $ceylontmp$bar$0 = $default$Inner$bar(foo);
                     this(foo, $ceylontmp$bar$0);
                 }
                 returning null;
@@ -67,7 +67,7 @@ final class NamedArgumentInvocationInterfaceMember$impl implements .java.io.Seri
             (
                 let
                 {
-                    long $ceylontmp$bar$1 = InnerWithCtor$ctor$bar(foo$param$);
+                    final long $ceylontmp$bar$1 = InnerWithCtor$ctor$bar(foo$param$);
                     this($name$, foo$param$, $ceylontmp$bar$1);
                 }
                 returning null;

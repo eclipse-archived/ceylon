@@ -220,7 +220,7 @@ abstract class Bug1696MixinA2<T> implements .com.redhat.ceylon.compiler.java.run
         return (
             let
             {
-                long $ceylontmp$step$0 = interpose$step($reified$Other, element);
+                final long $ceylontmp$step$0 = interpose$step($reified$Other, element);
             }
             returning interpose$canonical$($reified$Other, element, $ceylontmp$step$0);
         );
@@ -577,7 +577,7 @@ abstract class Bug1696MixinB2<T> implements .com.redhat.ceylon.compiler.java.run
         return (
             let
             {
-                long $ceylontmp$step$1 = interpose$step($reified$Other, element);
+                final long $ceylontmp$step$1 = interpose$step($reified$Other, element);
             }
             returning interpose$canonical$($reified$Other, element, $ceylontmp$step$1);
         );
@@ -911,7 +911,7 @@ abstract class Bug1696MixinC2<T> implements .com.redhat.ceylon.compiler.java.run
         return (
             let
             {
-                long $ceylontmp$step$2 = interpose$step($reified$Other, element);
+                final long $ceylontmp$step$2 = interpose$step($reified$Other, element);
             }
             returning interpose$canonical$($reified$Other, element, $ceylontmp$step$2);
         );
@@ -1268,7 +1268,7 @@ abstract class Bug1696MixinD2<T> implements .com.redhat.ceylon.compiler.java.run
         return (
             let
             {
-                long $ceylontmp$step$3 = interpose$step($reified$Other, element);
+                final long $ceylontmp$step$3 = interpose$step($reified$Other, element);
             }
             returning interpose$canonical$($reified$Other, element, $ceylontmp$step$3);
         );

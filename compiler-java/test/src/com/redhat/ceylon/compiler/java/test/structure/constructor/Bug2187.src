@@ -6,7 +6,7 @@ class Bug2187 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$f$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$f$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 this($name$, $ceylontmp$f$0);
             }
             returning null;
@@ -17,7 +17,7 @@ class Bug2187 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$f$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$f$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 this($name$, $ceylontmp$f$1);
             }
             returning null;

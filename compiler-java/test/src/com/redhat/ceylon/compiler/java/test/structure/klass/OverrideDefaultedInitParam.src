@@ -6,7 +6,7 @@ class OverrideDefaultedInitParam implements .com.redhat.ceylon.compiler.java.run
         (
             let
             {
-                .java.lang.String $ceylontmp$id$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParam.$default$id();
+                final .java.lang.String $ceylontmp$id$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParam.$default$id();
                 this($ceylontmp$id$0);
             }
             returning null;
@@ -32,7 +32,7 @@ class OverrideDefaultedInitParamSub extends .com.redhat.ceylon.compiler.java.tes
         (
             let
             {
-                .java.lang.String $ceylontmp$id$1 = .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParamSub.$default$id();
+                final .java.lang.String $ceylontmp$id$1 = .com.redhat.ceylon.compiler.java.test.structure.klass.OverrideDefaultedInitParamSub.$default$id();
                 this($ceylontmp$id$1);
             }
             returning null;

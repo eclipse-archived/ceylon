@@ -15,7 +15,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                long $ceylontmp$n$0 = f1$n();
+                final long $ceylontmp$n$0 = f1$n();
                 f1$priv$$canonical$($ceylontmp$n$0);
             }
             returning null;
@@ -43,7 +43,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                .java.lang.String $ceylontmp$s$1 = f2$s(n);
+                final .java.lang.String $ceylontmp$s$1 = f2$s(n);
                 f2$canonical$(n, $ceylontmp$s$1);
             }
             returning null;
@@ -71,8 +71,8 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                long $ceylontmp$n$2 = f3$n();
-                long $ceylontmp$m$3 = f3$m($ceylontmp$n$2);
+                final long $ceylontmp$n$2 = f3$n();
+                final long $ceylontmp$m$3 = f3$m($ceylontmp$n$2);
                 f3$canonical$($ceylontmp$n$2, $ceylontmp$m$3);
             }
             returning null;
@@ -87,7 +87,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                long $ceylontmp$m$4 = f3$m(n);
+                final long $ceylontmp$m$4 = f3$m(n);
                 f3$canonical$(n, $ceylontmp$m$4);
             }
             returning null;
@@ -115,8 +115,8 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                long $ceylontmp$n$5 = f4$n();
-                long $ceylontmp$m$6 = f4$m($ceylontmp$n$5);
+                final long $ceylontmp$n$5 = f4$n();
+                final long $ceylontmp$m$6 = f4$m($ceylontmp$n$5);
                 f4$canonical$($ceylontmp$n$5, $ceylontmp$m$6);
             }
             returning null;
@@ -131,7 +131,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                long $ceylontmp$m$7 = f4$m(n);
+                final long $ceylontmp$m$7 = f4$m(n);
                 f4$canonical$(n, $ceylontmp$m$7);
             }
             returning null;
@@ -159,7 +159,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                long $ceylontmp$n$8 = f5$n();
+                final long $ceylontmp$n$8 = f5$n();
                 f5$canonical$($ceylontmp$n$8);
             }
             returning null;
@@ -187,8 +187,8 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                long $ceylontmp$n$9 = f6$n();
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$10 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final long $ceylontmp$n$9 = f6$n();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$10 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 f6$canonical$($ceylontmp$n$9, $ceylontmp$seq$10);
             }
             returning null;
@@ -203,7 +203,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$11 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$seq$11 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 f6$canonical$(n, $ceylontmp$seq$11);
             }
             returning null;

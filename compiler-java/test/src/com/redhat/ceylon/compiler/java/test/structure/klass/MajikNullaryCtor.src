@@ -164,7 +164,7 @@ class MajikNullaryCtorDefaulted implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                long $ceylontmp$i$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorDefaulted.$default$i();
+                final long $ceylontmp$i$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorDefaulted.$default$i();
                 this($ceylontmp$i$0);
             }
             returning null;
@@ -226,7 +226,7 @@ class MajikNullaryCtorSequenced implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$va$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$va$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 this($ceylontmp$va$1);
             }
             returning null;

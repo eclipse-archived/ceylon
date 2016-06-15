@@ -246,7 +246,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$i$8 = m$i();
+                final long $ceylontmp$i$8 = m$i();
             }
             returning m$canonical$($ceylontmp$i$8);
         );
@@ -265,7 +265,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$i$9 = m2$i();
+                final long $ceylontmp$i$9 = m2$i();
             }
             returning m2$canonical$($ceylontmp$i$9);
         );
@@ -284,8 +284,8 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$i$10 = m3$i();
-                long $ceylontmp$n$11 = m3$n($ceylontmp$i$10);
+                final long $ceylontmp$i$10 = m3$i();
+                final long $ceylontmp$n$11 = m3$n($ceylontmp$i$10);
             }
             returning m3$canonical$($ceylontmp$i$10, $ceylontmp$n$11);
         );
@@ -295,7 +295,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$n$12 = m3$n(i);
+                final long $ceylontmp$n$12 = m3$n(i);
             }
             returning m3$canonical$(i, $ceylontmp$n$12);
         );
@@ -314,7 +314,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                long $ceylontmp$n$13 = m4$n(i);
+                final long $ceylontmp$n$13 = m4$n(i);
             }
             returning m4$canonical$(i, $ceylontmp$n$13);
         );
@@ -333,8 +333,8 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                T $ceylontmp$t$14 = m5$t($reified$U, i);
-                U $ceylontmp$u$15 = m5$u($reified$U, i, $ceylontmp$t$14);
+                final T $ceylontmp$t$14 = m5$t($reified$U, i);
+                final U $ceylontmp$u$15 = m5$u($reified$U, i, $ceylontmp$t$14);
             }
             returning m5$canonical$($reified$U, i, $ceylontmp$t$14, $ceylontmp$u$15);
         );
@@ -344,7 +344,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
         return (
             let
             {
-                U $ceylontmp$u$16 = m5$u($reified$U, i, t);
+                final U $ceylontmp$u$16 = m5$u($reified$U, i, t);
             }
             returning m5$canonical$($reified$U, i, t, $ceylontmp$u$16);
         );

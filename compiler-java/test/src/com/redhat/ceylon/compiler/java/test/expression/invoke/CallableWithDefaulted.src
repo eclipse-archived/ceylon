@@ -662,8 +662,8 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
         (
             let
             {
-                .java.lang.String $ceylontmp$b$6 = defaultedVariadic$b(a);
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$7 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .java.lang.String $ceylontmp$b$6 = defaultedVariadic$b(a);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$7 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 defaultedVariadic$priv$$canonical$(a, $ceylontmp$b$6, $ceylontmp$args$7);
             }
             returning null;
@@ -678,7 +678,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$8 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$args$8 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 defaultedVariadic$priv$$canonical$(a, b, $ceylontmp$args$8);
             }
             returning null;
@@ -850,7 +850,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
         (
             let
             {
-                .ceylon.language.Callable<? extends .ceylon.language.Integer> $ceylontmp$bar$10 = methodWithDefaultCallableParam$bar();
+                final .ceylon.language.Callable<? extends .ceylon.language.Integer> $ceylontmp$bar$10 = methodWithDefaultCallableParam$bar();
                 methodWithDefaultCallableParam$priv$$canonical$($ceylontmp$bar$10);
             }
             returning null;
@@ -902,7 +902,7 @@ class CallableWithDefaulted implements .com.redhat.ceylon.compiler.java.runtime.
         (
             let
             {
-                .ceylon.language.Callable<? extends .ceylon.language.Integer> $ceylontmp$bar$11 = methodWithDefaultCallableParam2$bar();
+                final .ceylon.language.Callable<? extends .ceylon.language.Integer> $ceylontmp$bar$11 = methodWithDefaultCallableParam2$bar();
                 methodWithDefaultCallableParam2$priv$$canonical$($ceylontmp$bar$11);
             }
             returning null;

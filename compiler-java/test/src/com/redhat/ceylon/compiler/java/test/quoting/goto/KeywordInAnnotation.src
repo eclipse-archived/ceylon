@@ -28,21 +28,6 @@ public final class AnnotationClass implements .com.redhat.ceylon.compiler.java.r
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Type() {
-        return .ceylon.language.Anything.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Value() {
-        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$ProgramElement() {
-        return .ceylon.language.Annotated.$TypeDescriptor$;
-    }
-    
-    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.quoting.$goto.AnnotationClass.$TypeDescriptor$;
     }

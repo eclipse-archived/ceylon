@@ -786,7 +786,7 @@ class CtorAbstractCtorGeneric<T> extends .com.redhat.ceylon.compiler.java.test.s
         (
             let
             {
-                T $ceylontmp$x$36 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.<T>CtorAbstractCtorGeneric$partial$x($reified$T);
+                final T $ceylontmp$x$36 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.<T>CtorAbstractCtorGeneric$partial$x($reified$T);
                 this($reified$T, $name$, $ceylontmp$x$36);
             }
             returning null;
@@ -797,7 +797,7 @@ class CtorAbstractCtorGeneric<T> extends .com.redhat.ceylon.compiler.java.test.s
         (
             let
             {
-                T $ceylontmp$y$38 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.<T>CtorAbstractCtorGeneric$rest$y($reified$T);
+                final T $ceylontmp$y$38 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.<T>CtorAbstractCtorGeneric$rest$y($reified$T);
                 this($reified$T, $name$, $ceylontmp$y$38);
             }
             returning null;

@@ -26,7 +26,7 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
             (
                 let
                 {
-                    long $ceylontmp$i$0 = Member$i();
+                    final long $ceylontmp$i$0 = Member$i();
                     this($ceylontmp$i$0);
                 }
                 returning null;
@@ -37,7 +37,7 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
             (
                 let
                 {
-                    long $ceylontmp$i$1 = Member$other$i();
+                    final long $ceylontmp$i$1 = Member$other$i();
                     this($name$, $ceylontmp$i$1);
                 }
                 returning null;
@@ -68,7 +68,7 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$i$2 = SharedMember$i();
+                final long $ceylontmp$i$2 = SharedMember$i();
             }
             returning new SharedMember($ceylontmp$i$2);
         );
@@ -93,7 +93,7 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                long $ceylontmp$i$3 = SharedMember$other$i();
+                final long $ceylontmp$i$3 = SharedMember$other$i();
             }
             returning new SharedMember($name$, $ceylontmp$i$3);
         );

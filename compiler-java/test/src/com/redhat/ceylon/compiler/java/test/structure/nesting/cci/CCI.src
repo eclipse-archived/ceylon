@@ -17,7 +17,7 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> i
         return (
             let
             {
-                U $ceylontmp$u$0 = m1$u($reified$U, b);
+                final U $ceylontmp$u$0 = m1$u($reified$U, b);
             }
             returning m1$priv$$canonical$($reified$U, b, $ceylontmp$u$0);
         );

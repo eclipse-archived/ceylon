@@ -36,7 +36,7 @@ final class TypeParamRename$impl<T, U> implements .java.io.Serializable {
         return (
             let
             {
-                T $ceylontmp$t2$0 = m$t2(t1);
+                final T $ceylontmp$t2$0 = m$t2(t1);
             }
             returning m$canonical$(t1, $ceylontmp$t2$0);
         );
@@ -58,7 +58,7 @@ final class TypeParamRename$impl<T, U> implements .java.io.Serializable {
         return (
             let
             {
-                V $ceylontmp$v$1 = m2$v($reified$V, $reified$W);
+                final V $ceylontmp$v$1 = m2$v($reified$V, $reified$W);
             }
             returning m2$canonical$($reified$V, $reified$W, $ceylontmp$v$1);
         );
@@ -102,7 +102,7 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runti
         return (
             let
             {
-                X $ceylontmp$t2$2 = m$t2(t1);
+                final X $ceylontmp$t2$2 = m$t2(t1);
             }
             returning m$canonical$(t1, $ceylontmp$t2$2);
         );
@@ -126,7 +126,7 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runti
         return (
             let
             {
-                A $ceylontmp$v$3 = m2$v($reified$A, $reified$B);
+                final A $ceylontmp$v$3 = m2$v($reified$A, $reified$B);
             }
             returning m2$canonical$($reified$A, $reified$B, $ceylontmp$v$3);
         );

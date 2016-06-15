@@ -85,7 +85,7 @@ final class InstantiatorDelegates$impl<X> implements .java.io.Serializable {
         return (
             let
             {
-                long $ceylontmp$i$0 = $default$Binary$i(b);
+                final long $ceylontmp$i$0 = $default$Binary$i(b);
             }
             returning new Binary(b, $ceylontmp$i$0);
         );
@@ -114,8 +114,8 @@ final class InstantiatorDelegates$impl<X> implements .java.io.Serializable {
         return (
             let
             {
-                boolean $ceylontmp$b$1 = $default$Binary2$b();
-                long $ceylontmp$i$2 = $default$Binary2$i($ceylontmp$b$1);
+                final boolean $ceylontmp$b$1 = $default$Binary2$b();
+                final long $ceylontmp$i$2 = $default$Binary2$i($ceylontmp$b$1);
             }
             returning new Binary2($ceylontmp$b$1, $ceylontmp$i$2);
         );
@@ -129,7 +129,7 @@ final class InstantiatorDelegates$impl<X> implements .java.io.Serializable {
         return (
             let
             {
-                long $ceylontmp$i$3 = $default$Binary2$i(b);
+                final long $ceylontmp$i$3 = $default$Binary2$i(b);
             }
             returning new Binary2(b, $ceylontmp$i$3);
         );
@@ -154,7 +154,7 @@ final class InstantiatorDelegates$impl<X> implements .java.io.Serializable {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$i$4 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning new Sequenced(b, $ceylontmp$i$4);
         );

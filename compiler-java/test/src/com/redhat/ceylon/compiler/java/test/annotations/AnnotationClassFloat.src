@@ -58,7 +58,7 @@ final class AnnotationClassFloatDefaulted implements .com.redhat.ceylon.compiler
         (
             let
             {
-                double $ceylontmp$f$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted.$default$f();
+                final double $ceylontmp$f$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassFloatDefaulted.$default$f();
                 this($ceylontmp$f$0);
             }
             returning null;
@@ -99,7 +99,7 @@ final class annotationClassFloat_ {
         return (
             let
             {
-                double $ceylontmp$f$1 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassFloat_.annotationClassFloat$f();
+                final double $ceylontmp$f$1 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassFloat_.annotationClassFloat$f();
             }
             returning annotationClassFloat($ceylontmp$f$1);
         );

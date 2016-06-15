@@ -87,7 +87,7 @@ class LLVMFunction6213B implements .com.redhat.ceylon.compiler.java.runtime.mode
         return (
             let
             {
-                .ceylon.language.String $ceylontmp$regNameIn$5 = register$regNameIn();
+                final .ceylon.language.String $ceylontmp$regNameIn$5 = register$regNameIn();
             }
             returning register$canonical$($ceylontmp$regNameIn$5);
         );
@@ -125,7 +125,7 @@ class LLVMFunction6213B implements .com.redhat.ceylon.compiler.java.runtime.mode
                         return (
                             let
                             {
-                                .com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B $ceylontmp$off$4 = store$off(val);
+                                final .com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B $ceylontmp$off$4 = store$off(val);
                             }
                             returning store$canonical$(val, $ceylontmp$off$4);
                         );

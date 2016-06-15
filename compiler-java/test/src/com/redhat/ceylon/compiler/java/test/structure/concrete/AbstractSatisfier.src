@@ -158,7 +158,7 @@ abstract class AbstractSatisfier<T> implements .com.redhat.ceylon.compiler.java.
         return (
             let
             {
-                long $ceylontmp$step$0 = interpose$step($reified$Other, element);
+                final long $ceylontmp$step$0 = interpose$step($reified$Other, element);
             }
             returning interpose$canonical$($reified$Other, element, $ceylontmp$step$0);
         );

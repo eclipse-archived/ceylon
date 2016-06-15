@@ -206,7 +206,7 @@ public abstract class Bug1777_Impl<Element> implements .com.redhat.ceylon.compil
         return (
             let
             {
-                long $ceylontmp$step$3 = interpose$step($reified$Other, element);
+                final long $ceylontmp$step$3 = interpose$step($reified$Other, element);
             }
             returning interpose$canonical$($reified$Other, element, $ceylontmp$step$3);
         );
@@ -537,7 +537,7 @@ public abstract class Bug1777_2<Element> implements .com.redhat.ceylon.compiler.
         return (
             let
             {
-                long $ceylontmp$step$4 = interpose$step($reified$Other, element);
+                final long $ceylontmp$step$4 = interpose$step($reified$Other, element);
             }
             returning interpose$canonical$($reified$Other, element, $ceylontmp$step$4);
         );

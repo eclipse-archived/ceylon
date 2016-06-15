@@ -11,7 +11,7 @@ interface NamedArgumentInvocation extends .com.redhat.ceylon.compiler.java.langu
         return (
             let
             {
-                long $ceylontmp$i$0 = f$i();
+                final long $ceylontmp$i$0 = f$i();
             }
             returning f$canonical$($ceylontmp$i$0);
         );
@@ -51,7 +51,7 @@ interface NamedArgumentInvocationSub extends .com.redhat.ceylon.compiler.java.te
         return (
             let
             {
-                long $ceylontmp$i$1 = g$i();
+                final long $ceylontmp$i$1 = g$i();
             }
             returning com$redhat$ceylon$compiler$java$test$structure$iface$NamedArgumentInvocationSub$g$g$priv$$canonical$($ceylontmp$i$1);
         );
@@ -80,7 +80,7 @@ interface NamedArgumentInvocationSub extends .com.redhat.ceylon.compiler.java.te
         return (
             let
             {
-                long $ceylontmp$i$6 = f$i();
+                final long $ceylontmp$i$6 = f$i();
             }
             returning f$canonical$($ceylontmp$i$6);
         );

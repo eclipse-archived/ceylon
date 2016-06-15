@@ -28,8 +28,8 @@ final class This$impl implements .java.io.Serializable {
         return (
             let
             {
-                long $ceylontmp$i1$0 = m2$i1();
-                long $ceylontmp$i2$1 = m2$i2($ceylontmp$i1$0);
+                final long $ceylontmp$i1$0 = m2$i1();
+                final long $ceylontmp$i2$1 = m2$i2($ceylontmp$i1$0);
             }
             returning m2$canonical$($ceylontmp$i1$0, $ceylontmp$i2$1);
         );
@@ -43,7 +43,7 @@ final class This$impl implements .java.io.Serializable {
         return (
             let
             {
-                long $ceylontmp$i2$2 = m2$i2(i1);
+                final long $ceylontmp$i2$2 = m2$i2(i1);
             }
             returning m2$canonical$(i1, $ceylontmp$i2$2);
         );

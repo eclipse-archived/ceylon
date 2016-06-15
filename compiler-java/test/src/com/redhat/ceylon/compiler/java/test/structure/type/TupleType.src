@@ -21,7 +21,7 @@ final class add_ {
         return (
             let
             {
-                .ceylon.language.Sequence<? extends .ceylon.language.Float> $ceylontmp$floats$0 = .com.redhat.ceylon.compiler.java.test.structure.type.add_.add$floats();
+                final .ceylon.language.Sequence<? extends .ceylon.language.Float> $ceylontmp$floats$0 = .com.redhat.ceylon.compiler.java.test.structure.type.add_.add$floats();
             }
             returning add($ceylontmp$floats$0);
         );

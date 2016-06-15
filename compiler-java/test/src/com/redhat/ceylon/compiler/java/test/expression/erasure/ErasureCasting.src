@@ -388,7 +388,7 @@ final class EC_ErasedMember$impl<Element, Absent> implements .java.io.Serializab
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p$22 = defaultedParams$p();
+                final .java.lang.Object $ceylontmp$p$22 = defaultedParams$p();
             }
             returning defaultedParams$canonical$($ceylontmp$p$22);
         );
@@ -418,7 +418,7 @@ final class EC_ErasedMember$impl<Element, Absent> implements .java.io.Serializab
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p$23 = $default$Class$p();
+                final .java.lang.Object $ceylontmp$p$23 = $default$Class$p();
             }
             returning new Class($ceylontmp$p$23);
         );
@@ -479,7 +479,7 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.r
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p$24 = defaultedParams$p();
+                final .java.lang.Object $ceylontmp$p$24 = defaultedParams$p();
             }
             returning defaultedParams$canonical$($ceylontmp$p$24);
         );

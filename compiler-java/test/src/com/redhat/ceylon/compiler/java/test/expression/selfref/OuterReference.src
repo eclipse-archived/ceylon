@@ -39,7 +39,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             (
                 let
                 {
-                    boolean $ceylontmp$b$0 = $default$InnerClass$b();
+                    final boolean $ceylontmp$b$0 = $default$InnerClass$b();
                     this($ceylontmp$b$0);
                 }
                 returning null;
@@ -53,7 +53,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             return (
                 let
                 {
-                    boolean $ceylontmp$b$1 = m$b();
+                    final boolean $ceylontmp$b$1 = m$b();
                 }
                 returning m$priv$$canonical$($ceylontmp$b$1);
             );
@@ -89,7 +89,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
             return (
                 let
                 {
-                    boolean $ceylontmp$b$2 = m$b();
+                    final boolean $ceylontmp$b$2 = m$b();
                 }
                 returning m$priv$$canonical$($ceylontmp$b$2);
             );
@@ -125,7 +125,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
                     let
                     {
                         LocalClass$impl $ceylontmp$impl$3 = new LocalClass$impl();
-                        boolean $ceylontmp$b$4 = $ceylontmp$impl$3.$default$b();
+                        final boolean $ceylontmp$b$4 = $ceylontmp$impl$3.$default$b();
                         this($ceylontmp$b$4);
                     }
                     returning null;
@@ -154,7 +154,7 @@ class OuterReference extends .com.redhat.ceylon.compiler.java.test.expression.se
                 (
                     let
                     {
-                        boolean $ceylontmp$b$5 = m$b();
+                        final boolean $ceylontmp$b$5 = m$b();
                         m$priv$$canonical$($ceylontmp$b$5);
                     }
                     returning null;

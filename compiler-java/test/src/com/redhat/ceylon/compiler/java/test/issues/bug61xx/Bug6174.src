@@ -17,7 +17,7 @@ class Bug6174 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return (
             let
             {
-                long $ceylontmp$size$0 = $default$Param$size(model$param$);
+                final long $ceylontmp$size$0 = $default$Param$size(model$param$);
             }
             returning new Param(model$param$, $ceylontmp$size$0);
         );

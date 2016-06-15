@@ -14,9 +14,9 @@ final class compareMeasureInteger2130_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$expect$50 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureInteger2130_.compareMeasureInteger2130$expect(start, length);
-                .ceylon.language.Integer $ceylontmp$breakAfter$51 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureInteger2130_.compareMeasureInteger2130$breakAfter(start, length, $ceylontmp$expect$50);
-                boolean $ceylontmp$debug$52 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureInteger2130_.compareMeasureInteger2130$debug(start, length, $ceylontmp$expect$50, $ceylontmp$breakAfter$51);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$expect$50 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureInteger2130_.compareMeasureInteger2130$expect(start, length);
+                final .ceylon.language.Integer $ceylontmp$breakAfter$51 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureInteger2130_.compareMeasureInteger2130$breakAfter(start, length, $ceylontmp$expect$50);
+                final boolean $ceylontmp$debug$52 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureInteger2130_.compareMeasureInteger2130$debug(start, length, $ceylontmp$expect$50, $ceylontmp$breakAfter$51);
                 compareMeasureInteger2130(start, length, $ceylontmp$expect$50, $ceylontmp$breakAfter$51, $ceylontmp$debug$52);
             }
             returning null;
@@ -33,8 +33,8 @@ final class compareMeasureInteger2130_ {
         (
             let
             {
-                .ceylon.language.Integer $ceylontmp$breakAfter$53 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureInteger2130_.compareMeasureInteger2130$breakAfter(start, length, expect);
-                boolean $ceylontmp$debug$54 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureInteger2130_.compareMeasureInteger2130$debug(start, length, expect, $ceylontmp$breakAfter$53);
+                final .ceylon.language.Integer $ceylontmp$breakAfter$53 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureInteger2130_.compareMeasureInteger2130$breakAfter(start, length, expect);
+                final boolean $ceylontmp$debug$54 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureInteger2130_.compareMeasureInteger2130$debug(start, length, expect, $ceylontmp$breakAfter$53);
                 compareMeasureInteger2130(start, length, expect, $ceylontmp$breakAfter$53, $ceylontmp$debug$54);
             }
             returning null;
@@ -51,7 +51,7 @@ final class compareMeasureInteger2130_ {
         (
             let
             {
-                boolean $ceylontmp$debug$55 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureInteger2130_.compareMeasureInteger2130$debug(start, length, expect, breakAfter);
+                final boolean $ceylontmp$debug$55 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureInteger2130_.compareMeasureInteger2130$debug(start, length, expect, breakAfter);
                 compareMeasureInteger2130(start, length, expect, breakAfter, $ceylontmp$debug$55);
             }
             returning null;
@@ -246,8 +246,8 @@ final class compareMeasureIntegerBy2130_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$expect$105 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureIntegerBy2130_.compareMeasureIntegerBy2130$expect(start, length, by);
-                .ceylon.language.Integer $ceylontmp$breakAfter$106 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureIntegerBy2130_.compareMeasureIntegerBy2130$breakAfter(start, length, by, $ceylontmp$expect$105);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$expect$105 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureIntegerBy2130_.compareMeasureIntegerBy2130$expect(start, length, by);
+                final .ceylon.language.Integer $ceylontmp$breakAfter$106 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureIntegerBy2130_.compareMeasureIntegerBy2130$breakAfter(start, length, by, $ceylontmp$expect$105);
                 compareMeasureIntegerBy2130(start, length, by, $ceylontmp$expect$105, $ceylontmp$breakAfter$106);
             }
             returning null;
@@ -264,7 +264,7 @@ final class compareMeasureIntegerBy2130_ {
         (
             let
             {
-                .ceylon.language.Integer $ceylontmp$breakAfter$107 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureIntegerBy2130_.compareMeasureIntegerBy2130$breakAfter(start, length, by, expect);
+                final .ceylon.language.Integer $ceylontmp$breakAfter$107 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureIntegerBy2130_.compareMeasureIntegerBy2130$breakAfter(start, length, by, expect);
                 compareMeasureIntegerBy2130(start, length, by, expect, $ceylontmp$breakAfter$107);
             }
             returning null;
@@ -453,8 +453,8 @@ final class compareMeasureCharacter2130_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Character> $ceylontmp$expect$156 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureCharacter2130_.compareMeasureCharacter2130$expect(start, length);
-                .ceylon.language.Integer $ceylontmp$breakAfter$157 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureCharacter2130_.compareMeasureCharacter2130$breakAfter(start, length, $ceylontmp$expect$156);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Character> $ceylontmp$expect$156 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureCharacter2130_.compareMeasureCharacter2130$expect(start, length);
+                final .ceylon.language.Integer $ceylontmp$breakAfter$157 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureCharacter2130_.compareMeasureCharacter2130$breakAfter(start, length, $ceylontmp$expect$156);
                 compareMeasureCharacter2130(start, length, $ceylontmp$expect$156, $ceylontmp$breakAfter$157);
             }
             returning null;
@@ -471,7 +471,7 @@ final class compareMeasureCharacter2130_ {
         (
             let
             {
-                .ceylon.language.Integer $ceylontmp$breakAfter$158 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureCharacter2130_.compareMeasureCharacter2130$breakAfter(start, length, expect);
+                final .ceylon.language.Integer $ceylontmp$breakAfter$158 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureCharacter2130_.compareMeasureCharacter2130$breakAfter(start, length, expect);
                 compareMeasureCharacter2130(start, length, expect, $ceylontmp$breakAfter$158);
             }
             returning null;
@@ -657,8 +657,8 @@ final class compareMeasureCharacterBy2130_ {
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Character> $ceylontmp$expect$208 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureCharacterBy2130_.compareMeasureCharacterBy2130$expect(start, length, by);
-                .ceylon.language.Integer $ceylontmp$breakAfter$209 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureCharacterBy2130_.compareMeasureCharacterBy2130$breakAfter(start, length, by, $ceylontmp$expect$208);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Character> $ceylontmp$expect$208 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureCharacterBy2130_.compareMeasureCharacterBy2130$expect(start, length, by);
+                final .ceylon.language.Integer $ceylontmp$breakAfter$209 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureCharacterBy2130_.compareMeasureCharacterBy2130$breakAfter(start, length, by, $ceylontmp$expect$208);
                 compareMeasureCharacterBy2130(start, length, by, $ceylontmp$expect$208, $ceylontmp$breakAfter$209);
             }
             returning null;
@@ -675,7 +675,7 @@ final class compareMeasureCharacterBy2130_ {
         (
             let
             {
-                .ceylon.language.Integer $ceylontmp$breakAfter$210 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureCharacterBy2130_.compareMeasureCharacterBy2130$breakAfter(start, length, by, expect);
+                final .ceylon.language.Integer $ceylontmp$breakAfter$210 = .com.redhat.ceylon.compiler.java.test.statement.loop.optim.compareMeasureCharacterBy2130_.compareMeasureCharacterBy2130$breakAfter(start, length, by, expect);
                 compareMeasureCharacterBy2130(start, length, by, expect, $ceylontmp$breakAfter$210);
             }
             returning null;

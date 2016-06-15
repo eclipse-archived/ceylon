@@ -76,7 +76,7 @@ class D6078 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         return (
             let
             {
-                .java.lang.String $ceylontmp$s$0 = a$s();
+                final .java.lang.String $ceylontmp$s$0 = a$s();
             }
             returning a$canonical$($ceylontmp$s$0);
         );

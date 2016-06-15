@@ -42,7 +42,7 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
         (
             let
             {
-                .java.lang.String $ceylontmp$a$0 = m$a();
+                final .java.lang.String $ceylontmp$a$0 = m$a();
                 m$canonical$($ceylontmp$a$0);
             }
             returning null;

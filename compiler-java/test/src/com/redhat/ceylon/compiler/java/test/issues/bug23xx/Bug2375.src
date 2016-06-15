@@ -28,7 +28,7 @@ public final class Bug2375$impl implements .java.io.Serializable {
         return (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onCompletion$0 = writeStringAsynchronous$onCompletion();
+                final .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onCompletion$0 = writeStringAsynchronous$onCompletion();
             }
             returning writeStringAsynchronous$canonical$($ceylontmp$onCompletion$0);
         );
@@ -82,7 +82,7 @@ public final class Bug2375$impl implements .java.io.Serializable {
         return (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onCompletion$1 = $default$CWithPl$onCompletion();
+                final .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onCompletion$1 = $default$CWithPl$onCompletion();
             }
             returning new CWithPl($ceylontmp$onCompletion$1);
         );
@@ -136,7 +136,7 @@ class Bug2375Impl implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onCompletion$2 = writeStringAsynchronous$onCompletion();
+                final .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onCompletion$2 = writeStringAsynchronous$onCompletion();
             }
             returning writeStringAsynchronous$canonical$($ceylontmp$onCompletion$2);
         );
@@ -178,7 +178,7 @@ class Bug2375Impl2 implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         return (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onCompletion$3 = writeStringAsynchronous$onCompletion();
+                final .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onCompletion$3 = writeStringAsynchronous$onCompletion();
             }
             returning writeStringAsynchronous$canonical$($ceylontmp$onCompletion$3);
         );
@@ -208,7 +208,7 @@ class Bug2375Impl2 implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         return (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onCompletion$4 = $default$CWithPl$onCompletion();
+                final .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onCompletion$4 = $default$CWithPl$onCompletion();
             }
             returning new CWithPl($ceylontmp$onCompletion$4);
         );

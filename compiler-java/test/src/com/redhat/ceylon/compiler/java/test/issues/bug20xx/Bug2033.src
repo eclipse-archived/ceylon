@@ -47,7 +47,7 @@ public final class Iterable$impl<Element> implements .java.io.Serializable {
             (
                 let
                 {
-                    long $ceylontmp$times$0 = $default$Member$times();
+                    final long $ceylontmp$times$0 = $default$Member$times();
                     this($ceylontmp$times$0);
                 }
                 returning null;
@@ -134,7 +134,7 @@ public final class List$impl<Element> implements .java.io.Serializable {
             (
                 let
                 {
-                    long $ceylontmp$times$1 = $this.$default$Member$times();
+                    final long $ceylontmp$times$1 = $this.$default$Member$times();
                     this($ceylontmp$times$1);
                 }
                 returning null;
@@ -333,7 +333,7 @@ class MweList3<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         return (
             let
             {
-                long $ceylontmp$times$2 = repeat$times();
+                final long $ceylontmp$times$2 = repeat$times();
             }
             returning repeat$canonical$($ceylontmp$times$2);
         );

@@ -11,7 +11,7 @@ interface Disambig extends .com.redhat.ceylon.compiler.java.language.ObjectProxy
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.structure.iface.Disambig $ceylontmp$a$0 = m$a();
+                final .com.redhat.ceylon.compiler.java.test.structure.iface.Disambig $ceylontmp$a$0 = m$a();
                 m$canonical$($ceylontmp$a$0);
             }
             returning null;

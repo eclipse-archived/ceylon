@@ -129,8 +129,8 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
         return (
             let
             {
-                long $ceylontmp$from$0 = patch$from($reified$Other, list);
-                long $ceylontmp$length$1 = patch$length($reified$Other, list, $ceylontmp$from$0);
+                final long $ceylontmp$from$0 = patch$from($reified$Other, list);
+                final long $ceylontmp$length$1 = patch$length($reified$Other, list, $ceylontmp$from$0);
             }
             returning patch$canonical$($reified$Other, list, $ceylontmp$from$0, $ceylontmp$length$1);
         );
@@ -146,7 +146,7 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
         return (
             let
             {
-                long $ceylontmp$length$2 = patch$length($reified$Other, list, from);
+                final long $ceylontmp$length$2 = patch$length($reified$Other, list, from);
             }
             returning patch$canonical$($reified$Other, list, from, $ceylontmp$length$2);
         );
@@ -378,7 +378,7 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
         return (
             let
             {
-                long $ceylontmp$step$3 = interpose$step($reified$Other, element);
+                final long $ceylontmp$step$3 = interpose$step($reified$Other, element);
             }
             returning interpose$canonical$($reified$Other, element, $ceylontmp$step$3);
         );
@@ -1118,8 +1118,8 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
         return (
             let
             {
-                long $ceylontmp$from$24 = patch$from($reified$Other, list);
-                long $ceylontmp$length$25 = patch$length($reified$Other, list, $ceylontmp$from$24);
+                final long $ceylontmp$from$24 = patch$from($reified$Other, list);
+                final long $ceylontmp$length$25 = patch$length($reified$Other, list, $ceylontmp$from$24);
             }
             returning patch$canonical$($reified$Other, list, $ceylontmp$from$24, $ceylontmp$length$25);
         );
@@ -1135,7 +1135,7 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
         return (
             let
             {
-                long $ceylontmp$length$26 = patch$length($reified$Other, list, from);
+                final long $ceylontmp$length$26 = patch$length($reified$Other, list, from);
             }
             returning patch$canonical$($reified$Other, list, from, $ceylontmp$length$26);
         );
@@ -1367,7 +1367,7 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
         return (
             let
             {
-                long $ceylontmp$step$27 = interpose$step($reified$Other, element);
+                final long $ceylontmp$step$27 = interpose$step($reified$Other, element);
             }
             returning interpose$canonical$($reified$Other, element, $ceylontmp$step$27);
         );

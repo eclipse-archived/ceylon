@@ -67,8 +67,8 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                long $ceylontmp$a$0 = methodWithOverloads$a($reified$T);
-                long $ceylontmp$b$1 = methodWithOverloads$b($reified$T, $ceylontmp$a$0);
+                final long $ceylontmp$a$0 = methodWithOverloads$a($reified$T);
+                final long $ceylontmp$b$1 = methodWithOverloads$b($reified$T, $ceylontmp$a$0);
                 methodWithOverloads$canonical$($reified$T, $ceylontmp$a$0, $ceylontmp$b$1);
             }
             returning null;
@@ -85,7 +85,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                long $ceylontmp$b$2 = methodWithOverloads$b($reified$T, a);
+                final long $ceylontmp$b$2 = methodWithOverloads$b($reified$T, a);
                 methodWithOverloads$canonical$($reified$T, a, $ceylontmp$b$2);
             }
             returning null;
@@ -228,8 +228,8 @@ public final class MethodInterface$impl implements .java.io.Serializable {
         (
             let
             {
-                long $ceylontmp$a$5 = methodWithOverloads$a($reified$T);
-                long $ceylontmp$b$6 = methodWithOverloads$b($reified$T, $ceylontmp$a$5);
+                final long $ceylontmp$a$5 = methodWithOverloads$a($reified$T);
+                final long $ceylontmp$b$6 = methodWithOverloads$b($reified$T, $ceylontmp$a$5);
                 methodWithOverloads$canonical$($reified$T, $ceylontmp$a$5, $ceylontmp$b$6);
             }
             returning null;
@@ -246,7 +246,7 @@ public final class MethodInterface$impl implements .java.io.Serializable {
         (
             let
             {
-                long $ceylontmp$b$7 = methodWithOverloads$b($reified$T, a);
+                final long $ceylontmp$b$7 = methodWithOverloads$b($reified$T, a);
                 methodWithOverloads$canonical$($reified$T, a, $ceylontmp$b$7);
             }
             returning null;
@@ -338,8 +338,8 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
         (
             let
             {
-                long $ceylontmp$a$8 = methodWithOverloads$a($reified$T);
-                long $ceylontmp$b$9 = methodWithOverloads$b($reified$T, $ceylontmp$a$8);
+                final long $ceylontmp$a$8 = methodWithOverloads$a($reified$T);
+                final long $ceylontmp$b$9 = methodWithOverloads$b($reified$T, $ceylontmp$a$8);
                 methodWithOverloads$canonical$($reified$T, $ceylontmp$a$8, $ceylontmp$b$9);
             }
             returning null;
@@ -358,7 +358,7 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
         (
             let
             {
-                long $ceylontmp$b$10 = methodWithOverloads$b($reified$T, a);
+                final long $ceylontmp$b$10 = methodWithOverloads$b($reified$T, a);
                 methodWithOverloads$canonical$($reified$T, a, $ceylontmp$b$10);
             }
             returning null;

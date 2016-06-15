@@ -425,7 +425,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
         return (
             let
             {
-                long $ceylontmp$step$15 = interpose$step($reified$Other, element);
+                final long $ceylontmp$step$15 = interpose$step($reified$Other, element);
             }
             returning interpose$canonical$($reified$Other, element, $ceylontmp$step$15);
         );

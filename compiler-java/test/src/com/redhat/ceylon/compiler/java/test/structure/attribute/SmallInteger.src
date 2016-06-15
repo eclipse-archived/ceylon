@@ -429,8 +429,8 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                int $ceylontmp$p1$52 = intParamDefault$p1();
-                int $ceylontmp$p2$53 = intParamDefault$p2($ceylontmp$p1$52);
+                final int $ceylontmp$p1$52 = intParamDefault$p1();
+                final int $ceylontmp$p2$53 = intParamDefault$p2($ceylontmp$p1$52);
                 intParamDefault$priv$$canonical$($ceylontmp$p1$52, $ceylontmp$p2$53);
             }
             returning null;
@@ -445,7 +445,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         (
             let
             {
-                int $ceylontmp$p2$54 = intParamDefault$p2(p1);
+                final int $ceylontmp$p2$54 = intParamDefault$p2(p1);
                 intParamDefault$priv$$canonical$(p1, $ceylontmp$p2$54);
             }
             returning null;

@@ -27,7 +27,7 @@ public class MemberClassAliasWithParameters_Foo implements .com.redhat.ceylon.co
         return (
             let
             {
-                .java.lang.String $ceylontmp$s$0 = $default$Member$s(i);
+                final .java.lang.String $ceylontmp$s$0 = $default$Member$s(i);
             }
             returning new Member(i, $ceylontmp$s$0);
         );

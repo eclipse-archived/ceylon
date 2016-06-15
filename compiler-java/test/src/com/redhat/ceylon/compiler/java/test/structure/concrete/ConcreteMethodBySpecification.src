@@ -47,7 +47,7 @@ final class ConcreteMethodBySpecification$impl implements .java.io.Serializable 
         return (
             let
             {
-                long $ceylontmp$i$0 = mSharedMem$i();
+                final long $ceylontmp$i$0 = mSharedMem$i();
             }
             returning mSharedMem$canonical$($ceylontmp$i$0);
         );
@@ -73,7 +73,7 @@ final class ConcreteMethodBySpecification$impl implements .java.io.Serializable 
         return (
             let
             {
-                long $ceylontmp$i$1 = mDefaultMem$i();
+                final long $ceylontmp$i$1 = mDefaultMem$i();
             }
             returning mDefaultMem$canonical$($ceylontmp$i$1);
         );
@@ -119,7 +119,7 @@ final class ConcreteMethodBySpecificationSub$impl implements .java.io.Serializab
         return (
             let
             {
-                long $ceylontmp$i$2 = mSharedSup$i();
+                final long $ceylontmp$i$2 = mSharedSup$i();
             }
             returning mSharedSup$canonical$($ceylontmp$i$2);
         );
@@ -141,7 +141,7 @@ final class ConcreteMethodBySpecificationSub$impl implements .java.io.Serializab
         return (
             let
             {
-                long $ceylontmp$i$3 = mDefaultSup$i();
+                final long $ceylontmp$i$3 = mDefaultSup$i();
             }
             returning mDefaultSup$canonical$($ceylontmp$i$3);
         );
@@ -182,7 +182,7 @@ class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.j
         return (
             let
             {
-                long $ceylontmp$i$4 = mDefaultSup$i();
+                final long $ceylontmp$i$4 = mDefaultSup$i();
             }
             returning mDefaultSup$canonical$($ceylontmp$i$4);
         );
@@ -207,7 +207,7 @@ class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.j
         return (
             let
             {
-                long $ceylontmp$i$5 = mSharedSup$i();
+                final long $ceylontmp$i$5 = mSharedSup$i();
             }
             returning mSharedSup$canonical$($ceylontmp$i$5);
         );
@@ -243,7 +243,7 @@ class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.j
         return (
             let
             {
-                long $ceylontmp$i$6 = mDefaultMem$i();
+                final long $ceylontmp$i$6 = mDefaultMem$i();
             }
             returning mDefaultMem$canonical$($ceylontmp$i$6);
         );
@@ -273,7 +273,7 @@ class ConcreteMethodBySpecificationImpl implements .com.redhat.ceylon.compiler.j
         return (
             let
             {
-                long $ceylontmp$i$7 = mSharedMem$i();
+                final long $ceylontmp$i$7 = mSharedMem$i();
             }
             returning mSharedMem$canonical$($ceylontmp$i$7);
         );

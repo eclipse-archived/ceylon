@@ -6,7 +6,7 @@ class Bug1981 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         (
             let
             {
-                .java.lang.String $ceylontmp$qname$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug1981.Bug1981$qname(name$param$);
+                final .java.lang.String $ceylontmp$qname$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug1981.Bug1981$qname(name$param$);
                 this(name$param$, $ceylontmp$qname$0);
             }
             returning null;

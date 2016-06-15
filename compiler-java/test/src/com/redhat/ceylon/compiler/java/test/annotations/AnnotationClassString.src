@@ -58,7 +58,7 @@ final class AnnotationClassStringDefaulted implements .com.redhat.ceylon.compile
         (
             let
             {
-                .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted.$default$s();
+                final .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringDefaulted.$default$s();
                 this($ceylontmp$s$0);
             }
             returning null;
@@ -133,7 +133,7 @@ final class AnnotationClassStringSequenceDefaulted implements .com.redhat.ceylon
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted.$default$s();
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$s$1 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringSequenceDefaulted.$default$s();
                 this($ceylontmp$s$1);
             }
             returning null;
@@ -208,7 +208,7 @@ final class AnnotationClassStringIterableDefaulted implements .com.redhat.ceylon
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$s$2 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted.$default$s();
+                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$s$2 = .com.redhat.ceylon.compiler.java.test.annotations.AnnotationClassStringIterableDefaulted.$default$s();
                 this($ceylontmp$s$2);
             }
             returning null;
@@ -294,7 +294,7 @@ final class annotationClassString_ {
         return (
             let
             {
-                .java.lang.String $ceylontmp$s$3 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassString_.annotationClassString$s();
+                final .java.lang.String $ceylontmp$s$3 = .com.redhat.ceylon.compiler.java.test.annotations.annotationClassString_.annotationClassString$s();
             }
             returning annotationClassString($ceylontmp$s$3);
         );

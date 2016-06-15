@@ -6,7 +6,7 @@ class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         (
             let
             {
-                .java.lang.String $ceylontmp$s$4 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$s();
+                final .java.lang.String $ceylontmp$s$4 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$s();
                 this($ceylontmp$s$4);
             }
             returning null;
@@ -17,7 +17,7 @@ class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         (
             let
             {
-                .java.lang.String $ceylontmp$s$5 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$one$s();
+                final .java.lang.String $ceylontmp$s$5 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$one$s();
                 this($name$, $ceylontmp$s$5);
             }
             returning null;
@@ -28,8 +28,8 @@ class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         (
             let
             {
-                .java.lang.String $ceylontmp$s$6 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$two$s();
-                long $ceylontmp$i$7 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$two$i($ceylontmp$s$6);
+                final .java.lang.String $ceylontmp$s$6 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$two$s();
+                final long $ceylontmp$i$7 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$two$i($ceylontmp$s$6);
                 this($name$, $ceylontmp$s$6, $ceylontmp$i$7);
             }
             returning null;
@@ -40,7 +40,7 @@ class DefaultedParameterCtor implements .com.redhat.ceylon.compiler.java.runtime
         (
             let
             {
-                long $ceylontmp$i$8 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$two$i(s$param$);
+                final long $ceylontmp$i$8 = .com.redhat.ceylon.compiler.java.test.structure.constructor.DefaultedParameterCtor.DefaultedParameterCtor$two$i(s$param$);
                 this($name$, s$param$, $ceylontmp$i$8);
             }
             returning null;

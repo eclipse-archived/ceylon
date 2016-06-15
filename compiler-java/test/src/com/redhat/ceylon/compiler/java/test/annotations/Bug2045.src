@@ -68,7 +68,7 @@ public final class bug2045_ {
         return (
             let
             {
-                long $ceylontmp$order$0 = .com.redhat.ceylon.compiler.java.test.annotations.bug2045_.bug2045$order();
+                final long $ceylontmp$order$0 = .com.redhat.ceylon.compiler.java.test.annotations.bug2045_.bug2045$order();
             }
             returning bug2045($ceylontmp$order$0);
         );

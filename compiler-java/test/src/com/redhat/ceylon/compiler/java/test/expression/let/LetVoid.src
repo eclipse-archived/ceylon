@@ -18,7 +18,7 @@ final class letVoid_ {
         (
             let
             {
-                long $ceylontmp$x$1 = .com.redhat.ceylon.compiler.java.test.expression.let.letVoid_.letVoid$x();
+                final long $ceylontmp$x$1 = .com.redhat.ceylon.compiler.java.test.expression.let.letVoid_.letVoid$x();
                 letVoid($ceylontmp$x$1);
             }
             returning null;

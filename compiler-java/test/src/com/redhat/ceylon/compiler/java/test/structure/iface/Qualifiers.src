@@ -32,7 +32,7 @@ interface Qualifiers extends .com.redhat.ceylon.compiler.java.language.ObjectPro
         return (
             let
             {
-                long $ceylontmp$n$0 = k$n();
+                final long $ceylontmp$n$0 = k$n();
             }
             returning k$canonical$($ceylontmp$n$0);
         );
@@ -57,7 +57,7 @@ interface QualifiersSub extends .com.redhat.ceylon.compiler.java.test.structure.
         return (
             let
             {
-                long $ceylontmp$m$1 = n$m();
+                final long $ceylontmp$m$1 = n$m();
             }
             returning n$canonical$($ceylontmp$m$1);
         );

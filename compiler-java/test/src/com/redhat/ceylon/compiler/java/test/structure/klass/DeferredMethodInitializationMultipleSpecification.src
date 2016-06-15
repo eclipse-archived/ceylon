@@ -19,7 +19,7 @@ class DeferredMethodInitializationMultipleSpecification implements .com.redhat.c
                 return (
                     let
                     {
-                        .java.lang.String $ceylontmp$name$0 = s$name();
+                        final .java.lang.String $ceylontmp$name$0 = s$name();
                     }
                     returning s$priv$$canonical$($ceylontmp$name$0);
                 );

@@ -259,8 +259,8 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
         return (
             let
             {
-                long $ceylontmp$from$0 = patch$from($reified$Other, list);
-                long $ceylontmp$length$1 = patch$length($reified$Other, list, $ceylontmp$from$0);
+                final long $ceylontmp$from$0 = patch$from($reified$Other, list);
+                final long $ceylontmp$length$1 = patch$length($reified$Other, list, $ceylontmp$from$0);
             }
             returning patch$canonical$($reified$Other, list, $ceylontmp$from$0, $ceylontmp$length$1);
         );
@@ -276,7 +276,7 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
         return (
             let
             {
-                long $ceylontmp$length$2 = patch$length($reified$Other, list, from);
+                final long $ceylontmp$length$2 = patch$length($reified$Other, list, from);
             }
             returning patch$canonical$($reified$Other, list, from, $ceylontmp$length$2);
         );
@@ -433,7 +433,7 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
         return (
             let
             {
-                long $ceylontmp$step$3 = interpose$step($reified$Other, element);
+                final long $ceylontmp$step$3 = interpose$step($reified$Other, element);
             }
             returning interpose$canonical$($reified$Other, element, $ceylontmp$step$3);
         );

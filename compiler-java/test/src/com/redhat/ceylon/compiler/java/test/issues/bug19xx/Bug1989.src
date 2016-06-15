@@ -15,7 +15,7 @@ public class Bug1989 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$fp$0 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1989.$default$fp(fp2);
+                final .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$fp$0 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1989.$default$fp(fp2);
                 this(fp2, $ceylontmp$fp$0);
             }
             returning null;

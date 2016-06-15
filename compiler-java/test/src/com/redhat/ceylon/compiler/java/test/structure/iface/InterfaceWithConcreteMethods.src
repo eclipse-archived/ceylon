@@ -19,8 +19,8 @@ interface InterfaceWithConcreteMethods<T> extends .com.redhat.ceylon.compiler.ja
         (
             let
             {
-                long $ceylontmp$i$0 = nonShared$i($reified$U);
-                long $ceylontmp$j$1 = nonShared$j($reified$U, $ceylontmp$i$0);
+                final long $ceylontmp$i$0 = nonShared$i($reified$U);
+                final long $ceylontmp$j$1 = nonShared$j($reified$U, $ceylontmp$i$0);
                 nonShared$priv$$canonical$($reified$U, $ceylontmp$i$0, $ceylontmp$j$1);
             }
             returning null;
@@ -37,7 +37,7 @@ interface InterfaceWithConcreteMethods<T> extends .com.redhat.ceylon.compiler.ja
         (
             let
             {
-                long $ceylontmp$j$2 = nonShared$j($reified$U, i);
+                final long $ceylontmp$j$2 = nonShared$j($reified$U, i);
                 nonShared$priv$$canonical$($reified$U, i, $ceylontmp$j$2);
             }
             returning null;
@@ -81,8 +81,8 @@ interface InterfaceWithConcreteMethods<T> extends .com.redhat.ceylon.compiler.ja
         (
             let
             {
-                long $ceylontmp$i$3 = shared$i();
-                long $ceylontmp$j$4 = shared$j($ceylontmp$i$3);
+                final long $ceylontmp$i$3 = shared$i();
+                final long $ceylontmp$j$4 = shared$j($ceylontmp$i$3);
                 shared$canonical$($ceylontmp$i$3, $ceylontmp$j$4);
             }
             returning null;
@@ -99,7 +99,7 @@ interface InterfaceWithConcreteMethods<T> extends .com.redhat.ceylon.compiler.ja
         (
             let
             {
-                long $ceylontmp$j$5 = shared$j(i);
+                final long $ceylontmp$j$5 = shared$j(i);
                 shared$canonical$(i, $ceylontmp$j$5);
             }
             returning null;
@@ -138,8 +138,8 @@ interface InterfaceWithConcreteMethods<T> extends .com.redhat.ceylon.compiler.ja
         return (
             let
             {
-                long $ceylontmp$i$6 = default$i();
-                long $ceylontmp$j$7 = default$j($ceylontmp$i$6);
+                final long $ceylontmp$i$6 = default$i();
+                final long $ceylontmp$j$7 = default$j($ceylontmp$i$6);
             }
             returning $default$canonical$($ceylontmp$i$6, $ceylontmp$j$7);
         );
@@ -155,7 +155,7 @@ interface InterfaceWithConcreteMethods<T> extends .com.redhat.ceylon.compiler.ja
         return (
             let
             {
-                long $ceylontmp$j$8 = default$j(i);
+                final long $ceylontmp$j$8 = default$j(i);
             }
             returning $default$canonical$(i, $ceylontmp$j$8);
         );

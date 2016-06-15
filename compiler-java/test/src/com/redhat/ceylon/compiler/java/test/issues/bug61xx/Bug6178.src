@@ -16,7 +16,7 @@ final class Bug6178$impl implements .java.io.Serializable {
         (
             let
             {
-                boolean $ceylontmp$boolean$0 = method$boolean();
+                final boolean $ceylontmp$boolean$0 = method$boolean();
                 method$priv$$canonical$($ceylontmp$boolean$0);
             }
             returning null;

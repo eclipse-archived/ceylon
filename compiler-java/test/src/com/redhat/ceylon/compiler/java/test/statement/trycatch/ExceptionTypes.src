@@ -11,8 +11,8 @@ class ExceptionTypesException extends .ceylon.language.Exception {
         (
             let
             {
-                .ceylon.language.String $ceylontmp$description$0 = .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$default$description();
-                .java.lang.Throwable $ceylontmp$cause$1 = .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$default$cause($ceylontmp$description$0);
+                final .ceylon.language.String $ceylontmp$description$0 = .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$default$description();
+                final .java.lang.Throwable $ceylontmp$cause$1 = .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$default$cause($ceylontmp$description$0);
                 this($ceylontmp$description$0, $ceylontmp$cause$1);
             }
             returning null;
@@ -24,7 +24,7 @@ class ExceptionTypesException extends .ceylon.language.Exception {
         (
             let
             {
-                .java.lang.Throwable $ceylontmp$cause$2 = .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$default$cause(description);
+                final .java.lang.Throwable $ceylontmp$cause$2 = .com.redhat.ceylon.compiler.java.test.statement.trycatch.ExceptionTypesException.$default$cause(description);
                 this(description, $ceylontmp$cause$2);
             }
             returning null;

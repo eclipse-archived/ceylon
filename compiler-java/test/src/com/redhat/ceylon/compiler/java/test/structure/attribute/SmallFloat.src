@@ -204,8 +204,8 @@ class SmallFloat implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         (
             let
             {
-                float $ceylontmp$p1$12 = floatparamDefault$p1();
-                float $ceylontmp$p2$13 = floatparamDefault$p2($ceylontmp$p1$12);
+                final float $ceylontmp$p1$12 = floatparamDefault$p1();
+                final float $ceylontmp$p2$13 = floatparamDefault$p2($ceylontmp$p1$12);
                 floatparamDefault$priv$$canonical$($ceylontmp$p1$12, $ceylontmp$p2$13);
             }
             returning null;
@@ -220,7 +220,7 @@ class SmallFloat implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         (
             let
             {
-                float $ceylontmp$p2$14 = floatparamDefault$p2(p1);
+                final float $ceylontmp$p2$14 = floatparamDefault$p2(p1);
                 floatparamDefault$priv$$canonical$(p1, $ceylontmp$p2$14);
             }
             returning null;

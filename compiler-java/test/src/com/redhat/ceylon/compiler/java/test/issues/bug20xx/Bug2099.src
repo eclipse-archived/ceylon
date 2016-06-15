@@ -9,7 +9,7 @@ class Bug2099_C implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$others$0 = foo$others(x);
+                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> $ceylontmp$others$0 = foo$others(x);
             }
             returning foo$priv$$canonical$(x, $ceylontmp$others$0);
         );
@@ -189,7 +189,7 @@ class Bug2099_D implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.Object $ceylontmp$y$3 = foo$y();
+                final .java.lang.Object $ceylontmp$y$3 = foo$y();
             }
             returning foo$priv$$canonical$($ceylontmp$y$3);
         );
@@ -278,7 +278,7 @@ class Bug2099_E implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         return (
             let
             {
-                .java.lang.Object $ceylontmp$y$7 = foo$y();
+                final .java.lang.Object $ceylontmp$y$7 = foo$y();
             }
             returning foo$priv$$canonical$($ceylontmp$y$7);
         );

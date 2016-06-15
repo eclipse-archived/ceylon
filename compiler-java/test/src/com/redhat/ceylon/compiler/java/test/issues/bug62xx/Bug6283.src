@@ -36,7 +36,7 @@ class Bug6283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         (
             let
             {
-                .ceylon.language.String $ceylontmp$b$0 = func$b(a);
+                final .ceylon.language.String $ceylontmp$b$0 = func$b(a);
                 func$priv$$canonical$(a, $ceylontmp$b$0);
             }
             returning null;

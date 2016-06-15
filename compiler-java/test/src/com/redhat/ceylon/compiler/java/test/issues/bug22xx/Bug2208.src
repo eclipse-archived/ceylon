@@ -114,8 +114,8 @@ public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues
         return (
             let
             {
-                S $ceylontmp$s$0 = toT2$s();
-                S $ceylontmp$s2$1 = toT2$s2($ceylontmp$s$0);
+                final S $ceylontmp$s$0 = toT2$s();
+                final S $ceylontmp$s2$1 = toT2$s2($ceylontmp$s$0);
             }
             returning toT2$canonical$($ceylontmp$s$0, $ceylontmp$s2$1);
         );
@@ -129,7 +129,7 @@ public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues
         return (
             let
             {
-                S $ceylontmp$s2$2 = toT2$s2(s);
+                final S $ceylontmp$s2$2 = toT2$s2(s);
             }
             returning toT2$canonical$(s, $ceylontmp$s2$2);
         );
@@ -161,8 +161,8 @@ public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues
             (
                 let
                 {
-                    S $ceylontmp$s$3 = $default$Inner$s();
-                    S $ceylontmp$s2$4 = $default$Inner$s2($ceylontmp$s$3);
+                    final S $ceylontmp$s$3 = $default$Inner$s();
+                    final S $ceylontmp$s2$4 = $default$Inner$s2($ceylontmp$s$3);
                     this($ceylontmp$s$3, $ceylontmp$s2$4);
                 }
                 returning null;
@@ -173,7 +173,7 @@ public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues
             (
                 let
                 {
-                    S $ceylontmp$s2$5 = $default$Inner$s2(s);
+                    final S $ceylontmp$s2$5 = $default$Inner$s2(s);
                     this(s, $ceylontmp$s2$5);
                 }
                 returning null;
@@ -201,8 +201,8 @@ public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues
         return (
             let
             {
-                S $ceylontmp$s$6 = $default$Inner2$s();
-                S $ceylontmp$s2$7 = $default$Inner2$s2($ceylontmp$s$6);
+                final S $ceylontmp$s$6 = $default$Inner2$s();
+                final S $ceylontmp$s2$7 = $default$Inner2$s2($ceylontmp$s$6);
             }
             returning new Inner2($ceylontmp$s$6, $ceylontmp$s2$7);
         );
@@ -216,7 +216,7 @@ public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues
         return (
             let
             {
-                S $ceylontmp$s2$8 = $default$Inner2$s2(s);
+                final S $ceylontmp$s2$8 = $default$Inner2$s2(s);
             }
             returning new Inner2(s, $ceylontmp$s2$8);
         );
@@ -290,8 +290,8 @@ public class C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s$9 = toT2$s();
-                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$10 = toT2$s2($ceylontmp$s$9);
+                final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s$9 = toT2$s();
+                final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$10 = toT2$s2($ceylontmp$s$9);
             }
             returning toT2$canonical$($ceylontmp$s$9, $ceylontmp$s2$10);
         );
@@ -307,7 +307,7 @@ public class C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$11 = toT2$s2(s);
+                final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$11 = toT2$s2(s);
             }
             returning toT2$canonical$(s, $ceylontmp$s2$11);
         );
@@ -326,8 +326,8 @@ public class C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s$12 = toT$s();
-                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$13 = toT$s2($ceylontmp$s$12);
+                final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s$12 = toT$s();
+                final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$13 = toT$s2($ceylontmp$s$12);
             }
             returning toT$canonical$($ceylontmp$s$12, $ceylontmp$s2$13);
         );
@@ -337,7 +337,7 @@ public class C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$14 = toT$s2(s);
+                final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$14 = toT$s2(s);
             }
             returning toT$canonical$(s, $ceylontmp$s2$14);
         );
@@ -367,8 +367,8 @@ public class C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s$15 = $default$Inner$s();
-                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$16 = $default$Inner$s2($ceylontmp$s$15);
+                final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s$15 = $default$Inner$s();
+                final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$16 = $default$Inner$s2($ceylontmp$s$15);
             }
             returning new Inner($ceylontmp$s$15, $ceylontmp$s2$16);
         );
@@ -384,7 +384,7 @@ public class C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$17 = $default$Inner$s2(s);
+                final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Sup $ceylontmp$s2$17 = $default$Inner$s2(s);
             }
             returning new Inner(s, $ceylontmp$s2$17);
         );
@@ -424,7 +424,7 @@ public abstract class DateRange implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .ceylon.language.String $ceylontmp$step$18 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.DateRange.$default$step();
+                final .ceylon.language.String $ceylontmp$step$18 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.DateRange.$default$step();
                 this($ceylontmp$step$18);
             }
             returning null;
@@ -481,7 +481,7 @@ public final class Completion$impl<Element, T extends .ceylon.language.Sequentia
         return (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onRejected$19 = completed$onRejected();
+                final .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onRejected$19 = completed$onRejected();
             }
             returning completed$canonical$($ceylontmp$onRejected$19);
         );
@@ -522,7 +522,7 @@ public abstract class Promise<Value> implements .com.redhat.ceylon.compiler.java
         return (
             let
             {
-                .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onRejected$20 = completed$onRejected();
+                final .ceylon.language.Callable<? extends .java.lang.Object> $ceylontmp$onRejected$20 = completed$onRejected();
             }
             returning completed$canonical$($ceylontmp$onRejected$20);
         );
@@ -572,7 +572,7 @@ final class FormalMethods$impl<A, B> implements .java.io.Serializable {
         return (
             let
             {
-                B $ceylontmp$arg$21 = tpMethodBUnary$arg();
+                final B $ceylontmp$arg$21 = tpMethodBUnary$arg();
             }
             returning tpMethodBUnary$canonical$($ceylontmp$arg$21);
         );
@@ -612,7 +612,7 @@ class MissingActualMethods implements .com.redhat.ceylon.compiler.java.runtime.m
         return (
             let
             {
-                .ceylon.language.String $ceylontmp$arg$22 = tpMethodBUnary$arg();
+                final .ceylon.language.String $ceylontmp$arg$22 = tpMethodBUnary$arg();
             }
             returning tpMethodBUnary$canonical$($ceylontmp$arg$22);
         );
@@ -701,7 +701,7 @@ public final class InterfaceConstructors$impl<T> implements .java.io.Serializabl
         return (
             let
             {
-                T $ceylontmp$t$23 = Member$t();
+                final T $ceylontmp$t$23 = Member$t();
             }
             returning new Member($ceylontmp$t$23);
         );

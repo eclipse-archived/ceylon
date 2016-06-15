@@ -6,7 +6,7 @@ public class CtorDelegationWithDp implements .com.redhat.ceylon.compiler.java.ru
         (
             let
             {
-                .java.lang.String $ceylontmp$name$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.CtorDelegationWithDp$name();
+                final .java.lang.String $ceylontmp$name$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.CtorDelegationWithDp$name();
                 this($ceylontmp$name$0);
             }
             returning null;
@@ -17,7 +17,7 @@ public class CtorDelegationWithDp implements .com.redhat.ceylon.compiler.java.ru
         (
             let
             {
-                .java.lang.String $ceylontmp$name$1 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.CtorDelegationWithDp$name();
+                final .java.lang.String $ceylontmp$name$1 = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.CtorDelegationWithDp$name();
                 this($ceylontmp$name$1);
             }
             returning null;

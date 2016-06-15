@@ -20,7 +20,7 @@ final class VariadicTricks implements .com.redhat.ceylon.compiler.java.runtime.m
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 this($ceylontmp$args$0);
             }
             returning null;
@@ -87,7 +87,7 @@ final class variadicTricks_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning variadicTricks($ceylontmp$args$1);
         );
@@ -110,7 +110,7 @@ final class variadicTricksIndirect_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
             returning variadicTricksIndirect($ceylontmp$args$2);
         );

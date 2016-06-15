@@ -9,8 +9,8 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
         (
             let
             {
-                long $ceylontmp$i$0 = m$i(s);
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$b$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final long $ceylontmp$i$0 = m$i(s);
+                final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$b$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 m$priv$$canonical$(s, $ceylontmp$i$0, $ceylontmp$b$1);
             }
             returning null;
@@ -25,7 +25,7 @@ class DefaultedAndSequenced implements .com.redhat.ceylon.compiler.java.runtime.
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$b$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$b$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 m$priv$$canonical$(s, i, $ceylontmp$b$2);
             }
             returning null;

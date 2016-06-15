@@ -14,8 +14,8 @@ final class defaultedParameters_ {
         return (
             let
             {
-                .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters$s();
-                long $ceylontmp$i$1 = .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters$i($ceylontmp$s$0);
+                final .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters$s();
+                final long $ceylontmp$i$1 = .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters$i($ceylontmp$s$0);
             }
             returning defaultedParameters($ceylontmp$s$0, $ceylontmp$i$1);
         );
@@ -31,7 +31,7 @@ final class defaultedParameters_ {
         return (
             let
             {
-                long $ceylontmp$i$2 = .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters$i(s);
+                final long $ceylontmp$i$2 = .com.redhat.ceylon.compiler.java.test.fordebug.trace.defaultedParameters_.defaultedParameters$i(s);
             }
             returning defaultedParameters(s, $ceylontmp$i$2);
         );

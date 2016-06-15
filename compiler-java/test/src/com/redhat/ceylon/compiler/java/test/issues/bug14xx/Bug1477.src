@@ -6,7 +6,7 @@ class Bug1477Node<TItem> implements .com.redhat.ceylon.compiler.java.runtime.mod
         (
             let
             {
-                .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<TItem>> $ceylontmp$children$0 = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node.<TItem>$default$children($reified$TItem, item);
+                final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node<TItem>> $ceylontmp$children$0 = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1477Node.<TItem>$default$children($reified$TItem, item);
                 this($reified$TItem, item, $ceylontmp$children$0);
             }
             returning null;

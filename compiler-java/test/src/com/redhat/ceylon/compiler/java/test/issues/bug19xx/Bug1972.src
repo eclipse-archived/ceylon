@@ -6,7 +6,7 @@ class Bug1972 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         (
             let
             {
-                .ceylon.language.String $ceylontmp$x$0 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972.Bug1972$x();
+                final .ceylon.language.String $ceylontmp$x$0 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1972.Bug1972$x();
                 this($ceylontmp$x$0);
             }
             returning null;

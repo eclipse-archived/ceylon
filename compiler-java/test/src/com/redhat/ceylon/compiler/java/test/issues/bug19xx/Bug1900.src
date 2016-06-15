@@ -9,10 +9,10 @@ final class bug1901_a_ {
         (
             let
             {
-                long $ceylontmp$a$0 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$a();
-                long $ceylontmp$b$1 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$b($ceylontmp$a$0);
-                long $ceylontmp$c$2 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$c($ceylontmp$a$0, $ceylontmp$b$1);
-                long $ceylontmp$d$3 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$d($ceylontmp$a$0, $ceylontmp$b$1, $ceylontmp$c$2);
+                final long $ceylontmp$a$0 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$a();
+                final long $ceylontmp$b$1 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$b($ceylontmp$a$0);
+                final long $ceylontmp$c$2 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$c($ceylontmp$a$0, $ceylontmp$b$1);
+                final long $ceylontmp$d$3 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$d($ceylontmp$a$0, $ceylontmp$b$1, $ceylontmp$c$2);
                 bug1901_a($ceylontmp$a$0, $ceylontmp$b$1, $ceylontmp$c$2, $ceylontmp$d$3);
             }
             returning null;
@@ -27,9 +27,9 @@ final class bug1901_a_ {
         (
             let
             {
-                long $ceylontmp$b$4 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$b(a);
-                long $ceylontmp$c$5 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$c(a, $ceylontmp$b$4);
-                long $ceylontmp$d$6 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$d(a, $ceylontmp$b$4, $ceylontmp$c$5);
+                final long $ceylontmp$b$4 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$b(a);
+                final long $ceylontmp$c$5 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$c(a, $ceylontmp$b$4);
+                final long $ceylontmp$d$6 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$d(a, $ceylontmp$b$4, $ceylontmp$c$5);
                 bug1901_a(a, $ceylontmp$b$4, $ceylontmp$c$5, $ceylontmp$d$6);
             }
             returning null;
@@ -44,8 +44,8 @@ final class bug1901_a_ {
         (
             let
             {
-                long $ceylontmp$c$7 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$c(a, b);
-                long $ceylontmp$d$8 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$d(a, b, $ceylontmp$c$7);
+                final long $ceylontmp$c$7 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$c(a, b);
+                final long $ceylontmp$d$8 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$d(a, b, $ceylontmp$c$7);
                 bug1901_a(a, b, $ceylontmp$c$7, $ceylontmp$d$8);
             }
             returning null;
@@ -60,7 +60,7 @@ final class bug1901_a_ {
         (
             let
             {
-                long $ceylontmp$d$9 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$d(a, b, c);
+                final long $ceylontmp$d$9 = .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1901_a_.bug1901_a$d(a, b, c);
                 bug1901_a(a, b, c, $ceylontmp$d$9);
             }
             returning null;

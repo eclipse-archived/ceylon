@@ -12,7 +12,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 binaryStar$canonical$(s, $ceylontmp$seq$0);
             }
             returning null;
@@ -39,8 +39,8 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         (
             let
             {
-                .java.lang.String $ceylontmp$s$1 = binaryOptStar$s();
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .java.lang.String $ceylontmp$s$1 = binaryOptStar$s();
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$2 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 binaryOptStar$canonical$($ceylontmp$s$1, $ceylontmp$seq$2);
             }
             returning null;
@@ -55,7 +55,7 @@ class Bug1155_B implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                final .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$seq$3 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
                 binaryOptStar$canonical$(s, $ceylontmp$seq$3);
             }
             returning null;

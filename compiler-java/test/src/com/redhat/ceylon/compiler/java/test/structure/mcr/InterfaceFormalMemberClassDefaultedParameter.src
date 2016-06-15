@@ -28,7 +28,7 @@ final class InterfaceFormalMemberClassDefaultedParameter$impl implements .java.i
             (
                 let
                 {
-                    .ceylon.language.String $ceylontmp$s$0 = $default$X$s(o);
+                    final .ceylon.language.String $ceylontmp$s$0 = $default$X$s(o);
                     this(o, $ceylontmp$s$0);
                 }
                 returning null;
@@ -71,7 +71,7 @@ class InterfaceFormalMemberClassDefaultedParameterSub implements .com.redhat.cey
         return (
             let
             {
-                .ceylon.language.String $ceylontmp$s$1 = $default$X$s(o);
+                final .ceylon.language.String $ceylontmp$s$1 = $default$X$s(o);
             }
             returning new X(o, $ceylontmp$s$1);
         );
@@ -122,7 +122,7 @@ class InterfaceFormalMemberClassDefaultedParameterSub2 implements .com.redhat.ce
         return (
             let
             {
-                .ceylon.language.String $ceylontmp$s$2 = $default$X$s(o);
+                final .ceylon.language.String $ceylontmp$s$2 = $default$X$s(o);
             }
             returning new X(o, $ceylontmp$s$2);
         );

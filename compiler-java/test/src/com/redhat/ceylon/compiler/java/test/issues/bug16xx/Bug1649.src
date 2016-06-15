@@ -63,7 +63,7 @@ class Bug1649Clazz implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         return (
             let
             {
-                .java.lang.Object $ceylontmp$var$0 = defaultedVar$var();
+                final .java.lang.Object $ceylontmp$var$0 = defaultedVar$var();
             }
             returning defaultedVar$canonical$($ceylontmp$var$0);
         );

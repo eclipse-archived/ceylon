@@ -15,7 +15,7 @@ class Bug299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             (
                 let
                 {
-                    .java.lang.String $ceylontmp$s$0 = $default$Inner$s();
+                    final .java.lang.String $ceylontmp$s$0 = $default$Inner$s();
                     this($ceylontmp$s$0);
                 }
                 returning null;
@@ -29,7 +29,7 @@ class Bug299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             (
                 let
                 {
-                    .java.lang.String $ceylontmp$s$1 = m$s();
+                    final .java.lang.String $ceylontmp$s$1 = m$s();
                     m$priv$$canonical$($ceylontmp$s$1);
                 }
                 returning null;
@@ -75,7 +75,7 @@ class Bug299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                     let
                     {
                         Inner$impl $ceylontmp$impl$2 = new Inner$impl();
-                        .java.lang.String $ceylontmp$s$3 = $ceylontmp$impl$2.$default$s();
+                        final .java.lang.String $ceylontmp$s$3 = $ceylontmp$impl$2.$default$s();
                         this($ceylontmp$s$3);
                     }
                     returning null;
@@ -89,7 +89,7 @@ class Bug299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
                 (
                     let
                     {
-                        .java.lang.String $ceylontmp$s$4 = m$s();
+                        final .java.lang.String $ceylontmp$s$4 = m$s();
                         m$priv$$canonical$($ceylontmp$s$4);
                     }
                     returning null;

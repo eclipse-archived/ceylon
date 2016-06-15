@@ -6,7 +6,7 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         (
             let
             {
-                .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$unaryDefaulted$s();
+                final .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$unaryDefaulted$s();
                 this($name$, $ceylontmp$s$0);
             }
             returning null;
@@ -17,8 +17,8 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         (
             let
             {
-                .java.lang.String $ceylontmp$s1$1 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$binaryDefaulted$s1();
-                .java.lang.String $ceylontmp$s2$2 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$binaryDefaulted$s2($ceylontmp$s1$1);
+                final .java.lang.String $ceylontmp$s1$1 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$binaryDefaulted$s1();
+                final .java.lang.String $ceylontmp$s2$2 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$binaryDefaulted$s2($ceylontmp$s1$1);
                 this($name$, $ceylontmp$s1$1, $ceylontmp$s2$2);
             }
             returning null;
@@ -29,7 +29,7 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         (
             let
             {
-                .java.lang.String $ceylontmp$s2$3 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$binaryDefaulted$s2(s1$param$);
+                final .java.lang.String $ceylontmp$s2$3 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$binaryDefaulted$s2(s1$param$);
                 this($name$, s1$param$, $ceylontmp$s2$3);
             }
             returning null;
@@ -40,9 +40,9 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         (
             let
             {
-                .java.lang.String $ceylontmp$s1$4 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$ternaryDefaulted$s1();
-                .java.lang.String $ceylontmp$s2$5 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$ternaryDefaulted$s2($ceylontmp$s1$4);
-                .java.lang.String $ceylontmp$s3$6 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$ternaryDefaulted$s3($ceylontmp$s1$4, $ceylontmp$s2$5);
+                final .java.lang.String $ceylontmp$s1$4 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$ternaryDefaulted$s1();
+                final .java.lang.String $ceylontmp$s2$5 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$ternaryDefaulted$s2($ceylontmp$s1$4);
+                final .java.lang.String $ceylontmp$s3$6 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$ternaryDefaulted$s3($ceylontmp$s1$4, $ceylontmp$s2$5);
                 this($name$, $ceylontmp$s1$4, $ceylontmp$s2$5, $ceylontmp$s3$6);
             }
             returning null;
@@ -53,8 +53,8 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         (
             let
             {
-                .java.lang.String $ceylontmp$s2$7 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$ternaryDefaulted$s2(s1$param$);
-                .java.lang.String $ceylontmp$s3$8 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$ternaryDefaulted$s3(s1$param$, $ceylontmp$s2$7);
+                final .java.lang.String $ceylontmp$s2$7 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$ternaryDefaulted$s2(s1$param$);
+                final .java.lang.String $ceylontmp$s3$8 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$ternaryDefaulted$s3(s1$param$, $ceylontmp$s2$7);
                 this($name$, s1$param$, $ceylontmp$s2$7, $ceylontmp$s3$8);
             }
             returning null;
@@ -65,7 +65,7 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         (
             let
             {
-                .java.lang.String $ceylontmp$s3$9 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$ternaryDefaulted$s3(s1$param$, s2$param$);
+                final .java.lang.String $ceylontmp$s3$9 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$ternaryDefaulted$s3(s1$param$, s2$param$);
                 this($name$, s1$param$, s2$param$, $ceylontmp$s3$9);
             }
             returning null;
@@ -76,10 +76,10 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         (
             let
             {
-                .java.lang.String $ceylontmp$s1$10 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s1();
-                .java.lang.String $ceylontmp$s2$11 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s2($ceylontmp$s1$10);
-                .java.lang.String $ceylontmp$s3$12 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s3($ceylontmp$s1$10, $ceylontmp$s2$11);
-                .java.lang.String $ceylontmp$s4$13 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s4($ceylontmp$s1$10, $ceylontmp$s2$11, $ceylontmp$s3$12);
+                final .java.lang.String $ceylontmp$s1$10 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s1();
+                final .java.lang.String $ceylontmp$s2$11 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s2($ceylontmp$s1$10);
+                final .java.lang.String $ceylontmp$s3$12 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s3($ceylontmp$s1$10, $ceylontmp$s2$11);
+                final .java.lang.String $ceylontmp$s4$13 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s4($ceylontmp$s1$10, $ceylontmp$s2$11, $ceylontmp$s3$12);
                 this($name$, $ceylontmp$s1$10, $ceylontmp$s2$11, $ceylontmp$s3$12, $ceylontmp$s4$13);
             }
             returning null;
@@ -90,9 +90,9 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         (
             let
             {
-                .java.lang.String $ceylontmp$s2$14 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s2(s1$param$);
-                .java.lang.String $ceylontmp$s3$15 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s3(s1$param$, $ceylontmp$s2$14);
-                .java.lang.String $ceylontmp$s4$16 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s4(s1$param$, $ceylontmp$s2$14, $ceylontmp$s3$15);
+                final .java.lang.String $ceylontmp$s2$14 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s2(s1$param$);
+                final .java.lang.String $ceylontmp$s3$15 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s3(s1$param$, $ceylontmp$s2$14);
+                final .java.lang.String $ceylontmp$s4$16 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s4(s1$param$, $ceylontmp$s2$14, $ceylontmp$s3$15);
                 this($name$, s1$param$, $ceylontmp$s2$14, $ceylontmp$s3$15, $ceylontmp$s4$16);
             }
             returning null;
@@ -103,8 +103,8 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         (
             let
             {
-                .java.lang.String $ceylontmp$s3$17 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s3(s1$param$, s2$param$);
-                .java.lang.String $ceylontmp$s4$18 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s4(s1$param$, s2$param$, $ceylontmp$s3$17);
+                final .java.lang.String $ceylontmp$s3$17 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s3(s1$param$, s2$param$);
+                final .java.lang.String $ceylontmp$s4$18 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s4(s1$param$, s2$param$, $ceylontmp$s3$17);
                 this($name$, s1$param$, s2$param$, $ceylontmp$s3$17, $ceylontmp$s4$18);
             }
             returning null;
@@ -115,7 +115,7 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         (
             let
             {
-                .java.lang.String $ceylontmp$s4$19 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s4(s1$param$, s2$param$, s3$param$);
+                final .java.lang.String $ceylontmp$s4$19 = .com.redhat.ceylon.compiler.java.test.expression.ref.ConstructorRef.ConstructorRef$naryDefaulted$s4(s1$param$, s2$param$, s3$param$);
                 this($name$, s1$param$, s2$param$, s3$param$, $ceylontmp$s4$19);
             }
             returning null;

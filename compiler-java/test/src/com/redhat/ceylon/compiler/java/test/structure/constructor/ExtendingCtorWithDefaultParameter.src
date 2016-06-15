@@ -6,7 +6,7 @@ class ExtendingCtorWithDefaultParameter implements .com.redhat.ceylon.compiler.j
         (
             let
             {
-                long $ceylontmp$a$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.ExtendingCtorWithDefaultParameter$bar$a();
+                final long $ceylontmp$a$0 = .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.ExtendingCtorWithDefaultParameter$bar$a();
                 this($name$, $ceylontmp$a$0);
             }
             returning null;
@@ -17,7 +17,7 @@ class ExtendingCtorWithDefaultParameter implements .com.redhat.ceylon.compiler.j
         (
             let
             {
-                long $ceylontmp$a$1 = .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.ExtendingCtorWithDefaultParameter$bar$a();
+                final long $ceylontmp$a$1 = .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendingCtorWithDefaultParameter.ExtendingCtorWithDefaultParameter$bar$a();
                 this($name$, $ceylontmp$a$1);
             }
             returning null;

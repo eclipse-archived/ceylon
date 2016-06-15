@@ -33,7 +33,7 @@ interface GenericInterface<T> extends .com.redhat.ceylon.compiler.java.language.
         (
             let
             {
-                .ceylon.language.Sequential<? extends T> $ceylontmp$ts$0 = f$ts(t);
+                final .ceylon.language.Sequential<? extends T> $ceylontmp$ts$0 = f$ts(t);
                 f$canonical$(t, $ceylontmp$ts$0);
             }
             returning null;

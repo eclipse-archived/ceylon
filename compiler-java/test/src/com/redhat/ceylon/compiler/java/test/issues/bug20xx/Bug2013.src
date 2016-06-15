@@ -84,7 +84,7 @@ class Bug2013Trucker implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return (
             let
             {
-                double $ceylontmp$speed$0 = driveCar$speed();
+                final double $ceylontmp$speed$0 = driveCar$speed();
             }
             returning driveCar$canonical$($ceylontmp$speed$0);
         );

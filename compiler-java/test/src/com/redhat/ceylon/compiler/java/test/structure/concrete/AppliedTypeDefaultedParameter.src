@@ -38,7 +38,7 @@ final class AppliedTypeDefaultedParameter$impl<T, U> implements .java.io.Seriali
         return (
             let
             {
-                T $ceylontmp$t$0 = $default$Member$t();
+                final T $ceylontmp$t$0 = $default$Member$t();
             }
             returning new Member($ceylontmp$t$0);
         );

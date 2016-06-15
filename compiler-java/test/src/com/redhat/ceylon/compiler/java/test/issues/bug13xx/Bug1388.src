@@ -9,7 +9,7 @@ public final class serveStaticFile_ {
         return (
             let
             {
-                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$fileMapper$0 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.serveStaticFile_.serveStaticFile$fileMapper();
+                final .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$fileMapper$0 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.serveStaticFile_.serveStaticFile$fileMapper();
             }
             returning serveStaticFile($ceylontmp$fileMapper$0);
         );

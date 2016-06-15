@@ -51,7 +51,7 @@ class Bug1695B extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1
         (
             let
             {
-                .ceylon.language.Sequence $ceylontmp$c1$0 = f$c1();
+                final .ceylon.language.Sequence $ceylontmp$c1$0 = f$c1();
                 f$priv$$canonical$($ceylontmp$c1$0);
             }
             returning null;

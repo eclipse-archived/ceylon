@@ -12,7 +12,7 @@ class NamedArgumentWithIterable implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $ceylontmp$b$0 = defaulted$b(a);
+                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> $ceylontmp$b$0 = defaulted$b(a);
                 defaulted$priv$$canonical$(a, $ceylontmp$b$0);
             }
             returning null;

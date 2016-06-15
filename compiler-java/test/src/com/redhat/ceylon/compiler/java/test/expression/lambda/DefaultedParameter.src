@@ -9,7 +9,7 @@ final class defaultedParameter_ {
         return (
             let
             {
-                .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$f$0 = .com.redhat.ceylon.compiler.java.test.expression.lambda.defaultedParameter_.defaultedParameter$f();
+                final .ceylon.language.Callable<? extends .ceylon.language.String> $ceylontmp$f$0 = .com.redhat.ceylon.compiler.java.test.expression.lambda.defaultedParameter_.defaultedParameter$f();
             }
             returning defaultedParameter($ceylontmp$f$0);
         );
