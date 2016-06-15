@@ -89,7 +89,7 @@ shared interface List<out Element=Anything>
     shared default Element? getFromLast(Integer index)
             => getFromFirst(size-1-index);
     
-    Element getElement(Integer index) {
+    /*Element getElement(Integer index) {
         if (exists element = getFromFirst(index)) { 
             return element;
         }
@@ -97,7 +97,7 @@ shared interface List<out Element=Anything>
             assert (is Element null);
             return null; 
         }
-    }
+    }*/
     
     "The index of the last element of the list, or `null` if 
      the list is empty. Always `size>0 then size-1`."
@@ -195,6 +195,7 @@ shared interface List<out Element=Anything>
             => sequence();
     
     shared actual default Iterator<Element> iterator() {
+        value ou = this;
         if (size>0) {
             return object
                     satisfies Iterator<Element> {
@@ -202,7 +203,7 @@ shared interface List<out Element=Anything>
                 value size = outer.size;
                 next() => index>=size
                     then finished
-                    else getElement(index++);
+                    else getElement(ou, index++);
                 string => outer.string + ".iterator()";
             };
         }
@@ -675,6 +676,7 @@ shared interface List<out Element=Anything>
             return [];
         }
         else {
+            value ou = this;
             object list
                     extends Object() 
                     satisfies List<Result> {
@@ -682,7 +684,7 @@ shared interface List<out Element=Anything>
                 size = outer.size;
                 getFromFirst(Integer index)
                         => if (0<=index<size) 
-                        then collecting(outer.getElement(index))
+                        then collecting(getElement(ou, index))
                         else null;
             }
             return ArraySequence(Array(list));
