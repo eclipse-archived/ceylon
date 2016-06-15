@@ -40,6 +40,7 @@ import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 
 public class MiscTests extends CompilerTests {
 
@@ -291,7 +292,15 @@ public class MiscTests extends CompilerTests {
     }
 
     @Test
-    public void compileSDK() throws IOException{
+    public void compileSDK7() throws IOException{
+        compileSDK(JDK.JDK7);
+    }
+    @Test
+    public void compileSDK8() throws IOException{
+        compileSDK(JDK.JDK8);
+    }
+    
+    public void compileSDK(JDK jdk) throws IOException{
         String[] modules = {
                 "buffer",
                 "collection",
@@ -332,15 +341,15 @@ public class MiscTests extends CompilerTests {
 //        System.out.println("Press enter to continue");
 //        System.in.read();
 //        System.out.println("Test started");
-        compileSDKOnly(modules, extraModules);
-        compileSDKTests(modules, extraTestModules);
+        compileSDKOnly(jdk, modules, extraModules);
+        compileSDKTests(jdk, modules, extraTestModules);
 //        System.out.println("Done: Press enter to exit");
 //        System.in.read();
 //        System.out.println("Test finished");
 
     }
 
-    private void compileSDKOnly(String[] modules, String[] extraModules){
+    private void compileSDKOnly(JDK jdk, String[] modules, String[] extraModules){
         String sourceDir = "../../ceylon-sdk/source";
         // don't run this if the SDK is not checked out
         File sdkFile = new File(sourceDir);
@@ -365,7 +374,9 @@ public class MiscTests extends CompilerTests {
         ErrorCollector errorCollector = new ErrorCollector();
         CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, errorCollector, 
-                Arrays.asList("-sourcepath", sourceDir, "-d", "build/classes-sdk",
+                Arrays.asList(
+                        "-source", jdk.version, "-target", jdk.version,
+                        "-sourcepath", sourceDir, "-d", "build/classes-sdk",
                         "-sysrep", getSysRepPath(),
                         "-suppress-warnings", "ceylonNamespace",
                         "-overrides", "../../ceylon-sdk/overrides.xml",
@@ -375,7 +386,7 @@ public class MiscTests extends CompilerTests {
         Assert.assertEquals("Compilation of SDK itself failed: " + errorCollector.getAssertionFailureMessage(), Boolean.TRUE, result);
     }
 
-    private void compileSDKTests(String[] modules, String[] extraModules){
+    private void compileSDKTests(JDK jdk, String[] modules, String[] extraModules){
         String sourceDir = "../../ceylon-sdk/test-source";
         String depsDir = "../../ceylon-sdk/test-deps";
         // don't run this if the SDK is not checked out
@@ -404,7 +415,9 @@ public class MiscTests extends CompilerTests {
         ErrorCollector errorCollector = new ErrorCollector();
         CeyloncFileManager fileManager = (CeyloncFileManager)compiler.getStandardFileManager(null, null, null);
         CeyloncTaskImpl task = (CeyloncTaskImpl) compiler.getTask(null, fileManager, errorCollector, 
-                Arrays.asList("-sourcepath", sourceDir, "-sysrep", getSysRepPath(), "-rep", depsDir, "-d", "build/classes-sdk", "-cp", getClassPathAsPath()), 
+                Arrays.asList(
+                        "-source", jdk.version, "-target", jdk.version,
+                        "-sourcepath", sourceDir, "-sysrep", getSysRepPath(), "-rep", depsDir, "-d", "build/classes-sdk", "-cp", getClassPathAsPath()), 
                 moduleNames, null);
         
         Boolean result = task.call();

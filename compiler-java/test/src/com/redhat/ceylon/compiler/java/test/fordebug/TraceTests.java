@@ -11,8 +11,8 @@ import com.redhat.ceylon.compiler.java.test.fordebug.Tracer.Step;
 
 public class TraceTests extends DebuggerTests {
     
-    public TraceTests() {
-        super();
+    public TraceTests(String target, String source) {
+        super(target, source);
     }
 
     @Override

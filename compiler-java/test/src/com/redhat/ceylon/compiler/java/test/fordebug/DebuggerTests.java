@@ -12,11 +12,12 @@ import org.junit.BeforeClass;
 
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.JdkVersionDependentTests;
 
-public class DebuggerTests extends CompilerTests {
+public class DebuggerTests extends JdkVersionDependentTests {
     
-    public DebuggerTests() {
-        super();
+    public DebuggerTests(String target, String source) {
+        super(target, source);
     }
 
     protected String getClassPathAsPath(ModuleWithArtifact... modules) {

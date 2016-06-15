@@ -222,6 +222,10 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         args.add(srcDir.getCanonicalPath());
         args.add("-res"); 
         args.add(resDir.getCanonicalPath());
+        args.add("-target");
+        args.add("8");
+        args.add("-source");
+        args.add("8");
         args.add("-out");
         args.add(outRepo.getAbsolutePath());
         for (String option : options) {
