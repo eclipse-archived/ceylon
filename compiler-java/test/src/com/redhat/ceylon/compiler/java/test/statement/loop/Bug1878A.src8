@@ -24,7 +24,9 @@ final class bug1878A_ {
         }         while ($ceylontmp$increasing$4 ? _$8 - $ceylontmp$last$3 != 0L : _$8 - $ceylontmp$last$3 != 0L);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug1878A2_ {
     

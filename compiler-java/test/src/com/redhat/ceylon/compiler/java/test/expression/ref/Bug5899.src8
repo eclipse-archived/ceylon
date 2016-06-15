@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.ref;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5899.o_.class),
@@ -17,7 +19,9 @@ public class Bug5899 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         return new D($name$, s$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("create")
     public static final class D$create {
@@ -28,7 +32,9 @@ public class Bug5899 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5899.D$create D$create = null;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5899.class)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
@@ -61,7 +67,9 @@ public class Bug5899 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     private transient .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5899.o_ o;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Name("o")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5899.class)
     @.com.redhat.ceylon.compiler.java.metadata.Object
@@ -83,7 +91,9 @@ public class Bug5899 implements .com.redhat.ceylon.compiler.java.runtime.model.R
             return new E($name$, s$param$);
         }
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("create")
         class E$create {
@@ -92,7 +102,9 @@ public class Bug5899 implements .com.redhat.ceylon.compiler.java.runtime.model.R
             }
         }
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
         @.ceylon.language.SharedAnnotation$annotation$
         @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5899.o_.class)
         @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
@@ -152,7 +164,9 @@ public class Bug5899 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.Bug5899.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class bug5899_ {
     

@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.expression.ref;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.D.class)})
 class Bug5898 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
@@ -18,7 +20,9 @@ class Bug5898 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return new D($name$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("create")
     public static final class D$create {
@@ -35,7 +39,9 @@ class Bug5898 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return new D($name$, s$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("create2")
     public static final class D$create2 {
@@ -46,7 +52,9 @@ class Bug5898 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.D$create2 D$create2 = null;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.class)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
@@ -98,7 +106,9 @@ class Bug5898 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug5898_ {
     

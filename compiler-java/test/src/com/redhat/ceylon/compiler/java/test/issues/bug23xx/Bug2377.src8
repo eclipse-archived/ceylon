@@ -9,7 +9,9 @@ final class bug2377_ {
         .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object>apply(f, .com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Object.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(other)}, args));
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug2377_run_ {
     

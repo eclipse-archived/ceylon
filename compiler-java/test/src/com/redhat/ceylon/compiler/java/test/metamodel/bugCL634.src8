@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.metamodel;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 class BugCL634 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     BugCL634() {
@@ -41,7 +43,9 @@ class BugCL634 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.BugCL634.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class bugCL634_ {
     

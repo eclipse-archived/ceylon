@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Repeatable(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotations$.class)
@@ -9,7 +11,9 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     
     public abstract .java.lang.String[] seq();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -17,7 +21,9 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_String,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
@@ -71,7 +77,9 @@ final class SequenceDefaults_String implements .com.redhat.ceylon.compiler.java.
         return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$.class;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -130,7 +138,9 @@ final class sequenceDefaults_String_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String(seq);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -166,7 +176,9 @@ final class sequenceDefaults_String_Empty_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String(seq);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
@@ -208,7 +220,9 @@ final class sequenceArguments_String_ {
         });
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
@@ -227,7 +241,9 @@ final class sequenceArguments_String_Empty_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_());
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Repeatable(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotations$.class)
@@ -236,7 +252,9 @@ final class sequenceArguments_String_Empty_ {
     
     public abstract boolean[] seq();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -244,7 +262,9 @@ final class sequenceArguments_String_Empty_ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Boolean,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
@@ -298,7 +318,9 @@ final class SequenceDefaults_Boolean implements .com.redhat.ceylon.compiler.java
         return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$.class;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -338,7 +360,9 @@ final class sequenceDefaults_Boolean_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean(seq);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -374,7 +398,9 @@ final class sequenceDefaults_Boolean_Empty_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean(seq);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
@@ -397,7 +423,9 @@ final class sequenceArguments_Boolean_ {
                 .ceylon.language.Boolean.instance(true)}));
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
@@ -416,7 +444,9 @@ final class sequenceArguments_Boolean_Empty_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean((.ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_());
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Repeatable(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotations$.class)
@@ -425,7 +455,9 @@ final class sequenceArguments_Boolean_Empty_ {
     
     public abstract int[] seq();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -433,7 +465,9 @@ final class sequenceArguments_Boolean_Empty_ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Character,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
@@ -487,7 +521,9 @@ final class SequenceDefaults_Character implements .com.redhat.ceylon.compiler.ja
         return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$.class;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -529,7 +565,9 @@ final class sequenceDefaults_Character_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character(seq);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -565,7 +603,9 @@ final class sequenceDefaults_Character_Empty_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character(seq);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
@@ -590,7 +630,9 @@ final class sequenceArguments_Character_ {
                 .ceylon.language.Character.instance(67)}));
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
@@ -609,7 +651,9 @@ final class sequenceArguments_Character_Empty_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character((.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Repeatable(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotations$.class)
@@ -618,7 +662,9 @@ final class sequenceArguments_Character_Empty_ {
     
     public abstract double[] seq();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -626,7 +672,9 @@ final class sequenceArguments_Character_Empty_ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Float,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
@@ -680,7 +728,9 @@ final class SequenceDefaults_Float implements .com.redhat.ceylon.compiler.java.r
         return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$.class;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -722,7 +772,9 @@ final class sequenceDefaults_Float_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float(seq);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -758,7 +810,9 @@ final class sequenceDefaults_Float_Empty_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float(seq);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
@@ -783,7 +837,9 @@ final class sequenceArguments_Float_ {
                 .ceylon.language.Float.instance(6.0)}));
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
@@ -802,7 +858,9 @@ final class sequenceArguments_Float_Empty_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float((.ceylon.language.Sequential<? extends .ceylon.language.Float>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Repeatable(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotations$.class)
@@ -811,7 +869,9 @@ final class sequenceArguments_Float_Empty_ {
     
     public abstract long[] seq();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -819,7 +879,9 @@ final class sequenceArguments_Float_Empty_ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Integer,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
@@ -873,7 +935,9 @@ final class SequenceDefaults_Integer implements .com.redhat.ceylon.compiler.java
         return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$.class;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -915,7 +979,9 @@ final class sequenceDefaults_Integer_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer(seq);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -951,7 +1017,9 @@ final class sequenceDefaults_Integer_Empty_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer(seq);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
@@ -976,7 +1044,9 @@ final class sequenceArguments_Integer_ {
                 .ceylon.language.Integer.instance(6L)}));
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
@@ -995,7 +1065,9 @@ final class sequenceArguments_Integer_Empty_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer((.ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_());
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Repeatable(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotations$.class)
@@ -1005,7 +1077,9 @@ final class sequenceArguments_Integer_Empty_ {
     @.com.redhat.ceylon.compiler.java.metadata.EnumerationReference
     public abstract .java.lang.Class<? extends .ceylon.language.Empty>[] seq();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1013,7 +1087,9 @@ final class sequenceArguments_Integer_Empty_ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Object,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
@@ -1067,7 +1143,9 @@ final class SequenceDefaults_Object implements .com.redhat.ceylon.compiler.java.
         return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$.class;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -1107,7 +1185,9 @@ final class sequenceDefaults_Object_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object(seq);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -1143,7 +1223,9 @@ final class sequenceDefaults_Object_Empty_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object(seq);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
@@ -1168,7 +1250,9 @@ final class sequenceArguments_Object_ {
                 .ceylon.language.empty_.get_()}));
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
@@ -1187,7 +1271,9 @@ final class sequenceArguments_Object_Empty_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object((.ceylon.language.Iterable<? extends .ceylon.language.Empty, ? extends .java.lang.Object>)(.ceylon.language.Iterable).ceylon.language.empty_.get_());
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Repeatable(.com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotations$.class)
@@ -1197,7 +1283,9 @@ final class sequenceArguments_Object_Empty_ {
     @.com.redhat.ceylon.compiler.java.metadata.DeclarationReference
     public abstract .java.lang.String[] seq();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1205,7 +1293,9 @@ final class sequenceArguments_Object_Empty_ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Declaration,ceylon.language.meta.declaration::ClassOrInterfaceDeclaration,ceylon.language::Anything>"})
@@ -1259,7 +1349,9 @@ final class SequenceDefaults_Declaration implements .com.redhat.ceylon.compiler.
         return .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$.class;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -1295,7 +1387,9 @@ final class sequenceDefaults_Declaration_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration(seq);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -1331,7 +1425,9 @@ final class sequenceDefaults_Declaration_Empty_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration(seq);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
@@ -1350,7 +1446,9 @@ final class sequenceArguments_Declaration_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration((.ceylon.language.Sequence<? extends .ceylon.language.meta.declaration.ValueDeclaration>).ceylon.language.Tuple.instance(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, new .java.lang.Object[]{.com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("ceylon.language", "1.2.3"), "ceylon.language", "1.2.3").findPackage("ceylon.language").getValue("empty")}));
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},

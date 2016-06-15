@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.iface;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::InterfaceWithConcreteAttributes<ceylon.language::Integer>"})
 class InterfaceWithConcreteAttributesSatisfier implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithConcreteAttributes<.ceylon.language.Integer>, .java.io.Serializable {
     

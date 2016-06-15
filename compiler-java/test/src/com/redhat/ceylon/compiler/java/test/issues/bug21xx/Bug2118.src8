@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug21xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -13,7 +15,9 @@ public interface Observer2118<T> extends .com.redhat.ceylon.compiler.java.langua
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$issues$bug21xx$Observer2118$T();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118$impl.Bar.class),
@@ -71,7 +75,9 @@ public final class Observable2118$impl<T> implements .java.io.Serializable {
             let
             {
                 
-                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object
@@ -124,7 +130,9 @@ public final class Observable2118$impl<T> implements .java.io.Serializable {
         return new Baz();
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class)
     @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug21xx::Observer2118<T>"})
@@ -151,7 +159,9 @@ public final class Observable2118$impl<T> implements .java.io.Serializable {
         return new Bar<V>($reified$V);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class)
     @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug21xx::Observer2118<V>"})

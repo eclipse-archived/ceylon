@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.iface;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 interface InheritFrom extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     
@@ -24,7 +26,9 @@ interface InheritFrom extends .com.redhat.ceylon.compiler.java.language.ObjectPr
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 class InheritFromBasic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     InheritFromBasic() {
@@ -38,7 +42,9 @@ class InheritFromBasic implements .com.redhat.ceylon.compiler.java.runtime.model
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasic.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::InheritFrom"})
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.iface::InheritFromBasic")
 class InheritFromBasicIndirectly extends .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasic implements .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom {
@@ -61,7 +67,9 @@ class InheritFromBasicIndirectly extends .com.redhat.ceylon.compiler.java.test.s
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasicIndirectly.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 interface InheritFrom2 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     
@@ -129,7 +137,9 @@ interface InheritFrom2 extends .com.redhat.ceylon.compiler.java.language.ObjectP
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom2.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::InheritFrom2"})
 @.com.redhat.ceylon.compiler.java.metadata.Class(
         identifiable = false,
@@ -167,7 +177,9 @@ class InheritFromObject extends .java.lang.Object implements .com.redhat.ceylon.
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromObject.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Identifiable"})
 interface InheritFrom3 extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
@@ -236,7 +248,9 @@ interface InheritFrom3 extends .com.redhat.ceylon.compiler.java.language.ObjectP
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom3.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::InheritFrom3"})
 class InheritFromBasicWithIdentifiableClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.InheritFrom3, .java.io.Serializable {
     
@@ -269,7 +283,9 @@ class InheritFromBasicWithIdentifiableClass implements .com.redhat.ceylon.compil
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InheritFromBasicWithIdentifiableClass.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 interface Itbl extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     
@@ -317,7 +333,9 @@ interface Itbl extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.Itbl.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::Itbl"})
 interface L extends .com.redhat.ceylon.compiler.java.test.structure.iface.Itbl {
@@ -366,14 +384,18 @@ interface L extends .com.redhat.ceylon.compiler.java.test.structure.iface.Itbl {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.L.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::L"})
 interface Sql extends .com.redhat.ceylon.compiler.java.test.structure.iface.L {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.Sql.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({
         "com.redhat.ceylon.compiler.java.test.structure.iface::Sql",
@@ -382,7 +404,9 @@ interface Sqc extends .com.redhat.ceylon.compiler.java.test.structure.iface.Sql,
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.Sqc.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::Sqc"})
 @.com.redhat.ceylon.compiler.java.metadata.Class(
         identifiable = false,
@@ -429,7 +453,9 @@ class As extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.r
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.As.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class inheritFrom_ {
     

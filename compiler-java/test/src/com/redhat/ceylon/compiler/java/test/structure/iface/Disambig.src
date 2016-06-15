@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.iface;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 interface Disambig extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     
@@ -42,7 +44,9 @@ interface Disambig extends .com.redhat.ceylon.compiler.java.language.ObjectProxy
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.Disambig.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class use_ {
     

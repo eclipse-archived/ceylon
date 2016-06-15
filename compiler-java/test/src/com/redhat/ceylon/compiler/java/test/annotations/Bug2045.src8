@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({
@@ -10,7 +12,9 @@ public @interface Bug2045Annotation$annotation$ {
     
     public abstract long order();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
@@ -65,7 +69,9 @@ public final class Bug2045Annotation implements .com.redhat.ceylon.compiler.java
         return .com.redhat.ceylon.compiler.java.test.annotations.Bug2045Annotation$annotation$.class;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -108,7 +114,9 @@ public final class bug2045_ {
         .com.redhat.ceylon.compiler.java.test.annotations.bug2045_.bug2045();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 @.com.redhat.ceylon.compiler.java.metadata.Name("bug2045Use")
 final class bug2045Use_ {

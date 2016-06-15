@@ -1,13 +1,17 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("java.lang::ObjectArray<java.lang::String>")
 final class JStrings {
     
     private JStrings() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("java.lang::ObjectArray<ceylon.language::String>")
 final class Strings {
     

@@ -1,13 +1,17 @@
 package com.redhat.ceylon.compiler.java.test.structure.iface;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("InheritedInterface")
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.Top.class)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({})
 public interface Top$InheritedInterface<A> {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.Top$InheritedInterface.class),
@@ -58,7 +62,9 @@ public final class Top$impl<A> implements .java.io.Serializable {
         return new InheritedClass();
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.Top.class)
     public class InheritedClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
@@ -73,7 +79,9 @@ public final class Top$impl<A> implements .java.io.Serializable {
         }
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::Top<A>"})
@@ -92,7 +100,9 @@ public interface Middle<A> extends .com.redhat.ceylon.compiler.java.test.structu
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Middle$A();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.ceylon.language.AbstractAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::Middle<A>"})
@@ -137,13 +147,17 @@ public abstract class MiddleClass<A> implements .com.redhat.ceylon.compiler.java
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.MiddleClass.class, $reified$A);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("DeclaredInterface")
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.BottomClass.class)
 public interface BottomClass$DeclaredInterface {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.ceylon.language.AbstractAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({
@@ -186,7 +200,9 @@ public abstract class BottomClass extends .com.redhat.ceylon.compiler.java.test.
         return new DeclaredClass();
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.BottomClass.class)
     public class DeclaredClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {

@@ -46,7 +46,9 @@ interface Bug1625_2<T> extends .com.redhat.ceylon.compiler.java.language.ObjectP
     
     public abstract .java.lang.Object f(final T t, final .ceylon.language.Sequential<? extends T> ts);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
@@ -101,7 +103,9 @@ class Bug1625_3Impl<T> implements .com.redhat.ceylon.compiler.java.runtime.model
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1625_3Impl.class, $reified$T);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Empty")
 @.com.redhat.ceylon.compiler.java.metadata.LocalContainer(
         path = {"bug1625"},
@@ -109,7 +113,9 @@ class Bug1625_3Impl<T> implements .com.redhat.ceylon.compiler.java.runtime.model
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
 interface bug1625$Empty_ {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"::bug1625$Empty_"})
 final class bug1625_ {

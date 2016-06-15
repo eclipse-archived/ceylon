@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class bug2037_ {
     
@@ -18,7 +20,9 @@ public final class bug2037_ {
     final .java.lang.String p2) {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 public class Bug2037 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     

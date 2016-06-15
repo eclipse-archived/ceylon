@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.alias;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 public class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
@@ -21,42 +23,54 @@ public class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 public interface TypeAliasInterface extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasInterface")
 final class TypeAlias1 {
     
     private TypeAlias1() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasInterface")
 final class TypeAlias2 {
     
     private TypeAlias2() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasClass")
 final class TypeAlias3 {
     
     private TypeAlias3() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasInterface")
 final class TypeAlias4 {
     
     private TypeAlias4() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class typeAliasMethod1_ {
     
@@ -74,7 +88,9 @@ final class typeAliasMethod1_ {
         return f;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class typeAliasMethod2_ {
     
@@ -92,7 +108,9 @@ final class typeAliasMethod2_ {
         return f;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class typeAliasMethod3_ {
     
@@ -106,7 +124,9 @@ final class typeAliasMethod3_ {
         return f;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class typeAliasMethod4_ {
     

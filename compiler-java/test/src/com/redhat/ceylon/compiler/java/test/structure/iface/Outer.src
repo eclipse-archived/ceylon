@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.iface;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
         "1anonymous_0_",
         "1f_"})
@@ -17,7 +19,9 @@ interface Outer extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
             let
             {
                 
-                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 @.com.redhat.ceylon.compiler.java.metadata.Object

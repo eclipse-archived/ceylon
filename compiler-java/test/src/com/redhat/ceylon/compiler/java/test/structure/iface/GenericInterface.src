@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.iface;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
@@ -64,7 +66,9 @@ interface GenericInterface<T> extends .com.redhat.ceylon.compiler.java.language.
         );
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::GenericInterface<Y>"})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -83,7 +87,9 @@ interface GenericInterface2<Y> extends .com.redhat.ceylon.compiler.java.test.str
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$GenericInterface2$Y();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::GenericInterface<ceylon.language::String>"})
 interface GenericInterface3 extends .com.redhat.ceylon.compiler.java.test.structure.iface.GenericInterface<.ceylon.language.String> {
@@ -96,7 +102,9 @@ interface GenericInterface3 extends .com.redhat.ceylon.compiler.java.test.struct
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.GenericInterface3.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({
         "com.redhat.ceylon.compiler.java.test.structure.iface::GenericInterface2<ceylon.language::String>",
         "com.redhat.ceylon.compiler.java.test.structure.iface::GenericInterface3"})

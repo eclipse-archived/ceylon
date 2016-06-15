@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
@@ -22,7 +24,9 @@ public interface Interface<Key, Value> extends .com.redhat.ceylon.compiler.java.
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$reified$Interface$Value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::Interface<ceylon.language::String,ceylon.language::Integer>"})
@@ -42,7 +46,9 @@ public interface SubInterface extends .com.redhat.ceylon.compiler.java.test.stru
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.SubInterface.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::Interface<Key,ceylon.language::Integer>"})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
@@ -134,7 +140,9 @@ public class Class<Key, Value> implements .com.redhat.ceylon.compiler.java.runti
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.Class.class, $reified$Key, $reified$Value);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
@@ -164,7 +172,9 @@ public class SubClass<T> extends .com.redhat.ceylon.compiler.java.test.structure
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.SubClass.class, $reified$T);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("toplevelObject")
 @.com.redhat.ceylon.compiler.java.metadata.Object
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.reified::Interface<ceylon.language::String,ceylon.language::Integer>"})
@@ -224,7 +234,9 @@ public final class toplevelObject_ implements .java.io.Serializable, .com.redhat
         return .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_.$TypeDescriptor$;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class reifiedInstantiate_ {
     

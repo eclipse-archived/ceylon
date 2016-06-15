@@ -251,7 +251,9 @@ final class bug2315Iterable_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable(strings);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},

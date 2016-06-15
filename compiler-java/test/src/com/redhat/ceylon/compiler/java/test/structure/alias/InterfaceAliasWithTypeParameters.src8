@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.alias;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -13,7 +15,9 @@ public interface InterfaceAliasWithTypeParameters_Foo<T> extends .com.redhat.cey
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$alias$InterfaceAliasWithTypeParameters_Foo$T();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::InterfaceAliasWithTypeParameters_Foo<T>")
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -26,7 +30,9 @@ public interface InterfaceAliasWithTypeParameters<T> {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$alias$InterfaceAliasWithTypeParameters$T();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::InterfaceAliasWithTypeParameters_Foo<ceylon.language::Integer>")
 public interface InterfaceAliasWithTypeParameters2 {

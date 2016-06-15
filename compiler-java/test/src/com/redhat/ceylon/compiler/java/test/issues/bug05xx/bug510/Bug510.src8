@@ -1,11 +1,15 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Bug510inner")
 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510.class)
 interface Bug510$Bug510inner {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510$Bug510inner.class)})
 interface Bug510 {
     
@@ -24,7 +28,9 @@ final class Bug510$impl implements .java.io.Serializable {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510 $this;
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class goto_ {
     
@@ -35,7 +41,9 @@ final class goto_ {
     static void $goto() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("synchronized")
 @.com.redhat.ceylon.compiler.java.metadata.Object
 final class synchronized_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -81,7 +89,9 @@ final class synchronized_ implements .java.io.Serializable, .com.redhat.ceylon.c
         return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.$TypeDescriptor$;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 @.com.redhat.ceylon.compiler.java.metadata.Name("volatile")
 final class volatile_ {

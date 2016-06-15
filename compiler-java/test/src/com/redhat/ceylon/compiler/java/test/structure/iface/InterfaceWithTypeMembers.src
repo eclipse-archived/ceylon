@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.iface;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("I")
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers.class)
@@ -16,7 +18,9 @@ public interface InterfaceWithTypeMembers$I {
             declaredVoid = true)
     public .java.lang.Object m();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Members({
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$impl.CSatisfiesI.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$I.class),
@@ -38,7 +42,9 @@ final class InterfaceWithTypeMembers$impl implements .java.io.Serializable {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers $this;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers.class)
     class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
@@ -75,7 +81,9 @@ final class InterfaceWithTypeMembers$impl implements .java.io.Serializable {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers.class)
     @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::InterfaceWithTypeMembers.I"})
     class CSatisfiesI implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.InterfaceWithTypeMembers$I, .java.io.Serializable {

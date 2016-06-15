@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.statement.loop.optim;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class compareMeasureInteger2130_ {
     
@@ -230,7 +232,9 @@ final class compareMeasureInteger2130_ {
         }
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class compareMeasureIntegerBy2130_ {
     
@@ -435,7 +439,9 @@ final class compareMeasureIntegerBy2130_ {
         }
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class compareMeasureCharacter2130_ {
     
@@ -637,7 +643,9 @@ final class compareMeasureCharacter2130_ {
         }
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class compareMeasureCharacterBy2130_ {
     
@@ -843,7 +851,9 @@ final class compareMeasureCharacterBy2130_ {
         }
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug2130Measure_ {
     
