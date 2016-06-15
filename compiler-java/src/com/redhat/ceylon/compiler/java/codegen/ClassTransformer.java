@@ -4989,7 +4989,7 @@ public class ClassTransformer extends AbstractTransformer {
                         }
                         Naming.SyntheticName varName = naming.temp(parameterModel.getName());
                         Type paramType = parameterType(overloadBuilder, parameterModel);
-                        vars.append(makeVar(varName, 
+                        vars.append(makeVar(FINAL, varName, 
                                 makeJavaType(paramType, CodegenUtil.isUnBoxed(parameterModel.getModel()) ? 0 : JT_NO_PRIMITIVES), 
                                 defaultArgument));
                         at(null);
