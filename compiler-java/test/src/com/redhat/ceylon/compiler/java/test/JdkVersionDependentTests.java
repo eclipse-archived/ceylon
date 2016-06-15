@@ -12,8 +12,9 @@ public class JdkVersionDependentTests extends CompilerTests {
     @Parameters(name="-target {0}")
     public static Iterable<Object[]> testParameters() {
         return Arrays.<Object[]>asList(
-                //new Object[]{"7", "7"}, 
-                new Object[]{"8", "8"});
+                new Object[]{"7", "7"}//, 
+                //new Object[]{"8", "8"}
+                );
     }
     
     private final String target;
