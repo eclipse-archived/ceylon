@@ -525,7 +525,7 @@
     <!-- Rule to build runtime classes from their Java and Ceylon sources -->
     <target name="ceylon.language.java"
             depends="generate.sources.java">
-    	<compile-runtime jdk="7"/>
+    	<compile-runtime jdk="8"/>
     	<!--<compile-runtime jdk="7"/>-->
     </target>
     
