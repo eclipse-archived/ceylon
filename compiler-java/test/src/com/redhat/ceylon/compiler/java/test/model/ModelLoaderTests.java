@@ -130,6 +130,11 @@ public class ModelLoaderTests extends JdkVersionDependentTests {
     
     private final boolean simpleAnnotationModels;
     
+    /* This class is extended in com.redhat.ceylon.eclipse.ui.test via this constructor */
+    protected ModelLoaderTests(boolean simpleAnnotationModels) {
+        this("7", "7", simpleAnnotationModels);
+    }
+    
     public ModelLoaderTests(String target, String source, boolean simpleAnnotationModels) {
         super(target, source);
         this.simpleAnnotationModels = simpleAnnotationModels;

@@ -296,6 +296,7 @@ public class MiscTests extends CompilerTests {
         compileSDK(JDK.JDK7);
     }
     @Test
+    @Ignore("Until it compiles against JDK8 language module")
     public void compileSDK8() throws IOException{
         compileSDK(JDK.JDK8);
     }
