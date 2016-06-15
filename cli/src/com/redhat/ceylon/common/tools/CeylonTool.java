@@ -392,6 +392,7 @@ public class CeylonTool implements Tool {
     public int execute() throws Exception {
         int result = SC_OK;
         try {
+            setSystemCwd();
             String[] names = (toolName != null) ? getToolNames() : new String[] { null };
             for (String singleToolName : names) {
                 ToolModel<Tool> model = getToolModel(singleToolName);
@@ -400,8 +401,6 @@ public class CeylonTool implements Tool {
                 if (oldConfig == null) {
                     oldConfig2 = setupConfig(tool);
                 }
-                syncCwd(tool);
-                setSystemCwd();
                 try {
                     run(model, tool);
                     result = SC_OK;
@@ -481,20 +480,6 @@ public class CeylonTool implements Tool {
         return null;
     }
 
-    // Here we set up the global configuration for this thread
-    // if (and only if) the setup deviates from the default
-    // (meaning `cwd` was set for the given tool)
-    private void syncCwd(Tool tool) throws IOException {
-        if (tool instanceof CeylonBaseTool) {
-            CeylonBaseTool cbt = (CeylonBaseTool)tool;
-            if (getCwd() != null) {
-                // If the main tool's `cwd` options is set it
-                // always overrides the one in the given tool
-                cbt.setCwd(getCwd());
-            }
-        }
-    }
-    
     private void setSystemCwd() {
         String cwd = null;
         if (getCwd() != null) {
