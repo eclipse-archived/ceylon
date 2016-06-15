@@ -16,6 +16,21 @@ final class ClassWithInitializerAnnotation implements .com.redhat.ceylon.compile
     }
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Type() {
+        return .ceylon.language.Anything.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Value() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializerAnnotation.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$ProgramElement() {
+        return .ceylon.language.meta.declaration.ClassWithInitializerDeclaration.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.ClassWithInitializerAnnotation.$TypeDescriptor$;
     }
@@ -52,6 +67,21 @@ final class ClassWithConstructorsAnnotation implements .com.redhat.ceylon.compil
     }
     
     ClassWithConstructorsAnnotation() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Type() {
+        return .ceylon.language.Anything.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Value() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.ClassWithConstructorsAnnotation.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$ProgramElement() {
+        return .ceylon.language.meta.declaration.ClassWithConstructorsDeclaration.$TypeDescriptor$;
     }
     
     @.java.lang.Override

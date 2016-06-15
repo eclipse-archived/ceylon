@@ -32,6 +32,24 @@ final class Bug1676_2_A implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Type() {
+        return .ceylon.language.Anything.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Value() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$ProgramElement() {
+        return .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A.$TypeDescriptor$;
     }
@@ -67,6 +85,24 @@ final class Bug1676_2_B implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     Bug1676_2_B() {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Type() {
+        return .ceylon.language.Anything.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Value() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$ProgramElement() {
+        return .ceylon.language.Annotated.$TypeDescriptor$;
     }
     
     @.java.lang.Override

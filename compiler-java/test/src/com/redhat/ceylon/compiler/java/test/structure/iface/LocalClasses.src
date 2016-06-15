@@ -1,0 +1,71 @@
+package com.redhat.ceylon.compiler.java.test.structure.iface;
+
+interface LocalClasses extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
+    
+    public default .java.lang.String f() {
+        
+        class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            LocalClass() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.iface.LocalClasses.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("f")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class));
+            }
+        }
+        final LocalClass lc = new LocalClass();
+        
+        final class getter$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+            
+            private getter$getter$_() {
+            }
+            
+            public .java.lang.String get_() {
+                return "";
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> getter$getter$_ = new getter$getter$_();
+        
+        final class getter$setter$_ {
+            
+            private getter$setter$_() {
+            }
+            private .java.lang.String value;
+            
+            public void set_(final .java.lang.String getter) {
+            }
+        }
+        final getter$setter$_ getter$setter$_ = new getter$setter$_();
+        
+        final class o_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+            
+            private o_() {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.iface.LocalClasses.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("f")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(o_.class));
+            }
+        }
+        final o_ o = new o_();
+        return lc.toString() + getter$getter$_.get_() + o.toString() + (
+            let
+            {
+                
+                class anonymous_0_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private anonymous_0_() {
+                    }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.iface.LocalClasses.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("f")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                    }
+                }
+            }
+            returning new anonymous_0_();
+        ).toString();
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.LocalClasses.class);
+}

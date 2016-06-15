@@ -43,6 +43,21 @@ public final class EnumeratedReference_X implements .com.redhat.ceylon.compiler.
     }
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$ProgramElement() {
+        return .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Value() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Type() {
+        return .ceylon.language.Anything.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_X.$TypeDescriptor$;
     }
@@ -85,6 +100,21 @@ public final class EnumeratedReference_Y implements .com.redhat.ceylon.compiler.
     }
     
     public EnumeratedReference_Y(final .ceylon.language.Comparison c) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$ProgramElement() {
+        return .ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Value() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$SequencedAnnotation$Type() {
+        return .ceylon.language.Anything.$TypeDescriptor$;
     }
     
     @.java.lang.Override

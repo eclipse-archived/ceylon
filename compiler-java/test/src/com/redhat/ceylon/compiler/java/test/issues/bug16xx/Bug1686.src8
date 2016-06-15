@@ -3,28 +3,11 @@ package com.redhat.ceylon.compiler.java.test.issues.bug16xx;
 class Bug1686 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686>, .java.io.Serializable {
     
     Bug1686() {
-        this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686>(.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686.$TypeDescriptor$, this);
-    }
-    protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686> $ceylon$language$Enumerable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686> $ceylon$language$Enumerable$impl() {
-        return $ceylon$language$Enumerable$this$;
     }
     
     @.java.lang.Override
-    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 other) {
-        return $ceylon$language$Enumerable$this$.offsetSign(other);
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 getPredecessor() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686)$ceylon$language$Enumerable$this$.getPredecessor();
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686)$ceylon$language$Enumerable$this$.getSuccessor();
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Enumerable$Other() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686.$TypeDescriptor$;
     }
     
     private final void f$priv$(final .ceylon.language.Range<.ceylon.language.Integer> x, final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686> x2) {

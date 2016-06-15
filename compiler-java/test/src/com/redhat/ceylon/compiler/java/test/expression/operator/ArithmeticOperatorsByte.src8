@@ -4,57 +4,21 @@ abstract class MyByte extends .java.lang.Object implements .com.redhat.ceylon.co
     
     MyByte() {
         super();
-        this.$ceylon$language$Binary$this$ = new .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte.$TypeDescriptor$, this);
-        this.$ceylon$language$Invertible$this$ = new .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte.$TypeDescriptor$, this);
-        this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte.$TypeDescriptor$, this);
-    }
-    protected final .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte> $ceylon$language$Binary$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte> $ceylon$language$Binary$impl() {
-        return $ceylon$language$Binary$this$;
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte clear(final long index) {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte)$ceylon$language$Binary$this$.clear(index);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Binary$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte.$TypeDescriptor$;
     }
     
     @.java.lang.Override
-    public final boolean set$bit(final long index) {
-        return $ceylon$language$Binary$this$.set$bit(index);
-    }
-    protected final .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte> $ceylon$language$Invertible$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte> $ceylon$language$Invertible$impl() {
-        return $ceylon$language$Invertible$this$;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Invertible$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte.$TypeDescriptor$;
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte minus(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte other) {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte)$ceylon$language$Invertible$this$.minus(other);
-    }
-    protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte> $ceylon$language$Enumerable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte> $ceylon$language$Enumerable$impl() {
-        return $ceylon$language$Enumerable$this$;
-    }
-    
-    @.java.lang.Override
-    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte other) {
-        return $ceylon$language$Enumerable$this$.offsetSign(other);
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getPredecessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte)$ceylon$language$Enumerable$this$.getPredecessor();
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyByte)$ceylon$language$Enumerable$this$.getSuccessor();
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Enumerable$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte.$TypeDescriptor$;
     }
     
     @.java.lang.Override

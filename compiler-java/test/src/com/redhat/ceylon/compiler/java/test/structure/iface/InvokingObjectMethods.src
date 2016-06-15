@@ -1,18 +1,19 @@
 package com.redhat.ceylon.compiler.java.test.structure.iface;
 
-interface InvokingObjectMethods {
+interface InvokingObjectMethods extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     
     private default void callMethodsOnObject$priv$() {
-        .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.objectString(.com.redhat.ceylon.compiler.java.test.structure.iface.InvokingObjectMethods.this);
-        s = .com.redhat.ceylon.compiler.java.Util.objectString(.com.redhat.ceylon.compiler.java.test.structure.iface.InvokingObjectMethods.this);
+        .java.lang.String s = .com.redhat.ceylon.compiler.java.language.ObjectProxy.super.toString();
+        s = .com.redhat.ceylon.compiler.java.language.ObjectProxy.super.toString();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InvokingObjectMethods.class);
 }
-interface InvokingIdentifiableMethods {
+interface InvokingIdentifiableMethods extends .com.redhat.ceylon.compiler.java.language.ObjectProxy {
     
     private default void callMethodsOnObject$priv$() {
-        final .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.objectString(.com.redhat.ceylon.compiler.java.test.structure.iface.InvokingIdentifiableMethods.this);
-        final long h = .java.lang.System.identityHashCode(.com.redhat.ceylon.compiler.java.test.structure.iface.InvokingIdentifiableMethods.this);
+        final .java.lang.String s = .com.redhat.ceylon.compiler.java.language.ObjectProxy.super.toString();
+        final long h = .com.redhat.ceylon.compiler.java.language.ObjectProxy.super.hashCode();
+        boolean e = .com.redhat.ceylon.compiler.java.language.ObjectProxy.super.equals(this);
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InvokingIdentifiableMethods.class);
 }

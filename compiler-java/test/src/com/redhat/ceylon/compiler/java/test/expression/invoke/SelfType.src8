@@ -62,8 +62,9 @@ final class selfType2_ {
 }
 interface D extends .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.invoke.D> {
     
-    public default .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.invoke.D> $ceylon$language$Comparable$impl() {
-        return new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.invoke.D>(.com.redhat.ceylon.compiler.java.test.expression.invoke.D.$TypeDescriptor$, this);
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Comparable$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.invoke.D.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.invoke.D.class);
 }

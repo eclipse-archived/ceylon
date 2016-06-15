@@ -3,23 +3,11 @@ package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
 class DestroyableCategory implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Destroyable, .ceylon.language.Category<.ceylon.language.String>, .java.io.Serializable {
     
     DestroyableCategory() {
-        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
-    }
-    protected final .ceylon.language.Category$impl<.ceylon.language.String> $ceylon$language$Category$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Category$impl<? super .ceylon.language.String> $ceylon$language$Category$impl() {
-        return $ceylon$language$Category$this$;
     }
     
     @.java.lang.Override
-    public boolean containsAny(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> elements) {
-        return $ceylon$language$Category$this$.containsAny(elements);
-    }
-    
-    @.java.lang.Override
-    public boolean containsEvery(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> elements) {
-        return $ceylon$language$Category$this$.containsEvery(elements);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Category$Element() {
+        return .ceylon.language.String.$TypeDescriptor$;
     }
     
     @.java.lang.Override

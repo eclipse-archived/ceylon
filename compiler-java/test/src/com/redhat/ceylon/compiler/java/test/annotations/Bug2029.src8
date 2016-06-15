@@ -16,6 +16,21 @@ public final class A implements .com.redhat.ceylon.compiler.java.runtime.model.R
     public A() {
     }
     
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Type() {
+        return .ceylon.language.Anything.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$Value() {
+        return .com.redhat.ceylon.compiler.java.test.annotations.A.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$OptionalAnnotation$ProgramElement() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, .ceylon.language.meta.declaration.ClassDeclaration.$TypeDescriptor$);
+    }
+    
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
         new .com.redhat.ceylon.compiler.java.test.annotations.A();

@@ -141,4 +141,10 @@ public class Java8InterfaceTests extends JdkVersionDependentTests {
     public void localClasses() {
         compareWithJavaSource("iface/LocalClasses");
     }
+    
+    @Test
+    public void nonSharedMethods() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.structure.iface.nonSharedMethods",
+                "iface/NonSharedMethods.ceylon");
+    }
 }

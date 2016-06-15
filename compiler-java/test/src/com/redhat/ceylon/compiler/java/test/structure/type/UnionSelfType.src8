@@ -3,33 +3,11 @@ package com.redhat.ceylon.compiler.java.test.structure.type;
 public class UnionSelfType_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Comparable, .java.io.Serializable {
     
     public UnionSelfType_Foo() {
-        this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Bar.$TypeDescriptor$), (.ceylon.language.Comparable)this);
-    }
-    protected final .ceylon.language.Comparable$impl $ceylon$language$Comparable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Comparable$impl $ceylon$language$Comparable$impl() {
-        return $ceylon$language$Comparable$this$;
     }
     
     @.java.lang.Override
-    public boolean largerThan(final .ceylon.language.Comparable other) {
-        return $ceylon$language$Comparable$this$.largerThan(other);
-    }
-    
-    @.java.lang.Override
-    public boolean notLargerThan(final .ceylon.language.Comparable other) {
-        return $ceylon$language$Comparable$this$.notLargerThan(other);
-    }
-    
-    @.java.lang.Override
-    public boolean notSmallerThan(final .ceylon.language.Comparable other) {
-        return $ceylon$language$Comparable$this$.notSmallerThan(other);
-    }
-    
-    @.java.lang.Override
-    public boolean smallerThan(final .ceylon.language.Comparable other) {
-        return $ceylon$language$Comparable$this$.smallerThan(other);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Comparable$Other() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Bar.$TypeDescriptor$);
     }
     
     @.java.lang.Override
@@ -51,33 +29,11 @@ public class UnionSelfType_Foo implements .com.redhat.ceylon.compiler.java.runti
 public class UnionSelfType_Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Comparable, .java.io.Serializable {
     
     public UnionSelfType_Bar() {
-        this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Bar.$TypeDescriptor$), (.ceylon.language.Comparable)this);
-    }
-    protected final .ceylon.language.Comparable$impl $ceylon$language$Comparable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Comparable$impl $ceylon$language$Comparable$impl() {
-        return $ceylon$language$Comparable$this$;
     }
     
     @.java.lang.Override
-    public boolean largerThan(final .ceylon.language.Comparable other) {
-        return $ceylon$language$Comparable$this$.largerThan(other);
-    }
-    
-    @.java.lang.Override
-    public boolean notLargerThan(final .ceylon.language.Comparable other) {
-        return $ceylon$language$Comparable$this$.notLargerThan(other);
-    }
-    
-    @.java.lang.Override
-    public boolean notSmallerThan(final .ceylon.language.Comparable other) {
-        return $ceylon$language$Comparable$this$.notSmallerThan(other);
-    }
-    
-    @.java.lang.Override
-    public boolean smallerThan(final .ceylon.language.Comparable other) {
-        return $ceylon$language$Comparable$this$.smallerThan(other);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Comparable$Other() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.type.UnionSelfType_Bar.$TypeDescriptor$);
     }
     
     @.java.lang.Override

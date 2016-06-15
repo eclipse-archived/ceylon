@@ -4,57 +4,21 @@ abstract class BWMyByte extends .java.lang.Object implements .com.redhat.ceylon.
     
     BWMyByte() {
         super();
-        this.$ceylon$language$Binary$this$ = new .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte.$TypeDescriptor$, this);
-        this.$ceylon$language$Invertible$this$ = new .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte.$TypeDescriptor$, this);
-        this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte>(.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte.$TypeDescriptor$, this);
-    }
-    protected final .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte> $ceylon$language$Binary$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Binary$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte> $ceylon$language$Binary$impl() {
-        return $ceylon$language$Binary$this$;
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte clear(final long index) {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Binary$this$.clear(index);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Binary$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte.$TypeDescriptor$;
     }
     
     @.java.lang.Override
-    public final boolean set$bit(final long index) {
-        return $ceylon$language$Binary$this$.set$bit(index);
-    }
-    protected final .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte> $ceylon$language$Invertible$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte> $ceylon$language$Invertible$impl() {
-        return $ceylon$language$Invertible$this$;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Invertible$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte.$TypeDescriptor$;
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte minus(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte other) {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Invertible$this$.minus(other);
-    }
-    protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte> $ceylon$language$Enumerable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte> $ceylon$language$Enumerable$impl() {
-        return $ceylon$language$Enumerable$this$;
-    }
-    
-    @.java.lang.Override
-    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte other) {
-        return $ceylon$language$Enumerable$this$.offsetSign(other);
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte getPredecessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Enumerable$this$.getPredecessor();
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte)$ceylon$language$Enumerable$this$.getSuccessor();
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Enumerable$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte.$TypeDescriptor$;
     }
     
     @.java.lang.Override

@@ -3,33 +3,11 @@ package com.redhat.ceylon.compiler.java.test.expression.operator;
 abstract class OfOp implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp>, .java.io.Serializable {
     
     OfOp() {
-        this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp>(.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp.$TypeDescriptor$, this);
-    }
-    protected final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.OfOp> $ceylon$language$Comparable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp> $ceylon$language$Comparable$impl() {
-        return $ceylon$language$Comparable$this$;
     }
     
     @.java.lang.Override
-    public boolean largerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp other) {
-        return $ceylon$language$Comparable$this$.largerThan(other);
-    }
-    
-    @.java.lang.Override
-    public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp other) {
-        return $ceylon$language$Comparable$this$.notLargerThan(other);
-    }
-    
-    @.java.lang.Override
-    public boolean notSmallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp other) {
-        return $ceylon$language$Comparable$this$.notSmallerThan(other);
-    }
-    
-    @.java.lang.Override
-    public boolean smallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp other) {
-        return $ceylon$language$Comparable$this$.smallerThan(other);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Comparable$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.OfOp.$TypeDescriptor$;
     }
     
     private final void m$priv$() {

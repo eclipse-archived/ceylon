@@ -4,106 +4,36 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     
     MyInteger() {
         super();
-        this.$ceylon$language$Integral$this$ = new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
-        this.$ceylon$language$Number$this$ = new .ceylon.language.Number$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
-        this.$ceylon$language$Invertible$this$ = new .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
-        this.$ceylon$language$Comparable$this$ = new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
-        this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger>(.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$, this);
-    }
-    protected final .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Integral$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Integral$impl() {
-        return $ceylon$language$Integral$this$;
     }
     
     @.java.lang.Override
-    public boolean divides(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
-        return $ceylon$language$Integral$this$.divides(other);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Invertible$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$;
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger modulo(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger modulus) {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Integral$this$.modulo(modulus);
-    }
-    protected final .ceylon.language.Number$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Number$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Number$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Number$impl() {
-        return $ceylon$language$Number$this$;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Numeric$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$;
     }
     
     @.java.lang.Override
-    public .ceylon.language.Comparison compare(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
-        return $ceylon$language$Number$this$.compare(other);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Summable$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$;
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getMagnitude() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Number$this$.getMagnitude();
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Integral$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$;
     }
     
     @.java.lang.Override
-    public long getSign() {
-        return $ceylon$language$Number$this$.getSign();
-    }
-    protected final .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Invertible$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Invertible$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Invertible$impl() {
-        return $ceylon$language$Invertible$this$;
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Exponentiable$This() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$;
     }
     
     @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger minus(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Invertible$this$.minus(other);
-    }
-    protected final .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Comparable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Comparable$impl() {
-        return $ceylon$language$Comparable$this$;
-    }
-    
-    @.java.lang.Override
-    public boolean largerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
-        return $ceylon$language$Comparable$this$.largerThan(other);
-    }
-    
-    @.java.lang.Override
-    public boolean notLargerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
-        return $ceylon$language$Comparable$this$.notLargerThan(other);
-    }
-    
-    @.java.lang.Override
-    public boolean notSmallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
-        return $ceylon$language$Comparable$this$.notSmallerThan(other);
-    }
-    
-    @.java.lang.Override
-    public boolean smallerThan(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
-        return $ceylon$language$Comparable$this$.smallerThan(other);
-    }
-    protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Enumerable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger> $ceylon$language$Enumerable$impl() {
-        return $ceylon$language$Enumerable$this$;
-    }
-    
-    @.java.lang.Override
-    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
-        return $ceylon$language$Enumerable$this$.offsetSign(other);
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getPredecessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Enumerable$this$.getPredecessor();
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Enumerable$this$.getSuccessor();
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Exponentiable$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger.$TypeDescriptor$;
     }
     
     @.java.lang.Override

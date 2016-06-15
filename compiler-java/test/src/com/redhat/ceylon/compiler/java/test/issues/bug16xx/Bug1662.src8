@@ -17,6 +17,11 @@ class Bug1662 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Summable$Other() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662 plus(final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662 other) {
         return new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1662(getFloat$priv$() + other.getFloat$priv$());
     }

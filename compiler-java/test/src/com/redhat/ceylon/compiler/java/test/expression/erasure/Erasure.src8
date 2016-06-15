@@ -152,23 +152,97 @@ class MyException extends .ceylon.language.Exception implements .com.redhat.ceyl
 }
 interface MyNumeric extends .ceylon.language.Numeric<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>, .ceylon.language.Integral<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>, .ceylon.language.Comparable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>, .ceylon.language.Exponentiable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric, .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>, .ceylon.language.Scalable<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric, .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric> {
     
-    public default .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric> $ceylon$language$Integral$impl() {
-        return new .ceylon.language.Integral$impl<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$, this);
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Invertible$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$;
     }
     
-    public default .ceylon.language.Comparable$impl<? super .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric> $ceylon$language$Comparable$impl() {
-        return new .ceylon.language.Comparable$impl<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric>(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$, this);
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Numeric$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Summable$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Comparable$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Integral$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Exponentiable$This() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Exponentiable$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Scalable$Scale() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Scalable$Value() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.class);
 }
 interface MyList<Element> extends .ceylon.language.Collection<Element>, .ceylon.language.Correspondence<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric, Element>, .ceylon.language.Ranged<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric, Element, .com.redhat.ceylon.compiler.java.test.expression.erasure.MyList<? extends Element>> {
     
-    public default .ceylon.language.Collection$impl<? extends Element> $ceylon$language$Collection$impl() {
-        return new .ceylon.language.Collection$impl<Element>(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyList.this.$reified$com$redhat$ceylon$compiler$java$test$expression$erasure$MyList$Element(), this);
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Iterable$Element() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyList.this.$reified$com$redhat$ceylon$compiler$java$test$expression$erasure$MyList$Element();
     }
     
-    public default .ceylon.language.Correspondence$impl<? super .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric, ? extends Element> $ceylon$language$Correspondence$impl() {
-        return new .ceylon.language.Correspondence$impl<.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric, Element>(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.expression.erasure.MyList.this.$reified$com$redhat$ceylon$compiler$java$test$expression$erasure$MyList$Element(), this);
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Iterable$Absent() {
+        return .ceylon.language.Null.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Category$Element() {
+        return .ceylon.language.Object.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Collection$Element() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyList.this.$reified$com$redhat$ceylon$compiler$java$test$expression$erasure$MyList$Element();
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Correspondence$Item() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyList.this.$reified$com$redhat$ceylon$compiler$java$test$expression$erasure$MyList$Element();
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Correspondence$Key() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Ranged$Subrange() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyList.class, .com.redhat.ceylon.compiler.java.test.expression.erasure.MyList.this.$reified$com$redhat$ceylon$compiler$java$test$expression$erasure$MyList$Element());
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Ranged$Index() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Ranged$Element() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyList.this.$reified$com$redhat$ceylon$compiler$java$test$expression$erasure$MyList$Element();
     }
     
     public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$expression$erasure$MyList$Element();
@@ -186,6 +260,36 @@ interface MySequence<Element> extends .com.redhat.ceylon.compiler.java.test.expr
     
     @.java.lang.Override
     public abstract .com.redhat.ceylon.compiler.java.test.expression.erasure.MySequence measure(final .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric from, final long length);
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Ranged$Subrange() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.MySequence.class, .com.redhat.ceylon.compiler.java.test.expression.erasure.MySequence.this.$reified$com$redhat$ceylon$compiler$java$test$expression$erasure$MySequence$Element());
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Ranged$Index() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Ranged$Element() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MySequence.this.$reified$com$redhat$ceylon$compiler$java$test$expression$erasure$MySequence$Element();
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Iterable$Element() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MySequence.this.$reified$com$redhat$ceylon$compiler$java$test$expression$erasure$MySequence$Element();
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Iterable$Absent() {
+        return .ceylon.language.Null.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Category$Element() {
+        return .ceylon.language.Object.$TypeDescriptor$;
+    }
     
     @.java.lang.Override
     public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$expression$erasure$MyList$Element() {
@@ -209,12 +313,48 @@ interface MyEmpty extends .com.redhat.ceylon.compiler.java.test.expression.erasu
     public abstract .com.redhat.ceylon.compiler.java.test.expression.erasure.MyEmpty measure(final .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric from, final long length);
     
     @.java.lang.Override
-    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$expression$erasure$MyList$Element() {
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Ranged$Subrange() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyEmpty.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Ranged$Index() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Ranged$Element() {
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
     }
     
-    public default .ceylon.language.Correspondence$impl<? super .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric, ? extends .java.lang.Object> $ceylon$language$Correspondence$impl() {
-        return new .ceylon.language.Correspondence$impl(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, this);
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Iterable$Element() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Iterable$Absent() {
+        return .ceylon.language.Null.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Category$Element() {
+        return .ceylon.language.Object.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Correspondence$Item() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Correspondence$Key() {
+        return .com.redhat.ceylon.compiler.java.test.expression.erasure.MyNumeric.$TypeDescriptor$;
+    }
+    
+    @.java.lang.Override
+    public default .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$expression$erasure$MyList$Element() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.erasure.MyEmpty.class);
 }

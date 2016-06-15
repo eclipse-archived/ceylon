@@ -367,7 +367,6 @@ class MajikNullaryCtorMixin implements .com.redhat.ceylon.compiler.java.runtime.
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected MajikNullaryCtorMixin() {
         super();
-        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
         this.i = 0L;
     }
     
@@ -376,7 +375,6 @@ class MajikNullaryCtorMixin implements .com.redhat.ceylon.compiler.java.runtime.
     @.ceylon.language.SharedAnnotation$annotation$
     final long i) {
         this.i = i;
-        this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final long i;
@@ -386,25 +384,11 @@ class MajikNullaryCtorMixin implements .com.redhat.ceylon.compiler.java.runtime.
     public final long getI() {
         return i;
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    protected final .ceylon.language.Category$impl<.ceylon.language.String> $ceylon$language$Category$this$;
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Category$impl<? super .ceylon.language.String> $ceylon$language$Category$impl() {
-        return $ceylon$language$Category$this$;
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean containsAny(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> elements) {
-        return $ceylon$language$Category$this$.containsAny(elements);
-    }
-    
-    @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public boolean containsEvery(final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> elements) {
-        return $ceylon$language$Category$this$.containsEvery(elements);
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Category$Element() {
+        return .ceylon.language.String.$TypeDescriptor$;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -440,6 +424,12 @@ class MajikNullaryCtorMixinSub extends .com.redhat.ceylon.compiler.java.test.str
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i) {
         super(i);
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Category$Element() {
+        return .ceylon.language.String.$TypeDescriptor$;
     }
     
     @.java.lang.Override

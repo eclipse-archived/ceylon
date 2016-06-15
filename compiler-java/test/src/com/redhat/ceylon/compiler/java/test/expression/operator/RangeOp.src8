@@ -23,28 +23,11 @@ class RangeOp<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
 abstract class RangeOpEnum implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum>, .java.io.Serializable {
     
     RangeOpEnum() {
-        this.$ceylon$language$Enumerable$this$ = new .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum>(.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum.$TypeDescriptor$, this);
-    }
-    protected final .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> $ceylon$language$Enumerable$this$;
-    
-    @.java.lang.Override
-    public .ceylon.language.Enumerable$impl<.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum> $ceylon$language$Enumerable$impl() {
-        return $ceylon$language$Enumerable$this$;
     }
     
     @.java.lang.Override
-    public long offsetSign(final .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum other) {
-        return $ceylon$language$Enumerable$this$.offsetSign(other);
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getPredecessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum)$ceylon$language$Enumerable$this$.getPredecessor();
-    }
-    
-    @.java.lang.Override
-    public .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum getSuccessor() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum)$ceylon$language$Enumerable$this$.getSuccessor();
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$ceylon$language$Enumerable$Other() {
+        return .com.redhat.ceylon.compiler.java.test.expression.operator.RangeOpEnum.$TypeDescriptor$;
     }
     
     @.java.lang.Override
