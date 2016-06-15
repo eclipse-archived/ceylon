@@ -172,24 +172,38 @@ public class Module
                 for (Package p: importedModule.getPackages()) {
                     list.add(p);
                 }
-                importedModule.addVisiblePackagesOfTransitiveDependencies(
-                        list, alreadyScannedModules, false);
+                importedModule.addAllPackagesOfTransitiveDependencies(
+                        list, alreadyScannedModules);
             }
         }
     }
-/*    
-    public Map<String, DeclarationWithProximity> 
-    getAvailableDeclarations(String startingWith, 
-            int proximity) {
-        return getAvailableDeclarations(startingWith, proximity, null);
+    
+    /**
+     * Avoid scanning the whole universe of transitive dependencies
+     * when we don't even have an initial prefix.
+     */
+    private List<Package> getPackagesToScan(String startingWith) {
+        if (startingWith.isEmpty()) {
+            List<Package> packs = getPackages();
+            List<Package> langPacks = getLanguageModule().getPackages();
+            List<Package> list =
+                    new ArrayList<Package>(
+                        packs.size() + langPacks.size());
+            list.addAll(packs);
+            list.addAll(langPacks);
+            return list;
+        }
+        else {
+            return getAllVisiblePackages();
+        }
     }
-*/    
+    
     public Map<String, DeclarationWithProximity> 
     getAvailableDeclarations(String startingWith, 
             int proximity, Cancellable canceller) {
         Map<String, DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
-        for (Package p: getAllVisiblePackages()) {
+        for (Package p: getPackagesToScan(startingWith)) {
             if (canceller != null
                     && canceller.isCancelled()) {
                 return Collections.emptyMap();
