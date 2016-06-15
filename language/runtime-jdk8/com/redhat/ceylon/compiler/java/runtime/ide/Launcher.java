@@ -116,6 +116,12 @@ public class Launcher {
         return new ArtifactResult(){
 
             @Override
+            public String namespace() {
+                // TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
             public String name() {
                 // TODO Auto-generated method stub
                 return null;
