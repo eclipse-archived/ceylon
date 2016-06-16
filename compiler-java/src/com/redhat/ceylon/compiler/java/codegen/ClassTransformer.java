@@ -60,6 +60,7 @@ import com.redhat.ceylon.compiler.java.codegen.recovery.PrivateConstructorOnly;
 import com.redhat.ceylon.compiler.java.codegen.recovery.ThrowerCatchallConstructor;
 import com.redhat.ceylon.compiler.java.codegen.recovery.ThrowerMethod;
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnnotationList;
@@ -3710,6 +3711,7 @@ public class ClassTransformer extends AbstractTransformer {
                 classBuilder.attribute(getter);
             }
             if (withinInterface) {
+                Interface iface = (Interface)decl.getDeclarationModel().getContainer();
                 at(decl.getType());
                 if (!useDefaultMethod(model) && lazy) {
                     // Generate getter in companion class
@@ -3719,7 +3721,10 @@ public class ClassTransformer extends AbstractTransformer {
                         classBuilder.attribute(makeGetter(decl, AttrTx.DEFAULT, lazy));
                     } else {
                         classBuilder.attribute(makeGetter(decl, AttrTx.BRIDGE_TO_STATIC, lazy));
+                        ExpressionTransformer eg = expressionGen();
+                        eg.receiver = eg.new DollarThis(iface);
                         classBuilder.attribute(makeGetter(decl, AttrTx.STATIC, lazy));
+                        eg.receiver = eg.receiver.parent;
                     }
                 }
             }
@@ -4128,7 +4133,16 @@ public class ClassTransformer extends AbstractTransformer {
         boolean prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(Decl.isMpl(def.getDeclarationModel())
                 || Decl.isLocalNotInitializer(def)
                 || expressionGen().isWithinSyntheticClassBody());
+        boolean q = def.getDeclarationModel().isInterfaceMember()
+                && ((Interface)def.getDeclarationModel().getContainer()).isUseDefaultMethods()
+                && !(def.getDeclarationModel().isFormal() || ! def.getDeclarationModel().isShared());
+        if (q) {
+            expressionGen().receiver = expressionGen().new DollarThis((Interface)def.getDeclarationModel().getContainer());
+        }
         List<JCStatement> body = transformMethodBody(def);
+        if (q) {
+            expressionGen().receiver = expressionGen().receiver.parent;
+        }
         expressionGen().withinSyntheticClassBody(prevSyntheticClassBody);
         return transform(def, classBuilder, body);
     }
@@ -4223,7 +4237,7 @@ public class ClassTransformer extends AbstractTransformer {
             
             JCMethodInvocation bridgingCall = make().Apply(null, naming.makeName(model, Naming.NA_MEMBER), bridgingArgs);
             JCStatement bridgingStmt;
-            if (model.isDeclaredVoid()) {
+            if (model.isDeclaredVoid() && !Strategy.useBoxedVoid(model)) {
                 bridgingStmt = make().Exec(bridgingCall);
             } else {
                 bridgingStmt = make().Return(bridgingCall);
@@ -4238,10 +4252,13 @@ public class ClassTransformer extends AbstractTransformer {
             
             // Transform the methods again, but at static methods with an explicit
             // $this parameter (and captured reified type parameters)
+            ExpressionTransformer eg = expressionGen();
+            eg.receiver = eg.new DollarThis(iface);
             lb.addAll(transformMethod(model, 
                     def,
                     true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
                     DaoKind.STATIC));
+            eg.receiver = eg.receiver.parent;
         
         }
         return lb;
@@ -4367,7 +4384,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
         methodBuilder.modifiers(transformMethodDeclFlags);
-        if (actual) {
+        if (actual && daoKind != DaoKind.STATIC) {
             methodBuilder.isOverride(methodModel.isActual());
         }
         if (includeAnnotations) {

@@ -4902,6 +4902,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             // should be merged since they all add a this qualifier in different
             // cases
             if(!mustUseParameter){
+                if (qualExpr == null) {
+                    qualExpr = receiver.qualify(decl);
+                }
+                
                 qualExpr = addQualifierForObjectMembersOfInterface(expr, decl, qualExpr);
 
                 qualExpr = addInterfaceImplAccessorIfRequired(qualExpr, expr, decl);
@@ -4994,17 +4998,54 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         return result;
     }
-
+    
+    abstract class Receiver {
+        Receiver parent = receiver == null ? this : receiver;
+        public abstract JCExpression qualifier();
+        public JCExpression qualify(Declaration decl) {
+            return null;
+        }
+    }
+    
+    class This extends Receiver {
+        
+        @Override
+        public JCExpression qualifier() {
+            return naming.makeThis();
+        }
+    }
+    class DollarThis extends Receiver {
+        private final Interface iface;
+        public DollarThis(Interface iface) {
+            this.iface = iface;
+        }
+        @Override
+        public JCExpression qualifier() {
+            return naming.makeQuotedThis();
+        }
+        @Override
+        public JCExpression qualify(Declaration decl) {
+            if (iface.isMember(decl) || iface.isInherited(decl)) {
+                return naming.makeQuotedThis();
+            }
+            return null;
+        }
+    }
+    Receiver receiver = new This();
+    
+    
     /**
-     * We may need to force a qualified this prefix (direct or outer) in the following cases:
-     * 
-     * - Required because of mixin inheritance with different type arguments (the same is already
+     * We may need to force a qualified {@code this} or {@code $this}
+     * prefix (direct or outer) in the following cases:
+     * <ul>
+     * <li>Required because of mixin inheritance with different type arguments (the same is already
      *   done for qualified references, but not for direct references)
-     * - The compiler generates anonymous local classes for things like
+     * <li>The compiler generates anonymous local classes for things like
      *   Callables and Comprehensions. When referring to a member foo 
      *   within one of those things we need a qualified {@code this}
      *   to ensure we're accessing the outer instances member, not 
      *   a member of the anonymous local class that happens to have the same name.
+     * </ul>
      */
     private JCExpression addThisOrObjectQualifierIfRequired(
             JCExpression qualExpr, Tree.StaticMemberOrTypeExpression expr,
@@ -5144,6 +5185,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(qualExpr != null
                 // this is only for interface containers
                 && declContainer instanceof Interface
+                && !((Interface)declContainer).isUseDefaultMethods()
                 // we only ever need the $impl if the declaration is not shared
                 && !decl.isShared()
                 && (!(expr instanceof Tree.QualifiedMemberExpression)
