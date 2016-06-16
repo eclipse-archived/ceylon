@@ -329,11 +329,13 @@ public class CeylonRunJsTool extends RepoUsingTool {
         }
         final ProcessBuilder proc;
         if (args != null && !args.isEmpty()) {
-            args.add(0, node);
-            args.add(1, "-e");
-            args.add(2, eval);
-            args.add(3, "dummy"); // See https://github.com/ceylon/ceylon.language/issues/503
-            proc = new ProcessBuilder(args.toArray(new String[0]));
+            ArrayList<String> newargs = new ArrayList<String>(args.size() + 4);
+            newargs.add(node);
+            newargs.add("-e");
+            newargs.add(eval);
+            newargs.add("dummy"); // See https://github.com/ceylon/ceylon.language/issues/503
+            newargs.addAll(args);
+            proc = new ProcessBuilder(newargs.toArray(new String[0]));
         } else {
             proc = new ProcessBuilder(node, "-e", eval);
         }
