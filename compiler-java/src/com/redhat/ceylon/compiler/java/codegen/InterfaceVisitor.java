@@ -128,6 +128,7 @@ public class InterfaceVisitor extends Visitor {
                 model.isToplevel() &&
                 target.compareTo(Target.JDK1_8) >= 0 && 
                 !hasCompilerAnnotation(that.getCompilerAnnotations(), "compileUsing", "companion")) {
+            // We might change this back if we find locals which capture the outer
             ((Interface)model).setUseDefaultMethods(true);
         }
         if (!model.isToplevel()
@@ -162,8 +163,12 @@ public class InterfaceVisitor extends Visitor {
                 && declarationModel.getContainer() instanceof Declaration) {
             declarationModel = (Declaration)declarationModel.getContainer();
         }
-        if (!(that instanceof Tree.Variable) 
-                && !declarationModel.getContainer().equals(declaration)
+        if ((that instanceof Tree.ObjectDefinition
+                || that instanceof Tree.AttributeGetterDefinition
+                || that instanceof Tree.AttributeSetterDefinition
+                || that instanceof Tree.AttributeDeclaration && ((Tree.AttributeDeclaration)that).getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression)
+                //&& !declarationModel.getContainer().equals(declaration)
+                && Decl.isLocal(declarationModel)
                 && declaration instanceof Interface) {
             ((Interface)declaration).setUseDefaultMethods(false);
         }

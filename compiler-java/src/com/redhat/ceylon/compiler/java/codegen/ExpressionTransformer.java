@@ -68,6 +68,7 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCTypeCast;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCUnary;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.Tag;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.Convert;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
@@ -4051,11 +4052,49 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     // Qualified members
     
+    public JCExpression makeEffectiveThis(Tree.Term t) {
+        Scope s = t.getScope();
+        while (!(s instanceof Package)) {
+            if (s instanceof ClassOrInterface) {
+                return naming.makeQualifiedThis(makeJavaType(((ClassOrInterface)s).getType(), JT_RAW));
+            }
+            s = s.getContainer();
+        }
+        return naming.makeThis();
+    }
+    
+    ClassOrInterface getClassOrInterfaceContainer(Tree.Term t) {
+        Scope s = t.getScope();
+        while (!(s instanceof Package)) {
+            if (s instanceof ClassOrInterface) {
+                return (ClassOrInterface)s;
+            }
+            s = s.getContainer();
+        }
+        return null;
+    }
+    
     public JCExpression transform(Tree.QualifiedMemberExpression expr) {
         // check for an optim
         JCExpression ret = checkForQualifiedMemberExpressionOptimisation(expr);
         if(ret != null)
             return ret;
+        if (isSuperOrSuperOf(expr.getPrimary())
+                && getClassOrInterfaceContainer(expr) instanceof Interface
+                && ((Interface)getClassOrInterfaceContainer(expr)).isUseDefaultMethods()) {
+            if (expr.getPrimary().getTypeModel().isObject()) {
+                // TODO What if I'm in a synthetic class ? I must use the right "this"
+                if (expr.getDeclaration().getName().equals("string")) {
+                    // thing.getClass().getName() + "@" + Integer.toHexString(thing.hashCode())
+                    return utilInvocation().objectString(makeEffectiveThis(expr));
+                }
+            } else if (expr.getPrimary().getTypeModel().isExactly(typeFact().getIdentifiableType())) {
+                if (expr.getDeclaration().getName().equals("hash")) {
+                    // System.identityHashCode(thing)
+                    return make().Apply(null, naming.makeSelect(make().QualIdent(syms().systemType.tsym), "identityHashCode"), List.<JCExpression>of(makeEffectiveThis(expr)));
+                }
+            }
+        }
         if (expr.getPrimary() instanceof Tree.BaseTypeExpression) {
             Tree.BaseTypeExpression primary = (Tree.BaseTypeExpression)expr.getPrimary();
             return transformMemberReference(expr, primary);
@@ -4634,6 +4673,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (iface.equals(typeFact().getIdentifiableDeclaration())) {
                     result = naming.makeQualifiedSuper(qualifier);
                 } else if (((Interface) direct).isUseDefaultMethods()) {
+                    if (isWithinSyntheticClassBody()) {
+                        // make an access method
+                    }
                     result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
                 } else {
                     if (useMethod(superOfQualifiedExpr, iface)) {
