@@ -162,6 +162,7 @@ public abstract class CompilerTests {
                 "-cacherep", cacheDir,
                 "-g", 
                 "-cp", getClassPathAsPath(),
+                "-target", "8",
                 "-suppress-warnings", "compilerAnnotation"));
     }
 

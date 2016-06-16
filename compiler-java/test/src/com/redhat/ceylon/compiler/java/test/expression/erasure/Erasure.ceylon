@@ -72,7 +72,7 @@ class MyException(String? m, Exception? x)
 @noanno
 interface MyNumeric satisfies Numeric<MyNumeric> & Integral<MyNumeric> & Comparable<MyNumeric> 
         & Exponentiable<MyNumeric,MyNumeric> & Scalable<MyNumeric,MyNumeric> {}
-
+/*
 @noanno
 interface MyList<out Element=Anything>
         satisfies Collection<Element> &
@@ -336,3 +336,4 @@ class Test(Integer&EmptyInterface n) {
         spreadInvocation = leftsAndRights*.leftAndRightMethod{param = CMiddle();};
     }
 }
+*/

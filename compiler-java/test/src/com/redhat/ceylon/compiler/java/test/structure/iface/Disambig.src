@@ -1,0 +1,59 @@
+package com.redhat.ceylon.compiler.java.test.structure.iface;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+interface Disambig {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public default void m() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.iface.Disambig $ceylontmp$a$0 = m$a();
+                m$canonical$($ceylontmp$a$0);
+            }
+            returning null;
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public default .com.redhat.ceylon.compiler.java.test.structure.iface.Disambig m$a() {
+        return null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private default void m$canonical$(final .com.redhat.ceylon.compiler.java.test.structure.iface.Disambig a) {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public default void m(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.iface::Disambig?")
+    final .com.redhat.ceylon.compiler.java.test.structure.iface.Disambig a) {
+        (
+            let
+            {
+                m$canonical$(a);
+            }
+            returning null;
+        );
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.Disambig.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class use_ {
+    
+    private use_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void use(@.com.redhat.ceylon.compiler.java.metadata.Name("d")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.iface::Disambig")
+    final .com.redhat.ceylon.compiler.java.test.structure.iface.Disambig d) {
+        d.m(null);
+        d.m();
+    }
+}

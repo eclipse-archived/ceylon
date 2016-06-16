@@ -1,0 +1,216 @@
+package com.redhat.ceylon.compiler.java.test.structure.iface;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Name("InheritedInterface")
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.Top.class)
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({})
+public interface Top$InheritedInterface<A> {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Members({
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.Top$InheritedInterface.class),
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.Top$impl.InheritedClass.class)})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "A",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT,
+        satisfies = {},
+        caseTypes = {})})
+public interface Top<A> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.iface.Top$impl<? extends A> $com$redhat$ceylon$compiler$java$test$structure$iface$Top$impl();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("A")
+    public abstract A inheritedMethod();
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("A")
+    public abstract A getInheritedAttribute();
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.iface.Top$impl<? extends A>.InheritedClass InheritedClass$new$();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ignore
+public final class Top$impl<A> implements .java.io.Serializable {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public Top$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, .com.redhat.ceylon.compiler.java.test.structure.iface.Top<? extends A> $this) {
+        this.$reified$A = $reified$A;
+        this.$this = $this;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.test.structure.iface.Top<? extends A> $this;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A) {
+        this.$reified$A = $reified$A;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.iface.Top$impl<? extends A>.InheritedClass InheritedClass$new$() {
+        return new InheritedClass();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.Top.class)
+    public class InheritedClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected InheritedClass() {
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.Top.class, .com.redhat.ceylon.compiler.java.test.structure.iface.Top$impl.this.$reified$A), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.Top$impl.InheritedClass.class));
+        }
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::Top<A>"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "A",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT,
+        satisfies = {},
+        caseTypes = {})})
+public interface Middle<A> extends .com.redhat.ceylon.compiler.java.test.structure.iface.Top<A> {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public default .com.redhat.ceylon.compiler.java.test.structure.iface.Top$impl<? extends A> $com$redhat$ceylon$compiler$java$test$structure$iface$Top$impl() {
+        return new .com.redhat.ceylon.compiler.java.test.structure.iface.Top$impl<A>(this.$reified$com$redhat$ceylon$compiler$java$test$structure$iface$Middle$A(), this);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public abstract .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Middle$A();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.ceylon.language.AbstractAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::Middle<A>"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "A",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.OUT,
+        satisfies = {},
+        caseTypes = {})})
+public abstract class MiddleClass<A> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.iface.Middle<A>, .java.io.Serializable {
+    
+    public MiddleClass(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A) {
+        this.$reified$A = $reified$A;
+        this.$com$redhat$ceylon$compiler$java$test$structure$iface$Top$this$ = new .com.redhat.ceylon.compiler.java.test.structure.iface.Top$impl<A>($reified$A, this);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Middle$A() {
+        return $reified$A;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    protected final .com.redhat.ceylon.compiler.java.test.structure.iface.Top$impl<A> $com$redhat$ceylon$compiler$java$test$structure$iface$Top$this$;
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.iface.Top$impl<? extends A> $com$redhat$ceylon$compiler$java$test$structure$iface$Top$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$iface$Top$this$;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .com.redhat.ceylon.compiler.java.test.structure.iface.Top$impl<? extends A>.InheritedClass InheritedClass$new$() {
+        return $com$redhat$ceylon$compiler$java$test$structure$iface$Top$this$.InheritedClass$new$();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.MiddleClass.class, $reified$A);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Name("DeclaredInterface")
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.BottomClass.class)
+public interface BottomClass$DeclaredInterface {
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.ceylon.language.SharedAnnotation$annotation$
+@.ceylon.language.AbstractAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Members({
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.BottomClass$DeclaredInterface.class),
+        @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.BottomClass.DeclaredClass.class)})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::Middle<ceylon.language::String>"})
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.iface::MiddleClass<ceylon.language::Object>")
+public abstract class BottomClass extends .com.redhat.ceylon.compiler.java.test.structure.iface.MiddleClass<.java.lang.Object> implements .com.redhat.ceylon.compiler.java.test.structure.iface.Middle<.ceylon.language.String> {
+    
+    public BottomClass() {
+        super(.ceylon.language.Object.$TypeDescriptor$);
+        $com$redhat$ceylon$compiler$java$test$structure$iface$Top$this$.$refine$(.ceylon.language.String.$TypeDescriptor$);
+        final .java.lang.String privateAttribute = "";
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$com$redhat$ceylon$compiler$java$test$structure$iface$Middle$A() {
+        return .ceylon.language.String.$TypeDescriptor$;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void privateMethod$priv$() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public abstract .java.lang.String declaredMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String s);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    public abstract .java.lang.String getDeclaredAttribute();
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.test.structure.iface.BottomClass.DeclaredClass DeclaredClass$new$() {
+        return new DeclaredClass();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.iface.BottomClass.class)
+    public class DeclaredClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected DeclaredClass() {
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.iface.BottomClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.BottomClass.DeclaredClass.class));
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public final void myOwnBottomMethod() {
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.iface.BottomClass.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.BottomClass.class);
+}

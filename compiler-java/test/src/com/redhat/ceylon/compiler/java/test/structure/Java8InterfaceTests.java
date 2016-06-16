@@ -93,4 +93,9 @@ public class Java8InterfaceTests extends CompilerTests {
     public void invokingObjectMethods() {
         compareWithJavaSource("iface/InvokingObjectMethods");
     }
+    
+    @Test
+    public void namedArgumentInvocation() {
+        compareWithJavaSource("iface/NamedArgumentInvocation");
+    }
 }
