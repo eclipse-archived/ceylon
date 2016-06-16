@@ -4674,9 +4674,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                     result = naming.makeQualifiedSuper(qualifier);
                 } else if (((Interface) direct).isUseDefaultMethods()) {
                     if (isWithinSyntheticClassBody()) {
-                        // make an access method
+                        // TODO make an access method
+                        Scope s = superOfQualifiedExpr.getScope();
+                        while (!(s instanceof Package)) {
+                            if (s instanceof ClassOrInterface) {
+                                break;
+                            }
+                            s = s.getContainer();
+                        }
+                        result = naming.makeQualIdent(naming.makeQualifiedThis(makeJavaType(((ClassOrInterface)s).getType(), JT_RAW)), "access");
+                    } else {
+                        result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
                     }
-                    result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
                 } else {
                     if (useMethod(superOfQualifiedExpr, iface)) {
                         result = make().Apply(null, naming.makeQualIdent(receiver.qualifier(), naming.getCompanionAccessorName(iface)), List.<JCExpression>nil());
