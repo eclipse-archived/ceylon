@@ -4621,7 +4621,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     result = naming.makeQualifiedSuper(makeJavaType(inheritedFrom.getType(), JT_RAW));
                 } else {
                     if (useMethod(superOfQualifiedExpr, iface)) {
-                        result = make().Apply(null, naming.makeUnquotedIdent(naming.getCompanionAccessorName(iface)), List.<JCExpression>nil());
+                        result = make().Apply(null, naming.makeQualIdent(receiver.qualifier(), naming.getCompanionAccessorName(iface)), List.<JCExpression>nil());
                     } else {
                         result = naming.makeCompanionFieldName(iface);
                     }

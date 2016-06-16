@@ -31,6 +31,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.codegen.ClassTransformer.AttrTx;
+import com.redhat.ceylon.compiler.java.codegen.ExpressionTransformer.DollarThis;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
