@@ -1,0 +1,135 @@
+package com.redhat.ceylon.compiler.java.test.structure.iface;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+interface NamedArgumentInvocation {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public default long f() {
+        return (
+            let
+            {
+                long $ceylontmp$i$0 = f$i();
+            }
+            returning f$canonical$($ceylontmp$i$0);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public default long f$i() {
+        return 1L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private default long f$canonical$(final long i) {
+        return i;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public default long f(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i) {
+        return f$canonical$(i);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocation.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Interface(useDefaultMethods = true)
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.iface::NamedArgumentInvocation"})
+interface NamedArgumentInvocationSub extends .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocation {
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private default long g$priv$() {
+        return (
+            let
+            {
+                long $ceylontmp$i$1 = g$i();
+            }
+            returning g$priv$$canonical$($ceylontmp$i$1);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private default long g$i() {
+        return 1L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private default long g$priv$$canonical$(final long i) {
+        return i;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    private default long g$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i) {
+        return g$priv$$canonical$(i);
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public default long f() {
+        return (
+            let
+            {
+                long $ceylontmp$i$6 = f$i();
+            }
+            returning f$canonical$($ceylontmp$i$6);
+        );
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private default long f$canonical$(final long i) {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub arg$2$callable$ = this;
+                .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub arg$2$argthis$ = this;
+                long arg$2$0 = arg$2$argthis$.g$i();
+            }
+            returning arg$2$callable$.g$priv$(arg$2$0);
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub arg$3$callable$ = this;
+                .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub arg$3$argthis$ = arg$3$callable$;
+                long arg$3$0 = arg$3$argthis$.g$i();
+            }
+            returning arg$3$callable$.g$priv$(arg$3$0);
+        );
+        (
+            let
+            {
+                long arg$4$0 = i;
+            }
+            returning .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocation.super.f(arg$4$0);
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocation arg$5$argthis$ = this;
+                long arg$5$0 = arg$5$argthis$.f$i();
+            }
+            returning .com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocation.super.f(arg$5$0);
+        );
+        return 1L;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public default long f(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    final long i) {
+        return f$canonical$(i);
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.NamedArgumentInvocationSub.class);
+}

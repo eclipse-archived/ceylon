@@ -1,0 +1,18 @@
+package com.redhat.ceylon.compiler.java.test.structure.iface;
+
+interface InvokingObjectMethods {
+    
+    private default void callMethodsOnObject$priv$() {
+        .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.objectString(.com.redhat.ceylon.compiler.java.test.structure.iface.InvokingObjectMethods.this);
+        s = .com.redhat.ceylon.compiler.java.Util.objectString(.com.redhat.ceylon.compiler.java.test.structure.iface.InvokingObjectMethods.this);
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InvokingObjectMethods.class);
+}
+interface InvokingIdentifiableMethods {
+    
+    private default void callMethodsOnObject$priv$() {
+        final .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.objectString(.com.redhat.ceylon.compiler.java.test.structure.iface.InvokingIdentifiableMethods.this);
+        final long h = .java.lang.System.identityHashCode(.com.redhat.ceylon.compiler.java.test.structure.iface.InvokingIdentifiableMethods.this);
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.iface.InvokingIdentifiableMethods.class);
+}

@@ -1,5 +1,5 @@
 interface NamedArgumentInvocation {
-    shared default Integer f(Integer i) {
+    shared default Integer f(Integer i=1) {
         return i;
     }
 }
