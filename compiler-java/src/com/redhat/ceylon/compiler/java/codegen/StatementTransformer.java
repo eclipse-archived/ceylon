@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.BooleanUtil;
+import com.redhat.ceylon.compiler.java.codegen.ClassTransformer.AttrTx;
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -4786,7 +4787,7 @@ public class StatementTransformer extends AbstractTransformer {
             Value v = vdb.var.getDeclarationModel();
             at(vdb.var);
             if (v.isClassMember() && v.isCaptured()) {
-                AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, v.getName(), v);
+                AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, v.getName(), v, AttrTx.THIS);
                 adb.immutable();
                 classGen().current().attribute(adb);
                 classGen().current().defs(vdb.buildDefOnly());
