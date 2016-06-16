@@ -820,7 +820,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     public void initialize(CeylonTool mainTool) throws Exception {
         super.initialize(mainTool);
         if (overrides != null) {
-            File of = new File(cwd, overrides);
+            File of = FileUtil.applyCwd(cwd, new File(overrides));
             if (!of.exists()) {
                 throw new IllegalArgumentException("Overrides file '"+of+"' does not exist");
             }
