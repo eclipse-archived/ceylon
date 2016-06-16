@@ -1389,7 +1389,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         ParameterList parameterList = ctor != null ? ctor.getFirstParameterList() : cls.getParameterList();
         if (Decl.withinInterface(cls)) {
-            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(daoAbstract, cls, ctor, instantiatorDeclCb.isCompanionBuilder());
+            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(DaoKind.ABSTRACT, null, null, cls, ctor, instantiatorDeclCb.isCompanionBuilder());
             MethodDefinitionBuilder instBuilder = overloaded.makeOverload(
                     parameterList,
                     null,
@@ -1398,7 +1398,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         if (!Decl.withinInterface(cls)
                 || !cls.isFormal()) {
-            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(!cls.isFormal() ? new DaoBody(DaoKind.THIS, node, pl) : daoAbstract, 
+            DefaultedArgumentOverload overloaded = new DefaultedArgumentInstantiator(!cls.isFormal() ? DaoKind.THIS : DaoKind.ABSTRACT, node, pl, 
                     cls, ctor, instantiatorImplCb.isCompanionBuilder());
             MethodDefinitionBuilder instBuilder = overloaded.makeOverload(
                     parameterList,
@@ -1628,7 +1628,7 @@ public class ClassTransformer extends AbstractTransformer {
                 if (generateInstantiator) {
                     if (Decl.withinInterface(cls)) {
                         
-                        MethodDefinitionBuilder instBuilder = new DefaultedArgumentInstantiator(daoAbstract, cls, constructor,
+                        MethodDefinitionBuilder instBuilder = new DefaultedArgumentInstantiator(DaoKind.ABSTRACT, null, null, cls, constructor,
                                 instantiatorDeclCb.isCompanionBuilder()).makeOverload(
                                 paramList.getModel(),
                                 param.getParameterModel(),
@@ -1636,7 +1636,7 @@ public class ClassTransformer extends AbstractTransformer {
                         instantiatorDeclCb.method(instBuilder);
                     }
                     if (!Decl.withinInterface(cls) || !cls.isFormal()) {
-                        MethodDefinitionBuilder instBuilder = new DefaultedArgumentInstantiator(new DaoBody(DaoKind.THIS, node, paramList), cls, constructor,
+                        MethodDefinitionBuilder instBuilder = new DefaultedArgumentInstantiator(DaoKind.THIS, node, paramList, cls, constructor,
                                 instantiatorImplCb.isCompanionBuilder()).makeOverload(
                                 paramList.getModel(),
                                 param.getParameterModel(),
@@ -2468,7 +2468,7 @@ public class ClassTransformer extends AbstractTransformer {
             for (Parameter param : parameters) {
 
                 if (Strategy.hasDefaultParameterOverload(param)) {
-                    MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(null, MethodDefinitionBuilder.method(this, method), typedMember, true)
+                    MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(DaoKind.ABSTRACT, null, null, MethodDefinitionBuilder.method(this, method), typedMember, true)
                     .makeOverload(
                             method.getFirstParameterList(),
                             param,
@@ -2787,7 +2787,7 @@ public class ClassTransformer extends AbstractTransformer {
                             if (Strategy.hasDefaultParameterOverload(param)) {
                                 if ((method.isDefault() || method.isShared() && !method.isFormal())
                                         && Decl.equal(method, subMethod)) {
-                                    MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(new DaoBody(DaoKind.THIS, (Tree.AnyMethod)null, null), MethodDefinitionBuilder.method(this, subMethod), typedMember, true)
+                                    MethodDefinitionBuilder overload = new DefaultedArgumentMethodTyped(DaoKind.THIS, (Tree.AnyMethod)null, null, MethodDefinitionBuilder.method(this, subMethod), typedMember, true)
                                         .makeOverload(
                                             subMethod.getFirstParameterList(),
                                             param,
@@ -4088,7 +4088,7 @@ public class ClassTransformer extends AbstractTransformer {
                     def,
                     true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
                     refinedResultType 
-                        && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoBody(DaoKind.SUPER, null, null) : new DaoBody(DaoKind.THIS, def, def.getParameterLists().get(0)),
+                        && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoBody(DaoKind.SUPER, def, def.getParameterLists().get(0)) : new DaoBody(DaoKind.THIS, def, def.getParameterLists().get(0)),
             !Strategy.defaultParameterMethodOnSelf(model)).toList();
         } else if (Decl.withinInterface(model)
             && !((Interface)model.getContainer()).isUseDefaultMethods()){// Is within interface
@@ -4121,39 +4121,91 @@ public class ClassTransformer extends AbstractTransformer {
                 result = transformMethod(def.getDeclarationModel(), 
                             def,
                             true, true, true, null,
-                            daoAbstract,
+                            new DaoBody(DaoKind.ABSTRACT, null, null),
                             !Strategy.defaultParameterMethodOnSelf(model)).toList();
             }
         } else if (Decl.withinInterface(model)
                 && ((Interface)model.getContainer()).isUseDefaultMethods()){// Is within interface
-            // Transform to the class
-            boolean refinedResultType = !model.getType().isExactly(
-                    ((TypedDeclaration)model.getRefinedDeclaration()).getType());
-            ListBuffer<MethodDefinitionBuilder> lb = transformMethod(def.getDeclarationModel(), 
-                    def,
-                    true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
-                    refinedResultType 
-                        && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
-                    !Strategy.defaultParameterMethodOnSelf(model));
-            
-            for (MethodDefinitionBuilder m :  transformMethod(def.getDeclarationModel(), 
-                    def,
-                    true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
-                    refinedResultType 
-                        && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
-                    !Strategy.defaultParameterMethodOnSelf(model))) {
-                if ((m.getModifiers() & DEFAULT) != 0) {
-                    m.addModifiers(STATIC);
-                    m.removeModifiers(DEFAULT);
-                    ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(this, "this");
-                    pdb.type(makeJavaType(((Interface)model.getContainer()).getType(), 0), null);
-                    m.prependParameter(pdb);
-                    lb.add(m);
-                }
-            }
+            ListBuffer<MethodDefinitionBuilder> lb = makeStaticMethodAndDefaultBridge(def, body, model);
             result = lb.toList();
         }
         return result;
+    }
+
+    /** 
+     * When transforming a concrete interface member using Java 8 
+     * {@code default} methods we generate a {@code default} bridge method 
+     * which delegates to a {@code static} method (with explicit {@code this}).
+     */
+    protected ListBuffer<MethodDefinitionBuilder> makeStaticMethodAndDefaultBridge(Tree.AnyMethod def,
+            List<JCStatement> body, final Function model) {
+        Interface iface = (Interface)model.getContainer();
+        // Transform to the class
+        boolean refinedResultType = !model.getType().isExactly(
+                ((TypedDeclaration)model.getRefinedDeclaration()).getType());
+        // TODO parameter naming
+        List<JCExpression> bridgingArgs = List.of(naming.makeThis());
+        //for (TypeParameter t : iface.getTypeParameters()) {
+        //    bridgingArgs = bridgingArgs.append(makeReifiedTypeArgument(t.getType()));
+        //}
+        for (TypeParameter t : model.getTypeParameters()) {
+            bridgingArgs = bridgingArgs.append(makeReifiedTypeArgument(t.getType()));
+        }
+        for (Parameter p : model.getParameterLists().get(0).getParameters()) {
+            bridgingArgs = bridgingArgs.append(naming.makeUnquotedIdent(p.getName()));
+        }
+        // TODO bridges for DPMs and DAOs
+        
+        JCMethodInvocation bridgingCall = make().Apply(null, naming.makeName(model, Naming.NA_MEMBER), bridgingArgs);
+        JCStatement bridgingStmt;
+        if (model.isDeclaredVoid()) {
+            bridgingStmt = make().Exec(bridgingCall);
+        } else {
+            bridgingStmt = make().Return(bridgingCall);
+        }
+        // Transform the method to a set of `default` methods
+        // using the bridging call as the body
+        ListBuffer<MethodDefinitionBuilder> lb = transformMethod(model,
+                def,
+                true, true, true, List.<JCStatement>of(bridgingStmt),
+                new DaoBody(DaoKind.STATIC, def, def.getParameterLists().get(0)),
+                !Strategy.defaultParameterMethodOnSelf(model));
+        
+        // Transform the methods again, and them adjust them to make them static
+        // and add the extra parameters, type parameters etc. 
+        // Note this requires that the given body was generated using explicit 
+        // $this
+        for (MethodDefinitionBuilder m :  transformMethod(model, 
+                def,
+                true, true, true, transformMplBodyUnlessSpecifier(def, model, body),
+                refinedResultType 
+                    && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoBody(DaoKind.SUPER, null, null) : new DaoBody(DaoKind.THIS, def, def.getParameterLists().get(0)),
+                !Strategy.defaultParameterMethodOnSelf(model))) {
+            if ((m.getModifiers() & DEFAULT) != 0) {
+                m.addModifiers(STATIC);
+                m.removeModifiers(DEFAULT);
+                
+                if (gen().supportsReified(iface)) {
+                    java.util.List<TypeParameter> typeParameters = new ArrayList<>(iface.getTypeParameters());
+                    Collections.reverse(typeParameters);
+                    for (TypeParameter tp : typeParameters) {
+                        // TODO Collisions between interface TPs and method TPs
+                        //m.prependParameter(m.makeReifiedTypeParameter(tp));
+                        // TODO actually I don't need to add parameters for the iface
+                        // because they're accessible via the type argument 
+                        // methods accessible from $this anyway!
+                        m.prependTypeParameter(tp, null);
+                    }
+                }
+                
+                // Add this
+                ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(this, "this");
+                pdb.type(makeJavaType(iface.getType(), 0), null);
+                m.prependParameter(pdb);
+                lb.add(m);
+            }
+        }
+        return lb;
     }
 
     
@@ -4199,7 +4251,7 @@ public class ClassTransformer extends AbstractTransformer {
                             noBody)) {
                         DaoBody daoBody;
                         if (!noBody) {
-                            daoBody = daoAbstract;
+                            daoBody = new DaoBody(DaoKind.ABSTRACT, null, null);
                         } else {
                             daoBody = new DaoBody(DaoKind.THIS, method, parameterList);
                         }
@@ -4770,8 +4822,6 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
     }
-   
-    final DaoBody daoAbstract = new DaoBody(DaoKind.ABSTRACT, null, null);
 
     
     /**
@@ -4973,8 +5023,8 @@ public class ClassTransformer extends AbstractTransformer {
         private TypedReference typedMember;
         private boolean forMixin;
 
-        DefaultedArgumentMethodTyped(DaoBody daoBody, MethodDefinitionBuilder mdb, TypedReference typedMember, boolean forMixin) {
-            super(daoBody, mdb, (Function)typedMember.getDeclaration());
+        DefaultedArgumentMethodTyped(DaoKind kind, Tree.Declaration invocation, Tree.ParameterList pl, MethodDefinitionBuilder mdb, TypedReference typedMember, boolean forMixin) {
+            super(new DaoBody(kind, invocation, pl), mdb, (Function)typedMember.getDeclaration());
             this.typedMember = typedMember;
             this.forMixin = forMixin;
         }
@@ -5241,8 +5291,8 @@ public class ClassTransformer extends AbstractTransformer {
 
         private boolean forCompanionClass;
 
-        DefaultedArgumentInstantiator(DaoBody daoBody, Class klass, Constructor ctor, boolean forCompanionClass) {
-            super(daoBody, MethodDefinitionBuilder.systemMethod(ClassTransformer.this, naming.getInstantiatorMethodName(klass)), klass, ctor, false);
+        DefaultedArgumentInstantiator(DaoKind kind, Tree.Declaration invocation, Tree.ParameterList pl, Class klass, Constructor ctor, boolean forCompanionClass) {
+            super(new DaoBody(kind, invocation, pl), MethodDefinitionBuilder.systemMethod(ClassTransformer.this, naming.getInstantiatorMethodName(klass)), klass, ctor, false);
             this.forCompanionClass = forCompanionClass;
         }
 

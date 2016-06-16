@@ -332,6 +332,12 @@ public class MethodDefinitionBuilder
         typeParamAnnotations.append(tpAnno);
         return this;
     }
+    
+    public MethodDefinitionBuilder prependTypeParameter(TypeParameter param, java.util.List<Type> producedBounds) {
+        typeParams.prepend(gen.makeTypeParameter(param, producedBounds));
+        typeParamAnnotations.prepend(gen.makeAtTypeParameter(param));
+        return this;
+    }
 
     public MethodDefinitionBuilder parameters(List<ParameterDefinitionBuilder> pdbs) {
         params.appendList(pdbs);
@@ -669,6 +675,13 @@ public class MethodDefinitionBuilder
     }
 
     public MethodDefinitionBuilder reifiedTypeParameter(TypeParameter param) {
+        ParameterDefinitionBuilder pdb = makeReifiedTypeParameter(param);
+        parameter(pdb);
+
+        return this;
+    }
+
+    protected ParameterDefinitionBuilder makeReifiedTypeParameter(TypeParameter param) {
         String descriptorName = gen.naming.getTypeArgumentDescriptorName(param);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(gen, descriptorName);
         pdb.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
@@ -677,9 +690,7 @@ public class MethodDefinitionBuilder
             pdb.noUserOrModelAnnotations();
         else
             pdb.ignored();
-        parameter(pdb);
-
-        return this;
+        return pdb;
     }
 
     public MethodDefinitionBuilder reifiedTypeParametersFromModel(java.util.List<TypeParameter> typeParameters) {
