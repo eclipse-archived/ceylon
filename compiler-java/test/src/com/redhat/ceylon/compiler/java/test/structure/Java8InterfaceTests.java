@@ -65,6 +65,11 @@ public class Java8InterfaceTests extends CompilerTests {
     }
     
     @Test
+    public void disambig() {
+        compareWithJavaSource("iface/Disambig");
+    }
+    
+    @Test
     public void defaultSatisfyCompanion() {
         compareWithJavaSource("iface/DefaultSatisfyCompanion");
     }
