@@ -586,7 +586,7 @@ public class CeylonVisitor extends Visitor {
                 }
                 classBuilder.getCompanionBuilder(iface).attribute(adb);
             } else {
-                if (model.isFormal() || !model.isShared()) {
+                if (true/*model.isFormal() || !model.isShared()*/) {
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.DEFAULT));
                 } else {
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.BRIDGE_TO_STATIC));
@@ -631,7 +631,7 @@ public class CeylonVisitor extends Visitor {
                 }
                 classBuilder.getCompanionBuilder(iface).attribute(adb);
             } else {
-                if (model.isFormal() || !model.isShared()) {
+                if (true/*model.isFormal() || !model.isShared()*/) {
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.DEFAULT));
                 } else {
                     classBuilder.attribute(gen.classGen().transform(decl, AttrTx.BRIDGE_TO_STATIC));

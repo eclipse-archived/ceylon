@@ -1766,7 +1766,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (isWithinSyntheticClassBody()) {
             return naming.makeQualifiedThis(makeJavaType(expr.getTypeModel()));
         } 
-        return receiver.qualifier();
+        return naming.makeThis();//receiver.qualifier();
     }
 
     public JCTree transform(Tree.Super expr) {
@@ -4586,11 +4586,18 @@ public class ExpressionTransformer extends AbstractTransformer {
         return widenSuper(node, inheritedFrom);
     }
 
+    /**
+     * 
+     * @param superOfQualifiedExpr
+     * @param inheritedFrom The class or interface the declaration is being inherited from 
+     * (may be indirect).
+     */
     private JCExpression widenSuper(
             Tree.Term superOfQualifiedExpr,
             TypeDeclaration inheritedFrom) {
         JCExpression result;
-        if (inheritedFrom instanceof Class) {
+        TypeDeclaration direct = findDirectSuper(superOfQualifiedExpr, inheritedFrom);
+        if (direct instanceof Class) {
             if(isWithinSyntheticClassBody()){
                 // super refers to the closest ClassOrInterface
                 Scope scope = superOfQualifiedExpr.getScope();
@@ -4600,22 +4607,22 @@ public class ExpressionTransformer extends AbstractTransformer {
                     }
                     scope = scope.getContainer();
                 }
-                if(scope instanceof ClassOrInterface)
-                    result = naming.makeQualifiedSuper(makeJavaType(((ClassOrInterface) scope).getType(), JT_RAW));
+                if(direct instanceof ClassOrInterface)
+                    result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
                 else
                     result = naming.makeSuper();
             }else{
                 result = naming.makeSuper();
             }
-        } else if (inheritedFrom instanceof Interface) {
+        } else if (direct instanceof Interface) {
             Interface iface = (Interface)inheritedFrom;
             JCExpression qualifier = null;
-            if (iface.isUseDefaultMethods()) {
-                return makeJavaType(iface.getType(), JT_RAW);
-            }
-            if (inheritedFrom instanceof LazyInterface
-                    && !((LazyInterface)inheritedFrom).isCeylon()) {
-                result = naming.makeQualifiedSuper(makeJavaType(inheritedFrom.getType(), JT_RAW));
+            //if (iface.isUseDefaultMethods()) {
+            //    return makeJavaType(iface.getType(), JT_RAW);
+            //}
+            if (direct instanceof LazyInterface
+                    && !((LazyInterface)direct).isCeylon()) {
+                result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
             } else if (needDollarThis(superOfQualifiedExpr.getScope())) {
                 qualifier = naming.makeQuotedThis();
                 if (iface.equals(typeFact().getIdentifiableDeclaration())) {
@@ -4626,8 +4633,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             } else {
                 if (iface.equals(typeFact().getIdentifiableDeclaration())) {
                     result = naming.makeQualifiedSuper(qualifier);
-                } else if (((Interface) inheritedFrom).isUseDefaultMethods()) {
-                    result = naming.makeQualifiedSuper(makeJavaType(inheritedFrom.getType(), JT_RAW));
+                } else if (((Interface) direct).isUseDefaultMethods()) {
+                    result = naming.makeQualifiedSuper(makeJavaType(direct.getType(), JT_RAW));
                 } else {
                     if (useMethod(superOfQualifiedExpr, iface)) {
                         result = make().Apply(null, naming.makeQualIdent(receiver.qualifier(), naming.getCompanionAccessorName(iface)), List.<JCExpression>nil());
@@ -4645,6 +4652,28 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = makeErroneous(superOfQualifiedExpr, "compiler bug: " + (inheritedFrom == null ? "null" : inheritedFrom.getClass().getName()) + " is an unhandled case in widen()");
         }
         return result;
+    }
+
+    protected TypeDeclaration findDirectSuper(Tree.Term superOfQualifiedExpr, TypeDeclaration inheritedFrom) {
+        Scope s = superOfQualifiedExpr.getScope();
+        while (!(s instanceof TypeDeclaration)) {
+            s = s.getContainer();
+        }
+        TypeDeclaration x = null;
+        TypeDeclaration td = (TypeDeclaration)s;
+        if (td.getExtendedType().getDeclaration().inherits(inheritedFrom)) {
+            x = td.getExtendedType().getDeclaration();
+        } else {
+            if (td.getSatisfiedTypes() != null) {
+                for (Type st : td.getSatisfiedTypes()) {
+                    if (st.getDeclaration().inherits(inheritedFrom)) {
+                        x = st.getDeclaration();
+                        break;
+                    }
+                }
+            }
+        }
+        return x;
     }
 
     protected boolean useMethod(Tree.Term superOfQualifiedExpr, Interface iface) {
@@ -4675,6 +4704,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     public JCExpression transformSuper(Tree.QualifiedMemberOrTypeExpression expression) {
         TypeDeclaration inheritedFrom = (TypeDeclaration)expression.getDeclaration().getContainer();
+        TypeDeclaration x = findDirectSuper(expression, inheritedFrom);
         return transformSuper(expression, inheritedFrom);
     }
     
@@ -5034,12 +5064,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         @Override
         public JCExpression qualifier() {
-            return naming.makeQuotedThis();
+            return naming.makeThis();
         }
         @Override
         public JCExpression qualify(Declaration decl) {
             if (iface.isMember(decl) || iface.isInherited(decl)) {
-                return naming.makeQuotedThis();
+                return naming.makeThis();
             }
             return null;
         }
@@ -5825,10 +5855,10 @@ public class ExpressionTransformer extends AbstractTransformer {
      * default+static methods. 
      */
     protected boolean useStaticSuper(Tree.Term leftTerm) {
-        return leftTerm instanceof Tree.QualifiedMemberOrTypeExpression
+        return false;/*leftTerm instanceof Tree.QualifiedMemberOrTypeExpression
                 && isSuperOrSuperOf(((Tree.QualifiedMemberOrTypeExpression)leftTerm).getPrimary())
                 && ((Tree.QualifiedMemberOrTypeExpression)leftTerm).getDeclaration().getContainer() instanceof Interface
-                && ((Interface)((Tree.QualifiedMemberOrTypeExpression)leftTerm).getDeclaration().getContainer()).isUseDefaultMethods();
+                && ((Interface)((Tree.QualifiedMemberOrTypeExpression)leftTerm).getDeclaration().getContainer()).isUseDefaultMethods();*/
     }
 
     /** Creates an anonymous class that extends Iterable and implements the specified comprehension.

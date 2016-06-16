@@ -151,7 +151,7 @@ public class InterfaceVisitor extends Visitor {
             this.declaration = oldDeclaration;
         } 
         if(model instanceof Interface){
-            ((Interface)model).setCompanionClassNeeded(isInterfaceWithCode(model));
+            ((Interface)model).setCompanionClassNeeded(isInterfaceWithCode(model) && !((Interface)model).isUseDefaultMethods());
         }
     }
     
