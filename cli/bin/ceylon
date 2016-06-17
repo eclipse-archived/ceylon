@@ -37,6 +37,12 @@ else
     JAVA="$JAVA_HOME/bin/java"
 fi
 
+# Check for cygwin or mingw, convert LIB to DOS format
+case "`uname`" in
+  CYGWIN*) [ -n "$LIB" ] && LIB=`cygpath -d "$LIB"`
+  MINGW*) [ -n "$LIB" ] && LIB="`(cd "$LIB"; pwd)`"
+esac
+
 # Make sure we have java installed
 if ! hash java 2>&-
 then
