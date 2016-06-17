@@ -61,7 +61,13 @@ if [ "$PRESERVE_JAVA_OPTS" != "true" ]; then
 fi
 JAVA_OPTS="$PREPEND_JAVA_OPTS $JAVA_OPTS"
 
+# Check for cygwin or mingw, convert LIB to DOS format
+BOOTSTRAP="$LIB/ceylon-bootstrap.jar"
+case "`uname`" in
+  CYGWIN*) [ -n "$LIB" ] && BOOTSTRAP=`cygpath -w "$BOOTSTRAP"`
+esac
+
 exec "$JAVA" \
     $JAVA_OPTS \
-    -jar "$LIB/ceylon-bootstrap.jar" \
+    -jar "$BOOTSTRAP" \
     "$@"
