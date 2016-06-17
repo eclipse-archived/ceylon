@@ -3097,8 +3097,10 @@ public class ExpressionVisitor extends Visitor {
                         mte;
             Type invokedType = 
                     qmte.getPrimary()
-                        .getTypeModel()
-                        .resolveAliases();
+                        .getTypeModel();
+            if (invokedType!=null) {
+            	invokedType = invokedType.resolveAliases();
+            }
             Type receiverType = unwrap(invokedType, qmte);
             return receiverType.getTypedReference(dec,
                     getTypeArguments(tas, receiverType, tps));
