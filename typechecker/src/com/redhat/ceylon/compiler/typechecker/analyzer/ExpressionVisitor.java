@@ -7073,9 +7073,11 @@ public class ExpressionVisitor extends Visitor {
                     return false;
                 }
                 else if (c.getParameterList()==null) {
-                    that.addError("class cannot be instantiated: '" +
-                            type.getName(unit) + 
-                            "' does not have a default constructor");
+                	if (!(c.isOverloaded() && c.isAbstraction())) {
+	                    that.addError("class cannot be instantiated: '" +
+	                            type.getName(unit) + 
+	                            "' does not have a default constructor");
+                	}
                     return false;
                 }
                 else {

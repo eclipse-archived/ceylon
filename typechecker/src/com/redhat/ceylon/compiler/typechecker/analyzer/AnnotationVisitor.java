@@ -1022,10 +1022,10 @@ public class AnnotationVisitor extends Visitor {
                         sb.setLength(sb.length()-2);
                     }
                     sb.append("'");
-                    that.addError("ambiguous invocation of overloaded method or class: " +
+                    that.addError("illegal argument types in invocation of overloaded method or class: " +
                             "there must be exactly one overloaded declaration of '" + 
                             dec.getName(unit) + 
-                            "' that accepts the given argument types" + sb);
+                            "' which accepts the given argument types" + sb);
                 }
             }
         }
