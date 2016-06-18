@@ -61,8 +61,9 @@ if [ "$PRESERVE_JAVA_OPTS" != "true" ]; then
 fi
 JAVA_OPTS="$PREPEND_JAVA_OPTS $JAVA_OPTS"
 
-# Check for cygwin, convert LIB to Windows format
 BOOTSTRAP="$LIB/ceylon-bootstrap.jar"
+
+# Check for cygwin, convert bootstrap path to Windows format
 case "`uname`" in
   CYGWIN*) [ -n "$LIB" ] && BOOTSTRAP=`cygpath -w "$BOOTSTRAP"`
 esac
