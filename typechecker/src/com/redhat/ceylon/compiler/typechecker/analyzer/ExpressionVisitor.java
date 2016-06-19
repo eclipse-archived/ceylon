@@ -4968,10 +4968,6 @@ public class ExpressionVisitor extends Visitor {
                                 "index must be assignable to key type");
                         that.setTypeModel(vt);
                         Tree.Term t = ee.getTerm();
-                        //TODO: in theory we could do a whole lot
-                        //      more static-execution of the 
-                        //      expression, but this seems
-                        //      perfectly sufficient
                         refineTypeForTupleElement(that, pt, t);
                     }
                 }
@@ -5031,6 +5027,10 @@ public class ExpressionVisitor extends Visitor {
 
     private void refineTypeForTupleElement(
             Tree.IndexExpression that, Type pt, Tree.Term t) {
+        //TODO: in theory we could do a whole lot
+        //      more static-execution of the 
+        //      expression, but this seems
+        //      perfectly sufficient
         boolean negated = false;
         if (t instanceof Tree.NegativeOp) {
             t = ((Tree.NegativeOp) t).getTerm();
