@@ -18,19 +18,27 @@ void visitDeclaration(
         try {
             Identifier id;
             VariableDeclaration vdecl;
+            Boolean const;
             dynamic {
                 id = eval("(function(node){return node.name})")(node); // TODO necessary to dress the name as Identifier (could be BindingPattern). do this properly
                 vdecl = eval("(function(x){return x})")(node); // TODO use assert instead; #6307
+                const = eval("(function(vdecl, constflags){return (vdecl.parent.flags & constflags) != 0})")(vdecl, NodeFlags.Const); // TODO can we write this in Ceylon?
             }
             String name = id.text;
             value type = typechecker.getTypeAtLocation(vdecl);
             container.put(name, JsonObject {
                     "$t" -> convertTypeForModel(type),
-                    "pa" -> packAnnotations { shared = true; }, // TODO variable? depends on if const or not
+                    "pa" -> packAnnotations {
+                        shared = true;
+                        variable = !const;
+                    },
                     "mt"->"a",
                     "nm"->name
                 });
-            writer.writeLine("ex$.``name`` = (function(``name``) { return function(){ return ``name``; }; })(exports.``name``);"); // TS emits a variable, Ceylon expects a function – TODO #6320
+            writer.writeLine("ex$.``name`` = (function(``name``) { return function(){ return ``name``; }; })(exports.``name``);"); // TS emits a variable, Ceylon expects a function – TODO #6320; TODO also this overwrites the TypeScript value, so if any TypeScript code uses this value we’re screwed
+            if (!const) {
+                writer.writeLine("ex$.set``initUCase(name)`` = function(``name``) { ex$.``name`` = function(){ return ``name``; }; };"); // TODO this is complete rubbish: we’re only overwriting the getter for Ceylon
+            }
             // TODO ex$.name = exports.name feels wrong; surely tsc can do the right thing by itself?
             // TODO write metamodel stuff
         } catch (Throwable t) {
