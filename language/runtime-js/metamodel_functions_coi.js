@@ -206,6 +206,13 @@ function coimtd$(coi,name,types,$$$mptypes,noInherit){
   }
   if (types===undefined)types=empty();
   var _tipo=mmfca$(coi.tipo,$$$mptypes.Container$getMethod);
+  if (_tipo && !_tipo.$$) {
+    //if _tipo is an object, go deeper to get its type
+    var mm=getrtmm$$(_tipo);
+    if (mm && mm.$t) {
+      _tipo=mm.$t.t;
+    }
+  }
   var fun = findMethodByNameFromPrototype$(_tipo.$$.prototype, name);
   if(!fun)
     return null;
