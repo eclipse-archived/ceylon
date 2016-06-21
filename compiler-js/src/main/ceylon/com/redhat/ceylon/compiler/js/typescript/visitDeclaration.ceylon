@@ -22,7 +22,7 @@ void visitDeclaration(
                 id = eval("(function(node){return node.name})")(node); // TODO necessary to dress the name as Identifier (could be BindingPattern). do this properly
                 vdecl = eval("(function(x){return x})")(node); // TODO use assert instead; #6307
             }
-            value name = id.text;
+            String name = id.text;
             value type = typechecker.getTypeAtLocation(vdecl);
             container.put(name, JsonObject {
                     "$t" -> convertTypeForModel(type),
