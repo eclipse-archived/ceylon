@@ -6,6 +6,7 @@ import ceylon.json {
     JsonArray
 }
 
+suppressWarnings ("expressionTypeNothing")
 shared void run() {
     if (process.arguments.size < 3) {
         process.writeErrorLine("Usage: load-typescript MODULE-NAME MODULE-VERSION FILE...");
