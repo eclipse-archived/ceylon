@@ -245,8 +245,9 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
     // Return the path relative to the source folder it belong to or null
     private String relativePath(VirtualFile file) {
         for (VirtualFile src : srcDirectories) {
-            if (file.getPath().startsWith(src.getPath() + "/")) {
-                return file.getPath().substring(src.getPath().length() + 1);
+            String path = file.getRelativePath(src);
+            if (path != null) {
+                return path;
             }
         }
         return null;
