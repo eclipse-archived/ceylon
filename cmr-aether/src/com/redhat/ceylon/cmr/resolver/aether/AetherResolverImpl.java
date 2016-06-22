@@ -131,9 +131,9 @@ public class AetherResolverImpl implements AetherResolver {
         if(localRepository == null)
         	localRepository = System.getProperty("user.home")+File.separator+".m2"+File.separator+"repository";
         else {
-//            if (! new File(localRepository).isAbsolute() && currentDirectory != null) {
-//                localRepository = new File(new File(currentDirectory), localRepository).getAbsolutePath();
-//            }
+            if (! new File(localRepository).isAbsolute() && currentDirectory != null) {
+                localRepository = new File(new File(currentDirectory), localRepository).getAbsolutePath();
+            }
         }
 
         // set up authentication
