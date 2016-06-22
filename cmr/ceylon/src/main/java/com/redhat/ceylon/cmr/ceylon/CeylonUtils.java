@@ -562,7 +562,7 @@ public class CeylonUtils {
                 try {
                     String path = builder.repositoryBuilder().absolute(cwd, repoInfo.getUrl());
                     if(!avoidRepository(path)){
-                        RepositoryBuilderConfig cfg = new RepositoryBuilderConfig(log, isOffline(config), getTimeout(config), getProxy(config));
+                        RepositoryBuilderConfig cfg = new RepositoryBuilderConfig(log, isOffline(config), getTimeout(config), getProxy(config), cwd.getAbsolutePath());
                         CmrRepository repo = builder.repositoryBuilder().buildRepository(path, cfg);
                         builder.addRepository(repo);
                     }
@@ -577,7 +577,7 @@ public class CeylonUtils {
                 repoUrl = resolveRepoUrl(repositories, repoUrl);
                 String path = builder.repositoryBuilder().absolute(cwd, repoUrl);
                 if(!avoidRepository(path)){
-                    RepositoryBuilderConfig cfg = new RepositoryBuilderConfig(log, isOffline(config), getTimeout(config), getProxy(config));
+                    RepositoryBuilderConfig cfg = new RepositoryBuilderConfig(log, isOffline(config), getTimeout(config), getProxy(config), cwd.getAbsolutePath());
                     CmrRepository repo = builder.repositoryBuilder().buildRepository(path, cfg);
                     builder.addRepository(repo);
                 }

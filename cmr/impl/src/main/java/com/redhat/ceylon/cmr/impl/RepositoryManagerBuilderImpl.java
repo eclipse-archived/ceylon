@@ -43,29 +43,32 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
     private final boolean offline;
     private final int timeout;
     private final Proxy proxy;
+    private final String currentDirectory;
 
-    public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides) {
-        this(log, offline, timeout, proxy, overrides, true);
+    public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides, String currentDirectory) {
+        this(log, offline, timeout, proxy, overrides, currentDirectory, true);
     }
-    public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides, boolean upgradeDist) {
+    public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides, String currentDirectory, boolean upgradeDist) {
         repository = new RootRepositoryManager(log, overrides, upgradeDist);
         this.log = log;
         this.offline = offline;
         this.timeout = timeout;
         this.proxy = proxy;
+        this.currentDirectory = currentDirectory;
         init();
     }
 
-    public RepositoryManagerBuilderImpl(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides) {
-        this(mainRepository, log, offline, timeout, proxy, overrides, true);
+    public RepositoryManagerBuilderImpl(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory, Overrides overrides) {
+        this(mainRepository, log, offline, timeout, proxy, currentDirectory, overrides, true);
     }
     
-    public RepositoryManagerBuilderImpl(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides, boolean upgradeDist) {
+    public RepositoryManagerBuilderImpl(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory, Overrides overrides, boolean upgradeDist) {
         repository = new RootRepositoryManager(mainRepository, log, overrides, upgradeDist);
         this.log = log;
         this.offline = offline;
         this.timeout = timeout;
         this.proxy = proxy;
+        this.currentDirectory = currentDirectory;
         init();
     }
 
@@ -80,7 +83,7 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
 
     @Override
     public RepositoryBuilder repositoryBuilder() {
-        return new RepositoryBuilderImpl(log, offline, timeout, proxy);
+        return new RepositoryBuilderImpl(log, offline, timeout, proxy, currentDirectory);
     }
 
     public RepositoryManagerBuilderImpl mergeStrategy(MergeStrategy strategy) {

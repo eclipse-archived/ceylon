@@ -38,8 +38,8 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
 
     private final RepositoryBuilderConfig defaultConfig;
     
-    RepositoryBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy) {
-        this.defaultConfig = new RepositoryBuilderConfig(log, offline, timeout, proxy);
+    RepositoryBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory) {
+        this.defaultConfig = new RepositoryBuilderConfig(log, offline, timeout, proxy, currentDirectory);
     }
 
     private static final ServiceLoader<RepositoryBuilder> builders;
