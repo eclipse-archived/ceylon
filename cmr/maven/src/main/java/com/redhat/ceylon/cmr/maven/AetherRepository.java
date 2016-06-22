@@ -45,11 +45,11 @@ public class AetherRepository extends MavenRepository {
     }
 
     public static CmrRepository createRepository(Logger log, boolean offline, int timeout) {
-        return createRepository(log, null, offline, timeout);
+        return createRepository(log, null, offline, timeout, null);
     }
 
-    public static CmrRepository createRepository(Logger log, String settingsXml, boolean offline, int timeout) {
-        AetherContentStore acs = new AetherContentStore(log, settingsXml, offline, timeout);
+    public static CmrRepository createRepository(Logger log, String settingsXml, boolean offline, int timeout, String currentDirectory) {
+        AetherContentStore acs = new AetherContentStore(log, settingsXml, offline, timeout, currentDirectory);
         return new AetherRepository(acs);
     }
 

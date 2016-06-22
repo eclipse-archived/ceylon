@@ -43,7 +43,7 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
     private static final Logger logger = new CMRJULLogger();
     
     // ensures that instantiating this resolver without the cmr-maven module will fail
-    private AetherUtils utils = new AetherUtils(logger, null, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT);
+    private AetherUtils utils = new AetherUtils(logger, null, false, (int)com.redhat.ceylon.common.Constants.DEFAULT_TIMEOUT, null);
 
     @Override
     public ModuleInfo resolve(DependencyContext context, Overrides overrides) {

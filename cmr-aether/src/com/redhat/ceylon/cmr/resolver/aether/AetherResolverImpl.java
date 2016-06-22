@@ -81,6 +81,7 @@ import org.eclipse.aether.version.Version;
  */
 public class AetherResolverImpl implements AetherResolver {
 
+    private String currentDirectory;
     private int timeout;
     private boolean offline;
     private String settingsXml;
@@ -129,6 +130,11 @@ public class AetherResolverImpl implements AetherResolver {
         String localRepository = set.getLocalRepository();
         if(localRepository == null)
         	localRepository = System.getProperty("user.home")+File.separator+".m2"+File.separator+"repository";
+        else {
+            if (! new File(localRepository).isAbsolute() && currentDirectory != null) {
+                localRepository = new File(new File(currentDirectory), localRepository).getAbsolutePath();
+            }
+        }
 
         // set up authentication
         DefaultAuthenticationSelector authenticationSelector = new DefaultAuthenticationSelector();
@@ -222,7 +228,8 @@ public class AetherResolverImpl implements AetherResolver {
     };
     
 
-    public AetherResolverImpl(String settingsXml, boolean offline, int timeout) {
+    public AetherResolverImpl(String currentDirectory, String settingsXml, boolean offline, int timeout) {
+        this.currentDirectory = currentDirectory;
         this.timeout = timeout;
         this.offline = offline;
         this.settingsXml = settingsXml;

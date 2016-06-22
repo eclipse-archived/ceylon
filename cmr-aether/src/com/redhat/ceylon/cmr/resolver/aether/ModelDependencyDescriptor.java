@@ -54,7 +54,13 @@ public class ModelDependencyDescriptor implements DependencyDescriptor {
 
 	@Override
 	public String getVersion() {
-		return model.getVersion();
+        String ret = model.getVersion();
+        if(ret == null){
+            Parent parent = model.getParent();
+            if(parent != null)
+                ret = parent.getVersion();
+        }
+        return ret;
 	}
 
 	@Override

@@ -9,16 +9,16 @@ import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 
 public class RepositoryManagerBuilderTester extends RepositoryManagerBuilder {
-    public RepositoryManagerBuilderTester(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides) {
+    public RepositoryManagerBuilderTester(Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory, Overrides overrides) {
     }
 
-    public RepositoryManagerBuilderTester(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides, boolean upgradeDist) {
+    public RepositoryManagerBuilderTester(Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory, Overrides overrides, boolean upgradeDist) {
     }
     
-    public RepositoryManagerBuilderTester(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides) {
+    public RepositoryManagerBuilderTester(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory, Overrides overrides) {
     }
     
-    public RepositoryManagerBuilderTester(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides, boolean upgradeDist) {
+    public RepositoryManagerBuilderTester(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory, Overrides overrides, boolean upgradeDist) {
     }
     
     public RepositoryManagerBuilder addRepository(CmrRepository external) {
