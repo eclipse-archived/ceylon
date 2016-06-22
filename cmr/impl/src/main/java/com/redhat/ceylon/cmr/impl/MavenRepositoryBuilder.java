@@ -85,7 +85,7 @@ public class MavenRepositoryBuilder implements RepositoryBuilder {
             }
         }
         Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
-        Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class, int.class);
-        return (CmrRepository) createRepository.invoke(null, config.log, settingsXml, config.offline, config.timeout);
+        Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class, int.class, String.class);
+        return (CmrRepository) createRepository.invoke(null, config.log, settingsXml, config.offline, config.timeout, config.currentDirectory);
     }
 }

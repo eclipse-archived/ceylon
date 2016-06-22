@@ -41,16 +41,18 @@ public interface RepositoryBuilder {
         public final boolean offline;
         public final int timeout;
         public final Proxy proxy;
+        public final String currentDirectory;
         
-        public RepositoryBuilderConfig(Logger log, boolean offline, int timeout, Proxy proxy) {
+        public RepositoryBuilderConfig(Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory) {
             this.log = log;
             this.offline = offline;
             this.timeout = timeout;
             this.proxy = proxy;
+            this.currentDirectory = currentDirectory;
         }
     }
     
-    public static final RepositoryBuilderConfig EMPTY_CONFIG = new RepositoryBuilderConfig(null, false, -1, null);
+    public static final RepositoryBuilderConfig EMPTY_CONFIG = new RepositoryBuilderConfig(null, false, -1, null, null);
     
     /**
      * If the token is path based this method will return the token
