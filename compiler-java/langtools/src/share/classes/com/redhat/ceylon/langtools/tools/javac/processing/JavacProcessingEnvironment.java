@@ -59,6 +59,7 @@ import com.redhat.ceylon.langtools.tools.javac.main.JavaCompiler;
 import com.redhat.ceylon.langtools.tools.javac.model.JavacElements;
 import com.redhat.ceylon.langtools.tools.javac.model.JavacTypes;
 import com.redhat.ceylon.langtools.tools.javac.parser.*;
+import com.redhat.ceylon.langtools.tools.javac.processing.wrappers.ProcessorWrapper;
 import com.redhat.ceylon.langtools.tools.javac.tree.*;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.*;
 import com.redhat.ceylon.langtools.tools.javac.util.Abort;
@@ -324,15 +325,19 @@ public class JavacProcessingEnvironment implements ProcessingEnvironment, Closea
      */
     private class ServiceIterator implements Iterator<Processor> {
         private Iterator<Processor> iterator;
+        private Iterator<javax.annotation.processing.Processor> iterator2;
         private Log log;
         private ServiceLoader<Processor> loader;
+        private ServiceLoader<javax.annotation.processing.Processor> loader2;
 
         ServiceIterator(ClassLoader classLoader, Log log) {
             this.log = log;
             try {
                 try {
                     loader = ServiceLoader.load(Processor.class, classLoader);
+                    loader2 = ServiceLoader.load(javax.annotation.processing.Processor.class, classLoader);
                     this.iterator = loader.iterator();
+                    this.iterator2 = loader2.iterator();
                 } catch (Exception e) {
                     // Fail softly if a loader is not actually needed.
                     this.iterator = handleServiceLoaderUnavailability("proc.no.service", null);
@@ -345,7 +350,7 @@ public class JavacProcessingEnvironment implements ProcessingEnvironment, Closea
 
         public boolean hasNext() {
             try {
-                return iterator.hasNext();
+                return iterator.hasNext() || iterator2.hasNext();
             } catch(ServiceConfigurationError sce) {
                 log.error("proc.bad.config.file", sce.getLocalizedMessage());
                 throw new Abort(sce);
@@ -356,13 +361,17 @@ public class JavacProcessingEnvironment implements ProcessingEnvironment, Closea
 
         public Processor next() {
             try {
-                return iterator.next();
+                return iterator.hasNext() ? iterator.next() : wrap(iterator2.next());
             } catch (ServiceConfigurationError sce) {
                 log.error("proc.bad.config.file", sce.getLocalizedMessage());
                 throw new Abort(sce);
             } catch (Throwable t) {
                 throw new Abort(t);
             }
+        }
+
+        private Processor wrap(javax.annotation.processing.Processor next) {
+            return next == null ? null : new ProcessorWrapper(next);
         }
 
         public void remove() {
@@ -373,6 +382,13 @@ public class JavacProcessingEnvironment implements ProcessingEnvironment, Closea
             if (loader != null) {
                 try {
                     loader.reload();
+                } catch(Exception e) {
+                    ; // Ignore problems during a call to reload.
+                }
+            }
+            if (loader2 != null) {
+                try {
+                    loader2.reload();
                 } catch(Exception e) {
                     ; // Ignore problems during a call to reload.
                 }
