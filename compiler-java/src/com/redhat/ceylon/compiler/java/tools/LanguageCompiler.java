@@ -149,6 +149,7 @@ public class LanguageCompiler extends JavaCompiler {
     private List<JavaFileObject> resourceFileObjects;
     private Map<String,CeylonFileObject> moduleNamesToFileObjects = new HashMap<String,CeylonFileObject>();
     private SourceLanguage sourceLanguage;
+    public boolean addModuleTrees;
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(final Context context) {
@@ -551,8 +552,10 @@ public class LanguageCompiler extends JavaCompiler {
                 moduleNamesToFileObjects .put(name, cfo);
             }
         }
-        for (JCCompilationUnit moduleTree : moduleTrees) {
-            trees = trees.append(moduleTree);
+        if(addModuleTrees){
+            for (JCCompilationUnit moduleTree : moduleTrees) {
+                trees = trees.append(moduleTree);
+            }
         }
         return trees;
     }
@@ -901,5 +904,38 @@ public class LanguageCompiler extends JavaCompiler {
         timer.startTask("Generate");
         super.generate(queue, results);
         timer.endTask();
+    }
+    
+    @Override
+    public void initRound(JavaCompiler prev) {
+        super.initRound(prev);
+        PhasedUnits oldPUs = ((LanguageCompiler)prev).phasedUnits;
+        ModuleManager moduleManager = phasedUnits.getModuleManager();
+        ModuleSourceMapper moduleSourceMapper = phasedUnits.getModuleSourceMapper();
+        for(PhasedUnit pu : oldPUs.getPhasedUnits()){
+            if(pu instanceof CeylonPhasedUnit){
+                CeylonPhasedUnit cpu = (CeylonPhasedUnit) pu;
+                // FIXME: this is bad in many ways
+                String pkgName;
+                try {
+                    pkgName = getPackage(((CeylonPhasedUnit) pu).getFileObject());
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    continue;
+                }
+                // make a Package with no module yet, we will resolve them later
+                /*
+                 * Stef: see javadoc for findOrCreateModulelessPackage() for why this is here.
+                 */
+                com.redhat.ceylon.model.typechecker.model.Package p = modelLoader.findOrCreateModulelessPackage(pkgName == null ? "" : pkgName);
+                CeylonPhasedUnit newPu = new CeylonPhasedUnit(pu.getUnitFile(), pu.getSrcDir(), pu.getCompilationUnit(), 
+                        p, moduleManager, moduleSourceMapper, ceylonContext, 
+                        cpu.getFileObject(), cpu.getLineMap());
+                phasedUnits.addPhasedUnit(pu.getUnitFile(), newPu);
+            }else{
+                phasedUnits.addPhasedUnit(pu.getUnitFile(), pu);
+            }
+        }
     }
 }

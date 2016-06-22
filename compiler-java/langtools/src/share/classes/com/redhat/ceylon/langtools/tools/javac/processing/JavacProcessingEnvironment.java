@@ -34,6 +34,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.regex.*;
 
+import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.javax.annotation.processing.*;
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
 import com.redhat.ceylon.javax.lang.model.element.*;
@@ -857,6 +858,9 @@ public class JavacProcessingEnvironment implements ProcessingEnvironment, Closea
             this.number = number;
 
             compiler = JavaCompiler.instance(context);
+            if(compiler instanceof LanguageCompiler){
+                ((LanguageCompiler)compiler).addModuleTrees = false;
+            }
             log = Log.instance(context);
             log.nerrors = priorErrors;
             log.nwarnings = priorWarnings;
@@ -1142,7 +1146,9 @@ public class JavacProcessingEnvironment implements ProcessingEnvironment, Closea
             nextLog.initRound(log);
 
             JavaCompiler oldCompiler = JavaCompiler.instance(context);
-            JavaCompiler nextCompiler = JavaCompiler.instance(next);
+            JavaCompiler nextCompiler = oldCompiler instanceof LanguageCompiler 
+                    ? LanguageCompiler.instance(next)
+                            : JavaCompiler.instance(next);
             nextCompiler.initRound(oldCompiler);
 
             filer.newRound(next);
@@ -1238,8 +1244,10 @@ public class JavacProcessingEnvironment implements ProcessingEnvironment, Closea
 
         JavaCompiler compiler = round.finalCompiler();
 
-        if (newSourceFiles.size() > 0)
-            roots = roots.appendList(compiler.parseFiles(newSourceFiles));
+        // Ceylon: we need to call parseFiles even if we did not add anything, to reset
+        // module stuff
+//        if (newSourceFiles.size() > 0)
+        roots = roots.appendList(compiler.parseFiles(newSourceFiles));
 
         errorStatus = errorStatus || (compiler.errorCount() > 0);
 
