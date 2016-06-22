@@ -1,3 +1,6 @@
+import java.lang {
+    JDouble=Double
+}
 
 "The [[Float]] value of the given 
  [[string representation|string]] of a decimal floating 
@@ -17,163 +20,152 @@ see (`function formatFloat`,
      `function parseInteger`)
 tagged("Numbers", "Basic types")
 shared Float? parseFloat(String string) {
-    
-    // parse the sign first
-    Integer sign;
-    String unsignedPart;
-    if (string.startsWith("-")) {
-        sign = -1;
-        unsignedPart = string[1...];
-    }
-    else if (string.startsWith("+")) {
-        sign = +1;
-        unsignedPart = string[1...];
-    }
-    else {
-        sign = +1;
-        unsignedPart = string;
-    }
-    // split into three main parts
-    String wholePart;
-    String fractionalPart;
-    String? rest;
-    if (exists dot = unsignedPart.firstOccurrence('.')) {
-        wholePart = unsignedPart[...dot-1];
-        String afterWholePart = unsignedPart[dot+1...];
-        if (exists mag 
-            = afterWholePart.firstIndexWhere(Character.letter)) {
-            fractionalPart = afterWholePart[...mag-1];
-            rest = afterWholePart[mag...];
+    // ("-"|"+")?
+    // Digit+ | ("." Digit+) | (Digit+ "." Digit*)
+    // (("E"|"e") ("+"|"-")? Digit+)
+    //      | Magnitude | FractionalMagnitude
+
+    variable Boolean first = true;
+    variable Boolean seenDigit = false;
+    variable Boolean seenDecimal = false;
+    variable Boolean inDigitPart = true;
+    variable Boolean inExponentPart = false;
+    variable Boolean inSuffixPart = false;
+    variable Integer digitCount = 0;
+    variable Boolean seenExponentDigit = false;
+    variable Integer suffixExponent = 0;
+
+    for (c in string) {
+        if (inDigitPart) {
+            digitCount++;
+            if (first) {
+                first = false;
+                if (c == '-' || c == '+') {
+                    continue;
+                }
+            }
+            if (c == '.') {
+                if (seenDecimal) {
+                    return null;
+                }
+                seenDecimal = true;
+                continue;
+            }
+            if ('0' <= c <= '9') {
+                seenDigit = true;
+                continue;
+            }
+            digitCount--;
         }
-        else {
-            fractionalPart = afterWholePart;
-            rest = null;
-        }
-    }
-    else {
-        if (exists mag
-            = unsignedPart.firstIndexWhere(Character.letter)) {
-            wholePart = unsignedPart[...mag-1];
-            rest = unsignedPart[mag...];
-        }
-        else {
-            wholePart = unsignedPart;
-            rest = null;
-        }
-        fractionalPart = "0";
-    }
-    
-    if (!wholePart.every(Character.digit) ||
-        !fractionalPart.every(Character.digit)) {
-        return null;
-    }
-    
-    value usableWholePart 
-            = wholePart[0:maximumIntegerExponent];
-    value usableFractionalPart 
-            = fractionalPart[0:
-                maximumIntegerExponent
-                    - usableWholePart.size];
-    
-    value digits = usableWholePart + usableFractionalPart;
-    value shift 
-            = usableFractionalPart.empty
-            then usableWholePart.size - wholePart.size
-            else usableFractionalPart.size;
-    
-    Integer exponent;
-    if (exists rest) {
-        if (exists magnitude
-                = parseFloatExponent(rest)) {
-            exponent = magnitude - shift;
-        }
-        else {
+        inDigitPart = false;
+
+        if (inSuffixPart) {
+            // illegal extra character
             return null;
         }
+
+        if (inExponentPart) {
+            if (first) {
+                first = false;
+                if (c == '-' || c == '+') {
+                    continue;
+                }
+            }
+            if ('0' <= c <= '9') {
+                seenExponentDigit = true;
+                continue;
+            }
+            return null;
+        }
+
+        if (c == 'e' || c == 'E') {
+            inExponentPart = true;
+            first = true;
+            continue;
+        }
+
+        if (c in "PTGMkmunpf") {
+            suffixExponent = parseSuffix(c);
+            inSuffixPart = true;
+            continue;
+        }
+
+        return null;
+    }
+
+    if (!seenDigit) {
+        // '.1' is ok, but not just '.' or 'e10'
+        return null;
+    }
+
+    if (inExponentPart && !seenExponentDigit) {
+        return null;
+    }
+
+    if (suffixExponent != 0) {
+        // Ceylon style magnitude suffix
+        return nativeParseFloat(
+            "``string[0:digitCount]``\
+             E``suffixExponent``");
     }
     else {
-        exponent = -shift; 
+        // may or may not have exponent
+        return nativeParseFloat(string);
     }
-    
-    if (exists unsigned = parseInteger(digits)) {
-        Float signed
-                = unsigned == 0
-                then 0 * sign.float //preserve sign of -0.0
-                else (sign * unsigned).nearestFloat;
-        value exponentMagnitude = exponent.magnitude;
-        if (exponentMagnitude == 0) {
-            return signed;
-        }
-        else if (exponentMagnitude<=maximumIntegerExponent) {
-            value scale = 10^exponentMagnitude;
-            return exponent<0
-            then signed / scale
-            else signed * scale;
-        }
-        else {
-            //scale can't be represented as 
-            //an integer, resulting in some
-            //rounding error
-            return signed * 10.0^exponent;
-        }
-    }
-    
-    return null;
 }
 
-//TODO: replace with a native implementation
-"The maximum number of decimal digits that can be 
- represented by an [[Integer]]."
-native Integer maximumIntegerExponent;
-
-native("jvm") Integer maximumIntegerExponent
-        = smallest(runtime.maxIntegerValue.string.size,
-                   runtime.minIntegerValue.string.size-1)
-            - 1;
-native("js") Integer maximumIntegerExponent => 17;
-
-Integer? parseFloatExponent(String string) {
-    switch (string)
-    case ("k") {
-        return 3;
-    }
-    case ("M") {
-        return 6;
-    }
-    case ("G") {
-        return 9;
-    }
-    case ("T") {
-        return 12;
-    }
-    case ("P") {
+Integer parseSuffix(Character suffix) {
+    switch (suffix)
+    case ('P') {
         return 15;
     }
-    case ("m") {
+    case ('T') {
+        return 12;
+    }
+    case ('G') {
+        return 9;
+    }
+    case ('M') {
+        return 6;
+    }
+    case ('k') {
+        return 3;
+    }
+    case ('m') {
         return -3;
     }
-    case ("u") {
+    case ('u') {
         return -6;
     }
-    case ("n") {
+    case ('n') {
         return -9;
     }
-    case ("p") {
+    case ('p') {
         return -12;
     }
-    case ("f") {
+    case ('f') {
         return -15;
     }
     else {
-        if (string.lowercased.startsWith("e") &&
-            string.rest.every(digitOrSign)) {
-            return parseInteger(string.rest);
-        }
-        else {
-            return null;
-        }
+        assert (false);
     }
 }
 
-Boolean(Character) digitOrSign 
-        = or(Character.digit, "+-".contains);
+native
+Float? nativeParseFloat(String string);
+
+native("jvm")
+Float? nativeParseFloat(String string)
+    =>  JDouble.parseDouble(string);
+
+native("js")
+Float? nativeParseFloat(String string) {
+    Float result;
+    dynamic {
+        result = Float(eval("parseFloat(\"``string``\")"));
+    }
+    if (result == 0.0 && string.occursAt(0, '-')) {
+        return -0.0;
+    }
+    return result; 
+}

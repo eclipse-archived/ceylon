@@ -898,7 +898,47 @@ void checkParseFloat() {
     check(parseFloat0("-0").string=="-0.0", "parseFloat(-0)");
     check(parseFloat0("0.0").string=="0.0", "parseFloat(0.0)");
     check(parseFloat0("-0.0").string=="-0.0", "parseFloat(-0.0)");
-    
+
+    check(parseFloat0("1e55555555555555555555555555555555555555555").string=="Infinity", "parseFloat(bigExponent)");
+    check(parseFloat0("1")==1.0, "parseFloat(1)");
+    check(parseFloat0("+1")==1.0, "parseFloat(+1)");
+    check(parseFloat0("-1")==-1.0, "parseFloat(-1)");
+    check(parseFloat0("1e1")==10.0, "parseFloat(1e1)");
+    check(parseFloat0("1e-1")==0.1, "parseFloat(1e-1)");
+    check(parseFloat0("1e+1")==10.0, "parseFloat(1e+1)");
+    check(parseFloat0(".123")==0.123, "parseFloat(.123)");
+    check(parseFloat(".") is Null, "parseFloat(.)");
+    check(parseFloat("e10") is Null, "parseFloat(e10)");
+    check(parseFloat0("1.")==1.0, "parseFloat(1.)");
+    check(parseFloat0("+1.")==1.0, "parseFloat(+1.)");
+    check(parseFloat0("-1.")==-1.0, "parseFloat(-1.)");
+    check(parseFloat0("1.e1")==10.0, "parseFloat(1.e1)");
+    check(parseFloat0("1.e-1")==0.1, "parseFloat(1.e-1)");
+    check(parseFloat0("1.e+1")==10.0, "parseFloat(1.e+1)");
+    check(parseFloat0("1.1")==1.1, "parseFloat(1.1)");
+    check(parseFloat0("+1.1")==1.1, "parseFloat(+1.1)");
+    check(parseFloat0("-1.1")==-1.1, "parseFloat(-1.1)");
+    check(parseFloat0("1.1e1")==11.0, "parseFloat(1.1e1)");
+    check(parseFloat0("1.1e-1")==0.11, "parseFloat(1.1e-1)");
+    check(parseFloat0("1.1e+1")==11.0, "parseFloat(1.1e+1)");
+    check(parseFloat0("123456.789e20")==123456.789e20, "parseFloat(123456.789e20)");
+    check(parseFloat0("123456.789f")==123456.789f, "parseFloat(123456.789f)");
+    check(parseFloat0("123456.")==123456.0, "parseFloat(123456.)");
+    check(parseFloat0("123456")==123456.0, "parseFloat(123456)");
+    check(parseFloat("1ee10") is Null, "parseFloat(1ee10)");
+    check(parseFloat0("0.000000000000000000000123456789")==0.000000000000000000000123456789,
+                "parseFloat(0.000000000000000000000123456789)");
+
+    // https://github.com/ceylon/ceylon/issues/6175
+    check(parseFloat0("9999999999999999")==9999999999999999.0, "parseFloat(9999999999999999)");
+
+    // https://github.com/ceylon/ceylon/issues/6152
+    check(parseFloat0("00000000000000.12345678901234567")==0.12345678901234567, "parseFloat()");
+    check(parseFloat0("00.12345678901234567")==0.12345678901234567, "parseFloat(00.12345678901234567)");
+    check(parseFloat0("0.12345678901234567")==0.12345678901234567, "parseFloat(0.12345678901234567)");
+    check(parseFloat0(".12345678901234567")==0.12345678901234567, "parseFloat(.12345678901234567)");
+    check(parseFloat0(".123456789012345678")==0.123456789012345678, "parseFloat(.123456789012345678)");
+
     check(1.leftLogicalShift(31).get(31), "logicalShift.get 1");
     check(1.leftLogicalShift(31).clear(31).zero, "logicalShift.get 2");
     check(0.set(31).get(31), "logicalShift.get 3");
