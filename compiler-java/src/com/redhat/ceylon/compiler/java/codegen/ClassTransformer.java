@@ -3634,7 +3634,8 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= Decl.isVariable(cdecl) || Decl.isLate(cdecl) ? 0 : FINAL;
-        result |= PRIVATE;
+        if(!CodegenUtil.hasCompilerAnnotation(cdecl, "packageProtected"))
+            result |= PRIVATE;
         
         return result;
     }
