@@ -34,6 +34,11 @@ public interface VirtualFile extends Comparable<VirtualFile> {
     String getPath();
 
     /**
+     * Relative file path
+     */
+    String getRelativePath(VirtualFile file);
+
+    /**
      * InputStream representing the file.
      * Must be closed by the caller.
      * @throws exception when is a folder

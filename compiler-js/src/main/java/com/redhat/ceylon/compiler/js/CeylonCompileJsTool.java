@@ -273,6 +273,10 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                     return getName();
                 }
                 @Override
+                public String getRelativePath(VirtualFile file) {
+                    return "";
+                }
+                @Override
                 public InputStream getInputStream() {
                     return System.in;
                 }

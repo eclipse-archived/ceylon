@@ -45,6 +45,24 @@ class ZipFolderVirtualFile implements VirtualFile {
     }
 
     @Override
+    public String getRelativePath(VirtualFile ancestor) {
+        if (ancestor instanceof ZipFolderVirtualFile) {
+            if (getPath().equals(ancestor.getPath())) {
+                return "";
+            } else if (getPath().startsWith(ancestor.getPath() + "/")) {
+                return getPath().substring(ancestor.getPath().length() + 1);
+            }
+        } else if (ancestor instanceof ZipFileVirtualFile) {
+            if (getPath().equals(ancestor.getPath())) {
+                return "";
+            } else if (getPath().startsWith(ancestor.getPath() + "!/")) {
+                return getPath().substring(ancestor.getPath().length() + 2);
+            }
+        }
+        return null;
+    }
+
+    @Override
     public InputStream getInputStream() {
         throw new IllegalStateException("Cannot call getInputStream() on a directory: " + getPath() );
     }

@@ -126,6 +126,15 @@ public class ZipFileVirtualFile implements ClosableVirtualFile {
     }
 
     @Override
+    public String getRelativePath(VirtualFile ancestor) {
+        if (ancestor.equals(this)) {
+            return "";
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public InputStream getInputStream() {
         throw new IllegalStateException("Cannot call getInputStream() on a directory: " + getPath() );
     }
