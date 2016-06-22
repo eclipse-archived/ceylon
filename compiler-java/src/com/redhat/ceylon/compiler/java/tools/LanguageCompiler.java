@@ -48,8 +48,11 @@ import java.util.Set;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonClassWriter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
@@ -106,6 +109,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Position;
 import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage;
 import com.redhat.ceylon.langtools.tools.javac.util.Position.LineMap;
 import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage.Language;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -851,7 +855,33 @@ public class LanguageCompiler extends JavaCompiler {
 
     @Override
     public void initProcessAnnotations(Iterable<? extends Processor> processors) {
-        // don't do anything, which will leave the "processAnnotations" field to false
+        java.util.List<String> aptModules = options.getMulti(Option.CEYLONAPT);
+        if(aptModules != null){
+            CeyloncFileManager dfm = (CeyloncFileManager) fileManager;
+            RepositoryManager repositoryManager = dfm.getRepositoryManager();
+            Set<ModuleSpec> visited = new HashSet<>();
+            for(String aptModule : aptModules){
+                ModuleSpec moduleSpec = ModuleSpec.parse(aptModule);
+                addDependenciesToAptPath(repositoryManager, moduleSpec, visited);
+            }
+            // we only run APT if asked explicitly with the --apt flag
+            super.initProcessAnnotations(processors);
+        }
+        // else don't do anything, which will leave the "processAnnotations" field to false
+    }
+
+    private void addDependenciesToAptPath(RepositoryManager repositoryManager, ModuleSpec moduleSpec, Set<ModuleSpec> visited) {
+        if(!visited.add(moduleSpec))
+            return;
+
+        ArtifactContext context = new ArtifactContext(null, moduleSpec.getName(), moduleSpec.getVersion(), ArtifactContext.JAR);
+        ArtifactResult result = repositoryManager.getArtifactResult(context);
+        ceylonEnter.addModuleToAptPath(moduleSpec, result);
+        
+        for(ArtifactResult dep : result.dependencies()){
+            ModuleSpec depSpec = new ModuleSpec(dep.name(), dep.version());
+            addDependenciesToAptPath(repositoryManager, depSpec, visited);
+        }
     }
 
     @Override

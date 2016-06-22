@@ -203,6 +203,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         String jdkProvider = DefaultToolOptions.getCompilerJdkProvider();
         this.jdkProvider = jdkProvider != null ? ModuleSpec.parse(jdkProvider) : null;
     }
+    private List<ModuleSpec> aptModules;
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
@@ -217,7 +218,19 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     public void setJdkProviderSpec(ModuleSpec jdkProvider) {
         this.jdkProvider = jdkProvider;
     }
-    
+
+    @OptionArgument(longName="apt", argumentName="module")
+    @Description("Specifies the name of the module providing the JDK (default: the underlying JDK).")
+    public void setAptModule(List<String> aptModules) {
+        if(aptModules != null){
+            this.aptModules = new ArrayList<ModuleSpec>(aptModules.size());
+            for(String mod : aptModules)
+                this.aptModules.add(ModuleSpec.parse(mod));
+        }else{
+            this.aptModules = null;
+        }
+    }
+
     @Option(longName="flat-classpath")
     @Description("Launches the Ceylon module using a flat classpath.")
     public void setFlatClasspath(boolean flatClasspath) {
@@ -405,7 +418,14 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add("-jdk-provider");
             arguments.add(jdkProvider.toString());
         }
-        
+
+        if(aptModules != null){
+            for(ModuleSpec mod : aptModules){
+                arguments.add("-apt");
+                arguments.add(mod.toString());
+            }
+        }
+
         for (File source : applyCwd(this.sources)) {
             arguments.add("-src");
             arguments.add(source.getPath());

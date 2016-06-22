@@ -35,6 +35,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.InvalidArchiveException;
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.compiler.java.codegen.AnnotationModelVisitor;
 import com.redhat.ceylon.compiler.java.codegen.BoxingDeclarationVisitor;
@@ -150,6 +151,7 @@ public class CeylonEnter extends Enter {
     private boolean isBootstrap;
     private Annotate annotate;
     private Set<Module> modulesAddedToClassPath = new HashSet<Module>();
+    private Set<ModuleSpec> modulesAddedToAptClassPath = new HashSet<ModuleSpec>();
     private TaskListener taskListener;
     private SourceLanguage sourceLanguage;
     private StatusPrinter sp;
@@ -494,6 +496,46 @@ public class CeylonEnter extends Enter {
             }
         }else if(verbose){
             log.printRawLines(WriterKind.NOTICE, "[Module already added to classpath]");
+        }
+    }
+
+    public void addModuleToAptPath(ModuleSpec module, ArtifactResult result) {
+        if(verbose)
+            log.printRawLines(WriterKind.NOTICE, "[Adding APT module to APT classpath: "+module+"]");        
+        
+        Collection<File> classPath = fileManager.getLocations().getLocation(StandardLocation.ANNOTATION_PROCESSOR_PATH);
+        
+        File artifact = null;
+        try {
+            artifact = result != null ? result.artifact() : null;
+        } catch (Exception e) {
+            log.error("ceylon", "Exception occured while trying to resolve APT module "+module);
+            e.printStackTrace();
+        }
+        
+        if(verbose){
+            if(artifact != null)
+                log.printRawLines(WriterKind.NOTICE, "[Found APT module at : "+artifact.getPath()+"]");
+            else
+                log.printRawLines(WriterKind.NOTICE, "[Could not find APT module]");
+        }
+
+        if(modulesAddedToAptClassPath.add(module)){
+            if(artifact != null && artifact.exists()){
+                ArrayList<File> newClassPath = classPath == null
+                        ? new ArrayList<File>(1)
+                        : new ArrayList<File>(classPath);
+                newClassPath.add(artifact);
+                try {
+                    fileManager.getLocations().setLocation(StandardLocation.CLASS_PATH, newClassPath);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }else{
+                log.error("ceylon", "Failed to find APT module "+module+" in repositories");
+            }
+        }else if(verbose){
+            log.printRawLines(WriterKind.NOTICE, "[APT Module already added to APT classpath]");
         }
     }
 

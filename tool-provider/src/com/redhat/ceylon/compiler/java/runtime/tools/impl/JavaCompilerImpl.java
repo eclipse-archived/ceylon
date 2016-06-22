@@ -163,6 +163,12 @@ public class JavaCompilerImpl implements Compiler {
                 translatedOptions.add(Option.CEYLONJDKPROVIDER.getText());
                 translatedOptions.add(javaOptions.getJdkProvider());
             }
+            if (javaOptions.getAptModules() != null) {
+                for(String aptModule : javaOptions.getAptModules()){
+                    translatedOptions.add(Option.CEYLONAPT.getText());
+                    translatedOptions.add(aptModule);
+                }
+            }
         }
         return translatedOptions;
     }
