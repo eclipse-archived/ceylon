@@ -45,10 +45,10 @@ public class RepositoryManagerBuilderImpl extends RepositoryManagerBuilder {
     private final Proxy proxy;
     private final String currentDirectory;
 
-    public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides, String currentDirectory) {
-        this(log, offline, timeout, proxy, overrides, currentDirectory, true);
+    public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory, Overrides overrides) {
+        this(log, offline, timeout, proxy, currentDirectory, overrides, true);
     }
-    public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides, String currentDirectory, boolean upgradeDist) {
+    public RepositoryManagerBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory, Overrides overrides, boolean upgradeDist) {
         repository = new RootRepositoryManager(log, overrides, upgradeDist);
         this.log = log;
         this.offline = offline;
