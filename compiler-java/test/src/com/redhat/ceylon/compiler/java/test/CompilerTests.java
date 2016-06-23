@@ -350,12 +350,38 @@ public abstract class CompilerTests {
         }
         
         // make sure we have all those we expect
+        ArrayList<CompilerError> expected = new ArrayList<CompilerError>();
         for(CompilerError expectedError : expectedErrorSet){
-            Assert.assertTrue("Missing expected error: "+expectedError, actualErrors.contains(expectedError));
+            if (!actualErrors.contains(expectedError)) {
+                expected.add(expectedError);
+            }
         }
         //  make sure we don't have unexpected ones
+        ArrayList<CompilerError> unexpected = new ArrayList<CompilerError>();
         for(CompilerError actualError : actualErrors){
-            Assert.assertTrue("Unexpected error: "+actualError, expectedErrorSet.contains(actualError));
+            if (!expectedErrorSet.contains(actualError)) {
+                unexpected.add(actualError);
+            }
+        }
+        if (!expected.isEmpty() || !unexpected.isEmpty()) {
+            StringBuffer txt = new StringBuffer();
+            if (!expected.isEmpty()) {
+                txt.append("Missing expected error(s):\n");
+                for (CompilerError err : expected) {
+                    txt.append(" - ");
+                    txt.append(err);
+                    txt.append("\n");
+                }
+            }
+            if (!unexpected.isEmpty()) {
+                txt.append("Unexpected error(s):\n");
+                for (CompilerError err : unexpected) {
+                    txt.append(" - ");
+                    txt.append(err);
+                    txt.append("\n");
+                }
+            }
+            Assert.fail(txt.toString());
         }
     }
     
