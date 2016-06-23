@@ -859,7 +859,7 @@ public class JavacProcessingEnvironment implements ProcessingEnvironment, Closea
 
             compiler = JavaCompiler.instance(context);
             if(compiler instanceof LanguageCompiler){
-                ((LanguageCompiler)compiler).addModuleTrees = false;
+                ((LanguageCompiler)compiler).setAddModuleTrees(false);
             }
             log = Log.instance(context);
             log.nerrors = priorErrors;

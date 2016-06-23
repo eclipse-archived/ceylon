@@ -149,7 +149,7 @@ public class LanguageCompiler extends JavaCompiler {
     private List<JavaFileObject> resourceFileObjects;
     private Map<String,CeylonFileObject> moduleNamesToFileObjects = new HashMap<String,CeylonFileObject>();
     private SourceLanguage sourceLanguage;
-    public boolean addModuleTrees;
+    public boolean addModuleTrees = true;
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(final Context context) {
@@ -937,5 +937,9 @@ public class LanguageCompiler extends JavaCompiler {
                 phasedUnits.addPhasedUnit(pu.getUnitFile(), pu);
             }
         }
+    }
+
+    public void setAddModuleTrees(boolean addModuleTrees) {
+        this.addModuleTrees = addModuleTrees;
     }
 }
