@@ -1,6 +1,8 @@
 package com.redhat.ceylon.langtools.tools.javac.processing.wrappers;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
 
@@ -63,6 +65,18 @@ public class ElementFacade implements Element {
     @Override
     public Name getSimpleName() {
         return Facades.facade(f.getSimpleName());
+    }
+
+    // Java 8 method
+//    @Override
+    public <A extends Annotation> A[] getAnnotationsByType(Class<A> arg0) {
+        // must use reflection for it to work on Java 7
+        try {
+            Method method = com.redhat.ceylon.javax.lang.model.element.Element.class.getMethod("getAnnotationsByType", Class.class);
+            return (A[]) method.invoke(f, arg0);
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -2,8 +2,6 @@ package com.redhat.ceylon.langtools.tools.javac.processing.wrappers;
 
 import java.util.List;
 
-
-import com.redhat.ceylon.javax.lang.model.element.Element;
 import com.redhat.ceylon.javax.lang.model.element.TypeElement;
 
 public class TypeElementFacade extends ElementFacade implements javax.lang.model.element.TypeElement {

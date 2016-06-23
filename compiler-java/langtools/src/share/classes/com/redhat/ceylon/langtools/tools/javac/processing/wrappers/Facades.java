@@ -27,11 +27,13 @@ import com.redhat.ceylon.javax.lang.model.type.TypeVariable;
 import com.redhat.ceylon.javax.lang.model.type.UnionType;
 import com.redhat.ceylon.javax.lang.model.type.WildcardType;
 import com.redhat.ceylon.javax.lang.model.util.Elements;
+import com.redhat.ceylon.javax.lang.model.util.Types;
 import com.redhat.ceylon.javax.tools.FileObject;
 import com.redhat.ceylon.javax.tools.JavaFileManager.Location;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.javax.lang.model.type.TypeMirror;
 import com.redhat.ceylon.javax.lang.model.type.TypeKind;
+import com.redhat.ceylon.javax.lang.model.SourceVersion;
 import com.redhat.ceylon.javax.lang.model.element.AnnotationMirror;
 import com.redhat.ceylon.javax.lang.model.element.AnnotationValue;
 import com.redhat.ceylon.javax.lang.model.element.Element;
@@ -316,6 +318,15 @@ public class Facades {
         return ret;
     }
 
+    public static TypeMirror[] unfacade(javax.lang.model.type.TypeMirror[] arg) {
+        TypeMirror[] ret = new TypeMirror[arg.length];
+        int i=0;
+        for(javax.lang.model.type.TypeMirror el : arg){
+            ret[i++] = unfacade(el);
+        }
+        return ret;
+    }
+
     public static javax.annotation.processing.Filer facade(Filer filer) {
         return filer == null ? null : new FilerFacade(filer);
     }
@@ -342,5 +353,29 @@ public class Facades {
 
     public static javax.tools.JavaFileObject.Kind facade(JavaFileObject.Kind kind) {
         return javax.tools.JavaFileObject.Kind.valueOf(kind.name());
+    }
+
+    public static javax.lang.model.SourceVersion facade(SourceVersion sourceVersion) {
+        return javax.lang.model.SourceVersion.valueOf(sourceVersion.name());
+    }
+
+    public static javax.lang.model.util.Types facade(Types typeUtils) {
+        return new TypesFacade(typeUtils);
+    }
+
+    public static TypeMirror unfacade(javax.lang.model.type.TypeMirror arg0) {
+        return ((TypeMirrorFacade)arg0).f;
+    }
+
+    public static DeclaredType unfacade(javax.lang.model.type.DeclaredType arg0) {
+        return (DeclaredType) ((DeclaredTypeFacade)arg0).f;
+    }
+
+    public static PrimitiveType unfacade(javax.lang.model.type.PrimitiveType arg0) {
+        return (PrimitiveType) ((PrimitiveTypeFacade)arg0).f;
+    }
+
+    public static ExecutableType unfacade(javax.lang.model.type.ExecutableType arg0) {
+        return (ExecutableType) ((ExecutableTypeFacade)arg0).f;
     }
 }

@@ -1,6 +1,8 @@
 package com.redhat.ceylon.langtools.tools.javac.processing.wrappers;
 
 import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
@@ -90,6 +92,18 @@ public class ElementsFacade implements javax.lang.model.util.Elements {
     @Override
     public void printElements(Writer arg0, Element... arg1) {
         f.printElements(arg0, Facades.unfacade(arg1));
+    }
+
+    // Java 8 method
+//    @Override
+    public boolean isFunctionalInterface(TypeElement arg0) {
+        // must use reflection for it to work on Java 7
+        try {
+            Method method = Elements.class.getMethod("isFunctionalInterface", com.redhat.ceylon.javax.lang.model.element.TypeElement.class);
+            return (Boolean) method.invoke(f, Facades.unfacade(arg0));
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

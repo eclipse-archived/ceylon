@@ -5,6 +5,7 @@ import com.redhat.ceylon.javax.lang.model.element.ElementVisitor;
 
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
 import com.redhat.ceylon.javax.lang.model.element.TypeElement;
+import com.redhat.ceylon.javax.lang.model.type.TypeKind;
 import com.redhat.ceylon.javax.lang.model.type.TypeVisitor;
 import com.redhat.ceylon.javax.tools.Diagnostic;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
@@ -17,11 +18,6 @@ public class Wrappers {
     
     public static Diagnostic.Kind wrap(javax.tools.Diagnostic.Kind kind) {
         return Diagnostic.Kind.valueOf(kind.name());
-    }
-
-
-    public static TypeElement wrap(javax.lang.model.element.TypeElement a) {
-        return new TypeElementWrapper(a);
     }
 
     public static <R, P> ElementVisitor<R, P> wrap(javax.lang.model.element.ElementVisitor<R, P> v) {
@@ -38,6 +34,10 @@ public class Wrappers {
 
     public static JavaFileObject.Kind wrap(javax.tools.JavaFileObject.Kind kind) {
         return JavaFileObject.Kind.valueOf(kind.name());
+    }
+
+    public static TypeKind wrap(javax.lang.model.type.TypeKind arg0) {
+        return TypeKind.valueOf(arg0.name());
     }
 
 }

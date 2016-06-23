@@ -30,8 +30,7 @@ public class ProcessingEnvironmentFacade implements ProcessingEnvironment {
 
     @Override
     public Locale getLocale() {
-        // TODO Auto-generated method stub
-        return null;
+        return f.getLocale();
     }
 
     @Override
@@ -41,20 +40,17 @@ public class ProcessingEnvironmentFacade implements ProcessingEnvironment {
 
     @Override
     public Map<String, String> getOptions() {
-        // TODO Auto-generated method stub
-        return null;
+        return f.getOptions();
     }
 
     @Override
     public SourceVersion getSourceVersion() {
-        // TODO Auto-generated method stub
-        return null;
+        return Facades.facade(f.getSourceVersion());
     }
 
     @Override
     public Types getTypeUtils() {
-        // TODO Auto-generated method stub
-        return null;
+        return Facades.facade(f.getTypeUtils());
     }
 
 }

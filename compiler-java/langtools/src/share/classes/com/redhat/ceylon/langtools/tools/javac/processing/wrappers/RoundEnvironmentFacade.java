@@ -25,13 +25,12 @@ public class RoundEnvironmentFacade implements javax.annotation.processing.Round
 
     @Override
     public Set<? extends javax.lang.model.element.Element> getRootElements() {
-        // TODO Auto-generated method stub
-        return null;
+        return Facades.facadeElementSet(f.getRootElements());
     }
 
     @Override
     public Set<? extends javax.lang.model.element.Element> getElementsAnnotatedWith(javax.lang.model.element.TypeElement a) {
-        return Facades.facadeElementSet(f.getElementsAnnotatedWith(Wrappers.wrap(a)));
+        return Facades.facadeElementSet(f.getElementsAnnotatedWith(Facades.unfacade(a)));
     }
 
     @Override
