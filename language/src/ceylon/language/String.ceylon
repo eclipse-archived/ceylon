@@ -161,17 +161,19 @@ shared native final class String(characters)
     
     "Split the string into lines of text, discarding line
      breaks. Recognized line break sequences are `\\n` and 
-     `\\r\\n`."
+     `\\r\\n`. The empty string is considered a single line 
+     of text."
     see (`value linesWithBreaks`)
-    shared native {String*} lines 
+    shared native {String+} lines 
             => split('\n'.equals, true, false)
                .spread(String.trimTrailing)('\r'.equals);
     
     "Split the string into lines of text with line breaks.
      Each line will be terminated by a line break sequence,
-     `\\n` or `\\r\\n`."
+     `\\n` or `\\r\\n`, except for the very last line. The 
+     empty string is considered a single line of text."
     see (`value lines`)
-    shared native {String*} linesWithBreaks
+    shared native {String+} linesWithBreaks
             => split('\n'.equals, false, false)
             .partition(2)
             .map(([line, *rest])

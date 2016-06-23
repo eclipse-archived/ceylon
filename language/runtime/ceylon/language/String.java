@@ -2023,7 +2023,7 @@ public final class String
         }
     };
     
-    @TypeInfo("{ceylon.language::String*}")
+    @TypeInfo("{ceylon.language::String+}")
     @Transient
     public Iterable<? extends String, ?> getLines() {
         return split(NEWLINES, true, false).map($TypeDescriptor$, TRIM_RETURNS);
@@ -2035,7 +2035,7 @@ public final class String
         return split(value, NEWLINES, true, false).map($TypeDescriptor$, TRIM_RETURNS);
     }
 
-    @TypeInfo("{ceylon.language::String*}")
+    @TypeInfo("{ceylon.language::String+}")
     @Transient
     public Iterable<? extends String, ?> getLinesWithBreaks() {
         return split(NEWLINES, false, false).partition(2)
