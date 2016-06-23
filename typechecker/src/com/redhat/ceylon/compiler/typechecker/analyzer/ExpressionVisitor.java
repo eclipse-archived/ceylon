@@ -512,6 +512,15 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
+    
+    private String patternCaseHint;
+    
+    @Override
+    public void visit(Tree.PatternCase that) {
+        patternCaseHint = " (try specifying explicit pattern variable types)";
+        super.visit(that);
+        patternCaseHint = null;
+    }
 
     private void destructure(Type entryType,
             Tree.KeyValuePattern keyValuePattern) {
@@ -523,9 +532,11 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (!unit.isEntryType(entryType)) {
             keyValuePattern
-                .addError("assigned expression is not an entry type, so may not be destructured: '"
-                    + entryType.asString(unit) + 
-                    "' is not an entry type");
+                .addError(
+                    "assigned expression is not an entry type, so may not be destructured: '" + 
+                    entryType.asString(unit) + 
+                    "' is not an entry type" + 
+                    patternCaseHint);
         }
         else {
             destructure(key, unit.getKeyType(entryType));
@@ -563,13 +574,16 @@ public class ExpressionVisitor extends Visitor {
             }
             if (!unit.isSequentialType(sequenceType)) {
                 tuplePattern
-                    .addError("assigned expression is not a sequence type, so may not be destructured: '" + 
+                    .addError(
+                        "assigned expression is not a sequence type, so may not be destructured: '" + 
                         sequenceType.asString(unit) + 
-                        "' is not a subtype of 'Sequential'");
+                        "' is not a subtype of 'Sequential'" + 
+                        patternCaseHint);
             }
             else if (unit.isEmptyType(sequenceType)) {
                 tuplePattern
-                    .addError("assigned expression is an empty sequence type, so may not be destructured: '" + 
+                    .addError(
+                        "assigned expression is an empty sequence type, so may not be destructured: '" + 
                         sequenceType.asString(unit) + 
                         "' is a subtype of 'Empty'");
             }
