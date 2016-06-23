@@ -30,6 +30,7 @@ import com.redhat.ceylon.compiler.java.test.annotations.AnnotationsTests;
 import com.redhat.ceylon.compiler.java.test.bc.BcTests;
 import com.redhat.ceylon.compiler.java.test.cargeneration.CarGenerationTests;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRTests;
+import com.redhat.ceylon.compiler.java.test.compat.CompatTests;
 import com.redhat.ceylon.compiler.java.test.cmr.CMRHTTPTests;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTests;
 import com.redhat.ceylon.compiler.java.test.expression.ExpressionTests2;
@@ -43,6 +44,8 @@ import com.redhat.ceylon.compiler.java.test.issues.IssuesTests_0500_0999;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTests_1000_1499;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTests_1500_1999;
 import com.redhat.ceylon.compiler.java.test.issues.IssuesTests_2000_2499;
+import com.redhat.ceylon.compiler.java.test.issues.IssuesTests_5500_5999;
+import com.redhat.ceylon.compiler.java.test.issues.IssuesTests_6000_6499;
 import com.redhat.ceylon.compiler.java.test.issues.PackageIssuesTests;
 import com.redhat.ceylon.compiler.java.test.language.LanguageSuite;
 import com.redhat.ceylon.compiler.java.test.languagesatisfaction.LanguageSatisfactionSuite;
@@ -60,10 +63,10 @@ import com.redhat.ceylon.compiler.java.test.statement.OptimizationTests;
 import com.redhat.ceylon.compiler.java.test.statement.StatementTests;
 import com.redhat.ceylon.compiler.java.test.statement.TryCatchTests;
 import com.redhat.ceylon.compiler.java.test.structure.ConstructorTests;
+import com.redhat.ceylon.compiler.java.test.structure.SerializableTests;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests2;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests3;
-import com.redhat.ceylon.itest.IntegrationTests;
 import com.redhat.ceylon.launcher.test.BootstrapTests;
 import com.redhat.ceylon.tools.TopLevelToolTests;
 import com.redhat.ceylon.tools.test.CompilerToolsTests;
@@ -75,21 +78,23 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     StructureTests.class,
     StructureTests2.class,
     StructureTests3.class,
+    SerializableTests.class,
     CMRHTTPTests.class,
     IssuesTests_0000_0499.class,
     IssuesTests_0500_0999.class,
     IssuesTests_1000_1499.class,
     IssuesTests_1500_1999.class,
     IssuesTests_2000_2499.class,
+    IssuesTests_5500_5999.class,
+    IssuesTests_6000_6499.class,
     MiscTests.class,
     CeylonDocToolTests.class,
     CompilerToolsTests.class,
-    
+
     NamingTests.class,
     ConstructorTests.class,
     AnnotationsTests.class,
     InteropTests.class,
-    ComprehensionTests.class,
     ModelLoaderTests.class,
     ValueTypeTests.class,
     PackageIssuesTests.class,
@@ -105,6 +110,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     LanguageSatisfactionSuite.class,
     LanguageSuite.class,
     BcTests.class,
+    CompatTests.class,
     ComprehensionTests.class,
     StaticRefTests.class,
     AntToolTests.class,
@@ -116,7 +122,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     BootstrapTests.class,
     TopLevelToolTests.class,
     // Unable to run due to OOMs
-    //IntegrationTests.class,
+    // IntegrationTests.class,
 })
 public class AllCompilerTests {
 }

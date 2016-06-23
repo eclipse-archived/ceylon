@@ -66,7 +66,6 @@ import com.redhat.ceylon.compiler.java.test.structure.SerializableTests;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests2;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests3;
-import com.redhat.ceylon.itest.IntegrationTests;
 import com.redhat.ceylon.launcher.test.BootstrapTests;
 import com.redhat.ceylon.tools.test.CompilerToolsTests;
 
@@ -122,7 +121,8 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
     NativeTests.class,
     BootstrapTests.class,
     // FIXME Disabled: it does not run currently in parallel
-    // TopLevelToolTest.class,
+    // TopLevelToolTests.class,
+    // Unable to run due to OOMs
     // IntegrationTests.class,
 })
 public class ConcurrentTests {
