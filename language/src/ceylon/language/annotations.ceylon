@@ -309,7 +309,9 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `javaAnnotationElement`,
      `syntaxDeprecation`,
      `smallIgnored`,
-     `literalNotSmall`."
+     `literalNotSmall`,
+     `redundantNarrowing`,
+     `redundantIteration`."
     String* warnings) 
         => SuppressWarningsAnnotation(*warnings);
 
