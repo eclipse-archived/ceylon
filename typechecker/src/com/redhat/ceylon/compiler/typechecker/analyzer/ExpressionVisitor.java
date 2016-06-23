@@ -513,13 +513,13 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private String patternCaseHint;
+    private String patternCaseHint = "";
     
     @Override
     public void visit(Tree.PatternCase that) {
         patternCaseHint = " (try specifying explicit pattern variable types)";
         super.visit(that);
-        patternCaseHint = null;
+        patternCaseHint = "";
     }
 
     private void destructure(Type entryType,
