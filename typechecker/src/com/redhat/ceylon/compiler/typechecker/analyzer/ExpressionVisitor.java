@@ -461,7 +461,11 @@ public class ExpressionVisitor extends Visitor {
         if (se != null) {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
+                if (that.getPatternCase()) {
+                    patternCaseHint = " (try specifying explicit pattern variable types)";
+                }
                 destructure(pattern, e.getTypeModel());
+                patternCaseHint = "";
             }
         }
     }
@@ -515,13 +519,6 @@ public class ExpressionVisitor extends Visitor {
     
     private String patternCaseHint = "";
     
-    @Override
-    public void visit(Tree.PatternCase that) {
-        patternCaseHint = " (try specifying explicit pattern variable types)";
-        super.visit(that);
-        patternCaseHint = "";
-    }
-
     private void destructure(Type entryType,
             Tree.KeyValuePattern keyValuePattern) {
         Tree.Pattern key = keyValuePattern.getKey();

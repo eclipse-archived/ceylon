@@ -653,6 +653,7 @@ public class LiteralVisitor extends Visitor {
             that.setCaseItem(createIsCase(type, id));
             Tree.Destructure destructure = 
                     destructure(pattern, id);
+            destructure.setPatternCase(true);
             Tree.Expression e = that.getExpression();
             Tree.Block b = that.getBlock();
             if (e!=null) {
