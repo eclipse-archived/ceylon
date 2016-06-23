@@ -617,23 +617,19 @@ public class LiteralVisitor extends Visitor {
                         switchId = bme.getIdentifier();
                     }
                     else {
-                        boolean found = false;
                         for (Tree.CaseClause cc: switchCaseList.getCaseClauses()) {
                             Tree.CaseItem item = cc.getCaseItem();
                             if (item instanceof Tree.IsCase) {
                                 return;
                             }
                             if (item instanceof Tree.PatternCase) {
-                                found = true;
+                                Tree.Identifier id = new Tree.Identifier(null);
+                                id.setText("_");
+                                switchId = id;
+                                switched.setVariable(createVariable(id, expression));
+                                switched.setExpression(null);
+                                return;
                             }
-                        }
-                        if (found) {
-                            Tree.Identifier id = new Tree.Identifier(null);
-                            id.setText("_");
-                            switchId = id;
-                            switched.setVariable(createVariable(id, expression));
-                            switched.setExpression(null);
-                            return;
                         }
                     }
                 }
