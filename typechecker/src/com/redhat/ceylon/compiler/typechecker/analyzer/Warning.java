@@ -22,5 +22,7 @@ public enum Warning {
     smallIgnored,
     literalNotSmall, 
     disjointEquals,
-    disjointContainment
+    disjointContainment,
+    redundantNarrowing, 
+    redundantIteration
 }

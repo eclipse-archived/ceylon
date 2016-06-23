@@ -805,14 +805,15 @@ public class ExpressionVisitor extends Visitor {
                     String help = " (expression is already of the specified type)";
                     if (that.getNot()) {
                         if (intersectionType(type, knownType, unit).isNothing()) {
-                            that.addError("does not narrow type: intersection of '" + 
+                            that.addUsageWarning(Warning.redundantNarrowing,
+                                    "condition does not narrow type: intersection of '" + 
                                     type.asString(unit) + 
                                     "' and '" + 
                                     knownType.asString(unit) + "' is empty" + 
                                     help);
                         }
                         else if (knownType.isSubtypeOf(type)) {
-                            that.addError("tests assignability to bottom type 'Nothing': '" + 
+                            that.addError("condition tests assignability to bottom type 'Nothing': '" + 
                                     knownType.asString(unit) + 
                                     "' is a subtype of '" + 
                                     type.asString(unit) + "'");
@@ -820,7 +821,8 @@ public class ExpressionVisitor extends Visitor {
                     } 
                     else {
                         if (knownType.isSubtypeOf(type)) {
-                            that.addError("does not narrow type: '" + 
+                            that.addUsageWarning(Warning.redundantNarrowing,
+                                    "condition does not narrow type: '" + 
                                     knownType.asString(unit) + 
                                     "' is a subtype of '" + 
                                     type.asString(unit) + "'" + 
@@ -843,7 +845,7 @@ public class ExpressionVisitor extends Visitor {
                             type.asString(unit));*/
                 }
                 else {
-                    that.addError("tests assignability to bottom type 'Nothing': intersection of '" +
+                    that.addError("condition tests assignability to bottom type 'Nothing': intersection of '" +
                             knownType.asString(unit) + "' and '" + 
                             type.asString(unit) + "' is empty");
                 }
@@ -949,10 +951,10 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         if (that instanceof Tree.ExistsCondition) {
-            checkOptional(t, term);
+            checkOptional(t, term, that);
         }
         else if (that instanceof Tree.NonemptyCondition) {
-            checkEmpty(t, term);
+            checkEmpty(t, term, that);
         }
     }
 
@@ -1012,28 +1014,30 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkEmpty(Type t, Tree.Term term) {
+    private void checkEmpty(Type t, Tree.Term term, Node that) {
         if (!isTypeUnknown(t)) {
             if (!unit.isSequentialType(unit.getDefiniteType(t))) {
-                term.addError("expression must be a possibly-empty sequential type: '" + 
+                that.addError("expression must be a possibly-empty sequential type: '" + 
                         t.asString(unit) + 
                         "' is not a subtype of 'Anything[]?'");
             }
             else if (!unit.isPossiblyEmptyType(t)) {
-                term.addError("expression must be a possibly-empty sequential type: '" + 
+                that.addUsageWarning(Warning.redundantNarrowing,
+                        "expression type is not a possibly-empty sequential type: '" + 
                         t.asString(unit) + 
-                        "' is not possibly-empty");
+                        "' cannot be empty");
             }
         }
     }
     
-    private void checkOptional(Type type, Tree.Term term) {
+    private void checkOptional(Type type, Tree.Term term, Node that) {
         if (!isTypeUnknown(type) && 
                 !unit.isOptionalType(type) && 
                 !hasUncheckedNulls(term)) {
-            term.addError("expression must be of optional type: '" +
+            that.addUsageWarning(Warning.redundantNarrowing,
+                    "expression type is not optional: '" +
                     type.asString(unit) + 
-                    "' is not optional");
+                    "' cannot be null");
         }
     }
 
@@ -1128,7 +1132,8 @@ public class ExpressionVisitor extends Visitor {
                                 "' is not a subtype of 'Iterable'");
                     }
                     else if (et!=null && unit.isEmptyType(et)) {
-                        se.addError("iterated expression is definitely empty: '" +
+                        se.addUsageWarning(Warning.redundantIteration,
+                                "iterated expression is definitely empty: '" +
                                 et.asString(unit) + 
                                 "' is a subtype of 'Empty'");
                     }
@@ -2778,7 +2783,7 @@ public class ExpressionVisitor extends Visitor {
                 op.addError("static reference may not involve safe member operator");
             }
             else {
-                checkOptional(pt, p);
+                checkOptional(pt, p, p);
             }
         }
         else if (op instanceof Tree.SpreadOp) {
@@ -5590,7 +5595,8 @@ public class ExpressionVisitor extends Visitor {
         Type lhst = leftType(that);
         Type rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            checkOptional(lhst, that.getLeftTerm());
+            Tree.Term lt = that.getLeftTerm();
+            checkOptional(lhst, lt, lt);
             Type dt = unit.getDefiniteType(lhst);
             Type rt = unionType(dt, rhst, unit);
             that.setTypeModel(rt);
@@ -5683,12 +5689,12 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitExistsOperator(Tree.Exists that) {
-        checkOptional(type(that), that.getTerm());
+        checkOptional(type(that), that.getTerm(), that);
         that.setTypeModel(unit.getBooleanType());
     }
     
     private void visitNonemptyOperator(Tree.Nonempty that) {
-        checkEmpty(type(that), that.getTerm());
+        checkEmpty(type(that), that.getTerm(), that);
         that.setTypeModel(unit.getBooleanType());
     }
     
