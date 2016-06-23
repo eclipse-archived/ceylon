@@ -188,8 +188,12 @@ public class JsIdentifierNames {
      */
     public String setter(Declaration decl) {
         String name = getName(decl, true, false);
-        return String.format("set%c%s", Character.toUpperCase(name.charAt(0)),
-                name.substring(1));
+        final Module mod = decl.getUnit().getPackage().getModule();
+        if (mod.getJsMajor() > 0 && (mod.getJsMajor() < 9 || (mod.getJsMajor() == 9 && mod.getJsMinor() < 1))) {
+            return String.format("set%c%s", Character.toUpperCase(name.charAt(0)),
+                    name.substring(1));
+        }
+        return String.format("set$%s", name);
     }
 
     /**
