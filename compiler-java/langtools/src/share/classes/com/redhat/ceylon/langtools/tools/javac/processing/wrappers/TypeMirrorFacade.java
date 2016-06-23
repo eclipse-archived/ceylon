@@ -43,7 +43,8 @@ public class TypeMirrorFacade implements javax.lang.model.type.TypeMirror {
         }
     }
 
-    @Override
+    // Java 8 method
+//    @Override
     public List<? extends javax.lang.model.element.AnnotationMirror> getAnnotationMirrors() {
         // must use reflection for it to work on Java 7
         try {
