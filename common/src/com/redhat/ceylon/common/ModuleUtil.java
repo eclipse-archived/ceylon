@@ -33,10 +33,15 @@ public abstract class ModuleUtil {
     }
 
     public static String makeModuleName(String moduleName, String version) {
+        return makeModuleName(null, moduleName, version);
+    }
+
+    public static String makeModuleName(String namespace, String moduleName, String version) {
+        String ns = namespace != null ? namespace + ":" : "";
         if (isDefaultModule(moduleName) || version == null) {
-            return moduleName;
+            return ns + moduleName;
         } else {
-            return moduleName + "/" + version;
+            return ns + moduleName + "/" + version;
         }
     }
 
