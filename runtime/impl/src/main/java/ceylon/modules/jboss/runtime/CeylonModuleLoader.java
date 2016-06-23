@@ -327,7 +327,12 @@ public class CeylonModuleLoader extends ModuleLoader
         String name = ModuleUtil.getModuleNameFromUri(mi.getName());
         final ArtifactContext context = new ArtifactContext(namespace, name, mi.getSlot(), ArtifactContext.CAR, ArtifactContext.JAR);
         ArtifactContext override = repository.getOverrides().applyOverrides(context);
-        return ModuleIdentifier.create(override.getName(), override.getVersion());
+        String newName;
+        if(override.getNamespace() != null)
+            newName = override.getNamespace()+":"+override.getName();
+        else
+            newName = override.getName();
+        return ModuleIdentifier.create(newName, override.getVersion());
     }
     
     @Override
@@ -579,7 +584,13 @@ public class CeylonModuleLoader extends ModuleLoader
      * @return module identifer
      */
     static ModuleIdentifier createModuleIdentifier(ArtifactResult i) {
-        return ModuleIdentifier.create(i.name(), i.version());
+        String name;
+        boolean isDepMaven = MavenArtifactContext.NAMESPACE.equals(i.namespace());
+        if(isDepMaven)
+            name = "maven:"+i.name();
+        else
+            name = i.name();
+        return ModuleIdentifier.create(name, i.version());
     }
 
     @Override
