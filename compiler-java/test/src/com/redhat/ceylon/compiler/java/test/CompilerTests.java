@@ -279,12 +279,6 @@ public abstract class CompilerTests {
             Throwable expectedException, 
             boolean includeWarnings, 
             CompilerError... expectedErrors) {
-        // make a compiler task
-        // FIXME: runFileManager.setSourcePath(dir);
-        ErrorCollector collector = new ErrorCollector();
-        
-        CeyloncTaskImpl task = getCompilerTask(options, collector, ceylonFiles);
-
         boolean expectedToFail = false;
         Diagnostic.Kind lowestErrorLevel = includeWarnings ? Diagnostic.Kind.WARNING : Diagnostic.Kind.ERROR;
         for (CompilerError expectedError : expectedErrors) {
@@ -297,6 +291,22 @@ public abstract class CompilerTests {
                 lowestErrorLevel = expectedError.kind;
         }
         EnumSet<Diagnostic.Kind> kinds = EnumSet.range(Diagnostic.Kind.ERROR, lowestErrorLevel);
+        ErrorCollector collector = compileErrorTest(ceylonFiles, options, expectedException, includeWarnings, expectedToFail);
+        Set<CompilerError> actualErrors = collector.get(kinds);
+        compareErrors(actualErrors, expectedErrors);
+    }
+    
+    protected ErrorCollector compileErrorTest(String[] ceylonFiles, 
+            List<String> options, 
+            Throwable expectedException, 
+            boolean includeWarnings, 
+            boolean expectedToFail) {
+        // make a compiler task
+        // FIXME: runFileManager.setSourcePath(dir);
+        ErrorCollector collector = new ErrorCollector();
+        
+        CeyloncTaskImpl task = getCompilerTask(options, collector, ceylonFiles);
+
         // now compile it all the way
         Throwable ex = null;
         ExitState exitState = task.call2();
@@ -334,8 +344,7 @@ public abstract class CompilerTests {
             Assert.fail("Expected compiler exception " + expectedException);
         }
         
-        Set<CompilerError> actualErrors = collector.get(kinds);
-        compareErrors(actualErrors, expectedErrors);
+        return collector;
     }
     
     private boolean eq(Object o1, Object o2) {
