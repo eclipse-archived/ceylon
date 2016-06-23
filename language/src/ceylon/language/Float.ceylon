@@ -214,7 +214,7 @@ shared native final class Float(Float float)
             => times(integer.nearestFloat);
     
     shared actual native Float plusInteger(Integer integer)
-            => plus(integer.float);
+            => plus(integer.nearestFloat);
     
     "The result of raising this number to the given integer
      power, where the following indeterminate forms evaluate 
