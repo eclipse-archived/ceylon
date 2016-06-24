@@ -14,10 +14,10 @@ class ControlStructures() {
         print(n);
     }
     
-    @error if (is Anything something) {}
-    @error if (is Object something) {}
-    @error if (is String sh = "hello") {}
-    @error if (is Object sh = "hello") {}
+    @warn:"redundantNarrowing" if (is Anything something) {}
+    @warn:"redundantNarrowing" if (is Object something) {}
+    @warn:"redundantNarrowing" if (is String sh = "hello") {}
+    @warn:"redundantNarrowing" if (is Object sh = "hello") {}
     
     variable String? var = "gavin"; 
     @error if (exists var) {}

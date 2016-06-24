@@ -171,8 +171,8 @@ class Assignability() {
     if (sequenceofx[0] exists) {}
     
     //@error if (exists "Hello") {}
-    @error if (exists something) {}
-    if (exists @error s = something) {}
+    @warn:"redundantNarrowing" if (exists something) {}
+    @warn:"redundantNarrowing" if (exists s = something) {}
     
     if (exists X x = nothing) {
         print(x.hello);
@@ -187,16 +187,16 @@ class Assignability() {
         print(y.name);
     }
     
-    if (exists @error X x = something) {
+    @warn:"redundantNarrowing" if (exists X x = something) {
         print(x.hello);
     }
     
-    if (exists @error xx = something) {
+    @warn:"redundantNarrowing" if (exists xx = something) {
         print(xx.hello);
     }
     
-    @error if (something.hello exists) {}
-    if (exists @error h = something.hello) {}
+    @warn:"redundantNarrowing" if (something.hello exists) {}
+    @warn:"redundantNarrowing" if (exists h = something.hello) {}
     
     @error if (is Y something) {
         @error print(something.name);
@@ -209,7 +209,7 @@ class Assignability() {
     @error if (X() is Y) {}
     @error if (X() is Object ) {}
     @error if (is Y x = X()) {}
-    @error if (is Object x = X()) {}
+    @warn:"redundantNarrowing" if (is Object x = X()) {}
     
     X[]? seq = null;
     
@@ -246,16 +246,16 @@ class Assignability() {
     
     @error for (@error X x in 46) {}
     
-    @error for (Integer i in []) {
+    @warn:"redundantIteration" for (Integer i in []) {
         print(i.string);
     }
     for (Integer i in {-1,+2}) {
         print(i.string);
     }
     @error if ({} nonempty) {}
-    @error if ([-2,+0,+1] nonempty) {}
+    @warn:"redundantNarrowing" if ([-2,+0,+1] nonempty) {}
     @error if (nonempty e = {}) {}
-    @error if (nonempty s = [-2,+0,+1]) {}
+    @warn:"redundantNarrowing" if (nonempty s = [-2,+0,+1]) {}
     Integer[] ints = [-2,+0,+1];
     if (nonempty ints) {
         Integer i = ints.first;

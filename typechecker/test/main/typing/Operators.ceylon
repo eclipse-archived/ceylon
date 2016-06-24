@@ -94,10 +94,10 @@ class Operators() {
     @type:"Boolean" value x29 = none exists;
     //@type:"Boolean" value x29n = exists none;
     
-    @error @type:"Boolean" value x30 = 1 exists;
+    @warn:"redundantNarrowing" @type:"Boolean" value x30 = 1 exists;
     //@error @type:"Boolean" value x30n = exists 1;
     
-    @error @type:"Boolean" value x73 = null exists;
+    @warn:"redundantNarrowing" @type:"Boolean" value x73 = null exists;
     //@error @type:"Boolean" value x73n = exists null;
     
     @error @type:"Boolean" value x70 = {} nonempty;
@@ -284,7 +284,7 @@ class Operators() {
     Float result = x>0.0 then x else 0.0;
     
     //@error String str1 = null ? null ? "hello";
-    @error String str2 = null else null else "hello";
+    @warn:"redundantNarrowing" String str2 = null else null else "hello";
 
     String? nostring = null;
     //@type:"String" value str3 = nostring ? nostring ? "hello";
