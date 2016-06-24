@@ -22,7 +22,9 @@ import com.redhat.ceylon.model.typechecker.model.Unit;
 public class AssertionVisitor extends Visitor {
     
     private boolean expectingError = false;
-	private String errMessage;
+	private String errorMessage;
+	private boolean expectingWarning = false;
+	private String warningType;
     private List<Message> foundErrors = new ArrayList<Message>();
     private int errors = 0;
     private int warnings = 0;
@@ -92,14 +94,20 @@ public class AssertionVisitor extends Visitor {
             return;
         }
         boolean b = expectingError;
+        boolean c = expectingWarning;
         List<Message> f = foundErrors;
         expectingError = false;
+        expectingWarning = false;
+        errorMessage = null;
+        warningType = null;
         foundErrors = new ArrayList<Message>();
         initExpectingError(that.getCompilerAnnotations());
         super.visit(that);
         checkErrors(that);
         expectingError = b;
-        errMessage = null;
+        expectingWarning = c;
+        errorMessage = null;
+        warningType = null;
         foundErrors = f;
     }
     
@@ -108,9 +116,12 @@ public class AssertionVisitor extends Visitor {
     @Override
     public void visit(Tree.ParameterDeclaration that) {
         boolean b = expectingError;
+        boolean c = expectingWarning;
         List<Message> f = foundErrors;
         expectingError = false;
-        errMessage = null;
+        expectingWarning = false;
+        errorMessage = null;
+        warningType = null;
         foundErrors = new ArrayList<Message>();
         initExpectingError(that.getTypedDeclaration().getCompilerAnnotations());
         ignore=true;
@@ -118,20 +129,27 @@ public class AssertionVisitor extends Visitor {
         ignore=false;
         checkErrors(that);
         expectingError = b;
-        errMessage = null;
+        expectingWarning = c;
+        errorMessage = null;
+        warningType = null;
         foundErrors = f;
     }
     
     @Override
     public void visit(Tree.CompilationUnit that) {
     	expectingError = false;
+    	expectingWarning = false;
+        errorMessage = null;
+        warningType = null;
         foundErrors = new ArrayList<Message>();
     	initExpectingError(that.getCompilerAnnotations());
         foundErrors.addAll(that.getErrors());
         checkErrors(that);
         foundErrors = new ArrayList<Message>();
     	expectingError = false;
-    	errMessage = null;
+    	expectingWarning = false;
+    	errorMessage = null;
+    	warningType = null;
     	super.visitAny(that);
     }
     
@@ -256,10 +274,11 @@ public class AssertionVisitor extends Visitor {
                         continue;
                     }
                     if (err instanceof AnalysisError ||
-                            err instanceof LexError ||
-                            err instanceof ParseError) {
-                    	if (errMessage==null ||
-                    			err.getMessage().contains(errMessage)) {
+                        err instanceof LexError ||
+                        err instanceof ParseError) {
+                    	if (errorMessage==null ||
+                    			err.getMessage()
+                    			    .contains(errorMessage)) {
                     		return;
                     	}
                     	else {
@@ -269,37 +288,61 @@ public class AssertionVisitor extends Visitor {
                 }
                 if (found) {
             		out(that, "error message should contain \"" + 
-            				errMessage);
+            				errorMessage);
                 }
                 else {
                 	out(that, "no errors");
                 	return;
                 }
             }
-//            else {
+            if (expectingWarning) {
+                boolean found = false;
                 for (Message err: foundErrors) {
-                    if (!includeError(err, 3)) {
+                    if (!includeError(err, 2)) {
                         continue;
                     }
-                    if (err instanceof LexError) {
-                        out( that, (LexError) err );
-                    }
-                    else if (err instanceof ParseError) {
-                        out( that, (ParseError) err );
-                    }
-                    else if (err instanceof UnsupportedError) {
-                        out( (UnsupportedError) err );
-                    } 
-                    else if (err instanceof AnalysisError) {
-                        out( (AnalysisError) err );
-                    }
-                    else if (err instanceof UsageWarning) {
-                        if (usageWarnings) {
-                            out( (UsageWarning) err );
+                    if (err instanceof UsageWarning) {
+                        if (warningType==null ||
+                                ((UsageWarning) err).getWarningName()
+                                    .equals(warningType)) {
+                            return;
+                        }
+                        else {
+                            found = true;
                         }
                     }
                 }
-//            }
+                if (found) {
+                    out(that, "warning type should be \"" + 
+                            warningType);
+                }
+                else {
+                    out(that, "no warnings");
+                    return;
+                }
+            }
+            for (Message err: foundErrors) {
+                if (!includeError(err, 3)) {
+                    continue;
+                }
+                if (err instanceof LexError) {
+                    out( that, (LexError) err );
+                }
+                else if (err instanceof ParseError) {
+                    out( that, (ParseError) err );
+                }
+                else if (err instanceof UnsupportedError) {
+                    out( (UnsupportedError) err );
+                } 
+                else if (err instanceof AnalysisError) {
+                    out( (AnalysisError) err );
+                }
+                else if (err instanceof UsageWarning) {
+                    if (usageWarnings) {
+                        out( (UsageWarning) err );
+                    }
+                }
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -312,7 +355,14 @@ public class AssertionVisitor extends Visitor {
                 expectingError = true;
                 Tree.StringLiteral sl = c.getStringLiteral();
 				if (sl!=null) {
-                	errMessage = sl.getText();
+                	errorMessage = sl.getText();
+                }
+            }
+            if (c.getIdentifier().getText().equals("warn")) {
+                expectingWarning = true;
+                Tree.StringLiteral sl = c.getStringLiteral();
+                if (sl!=null) {
+                    warningType = sl.getText();
                 }
             }
         }

@@ -1455,7 +1455,7 @@ public class ExpressionVisitor extends Visitor {
                 v.setTransient(true);
             }
             
-            if (!that.getRefinement()) {
+//            if (!that.getRefinement()) {
                 Type lhst = lhs.getTypeModel();
                 if (lhs==me && d instanceof Function &&
                         !lhst.isTypeConstructor()) {
@@ -1469,9 +1469,12 @@ public class ExpressionVisitor extends Visitor {
                     lhst = eraseDefaultedParameters(lhst);
                 }
                 if (!isTypeUnknown(lhst)) {
-                    checkType(lhst, td, rhs, 2100);
+                    TypedDeclaration member = 
+                            that.getRefinement() ? 
+                                    that.getRefined() : td;
+                    checkType(lhst, member, rhs, 2100);
                 }
-            }
+//            }
         }
         
         if (lhs instanceof Tree.ParameterizedExpression) {
@@ -1684,7 +1687,13 @@ public class ExpressionVisitor extends Visitor {
                 refinedProducedReference.getType(), 
                 unit);
         for (Declaration refinement: interveningRefinements) {
-            if (refinement instanceof FunctionOrValue) {
+            if (refinement instanceof FunctionOrValue
+                    //this one is directly checked from visit(SpecifierStatement)
+                    //which correctly handles defaulted parameters 
+                    //and assignments of generic function references
+                    //TODO: do we need to handle those complicating
+                    //      factors here as well?
+                    && !refinedMethodOrValue.equals(refinement)) {
                 FunctionOrValue rmv = 
                         (FunctionOrValue) 
                             refinement;
