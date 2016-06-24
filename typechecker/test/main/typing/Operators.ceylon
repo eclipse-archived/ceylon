@@ -161,7 +161,7 @@ class Operators() {
     @type:"Sequence<String>" value x47 = helloworld*.uppercased;
     @type:"Null|Sequential<Character>" value x48 = helloworld[1]?.sequence();
     @type:"Sequence<Sequential<Character>>" value x49 = helloworld*.sequence();
-    @type:"Sequence<Iterable<String,Null>>" value x50 = helloworld*.lines;
+    @type:"Sequence<Iterable<String,Nothing>>" value x50 = helloworld*.lines;
     @type:"Null|String" value x51 = helloworld[1]?.normalized;
     @type:"Null|Iterable<String,Nothing>" value x512 = helloworld[1]?.split((Character c) => c==' ');
     @type:"Sequence<String>" value x52 = helloworld*.normalized;
