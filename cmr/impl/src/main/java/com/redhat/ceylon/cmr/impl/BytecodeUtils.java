@@ -109,24 +109,7 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
             return null;
         
         final Object[] dependencies = (Object[]) ClassFileUtil.getAnnotationValue(moduleInfo, ai, "dependencies");
-        if (dependencies == null)
-            return new ModuleInfo(moduleName, version, null, Collections.<ModuleDependencyInfo>emptySet());
-
-        final Set<ModuleDependencyInfo> infos = new LinkedHashSet<ModuleDependencyInfo>();
-
-        for (Object im : dependencies) {
-        	Annotation dep = (Annotation) im;
-        	final String depUri = (String) ClassFileUtil.getAnnotationValue(moduleInfo, dep, "name");
-        	final String namespace = ModuleUtil.getNamespaceFromUri(depUri);
-            final String modName = ModuleUtil.getModuleNameFromUri(depUri);
-        	final ModuleDependencyInfo mi = new ModuleDependencyInfo(
-        	        namespace,
-        	        modName,
-        			(String) ClassFileUtil.getAnnotationValue(moduleInfo, dep, "version"),
-        			asBoolean(moduleInfo, dep, "optional"),
-        			asBoolean(moduleInfo, dep, "export"));
-        	infos.add(mi);
-        }
+        final Set<ModuleDependencyInfo> infos = getDependencies(moduleInfo, dependencies, moduleName, version, overrides);
         ModuleInfo ret = new ModuleInfo(moduleName, version, null, infos);
         if(overrides != null)
             ret = overrides.applyOverrides(moduleName, version, ret);
@@ -335,6 +318,10 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
     private static Set<ModuleDependencyInfo> getDependencies(ClassFile moduleInfo, Object[] dependencies, 
     		String module, String version, Overrides overrides) {
     	
+        if (dependencies == null) {
+            return Collections.<ModuleDependencyInfo>emptySet();
+        }
+
         int[] binver = getBinaryVersions(moduleInfo);
         boolean supportsNamespaces = supportsImportsWithNamespaces(binver);
         
@@ -361,8 +348,11 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
             
             result.add(new ModuleDependencyInfo(namespace, modName, depVersion, optional, export));
         }
-        if(overrides != null)
-            return overrides.applyOverrides(module, version, new ModuleInfo(module, version, null, result)).getDependencies();
+        
+        if (overrides != null) {
+            result = overrides.applyOverrides(module, version, new ModuleInfo(module, version, null, result)).getDependencies();
+        }
+        
         return result;
     }
     
