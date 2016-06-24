@@ -1233,7 +1233,7 @@ public class RefinementVisitor extends Visitor {
             Reference refiningMember, 
     		Reference refinedMember,
     		Node that, Declaration refined) {
-        if (hasUncheckedNullType(refinedMember)) {
+        if (AnalyzerUtil.hasUncheckedNullType(refinedMember)) {
             Unit unit = 
                     refiningMember.getDeclaration()
                         .getUnit();
@@ -1276,7 +1276,7 @@ public class RefinementVisitor extends Visitor {
             Reference refiningMember, 
     		Reference refinedMember, 
     		Node that, Declaration refined) {
-        if (hasUncheckedNullType(refinedMember)) {
+        if (AnalyzerUtil.hasUncheckedNullType(refinedMember)) {
             Unit unit = 
                     refiningMember.getDeclaration()
                         .getUnit();
@@ -1297,13 +1297,7 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private boolean hasUncheckedNullType(
-            Reference member) {
-        Declaration dec = member.getDeclaration();
-        return dec instanceof TypedDeclaration && 
-                ((TypedDeclaration) dec)
-                    .hasUncheckedNullType();
-    }
+    
 
     /*private void checkUnshared(Tree.Declaration that, Declaration dec) {
         if (dec.isActual()) {

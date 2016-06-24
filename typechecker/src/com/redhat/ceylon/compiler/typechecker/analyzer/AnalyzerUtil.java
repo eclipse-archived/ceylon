@@ -1427,4 +1427,11 @@ public class AnalyzerUtil {
                 "Null".equalsIgnoreCase(name));
     }
 
+    static boolean hasUncheckedNullType(Reference member) {
+        Declaration dec = member.getDeclaration();
+        return dec instanceof TypedDeclaration && 
+                ((TypedDeclaration) dec)
+                    .hasUncheckedNullType();
+    }
+
 }

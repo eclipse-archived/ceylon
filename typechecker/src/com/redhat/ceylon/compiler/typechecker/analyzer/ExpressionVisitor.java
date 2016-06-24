@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignable;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignableToOneOf;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCallable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCasesDisjoint;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactlyForInterop;
@@ -1380,6 +1381,7 @@ public class ExpressionVisitor extends Visitor {
             d = mte.getDeclaration();
         }
         if (d instanceof TypedDeclaration) {
+            TypedDeclaration td = (TypedDeclaration) d;
             if (that.getRefinement()) {
                 // interpret this specification as a 
                 // refinement of an inherited member
@@ -1460,7 +1462,10 @@ public class ExpressionVisitor extends Visitor {
                 t = eraseDefaultedParameters(t);
             }
             if (!isTypeUnknown(t)) {
-                checkType(t, d, rhs, 2100);
+                TypedDeclaration member = 
+                        that.getRefinement() ? 
+                                that.getRefined() : td;
+                checkType(t, member, rhs, 2100);
             }
         }
         
@@ -1688,8 +1693,7 @@ public class ExpressionVisitor extends Visitor {
                                 refinedMember);
                 if (rhs!=null && 
                         !isTypeUnknown(requiredType)) {
-                    checkType(requiredType, refinement, 
-                            rhs, 2100);
+                    checkType(requiredType, rmv, rhs, 2100);
                 }
                 if (!refinement.isDefault() && 
                         !refinement.isFormal()) {
@@ -1788,7 +1792,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkType(Type declaredType, 
-            Declaration dec, 
+            TypedDeclaration dec, 
             Tree.SpecifierOrInitializerExpression sie, 
             int code) {
         if (sie!=null) {
@@ -1796,10 +1800,23 @@ public class ExpressionVisitor extends Visitor {
             if (e!=null) {
                 Type t = e.getTypeModel();
                 if (!isTypeUnknown(t)) {
-                    checkAssignable(t, declaredType, sie, 
+                    String message = 
                             "specified expression must be assignable to declared type of " + 
-                                    decdesc(dec),
-                            code);
+                            decdesc(dec);
+                    if (dec.hasUncheckedNullType()) {
+                        Type optionalDeclaredType = 
+                                unit.getOptionalType(
+                                        declaredType);
+                       checkAssignableToOneOf(t, 
+                               declaredType, 
+                               optionalDeclaredType, 
+                               sie, message, code);
+                    }
+                    else {
+                        checkAssignable(t, 
+                                declaredType, 
+                                sie, message, code);
+                    }
                 }
             }
         }
