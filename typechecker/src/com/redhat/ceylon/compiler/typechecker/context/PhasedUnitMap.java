@@ -18,6 +18,10 @@ public abstract class PhasedUnitMap<ReturnedType extends PhasedUnit, StoredType>
     protected abstract StoredType toStoredType(ReturnedType phasedUnit); 
     protected abstract ReturnedType fromStoredType(StoredType storedValue, String path); 
     
+    public boolean containsRelativePath(String relativePath) {
+        return relativePathToPath.containsKey(relativePath);
+    }
+    
     public void addPhasedUnit(VirtualFile unitFile, ReturnedType phasedUnit) {
         phasedUnitPerPath.put(unitFile.getPath(), toStoredType(phasedUnit));
         relativePathToPath.put(phasedUnit.getPathRelativeToSrcDir(), unitFile.getPath());
