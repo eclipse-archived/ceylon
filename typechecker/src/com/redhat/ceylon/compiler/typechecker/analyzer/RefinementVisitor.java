@@ -1800,7 +1800,7 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private void refineAttribute(final Value sv, 
+    private void refineAttribute(Value sv, 
             Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that, 
             ClassOrInterface c) {
@@ -1839,6 +1839,11 @@ public class RefinementVisitor extends Visitor {
         v.setScope(c);
         v.setShortcutRefinement(true);
         v.setTransient(lazy);
+        Declaration rvd = rv.getDeclaration();
+        if (rvd instanceof TypedDeclaration) {
+            TypedDeclaration rvtd = (TypedDeclaration) rvd;
+            v.setUncheckedNullType(rvtd.hasUncheckedNullType());
+        }
         setVisibleScope(v);
         c.addMember(v);
         that.setRefinement(true);

@@ -254,8 +254,8 @@ class Assignability() {
     }
     @error if ({} nonempty) {}
     @error if ([-2,+0,+1] nonempty) {}
-    if (nonempty @error e = {}) {}
-    if (nonempty @error s = [-2,+0,+1]) {}
+    @error if (nonempty e = {}) {}
+    @error if (nonempty s = [-2,+0,+1]) {}
     Integer[] ints = [-2,+0,+1];
     if (nonempty ints) {
         Integer i = ints.first;

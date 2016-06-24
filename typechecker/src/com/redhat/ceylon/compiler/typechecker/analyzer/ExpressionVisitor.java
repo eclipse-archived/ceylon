@@ -1382,6 +1382,7 @@ public class ExpressionVisitor extends Visitor {
         }
         if (d instanceof TypedDeclaration) {
             TypedDeclaration td = (TypedDeclaration) d;
+            
             if (that.getRefinement()) {
                 // interpret this specification as a 
                 // refinement of an inherited member
@@ -1437,35 +1438,39 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             
-            if (hasParams && d instanceof Function && 
-                    ((Function) d).isDeclaredVoid() && 
-                    !isSatementExpression(rhs.getExpression())) {
-                rhs.addError("function is declared void so specified expression must be a statement: '" + 
-                        d.getName(unit) + 
-                        "' is declared 'void'");
+            if (hasParams 
+                    && d instanceof Function) {
+                Function f = (Function) d;
+                Tree.Expression se = rhs.getExpression();
+                if (f.isDeclaredVoid() && !isSatementExpression(se)) {
+                    rhs.addError(
+                            "function is declared void so specified expression must be a statement: '" + 
+                            d.getName(unit) + 
+                            "' is declared 'void'");
+                }
             }
-            if (d instanceof Value && 
-                    rhs instanceof Tree.LazySpecifierExpression) {
-                ((Value) d).setTransient(true);
+            if (rhs instanceof Tree.LazySpecifierExpression 
+                    && d instanceof Value) {
+                Value v = (Value) d;
+                v.setTransient(true);
             }
             
-            Type t = lhs.getTypeModel();
-            if (lhs==me && d instanceof Function &&
-                    !t.isTypeConstructor()) {
-                //if the declaration of the method has
-                //defaulted parameters, we should ignore
-                //that when determining if the RHS is
-                //an acceptable implementation of the
-                //method
-                //TODO: this is a pretty nasty way to
-                //      handle the problem
-                t = eraseDefaultedParameters(t);
-            }
-            if (!isTypeUnknown(t)) {
-                TypedDeclaration member = 
-                        that.getRefinement() ? 
-                                that.getRefined() : td;
-                checkType(t, member, rhs, 2100);
+            if (!that.getRefinement()) {
+                Type lhst = lhs.getTypeModel();
+                if (lhs==me && d instanceof Function &&
+                        !lhst.isTypeConstructor()) {
+                    //if the declaration of the method has
+                    //defaulted parameters, we should ignore
+                    //that when determining if the RHS is
+                    //an acceptable implementation of the
+                    //method
+                    //TODO: this is a pretty nasty way to
+                    //      handle the problem
+                    lhst = eraseDefaultedParameters(lhst);
+                }
+                if (!isTypeUnknown(lhst)) {
+                    checkType(lhst, td, rhs, 2100);
+                }
             }
         }
         
@@ -1679,10 +1684,10 @@ public class ExpressionVisitor extends Visitor {
                 refinedProducedReference.getType(), 
                 unit);
         for (Declaration refinement: interveningRefinements) {
-            if (refinement instanceof FunctionOrValue && 
-                    !refinement.equals(refinedMethodOrValue)) {
+            if (refinement instanceof FunctionOrValue) {
                 FunctionOrValue rmv = 
-                        (FunctionOrValue) refinement;
+                        (FunctionOrValue) 
+                            refinement;
                 Reference refinedMember = 
                         getRefinedMember(rmv, ci);
                 addToIntersection(refinedTypes, 
@@ -1828,9 +1833,11 @@ public class ExpressionVisitor extends Visitor {
             Declaration c = 
                     (Declaration) 
                         dec.getContainer();
-            name += " of '" + c.getName(unit) + "'";
+            return name + " of '" + c.getName(unit) + "'";
         }
-        return name;
+        else {
+            return name;
+        }
     }
 
     private void checkFunctionType(Type et, 
