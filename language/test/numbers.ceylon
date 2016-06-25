@@ -910,6 +910,8 @@ void checkParseFloat() {
     check(parseFloat(".") is Null, "parseFloat(.)");
     check(parseFloat("e10") is Null, "parseFloat(e10)");
     check(parseFloat0("1.")==1.0, "parseFloat(1.)");
+    check(parseFloat0("+.1")==0.1, "parseFloat(+.1)");
+    check(parseFloat0("-.1")==-0.1, "parseFloat(-.1)");
     check(parseFloat0("+1.")==1.0, "parseFloat(+1.)");
     check(parseFloat0("-1.")==-1.0, "parseFloat(-1.)");
     check(parseFloat0("1.e1")==10.0, "parseFloat(1.e1)");

@@ -1,6 +1,33 @@
 import java.lang {
     JDouble=Double
 }
+import ceylon.language {
+    ParseFloatState {
+        start, afterPlusMinus, digitsBeforeDecimal,
+        afterJustDecimal, afterDecimal, digitsAfterDecimal,
+        afterE, exponentDigits, afterEPlusMinus,
+        afterSuffix, invalid
+    }
+}
+
+class ParseFloatState of
+        start | afterPlusMinus | digitsBeforeDecimal |
+        afterJustDecimal | afterDecimal |
+        digitsAfterDecimal | afterE | exponentDigits |
+        afterEPlusMinus | afterSuffix | invalid {
+
+    shared new start {}
+    shared new afterPlusMinus {}
+    shared new digitsBeforeDecimal {}
+    shared new afterJustDecimal {}
+    shared new afterDecimal {}
+    shared new digitsAfterDecimal {}
+    shared new afterE {}
+    shared new exponentDigits {}
+    shared new afterEPlusMinus {}
+    shared new afterSuffix {}
+    shared new invalid {}
+}
 
 "The [[Float]] value of the given 
  [[string representation|string]] of a decimal floating 
@@ -21,92 +48,89 @@ see (`function formatFloat`,
 tagged("Numbers", "Basic types")
 shared Float? parseFloat(String string) {
     // ("-"|"+")?
-    // Digit+ | ("." Digit+) | (Digit+ "." Digit*)
-    // (("E"|"e") ("+"|"-")? Digit+)
-    //      | Magnitude | FractionalMagnitude
+    // (Digit* "." Digit+) | (Digit+ "."?)
+    // (("E"|"e") ("+"|"-")? Digit+) | suffix
 
-    variable Boolean first = true;
-    variable Boolean seenDigit = false;
-    variable Boolean seenDecimal = false;
-    variable Boolean inDigitPart = true;
-    variable Boolean inExponentPart = false;
-    variable Boolean inSuffixPart = false;
-    variable Integer digitCount = 0;
-    variable Boolean seenExponentDigit = false;
-    variable Integer suffixExponent = 0;
+    variable value state = start;
+    variable value size = 0;
+    variable Integer? suffixExponent = null;
 
     for (c in string) {
-        if (inDigitPart) {
-            digitCount++;
-            if (first) {
-                first = false;
-                if (c == '-' || c == '+') {
-                    continue;
-                }
-            }
-            if (c == '.') {
-                if (seenDecimal) {
-                    return null;
-                }
-                seenDecimal = true;
-                continue;
-            }
-            if ('0' <= c <= '9') {
-                seenDigit = true;
-                continue;
-            }
-            digitCount--;
-        }
-        inDigitPart = false;
+        size++;
+        state = switch (state)
+        case (start)
+            if (c == '+' || c == '-')
+                then afterPlusMinus
+            else if ('0' <= c <= '9')
+                then digitsBeforeDecimal
+            else if (c == '.')
+                then afterJustDecimal
+            else invalid
+        case (afterPlusMinus)
+            if ('0' <= c <= '9')
+                then digitsBeforeDecimal
+            else if (c == '.')
+                then afterJustDecimal
+            else invalid
+        case (digitsBeforeDecimal)
+            if ('0' <= c <= '9')
+                then digitsBeforeDecimal
+            else if (c == '.')
+                then afterDecimal
+            else if (c == 'e' || c == 'E')
+                then afterE
+            else if (c in "PTGMkmunpf")
+                then afterSuffix
+            else invalid
+        case (afterJustDecimal)
+            if ('0' <= c <= '9')
+                then digitsAfterDecimal
+            else invalid
+        case (digitsAfterDecimal |
+              afterDecimal)
+            if ('0' <= c <= '9')
+                then digitsAfterDecimal
+            else if (c == 'e' || c == 'E')
+                then afterE
+            else if (c in "PTGMkmunpf")
+                then afterSuffix
+            else invalid
+        case (afterE)
+            if ('0' <= c <= '9')
+                then exponentDigits
+            else if (c == '+' || c == '-')
+                then afterEPlusMinus
+            else invalid
+        case (exponentDigits |
+              afterEPlusMinus)
+            if ('0' <= c <= '9')
+                then exponentDigits
+            else invalid
+        case (afterSuffix)
+            invalid
+        case (invalid)
+            invalid;
 
-        if (inSuffixPart) {
-            // illegal extra character
-            return null;
-        }
-
-        if (inExponentPart) {
-            if (first) {
-                first = false;
-                if (c == '-' || c == '+') {
-                    continue;
-                }
-            }
-            if ('0' <= c <= '9') {
-                seenExponentDigit = true;
-                continue;
-            }
-            return null;
-        }
-
-        if (c == 'e' || c == 'E') {
-            inExponentPart = true;
-            first = true;
-            continue;
-        }
-
-        if (c in "PTGMkmunpf") {
+        if (state == afterSuffix) {
             suffixExponent = parseSuffix(c);
-            inSuffixPart = true;
-            continue;
         }
 
+        if (state == invalid) {
+            return null;
+        }
+    }
+
+    if (!state in [digitsBeforeDecimal,
+            afterDecimal, digitsAfterDecimal,
+            exponentDigits, afterSuffix]) {
         return null;
     }
 
-    if (!seenDigit) {
-        // '.1' is ok, but not just '.' or 'e10'
-        return null;
-    }
-
-    if (inExponentPart && !seenExponentDigit) {
-        return null;
-    }
-
-    if (suffixExponent != 0) {
+    if (exists exponent = suffixExponent) {
         // Ceylon style magnitude suffix
         return nativeParseFloat(
-            "``string[0:digitCount]``\
-             E``suffixExponent``");
+            "``string[...size-2]``\
+             E``exponent``");
     }
     else {
         // may or may not have exponent
