@@ -2006,7 +2006,7 @@ public class GenerateJsVisitor extends Visitor {
     String memberAccess(final Tree.StaticMemberOrTypeExpression expr, String lhs) {
         Declaration decl = expr.getDeclaration();
         String plainName = null;
-        if (decl == null && dynblock > 0) {
+        if (decl == null && isInDynamicBlock()) {
             plainName = expr.getIdentifier().getText();
         }
         else if (TypeUtils.isNativeJs(decl)) {
@@ -2218,7 +2218,7 @@ public class GenerateJsVisitor extends Visitor {
         final Tree.Term term = specStmt.getBaseMemberExpression();
         final Tree.StaticMemberOrTypeExpression smte = term instanceof Tree.StaticMemberOrTypeExpression
                 ? (Tree.StaticMemberOrTypeExpression)term : null;
-        if (dynblock > 0 && ModelUtil.isTypeUnknown(term.getTypeModel())) {
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(term.getTypeModel())) {
             if (smte != null && smte.getDeclaration() == null) {
                 out(smte.getIdentifier().getText());
             } else {
@@ -2278,7 +2278,7 @@ public class GenerateJsVisitor extends Visitor {
                     BmeGenerator.generateMemberAccess(smte, new GenerateCallback() {
                         @Override public void generateValue() {
                             int boxType = boxUnboxStart(expr.getTerm(), moval);
-                            if (dynblock > 0 && !ModelUtil.isTypeUnknown(moval.getType())
+                            if (isInDynamicBlock() && !ModelUtil.isTypeUnknown(moval.getType())
                                     && ModelUtil.isTypeUnknown(expr.getTypeModel())) {
                                 TypeUtils.generateDynamicCheck(expr, moval.getType(), GenerateJsVisitor.this, false,
                                         expr.getTypeModel().getTypeArguments());
@@ -2365,7 +2365,7 @@ public class GenerateJsVisitor extends Visitor {
                         qualify(specStmt, bmeDecl);
                     }
                     out(names.name(bmeDecl), "=");
-                    if (dynblock > 0 && ModelUtil.isTypeUnknown(expr.getTypeModel())
+                    if (isInDynamicBlock() && ModelUtil.isTypeUnknown(expr.getTypeModel())
                             && !ModelUtil.isTypeUnknown(((FunctionOrValue) bmeDecl).getType())) {
                         TypeUtils.generateDynamicCheck(expr, ((FunctionOrValue) bmeDecl).getType(), this, false,
                                 expr.getTypeModel().getTypeArguments());
@@ -2410,7 +2410,7 @@ public class GenerateJsVisitor extends Visitor {
         String returnValue = null;
         StaticMemberOrTypeExpression lhsExpr = null;
         
-        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             that.getLeftTerm().visit(this);
             out("=");
             int box = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
@@ -2636,7 +2636,7 @@ public class GenerateJsVisitor extends Visitor {
         }
         out("return ");
         final Type returnType = that.getExpression().getTypeModel();
-        if (dynblock > 0 && ModelUtil.isTypeUnknown(returnType)) {
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(returnType)) {
             Declaration cont = ModelUtil.getContainingDeclarationOfScope(that.getScope());
             Type dectype = ((Declaration)cont).getReference().getType();
             if (dectype != null && dectype.isTypeParameter() && !dectype.getSatisfiedTypes().isEmpty()) {
@@ -2985,7 +2985,7 @@ public class GenerateJsVisitor extends Visitor {
    }
 
    boolean hasSimpleGetterSetter(Declaration decl) {
-       return (dynblock > 0 && TypeUtils.isUnknown(decl)) ||
+       return (isInDynamicBlock() && TypeUtils.isUnknown(decl)) ||
                !((decl instanceof Value && ((Value)decl).isTransient()) || (decl instanceof Setter) || decl.isFormal());
    }
 
