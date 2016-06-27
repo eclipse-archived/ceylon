@@ -143,7 +143,8 @@ public class JsOutput {
         final String modAlias = names.moduleAlias(mod);
         final String path = ((JsonModule)mod).getNpmPath();
         if (requires.put(path, modAlias) == null) {
-            out("var ", modAlias, "=require('", path, "');\n");
+            out("var ", modAlias, "=", getLanguageModuleAlias(), "npm$req('",
+                    mod.getNameAsString(), "','", path, "');\n");
             if (modAlias != null && !modAlias.isEmpty()) {
                 out(clalias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "');\n");
             }
