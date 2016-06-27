@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Unit;
+import com.redhat.ceylon.model.typechecker.model.Value;
 import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 
 public class NpmPackage extends LazyPackage {
@@ -32,14 +36,28 @@ public class NpmPackage extends LazyPackage {
         Declaration d = decs.get(name);
         if (d == null) {
             if (Character.isUpperCase(name.charAt(0))) {
+                //It looks like this needs to be a special class that can return any member
+                //in a fashion similar to this package
                 d = new Class();
                 ((Class)d).setDynamic(true);
+                ParameterList plist = new ParameterList();
+                plist.setNamedParametersSupported(true);
+                plist.setFirst(true);
+                Parameter p0 = new Parameter();
+                p0.setName("args");
+                p0.setSequenced(true);
+                p0.setDeclaredAnything(true);
+                Value v = new Value();
+                v.setType(getUnit().getUnknownType());
+                p0.setModel(v);
+                plist.getParameters().add(p0);
+                ((Class)d).setParameterList(plist);
             } else {
                 d = new Function();
                 ((Function)d).setDynamicallyTyped(true);
             }
             d.setName(name);
-            d.setUnit(this.getUnit());
+            d.setUnit(getUnit());
             d.setShared(true);
             d.setContainer(this);
             decs.put(name, d);
