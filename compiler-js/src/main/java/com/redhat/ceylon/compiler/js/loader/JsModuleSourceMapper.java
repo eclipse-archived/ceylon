@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.impl.AbstractRepository;
 import com.redhat.ceylon.cmr.resolver.javascript.JavaScriptResolver;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
@@ -162,8 +163,14 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                 }
             }
             if ("npm".equals(artifact.namespace())) {
-                final String npmPath = artifact.artifact().getName();
-                ((JsonModule)module).setNpmPath(npmPath);
+                try {
+                    final File root = ((AbstractRepository)artifact.repository()).getRoot().getContent(File.class);
+                    final String npmPath = artifact.artifact().getAbsolutePath();
+                    ((JsonModule)module).setNpmPath(npmPath.substring(root.getAbsolutePath().length()+1));
+                } catch (IOException ex) {
+                    System.out.println("ay no mames");
+                    ex.printStackTrace();
+                }
                 return;
             }
         }

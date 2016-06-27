@@ -141,7 +141,7 @@ public class JsOutput {
 
     public void requireFromNpm(final Module mod, final JsIdentifierNames names) {
         final String modAlias = names.moduleAlias(mod);
-        final String path = mod.getNameAsString() + "/" + ((JsonModule)mod).getNpmPath();
+        final String path = ((JsonModule)mod).getNpmPath();
         if (requires.put(path, modAlias) == null) {
             out("var ", modAlias, "=require('", path, "');\n");
             if (modAlias != null && !modAlias.isEmpty()) {
