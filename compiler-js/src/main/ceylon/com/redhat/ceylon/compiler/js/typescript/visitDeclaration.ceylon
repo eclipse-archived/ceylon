@@ -37,7 +37,7 @@ void visitDeclaration(
                 });
             writer.writeLine("ex$.``name`` = (function(``name``) { return function(){ return ``name``; }; })(exports.``name``);"); // TS emits a variable, Ceylon expects a function – TODO #6320; TODO also this overwrites the TypeScript value, so if any TypeScript code uses this value we’re screwed
             if (!const) {
-                writer.writeLine("ex$.set``initUCase(name)`` = function(``name``) { ex$.``name`` = function(){ return ``name``; }; };"); // TODO this is complete rubbish: we’re only overwriting the getter for Ceylon
+                writer.writeLine("ex$.set$``name`` = function(``name``) { ex$.``name`` = function(){ return ``name``; }; };"); // TODO this is complete rubbish: we’re only overwriting the getter for Ceylon
             }
             // TODO ex$.name = exports.name feels wrong; surely tsc can do the right thing by itself?
             // TODO write metamodel stuff
