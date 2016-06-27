@@ -106,6 +106,8 @@ public class NpmContentStore extends AbstractContentStore {
                     Object main = descriptor.get("main");
                     if (main instanceof String) {
                         return (String)main;
+                    } else if (main == null) {
+                        return "index.js";
                     } else {
                         throw new RepositoryException("Unexpected value for 'main' in NPM descriptor: " + json);
                     }
