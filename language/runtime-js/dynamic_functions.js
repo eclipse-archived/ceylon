@@ -161,3 +161,16 @@ function natc$(a,t,loc) {
   throw new TypeError('Expected ' + qname$(t) + ' (' + loc + ')');
 }
 ex$.natc$=natc$;
+
+//A special kind of "require" for non-standard npm modules
+//that return a single function instead of a proper exports object
+function npm$req(name,mod) {
+  var x=require(mod);
+  if (typeof(x)==='function') {
+    var o={};
+    o[name]=x;
+    x=o;
+  }
+  return x;
+}
+ex$.npm$req=npm$req;
