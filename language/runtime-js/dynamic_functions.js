@@ -167,9 +167,14 @@ ex$.natc$=natc$;
 function npm$req(name,mod) {
   var x=require(mod);
   if (typeof(x)==='function') {
-    var o={};
-    o[name]=x;
-    x=o;
+    var k=Object.keys(x);
+    if (k.length===0) {
+      var o={};
+      o[name]=x;
+      x=o;
+    } else if (k.indexOf(name)<0) {
+      x[name]=x;
+    }
   }
   return x;
 }
