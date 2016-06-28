@@ -150,7 +150,7 @@ public class LanguageCompiler extends JavaCompiler {
     private List<JavaFileObject> resourceFileObjects;
     private Map<String,CeylonFileObject> moduleNamesToFileObjects = new HashMap<String,CeylonFileObject>();
     private SourceLanguage sourceLanguage;
-    public boolean addModuleTrees = true;
+    private boolean addModuleTrees = true;
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(final Context context) {
@@ -912,6 +912,8 @@ public class LanguageCompiler extends JavaCompiler {
     @Override
     public void initRound(JavaCompiler prev) {
         super.initRound(prev);
+        // round compilers don't add module trees, it's already done by the first one
+        addModuleTrees = false;
         PhasedUnits oldPUs = ((LanguageCompiler)prev).phasedUnits;
         ModuleManager moduleManager = phasedUnits.getModuleManager();
         ModuleSourceMapper moduleSourceMapper = phasedUnits.getModuleSourceMapper();
