@@ -53,6 +53,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonClassWriter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
@@ -877,10 +878,12 @@ public class LanguageCompiler extends JavaCompiler {
         if(!visited.add(moduleSpec))
             return;
 
-        ArtifactContext context = new ArtifactContext(null, moduleSpec.getName(), moduleSpec.getVersion(), ArtifactContext.JAR);
+        String ns = ModuleUtil.getNamespaceFromUri(moduleSpec.getName());
+        String name = ModuleUtil.getModuleNameFromUri(moduleSpec.getName());
+        ArtifactContext context = new ArtifactContext(ns, name, moduleSpec.getVersion(), ArtifactContext.JAR);
         ArtifactResult result = repositoryManager.getArtifactResult(context);
         ceylonEnter.addModuleToAptPath(moduleSpec, result);
-        
+
         for(ArtifactResult dep : result.dependencies()){
             ModuleSpec depSpec = new ModuleSpec(dep.name(), dep.version());
             addDependenciesToAptPath(repositoryManager, depSpec, visited);
