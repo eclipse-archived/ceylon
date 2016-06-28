@@ -204,6 +204,11 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         this.jdkProvider = jdkProvider != null ? ModuleSpec.parse(jdkProvider) : null;
     }
     private List<ModuleSpec> aptModules;
+    {
+        String[] aptModules = DefaultToolOptions.getCompilerAptModules();
+        if(aptModules != null)
+            setAptModule(Arrays.asList(aptModules));
+    }
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
