@@ -239,9 +239,8 @@ shared native("jvm") final class StringBuilder()
     shared actual native("jvm")
     Character? getFromFirst(Integer index) {
         try {
-            return 0 <= index < builder.length()
-                then builder.codePointAt(startIndex(index))
-                            .character;
+            return builder.codePointAt(startIndex(index))
+                          .character;
         }
         catch (IndexOutOfBoundsException ioobe) {
             return null;
