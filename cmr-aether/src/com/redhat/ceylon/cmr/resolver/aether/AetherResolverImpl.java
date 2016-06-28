@@ -272,10 +272,10 @@ public class AetherResolverImpl implements AetherResolver {
                 extension = "jar";
         }
         DefaultArtifact artifact = new DefaultArtifact( groupId, artifactId, classifier, extension, version);
-        final Dependency dependency = new Dependency( artifact, JavaScopes.COMPILE );
         DependencyNode ret;
         
         if(!fetchSingleArtifact){
+            final Dependency dependency = new Dependency( artifact, JavaScopes.COMPILE );
         	CollectRequest collectRequest = new CollectRequest();
         	collectRequest.setRepositories(repos);
         	collectRequest.setRoot( dependency );
