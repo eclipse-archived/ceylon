@@ -238,7 +238,8 @@ public class AetherResolverImpl implements AetherResolver {
     @Override
     public DependencyDescriptor getDependencies(String groupId, String artifactId, String version, boolean fetchSingleArtifact) 
     		throws AetherException{
-    	return getDependencies(groupId, artifactId, version, null, "jar", fetchSingleArtifact);
+        // null extension means auto-detect based on pom
+    	return getDependencies(groupId, artifactId, version, null, null, fetchSingleArtifact);
     }
     
     @Override
@@ -250,6 +251,26 @@ public class AetherResolverImpl implements AetherResolver {
         DefaultRepositorySystemSession session = newSession( repoSystem );
         List<RemoteRepository> repos = configureSession(repoSystem, session);
 
+        if(extension == null){
+            DefaultArtifact artifact = new DefaultArtifact( groupId, artifactId, classifier, "pom", version);
+            ArtifactRequest artifactRequest = new ArtifactRequest();
+            artifactRequest.setArtifact(artifact);
+            artifactRequest.setRepositories(repos);
+
+            Artifact resultArtifact;
+            try {
+                resultArtifact = repoSystem.resolveArtifact(session, artifactRequest).getArtifact();
+            } catch (ArtifactResolutionException e) {
+                throw new AetherException(e);
+            }
+            if(resultArtifact != null){
+                extension = findExtension(resultArtifact.getFile());
+            }
+            if(extension == null
+                    // we only support jar/aar. ear/war/bundle will resolve as jar anyway
+                    || (!extension.equals("jar") && !extension.equals("aar")))
+                extension = "jar";
+        }
         DefaultArtifact artifact = new DefaultArtifact( groupId, artifactId, classifier, extension, version);
         final Dependency dependency = new Dependency( artifact, JavaScopes.COMPILE );
         DependencyNode ret;
@@ -306,6 +327,20 @@ public class AetherResolverImpl implements AetherResolver {
         }
         
         return ret == null ? null : new DependencyNodeDependencyDescriptor(ret);
+    }
+
+    private String findExtension(File pomFile) {
+        if(pomFile != null && pomFile.exists()){
+            MavenXpp3Reader reader = new MavenXpp3Reader();
+            Model model;
+            try(FileReader fileReader = new FileReader(pomFile)){
+                model = reader.read(fileReader);
+                return model.getPackaging();
+            } catch (XmlPullParserException | IOException e) {
+                return null;
+            }
+        };
+        return null;
     }
 
     @Override
