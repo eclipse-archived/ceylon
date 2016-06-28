@@ -527,7 +527,7 @@ public class CeylonEnter extends Enter {
                         : new ArrayList<File>(classPath);
                 newClassPath.add(artifact);
                 try {
-                    fileManager.getLocations().setLocation(StandardLocation.CLASS_PATH, newClassPath);
+                    fileManager.getLocations().setLocation(StandardLocation.ANNOTATION_PROCESSOR_PATH, newClassPath);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
