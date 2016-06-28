@@ -2043,6 +2043,11 @@ public class RefinementVisitor extends Visitor {
         m.setContainer(c);
         m.setShortcutRefinement(true);
         m.setDeclaredVoid(sm.isDeclaredVoid());
+        Declaration rmd = rm.getDeclaration();
+        if (rmd instanceof TypedDeclaration) {
+            TypedDeclaration rmtd = (TypedDeclaration) rmd;
+            m.setUncheckedNullType(rmtd.hasUncheckedNullType());
+        }
         setVisibleScope(m);
         c.addMember(m);
         that.setRefinement(true);
