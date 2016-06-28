@@ -483,13 +483,33 @@ public class TypePrinter {
         if (elemtypes==null) {
             return false;
         }
-        Type t = union(elemtypes, unit);
-        Type typeArg = args.getTypeArgumentList().get(0);
-        if (typeArg==null) {
-            return false;
-        }
-        else {
-            return t.isExactly(typeArg);
+
+        int index = -1;
+        while (true) {
+            index++;
+            if (args.isTuple()) {
+                List<Type> tal = args.getTypeArgumentList();
+                if (tal.size() < 3) {
+                    return false;
+                }
+                Type t = union(elemtypes.subList(
+                        index, elemtypes.size()), unit);
+                Type typeArg = tal.get(0);
+                if (typeArg==null ||
+                        !t.isExactly(typeArg)) {
+                    return false;
+                }
+                // check Rest
+                args = tal.get(2);
+            }
+            else if (args.isEmpty()
+                    || args.isSequential()
+                    || args.isSequence()) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
