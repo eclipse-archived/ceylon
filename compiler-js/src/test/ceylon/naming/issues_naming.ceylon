@@ -69,4 +69,9 @@ void issues() {
   \iI6322="ok2";
   check(i6322=="ok1", "#6322.4");
   check(\iI6322=="ok2", "#6322.5");
+  //#6343
+  check(parseFloat("1") exists, "#6343.1");
+  check(isFinite()=="our own impl", "#6343.2");
 }
+
+shared String isFinite() => "our own impl";
