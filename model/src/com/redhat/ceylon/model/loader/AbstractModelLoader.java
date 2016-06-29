@@ -2793,8 +2793,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                     && !setter.isProtected() && !value.mirror.isProtected()
                                     && !setter.isDefaultAccess() && !value.mirror.isDefaultAccess())) {
                         VariableMirror setterParam = setter.getParameters().get(0);
-                        Type paramType = obtainType(setterParam.getType(), setterParam, klass, ModelUtil.getModuleContainer(klass), VarianceLocation.INVARIANT,
+                        Module module = ModelUtil.getModuleContainer(klass);
+                        Type paramType = obtainType(setterParam.getType(), setterParam, klass, module, VarianceLocation.INVARIANT,
                                 "setter '"+setter.getName()+"'", klass);
+                        switch(getUncheckedNullPolicy(isCeylon, setterParam.getType(), setterParam)){
+                        case Optional:
+                            if(!isCeylon){
+                                paramType = makeOptionalTypePreserveUnderlyingType(paramType, module);
+                            }
+                            break;
+                        }
                         // only add the setter if it has exactly the same type as the getter
                         if(paramType.isExactly(value.getType())){
                             value.setVariable(true);
