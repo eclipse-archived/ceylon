@@ -64,7 +64,7 @@ public class DocVisitor extends Visitor {
     public void visit(AnyAttribute that) {
         //local vars
     	Type t = that.getDeclarationModel().getType();
-    	if (t!=null) {
+    	if (t != null && t.getDeclaration() != null) {
     		retrieveDocs(t.getDeclaration().getAnnotations(), 
     				that.getType().getLocation());
     	}
@@ -82,7 +82,7 @@ public class DocVisitor extends Visitor {
         } 
         else {
             Type t = that.getDeclarationModel().getType();
-            if (t!=null) {
+            if (t != null && t.getDeclaration() != null) {
             	retrieveDocs(t.getDeclaration().getAnnotations(), 
             			that.getType().getLocation());
             }
