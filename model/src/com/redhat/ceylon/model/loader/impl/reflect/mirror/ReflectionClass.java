@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.ModelResolutionException;
@@ -59,6 +60,11 @@ public class ReflectionClass implements ClassMirror {
             annotations = ReflectionUtils.getAnnotations(klass);
         }
         return annotations;
+    }
+
+    @Override
+    public Set<String> getAnnotationNames() {
+        return getAnnotations().keySet();
     }
 
     @Override
