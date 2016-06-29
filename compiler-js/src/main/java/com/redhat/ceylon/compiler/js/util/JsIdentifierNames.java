@@ -39,6 +39,7 @@ public class JsIdentifierNames {
     }
 
     private static Set<String> reservedWords = new HashSet<String>();
+    private static Set<String> globals = new HashSet<String>();
 
     static {
         // Identifiers that have to be escaped because they are keywords in
@@ -81,6 +82,13 @@ public class JsIdentifierNames {
         //String, Array, etc
         reservedWords.addAll(Arrays.asList("length", "toString", "constructor", "prototype",
                 "concat", "indexOf", "lastIndexOf", "slice", "get"));
+        //Global identifiers. Like reserved words but only affects toplevel declarations, inside the same
+        //module
+        globals.addAll(Arrays.asList("parseFloat", "uneval", "isFinite", "isNaN", "parseInt",
+                "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent",
+                "escape", "unescape", "Symbol", "EvalError", "InternalError", "RangeError",
+                "ReferenceError", "SyntaxError", "TypeError", "URIError", "Math", "DataView",
+                "JSON", "ArrayBuffer"));
     }
 
     public static boolean isReservedWord(String token) {
@@ -313,8 +321,9 @@ public class JsIdentifierNames {
             if (suffix.length() > 0) {
                 // nested type
                 name += suffix;
-            } else if (!forGetterSetter && !TypeUtils.isConstructor(decl) && reservedWords.contains(name)) {
-                // JavaScript keyword
+            } else if ((!forGetterSetter && !TypeUtils.isConstructor(decl) && reservedWords.contains(name))
+                || isJsGlobal(decl)) {
+                // JavaScript keyword or global declaration
                 name = "$_" + name;
             }
         }
@@ -423,4 +432,8 @@ public class JsIdentifierNames {
         return "$c_";
     }
 
+    public boolean isJsGlobal(Declaration d) {
+        return d.isToplevel() && globals.contains(d.getName()) &&
+                d.getUnit().getPackage().getModule().getJsMajor()==0;
+    }
 }
