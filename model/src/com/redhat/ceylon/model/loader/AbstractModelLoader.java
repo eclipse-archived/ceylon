@@ -3408,21 +3408,32 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
 
+        Module module = ModelUtil.getModuleContainer(method);
         // and its return type
         // do not log an additional error if we had one from checking if it was overriding
         if(type == null)
-            type = obtainType(methodMirror.getReturnType(), methodMirror, method, ModelUtil.getModuleContainer(method), VarianceLocation.COVARIANT,
+            type = obtainType(methodMirror.getReturnType(), methodMirror, method, module, VarianceLocation.COVARIANT,
                               "method '"+methodMirror.getName()+"'", klass);
-        method.setType(type);
         
+        switch(getUncheckedNullPolicy(isCeylon, methodMirror.getReturnType(), methodMirror)){
+        case Optional:
+            if(!isCeylon){
+                type = makeOptionalTypePreserveUnderlyingType(type, module);
+            }
+            break;
+        case UncheckedNull:
+            method.setUncheckedNullType(true);
+            break;
+        }
+        method.setType(type);
+
         // now its parameters
         if(isEqualsMethod(methodMirror))
             setEqualsParameters(method, methodMirror);
         else
             setParameters(method, classMirror, methodMirror, isCeylon, klass);
-        
-        method.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
-        type.setRaw(isRaw(ModelUtil.getModuleContainer(klass), methodMirror.getReturnType()));
+
+        type.setRaw(isRaw(module, methodMirror.getReturnType()));
         markDeclaredVoid(method, methodMirror);
         markUnboxed(method, methodMirror, methodMirror.getReturnType());
         markSmall(method, methodMirror.getReturnType());
@@ -3619,7 +3630,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 && fieldMirror.isStatic())
             value.setEnumValue(true);
         
-        Type type = obtainType(fieldMirror.getType(), fieldMirror, klass, ModelUtil.getModuleContainer(klass), VarianceLocation.INVARIANT,
+        Module module = ModelUtil.getModuleContainer(klass);
+        Type type = obtainType(fieldMirror.getType(), fieldMirror, klass, module, VarianceLocation.INVARIANT,
                 "field '"+value.getName()+"'", klass);
         if (value.isEnumValue()) {
             Class enumValueType = new Class();
@@ -3637,10 +3649,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             value.setType(enumValueType.getType());
             value.setUncheckedNullType(false);
         } else {
+            switch(getUncheckedNullPolicy(isCeylon, fieldMirror.getType(), fieldMirror)){
+            case Optional:
+                if(!isCeylon){
+                    type = makeOptionalTypePreserveUnderlyingType(type, module);
+                }
+                break;
+            case UncheckedNull:
+                value.setUncheckedNullType(true);
+                break;
+            }
             value.setType(type);
-            value.setUncheckedNullType((!isCeylon && !fieldMirror.getType().isPrimitive()) || isUncheckedNull(fieldMirror));
         }
-        type.setRaw(isRaw(ModelUtil.getModuleContainer(klass), fieldMirror.getType()));
+        type.setRaw(isRaw(module, fieldMirror.getType()));
 
         markUnboxed(value, null, fieldMirror.getType());
         markSmall(value, fieldMirror.getType());
@@ -3745,17 +3766,27 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             type = logModelResolutionException(x, klass, "getter '"+methodName+"' (checking if it is an overriding method");
         }
         value.setName(JvmBackendUtil.strip(methodName, isCeylon, value.isShared()));
+        Module module = ModelUtil.getModuleContainer(klass);
 
         // do not log an additional error if we had one from checking if it was overriding
         if(type == null)
-            type = obtainType(methodMirror.getReturnType(), methodMirror, klass, ModelUtil.getModuleContainer(klass), VarianceLocation.INVARIANT,
+            type = obtainType(methodMirror.getReturnType(), methodMirror, klass, module, VarianceLocation.INVARIANT,
                               "getter '"+methodName+"'", klass);
-        value.setType(type);
         // special case for hash attributes which we want to pretend are of type long internally
         if(value.isShared() && methodName.equals("hash"))
             type.setUnderlyingType("long");
-        value.setUncheckedNullType((!isCeylon && !methodMirror.getReturnType().isPrimitive()) || isUncheckedNull(methodMirror));
-        type.setRaw(isRaw(ModelUtil.getModuleContainer(klass), methodMirror.getReturnType()));
+        switch(getUncheckedNullPolicy(isCeylon, methodMirror.getReturnType(), methodMirror)){
+        case Optional:
+            if(!isCeylon){
+                type = makeOptionalTypePreserveUnderlyingType(type, module);
+            }
+            break;
+        case UncheckedNull:
+            value.setUncheckedNullType(true);
+            break;
+        }
+        value.setType(type);
+        type.setRaw(isRaw(module, methodMirror.getReturnType()));
 
         markUnboxed(value, methodMirror, methodMirror.getReturnType());
         markSmall(value, methodMirror.getReturnType());
@@ -3768,9 +3799,30 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return value;
     }
 
-    private boolean isUncheckedNull(AnnotatedMirror methodMirror) {
-        Boolean unchecked = getAnnotationBooleanValue(methodMirror, CEYLON_TYPE_INFO_ANNOTATION, "uncheckedNull");
-        return unchecked != null && unchecked.booleanValue();
+    private enum NullStatus {
+        UncheckedNull, Optional, NonOptional, NoCheck;
+    }
+    
+    private NullStatus getUncheckedNullPolicy(boolean isCeylon, TypeMirror typeMirror, AnnotatedMirror annotatedMirror) {
+        if(!isCeylon){
+            if(typeMirror.isPrimitive())
+                return NullStatus.NonOptional;
+            for(String name : annotatedMirror.getAnnotationNames()){
+                String lcName = name.toLowerCase();
+                if(lcName.endsWith(".nullable")){
+                    return NullStatus.Optional;
+                }
+                if(lcName.endsWith(".notnull")
+                        || lcName.endsWith(".nonnull")){
+                    return NullStatus.NonOptional;
+                }
+            }
+        }
+        
+        Boolean unchecked = getAnnotationBooleanValue(annotatedMirror, CEYLON_TYPE_INFO_ANNOTATION, "uncheckedNull");
+        if(unchecked != null)
+            return unchecked.booleanValue() ? NullStatus.UncheckedNull : NullStatus.NonOptional;
+        return isCeylon ? NullStatus.NoCheck : NullStatus.UncheckedNull;
     }
 
     private void setMethodOrValueFlags(final ClassOrInterface klass, final MethodMirror methodMirror, final FunctionOrValue decl, boolean isCeylon) {
@@ -4033,12 +4085,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 TypeMirror variadicType = typeMirror.getComponentType();
                 // we pretend it's toplevel because we want to get magic string conversion for variadic methods
                 type = obtainType(ModelUtil.getModuleContainer((Scope)decl), variadicType, (Scope)decl, TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
-                if(!isCeylon && !variadicType.isPrimitive()){
-                    // Java parameters are all optional unless primitives
-                    Type optionalType = getOptionalType(type, module);
-                    optionalType.setUnderlyingType(type.getUnderlyingType());
-                    type = optionalType;
+                if(!isCeylon){
+                    // Java parameters are all optional unless primitives or annotated as such
+                    if(getUncheckedNullPolicy(isCeylon, variadicType, paramMirror) != NullStatus.NonOptional){
+                        type = makeOptionalTypePreserveUnderlyingType(type, module);
+                    }
                 }
+
                 // turn it into a Sequential<T>
                 type = typeFactory.getSequentialType(type);
             }else{
@@ -4047,11 +4100,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // variadic params may technically be null in Java, but it Ceylon sequenced params may not
                 // so it breaks the typechecker logic for handling them, and it will always be a case of bugs
                 // in the java side so let's not allow this
-                if(!isCeylon && !typeMirror.isPrimitive()){
-                    // Java parameters are all optional unless primitives
-                    Type optionalType = getOptionalType(type, module);
-                    optionalType.setUnderlyingType(type.getUnderlyingType());
-                    type = optionalType;
+                if(!isCeylon){
+                    // Java parameters are all optional unless primitives or annotated as such
+                    if(getUncheckedNullPolicy(isCeylon, typeMirror, paramMirror) != NullStatus.NonOptional){
+                        type = makeOptionalTypePreserveUnderlyingType(type, module);
+                    }
                 }
             }
             type.setRaw(isRaw(ModelUtil.getModuleContainer(container), typeMirror));
@@ -4131,6 +4184,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 parameterNameParser.parseMpl((String)functionalParameterAnnotation.getValue(), ((Function)decl).getType().getFullType(), (Function)decl);
             }
         }
+    }
+
+    private Type makeOptionalTypePreserveUnderlyingType(Type type, Module module) {
+        Type optionalType = getOptionalType(type, module);
+        optionalType.setUnderlyingType(type.getUnderlyingType());
+        return optionalType;
     }
 
     private boolean isCeylon1Dot1(ClassMirror classMirror) {
