@@ -8349,8 +8349,8 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type t = ic.getType();
         if (t!=null) {
             Type type = t.getTypeModel();
-            return type==null ? null :
-                type.getUnionOfCases();
+            return type/*==null ? null :
+                type.getUnionOfCases()*/;
         }
         else {
             return null;
@@ -8392,10 +8392,12 @@ public class ExpressionVisitor extends Visitor {
             List<Type> list = 
                     new ArrayList<Type>(es.size());
             for (Tree.Expression e: es) {
-                if (e.getTypeModel()!=null && 
-                        !(e.getTerm() instanceof Tree.Literal) && 
-                        !(e.getTerm() instanceof Tree.NegativeOp)) {
-                    addToUnion(list, e.getTypeModel());
+                if (e.getTypeModel()!=null) {
+                    Tree.Term term = e.getTerm();
+                    if (!(term instanceof Tree.Literal ||
+                          term instanceof Tree.NegativeOp)) {
+                        addToUnion(list, e.getTypeModel());
+                    }
                 }
             }
             return union(list, unit);
