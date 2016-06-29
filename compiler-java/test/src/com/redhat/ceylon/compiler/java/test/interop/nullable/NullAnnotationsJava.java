@@ -24,4 +24,8 @@ public class NullAnnotationsJava {
     public String getNotNullProperty(){ return null; }
     @Nullable
     public String getNullableProperty(){ return null; }
+
+    public void setUnknownProperty(String str){}
+    public void setNotNullProperty(@Nonnull String str){}
+    public void setNullableProperty(@Nullable String str){}
 }
