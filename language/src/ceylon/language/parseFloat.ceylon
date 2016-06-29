@@ -186,7 +186,7 @@ native("js")
 Float? nativeParseFloat(String string) {
     Float result;
     dynamic {
-        result = Float(eval("parseFloat(\"``string``\")"));
+        result = nativeJSParseFloat(string);
     }
     if (result == 0.0 && string.occursAt(0, '-')) {
         return -0.0;
