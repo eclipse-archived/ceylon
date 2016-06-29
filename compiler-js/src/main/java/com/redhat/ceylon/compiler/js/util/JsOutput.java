@@ -154,7 +154,7 @@ public class JsOutput {
                 dashIdx = singleFunctionName.indexOf('-', dashIdx);
             }
             out("var ", modAlias, "=", getLanguageModuleAlias(), "npm$req('",
-                    singleFunctionName, "','", path, "');\n");
+                    singleFunctionName, "','", path, "',require);\n");
             if (modAlias != null && !modAlias.isEmpty()) {
                 out(clalias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "');\n");
             }
