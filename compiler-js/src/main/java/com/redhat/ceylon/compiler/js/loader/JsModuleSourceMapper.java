@@ -13,6 +13,7 @@ import com.redhat.ceylon.cmr.impl.AbstractRepository;
 import com.redhat.ceylon.cmr.resolver.javascript.JavaScriptResolver;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.compiler.js.CeylonRunJsException;
@@ -167,6 +168,8 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                     final File root = ((AbstractRepository)artifact.repository()).getRoot().getContent(File.class);
                     final String npmPath = artifact.artifact().getAbsolutePath();
                     ((JsonModule)module).setNpmPath(npmPath.substring(root.getAbsolutePath().length()+1));
+                    module.setJsMajor(Versions.JS_BINARY_MAJOR_VERSION);
+                    module.setJsMinor(Versions.JS_BINARY_MINOR_VERSION);
                 } catch (IOException ex) {
                     System.out.println("ay no mames");
                     ex.printStackTrace();
