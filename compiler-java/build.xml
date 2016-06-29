@@ -195,6 +195,7 @@
             <src path="${test.src}"/>
             <include name="com/redhat/ceylon/compiler/java/test/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/interop/mixed/**" />
+            <exclude name="com/redhat/ceylon/compiler/java/test/interop/nullable/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/interop/Bug*" />
             <exclude name="com/redhat/ceylon/compiler/java/test/interop/Interdep*" />
             <exclude name="com/redhat/ceylon/compiler/java/test/interop/JavaRepeatable.java" />
