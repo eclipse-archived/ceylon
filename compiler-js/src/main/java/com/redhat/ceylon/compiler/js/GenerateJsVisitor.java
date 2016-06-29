@@ -655,7 +655,11 @@ public class GenerateJsVisitor extends Visitor {
             if (dname.endsWith("()")){
                 dname = dname.substring(0, dname.length()-2);
             }
-            out(dname, "=", dname);
+            if (names.isJsGlobal(d)) {
+                out(dname.substring(2), "=", dname);
+            } else {
+                out(dname, "=", dname);
+            }
             endLine(true);
         }
         return shared;
@@ -1729,8 +1733,11 @@ public class GenerateJsVisitor extends Visitor {
                     out(".plus(");
                 }
                 final Expression expr = exprs.get(i);
+                final Type t = expr.getTypeModel();
                 expr.visit(this);
-                if (expr.getTypeModel() == null || !expr.getTypeModel().isString()) {
+                if (t == null || t.isUnknown()) {
+                    out(".toString()");
+                } else if (!t.isString()) {
                     out(".string");
                 }
                 if (!skip) {
