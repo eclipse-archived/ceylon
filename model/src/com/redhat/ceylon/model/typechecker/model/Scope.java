@@ -132,14 +132,15 @@ public interface Scope {
     /**
      * Get a list of all declarations belonging directly to
      * this scope, even declarations which aren't normally
-     * visible. Calling this method necessarily loads the
-     * whole containing scope, so please don't, at least not
+     * visible.
+     * 
+     * Calling this method necessarily loads the whole 
+     * containing scope, so please don't, at least not 
      * unless you really have to.
      * 
-     * @return a list of everything
-     * @deprecated to discourage you from calling this
+     * @return A list of everything directly contained in 
+     *         this scope
      */
-    @Deprecated 
     public List<Declaration> getMembers();
     
     /**

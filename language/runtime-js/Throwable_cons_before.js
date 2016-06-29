@@ -22,7 +22,7 @@ function(msg,cause,exc) {
             exc.stack_trace.push("CIRCULAR");
             _caller = null;
           }
-        } else if (ilc===0 && noms.contains(_caller.string)) {
+        } else if (ilc===0 && $arr$cnt(noms,_caller.string)) {
           ilc=1;
           ilf=_caller.string;
         }

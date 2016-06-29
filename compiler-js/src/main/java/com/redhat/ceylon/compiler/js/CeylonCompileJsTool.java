@@ -216,7 +216,8 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     }
 
     @Override
-    public void initialize(CeylonTool mainTool) throws IOException {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
     }
 
     @Override
@@ -270,6 +271,10 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                 @Override
                 public String getPath() {
                     return getName();
+                }
+                @Override
+                public String getRelativePath(VirtualFile file) {
+                    return "";
                 }
                 @Override
                 public InputStream getInputStream() {

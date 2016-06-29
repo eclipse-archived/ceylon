@@ -386,13 +386,13 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                             newline();
                             String modver = md.getName() + "/" + md.getLastVersion().getVersion();
                             append("        ").append(modver);
-                            dep = new ModuleDependencyInfo(md.getName(), md.getLastVersion().getVersion(), false, true);
+                            dep = new ModuleDependencyInfo(null, md.getName(), md.getLastVersion().getVersion(), false, true);
                         }
                     } else {
                         ModuleDetails md = suggestions.iterator().next();
                         String modver = md.getName() + "/" + md.getLastVersion().getVersion();
                         msg("info.try.importing", modver);
-                        dep = new ModuleDependencyInfo(md.getName(), md.getLastVersion().getVersion(), false, true);
+                        dep = new ModuleDependencyInfo(null, md.getName(), md.getLastVersion().getVersion(), false, true);
                     }
                 }
                 return dep;

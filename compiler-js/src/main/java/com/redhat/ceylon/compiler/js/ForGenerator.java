@@ -13,6 +13,7 @@ public class ForGenerator {
     final GenerateJsVisitor gen;
     private final Set<Declaration> directAccess;
     private final String iterVar;
+    private String enteredVar;
 
     ForGenerator(GenerateJsVisitor generator, Set<Declaration> directAccess) {
         gen = generator;
@@ -32,9 +33,14 @@ public class ForGenerator {
         final String itemVar = generateForLoop(foriter, hasElse, caps);
         gen.encloseBlockInFunction(that.getForClause().getBlock(), false, caps);
         //If there's an else block, check for normal termination
-        gen.endBlock();
+        gen.endBlockNewLine();
+        if (enteredVar != null) {
+            gen.out("if(!",enteredVar,")");
+            gen.generateThrow(gen.getClAlias() + "AssertionError",
+                    "nonempty Iterable with initial 'finished' element", that);
+            gen.out(";");
+        }
         if (hasElse) {
-            gen.endLine();
             gen.out("if(", gen.getClAlias(), "finished()", "===", itemVar, ")");
             gen.encloseBlockInFunction(that.getElseClause().getBlock(), true, null);
         }
@@ -59,13 +65,23 @@ public class ForGenerator {
         }
         boolean isNative=iterateNative(iterable.getExpression().getTerm(), itemVar);
         if (!isNative) {
+            final boolean checkEntered = that.getUnit().isNonemptyIterableType(
+                    iterable.getExpression().getTerm().getTypeModel());
             if (hasElse || !optimize(iterable, itemVar)) {
-                gen.out("var ", itemVar, ";for(var ", iterVar,"=");
+                gen.out("var ", itemVar);
+                if (checkEntered) {
+                    enteredVar = gen.getNames().createTempVariable();
+                    gen.out(",", enteredVar);
+                }
+                gen.out(";for(var ", iterVar,"=");
                 iterable.visit(gen);
                 gen.out(".iterator();(", itemVar, "=", iterVar, ".next())!==",
                         gen.getClAlias(), "finished();)");
             }
             gen.beginBlock();
+            if (enteredVar != null) {
+                gen.out(enteredVar, "=true;");
+            }
         }
         if (that instanceof Tree.ValueIterator) {
             if (captured) {

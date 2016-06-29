@@ -108,7 +108,7 @@ class Union() {
     @type:"Null|Union.A|Null|Union.B|Null|Union.C" A?|B?|C? oabc = null;
     @type:"Null|Union.A|Union.B|Union.C" value oabc1 = oabc;
     if (is A|B|C oabc) {
-        @error if (exists oabc) {}
+        @warn:"redundantNarrowing" if (exists oabc) {}
     }
     if (is B|C oabc) {
         oabc.hello();
@@ -130,7 +130,7 @@ class Union() {
     
     if (is Sequence<String?> strs) {
         for (s in strs) {
-            @error if (is String s) {}
+            @warn:"redundantNarrowing" if (is String s) {}
             s.join {};
         }
     }

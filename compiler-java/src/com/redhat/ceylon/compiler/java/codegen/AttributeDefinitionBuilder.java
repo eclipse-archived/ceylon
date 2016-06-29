@@ -35,6 +35,7 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -181,8 +182,17 @@ public class AttributeDefinitionBuilder {
     
     public static AttributeDefinitionBuilder getter(AbstractTransformer owner, 
             String attrAndFieldName, TypedDeclaration attrType) {
-        return new AttributeDefinitionBuilder(owner, null, attrType, null, null,
-                attrAndFieldName, attrAndFieldName, false, false)
+        String getterName = Naming.getGetterName(attrType, false);
+        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, null, attrType, null, null,
+                        attrAndFieldName, attrAndFieldName, false, false);
+        if (!"ref".equals(getterName)
+                && !"get_".equals(getterName)
+                && !attrType.getName().equals(NamingBase.getJavaAttributeName(getterName))
+                && attrType.isShared()
+                && !Decl.isValueConstructor(attrType)) {
+            adb.getterBuilder.realName(attrType.getName());
+        }
+        return adb
             .skipField()
             .immutable();
     }

@@ -414,8 +414,9 @@
                 </listitem>
                 <listitem>
                     <para>
-                        Associativity: <literal>X|(Y|Z)</literal> is the same 
-                        type as <literal>(X|Y)|Z</literal>.
+                        Associativity: <literal>X|&lt;Y|Z&gt;</literal> is the same 
+                        type as <literal>&lt;X|Y&gt;|Z</literal>, where the angle 
+                        brackets denote grouping.
                     </para>
                 </listitem>
                 <listitem>
@@ -513,8 +514,9 @@
                 </listitem>
                 <listitem>
                     <para>
-                        Associativity: <literal>X&amp;(Y&amp;Z)</literal> is the same 
-                        type as <literal>(X&amp;Y)&amp;Z</literal>.
+                        Associativity: <literal>X&amp;&lt;Y&amp;Z&gt;</literal> is the same 
+                        type as <literal>&lt;X&amp;Y&gt;&amp;Z</literal>, where the angle 
+                        brackets denote grouping.
                     </para>
                 </listitem>
                 <listitem>
@@ -540,8 +542,8 @@
                 </listitem>
                 <listitem>
                     <para>
-                        Distributivity over union: <literal>X&amp;(Y|Z)</literal> is the same 
-                        type as <literal>(X&amp;Y)|(X&amp;Z)</literal>.
+                        Distributivity over union: <literal>X&amp;&lt;Y|Z&gt;</literal> is the same 
+                        type as <literal>&lt;X&amp;Y&gt;|&lt;X&amp;Z&gt;</literal>.
                     </para>
                 </listitem>
             </itemizedlist>

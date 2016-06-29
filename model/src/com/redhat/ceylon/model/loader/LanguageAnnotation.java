@@ -29,7 +29,7 @@ public enum LanguageAnnotation {
     DOC("doc", 0, AbstractModelLoader.CEYLON_LANGUAGE_DOC_ANNOTATION) {
         public List<Annotation> makeFromCeylonAnnotation(AnnotationMirror mirror) {
             Annotation anno = new Annotation(name);
-            anno.addPositionalArgment((String)mirror.getValue("description"));
+            anno.addPositionalArgument((String)mirror.getValue("description"));
             return Collections.singletonList(anno);
         }
     },
@@ -41,8 +41,8 @@ public enum LanguageAnnotation {
             for (AnnotationMirror thrown : thrownExceptions) {
                 Annotation anno = new Annotation(name);
                 // can't decode the declaration
-                anno.addPositionalArgment(parseMetamodelReference((String)thrown.getValue("type")));
-                anno.addPositionalArgment((String)thrown.getValue("when"));
+                anno.addPositionalArgument(parseMetamodelReference((String)thrown.getValue("type")));
+                anno.addPositionalArgument((String)thrown.getValue("when"));
                 result.add(anno);
             }
             return result;
@@ -54,7 +54,7 @@ public enum LanguageAnnotation {
             @SuppressWarnings("unchecked")
             List<String> authors = (List<String>)mirror.getValue("authors");
             for (String author : authors) {
-                anno.addPositionalArgment(author);
+                anno.addPositionalArgument(author);
             }
             return Collections.singletonList(anno);
         }
@@ -66,7 +66,7 @@ public enum LanguageAnnotation {
             List<String> backends = (List<String>)mirror.getValue("backends");
             if (backends != null) {
                 for (String backend : backends) {
-                    anno.addPositionalArgment(backend);
+                    anno.addPositionalArgument(backend);
                 }
             }
             return Collections.singletonList(anno);
@@ -83,7 +83,7 @@ public enum LanguageAnnotation {
                 @SuppressWarnings("unchecked")
                 List<String> elements = (List<String>)see.getValue("programElements");
                 for (String s : elements) {
-                    anno.addPositionalArgment(parseMetamodelReference(s));
+                    anno.addPositionalArgument(parseMetamodelReference(s));
                 }
                 result.add(anno);
             }
@@ -94,14 +94,14 @@ public enum LanguageAnnotation {
     LICENSE("license", 0, AbstractModelLoader.CEYLON_LANGUAGE_LICENSE_ANNOTATION) {
         public List<Annotation> makeFromCeylonAnnotation(AnnotationMirror mirror) {
             Annotation anno = new Annotation(name);
-            anno.addPositionalArgment((String)mirror.getValue("description"));
+            anno.addPositionalArgument((String)mirror.getValue("description"));
             return Collections.singletonList(anno);
         }
     },
     DEPRECATED("deprecated", 0, AbstractModelLoader.CEYLON_LANGUAGE_DEPRECATED_ANNOTATION) {
         public List<Annotation> makeFromCeylonAnnotation(AnnotationMirror mirror) {
             Annotation anno = new Annotation(name);
-            anno.addPositionalArgment((String)mirror.getValue("description"));
+            anno.addPositionalArgument((String)mirror.getValue("description"));
             return Collections.singletonList(anno);
         }
     },
@@ -111,7 +111,7 @@ public enum LanguageAnnotation {
             @SuppressWarnings("unchecked")
             List<String> tags = (List<String>)mirror.getValue("tags");
             for (String tag : tags) {
-                anno.addPositionalArgment(tag);
+                anno.addPositionalArgument(tag);
             }
             return Collections.singletonList(anno);
         }
@@ -122,7 +122,7 @@ public enum LanguageAnnotation {
             @SuppressWarnings("unchecked")
             List<String> warnings = (List<String>)mirror.getValue("warnings");
             for (String tag : warnings) {
-                anno.addPositionalArgment(tag);
+                anno.addPositionalArgument(tag);
             }
             return Collections.singletonList(anno);
         }
@@ -134,7 +134,7 @@ public enum LanguageAnnotation {
             @SuppressWarnings("unchecked")
             List<String> aliases = (List<String>)mirror.getValue("aliases");
             for (String alias : aliases) {
-                anno.addPositionalArgment(alias);
+                anno.addPositionalArgument(alias);
             }
             return Collections.singletonList(anno);
         }

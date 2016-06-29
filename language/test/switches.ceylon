@@ -12,7 +12,7 @@ String testMatch1(SwitchTest1 st) {
 }
 String testMatch2(SwitchTest1 st) {
     switch(st)
-    case(testcase1, testcase2) { return "case 1|2"; }
+    case(testcase1|testcase2) { return "case 1|2"; }
     case(testcase3) { return "case 3"; }
 }
 
@@ -40,15 +40,15 @@ class TestIs2(Integer|String x) {
 
 Integer testStringValues(String name) {
     switch (name)
-    case ("Tako", "Gavin") { return 1; }
-    case ("Emmanuel", "Stef", "David") { return 2; }
+    case ("Tako"|"Gavin") { return 1; }
+    case ("Emmanuel"|"Stef"|"David") { return 2; }
     else { return 0; }
 }
 
 Integer testOptionalStringValues(String? name) {
     switch (name)
-    case ("Tako", "Gavin") { return 1; }
-    case ("Emmanuel", "Stef", "David") { return 2; }
+    case ("Tako"|"Gavin") { return 1; }
+    case ("Emmanuel"|"Stef"|"David") { return 2; }
     case (null) { return 3; }
     else { return 0; }
 }
@@ -66,7 +66,7 @@ Integer testCharacterValues(Character ch) {
     switch (ch)
     case('+') { return 1; }
     case('-') { return 2; }
-    case('0', '1', '2', '3', '4', '5', '6', '7', '8', '9') { return 3; }
+    case('0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9') { return 3; }
     else { return 0; }
 }
 

@@ -248,7 +248,7 @@
         </if>
     </target>
 
-    <property name="last-release-number" value="1.2.0"/>
+    <property name="last-release-number" value="1.2.2"/>
 
     <property name="branch-for-last-release-updates" value="${last-release-number}-fixes"/>
     

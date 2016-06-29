@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.loader;
 
+import static com.redhat.ceylon.common.Versions.getJvmLanguageModuleVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
 
@@ -22,9 +23,9 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.JVMModuleUtil;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
-import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.model.loader.mirror.AccessibleMirror;
@@ -324,6 +325,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     /**
+     * To be redefined by subclasses if they compile a mix of Java + Ceylon files at the same go
+     */
+    protected boolean hasJavaAndCeylonSources() {
+        return false;
+    }
+
+    /**
      * To be redefined by subclasses if they don't need local declarations.
      */
     protected boolean needsLocalDeclarations(){
@@ -510,8 +518,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // make sure the language module has its real dependencies added, because we need them in the classpath
         // otherwise we will get errors on the Util and Metamodel calls we insert
         // WARNING! Make sure this list is always the same as the one in /ceylon-runtime/dist/repo/ceylon/language/_version_/module.xml
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
-        languageModule.addImport(new ModuleImport(findOrCreateModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(null, findOrCreateModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
+        languageModule.addImport(new ModuleImport(null, findOrCreateModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
         
         return languageModule;
     }
@@ -600,7 +608,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 return convertToDeclaration(module, typeName, declarationType);
             String error = "Declaration '" + typeName + "' could not be found in module '" + moduleScope.getNameAsString() 
                     + "' or its imported modules";
-            if(module != null && !module.isDefault())
+            if(module != null && !module.isDefaultModule())
                 error += " but was found in the non-imported module '"+module.getNameAsString()+"'";
             return logModelResolutionException(null, moduleScope, error).getDeclaration();
         }
@@ -1672,6 +1680,54 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             return languageDeclaration;
                     }
 
+                    String modulePackagePrefix = module.getNameAsString()+".";
+                    if(hasJavaAndCeylonSources()
+                            && container == null 
+                            && typeName.startsWith(modulePackagePrefix)){
+                        // perhaps it's a java source file depending on a ceylon source file, in which
+                        // case try to resolve it from source
+                        int lastDot = typeName.length();
+                        // FIXME: deal with escapes too
+                        List<String> qualified = null;
+                        while((lastDot = lastIndexOf(typeName, "$.", lastDot-1)) != -1){
+                            String packagePart = typeName.substring(0, lastDot);
+                            String namePart = typeName.substring(lastDot+1);
+                            int namePartDot = indexOf(namePart, "$.");
+                            if(namePartDot != -1)
+                                namePart = namePart.substring(0, namePartDot);
+                            if(packagePart.startsWith(modulePackagePrefix) || packagePart.equals(module.getNameAsString())){
+                                Package pkg = module.getPackage(packagePart);
+                                if(pkg instanceof LazyPackage){
+                                    Declaration memberFromSource = ((LazyPackage) pkg).getDirectMemberFromSource(namePart, Backends.JAVA);
+                                    if(memberFromSource != null){
+                                        if(qualified != null){
+                                            for(String path : qualified){
+                                                memberFromSource = memberFromSource.getDirectMember(path, null, false);
+                                                if(memberFromSource == null){
+                                                    // give up
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        return memberFromSource;
+                                    }else{
+                                        // we did find a package, let's not look further up
+                                        break;
+                                    }
+                                }
+                                // no package, try further up
+                                if(qualified == null)
+                                    qualified = new LinkedList<String>();
+                                qualified.add(0, namePart);
+                            }else{
+                                // we've gone too far up
+                                break;
+                            }
+                        }
+                        // at this point we're left with either the default package, or we looked up past
+                        // the module package
+                        // FIXME: support the default package
+                    }
                     throw new ModelResolutionException("Failed to resolve "+typeName);
                 }
                 // we only allow source loading when it's java code we're compiling in the same go
@@ -1685,6 +1741,36 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
+    private int indexOf(String string, String elements) {
+        int smallerIndex = -1;
+        for(int i=0;i<elements.length();i++){
+            char sep = elements.charAt(i);
+            int index = string.indexOf(sep);
+            // keep it if we have no previous result
+            if(smallerIndex == -1)
+                smallerIndex = index;
+            else if(index != -1 && index < smallerIndex)
+                // or keep it if we found something before our last find
+                smallerIndex = index;
+        }
+        return smallerIndex;
+    }
+    
+    private int lastIndexOf(String string, String elements, int startFrom) {
+        int largerIndex = -1;
+        for(int i=0;i<elements.length();i++){
+            char sep = elements.charAt(i);
+            int index = string.lastIndexOf(sep, startFrom);
+            // keep it if we have no previous result
+            if(largerIndex == -1)
+                largerIndex = index;
+            else if(index > largerIndex)
+                // or keep it if we found something after our last find
+                largerIndex = index;
+        }
+        return largerIndex;
+    }
+    
     private Type newUnknownType() {
         return new UnknownType(typeFactory).getType();
     }
@@ -1880,7 +1966,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public Module lookupModuleByPackageName(String packageName) {
         for(Module module : modules.getListOfModules()){
             // don't try the default module because it will always say yes
-            if(module.isDefault())
+            if(module.isDefaultModule())
                 continue;
             // skip modules we're not loading things from
             if(!ModelUtil.equalModules(module,getLanguageModule())
@@ -1920,7 +2006,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected Module findOrCreateModule(String moduleName, String version)  {
         synchronized(getLock()){
             boolean isJdk = false;
-            boolean defaultModule = false;
 
             // make sure it isn't loaded
             Module module = getLoadedModule(moduleName, version);
@@ -1952,14 +2037,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // FIXME: this can't be that easy.
             if(isJdk)
                 module.setAvailable(true);
-            module.setDefault(defaultModule);
             return module;
         }
     }
 
     public boolean loadCompiledModule(Module module)  {
+        return loadCompiledModule(module, true);
+    }
+    
+    public boolean loadCompiledModule(Module module, boolean loadModuleImports)  {
         synchronized(getLock()){
-            if(module.isDefault())
+            if(module.isDefaultModule())
                 return false;
             String pkgName = module.getNameAsString();
             if(pkgName.isEmpty())
@@ -1978,14 +2066,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
             if(moduleClass != null){
                 // load its module annotation
-                return loadCompiledModule(module, moduleClass, moduleClassName);
+                return loadCompiledModule(module, moduleClass, moduleClassName, loadModuleImports);
             }
             // give up
             return false;
         }
     }
 
-    private boolean loadCompiledModule(Module module, ClassMirror moduleClass, String moduleClassName) {
+    private boolean loadCompiledModule(Module module, ClassMirror moduleClass, String moduleClassName, boolean loadModuleImports) {
         String name = getAnnotationStringValue(moduleClass, CEYLON_MODULE_ANNOTATION, "name");
         String version = getAnnotationStringValue(moduleClass, CEYLON_MODULE_ANNOTATION, "version");
         if(name == null || name.isEmpty()){
@@ -2012,28 +2100,32 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // no need to load the "nativeBackends" annotation value, it's loaded from annotations
         setAnnotations(module, moduleClass, false);
         
-        List<AnnotationMirror> imports = getAnnotationArrayValue(moduleClass, CEYLON_MODULE_ANNOTATION, "dependencies");
-        if(imports != null){
-            for (AnnotationMirror importAttribute : imports) {
-                String dependencyName = (String) importAttribute.getValue("name");
-                if (dependencyName != null) {
-                    String dependencyVersion = (String) importAttribute.getValue("version");
+        if(loadModuleImports){
+            List<AnnotationMirror> imports = getAnnotationArrayValue(moduleClass, CEYLON_MODULE_ANNOTATION, "dependencies");
+            if(imports != null){
+                for (AnnotationMirror importAttribute : imports) {
+                    String dependencyUri = (String) importAttribute.getValue("name");
+                    if (dependencyUri != null) {
+                        String dependencyVersion = (String) importAttribute.getValue("version");
 
-                    Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dependencyName), dependencyVersion);
+                        String namespace = ModuleUtil.getNamespaceFromUri(dependencyUri);
+                        String depModuleName = ModuleUtil.getModuleNameFromUri(dependencyUri);
+                        Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(depModuleName), dependencyVersion);
 
-                    Boolean optionalVal = (Boolean) importAttribute.getValue("optional");
+                        Boolean optionalVal = (Boolean) importAttribute.getValue("optional");
 
-                    Boolean exportVal = (Boolean) importAttribute.getValue("export");
+                        Boolean exportVal = (Boolean) importAttribute.getValue("export");
 
-                    List<String> nativeBackends = (List<String>) importAttribute.getValue("nativeBackends");
-                    Backends backends = nativeBackends == null ? Backends.ANY : Backends.fromAnnotations(nativeBackends);
+                        List<String> nativeBackends = (List<String>) importAttribute.getValue("nativeBackends");
+                        Backends backends = nativeBackends == null ? Backends.ANY : Backends.fromAnnotations(nativeBackends);
 
-                    ModuleImport moduleImport = moduleManager.findImport(module, dependency);
-                    if (moduleImport == null) {
-                        boolean optional = optionalVal != null && optionalVal;
-                        boolean export = exportVal != null && exportVal;
-                        moduleImport = new ModuleImport(dependency, optional, export, backends);
-                        module.addImport(moduleImport);
+                        ModuleImport moduleImport = moduleManager.findImport(module, dependency);
+                        if (moduleImport == null) {
+                            boolean optional = optionalVal != null && optionalVal;
+                            boolean export = exportVal != null && exportVal;
+                            moduleImport = new ModuleImport(namespace, dependency, optional, export, backends);
+                            module.addImport(moduleImport);
+                        }
                     }
                 }
             }
@@ -2044,31 +2136,34 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         modules.getListOfModules().add(module);
         Module languageModule = modules.getLanguageModule();
         module.setLanguageModule(languageModule);
-        if(!ModelUtil.equalModules(module, languageModule)){
-            boolean found = false;
-            for (ModuleImport mi : module.getImports()) {
-                if ("ceylon.language".equals(mi.getModule().getNameAsString())) {
-                    found = true;
-                    break;
+        
+        if(loadModuleImports){
+            if(!ModelUtil.equalModules(module, languageModule)){
+                boolean found = false;
+                for (ModuleImport mi : module.getImports()) {
+                    if (mi.getModule().isLanguageModule()) {
+                        found = true;
+                        break;
+                    }
                 }
-            }
-            if (!found) {
-                // It's not really a LazyModule because we're not loading 
-                // it lazily. It's only here for module version analysis.
-                // But other stuff expects non-source modules to be lazy.
-                LazyModule oldLangMod = new LazyModule() {
-                    @Override
-                    protected AbstractModelLoader getModelLoader() {
-                        return AbstractModelLoader.this;
-                    }};
-                oldLangMod.setLanguageModule(oldLangMod);
-                oldLangMod.setName(Arrays.asList("ceylon", "language"));
-                oldLangMod.setVersion(Versions.getJvmLanguageModuleVersion(major, minor));
-                oldLangMod.setNativeBackends(Backends.JAVA);
-                oldLangMod.setJvmMajor(major);
-                oldLangMod.setJvmMinor(minor);
-                ModuleImport moduleImport = new ModuleImport(oldLangMod, false, false);
-                module.addImport(moduleImport);
+                if (!found) {
+                    // It's not really a LazyModule because we're not loading 
+                    // it lazily. It's only here for module version analysis.
+                    // But other stuff expects non-source modules to be lazy.
+                    LazyModule oldLangMod = new LazyModule() {
+                        @Override
+                        protected AbstractModelLoader getModelLoader() {
+                            return AbstractModelLoader.this;
+                        }};
+                    oldLangMod.setLanguageModule(oldLangMod);
+                    oldLangMod.setName(Arrays.asList("ceylon", "language"));
+                    oldLangMod.setVersion(getJvmLanguageModuleVersion(major, minor));
+                    oldLangMod.setNativeBackends(Backends.JAVA);
+                    oldLangMod.setJvmMajor(major);
+                    oldLangMod.setJvmMinor(minor);
+                    ModuleImport moduleImport = new ModuleImport(null, oldLangMod, false, false);
+                    module.addImport(moduleImport);
+                }
             }
         }
         
@@ -2645,29 +2740,33 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             }
         }
 
+        Set<String> fieldNames = new HashSet<String>();
+        // collect field names first
+        for(FieldMirror fieldMirror : classMirror.getDirectFields()){
+            if(!keepField(fieldMirror, isCeylon, isFromJDK))
+                continue;
+            // do not change the name case here otherwise it will appear taken by itself
+            fieldNames.add(fieldMirror.getName());
+        }
+
         // now handle fields
         for(FieldMirror fieldMirror : classMirror.getDirectFields()){
-            // We skip members marked with @Ignore
-            if(fieldMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
-                continue;
-            if(skipPrivateMember(fieldMirror))
-                continue;
-            if(isCeylon && fieldMirror.isStatic())
-                continue;
-            // FIXME: temporary, because some private classes from the jdk are
-            // referenced in private methods but not available
-            if(isFromJDK && !fieldMirror.isPublic() && !fieldMirror.isProtected())
+            if(!keepField(fieldMirror, isCeylon, isFromJDK))
                 continue;
             String name = fieldMirror.getName();
+            if(!JvmBackendUtil.isInitialLowerCase(name)){
+                String newName = NamingBase.getJavaBeanName(name);
+                if(!fieldNames.contains(newName)
+                        && !addingFieldWouldConflictWithMember(klass, newName)
+                        && !methods.containsKey(newName))
+                    name = newName;
+            }
             // skip the field if "we've already got one"
-            boolean conflicts = klass.getDirectMember(name, null, false) != null
-                    || "equals".equals(name)
-                    || "string".equals(name)
-                    || "hash".equals(name);
+            boolean conflicts = addingFieldWouldConflictWithMember(klass, name);
             if (!conflicts) {
-                Declaration decl = addValue(klass, fieldMirror.getName(), fieldMirror, isCeylon, isNativeHeaderMember);
+                Declaration decl = addValue(klass, name, fieldMirror, isCeylon, isNativeHeaderMember);
                 if (isCeylon && shouldCreateNativeHeader(decl, klass)) {
-                    Declaration hdr = addValue(klass, fieldMirror.getName(), fieldMirror, true, true);
+                    Declaration hdr = addValue(klass, name, fieldMirror, true, true);
                     setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
                     initNativeHeader(hdr, decl);
                 } else if (isCeylon && shouldLinkNatives(decl)) {
@@ -2813,6 +2912,28 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
             }
         }
+    }
+
+    private boolean addingFieldWouldConflictWithMember(ClassOrInterface klass, String name) {
+        return klass.getDirectMember(name, null, false) != null
+                || "equals".equals(name)
+                || "string".equals(name)
+                || "hash".equals(name);
+    }
+    
+    private boolean keepField(FieldMirror fieldMirror, boolean isCeylon, boolean isFromJDK) {
+        // We skip members marked with @Ignore
+        if(fieldMirror.getAnnotation(CEYLON_IGNORE_ANNOTATION) != null)
+            return false;
+        if(skipPrivateMember(fieldMirror))
+            return false;
+        if(isCeylon && fieldMirror.isStatic())
+            return false;
+        // FIXME: temporary, because some private classes from the jdk are
+        // referenced in private methods but not available
+        if(isFromJDK && !fieldMirror.isPublic() && !fieldMirror.isProtected())
+            return false;
+        return true;
     }
 
     private boolean propertiesMatch(ClassOrInterface klass, MethodMirror getter, MethodMirror setter) {
@@ -3259,6 +3380,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         method.setRealName(methodName);
         method.setUnit(klass.getUnit());
         method.setOverloaded(isOverloaded || isOverloadingMethod(methodMirror));
+        method.setVariadic(methodMirror.isVariadic());
         Type type = null;
         try{
             setMethodOrValueFlags(klass, methodMirror, method, isCeylon);
@@ -3269,8 +3391,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(methodName.equals("hash")
                 || methodName.equals("string"))
             method.setName(methodName+"_method");
-        else
-            method.setName(JvmBackendUtil.strip(methodName, isCeylon, method.isShared()));
+        else{
+            String ceylonName = JvmBackendUtil.strip(methodName, isCeylon, method.isShared());
+            if(!JvmBackendUtil.isInitialLowerCase(ceylonName))
+                ceylonName = NamingBase.getJavaBeanName(ceylonName);
+            method.setName(ceylonName);
+        }
         method.setDefaultedAnnotation(methodMirror.isDefault());
 
         // type params first
@@ -3463,18 +3589,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         String name = getAnnotationStringValue(methodMirror, CEYLON_NAME_ANNOTATION);
         if(name != null)
             return name;
-        return getJavaAttributeName(methodMirror.getName());
-    }
-    
-    private String getJavaAttributeName(String getterName) {
-        if (getterName.startsWith("get") || getterName.startsWith("set")) {
-            return NamingBase.getJavaBeanName(getterName.substring(3));
-        } else if (getterName.startsWith("is")) {
-            // Starts with "is"
-            return NamingBase.getJavaBeanName(getterName.substring(2));
-        } else {
-            throw new RuntimeException("Illegal java getter/setter name");
-        }
+        return NamingBase.getJavaAttributeName(methodMirror.getName());
     }
 
     private Value addValue(ClassOrInterface klass, String ceylonName, FieldMirror fieldMirror, boolean isCeylon, boolean isNativeHeader) {
@@ -3735,9 +3850,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }
                 }else{
                     if(isOverridingMethod(methodMirror)){
-                        decl.setActual(true);
                         Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), false);
-                        decl.setRefinedDeclaration(refined);
+                        if(refined instanceof FieldValue == false){
+                            decl.setActual(true);
+                            decl.setRefinedDeclaration(refined);
+                        }
                     }
                 }
                 
@@ -4135,7 +4252,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private Type logModelResolutionException(final String exceptionMessage, Module module, final String message) {
         UnknownType.ErrorReporter errorReporter;
-        if(module != null && !module.isDefault()){
+        if(module != null && !module.isDefaultModule()){
             final StringBuilder sb = new StringBuilder();
             sb.append("Error while loading the ").append(module.getNameAsString()).append("/").append(module.getVersion());
             sb.append(" module:\n ");
@@ -4234,7 +4351,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private void markUnboxed(TypedDeclaration decl, MethodMirror methodMirror, TypeMirror type) {
         boolean unboxed = false;
         if(type.isPrimitive() 
-                || type.getKind() == TypeKind.ARRAY
+                || isPrimitiveArray(type)
                 || sameType(type, STRING_TYPE)
                 || (methodMirror != null && methodMirror.isDeclaredVoid())) {
             unboxed = true;
@@ -4242,7 +4359,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         decl.setUnboxed(unboxed);
     }
     
-
+    private boolean isPrimitiveArray(TypeMirror type) {
+        if(type.getKind() == TypeKind.ARRAY){
+            TypeMirror componentType = type.getComponentType();
+            // byte[][] is not primitive, it's a ObjectArray<ByteArray>
+            return componentType.isPrimitive() || sameType(type, STRING_TYPE);
+        }
+        return false;
+    }
+    
     private void markSmall(FunctionOrValue value, TypeMirror type) {
         if (!(value.isMember() && value.getName().equals("hash"))) {
             value.setSmall(sameType(type, PRIM_INT_TYPE) && !value.getType().isCharacter()
@@ -5327,7 +5452,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             firstCache = valueDeclarationsByName;
                         }
                     }
-                    if(decl instanceof ClassOrInterface){
+                    if(decl instanceof TypeDeclaration) {
                         firstCache = typeDeclarationsByName;
                     }
 

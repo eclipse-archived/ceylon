@@ -3,6 +3,7 @@ package com.redhat.ceylon.model.typechecker.util;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isElementOfUnion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.union;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -474,6 +475,7 @@ public class TypePrinter {
                 unit.getTupleElementTypes(args);
         if (unit.isTupleLengthUnbounded(args)) {
             int lastIndex = elemtypes.size()-1;
+            elemtypes = new ArrayList<Type>(elemtypes);
             Type last = elemtypes.get(lastIndex);
             elemtypes.set(lastIndex, 
                     unit.getSequentialElementType(last));
@@ -580,6 +582,10 @@ public class TypePrinter {
         }
     }
 
+    protected boolean printTypeParameters(Type pt) {
+        return printTypeParameters();
+    }
+    
     protected String getSimpleProducedTypeName(Type pt, 
             Unit unit) {
         StringBuilder ptn = new StringBuilder();
@@ -610,7 +616,7 @@ public class TypePrinter {
         List<Type> args = pt.getTypeArgumentList();
         List<TypeParameter> params = ptd.getTypeParameters();
         if (!pt.isTypeConstructor() && 
-                printTypeParameters() && 
+                printTypeParameters(pt) && 
                 !args.isEmpty()) {
             ptn.append(lt());
             boolean first = true;

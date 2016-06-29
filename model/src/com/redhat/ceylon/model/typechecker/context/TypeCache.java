@@ -1,8 +1,10 @@
 package com.redhat.ceylon.model.typechecker.context;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -79,7 +81,7 @@ public class TypeCache {
     }
     
     // need a special value for null because ConcurrentHashMap does not support null
-    private final static Type NULL_VALUE = new UnknownType(null).getType();
+    public final static Type NULL_VALUE = new UnknownType(null).getType();
     // need ConcurrentHashMap even for the cache, otherwise get/put/containsKey can get info infinite loops
     // on concurrent operations
     private final Map<Type, Map<TypeDeclaration, Type>> superTypes = 
@@ -93,15 +95,26 @@ public class TypeCache {
         return cache.containsKey(dec);
     }
 
+    /**
+     * Returns a cached type, possibly NULL_VALUE to indicate a non-supertype
+     * @param producedType
+     * @param dec
+     * @return
+     */
     public Type get(Type producedType, TypeDeclaration dec) {
         Map<TypeDeclaration, Type> cache = superTypes.get(producedType);
         if (cache == null) {
             return null;
         }
-        Type ret = cache.get(dec);
-        return ret == NULL_VALUE ? null : ret;
+        return cache.get(dec);
     }
 
+    /**
+     * Caches a new super type. Use NULL_VALUE to cache a non-supertype
+     * @param producedType
+     * @param dec
+     * @param superType
+     */
     public void put(Type producedType, TypeDeclaration dec, Type superType) {
         Map<TypeDeclaration, Type> cache = superTypes.get(producedType);
         if (cache == null) {
@@ -110,14 +123,37 @@ public class TypeCache {
             cache = new ConcurrentHashMap<TypeDeclaration, Type>();
             superTypes.put(producedType, cache);
         }
-        if (superType == null) {
-            superType = NULL_VALUE;
-        }
         cache.put(dec, superType);
     }
 
     public void clear(){
         superTypes.clear();
+    }
+
+    /**
+     * Clears this type from the cache as a cached root and as a cached type value
+     * @param producedType
+     */
+    public void remove(Type producedType) {
+        Map<TypeDeclaration, Type> cache = superTypes.get(producedType);
+        if (cache != null) {
+            // help GC a bit
+            cache.clear();
+            superTypes.remove(producedType);
+        }
+        int hashCode = producedType.hashCode();
+        // also clear cached values
+        for(Map<TypeDeclaration, Type> cacheValues : superTypes.values()){
+            Iterator<Entry<TypeDeclaration, Type>> iterator = cacheValues.entrySet().iterator();
+            while(iterator.hasNext()){
+                Entry<TypeDeclaration, Type> entry = iterator.next();
+                if(entry.getValue() != NULL_VALUE
+                        && !entry.getValue().isUnknown()
+                        && entry.getValue().hashCode() == hashCode
+                        && entry.getValue().equals(producedType))
+                    iterator.remove();
+            }
+        }
     }
 
     public void clearForDeclaration(TypeDeclaration decl) {

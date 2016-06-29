@@ -42,7 +42,7 @@ public class CeylonClasspathTool extends ModuleLoadingTool {
     @Override
     public void run() throws Exception {
         // we do depend on having a Main
-        loadModule("com.redhat.ceylon.java.main", Versions.CEYLON_VERSION_NUMBER);
+        loadModule(null, "com.redhat.ceylon.java.main", Versions.CEYLON_VERSION_NUMBER);
 
         for (ModuleSpec module : modules) {
             String moduleName = module.getName();
@@ -57,7 +57,7 @@ public class CeylonClasspathTool extends ModuleLoadingTool {
                     null);
             if(version == null)
                 return;
-            loadModule(moduleName, version);
+            loadModule(null, moduleName, version);
             if(!force)
                 errorOnConflictingModule(moduleName, version);
         }

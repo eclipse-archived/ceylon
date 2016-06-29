@@ -4,7 +4,9 @@ public interface Cloneable<Clone extends .com.redhat.ceylon.compiler.java.test.a
     
     public abstract Clone getClone();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({})
@@ -18,7 +20,9 @@ public interface Cloneable<Clone extends .com.redhat.ceylon.compiler.java.test.a
     
     public abstract long $hashCode();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -26,7 +30,9 @@ public interface Cloneable<Clone extends .com.redhat.ceylon.compiler.java.test.a
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.Quoting$annotation$[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.ceylon.language.FinalAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({
@@ -121,7 +127,7 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
             untrusted = true)
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .com.redhat.ceylon.compiler.java.test.annotations.Quoting getClone() {
-        return (.com.redhat.ceylon.compiler.java.test.annotations.Quoting).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.annotations.Quoting)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
@@ -138,7 +144,9 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return .com.redhat.ceylon.compiler.java.test.annotations.Quoting$annotation$.class;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {
@@ -172,7 +180,9 @@ final class quoting_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Quoting("", "", -1L, 0L);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {

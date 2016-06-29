@@ -536,7 +536,7 @@ public class Metamodel {
         } catch (ModuleLoadException e) {
             // it's not an issue if we don't find the default module, it's always created but not always
             // present. Also not an issue for optional modules.
-            if(!declaration.isDefault() && !optional)
+            if(!declaration.isDefaultModule() && !optional)
                 throw Metamodel.newModelError(e.toString());
         } catch (SecurityException e) {
             throw Metamodel.newModelError(e.toString());
@@ -2015,5 +2015,43 @@ public class Metamodel {
                                 TypeDescriptor.klass(ValueModel.class, cls.$reifiedType, TypeDescriptor.NothingType)),
                         (Object[]) array);
         return (ceylon.language.Sequential) iterable.sequence();
+    }
+    
+    /**
+     * Return the java.lang.Class for the given reified type, or null if 
+     * the given type cannot be represented as a java.lang.Class. Only 
+     * types which simplify to class or interface types can be converted. 
+     */
+    public static java.lang.Class<?> getJavaClass(TypeDescriptor $reifiedT) {
+        if ($reifiedT instanceof TypeDescriptor.Intersection) {
+            return (java.lang.Class<?>)getJavaClass(((TypeDescriptor.Intersection)$reifiedT).toSimpleType(getModuleManager()));
+        }
+        else if ($reifiedT instanceof TypeDescriptor.Union) {
+            return (java.lang.Class<?>)getJavaClass(((TypeDescriptor.Intersection)$reifiedT).toSimpleType(getModuleManager()));
+        }
+        if ($reifiedT instanceof TypeDescriptor.Class) {
+            TypeDescriptor.Class klass = 
+                    (TypeDescriptor.Class) $reifiedT;
+            // this is already erased
+            return (java.lang.Class<?>) klass.getArrayElementClass();
+        } 
+        else if ($reifiedT instanceof TypeDescriptor.Member) {
+            TypeDescriptor.Member member = 
+                    (TypeDescriptor.Member) $reifiedT;
+            TypeDescriptor m = member.getMember();
+            if (m instanceof TypeDescriptor.Class) {
+                TypeDescriptor.Member.Class klass = 
+                        (TypeDescriptor.Class) m;
+                return (java.lang.Class<?>) klass.getKlass();
+            }
+        }
+        return null;
+    }
+    private static java.lang.Class<?> getJavaClass(Type pt) {
+        TypeDeclaration declaration = pt.getDeclaration();
+        if(declaration instanceof com.redhat.ceylon.model.typechecker.model.ClassOrInterface){
+            return getJavaClass(TypeDescriptor.klass(getJavaClass(declaration)));
+        }
+        return null;
     }
 }

@@ -167,7 +167,7 @@ public class Main {
             public final boolean optional, shared;
 
             public Dependency(String name, String version, boolean optional, boolean shared) {
-                super(null, name, version);
+                super(null, null, name, version);
                 this.optional = optional;
                 this.shared = shared;
             }
@@ -235,7 +235,7 @@ public class Main {
             public final List<Dependency> dependencies = new LinkedList<Dependency>();
 
             public Module(String name, String version, Type type, File jar) {
-                super(null, name, version);
+                super(null, null, name, version);
                 this.type = type;
                 this.jar = jar;
             }
@@ -244,6 +244,11 @@ public class Main {
                 dependencies.add(new Dependency(name, version, optional, shared));
             }
             
+            @Override
+            public String namespace() {
+                return null;
+            }
+
             @Override
             public int hashCode() {
                 int ret = 31;
@@ -469,7 +474,7 @@ public class Main {
         // information from the jar/car file itself.
         private Module searchJars(String name, String version) {
             if(overrides != null){
-                ArtifactContext ctx = new ArtifactContext(name, version);
+                ArtifactContext ctx = new ArtifactContext(null, name, version);
                 ArtifactContext replacement = overrides.replace(ctx);
                 if(replacement != null){
                     name = replacement.getName();
@@ -704,7 +709,7 @@ public class Main {
                 Object moduleDependencies = ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "dependencies");
                 ArtifactOverrides ao = null;
                 if(overrides != null){
-                    ao = overrides.getArtifactOverrides(new ArtifactContext(name, version));
+                    ao = overrides.getArtifactOverrides(new ArtifactContext(null, name, version));
                 }
                 if(moduleDependencies instanceof Object[]){
                     for(Object dependency : (Object[])moduleDependencies){
@@ -721,7 +726,7 @@ public class Main {
                             throw new IOException("Invalid module import");
                         
                         if(overrides != null){
-                            ArtifactContext depCtx = new ArtifactContext(depName, depVersion);
+                            ArtifactContext depCtx = new ArtifactContext(null, depName, depVersion);
                             ArtifactContext replacement = overrides.replace(depCtx);
                             if(replacement != null){
                                 depCtx = replacement;

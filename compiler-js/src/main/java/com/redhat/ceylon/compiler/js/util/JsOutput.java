@@ -18,6 +18,7 @@ import java.util.Set;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.compiler.js.JsCompiler;
+import com.redhat.ceylon.compiler.js.loader.JsonModule;
 import com.redhat.ceylon.compiler.js.loader.MetamodelVisitor;
 import com.redhat.ceylon.compiler.js.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
@@ -136,6 +137,28 @@ public class JsOutput {
 
     public String getLanguageModuleAlias() {
         return clalias;
+    }
+
+    public void requireFromNpm(final Module mod, final JsIdentifierNames names) {
+        final String modAlias = names.moduleAlias(mod);
+        final String path = ((JsonModule)mod).getNpmPath();
+        if (requires.put(path, modAlias) == null) {
+            //We use our own special "require" which will wrap single functions in a proper exports object
+            //If the module name has dashes, we transform that into camel casing.
+            String singleFunctionName = mod.getNameAsString();
+            int dashIdx = singleFunctionName.indexOf('-');
+            while (dashIdx > 0) {
+                singleFunctionName = singleFunctionName.substring(0, dashIdx) +
+                        Character.toUpperCase(singleFunctionName.charAt(dashIdx+1)) +
+                        singleFunctionName.substring(dashIdx+2);
+                dashIdx = singleFunctionName.indexOf('-', dashIdx);
+            }
+            out("var ", modAlias, "=", getLanguageModuleAlias(), "npm$req('",
+                    singleFunctionName, "','", path, "',require);\n");
+            if (modAlias != null && !modAlias.isEmpty()) {
+                out(clalias, "$addmod$(", modAlias,",'", mod.getNameAsString(), "/", mod.getVersion(), "');\n");
+            }
+        }
     }
 
     public void require(final Module mod, final JsIdentifierNames names) {

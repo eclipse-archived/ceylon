@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Options {
+    private String workingDirectory;
     private String systemRepository;
     private List<String> userRepositories = new LinkedList<String>();
     private boolean offline;
@@ -14,6 +15,13 @@ public class Options {
     private String overrides;
     private boolean downgradeDist;
     
+    public String getWorkingDirectory() {
+        return workingDirectory;
+    }
+    public void setWorkingDirectory(String workingDirectory) {
+        this.workingDirectory = workingDirectory;
+    }
+
     public String getSystemRepository() {
         return systemRepository;
     }

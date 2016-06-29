@@ -1,10 +1,9 @@
 """Abstract supertype of [[categories|Category]] whose
    elements may be iterated. Iterable categories are often
-   called _streams_. A stream need not be finite, but its
-   elements must be countable. That is, for any given
-   element of the stream, every iterator of the stream must
-   eventually return the element, even if the iterator
-   itself is not exhaustible.
+   called _streams_. A stream is a source of [[Iterator]]s,
+   which produce the elements of the stream. A given element 
+   may occur more than once in a stream, that is, it may be 
+   produced more than once by a given iterator of the stream. 
    
    A stream may have null elements. That is, an iterator for
    the stream may produce the value [[null]] one or more
@@ -13,28 +12,48 @@
    `true`. Thus, a stream is a `Category` of its non-null
    elements.
    
-   A given stream might not have a well-defined order, and
-   so the order in which elements are produced by the
-   stream's iterator may not be _stable_. That is, the order
-   may be different for two different iterators of the
-   stream. However, a stream has a well-defined set of
-   elements, and any two iterators for an immutable finite
-   stream should eventually return the same elements.
-   Furthermore, any two iterators for an immutable finite
-   stream should eventually return exactly the same number
-   of elements, which must be the [[size]] of the stream.
+   A _finite_ stream is a stream whose iterators are 
+   _exhaustible_, that is, they eventually stop producing
+   elements. A stream need not be finite, but its elements 
+   must be countable. That is, for any given element of the 
+   stream, every [[Iterator]] of the stream must eventually 
+   return the element, even if the iterator itself is not 
+   exhaustible. It is possible for a given element to occur 
+   a (countably) infinite number of times in a nonfinite 
+   stream. It may not, in general, be possible to even 
+   determine if an insteance of `Iterable` is finite.
    
-   A given stream may not be _finite_, in which case an
-   iterator for the stream is never exhaustible, and certain
-   operations of this interface either never terminate or
-   result in an [[AssertionError]]. It may not, in general,
-   be possible to even determine if an `Iterable` is finite.
+   For a nonfinite stream, certain operations of this 
+   interface either never terminate or result in an 
+   [[AssertionError]].
    
-   The type `Iterable<Element,Null>`, usually abbreviated
-   `{Element*}`, represents a possibly-empty iterable
-   container. The type `Iterable<Element,Nothing>`, usually
-   abbreviated `{Element+}`, represents a nonempty iterable
-   container.
+   A stream may be _mutable_, in which case two distinct 
+   iterators for the stream might not produce exactly the 
+   same elements. Furthermore, even an immutable stream 
+   might not have a well-defined order, and so the order in 
+   which elements are produced by the stream's iterator may 
+   not be _stable_. That is, the order may be different for 
+   two distinct iterators of the stream.
+   
+   However, a stream has a well-defined set of elements, and
+   so any two iterators for an immutable finite stream 
+   should eventually return the same elements. Furthermore, 
+   any two iterators for an immutable finite stream should 
+   eventually return exactly the same total number of 
+   elements, which must be the [[size]] of the stream. For
+   an immutable nonfinite stream, every element returned by
+   a given iterator must eventually be returned by any other
+   iterator of the stream.
+   
+   A stream may be known to be _nonempty_:
+   
+   - The type `Iterable<Element,Null>`, usually abbreviated
+     `{Element*}`, represents a possibly-empty stream. 
+   - The type `Iterable<Element,Nothing>`, usually 
+     abbreviated `{Element+}`, represents a nonempty stream. 
+   
+   Every iterator for a nonempty stream must produce at 
+   least one element.
    
    A value list in braces produces a new instance of 
    `Iterable`:
@@ -119,20 +138,23 @@
    streams. For some streams&mdash;for example, 
    `List`s&mdash;order is significant; for others&mdash;for 
    example, `Set`s&mdash;order is not significant. Therefore, 
-   unlike [[Collection]], `Iterable` does not define or 
-   require any form of [[value equality|Object.equals]], and 
-   some streams do not support value equality. It follows 
-   that the `==` operator should not be used to compare 
-   generic streams, unless the streams are known to share
-   some additional structure.
+   unlike [[Collection]] and its subtypes, `Iterable` does 
+   not define nor require any form of 
+   [[value equality|Object.equals]], and some streams simply
+   do not support value equality. It follows that the `==` 
+   operator should not be used to compare generic streams, 
+   unless the streams are known to share some additional 
+   structure.
    
-   To compare two streams, taking order into account, use
-   the function [[corresponding]].
+   To compare the elements of two streams, taking order into 
+   account, use the function [[corresponding]].
    
        {Float*} xs = ... ;
        {Float*} ys = ... ;
        Boolean same = corresponding(xs, ys);"""
-see (`interface Collection`, `function corresponding`)
+see (`interface Collection`, 
+     `function corresponding`,
+     `interface Iterator`)
 by ("Gavin")
 tagged("Streams")
 shared interface Iterable<out Element=Anything, 
@@ -140,7 +162,10 @@ shared interface Iterable<out Element=Anything,
         satisfies Category<>
         given Absent satisfies Null {
     
-    "An iterator for the elements belonging to this stream."
+    "An iterator for the elements belonging to this stream.
+     
+     If this is a nonempty stream with type `{Element+}`,
+     the iterator must produce at least one element."
     shared formal Iterator<Element> iterator();
     
     "Returns `true` if the iterator for this stream produces
@@ -751,7 +776,9 @@ shared interface Iterable<out Element=Anything,
      and [[ceylon.language::min]] may be used to find the  
      largest and smallest values in a stream of [[Comparable]] 
      values, according to the natural order of its elements."
-    see (`function package.max`, `function package.min`)
+    see (`function package.max`, `function package.min`,
+         `function byIncreasing`, `function byDecreasing`,
+         `function package.comparing`)
     shared default 
     Element|Absent max(
         "The function comparing pairs of elements."
@@ -833,7 +860,8 @@ shared interface Iterable<out Element=Anything,
      may be used to sort a stream of [[Comparable]] values 
      according to the natural order of its elements."
     see (`function increasing`, `function decreasing`,
-         `function byIncreasing`, `function byDecreasing`)
+         `function byIncreasing`, `function byDecreasing`,
+         `function package.comparing`)
     shared default 
     Element[] sort(
         "The function comparing pairs of elements."
@@ -1186,7 +1214,8 @@ shared interface Iterable<out Element=Anything,
     "A stream containing whose elements are pairs (2-tuples)
      comprising an element of this stream paired with the 
      next element in the stream. The resulting stream has
-     one fewer elements than this stream.
+     one fewer elements than this stream. If this stream has
+     exactly one element, the resulting stream is empty.
      
      For example, the expression
      
@@ -1201,18 +1230,22 @@ shared interface Iterable<out Element=Anything,
          every { for ([x, y] in nums.paired) x < y }
      
      For any stable `stream`, this operation is equivalent 
-     to `zipPairs(stream,stream.rest)`."
+     to `zipPairs(stream,stream.rest)`.
+     
+     For a stream with an unstable iteration order, a 
+     different stream might be produced each time `paired` 
+     is evaluated."
     shared default 
-    {[Element,Element]*} paired 
-            => object satisfies {[Element,Element]*} {
+    {Element[2]*} paired 
+            => object satisfies {Element[2]*} {
         size => let (size = outer.size-1) 
                 if (size<0) then 0 else size;
         empty => outer.size<2;
         iterator() 
                 => let (iter = outer.iterator()) 
-            object satisfies Iterator<[Element,Element]> {
+            object satisfies Iterator<Element[2]> {
                 variable value previous = iter.next();
-                shared actual [Element,Element]|Finished next() {
+                shared actual Element[2]|Finished next() {
                     if (!is Finished head = previous,
                         !is Finished tip = iter.next()) {
                         previous = tip;
@@ -1472,13 +1505,15 @@ shared interface Iterable<out Element=Anything,
                 => let (elements=outer)
                 object satisfies Iterator<Element> {
             
+            alias MaybeEntry => ElementEntry<Element>?;
+            
             value it = elements.iterator();
             variable value count = 0;
             
             variable value store 
                     = Array.ofSize {
                 size = 16;
-                element = null of ElementEntry<Element>?;
+                element = null of MaybeEntry;
             };
             
             function hash(Element element, Integer size) 
@@ -1486,18 +1521,19 @@ shared interface Iterable<out Element=Anything,
                     then element.hash.magnitude % size
                     else 0;
             
-            function rebuild(Array<ElementEntry<Element>?> store) {
+            function rebuild(Array<MaybeEntry> store) {
                 value newStore 
                         = Array.ofSize {
                     size = store.size*2;
-                    element = null of ElementEntry<Element>?;
+                    element = null of MaybeEntry;
                 };
                 for (entries in store) {
                     variable value entry = entries;
                     while (exists e = entry) {
-                        value index = 
-                                hash(e.element, 
-                                    newStore.size);
+                        value index = hash {
+                            element = e.element;
+                            size = newStore.size;
+                        };
                         newStore.set(index, 
                             ElementEntry {
                                 next = newStore[index];
@@ -1516,7 +1552,10 @@ shared interface Iterable<out Element=Anything,
                         return element;
                     }
                     else {
-                        value index = hash(element, store.size);
+                        value index = hash {
+                            element = element;
+                            size = store.size;
+                        };
                         value entry = store[index];
                         if (exists entry, entry.has(element)) {
                             //keep iterating
@@ -1601,6 +1640,13 @@ shared interface Iterable<out Element=Anything,
      distinct if they are not [[equal|Object.equals]]. Null 
      elements of this stream are simply discarded.
      
+     For example:
+     
+         \"helloworld\".frequencies()
+     
+     produces the map 
+     `{ r->1, d->1, e->1, w->1, h->1, l->3, o->2 }`.
+     
      This is an eager operation, and the resulting map does
      not reflect changes to this stream."
     shared Map<Element&Object,Integer> frequencies()
@@ -1615,8 +1661,15 @@ shared interface Iterable<out Element=Anything,
      distinct if they are not [[equal|Object.equals]]. Null 
      elements of this stream are simply discarded.
      
+     For example:
+     
+         (1..5).tabulate(2.divides)
+     
+     produces the map 
+     `{ 1->false, 2->true, 3->false, 4->true, 5->false }`.
+     
      This is an eager operation, and the resulting map does
-     not reflect changes to the given stream."
+     not reflect changes to this stream."
     shared Map<Element&Object,Result> tabulate<Result>(
         "A function that produces an item for the given
          [[key]], an element of this stream."
@@ -1638,7 +1691,7 @@ shared interface Iterable<out Element=Anything,
      
      For example:
      
-     (0..10).group((i) => i.even then \"even\" else \"odd\")
+         (0..10).group((i) => i.even then \"even\" else \"odd\")
      
      produces the map 
      `{ even->[0, 2, 4, 6, 8, 10], odd->[1, 3, 5, 7, 9] }`.
@@ -1655,7 +1708,20 @@ shared interface Iterable<out Element=Anything,
             given Group satisfies Object
             => summarize<Group,ElementEntry<Element>>
                     (grouping, ElementEntry)
-               .mapItems((_, item) => item.reversed);
+                .mapItems((_, elements) {
+                    //TODO: give Array a special-purpose 
+                    //      constructor for this
+                    value size = elements.size;
+                    value array = Array.ofSize {
+                        size = size;
+                        element = elements.first;
+                    };
+                    variable value i = size;
+                    for (element in elements) {
+                        array.set(--i, element);
+                    }
+                    return ArraySequence(array);
+                });
     
     "Efficiently [[group]] and [[fold]] the elements of this
      stream in a single step.
@@ -1698,27 +1764,30 @@ shared interface Iterable<out Element=Anything,
             => object extends Object() 
                       satisfies Map<Group,Result> {
         
+        alias MaybeEntry => GroupEntry<Group,Result>?;
+        
         variable value store 
                 = Array.ofSize {
             size = 16;
-            element = null of GroupEntry<Group,Result>?;
+            element = null of MaybeEntry;
         };
         
         function hash(Object group, Integer size) 
                 => group.hash.magnitude % size;
         
-        function rebuild
-            (Array<GroupEntry<Group,Result>?> store) {
+        function rebuild(Array<MaybeEntry> store) {
             value newStore 
                     = Array.ofSize {
                 size = store.size*2;
-                element = null of GroupEntry<Group,Result>?;
+                element = null of MaybeEntry;
             };
             for (groups in store) {
                 variable value group = groups;
                 while (exists g = group) {
-                    value index = 
-                            hash(g.group, newStore.size);
+                    value index = hash {
+                        group = g.group;
+                        size = newStore.size;
+                    };
                     newStore.set(index,
                         GroupEntry { 
                             next = newStore[index]; 
@@ -1734,13 +1803,17 @@ shared interface Iterable<out Element=Anything,
         variable value count = 0;
         for (element in outer) {
             value group = grouping(element);
-            value index = hash(group, store.size);
+            value index = hash {
+                group = group;
+                size = store.size;
+            };
             value entries = store[index];
             if (exists entries, 
                 exists entry = entries.get(group)) {
-                entry.elements 
-                        = accumulating(entry.elements, 
-                            element);
+                entry.elements = accumulating {
+                    partial = entry.elements;
+                    element = element;
+                };
                 //keep iterating
             }
             else {
@@ -1748,7 +1821,10 @@ shared interface Iterable<out Element=Anything,
                     GroupEntry {
                         next = entries;
                         group = group;
-                        elements = accumulating(null, element);
+                        elements = accumulating {
+                            partial = null;
+                            element = element;
+                        };
                     });
                 count++;
                 if (count>store.size*2) {

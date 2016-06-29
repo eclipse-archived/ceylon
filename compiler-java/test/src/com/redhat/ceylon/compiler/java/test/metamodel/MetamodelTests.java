@@ -26,6 +26,8 @@ import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.CompilerTests.ModuleWithArtifact;
+import com.redhat.ceylon.model.typechecker.model.Module;
 
 public class MetamodelTests extends CompilerTests {
 
@@ -126,6 +128,13 @@ public class MetamodelTests extends CompilerTests {
         runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.metamodel/123", 
                 Arrays.asList("--run", "com.redhat.ceylon.compiler.java.test.metamodel::interopAnnotations"));
         
+    }
+    
+    @Test
+    public void testBug6255() {
+        compile("bug6255/Bug6255.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.metamodel.bug6255.bug6255", 
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.metamodel.bug6255", "123"));
     }
 }
 

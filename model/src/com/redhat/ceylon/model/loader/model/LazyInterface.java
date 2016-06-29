@@ -7,6 +7,7 @@ import java.util.Map;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.ModelCompleter;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -48,10 +49,13 @@ public class LazyInterface extends Interface implements LazyContainer {
         this.classMirror = classMirror;
         this.completer = completer;
         this.realName = classMirror.getName();
-        setName(JvmBackendUtil.getMirrorName(classMirror));
         this.isStatic = classMirror.isStatic();
         this.isAnnotationType  = classMirror.isAnnotationType();
         this.isCeylon = classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null;
+        String ceylonName = JvmBackendUtil.getMirrorName(classMirror);
+        if(!isCeylon && JvmBackendUtil.isInitialLowerCase(ceylonName))
+            ceylonName = NamingBase.capitalize(ceylonName);
+        setName(ceylonName);
     }
 
     @Override

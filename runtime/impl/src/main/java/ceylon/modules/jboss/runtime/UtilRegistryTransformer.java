@@ -23,6 +23,7 @@ import java.security.ProtectionDomain;
 import org.jboss.modules.ModuleIdentifier;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 /**
@@ -77,7 +78,8 @@ public class UtilRegistryTransformer implements ClassFileTransformer {
             synchronized (this) {
                 if (done == false) {
                     done = true;
-                    registerModule(mi.getName(), mi.getSlot(), result, loader, true);
+                    String name = ModuleUtil.getModuleNameFromUri(mi.getName());
+                    registerModule(name, mi.getSlot(), result, loader, true);
                 }
             }
         }

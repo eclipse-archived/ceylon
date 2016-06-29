@@ -14,10 +14,10 @@ class ControlStructures() {
         print(n);
     }
     
-    @error if (is Anything something) {}
-    @error if (is Object something) {}
-    @error if (is String sh = "hello") {}
-    @error if (is Object sh = "hello") {}
+    @warn:"redundantNarrowing" if (is Anything something) {}
+    @warn:"redundantNarrowing" if (is Object something) {}
+    @warn:"redundantNarrowing" if (is String sh = "hello") {}
+    @warn:"redundantNarrowing" if (is Object sh = "hello") {}
     
     variable String? var = "gavin"; 
     @error if (exists var) {}
@@ -437,7 +437,35 @@ class TestGuards() {
                 return 0;
             }
         }
+        //TODO: relax this by detecting that 
+        //      the body of the loop never breaks
+        @error return int;
+    }
+    
+    Integer j2(Integer? int) {
+        if (!exists int) {
+            for (i in 0:10) {
+                print(i);
+                return 0;
+            }
+            else {
+                return 0;
+            }
+        }
         return int;
+    }
+    
+    Integer j3(Integer? int) {
+        if (!exists int) {
+            for (i in 0:10) {
+                print(i);
+                break;
+            }
+            else {
+                return 0;
+            }
+        }
+        @error return int;
     }
     
     Integer g1(Integer? int) {
@@ -506,4 +534,105 @@ class TestGuards() {
         }
     }
 
+}
+
+void ifNarrowing0(Integer|Float x) {
+    if (is Integer x) {
+        return;
+    }
+    Float xx = x;
+}
+
+void ifNarrowing1(Integer|Float x) {
+    if (is Integer x) {
+    }
+    else {
+        return;
+    }
+    Integer xx = x;
+}
+
+void ifNarrowing2(Integer|Float x) {
+    if (is Integer x) {
+        return;
+    }
+    else {
+    }
+    Float xx = x;
+}
+
+void ifNarrowing3(Integer|Float x) {
+    if (!is Integer x) {
+        return;
+    }
+    Integer xx = x;
+}
+
+void ifNarrowing4(Integer|Float x) {
+    if (!is Integer x) {
+    }
+    else {
+        return;
+    }
+    Float xx = x;
+}
+
+void ifNarrowing5(Integer|Float x) {
+    if (!is Integer x) {
+        return;
+    }
+    else {
+    }
+    Integer xx = x;
+}
+
+
+void ifNarrowingWithThrow0(Integer|Float x) {
+    if (is Integer x) {
+        throw;
+    }
+    Float xx = x;
+}
+
+void ifNarrowingWithThrow1(Integer|Float x) {
+    if (is Integer x) {
+    }
+    else {
+        throw;
+    }
+    Integer xx = x;
+}
+
+void ifNarrowingWithThrow2(Integer|Float x) {
+    if (is Integer x) {
+        throw;
+    }
+    else {
+    }
+    Float xx = x;
+}
+
+void ifNarrowingWithThrow3(Integer|Float x) {
+    if (!is Integer x) {
+        return;
+    }
+    Integer xx = x;
+}
+
+void ifNarrowingWithThrow4(Integer|Float x) {
+    if (!is Integer x) {
+    }
+    else {
+        throw;
+    }
+    Float xx = x;
+}
+
+void ifNarrowingWithThrow5(Integer|Float x) {
+    if (!is Integer x) {
+        throw;
+    }
+    else {
+    }
+    Integer xx = x;
 }

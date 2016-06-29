@@ -1,0 +1,63 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug61xx;
+
+final class Bug6129<T> {
+    
+    private Bug6129() {
+    }
+}
+final class bug6129_ {
+    
+    private bug6129_() {
+    }
+    private static final .ceylon.language.Callable<? extends .ceylon.language.Boolean> value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = (.ceylon.language.Callable<? extends .ceylon.language.Boolean>)(.java.lang.Object).ceylon.language.nothing_.get_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .ceylon.language.Callable<? extends .ceylon.language.Boolean> get_() {
+        if (bug6129_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug6129\' before it was set");
+        }
+    }
+}
+final class bug6129Ignored_ {
+    
+    private bug6129Ignored_() {
+    }
+    private static final .java.lang.Object value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = .com.redhat.ceylon.compiler.java.test.issues.bug61xx.bug6129_.get_().$call$((.java.lang.Object).ceylon.language.String.instance("Adfasd"));
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    public static .java.lang.Object get_() {
+        if (bug6129Ignored_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug6129Ignored\' before it was set");
+        }
+    }
+}

@@ -35,12 +35,13 @@ public interface RepositoryManager {
     /**
      * Resolve dependencies for the context.
      *
+     * @param name    the module namespace
      * @param name    the module name
      * @param version the module version
      * @return all dependencies, null if they cannot be found
      * @throws RepositoryException for any I/O error
      */
-    File[] resolve(String name, String version) throws RepositoryException;
+    File[] resolve(String namespace, String name, String version) throws RepositoryException;
 
     /**
      * Resolve dependencies for the context.
@@ -54,13 +55,14 @@ public interface RepositoryManager {
     /**
      * Returns an artifact as a File object, looked up by name and version
      * 
+     * @param namespace the artifact namespace
      * @param name the artifact name
      * @param version the artifact version
      * @return the File representing this artifact, if found. Null otherwise
      * 
      * @throws RepositoryException if anything went wrong
      */
-    File getArtifact(String name, String version) throws RepositoryException;
+    File getArtifact(String namespace, String name, String version) throws RepositoryException;
 
     /**
      * Returns an artifact as a File object, looked up by context. This allows
@@ -76,13 +78,14 @@ public interface RepositoryManager {
     /**
      * Returns an artifact as an ArtifactResult object, looked up by name and version
      * 
+     * @param namespace the artifact namespace
      * @param name the artifact name
      * @param version the artifact version
      * @return the ArtifactResult representing this artifact, if found. Null otherwise
      * 
      * @throws RepositoryException if anything went wrong
      */
-    ArtifactResult getArtifactResult(String name, String version) throws RepositoryException;
+    ArtifactResult getArtifactResult(String namespace, String name, String version) throws RepositoryException;
 
     /**
      * Returns an artifact as an ArtifactResult object, looked up by context. This allows
@@ -127,24 +130,26 @@ public interface RepositoryManager {
     /**
      * Publishes an artifact by name/version as an InputStream
      * 
+     * @param namespace the artifact namespace
      * @param name the artifact name
      * @param version the artifact version
      * @param content the artifact content as an InputStream
      * 
      * @throws RepositoryException if anything went wrong
      */
-    void putArtifact(String name, String version, InputStream content) throws RepositoryException;
+    void putArtifact(String namespace, String name, String version, InputStream content) throws RepositoryException;
 
     /**
      * Publishes an artifact by name/version as a File
      * 
+     * @param namespace the artifact namespace
      * @param name the artifact name
      * @param version the artifact version
      * @param content the artifact content as a File
      * 
      * @throws RepositoryException if anything went wrong
      */
-    void putArtifact(String name, String version, File content) throws RepositoryException;
+    void putArtifact(String namespace, String name, String version, File content) throws RepositoryException;
 
     /**
      * Publishes an artifact by context as an InputStream
@@ -170,12 +175,13 @@ public interface RepositoryManager {
     /**
      * Removes an artifact by name/version
      * 
+     * @param namespace the artifact namespace
      * @param name the artifact name
      * @param version the artifact version
      * 
      * @throws RepositoryException if anything went wrong
      */
-    void removeArtifact(String name, String version) throws RepositoryException;
+    void removeArtifact(String namespace, String name, String version) throws RepositoryException;
 
     /**
      * Removes an artifact by context

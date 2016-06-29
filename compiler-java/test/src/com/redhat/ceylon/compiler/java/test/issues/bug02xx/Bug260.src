@@ -38,7 +38,7 @@ class Bug260 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     Bug260() {
         this.attr = null;
-        this.attr2 = (.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2).ceylon.language.nothing_.get_();
+        this.attr2 = (.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2)(.java.lang.Object).ceylon.language.nothing_.get_();
         this.attr3 = new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Intersection();
     }
     private final .ceylon.language.Integer attr;
@@ -66,7 +66,7 @@ class Bug260 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 m2() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 attr3;
     

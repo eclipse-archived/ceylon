@@ -4076,7 +4076,7 @@ public class Resolve {
                         pos, location, site, name, argtypes, typeargtypes);
             }
             else {
-                if (scopeModule.isDefault()) {
+                if (scopeModule.isDefaultModule()) {
                     return diags.create(dkind, log.currentSource(),
                             pos, "ceylon.package.not.found.in.imports.default", pkgSymbol(sym));
                 } else {

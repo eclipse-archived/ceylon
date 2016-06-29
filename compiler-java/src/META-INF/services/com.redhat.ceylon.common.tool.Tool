@@ -15,3 +15,4 @@ com.redhat.ceylon.tools.p2.CeylonP2Tool
 com.redhat.ceylon.tools.jigsaw.CeylonJigsawTool
 com.redhat.ceylon.tools.antdoc.CeylonAntTaskDocTool
 com.redhat.ceylon.tools.bootstrap.CeylonBootstrapTool
+com.redhat.ceylon.tools.fatjar.CeylonFatJarTool

@@ -28,7 +28,9 @@ class DeclarationErrorVisitor extends Visitor {
     private static final int COULD_NOT_DETERMINE_PARAMETER_TYPE_SAME_AS_CORRESPONDING_PARAMETER = 9210;
     private static final int REFINED_MEMBER_WRONG_NUM_PL = 9300;
     private static final int MISSING_PL_FUNCTION_DECL = 1000;
+    private static final int NO_CONSTRUCTORS = 1001;
     private static final int PL_AND_CONSTRUCTORS = 1002;
+    private static final int FORWARD_DECL_NOT_IN_DECL_SECTION = 1450;
     
     private TransformationPlan plan;
     private final ExpressionErrorVisitor expressionVisitor;
@@ -55,6 +57,9 @@ class DeclarationErrorVisitor extends Visitor {
         try {
             plan = Errors.GENERATE;
             target.visit(this);
+            if (target.getDeclarationModel() != null) {
+                target.getDeclarationModel().setDropped(plan instanceof Drop);
+            }
             return plan;
         } finally {
             plan = oldPlan;
@@ -109,12 +114,19 @@ class DeclarationErrorVisitor extends Visitor {
                                     && ((Value)model).getTypeDeclaration().isAnonymous()))) {
                     plan = new ThrowerMethod(that, message);
                 } 
-                else if (message.getCode() == PL_AND_CONSTRUCTORS
+                else if ((message.getCode() == PL_AND_CONSTRUCTORS || message.getCode() == NO_CONSTRUCTORS)
                         && (model instanceof Class 
                             || (model instanceof Value
                                     && ((Value)model).getTypeDeclaration().isAnonymous()))) {
-                    plan = new ThrowerCatchallConstructor(that, message);
-                } 
+                    if (message.getCode() == NO_CONSTRUCTORS) {
+                        plan = new PrivateConstructorOnly(that, message);
+                    } else {
+                        plan = new ThrowerCatchallConstructor(that, message);
+                    }
+                }
+                else if (message.getCode() == FORWARD_DECL_NOT_IN_DECL_SECTION) {
+                    plan = Errors.GENERATE; 
+                }
                 else {
                     plan = new Drop(that, message);
                 } 
@@ -135,13 +147,7 @@ class DeclarationErrorVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Annotation that) {
-        // Unlike declaration bodies or specifiers, 
-        // we *do* care about errors in expressions in annotations: Those are
-        // considered part of the declaration
-        HasErrorException error = expressionVisitor.getFirstErrorMessage(that);
-        if (error != null) {
-            newplan(new Drop(error.getNode(), error.getErrorMessage()));
-        }
+        // don't go there
     }
     
     @Override

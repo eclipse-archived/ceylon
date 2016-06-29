@@ -7,7 +7,7 @@ function(other) {
             var ti=this.iterator();
             var oc=oi.next(); var tc;
             while((tc=ti.next())!=finished()){
-                if (!tc.equals(oc))return false;
+                if (!$eq$(tc,oc))return false;
                 oc=oi.next();
             }
             return true;

@@ -7,24 +7,27 @@ function $arr$(a,t,seq) {
 }
 ex$.$arr$=$arr$;
 
-Array.prototype.$sa$=function $sa$(t,ne) {
-    if (this.length===0)return empty();
+function $arr$sa$(arr,t,ne) {
+    if (arr.length===0)return empty();
     if (t===null || t===undefined)t={t:Anything};
-    return ArraySequence($arr$(this,t,ne),{Element$ArraySequence:t});
+    return ArraySequence($arr$(arr,t,ne),{Element$ArraySequence:t});
 }
-Array.prototype.equals=function arrayEquals(o) {
+ex$.$arr$sa$=$arr$sa$;
+
+function $arr$eq(a,o) {
   if (o===undefined||o===null||typeof(o.length)!='number')return false;
-  if (o.length===this.length) {
-    for (var i=0;i<this.length;i++) {
-      if (this[i]===undefined) {
+  if (o.length===a.length) {
+    for (var i=0;i<a.length;i++) {
+      if (a[i]===undefined) {
         if (o[i]!==undefined)return false;
-      } else if (this[i]===null) {
+      } else if (a[i]===null) {
         if (o[i]!==null)return false;
-      } else if (!this[i].equals(o[i]))return false;
+      } else if (!$eq$(a[i],o[i]))return false;
     }
   }
   return false;
 }
+ex$.$arr$eq=$arr$eq;
 //Ceylon Iterable to Native Array
 function $ci2na$(ci){
   if (ci===undefined||ci===empty())return [];
@@ -34,16 +37,23 @@ function $ci2na$(ci){
   }
   return a;
 }
-Array.prototype.contains=function arrayContains(o){
-  for (var i=0;i<this.length;i++) {
-    if (o===null) {
-      if (this[i]===null)return true;
-    } else if (o===undefined) {
-      if (this[i]===undefined)return true;
-    } else if (this[i].equals(o)) return true;
+function $arr$cnt(a,o){
+  if (o===null) {
+    for (var i=0;i<a.length;i++) {
+      if (a[i]===null)return true;
+    }
+  } else if (o===undefined) {
+    for (var i=0;i<a.length;i++) {
+      if (a[i]===undefined)return true;
+    }
+  } else {
+    for (var i=0;i<a.length;i++) {
+      if ($eq$(a[i],o)) return true;
+    }
   }
   return false;
 }
+ex$.$arr$cnt=$arr$cnt;
 empty().nativeArray=function(){return [];}
 
 atr$(arrprot$,'string', function() {

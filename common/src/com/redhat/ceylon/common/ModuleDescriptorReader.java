@@ -145,7 +145,7 @@ public class ModuleDescriptorReader {
     }
     
     /**
-     * Gets the module imports. Format is [name, version, optional, shared]
+     * Gets the module imports. Format is [repoType, name, version, optional, shared]
      */
     @SuppressWarnings("unchecked")
     public List<Object[]> getModuleImports() {

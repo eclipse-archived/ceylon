@@ -53,8 +53,8 @@ import org.junit.Before;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
-import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
 import com.redhat.ceylon.compiler.java.launcher.Main;
@@ -279,12 +279,6 @@ public abstract class CompilerTests {
             Throwable expectedException, 
             boolean includeWarnings, 
             CompilerError... expectedErrors) {
-        // make a compiler task
-        // FIXME: runFileManager.setSourcePath(dir);
-        ErrorCollector collector = new ErrorCollector();
-        
-        CeyloncTaskImpl task = getCompilerTask(options, collector, ceylonFiles);
-
         boolean expectedToFail = false;
         Diagnostic.Kind lowestErrorLevel = includeWarnings ? Diagnostic.Kind.WARNING : Diagnostic.Kind.ERROR;
         for (CompilerError expectedError : expectedErrors) {
@@ -297,6 +291,22 @@ public abstract class CompilerTests {
                 lowestErrorLevel = expectedError.kind;
         }
         EnumSet<Diagnostic.Kind> kinds = EnumSet.range(Diagnostic.Kind.ERROR, lowestErrorLevel);
+        ErrorCollector collector = compileErrorTest(ceylonFiles, options, expectedException, includeWarnings, expectedToFail);
+        Set<CompilerError> actualErrors = collector.get(kinds);
+        compareErrors(actualErrors, expectedErrors);
+    }
+    
+    protected ErrorCollector compileErrorTest(String[] ceylonFiles, 
+            List<String> options, 
+            Throwable expectedException, 
+            boolean includeWarnings, 
+            boolean expectedToFail) {
+        // make a compiler task
+        // FIXME: runFileManager.setSourcePath(dir);
+        ErrorCollector collector = new ErrorCollector();
+        
+        CeyloncTaskImpl task = getCompilerTask(options, collector, ceylonFiles);
+
         // now compile it all the way
         Throwable ex = null;
         ExitState exitState = task.call2();
@@ -334,8 +344,7 @@ public abstract class CompilerTests {
             Assert.fail("Expected compiler exception " + expectedException);
         }
         
-        Set<CompilerError> actualErrors = collector.get(kinds);
-        compareErrors(actualErrors, expectedErrors);
+        return collector;
     }
     
     private boolean eq(Object o1, Object o2) {
@@ -350,12 +359,38 @@ public abstract class CompilerTests {
         }
         
         // make sure we have all those we expect
+        ArrayList<CompilerError> expected = new ArrayList<CompilerError>();
         for(CompilerError expectedError : expectedErrorSet){
-            Assert.assertTrue("Missing expected error: "+expectedError, actualErrors.contains(expectedError));
+            if (!actualErrors.contains(expectedError)) {
+                expected.add(expectedError);
+            }
         }
         //  make sure we don't have unexpected ones
+        ArrayList<CompilerError> unexpected = new ArrayList<CompilerError>();
         for(CompilerError actualError : actualErrors){
-            Assert.assertTrue("Unexpected error: "+actualError, expectedErrorSet.contains(actualError));
+            if (!expectedErrorSet.contains(actualError)) {
+                unexpected.add(actualError);
+            }
+        }
+        if (!expected.isEmpty() || !unexpected.isEmpty()) {
+            StringBuffer txt = new StringBuffer();
+            if (!expected.isEmpty()) {
+                txt.append("Missing expected error(s):\n");
+                for (CompilerError err : expected) {
+                    txt.append(" - ");
+                    txt.append(err);
+                    txt.append("\n");
+                }
+            }
+            if (!unexpected.isEmpty()) {
+                txt.append("Unexpected error(s):\n");
+                for (CompilerError err : unexpected) {
+                    txt.append(" - ");
+                    txt.append(err);
+                    txt.append("\n");
+                }
+            }
+            Assert.fail(txt.toString());
         }
     }
     
@@ -591,9 +626,13 @@ public abstract class CompilerTests {
         return result;
     }
 
-    protected void compile(String... ceylon) {
+    protected void compile(List<String> options, String... ceylon) {
         ErrorCollector c = new ErrorCollector();
-        assertCompilesOk(c, getCompilerTask(c, ceylon).call2());
+        assertCompilesOk(c, getCompilerTask(options, c, ceylon).call2());
+    }
+    
+    protected void compile(String... ceylon) {
+        compile(defaultOptions, ceylon);
     }
 
     protected void compilesWithoutWarnings(String... ceylon) {
@@ -608,9 +647,13 @@ public abstract class CompilerTests {
                 0, dl.get(Diagnostic.Kind.WARNING).size() + dl.get(Diagnostic.Kind.MANDATORY_WARNING).size());
     }
 
-    protected Object compileAndRun(String main, String... ceylon) {
-        compile(ceylon);
+    protected Object compileAndRun(List<String> options, String main, String... ceylon) {
+        compile(options, ceylon);
         return run(main);
+    }
+    
+    protected Object compileAndRun(String main, String... ceylon) {
+        return compileAndRun(defaultOptions, main, ceylon);
     }
 
     protected Object run(String main) {
@@ -650,6 +693,12 @@ public abstract class CompilerTests {
             
             @Override
             public ArtifactResultType type() {
+                // TODO Auto-generated method stub
+                return null;
+            }
+            
+            @Override
+            public String namespace() {
                 // TODO Auto-generated method stub
                 return null;
             }
@@ -1012,7 +1061,7 @@ public abstract class CompilerTests {
         	CeylonJigsawTool jigsawTool = new CeylonJigsawTool();
         	jigsawTool.setOut(mlib);
         	jigsawTool.setRepositoryAsStrings(Arrays.asList(repos));
-        	jigsawTool.setModule(module.getName());
+        	jigsawTool.setModules(Arrays.asList(module.getName()));
         	jigsawTool.run();
 
         	ArrayList<String> a = new ArrayList<String>();
@@ -1036,11 +1085,11 @@ public abstract class CompilerTests {
 
     }
 
-    protected void runInMainApi(String rep, ModuleSpec module, String mainJavaClassName, List<String> moduleArgs) throws Throwable {
-        runInMainApi(rep, module, Collections.<ModuleSpec>emptyList(), mainJavaClassName, moduleArgs);
+    protected void runInMainApi(String rep, ModuleSpec module, String mainJavaClassName, List<String> moduleArgs, boolean debug) throws Throwable {
+        runInMainApi(rep, module, Collections.<ModuleSpec>emptyList(), mainJavaClassName, moduleArgs, debug);
     }
     
-    protected void runInMainApi(String rep, ModuleSpec module, List<ModuleSpec> extraModules, String mainJavaClassName, List<String> moduleArgs) throws Throwable {
+    protected void runInMainApi(String rep, ModuleSpec module, List<ModuleSpec> extraModules, String mainJavaClassName, List<String> moduleArgs, boolean debug) throws Throwable {
         /* Run this in its own process because jbmoss modules assumes it
          * owns the VM, and in particular because it likes to call 
          * System.exit() (which will break subsequent tests) while it 
@@ -1050,8 +1099,12 @@ public abstract class CompilerTests {
         ArrayList<String> a = new ArrayList<String>();
         String java = System.getProperty("java.home")+"/bin/java";
         a.add(java);
+        if (debug) {
+            a.add("-Xdebug");
+            a.add("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9090");
+        }
         a.add("-cp");
-        a.add(mainApiClasspath(rep, module, extraModules));
+        a.add(mainApiClasspath(rep, module, extraModules, debug));
         a.add("com.redhat.ceylon.compiler.java.runtime.Main");
         a.add(module.toString());
         a.add(mainJavaClassName);
@@ -1064,7 +1117,7 @@ public abstract class CompilerTests {
     }
     
     protected int runInMainApi(String rep, ModuleSpec module, String mainJavaClassName, List<String> moduleArgs,
-            File errFile, File outFile) throws Throwable {
+            File errFile, File outFile, boolean debug) throws Throwable {
         /* Run this in its own process because jbmoss modules assumes it
          * owns the VM, and in particular because it likes to call 
          * System.exit() (which will break subsequent tests) while it 
@@ -1074,8 +1127,12 @@ public abstract class CompilerTests {
         ArrayList<String> a = new ArrayList<String>();
         String java = System.getProperty("java.home")+"/bin/java";
         a.add(java);
+        if (debug) {
+            a.add("-Xdebug");
+            a.add("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9090");
+        }
         a.add("-cp");
-        a.add(mainApiClasspath(rep, module));
+        a.add(mainApiClasspath(rep, module, debug));
         a.add("com.redhat.ceylon.compiler.java.runtime.Main");
         a.add(module.toString());
         a.add(mainJavaClassName);
@@ -1095,20 +1152,20 @@ public abstract class CompilerTests {
         Process p = pb.start();
         return p.waitFor();
     }
-    protected String mainApiClasspath(String rep, ModuleSpec module) throws IOException, InterruptedException {
-        return mainApiClasspath(rep, module, Collections.<ModuleSpec>emptyList(), false);
+    protected String mainApiClasspath(String rep, ModuleSpec module, boolean debug) throws IOException, InterruptedException {
+        return mainApiClasspath(rep, module, Collections.<ModuleSpec>emptyList(), false, debug);
     }
-    protected String mainApiClasspath(String rep, ModuleSpec module, List<ModuleSpec> extraModules) throws IOException, InterruptedException {
-        return mainApiClasspath(rep, module, extraModules, false);
+    protected String mainApiClasspath(String rep, ModuleSpec module, List<ModuleSpec> extraModules, boolean debug) throws IOException, InterruptedException {
+        return mainApiClasspath(rep, module, extraModules, false, debug);
     }
-    protected String mainApiClasspath(String rep, ModuleSpec module, List<ModuleSpec> extraModules, boolean distDowngrade) throws IOException, InterruptedException {
-        return mainApiClasspath(rep, module, extraModules, distDowngrade, 0, null);
+    protected String mainApiClasspath(String rep, ModuleSpec module, List<ModuleSpec> extraModules, boolean distDowngrade, boolean debug) throws IOException, InterruptedException {
+        return mainApiClasspath(rep, module, extraModules, distDowngrade, 0, null, debug);
     }
-    protected String mainApiClasspath(String rep, ModuleSpec module, List<ModuleSpec> extraModules, int expectedSc, File err1) throws IOException, InterruptedException {
-        return mainApiClasspath(rep, module, extraModules, false, expectedSc, err1);
+    protected String mainApiClasspath(String rep, ModuleSpec module, List<ModuleSpec> extraModules, int expectedSc, File err1, boolean debug) throws IOException, InterruptedException {
+        return mainApiClasspath(rep, module, extraModules, false, expectedSc, err1, debug);
     }
     protected String mainApiClasspath(String rep, ModuleSpec module, List<ModuleSpec> extraModules,
-            boolean distDowngrade, int expectedSc, File err1) throws IOException, InterruptedException {
+            boolean distDowngrade, int expectedSc, File err1, boolean debug) throws IOException, InterruptedException {
         
         File dir = new File("build/mainapi");
         dir.mkdirs();
@@ -1129,6 +1186,9 @@ public abstract class CompilerTests {
             a.add(extraModule.toString());
         System.err.println(a);
         ProcessBuilder pb = new ProcessBuilder(a);
+        if (debug) {
+            pb.environment().put("JAVA_OPTS", "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=9090");
+        }
         pb.redirectOutput(out);
         pb.redirectError(err);
         Process p = pb.start();

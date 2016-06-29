@@ -96,6 +96,11 @@ public class CachedTOCJarsTest {
         }
 
         @Override
+        public String namespace() {
+            return null;
+        }
+
+        @Override
         public String name() {
             return module.getNameAsString();
         }

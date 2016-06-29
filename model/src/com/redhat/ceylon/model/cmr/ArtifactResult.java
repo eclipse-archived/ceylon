@@ -10,6 +10,13 @@ import java.util.List;
  */
 public interface ArtifactResult {
     /**
+     * Get namespace.
+     *
+     * @return the artifact namespace.
+     */
+    String namespace();
+
+    /**
      * Get name.
      *
      * @return the artifact name.

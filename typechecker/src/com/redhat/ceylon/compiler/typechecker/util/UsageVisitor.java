@@ -83,7 +83,7 @@ public class UsageVisitor extends Visitor {
         		!(declaration instanceof TypeParameter &&
         		    ((TypeParameter) declaration).getDeclaration() 
         		            instanceof TypeParameter)) {
-            if (bs.none() || isForBackend(bs, that.getUnit())) {
+            if (bs.none() || isForBackend(bs, that.getUnit().getSupportedBackends())) {
                 that.addUsageWarning(Warning.unusedDeclaration,
                         "declaration is never used: '" + 
                             declaration.getName() + "'");
@@ -98,7 +98,7 @@ public class UsageVisitor extends Visitor {
             Type type = that.getTypeModel();
             if (!isTypeUnknown(type) && type.isNothing()) {
                 Backends inBackends = that.getScope().getScopedBackends();
-                if (inBackends.none() || isForBackend(inBackends, that.getUnit())) {
+                if (inBackends.none() || isForBackend(inBackends, that.getUnit().getSupportedBackends())) {
                     that.addUsageWarning(Warning.expressionTypeNothing,
                             "expression has type 'Nothing'");
                 }

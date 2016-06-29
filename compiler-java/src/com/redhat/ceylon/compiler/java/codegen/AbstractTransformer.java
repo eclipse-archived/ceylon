@@ -100,8 +100,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.LanguageAnnotation;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
-import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
-import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -125,6 +123,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.util.TypePrinter;
 
 /**
@@ -132,14 +131,38 @@ import com.redhat.ceylon.model.typechecker.util.TypePrinter;
  */
 public abstract class AbstractTransformer implements Transformation {
 
-    private final static TypePrinter typeSerialiser = new TypePrinter(
-            true,//printAbbreviated 
-            true,//printTypeParameters 
-            false,//printTypeParameterDetail 
-            true,//printQualifyingType 
-            false,//escapeLowercased 
-            true,//printFullyQualified 
-            true);//printQualifier
+    // the @TypeInfo of a static inner class should not include type arguments
+    // for the qualifying classes. See #2388
+    static class TypeSerializer extends TypePrinter {
+        TypeSerializer() {
+            super(
+                true,//printAbbreviated 
+                true,//printTypeParameters 
+                false,//printTypeParameterDetail 
+                true,//printQualifyingType 
+                false,//escapeLowercased 
+                true,//printFullyQualified 
+                true);//printQualifier
+        }
+        /** The type being serialized */
+        private Type type;
+        public String serialize(Type pt, Unit unit) {
+            this.type = pt;
+            String result = super.print(pt, unit);
+            this.type = null;
+            return result;
+        }
+        @Override
+        protected boolean printTypeParameters(Type pt) {
+            return super.printTypeParameters() 
+                    && (pt == type
+                        || type == null
+                        || type.getDeclaration() == null 
+                        || type.getDeclaration().isToplevel() 
+                        || !type.getDeclaration().isStaticallyImportable());
+        }
+    };
+    private final TypeSerializer typeSerialiser = new TypeSerializer(); 
 
     private Context context;
     private TreeMaker make;
@@ -2260,7 +2283,11 @@ public abstract class AbstractTransformer implements Transformation {
             Type elementType = type.getTypeArgumentList().get(0);
             if(elementType == null)
                 return makeErroneous(null, "compiler bug: " + type + " has null parameter type to java ObjectArray");
-            return make().TypeArray(makeJavaType(elementType, flags | JT_TYPE_ARGUMENT));
+            elementType = simplifyType(elementType);
+            int newFlags = flags;
+            if((flags & JT_NO_PRIMITIVES) != 0)
+                newFlags |= JT_TYPE_ARGUMENT;
+            return make().TypeArray(makeJavaType(elementType, newFlags));
         }else if(name.equals("java.lang::ByteArray")){
             return make().TypeArray(make().TypeIdent(TypeTag.BYTE));
         }else if(name.equals("java.lang::ShortArray")){
@@ -2300,7 +2327,7 @@ public abstract class AbstractTransformer implements Transformation {
         ListBuffer<JCExpression> typeArgs = null;
         if(index >= firstQualifyingTypeWithTypeParameters) {
             int taFlags = flags;
-            if (qualifyingTypes != null && index < qualifyingTypes.size()) {
+            if (qualifyingTypes != null && index < qualifyingTypes.size()-1) {
                 // The qualifying types before the main one should
                 // have type parameters with proper variance
                 taFlags &= ~(JT_EXTENDS | JT_SATISFIES);
@@ -2807,7 +2834,7 @@ public abstract class AbstractTransformer implements Transformation {
         // be more resilient to upstream errors
         if(declType == null)
             return typeFact.getUnknownType();
-        if(isJavaVariadic(parameter) && (flags & TP_SEQUENCED_TYPE) == 0){
+        if(Decl.isJavaVariadicIncludingInheritance(parameter) && (flags & TP_SEQUENCED_TYPE) == 0){
             // type of param must be Iterable<T>
             Type elementType = typeFact.getIteratedType(type);
             if(elementType == null){
@@ -2862,15 +2889,12 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
 
-    private boolean isJavaVariadic(Parameter parameter) {
-        return parameter.isSequenced()
-                && parameter.getDeclaration() instanceof Function
-                && isJavaMethod((Function) parameter.getDeclaration());
+    boolean isJavaVariadic(Parameter parameter) {
+        return Decl.isJavaVariadic(parameter);
     }
 
     boolean isJavaMethod(Function method) {
-        ClassOrInterface container = Decl.getClassOrInterfaceContainer(method);
-        return container != null && !Decl.isCeylon(container);
+        return Decl.isJavaMethod(method);
     }
     
     boolean isJavaCtor(Class cls) {
@@ -3015,6 +3039,12 @@ public abstract class AbstractTransformer implements Transformation {
                 spec = List.<JCExpression>of(dependencyName, dependencyVersion);
             else
                 spec = List.<JCExpression>of(dependencyName);
+            
+            if (dependency.getNamespace() != null) {
+                JCExpression dependencyNamespace = make().Assign(naming.makeUnquotedIdent("namespace"),
+                        make().Literal(dependency.getNamespace()));
+                spec = spec.append(dependencyNamespace);
+            }
             
             if (Util.getAnnotation(dependency, "shared") != null) {
                 JCExpression exported = make().Assign(naming.makeUnquotedIdent("export"), make().Literal(true));
@@ -3629,7 +3659,7 @@ public abstract class AbstractTransformer implements Transformation {
     private String serialiseTypeSignature(Type type){
         // resolve aliases
         type = type.resolveAliases();
-        return typeSerialiser.print(type, typeFact);
+        return typeSerialiser.serialize(type, typeFact);
     }
     
     /*
@@ -4030,7 +4060,7 @@ public abstract class AbstractTransformer implements Transformation {
                                      BoxingStrategy boxingStrategy, Type exprType,
                                      List<JCTree.JCExpression> initialElements) {
         // find the sequence element type
-        Type type = typeFact().getIteratedType(sequenceType);
+        Type type = simplifyType(typeFact().getIteratedType(sequenceType));
         if(boxingStrategy == BoxingStrategy.UNBOXED){
             if(isCeylonInteger(type)){
                 if("short".equals(type.getUnderlyingType()))
@@ -4055,7 +4085,7 @@ public abstract class AbstractTransformer implements Transformation {
             } else if (isJavaString(type)) {
                 return utilInvocation().toJavaStringArray(expr, initialElements);
             } else if (isCeylonString(type)) {
-                return objectVariadicToJavaArray(invocation, type, exprType, expr, initialElements);
+                return utilInvocation().toJavaStringArray(expr, initialElements);
             }
             return objectVariadicToJavaArray(invocation, type, exprType, expr, initialElements);
         }else{

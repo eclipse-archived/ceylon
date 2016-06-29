@@ -1,0 +1,74 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug62xx;
+
+interface LLVMCodeTarget6213A {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug62xx.LLVMCodeTarget6213A$impl $com$redhat$ceylon$compiler$java$test$issues$bug62xx$LLVMCodeTarget6213A$impl();
+    
+    public <T>T call(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name);
+    
+    public <T>T call(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name, final .ceylon.language.Sequential<? extends .ceylon.language.String> args);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug62xx.LLVMCodeTarget6213A.class);
+}
+final class LLVMCodeTarget6213A$impl implements .java.io.Serializable {
+    
+    LLVMCodeTarget6213A$impl(.com.redhat.ceylon.compiler.java.test.issues.bug62xx.LLVMCodeTarget6213A $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug62xx.LLVMCodeTarget6213A $this;
+    
+    public <T>T call(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning call$canonical$($reified$T, name, $ceylontmp$args$0);
+        );
+    }
+    
+    private <T>T call$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name, final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    public <T>T call(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name, final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+        return call$canonical$($reified$T, name, args);
+    }
+}
+class LLVMFunction6213A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug62xx.LLVMCodeTarget6213A, .java.io.Serializable {
+    
+    LLVMFunction6213A() {
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug62xx$LLVMCodeTarget6213A$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug62xx.LLVMCodeTarget6213A$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug62xx.LLVMCodeTarget6213A$impl $com$redhat$ceylon$compiler$java$test$issues$bug62xx$LLVMCodeTarget6213A$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug62xx.LLVMCodeTarget6213A$impl $com$redhat$ceylon$compiler$java$test$issues$bug62xx$LLVMCodeTarget6213A$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug62xx$LLVMCodeTarget6213A$this$;
+    }
+    
+    @.java.lang.Override
+    public <T>T call(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name) {
+        return (
+            let
+            {
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$1 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+            }
+            returning call$canonical$($reified$T, name, $ceylontmp$args$1);
+        );
+    }
+    
+    @.java.lang.Override
+    public final <T>T call(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name, final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug62xx$LLVMCodeTarget6213A$this$.call($reified$T, name, args);
+    }
+    
+    private <T>T call$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name, final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug62xx$LLVMCodeTarget6213A$this$.call($reified$T, name, args);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug62xx.LLVMFunction6213A.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug62xx.LLVMFunction6213A.class);
+}

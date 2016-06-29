@@ -58,8 +58,8 @@ final class bug1899_ {
                     
                     @.java.lang.Override
                     public .ceylon.language.Comparison $call$(final .java.lang.Object $param$0) {
-                        final .ceylon.language.Comparable other = (.ceylon.language.Comparable)$param$0;
-                        return ((.ceylon.language.Comparable)$instance$).compare(other);
+                        final .ceylon.language.Number other = (.ceylon.language.Number)$param$0;
+                        return ((.ceylon.language.Number)$instance$).compare(other);
                     }
                 };
             }

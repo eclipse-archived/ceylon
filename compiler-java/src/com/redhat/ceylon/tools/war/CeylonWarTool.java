@@ -108,8 +108,8 @@ public class CeylonWarTool extends ModuleLoadingTool {
         final String moduleVersion = moduleVersion(this.moduleNameOptVersion);
         final Properties properties = new Properties();
         
-        if (!loadModule(moduleName, moduleVersion) ||
-                !loadModule(WAR_MODULE, Versions.CEYLON_VERSION_NUMBER)) {
+        if (!loadModule(null, moduleName, moduleVersion) ||
+                !loadModule(null, WAR_MODULE, Versions.CEYLON_VERSION_NUMBER)) {
             throw new ToolUsageError(CeylonWarMessages.msg("abort.missing.modules"));
         }
         

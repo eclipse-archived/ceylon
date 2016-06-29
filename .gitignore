@@ -1,2 +1,5 @@
-.gradle/
-build/
+.gradle
+**/.ant-targets-build.xml
+**/.DS_Store
+*~
+\#*\#

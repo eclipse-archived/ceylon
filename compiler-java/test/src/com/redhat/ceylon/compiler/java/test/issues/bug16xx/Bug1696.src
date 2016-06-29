@@ -25,11 +25,11 @@ final class Bug1696$impl<Element, Absent> implements .java.io.Serializable {
     }
     
     public final .ceylon.language.Sequence<? extends Element> getPaired() {
-        return (.ceylon.language.Sequence<? extends Element>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequence<? extends Element>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     public final .ceylon.language.Sequence<? extends Element> getPaired2() {
-        return (.ceylon.language.Sequence<? extends Element>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequence<? extends Element>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
 }
 class Bug1696Extend<Other> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696<.java.lang.Object, .ceylon.language.String>, .java.io.Serializable {
@@ -412,7 +412,7 @@ final class Bug1696MixinB1$impl implements .java.io.Serializable {
     private final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinB1 $this;
     
     public final .ceylon.language.Iterable getPaired() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
 }
 abstract class Bug1696MixinB2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinB1, .ceylon.language.Iterable<T, .java.lang.Object>, .java.io.Serializable {
@@ -1079,7 +1079,7 @@ abstract class Bug1696MixinC2<T> implements .com.redhat.ceylon.compiler.java.run
     
     @.java.lang.Override
     public .ceylon.language.Iterable getPaired() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends T>, ? extends .java.lang.Object>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends T>, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
@@ -1103,7 +1103,7 @@ final class Bug1696MixinD1$impl implements .java.io.Serializable {
     private final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinD1 $this;
     
     public final .ceylon.language.Iterable getPaired() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .java.lang.Object>, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
 }
 abstract class Bug1696MixinD2<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1696MixinD1, .ceylon.language.Iterable<T, .java.lang.Object>, .java.io.Serializable {
@@ -1436,7 +1436,7 @@ abstract class Bug1696MixinD2<T> implements .com.redhat.ceylon.compiler.java.run
     
     @.java.lang.Override
     public .ceylon.language.Iterable getPaired() {
-        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends T>, ? extends .java.lang.Object>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends T>, ? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

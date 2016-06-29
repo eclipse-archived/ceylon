@@ -125,7 +125,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         }else if(forCompiledModule || isLanguageModule || moduleManager.shouldLoadTransitiveDependencies()){
             // we only add stuff to the classpath and load the modules if we need them to compile our modules
             moduleManager.getModelLoader().addModuleToClassPath(module, artifact); // To be able to load it from the corresponding archive
-            if(!module.isDefault() && !moduleManager.getModelLoader().loadCompiledModule(module)){
+            if(!module.isDefaultModule() && !moduleManager.getModelLoader().loadCompiledModule(module)){
                 // we didn't find module.class so it must be a java module if it's not the default module
                 ((LazyModule)module).setJava(true);
                 module.setNativeBackends(Backend.Java.asSet());
@@ -138,23 +138,23 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
 
                     ModuleImport depImport = moduleManager.findImport(module, dependency);
                     if (depImport == null) {
-                        moduleImport = new ModuleImport(dependency, dep.importType() == ImportType.OPTIONAL, dep.importType() == ImportType.EXPORT, Backend.Java);
+                        moduleImport = new ModuleImport(dep.namespace(), dependency, dep.importType() == ImportType.OPTIONAL, dep.importType() == ImportType.EXPORT, Backend.Java);
                         module.addImport(moduleImport);
                     }
                 }
             }
             LazyModule lazyModule = (LazyModule) module;
-            if(!lazyModule.isJava() && !module.isDefault()){
+            if(!lazyModule.isJava() && !module.isDefaultModule()){
                 // it must be a Ceylon module
                 // default modules don't have any module descriptors so we can't check them
                 Overrides overrides = getContext().getRepositoryManager().getOverrides();
                 if (overrides != null) {
-                    if (overrides.getArtifactOverrides(new ArtifactContext(artifact.name(), artifact.version())) != null) {
+                    if (overrides.getArtifactOverrides(new ArtifactContext(artifact.namespace(), artifact.name(), artifact.version())) != null) {
                         Set<ModuleDependencyInfo> existingModuleDependencies = new HashSet<>();
                         for (ModuleImport i : lazyModule.getImports()) {
                             Module m = i.getModule();
                             if (m != null) {
-                                existingModuleDependencies.add(new ModuleDependencyInfo(m.getNameAsString(), m.getVersion(), i.isOptional(), i.isExport()));
+                                existingModuleDependencies.add(new ModuleDependencyInfo(i.getNamespace(), m.getNameAsString(), m.getVersion(), i.isOptional(), i.isExport()));
                             }
                         }
                         ModuleInfo sourceModuleInfo = new ModuleInfo(artifact.name(), artifact.version(), null, existingModuleDependencies);
@@ -163,7 +163,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                         for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {
                             Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dep.getName()), dep.getVersion());
                             Backends backends = dependency.getNativeBackends();
-                            moduleImport = new ModuleImport(dependency, dep.isOptional(), dep.isExport(), backends);
+                            moduleImport = new ModuleImport(dep.getNamespace(), dependency, dep.isOptional(), dep.isExport(), backends);
                             newModuleImports.add(moduleImport);
                         }
                         module.overrideImports(newModuleImports);
@@ -190,7 +190,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         // special case for the java modules, which we only get when using the wrong version
         String name = moduleImport.getModule().getNameAsString();
         JdkProvider jdkProvider = getJdkProvider();
-        if(jdkProvider.isJDKModule(name)){
+        if(jdkProvider != null && jdkProvider.isJDKModule(name)){
             error = "imported module '" + name + "' depends on JDK version '\"" + 
                     moduleImport.getModule().getVersion() +
                     "\"' and you're compiling with Java " + jdkProvider.getJDKVersion();

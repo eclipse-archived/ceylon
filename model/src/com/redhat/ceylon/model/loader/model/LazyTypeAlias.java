@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.loader.model;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -226,21 +227,33 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     }
 
     @Override
-    public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity) {
+    public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity, Cancellable canceller) {
+        if (canceller != null
+                && canceller.isCancelled()) {
+            return Collections.emptyMap();
+        }
         load();
-        return super.getImportableDeclarations(unit, startingWith, imports, proximity);
+        return super.getImportableDeclarations(unit, startingWith, imports, proximity, canceller);
     }
 
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity, Cancellable cancellable) {
+    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity, Cancellable canceller) {
+        if (canceller != null
+                && canceller.isCancelled()) {
+            return Collections.emptyMap();
+        }
         load();
-        return super.getMatchingDeclarations(unit, startingWith, proximity, cancellable);
+        return super.getMatchingDeclarations(unit, startingWith, proximity, canceller);
     }
 
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(Unit unit, Scope scope, String startingWith, int proximity) {
+    public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(Unit unit, Scope scope, String startingWith, int proximity, Cancellable canceller) {
+        if (canceller != null
+                && canceller.isCancelled()) {
+            return Collections.emptyMap();
+        }
         load();
-        return super.getMatchingMemberDeclarations(unit, scope, startingWith, proximity);
+        return super.getMatchingMemberDeclarations(unit, scope, startingWith, proximity, canceller);
     }
 
     @Override

@@ -5,6 +5,7 @@ import org.jboss.modules.ModuleClassLoaderFactory;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
 
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.RuntimeResolver;
 
 /**
@@ -121,7 +122,8 @@ public class CeylonModuleClassLoader extends ModuleClassLoader implements com.re
 
     @Override
     public String getModuleName() {
-        return getModule().getIdentifier().getName();
+        String name = ModuleUtil.getModuleNameFromUri(getModule().getIdentifier().getName());
+        return name;
     }
 
     @Override

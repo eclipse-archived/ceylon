@@ -32,7 +32,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -49,6 +48,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
 import com.redhat.ceylon.cmr.impl.LazyArtifactResult;
+import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.cmr.resolver.aether.AetherException;
 import com.redhat.ceylon.cmr.resolver.aether.AetherResolver;
@@ -72,11 +72,11 @@ class AetherUtils {
     private Logger log;
     private AetherResolver impl;
 
-    AetherUtils(Logger log, String settingsXml, boolean offline, int timeout) {
+    AetherUtils(Logger log, String settingsXml, boolean offline, int timeout, String currentDirectory) {
         this.log = log;
         if(settingsXml == null)
             settingsXml = MavenUtils.getDefaultMavenSettings();
-        impl = new AetherResolverImpl(settingsXml, offline, timeout);
+        impl = new AetherResolverImpl(currentDirectory, settingsXml, offline, timeout);
     }
 
     File findDependency(Node node) {
@@ -283,7 +283,7 @@ class AetherUtils {
                     throws AetherException {
         ArtifactOverrides artifactOverrides = null;
         if(overrides != null){
-            ArtifactContext ctx = new ArtifactContext(groupId+":"+artifactId, version);
+            ArtifactContext ctx = new ArtifactContext(MavenRepository.NAMESPACE, groupId+":"+artifactId, version);
             // see if this artifact is replaced
             ArtifactContext replaceContext = overrides.replace(ctx);
             if(replaceContext != null){
@@ -311,12 +311,13 @@ class AetherUtils {
             artifactTypes.add(new ModuleVersionArtifact(".jar", null, null));
             Set<String> authors = new HashSet<>();
             for(DependencyDescriptor dep : info.getDependencies()){
+                String namespace = MavenRepository.NAMESPACE;
                 String depName = dep.getGroupId()+":"+dep.getArtifactId();
                 String depVersion = dep.getVersion();
                 boolean export = false;
                 boolean optional = dep.isOptional();
                 if(overrides != null){
-                    ArtifactContext depCtx = new ArtifactContext(depName, dep.getVersion());
+                    ArtifactContext depCtx = new ArtifactContext(namespace, depName, dep.getVersion());
                     if(overrides.isRemoved(depCtx)
                             || (artifactOverrides != null 
                                 && (artifactOverrides.isRemoved(depCtx)
@@ -325,6 +326,7 @@ class AetherUtils {
                     ArtifactContext replaceCtx = overrides.replace(depCtx);
                     if(replaceCtx != null){
                         depCtx = replaceCtx;
+                        namespace = replaceCtx.getNamespace();
                         depName = replaceCtx.getName();
                     }
                     if(overrides.isVersionOverridden(depCtx))
@@ -336,13 +338,17 @@ class AetherUtils {
                             optional = artifactOverrides.isOptional(depCtx);
                     }
                 }
-                ModuleDependencyInfo moduleDependencyInfo = new ModuleDependencyInfo(depName, depVersion, optional, export);
+                ModuleDependencyInfo moduleDependencyInfo = new ModuleDependencyInfo(namespace, depName, depVersion, optional, export);
                 dependencies.add(moduleDependencyInfo);
             }
             if(artifactOverrides != null){
                 for(DependencyOverride add : artifactOverrides.getAdd()){
-                    ModuleDependencyInfo moduleDependencyInfo = new ModuleDependencyInfo(add.getArtifactContext().getName(), 
-                            add.getArtifactContext().getVersion(), add.isOptional(), add.isShared());
+                    ArtifactContext ac = add.getArtifactContext();
+                    ModuleDependencyInfo moduleDependencyInfo = new ModuleDependencyInfo(
+                            ac.getNamespace(),
+                            ac.getName(), 
+                            ac.getVersion(),
+                            add.isOptional(), add.isShared());
                     dependencies.add(moduleDependencyInfo);
                 }
             }
@@ -433,7 +439,7 @@ class AetherUtils {
     protected ArtifactResult createArtifactResult(RepositoryManager manager, final String module, final String dVersion, 
             final boolean shared, final boolean optional, final String repositoryDisplayString) {
 
-        return new LazyArtifactResult(manager, module, dVersion, shared ? ImportType.EXPORT : (optional ? ImportType.OPTIONAL : ImportType.UNDEFINED));
+        return new LazyArtifactResult(manager, MavenRepository.NAMESPACE, module, dVersion, shared ? ImportType.EXPORT : (optional ? ImportType.OPTIONAL : ImportType.UNDEFINED));
     }
 
     private ArtifactResult fetchWithClassifier(CmrRepository repository, String groupId, String artifactId, String version, String classifier, String repositoryDisplayString) {
@@ -460,10 +466,11 @@ class AetherUtils {
         private String repositoryDisplayString;
 
         protected MavenArtifactResult(CmrRepository repository, String name, String version, String repositoryDisplayString) {
-            super(repository, name, version);
+            super(repository, MavenRepository.NAMESPACE, name, version);
             this.repositoryDisplayString = repositoryDisplayString;
         }
 
+        @Override
         public ArtifactResultType type() {
             return ArtifactResultType.MAVEN;
         }

@@ -8,6 +8,7 @@ import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.ModelCompleter;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.loader.mirror.MethodMirror;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
@@ -56,10 +57,13 @@ public class LazyClass extends Class implements LazyContainer {
         this.superClass = superClass;
         this.constructor = constructor;
         this.realName = classMirror.getName();
-        setName(JvmBackendUtil.getMirrorName(classMirror));
         this.isStatic = classMirror.isStatic();
         this.isCeylon = classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null;
         this.isValueType = classMirror.getAnnotation(AbstractModelLoader.CEYLON_VALUETYPE_ANNOTATION) != null;
+        String ceylonName = JvmBackendUtil.getMirrorName(classMirror);
+        if(!isCeylon && JvmBackendUtil.isInitialLowerCase(ceylonName))
+            ceylonName = NamingBase.capitalize(ceylonName);
+        setName(ceylonName);
     }
 
     @Override

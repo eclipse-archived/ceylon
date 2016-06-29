@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
+import static com.redhat.ceylon.model.typechecker.util.ModuleManager.MODULE_FILE;
+import static com.redhat.ceylon.model.typechecker.util.ModuleManager.PACKAGE_FILE;
 
 import java.lang.ref.WeakReference;
 import java.util.EnumSet;
@@ -43,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.util.ReferenceCounter;
 import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.UsageVisitor;
 import com.redhat.ceylon.model.typechecker.context.TypeCache;
+import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -64,7 +67,7 @@ public class PhasedUnit {
     //must be the non qualified file name
     private String fileName;
     private WeakReference<ModuleManager> moduleManagerRef;
-    private WeakReference<ModuleSourceMapper> moduleManagerUtilRef;
+    private WeakReference<ModuleSourceMapper> moduleSourceMapperRef;
     private final String pathRelativeToSrcDir;
     private VirtualFile unitFile;
     private List<CommonToken> tokens;
@@ -106,7 +109,7 @@ public class PhasedUnit {
         this.moduleManagerRef = 
                 new WeakReference<ModuleManager>
                     (moduleManager);
-        this.moduleManagerUtilRef = 
+        this.moduleSourceMapperRef = 
                 new WeakReference<ModuleSourceMapper>
                     (moduleManagerUtil);
         this.tokens = tokenStream;
@@ -129,9 +132,9 @@ public class PhasedUnit {
         this.moduleManagerRef = 
                 new WeakReference<ModuleManager>
                     (other.moduleManagerRef.get());
-        this.moduleManagerUtilRef = 
+        this.moduleSourceMapperRef = 
                 new WeakReference<ModuleSourceMapper>
-                    (other.moduleManagerUtilRef.get());
+                    (other.moduleSourceMapperRef.get());
         this.pathRelativeToSrcDir = other.pathRelativeToSrcDir;
         this.unitFile = other.unitFile;
         this.tokens = other.tokens;
@@ -175,7 +178,9 @@ public class PhasedUnit {
                 moduleVisited = true;
                 processLiterals();
                 moduleVisitor = 
-                        new ModuleVisitor(moduleManagerRef.get(), moduleManagerUtilRef.get(), 
+                        new ModuleVisitor(
+                                moduleManagerRef.get(), 
+                                moduleSourceMapperRef.get(), 
                                 pkg);
                 moduleVisitor.setCompleteOnlyAST(!isAllowedToChangeModel(null));
                 rootNode.visit(moduleVisitor);
@@ -186,12 +191,11 @@ public class PhasedUnit {
     }
 
     protected ModuleSourceMapper getModuleSourceMapper() {
-        return moduleManagerUtilRef.get();
+        return moduleSourceMapperRef.get();
     }
     
     protected TypecheckerUnit createUnit() {
-        return new TypecheckerUnit(moduleManagerRef.get().getModules().getListOfModules(),
-        		moduleManagerUtilRef.get());
+        return new TypecheckerUnit(moduleSourceMapperRef.get());
     }
     
     public void visitRemainingModulePhase() {
@@ -274,8 +278,8 @@ public class PhasedUnit {
                                 "identical source files: " +
                                 unit.getFullPath() + " and " + 
                                 u.getFullPath();
-                        if (u.getFilename().equals(ModuleManager.MODULE_FILE) ||
-                            u.getFilename().equals(ModuleManager.PACKAGE_FILE)) {
+                        if (u.getFilename().equals(MODULE_FILE) ||
+                            u.getFilename().equals(PACKAGE_FILE)) {
                             errorMessage += " (a module/package descriptor should be defined only once, even in case of multiple source directories)";
                         }
                         rootNode.addError(errorMessage);                        
@@ -300,7 +304,7 @@ public class PhasedUnit {
                         String moduleName = 
                                 formatPath(importPath.getIdentifiers());
                         ModuleSourceMapper moduleManagerUtil = 
-                                moduleManagerUtilRef.get();
+                                moduleSourceMapperRef.get();
                         if (moduleManagerUtil != null) {
                             for (Module otherModule: 
                                     moduleManagerUtil.getCompiledModules()) {
@@ -334,9 +338,19 @@ public class PhasedUnit {
                 processLiterals();
                 scanningDeclarations = true;
                 //System.out.println("Scan declarations for " + fileName);
-                DeclarationVisitor dv = createDeclarationVisitor();
+                DeclarationVisitor dv = new DeclarationVisitor(unit) {
+                    @Override
+                    protected boolean shouldIgnoreOverload
+                    (Declaration overload, Declaration declaration) {
+                        return PhasedUnit.this.shouldIgnoreOverload(overload, declaration);
+                    }
+                    @Override
+                    protected boolean isAllowedToChangeModel
+                    (Declaration declaration) {
+                        return PhasedUnit.this.isAllowedToChangeModel(declaration);
+                    }
+                };
                 rootNode.visit(dv);
-                unit = dv.getCompilationUnit();
 
                 rootNode.visit(new LocalDeclarationVisitor());
 
@@ -349,26 +363,6 @@ public class PhasedUnit {
         }
     }
 
-    protected DeclarationVisitor createDeclarationVisitor() {
-        return new DeclarationVisitor(pkg, 
-                fileName,
-                unitFile.getPath(), 
-                pathRelativeToSrcDir) {
-            @Override
-            protected boolean shouldIgnoreOverload(Declaration overload, Declaration declaration) {
-                return PhasedUnit.this.shouldIgnoreOverload(overload, declaration);
-            }
-            @Override
-            protected TypecheckerUnit createUnit() {
-                return PhasedUnit.this.createUnit();
-            }
-            @Override
-            protected boolean isAllowedToChangeModel(Declaration declaration) {
-                return PhasedUnit.this.isAllowedToChangeModel(declaration);
-            }
-        };
-    }
-
     private void processLiterals() {
 		if (!literalsProcessed) {
 			rootNode.visit(new LiteralVisitor());
@@ -377,15 +371,19 @@ public class PhasedUnit {
 	}
 
     public void scanTypeDeclarations() {
+        scanTypeDeclarations(null);
+    }
+    
+    public void scanTypeDeclarations(Cancellable cancellable) {
         Boolean enabled = 
                 TypeCache.setEnabled(false);
         try {
             if (!typeDeclarationsScanned) {
                 //System.out.println("Scan type declarations for " + fileName);
-                rootNode.visit(new ImportVisitor());
+                rootNode.visit(new ImportVisitor(cancellable));
                 rootNode.visit(new DefaultTypeArgVisitor());
                 rootNode.visit(new SupertypeVisitor(false)); //TODO: move to a new phase!
-                rootNode.visit(new TypeVisitor());
+                rootNode.visit(new TypeVisitor(cancellable));
                 typeDeclarationsScanned = true;
             }
         }
@@ -414,10 +412,14 @@ public class PhasedUnit {
     }
 
     public synchronized void analyseTypes() {
+        analyseTypes(null);
+    }
+    
+    public synchronized void analyseTypes(Cancellable cancellable) {
         if (!fullyTyped) {
             Type.resetDepth(-100);
             //System.out.println("Run analysis phase for " + fileName);
-            rootNode.visit(new ExpressionVisitor());
+            rootNode.visit(new ExpressionVisitor(cancellable));
             rootNode.visit(new VisibilityVisitor());
             rootNode.visit(new AnnotationVisitor());
             rootNode.visit(new TypeArgumentVisitor());

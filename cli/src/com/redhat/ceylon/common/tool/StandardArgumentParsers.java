@@ -43,6 +43,13 @@ public class StandardArgumentParsers {
                 try {
                     return new URI(argument.replace('\\', '/'));
                 } catch (URISyntaxException e2) {
+                    if (argument.endsWith(":")) {
+                        try {
+                            // A hack to allow URIs of the form "aether:" and "npm:"
+                            return new URI(argument + "/#");
+                        } catch (URISyntaxException e3) {
+                        }
+                    }
                     File f = new File(argument);
                     return f.toURI();
                 }

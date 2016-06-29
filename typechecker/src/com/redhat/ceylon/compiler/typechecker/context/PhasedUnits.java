@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonToken;
@@ -34,6 +35,7 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
     private List<String> moduleFilters;
     private Set<VirtualFile> sourceFiles  = new HashSet<VirtualFile>();
     private String encoding;
+    private List<VirtualFile> srcDirectories;
 
     public PhasedUnits(Context context) {
         this.context = context;
@@ -79,9 +81,11 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
     }
 
     public void parseUnits(List<VirtualFile> srcDirectories) {
+        this.srcDirectories = srcDirectories;
         for (VirtualFile file : srcDirectories) {
             parseUnit(file, file);
         }
+        this.srcDirectories = null;
     }
 
     public void parseUnit(VirtualFile srcDir) {
@@ -203,23 +207,73 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
         moduleSourceMapper.push(dir.getName());
         
         // See if we're defining a new module
-        final List<? extends VirtualFile> files = dir.getChildren();
-        boolean definesModule = false;
-        for (VirtualFile file : files) {
-            if (ModuleManager.MODULE_FILE.equals(file.getName())) {
-                definesModule = true;
-                break;
-            }
-        }
+        boolean definesModule = hasModuleFile(dir);
 
         if(checkModuleFilters(definesModule)){
             if(definesModule)
                 moduleSourceMapper.visitModuleFile();
+            final List<? extends VirtualFile> files = dir.getChildren();
             for (VirtualFile file : files) {
                 parseFileOrDirectory(file, srcDir);
             }
         }
         moduleSourceMapper.pop();
+    }
+    
+    // Does a "module.ceylon" file exist in the current sub folder
+    // or, if <code>srcDirectories</code> is not <code>null</code>,
+    // in any of the same sub folders in those source folders?
+    private boolean hasModuleFile(VirtualFile dir) {
+        if (srcDirectories != null) {
+            String path = relativePath(dir);
+            if (path != null) {
+                // Add "/module.ceylon" to the end
+                path += "/" + ModuleManager.MODULE_FILE;
+                // Now see if we can find that path in any of the source folders
+                for (VirtualFile src : srcDirectories) {
+                    if (findFile(src, path) != null) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } else {
+            return findFile(dir, ModuleManager.MODULE_FILE) != null;
+        }
+    }
+
+    // Return the path relative to the source folder it belong to or null
+    private String relativePath(VirtualFile file) {
+        for (VirtualFile src : srcDirectories) {
+            String path = file.getRelativePath(src);
+            if (path != null) {
+                return path;
+            }
+        }
+        return null;
+    }
+    
+    // Find a file in the given path relative to the given directory or null
+    private VirtualFile findFile(VirtualFile src, String path) {
+        String[] parts = path.split(Pattern.quote("/"));
+        for (String part : parts) {
+            src = findChild(src, part);
+            if (src == null) {
+                return null;
+            }
+        }
+        return src;
+    }
+    
+    // Find a child by name in the given directory or null
+    private VirtualFile findChild(VirtualFile dir, String name) {
+        final List<? extends VirtualFile> files = dir.getChildren();
+        for (VirtualFile file : files) {
+            if (name.equals(file.getName())) {
+                return file;
+            }
+        }
+        return null;
     }
     
     private boolean checkModuleFilters(boolean definesModule) {
@@ -248,7 +302,7 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
             if(module.equals(Module.DEFAULT_MODULE_NAME)){
                 // Allow anything for the default module if it's not owned by another module
                 // and we're not defining a new module.
-                if(pkg.getModule().isDefault() && !definesModule){
+                if(pkg.getModule().isDefaultModule() && !definesModule){
                     return true;
                 }
                 // None of the other rules apply to the default module.
@@ -269,7 +323,7 @@ public class PhasedUnits extends PhasedUnitMap<PhasedUnit, PhasedUnit> {
             }
             // Allow the path that leads to the modules we're looking for, as long as they are in the default module
             // and we're not defining a new module
-            if(module.startsWith(pkgName + ".") && pkg.getModule().isDefault() && !definesModule){
+            if(module.startsWith(pkgName + ".") && pkg.getModule().isDefaultModule() && !definesModule){
                 return true;
             }
         }

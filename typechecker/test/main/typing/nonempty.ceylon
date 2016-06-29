@@ -6,9 +6,9 @@ void testNonempty() {
     Object[] seq3 = [1,1,1,""];
     assert(nonempty @error [Integer+] result3 = seq3);
     String str1 = "xyz";
-    assert(nonempty @error result3 = str1);
+    @error assert(nonempty result4 = str1);
     String str2 = "xyz";
-    assert(nonempty @error [Character+] result4 = str2);
+    @error assert(nonempty [Character+] result5 = str2);
     Integer|Float? num = null;
     assert (exists @error Integer int = num);
 }

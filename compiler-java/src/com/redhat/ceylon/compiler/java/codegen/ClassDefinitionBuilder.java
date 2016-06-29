@@ -313,6 +313,11 @@ public class ClassDefinitionBuilder {
         constructor.body(initBuilder.build().body.stats);
         return constructor;
     }
+    
+    public ClassDefinitionBuilder noInitConstructor() {
+        this.hasConstructors = true;
+        return this;
+    }
 
     /*
      * Builder methods - they transform the inner state before doing the final construction

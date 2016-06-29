@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug15xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("ceylon.language::Integer(ceylon.language::Integer)(ceylon.language::Integer, ceylon.language::Integer)")
 @.ceylon.language.SharedAnnotation$annotation$
 public final class Bug1583Mixer {
@@ -8,7 +10,9 @@ public final class Bug1583Mixer {
     private Bug1583Mixer() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("mixers")
 @.com.redhat.ceylon.compiler.java.metadata.Object
 public final class mixers_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {

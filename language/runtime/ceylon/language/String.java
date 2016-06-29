@@ -124,7 +124,7 @@ public final class String
             buf.append(s.value);
         return instance(buf.toString());
     }
-
+    
     public java.lang.String getUppercased() {
         return getUppercased(value);
     }
@@ -230,6 +230,7 @@ public final class String
 
     @Override
     @TypeInfo("ceylon.language::Integer")
+    @AliasesAnnotation$annotation$(aliases = "length")
     public long getSize() {
         //TODO: should we cache this value in an instvar?
         // But remember that we'll mostly be using the static verion
@@ -775,7 +776,13 @@ public final class String
         }
         if (sublist instanceof String) {
             String string = (String) sublist;
-            int start = value.offsetByCodePoints(0, (int)from);
+            int start;
+            try {
+                start = value.offsetByCodePoints(0, (int)from);
+            }
+            catch (IndexOutOfBoundsException iobe) {
+                return null;
+            }
             int index = value.indexOf(string.value, start);
             if (index >= 0) {
                 return Integer.instance(from + 
@@ -942,9 +949,8 @@ public final class String
         int index = value.lastIndexOf(element, start);
         if (index >= 0) {
             int dist = 
-                    value.codePointCount(start, 
-                            value.length());
-            if (dist>length) {
+                    value.codePointCount(index, start);
+            if (dist>=length) {
                 return null;
             }
             return Integer.instance( 
@@ -1037,7 +1043,10 @@ public final class String
     }
     
     @Override
-    public boolean startsWith(@Name("substring") List<?> substring) {
+    public boolean startsWith(
+            @Name("substring")
+            @TypeInfo("ceylon.language::List<ceylon.language::Anything>")
+            List<?> substring) {
         if (substring instanceof String) {
             return value.startsWith(((String)substring).value);
         }
@@ -1058,7 +1067,10 @@ public final class String
     }
     
     @Override
-    public boolean endsWith(@Name("substring") List<?> substring) {
+    public boolean endsWith(
+            @Name("substring")
+            @TypeInfo("ceylon.language::List<ceylon.language::Anything>")
+            List<?> substring) {
         if (substring instanceof String) {
             return value.endsWith(((String)substring).value);
         }
@@ -1147,7 +1159,7 @@ public final class String
     public static java.lang.String getTrimmed(java.lang.String value) {
         // Don't use value.trim() because that has a definition of ws that is 
         // inconsistent with ceylon.language::Character.whitespace
-        return internalTrim(value, WHITESPACE);
+        return trim(value, WHITESPACE);
     }
     
     @Override
@@ -1203,12 +1215,6 @@ public final class String
     @Ignore
     public static java.lang.String trim(java.lang.String value, 
             Callable<? extends Boolean> characters) {
-        return internalTrim(value, characters);
-    }
-    
-    @Ignore
-    private static java.lang.String internalTrim(java.lang.String value,
-            Callable<? extends Boolean> characters) {
         int from = 0;
         while (from < value.length()) {
             int c = java.lang.Character.codePointAt(value, from);
@@ -1228,6 +1234,7 @@ public final class String
         return value.substring(from, to);
     }
 
+    @Transient
     public java.lang.String getNormalized() {
         return getNormalized(value);
     }
@@ -1236,7 +1243,7 @@ public final class String
     public static java.lang.String getNormalized(java.lang.String value) {
         java.lang.StringBuilder result = 
                 new java.lang.StringBuilder(value.length());
-        boolean previousWasWhitespace=false;
+        boolean previousWasWhitespace = false;
         for (int i=0;i<value.length();) {
             int c = java.lang.Character.codePointAt(value, i);
             boolean isWhitespace = java.lang.Character.isWhitespace(c);
@@ -1244,7 +1251,7 @@ public final class String
                 result.appendCodePoint(c);
             }
             else if (!previousWasWhitespace) {
-                result.append(" ");
+                result.append(' ');
             }
             previousWasWhitespace = isWhitespace;
             i+=java.lang.Character.charCount(c);
@@ -1338,21 +1345,32 @@ public final class String
 
     @Ignore
     public static java.lang.String measure(java.lang.String value, 
-            final long from, final long length) {
-        long fromIndex = from;
-        long len = getSize(value);
-        if (fromIndex >= len || length <= 0) {
+            long from, long length) {
+        long len = value.length();
+        if (len==0 || from>=len || length<=0 || from+length<=0) {
             return "";
         }
-        long resultLength;
-        if (fromIndex + length > len) {
-            resultLength = len - fromIndex;
+        if (from<0) {
+            length += from;
+            from = 0;
         }
-        else {
-            resultLength = length;
+        int start;
+        try {
+            start = value.offsetByCodePoints(0, Util.toInt(from));
         }
-        int start = value.offsetByCodePoints(0, Util.toInt(fromIndex));
-        int end = value.offsetByCodePoints(start, Util.toInt(resultLength));
+        catch (IndexOutOfBoundsException ioobe) {
+            return "";
+        }
+        if (start+length>=len) {
+            return value.substring(start);
+        }
+        int end;
+        try {
+            end = value.offsetByCodePoints(start, Util.toInt(length));
+        }
+        catch (IndexOutOfBoundsException ioobe) {
+            return value.substring(start);
+        }
         return value.substring(start, end);
     }
 
@@ -1396,21 +1414,21 @@ public final class String
     @Ignore
     public static java.lang.String spanFrom(java.lang.String value, 
             long from) {
-        long len = getSize(value);
-        if (len == 0) {
+        if (from <= 0) {
+            return value;
+        }
+        long len = value.length();
+        if (len == 0 || from >= len) {
             return "";
         }
-        if (from >= len) {
+        int start;
+        try {
+            start = value.offsetByCodePoints(0, Util.toInt(from));
+        }
+        catch (IndexOutOfBoundsException ioobe) {
             return "";
         }
-        long toIndex = len - 1;
-        if (from < 0) {
-            from = 0;
-        }
-        int start = value.offsetByCodePoints(0, Util.toInt(from));
-        int end = value.offsetByCodePoints(start, 
-                Util.toInt(toIndex - from + 1));
-        return value.substring(start, end);
+        return value.substring(start);
     }
     
     @Ignore
@@ -1465,12 +1483,12 @@ public final class String
                 };
             }
             @Override
-            public List<? extends Character> sublistTo(long t) {
-                if (t>=to) {
+            public List<? extends Character> sublistTo(long index) {
+                if (index>=to) {
                     return this;
                 }
                 else {
-                    return String.sublistTo(value, to+t);
+                    return String.sublistTo(value, to+index);
                 }
             }
             @Override
@@ -1507,7 +1525,7 @@ public final class String
         return new BaseCharacterList() {
             int start;
             {
-                if (start<0) {
+                if (from<=0) {
                     start = 0;
                 }
                 else {
@@ -1524,8 +1542,7 @@ public final class String
             @Override
             public Character getFromFirst(long index) {
                 try {
-                    int offset = 
-                            start + 
+                    int offset =
                             value.offsetByCodePoints(start, 
                                     Util.toInt(index));
                     return Character.instance(
@@ -1568,12 +1585,12 @@ public final class String
                 };
             }
             @Override
-            public List<? extends Character> sublistFrom(long f) {
-                if (f<=0) {
+            public List<? extends Character> sublistFrom(long index) {
+                if (index<=0) {
                     return this;
                 }
                 else {
-                    return String.sublistFrom(value, from+f);
+                    return String.sublistFrom(value, from+index);
                 }
             }
             @Override
@@ -1605,27 +1622,28 @@ public final class String
     @Ignore
     public static java.lang.String spanTo(java.lang.String value, 
             final long to) {
-        long len = getSize(value);
-        if (len == 0) {
+        long len = value.length();
+        if (len==0 || to<0) {
             return "";
         }
-        long toIndex = to;
-        if (toIndex < 0) {
-            return "";
+        if (to>=len) {
+            return value;
         }
-        if (toIndex >= len) {
-            toIndex = len - 1;
+        int end;
+        try {
+            end = value.offsetByCodePoints(0, Util.toInt(to+1));
         }
-        int start = 0;
-        int end = value.offsetByCodePoints(start, Util.toInt(toIndex + 1));
-        return value.substring(start, end);
+        catch (IndexOutOfBoundsException ioobe) {
+            return value;
+        }
+        return value.substring(0, end);
     }
     
 
     @Ignore
     public static java.lang.String span(java.lang.String value, 
             long from, long to) {
-        long len = getSize(value);
+        long len = value.length();
         if (len == 0) {
             return "";
         }
@@ -1638,16 +1656,28 @@ public final class String
         if (to < 0 || from >= len) {
             return "";
         }
+        long begin = from < 0 ? 0 : from;
+        int start;
+        try {
+            start = value.offsetByCodePoints(0, Util.toInt(begin));
+        }
+        catch (IndexOutOfBoundsException ioobe) {
+            return "";
+        }
+        java.lang.String result;
         if (to >= len) {
-            to = len - 1;
+            result = value.substring(start);
         }
-        if (from < 0) {
-            from = 0;
+        else {
+            int end;
+            try {
+                end = value.offsetByCodePoints(start, Util.toInt(to+1 - begin));
+            }
+            catch (IndexOutOfBoundsException ioobe) {
+                return value.substring(start);
+            }
+            result = value.substring(start, end);
         }
-        int start = value.offsetByCodePoints(0, Util.toInt(from));
-        int end = value.offsetByCodePoints(start, 
-                Util.toInt(to - from + 1));
-        java.lang.String result = value.substring(start, end);
         return reverse ? getReversed(result) : result;
     }
     
@@ -1669,6 +1699,7 @@ public final class String
     }
     
     @Override
+    @Transient
     public String getReversed() {
         return instance(getReversed(value));
     }
@@ -1679,7 +1710,6 @@ public final class String
         if (len < 2) {
             return value;
         }
-        // FIXME: this would be better to directly build the Sequence<Character>
         java.lang.StringBuilder builder 
             = new java.lang.StringBuilder(value.length());
         int offset = value.length();
@@ -1710,6 +1740,32 @@ public final class String
         return builder.toString();
     }
 
+    public java.lang.String removeInitial(
+            @Name("prefix") java.lang.String prefix) {
+        return removeInitial(value, prefix);
+    }
+
+    @Ignore
+    public static java.lang.String removeInitial(java.lang.String value, 
+            java.lang.String prefix) {
+        return value.startsWith(prefix) ? 
+                value.substring(prefix.length()) : 
+                value;
+    }
+
+    public java.lang.String removeTerminal(
+            @Name("postfix") java.lang.String postfix) {
+        return removeTerminal(value, postfix);
+    }
+
+    @Ignore
+    public static java.lang.String removeTerminal(java.lang.String value, 
+            java.lang.String postfix) {
+        return value.endsWith(postfix) ? 
+                value.substring(0, value.length()-postfix.length()) : 
+                value;
+    }
+
     public java.lang.String replace(
             @Name("substring") java.lang.String substring,
             @Name("replacement") java.lang.String replacement) {
@@ -1719,6 +1775,9 @@ public final class String
     @Ignore
     public static java.lang.String replace(java.lang.String value, 
             java.lang.String substring, java.lang.String replacement) {
+        if (substring.isEmpty()) {
+            throw new AssertionError("string to replace must be nonempty");
+        }
         int index = value.indexOf(substring);
         if (index<0) return value;
         java.lang.StringBuilder builder = 
@@ -1739,6 +1798,9 @@ public final class String
     @Ignore
     public static java.lang.String replaceFirst(java.lang.String value, 
             java.lang.String substring, java.lang.String replacement) {
+        if (substring.isEmpty()) {
+            throw new AssertionError("string to replace must be nonempty");
+        }
         int index = value.indexOf(substring);
         if (index<0) {
             return value;
@@ -1758,6 +1820,9 @@ public final class String
     @Ignore
     public static java.lang.String replaceLast(java.lang.String value, 
             java.lang.String substring, java.lang.String replacement) {
+        if (substring.isEmpty()) {
+            throw new AssertionError("string to replace must be nonempty");
+        }
         int index = value.lastIndexOf(substring);
         if (index<0) {
             return value;
@@ -1958,7 +2023,7 @@ public final class String
         }
     };
     
-    @TypeInfo("{ceylon.language::String*}")
+    @TypeInfo("{ceylon.language::String+}")
     @Transient
     public Iterable<? extends String, ?> getLines() {
         return split(NEWLINES, true, false).map($TypeDescriptor$, TRIM_RETURNS);
@@ -1970,7 +2035,7 @@ public final class String
         return split(value, NEWLINES, true, false).map($TypeDescriptor$, TRIM_RETURNS);
     }
 
-    @TypeInfo("{ceylon.language::String*}")
+    @TypeInfo("{ceylon.language::String+}")
     @Transient
     public Iterable<? extends String, ?> getLinesWithBreaks() {
         return split(NEWLINES, false, false).partition(2)
@@ -2295,21 +2360,16 @@ public final class String
                     int index = 0;
                     @Override
                     public java.lang.Object next() {
-                        if (offset>=value.length()) {
-                            return finished_.get_();
-                        }
                         while (true) {
-                            int cp = value.codePointAt(offset);
-                            offset+=java.lang.Character.charCount(cp);
                             if (offset>=value.length()) {
                                 return finished_.get_();
                             }
-                            else {
-                                if (fun.$call$(Character.instance(cp)).booleanValue()) {
-                                    return Integer.instance(index++);
-                                }
-                                index++;
+                            int cp = value.codePointAt(offset);
+                            offset+=java.lang.Character.charCount(cp);
+                            if (fun.$call$(Character.instance(cp)).booleanValue()) {
+                                return Integer.instance(index++);
                             }
+                            index++;
                         }
                     }
                 };
@@ -2736,11 +2796,12 @@ public final class String
     
     @Ignore
     public static java.lang.String pad(java.lang.String value, long size, int character) {
-        int length = value.codePointCount(0, value.length());
+        long length = getSize(value);
         if (size<=length) return value;
         long leftPad = (size-length)/2;
         long rightPad = leftPad + (size-length)%2;
-        java.lang.StringBuilder builder = new java.lang.StringBuilder();
+        java.lang.StringBuilder builder = 
+                new java.lang.StringBuilder();
         for (int i=0;i<leftPad;i++) {
             builder.appendCodePoint(character);
         }
@@ -2778,10 +2839,11 @@ public final class String
     
     @Ignore
     public static java.lang.String padLeading(java.lang.String value, long size, int character) {
-        int length = value.codePointCount(0, value.length());
+        long length = getSize(value);
         if (size<=length) return value;
         long leftPad = size-length;
-        java.lang.StringBuilder builder = new java.lang.StringBuilder();
+        java.lang.StringBuilder builder = 
+                new java.lang.StringBuilder();
         for (int i=0;i<leftPad;i++) {
             builder.appendCodePoint(character);
         }
@@ -2816,10 +2878,11 @@ public final class String
     
     @Ignore
     public static java.lang.String padTrailing(java.lang.String value, long size, int character) {
-        int length = value.codePointCount(0, value.length());
+        long length = getSize(value);
         if (size<=length) return value;
         long rightPad = size-length;
-        java.lang.StringBuilder builder = new java.lang.StringBuilder(value);
+        java.lang.StringBuilder builder = 
+                new java.lang.StringBuilder(value);
         for (int i=0;i<rightPad;i++) {
             builder.appendCodePoint(character);
         }
@@ -2899,13 +2962,20 @@ public final class String
             long destinationPosition, 
             long length){
         int count = 0;
+        int src = Util.toInt(sourcePosition);
         int dest = Util.toInt(destinationPosition);
-        for (int index = value.offsetByCodePoints(0,Util.toInt(sourcePosition)); 
-                count<length;) {
-            int codePoint = value.codePointAt(index);
-            ((int[])destination.toArray())[count+dest] = codePoint;
-            index += java.lang.Character.charCount(codePoint);
-            count++;
+        int[] array = (int[]) destination.toArray();
+        try {
+            for (int index = value.offsetByCodePoints(0,src); 
+                    count<length;) {
+                int codePoint = value.codePointAt(index);
+                array[count+dest] = codePoint;
+                index += java.lang.Character.charCount(codePoint);
+                count++;
+            }
+        }
+        catch (IndexOutOfBoundsException iob) {
+            throw new AssertionError(iob.getMessage());
         }
     }
 
@@ -3387,5 +3457,88 @@ public final class String
             Callable<? extends Result> arg1) {
         return $ceylon$language$List$impl().mapElements(arg0, arg1);
     }
+    
+    @Ignore
+    public final long indexOf(java.lang.String string) {
+        return indexOf(value, string);
+    }
+    
+    @Ignore
+    public final long indexOf$from(java.lang.String string) {
+        return 0;
+    }
+    
+    @TypeInfo("ceylon.language::Integer")
+    public final long indexOf(@Name("string")
+    @TypeInfo("ceylon.language::String")
+    final java.lang.String string, @Name("from")
+    @Defaulted
+    @TypeInfo("ceylon.language::Integer")
+    final long from) {
+        return indexOf(value, string, from);
+    }
+    
+    public static long indexOf(java.lang.String value, java.lang.String string) {
+        return value.indexOf(string);
+    }
+    
+    public static long indexOf(java.lang.String value, java.lang.String string, long from) {
+        if (from>value.length()) {
+            return -1;
+        }
+        if (from<0) {
+            from = 0;
+        }
+        int start;
+        try {
+            start = value.offsetByCodePoints(0, (int)from);
+        }
+        catch (IndexOutOfBoundsException iobe) {
+            return -1;
+        }
+        return value.indexOf(string, start);
+    }
+    
+    @Ignore
+    public final long lastIndexOf(java.lang.String string) {
+        return lastIndexOf(value, string);
+    }
+    
+    @Ignore
+    public final long lastIndexOf$from(java.lang.String string) {
+        return Long.MAX_VALUE;
+    }
+    
+    @TypeInfo("ceylon.language::Integer")
+    public final long lastIndexOf(@Name("string")
+    @TypeInfo("ceylon.language::String")
+    java.lang.String string, @Name("to")
+    @Defaulted
+    @TypeInfo("ceylon.language::Integer")
+    final long to) {
+        return lastIndexOf(value, string, to);
+    }
+    
+    public static long lastIndexOf(java.lang.String value, java.lang.String string) {
+        return value.lastIndexOf(string);
+    }
+    
+    public static long lastIndexOf(java.lang.String value, java.lang.String string, long to) {
+        if (to>value.length()) {
+            return lastIndexOf(value, string);
+        }
+        if (to<0) {
+            return -1;
+        }
+        int start;
+        try {
+            start = value.offsetByCodePoints(0, (int)to);
+        }
+        catch (IndexOutOfBoundsException iobe) {
+            return lastIndexOf(value, string);
+        }
+        return value.lastIndexOf(string, start);
+    }
+    
 
 }

@@ -93,9 +93,9 @@ public class Util {
     // Used by the IDE
     public static String getArchiveName(Module module, String extension) {
         String moduleName = module.getNameAsString();
-        if(module.isDefault())
+        if(module.isDefaultModule()){
             moduleName = "default";
-        else{
+        }else{
             moduleName += "-"+module.getVersion();
         }
         return moduleName+"."+extension;
@@ -106,9 +106,9 @@ public class Util {
         String moduleName = module.getNameAsString();
         String modulePath;
         
-        if(module.isDefault())
+        if(module.isDefaultModule()){
             modulePath = "default";
-        else{
+        }else{
             modulePath = moduleName.replace('.', File.separatorChar);
             modulePath += File.separatorChar + module.getVersion();
         }

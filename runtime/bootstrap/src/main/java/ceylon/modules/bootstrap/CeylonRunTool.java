@@ -21,7 +21,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
@@ -97,6 +99,7 @@ public class CeylonRunTool extends RepoUsingTool {
     private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean upgradeDist = true;
+    private Map<String,String> extraModules = new HashMap<String,String>();
 
     public CeylonRunTool() {
         super(CeylonMessages.RESOURCE_BUNDLE);
@@ -164,9 +167,14 @@ public class CeylonRunTool extends RepoUsingTool {
     public void setLinkWithCurrentDistribution(boolean downgradeDist) {
         this.upgradeDist = !downgradeDist;
     }
+    
+    public void addExtraModule(String module, String version) {
+        this.extraModules.put(module, version);
+    }
 
     @Override
-    public void initialize(CeylonTool mainTool) {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
     }
 
     @Override
@@ -314,6 +322,8 @@ public class CeylonRunTool extends RepoUsingTool {
         options.setRun(run);
         options.setOverrides(overrides);
         options.setDowngradeDist(!upgradeDist);
+        options.setExtraModules(extraModules);
+        
         try {
             Runner runner = CeylonToolProvider.getRunner(Backend.Java, options, module, version);
             runner.run(args.toArray(new String[args.size()]));

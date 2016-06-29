@@ -662,7 +662,73 @@ interface DefiniteSpecification {
     @error class Sub() extends Super(name) {
         String name = "gavin";
     }
+    
+    class Foo0() {
+        String? name;
+        if (1==1) {
+            name = null;
+            return;
+        }
+        name = "Gavin";
+        shared void bar() => print(name);
+    }
+    
+    class Foo1() {
+        String? name;
+        for (x in 0..0) {
+            if (1==1) {
+                name = null;
+                break;
+            }
+        }
+        @error name = "Gavin";
+        shared void bar() => print(name);
+    }
+    
+    class Foo2() {
+        String? name;
+        for (x in 0..0) {
+            if (1==1) {
+                name = null;
+                break;
+            }
+            @error name = "Gavin";
+        }
+        shared void bar() => print(name);
+    }
+    
+    class Foo3() {
+        String? name;
+        for (x in 0..0) {
+            if (1==1) {
+                name = null;
+                return;
+            }
+        }
+        name = "Gavin";
+        shared void bar() => print(name);
+    }
 
+    class Foo4() {
+        String? name;
+        if (1==1) {
+            throw;
+        }
+        name = "Gavin";
+        shared void bar() => print(name);
+    }
+    
+    class Foo5() {
+        String? name;
+        for (x in 0..0) {
+            if (1==1) {
+                throw;
+            }
+        }
+        name = "Gavin";
+        shared void bar() => print(name);
+    }
+    
 }
 
 void localFatArrows() {
@@ -977,6 +1043,285 @@ shared void run24() {
         }
     } else {
         x = -1;
+    }
+    print(x);
+}
+
+shared void run26() {
+    for (i in 0:1) {
+        String? s = "";
+        if (!exists s) {
+            break; // or continue;
+        }
+        print(s.size);
+    }
+}
+
+shared void run27() {
+    for (i in 0:1) {
+        String? s = "";
+        if (!exists s) {
+            for (j in 0:0) {
+                break; // or continue;
+            }
+        }
+        @error print(s.size);
+    }
+}
+
+shared void run28() {
+    for (i in 0:1) {
+        String? s = "";
+        if (!exists s) {
+            while (false) {
+                break; // or continue;
+            }
+        }
+        @error print(s.size);
+    }
+}
+
+shared void run29() {
+    while (false) {
+        String? s = "";
+        if (!exists s) {
+            break; // or continue;
+        }
+        print(s.size);
+    }
+}
+
+class ClassWithReturn1() {
+    String name;
+    if (1==1) {
+        @error return;
+    }
+    name = "Gavin";
+    shared void bar() => print(name);
+}
+
+class ClassWithReturn2() {
+    if (1==1) {
+        @error return;
+    }
+    value name = "Gavin";
+    shared void bar() => print(name);
+}
+
+class ClassWithThrow1() {
+    String name;
+    if (1==1) {
+        throw;
+    }
+    name = "Gavin";
+    shared void bar() => print(name);
+}
+
+class ClassWithThrow2() {
+    if (1==1) {
+        throw;
+    }
+    value name = "Gavin";
+    shared void bar() => print(name);
+}
+
+void funWithReturn1() {
+    String name;
+    if (1==1) {
+        return;
+    }
+    name = "Gavin";
+    void bar() => print(name);
+}
+
+void funWithReturn2() {
+    if (1==1) {
+        return;
+    }
+    value name = "Gavin";
+    void bar() => print(name);
+}
+
+void funWithThrow1() {
+    String name;
+    if (1==1) {
+        throw;
+    }
+    name = "Gavin";
+    void bar() => print(name);
+}
+
+void funWithThrow2() {
+    if (1==1) {
+        throw;
+    }
+    value name = "Gavin";
+    void bar() => print(name);
+}
+
+
+void specificationInLoop1() {
+    Integer x;
+    for (j in 0:3) {
+        x = 10 + j;
+        print(x);
+        if (1==1) {
+            break;
+        }
+        else {
+            return;
+        }
+    }
+    @error print(x);
+}
+
+void specificationInLoop2() {
+    Integer x;
+    for (j in 0..3) {
+        x = 10 + j;
+        print(x);
+        if (1==1) {
+            break;
+        }
+        else {
+            return;
+        }
+    }
+    print(x);
+}
+
+void specificationInLoop3() {
+    Integer x;
+    for (j in 0..3) {
+        break;
+    }
+    @error print(x);
+}
+
+void specificationInLoop4() {
+    Integer x;
+    for (j in 0..3) {
+        if (1==1) {
+            break;
+        }
+        else {
+            return;
+        }
+    }
+    @error print(x);
+}
+
+
+void specificationInLoop5() {
+    variable Integer x;
+    for (j in 0..3) {
+        if (1==1) {
+            x = 1;
+        }
+        else {
+            return;
+        }
+        print(x);
+    }
+    print(x);
+}
+
+void specificationInLoop6() {
+    variable Integer x;
+    for (j in 0..3) {
+        if (1==1) {
+            x = 1;
+        }
+        else {
+            break;
+        }
+        print(x);
+    }
+    @error print(x);
+}
+
+void specificationInLoop7() {
+    variable Integer x;
+    while (1==0) {
+        if (1==1) {
+            x = 1;
+        }
+        else {
+            break;
+        }
+        print(x);
+    }
+    @error print(x);
+}
+
+void specificationInLoop8() {
+    variable Integer x;
+    while (1==0) {
+        if (1==1) {
+            x = 1;
+        }
+        else {
+            return;
+        }
+        print(x);
+    }
+    @error print(x);
+}
+
+void specificationInLoop9() {
+    Integer x;
+    for (j in 0:3) {
+        x = 10 + j;
+        print(x);
+        if (1==1) {
+            break;
+        }
+        else {
+            throw;
+        }
+    }
+    @error print(x);
+}
+
+void specificationInLoop10() {
+    Integer x;
+    for (j in 0..3) {
+        x = 10 + j;
+        print(x);
+        if (1==1) {
+            break;
+        }
+        else {
+            throw;
+        }
+    }
+    print(x);
+}
+
+void specificationInLoop11() {
+    Integer x;
+    for (j in 0..3) {
+        if (1==1) {
+            x = 10 + j;
+            break;
+        }
+        else {
+            throw;
+        }
+    }
+    print(x);
+}
+
+void specificationInLoop12() {
+    Integer x;
+    for (j in 0..3) {
+        if (1==1) {
+            x = 10 + j;
+            break;
+        }
+        else {
+            return;
+        }
     }
     print(x);
 }

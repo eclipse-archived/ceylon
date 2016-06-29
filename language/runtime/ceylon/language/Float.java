@@ -326,6 +326,7 @@ public final class Float
     }
 
     @AliasesAnnotation$annotation$(aliases = "absolute")
+    @Transient
     @Override
     public Float getMagnitude() {
         return instance(Math.abs(value));
@@ -397,6 +398,7 @@ public final class Float
     }
 
     @Override
+    @Transient
     public boolean getPositive() {
         return value > 0;
     }
@@ -407,6 +409,7 @@ public final class Float
     }
     
     @Override
+    @Transient
     public boolean getNegative() {
         return value < 0;
     }
@@ -416,6 +419,7 @@ public final class Float
         return value < 0;
     }
     
+    @Transient
     public boolean getStrictlyPositive() {
         return (Double.doubleToRawLongBits(value) >> 63)==0
                 && !Double.isNaN(value);
@@ -427,6 +431,7 @@ public final class Float
                 && !Double.isNaN(value);
     }
     
+    @Transient
     public boolean getStrictlyNegative() {
         return (Double.doubleToRawLongBits(value) >> 63)!=0
         		&& !Double.isNaN(value);
@@ -439,6 +444,7 @@ public final class Float
     }
     
     @Override
+    @Transient
     public long getSign() {
         if (value > 0)
             return 1;
@@ -470,6 +476,9 @@ public final class Float
     public Comparison compare(@Name("other") Float other) {
         double x = value;
         double y = other.value;
+        if (Double.isNaN(x) || Double.isNaN(y)) {
+            throw new Exception(new String("NaN is not comparable"));
+        }
         return (x < y) ? smaller_.get_() :
             ((x == y) ? equal_.get_() : larger_.get_());
     }
@@ -478,6 +487,9 @@ public final class Float
     public static Comparison compare(double value, double otherValue) {
         double x = value;
         double y = otherValue;
+        if (Double.isNaN(x) || Double.isNaN(y)) {
+            throw new Exception(new String("NaN is not comparable"));
+        }
         return (x < y) ? smaller_.get_() :
             ((x == y) ? equal_.get_() : larger_.get_());
     }

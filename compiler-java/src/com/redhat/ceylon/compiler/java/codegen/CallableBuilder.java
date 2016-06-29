@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrateg
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedMemberOrTypeExpression;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
@@ -269,7 +270,7 @@ public class CallableBuilder {
      *     value z = Outer.Inner;
      * </pre>
      */
-    public static CallableBuilder unboundFunctionalMemberReference(
+    public static JCExpression unboundFunctionalMemberReference(
             CeylonTransformer gen,
             Tree.QualifiedMemberOrTypeExpression qmte,
             Type typeModel, 
@@ -278,11 +279,19 @@ public class CallableBuilder {
         final ParameterList parameterList = methodClassOrCtor.getFirstParameterList();
         Type type = typeModel;
         JCExpression target;
+        boolean memberClassCtorRef = Decl.getConstructor((Declaration)methodClassOrCtor) != null
+                && !Decl.getConstructedClass((Declaration)methodClassOrCtor).isToplevel()
+                && qmte.getPrimary() instanceof Tree.QualifiedTypeExpression
+                ;
         boolean hasOuter = !(Decl.isConstructor((Declaration)methodClassOrCtor)
                 && gen.getNumParameterLists(typeModel) == 1);
         if (!hasOuter) {
             type = typeModel;
-            target = null;
+            if (memberClassCtorRef) {
+                target = gen.naming.makeUnquotedIdent(Unfix.$instance$);
+            } else {
+                target = null;
+            }
         } else {
             type = gen.getReturnTypeOfCallable(type);
             Type qualifyingType = qmte.getTarget().getQualifyingType();
@@ -296,10 +305,12 @@ public class CallableBuilder {
         }
         CallBuilder callBuilder = CallBuilder.instance(gen);
         Type accessType = gen.getParameterTypeOfCallable(typeModel, 0);
+        boolean needsCast = false;
         if (Decl.isConstructor((Declaration)methodClassOrCtor)) {
             Constructor ctor = Decl.getConstructor((Declaration)methodClassOrCtor);
             Class cls = Decl.getConstructedClass(ctor);
             if (Strategy.generateInstantiator(ctor)) {
+                needsCast = Strategy.isInstantiatorUntyped(ctor);
                 callBuilder.invoke(gen.naming.makeInstantiatorMethodName(target, cls));
             } else {
                 callBuilder.instantiate( 
@@ -347,6 +358,9 @@ public class CallableBuilder {
             callBuilder.argument(gen.naming.makeQuotedIdent(Naming.getAliasedParameterName(parameter)));
         }
         JCExpression innerInvocation = callBuilder.build();
+        if (needsCast) {
+            innerInvocation = gen.make().TypeCast(gen.makeJavaType(gen.getReturnTypeOfCallable(type)), innerInvocation);
+        }
         // Need to worry about boxing for Function and FunctionalParameter 
         if (methodClassOrCtor instanceof TypedDeclaration
                 && !Decl.isConstructor((Declaration)methodClassOrCtor)) {
@@ -368,8 +382,16 @@ public class CallableBuilder {
         List<JCStatement> innerBody = List.<JCStatement>of(gen.make().Return(innerInvocation));
         inner.useDefaultTransformation(innerBody);
         
+        JCExpression callable = inner.build();
         if (!hasOuter) {
-            return inner;
+            if (memberClassCtorRef) {
+                ;
+                JCVariableDecl def = gen.makeVar(Unfix.$instance$.toString(), 
+                        gen.makeJavaType(((QualifiedMemberOrTypeExpression)qmte.getPrimary()).getPrimary().getTypeModel()), 
+                        gen.expressionGen().transformQualifiedMemberPrimary(qmte));
+                return gen.make().LetExpr(def,callable);
+            }
+            return callable;
         }
         
         ParameterList outerPl = new ParameterList();
@@ -384,11 +406,11 @@ public class CallableBuilder {
         outerPl.getParameters().add(instanceParameter);
         CallableBuilder outer = new CallableBuilder(gen, qmte, typeModel, outerPl);
         outer.parameterTypes = outer.getParameterTypesFromParameterModels();
-        List<JCStatement> outerBody = List.<JCStatement>of(gen.make().Return(inner.build()));
+        List<JCStatement> outerBody = List.<JCStatement>of(gen.make().Return(callable));
         outer.useDefaultTransformation(outerBody);
         outer.companionAccess = Decl.isPrivateAccessRequiringCompanion(qmte);
         
-        return outer;
+        return outer.build();
     }
     
     class MemberReferenceDefaultValueCall implements DefaultValueMethodTransformation {

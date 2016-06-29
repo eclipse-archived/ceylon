@@ -10,6 +10,7 @@
 
  produces the stream `{ 0, 2, 4, 6, 8 }`."
 tagged("Streams")
+aliased("iterate")
 shared {Element+} loop<Element>(
         "The first element of the resulting stream."
         Element first)(

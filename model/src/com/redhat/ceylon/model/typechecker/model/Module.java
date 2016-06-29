@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.formatPath;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNameMatching;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
@@ -34,11 +35,10 @@ public class Module
             new ArrayList<ModuleImport>();
     private Module languageModule;
     private boolean available;
-    private boolean isDefault;
     private List<Annotation> annotations = 
             new ArrayList<Annotation>();
     private Unit unit;
-    private String memoisedName;
+    private String nameAsString;
     private TypeCache cache = new TypeCache();
     private String signature;
     private List<ModuleImport> overridenImports = null;
@@ -76,6 +76,26 @@ public class Module
     
     public void addImport(ModuleImport modImport) {
         imports.add(modImport);
+    }
+    
+    public boolean isLanguageModule() {
+        List<String> name = getName();
+        return name.size()==2
+                && name.get(0)
+                    .equals("ceylon")
+                && name.get(1)
+                    .equals("language");
+    }
+    
+    /**
+     * Is this the default module hosting all units outside 
+     * of an explicit module
+     */
+    public boolean isDefaultModule() {
+        List<String> name = getName();
+        return name.size()==1
+                && name.get(0)
+                    .equals(DEFAULT_MODULE_NAME);
     }
     
     public Module getLanguageModule() {
@@ -152,36 +172,52 @@ public class Module
                 for (Package p: importedModule.getPackages()) {
                     list.add(p);
                 }
-                importedModule.addVisiblePackagesOfTransitiveDependencies(
-                        list, alreadyScannedModules, false);
+                importedModule.addAllPackagesOfTransitiveDependencies(
+                        list, alreadyScannedModules);
             }
         }
     }
-/*    
-    public Map<String, DeclarationWithProximity> 
-    getAvailableDeclarations(String startingWith, 
-            int proximity) {
-        return getAvailableDeclarations(startingWith, proximity, null);
+    
+    /**
+     * Avoid scanning the whole universe of transitive dependencies
+     * when we don't even have an initial prefix.
+     */
+    private List<Package> getPackagesToScan(String startingWith) {
+        if (startingWith.isEmpty()) {
+            List<Package> packs = getPackages();
+            List<Package> langPacks = getLanguageModule().getPackages();
+            List<Package> list =
+                    new ArrayList<Package>(
+                        packs.size() + langPacks.size());
+            list.addAll(packs);
+            list.addAll(langPacks);
+            return list;
+        }
+        else {
+            return getAllVisiblePackages();
+        }
     }
-*/    
+    
     public Map<String, DeclarationWithProximity> 
     getAvailableDeclarations(String startingWith, 
             int proximity, Cancellable canceller) {
         Map<String, DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
-        for (Package p: getAllVisiblePackages()) {
+        for (Package p: getPackagesToScan(startingWith)) {
             if (canceller != null
                     && canceller.isCancelled()) {
-                break;
+                return Collections.emptyMap();
             }
-            String packageName = 
-                    p.getNameAsString();
-            boolean isLanguageModule = 
-                    packageName.equals(LANGUAGE_MODULE_NAME);
+            boolean isLanguagePackage = 
+                    p.isLanguagePackage();
             boolean isDefaultPackage = 
-                    packageName.isEmpty();
+                    p.isDefaultPackage();
             if (!isDefaultPackage) {
                 for (Declaration d: p.getMembers()) {
+                    if (canceller != null
+                            && canceller.isCancelled()) {
+                        return Collections.emptyMap();
+                    }
                     try {
                         if (isResolvable(d) && 
                                 d.isShared() && 
@@ -189,12 +225,12 @@ public class Module
                                 isNameMatching(startingWith, d)) {
                             String name = d.getName();
                             boolean isSpecialValue = 
-                                    isLanguageModule &&
+                                    isLanguagePackage &&
                                         name.equals("true") || 
                                         name.equals("false") || 
                                         name.equals("null");
                             boolean isSpecialType = 
-                                    isLanguageModule &&
+                                    isLanguagePackage &&
                                         name.equals("String") ||
                                         name.equals("Integer") ||
                                         name.equals("Float") ||
@@ -212,7 +248,7 @@ public class Module
                                 //declarations of the package
                                 prox = proximity+2;
                             }
-                            else if (isLanguageModule) {
+                            else if (isLanguagePackage) {
                                 //just less than toplevel
                                 //declarations of the package
                                 prox = proximity+3;
@@ -224,7 +260,7 @@ public class Module
                             }
                             result.put(d.getQualifiedNameString(), 
                                     new DeclarationWithProximity(d, 
-                                            prox, !isLanguageModule));
+                                            prox, !isLanguagePackage));
                         }
                     }
                     catch (Exception e) {}
@@ -279,17 +315,10 @@ public class Module
     }
     
     public String getNameAsString() {
-        if (memoisedName == null){
-            StringBuilder sb = new StringBuilder();
-            for (int i=0, s=name.size(); i<s; i++) {
-                sb.append(name.get(i));
-                if (i < name.size()-1) {
-                    sb.append('.');
-                }
-            }
-            memoisedName = sb.toString();
+        if (nameAsString == null) {
+            nameAsString = formatPath(name);
         }
-        return memoisedName;
+        return nameAsString;
     }
 
     @Override
@@ -298,18 +327,6 @@ public class Module
                 " \"" + getVersion() + "\"";
     }
     
-    /**
-     * Is this the default module hosting all units outside 
-     * of an explicit module
-     */
-    public boolean isDefault() {
-        return isDefault;
-    }
-
-    public void setDefault(boolean isDefault) {
-        this.isDefault = isDefault;
-    }
-
     @Override
     public List<Annotation> getAnnotations() {
         return annotations;
@@ -346,7 +363,7 @@ public class Module
             return 0;
         }
         // default first
-        if (isDefault()) {
+        if (isDefaultModule()) {
             return -1;
         }
         String name = this.getNameAsString();
@@ -377,7 +394,7 @@ public class Module
     
     public String getSignature() {
         if (signature == null) {
-            if (isDefault()) {
+            if (isDefaultModule()) {
                 signature = getNameAsString();
             }
             else {

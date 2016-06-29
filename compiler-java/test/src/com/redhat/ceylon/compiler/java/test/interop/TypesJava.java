@@ -99,7 +99,9 @@ public class TypesJava {
     java.util.List<ceylon.language.String> stringList(){ return null; }
     java.util.List<java.lang.String> jstringList(){ return null; }
     java.util.List<java.lang.Object> objectList(){ return null; }
-    
+
+    boolean variadicBooleanRet(boolean... vars){ return true; }
+
     void variadicBoolean(boolean... vars){}
     void variadicCeylonBoolean(ceylon.language.Boolean... vars){}
 

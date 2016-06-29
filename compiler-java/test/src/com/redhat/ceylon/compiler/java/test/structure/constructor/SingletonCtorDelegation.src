@@ -175,7 +175,9 @@ class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.jav
         return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.class, $name$);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class singletonCtorDelegation_ {
     

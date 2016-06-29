@@ -46,8 +46,6 @@ import com.redhat.ceylon.model.typechecker.util.TypePrinter;
  */
 public class Type extends Reference {
     
-    private static final Type NullType = new Type();
-    
     private TypeDeclaration declaration;
     private String underlyingType;
     private boolean isRaw;
@@ -69,34 +67,25 @@ public class Type extends Reference {
     public boolean isCovariant(TypeParameter param) {
         SiteVariance override = 
                 varianceOverrides.get(param);
-        if (override==null) {
-            return param.isCovariant();
-        }
-        else {
-            return override==OUT;
-        }
+        return override==null ? 
+                param.isCovariant() : 
+                override==OUT;
     }
     
     public boolean isContravariant(TypeParameter param) {
         SiteVariance override = 
                 varianceOverrides.get(param);
-        if (override==null) {
-            return param.isContravariant();
-        }
-        else {
-            return override==IN;
-        }
+        return override==null ? 
+                param.isContravariant() : 
+                override==IN;
     }
     
     public boolean isInvariant(TypeParameter param) {
         SiteVariance override = 
                 varianceOverrides.get(param);
-        if (override==null) {
-            return param.isInvariant();
-        }
-        else {
-            return false;
-        }
+        return override==null ? 
+                param.isInvariant() : 
+                false;
     }
     
     public void setVariance(TypeParameter param, 
@@ -172,8 +161,10 @@ public class Type extends Reference {
      * given type? 
      */
     public boolean isExactly(Type type) {
-        return type!=null && resolveAliases()
-                .isExactlyInternal(type.resolveAliases());
+        return type!=null && 
+                resolveAliases()
+                    .isExactlyInternal(
+                            type.resolveAliases());
     }
     
     private boolean isExactlyInternal(Type type) {
@@ -551,8 +542,10 @@ public class Type extends Reference {
      * Is this type a subtype of the given type? 
      */
     public boolean isSubtypeOf(Type type) {
-        return type!=null && resolveAliases()
-                .isSubtypeOfInternal(type.resolveAliases());
+        return type!=null && 
+                resolveAliases()
+                    .isSubtypeOfInternal(
+                            type.resolveAliases());
     }
 
     /**
@@ -609,7 +602,7 @@ public class Type extends Reference {
                 return true;
             }
             else if (isIntersection()) {
-                if (type.isClassOrInterface()) {
+                if (type.isDeclaredType()) {
                     TypeDeclaration otherDec = 
                             type.getDeclaration();
                     Type pst = getSupertype(otherDec);
@@ -1444,7 +1437,7 @@ public class Type extends Reference {
         if (canCache) {
             TypeCache cache = dec.getUnit().getCache();
             Type ret = cache.get(this, dec);
-            if(ret != null) return ret == NullType ? null : ret;
+            if(ret != null) return ret == TypeCache.NULL_VALUE ? null : ret;
         }
         
         while (dec.isAlias()) {
@@ -1477,7 +1470,7 @@ public class Type extends Reference {
         
         if (canCache) {
             TypeCache cache = dec.getUnit().getCache();
-            cache.put(this, dec, superType == null ? NullType : superType);
+            cache.put(this, dec, superType == null ? TypeCache.NULL_VALUE : superType);
         }
         return superType;
     }
@@ -1677,6 +1670,11 @@ public class Type extends Reference {
         
         Type result = null;
         Type lowerBound = null;
+        //Note: for anything other than a member lookup,
+        //result and lowerBound are always identical. But
+        //for member lookups we can return a "best" result, 
+        //i.e. a supertype declaration of the member that is
+        //subsequently refined by multiple intervening types
         
         Type extendedType = getInternalExtendedType();
         if (extendedType!=null) {
@@ -1715,15 +1713,17 @@ public class Type extends Reference {
                     TypeDeclaration prd = 
                             possibleResult.getDeclaration();
                     
-                    TypeDeclaration d = null;
-                    if (rd.equals(prd)) {
-                        d = rd;
-                    }
-                    
                     Unit unit = getDeclaration().getUnit();
-                    if (d!=null) {
-                        result = principalInstantiation(d, 
+                    if (rd.equals(prd)) {
+                        result = principalInstantiation(rd, 
                                 possibleResult, result, unit);
+                        if (result == null) {
+                            return null;
+                        }
+                        lowerBound = c.isMemberLookup() ? 
+                                intersectionType(result, 
+                                        lowerBound, unit) : 
+                                result;
                     }
                     else {
                         //ambiguous! we can't decide between 
@@ -1735,7 +1735,14 @@ public class Type extends Reference {
                             //try to find a common supertype 
                             //by forming the union of the two 
                             //possible results (since A|B is 
-                            //always a supertype of A&B)
+                            //always a supertype of A&B) but
+                            //also keep track of a lower bound,
+                            //in case we subsequently find a
+                            //strictly better and more refined
+                            //declaration of the member
+                            
+                            //lower bound is just the 
+                            //intersection
                             List<Type> types = 
                                     new ArrayList<Type>(2);
                             types.add(lowerBound);
@@ -1744,6 +1751,10 @@ public class Type extends Reference {
                                     intersection(types, unit);
                             List<Type> lbsts = 
                                     lowerBound.getSatisfiedTypes();
+                            
+                            //the "best" result is found by 
+                            //searching supertypes of the 
+                            //union
                             List<Type> caseTypes = 
                                     new ArrayList<Type>
                                         (lbsts.size());
@@ -3313,12 +3324,21 @@ public class Type extends Reference {
             return qualifiedName();
         }
     }
-
+    
+    private Type unionOfCases;
+    
     /**
      * Form a union type of all cases of the type, 
      * recursively reducing cases to their cases
      */
     public Type getUnionOfCases() {
+        if (unionOfCases==null) {
+            unionOfCases = getUnionOfCasesInternal();
+        }
+        return unionOfCases;
+    }
+    
+    private Type getUnionOfCasesInternal() {
         Unit unit = getDeclaration().getUnit();
         //if X is an intersection type A&B, and A is an
         //enumerated type with cases U and V, then the cases
@@ -3355,9 +3375,8 @@ public class Type extends Reference {
                         //we hit a self type
                         return this;
                     }
-                    addToUnion(list,
-                            ct.narrowToUpperBounds()
-                                .getUnionOfCases()); //note recursion
+                    addToUnion(list, 
+                            ct.getUnionOfCases());
                 }
                 return union(list, unit);
             }
@@ -4104,6 +4123,10 @@ public class Type extends Reference {
     
     public boolean isEntry() {
         return getDeclaration().isEntry();
+    }
+    
+    boolean isDeclaredType() {
+        return isClassOrInterface() || isTypeParameter();
     }
     
     public int getMemoisedHashCode() {

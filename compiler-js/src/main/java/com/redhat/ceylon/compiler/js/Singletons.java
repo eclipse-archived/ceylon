@@ -218,7 +218,8 @@ public class Singletons {
         final String typevar = gen.getNames().name(td);
         final String singvar = gen.getNames().name(d);
         final boolean nested = cdef.getDeclarationModel().isClassOrInterfaceMember();
-        gen.out(nested?"this.":"var ", objvar, "=undefined;function ", typevar, "_", singvar,
+        final String constructorName = typevar + gen.getNames().constructorSeparator(c) + singvar;
+        gen.out(nested?"this.":"var ", objvar, "=undefined;function ", constructorName,
                 "(){if(", nested?"this.":"", objvar, "===undefined){");
         if (dc==null) {
             gen.out("$init$", typevar, "();");
@@ -266,16 +267,16 @@ public class Singletons {
         if (nested) {
             gen.out("this.", objvar, "=", selfvar, ";");
         }
-        gen.out("}return ", nested?"this.":"", objvar, ";};", typevar, "_", singvar, ".$crtmm$=");
+        gen.out("}return ", nested?"this.":"", objvar, ";};", constructorName, ".$crtmm$=");
         TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), gen);
         gen.out(";");
         if (td.isClassOrInterfaceMember()) {
             gen.outerSelf(td);
-            gen.out(".", typevar, "_", singvar, "=", typevar, "_", singvar, ";");
+            gen.out(".", constructorName, "=", constructorName, ";");
         } else if (td.isShared()) {
-            gen.out("ex$.", typevar, "_", singvar, "=", typevar, "_", singvar, ";");
+            gen.out("ex$.", constructorName, "=", constructorName, ";");
         }
-        gen.out(gen.getNames().name(td), ".", typevar, "_", singvar, "=", typevar, "_", singvar);
+        gen.out(gen.getNames().name(td), ".", constructorName, "=", constructorName);
         gen.endLine(true);
     }
 

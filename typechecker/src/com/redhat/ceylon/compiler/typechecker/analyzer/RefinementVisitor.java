@@ -37,7 +37,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -1234,7 +1233,7 @@ public class RefinementVisitor extends Visitor {
             Reference refiningMember, 
     		Reference refinedMember,
     		Node that, Declaration refined) {
-        if (hasUncheckedNullType(refinedMember)) {
+        if (AnalyzerUtil.hasUncheckedNullType(refinedMember)) {
             Unit unit = 
                     refiningMember.getDeclaration()
                         .getUnit();
@@ -1244,14 +1243,14 @@ public class RefinementVisitor extends Visitor {
             checkAssignableToOneOf(refiningMember.getType(), 
                     refinedMember.getType(), 
                     optionalRefinedType, that, 
-            		"type of member must be assignable to type of refined member: " + 
+            		"type of member must be assignable to type of refined member " + 
     				message(refined), 
     				9000);
         }
         else {
             checkAssignable(refiningMember.getType(), 
                     refinedMember.getType(), that,
-            		"type of member must be assignable to type of refined member: " + 
+            		"type of member must be assignable to type of refined member " + 
     		        message(refined), 
     		        9000);
             checkSmallRefinement(that, refiningMember.getDeclaration(), refinedMember.getDeclaration());
@@ -1277,7 +1276,7 @@ public class RefinementVisitor extends Visitor {
             Reference refiningMember, 
     		Reference refinedMember, 
     		Node that, Declaration refined) {
-        if (hasUncheckedNullType(refinedMember)) {
+        if (AnalyzerUtil.hasUncheckedNullType(refinedMember)) {
             Unit unit = 
                     refiningMember.getDeclaration()
                         .getUnit();
@@ -1298,13 +1297,7 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private boolean hasUncheckedNullType(
-            Reference member) {
-        Declaration dec = member.getDeclaration();
-        return dec instanceof TypedDeclaration && 
-                ((TypedDeclaration) dec)
-                    .hasUncheckedNullType();
-    }
+    
 
     /*private void checkUnshared(Tree.Declaration that, Declaration dec) {
         if (dec.isActual()) {
@@ -1807,7 +1800,7 @@ public class RefinementVisitor extends Visitor {
         }
     }
 
-    private void refineAttribute(final Value sv, 
+    private void refineAttribute(Value sv, 
             Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that, 
             ClassOrInterface c) {
@@ -1846,6 +1839,11 @@ public class RefinementVisitor extends Visitor {
         v.setScope(c);
         v.setShortcutRefinement(true);
         v.setTransient(lazy);
+        Declaration rvd = rv.getDeclaration();
+        if (rvd instanceof TypedDeclaration) {
+            TypedDeclaration rvtd = (TypedDeclaration) rvd;
+            v.setUncheckedNullType(rvtd.hasUncheckedNullType());
+        }
         setVisibleScope(v);
         c.addMember(v);
         that.setRefinement(true);
@@ -1915,7 +1913,7 @@ public class RefinementVisitor extends Visitor {
             typeParams = null;
         }
         int i=0;
-        TypecheckerUnit unit = that.getUnit();
+        Unit unit = that.getUnit();
         for (ParameterList pl: sm.getParameterLists()) {
             ParameterList l = new ParameterList();
             Tree.ParameterList tpl = 
@@ -2045,6 +2043,11 @@ public class RefinementVisitor extends Visitor {
         m.setContainer(c);
         m.setShortcutRefinement(true);
         m.setDeclaredVoid(sm.isDeclaredVoid());
+        Declaration rmd = rm.getDeclaration();
+        if (rmd instanceof TypedDeclaration) {
+            TypedDeclaration rmtd = (TypedDeclaration) rmd;
+            m.setUncheckedNullType(rmtd.hasUncheckedNullType());
+        }
         setVisibleScope(m);
         c.addMember(m);
         that.setRefinement(true);

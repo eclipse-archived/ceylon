@@ -1,9 +1,10 @@
 if (this.$constrs$===undefined) {
   var mm=getrtmm$$(this.tipo);
-  var prefix=mm.d[mm.d.length-1]+'_';
+  var oldPrefix=mm.d[mm.d.length-1]+'_';
+  var newPrefix=mm.d[mm.d.length-1]+'$c_';
   var ccc=[];
   for (k in this.tipo) {
-    if (k.startsWith(prefix)) {
+    if (k.startsWith(newPrefix) || k.startsWith(oldPrefix)) {
       mm=getrtmm$$(this.tipo[k]);
       if (mm.d[mm.d.length-2]!=='$cn')continue;
       if (mm.ps===undefined) {
@@ -17,7 +18,7 @@ if (this.$constrs$===undefined) {
       ccc.push(r);
     }
   }
-  this.$constrs$=ccc.$sa$({t:'u',l:[
+  this.$constrs$=$arr$sa$(ccc,{t:'u',l:[
     {t:FunctionModel$meta$model,a:{Type$FunctionModel:this.$$targs$$.Type$AppliedClass,Arguments:{t:Nothing}}},
     {t:ValueModel$meta$model,a:{Type$ValueModel:this.$$targs$$.Type$AppliedClass}}]});
 }

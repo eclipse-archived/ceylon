@@ -11,5 +11,5 @@ function annotations($$$mptypes){
     var an = anns[i];
     if (is$(an, $$$mptypes.Annotation$annotations)) r.push(an);
   }
-  return r.$sa$($$$mptypes.Annotation$annotations);
+  return $arr$sa$(r,$$$mptypes.Annotation$annotations);
 }

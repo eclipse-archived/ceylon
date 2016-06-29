@@ -22,16 +22,19 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassDefinition;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -66,8 +69,86 @@ public class LocalTypeVisitor extends Visitor {
         return localInterfaces;
     }
 
+    public void startFrom(Node tree) {
+        int mpl = 0;
+        String prefix = null;
+        // make sure we start with the right number of anonymous classes for methods with MPL before we visit the children
+        if(tree instanceof Tree.AnyMethod){
+            Function model = ((Tree.AnyMethod)tree).getDeclarationModel();
+            mpl = model.getParameterLists().size();
+            if(mpl > 1){
+                prefix = this.prefix;
+                for(int i=1;i<mpl;i++)
+                    enterAnonymousClass();
+            }
+        }
+        
+        if(tree instanceof Tree.ClassDefinition){
+            visitClassBody((Tree.ClassDefinition)tree);
+        }else{
+            tree.visitChildren(this);
+        }
+        if(mpl > 1){
+            for(int i=1;i<mpl;i++)
+                exitAnonymousClass();
+            this.prefix = prefix;
+        }
+    }
+
+    private void visitClassBody(ClassDefinition classDef) {
+        List<Statement> statements = classDef.getClassBody().getStatements();
+        // first visit the super call that goes at the start of the initialiser
+        if(classDef.getExtendedType() != null){
+            classDef.getExtendedType().visit(this);
+        }
+        // then visit everything that ends up in the initialiser
+        for(Tree.Statement stmt : statements){
+            if(!endsUpInInitializer(stmt))
+                continue;
+            stmt.visit(this);
+        }
+        // then visit default parameter values that go after the initialiser
+        if(classDef.getParameterList() != null){
+            classDef.getParameterList().visit(this);
+        }
+        
+        // finally visit everything that is not part of the initialiser
+        for(Tree.Statement stmt : statements){
+            if(endsUpInInitializer(stmt))
+                continue;
+            stmt.visit(this);
+        }
+    }
+
+    private boolean endsUpInInitializer(Statement stmt) {
+        if(stmt instanceof Tree.MethodDefinition)
+            return false;
+        if(stmt instanceof Tree.MethodDeclaration
+                && ((Tree.MethodDeclaration) stmt).getSpecifierExpression() instanceof Tree.LazySpecifierExpression)
+            return false;
+        // lazy attributes end up in the initialiser if they're neither captured nor shared
+        if(stmt instanceof Tree.AttributeDeclaration
+                && ((Tree.AttributeDeclaration) stmt).getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression){
+            Value model = ((Tree.AttributeDeclaration) stmt).getDeclarationModel();
+            return !model.isCaptured() && !model.isShared();
+        }
+        if(stmt instanceof Tree.SpecifierStatement
+            && ((Tree.SpecifierStatement) stmt).getSpecifierExpression() instanceof Tree.LazySpecifierExpression){
+            return false;
+        }
+        if(stmt instanceof Tree.AttributeGetterDefinition
+                || stmt instanceof Tree.AttributeSetterDefinition)
+            return false;
+        if(stmt instanceof Tree.ClassOrInterface)
+            return false;
+        if(stmt instanceof Tree.TypeAliasDeclaration)
+            return false;
+        return true;
+    }
+
     private void collect(Node that, Declaration model) {
         if(model != null && (!model.isMember() 
+                || isMemberInInitialiser(model)
                 || Decl.isObjectExpressionType(model))){
             String name = Naming.escapeClassName(model.getName());
             Set<String> locals = this.locals;
@@ -96,6 +177,40 @@ public class LocalTypeVisitor extends Visitor {
         }
     }
 
+    private boolean isMemberInInitialiser(Declaration model) {
+        if(model.isShared() || model.isCaptured())
+            return false;
+        if(model instanceof ClassOrInterface)
+            return false;
+        if(model instanceof Value && ((Value) model).isTransient())
+            return false;
+        return true;
+    }
+
+    private void exitAnonymousClass() {
+        anonymous.pop();
+        Integer count = anonymous.peek();
+        anonymous.set(0, count+1);
+    }
+
+    private void enterAnonymousClass() {
+        anonymous.push(1);
+        prefix = getPrefix();
+    }
+
+    private String getPrefix() {
+        StringBuilder b = new StringBuilder();
+        // ignore the first one and traverse last to second
+        for(int i=anonymous.size()-1;i>0;i--){
+            Integer c = anonymous.get(i);
+            b.append(c).append("$");
+        }
+        return b.toString();
+    }
+
+    //
+    // Possibly members
+    
     @Override
     public void visit(Tree.AnyMethod that){
         Function model = that.getDeclarationModel();
@@ -118,6 +233,62 @@ public class LocalTypeVisitor extends Visitor {
     }
 
     @Override
+    public void visit(Tree.AttributeGetterDefinition that){
+        Value model = that.getDeclarationModel();
+        collect(that, model);
+        // stop at locals, who get a type generated for them
+        if(model.isMember())
+            super.visit(that);
+    }
+
+    @Override
+    public void visit(Tree.AttributeDeclaration that){
+        Value model = that.getDeclarationModel();
+        // we don't need to collect these
+        // stop at locals and private non-captured transient members which end up having a
+        // locall getter for them
+        if(!(model.isMember() 
+                && !model.isShared()
+                && !model.isCaptured()
+                && model.isTransient()))
+            super.visit(that);
+    }
+
+    @Override
+    public void visit(Tree.AttributeSetterDefinition that){
+        Setter model = that.getDeclarationModel();
+        // do not collect setters, they are always referenced by the getter
+        // stop at locals, who get a type generated for them
+        if(model.isMember())
+            super.visit(that);
+    }
+
+    @Override
+    public void visit(Tree.TypeAliasDeclaration that){
+        // stop at aliases, do not collect them since we can never create any instance of them
+        // and they are useless at runtime
+    }
+
+    @Override
+    public void visit(Tree.ClassOrInterface that){
+        ClassOrInterface model = that.getDeclarationModel();
+        // stop at aliases, do not collect them since we can never create any instance of them
+        // and they are useless at runtime
+        if(!model.isAlias())
+            collect(that, model);
+    }
+
+    @Override
+    public void visit(Tree.ObjectDefinition that){
+        Value model = that.getDeclarationModel();
+        if(model != null)
+            collect(that, model.getTypeDeclaration());
+    }
+
+    //
+    // Expressions
+    
+    @Override
     public void visit(Tree.FunctionalParameterDeclaration that) {
         Tree.TypedDeclaration typedDeclaration = that.getTypedDeclaration();
         boolean anon = typedDeclaration instanceof Tree.MethodDeclaration
@@ -131,26 +302,6 @@ public class LocalTypeVisitor extends Visitor {
         this.prefix = prefix;
     }
     
-    private void exitAnonymousClass() {
-        anonymous.pop();
-        Integer count = anonymous.peek();
-        anonymous.set(0, count+1);
-    }
-
-    private void enterAnonymousClass() {
-        anonymous.push(1);
-        prefix = getPrefix();
-    }
-
-    private String getPrefix() {
-        StringBuilder b = new StringBuilder();
-        // ignore the first one and traverse last to second
-        for(int i=anonymous.size()-1;i>0;i--){
-            Integer c = anonymous.get(i);
-            b.append(c).append("$");
-        }
-        return b.toString();
-    }
 
     @Override
     public void visit(Tree.Comprehension that) {
@@ -214,56 +365,28 @@ public class LocalTypeVisitor extends Visitor {
     
     @Override
     public void visit(Tree.SequenceEnumeration that) {
-        if(that.getSequencedArgument() == null){
-            // empty literals do not generate any class
-            super.visit(that);
-        }else{
-            String prefix = this.prefix;
-            enterAnonymousClass();
-            super.visit(that);
+        // WARNING: do not count those as they contain Tree.SequencedArgument that we do count
+        super.visit(that);
+    }
+
+    @Override
+    public void visit(Tree.SequencedArgument that) {
+        // All listed arguments are in an iterable class
+        String prefix = null;
+        for(Tree.PositionalArgument arg : that.getPositionalArguments()){
+            // any listed arg causes another anonymous class around the whole 
+            if(arg instanceof Tree.ListedArgument){
+                if(prefix == null){
+                    prefix = this.prefix;
+                    enterAnonymousClass();
+                }
+            }
+            arg.visit(this);
+        }
+        if(prefix != null){
             exitAnonymousClass();
             this.prefix = prefix;
         }
-    }
-
-    @Override
-    public void visit(Tree.AttributeGetterDefinition that){
-        Value model = that.getDeclarationModel();
-        collect(that, model);
-        // stop at locals, who get a type generated for them
-        if(model.isMember())
-            super.visit(that);
-    }
-    
-    @Override
-    public void visit(Tree.AttributeSetterDefinition that){
-        Setter model = that.getDeclarationModel();
-        // do not collect setters, they are always referenced by the getter
-        // stop at locals, who get a type generated for them
-        if(model.isMember())
-            super.visit(that);
-    }
-
-    @Override
-    public void visit(Tree.TypeAliasDeclaration that){
-        // stop at aliases, do not collect them since we can never create any instance of them
-        // and they are useless at runtime
-    }
-
-    @Override
-    public void visit(Tree.ClassOrInterface that){
-        ClassOrInterface model = that.getDeclarationModel();
-        // stop at aliases, do not collect them since we can never create any instance of them
-        // and they are useless at runtime
-        if(!model.isAlias())
-            collect(that, model);
-    }
-
-    @Override
-    public void visit(Tree.ObjectDefinition that){
-        Value model = that.getDeclarationModel();
-        if(model != null)
-            collect(that, model.getTypeDeclaration());
     }
 
     @Override
@@ -289,27 +412,6 @@ public class LocalTypeVisitor extends Visitor {
                 collect(that, model);
         }else{
             super.visit(that);
-        }
-    }
-
-    public void startFrom(Node tree) {
-        int mpl = 0;
-        String prefix = null;
-        // make sure we start with the right number of anonymous classes for methods with MPL before we visit the children
-        if(tree instanceof Tree.AnyMethod){
-            Function model = ((Tree.AnyMethod)tree).getDeclarationModel();
-            mpl = model.getParameterLists().size();
-            if(mpl > 1){
-                prefix = this.prefix;
-                for(int i=1;i<mpl;i++)
-                    enterAnonymousClass();
-            }
-        }
-        tree.visitChildren(this);
-        if(mpl > 1){
-            for(int i=1;i<mpl;i++)
-                exitAnonymousClass();
-            this.prefix = prefix;
         }
     }
 }

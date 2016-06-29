@@ -117,12 +117,12 @@ final class ifExpression_ {
                 if (erased2 != null) {
                     $ceylontmp$ifResult$17 = erased2;
                 } else {
-                    $ceylontmp$ifResult$17 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.A).ceylon.language.nothing_.get_();
+                    $ceylontmp$ifResult$17 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.A)(.java.lang.Object).ceylon.language.nothing_.get_();
                 }
             }
             returning $ceylontmp$ifResult$17;
         )).f();
-        final .ceylon.language.Integer arg = (.ceylon.language.Integer).ceylon.language.nothing_.get_();
+        final .ceylon.language.Integer arg = (.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_();
         final .java.lang.String x0 = (
             let
             {

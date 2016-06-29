@@ -35,7 +35,7 @@ shared native class AppliedClass<out Type=Anything, in Arguments=Nothing>() sati
   shared actual native TypeArgument[] typeArgumentWithVarianceList;
   shared actual native ClassModel<Anything, Nothing>? extendedType;
   shared actual native InterfaceModel<Anything>[] satisfiedTypes;
-  shared actual native Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType* types)
+  shared actual native Member<SubType, Kind>? getClassOrInterface<SubType, Kind>(String name, ClosedType<>* types)
     given Kind satisfies ClassOrInterface<Anything>;
 
   shared actual native Boolean typeOf(Anything instance);

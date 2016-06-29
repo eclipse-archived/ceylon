@@ -199,4 +199,10 @@ public class QuotingTests extends CompilerTests {
         compile("goto/KeywordInToplevelMethod.ceylon");
         compile("goto/KeywordInTopLevelUsage.ceylon");
     }
+    
+    @Test
+    public void testMemberCalledClass(){
+        compareWithJavaSource("goto/MemberCalledClass");
+        compile("goto/MemberCalledClassUse.ceylon");
+    }
 }

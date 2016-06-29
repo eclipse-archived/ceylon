@@ -408,7 +408,8 @@ public class TypeGenerator {
                 if (typeDecl instanceof Constructor) {
                     gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath), "$$a(");
                 } else {
-                    gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath), "_$c$$$a(");
+                    gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath),
+                            gen.getNames().constructorSeparator(typeDecl), "$c$$$a(");
                 }
             } else {
                 gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath),

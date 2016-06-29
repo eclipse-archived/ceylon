@@ -24,6 +24,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.CmrRepository;
+import com.redhat.ceylon.cmr.api.MavenArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
@@ -52,7 +53,7 @@ public class ResolverTestCase extends AbstractAetherTest {
     private void doTest(Tester tester) throws Exception {
         CmrRepository repository = createAetherRepository();
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
-        ArtifactResult result = manager.getArtifactResult("org.apache.camel:camel-core", "2.9.2");
+        ArtifactResult result = manager.getArtifactResult(MavenArtifactContext.NAMESPACE, "org.apache.camel:camel-core", "2.9.2");
         Assert.assertNotNull(result);
         Assert.assertEquals(result.name(), "org.apache.camel:camel-core");
         File artifact = result.artifact();
@@ -78,7 +79,7 @@ public class ResolverTestCase extends AbstractAetherTest {
         private final File artifact;
 
         private TestArtifactResult(CmrRepository repository, String name, String version, File artifact) {
-            super(repository, name, version);
+            super(repository, repository.getNamespace(), name, version);
             this.artifact = artifact;
         }
 

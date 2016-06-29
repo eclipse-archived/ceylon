@@ -326,7 +326,7 @@ class UnionTypeArg implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.java.lang.Override
     public final .ceylon.language.Iterator iterator() {
-        return (.ceylon.language.Iterator).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Iterator)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
@@ -651,7 +651,7 @@ class UnionTypeArgOverride implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final .ceylon.language.Iterator iterator() {
-        return (.ceylon.language.Iterator).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Iterator)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

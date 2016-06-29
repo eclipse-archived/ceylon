@@ -20,7 +20,7 @@ final class Bug993Top$impl<E> implements .java.io.Serializable {
     }
     
     public E e() {
-        return (E).ceylon.language.nothing_.get_();
+        return (E)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
 }
 interface Bug993MiddleInterface extends .com.redhat.ceylon.compiler.java.test.issues.bug09xx.Bug993Top<.ceylon.language.Iterable<? extends .ceylon.language.Character, ? extends .java.lang.Object>> {

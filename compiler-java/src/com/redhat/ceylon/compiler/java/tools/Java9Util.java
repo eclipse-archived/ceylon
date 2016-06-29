@@ -115,7 +115,7 @@ public class Java9Util {
 		private boolean isShared(Package pkg) {
 			// Special case for the language module where we don't want Ceylon users to access this package, but
 			// we need our produced Java code to be allowed to
-			if(pkg.getModule().getNameAsString().equals(Module.LANGUAGE_MODULE_NAME)){
+			if(pkg.getModule().isLanguageModule()){
 				String name = pkg.getNameAsString();
 				if(name.equals("com.redhat.ceylon.compiler.java.runtime.metamodel")
 						|| name.equals("com.redhat.ceylon.compiler.java.runtime")

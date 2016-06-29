@@ -25,6 +25,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.typechecker.context.TypeCache;
 
 public class Unit {
@@ -38,6 +39,8 @@ public class Unit {
     private final Set<String> dependentsOf = new HashSet<String>();
     private String fullPath;
     private String relativePath;
+    private Backends supportedBackends = Backends.ANY;
+    private boolean unresolvedReferences;
     
     public List<Import> getImports() {
         return imports;
@@ -47,9 +50,6 @@ public class Unit {
         return importLists;
     }
 
-    /**
-     * @return the dependentsOf
-     */
     public Set<String> getDependentsOf() {
         return dependentsOf;
     }
@@ -206,10 +206,14 @@ public class Unit {
     
     public Map<String, DeclarationWithProximity> 
     getMatchingImportedDeclarations(String startingWith, 
-            int proximity) {
+            int proximity, Cancellable canceller) {
         Map<String, DeclarationWithProximity> result = 
                 new TreeMap<String, DeclarationWithProximity>();
         for (Import i: new ArrayList<Import>(getImports())) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                return Collections.emptyMap();
+            }
             if (i.getAlias()!=null && 
                     !i.isAmbiguous() &&
                     isNameMatching(startingWith, i)) {
@@ -226,10 +230,14 @@ public class Unit {
     
     public Map<String, DeclarationWithProximity> 
     getMatchingImportedDeclarations(TypeDeclaration td, 
-            String startingWith, int proximity) {
+            String startingWith, int proximity, Cancellable canceller) {
         Map<String, DeclarationWithProximity> result = 
                 new TreeMap<String, DeclarationWithProximity>();
         for (Import i: new ArrayList<Import>(getImports())) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                return Collections.emptyMap();
+            }
             TypeDeclaration itd = i.getTypeDeclaration();
             if (i.getAlias()!=null && 
                     !i.isAmbiguous() &&
@@ -300,7 +308,8 @@ public class Unit {
     private Module getLanguageModule() {
         if (languageModule==null) {
             languageModule = 
-                    getPackage().getModule()
+                    getPackage()
+                        .getModule()
                         .getLanguageModule();
         }
         return languageModule;
@@ -627,12 +636,16 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Set");
     }
     
-    public TypeDeclaration getComparisonDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Comparison");
+    public Interface getMapDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("Map");
     }
     
-    public TypeDeclaration getBooleanDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Boolean");
+    public Class getComparisonDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Comparison");
+    }
+    
+    public Class getBooleanDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Boolean");
     }
     
     public Value getTrueValueDeclaration() {
@@ -643,24 +656,24 @@ public class Unit {
         return (Value) getLanguageModuleDeclaration("false");
     }
     
-    public TypeDeclaration getStringDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("String");
+    public Class getStringDeclaration() {
+        return (Class) getLanguageModuleDeclaration("String");
     }
     
-    public TypeDeclaration getFloatDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Float");
+    public Class getFloatDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Float");
     }
     
-    public TypeDeclaration getIntegerDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Integer");
+    public Class getIntegerDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Integer");
     }
     
-    public TypeDeclaration getCharacterDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Character");
+    public Class getCharacterDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Character");
     }
     
-    public TypeDeclaration getByteDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Byte");
+    public Class getByteDeclaration() {
+        return (Class) getLanguageModuleDeclaration("Byte");
     }
     
     public Interface getComparableDeclaration() {
@@ -1027,7 +1040,10 @@ public class Unit {
     public Type getJavaArrayElementType(Type type) {
         Type t = type.resolveAliases();
         TypeDeclaration dec = t.getDeclaration();
-        if (dec.equals(getJavaObjectArrayDeclaration())) {
+        if (!(dec instanceof Class)) {
+            return null;
+        }
+        else if (dec.equals(getJavaObjectArrayDeclaration())) {
             if (!t.getTypeArguments().isEmpty()) {
                 return t.getTypeArgumentList().get(0);
             }
@@ -2404,4 +2420,24 @@ public class Unit {
         return module != null ? module.getCache() : null;
     }
 
+    public Backends getSupportedBackends() {
+        return supportedBackends;
+    }
+    
+    public void setSupportedBackends(Backends backends) {
+        supportedBackends = backends;
+    }
+
+    public void setUnresolvedReferences() {
+        this.unresolvedReferences = true;
+    }
+    
+    public boolean getUnresolvedReferences() {
+        return unresolvedReferences;
+    }
+    
+    public boolean isJdkPackage(String name) {
+        return false;
+    }
+    
 }

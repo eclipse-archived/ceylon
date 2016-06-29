@@ -70,9 +70,9 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 
 	}
 	
-	protected boolean loadModule(String moduleName, String moduleVersion) throws IOException {
+	protected boolean loadModule(String namespace, String moduleName, String moduleVersion) throws IOException {
 		if (moduleVersion != null) {
-			return internalLoadModule(moduleName, moduleVersion);
+			return internalLoadModule(namespace, moduleName, moduleVersion);
 		}
 		
 		return false;
@@ -86,7 +86,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 		return jdkProvider.isJDKModule(moduleName);
 	}
 
-	private boolean internalLoadModule(String name, String version) throws IOException {
+	private boolean internalLoadModule(String namespace, String name, String version) throws IOException {
         String key = name + "/" + version;
         if(loadedModules.containsKey(key))
             return true;
@@ -105,7 +105,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         loadedVersions.add(version);
         
         RepositoryManager repositoryManager = getRepositoryManager(upgradeDist);
-        ArtifactContext artifactContext = new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR);
+        ArtifactContext artifactContext = new ArtifactContext(namespace, name, version, ArtifactContext.CAR, ArtifactContext.JAR);
         ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
         if(result == null || result.artifact() == null || !result.artifact().exists()){
             String err = getModuleNotFoundErrorMessage(repositoryManager, name, version);
@@ -118,7 +118,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         if(result != null){
             for(ArtifactResult dep : result.dependencies()){
                 if(dep.importType() != ImportType.OPTIONAL){
-                    internalLoadModule(dep.name(), dep.version());
+                    internalLoadModule(dep.namespace(), dep.name(), dep.version());
                 }
             }
         }
@@ -156,7 +156,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
     	super.initialize(mainTool);
     	if(jdkProviderModule != null){
     		ModuleSpec moduleSpec = ModuleSpec.parse(jdkProviderModule);
-			if(!internalLoadModule(moduleSpec.getName(), moduleSpec.getVersion())){
+			if(!internalLoadModule(null, moduleSpec.getName(), moduleSpec.getVersion())){
 		        throw new ToolUsageError(Messages.msg(bundle, "jdk.provider.not.found", jdkProviderModule));
 			}
 			ArtifactResult result = loadedModules.get(moduleSpec.getName()+"/"+moduleSpec.getVersion());

@@ -126,4 +126,8 @@ extends BaseIterable<Element, Absent>{
         	return $numExpressions < length;
         }
     }
+    
+    protected Object writeReplace() {
+        return sequence();
+    }
 }

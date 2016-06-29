@@ -88,7 +88,8 @@ public abstract class ToolLoader {
             ClassLoader mcl = (ClassLoader) loadMth.invoke(modLoader, name, version);
             return mcl;
         } catch (ReflectiveOperationException e) {
-            throw new ToolError("Could not load module '" + name + "/" + version + "' because: " + e.getCause().getMessage(), e) {};
+            Throwable cause = (e.getCause() != null) ? e.getCause() : e;
+            throw new ToolError("Could not load module '" + name + "/" + version + "' because: " + cause.toString(), e) {};
         }
     }
     

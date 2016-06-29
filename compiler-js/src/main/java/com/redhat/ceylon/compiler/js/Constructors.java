@@ -19,7 +19,7 @@ public class Constructors {
         gen.comment(that);
         final Constructor d = TypeUtils.getConstructor(that.getDeclarationModel());
         final Class container = cdef.getDeclarationModel();
-        final String fullName = gen.getNames().name(container) + "_" + gen.getNames().name(d);
+        final String fullName = gen.getNames().name(container) + gen.getNames().constructorSeparator(d) + gen.getNames().name(d);
         if (!TypeUtils.isNativeExternal(d) || !gen.stitchNative(d, that)) {
             generateConstructor(that, cdef, constructors, fullName, gen);
         }

@@ -397,7 +397,8 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     }
 
     @Override
-    public void initialize(CeylonTool mainTool) {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
         TypeCheckerBuilder builder = new TypeCheckerBuilder();
         for(File src : sourceFolders){
             builder.addSrcDirectory(src);
@@ -556,7 +557,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private File getFolder(Package pkg) {
         Module module = pkg.getModule();
         List<String> unprefixedName;
-        if(module.isDefault())
+        if(module.isDefaultModule())
             unprefixedName = pkg.getName();
         else{
             // remove the leading module name part
@@ -641,7 +642,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 
             documentModule(module);
             
-            ArtifactContext artifactDocs = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
+            ArtifactContext artifactDocs = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
             
             // find all doc folders to copy
             File outputDocFolder = getDocOutputFolder(module);
@@ -665,7 +666,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 if (isEmpty(module)) {
                     continue;
                 }
-                ArtifactContext docArtifact = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
+                ArtifactContext docArtifact = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
                 File docFolder = outputRepositoryManager.getArtifact(docArtifact);
                 File docIndex = new File(docFolder, "api/index.html");
                 if (docIndex.isFile()) {
@@ -951,7 +952,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private void docNothingType(Package pkg) throws IOException {
         final Annotation nothingDoc = new Annotation();
         nothingDoc.setName("doc");
-        nothingDoc.addPositionalArgment(
+        nothingDoc.addPositionalArgument(
                 "The special type _Nothing_ represents: \n" +
                 " - the intersection of all types, or, equivalently \n" +
                 " - the empty set \n" +
@@ -1010,7 +1011,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
      * @return
      */
     protected boolean isRootPackage(Module module, Package pkg) {
-        if(module.isDefault())
+        if(module.isDefaultModule())
             return pkg.getNameAsString().isEmpty();
         return pkg.getNameAsString().equals(module.getNameAsString());
     }

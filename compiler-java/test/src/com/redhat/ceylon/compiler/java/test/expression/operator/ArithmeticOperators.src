@@ -34,6 +34,11 @@ abstract class MyInteger extends .java.lang.Object implements .com.redhat.ceylon
     }
     
     @.java.lang.Override
+    public .ceylon.language.Comparison compare(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger other) {
+        return $ceylon$language$Number$this$.compare(other);
+    }
+    
+    @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getMagnitude() {
         return (.com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger)$ceylon$language$Number$this$.getMagnitude();
     }

@@ -8,7 +8,7 @@ class CtorOfObjectSubclass extends .java.lang.Object implements .com.redhat.ceyl
     
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
-        return ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        return ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
     }
     
     @.java.lang.Override
@@ -16,7 +16,7 @@ class CtorOfObjectSubclass extends .java.lang.Object implements .com.redhat.ceyl
         return (int)(
             let
             {
-                long $ceylontmp$hash$1 = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+                long $ceylontmp$hash$1 = ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
             }
             returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
         );

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -52,7 +53,7 @@ public class NpmDescriptorGenerator {
             for (ModuleImport imp : mod.getImports()) {
                 if (imp.isOptional()) {
                     opts.put(imp.getModule().getNameAsString(), imp.getModule().getVersion());
-                } else {
+                } else if (!imp.isNative() || imp.getNativeBackends().supports(Backend.JavaScript)) {
                     deps.put(imp.getModule().getNameAsString(), imp.getModule().getVersion());
                 }
             }
@@ -63,15 +64,15 @@ public class NpmDescriptorGenerator {
                 desc.put("optionalDependencies", opts);
             }
         }
-        //TODO list resource files, src archive, etc
         List<String> files = new ArrayList<>((src?6:4)+(resources ? 1 : 0));
-        files.add(mod.getNameAsString()+"-"+mod.getVersion()+ArtifactContext.JS);
-        files.add(mod.getNameAsString()+"-"+mod.getVersion()+ArtifactContext.JS+ArtifactContext.SHA1);
-        files.add(mod.getNameAsString()+"-"+mod.getVersion()+ArtifactContext.JS_MODEL);
-        files.add(mod.getNameAsString()+"-"+mod.getVersion()+ArtifactContext.JS_MODEL+ArtifactContext.SHA1);
+        final String modName = mod.getNameAsString()+"-"+mod.getVersion();
+        files.add(modName + ArtifactContext.JS);
+        files.add(modName+ArtifactContext.JS+ArtifactContext.SHA1);
+        files.add(modName+ArtifactContext.JS_MODEL);
+        files.add(modName+ArtifactContext.JS_MODEL+ArtifactContext.SHA1);
         if (src) {
-            files.add(mod.getNameAsString()+ArtifactContext.SRC);
-            files.add(mod.getNameAsString()+ArtifactContext.SRC+ArtifactContext.SHA1);
+            files.add(modName+ArtifactContext.SRC);
+            files.add(modName+ArtifactContext.SRC+ArtifactContext.SHA1);
         }
         if (resources) {
             files.add(ArtifactContext.RESOURCES);

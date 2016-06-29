@@ -7,6 +7,19 @@ import java.util.List;
 
 public class AndroidUtil {
 
+    public static boolean isRunningAndroid(){
+        Object app;
+        try {
+            app = Class.forName("android.app.ActivityThread")
+                    .getMethod("currentApplication").invoke(null);
+            return app != null;
+        } catch (IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | NoSuchMethodException
+                | SecurityException | ClassNotFoundException e) {
+            return false;
+        }
+    }
+    
     public static List<String> getDexEntries() {
         try {
             Object app = Class.forName("android.app.ActivityThread")

@@ -142,7 +142,18 @@ public abstract class AbstractRepository implements CmrRepository {
 
     @Override
     public String toString() {
-        return "Repository (" + getClass().getName() + ") for root: " + root;
+        StringBuffer txt = new StringBuffer();
+        txt.append("Repository (");
+        txt.append(getClass().getName());
+        txt.append(") for ");
+        if (getNamespace() != null) {
+            txt.append("namespace: ");
+            txt.append(getNamespace());
+            txt.append(" and ");
+        }
+        txt.append("root: ");
+        txt.append(root);
+        return txt.toString();
     }
 
     @Override

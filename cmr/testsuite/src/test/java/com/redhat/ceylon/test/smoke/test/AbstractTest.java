@@ -71,7 +71,7 @@ public class AbstractTest {
 
     private Path temp;
 
-    protected static final ModuleDependencyInfo IGNORE_DEPS = new ModuleDependencyInfo("$", "$", false, false);
+    protected static final ModuleDependencyInfo IGNORE_DEPS = new ModuleDependencyInfo(null, "$", "$", false, false);
     
     @Before
     public void setUp() throws Exception {

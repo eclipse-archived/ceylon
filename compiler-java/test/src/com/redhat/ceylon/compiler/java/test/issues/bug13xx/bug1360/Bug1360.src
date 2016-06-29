@@ -74,7 +74,7 @@ final class I$impl<T> implements .java.io.Serializable {
     }
     
     public final T[] main$s() {
-        return (T[]).ceylon.language.nothing_.get_();
+        return (T[])(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     private void $main$canonical$(final T[] s) {

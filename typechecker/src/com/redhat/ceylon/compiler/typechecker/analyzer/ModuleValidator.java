@@ -104,7 +104,8 @@ public class ModuleValidator {
                 Module jdkModule = moduleManagerUtil.getJdkModule();
                 List<Module> modules = new ArrayList<Module>(compiledModules.size()+2);
                 if(jdkModule != null){
-                	resolveModuleIfRequired(jdkModule, true, null, ImportDepth.First, dependencyTree, searchedArtifacts);
+                    ModuleImport synthimp = new ModuleImport(null, jdkModule, false, false);
+                    resolveModuleIfRequired(jdkModule, true, synthimp, ImportDepth.First, dependencyTree, searchedArtifacts);
                 }
                 // we must resolve the language module first because it contains definitions that must be in the classpath
                 // before any other JVM class is loaded, including the module descriptor annotations themselves
@@ -210,7 +211,7 @@ public class ModuleValidator {
         visibleDependencies.add(dependencyTree.getLast()); //first addition => no possible conflict
         for (ModuleImport moduleImport : moduleImports) {
             if (moduleImport.isNative() &&
-                    !isForBackend(moduleImport.getNativeBackends(), moduleManager)) {
+                    !isForBackend(moduleImport.getNativeBackends(), moduleManager.getSupportedBackends())) {
                 //import is not for this backend
                 continue;
             }
@@ -255,7 +256,7 @@ public class ModuleValidator {
                 RepositoryManager repositoryManager = context.getRepositoryManager();
                 Exception exceptionOnGetArtifact = null;
                 Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
-                ArtifactContext artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), getArtifactSuffixes(searchedArtifactExtensions));
+                ArtifactContext artifactContext = new ArtifactContext(moduleImport.getNamespace(), module.getNameAsString(), module.getVersion(), getArtifactSuffixes(searchedArtifactExtensions));
                 listener.retrievingModuleArtifact(module, artifactContext);
                 try {
                     artifact = repositoryManager.getArtifactResult(artifactContext);

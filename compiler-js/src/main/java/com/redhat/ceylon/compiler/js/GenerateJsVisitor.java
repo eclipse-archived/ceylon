@@ -491,6 +491,17 @@ public class GenerateJsVisitor extends Visitor {
         currentStatements = prevStatements;
     }
 
+    public void visitSingleExpression(Tree.Expression that) {
+        List<String> oldRetainedVars = retainedVars.reset(null);
+        final int boxType = boxStart(that.getTerm());
+        that.visit(this);
+        if (boxType == 4) out("/*TODO: callable targs 3*/");
+        boxUnboxEnd(boxType);
+        endLine(true);
+        retainedVars.emitRetainedVars(this);
+        retainedVars.reset(oldRetainedVars);
+    }
+
     @Override
     public void visit(final Tree.Body that) {
         visitStatements(that.getStatements());
@@ -644,7 +655,11 @@ public class GenerateJsVisitor extends Visitor {
             if (dname.endsWith("()")){
                 dname = dname.substring(0, dname.length()-2);
             }
-            out(dname, "=", dname);
+            if (names.isJsGlobal(d)) {
+                out(dname.substring(2), "=", dname);
+            } else {
+                out(dname, "=", dname);
+            }
             endLine(true);
         }
         return shared;
@@ -839,7 +854,8 @@ public class GenerateJsVisitor extends Visitor {
             for (Declaration cm : ac.getMembers()) {
                 if (cm instanceof Constructor && cm!=ac.getDefaultConstructor() && cm.isShared()) {
                     Constructor cons = (Constructor)cm;
-                    out("function ", aname, "_", names.name(cons), "(");
+                    final String constructorName = aname + names.constructorSeparator(cons) + names.name(cons);
+                    out("function ", constructorName, "(");
                     ArrayList<String> pnames = new ArrayList<>(cons.getFirstParameterList().getParameters().size()+1);
                     boolean first=true;
                     for (int i=0;i<cons.getFirstParameterList().getParameters().size();i++) {
@@ -867,7 +883,7 @@ public class GenerateJsVisitor extends Visitor {
                     out(");}");
                     if (ac.isShared()) {
                         sharePrefix(ac, true);
-                        out(aname, "_", names.name(cons), "=", aname, "_", names.name(cons),";");
+                        out(constructorName, "=", constructorName,";");
                         endLine();
                     }
                 }
@@ -956,8 +972,8 @@ public class GenerateJsVisitor extends Visitor {
                         //Add a simple attribute which really returns the singleton from the class
                         final Tree.Enumerated vc = (Tree.Enumerated)s;
                         defineAttribute(names.self(d), names.name(vc.getDeclarationModel()));
-                        out("{return ", typename, "_", names.name(vc.getDeclarationModel()),
-                                "();},undefined,");
+                        out("{return ", typename, names.constructorSeparator(vc.getDeclarationModel()),
+                                names.name(vc.getDeclarationModel()), "();},undefined,");
                         TypeUtils.encodeForRuntime(vc, vc.getDeclarationModel(), vc.getAnnotationList(), this);
                         out(");");
                     }
@@ -1621,12 +1637,9 @@ public class GenerateJsVisitor extends Visitor {
                 if (genatr) {
                     out("return ");
                     if (!isNaturalLiteral(specInitExpr.getExpression().getTerm())) {
-                        int boxType = boxStart(specInitExpr.getExpression().getTerm());
-                        specInitExpr.getExpression().visit(this);
-                        if (boxType == 4) out("/*TODO: callable targs 1*/");
-                        boxUnboxEnd(boxType);
+                        visitSingleExpression(specInitExpr.getExpression());
                     }
-                    out(";}");
+                    out("}");
                     if (asprop) {
                         Tree.AttributeSetterDefinition setterDef = null;
                         if (d.isVariable()) {
@@ -1720,8 +1733,11 @@ public class GenerateJsVisitor extends Visitor {
                     out(".plus(");
                 }
                 final Expression expr = exprs.get(i);
+                final Type t = expr.getTypeModel();
                 expr.visit(this);
-                if (expr.getTypeModel() == null || !expr.getTypeModel().isString()) {
+                if (t == null || t.isUnknown()) {
+                    out(".toString()");
+                } else if (!t.isString()) {
                     out(".string");
                 }
                 if (!skip) {
@@ -1733,7 +1749,21 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.FloatLiteral that) {
-        out(getClAlias(), "Float(", that.getText(), ")");
+        final String f = that.getText();
+        final int dot = f.indexOf('.');
+        boolean wrap = true;
+        if (f.indexOf('E', dot) < 0 && f.indexOf('e', dot) < 0) {
+            for (int i = dot+1; i < f.length(); i++) {
+                if (f.charAt(i) != '0') {
+                    wrap = false;
+                    break;
+                }
+            }
+        }
+        if (wrap) {
+            out(getClAlias(), "Float");
+        }
+        out("(", f, ")");
     }
 
     long parseNaturalLiteral(Tree.NaturalLiteral that, boolean neg) throws NumberFormatException {
@@ -1859,7 +1889,8 @@ public class GenerateJsVisitor extends Visitor {
                         out(names.moduleAlias(((Package)d.getContainer()).getModule()));
                     }
                 }
-                out(names.name((TypeDeclaration)d.getContainer()), "_", names.name(d), "()");
+                out(names.name((TypeDeclaration)d.getContainer()), names.constructorSeparator(d),
+                        names.name(d), "()");
                 if (wrap) {
                     out(";}");
                 }
@@ -1867,7 +1898,7 @@ public class GenerateJsVisitor extends Visitor {
                 Function fd = (Function)d;
                 if (fd.getTypeDeclaration() instanceof Constructor) {
                     that.getPrimary().visit(this);
-                    out("_", names.name(fd));
+                    out(names.constructorSeparator(fd), names.name(fd));
                 } else {
                     out("function($O$){return ");
                     if (BmeGenerator.hasTypeParameters(that)) {
@@ -1947,7 +1978,7 @@ public class GenerateJsVisitor extends Visitor {
                     return sb.toString();
                 }
             }
-            sb.append(isConstructor ? '_':'.');
+            sb.append(isConstructor ? names.constructorSeparator(decl) : ".");
         }
         boolean metaGetter = false;
         Scope scope = getSuperMemberScope(node);
@@ -1965,7 +1996,7 @@ public class GenerateJsVisitor extends Visitor {
         final String member = (accessThroughGetter(decl) && !accessDirectly(decl))
                 ? (setter ? names.setter(decl) : names.getter(decl, metaGetter)) : names.name(decl);
         if (!isConstructor && TypeUtils.isConstructor(decl)) {
-            sb.append(names.name((Declaration)decl.getContainer())).append("_");
+            sb.append(names.name((Declaration)decl.getContainer())).append(names.constructorSeparator(decl));
         }
         sb.append(member);
         if (!opts.isOptimize() && (scope != null)) {
@@ -1982,7 +2013,7 @@ public class GenerateJsVisitor extends Visitor {
     String memberAccess(final Tree.StaticMemberOrTypeExpression expr, String lhs) {
         Declaration decl = expr.getDeclaration();
         String plainName = null;
-        if (decl == null && dynblock > 0) {
+        if (decl == null && isInDynamicBlock()) {
             plainName = expr.getIdentifier().getText();
         }
         else if (TypeUtils.isNativeJs(decl)) {
@@ -2068,13 +2099,11 @@ public class GenerateJsVisitor extends Visitor {
         if (fromNative != toNative || fromTypeName.startsWith("ceylon.language::Callable<")) {
             if (fromNative) {
                 // conversion from native value to Ceylon value
-                if (fromTypeName.equals("ceylon.language::Integer")) {
+                if (fromType.isInteger() || fromType.isFloat()) {
                     out("(");
-                } else if (fromTypeName.equals("ceylon.language::Float")) {
-                    out(getClAlias(), "Float(");
-                } else if (fromTypeName.equals("ceylon.language::Boolean")) {
+                } else if (fromType.isBoolean()) {
                     out("(");
-                } else if (fromTypeName.equals("ceylon.language::Character")) {
+                } else if (fromType.isCharacter()) {
                     out(getClAlias(), "Character(");
                 } else if (fromTypeName.startsWith("ceylon.language::Callable<")) {
                     out(getClAlias(), "$JsCallable(");
@@ -2083,9 +2112,9 @@ public class GenerateJsVisitor extends Visitor {
                     return 0;
                 }
                 return 1;
-            } else if ("ceylon.language::Float".equals(fromTypeName)) {
+            } else if (fromType.isFloat()) {
                 // conversion from Ceylon Float to native value
-                return 2;
+                return toNative ? 2 : 1;
             } else if (fromTypeName.startsWith("ceylon.language::Callable<")) {
                 Term _t = fromTerm;
                 if (_t instanceof Tree.InvocationExpression) {
@@ -2110,7 +2139,7 @@ public class GenerateJsVisitor extends Visitor {
     void boxUnboxEnd(int boxType) {
         switch (boxType) {
         case 1: out(")"); break;
-        case 2: out(".valueOf()"); break;
+        case 2: out(".valueOf(/*UNFLOAT*/)"); break;
         case 4: out(")"); break;
         default: //nothing
         }
@@ -2196,7 +2225,7 @@ public class GenerateJsVisitor extends Visitor {
         final Tree.Term term = specStmt.getBaseMemberExpression();
         final Tree.StaticMemberOrTypeExpression smte = term instanceof Tree.StaticMemberOrTypeExpression
                 ? (Tree.StaticMemberOrTypeExpression)term : null;
-        if (dynblock > 0 && ModelUtil.isTypeUnknown(term.getTypeModel())) {
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(term.getTypeModel())) {
             if (smte != null && smte.getDeclaration() == null) {
                 out(smte.getIdentifier().getText());
             } else {
@@ -2256,7 +2285,7 @@ public class GenerateJsVisitor extends Visitor {
                     BmeGenerator.generateMemberAccess(smte, new GenerateCallback() {
                         @Override public void generateValue() {
                             int boxType = boxUnboxStart(expr.getTerm(), moval);
-                            if (dynblock > 0 && !ModelUtil.isTypeUnknown(moval.getType())
+                            if (isInDynamicBlock() && !ModelUtil.isTypeUnknown(moval.getType())
                                     && ModelUtil.isTypeUnknown(expr.getTypeModel())) {
                                 TypeUtils.generateDynamicCheck(expr, moval.getType(), GenerateJsVisitor.this, false,
                                         expr.getTypeModel().getTypeArguments());
@@ -2272,8 +2301,8 @@ public class GenerateJsVisitor extends Visitor {
                                     out(",");
                                 } else {
                                     //TODO extract parameters from Value
-                                    Type ps = moval.getType().getTypeArgumentList().get(1);
-                                    if (ps.isSubtypeOf(moval.getUnit().getEmptyType())) {
+                                    final Type ps = moval.getUnit().getCallableTuple(moval.getType());
+                                    if (ps == null || ps.isSubtypeOf(moval.getUnit().getEmptyType())) {
                                         out("[],");
                                     } else {
                                         out("[/*VALUE Callable params ", ps.asQualifiedString()+"*/],");
@@ -2343,7 +2372,7 @@ public class GenerateJsVisitor extends Visitor {
                         qualify(specStmt, bmeDecl);
                     }
                     out(names.name(bmeDecl), "=");
-                    if (dynblock > 0 && ModelUtil.isTypeUnknown(expr.getTypeModel())
+                    if (isInDynamicBlock() && ModelUtil.isTypeUnknown(expr.getTypeModel())
                             && !ModelUtil.isTypeUnknown(((FunctionOrValue) bmeDecl).getType())) {
                         TypeUtils.generateDynamicCheck(expr, ((FunctionOrValue) bmeDecl).getType(), this, false,
                                 expr.getTypeModel().getTypeArguments());
@@ -2388,7 +2417,7 @@ public class GenerateJsVisitor extends Visitor {
         String returnValue = null;
         StaticMemberOrTypeExpression lhsExpr = null;
         
-        if (dynblock > 0 && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             that.getLeftTerm().visit(this);
             out("=");
             int box = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
@@ -2443,7 +2472,7 @@ public class GenerateJsVisitor extends Visitor {
     public boolean qualify(final Node that, final Declaration d) {
         String path = qualifiedPath(that, d);
         if (path.length() > 0) {
-            out(path, d instanceof Constructor ? "_" : ".");
+            out(path, d instanceof Constructor ? names.constructorSeparator(d) : ".");
         }
         return path.length() > 0;
     }
@@ -2603,13 +2632,18 @@ public class GenerateJsVisitor extends Visitor {
     @Override
     public void visit(final Tree.Return that) {
         if (that.getExpression() == null) {
-            out("return;");
+            final Declaration contDecl = ModelUtil.getContainingDeclarationOfScope(that.getScope());
+            if (contDecl instanceof Class) {
+                out("return ", names.self((Class)contDecl), ";");
+            } else {
+                out("return;");
+            }
             endLine();
             return;
         }
         out("return ");
         final Type returnType = that.getExpression().getTypeModel();
-        if (dynblock > 0 && ModelUtil.isTypeUnknown(returnType)) {
+        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(returnType)) {
             Declaration cont = ModelUtil.getContainingDeclarationOfScope(that.getScope());
             Type dectype = ((Declaration)cont).getReference().getType();
             if (dectype != null && dectype.isTypeParameter() && !dectype.getSatisfiedTypes().isEmpty()) {
@@ -2883,10 +2917,7 @@ public class GenerateJsVisitor extends Visitor {
         }
         final Type lt = left.getTypeModel();
         final Type rt = right.getTypeModel();
-        final Type intdecl = left.getUnit().getIntegerType();
-        final Type booldecl = left.getUnit().getBooleanType();
-        return (lt.isSubtypeOf(intdecl) && rt.isSubtypeOf(intdecl))
-                || (lt.isSubtypeOf(booldecl) && rt.isSubtypeOf(booldecl));
+        return (lt.isInteger() && rt.isInteger()) || (lt.isBoolean() && rt.isBoolean());
     }
 
     @Override public void visit(final Tree.SmallerOp that) {
@@ -2961,7 +2992,7 @@ public class GenerateJsVisitor extends Visitor {
    }
 
    boolean hasSimpleGetterSetter(Declaration decl) {
-       return (dynblock > 0 && TypeUtils.isUnknown(decl)) ||
+       return (isInDynamicBlock() && TypeUtils.isUnknown(decl)) ||
                !((decl instanceof Value && ((Value)decl).isTransient()) || (decl instanceof Setter) || decl.isFormal());
    }
 
@@ -3095,7 +3126,7 @@ public class GenerateJsVisitor extends Visitor {
         } else {
             ContinueBreakVisitor top=continues.peek();
             if (top.belongs(that)) {
-                out(top.getBreakName(), "=true; return;");
+                out(top.getBreakName(), "=true;return;");
             } else {
                 out("break;");
             }
@@ -3107,7 +3138,7 @@ public class GenerateJsVisitor extends Visitor {
         } else {
             ContinueBreakVisitor top=continues.peek();
             if (top.belongs(that)) {
-                out(top.getContinueName(), "=true; return;");
+                out(top.getContinueName(), "=true;return;");
             } else {
                 out("continue;");
             }
@@ -3120,8 +3151,9 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     public void visit(final Tree.InOp that) {
+        out(getClAlias(), "$cnt$(");
         box(that.getRightTerm());
-        out(".contains(");
+        out(",");
         if (!isNaturalLiteral(that.getLeftTerm())) {
             box(that.getLeftTerm());
         }
@@ -3425,8 +3457,8 @@ public class GenerateJsVisitor extends Visitor {
         comment(that);
         TypeDeclaration klass = (TypeDeclaration)that.getEnumerated().getContainer();
         defineAttribute(names.self(klass), names.name(that.getDeclarationModel()));
-        out("{return ", names.name(klass), "_", names.name(that.getDeclarationModel()),
-                "();},undefined,");
+        out("{return ", names.name(klass), names.constructorSeparator(that.getDeclarationModel()),
+                names.name(that.getDeclarationModel()), "();},undefined,");
         TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), this);
         out(");");
     }
@@ -3436,7 +3468,7 @@ public class GenerateJsVisitor extends Visitor {
         final Declaration d = that.getDeclaration();
         if (d instanceof Constructor) {
             qualify(that, (Declaration)d.getContainer());
-            out(names.name((Declaration)d.getContainer()), "_");
+            out(names.name((Declaration)d.getContainer()), names.constructorSeparator(d));
         } else {
             qualify(that, d);
         }
@@ -3464,4 +3496,5 @@ public class GenerateJsVisitor extends Visitor {
     public void visit(Tree.SequenceType that) {
         //This is just to avoid the NaturalLiteral from being visited
     }
+
 }

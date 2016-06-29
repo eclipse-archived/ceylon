@@ -1,4 +1,4 @@
-import check { check }
+import check { check,fail }
 
 shared object topObject483 {
   string = "object.";
@@ -29,6 +29,12 @@ shared class Test483() {
   check(getOther()=="method.", "#483.4 member (inside) ``getOther()``");
 }
 
+variable String i6322 = "1";
+variable String \iI6322 = "2";
+void setI6322(String s) {
+  fail("#6322.1");
+}
+
 void issues() {
   check(topObject483.string=="object.", "#483.1 toplevel ``topObject483``");
   check(getTopObject483().string=="method.", "#483.2 toplevel ``getTopObject483()``");
@@ -56,4 +62,16 @@ void issues() {
   check(t.getMember483().string=="method.", "#483.2 member (outside) ``t.getMember483()``");
   check(t.other=="value.", "#483.3 member (outside) ``t.other``");
   check(t.getOther()=="method.", "#483.4 member (outside) ``t.getOther()``");
+
+  check(i6322=="1", "#6322.2");
+  check(\iI6322=="2", "#6322.3");
+  i6322="ok1";
+  \iI6322="ok2";
+  check(i6322=="ok1", "#6322.4");
+  check(\iI6322=="ok2", "#6322.5");
+  //#6343
+  check(parseFloat("1") exists, "#6343.1");
+  check(isFinite()=="our own impl", "#6343.2");
 }
+
+shared String isFinite() => "our own impl";

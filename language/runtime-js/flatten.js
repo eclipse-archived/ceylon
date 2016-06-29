@@ -41,7 +41,7 @@ function flatten(tf, $$$mptypes) {
         if (seqarg===undefined || seqarg.length===0) {
           seqarg=empty();
         } else if (seqarg !== null && !is$(seqarg,{t:Sequence})) {
-          seqarg=seqarg.$sa$(seqarg._elemTarg());
+          seqarg=$arr$sa$(seqarg,seqarg._elemTarg());
         }
         if (argx===1&&t.length==0)return tf(seqarg);
         return tf(tpl$(t,seqarg));
@@ -79,7 +79,7 @@ function flatten(tf, $$$mptypes) {
       if (is$(s,{t:ArraySequence})){
         //This is awful but it's the only way to get the array directly out of its sequence
         //Don't forget to update the property name when it changes
-        return tf(tpl$(s.$gt.arr$),$mpt);
+        return tf(tpl$(s.$7.arr$),$mpt);
       }
       if (is$(s,{t:$_Array}))return tf(tpl$(s.arr$),$mpt);
       return tf(s?tpl$(s):empty(),$mpt);

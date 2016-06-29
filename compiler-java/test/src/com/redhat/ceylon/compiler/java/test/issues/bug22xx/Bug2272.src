@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug22xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1$1Local"})
 class Bug2272 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
@@ -15,7 +17,9 @@ class Bug2272 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             public .java.lang.Object $call$() {
                 
-                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("Local")
                 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                 class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
@@ -42,7 +46,9 @@ class Bug2272 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2272.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 @.com.redhat.ceylon.compiler.java.metadata.Name("bug2272")
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1$1PackageLocal"})
@@ -65,7 +71,9 @@ final class bug2272_ {
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore
                 public .java.lang.Object $call$() {
                     
-                    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                            major = 8,
+                            minor = 1)
                     @.com.redhat.ceylon.compiler.java.metadata.Name("PackageLocal")
                     @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(
                             isPackageLocal = true,

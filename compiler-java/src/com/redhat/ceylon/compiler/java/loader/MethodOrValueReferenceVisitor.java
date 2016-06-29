@@ -300,8 +300,11 @@ public class MethodOrValueReferenceVisitor extends Visitor {
                 }
             }
             // do regular capturing after that (for members), if required
-            if(!declaration.isCaptured())
+            if(!declaration.isCaptured()) {
+                boolean cs = enterCapturingScope();
                 super.visit(that);
+                exitCapturingScope(cs);
+            }
         }
     }
     

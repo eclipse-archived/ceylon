@@ -596,22 +596,22 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     
     @.java.lang.Override
     public final .ceylon.language.Iterator iterator() {
-        return (.ceylon.language.Iterator<? extends Element>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Iterator<? extends Element>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final long getSize() {
-        return ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+        return ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
     }
     
     @.java.lang.Override
     public final boolean contains(final .java.lang.Object o) {
-        return ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        return ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
     }
     
     @.java.lang.Override
     public .java.lang.String toString() {
-        return ((.ceylon.language.String).ceylon.language.nothing_.get_()).toString();
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
     }
     
     @.java.lang.Override

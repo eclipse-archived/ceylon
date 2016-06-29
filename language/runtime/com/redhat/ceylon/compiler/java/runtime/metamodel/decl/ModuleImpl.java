@@ -14,6 +14,7 @@ import ceylon.language.Sequential;
 import ceylon.language.meta.declaration.Import;
 import ceylon.language.meta.declaration.Package;
 
+import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.ByteArrayResource;
 import com.redhat.ceylon.compiler.java.language.FileResource;
@@ -49,7 +50,7 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
     @Override
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
-        if(declaration.isDefault() || declaration.isJava())
+        if(declaration.isDefaultModule() || declaration.isJava())
             return NO_ANNOTATION;
         return Metamodel.getJavaClass(declaration).getAnnotations();
     }
@@ -57,7 +58,7 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
     @Override
     @Ignore
     public boolean $isAnnotated$(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) {
-        if(declaration.isDefault() || declaration.isJava())
+        if(declaration.isDefaultModule() || declaration.isJava())
             return false;
         final AnnotatedElement element = Metamodel.getJavaClass(declaration);;
         return element != null ? element.isAnnotationPresent(annotationType) : false;
@@ -131,6 +132,7 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
         } else {
             fullPath = fullPath.substring(1);
         }
+        fullPath = JVMModuleUtil.quoteJavaKeywordsInFilename(fullPath);
         
         // First lets ask the module manager for the contents of the resource
         RuntimeModuleManager moduleManager = Metamodel.getModuleManager();

@@ -62,8 +62,7 @@ public class TypeFactory extends Unit {
      * @return whether the type is a union type
      */
     public boolean isUnion(Type pt) {
-        if (pt==null) return false;
-        return pt.isUnion() && pt.getCaseTypes().size() > 1;
+        return pt!=null && pt.isUnion() && pt.getCaseTypes().size() > 1;
     }
 
     /**
@@ -72,8 +71,7 @@ public class TypeFactory extends Unit {
      * @return whether the type is an intersection type
      */
     public boolean isIntersection(Type pt) {
-        if (pt==null) return false;
-        return pt.isIntersection() && pt.getSatisfiedTypes().size() > 1;
+        return pt != null && pt.isIntersection() && pt.getSatisfiedTypes().size() > 1;
     }
 
     public TypeDeclaration getArraySequenceDeclaration() {

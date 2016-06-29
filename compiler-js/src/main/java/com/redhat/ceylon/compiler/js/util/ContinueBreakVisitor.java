@@ -19,6 +19,7 @@ public class ContinueBreakVisitor extends Visitor {
     private String rname;
     private int level;
     private boolean ignore;
+    private int loops;
     private final IdentityHashMap<Tree.Directive, Boolean> dirs = new IdentityHashMap<>();
 
     public ContinueBreakVisitor(Tree.Block n, JsIdentifierNames names) {
@@ -37,40 +38,51 @@ public class ContinueBreakVisitor extends Visitor {
         level--;
     }
     public void visit(Tree.Break n) {
-        if (ignore) {
+        if (ignore || loops>0) {
             return;
         }
-        if (level < 3) {
-            if (bname == null) {
-                bname = names.createTempVariable();
-            }
-            breaks = true;
-            dirs.put(n, true);
+        if (bname == null) {
+            bname = names.createTempVariable();
         }
+        breaks = true;
+        dirs.put(n, true);
         super.visit(n);
     }
     public void visit(Tree.Continue n) {
-        if (ignore) {
+        if (ignore || loops>0) {
             return;
         }
-        if (level < 3) {
-            if (cname == null) {
-                cname = names.createTempVariable();
-            }
-            continues = true;
-            dirs.put(n, true);
+        if (cname == null) {
+            cname = names.createTempVariable();
         }
+        continues = true;
+        dirs.put(n, true);
         super.visit(n);
     }
     public void visit(Tree.Return n) {
         if (ignore) {
             return;
         }
-        if (level < 3) {
-            returns = true;
-        }
+        returns = true;
         super.visit(n);
     }
+    public void visit(final Tree.ForStatement that) {
+        if (ignore) {
+            return;
+        }
+        loops++;
+        super.visit(that);
+        loops--;
+    }
+    public void visit(final Tree.WhileStatement that) {
+        if (ignore) {
+            return;
+        }
+        loops++;
+        super.visit(that);
+        loops--;
+    }
+
 
     public boolean belongs(Tree.Directive dir) {
         return dirs.containsKey(dir);
@@ -101,4 +113,5 @@ public class ContinueBreakVisitor extends Visitor {
         }
         return rname;
     }
+
 }

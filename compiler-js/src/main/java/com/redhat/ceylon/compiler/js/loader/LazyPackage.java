@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.js.loader;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -146,22 +147,34 @@ public abstract class LazyPackage extends Package {
     @Override
     public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit,
             String startingWith, int proximity, Cancellable canceller) {
+        if (canceller != null
+                && canceller.isCancelled()) {
+            return Collections.emptyMap();
+        }
         loadIfNecessary();
         return super.getMatchingDeclarations(unit, startingWith, proximity, canceller);
     }
 
     @Override
     public Map<String, DeclarationWithProximity> getMatchingDirectDeclarations(
-            String startingWith, int proximity) {
+            String startingWith, int proximity, Cancellable canceller) {
+        if (canceller != null
+                && canceller.isCancelled()) {
+            return Collections.emptyMap();
+        }
         loadIfNecessary();
-        return super.getMatchingDirectDeclarations(startingWith, proximity);
+        return super.getMatchingDirectDeclarations(startingWith, proximity, canceller);
     }
 
     @Override
     public Map<String, DeclarationWithProximity> getImportableDeclarations(
-            Unit unit, String startingWith, List<Import> imports, int proximity) {
+            Unit unit, String startingWith, List<Import> imports, int proximity, Cancellable canceller) {
+        if (canceller != null
+                && canceller.isCancelled()) {
+            return Collections.emptyMap();
+        }
         loadIfNecessary();
-        return super.getImportableDeclarations(unit, startingWith, imports, proximity);
+        return super.getImportableDeclarations(unit, startingWith, imports, proximity, canceller);
     }
 
     @Override

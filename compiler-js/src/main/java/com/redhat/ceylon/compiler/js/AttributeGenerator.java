@@ -274,7 +274,6 @@ public class AttributeGenerator {
                     gen.defineAttribute(gen.getNames().self(outer), gen.getNames().name(d));
                     gen.beginBlock();
                     gen.initSelf(that);
-                    Expression expr = that.getSpecifierOrInitializerExpression().getExpression();
                     boolean stitch = TypeUtils.isNativeExternal(d);
                     if (stitch) {
                         stitch=gen.stitchNative(d, that);
@@ -284,12 +283,10 @@ public class AttributeGenerator {
                         }
                     }
                     if (!stitch) {
+                        final Expression expr = that.getSpecifierOrInitializerExpression().getExpression();
                         gen.out("return ");
                         if (!gen.isNaturalLiteral(expr.getTerm())) {
-                            final int boxType = gen.boxStart(expr.getTerm());
-                            expr.visit(gen);
-                            if (boxType == 4) gen.out("/*TODO: callable targs 3*/");
-                            gen.boxUnboxEnd(boxType);
+                            gen.visitSingleExpression(expr);
                         }
                     }
                     gen.endBlock();
@@ -328,8 +325,7 @@ public class AttributeGenerator {
                             }
                         } else {
                             gen.out("return ");
-                            that.getSpecifierOrInitializerExpression().getExpression().visit(gen);
-                            gen.out(";");
+                            gen.visitSingleExpression(that.getSpecifierOrInitializerExpression().getExpression());
                         }
                         gen.out("}");
                     } else {

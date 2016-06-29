@@ -17,14 +17,16 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 
 public class JdkProvider {
     private boolean alternateJdk;
-    private Map<String, Set<String>> jdkModules = new HashMap<String, Set<String>>();
+    private Map<String, Set<String>> jdkModules = 
+            new HashMap<String, Set<String>>();
     private Module module;
     private String name;
 
     /**
      * Creates a JdkProvider loaded from the given module/jar
      */
-    public JdkProvider(String name, String version, Module module, File jar) throws ZipException, IOException{
+    public JdkProvider(String name, String version, Module module, File jar) 
+            throws ZipException, IOException{
         this.module = module;
         this.name = name;
         loadJar(jar);
@@ -37,7 +39,8 @@ public class JdkProvider {
     public JdkProvider() {
     }
 
-    private void loadJar(File jar) throws ZipException, IOException {
+    private void loadJar(File jar) 
+            throws ZipException, IOException {
         Set<String> packages = JvmBackendUtil.listPackages(jar, null);
         for(String pkg : packages){
             String jdkModuleName = JDKUtils.getJDKModuleNameForPackage(pkg);
@@ -55,7 +58,8 @@ public class JdkProvider {
     public boolean isJDKModule(String module) {
         if(alternateJdk)
             return jdkModules.containsKey(module);
-        return JDKUtils.isJDKModule(module) || JDKUtils.isOracleJDKModule(module);
+        return JDKUtils.isJDKModule(module) 
+                || JDKUtils.isOracleJDKModule(module);
     }
 
     public boolean isJDKPackage(String pkg) {
@@ -66,7 +70,8 @@ public class JdkProvider {
                 }
             }
         }
-        return JDKUtils.isJDKAnyPackage(pkg) || JDKUtils.isOracleJDKAnyPackage(pkg);
+        return JDKUtils.isJDKAnyPackage(pkg) 
+                || JDKUtils.isOracleJDKAnyPackage(pkg);
     }
 
     public boolean isJDKPackage(String module, String pkg) {
@@ -74,7 +79,8 @@ public class JdkProvider {
             Set<String> packages = jdkModules.get(module);
             return packages != null && packages.contains(pkg);
         }
-        return JDKUtils.isJDKPackage(module, pkg) || JDKUtils.isOracleJDKPackage(module, pkg);
+        return JDKUtils.isJDKPackage(module, pkg) 
+                || JDKUtils.isOracleJDKPackage(module, pkg);
     }
 
     public Set<String> getJDKModuleNames() {

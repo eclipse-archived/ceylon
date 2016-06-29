@@ -26,6 +26,7 @@ public class JavaRunnerImpl implements JavaRunner {
         this.module = module;
         
         RepositoryManager repositoryManager = CeylonUtils.repoManager()
+                .cwd(options.getWorkingDirectory())
                 .userRepos(options.getUserRepositories())
                 .systemRepo(options.getSystemRepository())
                 .offline(options.isOffline())
