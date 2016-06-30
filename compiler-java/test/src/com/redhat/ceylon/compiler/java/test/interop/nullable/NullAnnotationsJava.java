@@ -25,7 +25,16 @@ public class NullAnnotationsJava {
     @Nullable
     public String getNullableProperty(){ return null; }
 
+    @Nonnull
+    public String getNotNullProperty2(){ return null; }
+    @Nullable
+    public String getNullableProperty2(){ return null; }
+
     public void setUnknownProperty(String str){}
     public void setNotNullProperty(@Nonnull String str){}
     public void setNullableProperty(@Nullable String str){}
+
+    // non-annotated setters
+    public void setNotNullProperty2(String str){}
+    public void setNullableProperty2(String str){}
 }

@@ -2796,7 +2796,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         Module module = ModelUtil.getModuleContainer(klass);
                         Type paramType = obtainType(setterParam.getType(), setterParam, klass, module, VarianceLocation.INVARIANT,
                                 "setter '"+setter.getName()+"'", klass);
-                        switch(getUncheckedNullPolicy(isCeylon, setterParam.getType(), setterParam)){
+                        NullStatus nullPolicy = getUncheckedNullPolicy(isCeylon, setterParam.getType(), setterParam);
+                        // if there's no annotation on the setter param, inherit annotations from getter
+                        if(nullPolicy == NullStatus.UncheckedNull)
+                            nullPolicy = getUncheckedNullPolicy(isCeylon, value.mirror.getReturnType(), value.mirror);
+                        switch(nullPolicy){
                         case Optional:
                             if(!isCeylon){
                                 paramType = makeOptionalTypePreserveUnderlyingType(paramType, module);

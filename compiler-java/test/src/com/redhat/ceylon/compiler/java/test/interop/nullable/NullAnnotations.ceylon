@@ -35,15 +35,23 @@ shared class NullAnnotations(){
         @type:"String?"
         value nullable2 = j.nullableProperty;
         String notNull2 = j.notNullProperty;
+        @type:"String?"
+        value nullable3 = j.nullableProperty2;
+        String notNull3 = j.notNullProperty2;
 
         j.unknownProperty = "foo";
         j.unknownProperty = null;
         j.nullableProperty = "foo";
         j.nullableProperty = null;
         j.notNullProperty = "foo";
+        j.nullableProperty2 = "foo";
+        j.nullableProperty2 = null;
+        j.notNullProperty2 = "foo";
 
         @error
         j.notNullProperty = null;
+        @error
+        j.notNullProperty2 = null;
         @error
         NullAnnotationsJava("a", null, "c");
         @error
