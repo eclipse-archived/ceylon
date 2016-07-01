@@ -3628,11 +3628,13 @@ public abstract class AbstractTransformer implements Transformation {
         return makeJavaTypeAnnotations(type, declaredVoid, 
                 CodegenUtil.hasTypeErased(decl),
                 CodegenUtil.hasUntrustedType(decl),
-                needsJavaTypeAnnotations(decl));
+                needsJavaTypeAnnotations(decl),
+                decl.hasUncheckedNullType());
     }
 
     private List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Type type, boolean declaredVoid, 
-                                                              boolean hasTypeErased, boolean untrusted, boolean required) {
+                                                              boolean hasTypeErased, boolean untrusted, 
+                                                              boolean required, boolean uncheckedNull) {
         if (!required)
             return List.nil();
         String name = serialiseTypeSignature(type);
@@ -3652,6 +3654,10 @@ public abstract class AbstractTransformer implements Transformation {
         if (untrusted) {
             annotationArgs.add(
                     make().Assign(naming.makeUnquotedIdent("untrusted"), make().Literal(untrusted)));
+        }
+        if (uncheckedNull) {
+            annotationArgs.add(
+                    make().Assign(naming.makeUnquotedIdent("uncheckedNull"), make().Literal(uncheckedNull)));
         }
         return makeModelAnnotation(syms().ceylonAtTypeInfoType, annotationArgs.toList());
     }
