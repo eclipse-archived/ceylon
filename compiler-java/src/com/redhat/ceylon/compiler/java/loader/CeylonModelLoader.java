@@ -810,6 +810,7 @@ public class CeylonModelLoader extends AbstractModelLoader {
     protected FunctionalInterface getFunctionalInterface(TypeMirror typeMirror) {
         if(typeMirror.getKind() != TypeKind.DECLARED)
             return null;
+        // FIXME: possibly apply other optimisations to lighten the lookup cost? see what javac does
         Type type = ((JavacType)typeMirror).type;
         try{
             MethodSymbol descriptorSymbol = (MethodSymbol) types.findDescriptorSymbol(type.tsym);
