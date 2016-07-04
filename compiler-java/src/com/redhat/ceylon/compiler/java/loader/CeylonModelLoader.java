@@ -62,6 +62,7 @@ import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.MethodType;
 import com.redhat.ceylon.langtools.tools.javac.code.Types;
 import com.redhat.ceylon.langtools.tools.javac.code.Types.FunctionDescriptorLookupError;
@@ -814,18 +815,22 @@ public class CeylonModelLoader extends AbstractModelLoader {
         Type type = ((JavacType)typeMirror).type;
         try{
             MethodSymbol descriptorSymbol = (MethodSymbol) types.findDescriptorSymbol(type.tsym);
-            MethodType descriptorType = (MethodType) types.findDescriptorType(type);
+            Type descriptorType = types.findDescriptorType(type);
+            // Let's be honest I've no idea what this means, but it happens and Javac seems to refuse it too
+            if(descriptorType.hasTag(TypeTag.FORALL))
+                return null;
+            MethodType methodDescriptorType = (MethodType)descriptorType; 
             // FIXME: does this really skip classes?
             ClassSymbol outermostClass = descriptorSymbol.outermostClass();
             
             JavacClass classMirror = new JavacClass(outermostClass);
             ListBuffer<TypeMirror> substitutedParameterTypes = new ListBuffer<TypeMirror>();
-            for(Type parameterType : descriptorType.getParameterTypes()){
+            for(Type parameterType : methodDescriptorType.getParameterTypes()){
                 substitutedParameterTypes.add(new JavacType(parameterType));
             }
             return new com.redhat.ceylon.model.loader.mirror.FunctionalInterface(classMirror, 
                     new JavacMethod(classMirror, descriptorSymbol), 
-                    new JavacType(descriptorType.getReturnType()),
+                    new JavacType(methodDescriptorType.getReturnType()),
                     substitutedParameterTypes.toList());
         }catch(FunctionDescriptorLookupError err){
             return null;
