@@ -1758,7 +1758,6 @@ public class CallableBuilder {
 
 
     //Target target = new Target(null);
-    Target target = new Target(null);
 
     private TypedReference functionalInterfaceMethod;
 
