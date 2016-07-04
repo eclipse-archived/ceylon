@@ -21,12 +21,14 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeade
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isObject;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
 
@@ -51,7 +53,6 @@ import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.LazyType;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -976,7 +977,7 @@ public class RefinementVisitor extends Visitor {
         }
 		else if (refinedMemberIsVariable(refinedMemberDec)) {
             checkRefinedMemberTypeExactly(refiningMember, 
-                    refinedMember, typeNode, refined);
+                    refinedMember, typeNode, refined, refining);
         }
         else {
             //note: this version checks return type and parameter types in one shot, but the
@@ -1237,39 +1238,97 @@ public class RefinementVisitor extends Visitor {
     		Node that, 
     		Declaration refined, 
     		Declaration refining) {
+        Unit unit = that.getUnit();
         Type refiningType = refiningMember.getType();
         Type refinedType = refinedMember.getType();
-        if (ModelUtil.isTypeUnknown(refiningType)
-                && refined instanceof TypedDeclaration
-                && that instanceof Tree.LocalModifier) {
-            TypedDeclaration td = 
-                    (TypedDeclaration) refining;
-            Tree.LocalModifier mod = 
-                    (Tree.LocalModifier) that;
-            td.setType(refinedType);
-            mod.setTypeModel(refinedType);
-            return;
+        if (!isTypeUnknown(refinedType)) {
+            if (that instanceof Tree.LocalModifier) {
+                TypedDeclaration td = 
+                        (TypedDeclaration) refining;
+                Tree.LocalModifier mod = 
+                        (Tree.LocalModifier) that;
+                Type t;
+                if (isTypeUnknown(refiningType)) {
+                    t = refinedType;
+                }
+                else {
+                    t = intersectionType(
+                            refiningType, refinedType, 
+                            unit);
+                }
+                td.setType(t);
+                mod.setTypeModel(t);
+                return;
+            }
+            if (hasUncheckedNullType(refinedMember)) {
+                Type optionalRefinedType = 
+                        unit.getOptionalType(refinedType);
+                checkAssignableToOneOf(refiningType, 
+                        refinedType, optionalRefinedType, 
+                        that, 
+                		"type of member must be assignable to type of refined member " + 
+        				message(refined), 
+        				9000);
+            }
+            else {
+                checkAssignable(refiningType, refinedType, 
+                        that,
+                		"type of member must be assignable to type of refined member " + 
+        		        message(refined), 
+        		        9000);
+                checkSmallRefinement(that, 
+                        refiningMember.getDeclaration(), 
+                        refinedMember.getDeclaration());
+            }
         }
-        if (hasUncheckedNullType(refinedMember)) {
-            Unit unit = that.getUnit();
-            Type optionalRefinedType = 
-                    unit.getOptionalType(refinedType);
-            checkAssignableToOneOf(refiningType, 
-                    refinedType, optionalRefinedType, 
-                    that, 
-            		"type of member must be assignable to type of refined member " + 
-    				message(refined), 
-    				9000);
-        }
-        else {
-            checkAssignable(refiningType, refinedType, 
-                    that,
-            		"type of member must be assignable to type of refined member " + 
-    		        message(refined), 
-    		        9000);
-            checkSmallRefinement(that, 
-                    refiningMember.getDeclaration(), 
-                    refinedMember.getDeclaration());
+    }
+
+    private void checkRefinedMemberTypeExactly(
+            Reference refiningMember, 
+    		Reference refinedMember, 
+    		Node that, 
+    		Declaration refined,
+    		Declaration refining) {
+        Unit unit = that.getUnit();
+        Type refiningType = refiningMember.getType();
+        Type refinedType = refinedMember.getType();
+        if (!isTypeUnknown(refinedType)) {
+            if (that instanceof Tree.LocalModifier) {
+                TypedDeclaration td = 
+                        (TypedDeclaration) refining;
+                Tree.LocalModifier mod = 
+                        (Tree.LocalModifier) that;
+                Type t;
+                if (isTypeUnknown(refiningType)) {
+                    t = refinedType;
+                    td.setType(t);
+                    mod.setTypeModel(t);
+                }
+                else {
+                    checkIsExactly(refiningType, 
+                            refinedType, that,
+                            "inferred type of member must be exactly the same as type of variable refined member: " + 
+                            message(refined), 
+                            9000);
+                }
+                return;
+            }
+            if (hasUncheckedNullType(refinedMember)) {
+                Type optionalRefinedType = 
+                        unit.getOptionalType(refinedType);
+                checkIsExactlyOneOf(refiningType, 
+                        refinedMember.getType(), 
+                		optionalRefinedType, that, 
+                		"type of member must be exactly the same as type of variable refined member: " + 
+        	            message(refined));
+            }
+            else {
+                checkIsExactly(refiningType, 
+                        refinedType, that,
+                		"type of member must be exactly the same as type of variable refined member: " + 
+        	            message(refined), 
+        	            9000);
+            }
         }
     }
 
@@ -1298,33 +1357,6 @@ public class RefinementVisitor extends Visitor {
             refiningFunctionOrValue.setSmall(refinedSmall);
         }
     }
-
-    private void checkRefinedMemberTypeExactly(
-            Reference refiningMember, 
-    		Reference refinedMember, 
-    		Node that, Declaration refined) {
-        if (hasUncheckedNullType(refinedMember)) {
-            Unit unit = 
-                    refiningMember.getDeclaration()
-                        .getUnit();
-            Type optionalRefinedType = 
-                    unit.getOptionalType(
-                            refinedMember.getType());
-            checkIsExactlyOneOf(refiningMember.getType(), 
-                    refinedMember.getType(), 
-            		optionalRefinedType, that, 
-            		"type of member must be exactly the same as type of variable refined member: " + 
-            	            message(refined));
-        }
-        else {
-            checkIsExactly(refiningMember.getType(), 
-                    refinedMember.getType(), that,
-            		"type of member must be exactly the same as type of variable refined member: " + 
-            	            message(refined), 9000);
-        }
-    }
-
-    
 
     /*private void checkUnshared(Tree.Declaration that, Declaration dec) {
         if (dec.isActual()) {
