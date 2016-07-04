@@ -985,6 +985,11 @@ public class CallableBuilder {
                 }
                 classBody.append(callTyped);
             }
+            // if required, implement the functional interface method bridge
+            if (functionalInterfaceMethod != null){
+                MethodDefinitionBuilder mdb = makeFunctionalInterfaceMethod();
+                classBody.append(mdb.build());
+            }
         }
         
         /**
@@ -1032,6 +1037,57 @@ public class CallableBuilder {
         return callMethod;
     }
     
+    public MethodDefinitionBuilder makeFunctionalInterfaceMethod() {
+        FunctionOrValue methodOrValue = (FunctionOrValue) functionalInterfaceMethod.getDeclaration();
+        MethodDefinitionBuilder callMethod = 
+                MethodDefinitionBuilder.method(gen, methodOrValue, 0);
+        callMethod.isOverride(true);
+        callMethod.modifiers(Flags.PUBLIC);
+        Type returnType = functionalInterfaceMethod.getType();
+        if(methodOrValue instanceof Value || !((Function)methodOrValue).isDeclaredVoid()){
+            int flags = CodegenUtil.isUnBoxed(methodOrValue) 
+                    ? 0 : JT_NO_PRIMITIVES;
+            callMethod.resultType(gen.makeJavaType(returnType, flags), null);
+        }
+        ListBuffer<JCExpression> args = new ListBuffer<>();
+        if(methodOrValue instanceof Function){
+            for(Parameter param : ((Function)methodOrValue).getFirstParameterList().getParameters()){
+                TypedReference typedParameter = functionalInterfaceMethod.getTypedParameter(param);
+                ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(gen, param.getName());
+                pdb.type(gen.makeJavaType(typedParameter.getType(), 0), null);
+                callMethod.parameter(pdb);
+                JCExpression arg = gen.makeUnquotedIdent(param.getName());
+                if(CodegenUtil.isUnBoxed(param.getModel())){
+                    arg = gen.expressionGen().applyErasureAndBoxing(arg, typedParameter.getType(), 
+                            false, BoxingStrategy.BOXED,
+                            // possibly this should be the callable method arg type
+                            typedParameter.getType());
+                }
+                args.append(arg);
+            }
+        }else{
+            // no-arg getter
+        }
+        JCExpression call = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableMethodName()), args.toList());
+        JCStatement body;
+        if(methodOrValue instanceof Function 
+                && ((Function)methodOrValue).isDeclaredVoid())
+            body = gen.make().Exec(call);
+        else{
+            if(CodegenUtil.isUnBoxed(methodOrValue)){
+                call = gen.expressionGen().applyErasureAndBoxing(call, 
+                        returnType, 
+                        true, 
+                        BoxingStrategy.UNBOXED,
+                        // possibly this should be the callable method return type
+                        returnType);
+            }
+            body = gen.make().Return(call);
+        }
+        callMethod.body(body);
+        return callMethod;
+    }
+
     /**
      * Builds a {@code $call()} method that
      * <ul>
