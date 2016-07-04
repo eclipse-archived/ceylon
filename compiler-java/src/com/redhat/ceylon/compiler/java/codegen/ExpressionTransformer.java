@@ -3068,9 +3068,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         // except for Java array constructors
         Declaration primaryDeclaration = invocation.getPrimaryDeclaration();
         Tree.Term primary = invocation.getPrimary();
-        if(primaryDeclaration instanceof Class == false
-                || !isJavaArray(((Class) primaryDeclaration).getType())){
-            invocation.addReifiedArguments(result);
+        if(primaryDeclaration instanceof Value == false){
+            if(primaryDeclaration instanceof Class == false
+                    || !isJavaArray(((Class) primaryDeclaration).getType())){
+                invocation.addReifiedArguments(result);
+            }
         }
         if (!(primary instanceof Tree.BaseTypeExpression)
                 && !(primary instanceof Tree.QualifiedTypeExpression)
@@ -3640,6 +3642,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression primTypeExpr = makeJavaType(invocation.getQmePrimary().getTypeModel(), JT_NO_PRIMITIVES | JT_VALUE_TYPE);
             callBuilder.invoke(naming.makeQuotedQualIdent(primTypeExpr, transformedPrimary.selector));
 
+        } else if (invocation.getPrimaryDeclaration() instanceof Value){
+            // Call on a Callable, must add the $call$ method
+            callBuilder.invoke(naming.makeQuotedQualIdent(transformedPrimary.expr, transformedPrimary.selector, Naming.getCallableMethodName()));
         } else {
             callBuilder.invoke(naming.makeQuotedQualIdent(transformedPrimary.expr, transformedPrimary.selector));
         }
@@ -4083,6 +4088,25 @@ public class ExpressionTransformer extends AbstractTransformer {
             Functional functional, Type expectedType) {
         return CallableBuilder.methodReference(gen(), expr, 
                     functional.getFirstParameterList(), expectedType);
+    }
+
+    public JCExpression transformFunctionalInterfaceBridge(Tree.StaticMemberOrTypeExpression expr,
+            Value functional, Type expectedType) {
+        ParameterList paramList = new ParameterList();
+        Type callableType = expr.getTypeModel().getSupertype(typeFact().getCallableDeclaration());
+        int i=0;
+        for(Type type : typeFact().getCallableArgumentTypes(callableType)){
+            Parameter param = new Parameter();
+            Value paramModel = new Value();
+            param.setModel(paramModel);
+            param.setName("arg"+i);
+            paramModel.setName("arg"+i);
+            paramModel.setType(type);
+            paramList.getParameters().add(param);
+            i++;
+        }
+        return CallableBuilder.methodReference(gen(), expr, 
+                    paramList, expectedType);
     }
 
     //
@@ -4824,6 +4848,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                         || functionalParameterRequiresCallable((Function)decl, expr)) 
                 && isFunctionalResult(expr.getTypeModel())) {
             result = transformFunctional(expr, (Functional)decl, expectedType);
+        } else if (decl instanceof Value
+                && isFunctionalResult(expr.getTypeModel())
+                && checkForFunctionalInterface(expectedType) != null) {
+            result = transformFunctionalInterfaceBridge(expr, (Value)decl, expectedType);
         } else if (Decl.isGetter(decl)) {
             // invoke the getter
             if (decl.isToplevel()) {
