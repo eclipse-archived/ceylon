@@ -17,7 +17,9 @@ import com.redhat.ceylon.model.loader.TypeParser;
 import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionMethod;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
+import com.redhat.ceylon.model.loader.mirror.FunctionalInterface;
 import com.redhat.ceylon.model.loader.mirror.MethodMirror;
+import com.redhat.ceylon.model.loader.mirror.TypeMirror;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Unit;
@@ -186,4 +188,9 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
         log.debug(message);
     }
 
+    @Override
+    protected FunctionalInterface getFunctionalInterface(TypeMirror type) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

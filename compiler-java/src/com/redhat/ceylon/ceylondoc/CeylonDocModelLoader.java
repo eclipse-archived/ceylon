@@ -154,10 +154,4 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
     protected void makeInteropAnnotationConstructorInvocation(AnnotationProxyMethod ctor, AnnotationProxyClass klass, List<Parameter> ctorParams) {
         // nothing to do
     }
-
-    @Override
-    protected FunctionalInterface getFunctionalInterface(TypeMirror type) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }
