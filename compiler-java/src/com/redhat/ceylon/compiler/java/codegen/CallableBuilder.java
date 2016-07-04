@@ -1028,7 +1028,8 @@ public class CallableBuilder {
     
     protected final MethodDefinitionBuilder makeCallMethod(List<JCStatement> body, int arity) {
         MethodDefinitionBuilder callMethod = MethodDefinitionBuilder.callable(gen);
-        callMethod.isOverride(true);
+        // we only override it if we're not building a functional interface class
+        callMethod.isOverride(functionalInterfaceMethod == null);
         callMethod.modifiers(Flags.PUBLIC);
         Type returnType = gen.getReturnTypeOfCallable(typeModel);
         callMethod.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);
