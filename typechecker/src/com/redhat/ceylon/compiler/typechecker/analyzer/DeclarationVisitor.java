@@ -1347,11 +1347,18 @@ public abstract class DeclarationVisitor extends Visitor {
                             200);
                 }
             }
-            else if (v.isShared()) {
+            else if (mustHaveExplicitType(v)) {
                 type.addError("shared value must explicitly specify a type", 
                         200);
             }
         }
+    }
+
+    private boolean mustHaveExplicitType(FunctionOrValue fov) {
+        return fov.isShared() 
+                && (!fov.isActual() 
+                    || fov.isDefault() 
+                    || fov.isFormal());
     }
     
     @Override
@@ -1376,7 +1383,7 @@ public abstract class DeclarationVisitor extends Visitor {
                             200);
                 }
             }
-            else if (m.isShared()) {
+            else if (mustHaveExplicitType(m)) {
                 type.addError("shared function must explicitly specify a return type", 
                         200);
             }

@@ -10,6 +10,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.check
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeErrorNode;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.hasUncheckedNullType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor.setVisibleScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMember;
@@ -50,6 +51,7 @@ import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.LazyType;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -981,7 +983,7 @@ public class RefinementVisitor extends Visitor {
             //resulting error messages aren't as friendly, so do it the hard way instead!
             //checkAssignable(refiningMember.getFullType(), refinedMember.getFullType(), that,
             checkRefinedMemberTypeAssignable(refiningMember, 
-                    refinedMember, typeNode, refined);
+                    refinedMember, typeNode, refined, refining);
         }
         if (refining instanceof Functional && 
                 refined instanceof Functional) {
@@ -1232,43 +1234,68 @@ public class RefinementVisitor extends Visitor {
     private void checkRefinedMemberTypeAssignable(
             Reference refiningMember, 
     		Reference refinedMember,
-    		Node that, Declaration refined) {
-        if (AnalyzerUtil.hasUncheckedNullType(refinedMember)) {
-            Unit unit = 
-                    refiningMember.getDeclaration()
-                        .getUnit();
+    		Node that, 
+    		Declaration refined, 
+    		Declaration refining) {
+        Type refiningType = refiningMember.getType();
+        Type refinedType = refinedMember.getType();
+        if (ModelUtil.isTypeUnknown(refiningType)
+                && refined instanceof TypedDeclaration
+                && that instanceof Tree.LocalModifier) {
+            TypedDeclaration td = 
+                    (TypedDeclaration) refining;
+            Tree.LocalModifier mod = 
+                    (Tree.LocalModifier) that;
+            td.setType(refinedType);
+            mod.setTypeModel(refinedType);
+            return;
+        }
+        if (hasUncheckedNullType(refinedMember)) {
+            Unit unit = that.getUnit();
             Type optionalRefinedType = 
-                    unit.getOptionalType(
-                            refinedMember.getType());
-            checkAssignableToOneOf(refiningMember.getType(), 
-                    refinedMember.getType(), 
-                    optionalRefinedType, that, 
+                    unit.getOptionalType(refinedType);
+            checkAssignableToOneOf(refiningType, 
+                    refinedType, optionalRefinedType, 
+                    that, 
             		"type of member must be assignable to type of refined member " + 
     				message(refined), 
     				9000);
         }
         else {
-            checkAssignable(refiningMember.getType(), 
-                    refinedMember.getType(), that,
+            checkAssignable(refiningType, refinedType, 
+                    that,
             		"type of member must be assignable to type of refined member " + 
     		        message(refined), 
     		        9000);
-            checkSmallRefinement(that, refiningMember.getDeclaration(), refinedMember.getDeclaration());
+            checkSmallRefinement(that, 
+                    refiningMember.getDeclaration(), 
+                    refinedMember.getDeclaration());
         }
     }
 
-    private void checkSmallRefinement(Node that, Declaration refiningDeclaration, Declaration refinedDeclaration) {
+    private void checkSmallRefinement(Node that, 
+            Declaration refiningDeclaration, 
+            Declaration refinedDeclaration) {
         if (refiningDeclaration instanceof FunctionOrValue &&
-                refinedDeclaration instanceof FunctionOrValue) {
-            boolean refiningSmall = ((FunctionOrValue)refiningDeclaration).isSmall();
-            boolean refinedSmall = ((FunctionOrValue)refinedDeclaration).isSmall();
+            refinedDeclaration instanceof FunctionOrValue) {
+            FunctionOrValue refiningFunctionOrValue = 
+                    (FunctionOrValue)
+                        refiningDeclaration;
+            FunctionOrValue refinedFunctionOrValue = 
+                    (FunctionOrValue)
+                        refinedDeclaration;
+            boolean refiningSmall = 
+                    refiningFunctionOrValue.isSmall();
+            boolean refinedSmall = 
+                    refinedFunctionOrValue.isSmall();
             if (refiningSmall
                     && !refinedSmall) {
-                that.addUsageWarning(Warning.smallIgnored, "small annotation on actual member " +
+                that.addUsageWarning(Warning.smallIgnored, 
+                        "small annotation on actual member " +
                         message(refiningDeclaration) + " will be ignored: " +
                         message(refinedDeclaration) + " is not small");
             }
-            ((FunctionOrValue)refiningDeclaration).setSmall(refinedSmall);
+            refiningFunctionOrValue.setSmall(refinedSmall);
         }
     }
 
@@ -1276,7 +1303,7 @@ public class RefinementVisitor extends Visitor {
             Reference refiningMember, 
     		Reference refinedMember, 
     		Node that, Declaration refined) {
-        if (AnalyzerUtil.hasUncheckedNullType(refinedMember)) {
+        if (hasUncheckedNullType(refinedMember)) {
             Unit unit = 
                     refiningMember.getDeclaration()
                         .getUnit();
