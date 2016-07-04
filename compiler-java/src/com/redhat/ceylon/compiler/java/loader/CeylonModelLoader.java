@@ -51,7 +51,6 @@ import com.redhat.ceylon.javax.lang.model.element.NestingKind;
 import com.redhat.ceylon.javax.tools.JavaFileManager;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.langtools.tools.javac.code.Attribute.Compound;
-import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.code.Kinds;
 import com.redhat.ceylon.langtools.tools.javac.code.Scope;
 import com.redhat.ceylon.langtools.tools.javac.code.Scope.Entry;
@@ -61,10 +60,11 @@ import com.redhat.ceylon.langtools.tools.javac.code.Symbol.CompletionFailure;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.MethodSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
-import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeVariableSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.Type.MethodType;
 import com.redhat.ceylon.langtools.tools.javac.code.Types;
+import com.redhat.ceylon.langtools.tools.javac.code.Types.FunctionDescriptorLookupError;
 import com.redhat.ceylon.langtools.tools.javac.jvm.ClassReader;
 import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
@@ -811,46 +811,23 @@ public class CeylonModelLoader extends AbstractModelLoader {
         if(typeMirror.getKind() != TypeKind.DECLARED)
             return null;
         Type type = ((JavacType)typeMirror).type;
-        if(type.tsym instanceof ClassSymbol == false)
-            return null;
-        final ClassSymbol classSymbol = (ClassSymbol) type.tsym;
-        if(!classSymbol.isInterface())
-            return null;
-        // FIXME: look in superinterfaces too
-        MethodSymbol method = null;
-        for(Symbol sym : classSymbol.getEnclosedElements()){
-            // look for public abstract methods
-            if(sym instanceof MethodSymbol
-                    && !sym.isConstructor()
-                    && (sym.flags() & Flags.PRIVATE) == 0
-                    && (sym.flags() & Flags.ABSTRACT) != 0){
-                if(method == null)
-                    method = (MethodSymbol) sym;
-                else
-                    return null; // more than one
+        try{
+            MethodSymbol descriptorSymbol = (MethodSymbol) types.findDescriptorSymbol(type.tsym);
+            MethodType descriptorType = (MethodType) types.findDescriptorType(type);
+            // FIXME: does this really skip classes?
+            ClassSymbol outermostClass = descriptorSymbol.outermostClass();
+            
+            JavacClass classMirror = new JavacClass(outermostClass);
+            ListBuffer<TypeMirror> substitutedParameterTypes = new ListBuffer<TypeMirror>();
+            for(Type parameterType : descriptorType.getParameterTypes()){
+                substitutedParameterTypes.add(new JavacType(parameterType));
             }
-        }
-        if(method == null)
+            return new com.redhat.ceylon.model.loader.mirror.FunctionalInterface(classMirror, 
+                    new JavacMethod(classMirror, descriptorSymbol), 
+                    new JavacType(descriptorType.getReturnType()),
+                    substitutedParameterTypes.toList());
+        }catch(FunctionDescriptorLookupError err){
             return null;
-        
-        Type returnType = method.getReturnType();
-        List<Type> typeArguments = type.getTypeArguments();
-        List<TypeVariableSymbol> typeParameters = classSymbol.getTypeParameters();
-        ListBuffer<Type> typeParameterTypeBuffer = new ListBuffer<Type>();
-        for(TypeSymbol typeParameter : typeParameters){
-            typeParameterTypeBuffer.add(typeParameter.type);
         }
-        List<Type> typeParameterTypes = typeParameterTypeBuffer.toList();
-        
-        Type returnTypeSubst = types.subst(returnType, typeParameterTypes, typeArguments);
-        
-        ListBuffer<TypeMirror> substitutedParameterTypes = new ListBuffer<TypeMirror>();
-        for(Symbol.VarSymbol parameter : method.getParameters()){
-            Type parameterType = types.subst(parameter.type, typeParameterTypes, typeArguments);
-            substitutedParameterTypes.add(new JavacType(parameterType));
-        }
-        JavacClass classMirror = new JavacClass(classSymbol);
-        return new com.redhat.ceylon.model.loader.mirror.FunctionalInterface(classMirror, new JavacMethod(classMirror, method), 
-                new JavacType(returnTypeSubst), substitutedParameterTypes.toList());
     }
 }
