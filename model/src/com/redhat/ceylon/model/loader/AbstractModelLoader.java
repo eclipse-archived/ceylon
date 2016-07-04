@@ -5123,7 +5123,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
     
     private Type getFunctionalInterfaceType(Module moduleScope, Scope scope, TypeMirror type) {
-        //        System.err.println("getfunctional for "+type);
+                System.err.println("getfunctional for "+type);
         if(type instanceof SimpleReflType)
             return null;
         FunctionalInterface functionalInterface = getFunctionalInterface(type);
