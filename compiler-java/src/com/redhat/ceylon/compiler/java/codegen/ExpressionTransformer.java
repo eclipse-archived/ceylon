@@ -396,15 +396,15 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Collections.singletonList(functionArg.getParameterLists().get(0)),
                 classGen().transformMplBody(functionArg.getParameterLists(), model, body));
         
-        TypeDeclaration expectedDeclaration = expectedType.getDeclaration();
+        TypeDeclaration expectedDeclaration = expectedType.eliminateNull().getDeclaration();
         if(expectedDeclaration instanceof UnionType){
             // ignore Callable and Null
             Type other = null;
             boolean skip = false;
             for(Type caseType : expectedDeclaration.getCaseTypes()){
                 // FIXME: fast-case
-                if(caseType.isExactly(typeFact().getNullDeclaration().getType())
-                        || caseType.isSubtypeOf(typeFact().getCallableDeclaration().getType()))
+                if(isNull(caseType)
+                        || caseType.getDeclaration().inherits(typeFact().getCallableDeclaration()))
                     continue;
                 if(other == null)
                     other = caseType;
