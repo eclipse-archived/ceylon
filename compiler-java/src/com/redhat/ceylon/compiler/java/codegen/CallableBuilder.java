@@ -62,9 +62,11 @@ import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
+import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -181,7 +183,8 @@ public class CallableBuilder {
      * </pre>
      */
     public static JCExpression methodReference(CeylonTransformer gen, 
-            final Tree.StaticMemberOrTypeExpression forwardCallTo, ParameterList parameterList) {
+            final Tree.StaticMemberOrTypeExpression forwardCallTo, ParameterList parameterList, 
+            Type expectedType) {
         ListBuffer<JCStatement> letStmts = new ListBuffer<JCStatement>();
         CallableBuilder cb = new CallableBuilder(gen, forwardCallTo, forwardCallTo.getTypeModel(), parameterList);
         cb.parameterTypes = cb.getParameterTypesFromCallableModel();
@@ -260,6 +263,8 @@ public class CallableBuilder {
             tx = cb.new FixedArityCallableTransformation(cb.new CallMethodWithForwardedBody(instanceFieldName, instanceFieldIsBoxed, forwardCallTo, true), null);
         }
         cb.useTransformation(tx);
+        
+        cb.checkForFunctionalInterface(expectedType);
         
         return letStmts.isEmpty() ? cb.build() : gen.make().LetExpr(letStmts.toList(), cb.build());
     }
@@ -1073,6 +1078,7 @@ public class CallableBuilder {
                 TypedReference typedParameter = functionalInterfaceMethod.getTypedParameter(param);
                 ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(gen, param.getName());
                 pdb.type(gen.makeJavaType(typedParameter.getType(), 0), null);
+                pdb.modifiers(Flags.FINAL);
                 callMethod.parameter(pdb);
                 JCExpression arg = gen.makeUnquotedIdent(param.getName());
                 if(CodegenUtil.isUnBoxed(param.getModel())){
@@ -1853,5 +1859,33 @@ public class CallableBuilder {
     public void functionalInterface(Type interfaceType, TypedReference method) {
         this.functionalInterface = interfaceType;
         this.functionalInterfaceMethod = method;
+    }
+
+    public void checkForFunctionalInterface(Type expectedType) {
+        TypeDeclaration expectedDeclaration = expectedType.eliminateNull().getDeclaration();
+        if(expectedDeclaration instanceof UnionType){
+            // ignore Callable and Null
+            Type other = null;
+            boolean skip = false;
+            for(Type caseType : expectedDeclaration.getCaseTypes()){
+                // FIXME: fast-case
+                if(gen.isNull(caseType)
+                        || caseType.getDeclaration().inherits(gen.typeFact().getCallableDeclaration()))
+                    continue;
+                if(other == null)
+                    other = caseType;
+                else{
+                    skip = true;
+                    break;
+                }
+            }
+            if(!skip && other != null){
+                TypedReference functionalInterface = gen.isFunctionalInterface(other);
+                if(functionalInterface != null){
+                    System.err.println("Got functional interface: "+other+" / "+functionalInterface);
+                    functionalInterface(other, functionalInterface);
+                }
+            }
+        }
     }
 }
