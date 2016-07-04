@@ -4,6 +4,9 @@ import java.util.function.*;
 
 public class LambdasJava {
 
+    public LambdasJava(){}
+    public LambdasJava(IntConsumer consumer){}
+    
     public <T> void consumer(Consumer<T> consumer, T t){
         consumer.accept(t);
     }
