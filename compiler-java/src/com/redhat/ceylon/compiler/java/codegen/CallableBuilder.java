@@ -1845,30 +1845,10 @@ public class CallableBuilder {
     }
 
     public void checkForFunctionalInterface(Type expectedType) {
-        TypeDeclaration expectedDeclaration = expectedType.eliminateNull().getDeclaration();
-        if(expectedDeclaration instanceof UnionType){
-            // ignore Callable and Null
-            Type other = null;
-            boolean skip = false;
-            for(Type caseType : expectedDeclaration.getCaseTypes()){
-                // FIXME: fast-case
-                if(gen.isNull(caseType)
-                        || caseType.getDeclaration().inherits(gen.typeFact().getCallableDeclaration()))
-                    continue;
-                if(other == null)
-                    other = caseType;
-                else{
-                    skip = true;
-                    break;
-                }
-            }
-            if(!skip && other != null){
-                TypedReference functionalInterface = gen.isFunctionalInterface(other);
-                if(functionalInterface != null){
-                    System.err.println("Got functional interface: "+other+" / "+functionalInterface);
-                    functionalInterface(other, functionalInterface);
-                }
-            }
+        TypedReference functionalInterface = gen.checkForFunctionalInterface(expectedType);
+        if(functionalInterface != null){
+            System.err.println("Got functional interface: "+functionalInterface.getQualifyingType()+" / "+functionalInterface);
+            functionalInterface(functionalInterface.getQualifyingType(), functionalInterface);
         }
     }
 }

@@ -1041,11 +1041,20 @@ class CallableInvocation extends DirectInvocation {
         this.instanceFieldName = primaryName;
         this.instanceFieldIsBoxed = primaryIsBoxed;
         Functional functional = null;
-        if(primary instanceof Tree.MemberOrTypeExpression)
-            functional = (Functional) ((Tree.MemberOrTypeExpression) primary).getDeclaration();
-        else if(primary instanceof Tree.FunctionArgument)
+        boolean useParameterList = false;
+        if(primary instanceof Tree.MemberOrTypeExpression){
+            Declaration declaration = ((Tree.MemberOrTypeExpression) primary).getDeclaration();
+            if(declaration instanceof Functional)
+                functional = (Functional) declaration;
+            else{
+                // inherit params of a Callable value ref, for SAM wrapper
+                useParameterList = true;
+            }
+        }else if(primary instanceof Tree.FunctionArgument)
             functional = ((Tree.FunctionArgument) primary).getDeclarationModel();
-        if(functional != null)
+        if(useParameterList)
+            callableParameters = parameterList.getParameters();
+        else if(functional != null)
             callableParameters = functional.getFirstParameterList().getParameters();
         else
             callableParameters = Collections.emptyList();

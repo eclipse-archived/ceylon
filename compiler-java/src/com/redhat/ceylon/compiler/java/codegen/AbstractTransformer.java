@@ -123,6 +123,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
+import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.util.TypePrinter;
 
@@ -5740,5 +5741,32 @@ public abstract class AbstractTransformer implements Transformation {
         if(member == null)
             return null;
         return member.appliedTypedReference(type, Collections.<Type>emptyList());
+    }
+
+    public TypedReference checkForFunctionalInterface(Type expectedType) {
+        if(expectedType == null)
+            return null;
+        TypeDeclaration expectedDeclaration = expectedType.eliminateNull().getDeclaration();
+        if(expectedDeclaration instanceof UnionType){
+            // ignore Callable and Null
+            Type other = null;
+            boolean skip = false;
+            for(Type caseType : expectedDeclaration.getCaseTypes()){
+                // FIXME: fast-case
+                if(isNull(caseType)
+                        || caseType.getDeclaration().inherits(typeFact().getCallableDeclaration()))
+                    continue;
+                if(other == null)
+                    other = caseType;
+                else{
+                    skip = true;
+                    break;
+                }
+            }
+            if(!skip && other != null){
+                return isFunctionalInterface(other);
+            }
+        }
+        return null;
     }
 }
