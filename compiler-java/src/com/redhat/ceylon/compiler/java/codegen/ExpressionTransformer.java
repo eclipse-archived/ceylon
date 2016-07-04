@@ -443,27 +443,28 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private TypedReference isFunctionalInterface(Type type) {
+        // FIXME: use model-loader info somehow
         TypeDeclaration declaration = type.getDeclaration();
         if(declaration instanceof Interface == false)
             return null;
         if(!declaration.getSatisfiedTypes().isEmpty())
             return null;
-        Function method = null;
+        FunctionOrValue member = null;
         for(Declaration d : declaration.getMembers()){
-            if(d instanceof Function == false)
-                return null;
-            // ignore non-formal methods
+            if(d instanceof FunctionOrValue == false)
+                continue;
+            // ignore non-formal members
             if(!d.isFormal())
                 continue;
             // allow only one
-            if(method == null)
-                method = (Function) d;
+            if(member == null)
+                member = (FunctionOrValue) d;
             else
                 return null;
         }
-        if(method == null)
+        if(member == null)
             return null;
-        return method.appliedTypedReference(type, Collections.<Type>emptyList());
+        return member.appliedTypedReference(type, Collections.<Type>emptyList());
     }
 
     //
