@@ -321,6 +321,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         }else if(term instanceof Tree.SwitchExpression){
             // special case to be able to pass expected type to switch op
             result = transform((Tree.SwitchExpression)term, expectedType);
+        }else if(term instanceof Tree.BaseMemberExpression){
+            // special case to be able to pass expected type to function refs
+            result = transformMemberExpression((Tree.BaseMemberExpression)term, null, null, expectedType);
         }else{
             CeylonVisitor v = gen().visitor;
             final ListBuffer<JCTree> prevDefs = v.defs;
@@ -396,60 +399,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 Collections.singletonList(functionArg.getParameterLists().get(0)),
                 classGen().transformMplBody(functionArg.getParameterLists(), model, body));
         
-        TypeDeclaration expectedDeclaration = expectedType.eliminateNull().getDeclaration();
-        if(expectedDeclaration instanceof UnionType){
-            // ignore Callable and Null
-            Type other = null;
-            boolean skip = false;
-            for(Type caseType : expectedDeclaration.getCaseTypes()){
-                // FIXME: fast-case
-                if(isNull(caseType)
-                        || caseType.getDeclaration().inherits(typeFact().getCallableDeclaration()))
-                    continue;
-                if(other == null)
-                    other = caseType;
-                else{
-                    skip = true;
-                    break;
-                }
-            }
-            if(!skip && other != null){
-                TypedReference functionalInterface = isFunctionalInterface(other);
-                if(functionalInterface != null){
-                    System.err.println("Got functional interface: "+other+" / "+functionalInterface);
-                    callableBuilder.functionalInterface(other, functionalInterface);
-                }
-            }
-        }
+        callableBuilder.checkForFunctionalInterface(expectedType);
         
         JCExpression result = callableBuilder.build();
         result = applyErasureAndBoxing(result, callableType, true, BoxingStrategy.BOXED, expectedType);
         return result;
-    }
-    
-    private TypedReference isFunctionalInterface(Type type) {
-        // FIXME: use model-loader info somehow
-        TypeDeclaration declaration = type.getDeclaration();
-        if(declaration instanceof Interface == false)
-            return null;
-        if(!declaration.getSatisfiedTypes().isEmpty())
-            return null;
-        FunctionOrValue member = null;
-        for(Declaration d : declaration.getMembers()){
-            if(d instanceof FunctionOrValue == false)
-                continue;
-            // ignore non-formal members
-            if(!d.isFormal())
-                continue;
-            // allow only one
-            if(member == null)
-                member = (FunctionOrValue) d;
-            else
-                return null;
-        }
-        if(member == null)
-            return null;
-        return member.appliedTypedReference(type, Collections.<Type>emptyList());
     }
 
     //
@@ -4084,9 +4038,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transformFunctional(Tree.StaticMemberOrTypeExpression expr,
-            Functional functional) {
+            Functional functional, Type expectedType) {
         return CallableBuilder.methodReference(gen(), expr, 
-                    functional.getFirstParameterList());
+                    functional.getFirstParameterList(), expectedType);
     }
 
     //
@@ -4758,8 +4712,13 @@ public class ExpressionTransformer extends AbstractTransformer {
             return primaryExpr;
         }
     }
-    
+
     private JCExpression transformMemberExpression(Tree.StaticMemberOrTypeExpression expr, JCExpression primaryExpr, TermTransformer transformer) {
+        return transformMemberExpression(expr, primaryExpr, transformer, null);
+    }
+    
+    private JCExpression transformMemberExpression(Tree.StaticMemberOrTypeExpression expr, JCExpression primaryExpr, 
+            TermTransformer transformer, Type expectedType) {
         JCExpression result = null;
 
         // do not throw, an error will already have been reported
@@ -4805,7 +4764,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && (!(decl instanceof Function) || !decl.isParameter() 
                         || functionalParameterRequiresCallable((Function)decl, expr)) 
                 && isFunctionalResult(expr.getTypeModel())) {
-            result = transformFunctional(expr, (Functional)decl);
+            result = transformFunctional(expr, (Functional)decl, expectedType);
         } else if (Decl.isGetter(decl)) {
             // invoke the getter
             if (decl.isToplevel()) {

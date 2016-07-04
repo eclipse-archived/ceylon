@@ -5716,4 +5716,29 @@ public abstract class AbstractTransformer implements Transformation {
                 null);
         return make().Throw(exception);
     }
+
+    TypedReference isFunctionalInterface(Type type) {
+        // FIXME: use model-loader info somehow
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration instanceof Interface == false)
+            return null;
+        if(!declaration.getSatisfiedTypes().isEmpty())
+            return null;
+        FunctionOrValue member = null;
+        for(Declaration d : declaration.getMembers()){
+            if(d instanceof FunctionOrValue == false)
+                continue;
+            // ignore non-formal members
+            if(!d.isFormal())
+                continue;
+            // allow only one
+            if(member == null)
+                member = (FunctionOrValue) d;
+            else
+                return null;
+        }
+        if(member == null)
+            return null;
+        return member.appliedTypedReference(type, Collections.<Type>emptyList());
+    }
 }
