@@ -58,13 +58,16 @@ public class AnnotationProxyClass extends Class {
 
     private void load() {
         if(!isLoaded2){
-            synchronized(completer.getLock()){
-                if(!isLoaded){
-                    isLoaded = true;
-                    completer.complete(this);
-                    isLoaded2 = true;
+            completer.synchronizedRun(new Runnable() {
+                @Override
+                public void run() {
+                    if(!isLoaded){
+                        isLoaded = true;
+                        completer.complete(AnnotationProxyClass.this);
+                        isLoaded2 = true;
+                    }
                 }
-            }
+            });
         }
     }
 }
