@@ -199,6 +199,7 @@
             <exclude name="com/redhat/ceylon/compiler/java/test/interop/Bug*" />
             <exclude name="com/redhat/ceylon/compiler/java/test/interop/Interdep*" />
             <exclude name="com/redhat/ceylon/compiler/java/test/interop/JavaRepeatable.java" />
+            <exclude name="com/redhat/ceylon/compiler/java/test/interop/Lambda*" />
             <exclude name="com/redhat/ceylon/compiler/java/test/cmr/modules/bug1062/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/recovery/modules/bug1411/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/issues/*/**" />
