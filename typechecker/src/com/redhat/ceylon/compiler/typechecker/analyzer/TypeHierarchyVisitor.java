@@ -391,7 +391,8 @@ public class TypeHierarchyVisitor extends Visitor {
             List<Type> orderedTypes, Class clazz) {
         Type aggregation = buildAggregatedType(orderedTypes);
         for (Type.Members members: aggregation.membersByName.values()) {
-            if (!members.formals.isEmpty()) {
+            if (!members.formals.isEmpty() 
+                    && members.nonFormalsNonDefaults.isEmpty()) {
                 if (members.actualsNonFormals.isEmpty()) {
                     Declaration example = members.formals.iterator().next();
                     Declaration declaringType = 
