@@ -3642,9 +3642,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression primTypeExpr = makeJavaType(invocation.getQmePrimary().getTypeModel(), JT_NO_PRIMITIVES | JT_VALUE_TYPE);
             callBuilder.invoke(naming.makeQuotedQualIdent(primTypeExpr, transformedPrimary.selector));
 
-        } else if (invocation.getPrimaryDeclaration() instanceof Value){
-            // Call on a Callable, must add the $call$ method
-            callBuilder.invoke(naming.makeQuotedQualIdent(transformedPrimary.expr, transformedPrimary.selector, Naming.getCallableMethodName()));
         } else {
             callBuilder.invoke(naming.makeQuotedQualIdent(transformedPrimary.expr, transformedPrimary.selector));
         }
