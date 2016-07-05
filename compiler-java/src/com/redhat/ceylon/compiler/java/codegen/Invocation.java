@@ -1133,7 +1133,16 @@ class CallableInvocation extends DirectInvocation {
     
     protected TransformedInvocationPrimary transformPrimary(JCExpression primaryExpr,
             String selector) {
-        return new TransformedInvocationPrimary(instanceFieldName != null ? instanceFieldName.makeIdent() : primaryExpr, selector);
+        JCExpression transformedPrimary = instanceFieldName != null ? instanceFieldName.makeIdent() : primaryExpr;
+        String transformedSelector = selector;
+        if(getPrimaryDeclaration() instanceof Value){
+            if(transformedPrimary == null)
+                transformedPrimary = gen.makeUnquotedIdent(selector);
+            else
+                transformedPrimary = gen.makeQualIdent(primaryExpr, selector);
+            transformedSelector = Naming.getCallableMethodName();
+        }
+        return new TransformedInvocationPrimary(transformedPrimary, transformedSelector);
     }
     
     public Constructor getConstructor() {

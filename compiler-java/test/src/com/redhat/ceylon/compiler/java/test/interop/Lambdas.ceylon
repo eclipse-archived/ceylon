@@ -15,6 +15,7 @@ void lambdas() {
     j.intConsumer(f);
     value fval = (Integer i) => print(i);
     j.intConsumer(fval);
+    fval(1);
 
     j.intConsumer(toplevel);
     
