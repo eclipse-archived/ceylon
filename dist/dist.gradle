@@ -1,0 +1,41 @@
+
+
+task setupRepo {
+    dependsOn ':runtime:setupRepo'
+}
+
+task installCompiler {
+    dependsOn ':common:publishInternal'
+}
+
+//<target name="install-compiler"
+// depends="
+//   install-common,
+//   install-cli,
+//   install-langtools-classfile,
+//   install-model,
+//   install-cmr,
+//   install-typechecker,
+//   install-compiler-nodeps"
+//<target name="install-compiler-nodeps">
+//<ant antfile="${project-compiler.dir}/build.xml" target="publish" dir="${project-compiler.dir}" inheritall="false">
+//<property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+//<property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+//<property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+//</ant>
+//    </target>
+
+//<target name="install-common" depends="install-common-nodeps" />
+//<target name="install-common-nodeps">
+//<ant antfile="${project-common.dir}/build.xml" target="publish" dir="${project-common.dir}" inheritall="false">
+//<property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
+//<property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
+//<property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
+//<property name="buildid" value="${buildid}" />
+//</ant>
+//    </target>
+
+
+build {
+    dependsOn setupRepo,installCompiler
+}
