@@ -1,25 +1,66 @@
-
-// By default projects use a flat source hierarchy
-subprojects.each { project.ext.defaultSources = false }
+plugins {
+    id "com.admc.javaPropFile" version "1.0.0"
+}
 
 subprojects {
-    apply plugin: 'java'
-    version='1.2.3'
 
-    compileJava.options.encoding = 'UTF-8'
+    apply plugin : 'com.admc.javaPropFile'
 
     // put all the build artifacts in subfolders of the root "build" folder
     buildDir = new File(rootProject.buildDir, it.path.replace(":", "_").substring(1))
 
+    ext {
+        // Everything in common-build.properties will be availabe on the 'cbp'
+        // property object
+        cbp = propFileLoader.load file(
+            "${rootProject.projectDir}/common-build.properties"
+        ), [ basedir : rootProject.projectDir,
+             'sun.boot.class.path' : ''
+        ]
+
+        distDir = file(cbp.'build.dist')
+        repoDir = file(cbp.'build.dist.repo')
+        globalLibDir = file("${rootProject.projectDir}/lib")
+    }
+
+    version= cbp.'ceylon.version'
+
     repositories {
         flatDir {
-            dirs '../dist/dist/repo', '../lib'
+            dirs repoDir, globalLibDir
         }
         mavenCentral()
+    }
+}
+
+// TODO : Might have to filter it to project that needs Java compiltation
+subprojects {
+
+    apply plugin: 'java'
+
+    ext {
+        // By default projects use a flat source hierarchy
+        defaultSources = false
     }
 
     dependencies {
         testCompile 'junit:junit:4.11'
+    }
+
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+
+    compileJava {
+        options.encoding = 'UTF-8'
+    }
+
+    task sha1 ( type : Checksum ) {
+        archive jar
+        dependsOn jar
+    }
+
+    assemble {
+        dependsOn sha1
     }
 
     // Override the default Maven-like source hierarchy for
@@ -48,6 +89,5 @@ subprojects {
             }
         }
     }
-
 }
 
