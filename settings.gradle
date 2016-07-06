@@ -1,1 +1,1 @@
-include 'common', 'cli', 'langtools-classfile', 'model', 'cmr-aether', 'cmr-webdav', 'cmr-js', 'cmr', 'typechecker', 'compiler-js', 'compiler-java', 'language'
+include 'common', 'cli', 'langtools-classfile', 'model', 'cmr-aether', 'cmr-webdav', 'cmr-js', 'cmr', 'typechecker', 'compiler-js', 'compiler-java', 'language', 'module-loader', 'tool-provider', 'runtime'
