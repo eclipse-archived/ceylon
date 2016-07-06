@@ -218,6 +218,7 @@ public class JsonPackage extends LazyPackage {
             }
             cls.setAbstract(m.remove("abstract") != null);
             cls.setAnonymous(m.remove("$anon") != null);
+            cls.setDynamic(m.remove(KEY_DYNAMIC) != null);
             cls.setContainer(parent);
             cls.setName(name);
             cls.setUnit(u2);
@@ -267,9 +268,7 @@ public class JsonPackage extends LazyPackage {
                 cnst.setScope(cls);
                 cnst.setUnit(cls.getUnit());
                 cnst.setExtendedType(cls.getType());
-                if (cons.getValue().containsKey(KEY_JS_NEW)) {
-                    cnst.setJsNew((Boolean)cons.getValue().remove(KEY_JS_NEW));
-                }
+                cnst.setDynamic(cons.getValue().remove(KEY_DYNAMIC) != null);
                 setAnnotations(cnst, (Integer)cons.getValue().remove(KEY_PACKED_ANNS),
                         (Map<String,Object>)cons.getValue().remove(KEY_ANNOTATIONS));
                 final List<Map<String,Object>> modelPlist = (List<Map<String,Object>>)cons.getValue().remove(
@@ -304,7 +303,7 @@ public class JsonPackage extends LazyPackage {
                     cf.setVisibleScope(cnst.getVisibleScope());
                     cf.setShared(cnst.isShared());
                     cf.setDeprecated(cnst.isDeprecated());
-                    cf.setJsNew(cnst.isJsNew());
+                    cf.setDynamic(cnst.isDynamic());
                     cls.addMember(cf);
                 }
             }
