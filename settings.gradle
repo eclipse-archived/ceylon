@@ -1,1 +1,20 @@
-include 'common', 'cli', 'langtools-classfile', 'model', 'cmr-aether', 'cmr-webdav', 'cmr-js', 'cmr', 'typechecker', 'compiler-js', 'compiler-java', 'language'
+//include 'cli'
+//include 'langtools-classfile'
+//include 'model'
+//include 'cmr-aether'
+//include 'cmr-webdav'
+//include 'cmr-js'
+//include 'cmr'
+//include 'typechecker'
+//include 'compiler-js'
+//include 'compiler-java'
+//include 'language'
+
+include 'dist'
+project(':dist').buildFileName = 'dist.gradle'
+
+include 'runtime'
+project(':runtime').buildFileName = 'runtime.gradle'
+
+include 'common'
+project(':common').buildFileName = 'common.gradle'
