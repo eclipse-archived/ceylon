@@ -1,0 +1,68 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug62xx;
+
+class Bug6283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug6283() {
+        final .java.lang.Object obj = (
+            let
+            {
+                
+                class anonymous_0_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+                    
+                    private anonymous_0_() {
+                        (
+                            let
+                            {
+                                .com.redhat.ceylon.compiler.java.test.issues.bug62xx.Bug6283 arg$1$argthis$ = .com.redhat.ceylon.compiler.java.test.issues.bug62xx.Bug6283.this;
+                                .java.lang.String arg$1$0 = "hello";
+                                .ceylon.language.String arg$1$1 = arg$1$argthis$.func$b(arg$1$0);
+                                func$priv$(arg$1$0, arg$1$1);
+                            }
+                            returning null;
+                        );
+                    }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug62xx.Bug6283.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                    }
+                }
+            }
+            returning new anonymous_0_();
+        );
+    }
+    
+    private final void func$priv$(final .java.lang.String a) {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$b$0 = func$b(a);
+                func$priv$$canonical$(a, $ceylontmp$b$0);
+            }
+            returning null;
+        );
+    }
+    
+    private final .ceylon.language.String func$b(final .java.lang.String a) {
+        return null;
+    }
+    
+    private void func$priv$$canonical$(final .java.lang.String a, final .ceylon.language.String b) {
+    }
+    
+    private final void func$priv$(final .java.lang.String a, final .ceylon.language.String b) {
+        (
+            let
+            {
+                func$priv$$canonical$(a, b);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug62xx.Bug6283.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug62xx.Bug6283.class);
+}

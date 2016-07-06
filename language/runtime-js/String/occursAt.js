@@ -1,3 +1,3 @@
 function (i,e) {
-  return e.equals(this.getFromFirst(i));
+  return $eq$(e,this.getFromFirst(i));
 }

@@ -44,8 +44,10 @@ import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.cmr.util.JarUtils.JarEntryFilter;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.java.loader.CeylonModelLoader;
+import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.langtools.source.util.TaskListener;
@@ -165,7 +167,7 @@ public class JarOutputRepositoryManager {
         		Options options, CeyloncFileManager ceyloncFileManager, MultiTaskListener taskListener) throws IOException{
             this.options = options;
             this.repoManager = repoManager;
-            this.carContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
+            this.carContext = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
             this.log = log;
             this.cmrLog = new JavacLogger(options, Log.instance(ceyloncFileManager.getContext()));
             AbstractModelLoader modelLoader = CeylonModelLoader.instance(ceyloncFileManager.getContext());
@@ -185,8 +187,8 @@ public class JarOutputRepositoryManager {
             this.module = module;
             this.writeOsgiManifest = !options.isSet(Option.CEYLONNOOSGI);
             this.osgiProvidedBundles = options.get(Option.CEYLONOSGIPROVIDEDBUNDLES);
-            this.writeMavenManifest = !options.isSet(Option.CEYLONNOPOM) && !module.isDefault();
-            this.writeJava9Module= options.isSet(Option.CEYLONJIGSAW) && !module.isDefault();
+            this.writeMavenManifest = !options.isSet(Option.CEYLONNOPOM) && !module.isDefaultModule();
+            this.writeJava9Module= options.isSet(Option.CEYLONJIGSAW) && !module.isDefaultModule();
             
             // Determine the special path that signals that the files it contains
             // should be moved to the root of the output JAR/CAR
@@ -262,12 +264,12 @@ public class JarOutputRepositoryManager {
                 // Add META-INF/MANIFEST.MF
                 if (writeOsgiManifest && manifest == null) {
                     // Copy the previous manifest
-                    Manifest manifest = (module.isDefault() 
+                    Manifest manifest = (module.isDefaultModule() 
                     		? new OsgiUtil.DefaultModuleManifest() 
                                     // using old compiler-generated manifest, so don't worry about conflicts: null logger 
                     	    : new OsgiUtil.OsgiManifest(module, jdkProvider, osgiProvidedBundles, getPreviousManifest(), null)).build();
                     writeManifestJarEntry(manifestFirst, manifest);
-                } else if (manifest != null && !module.isDefault()) {
+                } else if (manifest != null && !module.isDefaultModule()) {
                     // Use the added manifest
                     manifest.writeManifest(manifestFirst, new JavacLogger(options, log));
                 }
@@ -278,7 +280,7 @@ public class JarOutputRepositoryManager {
                 }
 
                 // Add module-info.class
-                if (writeJava9Module && !module.isDefault()) {
+                if (writeJava9Module && !module.isDefaultModule()) {
                     writeJava9Module(foldersAdded, manifestFirst, module);
                 }
 
@@ -304,7 +306,7 @@ public class JarOutputRepositoryManager {
                 JarUtils.publish(finalCarFile, sha1File, carContext, repoManager, cmrLog);
                 
                 String info;
-                if(module.isDefault())
+                if(module.isDefaultModule())
                     info = module.getNameAsString();
                 else
                     info = module.getNameAsString() + "/" + module.getVersion();
@@ -411,9 +413,10 @@ public class JarOutputRepositoryManager {
                 }
             }
         }
-
+        
         public JavaFileObject getJavaFileObject(String fileName, File sourceFile) {
-            String entryName = fileName.replace(File.separatorChar, '/');
+            String quotedFileName = JVMModuleUtil.quoteJavaKeywordsInFilename(fileName);
+            String entryName = quotedFileName.replace(File.separatorChar, '/');
             
             if (!resourceRootPath.isEmpty() && entryName.startsWith(resourceRootPath)) {
                 // Files in the special "resource root path" get moved
@@ -434,7 +437,7 @@ public class JarOutputRepositoryManager {
                 modifiedResourceFilesRel.add(entryName);
                 modifiedResourceFilesFull.add(FileUtil.applyPath(resourceCreator.getPaths(), fileName).getPath());
                 if (OsgiUtil.CeylonManifest.isManifestFileName(entryName) && 
-                        (module.isDefault() || writeOsgiManifest)) {
+                        (module.isDefaultModule() || writeOsgiManifest)) {
                     manifest = new JarEntryManifestFileObject(outputJarFile.getPath(), entryName, 
                     		module, osgiProvidedBundles, jdkProvider);
                     return manifest;

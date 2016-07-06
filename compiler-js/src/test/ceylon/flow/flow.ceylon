@@ -186,6 +186,37 @@ void testIfNonempty() {
     }
 }
 
+class I6206() {
+  if (1==1) {
+    return;
+  }
+  fail("#6206 never happen 1");
+}
+class C6206 {
+  shared new() {
+    if (1==1) {
+      return;
+    }
+    fail("#6206 never happen 2");
+  }
+}
+class C6206_2 {
+  shared new() {}
+  if (2==2) {
+    return;
+  }
+  fail("#6206 never happen 3");
+}
+
+void test6206() {
+  variable Object? o = I6206();
+  check(o exists, "#6206.1");
+  o = C6206();
+  check(o exists, "#6206.2");
+  o = C6206_2();
+  check(o exists, "#6206.3");
+}
+
 shared void test() {
     test_if();
     test_while();
@@ -199,5 +230,6 @@ shared void test() {
     issue589();
     testConditions();
     testSwitches();
+    test6206();
     results();
 }

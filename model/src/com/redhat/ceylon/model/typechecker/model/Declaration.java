@@ -36,6 +36,7 @@ public abstract class Declaration
     private static final int PROTECTED = 1<<8;
     private static final int PACKAGE = 1<<9;
     private static final int STATIC = 1<<10;
+    private static final int DROPPED = 1<<30;
     
 	private String name;
 	protected int flags;
@@ -213,6 +214,23 @@ public abstract class Declaration
     public void setNativeBackends(Backends backends) {
     	this.nativeBackends=backends;
     }
+    
+    /** 
+     * true if the JVM backend has not emitted code for this declaration
+     * due to an error in this declaration
+     */
+    public boolean isDropped() {
+        return (flags&DROPPED)!=0;
+    }
+    
+    public void setDropped(boolean dropped) {
+        if (dropped) {
+            flags|=DROPPED;
+        }
+        else {
+            flags&=(~DROPPED);
+        }
+    }
 
     public Backends getScopedBackends() {
         Backends backends = getNativeBackends();
@@ -284,17 +302,19 @@ public abstract class Declaration
 
     /**
      * Determine if this declaration is directly defined in 
-     * a containing scope of the given scope.
+     * the given scope or in a containing scope of the given 
+     * scope (and is not visible only due to inheritance). 
      */
     public boolean isDefinedInScope(Scope scope) {
-        Scope container = getRealScope(getContainer());
-        while (scope!=null) {
-            if (container==scope) {
-                return true;
-            }
-            scope = scope.getContainer();
-        }
-        return false;
+        return contains(
+                // call getRealScope() to
+                // account for weird visibility 
+                // rules for ConditionScopes, 
+                // i.e. this declaration might
+                // be visible from outside its
+                // own ConditionScope
+                getRealScope(getContainer()),
+                scope);
     }
     
     public boolean isCaptured() {
@@ -380,6 +400,10 @@ public abstract class Declaration
         }
     }
 
+    public boolean isVariadic() {
+        return false;
+    }
+    
     /**
      * Get a produced reference for this declaration
      * by binding explicit or inferred type arguments
@@ -419,11 +443,7 @@ public abstract class Declaration
     }
     
     Type getMemberContainerType() {
-        if (isMember() 
-                // static inner classes in Java have no container type,
-                // but Java enums are fake inner classes that require their
-                // container type
-                && (!isStaticallyImportable() || isJavaEnum())) {
+        if (isMember()) {
             ClassOrInterface container = 
                     (ClassOrInterface) 
                         getContainer();

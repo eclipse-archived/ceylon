@@ -244,7 +244,7 @@ shared interface Empty of e
     [] trimTrailing(Boolean trimming(Nothing elem)) => this;
     
     shared actual 
-    [[],[]] slice(Integer index) => [this, this];
+    [][2] slice(Integer index) => [this, this];
     
     shared actual 
     void each(void step(Nothing element)) {}

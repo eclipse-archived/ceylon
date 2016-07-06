@@ -11,9 +11,9 @@ class Bug1289_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     
     @.java.lang.Override
     public final .java.lang.Object m(final .ceylon.language.Integer xboxed, final .ceylon.language.Integer yboxed, final .ceylon.language.Integer zboxed) {
-        final long x = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
-        final long y = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
-        final long z = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+        final long x = ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
+        final long y = ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
+        final long z = ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
         boolean b = false;
         b = (
             let
@@ -146,42 +146,42 @@ class Bug1289_Foo implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
             {
                 .ceylon.language.Integer middle$18 = yboxed;
             }
-            returning xboxed.compare(middle$18) == .ceylon.language.smaller_.get_() && middle$18.compare(zboxed) == .ceylon.language.smaller_.get_();
+            returning xboxed.smallerThan(middle$18) && middle$18.smallerThan(zboxed);
         );
         b = (
             let
             {
                 .ceylon.language.Integer middle$19 = zboxed;
             }
-            returning xboxed.compare(middle$19) == .ceylon.language.smaller_.get_() && middle$19.compare(yboxed) == .ceylon.language.smaller_.get_();
+            returning xboxed.smallerThan(middle$19) && middle$19.smallerThan(yboxed);
         );
         b = (
             let
             {
                 .ceylon.language.Integer middle$20 = xboxed;
             }
-            returning yboxed.compare(middle$20) == .ceylon.language.smaller_.get_() && middle$20.compare(zboxed) == .ceylon.language.smaller_.get_();
+            returning yboxed.smallerThan(middle$20) && middle$20.smallerThan(zboxed);
         );
         b = (
             let
             {
                 .ceylon.language.Integer middle$21 = zboxed;
             }
-            returning yboxed.compare(middle$21) == .ceylon.language.smaller_.get_() && middle$21.compare(xboxed) == .ceylon.language.smaller_.get_();
+            returning yboxed.smallerThan(middle$21) && middle$21.smallerThan(xboxed);
         );
         b = (
             let
             {
                 .ceylon.language.Integer middle$22 = xboxed;
             }
-            returning zboxed.compare(middle$22) == .ceylon.language.smaller_.get_() && middle$22.compare(yboxed) == .ceylon.language.smaller_.get_();
+            returning zboxed.smallerThan(middle$22) && middle$22.smallerThan(yboxed);
         );
         b = (
             let
             {
                 .ceylon.language.Integer middle$23 = yboxed;
             }
-            returning zboxed.compare(middle$23) == .ceylon.language.smaller_.get_() && middle$23.compare(xboxed) == .ceylon.language.smaller_.get_();
+            returning zboxed.smallerThan(middle$23) && middle$23.smallerThan(xboxed);
         );
         return null;
     }
@@ -199,9 +199,9 @@ class Bug1289_Foo2 implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.java.lang.Override
     public final .java.lang.Object m(final .ceylon.language.Float xboxed, final .ceylon.language.Float yboxed, final .ceylon.language.Float zboxed) {
-        final double x = ((.ceylon.language.Float).ceylon.language.nothing_.get_()).doubleValue();
-        final double y = ((.ceylon.language.Float).ceylon.language.nothing_.get_()).doubleValue();
-        final double z = ((.ceylon.language.Float).ceylon.language.nothing_.get_()).doubleValue();
+        final double x = ((.ceylon.language.Float)(.java.lang.Object).ceylon.language.nothing_.get_()).doubleValue();
+        final double y = ((.ceylon.language.Float)(.java.lang.Object).ceylon.language.nothing_.get_()).doubleValue();
+        final double z = ((.ceylon.language.Float)(.java.lang.Object).ceylon.language.nothing_.get_()).doubleValue();
         boolean b = false;
         b = (
             let
@@ -334,42 +334,42 @@ class Bug1289_Foo2 implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
             {
                 .ceylon.language.Float middle$42 = yboxed;
             }
-            returning xboxed.compare(middle$42) == .ceylon.language.smaller_.get_() && middle$42.compare(zboxed) == .ceylon.language.smaller_.get_();
+            returning xboxed.smallerThan(middle$42) && middle$42.smallerThan(zboxed);
         );
         b = (
             let
             {
                 .ceylon.language.Float middle$43 = zboxed;
             }
-            returning xboxed.compare(middle$43) == .ceylon.language.smaller_.get_() && middle$43.compare(yboxed) == .ceylon.language.smaller_.get_();
+            returning xboxed.smallerThan(middle$43) && middle$43.smallerThan(yboxed);
         );
         b = (
             let
             {
                 .ceylon.language.Float middle$44 = xboxed;
             }
-            returning yboxed.compare(middle$44) == .ceylon.language.smaller_.get_() && middle$44.compare(zboxed) == .ceylon.language.smaller_.get_();
+            returning yboxed.smallerThan(middle$44) && middle$44.smallerThan(zboxed);
         );
         b = (
             let
             {
                 .ceylon.language.Float middle$45 = zboxed;
             }
-            returning yboxed.compare(middle$45) == .ceylon.language.smaller_.get_() && middle$45.compare(xboxed) == .ceylon.language.smaller_.get_();
+            returning yboxed.smallerThan(middle$45) && middle$45.smallerThan(xboxed);
         );
         b = (
             let
             {
                 .ceylon.language.Float middle$46 = xboxed;
             }
-            returning zboxed.compare(middle$46) == .ceylon.language.smaller_.get_() && middle$46.compare(yboxed) == .ceylon.language.smaller_.get_();
+            returning zboxed.smallerThan(middle$46) && middle$46.smallerThan(yboxed);
         );
         b = (
             let
             {
                 .ceylon.language.Float middle$47 = yboxed;
             }
-            returning zboxed.compare(middle$47) == .ceylon.language.smaller_.get_() && middle$47.compare(xboxed) == .ceylon.language.smaller_.get_();
+            returning zboxed.smallerThan(middle$47) && middle$47.smallerThan(xboxed);
         );
         return null;
     }
@@ -389,177 +389,177 @@ class Bug1289_Foo3<Element extends .ceylon.language.Comparable<? super Element>>
     
     @.java.lang.Override
     public final .java.lang.Object m(final Element xboxed, final Element yboxed, final Element zboxed) {
-        final Element x = (Element).ceylon.language.nothing_.get_();
-        final Element y = (Element).ceylon.language.nothing_.get_();
-        final Element z = (Element).ceylon.language.nothing_.get_();
+        final Element x = (Element)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final Element y = (Element)(.java.lang.Object).ceylon.language.nothing_.get_();
+        final Element z = (Element)(.java.lang.Object).ceylon.language.nothing_.get_();
         boolean b = false;
         b = (
             let
             {
                 Element middle$48 = (Element)y;
             }
-            returning x.compare(middle$48) == .ceylon.language.smaller_.get_() && middle$48.compare(z) == .ceylon.language.smaller_.get_();
+            returning x.smallerThan(middle$48) && middle$48.smallerThan(z);
         );
         b = (
             let
             {
                 Element middle$49 = (Element)z;
             }
-            returning x.compare(middle$49) == .ceylon.language.smaller_.get_() && middle$49.compare(y) == .ceylon.language.smaller_.get_();
+            returning x.smallerThan(middle$49) && middle$49.smallerThan(y);
         );
         b = (
             let
             {
                 Element middle$50 = (Element)x;
             }
-            returning y.compare(middle$50) == .ceylon.language.smaller_.get_() && middle$50.compare(z) == .ceylon.language.smaller_.get_();
+            returning y.smallerThan(middle$50) && middle$50.smallerThan(z);
         );
         b = (
             let
             {
                 Element middle$51 = (Element)z;
             }
-            returning y.compare(middle$51) == .ceylon.language.smaller_.get_() && middle$51.compare(x) == .ceylon.language.smaller_.get_();
+            returning y.smallerThan(middle$51) && middle$51.smallerThan(x);
         );
         b = (
             let
             {
                 Element middle$52 = (Element)x;
             }
-            returning z.compare(middle$52) == .ceylon.language.smaller_.get_() && middle$52.compare(y) == .ceylon.language.smaller_.get_();
+            returning z.smallerThan(middle$52) && middle$52.smallerThan(y);
         );
         b = (
             let
             {
                 Element middle$53 = (Element)y;
             }
-            returning z.compare(middle$53) == .ceylon.language.smaller_.get_() && middle$53.compare(x) == .ceylon.language.smaller_.get_();
+            returning z.smallerThan(middle$53) && middle$53.smallerThan(x);
         );
         b = (
             let
             {
                 Element middle$54 = (Element)y;
             }
-            returning xboxed.compare(middle$54) == .ceylon.language.smaller_.get_() && middle$54.compare(z) == .ceylon.language.smaller_.get_();
+            returning xboxed.smallerThan(middle$54) && middle$54.smallerThan(z);
         );
         b = (
             let
             {
                 Element middle$55 = (Element)z;
             }
-            returning xboxed.compare(middle$55) == .ceylon.language.smaller_.get_() && middle$55.compare(y) == .ceylon.language.smaller_.get_();
+            returning xboxed.smallerThan(middle$55) && middle$55.smallerThan(y);
         );
         b = (
             let
             {
                 Element middle$56 = (Element)xboxed;
             }
-            returning y.compare(middle$56) == .ceylon.language.smaller_.get_() && middle$56.compare(z) == .ceylon.language.smaller_.get_();
+            returning y.smallerThan(middle$56) && middle$56.smallerThan(z);
         );
         b = (
             let
             {
                 Element middle$57 = (Element)z;
             }
-            returning y.compare(middle$57) == .ceylon.language.smaller_.get_() && middle$57.compare(xboxed) == .ceylon.language.smaller_.get_();
+            returning y.smallerThan(middle$57) && middle$57.smallerThan(xboxed);
         );
         b = (
             let
             {
                 Element middle$58 = (Element)xboxed;
             }
-            returning z.compare(middle$58) == .ceylon.language.smaller_.get_() && middle$58.compare(y) == .ceylon.language.smaller_.get_();
+            returning z.smallerThan(middle$58) && middle$58.smallerThan(y);
         );
         b = (
             let
             {
                 Element middle$59 = (Element)y;
             }
-            returning z.compare(middle$59) == .ceylon.language.smaller_.get_() && middle$59.compare(xboxed) == .ceylon.language.smaller_.get_();
+            returning z.smallerThan(middle$59) && middle$59.smallerThan(xboxed);
         );
         b = (
             let
             {
                 Element middle$60 = (Element)yboxed;
             }
-            returning xboxed.compare(middle$60) == .ceylon.language.smaller_.get_() && middle$60.compare(z) == .ceylon.language.smaller_.get_();
+            returning xboxed.smallerThan(middle$60) && middle$60.smallerThan(z);
         );
         b = (
             let
             {
                 Element middle$61 = (Element)z;
             }
-            returning xboxed.compare(middle$61) == .ceylon.language.smaller_.get_() && middle$61.compare(yboxed) == .ceylon.language.smaller_.get_();
+            returning xboxed.smallerThan(middle$61) && middle$61.smallerThan(yboxed);
         );
         b = (
             let
             {
                 Element middle$62 = (Element)xboxed;
             }
-            returning yboxed.compare(middle$62) == .ceylon.language.smaller_.get_() && middle$62.compare(z) == .ceylon.language.smaller_.get_();
+            returning yboxed.smallerThan(middle$62) && middle$62.smallerThan(z);
         );
         b = (
             let
             {
                 Element middle$63 = (Element)z;
             }
-            returning yboxed.compare(middle$63) == .ceylon.language.smaller_.get_() && middle$63.compare(xboxed) == .ceylon.language.smaller_.get_();
+            returning yboxed.smallerThan(middle$63) && middle$63.smallerThan(xboxed);
         );
         b = (
             let
             {
                 Element middle$64 = (Element)xboxed;
             }
-            returning z.compare(middle$64) == .ceylon.language.smaller_.get_() && middle$64.compare(yboxed) == .ceylon.language.smaller_.get_();
+            returning z.smallerThan(middle$64) && middle$64.smallerThan(yboxed);
         );
         b = (
             let
             {
                 Element middle$65 = (Element)yboxed;
             }
-            returning z.compare(middle$65) == .ceylon.language.smaller_.get_() && middle$65.compare(xboxed) == .ceylon.language.smaller_.get_();
+            returning z.smallerThan(middle$65) && middle$65.smallerThan(xboxed);
         );
         b = (
             let
             {
                 Element middle$66 = (Element)yboxed;
             }
-            returning xboxed.compare(middle$66) == .ceylon.language.smaller_.get_() && middle$66.compare(zboxed) == .ceylon.language.smaller_.get_();
+            returning xboxed.smallerThan(middle$66) && middle$66.smallerThan(zboxed);
         );
         b = (
             let
             {
                 Element middle$67 = (Element)zboxed;
             }
-            returning xboxed.compare(middle$67) == .ceylon.language.smaller_.get_() && middle$67.compare(yboxed) == .ceylon.language.smaller_.get_();
+            returning xboxed.smallerThan(middle$67) && middle$67.smallerThan(yboxed);
         );
         b = (
             let
             {
                 Element middle$68 = (Element)xboxed;
             }
-            returning yboxed.compare(middle$68) == .ceylon.language.smaller_.get_() && middle$68.compare(zboxed) == .ceylon.language.smaller_.get_();
+            returning yboxed.smallerThan(middle$68) && middle$68.smallerThan(zboxed);
         );
         b = (
             let
             {
                 Element middle$69 = (Element)zboxed;
             }
-            returning yboxed.compare(middle$69) == .ceylon.language.smaller_.get_() && middle$69.compare(xboxed) == .ceylon.language.smaller_.get_();
+            returning yboxed.smallerThan(middle$69) && middle$69.smallerThan(xboxed);
         );
         b = (
             let
             {
                 Element middle$70 = (Element)xboxed;
             }
-            returning zboxed.compare(middle$70) == .ceylon.language.smaller_.get_() && middle$70.compare(yboxed) == .ceylon.language.smaller_.get_();
+            returning zboxed.smallerThan(middle$70) && middle$70.smallerThan(yboxed);
         );
         b = (
             let
             {
                 Element middle$71 = (Element)yboxed;
             }
-            returning zboxed.compare(middle$71) == .ceylon.language.smaller_.get_() && middle$71.compare(xboxed) == .ceylon.language.smaller_.get_();
+            returning zboxed.smallerThan(middle$71) && middle$71.smallerThan(xboxed);
         );
         return null;
     }

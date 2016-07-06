@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.fordebug.trace;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class defaultedParameters_ {
     
@@ -51,7 +53,9 @@ final class defaultedParameters_ {
         return i + .ceylon.language.String.getSize(s);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class defaultedParametersMain_ {
     

@@ -16,22 +16,31 @@
 
 package com.redhat.ceylon.cmr.api;
 
+import com.redhat.ceylon.common.ModuleUtil;
+
 /**
  * Module info.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
 public final class ModuleDependencyInfo implements Comparable<ModuleDependencyInfo> {
+    private String namespace;
     private String name;
     private String version;
     private boolean optional;
     private boolean shared;
 
-    public ModuleDependencyInfo(String name, String version, boolean optional, boolean shared) {
+    public ModuleDependencyInfo(String namespace, String name, String version, boolean optional, boolean shared) {
+        this.namespace = namespace;
         this.name = name;
         this.version = version;
         this.optional = optional;
         this.shared = shared;
+        assert(ModuleUtil.validNamespace(namespace));
+    }
+
+    public String getNamespace() {
+        return namespace;
     }
 
     public String getName() {
@@ -84,7 +93,10 @@ public final class ModuleDependencyInfo implements Comparable<ModuleDependencyIn
 
     @Override
     public String toString() {
-        return ((shared) ? "shared " : "") + ((optional) ? "optional " : "") + getModuleName();
+        return ((shared) ? "shared " : "") +
+                ((optional) ? "optional " : "") +
+                ((namespace != null) ? namespace + ":" : "") +
+                getModuleName();
     }
 
     public String getModuleName() {

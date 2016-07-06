@@ -13,7 +13,7 @@ function funparamtypes(fun) {
     }
     r.push(typeLiteral$meta({Type$typeLiteral:pt},fun.$targs));
   }
-  return r.$sa$({t:Type$meta$model,a:{t:Anything}});
+  return $arr$sa$(r,{t:Type$meta$model,a:{t:Anything}});
 }
 //FunctionModel.string
 function funmodstr$(fun) {
@@ -113,7 +113,7 @@ function _funtypeargl_$(fun,makeItem,listarg){
         }
         ord.push(makeItem(fun,_targ||0,targ));
       }
-      return ord.$sa$(listarg);
+      return $arr$sa$(ord,listarg);
     }
     return empty();
   }

@@ -20,5 +20,9 @@ public enum Warning {
     javaAnnotationElement,
     syntaxDeprecation,
     smallIgnored,
-    literalNotSmall
+    literalNotSmall, 
+    disjointEquals,
+    disjointContainment,
+    redundantNarrowing, 
+    redundantIteration
 }

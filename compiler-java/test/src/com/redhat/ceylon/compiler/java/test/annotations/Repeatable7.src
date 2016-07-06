@@ -1,12 +1,16 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({})
 @interface Repeatable$annotation$ {
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({.java.lang.annotation.ElementType.TYPE})
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -14,7 +18,9 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.Repeatable$annotation$[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::Repeatable,ceylon.language.meta.declaration::ClassDeclaration,ceylon.language::Anything>"})
@@ -42,7 +48,9 @@ final class Repeatable implements .com.redhat.ceylon.compiler.java.runtime.model
         return .com.redhat.ceylon.compiler.java.test.annotations.Repeatable$annotation$.class;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {},
@@ -58,7 +66,9 @@ final class repeatable_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Repeatable();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.test.annotations.Repeatable$annotations$({
         @.com.redhat.ceylon.compiler.java.test.annotations.Repeatable$annotation$,
         @.com.redhat.ceylon.compiler.java.test.annotations.Repeatable$annotation$})

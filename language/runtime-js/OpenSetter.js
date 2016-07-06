@@ -22,7 +22,7 @@ atr$($$openSetter,'name',function(){return this.variable.name;},undefined,functi
   atr$($$openSetter,'string',function(){return "setter " + this.qualifiedName;},undefined,function(){return{$t:{t:$_String},$cont:OpenSetter,an:function(){return[shared(),actual()]},mod:$CCMM$,d:['$','Object','$at','string']};});
   atr$($$openSetter,'qualifiedName',function(){return this.variable.qualifiedName;},undefined,function(){return{mod:$CCMM$,$t:{t:$_String},$cont:OpenSetter,pa:3,d:['ceylon.language.meta.declaration','Declaration','$at','qualifiedName']};});
       $$openSetter.equals=function(o) {
-        return is$(o,{t:OpenSetter}) && o.variable.equals(this.variable);
+        return is$(o,{t:OpenSetter}) && $eq$(o.variable,this.variable);
       }
     })(OpenSetter.$$.prototype);
   }

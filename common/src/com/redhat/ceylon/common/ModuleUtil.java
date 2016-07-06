@@ -1,9 +1,12 @@
 package com.redhat.ceylon.common;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 public abstract class ModuleUtil {
 
+    private static final Pattern validNS = Pattern.compile("[a-z]+");
+    
     private ModuleUtil() {
     }
 
@@ -30,10 +33,15 @@ public abstract class ModuleUtil {
     }
 
     public static String makeModuleName(String moduleName, String version) {
+        return makeModuleName(null, moduleName, version);
+    }
+
+    public static String makeModuleName(String namespace, String moduleName, String version) {
+        String ns = namespace != null ? namespace + ":" : "";
         if (isDefaultModule(moduleName) || version == null) {
-            return moduleName;
+            return ns + moduleName;
         } else {
-            return moduleName + "/" + version;
+            return ns + moduleName + "/" + version;
         }
     }
 
@@ -76,16 +84,7 @@ public abstract class ModuleUtil {
      * Turns maven:foo:bar into foo.bar
      */
     public static String toCeylonModuleName(String name){
-        int firstColon = name.indexOf(':');
-        if(firstColon == -1)
-            return name;
-        // if we have more than one colon, we can start with "maven:"
-        if(name.indexOf(':', firstColon+1) != -1){
-            // remove the prefix
-            if(name.startsWith("maven:"))
-                name = name.substring("maven:".length());
-        }
-        return name.replace(':', '.');
+        return getModuleNameFromUri(name).replace(':', '.');
     }
     
     /**
@@ -94,4 +93,51 @@ public abstract class ModuleUtil {
     public static boolean isMavenModule(String name){
         return name != null && name.indexOf(':') != -1;
     }
+    
+    /**
+     * For imports of the type
+     * <code>import "maven:some.artifact:name" "1.2.3"</code>
+     * this will return "maven" and <code>null otherwise</code>
+     */
+    public static String getNamespaceFromUri(String uri) {
+        int p = uri.indexOf(':');
+        if (p > 0) {
+            String prefix = uri.substring(0, p);
+            if (validNamespace(prefix)) {
+                return prefix;
+            } else {
+                // Prefix is invalid so it's considered a maven import
+                return "maven";
+            }
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * For imports of the type
+     * <code>import "maven:some.artifact:name" "1.2.3"</code>
+     * this will return "some.artifact:name"
+     */
+    public static String getModuleNameFromUri(String uri) {
+        int p = uri.indexOf(':');
+        if (p > 0) {
+            String prefix = uri.substring(0, p);
+            if (validNamespace(prefix)) {
+                return uri.substring(p + 1);
+            } else {
+                // Prefix is invalid so it's considered a maven import
+                return uri;
+            }
+        } else {
+            return uri;
+        }
+    }
+    
+    // Only non-empty strings of lowercase letters are considered valid namespaces
+    // Additionally <code>null</code> is considered valid as well (being the same as "ceylon")
+    public static boolean validNamespace(String namespace) {
+        return namespace == null || validNS.matcher(namespace).matches();
+    }
+
 }

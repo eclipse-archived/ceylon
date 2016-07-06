@@ -501,6 +501,8 @@ shared class ValueConstructors {
         value declaredCtors2 = `ValueConstructors`.getDeclaredValueConstructors(`DocAnnotation`);
         assert(nsc in declaredCtors2);
         assert(declaredCtors2.size == 1);
+        //#6195
+        assert(`ValueConstructors`.getConstructor("sharedCtor") exists);
     }
     shared void testDeclarations() {
         value sc = `new ValueConstructors.sharedCtor`;
@@ -509,14 +511,13 @@ shared class ValueConstructors {
         assert("sharedCtor" == sc.name);
         assert("nonSharedCtor" == nsc.name);
         
-        print(sc.qualifiedName);
         assert("metamodel::ValueConstructors.sharedCtor" == sc.qualifiedName);
         assert("metamodel::ValueConstructors.nonSharedCtor" == nsc.qualifiedName);
         
         assert(sc.container == `class ValueConstructors`);
         assert(nsc.container == `class ValueConstructors`);
         
-        print(sc.openType);
+        assert(sc.openType.string == "metamodel::ValueConstructors");
         assert(sc.openType == `class ValueConstructors`.openType);
         assert(nsc.openType == `class ValueConstructors`.openType);
         
@@ -646,6 +647,8 @@ shared class Constructors<T> {
     
     shared void testMemberModels() {
         value member = Member();
+        //JS prints ceylon.language.jsint::AppliedMemberClassCallableConstructor<metamodel::Constructors<ceylon.language::String>,metamodel::Constructors.Member,[]>
+        //JVM prints com.redhat.ceylon.compiler.java.runtime.metamodel.meta::MemberClassCallableConstructorImpl<metamodel::Constructors<ceylon.language::String>,metamodel::Constructors<ceylon.language::String>.Member,ceylon.language::Sequential<ceylon.language::Anything>>
         print(type(`Member`.getConstructor("")));
         assert(is MemberClassCallableConstructor<Constructors<T>,Member,[T?]|[]> memberMember = `Member`.getConstructor<[T?]|[]>(""));
         value memberOther = `Member.otherCtor`;

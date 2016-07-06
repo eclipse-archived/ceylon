@@ -5,6 +5,13 @@
  first element of `it` such that for every element `e` of 
  `it`, `max(it) >= e`.
  
+ Any value `x` which violates the reflexivity requirement of
+ [[Object.equals]] such that `x!=x` is skipped, unless it is
+ the last element in the stream. Thus, for a stream of 
+ [[Float]]s, `max()` will not return an
+ [[undefined value|Float.undefined]] unless every element of
+ the stream is undefined.
+ 
  Note that [[Iterable.max]] may be used to find the largest 
  value in any stream, as determined by a given comparator 
  function."
@@ -25,6 +32,10 @@ shared native("js") Absent|Value max<Value,Absent>
     value it = values.iterator();
     if (!is Finished first = it.next()) {
         variable value max = first;
+        while (max!=max, //quick test for NaN
+              !is Finished val = it.next()) {
+            max = val;
+        }
         while (!is Finished val = it.next()) {
             if (val>max) {
                 max = val;
@@ -63,6 +74,10 @@ shared native("jvm") Absent|Value max<Value,Absent>
     }
     case (is Float) {
         variable Float max = first;
+        while (max!=max,
+               is Float val = it.next()) {
+            max = val;
+        }
         while (is Float val = it.next()) {
             if ((val of Float) > max) {
                 max = val;
@@ -73,6 +88,11 @@ shared native("jvm") Absent|Value max<Value,Absent>
     }
     else {
         variable value max = first;
+        //exactly reproduce behavior on JS above
+        while (max!=max,
+              !is Finished val = it.next()) {
+            max = val;
+        }
         while (!is Finished val = it.next()) {
             if (val>max) {
                 max = val;

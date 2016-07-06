@@ -147,14 +147,14 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     }
 
     // Backwards-compat
-    @OptionArgument(longName="maven-overrides", argumentName="url")
+    @OptionArgument(longName="maven-overrides", argumentName="file")
     @Description("Specifies the XML file to use to load Maven artifact overrides. See http://ceylon-lang.org/documentation/current/reference/repository/maven/ for information. Deprecated: use --overrides.")
     @Deprecated
     public void setMavenOverrides(String mavenOverrides) {
         this.overrides = mavenOverrides;
     }
 
-    @OptionArgument(longName="overrides", argumentName="url")
+    @OptionArgument(longName="overrides", argumentName="file")
     @Description("Specifies the XML file to use to load module overrides. See http://ceylon-lang.org/documentation/current/reference/repository/maven/ for information. *Experimental*.")
     public void setOverrides(String overrides) {
         this.overrides = overrides;
@@ -295,7 +295,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         
         if (ModuleUtil.isDefaultModule(name) || version != null) {
             // If we have the default module or a version we first try it the quick way
-            ArtifactContext ac = new ArtifactContext(name, version, type.getSuffixes());
+            ArtifactContext ac = new ArtifactContext(null, name, version, type.getSuffixes());
             ac.setIgnoreDependencies(true);
             ac.setThrowErrorIfMissing(false);
             ArtifactResult result = repoMgr.getArtifactResult(ac);
@@ -545,7 +545,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
 
     private boolean shouldRecompile(boolean checkCompilation, RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type) throws IOException {
         if (checkCompilation) {
-            ArtifactContext ac = new ArtifactContext(name, version, type.getSuffixes());
+            ArtifactContext ac = new ArtifactContext(null, name, version, type.getSuffixes());
             ac.setIgnoreDependencies(true);
             ac.setThrowErrorIfMissing(false);
             File artifile = repoMgr.getArtifact(ac);
@@ -614,7 +614,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                     }
                     SortedSet<ModuleDependencyInfo> dependencies = new TreeSet<>();
                     for(Object[] dep : mdr.getModuleImports()){
-                        dependencies.add(new ModuleDependencyInfo((String)dep[0], (String)dep[1], (Boolean)dep[2], (Boolean)dep[3]));
+                        dependencies.add(new ModuleDependencyInfo((String)dep[0], (String)dep[1], (String)dep[2], (Boolean)dep[3], (Boolean)dep[4]));
                     }
                     mvd.setDependencies(dependencies);
                     mvd.setRemote(false);
@@ -814,6 +814,17 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     
     public Appendable getOutAppendable(){
         return out;
+    }
+    
+    @Override
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
+        if (overrides != null) {
+            File of = FileUtil.applyCwd(cwd, new File(overrides));
+            if (!of.exists()) {
+                throw new IllegalArgumentException("Overrides file '"+of+"' does not exist");
+            }
+        }
     }
 }
 

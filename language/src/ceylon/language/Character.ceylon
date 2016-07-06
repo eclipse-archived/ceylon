@@ -33,7 +33,7 @@ shared final native class Character(Character character)
                   Enumerable<Character> {
     
     "A string containing just this character."
-    shared actual native String string;
+    shared actual native String string => String { this };
     
     "The lowercase representation of this character.
      
@@ -126,8 +126,7 @@ shared final native class Character(Character character)
        *Zl*, or *Zp* that is not a non-breaking space."
     shared native Boolean whitespace;
     
-    "Determine if this character is an ISO control 
-     character."
+    "Determine if this character is an ISO control character."
     shared native Boolean control;
     
     /*"The general category of the character"
@@ -157,20 +156,51 @@ shared final native class Character(Character character)
      32-bit [[Unicode code point|integer]]."
     shared actual native Integer hash => integer;
     
-    "The character with the unicode code point that is the
+    "The character with the Unicode code point that is the
      predecessor of the unicode code point this character."
-    shared actual native Character predecessor;
+    shared actual native Character predecessor
+            => (integer-1).character;
 
-    "The character with the unicode code point that is the
+    "The character with the Unicode code point that is the
      successor of the unicode code point this character."
-    shared actual native Character successor;
+    shared actual native Character successor
+            => (integer+1).character;
     
-    shared actual native Character neighbour(Integer offset);
-    shared actual native Integer offset(Character other);
-    shared actual native Integer offsetSign(Character other);
+    shared actual native Character neighbour(Integer offset)
+            => (integer + offset).character;
     
-    shared actual native Boolean largerThan(Character other); 
-    shared actual native Boolean smallerThan(Character other); 
-    shared actual native Boolean notSmallerThan(Character other); 
-    shared actual native Boolean notLargerThan(Character other); 
+    "The difference between the Unicode code point of this
+     character, and the Unicode code point of the given
+     character."
+    shared actual native Integer offset(Character other)
+            => integer - other.integer;
+    
+    shared actual native Integer offsetSign(Character other)
+            => super.offsetSign(other);
+    
+    "Determine if this character's code point is larger than
+     the given character's code point, returning `false` if
+     the two characters represent the same code point."
+    shared actual native Boolean largerThan(Character other)
+            => this.integer > other.integer;
+     
+    "Determine if this character's code point is smaller 
+     than the given character's code point, returning `false` 
+     if the two characters represent the same code point."
+    shared actual native Boolean smallerThan(Character other)
+            => this.integer < other.integer; 
+
+     "Determine if this character's code point is larger 
+      than or equal to the given character's code point, 
+      returning `true` if the two characters represent the 
+      same code point."
+    shared actual native Boolean notSmallerThan(Character other)
+            => this.integer >= other.integer; 
+
+     "Determine if this character's code point is smaller 
+      than or equal to the given character's code point, 
+      returning `true` if the two characters represent the 
+      same code point."
+    shared actual native Boolean notLargerThan(Character other)
+            => this.integer <= other.integer; 
 }

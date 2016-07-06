@@ -4,5 +4,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface ImportableScope extends Scope {
-    public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity);
+    public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity, Cancellable canceller);
 }

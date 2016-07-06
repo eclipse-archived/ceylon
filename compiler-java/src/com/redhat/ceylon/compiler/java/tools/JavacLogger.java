@@ -31,7 +31,7 @@ public class JavacLogger implements Logger {
     private Log log;
 
     public JavacLogger(Options options, Log log) {
-        this.debugEnabled = options.get(Option.VERBOSE) != null || options.get(Option.VERBOSE + ":cmr") != null;
+        this.debugEnabled = options.get(Option.VERBOSE) != null || options.get(Option.VERBOSE.text + ":cmr") != null;
         this.log = log;
     }
 

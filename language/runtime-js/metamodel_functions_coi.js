@@ -10,7 +10,16 @@ function coigetcoi$(coi,name$2,types$3,$$$mptypes,noInherit){
   if(types$3===undefined){types$3=empty();}
   var mm = getrtmm$$(_tipo);
   var nom = name$2 + '$' + mm.d[mm.d.length-1];
+  //When we get an object function we need to go deeper to get its type
+  if (!_tipo.$$ && mm.$t) {
+    _tipo=mm.$t.t;
+  }
   var ic = _tipo.$$.prototype[nom];
+  if (!ic) {
+    //If we're looking for an attribute, the naming is different
+    var nom2='$prop$get'+name$2[0].toUpperCase()+name$2.substring(1);
+    ic=_tipo.$$.prototype[nom2];
+  }
   if (!ic) {
     if (noInherit)return null;
     var pere=mm['super'];
@@ -64,7 +73,7 @@ function coiclasse$(coi,anntypes,$$$mptypes,noInherit){
       }
     }
   }
-  return mems.$sa$({t:MemberClass$meta$model,a:{Arguments$MemberClass:$$$mptypes.Arguments$getClasses,Container$MemberClass:$$$mptypes.Container$getClasses,Type$MemberClass:$$$mptypes.Type$getClasses}});
+  return $arr$sa$(mems,{t:MemberClass$meta$model,a:{Arguments$MemberClass:$$$mptypes.Arguments$getClasses,Container$MemberClass:$$$mptypes.Container$getClasses,Type$MemberClass:$$$mptypes.Type$getClasses}});
 }
 function coicla$(coi,name,types,cont,noInherit) {
   var rv=coigetcoi$(coi,name,types,{Container$getClassOrInterface:cont,
@@ -98,7 +107,7 @@ function clsparamtypes(cls) {
     }
     r.push(typeLiteral$meta({Type$typeLiteral:pt},cls.$targs));
   }
-  return r.$sa$({t:Type$meta$model,a:{t:Anything}});
+  return $arr$sa$(r,{t:Type$meta$model,a:{t:Anything}});
 }
 function coigetifc$(coi,anntypes,$$$mptypes,noInherit){
   var mems=[];
@@ -119,7 +128,7 @@ function coigetifc$(coi,anntypes,$$$mptypes,noInherit){
       }
     }
   }
-  return mems.$sa$({t:MemberInterface$meta$model,a:{Container$MemberInterface:$$$mptypes.Container$getInterfaces,Type$MemberInterface:$$$mptypes.Type$getInterfaces}});
+  return $arr$sa$(mems,{t:MemberInterface$meta$model,a:{Container$MemberInterface:$$$mptypes.Container$getInterfaces,Type$MemberInterface:$$$mptypes.Type$getInterfaces}});
 }
 function coiifc$(coi,name,types,cont,noInherit){
   var rv=coigetcoi$(coi,name,types,{Container$getClassOrInterface:cont,
@@ -189,7 +198,7 @@ function coigetatr$(coi,anntypes,$$$mptypes,noInherit){
       }
     }
   }
-  return mems.$sa$({t:Attribute$meta$model,a:{Set$Attribute:$$$mptypes.Set$getAttributes,Container$Attribute:$$$mptypes.Container$getAttributes,Get$Attribute:$$$mptypes.Get$getAttributes}});
+  return $arr$sa$(mems,{t:Attribute$meta$model,a:{Set$Attribute:$$$mptypes.Set$getAttributes,Container$Attribute:$$$mptypes.Container$getAttributes,Get$Attribute:$$$mptypes.Get$getAttributes}});
 }
 function coimtd$(coi,name,types,$$$mptypes,noInherit){
   if (noInherit && !extendsType($$$mptypes.Container$getMethod,{t:coi.tipo})) {
@@ -197,6 +206,13 @@ function coimtd$(coi,name,types,$$$mptypes,noInherit){
   }
   if (types===undefined)types=empty();
   var _tipo=mmfca$(coi.tipo,$$$mptypes.Container$getMethod);
+  if (_tipo && !_tipo.$$) {
+    //if _tipo is an object, go deeper to get its type
+    var mm=getrtmm$$(_tipo);
+    if (mm && mm.$t) {
+      _tipo=mm.$t.t;
+    }
+  }
   var fun = findMethodByNameFromPrototype$(_tipo.$$.prototype, name);
   if(!fun)
     return null;
@@ -258,7 +274,7 @@ function coigetmtd$(coi,anntypes,$$$mptypes,noInherit){
       }
     }
   }
-  return mems.$sa$({t:Method$meta$model,a:{Container$Method:$$$mptypes.Container$getMethods,Arguments$Method:$$$mptypes.Arguments$getMethods,Type$Method:$$$mptypes.Type$getMethods}});
+  return $arr$sa$(mems,{t:Method$meta$model,a:{Container$Method:$$$mptypes.Container$getMethods,Arguments$Method:$$$mptypes.Arguments$getMethods,Type$Method:$$$mptypes.Type$getMethods}});
 }
 //ClassOrInterface.satisfiedTypes
 function coisattype$(coi){
@@ -303,7 +319,7 @@ function coicase$(coi){
         rv.push(cts[i]());
       }
     }
-    return rv.$sa$({t:coi.tipo});
+    return $arr$sa$(rv,{t:coi.tipo});
   }
   return empty();
 }
@@ -545,7 +561,7 @@ function _coitargl_$(coi,makeItem,listarg){
         }
         ord.push(makeItem(coi,_targ||0,targ));
       }
-      return ord.$sa$(listarg);
+      return $arr$sa$(ord,listarg);
     }
     return empty();
   }

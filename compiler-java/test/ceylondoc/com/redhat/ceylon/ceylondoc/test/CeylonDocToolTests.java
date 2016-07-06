@@ -546,6 +546,9 @@ public class CeylonDocToolTests {
                 "ceylon.decimal",
                 "ceylon.file",
                 "ceylon.html",
+                "ceylon.http.client",
+                "ceylon.http.common",
+                "ceylon.http.server",
                 "ceylon.interop.browser", 
                 "ceylon.interop.java", 
                 "ceylon.io",
@@ -553,7 +556,6 @@ public class CeylonDocToolTests {
                 "ceylon.locale", 
                 "ceylon.logging", 
                 "ceylon.math",
-                "ceylon.net",
                 "ceylon.numeric",
                 "ceylon.process",
                 "ceylon.promise",
@@ -563,6 +565,7 @@ public class CeylonDocToolTests {
                 "ceylon.time",
                 "ceylon.transaction",
                 "ceylon.unicode",
+                "ceylon.uri",
                 "ceylon.whole",
                 "com.redhat.ceylon.war"
         };
@@ -617,12 +620,12 @@ public class CeylonDocToolTests {
         
         // download a required jar
         RepositoryManager repoManager = CeylonUtils.repoManager().systemRepo("../dist/dist/repo").buildManager();
-        File jbossModulesModule = repoManager.getArtifact(new ArtifactContext("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION, ".jar"));
-        File runtimeModule = repoManager.getArtifact(new ArtifactContext("ceylon.runtime", Versions.CEYLON_VERSION_NUMBER, ".jar"));
-        File modelModule = repoManager.getArtifact(new ArtifactContext("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, ".jar"));
-        File undertowCoreModule = repoManager.getArtifact(new ArtifactContext("io.undertow.core", "1.3.5.Final", ".jar"));
-        File narnyaModule = repoManager.getArtifact(new ArtifactContext("org.jboss.narayana.jta", "5.2.7.Final", ".jar"));
-        File languageModule = repoManager.getArtifact(new ArtifactContext(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, ".car"));
+        File jbossModulesModule = repoManager.getArtifact(new ArtifactContext(null, "org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION, ".jar"));
+        File runtimeModule = repoManager.getArtifact(new ArtifactContext(null, "ceylon.runtime", Versions.CEYLON_VERSION_NUMBER, ".jar"));
+        File modelModule = repoManager.getArtifact(new ArtifactContext(null, "com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, ".jar"));
+        File undertowCoreModule = repoManager.getArtifact(new ArtifactContext(null, "io.undertow.core", "1.3.5.Final", ".jar"));
+        File narnyaModule = repoManager.getArtifact(new ArtifactContext(null, "org.jboss.narayana.jta", "5.2.7.Final", ".jar"));
+        File languageModule = repoManager.getArtifact(new ArtifactContext(null, AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, ".car"));
 
         // fire up the java compiler
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
@@ -636,7 +639,7 @@ public class CeylonDocToolTests {
                 +languageModule.getAbsolutePath());
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
         String[] fileNames = new String[]{
-                "ceylon/net/http/server/internal/JavaHelper.java",
+                "ceylon/http/server/internal/JavaHelper.java",
                 "ceylon/interop/java/internal/javaBooleanArray_.java",
                 "ceylon/interop/java/internal/javaByteArray_.java",
                 "ceylon/interop/java/internal/javaCharArray_.java",
@@ -664,7 +667,7 @@ public class CeylonDocToolTests {
         
         // now we need to zip it up
         makeCarFromClassFiles(dir, fileNames, "ceylon.test", Versions.CEYLON_VERSION_NUMBER);
-        makeCarFromClassFiles(dir, fileNames, "ceylon.net", Versions.CEYLON_VERSION_NUMBER);
+        makeCarFromClassFiles(dir, fileNames, "ceylon.http.server", Versions.CEYLON_VERSION_NUMBER);
         makeCarFromClassFiles(dir, fileNames, "ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER);
         makeCarFromClassFiles(dir, fileNames, "ceylon.transaction", Versions.CEYLON_VERSION_NUMBER);
     }
@@ -706,7 +709,7 @@ public class CeylonDocToolTests {
     private Module makeDefaultModule() {
         Module module = new Module();
         module.setName(Arrays.asList(Module.DEFAULT_MODULE_NAME));
-        module.setDefault(true);
+//        module.setDefault(true);
         return module;
     }
 

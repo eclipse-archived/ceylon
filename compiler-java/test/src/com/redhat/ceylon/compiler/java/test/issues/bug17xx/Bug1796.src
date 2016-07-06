@@ -6,7 +6,7 @@ final class bug1796_ {
     }
     
     static void bug1796() {
-        final boolean normalize = ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        final boolean normalize = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         
         final class process_ {
             

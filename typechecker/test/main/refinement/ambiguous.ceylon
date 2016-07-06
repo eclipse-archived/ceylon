@@ -100,3 +100,23 @@ void runIt() {
     print(Bad().someString + Bad().someStringF());
     print(Good().someString + Good().someStringF());
 }
+
+interface Cov<out T> {
+    shared formal T get;
+}
+
+interface Ax {}
+interface Bx {}
+interface Cx {}
+
+interface I1x satisfies Cov<Ax> {}
+interface I2x satisfies Cov<Bx> {}
+interface I3x satisfies Cov<Ax&Cx> {}
+
+class Xx() satisfies I1x & I2x & I3x {
+    @error shared actual Ax&Cx get => nothing;
+}
+
+class Yx() satisfies I1x & I2x & I3x {
+    shared actual Ax&Bx&Cx get => nothing;
+}

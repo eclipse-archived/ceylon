@@ -530,10 +530,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         sync = s1.equals(s2);
         sync = !s1.equals(s2);
         final .ceylon.language.Comparison c = .ceylon.language.String.compare(s1, s2);
-        sync = .ceylon.language.String.compare(s1, s2) == .ceylon.language.smaller_.get_();
-        sync = .ceylon.language.String.compare(s1, s2) == .ceylon.language.larger_.get_();
-        sync = .ceylon.language.String.compare(s1, s2) != .ceylon.language.larger_.get_();
-        sync = .ceylon.language.String.compare(s1, s2) != .ceylon.language.smaller_.get_();
+        sync = .ceylon.language.String.smallerThan(s1, s2);
+        sync = .ceylon.language.String.largerThan(s1, s2);
+        sync = .ceylon.language.String.notLargerThan(s1, s2);
+        sync = .ceylon.language.String.notSmallerThan(s1, s2);
     }
     
     @.java.lang.Override
@@ -543,10 +543,10 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
         sync = .ceylon.language.String.instance(s1).equals(s2);
         sync = !.ceylon.language.String.instance(s1).equals(s2);
         final .ceylon.language.Comparison c = .ceylon.language.String.compare(s1, s2.toString());
-        sync = .ceylon.language.String.compare(s1, s2.toString()) == .ceylon.language.smaller_.get_();
-        sync = .ceylon.language.String.compare(s1, s2.toString()) == .ceylon.language.larger_.get_();
-        sync = .ceylon.language.String.compare(s1, s2.toString()) != .ceylon.language.larger_.get_();
-        sync = .ceylon.language.String.compare(s1, s2.toString()) != .ceylon.language.smaller_.get_();
+        sync = .ceylon.language.String.smallerThan(s1, s2.toString());
+        sync = .ceylon.language.String.largerThan(s1, s2.toString());
+        sync = .ceylon.language.String.notLargerThan(s1, s2.toString());
+        sync = .ceylon.language.String.notSmallerThan(s1, s2.toString());
         return null;
     }
     

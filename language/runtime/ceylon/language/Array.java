@@ -148,7 +148,8 @@ public final class Array<Element>
             final Iterable<? extends Element,?> elements) {
         
         if (elements instanceof List) {
-            return createArrayFromList($reifiedElement, (List<? extends Element>) elements);
+            return createArrayFromList($reifiedElement, 
+                    (List<? extends Element>) elements);
         }
         
         final ArrayList<Element> list = new ArrayList<Element>();
@@ -274,7 +275,8 @@ public final class Array<Element>
         
         if (elements instanceof ceylon.language.String
                 && !$reifiedElement.containsNull()
-                && $reifiedElement.getArrayElementClass()==ceylon.language.Character.class) {
+                && $reifiedElement.getArrayElementClass()
+                    == ceylon.language.Character.class) {
             int[] array = new int[size];
             java.lang.String string = elements.toString();
             for (int i=0, offset = 0; i<size; i++) {
@@ -701,9 +703,11 @@ public final class Array<Element>
         if (array == null) {
             return null;
         }
-        java.lang.Class<?> componentType = array.getClass().getComponentType();
-        TypeDescriptor optionalType = TypeDescriptor.union(Null.$TypeDescriptor$,
-                TypeDescriptor.klass(componentType));
+        java.lang.Class<?> componentType = 
+                array.getClass().getComponentType();
+        TypeDescriptor optionalType = 
+                TypeDescriptor.union(Null.$TypeDescriptor$,
+                        TypeDescriptor.klass(componentType));
         return new Array<T>(optionalType, array);
     }
     
@@ -1044,6 +1048,7 @@ public final class Array<Element>
     }
 
     @Override
+    @AliasesAnnotation$annotation$(aliases = "length")
     public long getSize() {
         return size;
     }
@@ -1330,35 +1335,43 @@ public final class Array<Element>
         switch (elementType) {
         case JavaLong:
             if (element instanceof java.lang.Long) {
-                return ((long[])array)[index]==((java.lang.Long)element).longValue();
+                return ((long[])array)[index]
+                        == ((java.lang.Long)element).longValue();
             }
         case JavaDouble:
             if (element instanceof java.lang.Double) {
-                return ((double[])array)[index]==((java.lang.Double)element).doubleValue();
+                return ((double[])array)[index]
+                        == ((java.lang.Double)element).doubleValue();
             }
         case JavaInteger:
             if (element instanceof java.lang.Integer) {
-                return ((int[])array)[index]==((java.lang.Integer)element).intValue();
+                return ((int[])array)[index]
+                        == ((java.lang.Integer)element).intValue();
             }
         case JavaByte:
             if (element instanceof java.lang.Byte) {
-                return ((byte[])array)[index]==((java.lang.Byte)element).byteValue();
+                return ((byte[])array)[index]
+                        == ((java.lang.Byte)element).byteValue();
             }
         case JavaBoolean:
             if (element instanceof java.lang.Boolean) {
-                return ((boolean[])array)[index]==((java.lang.Boolean)element).booleanValue();
+                return ((boolean[])array)[index]
+                        == ((java.lang.Boolean)element).booleanValue();
             }
         case JavaCharacter:
             if (element instanceof java.lang.Character) {
-                return ((char[])array)[index]==((java.lang.Character)element).charValue();
+                return ((char[])array)[index]
+                        == ((java.lang.Character)element).charValue();
             }
         case JavaShort:
             if (element instanceof java.lang.Short) {
-                return ((short[])array)[index]==((java.lang.Short)element).shortValue();
+                return ((short[])array)[index]
+                        == ((java.lang.Short)element).shortValue();
             }
         case JavaFloat:
             if (element instanceof java.lang.Float) {
-                return ((float[])array)[index]==((java.lang.Float)element).floatValue();
+                return ((float[])array)[index]
+                        == ((java.lang.Float)element).floatValue();
             }
         case JavaString:
             if (element instanceof java.lang.String) {
@@ -1414,7 +1427,8 @@ public final class Array<Element>
         int j = (int) q;
         if (i==j) return;
         if (array instanceof java.lang.Object[]) {
-            java.lang.Object[] objectArray = (java.lang.Object[]) array;
+            java.lang.Object[] objectArray = 
+                    (java.lang.Object[]) array;
             java.lang.Object x = objectArray[i];
             java.lang.Object y = objectArray[j];
             objectArray[j] = x;
@@ -1500,7 +1514,8 @@ public final class Array<Element>
             destPos = from;
         }
         if (array instanceof java.lang.Object[]) {
-            java.lang.Object[] objectArray = (java.lang.Object[]) array;
+            java.lang.Object[] objectArray = 
+                    (java.lang.Object[]) array;
             java.lang.Object x = objectArray[from];
             System.arraycopy(objectArray, srcPos, objectArray, destPos, len);
             objectArray[to] = x;
@@ -1916,7 +1931,8 @@ public final class Array<Element>
         }
         else {
             return new ArraySequence<Element>($reifiedElement, 
-                    new Array<Element>($reifiedElement, copyArray()));
+                    new Array<Element>($reifiedElement, 
+                            copyArray()));
         }
     }
     
@@ -1960,8 +1976,16 @@ public final class Array<Element>
                        @Name("destinationPosition") @Defaulted long destinationPosition, 
                        @Name("length") @Defaulted long length) {
         if (length>0) {
-            arraycopy(array, Util.toInt(sourcePosition), destination.array, 
-                    Util.toInt(destinationPosition), Util.toInt(length));
+            try {
+                arraycopy(array, 
+                        Util.toInt(sourcePosition), 
+                        destination.array, 
+                        Util.toInt(destinationPosition), 
+                        Util.toInt(length));
+            }
+            catch (IndexOutOfBoundsException iob) {
+                throw new AssertionError(iob.getMessage());
+            }
         }
     }
     
@@ -1975,15 +1999,17 @@ public final class Array<Element>
     @Ignore @Deprecated
     public void copyTo(Array<Element> destination, 
             int sourcePosition, int destinationPosition) {
-        copyTo(destination, (long)sourcePosition, (long)destinationPosition);
+        copyTo(destination, 
+                (long) sourcePosition, (long) destinationPosition);
     }
     
     /** Provided for binary compatibility with Ceylon 1.1 */
     @Ignore @Deprecated
     public void copyTo(Array<Element> destination, 
             int sourcePosition, int destinationPosition, int length) {
-        copyTo(destination, (long)sourcePosition, (long)destinationPosition, 
-                (long)length);
+        copyTo(destination, 
+                (long) sourcePosition, (long) destinationPosition, 
+                (long) length);
     }
 
     @Override
@@ -2214,7 +2240,8 @@ public final class Array<Element>
     public void reverseInPlace() {
         if (array instanceof java.lang.Object[]) {
             for (int index=0; index<size/2; index++) {
-                java.lang.Object[] arr = (java.lang.Object[]) array;
+                java.lang.Object[] arr = 
+                        (java.lang.Object[]) array;
                 java.lang.Object swap = arr[index];
                 int indexFromLast = size-index-1;
                 arr[index] = arr[indexFromLast];

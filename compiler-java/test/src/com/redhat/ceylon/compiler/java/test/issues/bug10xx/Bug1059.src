@@ -24,7 +24,7 @@ public class Bug1059<SomeType> implements .com.redhat.ceylon.compiler.java.runti
             return new .ceylon.language.Singleton<SomeType>($reified$SomeType, (SomeType)getI$priv$()).iterator();
         }
         final .ceylon.language.Callable<? extends .ceylon.language.Boolean> i$2 = (.ceylon.language.Callable)getI$priv$();
-        return (.ceylon.language.Iterator<? extends SomeType>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Iterator<? extends SomeType>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

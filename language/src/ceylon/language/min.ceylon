@@ -4,7 +4,14 @@
  
  For any nonempty stream `it`, `min(it)` evaluates to the 
  first element of `it` such that for every element `e` of 
- `it`, `min(it) <= e`."
+ `it`, `min(it) <= e`.
+ 
+ Any value `x` which violates the reflexivity requirement of
+ [[Object.equals]] such that `x!=x` is skipped, unless it is
+ the last element in the stream. Thus, for a stream of 
+ [[Float]]s, `min()` will not return an
+ [[undefined value|Float.undefined]] unless every element of
+ the stream is undefined."
 see (`interface Comparable`, 
      `function max`,
      `function smallest`)
@@ -21,6 +28,10 @@ shared native("js") Absent|Value min<Value,Absent>
     value it = values.iterator();
     if (!is Finished first = it.next()) {
         variable value min = first;
+        while (min!=min, //quick test for NaN
+              !is Finished val = it.next()) {
+            min = val;
+        }
         while (!is Finished val = it.next()) {
             if (val<min) {
                 min = val;
@@ -59,6 +70,10 @@ shared native("jvm") Absent|Value min<Value,Absent>
     }
     case (is Float) {
         variable Float min = first;
+        while (min!=min,
+               is Float val = it.next()) {
+            min = val;
+        }
         while (is Float val = it.next()) {
             if ((val of Float) < min) {
                 min = val;
@@ -69,6 +84,11 @@ shared native("jvm") Absent|Value min<Value,Absent>
     }
     else {
         variable value min = first;
+        //exactly reproduce behavior on JS above
+        while (min!=min,
+              !is Finished val = it.next()) {
+            min = val;
+        }
         while (!is Finished val = it.next()) {
             if (val<min) {
                 min = val;

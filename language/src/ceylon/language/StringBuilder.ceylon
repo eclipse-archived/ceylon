@@ -3,7 +3,8 @@ import java.lang {
     JCharacter=Character {
         toChars,
         charCount
-    }
+    },
+    IndexOutOfBoundsException
 }
 
 """Builder utility for constructing [[strings|String]] by 
@@ -16,7 +17,7 @@ import java.lang {
        String hello = builder.string; //hello world"""
 tagged("Strings")
 shared native final class StringBuilder() 
-        satisfies List<Character> {
+        satisfies SearchableList<Character> { 
     
     "The number characters in the current content, that is, 
      the [[size|String.size]] of the produced [[string]]."
@@ -26,14 +27,16 @@ shared native final class StringBuilder()
     
     "The resulting string. If no characters have been
      appended, the empty string."
-    shared actual native String string;
+    shared actual native variable String string;
     
     shared actual native Iterator<Character> iterator();
     
     "Returns a string of the given [[length]] containing
      the characters beginning at the given [[index]]."
-    shared native 
-    String substring(Integer index, Integer length);
+    deprecated ("use [[measure]]")
+    shared 
+    String substring(Integer index, Integer length)
+            => measure(index, length);
     
     shared actual native
     Character? getFromFirst(Integer index);
@@ -91,19 +94,20 @@ shared native final class StringBuilder()
     "Insert a [[character]] at the specified [[index]]."
     shared native 
     StringBuilder insertCharacter
-    (Integer index, Character character) ;
+            (Integer index, Character character);
     
     "Replaces the specified [[number of characters|length]] 
      from the current content, starting at the specified 
-     [[index]], with the given [[string]]. If `length` is 
-     nonpositive, nothing is replaced."
+     [[index]], with the given [[string]]. If [[length]] is 
+     nonpositive, nothing is replaced, and the `string` is
+     simply inserted at the specified `index`."
     shared native 
     StringBuilder replace
-    (Integer index, Integer length, String string);
+            (Integer index, Integer length, String string);
     
     "Deletes the specified [[number of characters|length]] 
      from the current content, starting at the specified 
-     [[index]]. If `length` is nonpositive, nothing is 
+     [[index]]. If [[length]] is nonpositive, nothing is 
      deleted."
     shared native 
     StringBuilder delete(Integer index, Integer length/*=1*/);
@@ -124,12 +128,77 @@ shared native final class StringBuilder()
     shared native 
     StringBuilder reverseInPlace();
     
+    "The first index at which the given 
+     [[list of characters|sublist]] occurs as a sublist, 
+     that is greater than or equal to the optional 
+     [[starting index|from]]."
+    shared actual native
+    Integer? firstInclusion(List<Character> sublist,
+        Integer from);
+    
+    "The last index at which the given 
+     [[list of characters|sublist]] occurs as a sublist, 
+     that falls within the range `0:size-from+1-sublist.size` 
+     defined by the optional [[starting index|from]], 
+     interpreted as a reverse index counting from the _end_
+     of the list."
+    shared actual native
+    Integer? lastInclusion(List<Character> sublist,
+        Integer from);
+    
+    "The first index at which the given [[character]] occurs, 
+     that is greater than or equal to the optional 
+     [[starting index|from]]."
+    shared actual native
+    Integer? firstOccurrence(Character character,
+        Integer from, Integer length);
+    
+    "The last index at which the given [[character]] occurs, 
+     that falls within the range `0:size-from` defined by 
+     the optional [[starting index|from]], interpreted as a 
+     reverse index counting from the _end_ of the list."
+    shared actual native
+    Integer? lastOccurrence(Character character,
+        Integer from, Integer length);
+    
+    shared actual native
+    {Integer*} inclusions(List<Character> sublist, 
+        Integer from);
+    
+    shared actual native
+    {Integer*} occurrences(Character character, 
+        Integer from, Integer length);
+    
+    shared actual 
+    Boolean occursAt(Integer index, Character character) 
+            => if (exists ch = getFromFirst(index))
+                then ch == character else false;
+    
+    shared actual 
+    Boolean includesAt(Integer index, List<Character> sublist)
+            => this[index:sublist.size] == sublist;
+    
+    shared actual native 
+    String measure(Integer from, Integer length);
+    
+    shared actual 
+    String initial(Integer length) 
+            => measure(0, length);
+    
+    shared actual 
+    String terminal(Integer length) 
+            => measure(size-length, length);
+    
+    shared actual native String span(Integer from, Integer to);
+    shared actual native String spanTo(Integer to);
+    shared actual native String spanFrom(Integer from);
+    
     shared actual native Boolean equals(Object that);
     shared actual native Integer hash;
 }
 
 shared native("jvm") final class StringBuilder() 
-        satisfies List<Character> {
+        satisfies SearchableList<Character> {
     
     value builder = JStringBuilder();
     
@@ -143,6 +212,9 @@ shared native("jvm") final class StringBuilder()
     
     shared actual native("jvm") String string 
             => builder.string;
+    
+    native("jvm") assign string 
+            => builder.replace(0, builder.length(), string);
     
     shared actual native("jvm") 
     Iterator<Character> iterator() {
@@ -164,29 +236,16 @@ shared native("jvm") final class StringBuilder()
         return stringBuilderIterator;
     }
     
-    shared native("jvm") 
-    String substring(Integer index, Integer length) {
-        "index must not be negative"
-        assert (index>=0);
-        "index must not be greater than size"
-        assert(index<=size);
-        "index+length must not be greater than size"
-        assert (index+length<=size);
-        if (length>0) {
-            Integer start = startIndex(index);
-            Integer end = endIndex(start, length);
-            return builder.substring(start, end);
+    shared actual native("jvm")
+    Character? getFromFirst(Integer index) {
+        try {
+            return builder.codePointAt(startIndex(index))
+                          .character;
         }
-        else {
-            return "";
+        catch (IndexOutOfBoundsException ioobe) {
+            return null;
         }
     }
-    
-    shared actual native("jvm")
-    Character? getFromFirst(Integer index) 
-            => if (index<0 || index>size)
-            then null
-            else builder.codePointAt(startIndex(index)).character;
     
     shared native("jvm") 
     StringBuilder append(String string) {
@@ -249,12 +308,10 @@ shared native("jvm") final class StringBuilder()
         assert(index<=size);
         "index+length must not be greater than size"
         assert (index+length<=size);
-        if (!string.empty) {
-            Integer len = (length<0) then 0 else length;
-            Integer start = startIndex(index);
-            Integer end = endIndex(start, len);
-            builder.replace(start, end, string);
-        }
+        Integer len = length<0 then 0 else length;
+        Integer start = startIndex(index);
+        Integer end = endIndex(start, len);
+        builder.replace(start, end, string);
         return this;
     }
     
@@ -301,6 +358,184 @@ shared native("jvm") final class StringBuilder()
         return this;
     }
     
+    shared actual native("jvm")
+    Integer? firstInclusion(List<Character> sublist,
+        Integer from) {
+        try {
+            value start 
+                    = builder.offsetByCodePoints(0, 
+                            from>0 then from else 0);
+            value index 
+                    = builder.indexOf(String(sublist), 
+                            start);
+            return index>=0 
+                then from 
+                    + builder.codePointCount(start, index);
+        }
+        catch (IndexOutOfBoundsException ioe) {
+            return null;
+        }
+    }
+    
+    shared actual native("jvm")
+    Integer? lastInclusion(List<Character> sublist,
+        Integer from) {
+        try {
+            value start 
+                    = builder.offsetByCodePoints(
+                            builder.length(), 
+                            (from>0 then -from else 0)
+                                - sublist.size);
+            value index 
+                    = builder.lastIndexOf(String(sublist), 
+                            start);
+            return index>=0 
+                then builder.codePointCount(0, index);
+        }
+        catch (IndexOutOfBoundsException ioe) {
+            return null;
+        }
+    }
+    
+    shared actual native("jvm")
+    Integer? firstOccurrence(Character character,
+        Integer from, Integer length) {
+        if (length<=0) { return null; }
+        try {
+            value start 
+                    = builder.offsetByCodePoints(0, 
+                            from>0 then from else 0);
+            value index 
+                    = builder.indexOf(character.string, 
+                            start);
+            if (index>=0) {
+                value count  //TODO: wrong if from<0
+                        = builder.codePointCount(start, index);
+                return count < length
+                    then from + count 
+                    else null;
+            }
+            else {
+                return null;
+            }
+        }
+        catch (IndexOutOfBoundsException ioe) {
+            return null;
+        }
+    }
+    
+    shared actual native("jvm")
+    Integer? lastOccurrence(Character character,
+        Integer from, Integer length) {
+        if (length<=0) { return null; }
+        try {
+            value start 
+                    = builder.offsetByCodePoints(
+                            builder.length(), 
+                            (from>0 then -from else 0) - 1);
+            value index 
+                    = builder.lastIndexOf(character.string, 
+                            start);
+            if (index>=0) {
+                value count = //TODO: wrong if from<0
+                        builder.codePointCount(index, start);
+                return count < length 
+                    then builder.codePointCount(0, index)
+                    else null;
+            }
+            else {
+                return null;
+            }
+        }
+        catch (IndexOutOfBoundsException ioe) {
+            return null;
+        }
+    }
+    
+    shared actual native("jvm")
+    {Integer*} inclusions(List<Character> sublist, 
+        Integer from)
+            //TODO: optimize this!
+            => string.inclusions(sublist, from);
+    
+    shared actual native("jvm")
+    {Integer*} occurrences(Character character, 
+        Integer from, Integer length)
+            //TODO: optimize this!
+            => string.occurrences(character, from, length);
+    
+    shared actual native("jvm")
+    String measure(Integer from, Integer length) {
+        value len = size;
+        if (from >= len || length <= 0) {
+            return "";
+        }
+        value resultLength 
+                = if (from + length > len) 
+                then len - from 
+                else length;
+        value start = startIndex(from);
+        value end = endIndex(start, resultLength);
+        return builder.substring(start, end);
+    }
+    
+    shared actual native("jvm") 
+    String span(Integer from, Integer to) {
+        value len = size;
+        if (len == 0) {
+            return "";
+        }
+        value reverse = to < from;
+        Integer _to;
+        Integer _from;
+        if (reverse) {
+            _to = from;
+            _from = to;
+        }
+        else {
+            _to = to;
+            _from = from;
+        }
+        if (_to < 0 || _from >= len) {
+            return "";
+        }
+        value begin = _from < 0 then 0 else _from;
+        value start = startIndex(begin);
+        String result;
+        if (_to >= len) {
+            result = builder.substring(start);
+        }
+        else {
+            value end = endIndex(start, _to+1 - begin);
+            result = builder.substring(start, end);
+        }
+        return reverse then result.reversed else result;
+    }
+    
+    shared actual native("jvm") 
+    String spanFrom(Integer from) {
+        if (from <= 0) {
+            return string;
+        }
+        value len = size;
+        if (len == 0 || from >= len) {
+            return "";
+        }
+        return builder.substring(startIndex(from));
+    }
+    
+    shared actual native("jvm") 
+    String spanTo(Integer to) {
+        value len = size;
+        if (len == 0 || to < 0) {
+            return "";
+        }
+        if (to >= len) {
+            return string;
+        }
+        return builder.substring(0, startIndex(to+1));
+    }
+    
     shared actual native("jvm") Boolean equals(Object that) 
             => builder.equals(that);
     
@@ -316,67 +551,65 @@ shared native("jvm") final class StringBuilder()
 }
 
 shared native("js") final class StringBuilder() 
-        satisfies List<Character> {
+        satisfies SearchableList<Character> {
     
-    variable String str = "";
-    
-    shared actual native("js") Integer size => str.size;
+    shared actual native("js") variable String string = "";
+        
+    shared actual native("js") Integer size => string.size;
     
     shared actual native("js") Integer? lastIndex 
-            => if (str.size == 0)
+            => if (string.size == 0)
             then null
-            else str.size - 1;
-    
-    shared actual native("js") String string => str;
+            else string.size - 1;
     
     shared actual native("js") 
     Iterator<Character> iterator() 
-            => str.iterator();
+            => string.iterator();
     
-    shared native("js") 
-    String substring(Integer index, Integer length) {
-        "index must not be negative"
-        assert (index>=0);
-        "index must not be greater than size"
-        assert(index<=size);
-        "index+length must not be greater than size"
-        assert (index+length<=size);
-        return if (length>0) then str[index..length] else "";
-    }
+    shared actual native("js")
+    String measure(Integer from, Integer length)
+            => string[from:length];
+    
+    shared actual native("js")
+    String span(Integer from, Integer to) => string[from:to];
+    
+    shared actual native("js")
+    String spanTo(Integer to) => string[...to];
+    
+    shared actual native("js")
+    String spanFrom(Integer from) => string[from...];
     
     shared actual native("js")
     Character? getFromFirst(Integer index) 
-            => if (index<0 || index>size) 
-            then null 
-            else str.getFromFirst(index);
+            => string.getFromFirst(index);
     
     shared native("js") 
     StringBuilder append(String string) {
-        str = str + string;
+        this.string = this.string + string;
         return this;
     }
     
     shared native("js") 
     StringBuilder prepend(String string) {
-        str = string + str;
+        this.string = string + this.string;
         return this;
     }
     
     shared native("js") 
     StringBuilder appendCharacter(Character character) {
-        str = str + character.string;
+        string = string + character.string;
         return this;
     }
     
     shared native("js") 
     StringBuilder prependCharacter(Character character) {
-        str = character.string + str;
+        string = character.string + string;
         return this;
     }
     
     shared native("js") 
     StringBuilder clear() {
-        str = "";
+        string = "";
         return this;
     }
     
@@ -386,7 +619,10 @@ shared native("js") final class StringBuilder()
         assert (index>=0);
         "index must not be greater than size"
         assert(index<=size);
-        str = str[0:index] + string + str[index...];
+        this.string 
+                = this.string[0:index] 
+                + string 
+                + this.string[index...];
         return this;
     }
     
@@ -404,9 +640,11 @@ shared native("js") final class StringBuilder()
         assert(index<=size);
         "index+length must not be greater than size"
         assert (index+length<=size);
-        if (!string.empty) {
-            str = str[0:index] + string + str[index+length...];
-        }
+        value len = length<0 then 0 else length;
+        this.string 
+                = this.string[0:index] 
+                + string + 
+                this.string[index+len...];
         return this;
     }
     
@@ -419,7 +657,8 @@ shared native("js") final class StringBuilder()
         "index+length must not be greater than size"
         assert (index+length<=size);
         if (length>0) {
-            str = str[0:index] + str[index+length...];
+            string = string[0:index] 
+                    + string[index+length...];
         }
         return this;
     }
@@ -429,7 +668,7 @@ shared native("js") final class StringBuilder()
         "length must not be greater than size"
         assert (length<=size);
         if (length>0) {
-            str = str[length...];
+            string = string[length...];
         }
         return this;
     }
@@ -439,19 +678,49 @@ shared native("js") final class StringBuilder()
         "length must not be greater than size"
         assert (length<=size);
         if (length>0) {
-            str = str[0:size-length];
+            string = string[0:size-length];
         }
         return this;
     }
     
     shared native("js") 
     StringBuilder reverseInPlace() {
-        str = str.reversed;
+        string = string.reversed;
         return this;
     }
     
-    shared actual native("js") Boolean equals(Object that) 
-            => str.equals(that);
+    shared actual native("js")
+    Integer? firstInclusion(List<Character> sublist,
+        Integer from) 
+            => string.firstInclusion(sublist, from);
     
-    shared actual native("js") Integer hash => str.hash;
+    shared actual native("js")
+    Integer? lastInclusion(List<Character> sublist,
+        Integer from) 
+            => string.lastInclusion(sublist, from);
+    
+    shared actual native("js")
+    Integer? firstOccurrence(Character character,
+        Integer from, Integer length) 
+            => string.firstOccurrence(character, from, length);
+    
+    shared actual native("js")
+    Integer? lastOccurrence(Character character,
+        Integer from, Integer length) 
+            => string.lastOccurrence(character, from, length);
+    
+    shared actual native("js")
+    {Integer*} inclusions(List<Character> sublist, 
+        Integer from)
+            => string.inclusions(sublist, from);
+    
+    shared actual native("js")
+    {Integer*} occurrences(Character character, 
+        Integer from, Integer length)
+            => string.occurrences(character, from, length);
+    
+    shared actual native("js") Boolean equals(Object that) 
+            => string.equals(that);
+    
+    shared actual native("js") Integer hash => string.hash;
 }

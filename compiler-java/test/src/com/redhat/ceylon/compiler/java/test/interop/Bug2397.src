@@ -6,16 +6,16 @@ final class bug2397_ {
     }
     
     static void bug2397() {
-        final .ceylon.language.String[] strings = (.ceylon.language.String[]).ceylon.language.nothing_.get_();
-        final .ceylon.language.String[] array$0 = strings;
-        loop_0: for (int i$2 = 0; i$2 < array$0.length; i$2++) {
-            final .ceylon.language.String string = array$0[i$2];
+        final .ceylon.language.String[] strings = (.ceylon.language.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .ceylon.language.String[] array$1 = strings;
+        loop_0: for (int i$3 = 0; i$3 < array$1.length; i$3++) {
+            final .ceylon.language.String string = array$1[i$3];
             final .ceylon.language.String s = string;
         }
-        final .ceylon.language.String[] optStrings = (.ceylon.language.String[]).ceylon.language.nothing_.get_();
-        final .ceylon.language.String[] array$3 = optStrings;
-        loop_1: for (int i$5 = 0; i$5 < array$3.length; i$5++) {
-            final .ceylon.language.String string = array$3[i$5];
+        final .ceylon.language.String[] optStrings = (.ceylon.language.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        final .ceylon.language.String[] array$5 = optStrings;
+        loop_1: for (int i$7 = 0; i$7 < array$5.length; i$7++) {
+            final .ceylon.language.String string = array$5[i$7];
             final .ceylon.language.String s = string;
         }
     }

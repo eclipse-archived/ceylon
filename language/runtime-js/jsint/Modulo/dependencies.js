@@ -11,7 +11,7 @@ if (deps===undefined){
   if (!hasLangMod) {
     _d.push(Importa$jsint('ceylon.language',$CCMM$()['$mod-version'],this,[]));
   }
-  deps = _d.$sa$({t:Import$meta$declaration});
+  deps = $arr$sa$(_d,{t:Import$meta$declaration});
   this.m$.$mdep$=deps;
 }
 return deps;

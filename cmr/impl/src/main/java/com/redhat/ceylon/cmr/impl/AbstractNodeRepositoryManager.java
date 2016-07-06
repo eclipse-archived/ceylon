@@ -430,12 +430,15 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         log.debug("Looking for " + context);
 
         for (CmrRepository repository : repositories) {
-            if(context.isMaven() && !repository.isMaven()){
-                log.debug("  -> Skipping non-Maven repo for Maven lookup");
+            if (context.getNamespace() != null
+                    && !context.getNamespace().equals(repository.getNamespace())) {
+                log.debug("  -> Skipping repo that does not handle namespace: " + context.getNamespace());
                 continue;
             }
-            if(!context.isMaven() && repository.isMaven()){
-                log.debug("  -> Skipping Maven repo for non-Maven lookup");
+            if (context.getNamespace() == null &&
+                    repository.getNamespace() != null &&
+                    !DefaultRepository.NAMESPACE.equals(repository.getNamespace())) {
+                log.debug("  -> Skipping non-Ceylon repo for Ceylon lookup");
                 continue;
             }
             Node child = fromRepository(repository, context, addLeaf);

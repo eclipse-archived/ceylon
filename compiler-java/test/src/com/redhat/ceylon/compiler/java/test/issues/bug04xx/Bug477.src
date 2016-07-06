@@ -9,7 +9,7 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl($reified$T, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(.ceylon.language.Integer.$TypeDescriptor$, $reified$T, this);
-        this.string = ((.ceylon.language.String).ceylon.language.nothing_.get_()).toString();
+        this.string = ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
         this.hash = 1L;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
@@ -528,7 +528,7 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1<? extends T> $clone() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1<? extends T>).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug477_1<? extends T>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     private final .java.lang.String string;
     
@@ -551,7 +551,7 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
-        return ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        return ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
     }
     
     @.java.lang.Override
@@ -568,7 +568,7 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl($reified$T, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(.ceylon.language.Integer.$TypeDescriptor$, $reified$T, this);
-        this.string = ((.ceylon.language.String).ceylon.language.nothing_.get_()).toString();
+        this.string = ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
         this.hash = 1L;
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
@@ -1087,7 +1087,7 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final .ceylon.language.List<? extends T> $clone() {
-        return (.ceylon.language.List<? extends T>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.List<? extends T>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     private final .java.lang.String string;
     
@@ -1110,7 +1110,7 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final boolean equals(final .java.lang.Object that) {
-        return ((.ceylon.language.Boolean).ceylon.language.nothing_.get_()).booleanValue();
+        return ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
     }
     
     @.java.lang.Override

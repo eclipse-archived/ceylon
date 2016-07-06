@@ -8,7 +8,7 @@ class Bug713 extends .java.awt.Container implements .com.redhat.ceylon.compiler.
     
     @.java.lang.Override
     public final .java.awt.Component getComponentAt(final .java.awt.Point point) {
-        return (.java.awt.Component).ceylon.language.nothing_.get_();
+        return (.java.awt.Component)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

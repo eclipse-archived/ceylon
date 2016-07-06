@@ -48,10 +48,10 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
 
         private void preloadModules() throws ModuleNotFoundException {
             try {
-                loadModule(module, modver, false, false, null);
+                loadModule(null, module, modver, false, false, null);
                 if(extraModules != null){
                     for(Entry<String,String> entry : extraModules.entrySet()){
-                        loadModule(entry.getKey(), entry.getValue(), false, false, null);
+                        loadModule(null, entry.getKey(), entry.getValue(), false, false, null);
                     }
                 }
             } catch (IOException e) {

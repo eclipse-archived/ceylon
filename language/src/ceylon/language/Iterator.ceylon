@@ -1,9 +1,9 @@
-"Produces the elements of an [[Iterable]] object. For 
+"Produces the elements of a [[stream|Iterable]]. For 
  example, this class has an `Iterator` that produces the 
  integers from `min` to `max`:
  
      class IntegerIterable(Integer min, Integer max) 
-            satisfies {Integer+} {
+            satisfies {Integer*} {
         iterator() => object satisfies Iterator<Integer> {
             variable value i = min;
             next() => i<=max then i++ else finished;
@@ -31,6 +31,9 @@ shared interface Iterator<out Element> {
      produce the value `finished`.
      
      An iterator for a nonfinite stream may never produce
-     the value `finished`."
+     the value `finished`.
+     
+     An iterator for a nonempty stream must produce at least
+     one value of type `Element`."
     shared formal Element|Finished next();
 }

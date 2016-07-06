@@ -2646,7 +2646,8 @@ ifExpression returns [IfExpression term]
       { $term = new IfExpression($IF_CLAUSE); 
         $term.setIfClause(new IfClause(null)); }
       conditions
-      { $term.getIfClause().setConditionList($conditions.conditionList); }
+      { $term.getIfClause().setConditionList($conditions.conditionList); 
+        $term.setIfClause($term.getIfClause()); } //yew!
       thenExpression
       { IfClause ic = $thenExpression.ifClause;
         if (ic!=null) {
@@ -4043,10 +4044,18 @@ matchCaseCondition returns [MatchCase item]
     ;
 
 isCaseCondition returns [IsCase item]
+    @init { StaticType t = null; } 
     : IS_OP 
       { $item = new IsCase($IS_OP); }
       type
-      { $item.setType($type.type); }
+      { t = $type.type;
+        $item.setType(t); }
+      (
+        MEMBER_OP
+        { QualifiedType qt = new QualifiedType($MEMBER_OP);
+          qt.setOuterType(t);
+          $item.setType(qt);  }
+      )?
     ;
 
 satisfiesCaseCondition returns [SatisfiesCase item]

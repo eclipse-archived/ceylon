@@ -51,7 +51,7 @@ final class bug2266_ {
                 if (b) {
                     $ceylontmp$ifResult$0 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
                 } else {
-                    $ceylontmp$ifResult$0 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                    $ceylontmp$ifResult$0 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 }
             }
             returning $ceylontmp$ifResult$0;
@@ -63,7 +63,7 @@ final class bug2266_ {
                 if (b) {
                     $ceylontmp$ifResult$2 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
                 } else {
-                    $ceylontmp$ifResult$2 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                    $ceylontmp$ifResult$2 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 }
             }
             returning $ceylontmp$ifResult$2;
@@ -75,7 +75,7 @@ final class bug2266_ {
                 if (b) {
                     $ceylontmp$ifResult$4 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
                 } else {
-                    $ceylontmp$ifResult$4 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                    $ceylontmp$ifResult$4 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 }
             }
             returning $ceylontmp$ifResult$4;
@@ -85,7 +85,7 @@ final class bug2266_ {
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$6;
                 if (b) {
-                    $ceylontmp$ifResult$6 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                    $ceylontmp$ifResult$6 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 } else {
                     $ceylontmp$ifResult$6 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
                 }
@@ -97,7 +97,7 @@ final class bug2266_ {
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$8;
                 if (b) {
-                    $ceylontmp$ifResult$8 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                    $ceylontmp$ifResult$8 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 } else {
                     $ceylontmp$ifResult$8 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
                 }
@@ -109,7 +109,7 @@ final class bug2266_ {
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_ $ceylontmp$ifResult$10;
                 if (b) {
-                    $ceylontmp$ifResult$10 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                    $ceylontmp$ifResult$10 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 } else {
                     $ceylontmp$ifResult$10 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
                 }
@@ -125,7 +125,7 @@ final class bug2266_ {
                     if (sel$13 == true) {
                         $ceylontmp$ifResult$12 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
                     } else {
-                        $ceylontmp$ifResult$12 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$12 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                 }
             }
@@ -140,7 +140,7 @@ final class bug2266_ {
                     if (sel$15 == true) {
                         $ceylontmp$ifResult$14 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
                     } else {
-                        $ceylontmp$ifResult$14 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$14 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                 }
             }
@@ -155,7 +155,7 @@ final class bug2266_ {
                     if (sel$17 == true) {
                         $ceylontmp$ifResult$16 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
                     } else {
-                        $ceylontmp$ifResult$16 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$16 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                 }
             }
@@ -168,7 +168,7 @@ final class bug2266_ {
                 {
                     boolean sel$19 = b;
                     if (sel$19 == true) {
-                        $ceylontmp$ifResult$18 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$18 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     } else {
                         $ceylontmp$ifResult$18 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
                     }
@@ -183,7 +183,7 @@ final class bug2266_ {
                 {
                     boolean sel$21 = b;
                     if (sel$21 == true) {
-                        $ceylontmp$ifResult$20 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$20 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     } else {
                         $ceylontmp$ifResult$20 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
                     }
@@ -198,7 +198,7 @@ final class bug2266_ {
                 {
                     boolean sel$23 = b;
                     if (sel$23 == true) {
-                        $ceylontmp$ifResult$22 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$22 = (.com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     } else {
                         $ceylontmp$ifResult$22 = .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_.get_();
                     }
@@ -213,7 +213,7 @@ final class bug2266_ {
                 if (b) {
                     $ceylontmp$ifResult$24 = .ceylon.language.larger_.get_();
                 } else {
-                    $ceylontmp$ifResult$24 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                    $ceylontmp$ifResult$24 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 }
             }
             returning $ceylontmp$ifResult$24;
@@ -225,7 +225,7 @@ final class bug2266_ {
                 if (b) {
                     $ceylontmp$ifResult$26 = .ceylon.language.larger_.get_();
                 } else {
-                    $ceylontmp$ifResult$26 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                    $ceylontmp$ifResult$26 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 }
             }
             returning $ceylontmp$ifResult$26;
@@ -237,7 +237,7 @@ final class bug2266_ {
                 if (b) {
                     $ceylontmp$ifResult$28 = .ceylon.language.larger_.get_();
                 } else {
-                    $ceylontmp$ifResult$28 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                    $ceylontmp$ifResult$28 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 }
             }
             returning $ceylontmp$ifResult$28;
@@ -247,7 +247,7 @@ final class bug2266_ {
             {
                 .ceylon.language.larger_ $ceylontmp$ifResult$30;
                 if (b) {
-                    $ceylontmp$ifResult$30 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                    $ceylontmp$ifResult$30 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 } else {
                     $ceylontmp$ifResult$30 = .ceylon.language.larger_.get_();
                 }
@@ -259,7 +259,7 @@ final class bug2266_ {
             {
                 .ceylon.language.larger_ $ceylontmp$ifResult$32;
                 if (b) {
-                    $ceylontmp$ifResult$32 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                    $ceylontmp$ifResult$32 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 } else {
                     $ceylontmp$ifResult$32 = .ceylon.language.larger_.get_();
                 }
@@ -271,7 +271,7 @@ final class bug2266_ {
             {
                 .ceylon.language.larger_ $ceylontmp$ifResult$34;
                 if (b) {
-                    $ceylontmp$ifResult$34 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                    $ceylontmp$ifResult$34 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                 } else {
                     $ceylontmp$ifResult$34 = .ceylon.language.larger_.get_();
                 }
@@ -287,7 +287,7 @@ final class bug2266_ {
                     if (sel$37 == true) {
                         $ceylontmp$ifResult$36 = .ceylon.language.larger_.get_();
                     } else {
-                        $ceylontmp$ifResult$36 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$36 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                 }
             }
@@ -302,7 +302,7 @@ final class bug2266_ {
                     if (sel$39 == true) {
                         $ceylontmp$ifResult$38 = .ceylon.language.larger_.get_();
                     } else {
-                        $ceylontmp$ifResult$38 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$38 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                 }
             }
@@ -317,7 +317,7 @@ final class bug2266_ {
                     if (sel$41 == true) {
                         $ceylontmp$ifResult$40 = .ceylon.language.larger_.get_();
                     } else {
-                        $ceylontmp$ifResult$40 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$40 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                 }
             }
@@ -330,7 +330,7 @@ final class bug2266_ {
                 {
                     boolean sel$43 = b;
                     if (sel$43 == true) {
-                        $ceylontmp$ifResult$42 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$42 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     } else {
                         $ceylontmp$ifResult$42 = .ceylon.language.larger_.get_();
                     }
@@ -345,7 +345,7 @@ final class bug2266_ {
                 {
                     boolean sel$45 = b;
                     if (sel$45 == true) {
-                        $ceylontmp$ifResult$44 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$44 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     } else {
                         $ceylontmp$ifResult$44 = .ceylon.language.larger_.get_();
                     }
@@ -360,7 +360,7 @@ final class bug2266_ {
                 {
                     boolean sel$47 = b;
                     if (sel$47 == true) {
-                        $ceylontmp$ifResult$46 = (.ceylon.language.larger_).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$46 = (.ceylon.language.larger_)(.java.lang.Object).ceylon.language.nothing_.get_();
                     } else {
                         $ceylontmp$ifResult$46 = .ceylon.language.larger_.get_();
                     }

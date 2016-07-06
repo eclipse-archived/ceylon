@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.loader.model.LazyElement;
 
@@ -58,7 +57,9 @@ public class ModelUtil {
     
     /**
      * Get the nearest containing scope that is not a
-     * ConditionScope. 
+     * ConditionScope. Often needed because things
+     * defined in ConditionScopes are actually visible
+     * outside the ConditionScope.
      */
     public static Scope getRealScope(Scope scope) {
         while (!(scope instanceof Package)) {
@@ -67,7 +68,7 @@ public class ModelUtil {
             }
             scope = scope.getContainer();
         }
-        return null;
+        return scope;
     }
     
     /**
@@ -1295,10 +1296,10 @@ public class ModelUtil {
                         list.clear();
                         list.add(unit.getNothingType());
                         return;
-                    } 
+                    }
                     else {
-                        if (type.isClassOrInterface() && 
-                            t.isClassOrInterface() && 
+                        if (type.isDeclaredType() &&
+                            t.isDeclaredType() &&
                             t.getDeclaration().equals(dec) &&
                                 !type.containsUnknowns() &&
                                 !t.containsUnknowns()) {
@@ -1309,7 +1310,8 @@ public class ModelUtil {
                                     principalInstantiation(
                                             dec, type, t, 
                                             unit);
-                            if (!pi.containsUnknowns()) {
+                            if (pi!=null &&
+                                    !pi.containsUnknowns()) {
                                 list.remove(i);
                                 list.add(pi);
                                 return;
@@ -1444,36 +1446,9 @@ public class ModelUtil {
             q.isExactlyNothing()) {
             return true;
         }
+        
         TypeDeclaration pd = p.getDeclaration();
         TypeDeclaration qd = q.getDeclaration();
-        if (p.isTypeParameter()) {
-            p = canonicalIntersection(
-                    p.getSatisfiedTypes(), 
-                    unit);
-            pd = p.getDeclaration();
-        }
-        if (q.isTypeParameter()) {
-            q = canonicalIntersection(
-                    q.getSatisfiedTypes(), 
-                    unit);
-            qd = q.getDeclaration();
-        }
-        if (q.isIntersection()) {
-            for (Type t: q.getSatisfiedTypes()) {
-                if (emptyMeet(p,t,unit)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        if (p.isIntersection()) {
-            for (Type t: p.getSatisfiedTypes()) {
-                if (emptyMeet(q,t,unit)) {
-                    return true;
-                }
-            }
-            return false;
-        }
         if (q.isUnion()) {
             for (Type t: q.getCaseTypes()) {
                 if (!emptyMeet(p,t,unit)) {
@@ -1501,7 +1476,7 @@ public class ModelUtil {
             }
             return true;
         }
-        else if (p.getCaseTypes()!=null) {
+        else if (pd.getCaseTypes()!=null) {
             boolean all = true;
             for (Type t: pd.getCaseTypes()) {
                 if (t.getDeclaration().isSelfType() || 
@@ -1512,6 +1487,24 @@ public class ModelUtil {
             }
             if (all) return true;
         }
+
+        if (q.isIntersection() || q.isTypeParameter()) {
+            for (Type t: q.getSatisfiedTypes()) {
+                if (emptyMeet(p,t,unit)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if (p.isIntersection() || p.isTypeParameter()) {
+            for (Type t: p.getSatisfiedTypes()) {
+                if (emptyMeet(q,t,unit)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
         if (p.isClass() && q.isClass() ||
             p.isInterface() && q.isNull() ||
             q.isInterface() && p.isNull()) {
@@ -1558,8 +1551,7 @@ public class ModelUtil {
                 !st.inherits(qd) ||
             p.isClassOrInterface() &&
                 qd.inherits(st) && !pd.inherits(st) && 
-                !st.inherits(pd) && 
-                !p.involvesTypeParameters()) {
+                !st.inherits(pd)) {
             return true;
         }
         
@@ -1664,7 +1656,7 @@ public class ModelUtil {
                     (pstds.size()+qstds.size());
         set.addAll(pstds); 
         set.retainAll(qstds);
-        for (TypeDeclaration std: pstds) {
+        for (TypeDeclaration std: set) {
             Type pst = null;
             Type qst = null;
             for (TypeParameter tp: std.getTypeParameters()) {
@@ -1726,7 +1718,7 @@ public class ModelUtil {
         StringBuilder sb = new StringBuilder();
         for (int i=0; i<path.size(); i++) {
             String pathPart = path.get(i);
-            if (! pathPart.isEmpty()) {
+            if (!pathPart.isEmpty()) {
                 sb.append(pathPart);
                 if (i<path.size()-1) sb.append(separator);
             }
@@ -2350,7 +2342,8 @@ public class ModelUtil {
                        arg = unit.getUnknownType();
                     }
                     else {
-                        return unit.getNothingType();
+                        //may not be Nothing for TPs
+                        return null;
                     }
                 }
                 else if (firstCo && secondInv) {
@@ -2362,7 +2355,8 @@ public class ModelUtil {
                        arg = unit.getUnknownType();
                     }
                     else {
-                        return unit.getNothingType();
+                        //may not be Nothing for TPs
+                        return null;
                     }
                 }
                 else if (secondCo && firstInv) {
@@ -2374,7 +2368,8 @@ public class ModelUtil {
                       arg = unit.getUnknownType();
                    }
                    else {
-                       return unit.getNothingType();
+                       //may not be Nothing for TPs
+                       return null;
                    }
                 }
                 else if (secondContra && firstInv) {
@@ -2386,7 +2381,8 @@ public class ModelUtil {
                         arg = unit.getUnknownType();
                     }
                     else {
-                        return unit.getNothingType();
+                        //may not be Nothing for TPs
+                        return null;
                     }
                 }
                 else if (firstInv && secondInv) {
@@ -2407,7 +2403,12 @@ public class ModelUtil {
                         //the type arguments are distinct, and the
                         //intersection is Nothing, so there is
                         //no reasonable principal instantiation
-                        return unit.getNothingType();
+
+                        //note: if dec is a TypeParameter, it may
+                        //not actually be invariant, and the
+                        //principal instantiation may not be
+                        //Nothing
+                        return null;
                     }
                 }
                 else {
@@ -2620,11 +2621,6 @@ public class ModelUtil {
     }
     
     public static boolean isForBackend(Backends backends,
-            BackendSupport support) {
-        return isForBackend(backends, support.getSupportedBackends());
-    }
-    
-    public static boolean isForBackend(Backends backends,
             Backends supported) {
         return backends.none() || supported.supports(backends);
     }
@@ -2743,13 +2739,16 @@ public class ModelUtil {
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 // In the rest of the cases we go look in the declaration's container
                 nat = getNativeDeclaration(dec.getContainer(), dec.getName(), backends);
                 
                 if (dec instanceof Setter && nat instanceof Value) {
-                    nat = ((Value)nat).getSetter();
-                } else if (dec instanceof ClassOrInterface && 
+                    Value value = (Value) nat;
+                    nat = value.getSetter();
+                }
+                else if (dec instanceof ClassOrInterface && 
                         nat instanceof Value) {
                     // In case of objects make sure we return the same type of
                     // declaration we were called with
@@ -2757,7 +2756,8 @@ public class ModelUtil {
                     if (isObject(value)) {
                         nat = value.getType().getDeclaration();
                     }
-                } else if (dec instanceof Constructor
+                }
+                else if (dec instanceof Constructor
                         && nat instanceof FunctionOrValue
                         && isConstructor(nat)) {
                     // In case of constructors we make sure we return the same
@@ -2767,7 +2767,8 @@ public class ModelUtil {
             }
             
             return nat;
-        } else {
+        }
+        else {
             return dec;
         }
     }
@@ -2930,11 +2931,12 @@ public class ModelUtil {
     }
 
     public static void setVisibleScope(Declaration model) {
-        Scope s=model.getContainer();
+        Scope s = model.getContainer();
         while (s!=null) {
             if (s instanceof Declaration) {
+                Declaration d = (Declaration) s;
                 if (model.isShared()) {
-                    if (!((Declaration) s).isShared()) {
+                    if (!d.isShared()) {
                         model.setVisibleScope(s.getContainer());
                         break;
                     }
@@ -2986,8 +2988,13 @@ public class ModelUtil {
     }
 
     public static boolean isNonTransientValue(Declaration decl) {
-        return (decl instanceof Value)
-                && !((Value)decl).isTransient();
+        if (decl instanceof Value) {
+            Value value = (Value)decl;
+            return !value.isTransient();
+        }
+        else {
+            return false;
+        }
     }
 
     /**

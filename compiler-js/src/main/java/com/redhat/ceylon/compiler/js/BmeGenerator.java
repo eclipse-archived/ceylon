@@ -16,12 +16,12 @@ import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
-import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
+import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -32,10 +32,10 @@ public class BmeGenerator {
         Declaration decl = bme.getDeclaration();
         if (decl != null) {
             String name = decl.getName();
-            String pkgName = decl.getUnit().getPackage().getQualifiedNameString();
+            Package pkg = decl.getUnit().getPackage();
 
             // map Ceylon true/false/null directly to JS true/false/null
-            if (Module.LANGUAGE_MODULE_NAME.equals(pkgName)) {
+            if (pkg.isLanguagePackage()) {
                 if ("true".equals(name) || "false".equals(name) || "null".equals(name)) {
                     gen.out(name);
                     return;
@@ -45,7 +45,7 @@ public class BmeGenerator {
                 Constructor cd = TypeUtils.getConstructor(decl);
                 Declaration cdc = (Declaration)cd.getContainer();
                 if (!gen.qualify(bme, cd)) {
-                    gen.out(gen.getNames().name(cdc), "_");
+                    gen.out(gen.getNames().name(cdc), gen.getNames().constructorSeparator(decl));
                 }
                 if (decl instanceof Value) {
                     gen.out(gen.getNames().name(decl));
@@ -188,7 +188,8 @@ public class BmeGenerator {
 
     static void generateQte(final Tree.QualifiedTypeExpression that, final GenerateJsVisitor gen) {
         Tree.Primary prim = that.getPrimary();
-        final boolean dyncall = gen.isInDynamicBlock() && that.getDeclaration() == null;
+        final Declaration d = that.getDeclaration();
+        final boolean dyncall = gen.isInDynamicBlock() && d == null;
         if (that.getMemberOperator() instanceof Tree.SpreadOp) {
             SequenceGenerator.generateSpread(that, gen);
         } else if ((that.getDirectlyInvoked() && that.getMemberOperator() instanceof Tree.SafeMemberOp==false
@@ -206,16 +207,17 @@ public class BmeGenerator {
             }
             if (dyncall) {
                 gen.out(".", that.getIdentifier().getText());
-            } else if (TypeUtils.isConstructor(that.getDeclaration())) {
-                gen.out("_", gen.getNames().name(that.getDeclaration()));
+            } else if (TypeUtils.isConstructor(d)) {
+                gen.out(gen.getNames().constructorSeparator(d),
+                        gen.getNames().name(d));
             } else {
-                gen.out(".", gen.getNames().name(that.getDeclaration()));
+                gen.out(".", gen.getNames().name(d));
             }
         } else {
             final boolean parens = that.getDirectlyInvoked() &&
                     prim instanceof Tree.BaseTypeExpression;
             if (parens)gen.out("(");
-            FunctionHelper.generateCallable(that, gen.getNames().name(that.getDeclaration()), gen);
+            FunctionHelper.generateCallable(that, gen.getNames().name(d), gen);
             if (parens)gen.out(")");
         }
     }

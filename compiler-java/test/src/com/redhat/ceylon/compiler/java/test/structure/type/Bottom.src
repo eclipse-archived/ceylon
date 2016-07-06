@@ -8,7 +8,7 @@ class BottomClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     
     BottomClass(final .java.lang.Object argObject, final long argInteger) {
         final .java.lang.Object attrObject = .ceylon.language.nothing_.get_();
-        final long attrInteger = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+        final long attrInteger = ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
     }
     
     private final .java.lang.Object methodObject$priv$(final .java.lang.Object o) {
@@ -16,11 +16,11 @@ class BottomClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     
     private final long methodInteger$priv$(final long i) {
-        return ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+        return ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
     }
     
     private final void f$priv$() {
-        new .com.redhat.ceylon.compiler.java.test.structure.type.BottomClass(.ceylon.language.nothing_.get_(), ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue());
+        new .com.redhat.ceylon.compiler.java.test.structure.type.BottomClass(.ceylon.language.nothing_.get_(), ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue());
     }
     
     @.java.lang.Override
@@ -66,7 +66,7 @@ final class toplevelInteger_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+            value = ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
             $initException$ = null;
             $init$value = true;
         } catch (.java.lang.Throwable x) {

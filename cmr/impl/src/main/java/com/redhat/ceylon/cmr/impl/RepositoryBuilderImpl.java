@@ -18,35 +18,43 @@
 package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.net.Proxy;
-import java.net.URI;
+import java.util.ServiceLoader;
 
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryBuilder;
-import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.common.log.Logger;
 
 /**
- * Repository builder.
+ * "Meta" Repository builder. It uses the Java services mechanism
+ * to obtain a list of all available RepositoryBuilder implementations
+ * and passes them the given token one by one until one of them
+ * returns a result.
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
+ * @author Tako Schotanus (tako@ceylon-lang.org)
  */
 class RepositoryBuilderImpl implements RepositoryBuilder {
 
-    private Logger log;
-    private boolean offline;
-    private int timeout;
-    private Proxy proxy;
+    private final RepositoryBuilderConfig defaultConfig;
     
-    RepositoryBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy) {
-        this.log = log;
-        this.offline = offline;
-        this.timeout = timeout;
-        this.proxy = proxy;
+    RepositoryBuilderImpl(Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory) {
+        this.defaultConfig = new RepositoryBuilderConfig(log, offline, timeout, proxy, currentDirectory);
     }
 
+    private static final ServiceLoader<RepositoryBuilder> builders;
+    private static final LocalRepositoryBuilder localBuilder;
+    
+    static {
+        builders = ServiceLoader.load(RepositoryBuilder.class);
+        localBuilder = new LocalRepositoryBuilder();
+    }
+    
     public CmrRepository buildRepository(String token) throws Exception {
+        return buildRepository(token, defaultConfig);
+    }
+
+    public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         if (token == null)
             throw new IllegalArgumentException("Null repository");
 
@@ -55,52 +63,25 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
         if (temp != null)
             token = temp;
 
-        StructureBuilder structureBuilder;
-        if (token.startsWith("http:") || token.startsWith("https:")) {
-            structureBuilder = new RemoteContentStore(token, log, offline, timeout, proxy);
-        } else if (token.equals("jdk") || token.equals("jdk:")) {
-            return new JDKRepository();
-        } else if (token.equals("aether") || token.equals("aether:") || token.equals("mvn") || token.equals("mvn:")) {
-            Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
-            Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class, int.class);
-            return (CmrRepository) createRepository.invoke(null, log, null, offline, timeout);
-        } else if (token.startsWith("aether:")) {
-            return createMavenRepository(token, "aether:");
-        } else if (token.startsWith("mvn:")) {
-            return createMavenRepository(token, "mvn:");
-        } else if (token.startsWith("flat:")) {
-            final File file = new File(token.substring(5));
-            if (file.exists() == false)
-                throw new IllegalArgumentException("Directory does not exist: " + token);
-            if (file.isDirectory() == false)
-                throw new IllegalArgumentException("Repository exists but is not a directory: " + token);
-
-            structureBuilder = new FileContentStore(file);
-            return new FlatRepository(structureBuilder.createRoot());
-        } else {
-            final File file = (token.startsWith("file:") ? new File(new URI(token)) : new File(token));
-            if (file.exists() == false)
-                throw new IllegalArgumentException("Directory does not exist: " + token);
-            if (file.isDirectory() == false)
-                throw new IllegalArgumentException("Repository exists but is not a directory: " + token);
-
-            structureBuilder = new FileContentStore(file);
+        for (RepositoryBuilder builder : builders) {
+            CmrRepository repo = builder.buildRepository(token, config);
+            if (repo != null) {
+                return repo;
+            }
         }
-        return new DefaultRepository(structureBuilder.createRoot());
+        
+        return localBuilder.buildRepository(token, config);
     }
 
-    protected CmrRepository createMavenRepository(String token, String prefix) throws Exception {
-        String config = token.substring(prefix.length());
-        // backwards compat: ignore overrides from here, previously located after | symbol
-        int p = config.indexOf("|");
-        String settingsXml = null;
-        if (p < 0) {
-            settingsXml = config;
-        } else {
-            settingsXml = config.substring(0, p);
+    @Override
+    public String absolute(File cwd, String token) throws Exception {
+        for (RepositoryBuilder builder : builders) {
+            String abstoken = builder.absolute(cwd, token);
+            if (abstoken != null) {
+                return abstoken;
+            }
         }
-        Class<?> aetherRepositoryClass = Class.forName("com.redhat.ceylon.cmr.maven.AetherRepository");
-        Method createRepository = aetherRepositoryClass.getMethod("createRepository", Logger.class, String.class, boolean.class, int.class);
-        return (CmrRepository) createRepository.invoke(null, log, settingsXml, offline, timeout);
+        return localBuilder.absolute(cwd, token);
     }
+    
 }

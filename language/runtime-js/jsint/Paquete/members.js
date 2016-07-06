@@ -45,5 +45,5 @@ function members($$$mptypes){
       }
     }
   }
-  return r.$sa$(kind);
+  return $arr$sa$(r,kind);
 }

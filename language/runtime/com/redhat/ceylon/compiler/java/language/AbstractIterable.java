@@ -56,4 +56,8 @@ extends BaseIterable<Element,Absent>  {
 //        return TypeDescriptor.klass(AbstractIterable.class, 
 //        		$reifiedElement, $reifiedAbsent);
 //    }
+    
+    protected Object writeReplace() {
+        return sequence();
+    }
 }

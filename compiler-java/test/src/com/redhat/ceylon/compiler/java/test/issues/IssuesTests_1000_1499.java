@@ -145,7 +145,7 @@ public class IssuesTests_1000_1499 extends CompilerTests {
     public void testBug1083() {
         assertErrors("bug10xx/Bug1083",
                 new CompilerError(24, "class cannot be instantiated: 'BigInteger' does not have a default constructor"),
-                new CompilerError(24, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'BigInteger' that accepts the given argument types ''"));
+                new CompilerError(24, "illegal argument types in invocation of overloaded method or class: there must be exactly one overloaded declaration of 'BigInteger' which accepts the given argument types ''"));
     }
     
     @Test
@@ -313,7 +313,7 @@ public class IssuesTests_1000_1499 extends CompilerTests {
     public void testBug1180() {
         compile("bug11xx/Bug1180_1.ceylon");
         assertErrors("bug11xx/Bug1180_2",
-                new CompilerError(25, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'ArrayList' that accepts the given argument types '{Bug1180Person*}'"),
+                new CompilerError(25, "illegal argument types in invocation of overloaded method or class: there must be exactly one overloaded declaration of 'ArrayList' which accepts the given argument types '{Bug1180Person*}'"),
                 new CompilerError(25, "class alias may not alias overloaded class")
         );
     }
@@ -561,7 +561,7 @@ public class IssuesTests_1000_1499 extends CompilerTests {
         // disabled because although we can compile them, we can't invoke them: https://github.com/ceylon/ceylon-compiler/issues/1664
         assertErrors("bug13xx/Bug1328",
                 new CompilerError(29, "refined member type parameter 'Thing' of 'make' in 'Bug1328_Factory' has upper bound which refining member type parameter 'Thing2' does not satisfy: 'Things' ('Thing2' should be upper bounded by 'Integer')"),
-                new CompilerError(-1, "Ceylon backend error: com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328 is not abstract and does not override abstract method <Thing>make(com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor,Thing) in com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory"));
+                new CompilerError(28, "Ceylon backend error: com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328 is not abstract and does not override abstract method <Thing>make(com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor,Thing) in com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1328_Factory"));
     }
 
     @Test

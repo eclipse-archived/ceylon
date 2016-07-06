@@ -5,4 +5,4 @@ function $_Array$$c(a$,t$){
   a.arr$=a$;
   return a;
 }
-function $_Array(e$,t$){return $_Array_$c$(e$,t$);}
+function $_Array(e$,t$){return $_Array$c_$c$(e$,t$);}

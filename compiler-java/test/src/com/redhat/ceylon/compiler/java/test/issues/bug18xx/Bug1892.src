@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug18xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug1892_1_ {
     
@@ -14,7 +16,9 @@ final class bug1892_1_ {
     static void bug1892_1() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug1892_2_ {
     
@@ -26,7 +30,9 @@ final class bug1892_2_ {
     static void bug1892_2() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug1892_3_ {
     
@@ -38,7 +44,9 @@ final class bug1892_3_ {
     static void bug1892_3() {
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug1892_4_ {
     

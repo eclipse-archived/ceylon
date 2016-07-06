@@ -36,7 +36,7 @@ public class Annotation {
         return positionalArguments;
     }
     
-    public void addPositionalArgment(String value) {
+    public void addPositionalArgument(String value) {
         positionalArguments.add(value);
     }
     

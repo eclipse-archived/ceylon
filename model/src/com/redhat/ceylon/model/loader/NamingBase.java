@@ -163,7 +163,10 @@ public class NamingBase {
             newName[codePointIndex++] = c;
             charIndex += Character.charCount(c);
         }
-        
+
+        if(is_CONSTANT_CASE(newName))
+            return constant_case_toCamelCase(newName);
+
         for(int i=0;i<newName.length;i++){
             int codepoint = newName[i];
             if(Character.isLowerCase(codepoint) || codepoint == '_'){
@@ -176,6 +179,39 @@ public class NamingBase {
             newName[i] = Character.toLowerCase(codepoint);
         }
         return new String(newName, 0, newName.length);
+    }
+
+    private static String constant_case_toCamelCase(int[] newName) {
+        int j = 0;
+        boolean capitaliseNext = false;
+        for(int i=0;i<newName.length;i++){
+            int codepoint = newName[i];
+            if(codepoint == '_'){
+                // skip underscore
+                capitaliseNext = true;
+            }else if(capitaliseNext){
+                newName[j++] = codepoint;
+                capitaliseNext = false;
+            }else{
+                newName[j++] = Character.toLowerCase(codepoint);
+            }
+        }
+        return new String(newName, 0, j);
+    }
+
+    private static boolean is_CONSTANT_CASE(int[] newName) {
+        // reject empty, "U" and "_"
+        if(newName.length <= 1)
+            return false;
+        boolean hasOneUnderscore = false;
+        for(int i=0;i<newName.length;i++){
+            int codepoint = newName[i];
+            if(Character.isLowerCase(codepoint) && codepoint != '_')
+                return false;
+            if(codepoint == '_')
+                hasOneUnderscore = true;
+        }
+        return hasOneUnderscore;
     }
 
     /**
@@ -207,7 +243,7 @@ public class NamingBase {
         if (decl instanceof FieldValue){
             return ((FieldValue)decl).getRealName();
         }
-        if (decl instanceof JavaBeanValue) {
+        if (decl instanceof JavaBeanValue && !indirect) {
             return ((JavaBeanValue)decl).getGetterName();
         }
         
@@ -285,7 +321,11 @@ public class NamingBase {
      * Its public modifier will be removed at a future date.
      */
     public static String getGetterName(String property) {
-        return "get"+capitalize(stripLeadingDollar(property));
+        String result = "get"+capitalize(stripLeadingDollar(property));
+        if ("getClass".equals(result)) {
+            result = "getClass$";
+        }
+        return result;
     }
 
     /** 
@@ -299,5 +339,28 @@ public class NamingBase {
 
     public static String name(Unfix unfix) {
         return unfix.toString();
+    }
+    
+    /** 
+     * Return the name of the Ceylon attribute according to conventions 
+     * applied to the given getter/setter method name.
+     * Note: The value of a {@code @Name} annotation take precedence over
+     * the convention-derived name returned by this method. 
+     */
+    public static String getJavaAttributeName(String getterName) {
+        if (getterName.startsWith("get") || getterName.startsWith("set")) {
+            return NamingBase.getJavaBeanName(getterName.substring(3));
+        } else if (getterName.startsWith("is")) {
+            // Starts with "is"
+            return NamingBase.getJavaBeanName(getterName.substring(2));
+        } else if (getterName.equals("hashCode")) {
+            // Starts with "is"
+            return "hash";
+        } else if (getterName.equals("toString")) {
+            // Starts with "is"
+            return "string";
+        } else {
+            throw new RuntimeException("Illegal java getter/setter name " + getterName);
+        }
     }
 }

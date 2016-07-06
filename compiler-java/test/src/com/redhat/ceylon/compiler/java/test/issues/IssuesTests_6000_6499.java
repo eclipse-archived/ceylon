@@ -20,11 +20,13 @@
 package com.redhat.ceylon.compiler.java.test.issues;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 
@@ -32,7 +34,7 @@ public class IssuesTests_6000_6499 extends CompilerTests {
 
     @Override
     protected ModuleWithArtifact getDestModuleWithArtifact(String main){
-        return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues", "1");
+        return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug62xx", "1");
     }
     
     @Override
@@ -64,8 +66,13 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     }
     
     @Test
+    public void testBug6096() {
+        compareWithJavaSource("bug60xx/Bug6096");
+    }
+    
+    @Test
     public void testBug6129() {
-        compareWithJavaSource("bug60xx/Bug6129");
+        compareWithJavaSource("bug61xx/Bug6129");
     }
 
 
@@ -96,5 +103,103 @@ public class IssuesTests_6000_6499 extends CompilerTests {
         } finally {
             err.delete();
         }
+    }
+    
+    @Test
+    public void testBug6174() {
+        compareWithJavaSource("bug61xx/Bug6174");
+    }
+    
+    @Test
+    public void testBug6176() {
+        compareWithJavaSource("bug61xx/Bug6176");
+    }
+    
+    @Test
+    public void testBug6178() {
+        compareWithJavaSource("bug61xx/Bug6178");
+    }
+    
+    @Test
+    public void testBug6180() {
+        compareWithJavaSource("bug61xx/Bug6180");
+    }
+    
+    @Test
+    public void testBug6207() {
+        compile("bug62xx/Bug6207.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6207");
+    }
+    
+    @Test
+    public void testBug6213A() {
+        compareWithJavaSource("bug62xx/Bug6213A");
+    }
+    @Test
+    public void testBug6213B() {
+        compareWithJavaSource("bug62xx/Bug6213B");
+    }
+    
+    @Test
+    public void testBug6215() {
+        compareWithJavaSource("bug62xx/Bug6215");
+    }
+    
+    @Test
+    public void testBug6231() {
+        
+        compile("bug62xx/bug6231/static/run.ceylon");
+        
+        ArrayList<String> options = new ArrayList<String>(defaultOptions);
+        options.add("-res");
+        options.add("test/src");
+        
+        compileAndRun(options,
+                "com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6231.$static.run",
+                "bug62xx/bug6231/static/run.ceylon");
+    }
+    
+    @Test
+    public void testBug6234() {
+        assertErrors("bug62xx/Bug6234", 
+                new CompilerError(15, "forward declaration may not occur in declaration section: 'count'"));
+    }
+    
+    @Test
+    public void testBug6239() {
+        compareWithJavaSource("bug62xx/Bug6239");
+    }
+    
+    @Test
+    public void testBug6253() {
+        compile("bug62xx/Bug6253.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6253run");
+    }
+    
+    @Test
+    public void testBug6267() {
+        compareWithJavaSource("bug62xx/Bug6267");
+    }
+    
+    @Test
+    public void testBug6272() {
+        assertErrors("bug62xx/Bug6272",
+                new CompilerError(8, "argument of unknown type assigned to inferred type parameter: 'Item' of 'HashMap'"),
+                new CompilerError(8, "function or value does not exist: 'bar'"));
+    }
+    
+    @Test
+    public void testBug6277() {
+        compareWithJavaSource("bug62xx/Bug6277");
+    }
+    
+    @Test
+    public void testBug6283() {
+        compareWithJavaSource("bug62xx/Bug6283");
+    }
+
+    @Test
+    public void testBug6344() {
+        compareWithJavaSource("bug63xx/Bug6344");
     }
 }

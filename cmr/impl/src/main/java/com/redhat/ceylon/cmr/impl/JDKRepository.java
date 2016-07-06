@@ -45,6 +45,8 @@ public class JDKRepository extends AbstractRepository {
 
     public static final String JDK_REPOSITORY_DISPLAY_STRING = "JDK modules repository";
     
+    public static final String NAMESPACE = "jdk";
+
     private static final String JAVA_ORIGIN = "Java Runtime";
 
 	private JdkProvider jdkProvider;
@@ -208,8 +210,8 @@ public class JDKRepository extends AbstractRepository {
     }
 
     @Override
-    public boolean isMaven() {
-        return false;
+    public String getNamespace() {
+        return NAMESPACE;
     }
 
 }

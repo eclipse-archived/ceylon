@@ -102,7 +102,7 @@ public class MavenUtils {
                     if(depScope != null 
                             && (depScope.equals("test") || depScope.equals("system")))
                         continue;
-                    ret.add(new ModuleDependencyInfo(depGroupId+":"+depArtifactId, depVersion, "true".equals(depOptional), false));
+                    ret.add(new ModuleDependencyInfo("maven", depGroupId+":"+depArtifactId, depVersion, "true".equals(depOptional), false));
                 }
             }
         }

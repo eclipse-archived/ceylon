@@ -7,11 +7,11 @@ class SatisfyInterfaceWithDefaultMethod implements .com.redhat.ceylon.compiler.j
     
     @.java.lang.Override
     public final .java.util.Iterator<.ceylon.language.String> iterator() {
-        return (.java.util.Iterator<.ceylon.language.String>).ceylon.language.nothing_.get_();
+        return (.java.util.Iterator<.ceylon.language.String>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     private final void use$priv$() {
-        forEach((.java.util.function.Consumer<? super .ceylon.language.String>).ceylon.language.nothing_.get_());
+        forEach((.java.util.function.Consumer<? super .ceylon.language.String>)(.java.lang.Object).ceylon.language.nothing_.get_());
     }
     
     @.java.lang.Override

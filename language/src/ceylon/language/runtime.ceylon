@@ -91,15 +91,15 @@ shared native("jvm") object runtime  {
     shared native("jvm") Integer integerAddressableSize 
             => 64;
     shared native("jvm") Integer minIntegerValue 
-            => Long.\iMIN_VALUE;
+            => Long.minValue;
     shared native("jvm") Integer maxIntegerValue 
-            => Long.\iMAX_VALUE;
+            => Long.maxValue;
     shared native("jvm") Integer maxArraySize 
-            = Int.\iMAX_VALUE - 8;
+            = Int.maxValue - 8;
     shared native("jvm") Float maxFloatValue 
-            => Double.\iMAX_VALUE;
+            => Double.maxValue;
     shared native("jvm") Float minFloatValue 
-            => Double.\iMIN_VALUE;    
+            => Double.minValue;    
     shared native("jvm") Float epsilon 
             = Math.ulp(1.0);
     shared native("jvm") Integer maxExactIntegralFloat 

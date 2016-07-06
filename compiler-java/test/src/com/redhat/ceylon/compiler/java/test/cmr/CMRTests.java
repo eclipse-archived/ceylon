@@ -63,6 +63,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.DependencyResolver;
+import com.redhat.ceylon.cmr.api.MavenArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
@@ -860,11 +861,11 @@ public class CMRTests extends CompilerTests {
                 Arrays.asList("--flat-classpath", "--overrides", getPackagePath()+"/modules/sparkframework/overrides-log.xml"));
         // and via main without aether
         runInMainApi(destDir, new ModuleSpec("com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework","1"), 
-                "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework.run_", Arrays.<String>asList());
+                "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework.run_", Arrays.<String>asList(), false);
         // and via main with aether
         runInMainApi(destDir, new ModuleSpec("com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework","1"),
                 Arrays.asList(new ModuleSpec("com.redhat.ceylon.module-resolver-aether", Versions.CEYLON_VERSION_NUMBER)),
-                "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework.run_", Arrays.<String>asList());
+                "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework.run_", Arrays.<String>asList(), false);
     }
 
     @Test
@@ -1747,7 +1748,7 @@ public class CMRTests extends CompilerTests {
         String artifactId = "javax.el-api";
         String version = "3.0.0";
         String coord = groupId + ":" + artifactId;
-        File artifact = repository.getArtifact(coord, version);
+        File artifact = repository.getArtifact(MavenArtifactContext.NAMESPACE, coord, version);
         Assert.assertNotNull(artifact);
         try(ZipFile zf = new ZipFile(artifact)){
             String descriptorPath = String.format("META-INF/maven/%s/%s/pom.xml", groupId, artifactId);
@@ -1762,4 +1763,14 @@ public class CMRTests extends CompilerTests {
             }
         }
     }
+    
+    @Test
+    public void testNamespaceImports() throws IOException{
+        // Try to compile the ceylon module
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "aether", "-verbose:cmr"), 
+                (DiagnosticListener<? super FileObject>)null, 
+                "modules/aetherdefault/module.ceylon", "modules/namespaces/foo.ceylon");
+        assertEquals(Boolean.TRUE, ceylonTask.call());
+    }
+
 }

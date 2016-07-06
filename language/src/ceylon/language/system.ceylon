@@ -34,8 +34,8 @@ shared native object system {
      locale for this system."
     shared native String locale;
     
-    "Returns the IANA character set name representing the default 
-     character encoding for this system."
+    "Returns the IANA character set name representing the 
+     default character encoding for this system."
     shared native String characterEncoding;
     
     string => "system";
@@ -43,20 +43,20 @@ shared native object system {
 
 shared native("jvm") object system {
     
-    shared native("jvm") Integer milliseconds =>
-            currentTimeMillis();
+    shared native("jvm") Integer milliseconds 
+            => currentTimeMillis();
     
-    shared native("jvm") Integer nanoseconds =>
-            nanoTime();
+    shared native("jvm") Integer nanoseconds 
+            => nanoTime();
     
-    shared native("jvm") Integer timezoneOffset =>
-            defaultTimeZone.getOffset(milliseconds);
+    shared native("jvm") Integer timezoneOffset 
+            => defaultTimeZone.getOffset(milliseconds);
     
-    shared native("jvm") String locale =>
-            defaultLocale.toLanguageTag();
+    shared native("jvm") String locale 
+            => defaultLocale.toLanguageTag();
     
-    shared native("jvm") String characterEncoding =>
-            defaultCharset().name();
+    shared native("jvm") String characterEncoding 
+            => defaultCharset().name();
     
 }
 
@@ -88,7 +88,7 @@ shared native("js") object system {
     
     String? normalizeLocaleTag(String? tag) {
         if (exists tag, !tag.empty) {
-            Integer? p = tag.firstOccurrence('.');
+            value p = tag.firstOccurrence('.');
             String t = if (exists p) then tag[0:p] else tag;
             return t.replace("_", "-");
         } else {
@@ -96,7 +96,7 @@ shared native("js") object system {
         }
     }
     
-    shared native("js") String characterEncoding =>
-            "UTF-16"; //JavaScript always uses UTF-16
+    shared native("js") String characterEncoding 
+            => "UTF-16"; //JavaScript always uses UTF-16
     
 }

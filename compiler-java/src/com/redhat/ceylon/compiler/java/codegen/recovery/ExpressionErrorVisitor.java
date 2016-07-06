@@ -5,7 +5,13 @@ import java.util.List;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 
 /**
  * Visitor for expressions which determines whether there are any 
@@ -65,9 +71,39 @@ public class ExpressionErrorVisitor
         return null;
     }
 
+    protected UnexpectedError refersToBrokenDeclaration(Node that) {
+        return new UnexpectedError(that, "refers to a declaration with compiler errors");
+    }
+
     /** Is the given message on the given node considered an error */
     protected boolean isError(Node that, Message message) {
         return !(message instanceof UsageWarning);
     }
 
+    public void visit(Tree.MetaLiteral that) {
+        Declaration declaration = that.getDeclaration();
+        if (declaration instanceof TypedDeclaration) {
+            checkType(that, ((TypedDeclaration)declaration).getTypedReference().getFullType());
+        } else if (declaration instanceof TypeDeclaration) {
+            checkType(that,  ((TypeDeclaration)declaration).getType());
+        }
+        super.visit(that);
+    }
+
+    protected void checkType(Tree.MetaLiteral that, Type type) {
+        if (type == null
+                ||  type.containsUnknowns()) {
+            throw new HasErrorException(that, refersToBrokenDeclaration(that));
+        }
+    }
+    
+    @Override
+    public void visit(Tree.MemberOrTypeExpression that) {
+        if (that.getDeclaration() != null
+                && that.getDeclaration().isDropped()) {
+            throw new HasErrorException(that, refersToBrokenDeclaration(that));
+        }
+        super.visit(that);
+    }
+    
 }

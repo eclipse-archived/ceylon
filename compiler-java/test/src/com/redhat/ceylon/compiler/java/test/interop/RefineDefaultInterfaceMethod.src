@@ -7,7 +7,7 @@ class RefineDefaultInterfaceMethod implements .com.redhat.ceylon.compiler.java.r
     
     @.java.lang.Override
     public final .java.util.Iterator<.ceylon.language.String> iterator() {
-        return (.java.util.Iterator<.ceylon.language.String>).ceylon.language.nothing_.get_();
+        return (.java.util.Iterator<.ceylon.language.String>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

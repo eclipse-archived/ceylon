@@ -313,3 +313,26 @@ function setObjectProperty(object, key, value) {
   object[key]=value;
 }
 ex$.setObjectProperty=setObjectProperty;
+
+function $eq$(a,b) {
+  if (a===null)return b===null;
+  if (a===undefined)return b===undefined;
+  if (Array.isArray(a))return $arr$eq(a,b);
+  //Be very careful about the ordering of this operators
+  if (a.equals)return a.equals(b);
+  return a==b;
+}
+ex$.$eq$=$eq$;
+function $cnt$(a,b) {
+  if (a===null||a===undefined)return false;
+  if (Array.isArray(a))return $arr$cnt(a,b);
+  return a.contains&&a.contains(b);
+}
+ex$.$cnt$=$cnt$;
+//Check spread destructuring
+function $cksprdstr$(min,t,v,loc,f,s) {
+  s=s.sequence();
+  if (s.shorterThan(min))throwexc(AssertionError('length of ' + v + ' is less than minimum length of its static type ' + t),loc,f);
+  return s;
+}
+ex$.$cksprdstr$=$cksprdstr$;

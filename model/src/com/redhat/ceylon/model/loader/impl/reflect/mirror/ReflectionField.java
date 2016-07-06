@@ -3,6 +3,7 @@ package com.redhat.ceylon.model.loader.impl.reflect.mirror;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.model.loader.mirror.FieldMirror;
@@ -29,6 +30,11 @@ public class ReflectionField implements FieldMirror {
             annotations = ReflectionUtils.getAnnotations(field);
         }
         return annotations;
+    }
+
+    @Override
+    public Set<String> getAnnotationNames() {
+        return getAnnotations().keySet();
     }
 
     @Override

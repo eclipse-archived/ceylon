@@ -57,9 +57,9 @@ public class FunctionHelper {
                         null, scope instanceof Function ? (Function)scope : null);
                 gen.out("return ");
                 if (!gen.isNaturalLiteral(expr.getTerm())) {
-                    expr.visit(gen);
+                    gen.visitSingleExpression(expr);
                 }
-                gen.out(";}");
+                gen.out("}");
             }
         }, emitFunctionKeyword, gen);
     }
@@ -121,9 +121,8 @@ public class FunctionHelper {
         if (specExpr != null) {
             gen.out("return ");
             if (!gen.isNaturalLiteral(specExpr.getExpression().getTerm())) {
-                specExpr.getExpression().visit(gen);
+                gen.visitSingleExpression(specExpr.getExpression());
             }
-            gen.out(";");
         }
         else if (block != null) {
             gen.visitStatements(block.getStatements());
@@ -229,6 +228,17 @@ public class FunctionHelper {
             }
             gen.out(gen.getNames().name(m));
             if (!m.isToplevel())gen.out("=");
+            if (TypeUtils.isNativeExternal(m)) {
+                if (gen.stitchNative(m, that)) {
+                    if (verboseStitcher) {
+                        gen.spitOut("Stitching in native method " + m.getQualifiedNameString() + ", ignoring Ceylon declaration");
+                    }
+                    if (m.isShared()) {
+                        gen.share(m);
+                    }
+                    return;
+                }
+            }
             singleExprFunction(that.getParameterLists(),
                     that.getSpecifierExpression().getExpression(), m, true, !m.isToplevel(), gen);
             gen.endLine(true);
@@ -373,8 +383,8 @@ public class FunctionHelper {
             first=false;
         }
         gen.out(";return ");
-        that.getLetClause().getExpression().visit(gen);
-        gen.out(";}()");
+        gen.visitSingleExpression(that.getLetClause().getExpression());
+        gen.out("}()");
         directs.removeAll(decs2);
     }
 
@@ -496,15 +506,20 @@ public class FunctionHelper {
                         (Tree.BaseTypeExpression)that.getPrimary());
                 if (hasTargs) {
                     if (that.getDirectlyInvoked()) {
-                        gen.out(gen.qualifiedPath(that, cd), "_", gen.getNames().name(cd));
+                        gen.out(gen.qualifiedPath(that, cd), gen.getNames().constructorSeparator(cd),
+                                gen.getNames().name(cd));
                     } else {
                         BmeGenerator.printGenericMethodReference(gen,
                                 (Tree.BaseTypeExpression)that.getPrimary(), "0",
-                                gen.qualifiedPath(that, cd) + "_" + gen.getNames().name(cd));
+                                gen.qualifiedPath(that, cd) + gen.getNames().constructorSeparator(cd) +
+                                gen.getNames().name(cd));
                     }
                 } else {
                     gen.qualify(that, cd);
                     gen.out(gen.getNames().name(cd));
+                    if (cd.isValueConstructor()) {
+                        gen.out("()");
+                    }
                 }
             } else {
                 gen.out("function(x){return ");

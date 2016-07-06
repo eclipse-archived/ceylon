@@ -182,7 +182,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
                 		ModuleQuery.Type.ALL, null, null, null, null);
                 module = new ModuleSpec(module.getName(), version);
             }
-            ArtifactContext ac = new ArtifactContext(module.getName(), module.getVersion(), artifactsArray);
+            ArtifactContext ac = new ArtifactContext(null, module.getName(), module.getVersion(), artifactsArray);
             ac.setIgnoreDependencies(!withDependencies);
             ac.setForceOperation(true);
             acs.add(ac);

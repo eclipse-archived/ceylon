@@ -1,0 +1,48 @@
+package com.redhat.ceylon.compiler.java.test.structure.constructor;
+
+class Bug6196 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected Bug6196() {
+        super();
+        this.string_ = null;
+    }
+    private final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> string_;
+    
+    @.java.lang.Override
+    public final .java.lang.String toString() {
+        return string_.get_();
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug6196.u1_ u1_ = null;
+    
+    public static final class u1_ {
+        
+        u1_() {
+        }
+    }
+    
+    public Bug6196(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug6196.u1_ $name$) {
+        string_ = (
+            let
+            {
+                
+                final class string_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> {
+                    
+                    private string_() {
+                    }
+                    
+                    @.java.lang.Override
+                    public .java.lang.String get_() {
+                        return "u1";
+                    }
+                }
+            }
+            returning new string_();
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug6196.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug6196.class);
+}

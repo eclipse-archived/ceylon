@@ -24,7 +24,7 @@ import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
-import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -112,6 +112,9 @@ public class TypeUtils {
                 t = (TypeDeclaration)t.getContainer();
             }
             gen.out(qualifiedTypeContainer(node, imported, t, gen));
+            boolean isAnonCallable = t.isAnonymous() && t.getExtendedType() != null &&
+                    t.getExtendedType().getDeclaration() != null &&
+                    t.getExtendedType().getDeclaration().equals(t.getUnit().getCallableDeclaration());
             boolean _init = (!imported && pt.getDeclaration().isDynamic()) || t.isAnonymous();
             if (_init && !pt.getDeclaration().isToplevel()) {
                 Declaration dynintc = ModelUtil.getContainingClassOrInterface(node.getScope());
@@ -120,12 +123,17 @@ public class TypeUtils {
                     _init=false;
                 }
             }
-            if (_init) {
+            if (_init && !isAnonCallable) {
                 gen.out("$init$");
             }
 
             if (!outputTypeList(null, pt, gen, skipSelfDecl)) {
-                if (t.isAnonymous()) {
+                if (isAnonCallable) {
+                    gen.out("{t:");
+                    outputQualifiedTypename(node, true, pt.getExtendedType(), gen, skipSelfDecl);
+                    gen.out("}");
+                    return;
+                } else if (t.isAnonymous()) {
                     gen.out(gen.getNames().objectName(t));
                 } else {
                     gen.out(gen.getNames().name(t));
@@ -793,8 +801,8 @@ public class TypeUtils {
     /** Returns the list of keys to get from the package to the declaration, in the model. */
     public static List<String> generateModelPath(final Declaration d) {
         final ArrayList<String> sb = new ArrayList<>();
-        final String pkgName = d.getUnit().getPackage().getNameAsString();
-        sb.add(Module.LANGUAGE_MODULE_NAME.equals(pkgName)?"$":pkgName);
+        final Package pkg = d.getUnit().getPackage();
+        sb.add(pkg.isLanguagePackage()?"$":pkg.getNameAsString());
         if (d.isToplevel()) {
             sb.add(d.getName());
             if (d instanceof Setter) {
@@ -926,12 +934,12 @@ public class TypeUtils {
             }
             gen.out(",$cont:");
             boolean generateName = true;
-            if (_cont.getName() != null && _cont.getName().startsWith("anonymous#")
+            if ((_cont.getName() != null && _cont.isAnonymous() && _cont instanceof Function)
                     || (_cont instanceof Value && !((Value)_cont).isTransient())) {
                 //Anon functions don't have metamodel so go up until we find a non-anon container
                 Declaration _supercont = ModelUtil.getContainingDeclaration(_cont);
                 while (_supercont != null && _supercont.getName() != null
-                        && _supercont.getName().startsWith("anonymous#")) {
+                        && _supercont.isAnonymous()) {
                     _supercont = ModelUtil.getContainingDeclaration(_supercont);
                 }
                 if (_supercont == null) {

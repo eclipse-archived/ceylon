@@ -20,7 +20,7 @@ public final class Bug1358$impl<Element> implements .java.io.Serializable {
     }
     
     public <Result>Result fold(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Result) {
-        return (Result).ceylon.language.nothing_.get_();
+        return (Result)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
 }
 public class Bug1358ClassImpl<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1358<.java.lang.Object>, .java.io.Serializable {

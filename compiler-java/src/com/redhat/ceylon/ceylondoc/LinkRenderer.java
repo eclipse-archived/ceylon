@@ -937,7 +937,7 @@ public class LinkRenderer {
 
     private boolean canLinkToCeylonLanguageModule() {
         Module currentModule = ceylonDocTool.getCurrentModule();
-        if (currentModule.getNameAsString().equals(Module.LANGUAGE_MODULE_NAME)) {
+        if (currentModule.isLanguageModule()) {
             return true;
         } else {
             Module languageModule = currentModule.getLanguageModule();

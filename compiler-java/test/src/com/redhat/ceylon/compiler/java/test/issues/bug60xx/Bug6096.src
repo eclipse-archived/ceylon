@@ -1,0 +1,94 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug60xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class f_ {
+    
+    private f_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+            value = "T",
+            variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+            satisfies = {},
+            caseTypes = {})})
+    static <T>T f(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class bug6096_ {
+    
+    private bug6096_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void bug6096() {
+        final double y = 1L * ((.ceylon.language.Float).ceylon.language.sum_.<.ceylon.language.Float>sum(.ceylon.language.Float.$TypeDescriptor$, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            protected final .java.lang.Object $evaluate$(int $index$) {
+                switch ($index$) {
+                case 0: 
+                    return .ceylon.language.Float.instance(1.0);
+                
+                default: 
+                    return null;
+                
+                }
+            }
+        })).doubleValue();
+        final double z = 1L * ((.ceylon.language.Float)(
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$0$reified$0 = .ceylon.language.Float.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return .ceylon.language.Float.instance(1.0);
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+            }
+            returning .ceylon.language.sum_.<.ceylon.language.Float>sum(arg$0$reified$0, arg$0$0);
+        )).doubleValue();
+        final double x = .ceylon.language.Integer.$power$(1L, ((.ceylon.language.Float)(
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Float.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$1$0 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    protected final .java.lang.Object $evaluate$(int $index$) {
+                        switch ($index$) {
+                        case 0: 
+                            return .ceylon.language.Float.instance(1.0);
+                        
+                        default: 
+                            return null;
+                        
+                        }
+                    }
+                };
+            }
+            returning .ceylon.language.sum_.<.ceylon.language.Float>sum(arg$1$reified$0, arg$1$0);
+        )).doubleValue());
+    }
+}

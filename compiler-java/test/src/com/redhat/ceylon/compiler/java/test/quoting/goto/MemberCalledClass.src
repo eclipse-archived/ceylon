@@ -1,0 +1,114 @@
+package com.redhat.ceylon.compiler.java.test.quoting.$goto;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Name("memberCalledClass")
+@.com.redhat.ceylon.compiler.java.metadata.Object
+final class memberCalledClass_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private memberCalledClass_() {
+        this.$class = 2L;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_.get_();
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_.class);
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final long $class;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.com.redhat.ceylon.compiler.java.metadata.Name("class")
+    public final long getClass$() {
+        return $class;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.goto::memberCalledClass")
+    static .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_ get_() {
+        if (memberCalledClass_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'memberCalledClass\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_.$TypeDescriptor$;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Name("memberCalledClass2")
+@.com.redhat.ceylon.compiler.java.metadata.Object
+final class memberCalledClass2_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private memberCalledClass2_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_.get_();
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_.class);
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    public final long $class() {
+        return 2L;
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.goto::memberCalledClass2")
+    static .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_ get_() {
+        if (memberCalledClass2_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'memberCalledClass2\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_.$TypeDescriptor$;
+    }
+}

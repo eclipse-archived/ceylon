@@ -98,4 +98,18 @@ void issue589() {
     f();
   }
   check(sb.string=="1234", "#589 expected 1234 got ``sb``");
+  variable value b6201=false;
+  while (true) {
+    if (is String s = ("" of Anything)) {
+      if ([""].every((x) => s == x)) {
+        if (1==1) {
+          if (2==2) {
+            b6201=true;
+            break;
+          }
+        }
+      }
+    }
+  }
+  check(b6201, "#6201");
 }

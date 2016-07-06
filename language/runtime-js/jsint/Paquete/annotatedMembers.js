@@ -21,7 +21,7 @@ function annotatedMembers($$$mptypes){
         }
       }
     }
-    return rv.$sa$($$$mptypes.Kind$annotatedMembers);
+    return $arr$sa$(rv,$$$mptypes.Kind$annotatedMembers);
   }
   return empty();
 }

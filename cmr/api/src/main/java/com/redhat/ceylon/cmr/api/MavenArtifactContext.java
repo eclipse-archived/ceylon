@@ -4,12 +4,13 @@ import java.util.Objects;
 
 @SuppressWarnings("serial")
 public class MavenArtifactContext extends ArtifactContext {
-
     private String classifier;
     private String packaging;
 
+    public static final String NAMESPACE = "maven";
+    
     public MavenArtifactContext(String groupId, String artifactId, String version, String packaging, String classifier) {
-        super(groupId+":"+artifactId, version);
+        super(NAMESPACE, groupId+":"+artifactId, version);
         this.classifier = classifier;
         this.packaging = packaging;
     }

@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Class(
         identifiable = false,
         basic = false,
@@ -44,7 +46,9 @@ class JavaIoSerializableObject extends .java.lang.Object implements .com.redhat.
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableObject.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Class
 class JavaIoSerializableBasic extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
@@ -60,7 +64,9 @@ class JavaIoSerializableBasic extends .java.lang.Object implements .com.redhat.c
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableBasic.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("javaIoSerializableObject")
 @.com.redhat.ceylon.compiler.java.metadata.Object
 @.com.redhat.ceylon.compiler.java.metadata.Class
@@ -108,7 +114,9 @@ final class javaIoSerializableObject_ extends .java.lang.Object implements .java
         return .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$TypeDescriptor$;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("javaIoSerializableBasic")
 @.com.redhat.ceylon.compiler.java.metadata.Object
 @.com.redhat.ceylon.compiler.java.metadata.Class
@@ -156,7 +164,9 @@ final class javaIoSerializableBasic_ extends .java.lang.Object implements .java.
         return .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$TypeDescriptor$;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -177,7 +187,9 @@ class JavaIoSerializableGeneric<T> implements .com.redhat.ceylon.compiler.java.r
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableGeneric.class, $reified$T);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 interface JavaIoSerializable {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -207,7 +219,9 @@ final class JavaIoSerializable$impl implements .java.io.Serializable {
         return null;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.klass::JavaIoSerializable"})
 class JavaIoSerializableMixin implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializable, .java.io.Serializable {
     
@@ -237,7 +251,9 @@ class JavaIoSerializableMixin implements .com.redhat.ceylon.compiler.java.runtim
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableMixin.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class JavaIoSerializableCtors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
@@ -245,7 +261,9 @@ class JavaIoSerializableCtors implements .com.redhat.ceylon.compiler.java.runtim
     public JavaIoSerializableCtors() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("foo")
     private static final class foo_ {
@@ -273,7 +291,9 @@ class JavaIoSerializableCtors implements .com.redhat.ceylon.compiler.java.runtim
         return foo;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("bar")
     private static final class bar_ {
@@ -320,11 +340,15 @@ class JavaIoSerializableCtors implements .com.redhat.ceylon.compiler.java.runtim
         return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.class, $name$);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("foo")
     private static final class foo_ {
@@ -352,7 +376,9 @@ class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.r
         return foo;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("bar")
     private static final class bar_ {
@@ -399,7 +425,9 @@ class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.r
         return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors.class, $name$);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Members({
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.JavaIoSerializableValueCtors.class),
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.javaIoSerializableObject_.class)})
@@ -410,7 +438,9 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     }
     private transient .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.javaIoSerializableObject_ javaIoSerializableObject;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Name("javaIoSerializableObject")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.class)
     @.com.redhat.ceylon.compiler.java.metadata.Object
@@ -442,7 +472,9 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         return javaIoSerializableObject;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("foo")
     static final class JavaIoSerializableValueCtors$foo {
@@ -462,7 +494,9 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         return $instance$JavaIoSerializableValueCtors$foo;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("bar")
     static final class JavaIoSerializableValueCtors$bar {
@@ -482,7 +516,9 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         return $instance$JavaIoSerializableValueCtors$bar;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.class)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
@@ -526,7 +562,9 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.Outer.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("javaIoSerializableQuoting")
 @.com.redhat.ceylon.compiler.java.metadata.Object
 final class javaIoSerializableQuoting_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -577,7 +615,9 @@ final class javaIoSerializableQuoting_ implements .java.io.Serializable, .com.re
         return .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$TypeDescriptor$;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class JavaIoSerializableQuoting implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
@@ -586,7 +626,9 @@ class JavaIoSerializableQuoting implements .com.redhat.ceylon.compiler.java.runt
     public final void $writeReplace() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("val")
     private static final class val_ {
@@ -631,7 +673,9 @@ class JavaIoSerializableQuoting implements .com.redhat.ceylon.compiler.java.runt
         return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableQuoting.class, $name$);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 class JavaIoSerializableNoQuoting implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     JavaIoSerializableNoQuoting() {

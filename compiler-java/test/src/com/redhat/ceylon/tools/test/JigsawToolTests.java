@@ -55,13 +55,15 @@ public class JigsawToolTests extends AbstractToolTests {
                         "--rep", "../dist/dist/repo",
                         "--rep", getOutPath(),
                         "--out", getOutPath(),
-                        "ceylon.language/"+Versions.CEYLON_VERSION_NUMBER));
+                        "ceylon.language/"+Versions.CEYLON_VERSION_NUMBER,
+                        "com.redhat.ceylon.module-resolver/"+Versions.CEYLON_VERSION_NUMBER));
         tool.run();
         
         File out = new File(getOutPath());
         Assert.assertTrue(out.exists());
         Assert.assertTrue(new File(out, "ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".jar").exists());
         Assert.assertTrue(new File(out, "com.redhat.ceylon.model-"+Versions.CEYLON_VERSION_NUMBER+".jar").exists());
+        Assert.assertTrue(new File(out, "com.redhat.ceylon.module-resolver-"+Versions.CEYLON_VERSION_NUMBER+".jar").exists());
     }
 
     @Test

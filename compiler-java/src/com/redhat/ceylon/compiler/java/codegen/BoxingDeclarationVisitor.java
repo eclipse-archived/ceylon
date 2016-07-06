@@ -43,10 +43,12 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.typechecker.context.TypeCache;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -187,9 +189,32 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         }
         
         // inherit underlying type constraints
-        if(!Decl.equal(refinedDeclaration, declaration) && type.getUnderlyingType() == null
+        if(!Decl.equal(refinedDeclaration, declaration)){
+            // simple case
+            if(type.getUnderlyingType() == null
                 && refinedDeclaration.getType() != null)
-            type.setUnderlyingType(refinedDeclaration.getType().getUnderlyingType());
+                type.setUnderlyingType(refinedDeclaration.getType().getUnderlyingType());
+            // special case for variadics
+            if(Decl.isValueParameter(refinedDeclaration)){
+                Parameter parameter = ((FunctionOrValue) refinedDeclaration).getInitializerParameter();
+                if(parameter.isSequenced()){
+                    // inherit the underlying type of the iterated type
+                    Type refinedIteratedType = refinedDeclaration.getType().getTypeArgumentList().get(0);
+                    if(refinedIteratedType.getUnderlyingType() != null){
+                        Type ourIteratedType = type.getTypeArgumentList().get(0);
+                        if(ourIteratedType.getUnderlyingType() == null){
+                            ourIteratedType.setUnderlyingType(refinedIteratedType.getUnderlyingType());
+                            // make sure we remove those types from the cache otherwise UGLY things happen
+                            TypeCache cache = type.getDeclaration().getUnit().getCache();
+                            if(cache != null){
+                                cache.remove(ourIteratedType);
+                                cache.remove(type);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         
         // abort if our boxing state has already been set
         if(declaration.getUnboxed() != null)

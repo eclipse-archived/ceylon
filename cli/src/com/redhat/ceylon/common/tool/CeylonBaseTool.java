@@ -35,6 +35,25 @@ public abstract class CeylonBaseTool implements Tool {
         this.verbose = verbose;
     }
     
+    protected boolean isVerbose(){
+        return isVerbose("all");
+    }
+    
+    protected boolean isVerbose(String category){
+        if(verbose == null)
+            return false;
+        // all?
+        if(verbose.isEmpty() || verbose.equals("all"))
+            return true;
+        if(category == null)
+            return false;
+        for(String cat : verbose.split(",")){
+            if(cat.equals(category))
+                return true;
+        }
+        return false;
+    }
+    
     protected File validCwd() {
         return (cwd != null) ? cwd : new File(".");
     }

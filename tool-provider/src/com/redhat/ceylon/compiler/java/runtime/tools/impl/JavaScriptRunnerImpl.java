@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.ModuleUtil;
@@ -20,17 +21,20 @@ public class JavaScriptRunnerImpl implements Runner {
     public JavaScriptRunnerImpl(final RunnerOptions options, String module, String version) {
         tool = new CeylonRunJsTool() {
             @Override
-            protected void customizeDependencies(List<File> localRepos, RepositoryManager repoman) throws IOException {
+            protected void customizeDependencies(List<File> localRepos, RepositoryManager repoman, Set<String> loadedDependencies) throws IOException {
                 for (Map.Entry<String,String> extraModule : options.getExtraModules().entrySet()) {
                     String modName = extraModule.getKey();
                     String modVersion = extraModule.getValue();
                     File artifact = getArtifact(repoman, modName, modVersion, true);
                     localRepos.add(getRepoDir(modName, artifact));
-                    loadDependencies(localRepos, repoman, artifact);
+                    loadDependencies(localRepos, repoman, artifact, loadedDependencies);
                 }
             };
         };
 
+        if (options.getWorkingDirectory() != null) {
+            tool.setCwd(new File(options.getWorkingDirectory()));
+        }
         moduleSpec = ModuleUtil.makeModuleName(module, version);
         tool.setThrowOnError(true);
         tool.setModuleVersion(moduleSpec);

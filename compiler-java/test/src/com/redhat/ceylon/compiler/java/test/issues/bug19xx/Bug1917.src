@@ -26,11 +26,11 @@ final class bug1917_ {
             }
             returning $ceylontmp$op$1;
         );
-        head = (.ceylon.language.String)(
+        head = (.ceylon.language.String)(.java.lang.Object)(
             let
             {
                 .java.lang.Object $ceylontmp$op$2 = .ceylon.language.nothing_.get_();
-                tail = (.ceylon.language.String)$ceylontmp$op$2;
+                tail = (.ceylon.language.String)(.java.lang.Object)$ceylontmp$op$2;
             }
             returning $ceylontmp$op$2;
         );

@@ -48,6 +48,7 @@ import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaMethod;
 import com.redhat.ceylon.model.loader.model.LazyClass;
+import com.redhat.ceylon.model.loader.model.LazyElement;
 import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.loader.model.LazyFunction;
 import com.redhat.ceylon.model.loader.model.LazyValue;
@@ -474,7 +475,14 @@ public class Naming extends NamingBase implements LocalId {
             TypeDeclaration klass = (TypeDeclaration)scope;
             if(klass.isAnonymous() && !klass.isNamed())
                 typeDeclarationBuilder.clear();
-            typeDeclarationBuilder.append(escapeClassName(klass.getName() != null ? klass.getName() : ""));
+            String className = "";
+            if(klass.getName() != null){
+                if(ModelUtil.isCeylonDeclaration(klass))
+                    className = escapeClassName(klass.getName());
+                else
+                    className = getRealName(klass, NA_WRAPPER_UNQUOTED);
+            }
+            typeDeclarationBuilder.append(className);
             if (Decl.isCeylon(klass)) {
                 if (flags.contains(DeclNameFlag.COMPANION)
                     && Decl.isLocalNotInitializer(klass)
@@ -493,7 +501,14 @@ public class Naming extends NamingBase implements LocalId {
             }
         } else if (scope instanceof Interface) {
             Interface iface = (Interface)scope;
-            typeDeclarationBuilder.append(iface.getName());
+            String className = "";
+            if(iface.getName() != null){
+                if(ModelUtil.isCeylonDeclaration(iface))
+                    className = iface.getName();
+                else
+                    className = getRealName(iface, NA_WRAPPER_UNQUOTED);
+            }
+            typeDeclarationBuilder.append(className);
             if (Decl.isCeylon(iface)
                 && ((decl instanceof Class || decl instanceof Constructor || decl instanceof TypeAlias|| scope instanceof Constructor) 
                         || flags.contains(DeclNameFlag.COMPANION))) {
@@ -1107,7 +1122,7 @@ public class Naming extends NamingBase implements LocalId {
                     if (outerNames == null) {
                         outerNames = new ArrayList<String>(2);
                     }
-                    outerNames.add(quoteIfJavaKeyword(((TypedDeclaration) s).getName()));
+                    outerNames.add(quoteIfJavaKeyword(getRealName((TypedDeclaration)s, 0)));
                 }
                 s = s.getContainer();
             }
@@ -1175,6 +1190,8 @@ public class Naming extends NamingBase implements LocalId {
         String name;
         if (decl instanceof LazyValue) {
             name = ((LazyValue)decl).getRealName();
+        } else if (decl instanceof FieldValue) {
+            name = ((FieldValue)decl).getRealName();
         } else if (decl instanceof LazyFunction) {
             name = ((LazyFunction)decl).getRealName();
         } else if (decl instanceof LazyClass) {
@@ -1810,7 +1827,7 @@ public class Naming extends NamingBase implements LocalId {
         if (decl instanceof TypedDeclaration) {
             return getVarMapper().get((TypedDeclaration)decl);
         }
-        return decl.getName();
+        return getRealName(decl, 0);
     }
 
     /**

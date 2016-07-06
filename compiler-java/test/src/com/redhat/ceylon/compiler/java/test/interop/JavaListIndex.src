@@ -6,7 +6,7 @@ final class javaListIndex_ {
     }
     
     static void javaListIndex() {
-        final .java.util.List<.ceylon.language.String> l = (.java.util.List<.ceylon.language.String>).ceylon.language.nothing_.get_();
+        final .java.util.List<.ceylon.language.String> l = (.java.util.List<.ceylon.language.String>)(.java.lang.Object).ceylon.language.nothing_.get_();
         final .ceylon.language.String l0 = (
             let
             {

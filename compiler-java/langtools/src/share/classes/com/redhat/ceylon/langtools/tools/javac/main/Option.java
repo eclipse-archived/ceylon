@@ -34,7 +34,6 @@ import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -456,6 +455,13 @@ public enum Option {
     CEYLONNOPOM("-nopom", "opt.ceylonnopom", OptionKind.STANDARD, OptionGroup.CEYLON),
     CEYLONPACK200("-pack200", "opt.ceylonpack200", OptionKind.STANDARD, OptionGroup.CEYLON),
     CEYLONJDKPROVIDER("-jdk-provider", "opt.arg.value", "opt.ceylonjdkprovider", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONAPT("-apt", "opt.arg.value", "opt.ceylonapt", OptionKind.STANDARD, OptionGroup.CEYLON){
+        @Override
+        public boolean process(OptionHelper helper, String option, String arg) {
+            helper.addMulti(option, arg);
+            return false;
+        }
+    },
     CEYLONSOURCEPATH("-src", "opt.arg.directory", "opt.ceylonsourcepath", OptionKind.STANDARD, OptionGroup.CEYLON) {
         @Override
         public boolean process(OptionHelper options, String option, String arg) {
@@ -532,8 +538,9 @@ public enum Option {
         }
         @Override
         public boolean process(OptionHelper helper, String option) {
-            String s= option;
-            File f = new File(s);
+            String s = option;
+            String cwd = helper.get(CEYLONCWD);
+            File f = cwd != null ? FileUtil.applyCwd(new File(cwd), new File(s)) : new File(s);
             if (s.endsWith(".java")
                     || s.endsWith(".ceylon") // FIXME: Should be a FileManager query
             ) {

@@ -302,6 +302,7 @@ public final class Integer
 
     @AliasesAnnotation$annotation$(aliases = "absolute")
     @Override
+    @Transient
     public Integer getMagnitude() {
         return instance(Math.abs(value));
     }
@@ -312,6 +313,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public Integer getFractionalPart() {
         return instance(0);
     }
@@ -322,6 +324,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public Integer getWholePart() {
         return this;
     }
@@ -332,6 +335,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public boolean getPositive() {
         return value > 0;
     }
@@ -342,6 +346,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public boolean getNegative() {
         return value < 0;
     }
@@ -352,6 +357,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public long getSign() {
         if (value > 0)
             return 1;
@@ -484,10 +490,12 @@ public final class Integer
         if (value>other) {
             return 1;
         }
-        if (value<other) {
+        else if (value<other) {
             return -1;
         }
-        return 0;
+        else {
+            return 0;
+        }
     }
 
     @Override
@@ -520,6 +528,7 @@ public final class Integer
         return (double) value;
     }
 
+    @Transient
     public byte getByte() {
         return getByte(value);
     }
@@ -531,7 +540,7 @@ public final class Integer
 
     @TypeInfo("ceylon.language::Character")
     public int getCharacter() {
-        return getCharacter(value);
+        return codepoint(value);
     }
 
     @Ignore
@@ -551,6 +560,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public boolean getUnit() {
         return value==1;
     }
@@ -561,6 +571,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public boolean getZero() {
         return value==0;
     }
@@ -571,6 +582,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public Integer getPredecessor() {
         return Integer.instance(value - 1);
     }
@@ -581,6 +593,7 @@ public final class Integer
     }
 
     @Override
+    @Transient
     public Integer getSuccessor() {
         return Integer.instance(value + 1);
     }
@@ -631,6 +644,7 @@ public final class Integer
     }
 
     @Override
+    @AliasesAnnotation$annotation$(aliases = "leftShift")
     public Integer leftLogicalShift(@Name("shift") long shift) {
         return instance(value << shift);
     }
@@ -641,6 +655,7 @@ public final class Integer
     }
 
     @Override
+    @AliasesAnnotation$annotation$(aliases = "rightShift")
     public Integer rightLogicalShift(@Name("shift") long shift) {
         return instance(value >>> shift);
     }

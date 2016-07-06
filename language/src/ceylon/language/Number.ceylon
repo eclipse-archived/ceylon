@@ -35,7 +35,9 @@ shared interface Number<Other> of Other
      - `x.magnitude == 0` if and only if `x==0`."
     aliased("absolute")
     shared default Other magnitude
-            => negative then negated else this of Other;
+            => negative 
+            then negated 
+            else this of Other;
     
     "The sign of this number: 
      
@@ -46,17 +48,10 @@ shared interface Number<Other> of Other
      Must satisfy:
      
          x.magnitude.timesInteger(x.sign) == x"
-    shared default Integer sign {
-        if (positive) {
-            return 1;
-        }
-        else if (negative) {
-            return -1;
-        }
-        else {
-            return 0;
-        }
-    }
+    shared default Integer sign 
+            => if (positive) then 1
+          else if (negative) then -1
+          else 0;
     
     "Determine if the number is strictly positive, that is, 
      if `this>0`, where `0` is the additive identity."
@@ -91,6 +86,19 @@ shared interface Number<Other> of Other
             "if the exponent is a negative power and this is 
              an integral numeric type")
     shared formal Other powerOfInteger(Integer integer);
+    
+    "Compares this number with the given number, returning:
+     
+     - [[larger]], if the [[difference|minus]] `this-other`
+       between the numbers is [[positive]],
+     - [[smaller]], if the difference `this-other` between 
+       the numbers is [[negative]], or
+     - [[equal]] otherwise."
+    shared actual default Comparison compare(Other other) 
+            => let (diff = this - other)
+                if (diff.positive) then larger
+           else if (diff.negative) then smaller
+           else equal;
     
 }
 

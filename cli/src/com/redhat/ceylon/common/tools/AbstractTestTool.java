@@ -35,7 +35,7 @@ public abstract class AbstractTestTool extends RepoUsingTool {
     protected List<String> argumentList;
     protected String version;
     protected String compileFlags;
-    protected boolean tap;
+    protected String tap;
     protected boolean report;
     private final Type type;
     private final Integer jvmBinaryMajor;
@@ -92,9 +92,12 @@ public abstract class AbstractTestTool extends RepoUsingTool {
         this.version = version;
     }
     
-    @Option(longName = "tap")
-    @Description("Enables the Test Anything Protocol v13.")
-    public void setTap(boolean tap) {
+    @Option
+    @OptionArgument(argumentName = "file")
+    @Description("Enables the Test Anything Protocol v13 "
+            + "and writes the results to the specified file. "
+            + "If the file name is empty or `-`, print to standard output.")
+    public void setTap(String tap) {
         this.tap = tap;
     }
 
@@ -180,8 +183,12 @@ public abstract class AbstractTestTool extends RepoUsingTool {
     }
 
     protected void processTapOption(List<String> args) {
-        if (tap) {
-            args.add("--tap");
+        if (tap != null) {
+            if (tap.isEmpty()) {
+                args.add("--tap");
+            } else {
+                args.add("--tap=" + tap);
+            }
         }
     }
     
@@ -214,7 +221,7 @@ public abstract class AbstractTestTool extends RepoUsingTool {
     private String findTestVersionInDependecies(String moduleAndVersion) {
         String moduleName = ModuleUtil.moduleName(moduleAndVersion);
         String moduleVersion = ModuleUtil.moduleVersion(moduleAndVersion);
-        ModuleDependencyInfo root = new ModuleDependencyInfo(moduleName, moduleVersion, false, false);
+        ModuleDependencyInfo root = new ModuleDependencyInfo(null, moduleName, moduleVersion, false, false);
         Queue<ModuleDependencyInfo> queue = new LinkedList<ModuleDependencyInfo>();
         queue.add(root);
         

@@ -106,35 +106,35 @@ public final class CapturedTypeParam$impl<OuterT1, OuterT2> implements .java.io.
                     }
                     
                     public OuterT1 outerT1() {
-                        return (OuterT1).ceylon.language.nothing_.get_();
+                        return (OuterT1)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                     
                     public OuterT2 outerT2() {
-                        return (OuterT2).ceylon.language.nothing_.get_();
+                        return (OuterT2)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                     
                     public MethodFooT1 methodFooT1() {
-                        return (MethodFooT1).ceylon.language.nothing_.get_();
+                        return (MethodFooT1)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                     
                     public MethodFooT2 methodFooT2() {
-                        return (MethodFooT2).ceylon.language.nothing_.get_();
+                        return (MethodFooT2)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                     
                     public MethodBarT1 methodBarT1() {
-                        return (MethodBarT1).ceylon.language.nothing_.get_();
+                        return (MethodBarT1)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                     
                     public MethodBarT2 methodBarT2() {
-                        return (MethodBarT2).ceylon.language.nothing_.get_();
+                        return (MethodBarT2)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                     
                     public InnerT1 innerT1() {
-                        return (InnerT1).ceylon.language.nothing_.get_();
+                        return (InnerT1)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                     
                     public InnerT2 innerT2() {
-                        return (InnerT2).ceylon.language.nothing_.get_();
+                        return (InnerT2)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                 }
                 
@@ -219,7 +219,7 @@ public final class CapturedTypeParam$impl<OuterT1, OuterT2> implements .java.io.
             }
             
             public OuterT1 outerT1() {
-                return (OuterT1).ceylon.language.nothing_.get_();
+                return (OuterT1)(.java.lang.Object).ceylon.language.nothing_.get_();
             }
         }
         

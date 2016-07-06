@@ -149,7 +149,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
     }
 
     private void addOutputModuleToClassPath(Module module) {
-        ArtifactContext ctx = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
+        ArtifactContext ctx = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
         ArtifactResult result = outputRepositoryManager.getArtifactResult(ctx);
         if(result != null)
             getModelLoader().addModuleToClassPath(module, result);

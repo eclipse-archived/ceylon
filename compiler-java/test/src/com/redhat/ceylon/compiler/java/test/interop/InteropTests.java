@@ -79,8 +79,8 @@ public class InteropTests extends CompilerTests {
     public void testIopAmbiguousOverloading(){
         compile("TypesJava.java", "JavaWithOverloadedMembers.java");
         assertErrors("AmbiguousOverloading",
-                new CompilerError(25, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'ambiguousOverload' that accepts the given argument types 'String, String'"),
-                new CompilerError(26, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'ambiguousOverload2' that accepts the given argument types 'Integer, Integer'")
+                new CompilerError(25, "illegal argument types in invocation of overloaded method or class: there must be exactly one overloaded declaration of 'ambiguousOverload' which accepts the given argument types 'String, String'"),
+                new CompilerError(26, "illegal argument types in invocation of overloaded method or class: there must be exactly one overloaded declaration of 'ambiguousOverload2' which accepts the given argument types 'Integer, Integer'")
                 );
     }
 
@@ -96,6 +96,12 @@ public class InteropTests extends CompilerTests {
         compareWithJavaSource("VariadicArraysMethods");
     }
 
+    @Test
+    public void testIopVariadicImplementations(){
+        compile("TypesJava.java");
+        compareWithJavaSource("VariadicImplementations");
+    }
+    
     @Test
     public void testIopImplementOverloadedConstructors(){
         compile("JavaWithOverloadedMembers.java");
@@ -343,7 +349,7 @@ public class InteropTests extends CompilerTests {
     public void testIopExtendsDefaultAccessClassWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("access/ExtendsDefaultAccessClassWithOverloading",
-                new CompilerError(21, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' that accepts the given argument types ''")
+                new CompilerError(21, "illegal argument types in invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' which accepts the given argument types ''")
         );
     }
 
@@ -372,7 +378,7 @@ public class InteropTests extends CompilerTests {
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("access/CallsDefaultAccessClassWithOverloading",
                 new CompilerError(22, "class cannot be instantiated: 'JavaDefaultAccessClass4' does not have a default constructor"),
-                new CompilerError(22, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' that accepts the given argument types ''")
+                new CompilerError(22, "illegal argument types in invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' which accepts the given argument types ''")
         );
     }
 
@@ -393,7 +399,7 @@ public class InteropTests extends CompilerTests {
     public void testIopCallsDefaultAccessClassInAnotherPkgWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("CallsDefaultAccessClassInAnotherPkgWithOverloading",
-                new CompilerError(26, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' that accepts the given argument types ''"),
+                new CompilerError(26, "illegal argument types in invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' which accepts the given argument types ''"),
                 new CompilerError(26, "class cannot be instantiated: 'JavaDefaultAccessClass4' does not have a default constructor"),
                 new CompilerError(27, "type constructor is not visible: 'JavaDefaultAccessClass4'"),
                 new CompilerError(28, "protected constructor is not visible: 'JavaDefaultAccessClass4'")
@@ -757,5 +763,46 @@ public class InteropTests extends CompilerTests {
         Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
                 || JDKUtils.jdk == JDKUtils.JDK.JDK9);
         compareWithJavaSource("RefineDefaultInterfaceMethod");
+    }
+    
+    @Test
+    public void testBug6244(){
+        compile("Bug6244Java.java");
+        compile("Bug6244.ceylon");
+    }
+    
+    @Test
+    public void testSdkBug571() throws Throwable{
+        compile("SdkBug571.ceylon");
+        runInJBossModules("run", 
+                "com.redhat.ceylon.compiler.java.test.interop",
+                Arrays.asList("--run=com.redhat.ceylon.compiler.java.test.interop::sdkBug571_run"));
+    }
+
+    @Test
+    public void testIopBug6099(){
+        compile("Bug6099Java.java");
+        compile("Bug6099.ceylon");
+    }
+    
+    @Test
+    public void testIopBug6123(){
+        compile("Bug6123Java.java");
+        compile("Bug6123.ceylon");
+    }
+    
+    @Test
+    public void testIopBug6289(){
+        compareWithJavaSource("Bug6289");
+    }
+
+    @Test
+    public void testIopInterdep(){
+        compile("InterdepJava.java", "Interdep.ceylon");
+    }
+    
+    @Test
+    public void testIopNullAnnotations(){
+        compile("nullable/NullAnnotationsJava.java", "nullable/NullAnnotations.ceylon");
     }
 }

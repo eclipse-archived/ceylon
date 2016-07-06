@@ -6,20 +6,20 @@ final class bug509_ {
     }
     
     static boolean bug509(final .ceylon.language.Sequential<? extends .java.lang.Object> objs) {
-        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$3 = objs;
-        final boolean isTuple$4 = iterable$3 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$3).$getArray$() != null;
-        .java.lang.Object elem$0 = null;
-        int i$5 = 0;
-        final int length$6;
-        if (isTuple$4) {
-            length$6 = (int)iterable$3.getSize();
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$4 = objs;
+        final boolean isTuple$5 = iterable$4 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$4).$getArray$() != null;
+        .java.lang.Object elem$1 = null;
+        int i$6 = 0;
+        final int length$7;
+        if (isTuple$5) {
+            length$7 = (int)iterable$4.getSize();
         } else {
-            length$6 = 0;
+            length$7 = 0;
         }
-        .ceylon.language.Iterator<? extends .java.lang.Object> obj$iterator$$1 = isTuple$4 ? null : iterable$3.iterator();
-        loop_0: while (isTuple$4 ? i$5 < length$6 : !((elem$0 = obj$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$4) elem$0 = iterable$3.getFromFirst(i$5++);
-            final .java.lang.Object obj = elem$0;
+        .ceylon.language.Iterator<? extends .java.lang.Object> obj$iterator$$2 = isTuple$5 ? null : iterable$4.iterator();
+        loop_0: while (isTuple$5 ? i$6 < length$7 : !((elem$1 = obj$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$5) elem$1 = iterable$4.getFromFirst(i$6++);
+            final .java.lang.Object obj = elem$1;
             if (obj.equals(.ceylon.language.Integer.instance(1L))) {
                 return true;
             }

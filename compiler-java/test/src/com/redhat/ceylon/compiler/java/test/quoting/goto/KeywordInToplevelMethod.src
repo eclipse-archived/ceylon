@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.quoting.$goto;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class package_ {
     
@@ -19,7 +21,9 @@ public final class package_ {
         .com.redhat.ceylon.compiler.java.test.quoting.$goto.package_.$package();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class module_ {
     

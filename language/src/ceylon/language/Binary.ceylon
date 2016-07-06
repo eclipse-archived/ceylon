@@ -10,22 +10,22 @@ shared interface Binary<Other> of Other
     "The binary complement of this sequence of bits."
     shared formal Other not;
 
-    "Shift the sequence of bits to the left, by the 
-     given [[number of places|shift]], filling the least
-     significant bits with zeroes."
+    "Shift the sequence of bits to the left, by the given 
+     [[number of places|shift]], filling the least
+     significant bits with zeroes (zero extension)."
     shared formal Other leftLogicalShift(Integer shift);
 
-    "Shift the sequence of bits to the right, by the 
-     given [[number of places|shift]], filling the most
-     significant bits with zeroes.
+    "Shift the sequence of bits to the right, by the given 
+     [[number of places|shift]], filling the most
+     significant bits with zeroes (zero extension).
      
      If the sequence of bits represents a signed integer, 
      the sign is not preserved."
     shared formal Other rightLogicalShift(Integer shift);
 
-    "Shift the sequence of bits to the right, by the 
-     given [[number of places|shift]], preserving the values
-     of the most significant bits.
+    "Shift the sequence of bits to the right, by the given 
+     [[number of places|shift]], preserving the values of 
+     the most significant bits (sign extension).
      
      If the sequence of bits represents a signed integer, 
      the sign is preserved."

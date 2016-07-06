@@ -231,7 +231,8 @@ public abstract class ClassOrInterfaceDeclarationImpl
         checkInit();
         ArrayList<Kind> members = new ArrayList<Kind>(declarations.size());
         for(ceylon.language.meta.declaration.NestableDeclaration decl : declarations){
-            if (predicate.accept(((NestableDeclarationImpl)decl).declaration)) {
+            Declaration declaration2 = ((NestableDeclarationImpl)decl).declaration;
+            if (!declaration2.isNativeHeader() && predicate.accept(declaration2)) {
                 members.add((Kind) decl);
             }
         }
@@ -251,7 +252,8 @@ public abstract class ClassOrInterfaceDeclarationImpl
         checkInit();
         ArrayList<Kind> members = new ArrayList<Kind>(declarations.size());
         for(ceylon.language.meta.declaration.NestableDeclaration decl : declaredDeclarations){
-            if (predicate.accept(((NestableDeclarationImpl)decl).declaration)) {
+            Declaration declaration2 = ((NestableDeclarationImpl)decl).declaration;
+            if (!declaration2.isNativeHeader() && predicate.accept(declaration2)) {
                 members.add((Kind) decl);
             }
         }
@@ -270,7 +272,8 @@ public abstract class ClassOrInterfaceDeclarationImpl
         }
         checkInit();
         for(ceylon.language.meta.declaration.NestableDeclaration decl : declarations){
-            if (predicate.accept(((NestableDeclarationImpl)decl).declaration)) {
+            Declaration declaration2 = ((NestableDeclarationImpl)decl).declaration;
+            if (!declaration2.isNativeHeader() && predicate.accept(declaration2)) {
                 return (Kind)decl;
             }
         }
@@ -286,7 +289,8 @@ public abstract class ClassOrInterfaceDeclarationImpl
         }
         checkInit();
         for(ceylon.language.meta.declaration.NestableDeclaration decl : declaredDeclarations){
-            if (predicate.accept(((NestableDeclarationImpl)decl).declaration)) {
+            Declaration declaration2 = ((NestableDeclarationImpl)decl).declaration;
+            if (!declaration2.isNativeHeader() && predicate.accept(declaration2)) {
                 return (Kind)decl;
             }
         }

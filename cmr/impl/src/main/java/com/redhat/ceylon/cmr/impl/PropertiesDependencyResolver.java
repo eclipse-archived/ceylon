@@ -26,6 +26,7 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
+import com.redhat.ceylon.common.ModuleUtil;
 
 /**
  * Read module info from properties.
@@ -46,19 +47,21 @@ public final class PropertiesDependencyResolver extends ModulesDependencyResolve
             properties.load(stream);
             Set<ModuleDependencyInfo> infos = new LinkedHashSet<>();
             for (Map.Entry<?,?> entry : properties.entrySet()) {
-                String name = entry.getKey().toString();
+                String depUri = entry.getKey().toString();
                 String version = entry.getValue().toString();
                 boolean optional = false;
                 boolean shared = false;
-                if (name.startsWith("+")) {
-                    name = name.substring(1);
+                if (depUri.startsWith("+")) {
+                    depUri = depUri.substring(1);
                     shared = true;
                 }
-                if (name.endsWith("?")) {
-                    name = name.substring(0, name.length() - 1);
+                if (depUri.endsWith("?")) {
+                    depUri = depUri.substring(0, depUri.length() - 1);
                     optional = true;
                 }
-                infos.add(new ModuleDependencyInfo(name, version, optional, shared));
+                String namespace = ModuleUtil.getNamespaceFromUri(depUri);
+                String modName = ModuleUtil.getModuleNameFromUri(depUri);
+                infos.add(new ModuleDependencyInfo(namespace, modName, version, optional, shared));
             }
             ModuleInfo ret = new ModuleInfo(moduleName, moduleVersion, null, infos);
             if(overrides != null)

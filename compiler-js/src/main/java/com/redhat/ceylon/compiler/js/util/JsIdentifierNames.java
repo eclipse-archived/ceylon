@@ -39,6 +39,7 @@ public class JsIdentifierNames {
     }
 
     private static Set<String> reservedWords = new HashSet<String>();
+    private static Set<String> globals = new HashSet<String>();
 
     static {
         // Identifiers that have to be escaped because they are keywords in
@@ -54,6 +55,8 @@ public class JsIdentifierNames {
                 "with", "abstract", "process", "require", "class", "extends", "import",
                 //These are only in strict mode and supposedly break something in the SDK or something
                 //"interface", "let", "package", "yield",
+                "await", "break", "case", "catch", "continue", "else", "finally", "for",
+                "function", "if", "in", "return", "switch", "this", "throw", "try", "while", "with",
                 "super"));
         //Types
         reservedWords.addAll(Arrays.asList("Date", "Object", "Boolean", "Error", "Number", "RegExp"));
@@ -79,6 +82,13 @@ public class JsIdentifierNames {
         //String, Array, etc
         reservedWords.addAll(Arrays.asList("length", "toString", "constructor", "prototype",
                 "concat", "indexOf", "lastIndexOf", "slice", "get"));
+        //Global identifiers. Like reserved words but only affects toplevel declarations, inside the same
+        //module
+        globals.addAll(Arrays.asList("parseFloat", "uneval", "isFinite", "isNaN", "parseInt",
+                "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent",
+                "escape", "unescape", "Symbol", "EvalError", "InternalError", "RangeError",
+                "ReferenceError", "SyntaxError", "TypeError", "URIError", "Math", "DataView",
+                "JSON", "ArrayBuffer"));
     }
 
     public static boolean isReservedWord(String token) {
@@ -186,8 +196,12 @@ public class JsIdentifierNames {
      */
     public String setter(Declaration decl) {
         String name = getName(decl, true, false);
-        return String.format("set%c%s", Character.toUpperCase(name.charAt(0)),
-                name.substring(1));
+        final Module mod = decl.getUnit().getPackage().getModule();
+        if (mod.getJsMajor() > 0 && (mod.getJsMajor() < 9 || (mod.getJsMajor() == 9 && mod.getJsMinor() < 1))) {
+            return String.format("set%c%s", Character.toUpperCase(name.charAt(0)),
+                    name.substring(1));
+        }
+        return String.format("set$%s", name);
     }
 
     /**
@@ -307,8 +321,9 @@ public class JsIdentifierNames {
             if (suffix.length() > 0) {
                 // nested type
                 name += suffix;
-            } else if (!forGetterSetter && reservedWords.contains(name)) {
-                // JavaScript keyword
+            } else if ((!forGetterSetter && !TypeUtils.isConstructor(decl) && reservedWords.contains(name))
+                || isJsGlobal(decl)) {
+                // JavaScript keyword or global declaration
                 name = "$_" + name;
             }
         }
@@ -323,7 +338,7 @@ public class JsIdentifierNames {
             final com.redhat.ceylon.model.typechecker.model.Package raiz = declPkg.getModule().getRootPackage();
             //rootPackage can be null when compiling from IDE
             String rootName = raiz == null ?
-                    (declPkg.getModule().isDefault() ? "" : declPkg.getModule().getNameAsString()) :
+                    (declPkg.getModule().isDefaultModule() ? "" : declPkg.getModule().getNameAsString()) :
                         raiz.getNameAsString();
             String pkgName = declPkg.getNameAsString();
             rootName = pkgName.substring(rootName.length()).replaceAll("\\.", "\\$");
@@ -405,7 +420,20 @@ public class JsIdentifierNames {
     }
 
     public String valueConstructorName(TypeDeclaration d) {
-        TypeDeclaration c = (TypeDeclaration)d.getContainer();
-        return name(c) + "_" + name(c.getDirectMember(d.getName(), null, false));
+        final TypeDeclaration c = (TypeDeclaration)d.getContainer();
+        return name(c) + constructorSeparator(d) + name(c.getDirectMember(d.getName(), null, false));
+    }
+
+    public String constructorSeparator(Declaration c) {
+        final Module mod = c.getUnit().getPackage().getModule();
+        if (mod.getJsMajor() > 0 && (mod.getJsMajor() < 9 || (mod.getJsMajor() == 9 && mod.getJsMinor() < 1))) {
+            return "_";
+        }
+        return "$c_";
+    }
+
+    public boolean isJsGlobal(Declaration d) {
+        return d.isToplevel() && globals.contains(d.getName()) &&
+                d.getUnit().getPackage().getModule().getJsMajor()==0;
     }
 }

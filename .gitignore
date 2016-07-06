@@ -1,2 +1,6 @@
 .gradle/
 build/
+**/.ant-targets-build.xml
+**/.DS_Store
+*~
+\#*\#

@@ -8,8 +8,10 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.CmrRepository;
@@ -327,11 +329,13 @@ public class CeylonRunJsTool extends RepoUsingTool {
         }
         final ProcessBuilder proc;
         if (args != null && !args.isEmpty()) {
-            args.add(0, node);
-            args.add(1, "-e");
-            args.add(2, eval);
-            args.add(3, "dummy"); // See https://github.com/ceylon/ceylon.language/issues/503
-            proc = new ProcessBuilder(args.toArray(new String[0]));
+            ArrayList<String> newargs = new ArrayList<String>(args.size() + 4);
+            newargs.add(node);
+            newargs.add("-e");
+            newargs.add(eval);
+            newargs.add("dummy"); // See https://github.com/ceylon/ceylon.language/issues/503
+            newargs.addAll(args);
+            proc = new ProcessBuilder(newargs.toArray(new String[0]));
         } else {
             proc = new ProcessBuilder(node, "-e", eval);
         }
@@ -370,7 +374,8 @@ public class CeylonRunJsTool extends RepoUsingTool {
         return deps;
     }
 
-    protected void loadDependencies(List<File> repos, RepositoryManager repoman, File jsmod) throws IOException {
+    protected void loadDependencies(List<File> repos, RepositoryManager repoman,
+            File jsmod, Set<String> loaded) throws IOException {
         final List<Object> deps = getDependencies(jsmod);
         if (deps == null) {
             return;
@@ -387,23 +392,27 @@ public class CeylonRunJsTool extends RepoUsingTool {
                 depname = depmap.get("path").toString();
                 optional = new Integer(1).equals(depmap.get("opt"));
             }
-            //Module names have escaped forward slashes due to JSON encoding
-            int idx = depname.indexOf('/');
-            final String modname = depname.substring(0, idx);
-            final String modvers = depname.substring(idx+1);
-            File other = getArtifact(repoman, modname, modvers, optional);
-            if (other != null) {
-                final File f = getRepoDir(modname, other);
-                if (!repos.contains(f)) {
-                    repos.add(f);
+            if (!loaded.contains(depname)) {
+                loaded.add(depname);
+                //Module names have escaped forward slashes due to JSON encoding
+                int idx = depname.indexOf('/');
+                final String modname = depname.substring(0, idx);
+                final String modvers = depname.substring(idx+1);
+                File other = getArtifact(repoman, modname, modvers, optional);
+                if (other != null) {
+                    final File f = getRepoDir(modname, other);
+                    if (!repos.contains(f)) {
+                        repos.add(f);
+                    }
+                    loadDependencies(repos, repoman, other, loaded);
                 }
-                loadDependencies(repos, repoman, other);
             }
         }
     }
 
     @Override
-    public void initialize(CeylonTool mainTool) {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
     }
 
     @Override
@@ -456,8 +465,10 @@ public class CeylonRunJsTool extends RepoUsingTool {
         if (!localRepos.contains(rd)) {
             localRepos.add(rd);
         }
-        loadDependencies(localRepos, getRepositoryManager(), jsmod);
-        customizeDependencies(localRepos, getRepositoryManager());
+        final Set<String> loadedDependencies = new HashSet<>();
+        loadedDependencies.add(module);
+        loadDependencies(localRepos, getRepositoryManager(), jsmod, loadedDependencies);
+        customizeDependencies(localRepos, getRepositoryManager(), loadedDependencies);
 
         final ProcessBuilder proc = buildProcess(modname, version, func, args, exepath, localRepos, output);
         final Process nodeProcess = proc.start();
@@ -492,7 +503,13 @@ public class CeylonRunJsTool extends RepoUsingTool {
 
     // Make sure JS and JS_MODEL artifacts exist and try to obtain the RESOURCES as well
     protected File getArtifact(RepositoryManager repoman, String modName, String modVersion, boolean optional) {
-        ArtifactContext ac = new ArtifactContext(modName, modVersion, ArtifactContext.JS, ArtifactContext.JS_MODEL, ArtifactContext.RESOURCES);
+        final int colonIdx = modName.indexOf(':');
+        String namespace = null;
+        if (colonIdx > 0) {
+            namespace = modName.substring(0,colonIdx);
+            modName = modName.substring(colonIdx + 1);
+        }
+        ArtifactContext ac = new ArtifactContext(namespace, modName, modVersion, ArtifactContext.JS, ArtifactContext.JS_MODEL, ArtifactContext.RESOURCES);
         ac.setIgnoreDependencies(true);
         ac.setThrowErrorIfMissing(false);
         List<ArtifactResult> results = repoman.getArtifactResults(ac);
@@ -500,6 +517,8 @@ public class CeylonRunJsTool extends RepoUsingTool {
         ArtifactResult model = getArtifactType(results, ArtifactContext.JS_MODEL);
         if (code == null || model == null) {
             if (optional) {
+                return null;
+            } else if (code != null && "npm".equals(namespace)) {
                 return null;
             }
             throw new CeylonRunJsException("Cannot find module " + ModuleUtil.makeModuleName(modName, modVersion) + " in specified module repositories");
@@ -529,7 +548,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         return file;
     }
 
-    protected void customizeDependencies(List<File> localRepos, RepositoryManager repoman) throws IOException {
+    protected void customizeDependencies(List<File> localRepos, RepositoryManager repoman, Set<String> loadedDependencies) throws IOException {
     }
 
     // use to test and debug:

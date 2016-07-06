@@ -202,12 +202,13 @@ class ModuleDescriptorReader {
     }
 
     /**
-     * Gets the module imports. Format is [name, version, optional, shared]
+     * Gets the module imports. Format is [repoType, name, version, optional, shared]
      */
     public List<Object[]> getModuleImports(){
         ArrayList<Object[]> imports = new ArrayList<Object[]>();
         for(ModuleImport dep : moduleDescriptor.getImports()){
-            imports.add(new Object[]{ 
+            imports.add(new Object[]{
+                    dep.getNamespace(),
                     dep.getModule().getNameAsString(), 
                     dep.getModule().getVersion(),
                     dep.isOptional(),

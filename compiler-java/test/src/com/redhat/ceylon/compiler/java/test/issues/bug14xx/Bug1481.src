@@ -16,7 +16,9 @@ public class Bug1481Foo implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Foo.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Members({
         @.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap$impl.H3.class),
@@ -64,7 +66,9 @@ public final class Bug1481Heap$impl<Key, Item> implements .java.io.Serializable 
         this.$reified$Key = $reified$Key;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("Key->Item")
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class)
@@ -74,7 +78,9 @@ public final class Bug1481Heap$impl<Key, Item> implements .java.io.Serializable 
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("Key->Item")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class)
     final class HEntry2 {
@@ -104,7 +110,9 @@ public final class Bug1481Heap$impl<Key, Item> implements .java.io.Serializable 
         throw new .ceylon.language.Exception();
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.issues.bug14xx::Bug1481Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class)
@@ -130,7 +138,9 @@ public final class Bug1481Heap$impl<Key, Item> implements .java.io.Serializable 
         throw new .ceylon.language.Exception();
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.issues.bug14xx::Bug1481Foo")
     @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class)
     final class H3 {

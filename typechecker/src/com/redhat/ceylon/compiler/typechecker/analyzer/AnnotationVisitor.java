@@ -10,13 +10,11 @@ import static com.redhat.ceylon.model.loader.model.AnnotationTarget.PACKAGE;
 import static com.redhat.ceylon.model.loader.model.AnnotationTarget.PARAMETER;
 import static com.redhat.ceylon.model.loader.model.AnnotationTarget.TYPE;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
-import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -27,6 +25,7 @@ import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -419,7 +418,7 @@ public class AnnotationVisitor extends Visitor {
                 TypeDeclaration td = t.getDeclaration();
                 if (td!=null) {
                     if (td.isAnnotation()) {
-                        TypecheckerUnit unit = that.getUnit();
+                        Unit unit = that.getUnit();
                         TypeDeclaration annotationDec = 
                                 unit.getAnnotationDeclaration();
                         if (t.isNothing()) {
@@ -428,15 +427,13 @@ public class AnnotationVisitor extends Visitor {
                         if (!td.inherits(annotationDec)) {
                             that.addError("annotation constructor must return a subtype of 'Annotation'");
                         }
-                        if (!unit.getPackage()
-                                .getQualifiedNameString()
-                                .equals(LANGUAGE_MODULE_NAME)) {
-                            String packageName = 
+                        if (!unit.getPackage().isLanguagePackage()) {
+                            boolean langPackage = 
                                     td.getUnit()
                                       .getPackage()
-                                      .getQualifiedNameString();
+                                      .isLanguagePackage();
                             String typeName = td.getName();
-                            if (packageName.equals(LANGUAGE_MODULE_NAME) && 
+                            if (langPackage && 
                                     (typeName.equals("Shared") ||
                                     typeName.equals("Abstract") || 
                                     typeName.equals("Default") ||
@@ -823,7 +820,8 @@ public class AnnotationVisitor extends Visitor {
         }*/
         if (dec!=null) {
             if (!dec.isAnnotation()) {
-                primary.addError("not an annotation constructor");
+                primary.addError("not an annotation constructor: '" 
+                        + dec.getName(that.getUnit()) + "'");
             }
             else {
                 checkAnnotationArguments(null, 
@@ -999,7 +997,7 @@ public class AnnotationVisitor extends Visitor {
         Declaration dec = that.getDeclaration();
         if (!that.getStaticMethodReferencePrimary() &&
                 isAbstraction(dec)) {
-            TypecheckerUnit unit = that.getUnit();
+            Unit unit = that.getUnit();
             if (that.getStaticMethodReference() && 
                     !dec.isStaticallyImportable()) {
                 that.addError("ambiguous static reference to overloaded method or class: '" +
@@ -1024,13 +1022,47 @@ public class AnnotationVisitor extends Visitor {
                         sb.setLength(sb.length()-2);
                     }
                     sb.append("'");
-                    that.addError("ambiguous invocation of overloaded method or class: " +
+                    that.addError("illegal argument types in invocation of overloaded method or class: " +
                             "there must be exactly one overloaded declaration of '" + 
                             dec.getName(unit) + 
-                            "' that accepts the given argument types" + sb);
+                            "' which accepts the given argument types" + sb);
                 }
             }
         }
+    }
+    
+    @Override
+    public void visit(Tree.TypeConstraint that) {
+        Tree.SatisfiedTypes sts = that.getSatisfiedTypes();
+        if (sts != null) {
+            Unit unit = that.getUnit();
+            for (Tree.StaticType t: sts.getTypes()) {
+                Type type = t.getTypeModel();
+                if (type!=null && unit.isJavaArrayType(type)) {
+                    t.addError("type parameter upper bound is a Java array type");
+                }
+            }
+        }
+        super.visit(that);
+    }
+    
+    @Override
+    public void visit(Tree.BaseTypeExpression that) {
+        super.visit(that);
+        Unit unit = that.getUnit();
+        Type type = (Type) that.getTarget();
+        if (type!=null && unit.isJavaObjectArrayType(type)) {
+            Type ta = unit.getJavaArrayElementType(type);
+            if (!ModelUtil.isTypeUnknown(ta) && 
+                    (ta.isNothing() || 
+                     ta.isIntersection() || 
+                     unit.getDefiniteType(ta).isUnion())) {
+                that.addError(
+                        "illegal Java array element type: arrays with element type '" 
+                                + ta.asString(unit) + "' may not be instantiated");
+            }
+        }
+        
     }
     
 }

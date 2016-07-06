@@ -43,9 +43,11 @@ import org.jboss.modules.filter.PathFilter;
 import org.jboss.modules.filter.PathFilters;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.MavenArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
@@ -123,14 +125,14 @@ public class CeylonModuleLoader extends ModuleLoader
         CLI = ModuleIdentifier.create("com.redhat.ceylon.cli", defaultVersion);
 
         // Maven support
-        AETHER_API = ModuleIdentifier.create("org.eclipse.aether.aether-api", "1.1.0");
-        AETHER_SPI = ModuleIdentifier.create("org.eclipse.aether.aether-spi", "1.1.0");
-        AETHER_UTIL = ModuleIdentifier.create("org.eclipse.aether.aether-util", "1.1.0");
-        AETHER_IMPL = ModuleIdentifier.create("org.eclipse.aether.aether-impl", "1.1.0");
-        AETHER_CONNECTOR_BASIC = ModuleIdentifier.create("org.eclipse.aether.aether-connector-basic", "1.1.0");
-        AETHER_TRANSPORT_FILE = ModuleIdentifier.create("org.eclipse.aether.aether-transport-file", "1.1.0");
-        AETHER_TRANSPORT_HTTP = ModuleIdentifier.create("org.eclipse.aether.aether-transport-http", "1.1.0");
-        GUAVA = ModuleIdentifier.create("com.google.guava.guava", "18.0");
+        AETHER_API = ModuleIdentifier.create("org.eclipse.aether.api", "1.1.0");
+        AETHER_SPI = ModuleIdentifier.create("org.eclipse.aether.spi", "1.1.0");
+        AETHER_UTIL = ModuleIdentifier.create("org.eclipse.aether.util", "1.1.0");
+        AETHER_IMPL = ModuleIdentifier.create("org.eclipse.aether.impl", "1.1.0");
+        AETHER_CONNECTOR_BASIC = ModuleIdentifier.create("org.eclipse.aether.connector.basic", "1.1.0");
+        AETHER_TRANSPORT_FILE = ModuleIdentifier.create("org.eclipse.aether.transport.file", "1.1.0");
+        AETHER_TRANSPORT_HTTP = ModuleIdentifier.create("org.eclipse.aether.transport.http", "1.1.0");
+        GUAVA = ModuleIdentifier.create("com.google.guava", "18.0");
         COMMONS_LANG3 = ModuleIdentifier.create("org.apache.commons.lang3", "3.4");
         MAVEN_ARTIFACT = ModuleIdentifier.create("org.apache.maven.maven-artifact", "3.3.9");
         MAVEN_MODEL = ModuleIdentifier.create("org.apache.maven.maven-model", "3.3.9");
@@ -314,14 +316,19 @@ public class CeylonModuleLoader extends ModuleLoader
     }
 
     protected ArtifactResult findArtifact(ModuleIdentifier mi) {
-        final ArtifactContext context = new ArtifactContext(mi.getName(), mi.getSlot(), ArtifactContext.CAR, ArtifactContext.JAR);
+        String namespace = ModuleUtil.getNamespaceFromUri(mi.getName());
+        String name = ModuleUtil.getModuleNameFromUri(mi.getName());
+        final ArtifactContext context = new ArtifactContext(namespace, name, mi.getSlot(), ArtifactContext.CAR, ArtifactContext.JAR);
         return repository.getArtifactResult(context);
     }
     
     protected ModuleIdentifier findOverride(ModuleIdentifier mi) {
-        final ArtifactContext context = new ArtifactContext(mi.getName(), mi.getSlot(), ArtifactContext.CAR, ArtifactContext.JAR);
+        String namespace = ModuleUtil.getNamespaceFromUri(mi.getName());
+        String name = ModuleUtil.getModuleNameFromUri(mi.getName());
+        final ArtifactContext context = new ArtifactContext(namespace, name, mi.getSlot(), ArtifactContext.CAR, ArtifactContext.JAR);
         ArtifactContext override = repository.getOverrides().applyOverrides(context);
-        return ModuleIdentifier.create(override.getName(), override.getVersion());
+        String newName = ModuleUtil.makeModuleName(override.getNamespace(), override.getName(), null);
+        return ModuleIdentifier.create(newName, override.getVersion());
     }
     
     @Override
@@ -399,7 +406,7 @@ public class CeylonModuleLoader extends ModuleLoader
                         continue;
                     }
 
-                    boolean isDepMaven = name.contains(":");
+                    boolean isDepMaven = MavenArtifactContext.NAMESPACE.equals(i.namespace());
 
                     if (i.importType() == ImportType.OPTIONAL) {
                         Node<ArtifactResult> current = root;
@@ -573,7 +580,8 @@ public class CeylonModuleLoader extends ModuleLoader
      * @return module identifer
      */
     static ModuleIdentifier createModuleIdentifier(ArtifactResult i) {
-        return ModuleIdentifier.create(i.name(), i.version());
+        String name = ModuleUtil.makeModuleName(i.namespace(), i.name(), null);
+        return ModuleIdentifier.create(name, i.version());
     }
 
     @Override

@@ -1,0 +1,3 @@
+<overrides>
+ <set groupId="com.android.support" artifactId="support-annotations" version="23.0.1"/>
+</overrides>

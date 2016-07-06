@@ -115,3 +115,21 @@ class CompBar() satisfies Comp<CompBar> {
     }
 }
 
+abstract class OkSelfTypeWithUpperBound<T>() 
+        given T satisfies Object {
+    class Inner() of T {
+        shared String size = "big";
+    }
+    T t = Inner() of T;
+    Integer size = t.hash;
+}
+
+abstract class BrokenSelfTypeWithUpperBound<T>() 
+        given T satisfies String {
+    @error class Inner() of T {
+        shared String size = "big";
+    }
+    T t = Inner() of T;
+    Integer size = t.size;
+}
+

@@ -27,6 +27,8 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.BooleanUtil;
@@ -102,6 +104,7 @@ public class StatementTransformer extends AbstractTransformer {
     // Used to hold the name of the variable associated with the fail-block if the innermost for-loop
     // Is null if we're currently in a while-loop or not in any loop at all
     private Name currentForFailVariable = null;
+    private Naming.SyntheticName currentEnteredVariable = null;
     
     /**
      * If false generating plain {@code return;} statements is OK.
@@ -117,6 +120,9 @@ public class StatementTransformer extends AbstractTransformer {
     private final Transformer<List<JCStatement>, Tree.Break> defaultBreakTransformer = new DefaultBreakTransformer();
     private final Transformer<JCStatement, Tree.Continue> defaultContinueTransformer = new DefaultContinueTransformer();
     private Transformer<JCStatement, Tree.Continue> continueTransformer = defaultContinueTransformer;
+    
+    private Tree.Block currentBlock = null;
+    private Map<Tree.Block, Runnable> onEndBlock = new IdentityHashMap<>();
     
     public static StatementTransformer getInstance(Context context) {
         StatementTransformer trans = context.get(StatementTransformer.class);
@@ -154,6 +160,8 @@ public class StatementTransformer extends AbstractTransformer {
         final ListBuffer<JCTree> prevDefs = v.defs;
         final boolean prevInInitializer = v.inInitializer;
         final ClassDefinitionBuilder prevClassBuilder = v.classBuilder;
+        Tree.Block oldBlock = block;
+        currentBlock = block;
         List<JCStatement> result;
         try {
             v.defs = new ListBuffer<JCTree>();
@@ -182,6 +190,10 @@ public class StatementTransformer extends AbstractTransformer {
                 }
             }
             result = (List<JCStatement>)v.getResult().toList();
+            Runnable r = onEndBlock.get(block);
+            if (r != null) {
+                r.run();
+            }
         } finally {
             v.classBuilder = prevClassBuilder;
             v.inInitializer = prevInInitializer;
@@ -192,6 +204,7 @@ public class StatementTransformer extends AbstractTransformer {
                 scope = scope.getScope();
             }
             naming.closeScopedSubstitutions(scope);
+            currentBlock = oldBlock;
         }
         return result;
     }
@@ -1620,6 +1633,9 @@ public class StatementTransformer extends AbstractTransformer {
             
             List<JCStatement> body = transformBlock(stmt.getForClause().getBlock());
             body = body.prependList(itemDecls);
+            if (needsLoopEnteredCheck()) {
+                body = body.prepend(makeLoopEntered());
+            }
             
             JCStatement forLoop = make().Labelled(label, make().ForeachLoop(loopvar, 
                     expressionGen().transformExpression(forIterator.getSpecifierExpression().getExpression()), 
@@ -1714,7 +1730,9 @@ public class StatementTransformer extends AbstractTransformer {
                     Naming.getVariableName(getElementOrKeyVariable()), 
                     typeExpr, 
                     codePointAtCallExpr));
-            
+            if (needsLoopEnteredCheck()) {
+                transformedBlock = transformedBlock.prepend(makeLoopEntered());
+            }
             JCStatement block = make().Block(0, transformedBlock);
             
             
@@ -1876,7 +1894,9 @@ public class StatementTransformer extends AbstractTransformer {
             } else {
                 throw BugException.unhandledCase(forIterator);
             }
-            
+            if (needsLoopEnteredCheck()) {
+                transformedBlock = transformedBlock.prepend(makeLoopEntered());
+            }
             JCStatement block = make().Block(0, transformedBlock);
             result.add(make().Labelled(this.label, make().ForLoop(
                     List.<JCStatement>of(iVar), 
@@ -2065,7 +2085,7 @@ public class StatementTransformer extends AbstractTransformer {
         
         @Override
         protected JCExpression makeIndexableType() {
-            return makeJavaType(javaArrayType);
+            return makeJavaType(javaArrayType, JT_NO_PRIMITIVES);
         }
         
         @Override
@@ -2447,6 +2467,7 @@ public class StatementTransformer extends AbstractTransformer {
         protected Tree.ForStatement stmt;
         protected final Name label;
         protected final Name failVar;
+        protected final Naming.SyntheticName enteredVar;
         
         ForStatementTransformation(Tree.ForStatement stmt) {
             this.stmt = stmt;
@@ -2457,6 +2478,7 @@ public class StatementTransformer extends AbstractTransformer {
             } else {
                 failVar = null;
             }
+            enteredVar = naming.alias("loopentered");
         }
         
         protected final Tree.ForIterator getForIterator() {
@@ -2500,6 +2522,7 @@ public class StatementTransformer extends AbstractTransformer {
             at(stmt);
             ListBuffer<JCStatement> outer = new ListBuffer<JCStatement>();
             Name tempForFailVariable = currentForFailVariable;
+            Naming.SyntheticName tempEnteredVariable = currentEnteredVariable;
             try {
                 // Install the outer substitutions
                 Iterable<Value> deferredSpecifiedInFor = stmt.getForClause().getControlBlock().getSpecifiedValues();
@@ -2518,14 +2541,23 @@ public class StatementTransformer extends AbstractTransformer {
                 } else {
                     currentForFailVariable = null;
                 }
+                if (needsLoopEnteredCheck()) {
+                    JCVariableDecl enteredDecl = make().VarDef(make().Modifiers(0), enteredVar.asName(), make().TypeIdent(TypeTag.BOOLEAN), make().Literal(false));
+                    outer.append(enteredDecl);
+                    currentEnteredVariable = enteredVar;
+                } else {
+                    currentEnteredVariable = null;
+                }
                 
                 outer.appendList(transformForClause());
+                if (needsLoopEnteredCheck()) {
+                    outer.append(makeLoopEnteredCheck());
+                }
                 
                 if (stmt.getElseClause() != null) {
                     // The user-supplied contents of fail block
                     List<JCStatement> failblock = transformBlock(stmt.getElseClause().getBlock());
                     // Close the inner substitutions of the else block
-                    closeInnerSubstituionsForSpecifiedValues(stmt.getElseClause(), false);
                     if (needsFailVar()) {
                         // if ($doforelse$X) ...
                         JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
@@ -2545,11 +2577,26 @@ public class StatementTransformer extends AbstractTransformer {
             
             } finally {
                 currentForFailVariable = tempForFailVariable;
+                currentEnteredVariable = tempEnteredVariable;
             }
     
             return outer.toList();
         }
-
+        
+        protected boolean needsLoopEnteredCheck() {
+            return stmt.getUnit().isNonemptyIterableType(getIterable().getTypeModel());
+        }
+        
+        protected JCStatement makeLoopEntered() {
+            return at(stmt).Exec(at(stmt).Assign(currentEnteredVariable.makeIdent(), make().Literal(true)));
+        }
+        
+        protected JCStatement makeLoopEnteredCheck() {
+            return at(stmt).If(make().Unary(JCTree.Tag.NOT, currentEnteredVariable.makeIdent()),
+                    makeThrowAssertionException(make().Literal("nonempty Iterable with initial 'finished' element")), 
+                    null);
+        }
+        
         private boolean needsFailVar() {
             return stmt.getExits() && stmt.getElseClause() != null;
         }
@@ -2600,7 +2647,8 @@ public class StatementTransformer extends AbstractTransformer {
                     sequenceElementType,
                     containment,
                     itemDecls,
-                    stmts, 
+                    stmts,
+                    needsLoopEnteredCheck() ? makeLoopEntered() : null,
                     !isOptimizationDisabled(stmt, Optimization.ArrayIterationDynamic),
                     !isOptimizationDisabled(stmt, Optimization.TupleIterationDynamic)));
         }
@@ -2642,7 +2690,7 @@ public class StatementTransformer extends AbstractTransformer {
             JCExpression iterableExpr,
             List<JCStatement> itemDecls,
             List<JCStatement> bodyStmts,
-            boolean allowArrayOpt, boolean allowArraySeqOpt) {
+            JCStatement loopEntered, boolean allowArrayOpt, boolean allowArraySeqOpt) {
         Type iteratorElementType = iteratedType;
         ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
         
@@ -2735,6 +2783,9 @@ public class StatementTransformer extends AbstractTransformer {
         result.append(iteratorDecl);
         
         ListBuffer<JCStatement> loopBody = new ListBuffer<JCStatement>();
+        if (loopEntered != null) {
+            loopBody.append(loopEntered);
+        }
         
         if(optForArray || optForTuple) {
         	JCExpression cond;
@@ -2858,6 +2909,12 @@ public class StatementTransformer extends AbstractTransformer {
             varname = naming.alias(getVariable().getIdentifier().getText());
         }
         
+        @Override
+        protected boolean needsLoopEnteredCheck() {
+            // Since we use a do/while we must enter the loop
+            return false;
+        }
+        
         protected final boolean isIntegerSpan() {
             return type.getTag() == syms().longType.getTag();
         }
@@ -2922,6 +2979,9 @@ public class StatementTransformer extends AbstractTransformer {
             
             // Now add the PRE- and POST-STATEMENTS
             blockStatements = decorateBlock(blockStatements);
+            if (needsLoopEnteredCheck()) {
+                blockStatements = blockStatements.prepend(makeLoopEntered());
+            }
             
             // The actual loop
             result.append(make().Labelled(this.label, makeLoop(blockStatements)));
@@ -3276,9 +3336,10 @@ public class StatementTransformer extends AbstractTransformer {
      * also generate a final <tt>x$$</tt> and install an "inner substitution"
      * {@code x->x$$} so that captured references within the control
      * structure still work.</li>
-     * <li>At end end of the else Blocks of for/else and at 
-     * Break, Continue, Throw and Return statements within the
-     * control structure we remove the "inner substitution" {@code x->x$$}
+     * <li>At end end of the block in which the value is specified we remove 
+     * the "inner substitution" {@code x->x$$}. This assumes that the Ceylon 
+     * block mirrors the java block structure which is not  necessarily true, 
+     * but is true enough in practice.
      * <li>At the end of the control structure we assign <tt>x = x$</tt>
      * and remove the "outer substitution" {@code x->x$}</li>
      * </ul>
@@ -3292,6 +3353,7 @@ public class StatementTransformer extends AbstractTransformer {
         private Naming.Substitution outerSubst = null;
         private SyntheticName innerAlias;
         private Naming.Substitution innerSubst = null;
+        private JCExpression alias;
         
         public DeferredSpecification(Value value, int modifiers, Type type) {
             this.value = value;
@@ -3359,6 +3421,9 @@ public class StatementTransformer extends AbstractTransformer {
             if (innerSubst != null || innerAlias != null) {
                 throw new BugException("An inner substitution (" + innerSubst + ") is already open");
             }
+            // We're going to need the unaliased variable when we close the outer substitution
+            alias = naming.makeName(value, Naming.NA_IDENT);
+            
             try (SavedPosition pos = noPosition()) {
                 innerAlias = naming.alias(value.getName());
                 JCStatement result = makeVar(
@@ -3367,20 +3432,23 @@ public class StatementTransformer extends AbstractTransformer {
                         makeJavaType(type, (value.getUnboxed() == false) ? AbstractTransformer.JT_NO_PRIMITIVES : 0), 
                         naming.makeName(value, Naming.NA_IDENT));
                 innerSubst = naming.addVariableSubst(value, innerAlias.getName());
+                
+                // Close this substitution when we finish transforming the current block
+                onEndBlock.put(currentBlock, new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if (innerSubst == null || innerAlias == null) {
+                            throw new BugException("No inner substitution to close");
+                        }
+                        innerSubst.close();
+                        innerSubst = null;
+                        innerAlias = null;
+                    }
+                    
+                });
                 return result;
             }
-        }
-        
-        /**
-         * Removes the "inner substitution" installed by {@link #openInnerSubstitution()}
-         */
-        public void closeInnerSubstitution() {
-            if (innerSubst == null || innerAlias == null) {
-                throw new BugException("No inner substitution to close");
-            }
-            innerSubst.close();
-            innerSubst = null;
-            innerAlias = null;
         }
         
         /**
@@ -3395,7 +3463,6 @@ public class StatementTransformer extends AbstractTransformer {
                 throw new BugException("No outer substitution to close");
             }
             try (SavedPosition pos = noPosition()) {
-                JCExpression alias = naming.makeName(value, Naming.NA_IDENT);
                 outerSubst.close();
                 outerSubst = null;
                 JCExpression var = naming.makeName(value, Naming.NA_IDENT);
@@ -3408,48 +3475,6 @@ public class StatementTransformer extends AbstractTransformer {
     
     public DeferredSpecification getDeferredSpecification(Declaration value) {
         return deferredSpecifications.get(value);
-    }
-    
-    /**
-     * Removes the "inner substitutions" for any deferred values specified 
-     * in the given control block.
-     * 
-     * If we're closing the substitutions because of a return or throw then 
-     * all enclosing substitutions need to be closed. 
-     * If it's because of a break/continue then just those for the given 
-     * controlClause need to be closed.
-     */
-    private void closeInnerSubstituionsForSpecifiedValues(Tree.ControlClause contolClause, boolean enclosing) {
-        if (contolClause != null) {
-            ControlBlock controlBlock = contolClause.getControlBlock();
-            outer: while (true) {
-                java.util.Set<Value> assigned = controlBlock.getSpecifiedValues();
-                if (assigned != null) {
-                    for (Value value : assigned) {
-                        DeferredSpecification ds = statementGen().getDeferredSpecification(value);
-                        if (ds != null) {
-                            ds.closeInnerSubstitution();
-                        }
-                    }
-                }
-                if (!enclosing) {
-                    break;
-                }
-                Scope s = controlBlock.getContainer();
-                while (s != null) {
-                    if (s instanceof ControlBlock) {
-                        controlBlock = (ControlBlock)s;
-                        continue outer;
-                    } else if (s instanceof Declaration) {
-                     // we need to stop when we reach a control block that 
-                        // encloses the declaration of the value
-                        break outer;
-                    }
-                    s = s.getContainer();
-                }
-                break;
-            }
-        }
     }
     
     // FIXME There is a similar implementation in ClassGen!
@@ -3518,9 +3543,6 @@ public class StatementTransformer extends AbstractTransformer {
 
         @Override
         public List<JCStatement> transform(Break stmt) {
-           // Remove the inner substitutions for any deferred values specified 
-            // in the control block
-            closeInnerSubstituionsForSpecifiedValues(currentForClause, false);
             
             JCStatement brk = at(stmt).Break(getLabel(stmt));
         
@@ -3566,19 +3588,13 @@ public class StatementTransformer extends AbstractTransformer {
         }
         
         public JCStatement transform(Tree.Return ret) {
-            // Remove the inner substitutions for any deferred values specified 
-            // in the control block
-            closeInnerSubstituionsForSpecifiedValues(currentForClause, true);
-            at(ret);
             return at(ret).Break(label);
         }
     }
     
     class DefaultReturnTransformer implements Transformer<JCStatement, Tree.Return> {
         public JCStatement transform(Tree.Return ret) {
-            // Remove the inner substitutions for any deferred values specified 
-            // in the control block
-            closeInnerSubstituionsForSpecifiedValues(currentForClause, true);
+            
             Tree.Expression expr = ret.getExpression();
             JCExpression returnExpr = null;
             at(ret);
@@ -3681,9 +3697,6 @@ public class StatementTransformer extends AbstractTransformer {
     };
     
     public JCStatement transform(Tree.Throw t) {
-        // Remove the inner substitutions for any deferred values specified 
-        // in the control block
-        closeInnerSubstituionsForSpecifiedValues(currentForClause, true);
         at(t);
         Tree.Expression expr = t.getExpression();
         final JCExpression exception;
@@ -3694,7 +3707,9 @@ public class StatementTransformer extends AbstractTransformer {
                     null);
         } else {
             // we must unerase the exception to Throwable
-            Type exceptionType = expr.getTypeModel().getSupertype(t.getUnit().getThrowableDeclaration());
+        	Type exprType = expr.getTypeModel();
+        	TypeDeclaration throwable = t.getUnit().getThrowableDeclaration();
+        	Type exceptionType = exprType.isNothing() ? throwable.getType() : exprType.getSupertype(throwable); 
             exception = gen().expressionGen().transformExpression(expr, BoxingStrategy.UNBOXED, exceptionType);
         }
         return make().Throw(exception);
@@ -4730,8 +4745,8 @@ public class StatementTransformer extends AbstractTransformer {
         return getLabel(loop.getControlBlock());
     }
     
-    public List<JCVariableDecl> transformVariableOrDestructure(Tree.Statement varOrDes) {
-        List<JCVariableDecl> vars = List.<JCVariableDecl>nil();
+    public List<JCStatement> transformVariableOrDestructure(Tree.Statement varOrDes) {
+        List<JCStatement> vars = List.<JCStatement>nil();
         if (varOrDes instanceof Tree.Variable) {
             Tree.Variable var = (Tree.Variable)varOrDes;
             Expression expr = var.getSpecifierExpression().getExpression();
@@ -4752,8 +4767,8 @@ public class StatementTransformer extends AbstractTransformer {
      * @param stmt The Ceylon destructure
      * @return The Java tree
      */
-    List<JCVariableDecl> transform(Tree.Destructure stmt) {
-        List<JCVariableDecl> result = List.nil();
+    List<JCStatement> transform(Tree.Destructure stmt) {
+        List<JCStatement> result = List.nil();
         
         // Create temp var to hold result of expression
         Tree.Pattern pat = stmt.getPattern();
@@ -4766,8 +4781,20 @@ public class StatementTransformer extends AbstractTransformer {
         result = result.append(tmpVar);
         
         // Now add the destructured variables
-        List<JCVariableDecl> vars = VarDefBuilder.buildAll(transformPattern(pat, tmpVarName.makeIdent()));
-        result = result.appendList(vars);
+        List<VarDefBuilder> destructured = transformPattern(pat, tmpVarName.makeIdent());
+        for (VarDefBuilder vdb : destructured) {
+            Value v = vdb.var.getDeclarationModel();
+            at(vdb.var);
+            if (v.isClassMember() && v.isCaptured()) {
+                AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, v.getName(), v);
+                adb.immutable();
+                classGen().current().attribute(adb);
+                classGen().current().defs(vdb.buildDefOnly());
+                result = result.append(make().Exec(make().Assign(vdb.name().makeIdentWithThis(), vdb.expr())));
+            } else {
+                result = result.append(vdb.build());
+            }
+        }
         
         return result;
     }
@@ -4855,14 +4882,6 @@ public class StatementTransformer extends AbstractTransformer {
             return def;
         }
         
-        static List<JCVariableDecl> buildAll(List<VarDefBuilder> vars) {
-            List<JCVariableDecl> result = List.nil();
-            for (VarDefBuilder vdb : vars) {
-                result = result.append(vdb.build());
-            }
-            return result;
-        }
-
         @Override
         public String toString() {
             return "VarDefBuilder [build()=" + buildInternal() + "]";
@@ -4902,7 +4921,22 @@ public class StatementTransformer extends AbstractTransformer {
                     }
                     fullGetExpr = make().Apply(null, tupleAccessExpr, List.of(idxExpr));
                     if (isVariadicVariable(p)) {
-                        fullGetExpr = make().Apply(null, makeQualIdent(fullGetExpr, "sequence"), List.<JCExpression>nil());
+                        Tree.Variable vp = ((Tree.VariablePattern)p).getVariable();
+                        Type vt = vp.getDeclarationModel().getType();
+                        Naming.SyntheticName tail = naming.alias("tail");
+                        int minLength = p.getUnit().getTupleMinimumLength(vt);
+                        if (minLength > 0) {
+                            // defend against tuples containing finished
+                            JCStatement v = makeVar(tail, makeJavaType(typeFact().getSequentialType(ot), JT_RAW), make().Apply(null, makeQualIdent(fullGetExpr, "sequence"), List.<JCExpression>nil()));
+                            JCStatement c = make().If(make().Apply(null,
+                                    naming.makeSelect(tail.makeIdent(), "shorterThan"), List.<JCExpression>of(make().Literal(minLength))),
+                                    makeThrowAssertionException(make().Literal("length of " + vp.getDeclarationModel().getName() + " is less than minimum length of its static type " + vt.asString())), 
+                                    null);
+                            fullGetExpr = make().LetExpr(List.<JCStatement>of(v, c), 
+                                    make().TypeCast(makeJavaType(vt), tail.makeIdent()));
+                        } else {
+                            fullGetExpr = make().Apply(null, makeQualIdent(fullGetExpr, "sequence"), List.<JCExpression>nil());
+                        }
                     }
                 } else {
                     fullGetExpr = null;

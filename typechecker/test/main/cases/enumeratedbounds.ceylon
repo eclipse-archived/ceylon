@@ -37,3 +37,7 @@ class Lizt<out Item>() {
         return i of Item; 
     }
 }
+
+class C<T,U>() given T of String[]|Map<String,U> {}
+
+class D<T,U>() given T of Map<String,U>|String[] {}

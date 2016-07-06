@@ -26,6 +26,7 @@ import static com.redhat.ceylon.langtools.tools.javac.code.Flags.PUBLIC;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.STATIC;
 import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.VOID;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -357,6 +358,11 @@ public class MethodDefinitionBuilder
                 nonWideningType)) {
             pdb.type(gen.make().Type(gen.syms().objectType), gen.makeJavaTypeAnnotations(decl.getModel()));
         } else {
+            if((modifiers & Flags.VARARGS) != 0){
+                // turn this into a Java variadic
+                Type elementType = gen.typeFact().getIteratedType(nonWideningType);
+                nonWideningType = gen.typeFact().getJavaObjectArrayDeclaration().appliedType(null, Arrays.asList(elementType));
+            }
             pdb.type(paramType(gen, nonWideningDecl, nonWideningType, flags), gen.makeJavaTypeAnnotations(decl.getModel()));
         }
         return parameter(pdb);
@@ -399,11 +405,19 @@ public class MethodDefinitionBuilder
     }
     
     static class NonWideningParam {
+        /**
+         * Flags for makeJavaType
+         */
         public final int flags;
+        /**
+         * Modifiers for JCModifiers
+         */
+        public final long modifiers;
         public final Type nonWideningType;
         public final TypedDeclaration nonWideningDecl;
-        NonWideningParam(int mods, Type nonWideningType, TypedDeclaration nonWideningDecl){
-            this.flags = mods;
+        NonWideningParam(int flags, long modifiers, Type nonWideningType, TypedDeclaration nonWideningDecl){
+            this.flags = flags;
+            this.modifiers = modifiers;
             this.nonWideningType = nonWideningType;
             this.nonWideningDecl = nonWideningDecl;
         }
@@ -428,12 +442,14 @@ public class MethodDefinitionBuilder
         FunctionOrValue mov = CodegenUtil.findMethodOrValueForParam(param);
         if(typedRef == null)
             typedRef = gen.getTypedReference(mov);
-        int mods = 0;
+        long mods = 0;
         if (!Decl.isNonTransientValue(mov) || !mov.isVariable() || mov.isCaptured()) {
             mods |= FINAL;
         }
         NonWideningParam nonWideningParam = getNonWideningParam(typedRef, wideningRules);
         flags |= nonWideningParam.flags;
+        mods |= nonWideningParam.modifiers;
+        
         return parameter(node, mods, param.getModel().getAnnotations(), userAnnotations, paramName, aliasedName, param, 
                 nonWideningParam.nonWideningDecl, nonWideningParam.nonWideningType, flags);
     }
@@ -447,6 +463,7 @@ public class MethodDefinitionBuilder
             WideningRules wideningRules) {
         TypedDeclaration nonWideningDecl = null;
         int flags = 0;
+        long modifiers = 0;
         Type nonWideningType;
         FunctionOrValue mov = (FunctionOrValue) typedRef.getDeclaration();
         if (Decl.isValue(mov)) {
@@ -470,6 +487,12 @@ public class MethodDefinitionBuilder
         if(wideningRules != WideningRules.NONE
                 && mov instanceof Value){
             TypedDeclaration refinedParameter = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(mov);
+            if(refinedParameter != null
+                    && refinedParameter instanceof Value
+                    && ((Value)refinedParameter).getInitializerParameter() != null
+                    && gen.isJavaVariadic(((Value)refinedParameter).getInitializerParameter())){
+                modifiers |= Flags.VARARGS;
+            }
             // mixin bridge methods have the same rules as when refining stuff except they are their own refined decl
             if(wideningRules == WideningRules.FOR_MIXIN || !Decl.equal(refinedParameter, mov)){
                 Type refinedParameterType;
@@ -508,7 +531,7 @@ public class MethodDefinitionBuilder
                 && gen.rawParameters((Declaration) mov.getContainer())) {
             flags |= AbstractTransformer.JT_RAW;
         }
-        return new NonWideningParam(flags, nonWideningType, nonWideningDecl);
+        return new NonWideningParam(flags, modifiers, nonWideningType, nonWideningDecl);
     }
 
     public MethodDefinitionBuilder isOverride(boolean isOverride) {

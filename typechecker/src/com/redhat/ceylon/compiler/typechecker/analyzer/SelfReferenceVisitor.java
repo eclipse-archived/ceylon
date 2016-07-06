@@ -144,7 +144,8 @@ public class SelfReferenceVisitor extends Visitor {
         Declaration member = 
                 resolveTypeAliases(that.getDeclaration());
         if (member!=null &&
-                isInherited(that.getScope(), member)) {
+                isInherited(that.getScope(), member) &&
+                !member.getUnit().getPackage().getModule().isJava()) {
             Declaration container = 
                     (Declaration) 
                     member.getContainer();

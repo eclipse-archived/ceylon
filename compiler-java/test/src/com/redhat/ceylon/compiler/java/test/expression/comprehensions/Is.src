@@ -17,12 +17,12 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common common() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo foo() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
@@ -38,7 +38,7 @@ class FooSub extends .com.redhat.ceylon.compiler.java.test.expression.comprehens
     }
     
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub foo2() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
@@ -59,12 +59,12 @@ class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common common() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar bar() {
-        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

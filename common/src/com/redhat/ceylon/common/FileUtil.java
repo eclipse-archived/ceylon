@@ -9,6 +9,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -255,20 +256,21 @@ public class FileUtil {
      */
     public static File[] getExecPath() {
         String path = System.getenv("PATH");
-        if (path != null && !path.isEmpty()) {
-            String[] items = path.split(Pattern.quote(File.pathSeparator));
-            File[] result = new File[items.length];
-            for (int i = 0; i < items.length; i++) {
-                result[i] = new File(items[i]);
-            }
-            return result;
-        } else {
-            return EMPTY_FILES;
-        }
+        return pathToFileArray(path);
     }
     
     private static final String[] EMPTY_STRINGS = new String[0];
     private static final File[] EMPTY_FILES = new File[0];
+    
+    public static List<File> pathToFileList(String path) {
+        if (path != null && !path.isEmpty()) {
+            String[] items = path.split(Pattern.quote(File.pathSeparator));
+            return pathsToFileList(Arrays.asList(items));
+        } else {
+            return Collections.emptyList();
+        }
+        
+    }
     
     public static List<File> pathsToFileList(Collection<String> paths) {
         if (paths != null) {
@@ -283,12 +285,21 @@ public class FileUtil {
         
     }
     
+    public static File[] pathToFileArray(String path) {
+        if (path != null && !path.isEmpty()) {
+            String[] items = path.split(Pattern.quote(File.pathSeparator));
+            return pathsToFileArray(items);
+        } else {
+            return EMPTY_FILES;
+        }
+        
+    }
+    
     public static File[] pathsToFileArray(String[] paths) {
         if (paths != null) {
             File[] result = new File[paths.length];
-            int idx = 0;
-            for (String s : paths) {
-                result[idx++] = new File(s);
+            for (int i = 0; i < paths.length; i++) {
+                result[i] = new File(paths[i]);
             }
             return result;
         } else {

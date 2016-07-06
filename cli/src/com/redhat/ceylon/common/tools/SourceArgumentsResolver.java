@@ -88,13 +88,13 @@ public class SourceArgumentsResolver {
         Iterable<File> srcs = FileUtil.applyCwd(cwd, sourceDirs);
         Iterable<File> resrcs = FileUtil.applyCwd(cwd, resourceDirs);
         for (String moduleOrFile : modulesOrFiles) {
-            File file = new File(moduleOrFile);
+            File file = FileUtil.applyCwd(cwd, new File(moduleOrFile));
             if (file.isFile()) {
                 // It's a single (re)source file instead of a module name, so let's check
                 // if it's really located in one of the defined (re)source folders
                 File path;
                 if (hasAcceptedSuffix(file, sourceSuffixes)) {
-                    path = FileUtil.selectPath(srcs, moduleOrFile);
+                    path = FileUtil.selectPath(srcs, file.getPath());
                     if (path == null) {
                         String srcPath = sourceDirs.toString();
                         throw new ToolUsageError(CeylonToolMessages.msg("error.not.in.source.path", moduleOrFile, srcPath));

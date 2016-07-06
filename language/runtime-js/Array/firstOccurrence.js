@@ -10,7 +10,7 @@ function(e,from,len){
     }
   } else {
     for (var i=from;i<lim;i++) {
-      if (this.arr$[i]!==null && e.equals(this.arr$[i]))return i;
+      if (this.arr$[i]!==null && $eq$(e,this.arr$[i]))return i;
     }
   }
   return null;

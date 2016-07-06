@@ -307,7 +307,7 @@ public class ModelLoaderTests extends CompilerTests {
         RuntimeModuleManager moduleManager = new RuntimeModuleManager(null);
         context.setModules(new Modules());
         moduleManager.initCoreModules(new Modules());
-        moduleManager.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, Versions.CEYLON_VERSION_NUMBER, repoManager.getArtifactResult("ceylon.language", Versions.CEYLON_VERSION_NUMBER), 
+        moduleManager.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, Versions.CEYLON_VERSION_NUMBER, repoManager.getArtifactResult(null, "ceylon.language", Versions.CEYLON_VERSION_NUMBER), 
                 getClass().getClassLoader());
         RuntimeModelLoader modelLoader = moduleManager.getModelLoader();
         modelLoader.setupWithNoStandardModules();

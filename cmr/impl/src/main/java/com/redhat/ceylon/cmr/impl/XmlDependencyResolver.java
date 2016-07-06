@@ -56,7 +56,7 @@ final public class XmlDependencyResolver extends ModulesDependencyResolver {
             final Module module = parse(stream);
             final Set<ModuleDependencyInfo> infos = new LinkedHashSet<>();
             for (ModuleIdentifier mi : module.getDependencies()) {
-                infos.add(new ModuleDependencyInfo(mi.getName(), mi.getSlot(), mi.isOptional(), mi.isExport()));
+                infos.add(new ModuleDependencyInfo(null, mi.getName(), mi.getSlot(), mi.isOptional(), mi.isExport()));
             }
             ModuleInfo ret = new ModuleInfo(name, version, module.getFilter(), infos);
             if(overrides != null)

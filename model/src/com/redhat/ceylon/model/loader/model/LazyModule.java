@@ -51,7 +51,7 @@ public abstract class LazyModule extends Module {
         
         // unless we're the default module, in which case we have to check this at the end,
         // since every package can be part of the default module
-        boolean defaultModule = isDefault();
+        boolean defaultModule = isDefaultModule();
         if(!defaultModule){
             pkg = findPackageInModule(this, name);
             if(pkg != null)
@@ -175,7 +175,6 @@ public abstract class LazyModule extends Module {
     }
 
     public boolean containsPackage(String pkgName){
-        String moduleName = getNameAsString();
         if(!isJava){
             List<Package> superPackages = super.getPackages();
             for(int i=0,l=superPackages.size();i<l;i++){
@@ -183,8 +182,8 @@ public abstract class LazyModule extends Module {
                     return true;
             }
             // The language module is in the classpath and does not have its jarPackages loaded
-            if(moduleName.equals(Module.LANGUAGE_MODULE_NAME)){
-                return JvmBackendUtil.isSubPackage(moduleName, pkgName)
+            if(isLanguageModule()){
+                return JvmBackendUtil.isSubPackage(getNameAsString(), pkgName)
                         || pkgName.startsWith("com.redhat.ceylon.compiler.java.runtime")
                         || pkgName.startsWith("com.redhat.ceylon.compiler.java.language")
                         || pkgName.startsWith("com.redhat.ceylon.compiler.java.metadata");
@@ -192,7 +191,7 @@ public abstract class LazyModule extends Module {
             return getJarPackages().contains(pkgName);
         }else{
             // special rules for the JDK which we don't load from the repo
-            if(isJdkPackage(moduleName, pkgName))
+            if(isJdkPackage(getNameAsString(), pkgName))
                 return true;
             JdkProvider jdkProvider = getModelLoader().getJdkProvider();
             if(jdkProvider.getJdkContainerModule() == this

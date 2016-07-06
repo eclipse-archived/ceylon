@@ -23,6 +23,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOf
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNativeHeader;
+import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 import static java.lang.Integer.parseInt;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.emptyMap;
@@ -36,7 +37,6 @@ import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -58,7 +58,6 @@ import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.LazyType;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
-import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -94,25 +93,19 @@ public abstract class DeclarationVisitor extends Visitor {
     private static final Constructor[] NO_CONSTRUCTORS = new Constructor[0];
     
     private final Package pkg;
-    private final String filename;
     private Scope scope;
-    private TypecheckerUnit unit;
+    private Unit unit;
     private ParameterList parameterList;
     private Declaration declaration;
-    private String fullPath; 
-    private String relativePath;
     private boolean dynamic;
     
-    public DeclarationVisitor(Package pkg, String filename,
-            String fullPath, String relativePath) {
+    public DeclarationVisitor(Unit unit) {
+        this.unit = unit;
+        this.pkg = unit.getPackage();
         scope = pkg;
-        this.pkg = pkg;
-        this.filename = filename;
-        this.fullPath = fullPath;
-        this.relativePath = relativePath;
     }
 
-    public TypecheckerUnit getCompilationUnit() {
+    public Unit getCompilationUnit() {
         return unit;
     }
     
@@ -671,7 +664,7 @@ public abstract class DeclarationVisitor extends Visitor {
 
     /**
      * Get the containing scope, skipping any condition
-     * scopes. 
+     * scopes in the case of a regular declaration. 
      * 
      * @see com.redhat.ceylon.model.typechecker.model.ConditionScope
      */
@@ -723,13 +716,7 @@ public abstract class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.CompilationUnit that) {
-        unit = createUnit();
-        //that.setModelNode(unit);
-        unit.setPackage(pkg);
-        unit.setFilename(filename);
-        unit.setFullPath(fullPath);
-        unit.setRelativePath(relativePath);
-        unit.setSupportedBackends(that.getUnit().getSupportedBackends());
+//        unit.setSupportedBackends(that.getUnit().getSupportedBackends());
         pkg.removeUnit(unit);
         pkg.addUnit(unit);
         super.visit(that);
@@ -785,8 +772,6 @@ public abstract class DeclarationVisitor extends Visitor {
         }
     }
     
-    protected abstract TypecheckerUnit createUnit();
-
     @Override
     public void visit(Tree.ImportMemberOrTypeList that) {
         ImportList il = new ImportList();
@@ -1314,6 +1299,10 @@ public abstract class DeclarationVisitor extends Visitor {
         exitScope(o);
     }
     
+    private boolean mustHaveExplicitType(FunctionOrValue fov) {
+        return fov.isShared() && !fov.isActual();
+    }
+    
     @Override
     public void visit(Tree.AttributeDeclaration that) {
         Value v = new Value();
@@ -1362,13 +1351,13 @@ public abstract class DeclarationVisitor extends Visitor {
                             200);
                 }
             }
-            else if (v.isShared()) {
+            else if (mustHaveExplicitType(v)) {
                 type.addError("shared value must explicitly specify a type", 
                         200);
             }
         }
     }
-    
+
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
@@ -1391,7 +1380,7 @@ public abstract class DeclarationVisitor extends Visitor {
                             200);
                 }
             }
-            else if (m.isShared()) {
+            else if (mustHaveExplicitType(m)) {
                 type.addError("shared function must explicitly specify a return type", 
                         200);
             }
@@ -1409,7 +1398,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 type.addError("toplevel function must explicitly specify a return type", 
                         200);
             }
-            else if (m.isShared() && !dynamic) {
+            else if (mustHaveExplicitType(m) && !dynamic) {
                 type.addError("shared function must explicitly specify a return type", 
                         200);
             }
@@ -1432,7 +1421,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 type.addError("toplevel getter must explicitly specify a type", 
                         200);
             }
-            else if (g.isShared() && !dynamic) {
+            else if (mustHaveExplicitType(g) && !dynamic) {
                 type.addError("shared getter must explicitly specify a type", 
                         200);
             }
@@ -1470,7 +1459,6 @@ public abstract class DeclarationVisitor extends Visitor {
         unit.addDeclaration(v);
         Scope sc = getContainer(that);
         sc.addMember(v);
-        
         s.setParameter(p);
         super.visit(that);
         exitScope(o);
@@ -1700,7 +1688,8 @@ public abstract class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Body that) {
-        addGuardedVariables(that);
+        addGuardedVariables(that, 
+                that instanceof Tree.ClassBody);
         
         int oid=id;
         id=0;
@@ -1708,34 +1697,61 @@ public abstract class DeclarationVisitor extends Visitor {
         id=oid;
     }
 
-    private static void addGuardedVariables(Tree.Body that) {
+    private static void addGuardedVariables(Tree.Body that, 
+            boolean isInitializer) {
         List<Tree.Statement> originals = 
                 that.getStatements();
+        int originalSize = originals.size();
         List<Tree.Statement> result = 
-                new ArrayList<Tree.Statement>
-                    (originals.size());
-        for (int i=0; i<originals.size(); i++) {
+                new ArrayList<Tree.Statement>(originalSize);
+        for (int i=0; i<originalSize; i++) {
             Tree.Statement st = originals.get(i);
             result.add(st);
-            if (i<originals.size()-1 &&
+            if (i<originalSize-1 &&
                     st instanceof Tree.IfStatement) {
                 Tree.IfStatement ifst =
                         (Tree.IfStatement) st;
                 Tree.IfClause ifcl = ifst.getIfClause();
-                Tree.ElseClause elcl = ifst.getElseClause();
-                if (ifcl!=null && elcl==null) {
+                if (ifcl!=null) {
                     Tree.Block block = ifcl.getBlock();
                     if (block!=null) {
                         List<Tree.Statement> statements = 
                                 block.getStatements();
                         if (!statements.isEmpty()) {
+                            int size = statements.size();
                             Tree.Statement last = 
-                                    statements.get(
-                                            statements.size()-1);
-                            if (definitelyReturns(last)) {
+                                    statements.get(size-1);
+                            if (definitelyReturns(last, 
+                                    isInitializer, false)) {
+                                Tree.ConditionList cl = 
+                                        ifcl.getConditionList();
                                 Tree.Variable v = 
-                                       guardedVariable(
-                                               ifcl.getConditionList());
+                                       guardedVariable(cl,
+                                               true);
+                                if (v!=null) {
+                                    result.add(v);
+                                }                                
+                            }
+                        }
+                    }
+                }
+                Tree.ElseClause elcl = ifst.getElseClause();
+                if (elcl!=null) {
+                    Tree.Block block = elcl.getBlock();
+                    if (block!=null) {
+                        List<Tree.Statement> statements = 
+                                block.getStatements();
+                        if (!statements.isEmpty()) {
+                            int size = statements.size();
+                            Tree.Statement last = 
+                                    statements.get(size-1);
+                            if (definitelyReturns(last, 
+                                    isInitializer, false)) {
+                                Tree.ConditionList cl = 
+                                        ifcl.getConditionList();
+                                Tree.Variable v = 
+                                       guardedVariable(cl, 
+                                               false);
                                 if (v!=null) {
                                     result.add(v);
                                 }                                
@@ -1749,8 +1765,12 @@ public abstract class DeclarationVisitor extends Visitor {
         originals.addAll(result);
     }
 
-    public static boolean definitelyReturns(Tree.Statement last) {
-        if (last instanceof Tree.Directive) {
+    public static boolean definitelyReturns(Tree.Statement last, 
+            boolean isInitializer, boolean withinInnerLoop) {
+        if (last instanceof Tree.Throw ||
+            !isInitializer && last instanceof Tree.Return ||
+            !withinInnerLoop && (last instanceof Tree.Break 
+                              || last instanceof Tree.Continue)) {
             return true;
         }
         else if (last instanceof Tree.IfStatement) {
@@ -1770,15 +1790,20 @@ public abstract class DeclarationVisitor extends Visitor {
                                 ists.get(ists.size()-1);
                         Tree.Statement elast =
                                 ests.get(ests.size()-1);
-                        return definitelyReturns(ilast) &&
-                                definitelyReturns(elast);
+                        return definitelyReturns(ilast,
+                                        isInitializer,
+                                        withinInnerLoop) &&
+                                definitelyReturns(elast,
+                                        isInitializer,
+                                        withinInnerLoop);
                     }
                 }
             }
             return false;
         }
         else if (last instanceof Tree.SwitchStatement) {
-            Tree.SwitchStatement ss = (Tree.SwitchStatement) last;
+            Tree.SwitchStatement ss = 
+                    (Tree.SwitchStatement) last;
             Tree.SwitchCaseList scl = ss.getSwitchCaseList();
             if (scl!=null) {
                 for (Tree.CaseClause cc: scl.getCaseClauses()) {
@@ -1795,7 +1820,9 @@ public abstract class DeclarationVisitor extends Visitor {
                         else {
                             Tree.Statement clast =
                                     csts.get(csts.size()-1);
-                            if (!definitelyReturns(clast)) {
+                            if (!definitelyReturns(clast, 
+                                    isInitializer,
+                                    withinInnerLoop)) {
                                 return false;
                             }
                         }
@@ -1816,7 +1843,9 @@ public abstract class DeclarationVisitor extends Visitor {
                         else {
                             Tree.Statement elast =
                                     ests.get(ests.size()-1);
-                            if (!definitelyReturns(elast)) {
+                            if (!definitelyReturns(elast, 
+                                    isInitializer,
+                                    withinInnerLoop)) {
                                 return false;
                             }
                         }
@@ -1826,18 +1855,37 @@ public abstract class DeclarationVisitor extends Visitor {
             }
             return false;
         }
+        //TODO: do something with try/catch/finally
+        //      detect try and every catch definitely
+        //      return, or that finally definitely returns
         else if (last instanceof Tree.ForStatement) {
-            Tree.ForStatement is = (Tree.ForStatement) last;
-            Tree.ElseClause ec = is.getElseClause();
-            if (ec!=null) {
+            Tree.ForStatement fs = (Tree.ForStatement) last;
+            Tree.ElseClause ec = fs.getElseClause();
+            Tree.ForClause fc = fs.getForClause();
+            if (ec!=null && fc!=null) {
                 Tree.Block ecb = ec.getBlock();
-                if (ecb!=null) {
+                Tree.Block fcb = fc.getBlock();
+                if (ecb!=null && ecb!=null) {
+                    List<Tree.Statement> fsts = 
+                            fcb.getStatements();
                     List<Tree.Statement> ests = 
                             ecb.getStatements();
-                    if (!ests.isEmpty()) {
+                    //TODO: detect the case where the body
+                    //      of the for loop never breaks
+                    //TODO: detect the case where we are
+                    //      iterating something known to be
+                    //      nonempty
+                    if (!ests.isEmpty() && !fsts.isEmpty()) {
+                        Tree.Statement flast =
+                                fsts.get(fsts.size()-1);
                         Tree.Statement elast =
                                 ests.get(ests.size()-1);
-                        return definitelyReturns(elast);
+                        return definitelyReturns(flast, //|| definitelyDoesNotBreak(flast)
+                                        isInitializer,
+                                        true) &&
+                                definitelyReturns(elast, 
+                                        isInitializer,
+                                        true);
                     }
                 }
             }
@@ -1849,7 +1897,7 @@ public abstract class DeclarationVisitor extends Visitor {
     }
     
     private static Tree.Variable guardedVariable(
-            Tree.ConditionList cl) {
+            Tree.ConditionList cl, boolean reversed) {
         if (cl!=null) {
             List<Tree.Condition> conditions = 
                     cl.getConditions();
@@ -1862,9 +1910,12 @@ public abstract class DeclarationVisitor extends Visitor {
                             (Tree.ExistsOrNonemptyCondition) c;
                     Tree.Statement s = enc.getVariable();
                     if (s instanceof Tree.Variable) {
-                        Tree.Variable v = (Tree.Variable) s;
-                        t = v.getType();
-                        id = v.getIdentifier();
+                        Tree.Variable v = 
+                                (Tree.Variable) s;
+                        if (v!=null) {
+                            t = v.getType();
+                            id = v.getIdentifier();
+                        }
                     }
                 }
                 else if (c instanceof Tree.IsCondition) {
@@ -1880,6 +1931,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 if (id!=null && t instanceof Tree.SyntheticVariable) { 
                     CustomTree.GuardedVariable ev = 
                             new CustomTree.GuardedVariable(null);
+                    ev.setReversed(reversed);
                     ev.setConditionList(cl);
                     ev.setType(new Tree.SyntheticVariable(null));
                     Tree.SpecifierExpression ese = 
@@ -2474,7 +2526,7 @@ public abstract class DeclarationVisitor extends Visitor {
         Tree.ImportPath path = that.getImportPath();
         if (path!=null && 
                 formatPath(path.getIdentifiers())
-                    .equals(Module.LANGUAGE_MODULE_NAME)) {
+                    .equals(LANGUAGE_MODULE_NAME)) {
             Tree.ImportMemberOrTypeList imtl = 
                     that.getImportMemberOrTypeList();
             if (imtl!=null) {
@@ -2579,7 +2631,7 @@ public abstract class DeclarationVisitor extends Visitor {
                                 outerType.getTypeModel()
                                     .getDeclaration();
                         return AnalyzerUtil.getTypeMember(
-                                dec, name, null, false, unit);
+                                dec, name, null, false, unit, scope);
                     }
                 }
                 @Override

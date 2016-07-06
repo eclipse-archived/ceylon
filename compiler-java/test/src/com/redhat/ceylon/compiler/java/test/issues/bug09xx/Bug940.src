@@ -7,7 +7,7 @@ public class Bug940 implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     public Bug940(final .ceylon.language.Callable<? extends .java.lang.Object> callable) {
-        final .ceylon.language.Callable<? extends .java.lang.Object> z = (.ceylon.language.Callable<? extends .java.lang.Object>)callable.$call$();
+        final .ceylon.language.Callable<? extends .java.lang.Object> z = (.ceylon.language.Callable<? extends .java.lang.Object>)(.java.lang.Object)callable.$call$();
         z.$call$();
     }
     

@@ -161,11 +161,29 @@ class RuntimeUtil {
      * <p>Invoke {@link com.redhat.ceylon.compiler.java.Util#sequentialWrapperBoxed(int[])} ,
      * {@link com.redhat.ceylon.compiler.java.Util#sequentialWrapperBoxed(java.lang.String[])} etc
      * with the given array.</p>
+     * 
+     * <p>Note that this method wraps int[] into Sequential&lt;Character&gt; and so is only valid
+     * for code points and not interop if you want Sequential&lt;Integer&gt;. Use #sequentialWrapperBoxedForInteger
+     * if you want that. This is due to backwards-compatibility. </p>
      *  
-     * <p>Note that subsequent changes to the array will be visible in the resulting Sequential<p>
+     * <p>Note that subsequent changes to the array will not be visible in the resulting Sequential due to boxing<p>
      */
     public JCExpression sequentialWrapperBoxed(JCExpression arrayOfUnboxed) {
         return makeUtilInvocation(null, "sequentialWrapperBoxed", List.of(arrayOfUnboxed));
+    }
+
+    /**
+     * <p>Invoke {@link com.redhat.ceylon.compiler.java.Util#sequentialWrapperBoxedForInteger(int[])}
+     * with the given array.</p>
+     * 
+     * <p>Note that this method wraps int[] into Sequential&lt;Integer&gt; and so is only valid
+     * for interop if you want Sequential&lt;Integer&gt;. Use #sequentialWrapperBoxed
+     * if you don't want that. This is due to backwards-compatibility. </p>
+     *  
+     * <p>Note that subsequent changes to the array will be not visible in the resulting Sequential due to boxing<p>
+     */
+    public JCExpression sequentialWrapperBoxedForInteger(JCExpression arrayOfUnboxed) {
+        return makeUtilInvocation(null, "sequentialWrapperBoxedForInteger", List.of(arrayOfUnboxed));
     }
 
     public JCExpression makeArray(List<JCExpression> dimensions) {
@@ -238,5 +256,13 @@ class RuntimeUtil {
 
     public JCExpression recover() {
         return makeUtilInvocation(null, "recover", List.<JCExpression>nil());
+    }
+
+    public JCExpression sequentialWrapper(JCExpression typeArg, JCExpression reifiedTypeArg, JCExpression array) {
+        return makeUtilInvocation(List.of(typeArg), "sequentialWrapper", List.of(reifiedTypeArg, array));
+    }
+
+    public JCExpression sequentialWrapperCopy(JCExpression typeArg, JCExpression reifiedTypeArg, JCExpression array) {
+        return makeUtilInvocation(List.of(typeArg), "sequentialWrapperCopy", List.of(reifiedTypeArg, array));
     }
 }

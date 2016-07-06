@@ -83,7 +83,7 @@ public class JarEntryManifestFileObject implements JavaFileObject {
 
     private void writeManifestJarEntry(JarOutputStream jarFile, Manifest originalManifest, Logger log) throws IOException {
         Manifest manifest;
-        if (module.isDefault()) {
+        if (module.isDefaultModule()) {
             manifest = new OsgiUtil.DefaultModuleManifest().build();
         } else {
             manifest = new OsgiUtil.OsgiManifest(module, jdkProvider, osgiProvidedBundles, originalManifest, log).build();

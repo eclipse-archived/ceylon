@@ -871,7 +871,9 @@ class CtorAbstractCtorGeneric<T> extends .com.redhat.ceylon.compiler.java.test.s
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.class, $reified$T);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class runCtorAbstractCtor_ {
     

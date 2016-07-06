@@ -35,7 +35,8 @@ public class CeylonBrowseTool extends RepoUsingTool {
     }
 
     @Override
-    public void initialize(CeylonTool tool) {
+    public void initialize(CeylonTool tool) throws Exception {
+        super.initialize(tool);
     }
 
     @Override

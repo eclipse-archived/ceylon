@@ -12,4 +12,4 @@ for (mem in this.m$['$pks$']) {
     m.push(this.m$['$pks$'][mem]);
   }
 }
-return m.$sa$({t:Package$meta$declaration});
+return $arr$sa$(m,{t:Package$meta$declaration});

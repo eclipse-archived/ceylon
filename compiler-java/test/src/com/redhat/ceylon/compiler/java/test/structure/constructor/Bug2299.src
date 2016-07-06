@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class Bug2299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
@@ -12,7 +14,9 @@ class Bug2299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2299.$delegation$ $delegation$ = null;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName(
             delegation = true,
@@ -38,7 +42,9 @@ class Bug2299 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         this(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2299.$delegation$, s$param$);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("_ROOT")
     private static final class _ROOT_ {

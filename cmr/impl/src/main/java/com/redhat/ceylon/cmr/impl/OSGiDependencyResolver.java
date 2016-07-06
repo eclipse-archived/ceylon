@@ -145,7 +145,7 @@ public class OSGiDependencyResolver extends AbstractDependencyResolver {
                 log.warning(String.format("Parameter %s is not directive or attribute.", param));
             }
         }
-        return new ModuleDependencyInfo(name, version, optional, shared);
+        return new ModuleDependencyInfo(null, name, version, optional, shared);
     }
 
     private String[] parseDirective(String parameter) {
