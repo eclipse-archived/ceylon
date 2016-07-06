@@ -1832,9 +1832,12 @@ public class RefinementVisitor extends Visitor {
                                     tdcontainer;
                         if (!tdcontainer.equals(realScope) && 
                                 ci.inherits(tdci)) {
+                            if (td.isVariable() && td.getUnit().getPackage().getModule().isJava()) {
+                                //allow assignment to variable member of Java supertype
+                            }
                             // interpret this specification as a 
                             // refinement of an inherited member
-                            if (tdcontainer==scope) {
+                            else if (tdcontainer==scope) {
                                 that.addError("parameter declaration hides refining member: '" +
                                         td.getName(unit) + 
                                         "' (rename parameter)");
