@@ -1,9 +1,9 @@
 
 dependencies {
-    compile project(':common'),
-        project(':model'),
-        project(':cmr'),
-        'org.antlr:antlr:3.4'
+    compile project(':common')
+    compile project(':model')
+    compile project(':cmr')
+    compile 'org.antlr:antlr:3.4'
 }
 
 sourceSets {
