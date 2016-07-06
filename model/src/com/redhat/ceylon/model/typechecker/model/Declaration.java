@@ -32,6 +32,7 @@ public abstract class Declaration
     private static final int DEFAULT = 1<<3;
     private static final int ANNOTATION = 1<<4;
     private static final int DEPRECATED = 1<<5;
+    private static final int DYNAMIC = 1<<6;
     
     private static final int PROTECTED = 1<<8;
     private static final int PACKAGE = 1<<9;
@@ -95,6 +96,27 @@ public abstract class Declaration
             flags&=(~DEPRECATED);
         }
 	}
+    
+    /**
+     * Whether this declaration is dynamic, that is, outside of Ceylon's control
+     * (such as a dynamic interface).
+     * Not to be confused with {@link TypedDeclaration#isDynamicallyTyped()}.
+     */
+    public boolean isDynamic() {
+        return (flags&DYNAMIC)!=0;
+    }
+    
+    /**
+     * @see #isDynamic()
+     */
+    public void setDynamic(boolean dynamic) {
+        if (dynamic) {
+            flags|=DYNAMIC;
+        }
+        else {
+            flags&=(~DYNAMIC);
+        }
+    }
 
     String toStringName() {
         String name = getName();
