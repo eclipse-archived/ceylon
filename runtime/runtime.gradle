@@ -1,0 +1,19 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+task setupRepo( type : Copy ) {
+    group "Setup"
+    description "Setup the basic structure of the dist folder by copying the template folder"
+    into repoDir
+    from 'dist/repo', {
+        include "**/*.xml"
+        filter { it.replaceAll( '_version_',version) }
+        filter ReplaceTokens, tokens : [ 'ceylon-version' : version ]
+    }
+    from 'dist/repo', {
+        include '**/*.jar'
+    }
+
+    doFirst {
+        logger.info "TODO: Copying hardcoded JARs might be better dealt with using Gradle's dependency management"
+    }
+}
