@@ -1,5 +1,0 @@
-
-dependencies {
-    compile 'org.tautua.markdownpapers:markdownpapers-core:1.2.7'
-}
-

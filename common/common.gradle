@@ -1,0 +1,94 @@
+
+dependencies {
+    compile 'org.tautua.markdownpapers:markdownpapers-core:1.2.7'
+}
+
+//<target name="publish"
+//depends="clean.repo,init.repo,dist,publish-internal"
+//description="Publish both type checker and ceylon.language template module">
+//</target>
+//         <mkdir dir="${ceylon.common.repo}" />
+
+
+
+//<target name="publish-internal" depends="init.repo">
+//<copy todir="${ceylon.repo.dir}" overwrite="true">
+//<fileset dir="${build.dist.repo}" />
+//</copy>
+//    </target>
+
+
+//<target name="dist" depends="build">
+//<zip destfile="${build.dist.repo}/${ceylon.common.src}">
+//<fileset dir="${src}">
+//<include name="**/*.java"/>
+//</fileset>
+//        </zip>
+//<antcall target="sha1sum">
+//<param name="file" value="${build.dist.repo}/${ceylon.common.src}"/>
+//</antcall>
+//    </target>
+
+
+task sourceZip( type : Zip ) {
+    group 'Build'
+    description 'Archives source files'
+
+    from 'src', {
+        include '**/*.java'
+    }
+
+    archiveName = "com.redhat.ceylon.common-${cbp.'module.com.redhat.ceylon.common.version'}.src.zip"
+}
+
+jar {
+    manifest {
+        attributes 'Bundle-SymbolicName': 'com.redhat.ceylon.common',
+            'Bundle-Version': cbp.'module.com.redhat.ceylon.common.version'+".${TimeStamp.BUILD}"
+    }
+    archiveName = "com.redhat.ceylon.common-${cbp.'module.com.redhat.ceylon.common.version'}.jar"
+}
+
+sha1 {
+    archive sourceZip
+}
+
+task publishSource( type : Copy ) {
+    group 'Distribution'
+    description 'Copies sources artifacts to distribution area'
+
+    from sha1, {
+        include '**/*.zip'
+    }
+    from sourceZip
+
+    into cbp.'build.dist.repo'
+}
+
+task publishJar( type : Copy ) {
+    group 'Distribution'
+    description 'Copies binary artifacts to distribution area'
+
+    from sha1, {
+        include '**/*.jar'
+    }
+
+    from jar
+
+    into cbp.'ceylon.common.dir'
+}
+
+task publishInternal {
+    dependsOn publishSource,publishJar
+}
+
+task cleanRepo ( type : Delete ) {
+    group 'Publish'
+    description 'Deletes published artifacts'
+    delete publishJar.outputs.files
+    delete publishSource.outputs.files
+}
+
+clean {
+    dependsOn cleanRepo
+}
