@@ -1,0 +1,33 @@
+= Tracking Gradle Migration
+
+Top-level install build requires:
+
+== Dist
+
+.From dist/build.xml
+[source,xml]
+----
+<target name="install-all"
+    depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, <!-- 1 --> <!-- 2 -->
+             copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
+             copy-licenses, install-runtime,
+             add-module-descriptors, generate-buildid"
+    description="Generates all binaries and copies them to the distribution folder">
+</target>
+----
+<1> `setup-repo` handled `:runtime:setupRepo`
+<2> `install-compiler` handled by `:common:publishInternal`.
+
+== Commons
+
+.From common/build.xml
+[source,xml]
+----
+<target name="publish"
+    depends="clean.repo,init.repo,dist,publish-internal" <!-- 1 --> <!-- 2 --> <!-- 3 -- >
+    description="Publish both type checker and ceylon.language template module">
+</target>
+----
+<1> `clean.repo` handled by `cleanRepo` which is a dependency of `clean`.
+<2> `init.repo`, `publish-internal` handled by `publishInternal`.
+<3> `dist` handled by Gradle dependency chain and included `assemble`, `sourceZip`, `sha1` and `jar`
