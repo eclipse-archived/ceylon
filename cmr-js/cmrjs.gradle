@@ -1,0 +1,16 @@
+
+dependencies {
+    compile 'net.minidev:json-smart:1.1.1'
+}
+
+jar {
+    manifest {
+        attributes 'Bundle-SymbolicName': 'com.redhat.ceylon.module-resolver-javascript',
+            'Bundle-Version': cbp.'module.com.redhat.ceylon.module-resolver-javascript.version'+".${TimeStamp.BUILD}"
+    }
+    archiveName = "com.redhat.ceylon.module-resolver-javascript-${cbp.'module.com.redhat.ceylon.module-resolver-javascript.version'}.jar"
+}
+
+publishJar {
+    into "${cbp.'build.dist.repo'}/${cbp.'module-resolver-javascript.dir'}"
+}
