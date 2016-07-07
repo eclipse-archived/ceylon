@@ -41,15 +41,14 @@ Ant & Gradle builds.
 
 == Cli
 
-Awaiting `model`, `cmr`
+.TODO
+* Should consider looking at `application` plugins to do a better job of bundling scripts. One task is
+  specifically called `startScripts` to mimic a similar fucntionaing task in `application` plugin. This
+  was done to deliberately break the build when the refactoring for `application` happens.
 
 == Cmr
 
 .TODO
-* Publishing
-* Publish apiJar as well?
-* Source Zip
-* Need to check whether contents of `apiJar` should also be in `jar`.
 * 17 tests are currently (disabled test task for moment)
 
 == Cmr-aether
@@ -64,17 +63,9 @@ Compilation has been straight-forward.
 
 Compilation has been straight-forward.
 
-.TODO
-* Publishing
-* Source Zip
-
 == Model
 
 Compilation has been straight-forward.
-
-.TODO
-* Publishing
-* Source Zip
 
 == Langtools-classfile
 
@@ -82,9 +73,9 @@ This has been straight-forward to do. There are no `*.utf8properties` files in t
 `native2ascii` Ant task that was used. The solution (which hopefully will work) is to hook into the lifecycle
 `processResources` task, and fix the encodings on the fly using the Ant `EscapeUnicode` filter instead.
 
+We also set `ceylonPublishModuleName` as this one uses two distinctly named property names from `common-build.properties`.
+
 .TODO
-* Publishing
-* Source Zip
 * Do we need to set `-XDignore.symbol.file`  for `JavaCompile` options?
 
 == buildSrc

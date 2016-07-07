@@ -16,8 +16,8 @@ project(':runtime').buildFileName = 'runtime.gradle'
 include 'common'
 project(':common').buildFileName = 'common.gradle'
 
-//include 'cli'
-//project(':cli').buildFileName = 'cli.gradle'
+include 'cli'
+project(':cli').buildFileName = 'cli.gradle'
 
 include 'model'
 project(':model').buildFileName = 'model.gradle'
