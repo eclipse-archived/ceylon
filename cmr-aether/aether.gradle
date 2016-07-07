@@ -20,5 +20,5 @@ jar {
 }
 
 publishJar {
-    into "${cbp.'build.dist.repo'}/${cbp.'module-resolver-aether'}"
+    into "${cbp.'build.dist.repo'}/${cbp.'module-resolver-aether.dir'}"
 }
