@@ -112,6 +112,5 @@ subprojects {
     task publishInternal {
         dependsOn 'publishJar'
     }
-
 }
 

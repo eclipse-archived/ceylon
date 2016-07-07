@@ -22,8 +22,8 @@ project(':model').buildFileName = 'model.gradle'
 include 'langtools-classfile'
 project(':langtools-classfile').buildFileName = 'langtools.gradle'
 
-//include 'cmr'
-//project(':cmr').buildFileName = 'cmr.gradle'
+include 'cmr'
+project(':cmr').buildFileName = 'cmr.gradle'
 
 include 'cmr-aether'
 project(':cmr-aether').buildFileName = 'aether.gradle'

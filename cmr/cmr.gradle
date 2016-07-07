@@ -1,0 +1,69 @@
+
+dependencies {
+    compile project(':common')
+    compile project(':langtools-classfile')
+    compile project(':model')
+    compile project(':cmr-aether')
+    compile project(':cmr-webdav')
+    compile project(':cmr-js')
+    compile 'org.jboss:jandex:2.0.0.Final'
+    compile 'org.jboss.modules:jboss-modules:1.4.4.Final'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'api/src/main/java', 'spi/src/main/java', 'impl/src/main/java', 'ceylon/src/main/java',
+                'webdav/src/main/java', 'maven/src/main/java'
+        }
+        resources {
+            srcDirs 'api/src/main/resources', 'spi/src/main/resources', 'impl/src/main/resources',
+                'ceylon/src/main/resources', 'webdav/src/main/resources', 'maven/src/main/resources'
+        }
+    }
+    test {
+        java {
+            srcDirs 'testsuite/src/test/java', 'maven/src/test/java'
+        }
+        resources {
+            srcDirs 'testsuite/src/test/resources', 'maven/src/test/resources'
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Bundle-SymbolicName': 'com.redhat.ceylon.module-resolver',
+            'Bundle-Version': cbp.'module.com.redhat.ceylon.module-resolver.version'+".${TimeStamp.BUILD}"
+    }
+    archiveName = 'module-resolver.jar'
+//    archiveName = "com.redhat.ceylon.module-resolver-${cbp.'module.com.redhat.ceylon.module-resolver.version'}.jar"
+}
+
+
+task apiJar ( type : Jar ) {
+    from sourceSets.main.output.classesDir, {
+        include '**/spi/*'
+        include '**/api/*'
+    }
+//    archiveName = "com.redhat.ceylon.module-resolver-${cbp.'module.com.redhat.ceylon.module-resolver.version'}.jar"
+    archiveName = 'module-resolver-api.jar'
+    dependsOn classes
+}
+
+sha1 {
+    archive apiJar
+}
+
+artifacts {
+    archives apiJar
+}
+
+
+publishJar {
+    // TODO: From apiJar as well?
+    into "${cbp.'build.dist.repo'}/${cbp.'ceylon.module-resolver.dir'}"
+}
+
+//TODO: Remove this
+test.enabled = false
