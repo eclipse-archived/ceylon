@@ -45,26 +45,32 @@ public class LazyClassAlias extends ClassAlias implements LazyContainer {
 
     private void load() {
         if(!isLoaded2){
-            synchronized(completer.getLock()){
-                loadTypeParams();
-                if(!isLoaded){
-                    isLoaded = true;
-                    completer.complete(this);
-                    isLoaded2 = true;
+            completer.synchronizedRun(new Runnable() {
+                @Override
+                public void run() {
+                    loadTypeParams();
+                    if(!isLoaded){
+                        isLoaded = true;
+                        completer.complete(LazyClassAlias.this);
+                        isLoaded2 = true;
+                    }
                 }
-            }
+            });
         }
     }
 
     private void loadTypeParams() {
         if(!isTypeParamsLoaded2){
-            synchronized(completer.getLock()){
-                if(!isTypeParamsLoaded){
-                    isTypeParamsLoaded = true;
-                    completer.completeTypeParameters(this);
-                    isTypeParamsLoaded2 = true;
+            completer.synchronizedRun(new Runnable() {
+                @Override
+                public void run() {
+                    if(!isTypeParamsLoaded){
+                        isTypeParamsLoaded = true;
+                        completer.completeTypeParameters(LazyClassAlias.this);
+                        isTypeParamsLoaded2 = true;
+                    }
                 }
-            }
+            });
         }
     }
     

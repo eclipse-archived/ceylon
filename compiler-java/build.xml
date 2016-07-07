@@ -55,6 +55,8 @@
 
     <path id="test.run.classpath">
         <path refid="test.compile.classpath" />
+    	<pathelement path="${ceylon.module-resolver-webdav.lib}" />
+    	<pathelement path="${ceylon.module-resolver-aether.lib}" />
         <pathelement path="${ceylon.compiler.lib}" />
         <pathelement path="${ceylon.language.lib}" />
         <pathelement path="${ceylon-tests.car}" />
@@ -205,6 +207,7 @@
             <include name="com/redhat/ceylon/tools/**" />
             <exclude name="com/redhat/ceylon/tools/test/bug1183/**" />
             <include name="com/redhat/ceylon/itest/**" />
+            <include name="com/redhat/ceylon/launcher/test/**" />
             <include name="com/redhat/ceylon/ant/**" />
             <include name="com/redhat/ceylon/ceylondoc/test/**" />
             <exclude name="com/redhat/ceylon/compiler/java/test/recovery/bug6290/**"/>

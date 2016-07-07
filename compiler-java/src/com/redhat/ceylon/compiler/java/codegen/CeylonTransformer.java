@@ -319,6 +319,8 @@ public class CeylonTransformer extends AbstractTransformer {
                             || name.equals("InterfaceDeclaration")
                             || name.equals("ClassOrInterfaceDeclaration"))
                         return make().Type(syms().stringType);
+                    // probably an enum value then
+                    return make().TypeArray(make().Type(syms().stringType));
                 }
                 if(type instanceof Tree.SequencedType){
                     return make().TypeArray(getAnnotationTypeFor(((Tree.SequencedType) type).getType()));
