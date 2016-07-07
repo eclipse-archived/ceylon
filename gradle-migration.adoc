@@ -84,3 +84,19 @@ This has been straight-forward to do. There are no `*.utf8properties` files in t
 .TODO
 * Publishing
 * Source Zip
+
+== buildSrc
+
+A `buildSrc` folder has been added to help with some of the delicate and less common feastures of this build.
+
+=== Checksum
+
+A checksum task type has been added as `buildSrc/src/main.groovy/CheckSum.groovy`. This task can be used in conjuction
+with any archiver tasks such as `Zip` & `Jar` to create checksums. By default a `sha1` task is added to each Java
+project. This replaces the use of the `sha1sum` tasks in the Ant build.
+
+=== Timestamp
+
+A helper class has been added as `buildSrc/src/main.groovy/TimeStamp.groovy`. It sets a singular timestamp value
+at the beginning of the build which can then be used in all builds via `TimeStamp.BUILD`. This replaces the use of
+the `TStamp` ant task.
