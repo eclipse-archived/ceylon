@@ -1,0 +1,20 @@
+
+dependencies {
+    compile project(':common')
+    compile project(':langtools-classfile')
+}
+
+
+jar {
+    manifest {
+        attributes 'Bundle-SymbolicName': 'com.redhat.ceylon.model',
+            'Bundle-Version': cbp.'module.com.redhat.ceylon.model.version'+".${TimeStamp.BUILD}"
+    }
+    archiveName = "com.redhat.ceylon.model-${cbp.'module.com.redhat.ceylon.model.version'}.jar"
+}
+
+
+publishJar {
+    into "${cbp.'build.dist.repo'}/${cbp.'ceylon.model.dir'}"
+}
+
