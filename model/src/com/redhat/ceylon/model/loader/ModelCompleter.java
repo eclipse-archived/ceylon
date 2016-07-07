@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.loader;
 
+import java.util.concurrent.Callable;
+
 import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.model.loader.model.LazyClass;
@@ -82,6 +84,10 @@ public interface ModelCompleter {
      * Returns a lock we can use for thread-safety
      */
     Object getLock();
+
+    <T> T synchronizedCall(Callable<T> action) throws Exception;
+
+    void synchronizedRun(Runnable action);
 
     /**
      * Completes loading of an annotation proxy class

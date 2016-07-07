@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
@@ -143,6 +144,14 @@ public class JavacClass implements ClassMirror {
             annotations = JavacUtil.getAnnotations(classSymbol);
         }
         return annotations.get(type);
+    }
+
+    @Override
+    public Set<String> getAnnotationNames() {
+        if (annotations == null) {
+            annotations = JavacUtil.getAnnotations(classSymbol);
+        }
+        return annotations.keySet();
     }
 
     @Override

@@ -1299,6 +1299,10 @@ public abstract class DeclarationVisitor extends Visitor {
         exitScope(o);
     }
     
+    private boolean mustHaveExplicitType(FunctionOrValue fov) {
+        return fov.isShared() && !fov.isActual();
+    }
+    
     @Override
     public void visit(Tree.AttributeDeclaration that) {
         Value v = new Value();
@@ -1347,13 +1351,13 @@ public abstract class DeclarationVisitor extends Visitor {
                             200);
                 }
             }
-            else if (v.isShared()) {
+            else if (mustHaveExplicitType(v)) {
                 type.addError("shared value must explicitly specify a type", 
                         200);
             }
         }
     }
-    
+
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
@@ -1376,7 +1380,7 @@ public abstract class DeclarationVisitor extends Visitor {
                             200);
                 }
             }
-            else if (m.isShared()) {
+            else if (mustHaveExplicitType(m)) {
                 type.addError("shared function must explicitly specify a return type", 
                         200);
             }
@@ -1394,7 +1398,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 type.addError("toplevel function must explicitly specify a return type", 
                         200);
             }
-            else if (m.isShared() && !dynamic) {
+            else if (mustHaveExplicitType(m) && !dynamic) {
                 type.addError("shared function must explicitly specify a return type", 
                         200);
             }
@@ -1417,7 +1421,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 type.addError("toplevel getter must explicitly specify a type", 
                         200);
             }
-            else if (g.isShared() && !dynamic) {
+            else if (mustHaveExplicitType(g) && !dynamic) {
                 type.addError("shared getter must explicitly specify a type", 
                         200);
             }
@@ -1455,7 +1459,6 @@ public abstract class DeclarationVisitor extends Visitor {
         unit.addDeclaration(v);
         Scope sc = getContainer(that);
         sc.addMember(v);
-        
         s.setParameter(p);
         super.visit(that);
         exitScope(o);

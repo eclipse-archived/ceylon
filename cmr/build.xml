@@ -15,10 +15,6 @@
     <property name="cmr-maven.src" location="${basedir}/maven/src/main/java"/>
     <property name="cmr-maven.resources" location="${basedir}/maven/src/main/resources"/>
 
-    <!-- jar generated -->
-    <property name="module-resolver.jar" location="${build.lib}/module-resolver.jar"/>
-    <property name="module-resolver-api.jar" location="${build.lib}/module-resolver-api.jar"/>
-    
     <property name="cmr-testsuite-test.src" location="${basedir}/testsuite/src/test/java"/>
     <property name="cmr-testsuite-test.resources" location="${basedir}/testsuite/src/test/resources"/>
 
@@ -150,7 +146,7 @@
     	
     <target name="ide-quick-internal">
         <antcall target="bundle-proxy">
-            <param name="archivePath" value="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
+            <param name="archivePath" value="${ceylon.module-resolver.lib}"/>
         </antcall>
     </target>
 
@@ -181,9 +177,8 @@
         <antcall target="sha1sum">
             <param name="file" value="${build.dist.repo}/${ceylon.module-resolver.src}"/>
         </antcall>
-        <copy file="${module-resolver.jar}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
         <antcall target="sha1sum">
-            <param name="file" value="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
+            <param name="file" value="${ceylon.module-resolver.lib}"/>
         </antcall>
     </target>
 
@@ -290,11 +285,10 @@
 
     <!-- Rule to build module-resolver jar -->
     <target name="module-resolver.jar" depends="module-resolver.classes">
-        <mkdir dir="${build.lib}"/>
         <tstamp>
             <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
         </tstamp>        
-        <jar destfile="${module-resolver.jar}">
+        <jar destfile="${ceylon.module-resolver.lib}">
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
@@ -304,17 +298,6 @@
         </jar>
     </target>
 
-    <!-- Rule to build module-resolver-api jar -->
-    <target name="module-resolver-api.jar" depends="module-resolver.classes.api">
-        <mkdir dir="${build.lib}"/>
-        <jar destfile="${module-resolver-api.jar}">
-            <fileset dir="${build.classes}">
-                <include name="**/spi/*"/>
-                <include name="**/api/*"/>
-            </fileset>
-        </jar>
-    </target>
-            
     <!-- Rule to compile and test -->
     <target name="build" depends="module-resolver.jar"/>
 

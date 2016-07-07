@@ -23,19 +23,22 @@ public class ReflectionModule extends LazyModule {
     @Override
     public List<Package> getPackages() {
         // make sure we're complete
-        AbstractModelLoader modelLoader = getModelLoader();
+        final AbstractModelLoader modelLoader = getModelLoader();
         if(!packagesLoaded){
-            synchronized(modelLoader.getLock()){
-                if(!packagesLoaded){
-                    String name = getNameAsString();
-                    for(String pkg : getJarPackages()){
-                        // special case for the language module to hide stuff
-                        if(!name.equals(AbstractModelLoader.CEYLON_LANGUAGE) || pkg.startsWith(AbstractModelLoader.CEYLON_LANGUAGE))
-                            modelLoader.findOrCreatePackage(this, pkg);
+            modelLoader.synchronizedRun(new Runnable() {
+                @Override
+                public void run() {
+                    if(!packagesLoaded){
+                        String name = getNameAsString();
+                        for(String pkg : getJarPackages()){
+                            // special case for the language module to hide stuff
+                            if(!name.equals(AbstractModelLoader.CEYLON_LANGUAGE) || pkg.startsWith(AbstractModelLoader.CEYLON_LANGUAGE))
+                                modelLoader.findOrCreatePackage(ReflectionModule.this, pkg);
+                        }
+                        packagesLoaded = true;
                     }
-                    packagesLoaded = true;
                 }
-            }
+            });
         }
         return super.getPackages();
     }

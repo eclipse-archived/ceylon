@@ -26,6 +26,7 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
@@ -390,7 +391,8 @@ public class TypeHierarchyVisitor extends Visitor {
             List<Type> orderedTypes, Class clazz) {
         Type aggregation = buildAggregatedType(orderedTypes);
         for (Type.Members members: aggregation.membersByName.values()) {
-            if (!members.formals.isEmpty()) {
+            if (!members.formals.isEmpty() 
+                    && members.nonFormalsNonDefaults.isEmpty()) {
                 if (members.actualsNonFormals.isEmpty()) {
                     Declaration example = members.formals.iterator().next();
                     Declaration declaringType = 
@@ -660,23 +662,17 @@ public class TypeHierarchyVisitor extends Visitor {
                                             "' from '" + std.getName() +  
                                             "' and another unrelated supertype");
                                 }
-                                else {
-                                    //TODO: I'm not really certain that the following
-                                    //      condition is correct, we really should 
-                                    //      check that the other declaration is a Java
-                                    //      interface member (see the TODO above)
-                                    if (!(d.getUnit().getPackage().getModule().isJava() &&
-                                            r.getUnit().getPackage().getModule().isJava() &&
-                                            r.isInterfaceMember() &&
-                                            d.isClassMember())) {
-                                        that.addError("member '" + d.getName() + 
-                                                "' is inherited ambiguously by '" + td.getName() +
-                                                "' from '" + std.getName() +  
-                                                "' and another subtype of '" + 
-                                                ((TypeDeclaration) r.getContainer()).getName() + 
-                                                "' and so must be refined by '" + td.getName() + "'", 
-                                                350);
-                                    }
+                                else if (!((std instanceof Interface 
+                                            || r.isInterfaceMember()) && 
+                                          isDefinedInJava(std) &&
+                                          isDefinedInJava(r))) {
+                                    that.addError("member '" + d.getName() + 
+                                            "' is inherited ambiguously by '" + td.getName() +
+                                            "' from '" + std.getName() +  
+                                            "' and another subtype of '" + 
+                                            ((TypeDeclaration) r.getContainer()).getName() + 
+                                            "' and so must be refined by '" + td.getName() + "'", 
+                                            350);
                                 }
                                 errors.add(d.getName());
                             }
@@ -700,6 +696,14 @@ public class TypeHierarchyVisitor extends Visitor {
                 }
             }
         }
+    }
+
+    private boolean isDefinedInJava(Declaration d) {
+        if (d.getUnit().getPackage().getModule().isJava()) {
+            return true;
+        }
+        Declaration rd = d.getRefinedDeclaration();
+        return rd!=null && !rd.equals(d) && isDefinedInJava(rd);
     }
 
 }

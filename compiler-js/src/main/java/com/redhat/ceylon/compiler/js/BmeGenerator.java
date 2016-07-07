@@ -264,9 +264,6 @@ public class BmeGenerator {
                     gen.qualify(that, d);
                 }
             } else {
-                if (d instanceof Class && ((Class)d).isDynamic()) {
-                    gen.out("new ");
-                }
                 gen.qualify(that, d);
             }
             gen.out(gen.getNames().name(d));

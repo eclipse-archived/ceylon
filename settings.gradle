@@ -3,6 +3,9 @@
 //include 'compiler-js'
 //include 'compiler-java'
 //include 'language'
+//    'language',
+// 'module-loader',
+// 'tool-provider'
 
 include 'dist'
 project(':dist').buildFileName = 'dist.gradle'
@@ -33,3 +36,4 @@ project(':cmr-webdav').buildFileName = 'webdav.gradle'
 
 include 'cmr-js'
 project(':cmr-js').buildFileName = 'cmrjs.gradle'
+

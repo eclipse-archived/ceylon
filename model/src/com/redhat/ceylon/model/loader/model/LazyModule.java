@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
@@ -113,18 +114,21 @@ public abstract class LazyModule extends Module {
             return module.getPackage(name);
     }
 
-    private Package findPackageInModule(LazyModule module, String name) {
+    private Package findPackageInModule(final LazyModule module, final String name) {
         if(module.containsPackage(name)){
             // first try the already loaded packages from that module
             AbstractModelLoader modelLoader = getModelLoader();
-            synchronized(modelLoader.getLock()){
-                for(Package pkg : module.getPackages()){
-                    if(pkg.getNameAsString().equals(name))
-                        return pkg;
+            return modelLoader.synchronizedCall(new Callable<Package>() {
+                @Override
+                public Package call() throws Exception {
+                    for(Package pkg : module.getPackages()){
+                        if(pkg.getNameAsString().equals(name))
+                            return pkg;
+                    }
+                    // create/load a new one
+                    return getModelLoader().findExistingPackage(module, name);
                 }
-                // create/load a new one
-                return getModelLoader().findExistingPackage(module, name);
-            }
+            });
         }
         return null;
     }

@@ -51,7 +51,27 @@ public class NpmPackage extends LazyPackage {
                 v.setType(getUnit().getUnknownType());
                 p0.setModel(v);
                 plist.getParameters().add(p0);
-                ((Class)d).setParameterList(plist);
+                //Add a default constructor with jsNew set
+                Constructor defcon = new Constructor();
+                defcon.setJsNew(true);
+                defcon.addParameterList(plist);
+                defcon.setDynamic(true);
+                defcon.setShared(true);
+                defcon.setUnit(getUnit());
+                defcon.setContainer((Class)d);
+                defcon.setScope((Class)d);
+                Function cf = new Function();
+                cf.setDynamicallyTyped(true);
+                cf.addParameterList(plist);
+                cf.setContainer((Class)d);
+                cf.setScope((Class)d);
+                cf.setUnit(d.getUnit());
+                cf.setVisibleScope(defcon.getVisibleScope());
+                cf.setShared(true);
+                cf.setJsNew(true);
+                ((Class)d).setConstructors(true);
+                ((Class)d).addMember(defcon);
+                ((Class)d).addMember(cf);
             } else {
                 d = new Function();
                 ((Function)d).setDynamicallyTyped(true);

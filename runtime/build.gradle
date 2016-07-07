@@ -1,8 +1,10 @@
 
 dependencies {
     compile project(':common'),
+        project(':cli'),
         project(':model'),
         project(':cmr'),
+        project(':tool-provider'),
         project(':language')
 }
 

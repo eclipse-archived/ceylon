@@ -523,3 +523,5 @@ $specialiseForNumber$(Integer, 'nearestFloat', function(){return {mod:$CCMM$,$t:
 
 ex$.Integer=Integer;
 ex$.Float=Float;
+
+nativeJSParseFloat=parseFloat;

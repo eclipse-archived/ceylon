@@ -800,4 +800,9 @@ public class InteropTests extends CompilerTests {
     public void testIopInterdep(){
         compile("InterdepJava.java", "Interdep.ceylon");
     }
+    
+    @Test
+    public void testIopNullAnnotations(){
+        compile("nullable/NullAnnotationsJava.java", "nullable/NullAnnotations.ceylon");
+    }
 }
