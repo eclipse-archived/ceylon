@@ -35,24 +35,15 @@ task publishSource( type : Copy ) {
     }
     from sourceZip
 
-    into cbp.'build.dist.repo'
+    into "${cbp.'build.dist.repo'}/${cbp.'ceylon.common.src'}"
 }
 
-task publishJar( type : Copy ) {
-    group 'Distribution'
-    description 'Copies binary artifacts to distribution area'
-
-    from sha1, {
-        include '**/*.jar'
-    }
-
-    from jar
-
-    into cbp.'ceylon.common.dir'
+publishJar {
+    into "${cbp.'build.dist.repo'}/${cbp.'ceylon.common.dir'}"
 }
 
-task publishInternal {
-    dependsOn publishSource,publishJar
+publishInternal {
+    dependsOn publishSource
 }
 
 task cleanRepo ( type : Delete ) {
