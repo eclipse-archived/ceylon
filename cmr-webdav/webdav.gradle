@@ -1,17 +1,10 @@
+ext {
+    ceylonModuleName = 'module-resolver-webdav'
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
 
 dependencies {
     compile 'com.github.lookfirst:sardine:5.1'
-}
-
-jar {
-    manifest {
-        attributes 'Bundle-SymbolicName': 'com.redhat.ceylon.module-resolver-webdav',
-            'Bundle-Version': cbp.'module.com.redhat.ceylon.module-resolver-webdav.version'+".${TimeStamp.BUILD}"
-    }
-    archiveName = "com.redhat.ceylon.module-resolver-webdav-${cbp.'module.com.redhat.ceylon.module-resolver-webdav.version'}.jar"
-}
-
-publishJar {
-    into "${cbp.'build.dist.repo'}/${cbp.'module-resolver-webdav.dir'}"
 }
 
