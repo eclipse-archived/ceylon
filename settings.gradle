@@ -30,3 +30,6 @@ project(':cmr-aether').buildFileName = 'aether.gradle'
 
 include 'cmr-webdav'
 project(':cmr-webdav').buildFileName = 'webdav.gradle'
+
+include 'cmr-js'
+project(':cmr-js').buildFileName = 'cmrjs.gradle'
