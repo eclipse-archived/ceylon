@@ -1,0 +1,24 @@
+
+dependencies {
+    compile 'org.apache.maven:maven-model:3.3.9'
+    compile 'org.apache.maven:maven-settings:3.3.9'
+    compile 'org.apache.maven:maven-settings-builder:3.3.9'
+    compile 'org.apache.maven:maven-aether-provider:3.3.9'
+    compile 'org.eclipse.aether:aether-api:1.1.0'
+    compile 'org.eclipse.aether:aether-impl:1.1.0'
+    compile 'org.eclipse.aether:aether-connector-basic:1.1.0'
+    compile 'org.eclipse.aether:aether-transport-file:1.1.0'
+    compile 'org.eclipse.aether:aether-transport-http:1.1.0'
+}
+
+jar {
+    manifest {
+        attributes 'Bundle-SymbolicName': 'com.redhat.ceylon.module-resolver-aether',
+            'Bundle-Version': cbp.'module.com.redhat.ceylon.module-resolver-aether.version'+".${TimeStamp.BUILD}"
+    }
+    archiveName = "com.redhat.ceylon.module-resolver-aether-${cbp.'module.com.redhat.ceylon.module-resolver-aether.version'}.jar"
+}
+
+publishJar {
+    into "${cbp.'build.dist.repo'}/${cbp.'module-resolver-aether'}"
+}
