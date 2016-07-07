@@ -1,4 +1,0 @@
-
-dependencies {
-    compile 'com.github.lookfirst:sardine:5.1'
-}
