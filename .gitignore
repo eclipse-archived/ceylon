@@ -6,4 +6,5 @@ build/
 \#*\#
 .idea
 build
+builtByGradle
 gradle-app.setting
