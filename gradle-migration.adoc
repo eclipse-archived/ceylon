@@ -1,6 +1,12 @@
 = Tracking Gradle Migration
 
-Top-level install build requires:
+Builds currently go to `builtByGradle` directory instead of `build` in order to make it easier to compare
+Ant & Gradle builds.
+
+== Overall TODO for each project
+
+* ide-quick
+* bundle-proxy
 
 == Dist
 
@@ -41,6 +47,7 @@ Awaiting `model`, `cmr`
 .TODO
 * Publishing
 * Publish apiJar as well?
+* Source Zip
 * Need to check whether contents of `apiJar` should also be in `jar`.
 * 17 tests are currently (disabled test task for moment)
 
@@ -50,6 +57,7 @@ Compilation has been straight-forward.
 
 .TODO
 * Publishing
+* Source Zip
 
 == Cmr-webdav
 
@@ -57,6 +65,7 @@ Compilation has been straight-forward.
 
 .TODO
 * Publishing
+* Source Zip
 
 == Model
 
@@ -64,6 +73,7 @@ Compilation has been straight-forward.
 
 .TODO
 * Publishing
+* Source Zip
 
 == Langtools-classfile
 
@@ -73,3 +83,4 @@ This has been straight-forward to do. There are no `*.utf8properties` files in t
 
 .TODO
 * Publishing
+* Source Zip
