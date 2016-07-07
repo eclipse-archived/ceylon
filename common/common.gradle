@@ -1,58 +1,10 @@
+ext {
+    ceylonModuleName = 'common'
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
 
 dependencies {
     compile 'org.tautua.markdownpapers:markdownpapers-core:1.2.7'
 }
 
-task sourceZip( type : Zip ) {
-    group 'Build'
-    description 'Archives source files'
-
-    from 'src', {
-        include '**/*.java'
-    }
-
-    archiveName = "com.redhat.ceylon.common-${cbp.'module.com.redhat.ceylon.common.version'}.src.zip"
-}
-
-jar {
-    manifest {
-        attributes 'Bundle-SymbolicName': 'com.redhat.ceylon.common',
-            'Bundle-Version': cbp.'module.com.redhat.ceylon.common.version'+".${TimeStamp.BUILD}"
-    }
-    archiveName = "com.redhat.ceylon.common-${cbp.'module.com.redhat.ceylon.common.version'}.jar"
-}
-
-sha1 {
-    archive sourceZip
-}
-
-task publishSource( type : Copy ) {
-    group 'Distribution'
-    description 'Copies sources artifacts to distribution area'
-
-    from sha1, {
-        include '**/*.zip'
-    }
-    from sourceZip
-
-    into "${cbp.'build.dist.repo'}/${cbp.'ceylon.common.src'}"
-}
-
-publishJar {
-    into "${cbp.'build.dist.repo'}/${cbp.'ceylon.common.dir'}"
-}
-
-publishInternal {
-    dependsOn publishSource
-}
-
-task cleanRepo ( type : Delete ) {
-    group 'Publish'
-    description 'Deletes published artifacts'
-    delete publishJar.outputs.files
-    delete publishSource.outputs.files
-}
-
-clean {
-    dependsOn cleanRepo
-}

@@ -1,4 +1,4 @@
-
+apply plugin : LifecycleBasePlugin
 
 task setupRepo {
     dependsOn ':runtime:setupRepo'
@@ -6,6 +6,7 @@ task setupRepo {
 
 task installCompiler {
     dependsOn ':common:publishInternal'
+//    dependsOn ':cli:publishInternal'
 }
 
 //<target name="install-compiler"

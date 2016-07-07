@@ -7,21 +7,13 @@ plugins {
 
 subprojects {
 
-    apply plugin : 'com.admc.javaPropFile'
+    apply plugin : CeylonCommonBuildProperties
 
     // put all the build artifacts in subfolders of the root "build" folder
 //    buildDir = new File(rootProject.buildDir, it.path.replace(":", "_").substring(1))
     buildDir = new File(rootProject.projectDir, 'builtByGradle/' + it.path.replace(":", "_").substring(1))
 
     ext {
-        // Everything in common-build.properties will be availabe on the 'cbp'
-        // property object
-        cbp = propFileLoader.load file(
-            "${rootProject.projectDir}/common-build.properties"
-        ), [ basedir : rootProject.projectDir,
-             'sun.boot.class.path' : ''
-        ]
-
         distDir = file(cbp.'build.dist')
         repoDir = file(cbp.'build.dist.repo')
         globalLibDir = file("${rootProject.projectDir}/lib")
@@ -37,81 +29,4 @@ subprojects {
     }
 }
 
-// TODO : Might have to filter it to project that needs Java compiltation
-subprojects {
-
-    apply plugin: 'java'
-
-    ext {
-        // By default projects use a flat source hierarchy
-        defaultSources = false
-    }
-
-    dependencies {
-        testCompile 'junit:junit:4.11'
-    }
-
-    sourceCompatibility = 1.7
-    targetCompatibility = 1.7
-
-    compileJava {
-        options.encoding = 'UTF-8'
-    }
-
-    task sha1 ( type : Checksum ) {
-        archive jar
-        dependsOn jar
-    }
-
-    assemble {
-        dependsOn sha1
-    }
-
-    processResources {
-        filesMatching 'com/redhat/**/*.utf8properties', { fcd ->
-            fcd.filter EscapeUnicode
-            fcd.name = fcd.name.replace('.utf8properties','.properties')
-        }
-    }
-
-    // Override the default Maven-like source hierarchy for
-    // any projects where `defaultSources == false`
-    if (!project.defaultSources) {
-        sourceSets {
-            main {
-                java {
-                    srcDir 'src'
-                }
-                resources {
-                    srcDir 'src'
-                    exclude '**/*.java'
-                }
-            }
-            test {
-                java {
-                    srcDir 'test/src'
-                }
-                resources {
-                    srcDir 'test/src'
-                    exclude '**/*.java'
-                }
-            }
-        }
-    }
-
-    task publishJar( type : Copy ) {
-        group 'Distribution'
-        description 'Copies binary artifacts to distribution area'
-
-        from sha1, {
-            include '**/*.jar'
-        }
-
-        from jar
-    }
-
-    task publishInternal {
-        dependsOn 'publishJar'
-    }
-}
 

@@ -7,6 +7,7 @@ Ant & Gradle builds.
 
 * ide-quick
 * bundle-proxy
+* Tests are disabled globally.
 
 == Dist
 
@@ -84,6 +85,7 @@ This has been straight-forward to do. There are no `*.utf8properties` files in t
 .TODO
 * Publishing
 * Source Zip
+* Do we need to set `-XDignore.symbol.file`  for `JavaCompile` options?
 
 == buildSrc
 
@@ -100,3 +102,29 @@ project. This replaces the use of the `sha1sum` tasks in the Ant build.
 A helper class has been added as `buildSrc/src/main.groovy/TimeStamp.groovy`. It sets a singular timestamp value
 at the beginning of the build which can then be used in all builds via `TimeStamp.BUILD`. This replaces the use of
 the `TStamp` ant task.
+
+=== CeylonCommonBuildProperties
+
+This is a plugin that is applied which loads up the properties from `common-build.properties` and places it on the
+projet extension as a field called `cbp`.
+
+It also provides a `requiresCBP` method that will fail the build if a specific property has not been found in
+`common-build.properties`.
+
+== gradle
+
+A number of common functionality not suitable for buildSrc have been added as buildscript in the `gradle` folder
+
+=== requires-common-build-properties.gradle
+
+Provides a `requiresCBP` method that will fail the build is a specific property has not been found in
+`common-build.properties`.
+
+=== java-for-modules.gradle
+
+Adds common `jar` and `publishInternal` configuration. It requires `ceylonModuleName` to be set before including it.
+If `ceylonSourceLayout` is set to `false` before inclusion it will not set up `sourceSets` to use the Ant layout.
+
+It assumes that `ceylonModuleName` is used in a consistent manner throughout a specific manner. This usually works,
+but there some exceptions i.e. `classfile` and 'langtools.classfile`. For this case a subproject can manually set
+`ceylonPublishModuleName` to the `ceylon.XXXX.dir` part.

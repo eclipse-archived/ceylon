@@ -1,57 +1,10 @@
 
 ext {
     ceylonModuleName = 'module-resolver'
+    ceylonSourceLayout = false
 }
 
-// ----------------------------------------
-if(ext.ceylonModuleName == null) {
-    throw new GradleException ('''ceylonModule name was not found. You need to define it in an extension block such as
-
-ext {
-    ceylonModuleName = 'foo'
-}
-
-''')
-}
-
-ext {
-    requiresCBP = { String propName ->
-
-        if(ext.cbp == null) {
-            throw new GradleException ('ext.cbp is not defined. Did you load common-build.properties correctly?')
-        }
-
-        if(cbp."${propName}" == null) {
-            throw new GradleException ("${propName} is not defined in common-build.properties")
-        }
-    }
-}
-
-requiresCBP "module.com.redhat.ceylon.${ceylonModuleName}.version"
-requiresCBP 'build.dist.repo'
-requiresCBP "ceylon.${ceylonModuleName}.dir"
-
-ext {
-    bundleSymbolicName = 'com.redhat.ceylon.' + ceylonModuleName
-    bundleVersionName = cbp."module.com.redhat.ceylon.${ceylonModuleName}.version"
-    jarPublishDir = cbp.'build.dist.repo' + '/' + cbp."ceylon.${ceylonModuleName}.dir"
-}
-
-
-jar {
-    manifest {
-        attributes 'Bundle-SymbolicName': bundleSymbolicName,
-            'Bundle-Version': bundleVersionName+".${TimeStamp.BUILD}"
-    }
-    archiveName = "com.redhat.ceylon.module-resolver-${bundleVersionName}.jar"
-}
-
-publishJar {
-    // TODO: From apiJar as well?
-    into "${cbp.'build.dist.repo'}/${cbp.'ceylon.module-resolver.dir'}"
-}
-
-// ----------------------------------------
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
 
 dependencies {
     compile project(':common')
@@ -84,39 +37,6 @@ sourceSets {
         }
     }
 }
-
-//jar {
-//    manifest {
-//        attributes 'Bundle-SymbolicName': 'com.redhat.ceylon.module-resolver',
-//            'Bundle-Version': cbp.'module.com.redhat.ceylon.module-resolver.version'+".${TimeStamp.BUILD}"
-//    }
-//    archiveName = "com.redhat.ceylon.module-resolver-${cbp.'module.com.redhat.ceylon.module-resolver.version'}.jar"
-//}
-
-
-//task apiJar ( type : Jar ) {
-//    from sourceSets.main.output.classesDir, {
-//        include '**/spi/*'
-//        include '**/api/*'
-//    }
-////    archiveName = "com.redhat.ceylon.module-resolver-${cbp.'module.com.redhat.ceylon.module-resolver.version'}.jar"
-//    archiveName = 'module-resolver-api.jar'
-//    dependsOn classes
-//}
-//
-//sha1 {
-//    archive apiJar
-//}
-//
-//artifacts {
-//    archives apiJar
-//}
-
-
-//publishJar {
-//    // TODO: From apiJar as well?
-//    into "${cbp.'build.dist.repo'}/${cbp.'ceylon.module-resolver.dir'}"
-//}
 
 //TODO: Remove this
 test.enabled = false
