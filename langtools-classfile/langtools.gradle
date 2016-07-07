@@ -1,0 +1,19 @@
+
+dependencies {
+    compile project(':common')
+}
+
+jar {
+    manifest {
+        attributes 'Bundle-SymbolicName': 'com.redhat.ceylon.langtools.classfile',
+            'Bundle-Version': cbp.'module.com.redhat.ceylon.langtools.classfile.version'+".${TimeStamp.BUILD}"
+    }
+    archiveName = "com.redhat.ceylon.langtools.classfile-${cbp.'module.com.redhat.ceylon.langtools.classfile.version'}.jar"
+}
+
+
+// TODO: Do we need to set <compilerarg value="-XDignore.symbol.file" /> for JavaCompile options?
+
+publishJar {
+    into "${cbp.'build.dist.repo'}/${cbp.'ceylon.classfile.dir'}"
+}
