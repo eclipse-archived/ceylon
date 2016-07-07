@@ -1,10 +1,4 @@
-//include 'cli'
-//include 'langtools-classfile'
-//include 'model'
-//include 'cmr-aether'
-//include 'cmr-webdav'
 //include 'cmr-js'
-//include 'cmr'
 //include 'typechecker'
 //include 'compiler-js'
 //include 'compiler-java'
@@ -18,3 +12,21 @@ project(':runtime').buildFileName = 'runtime.gradle'
 
 include 'common'
 project(':common').buildFileName = 'common.gradle'
+
+//include 'cli'
+//project(':cli').buildFileName = 'cli.gradle'
+
+include 'model'
+project(':model').buildFileName = 'model.gradle'
+
+include 'langtools-classfile'
+project(':langtools-classfile').buildFileName = 'langtools.gradle'
+
+//include 'cmr'
+//project(':cmr').buildFileName = 'cmr.gradle'
+
+include 'cmr-aether'
+project(':cmr-aether').buildFileName = 'aether.gradle'
+
+include 'cmr-webdav'
+project(':cmr-webdav').buildFileName = 'webdav.gradle'
