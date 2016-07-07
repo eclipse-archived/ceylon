@@ -10,7 +10,8 @@ subprojects {
     apply plugin : 'com.admc.javaPropFile'
 
     // put all the build artifacts in subfolders of the root "build" folder
-    buildDir = new File(rootProject.buildDir, it.path.replace(":", "_").substring(1))
+//    buildDir = new File(rootProject.buildDir, it.path.replace(":", "_").substring(1))
+    buildDir = new File(rootProject.projectDir, 'builtByGradle/' + it.path.replace(":", "_").substring(1))
 
     ext {
         // Everything in common-build.properties will be availabe on the 'cbp'
