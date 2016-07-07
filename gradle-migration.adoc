@@ -31,3 +31,45 @@ Top-level install build requires:
 <1> `clean.repo` handled by `cleanRepo` which is a dependency of `clean`.
 <2> `init.repo`, `publish-internal` handled by `publishInternal`.
 <3> `dist` handled by Gradle dependency chain and included `assemble`, `sourceZip`, `sha1` and `jar`
+
+== Cli
+
+Awaiting `model`, `cmr`
+
+== Cmr
+
+.TODO
+* Publishing
+* Publish apiJar as well?
+* Need to check whether contents of `apiJar` should also be in `jar`.
+* 17 tests are currently (disabled test task for moment)
+
+== Cmr-aether
+
+Compilation has been straight-forward.
+
+.TODO
+* Publishing
+
+== Cmr-webdav
+
+Compilation has been straight-forward.
+
+.TODO
+* Publishing
+
+== Model
+
+Compilation has been straight-forward.
+
+.TODO
+* Publishing
+
+== Langtools-classfile
+
+This has been straight-forward to do. There are no `*.utf8properties` files in this project, but it has alerted to the
+`native2ascii` Ant task that was used. The solution (which hopefully will work) is to hook into the lifecycle
+`processResources` task, and fix the encodings on the fly using the Ant `EscapeUnicode` filter instead.
+
+.TODO
+* Publishing
