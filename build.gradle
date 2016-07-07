@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.EscapeUnicode
+
 plugins {
     id 'com.gradle.build-scan' version '1.0'
     id "com.admc.javaPropFile" version "1.0.0"
@@ -64,31 +66,52 @@ subprojects {
         dependsOn sha1
     }
 
+    processResources {
+        filesMatching 'com/redhat/**/*.utf8properties', { fcd ->
+            fcd.filter EscapeUnicode
+            fcd.name = fcd.name.replace('.utf8properties','.properties')
+        }
+    }
+
     // Override the default Maven-like source hierarchy for
     // any projects where `defaultSources == false`
-    afterEvaluate { project ->
-        if (!project.defaultSources) {
-            sourceSets {
-                main {
-                    java {
-                        srcDir 'src'
-                    }
-                    resources {
-                        srcDir 'src'
-                        exclude '**/*.java'
-                    }
+    if (!project.defaultSources) {
+        sourceSets {
+            main {
+                java {
+                    srcDir 'src'
                 }
-                test {
-                    java {
-                        srcDir 'test/src'
-                    }
-                    resources {
-                        srcDir 'test/src'
-                        exclude '**/*.java'
-                    }
+                resources {
+                    srcDir 'src'
+                    exclude '**/*.java'
+                }
+            }
+            test {
+                java {
+                    srcDir 'test/src'
+                }
+                resources {
+                    srcDir 'test/src'
+                    exclude '**/*.java'
                 }
             }
         }
     }
+
+    task publishJar( type : Copy ) {
+        group 'Distribution'
+        description 'Copies binary artifacts to distribution area'
+
+        from sha1, {
+            include '**/*.jar'
+        }
+
+        from jar
+    }
+
+    task publishInternal {
+        dependsOn 'publishJar'
+    }
+
 }
 
