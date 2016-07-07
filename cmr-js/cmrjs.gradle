@@ -12,5 +12,5 @@ jar {
 }
 
 publishJar {
-    into "${cbp.'build.dist.repo'}/${cbp.'module-resolver-javascript.dir'}"
+    into "${cbp.'build.dist.repo'}/${cbp.'ceylon.module-resolver-javascript.dir'}"
 }
