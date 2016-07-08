@@ -2,7 +2,9 @@ package com.redhat.ceylon.common.tools;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -122,7 +124,7 @@ public abstract class ModuleWildcardsHelper {
             } else {
                 namePrefix = name.substring(0, name.length() - 1);
             }
-            List<String> modules = findModules(dirs, parentPath, namePrefix, forBackend);
+            Set<String> modules = findModules(dirs, parentPath, namePrefix, forBackend);
             result.addAll(modules);
         } else {
             result.add(name);
@@ -142,15 +144,19 @@ public abstract class ModuleWildcardsHelper {
     public static boolean isModuleName(String name) {
         String[] parts = name.split("\\.");
         for (String part : parts) {
-            if (part.isEmpty()) {
-                return false;
-            }
-            Matcher m = idPattern.matcher(part);
-            if (!m.matches()) {
+            if (!isNamePart(part)) {
                 return false;
             }
         }
         return true;
+    }
+
+    public static boolean isNamePart(String part) {
+        if (part.isEmpty()) {
+            return false;
+        }
+        Matcher m = idPattern.matcher(part);
+        return m.matches();
     }
 
     public static boolean onlyGlobArgs(List<String> names) {
@@ -172,8 +178,8 @@ public abstract class ModuleWildcardsHelper {
         return false;
     }
 
-    private static List<String> findModules(Iterable<File> dirs, String modPath, String prefix, Backend forBackend) {
-        List<String> modules = new ArrayList<String>();
+    private static Set<String> findModules(Iterable<File> dirs, String modPath, String prefix, Backend forBackend) {
+        Set<String> modules = new LinkedHashSet<String>();
         for (File dir : dirs) {
             File modDir = new File(dir, modPath);
             if (modDir.isDirectory() && modDir.canRead()) {
@@ -183,7 +189,7 @@ public abstract class ModuleWildcardsHelper {
         return modules;
     }
     
-    private static void findModules(List<String> modules, File root, File dir, String prefix, Backend forBackend, boolean first) {
+    private static void findModules(Set<String> modules, File root, File dir, String prefix, Backend forBackend, boolean first) {
         File descriptor = new File(dir, Constants.MODULE_DESCRIPTOR);
         if (descriptor.isFile()) {
             File modDir = FileUtil.relativeFile(root, dir);
@@ -194,8 +200,10 @@ public abstract class ModuleWildcardsHelper {
         } else if (first || prefix == null || prefix.isEmpty()) {
             File[] files = dir.listFiles();
             for (File f : files) {
-                if (f.isDirectory() && f.canRead() && isModuleName(f.getName())) {
+                if (f.isDirectory() && f.canRead() && isNamePart(f.getName())) {
                     findModules(modules, root, f, prefix, forBackend, false);
+                } else if (f.isFile() && f.canRead() && f.getName().endsWith(Constants.CEYLON_SUFFIX)) {
+                    modules.add("default");
                 }
             }
         }
