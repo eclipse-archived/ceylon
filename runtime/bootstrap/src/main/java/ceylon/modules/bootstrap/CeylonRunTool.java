@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,14 +90,15 @@ public class CeylonRunTool extends RepoUsingTool {
     
     private static volatile Module runtimeModule;
 
-    private String moduleNameOptVersion;
+    private String moduleNameOptVersion = DefaultToolOptions.getRunToolModule(com.redhat.ceylon.common.Backend.Java);
     /** The (Ceylon) name of the functional to run, e.g. {@code foo.bar::baz} */
-    private String run;
+    private String run = moduleNameOptVersion != null ? DefaultToolOptions.getRunToolRun(com.redhat.ceylon.common.Backend.Java) : null;
     private String compileFlags;
-    private List<String> args = Collections.emptyList();
+    private List<String> args = DefaultToolOptions.getRunToolArgs(com.redhat.ceylon.common.Backend.Java);
     private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean upgradeDist = true;
+    
     private Map<String,String> extraModules = new HashMap<String,String>();
 
     public CeylonRunTool() {
@@ -111,7 +111,7 @@ public class CeylonRunTool extends RepoUsingTool {
         this.flatClasspath = flatClasspath;
     }
 
-    @Argument(argumentName = "module", multiplicity = "1", order = 1)
+    @Argument(argumentName = "module", multiplicity = "?", order = 1)
     public void setModule(String moduleNameOptVersion) {
         this.moduleNameOptVersion = moduleNameOptVersion;
     }
@@ -175,6 +175,10 @@ public class CeylonRunTool extends RepoUsingTool {
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
         super.initialize(mainTool);
+        
+        if (moduleNameOptVersion == null) {
+            throw new IllegalArgumentException("Missing required argument 'module' to command 'run'");
+        }
     }
 
     @Override

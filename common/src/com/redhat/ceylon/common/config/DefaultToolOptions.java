@@ -44,12 +44,17 @@ public class DefaultToolOptions {
     public final static String SECTION_RUNTOOL = "runtool";
     
     public final static String RUNTOOL_COMPILE = "runtool.compile";
+    public final static String RUNTOOL_RUN = "runtool.run";
+    public final static String RUNTOOL_MODULE = "runtool.module";
     
     public final static String SECTION_TESTTOOL = "testtool";
     
     public final static String TESTTOOL_COMPILE = "testtool.compile";
     
     public final static String KEY_MODULES = "modules";
+    public final static String KEY_MODULE = "module";
+    public final static String KEY_ARG = "arg";
+    public final static String KEY_RUN = "run";
     
     public final static List<String> DEFAULT_COMPILER_MODULES = Arrays.asList(new String[] { "*" });
     
@@ -297,6 +302,40 @@ public class DefaultToolOptions {
 
     public static String getRunToolCompileFlags(CeylonConfig config) {
         return config.getOption(RUNTOOL_COMPILE, Constants.DEFAULT_RUNTOOL_COMPILATION_FLAGS);
+    }
+    
+    public static String getRunToolModule(Backend backend) {
+        return getRunToolModule(CeylonConfig.get(), backend);
+    }
+
+    public static String getRunToolModule(CeylonConfig config, Backend backend) {
+        return config.getOption(key(SECTION_RUNTOOL, KEY_MODULE, backend),
+                config.getOption(key(SECTION_RUNTOOL, KEY_MODULE)));
+    }
+    
+    public static String getRunToolRun(Backend backend) {
+        return getRunToolRun(CeylonConfig.get(), backend);
+    }
+
+    public static String getRunToolRun(CeylonConfig config, Backend backend) {
+        return config.getOption(key(SECTION_RUNTOOL, KEY_RUN, backend),
+                config.getOption(key(SECTION_RUNTOOL, KEY_RUN)));
+    }
+    
+    public static List<String> getRunToolArgs(Backend backend) {
+        return getRunToolArgs(CeylonConfig.get(), backend);
+    }
+    
+    public static List<String> getRunToolArgs(CeylonConfig config, Backend backend) {
+        String[] args = config.getOptionValues(key(SECTION_RUNTOOL, KEY_ARG, backend));
+        if (args == null) {
+            args = config.getOptionValues(key(SECTION_RUNTOOL, KEY_ARG));
+        }
+        if (args != null) {
+            return Arrays.asList(args);
+        } else {
+            return Collections.emptyList();
+        }
     }
     
     public static String getTestToolCompileFlags() {
