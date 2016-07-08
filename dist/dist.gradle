@@ -6,7 +6,12 @@ task setupRepo {
 
 task installCompiler {
     dependsOn ':common:publishInternal'
-//    dependsOn ':cli:publishInternal'
+    dependsOn ':cli:publishInternal'
+    dependsOn ':langtools-classfile:publishInternal'
+    dependsOn ':model:publishInternal'
+    dependsOn ':cmr:publishInternal'
+    dependsOn ':typechecker:publishInternal'
+//    dependsOn ':compiler-java:publishInternal'
 }
 
 //<target name="install-compiler"

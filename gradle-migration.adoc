@@ -23,7 +23,14 @@ Ant & Gradle builds.
 </target>
 ----
 <1> `setup-repo` handled `:runtime:setupRepo`
-<2> `install-compiler` handled by `:common:publishInternal`.
+<2> `install-compiler` handled by `publishInternal` task in `common`, `cli`, `;angtools-classfile`,
+  `model`, `cmr` ...
+
+// typechecker etc.
+
+.Currently waiting for
+* `typechecker`
+* `compiler-java`
 
 == Commons
 
@@ -53,7 +60,7 @@ Ant & Gradle builds.
 
 == Cmr-aether
 
-Compilation has been straight-forward.
+Standard Ceylon Java project.
 
 .TODO
 * Publishing
@@ -61,11 +68,11 @@ Compilation has been straight-forward.
 
 == Cmr-webdav
 
-Compilation has been straight-forward.
+Standard Ceylon Java project.
 
 == Model
 
-Compilation has been straight-forward.
+Standard Ceylon Java project.
 
 == Langtools-classfile
 
@@ -77,6 +84,33 @@ We also set `ceylonPublishModuleName` as this one uses two distinctly named prop
 
 .TODO
 * Do we need to set `-XDignore.symbol.file`  for `JavaCompile` options?
+
+== Typechecker
+
+Usage of Gradle's builtin `antlr` plugin did not work due to a showstopper bug. Sticking wil the old `build.xml` is not
+ideal as automatic management of artifacts for project dependencies will be lost. Created `CeylonAntlr` plugin to solve
+the problem.
+
+The equivalent of the Ant `treegen` task has been solved by creating a sourceset called `treegen`. This automatically
+ creates a `compileTreegenJava` tasks which is then made dependent on `generateGrammarSource`.
+
+The `tree` used a class called `Generate` to create further Java files for later compilation. It was discovered that
+the `Generate` class has a hardcoded path that starts with `gensrc`.
+For this reason the generated source directory is configured in the subproject to be `gensrc`, but located under the
+build directory. The Gradle `tree` task used the build directory has working directory and references back to the
+project directory to find the `Ceylon.nodes` file. it also manually sets an output directory property so that Gradle
+can have an idea when it is up to date.
+
+Finally `compileJava` has to depend on `tree`, whereafter all of the tasks supplied via `java-for-modules.gradle`,
+starts to work.
+
+.TODO
+* The Ant `antlr.tree` deleted tokens at the end. SHould we still do that?
+
+== Compiler-java
+
+.TODO
+* Waiting for `typechecker` to be completed.
 
 == buildSrc
 
@@ -102,14 +136,14 @@ projet extension as a field called `cbp`.
 It also provides a `requiresCBP` method that will fail the build if a specific property has not been found in
 `common-build.properties`.
 
+=== CeylonAntlr
+
+A local plugin that mimics a number of conventions of the builtin Gradle `antlr` plugin, but is stripped down in
+functionality and covers just enough to work within the Ceylon build environment.
+
 == gradle
 
 A number of common functionality not suitable for buildSrc have been added as buildscript in the `gradle` folder
-
-=== requires-common-build-properties.gradle
-
-Provides a `requiresCBP` method that will fail the build is a specific property has not been found in
-`common-build.properties`.
 
 === java-for-modules.gradle
 

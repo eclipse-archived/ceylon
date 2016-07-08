@@ -1,9 +1,6 @@
-//include 'cmr-js'
-//include 'typechecker'
 //include 'compiler-js'
 //include 'compiler-java'
 //include 'language'
-//    'language',
 // 'module-loader',
 // 'tool-provider'
 
@@ -37,3 +34,8 @@ project(':cmr-webdav').buildFileName = 'webdav.gradle'
 include 'cmr-js'
 project(':cmr-js').buildFileName = 'cmrjs.gradle'
 
+include 'typechecker'
+project(':typechecker').buildFileName = 'typechecker.gradle'
+
+//include 'compiler-java'
+//project(':compiler-java').buildFileName = 'compilerjava.gradle'
