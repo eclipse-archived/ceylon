@@ -30,21 +30,6 @@ sourceSets {
     }
 }
 
-//"""
-//    <target name="antlr.parser"
-//            description="Generate code from ANTLR grammar">
-//        <mkdir dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/parser"/>
-//        <java classname="org.antlr.Tool">
-//            <arg value="-o"/>
-//            <arg value="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/parser"/>
-//            <arg value="${antlr.src}"/>
-//            <classpath>
-//                <pathelement location="${antlr.lib}"/>
-//            </classpath>
-//        </java>
-//    </target>
-//
-
 // TODO: Should we delete these tokens?
 //        <delete>
 //            <fileset dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"
@@ -63,37 +48,9 @@ generateGrammarSource {
         fileTree("antlr/com/redhat/ceylon/compiler/typechecker/treegen") { include '**/*.g' }
 }
 
-//    <target name="treegen" depends="antlr.tree, antlr.parser">
-//        <mkdir dir="${build.classes}"/>
-//        <javac
-//                srcdir="${src}:${gensrc}"
-//                destdir="${build.classes}"
-//                debug="true"
-//                encoding="UTF-8"
-//                classpath="${antlr.lib}"
-//                target="${compile.java.target}"
-//                source="${compile.java.source}"
-//                bootclasspath="${compile.java.bootclasspath}">
-//            <include name="com/redhat/ceylon/compiler/typechecker/treegen/*.java"/>
-//        </javac>
-//    </target>
-
 compileTreegenJava {
     dependsOn generateGrammarSource
 }
-
-
-//    <target name="tree" depends="treegen"
-//            description="Generate the tree builder code">
-//        <mkdir dir="${gensrc}/com/redhat/ceylon/compiler/typechecker/tree"/>
-//        <java classname="com.redhat.ceylon.compiler.typechecker.treegen.Generate" dir="${basedir}" fork="yes">
-//            <arg value="antlr/Ceylon.nodes"/>
-//            <classpath>
-//                <pathelement location="${antlr.lib}"/>
-//                <pathelement location="${build.classes}"/>
-//            </classpath>
-//        </java>
-//    </target>
 
 task tree( type : JavaExec ) {
     group 'Build'
@@ -115,20 +72,6 @@ task tree( type : JavaExec ) {
     }
 }
 
-//    <target name="compile" depends="tree" description="compile the type checker">
-//        <javac
-//                srcdir="${src}:${gensrc}"
-//                destdir="${build.classes}"
-//                debug="true"
-//                encoding="UTF-8"
-//                classpathref="classpath"
-//                target="${compile.java.target}"
-//                source="${compile.java.source}"
-//                bootclasspath="${compile.java.bootclasspath}">
-//            <include name="**/*.java"/>
-//        </javac>
-//    </target>
-
 compileJava {
     dependsOn tree
 }
@@ -139,35 +82,3 @@ sourceZip {
         include '**/*.java'
     }
 }
-
-
-//ant.importBuild('build.xml') { antTargetName ->
-//    'ant-' + antTargetName
-//}
-//
-//compileJava.dependsOn 'ant-tree'
-//clean.dependsOn 'ant-clean'
-
-/*
-apply plugin: 'antlr'
-
-dependencies {
-    antlr "org.antlr:antlr:3.4"
-    compile project(':common'),
-        project(':model'),
-        project(':cmr')
-}
-
-sourceSets {
-    main {
-        antlr {
-            srcDir 'antlr'
-        }
-    }
-}   
-
-generateGrammarSource {
-    outputDirectory = new File(rootProject.buildDir, 'typechecker/gensrc')
-}
-*/
-
