@@ -22,6 +22,7 @@ public class DefaultToolOptions {
     public final static String DEFAULTS_OVERRIDES = "defaults.overrides";
     public final static String DEFAULTS_FLAT_CLASSPATH = "defaults.flatclasspath";
     public final static String DEFAULTS_AUTO_EPORT_MAVEN_DEPENDENCIES = "defaults.autoexportmavendependencies";
+    public final static String DEFAULTS_LINK_WITH_CURRENT_DISTRIBUTION = "defaults.linkwithcurrentdistribution";
     
     public final static String SECTION_COMPILER = "compiler";
     
@@ -133,6 +134,14 @@ public class DefaultToolOptions {
 
     public static boolean getDefaultAutoExportMavenDependencies(CeylonConfig config) {
         return config.getBoolOption(DEFAULTS_AUTO_EPORT_MAVEN_DEPENDENCIES, false);
+    }
+
+    public static boolean getLinkWithCurrentDistribution() {
+        return getLinkWithCurrentDistribution(CeylonConfig.get());
+    }
+
+    public static boolean getLinkWithCurrentDistribution(CeylonConfig config) {
+        return config.getBoolOption(DEFAULTS_LINK_WITH_CURRENT_DISTRIBUTION, true);
     }
 
     public static String getCompilerJdkProvider() {

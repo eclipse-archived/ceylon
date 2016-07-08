@@ -14,6 +14,7 @@ import com.redhat.ceylon.common.Messages;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
@@ -30,7 +31,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 
     protected Map<String, ArtifactResult> loadedModules = new HashMap<>();
     protected Map<String, SortedSet<String>> loadedModuleVersions = new HashMap<>();
-    protected boolean upgradeDist = true;
+    protected boolean upgradeDist = DefaultToolOptions.getLinkWithCurrentDistribution();
     // start out with the JDK one and change in initialise()
     protected JdkProvider jdkProvider = new JdkProvider();
     protected String jdkProviderModule;

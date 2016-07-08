@@ -97,7 +97,7 @@ public class CeylonRunTool extends RepoUsingTool {
     private List<String> args = DefaultToolOptions.getRunToolArgs(com.redhat.ceylon.common.Backend.Java);
     private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
-    private boolean upgradeDist = true;
+    private boolean upgradeDist = DefaultToolOptions.getLinkWithCurrentDistribution();
     
     private Map<String,String> extraModules = new HashMap<String,String>();
 
