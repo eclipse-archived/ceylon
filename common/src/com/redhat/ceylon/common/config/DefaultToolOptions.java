@@ -40,7 +40,7 @@ public class DefaultToolOptions {
     public final static String COMPILER_PROGRESS = "compiler.progress";
     public final static String COMPILER_JDKPROVIDER = "compiler.jdkprovider";
     public final static String COMPILER_APT = "compiler.apt";
-    public final static String COMPILER_MODULES = "compiler.modules";
+    public final static String COMPILER_MODULES = "compiler.module";
     
     public final static String SECTION_RUNTOOL = "runtool";
     
@@ -52,7 +52,6 @@ public class DefaultToolOptions {
     
     public final static String TESTTOOL_COMPILE = "testtool.compile";
     
-    public final static String KEY_MODULES = "modules";
     public final static String KEY_MODULE = "module";
     public final static String KEY_ARG = "arg";
     public final static String KEY_RUN = "run";
@@ -294,9 +293,9 @@ public class DefaultToolOptions {
     }
     
     public static List<String> getCompilerModules(CeylonConfig config, Backend backend) {
-        String[] modules = config.getOptionValues(key(SECTION_COMPILER, KEY_MODULES, backend));
+        String[] modules = config.getOptionValues(key(SECTION_COMPILER, KEY_MODULE, backend));
         if (modules == null) {
-            modules = config.getOptionValues(key(SECTION_COMPILER, KEY_MODULES));
+            modules = config.getOptionValues(key(SECTION_COMPILER, KEY_MODULE));
         }
         if (modules != null) {
             return Arrays.asList(modules);
