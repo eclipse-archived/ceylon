@@ -72,7 +72,7 @@ import ceylon.modules.bootstrap.loader.InitialModuleLoader;
         "## Configuration file" +
         "\n\n" +
         "The run tool accepts the following option from the Ceylon configuration file: " +
-        "`runtool.compile` " +
+        "`runtool.compile`, `runtool.run`, `runtool.module` and multiple `runtool.arg` " +
         "(the equivalent option on the command line always has precedence)." +
         "\n\n" +
         "## EXAMPLE" +
@@ -90,11 +90,11 @@ public class CeylonRunTool extends RepoUsingTool {
     
     private static volatile Module runtimeModule;
 
-    private String moduleNameOptVersion = DefaultToolOptions.getRunToolModule(com.redhat.ceylon.common.Backend.Java);
+    private String moduleNameOptVersion;
     /** The (Ceylon) name of the functional to run, e.g. {@code foo.bar::baz} */
-    private String run = moduleNameOptVersion != null ? DefaultToolOptions.getRunToolRun(com.redhat.ceylon.common.Backend.Java) : null;
+    private String run;
     private String compileFlags;
-    private List<String> args = DefaultToolOptions.getRunToolArgs(com.redhat.ceylon.common.Backend.Java);
+    private List<String> args;
     private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean upgradeDist = DefaultToolOptions.getLinkWithCurrentDistribution();
@@ -129,9 +129,10 @@ public class CeylonRunTool extends RepoUsingTool {
     }
 
     @OptionArgument(longName = "run", argumentName = "toplevel")
-    @Description("Specifies the fully qualified name of a toplevel method or class with no parameters. " +
+    @Description("Specifies the fully qualified name of a toplevel method or class to run. " +
+            "The indicated declaration must be shared by the <module> and have no parameters. " +
             "The format is: `qualified.package.name::classOrMethodName` with `::` acting as separator " +
-            "between the package name and the toplevel class or method name.")
+            "between the package name and the toplevel class or method name. (default: `<module>::run`)")
     public void setRun(String run) {
         this.run = run;
     }
@@ -177,7 +178,17 @@ public class CeylonRunTool extends RepoUsingTool {
         super.initialize(mainTool);
         
         if (moduleNameOptVersion == null) {
-            throw new IllegalArgumentException("Missing required argument 'module' to command 'run'");
+            moduleNameOptVersion = DefaultToolOptions.getRunToolModule(com.redhat.ceylon.common.Backend.Java);
+            if (moduleNameOptVersion != null) {
+                if (run == null) {
+                    run = DefaultToolOptions.getRunToolRun(com.redhat.ceylon.common.Backend.Java);
+                }
+                if (args == null || args.isEmpty()) {
+                    args = DefaultToolOptions.getRunToolArgs(com.redhat.ceylon.common.Backend.Java);
+                }
+            } else {
+                throw new IllegalArgumentException("Missing required argument 'module' to command 'run'");
+            }
         }
     }
 
