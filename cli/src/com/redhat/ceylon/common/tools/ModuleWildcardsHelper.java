@@ -153,6 +153,15 @@ public abstract class ModuleWildcardsHelper {
         return true;
     }
 
+    public static boolean onlyGlobArgs(List<String> names) {
+        for (String name : names) {
+            if (!name.endsWith("*")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private static boolean existsSourceSubDir(Iterable<File> dirs, String file) {
         for (File dir : dirs) {
             File subDir = new File(dir, file);
