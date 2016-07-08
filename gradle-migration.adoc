@@ -109,10 +109,23 @@ starts to work.
 
 == Compiler-java
 
-.TODO
-* Waiting for `typechecker` to be completed.
+There is an unfortunate interdependency with `language`.
 
-== buildSrc
+*Utf8properties*: Unlike the Ant `compiler.classes` the `main` source set will include `*.utf8properties`.
+  The reason for this is that the Gradle task can take care of this in the `processResources` task via a filter,
+  whereas in Ant this hand to be handled via an extra build step.
+
+
+.TODO
+* Do we need to `-XDignore.symbol.file` when compiling?
+* Mismatch in `compiler-*.jar` artifacts between ANT (1789 files) and Gradle (1777 files).
+* Mismatch in `ceylon-*.jar` artifacts between ANT (154 files) and Gradle (155 files).
+
+== Language
+
+There is an unfortunate interdependency with `compiler-java`.
+
+== Custom build code in buildSrc
 
 A `buildSrc` folder has been added to help with some of the delicate and less common feastures of this build.
 

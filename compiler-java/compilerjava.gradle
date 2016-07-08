@@ -1,0 +1,238 @@
+ext {
+    ceylonModuleName = 'compiler'
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+
+
+// TODO: being dependent on this will cause circular dependency
+//     <pathelement path="${ceylon.language.lib}" />
+dependencies {
+    compile project(':common')
+    compile project(':cli')
+    compile project(':langtools-classfile')
+    compile project(':model')
+    compile project(':cmr')
+    compile project(':typechecker')
+    compile 'org.apache.ant:ant:1.8.2'
+    compile 'com.github.rjeschke:txtmark:0.13'
+    compile 'org.antlr:antlr:3.4'
+
+    testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
+    testCompile group: 'org.tautua.markdownpapers', name: 'markdownpapers-core', version: '1.2.7'
+    testCompile group: 'org.jboss.modules', name: 'jboss-modules', version: '1.4.4.Final'
+
+//    """        <pathelement path="${hamcrest.lib}" />
+//        <pathelement path="${markdownpapers.lib}" />
+//        <pathelement path="${jboss-modules.lib}" />
+//"""
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'langtools/src/share/classes'
+            include "com/redhat/**"
+            include "com/redhat/ceylon/langtools/tools/javac/**"
+            include "com/redhat/ceylon/langtools/source/**"
+            include "com/redhat/ceylon/javax/**"
+            exclude "**/Java7Checker.java"
+            exclude "com/redhat/ceylon/ant/**"
+            exclude "com/redhat/ceylon/launcher/**"
+            exclude 'com/redhat/ceylon/tools/antdoc/**'
+            exclude 'com/redhat/ceylon/tools/bootstrap/**'
+        }
+        resources {
+            srcDirs = [ 'src',"${project(':common').projectDir}/src",'langtools/src/share/classes' ]
+            include 'com/redhat/**/*.utf8properties'
+            include 'com/redhat/**/resources/**'
+            include 'com/redhat/**/*.properties'
+            include 'com/redhat/ceylon/common/config/**/*.properties'
+            include 'com/redhat/ceylon/langtools/tools/javac/resources/*.properties'
+            include 'META-INF/**'
+        }
+    }
+
+    antTask {
+        java {
+            srcDirs = []
+        }
+        resources {
+            include "com/redhat/ceylon/ant/antlib.xml"
+        }
+    }
+
+    test {
+        java {
+            srcDir 'test/ceylondoc'
+            include "com/redhat/ceylon/compiler/java/test/**"
+            include "com/redhat/ceylon/compiler/java/codegen/**"  // TODO: Not in build.xml atm
+            include "com/redhat/ceylon/tools/**"
+            include "com/redhat/ceylon/itest/**"
+            include "com/redhat/ceylon/launcher/test/**"
+            include "com/redhat/ceylon/ant/**"
+            include "com/redhat/ceylon/ceylondoc/test/**"
+            exclude "com/redhat/ceylon/tools/test/bug1183/**"
+            exclude "com/redhat/ceylon/compiler/java/test/interop/mixed/**"
+            exclude "com/redhat/ceylon/compiler/java/test/interop/nullable/**"
+            exclude "com/redhat/ceylon/compiler/java/test/interop/Bug*"
+            exclude "com/redhat/ceylon/compiler/java/test/interop/Interdep*"
+            exclude "com/redhat/ceylon/compiler/java/test/interop/JavaRepeatable.java"
+            exclude "com/redhat/ceylon/compiler/java/test/cmr/modules/bug1062/**"
+            exclude "com/redhat/ceylon/compiler/java/test/recovery/modules/bug1411/**"
+            exclude "com/redhat/ceylon/compiler/java/test/issues/*/**"
+            exclude "com/redhat/ceylon/compiler/java/test/recovery/bug6290/**"
+        }
+        resources {
+            include "META-INF/**"
+            include "**/*.txt"
+            include "**/*.md"
+            include "**/*.properties"
+        }
+    }
+
+    jdk6Stubs {
+        java {
+            srcDirs = ['src','langtools/src/share/classes']
+            source project(':common').sourceSets.main.java
+            include "**/Java7Checker.java"
+            include "com/redhat/ceylon/tools/Tool.java"
+            include "com/redhat/ceylon/tools/Plugin.java"
+            include "com/redhat/ceylon/ant/**"
+            include "com/redhat/ceylon/launcher/**"
+            include "com/redhat/ceylon/common/*"
+            include "com/redhat/ceylon/common/config/*"
+            include "com/redhat/ceylon/common/tools/ModuleWildcardsHelper.java"
+        }
+        resources {
+            srcDirs = []
+        }
+        compileClasspath = configurations.compile
+        runtimeClasspath = output + compileClasspath
+        output.classesDir = sourceSets.main.output.classesDir
+    }
+}
+
+compileJdk6StubsJava {
+    sourceCompatibility = '1.6'
+    targetCompatibility = '1.6'
+    dependsOn compileJava
+}
+
+assemble {
+    dependsOn compileJdk6StubsJava
+}
+
+
+jar {
+    exclude "com/redhat/ceylon/ant/**"
+    exclude "com/redhat/ceylon/common/**"
+    exclude "com/redhat/ceylon/launcher/**"
+}
+
+task antJar ( type : Jar ) {
+    group 'Build'
+    description 'Create Ant tasks jar'
+    dependsOn classes,processAntTaskResources
+
+    destinationDir = jar.destinationDir
+    archiveName = 'ceylon-ant.jar'
+    from sourceSets.main.output.classesDir, {
+        include "com/redhat/ceylon/ant/**"
+        include "com/redhat/ceylon/common/**"
+        include "com/redhat/ceylon/launcher/**"
+    }
+    from sourceSets.antTask.output.resourcesDir
+}
+
+//"""
+//    <target name="bootstrap.jar" depends="compiler.classes">
+//        <mkdir dir="${build.lib}" />
+//        <jar destfile="${build.lib}/ceylon-bootstrap.jar" filesetmanifest="merge">
+//            <fileset dir="${build.classes}">
+//                <include name="com/redhat/ceylon/launcher/Bootstrap*.class" />
+//                <include name="com/redhat/ceylon/launcher/CeylonClassLoader.class" />
+//                <include name="com/redhat/ceylon/launcher/LauncherUtil.class" />
+//                <include name="META-INF/MANIFEST.MF" />
+//            </fileset>
+//        </jar>
+//    </target>
+//
+//    <!-- Rule to build bootstrap module -->
+//    <target name="bootstrap.module" depends="compiler.classes">
+//        <mkdir dir="${build.dist.repo}/${ceylon.bootstrap.dir}" />
+//        <jar destfile="${build.dist.repo}/${ceylon.bootstrap.jar}">
+//            <fileset dir="${build.classes}">
+//                <include name="com/redhat/ceylon/launcher/**" />
+//                <exclude name="com/redhat/ceylon/launcher/Start.class" />
+//            </fileset>
+//            <manifest>
+//                <attribute name="Bundle-SymbolicName" value="ceylon.bootstrap"/>
+//                <attribute name="Bundle-Version" value="${module.ceylon.bootstrap.version}.${qualifier}"/>
+//            </manifest>
+//        </jar>
+//        <antcall target="sha1sum">
+//            <param name="file" value="${build.dist.repo}/${ceylon.bootstrap.jar}" />
+//        </antcall>
+//    </target>
+//"""
+
+//"""
+//<target name="test.classes" depends="compiler.classes">
+//        <mkdir dir="${build.classes}" />
+//        <javac destdir="${build.classes}" debug="true" encoding="UTF-8"
+// classpathref="test.compile.classpath" target="${compile.java.target}"
+// source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="false">
+//            <src path="${test.ceylond.src}"/>
+//            <src path="${test.src}"/>
+//            <include name="com/redhat/ceylon/compiler/java/test/**" />
+//            <exclude name="com/redhat/ceylon/compiler/java/test/interop/mixed/**" />
+//            <exclude name="com/redhat/ceylon/compiler/java/test/interop/nullable/**" />
+//            <exclude name="com/redhat/ceylon/compiler/java/test/interop/Bug*" />
+//            <exclude name="com/redhat/ceylon/compiler/java/test/interop/Interdep*" />
+//            <exclude name="com/redhat/ceylon/compiler/java/test/interop/JavaRepeatable.java" />
+//            <exclude name="com/redhat/ceylon/compiler/java/test/cmr/modules/bug1062/**" />
+//            <exclude name="com/redhat/ceylon/compiler/java/test/recovery/modules/bug1411/**" />
+//            <exclude name="com/redhat/ceylon/compiler/java/test/issues/*/**" />
+//            <include name="com/redhat/ceylon/tools/**" />
+//            <exclude name="com/redhat/ceylon/tools/test/bug1183/**" />
+//            <include name="com/redhat/ceylon/itest/**" />
+//            <include name="com/redhat/ceylon/launcher/test/**" />
+//            <include name="com/redhat/ceylon/ant/**" />
+//            <include name="com/redhat/ceylon/ceylondoc/test/**" />
+//            <exclude name="com/redhat/ceylon/compiler/java/test/recovery/bug6290/**"/>
+//        </javac>
+//        <copy todir="${build.classes}">
+//            <fileset dir="${test.src}">
+//                <include name="META-INF/**" />
+//                <include name="**/*.txt" />
+//                <include name="**/*.md" />
+//                <include name="**/*.properties" />
+//            </fileset>
+//        </copy>
+//    </target>
+//
+//"""
+
+//"""
+//    <target name="build" depends="compiler.jar,ant.jar,bootstrap.jar,bootstrap.module">
+//        <mkdir dir="${build.dist}" />
+//        <mkdir dir="${build.bin}" />
+//        <mkdir dir="${build.ceylon.cars}" />
+//
+//        <copy todir="${build.bin}">
+//            <fileset dir="${basedir}/bin">
+//            </fileset>
+//            <filterset>
+//                <filter token="ceylon-version" value="${ceylon.version}"/>
+//            </filterset>
+//        </copy>
+//        <chmod perm="0755">
+//            <fileset dir="${build.bin}">
+//                <include name="ceylon" />
+//            </fileset>
+//        </chmod>
+//    </target>
+//"""
+
+

@@ -29,7 +29,8 @@ if(!ext.properties.containsKey('ceylonPublishModuleName')) {
 requiresCBP "module.com.redhat.ceylon.${ceylonModuleName}.version"
 requiresCBP 'build.dist.repo'
 requiresCBP "ceylon.${ceylonPublishModuleName}.dir"
-
+requiresCBP 'compile.java.target'
+requiresCBP 'compile.java.source'
 
 ext {
     bundleSymbolicName = 'com.redhat.ceylon.' + ceylonModuleName
@@ -52,8 +53,8 @@ dependencies {
     testCompile 'junit:junit:4.11'
 }
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = cbp.'compile.java.source'
+targetCompatibility = cbp.'compile.java.target'
 
 compileJava {
     options.encoding = 'UTF-8'
@@ -76,19 +77,19 @@ if (ext.ceylonSourceLayout) {
     sourceSets {
         main {
             java {
-                srcDir 'src'
+                srcDirs = ['src']
             }
             resources {
-                srcDir 'src'
+                srcDirs = ['src']
                 exclude '**/*.java'
             }
         }
         test {
             java {
-                srcDir 'test/src'
+                srcDirs = ['test/src']
             }
             resources {
-                srcDir 'test/src'
+                srcDirs = ['test/src']
                 exclude '**/*.java'
             }
         }
