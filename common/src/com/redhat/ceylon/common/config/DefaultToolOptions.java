@@ -6,10 +6,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 
 public class DefaultToolOptions {
+    
+    public final static String SECTION_DEFAULTS = "defaults";
     
     public final static String DEFAULTS_ENCODING = "defaults.encoding";
     public final static String DEFAULTS_OFFLINE = "defaults.offline";
@@ -19,6 +22,8 @@ public class DefaultToolOptions {
     public final static String DEFAULTS_OVERRIDES = "defaults.overrides";
     public final static String DEFAULTS_FLAT_CLASSPATH = "defaults.flatclasspath";
     public final static String DEFAULTS_AUTO_EPORT_MAVEN_DEPENDENCIES = "defaults.autoexportmavendependencies";
+    
+    public final static String SECTION_COMPILER = "compiler";
     
     public final static String COMPILER_SOURCE = "compiler.source";
     public final static String COMPILER_RESOURCE = "compiler.resource";
@@ -34,9 +39,19 @@ public class DefaultToolOptions {
     public final static String COMPILER_PROGRESS = "compiler.progress";
     public final static String COMPILER_JDKPROVIDER = "compiler.jdkprovider";
     public final static String COMPILER_APT = "compiler.apt";
+    public final static String COMPILER_MODULES = "compiler.modules";
+    
+    public final static String SECTION_RUNTOOL = "runtool";
     
     public final static String RUNTOOL_COMPILE = "runtool.compile";
+    
+    public final static String SECTION_TESTTOOL = "testtool";
+    
     public final static String TESTTOOL_COMPILE = "testtool.compile";
+    
+    public final static String KEY_MODULES = "modules";
+    
+    public final static List<String> DEFAULT_COMPILER_MODULES = Arrays.asList(new String[] { "*" });
     
     private DefaultToolOptions() {
     }
@@ -260,6 +275,22 @@ public class DefaultToolOptions {
         return config.getBoolOption(COMPILER_PROGRESS, false);
     }
     
+    public static List<String> getCompilerModules(Backend backend) {
+        return getCompilerModules(CeylonConfig.get(), backend);
+    }
+    
+    public static List<String> getCompilerModules(CeylonConfig config, Backend backend) {
+        String[] modules = config.getOptionValues(key(SECTION_COMPILER, KEY_MODULES, backend));
+        if (modules == null) {
+            modules = config.getOptionValues(key(SECTION_COMPILER, KEY_MODULES));
+        }
+        if (modules != null) {
+            return Arrays.asList(modules);
+        } else {
+            return DEFAULT_COMPILER_MODULES;
+        }
+    }
+    
     public static String getRunToolCompileFlags() {
         return getRunToolCompileFlags(CeylonConfig.get());
     }
@@ -274,5 +305,17 @@ public class DefaultToolOptions {
 
     public static String getTestToolCompileFlags(CeylonConfig config) {
         return config.getOption(TESTTOOL_COMPILE, Constants.DEFAULT_TESTTOOL_COMPILATION_FLAGS);
+    }
+    
+    private static String key(String section, String key) {
+        return key(section, key, null);
+    }
+    
+    private static String key(String section, String key, Backend backend) {
+        if (backend != null && backend != Backend.Header)  {
+            return section + "." + backend.nativeAnnotation.toLowerCase() + "." + key;
+        } else {
+            return section + "." + key;
+        }
     }
 }
