@@ -2,14 +2,4 @@ ext {
     ceylonModuleName = 'language'
 }
 
-apply plugin : LifecycleBasePlugin
-ant.properties.'build.dir' = buildDir
-ant.importBuild('build.xml') { "ant${it.capitalize()}".toString() }
-clean.dependsOn antClean
-check.dependsOn antTest
-assemble.dependsOn antBuild
-
-task publishInternal {
-    dependsOn antPublish
-}
-
+apply from : "${rootProject.projectDir}/gradle/use-ant-build.gradle"
