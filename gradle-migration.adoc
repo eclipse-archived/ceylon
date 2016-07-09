@@ -115,7 +115,6 @@ There is an unfortunate interdependency with `language`.
   The reason for this is that the Gradle task can take care of this in the `processResources` task via a filter,
   whereas in Ant this hand to be handled via an extra build step.
 
-
 .TODO
 * Do we need to `-XDignore.symbol.file` when compiling?
 * Mismatch in `compiler-*.jar` artifacts between ANT (1789 files) and Gradle (1777 files).
@@ -123,7 +122,17 @@ There is an unfortunate interdependency with `language`.
 
 == Language
 
+We still use the imported Ant buidl to get stuff done. `build.dir` is set as a property on the imported build
+and that seems to be forcing Ant to build into Gradle's `buildDir`.
+
 There is an unfortunate interdependency with `compiler-java`.
+
+.TODO
+* Publishing
+* Fix it from going through the Ant build to building everything as part of Gradle direct.
+* Start using `generate-source.gradle` to generate source.
+* Set `generateModuleInfo` according to `jigsaw`.
+
 
 == Custom build code in buildSrc
 
