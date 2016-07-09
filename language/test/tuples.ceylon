@@ -174,7 +174,9 @@ shared void tuples() {
     try {
         value a = [finished, finished, finished];
         value [b, *c] = a;
-        fail("Spread of tuple with initial 'finished' should have thrown");
+        if (c.size != 2 || b != finished || c != [finished, finished]) {
+            fail("Spread of tuple with initial 'finished' should have thrown");
+        }
     } catch (AssertionError e) {
         check(e.message == "length of c is less than minimum length of its static type Finished[2]", "deconstruct [finished] 1");
     }
@@ -182,8 +184,9 @@ shared void tuples() {
     try {
         value a = [finished, 1, finished];
         value [b, *c] = a;
-        fail("Deconstruct of tuple with initial 'finished' should have thrown");
-        print(c[1].string);
+        if (c.size != 2 || b != finished || c != [1, finished]) {
+            fail("Deconstruct of tuple with initial 'finished' should have thrown");
+        }
     } catch (AssertionError e) {
         check(e.message == "length of c is less than minimum length of its static type [Integer, Finished]", "deconstruct [finished] 2");
     }
