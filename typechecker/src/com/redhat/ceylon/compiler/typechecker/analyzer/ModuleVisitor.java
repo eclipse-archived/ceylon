@@ -333,6 +333,9 @@ public class ModuleVisitor extends Visitor {
                 namespace = ModuleUtil.getNamespaceFromUri(nameString);
                 name = asList(ModuleUtil.getModuleNameFromUri(nameString).split("\\."));
                 node = that.getQuotedLiteral();
+                if ("maven".equals(namespace) && !nameString.startsWith("maven:")) {
+                    node.addUsageWarning(Warning.missingImportPrefix, "use of old style Maven imports is deprecated, prefix with 'maven:'");
+                }
             }
             else {
                 namespace = null;

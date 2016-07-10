@@ -24,5 +24,6 @@ public enum Warning {
     disjointEquals,
     disjointContainment,
     redundantNarrowing, 
-    redundantIteration
+    redundantIteration,
+    missingImportPrefix
 }
