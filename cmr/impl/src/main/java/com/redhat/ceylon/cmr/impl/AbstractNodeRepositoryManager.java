@@ -599,4 +599,16 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             root.refresh(recurse);
         }
     }
+
+    @Override
+    public boolean isValidNamespace(String namespace) {
+        for (CmrRepository root : getRepositories()) {
+            if (namespace == null && DefaultRepository.NAMESPACE.equals(root.getNamespace())) {
+                return true;
+            } else if (namespace != null && namespace.equals(root.getNamespace())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

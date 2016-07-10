@@ -133,4 +133,9 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
     public ArtifactContext getArtifactOverride(ArtifactContext context) throws RepositoryException {
         return context;
     }
+
+    @Override
+    public boolean isValidNamespace(String namespace) {
+        return namespace == null || DefaultRepository.NAMESPACE.equals(namespace);
+    }
 }
