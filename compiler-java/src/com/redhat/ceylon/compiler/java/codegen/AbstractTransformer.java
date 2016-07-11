@@ -44,6 +44,7 @@ import java.util.TreeSet;
 import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.ceylondoc.Util;
+import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.Versions;
@@ -3040,7 +3041,8 @@ public abstract class AbstractTransformer implements Transformation {
             else
                 spec = List.<JCExpression>of(dependencyName);
             
-            if (dependency.getNamespace() != null) {
+            if (dependency.getNamespace() != null
+                    && !DefaultRepository.NAMESPACE.equals(dependency.getNamespace())) {
                 JCExpression dependencyNamespace = make().Assign(naming.makeUnquotedIdent("namespace"),
                         make().Literal(dependency.getNamespace()));
                 spec = spec.append(dependencyNamespace);
