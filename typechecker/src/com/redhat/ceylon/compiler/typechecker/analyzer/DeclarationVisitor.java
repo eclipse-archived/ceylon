@@ -1043,6 +1043,9 @@ public abstract class DeclarationVisitor extends Visitor {
         if (i.isNativeImplementation()) {
             addMissingHeaderMembers(i);
         }
+        if (i.isDynamic()) {
+            i.makeMembersDynamic();
+        }
         // Required by IDE to be omitted: https://github.com/ceylon/ceylon-compiler/issues/2326
 //        if (that.getDynamic()) {
 //            checkDynamic(that);
