@@ -134,10 +134,20 @@ public abstract class ModuleUtil {
         }
     }
     
-    // Only non-empty strings of lowercase letters are considered valid namespaces
-    // Additionally <code>null</code> is considered valid as well (being the same as "ceylon")
+    /**
+     * Only <code>null</code> or proper Ceylon identifiers are considered valid namespaces
+     */
     public static boolean validNamespace(String namespace) {
         return namespace == null || moduleIdPattern.matcher(namespace).matches();
     }
 
+    /**
+     * Determines if the given major/minor binary versions support import namespaces
+     */
+    public static boolean supportsImportsWithNamespaces(int majorBinVer, int minorBinVer) {
+        return (majorBinVer > Versions.V1_2_3_JVM_BINARY_MAJOR_VERSION
+                || (majorBinVer == Versions.V1_2_3_JVM_BINARY_MAJOR_VERSION
+                && minorBinVer >= Versions.V1_2_3_JVM_BINARY_MINOR_VERSION));
+    }
+    
 }

@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.jar.JarEntry;
@@ -40,7 +39,6 @@ import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.ModuleUtil;
-import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.langtools.classfile.Annotation;
 import com.redhat.ceylon.langtools.classfile.ClassFile;
 import com.redhat.ceylon.langtools.classfile.ConstantPoolException;
@@ -179,7 +177,7 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
     	return getBinaryVersions(moduleInfo);
     }
 
-    private static int[] getBinaryVersions(ClassFile moduleInfo) {
+    public static int[] getBinaryVersions(ClassFile moduleInfo) {
         if(moduleInfo == null)
             return null;
         Annotation ceylonAnnotation = ClassFileUtil.findAnnotation(moduleInfo, CEYLON_ANNOTATION);
@@ -306,15 +304,6 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         }
     }
 
-    private static boolean supportsImportsWithNamespaces(int[] binver) {
-        if (binver == null) {
-            return false;
-        }
-        return (binver[0] > Versions.V1_2_3_JVM_BINARY_MAJOR_VERSION
-                || (binver[0] == Versions.V1_2_3_JVM_BINARY_MAJOR_VERSION
-                && binver[1] >= Versions.V1_2_3_JVM_BINARY_MINOR_VERSION));
-    }
-    
     private static Set<ModuleDependencyInfo> getDependencies(ClassFile moduleInfo, Object[] dependencies, 
     		String module, String version, Overrides overrides) {
     	
@@ -323,7 +312,7 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         }
 
         int[] binver = getBinaryVersions(moduleInfo);
-        boolean supportsNamespaces = supportsImportsWithNamespaces(binver);
+        boolean supportsNamespaces = binver != null && ModuleUtil.supportsImportsWithNamespaces(binver[0], binver[1]);
         
         Set<ModuleDependencyInfo> result = new HashSet<ModuleDependencyInfo>(dependencies.length);
         for (Object depObject : dependencies) {
