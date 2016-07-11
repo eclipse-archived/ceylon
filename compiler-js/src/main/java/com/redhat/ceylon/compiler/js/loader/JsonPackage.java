@@ -339,6 +339,12 @@ public class JsonPackage extends LazyPackage {
                 loadClass(cdef.getKey(), cdef.getValue(), cls, allparms);
             }
         }
+        if (cls.isDynamic() &&
+                (getModule().getJsMajor()<9 ||
+                    (getModule().getJsMajor()==9 && getModule().getJsMinor()<1))) {
+            // previous versions did not set dynamic flag on members
+            cls.makeMembersDynamic();
+        }
         return cls;
     }
 
@@ -730,6 +736,12 @@ public class JsonPackage extends LazyPackage {
             for (Map.Entry<String,Map<String,Object>> cdef : cdefs.entrySet()) {
                 loadClass(cdef.getKey(), cdef.getValue(), t, allparms);
             }
+        }
+        if (t.isDynamic() &&
+                (getModule().getJsMajor()<9 ||
+                    (getModule().getJsMajor()==9 && getModule().getJsMinor()<1))) {
+            // previous versions did not set dynamic flag on members
+            t.makeMembersDynamic();
         }
         return t;
     }
