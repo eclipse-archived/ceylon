@@ -319,26 +319,21 @@ public class ModuleVisitor extends Visitor {
             }
             String version = 
                     getVersionString(that.getVersion());
-            String namespace;
+            String namespace = that.getNamespace() != null ? 
+                    that.getNamespace().getText() : null;
             List<String> name;
             Node node;
             if (importPath!=null) {
-                namespace = null;
             	name = getNameAsList(importPath);
             	node = importPath;
             }
             else if (that.getQuotedLiteral()!=null) {
                 String nameString = 
                         getNameString(that.getQuotedLiteral());
-                namespace = ModuleUtil.getNamespaceFromUri(nameString);
-                name = asList(ModuleUtil.getModuleNameFromUri(nameString).split("\\."));
+                name = asList(nameString.split("\\."));
                 node = that.getQuotedLiteral();
-                if ("maven".equals(namespace) && !nameString.startsWith("maven:")) {
-                    node.addUsageWarning(Warning.missingImportPrefix, "use of old style Maven imports is deprecated, prefix with 'maven:'");
-                }
             }
             else {
-                namespace = null;
             	name = Collections.emptyList();
             	node = null;
             }
