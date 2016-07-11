@@ -15,12 +15,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -359,6 +361,12 @@ public class ModuleVisitor extends Visitor {
                 }
             }
             else {
+                if (namespace == null &&
+                        ModuleUtil.isMavenModule(ModelUtil.formatPath(name))) {
+                    namespace = MavenRepository.NAMESPACE;
+                    node.addUsageWarning(Warning.missingImportPrefix,
+                            "use of old style Maven imports is deprecated, prefix with 'maven:'");
+                }
                 Tree.AnnotationList al =
                         that.getAnnotationList();
                 Unit u = unit.getUnit();
