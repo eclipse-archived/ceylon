@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public abstract class ModuleUtil {
 
-    private static final Pattern validNS = Pattern.compile("[a-z]+");
+    private static final Pattern validNS = Pattern.compile("[a-z][a-zA-Z0-9]+");
     
     private ModuleUtil() {
     }
