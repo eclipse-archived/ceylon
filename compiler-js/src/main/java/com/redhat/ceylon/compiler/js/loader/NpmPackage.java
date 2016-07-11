@@ -73,6 +73,7 @@ public class NpmPackage extends LazyPackage {
                 ((Class)d).addMember(cf);
             } else {
                 d = new Function();
+                ((Function)d).setDynamic(true);
                 ((Function)d).setDynamicallyTyped(true);
             }
             d.setName(name);
