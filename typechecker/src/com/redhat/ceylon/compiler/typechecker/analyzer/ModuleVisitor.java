@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
@@ -339,30 +340,33 @@ public class ModuleVisitor extends Visitor {
             	name = Collections.emptyList();
             	node = null;
             }
+            boolean hasMavenName = ModuleUtil.isMavenModule(ModelUtil.formatPath(name));
+            boolean forCeylon = (importPath != null && namespace == null)
+                    || (importPath == null && namespace == null && !hasMavenName)
+                    || DefaultRepository.NAMESPACE.equals(namespace);
             if (name.isEmpty()) {
                 that.addError("missing module name");
             }
             else if (name.get(0).equals(DEFAULT_MODULE_NAME)) {
-            	if (importPath!=null) {
+            	if (forCeylon) {
             		node.addError("reserved module name: 'default'");
             	}
             }
             else if (name.size()==1 && 
                      name.get(0).equals("ceylon")) {
-                if (importPath!=null) {
+                if (forCeylon) {
                     node.addError("reserved module name: 'ceylon'");
                 }
             }
             else if (name.size()>1 && 
                      name.get(0).equals("ceylon") && 
                      name.get(1).equals("language")) {
-                if (importPath!=null) {
+                if (forCeylon) {
                     node.addError("the language module is imported implicitly");
                 }
             }
             else {
-                if (namespace == null &&
-                        ModuleUtil.isMavenModule(ModelUtil.formatPath(name))) {
+                if (namespace == null && hasMavenName) {
                     namespace = MavenRepository.NAMESPACE;
                     node.addUsageWarning(Warning.missingImportPrefix,
                             "use of old style Maven imports is deprecated, prefix with 'maven:'");
