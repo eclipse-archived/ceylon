@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public abstract class ModuleUtil {
 
-    private static final Pattern validNS = Pattern.compile("[\\p{IsLowercase}_][\\p{IsAlphabetic}\\p{IsDigit}_]*");
+    public static final Pattern moduleIdPattern = Pattern.compile("[\\p{IsLowercase}_][\\p{IsAlphabetic}\\p{IsDigit}_]*");
     
     private ModuleUtil() {
     }
@@ -137,7 +137,7 @@ public abstract class ModuleUtil {
     // Only non-empty strings of lowercase letters are considered valid namespaces
     // Additionally <code>null</code> is considered valid as well (being the same as "ceylon")
     public static boolean validNamespace(String namespace) {
-        return namespace == null || validNS.matcher(namespace).matches();
+        return namespace == null || moduleIdPattern.matcher(namespace).matches();
     }
 
 }

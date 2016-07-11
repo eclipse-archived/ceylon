@@ -6,13 +6,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleDescriptorReader;
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.ModuleUtil;
 
 /**
  * Class with helper methods for expanding a list of module names/specs
@@ -22,8 +22,6 @@ import com.redhat.ceylon.common.ModuleSpec;
  */
 public abstract class ModuleWildcardsHelper {
 
-    private static final Pattern idPattern = Pattern.compile("[\\p{IsLowercase}_][\\p{IsAlphabetic}\\p{IsDigit}_]*");;
-    
     /**
      * Given a source directory and a list of ModuleSpecs
      * that possibly contain wildcards it returns a expanded list of
@@ -155,7 +153,7 @@ public abstract class ModuleWildcardsHelper {
         if (part.isEmpty()) {
             return false;
         }
-        Matcher m = idPattern.matcher(part);
+        Matcher m = ModuleUtil.moduleIdPattern.matcher(part);
         return m.matches();
     }
 
