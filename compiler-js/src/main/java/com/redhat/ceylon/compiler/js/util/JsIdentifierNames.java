@@ -297,7 +297,7 @@ public class JsIdentifierNames {
         if (name.startsWith("anonymous#")) {
             name="anon$" + name.substring(10);
         }
-        if (decl.isClassOrInterfaceMember() && ((ClassOrInterface)decl.getContainer()).isDynamic()) {
+        if (decl.isDynamic()) {
             return JsUtils.escapeStringLiteral(decl.getName());
         }
         boolean nonLocal = !priv;

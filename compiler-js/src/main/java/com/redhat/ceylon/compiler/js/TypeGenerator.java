@@ -295,8 +295,8 @@ public class TypeGenerator {
         //Don't even bother with nodes that have errors
         if (errVisitor.hasErrors(that))return;
         final Interface d = that.getDeclarationModel();
-        //If it's inside a dynamic interface, don't generate anything
-        if (d.isClassOrInterfaceMember() && ((ClassOrInterface)d.getContainer()).isDynamic())return;
+        //If it's inside a dynamic interface (or for some other reason dynamic), don't generate anything
+        if (d.isDynamic())return;
         final Interface natd = (Interface)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
         final boolean headerWithoutBackend = NativeUtil.isHeaderWithoutBackend(that, Backend.JavaScript);
         if (natd!= null && (headerWithoutBackend || NativeUtil.isNativeHeader(that))) {
