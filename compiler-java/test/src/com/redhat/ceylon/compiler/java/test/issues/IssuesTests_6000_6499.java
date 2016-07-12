@@ -22,12 +22,18 @@ package com.redhat.ceylon.compiler.java.test.issues;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.ErrorCollector;
+import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
+import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
+import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
 
 
 public class IssuesTests_6000_6499 extends CompilerTests {
@@ -202,4 +208,30 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     public void testBug6344() {
         compareWithJavaSource("bug63xx/Bug6344");
     }
+    
+    @Test
+    public void testBugAndroid() {
+        java.util.List<File> sourceFiles = new ArrayList<File>(0);
+
+        CeyloncTool runCompiler = makeCompiler();
+        ErrorCollector c = new ErrorCollector();
+        CeyloncFileManager runFileManager = makeFileManager(runCompiler, c);
+
+        List<String> options = Arrays.asList("-jdk-provider", "android/23", 
+                "-rep", "/home/stephane/src/AndroidStudioProjects/CeylonDemo5/app/build/intermediates/ceylon-android/repository",
+//                "-rep", "/home/stephane/src/AndroidStudioProjects/CeylonDemo5/app/build/intermediates/ceylon-android/apt-repository",
+                "-src", "/home/stephane/src/AndroidStudioProjects/CeylonDemo5/app/src/main/ceylon",
+                "-src", "/home/stephane/src/AndroidStudioProjects/CeylonDemo5/app/build/generated/source/r/debug",
+//                "-apt", "com.jakewharton.butterknife-compiler/8.1.0",
+                "-sysrep", getSysRepPath(),
+                "-verbose:code"
+                );
+
+        Iterable<? extends JavaFileObject> compilationUnits1 =
+                runFileManager.getJavaFileObjectsFromFiles(sourceFiles);
+        CeyloncTaskImpl task = runCompiler.getTask(null, runFileManager, c, 
+                options, Arrays.asList("com.example.android.ceylondemo5"), compilationUnits1);
+        assertCompilesOk(c, task.call2());
+       }
+
 }

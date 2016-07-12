@@ -2,7 +2,9 @@ package com.redhat.ceylon.model.typechecker.model;
 
 
 public class Parameter {
-    
+
+    private boolean factoryProperty;
+    private boolean factoryParameter;
 	private boolean defaulted;
 	private boolean sequenced;
     private Declaration declaration;
@@ -92,6 +94,18 @@ public class Parameter {
     @Override
     public String toString() {
         return model==null ? name : model.toString();
+    }
+    public boolean isFactoryProperty() {
+        return factoryProperty;
+    }
+    public void setFactoryProperty(boolean factoryProperty) {
+        this.factoryProperty = factoryProperty;
+    }
+    public boolean isFactoryParameter() {
+        return factoryParameter;
+    }
+    public void setFactoryParameter(boolean factoryParameter) {
+        this.factoryParameter = factoryParameter;
     }
     
 }

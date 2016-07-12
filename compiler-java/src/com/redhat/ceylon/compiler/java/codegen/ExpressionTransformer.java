@@ -79,6 +79,8 @@ import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.model.loader.model.FieldValue;
+import com.redhat.ceylon.model.loader.model.LazyClass;
+import com.redhat.ceylon.model.loader.model.LazyConstructorFactoryFunction;
 import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -3591,6 +3593,10 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression primTypeExpr = makeJavaType(invocation.getQmePrimary().getTypeModel(), JT_NO_PRIMITIVES | JT_VALUE_TYPE);
             callBuilder.invoke(naming.makeQuotedQualIdent(primTypeExpr, transformedPrimary.selector));
 
+        } else if(Decl.isFactoryConstructor(invocation.getPrimaryDeclaration())){
+            LazyClass factoryClass = ((LazyConstructorFactoryFunction)invocation.getPrimaryDeclaration()).getFactoryClass();
+            JCExpression typeExpr = makeJavaType(factoryClass.getType(), AbstractTransformer.JT_CLASS_NEW);
+            callBuilder.instantiate(typeExpr);
         } else {
             callBuilder.invoke(naming.makeQuotedQualIdent(transformedPrimary.expr, transformedPrimary.selector));
         }
@@ -3840,6 +3846,13 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression resultExpr = transformPositionalInvocationOrInstantiation(invocation, callBuilder, transformedPrimary);
         // apply the default parameters
         if (invocation.getVars() != null && !invocation.getVars().isEmpty()) {
+            if(invocation.getPropertySetters() != null && !invocation.getPropertySetters().isEmpty()){
+                JCExpression retType = makeJavaType(invocation.getProducedReference().getType());
+                SyntheticName retName = invocation.getPropertySettersTarget();
+                JCVariableDecl var = makeVar(retName, retType, resultExpr);
+                invocation.getVars().append(var).appendList(invocation.getPropertySetters());
+                resultExpr = retName.makeIdent();
+            }
             if ((invocation.getReturnType() == null 
                     || Decl.isUnboxedVoid(invocation.getPrimaryDeclaration()))
                     && !Decl.isMpl((Functional) invocation.getPrimaryDeclaration())) {
@@ -4714,6 +4727,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (decl == null) {
             return makeErroneous(expr, "compiler bug: expression with no declaration");
         }
+        if(Decl.isFactoryConstructor(decl))
+            decl = ((LazyConstructorFactoryFunction) decl).getFactoryClass();
         
         // Try to find the original declaration, in case we have conditionals that refine the type of objects without us
         // creating a tmp variable (in which case we have a substitution for it)

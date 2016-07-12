@@ -164,9 +164,17 @@ class Strategy {
     }
     
     public static boolean hasDefaultParameterValueMethod(Parameter param) {
-        return param.isDefaulted();
+        return param.isDefaulted() && !(param.isFactoryProperty() || param.isFactoryParameter());
     }
-    
+
+    public static boolean isDefaultParameterForFactoryProperty(Parameter param) {
+        return param.isDefaulted() && param.isFactoryProperty();
+    }
+
+    public static boolean isDefaultParameterForFactoryParameter(Parameter param) {
+        return param.isDefaulted() && param.isFactoryParameter();
+    }
+
     public static boolean hasDefaultParameterOverload(Parameter param) {
         return param.isDefaulted() 
                 || isCeylonVariadicNeedingEmpty(param);

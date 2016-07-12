@@ -14,6 +14,7 @@ import com.redhat.ceylon.model.loader.mirror.MethodMirror;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
@@ -32,12 +33,13 @@ public class LazyClass extends Class implements LazyContainer {
     public final ClassMirror classMirror;
     private ModelCompleter completer;
     private Class superClass;
-    private MethodMirror constructor;
+    public final MethodMirror constructor;
     private String realName;
     private boolean isStatic;
     private boolean isCeylon;
     private boolean isValueType;
     private Map<String,Declaration> localDeclarations;
+    private Function constructorFactoryFunction;
     
     private boolean isLoaded = false;
     private boolean isLoaded2 = false;
@@ -431,5 +433,13 @@ public class LazyClass extends Class implements LazyContainer {
     
     public void setHasJpaConstructor(boolean hasJpaConstructor) {
         this.hasJpaConstructor = hasJpaConstructor;
+    }
+    
+    public void setConstructorFactoryFunction(Function factory){
+        this.constructorFactoryFunction = factory;
+    }
+    
+    public Function getConstructorFactoryFunction(){
+        return constructorFactoryFunction;
     }
 }

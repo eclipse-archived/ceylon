@@ -46,6 +46,7 @@ import com.redhat.ceylon.model.loader.model.JavaBeanValue;
 import com.redhat.ceylon.model.loader.model.JavaMethod;
 import com.redhat.ceylon.model.loader.model.LazyClass;
 import com.redhat.ceylon.model.loader.model.LazyClassAlias;
+import com.redhat.ceylon.model.loader.model.LazyConstructorFactoryFunction;
 import com.redhat.ceylon.model.loader.model.LazyContainer;
 import com.redhat.ceylon.model.loader.model.LazyElement;
 import com.redhat.ceylon.model.loader.model.LazyFunction;
@@ -85,6 +86,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -1372,11 +1374,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // If the class has multiple constructors we make a copy of the class
         // for each one (each with it's own single constructor) and make them
         // a subclass of the original
-        Class supercls = makeLazyClass(classMirror, null, null, false);
+        LazyClass supercls = makeLazyClass(classMirror, null, null, false);
         // the abstraction class gets the class modifiers
         setNonLazyDeclarationProperties(supercls, classMirror, classMirror, classMirror, isCeylon);
         supercls.setAbstraction(true);
         List<Declaration> overloads = new ArrayList<Declaration>(constructors.size());
+        int minParams = -1;
+        LazyClass minConstructor = null;
         // all filtering is done in getClassConstructors
         for (MethodMirror constructor : constructors) {
             LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor, false);
@@ -1385,11 +1389,32 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             subdecl.setOverloaded(true);
             overloads.add(subdecl);
             decls.add(subdecl);
+            
+            int paramCount = constructor.getParameters().size();
+            if(constructor.isPublic() && (minParams == -1 || paramCount < minParams)){
+                minParams = paramCount;
+                minConstructor = subdecl;
+            }
         }
         supercls.setOverloads(overloads);
+        
+        if((classMirror.getQualifiedName().equals("android.widget.Button")
+                || classMirror.getQualifiedName().equals("android.widget.EditText")
+                || classMirror.getQualifiedName().equals("android.widget.LinearLayout"))
+                && minConstructor != null){
+            Function factoryFunction = makeConstructorFactoryFunction(minConstructor);
+            supercls.setConstructorFactoryFunction(factoryFunction);
+            decls.add(factoryFunction);
+        }
         return supercls;
     }
 
+    private Function makeConstructorFactoryFunction(LazyClass klass) {
+        Function f = new LazyConstructorFactoryFunction(klass, this);
+        setNonLazyDeclarationProperties(f, klass.constructor, klass.constructor, klass.classMirror, true);
+        return f;
+    }
+    
     private void setNonLazyDeclarationProperties(Declaration decl, AccessibleMirror mirror, AnnotatedMirror annotatedMirror, ClassMirror classMirror, boolean isCeylon) {
         if(isCeylon){
             // when we're in a local type somewhere we must turn public declarations into package or protected ones, so
@@ -4598,6 +4623,171 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
      }
 
+    @Override
+    public void complete(LazyConstructorFactoryFunction method)  {
+        synchronized(getLock()){
+            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            LazyClass klass = method.klass;
+            
+            System.err.println("complete lazy constr");
+            // FIXME: should we create a new type?
+            method.setType(klass.getType());
+            method.setUnboxed(false);
+            method.setStaticallyImportable(true);
+
+            ParameterList klassParameterList = klass.getParameterList();
+            ParameterList parameterList = new ParameterList();
+            // constructor parameters
+            for(Parameter klassParameter : klassParameterList.getParameters()){
+                Parameter newParameter = new Parameter();
+                FunctionOrValue klassModel = klassParameter.getModel();
+                FunctionOrValue newModel = copyModel(klassModel);
+                String name = klassParameter.getName();
+                if(name.startsWith("arg")){
+                    // FIXME: expensive!!
+                    TypeDeclaration typeDeclaration = newModel.getType().eliminateNull().getDeclaration();
+                    String typeName = typeDeclaration.getName();
+                    System.err.println("Constructor param "+name+" trying for "+typeName);
+                    name = NamingBase.getJavaBeanName(typeName);
+                }
+                newParameter.setName(name);
+                newParameter.setModel(newModel);
+                newParameter.setDeclaration(method);
+                newModel.setInitializerParameter(newParameter);
+                // pretend they're all optional, we'll inject values if not provided
+                newParameter.setDefaulted(true);
+                newParameter.setFactoryParameter(true);
+                // FIXME: mark those which need injection
+                
+                parameterList.getParameters().add(newParameter);
+            }
+            // property parameters
+            HashSet<String> properties = new HashSet<String>();
+            HashSet<String> setters = new HashSet<String>();
+            boolean isViewGroup = collectMutableProperties(klass, new HashSet<Declaration>(), properties, setters);
+            System.err.println("isViewGroupd: "+isViewGroup);
+            Type klassType = klass.getType();
+            for(String name : properties){
+                Declaration member = klass.getMember(name, null, false);
+                if(member instanceof JavaBeanValue){
+                    FunctionOrValue klassModel = (JavaBeanValue)member;
+                    TypedReference typedMember = klassType.getTypedMember(klassModel, Collections.<Type>emptyList());
+                    Parameter newParameter = new Parameter();
+                    FunctionOrValue newModel = copyModel(klassModel);
+                    // get the inherited type, not the declared one
+                    newModel.setType(typedMember.getType());
+                    newModel.setUnboxed(klassModel.getUnboxed());
+                    newParameter.setName(member.getName());
+                    newParameter.setModel(newModel);
+                    newParameter.setDeclaration(method);
+                    // they're all optional
+                    newParameter.setDefaulted(true);
+                    newParameter.setFactoryProperty(true);
+                    newModel.setInitializerParameter(newParameter);
+                    
+                    System.err.println("Adding property "+member.getName());
+                    parameterList.getParameters().add(newParameter);
+                }
+            }
+            for(String name : setters){
+                Declaration member = klass.getMember(name, null, false);
+                if(member instanceof Function){
+                    String beanName = NamingBase.getJavaBeanName(name.substring(3));
+                    if(beanName.isEmpty() || properties.contains(beanName))
+                        continue;
+                    Function klassModel = (Function)member;
+                    if(klassModel.getFirstParameterList().getParameters().isEmpty())
+                        continue;
+                    Parameter setterParameter = klassModel.getFirstParameterList().getParameters().get(0);
+                    FunctionOrValue setterParameterModel = setterParameter.getModel();
+                    TypedReference typedMember = klassType.getTypedMember(klassModel, Collections.<Type>emptyList());
+                    TypedReference typedParameter = typedMember.getTypedParameter(setterParameter);
+                    Parameter newParameter = new Parameter();
+                    FunctionOrValue newModel = new Value();
+                    // get the inherited type, not the declared one
+                    newModel.setType(typedParameter.getType());
+                    newModel.setUnboxed(setterParameterModel.getUnboxed());
+                    newModel.setName(beanName);
+                    newParameter.setName(beanName);
+                    newParameter.setModel(newModel);
+                    newParameter.setDeclaration(method);
+                    // they're all optional
+                    newParameter.setDefaulted(true);
+                    newParameter.setFactoryProperty(true);
+                    newModel.setInitializerParameter(newParameter);
+                    
+                    System.err.println("Adding setter property "+beanName);
+                    parameterList.getParameters().add(newParameter);
+                }
+            }
+            if(isViewGroup){
+                Declaration childAt = klass.getMember("getChildAt", null, false);
+                if(childAt instanceof Function){
+                    TypeDeclaration viewDeclaration = ((Function) childAt).getTypeDeclaration();
+                    Parameter newParameter = new Parameter();
+                    Value model = new Value();
+                    model.setName("children");
+                    Type type = typeFactory.getIterableType(viewDeclaration.getType());
+                    model.setType(type);
+                    newParameter.setModel(model);
+                    newParameter.setName(model.getName());
+                    newParameter.setDeclaration(method);
+                    newParameter.setFactoryProperty(true);
+                    newParameter.setSequenced(true);
+                    newParameter.setDefaulted(true);
+                    model.setInitializerParameter(newParameter);
+                    
+                    System.err.println("Adding children property: "+type);
+                    parameterList.getParameters().add(newParameter);
+                }
+            }
+        
+            method.addParameterList(parameterList);
+        }
+    }
+
+    private boolean collectMutableProperties(TypeDeclaration type, HashSet<Declaration> visited, 
+            HashSet<String> properties, HashSet<String> setters) {
+        if(!visited.add(type))
+            return false;
+        System.err.println("Collecting properties from supertype "+type.getQualifiedNameString());
+        for(Declaration member : type.getMembers()){
+            if(member instanceof JavaBeanValue && ((JavaBeanValue) member).isVariable()){
+                System.err.println(" found mutable property "+member.getName());
+                properties.add(member.getName());
+            }else if(member instanceof Function && member.getName().startsWith("set")){
+                Function f = (Function) member;
+                if(f.getFirstParameterList().getParameters().size() == 1
+                        && f.isDeclaredVoid()){
+                    System.err.println(" found setter "+member.getName());
+                    setters.add(member.getName());
+                }
+            }
+        }
+        boolean ret = type.getQualifiedNameString().equals("android.view::ViewGroup");
+        if(type.getExtendedType() != null){
+            ret |= collectMutableProperties(type.getExtendedType().getDeclaration(), visited, properties, setters);
+        }
+        for(Type satisfiedType : type.getSatisfiedTypes()){
+            ret |= collectMutableProperties(satisfiedType.getDeclaration(), visited, properties, setters);
+        }
+        return ret;
+    }
+
+    private FunctionOrValue copyModel(FunctionOrValue originalModel) {
+        FunctionOrValue newModel;
+        if(originalModel instanceof Function){
+            newModel = new Function();
+        }else{
+            newModel = new Value();
+        }
+        newModel.setName(originalModel.getName());
+        // FIXME: should we create a new type?
+        newModel.setType(originalModel.getType());
+        
+        return newModel;
+    }
+    
     private MethodMirror getFunctionMethodMirror(LazyFunction method) {
         MethodMirror meth = null;
         String lookupName = method.getName();

@@ -31,6 +31,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.LazyClass;
+import com.redhat.ceylon.model.loader.model.LazyConstructorFactoryFunction;
 import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -1047,5 +1048,9 @@ public class Decl {
             }
         }
         return null;
+    }
+
+    public static boolean isFactoryConstructor(Declaration decl) {
+        return decl instanceof LazyConstructorFactoryFunction;
     }
 }

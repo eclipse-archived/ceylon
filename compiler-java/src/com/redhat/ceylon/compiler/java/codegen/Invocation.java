@@ -32,12 +32,14 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.ListedArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
@@ -46,6 +48,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCReturn;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
@@ -53,6 +56,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
@@ -1256,6 +1260,7 @@ class NamedArgumentInvocation extends Invocation {
     
     private final Tree.NamedArgumentList namedArgumentList;
     private final ListBuffer<JCStatement> vars = new ListBuffer<JCStatement>();
+    private final ListBuffer<JCStatement> propertySetters = new ListBuffer<JCStatement>();
     private final Naming.SyntheticName callVarName;
     private final Naming.SyntheticName varBaseName;
     private final Set<String> argNames = new HashSet<String>();
@@ -1263,6 +1268,7 @@ class NamedArgumentInvocation extends Invocation {
     private final TreeMap<Integer, ExpressionAndType> argsAndTypes = new TreeMap<Integer, ExpressionAndType>();
     private final Set<Parameter> bound = new HashSet<Parameter>();
     private Reference producedReference;
+    private SyntheticName propertySettersTarget;
     
     public NamedArgumentInvocation(
             AbstractTransformer gen, Tree.Term primary,
@@ -1286,7 +1292,11 @@ class NamedArgumentInvocation extends Invocation {
             result.append(new ExpressionAndType(reifiedTypeArgName(tpIndex).makeIdent(), gen.makeTypeDescriptorType()));
         }
     }
-    
+
+    ListBuffer<JCStatement> getPropertySetters() {
+        return propertySetters;
+    }
+
     ListBuffer<JCStatement> getVars() {
         return vars;
     }
@@ -1349,15 +1359,31 @@ class NamedArgumentInvocation extends Invocation {
         // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
         // not match, so we go raw, we also ignore primitives naturally
         int flags = JT_RAW | JT_NO_PRIMITIVES;
-        gen.at(sequencedArgument);
-        JCTree.JCExpression sequenceValue = gen.makeLazyIterable(sequencedArgument, iteratedType, absentType, flags);
-        JCTree.JCExpression sequenceType = gen.makeJavaType(parameterType, flags);
-        
-        Naming.SyntheticName argName = argName(parameter);
+        if(parameter.isFactoryProperty()){
+            int i = 0;
+            Type parameterIteratedType = gen.typeFact().getIteratedType(parameterType);
+            for(PositionalArgument arg : sequencedArgument.getPositionalArguments()){
+                gen.at(sequencedArgument);
+                final Naming.SyntheticName argName = gen.naming.temp("child$"+i);
+                // FIXME: unrealistic
+                JCExpression value = gen.expressionGen().transformExpression(((ListedArgument)arg).getExpression());
+                JCTree.JCExpression elemType = gen.makeJavaType(parameterIteratedType, flags);
+                JCTree.JCVariableDecl varDecl = gen.makeVar(argName, elemType, value);
+                gen.at(getPrimary());
+                bind(parameter, argName, gen.makeJavaType(parameterIteratedType, flags), List.<JCTree.JCStatement>of(varDecl));
+                i++;
+            }
+        }else{
+            gen.at(sequencedArgument);
+            JCTree.JCExpression sequenceValue = gen.makeLazyIterable(sequencedArgument, iteratedType, absentType, flags);
+            JCTree.JCExpression sequenceType = gen.makeJavaType(parameterType, flags);
 
-        JCTree.JCVariableDecl varDecl = gen.makeVar(argName, sequenceType, sequenceValue);
-        gen.at(getPrimary());
-        bind(parameter, argName, gen.makeJavaType(parameterType, flags), List.<JCTree.JCStatement>of(varDecl));
+            Naming.SyntheticName argName = argName(parameter);
+
+            JCTree.JCVariableDecl varDecl = gen.makeVar(argName, sequenceType, sequenceValue);
+            gen.at(getPrimary());
+            bind(parameter, argName, gen.makeJavaType(parameterType, flags), List.<JCTree.JCStatement>of(varDecl));
+        }
     }
 
     private JCExpression makeDefaultedArgumentMethodCall(Parameter param) {
@@ -1596,8 +1622,20 @@ class NamedArgumentInvocation extends Invocation {
     
     private void bind(Parameter param, Naming.SyntheticName argName, JCExpression argType, List<JCStatement> statements) {
         this.vars.appendList(statements);
-        this.argsAndTypes.put(parameterIndex(param), new ExpressionAndType(argName.makeIdent(), argType));
-        this.argsNamesByIndex.put(parameterIndex(param), argName);
+        if(param.isFactoryProperty()){
+            // FIXME: use real setter name
+            if(propertySettersTarget == null)
+                propertySettersTarget = gen.naming.temp("ret");
+            JCExpression target = gen.makeQualIdent(propertySettersTarget.makeIdent(),
+                    param.isSequenced() 
+                    ? "addView"
+                    : "set"+NamingBase.capitalize(param.getName()));
+            JCMethodInvocation setter = gen.make().Apply(null, target, List.of(gen.makeUnquotedIdent(argName.asName())));
+            this.propertySetters.add(gen.make().Exec(setter));
+        }else{
+            this.argsAndTypes.put(parameterIndex(param), new ExpressionAndType(argName.makeIdent(), argType));
+            this.argsNamesByIndex.put(parameterIndex(param), argName);
+        }
         this.bound.add(param);
     }
     
@@ -1675,6 +1713,10 @@ class NamedArgumentInvocation extends Invocation {
                         argExpr = makeDefaultedArgumentMethodCall(param);
                         hasDefaulted |= true;
                     }
+                } else if(Strategy.isDefaultParameterForFactoryProperty(param)) {
+                    argExpr = null;
+                } else if(Strategy.isDefaultParameterForFactoryParameter(param)) {
+                    argExpr = gen.naming.makeThis();
                 } else if (Strategy.hasEmptyDefaultArgument(param)) {
                     argExpr = gen.makeEmptyAsSequential(true);
                 } else if(gen.typeFact().isIterableType(param.getType())){
@@ -1690,7 +1732,8 @@ class NamedArgumentInvocation extends Invocation {
                         argExpr = gen.makeErroneous(this.getNode(), "compiler bug: missing argument, and parameter is not defaulted");
                     }
                 }
-                appendDefaulted(param, argExpr);
+                if(argExpr != null)
+                    appendDefaulted(param, argExpr);
             }
         }
         return hasDefaulted;
@@ -1795,5 +1838,13 @@ class NamedArgumentInvocation extends Invocation {
     @Override
     public void location(CallBuilder callBuilder) {
         callBuilder.location(namedArgumentList);
+    }
+
+    public Reference getProducedReference() {
+        return producedReference;
+    }
+
+    public SyntheticName getPropertySettersTarget() {
+        return propertySettersTarget;
     }
 }

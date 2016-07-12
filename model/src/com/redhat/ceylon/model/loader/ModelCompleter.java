@@ -4,6 +4,7 @@ import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.model.loader.model.LazyClass;
 import com.redhat.ceylon.model.loader.model.LazyClassAlias;
+import com.redhat.ceylon.model.loader.model.LazyConstructorFactoryFunction;
 import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.loader.model.LazyInterfaceAlias;
 import com.redhat.ceylon.model.loader.model.LazyFunction;
@@ -92,4 +93,6 @@ public interface ModelCompleter {
      * Completes loading of an annotation proxy method
      */
     void complete(AnnotationProxyMethod annotationProxyMethod);
+
+    void complete(LazyConstructorFactoryFunction lazyConstructorFactoryFunction);
 }

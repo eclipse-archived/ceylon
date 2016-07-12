@@ -20,6 +20,7 @@ import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Type;
@@ -107,6 +108,11 @@ public class LazyPackage extends Package {
                 d = modelLoader.convertToDeclaration(module, className, DeclarationType.VALUE);
                 if (d instanceof Class) {
                     Class c = (Class) d;
+                    if(!c.getName().equals(name) && d instanceof LazyClass){
+                        Function factoryFunction = ((LazyClass) d).getConstructorFactoryFunction();
+                        if(factoryFunction != null && factoryFunction.getName().equals(name))
+                            return factoryFunction;
+                    }
                     if (c.isAbstraction() && signature != null) {
                         ArrayList<Declaration> list = new ArrayList<Declaration>(c.getOverloads());
                         list.add(c);

@@ -354,6 +354,12 @@ public class CeylonModelLoader extends AbstractModelLoader {
     private ClassMirror lookupNewClassMirror(String name) {
         ClassSymbol classSymbol = null;
 
+        if(name.equals("android.widget.button"))
+            name = "android.widget.Button";
+        if(name.equals("android.widget.editText"))
+            name = "android.widget.EditText";
+        if(name.equals("android.widget.linearLayout"))
+            name = "android.widget.LinearLayout";
         String outerName = name;
         /*
          * This madness here tries to look for a class, and if it fails, tries to resolve it 
