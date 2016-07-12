@@ -17,6 +17,7 @@ import static java.lang.Character.isUpperCase;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
+import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
@@ -54,6 +56,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -694,7 +697,7 @@ public class AnalyzerUtil {
                 node.getUnit());
     }
 
-    static void checkAssignable(Type type, 
+    static boolean checkAssignable(Type type, 
             Type supertype, Node node, 
             String message, int code) {
         if (isTypeUnknown(type)) {
@@ -704,10 +707,88 @@ public class AnalyzerUtil {
             addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
+            if(canCoerce(type, supertype) != null)
+                return true;
             node.addError(message + 
                     notAssignableMessage(type, supertype, node), 
                     code);
         }
+        return false;
+    }
+
+    static Type canCoerce(Type type, Type supertype) {
+        supertype = supertype.eliminateNull();
+        Unit unit = type.getDeclaration().getUnit();
+        if(type.getDeclaration().inherits(unit.getCallableDeclaration())){
+            // we have a Callable, are we looking for an SMI?
+            TypeDeclaration supertypeDeclaration = supertype.getDeclaration();
+            if(!supertypeDeclaration.isSam())
+                return null;
+            // FIXME: overloads
+            Declaration member = supertypeDeclaration.getMember(supertypeDeclaration.getSamName(), null, false);
+            if(member instanceof TypedDeclaration == false)
+                return null;
+            TypedReference typedMember = supertype.getTypedMember((TypedDeclaration) member, Collections.<Type>emptyList());
+            // FIXME: remove nulls from java params
+            // FIXME: proper type for values
+            Type referenceType = typedMember.getFullType();
+//            if(type.isSubtypeOf(referenceType))
+                return referenceType;
+        }
+        return null;
+    }
+
+    static Type canCoerce(Type type, TypeDeclaration supertypeDeclaration) {
+        Unit unit = type.getDeclaration().getUnit();
+        if(type.getDeclaration().inherits(unit.getCallableDeclaration())){
+            // we have a Callable, are we looking for an SMI?
+            if(!supertypeDeclaration.isSam())
+                return null;
+            // FIXME: overloads
+            Declaration member = supertypeDeclaration.getMember(supertypeDeclaration.getSamName(), null, false);
+            if(member instanceof TypedDeclaration == false)
+                return null;
+            // type: Callable<Boolean,[Integer]>
+            // supertype: Function<R,T>
+            // member: R apply(T arg) => Callable<R,[T]>
+//            return type;
+            Type callableType = type.getSupertype(unit.getCallableDeclaration());
+            Type returnType = unit.getCallableReturnType(callableType);
+            List<Type> argumentTypes = unit.getCallableArgumentTypes(callableType);
+            Map<TypeParameter, Type> typeArguments = new HashMap<>();
+            if(member instanceof Function){
+                Function f = (Function) member;
+                Type memberReturnType = f.getType();
+                if(memberReturnType.isTypeParameter()){
+                    typeArguments.put((TypeParameter)memberReturnType.getDeclaration(), returnType);
+                }
+                // FIXME: what if it contains a type param? like Foo<T>?
+                int i = 0;
+                for(Parameter p : f.getFirstParameterList().getParameters()){
+                    Type memberParamType = p.getModel().getType().eliminateNull();
+                    if(memberParamType.isTypeParameter()){
+                        // FIXME: index
+                        typeArguments.put((TypeParameter)memberParamType.getDeclaration(), argumentTypes.get(i));
+                    }
+                    // FIXME: what if it contains a type param? like Foo<T>?
+                    i++;
+                }
+                List<Type> typeArgumentList = new ArrayList<Type>(supertypeDeclaration.getTypeParameters().size());
+                for(TypeParameter tp : supertypeDeclaration.getTypeParameters()){
+                    // FIXME: missing?
+                    typeArgumentList.add(typeArguments.get(tp));
+                }
+                Type supertype = supertypeDeclaration.appliedType(null, typeArgumentList);
+                return supertype;
+            }
+            Type supertype = supertypeDeclaration.appliedType(null, Arrays.asList(unit.getBooleanType(), unit.getBooleanType()));
+            return supertype;
+//            TypedReference typedMember = supertype.getTypedMember((TypedDeclaration) member, Collections.<Type>emptyList());
+//            Type referenceType = typedMember.getFullType();
+//            if(type.isSubtypeOf(referenceType))
+//                return referenceType;
+        }
+        return null;
     }
 
     /*static void checkAssignable(Type type, Type supertype, 
