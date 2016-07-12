@@ -577,7 +577,8 @@
     boolean unboxed;
     boolean typeErased;
     boolean untrustedType;
-    boolean small;)
+    boolean small;
+    boolean coerced;)
 ^(abstract OPERATOR_EXPRESSION:TERM)
 
 ^(abstract BINARY_OPERATOR_EXPRESSION:OPERATOR_EXPRESSION

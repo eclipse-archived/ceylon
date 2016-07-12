@@ -361,6 +361,10 @@ public class TypeArgumentInference {
             else {
                 Type supertype = 
                         argType.getSupertype(paramTypeDec);
+                // Apply coercions
+                if(supertype == null){
+                    supertype = AnalyzerUtil.canCoerce(argType, paramTypeDec);
+                }
                 if (supertype!=null) {
                     List<Type> list = 
                             new ArrayList<Type>(2);

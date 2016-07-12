@@ -4979,9 +4979,10 @@ public class ExpressionVisitor extends Visitor {
             Type at = a.getTypeModel();
             if (!isTypeUnknown(at) && 
                     !isTypeUnknown(paramType)) {
-                checkAssignable(at, paramType, a, 
+                boolean coerced = checkAssignable(at, paramType, a, 
                         "argument must be assignable to parameter " + 
                                 argdesc(p, pr), 2100);
+                a.getExpression().setCoerced(true);
             }
         }
     }
