@@ -88,7 +88,9 @@ public class TryCatchGenerator {
             gen.out("catch(", catchVarName, ")");
             gen.beginBlock();
             //Check if it's native and if so, wrap it
-            gen.out("if(", catchVarName, ".getT$name===undefined)", catchVarName, "=",
+            gen.out("if(");
+            gen.generateIsOfType(that, catchVarName, that.getUnit().getThrowableType(), catchVarName, true);
+            gen.out(")", catchVarName, "=",
                     gen.getClAlias(), "NatErr(", catchVarName, ")");
             gen.endLine(true);
             if (resources != null) {
