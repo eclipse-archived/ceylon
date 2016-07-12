@@ -485,7 +485,10 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     public ModuleSearchResult completeModules(ModuleQuery query) {
         ModuleSearchResult result = new ModuleSearchResult();
         for (CmrRepository root : getRepositories()) {
-            root.completeModules(query, result);
+            if (query.getNamespace() == null
+                    || query.getNamespace().equals(root.getNamespace())) {
+                root.completeModules(query, result);
+            }
         }
         return result;
     }
@@ -494,7 +497,10 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     public ModuleVersionResult completeVersions(ModuleVersionQuery query) {
         ModuleVersionResult result = new ModuleVersionResult(query.getName());
         for (CmrRepository root : getRepositories()) {
-            root.completeVersions(query, result);
+            if (query.getNamespace() == null
+                    || query.getNamespace().equals(root.getNamespace())) {
+                root.completeVersions(query, result);
+            }
         }
         return result;
     }
@@ -505,7 +511,10 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             // that's pretty simple
             ModuleSearchResult result = new ModuleSearchResult();
             for (CmrRepository root : getRepositories()) {
-                root.searchModules(query, result);
+                if (query.getNamespace() == null
+                        || query.getNamespace().equals(root.getNamespace())) {
+                    root.searchModules(query, result);
+                }
             }
             return result;
         } else {
@@ -523,13 +532,16 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             }
             Long start = query.getStart();
             for (CmrRepository root : repos) {
-                ModuleSearchResult result = new ModuleSearchResult();
-                // adapt the start index if required
-                if (pagingInfo != null)
-                    query.setStart(pagingInfo[i]);
-                root.searchModules(query, result);
-                results[i++] = result;
-                names.addAll(result.getModuleNames());
+                if (query.getNamespace() == null
+                        || query.getNamespace().equals(root.getNamespace())) {
+                    ModuleSearchResult result = new ModuleSearchResult();
+                    // adapt the start index if required
+                    if (pagingInfo != null)
+                        query.setStart(pagingInfo[i]);
+                    root.searchModules(query, result);
+                    results[i++] = result;
+                    names.addAll(result.getModuleNames());
+                }
             }
             // restore the query start
             query.setStart(start);

@@ -206,7 +206,7 @@ public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfo
         
         int[] binver = getBinaryVersions(moduleInfo);
 
-        ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, getVersionFromFilename(moduleName, moduleArchive.getName()));
+        ModuleVersionDetails mvd = new ModuleVersionDetails(null, moduleName, getVersionFromFilename(moduleName, moduleArchive.getName()));
         mvd.setDoc(doc);
         mvd.setLicense(license);
         if (by != null) {

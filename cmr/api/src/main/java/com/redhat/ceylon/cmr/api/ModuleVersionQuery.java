@@ -5,7 +5,12 @@ public class ModuleVersionQuery extends ModuleQuery {
     private String version;
 
     public ModuleVersionQuery(String name, String version, Type type) {
-        super(name, type);
+        super(null, name, type);
+        this.version = version;
+    }
+
+    public ModuleVersionQuery(String namespace, String name, String version, Type type) {
+        super(namespace, name, type);
         this.version = version;
     }
 
@@ -19,6 +24,6 @@ public class ModuleVersionQuery extends ModuleQuery {
 
     @Override
     public String toString() {
-        return "ModuleVersionQuery[name=" + name + ",version=" + version + ",type=" + type + "]";
+        return "ModuleVersionQuery[ns=" + namespace + ",name=" + name + ",version=" + version + ",type=" + type + "]";
     }
 }

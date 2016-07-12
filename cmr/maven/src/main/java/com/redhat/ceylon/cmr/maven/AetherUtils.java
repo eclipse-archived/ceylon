@@ -352,7 +352,9 @@ class AetherUtils {
                     dependencies.add(moduleDependencyInfo);
                 }
             }
-            ModuleVersionDetails moduleVersionDetails = new ModuleVersionDetails(groupId+":"+artifactId, version, 
+            ModuleVersionDetails moduleVersionDetails = new ModuleVersionDetails(
+                    MavenRepository.NAMESPACE,
+                    groupId+":"+artifactId, version, 
                     description.length() > 0 ? description.toString() : null,
                     licenseBuilder.length() > 0 ? licenseBuilder.toString() : null,
                     authors, dependencies, artifactTypes , true, repositoryDisplayString);
