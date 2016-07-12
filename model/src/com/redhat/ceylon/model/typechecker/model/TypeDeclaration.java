@@ -37,6 +37,7 @@ public abstract class TypeDeclaration extends Declaration
     private boolean dynamic;
 	private boolean sealed;
     private List<TypedDeclaration> caseValues;
+    private String samName;
 
 	/** 
 	 * true if the type arguments of this type are not 
@@ -1217,5 +1218,16 @@ public abstract class TypeDeclaration extends Declaration
     public EnumSet<AnnotationTarget> getAnnotationTarget() {
         return null;
     }
+
+    public boolean isSam() {
+        return getSamName() != null;
+    }
+
+    public String getSamName() {
+        return samName;
+    }
     
+    public void setSamName(String samName){
+        this.samName = samName;
+    }
 }

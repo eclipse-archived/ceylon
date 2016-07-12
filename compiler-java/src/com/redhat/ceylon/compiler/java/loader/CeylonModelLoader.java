@@ -79,6 +79,7 @@ import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.ModelResolutionException;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.TypeParser;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.loader.mirror.FunctionalInterface;
@@ -793,6 +794,47 @@ public class CeylonModelLoader extends AbstractModelLoader {
         if(hasJavaAndCeylonSources == null)
             hasJavaAndCeylonSources = ((CompilerModuleManager)phasedUnits.getModuleManager()).getCeylonEnter().isCompilingJavaAndCeylonSources();
         return hasJavaAndCeylonSources;
+    }
+
+    @Override
+    protected String isFunctionalInterface(ClassMirror klass){
+        Type type = ((JavacClass)klass).classSymbol.type;
+        try{
+            Type descriptorType = types.findDescriptorType(type);
+            if(descriptorType == null)
+                return null;
+            // Let's be honest I've no idea what this means, but it happens and Javac seems to refuse it too
+            if(descriptorType.hasTag(TypeTag.FORALL))
+                return null;
+
+            MethodSymbol descriptorSymbol = (MethodSymbol) types.findDescriptorSymbol(type.tsym);
+            if(descriptorSymbol != null){
+                String name = descriptorSymbol.getSimpleName().toString();
+                if(isGetter(descriptorSymbol)){
+                    name = NamingBase.getJavaAttributeName(name);
+                }
+                return name;
+            }
+            return null;
+        }catch(FunctionDescriptorLookupError err){
+            return null;
+        }
+    }
+    
+    private boolean isGetter(MethodSymbol methodSymbol) {
+        if(!methodSymbol.getTypeParameters().isEmpty())
+            return false;
+        String name = methodSymbol.name.toString();
+        boolean matchesGet = name.length() > 3 && name.startsWith("get") 
+                && isStartOfJavaBeanPropertyName(name.codePointAt(3)) 
+                && !"getString".equals(name) && !"getHash".equals(name) && !"getEquals".equals(name);
+        boolean matchesIs = name.length() > 2 && name.startsWith("is") 
+                && isStartOfJavaBeanPropertyName(name.codePointAt(2)) 
+                && !"isString".equals(name) && !"isHash".equals(name) && !"isEquals".equals(name);
+        boolean hasNoParams = methodSymbol.getParameters().size() == 0;
+        boolean hasNonVoidReturn = (methodSymbol.getReturnType().getKind() != com.redhat.ceylon.javax.lang.model.type.TypeKind.VOID);
+        boolean hasBooleanReturn = (methodSymbol.getReturnType().getKind() == com.redhat.ceylon.javax.lang.model.type.TypeKind.BOOLEAN);
+        return (matchesGet && hasNonVoidReturn || matchesIs && hasBooleanReturn) && hasNoParams;
     }
 
     @Override

@@ -432,4 +432,10 @@ public class LazyClass extends Class implements LazyContainer {
     public void setHasJpaConstructor(boolean hasJpaConstructor) {
         this.hasJpaConstructor = hasJpaConstructor;
     }
+
+    @Override
+    public String getSamName() {
+        load();
+        return super.getSamName();
+    }
 }

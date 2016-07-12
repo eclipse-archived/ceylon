@@ -361,4 +361,10 @@ public class LazyInterface extends Interface implements LazyContainer {
         // requires no lazy-loading
         return super.isDeprecated();
     }
+    
+    @Override
+    public String getSamName() {
+        load();
+        return super.getSamName();
+    }
 }
