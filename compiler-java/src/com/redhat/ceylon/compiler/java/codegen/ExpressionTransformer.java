@@ -589,6 +589,18 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         ret = applySelfTypeCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType);
         ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy, exprBoxed, exprSmall, flags);
+        ret = applyJavaCoercions(ret, exprType, expectedType);
+        return ret;
+    }
+
+    private JCExpression applyJavaCoercions(JCExpression ret, Type exprType, Type expectedType) {
+        exprType = simplifyType(exprType);
+        expectedType = simplifyType(expectedType);
+        System.err.println("coercions: "+exprType+" to "+expectedType);
+        if(isCeylonString(exprType) && expectedType.isExactly(typeFact().getJavaCharSequenceDeclaration().getType())){
+            // FIXME: only do this if boxed, or rather, do not box in the first place
+            return make().Apply(null, makeQualIdent(ret, "toString"), List.<JCTree.JCExpression>nil());
+        }
         return ret;
     }
 

@@ -707,7 +707,7 @@ public class AnalyzerUtil {
             addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-            if(canCoerce(type, supertype) != null)
+            if(canCoerce(type, supertype))
                 return true;
             node.addError(message + 
                     notAssignableMessage(type, supertype, node), 
@@ -716,26 +716,28 @@ public class AnalyzerUtil {
         return false;
     }
 
-    static Type canCoerce(Type type, Type supertype) {
+    static boolean canCoerce(Type type, Type supertype) {
         supertype = supertype.eliminateNull();
         Unit unit = type.getDeclaration().getUnit();
         if(type.getDeclaration().inherits(unit.getCallableDeclaration())){
             // we have a Callable, are we looking for an SMI?
             TypeDeclaration supertypeDeclaration = supertype.getDeclaration();
             if(!supertypeDeclaration.isSam())
-                return null;
+                return false;
             // FIXME: overloads
             Declaration member = supertypeDeclaration.getMember(supertypeDeclaration.getSamName(), null, false);
             if(member instanceof TypedDeclaration == false)
-                return null;
+                return false;
             TypedReference typedMember = supertype.getTypedMember((TypedDeclaration) member, Collections.<Type>emptyList());
             // FIXME: remove nulls from java params
             // FIXME: proper type for values
             Type referenceType = typedMember.getFullType();
 //            if(type.isSubtypeOf(referenceType))
-                return referenceType;
+                return true;
+        }else if(type.getDeclaration().inherits(unit.getStringDeclaration())){
+            return supertype.isExactly(unit.getJavaCharSequenceDeclaration().getType());
         }
-        return null;
+        return false;
     }
 
     static Type canCoerce(Type type, TypeDeclaration supertypeDeclaration) {
