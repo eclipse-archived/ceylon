@@ -36,6 +36,7 @@ public abstract class TypeDeclaration extends Declaration
     private boolean inconsistentType;
 	private boolean sealed;
     private List<TypedDeclaration> caseValues;
+    private String samName;
 
 	/** 
 	 * true if the type arguments of this type are not 
@@ -1217,4 +1218,15 @@ public abstract class TypeDeclaration extends Declaration
         return null;
     }
 
+    public boolean isSam() {
+        return getSamName() != null;
+    }
+
+    public String getSamName() {
+        return samName;
+    }
+    
+    public void setSamName(String samName){
+        this.samName = samName;
+    }
 }

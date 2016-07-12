@@ -3048,6 +3048,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         setSatisfiedTypes(klass, classMirror);
         setCaseTypes(klass, classMirror);
         setAnnotations(klass, classMirror, isNativeHeaderMember);
+        if(klass instanceof Interface)
+            klass.setSamName(isFunctionalInterface(classMirror));
         
         // local declarations come last, because they need all members to be completed first
         if(!klass.isAlias()){
@@ -3623,7 +3625,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return result;
     }
     
-    private boolean isStartOfJavaBeanPropertyName(int codepoint){
+    protected boolean isStartOfJavaBeanPropertyName(int codepoint){
         return (codepoint == Character.toUpperCase(codepoint)) || codepoint == '_'; 
     }
 
@@ -5303,13 +5305,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 && variance == VarianceLocation.CONTRAVARIANT){
             Type callableType = getFunctionalInterfaceType(moduleScope, scope, type);
             if(callableType != null){
-                System.err.println(type+" is a FunctionalInterface: "+callableType);
-                UnionType pt = new UnionType(typeFactory);
-                List<Type> caseTypes = new ArrayList<Type>(2);
-                caseTypes.add(ret);
-                caseTypes.add(callableType);
-                pt.setCaseTypes(caseTypes);
-                ret = pt.getType();
+//                System.err.println(type+" is a FunctionalInterface: "+callableType);
+//                UnionType pt = new UnionType(typeFactory);
+//                List<Type> caseTypes = new ArrayList<Type>(2);
+//                caseTypes.add(ret);
+//                caseTypes.add(callableType);
+//                pt.setCaseTypes(caseTypes);
+//                ret = pt.getType();
             }
         }
         return ret;
@@ -5336,6 +5338,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     protected abstract FunctionalInterface getFunctionalInterface(TypeMirror type);
+    protected String isFunctionalInterface(ClassMirror klass){
+        return null;
+    }
         
     private TypeMirror applyTypeMapping(TypeMirror type, TypeLocation location) {
         // don't erase to c.l.String if in a type param location

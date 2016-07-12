@@ -366,4 +366,10 @@ public class LazyInterface extends Interface implements LazyContainer {
     public boolean isJava() {
         return !isCeylon;
     }
+    
+    @Override
+    public String getSamName() {
+        load();
+        return super.getSamName();
+    }
 }

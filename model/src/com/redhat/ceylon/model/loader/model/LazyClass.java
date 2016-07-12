@@ -437,4 +437,10 @@ public class LazyClass extends Class implements LazyContainer {
     public boolean isJava() {
         return !isCeylon;
     }
+
+    @Override
+    public String getSamName() {
+        load();
+        return super.getSamName();
+    }
 }
