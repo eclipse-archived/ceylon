@@ -532,7 +532,17 @@ public class Unit implements LanguageModuleProvider {
             return (Interface) lang.getMember("Iterable", null, false);
         }
     }
-    
+
+    public Interface getJavaCharSequenceDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Interface) lang.getMember("CharSequence", null, false);
+        }
+    }
+
     public Interface getJavaCollectionDeclaration() {
         Package util = getJavaUtilPackage();
         if (util==null) {
