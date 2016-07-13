@@ -565,6 +565,10 @@ public abstract class Declaration
                                         thatParam.getType();
                                 if (thisParamType!=null && 
                                     thatParamType!=null) {
+                                    thisParamType = 
+                                            unit.getDefiniteType(thisParamType);
+                                    thatParamType = 
+                                            unit.getDefiniteType(thatParamType);
                                     TypeDeclaration thisErasedType = 
                                             erase(thisParamType, unit);
                                     TypeDeclaration thatErasedType = 
