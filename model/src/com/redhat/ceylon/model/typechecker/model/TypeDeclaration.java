@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 
 public abstract class TypeDeclaration extends Declaration 
@@ -1209,11 +1208,6 @@ public abstract class TypeDeclaration extends Declaration
         return false;
     }
 
-    @Override
-    public Backends getScopedBackends() {
-        return super.getScopedBackends();
-    }
-    
     public EnumSet<AnnotationTarget> getAnnotationTarget() {
         return null;
     }

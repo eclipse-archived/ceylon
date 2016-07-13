@@ -1,9 +1,5 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import com.redhat.ceylon.common.Backends;
-
-
-
 /**
  * Represents any value - either a reference or getter.
  *
@@ -126,11 +122,6 @@ public class Value extends FunctionOrValue implements Scope {
         else {
             flags&=(~INFERRED);
         }
-    }
-
-    @Override
-    public Backends getScopedBackends() {
-        return super.getScopedBackends();
     }
     
     @Override

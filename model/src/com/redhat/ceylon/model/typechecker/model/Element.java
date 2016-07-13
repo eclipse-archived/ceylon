@@ -19,7 +19,7 @@ import com.redhat.ceylon.common.Backends;
  * @author Gavin King
  *
  */
-public abstract class Element {
+public abstract class Element implements Scoped {
     
     Element() {}
     
@@ -27,10 +27,12 @@ public abstract class Element {
 	private Scope scope;
 	protected Unit unit;
     
+	@Override
 	public List<Declaration> getMembers() {
         return emptyList();
     }
     
+	@Override
     public Unit getUnit() {
         return unit;
     }
@@ -47,6 +49,7 @@ public abstract class Element {
      * 
      * @see ConditionScope
      */
+    @Override
     public Scope getContainer() {
         return container;
     }
@@ -62,6 +65,7 @@ public abstract class Element {
      * 
      * @see ConditionScope
      */
+    @Override
     public Scope getScope() {
 		return scope;
 	}
@@ -70,6 +74,7 @@ public abstract class Element {
     	this.scope = scope;
     }
     
+    @Override
     public String getQualifiedNameString() {
         return getContainer().getQualifiedNameString();
     }
@@ -77,6 +82,7 @@ public abstract class Element {
     /**
      * Search only directly inside this scope.
      */
+    @Override
     public Declaration getDirectMember(String name, 
             List<Type> signature, boolean variadic) {
         return getDirectMember(name, signature, variadic, 
@@ -98,6 +104,7 @@ public abstract class Element {
      * Search only directly inside this scope for a member
      * with the given name and any of the given backends
      */
+    @Override
     public Declaration getDirectMemberForBackend(String name, 
             Backends backends) {
         return lookupMemberForBackend(getMembers(), 
@@ -125,6 +132,7 @@ public abstract class Element {
      * members, but return them anyway, to let the caller 
      * produce a nicer error.
      */
+    @Override
     public Declaration getMember(String name, 
             List<Type> signature, boolean variadic) {
         return getMember(name, signature, variadic, false);
@@ -136,6 +144,7 @@ public abstract class Element {
      * and containing scopes, returning even un-shared 
      * declarations of this scope and containing scopes.
      */
+    @Override
     public Declaration getMemberOrParameter(Unit unit, String name, 
             List<Type> signature, boolean variadic) {
         return getMemberOrParameter(unit, name, signature, 
@@ -192,6 +201,7 @@ public abstract class Element {
                 onlyExactMatches);
     }
 
+    @Override
     public boolean isInherited(Declaration d) {
         if (d.getContainer()==this) {
             return false;
@@ -204,6 +214,7 @@ public abstract class Element {
         }
     }
     
+    @Override
     public TypeDeclaration getInheritingDeclaration(Declaration d) {
         if (d.getContainer()==this) {
             return null;
@@ -216,6 +227,7 @@ public abstract class Element {
         }
     }
     
+    @Override
     public Type getDeclaringType(Declaration d) {
         if (d.isMember()) {
             return getContainer().getDeclaringType(d);
@@ -225,6 +237,7 @@ public abstract class Element {
         }
     }
     
+    @Override
     public Map<String, DeclarationWithProximity> 
     getMatchingDeclarations(Unit unit, String startingWith, 
             int proximity, Cancellable canceller) {
@@ -256,4 +269,8 @@ public abstract class Element {
     	return result;
     }
 
+    @Override
+    public Backends getScopedBackends() {
+        return getScope().getScopedBackends();
+    }
 }

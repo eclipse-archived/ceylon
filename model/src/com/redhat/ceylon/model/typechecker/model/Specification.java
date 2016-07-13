@@ -3,8 +3,6 @@ package com.redhat.ceylon.model.typechecker.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.common.Backends;
-
 public class Specification extends Element implements Scope {
     
     private int id;
@@ -60,8 +58,4 @@ public class Specification extends Element implements Scope {
         this.declaration = declaration;
     }
 
-    @Override
-    public Backends getScopedBackends() {
-        return getScope().getScopedBackends();
-    }
 }

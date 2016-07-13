@@ -5,8 +5,6 @@ import static java.util.Collections.emptyList;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.common.Backends;
-
 /**
  * A function. Note that a function must have at least one 
  * parameter list.
@@ -137,11 +135,6 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
         else {
             flags&=(~JS_NEW);
         }
-    }
-    
-    @Override
-    public Backends getScopedBackends() {
-        return super.getScopedBackends();
     }
     
     @Override

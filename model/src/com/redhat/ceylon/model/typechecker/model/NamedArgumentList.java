@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.redhat.ceylon.common.Backends;
-
 public class NamedArgumentList extends Element implements Scope {
 	
     private ParameterList parameterList;
@@ -79,8 +77,4 @@ public class NamedArgumentList extends Element implements Scope {
         }
     }
     
-    @Override
-    public Backends getScopedBackends() {
-        return getScope().getScopedBackends();
-    }
 }

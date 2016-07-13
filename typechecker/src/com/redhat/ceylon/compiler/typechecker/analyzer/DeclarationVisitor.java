@@ -778,6 +778,7 @@ public abstract class DeclarationVisitor extends Visitor {
         unit.getImportLists().add(il);
         that.setImportList(il);
         il.setContainer(scope);
+        il.setUnit(unit);
         Scope o = enterScope(il);
         super.visit(that);
         exitScope(o);
