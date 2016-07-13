@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.common.Backends;
 
-public interface Scoped {
+public interface Scoped extends Sourced {
 
     /**
      * A period-separated name uniquely representing this 
@@ -135,8 +135,6 @@ public interface Scoped {
     public TypeDeclaration getInheritingDeclaration(Declaration d);
 
     public Type getDeclaringType(Declaration d);
-    
-    public Unit getUnit();
     
     public boolean isToplevel();
     
