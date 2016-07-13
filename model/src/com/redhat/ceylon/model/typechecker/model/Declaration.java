@@ -453,11 +453,27 @@ public abstract class Declaration
             return null;
         }
     }
-
+    
+    /**
+     * Does this model object "abstract" over several
+     * overloaded declarations with the same name?
+     * 
+     * Always returns false for Ceylon declarations.
+     */
     public boolean isAbstraction() { 
         return false; 
     }
 
+    /**
+     * Is this model object an overloaded declaration 
+     * which shared a name with other declarations in
+     * the same scope?
+     * 
+     * Always returns false for Ceylon declarations.
+     * 
+     * Always false for "abstractions" of overloaded
+     * declarations.
+     */
     public boolean isOverloaded() {
         return false;
     }

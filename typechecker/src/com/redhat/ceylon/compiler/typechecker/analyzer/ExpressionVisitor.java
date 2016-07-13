@@ -7123,11 +7123,13 @@ public class ExpressionVisitor extends Visitor {
                     return false;
                 }
                 else if (c.getParameterList()==null) {
-                	if (!(c.isOverloaded() && c.isAbstraction())) {
+                	if (!c.isAbstraction()) {
 	                    that.addError("class cannot be instantiated: '" +
 	                            type.getName(unit) + 
 	                            "' does not have a default constructor");
                 	}
+                    //else the parameter list is null because an
+                    //overloaded declaration could not be resolved
                     return false;
                 }
                 else {
