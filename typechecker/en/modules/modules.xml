@@ -623,7 +623,7 @@ shared package org.hibernate.query;</programlisting>
             
             <synopsis>ModuleBody: "{" ModuleImport* "}"</synopsis>
             <synopsis>ModuleImport: Annotations "import" RepositoryType? (FullPackageName|StringLiteral) StringLiteral ";"</synopsis>
-            <synopsis>RepositoryType: LIdentifier</synopsis>
+            <synopsis>RepositoryType: LIdentifier ":"</synopsis>
             
             <para>The optional repository type identifier selects an external module 
             repository system, for example, <literal>maven</literal>, or <literal>npm</literal>, 
