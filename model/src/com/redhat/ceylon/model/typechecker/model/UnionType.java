@@ -14,6 +14,9 @@ import java.util.Map;
 public class UnionType extends TypeDeclaration {
 
     public UnionType(Unit unit) {
+        if (unit==null) {
+            throw new IllegalArgumentException("null unit");
+        }
         this.unit = unit;
     }
     

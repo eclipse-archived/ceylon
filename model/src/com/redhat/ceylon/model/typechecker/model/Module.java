@@ -270,7 +270,7 @@ public class Module
         if ("Nothing".startsWith(startingWith)) {
             result.put("Nothing", 
                     new DeclarationWithProximity(
-                            new NothingType(unit),
+                            new NothingType(languageModule.getUnit()),
                             //same as other "special" 
                             //language module declarations
                             proximity+2));

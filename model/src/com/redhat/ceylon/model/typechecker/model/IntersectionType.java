@@ -17,6 +17,9 @@ import java.util.List;
 public class IntersectionType extends TypeDeclaration {
 
     public IntersectionType(Unit unit) {
+        if (unit==null) {
+            throw new IllegalArgumentException("null unit");
+        }
         this.unit = unit;
     }
     
