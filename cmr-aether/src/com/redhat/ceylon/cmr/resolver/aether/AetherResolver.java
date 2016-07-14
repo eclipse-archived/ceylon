@@ -19,4 +19,6 @@ public interface AetherResolver {
     public DependencyDescriptor getDependencies(File pomXml, String name, String version) throws IOException;
 
     public DependencyDescriptor getDependencies(InputStream pomXml, String name, String version) throws IOException;
+    
+    public File getLocalRepositoryBaseDir();
 }

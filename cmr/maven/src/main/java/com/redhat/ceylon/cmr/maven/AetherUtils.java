@@ -84,6 +84,10 @@ class AetherUtils {
         return (result != null) ? result.artifact() : null;
     }
 
+    public File getLocalRepositoryBaseDir() {
+        return impl.getLocalRepositoryBaseDir();
+    }
+
     ArtifactResult findDependencies(RepositoryManager manager, Node node) {
         return findDependencies(manager, node, null);
     }

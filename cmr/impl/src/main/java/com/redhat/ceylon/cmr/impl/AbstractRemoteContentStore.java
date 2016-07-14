@@ -16,6 +16,9 @@
 
 package com.redhat.ceylon.cmr.impl;
 
+import java.io.File;
+import java.util.Collections;
+
 import com.redhat.ceylon.cmr.api.ContentFinderDelegate;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleSearchResult;
@@ -112,5 +115,11 @@ public abstract class AbstractRemoteContentStore extends AbstractContentStore im
         public String getDisplayString() {
             return getService(ContentStore.class).getDisplayString();
         }
+    }
+    
+
+    @Override
+    public Iterable<File> getBaseDirectories() {
+        return Collections.emptyList();
     }
 }
