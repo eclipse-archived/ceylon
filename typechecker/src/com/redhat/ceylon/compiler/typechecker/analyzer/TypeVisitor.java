@@ -1,12 +1,13 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correct;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correctionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isVeryAbstractClass;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memberCorrectionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.setTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
@@ -393,11 +394,10 @@ public class TypeVisitor extends Visitor {
             if (type==null) {
                 if (!isNativeForWrongBackend(
                         scope.getScopedBackends())) {
-                    String correction = correct(scope, unit, name, cancellable);
-                    String message = correction==null ? "" :
-                        " (did you mean '" + correction + "'?)";
-                    that.addError("type declaration does not exist: '" + 
-                            name + "'" + message, 
+                    that.addError("type declaration does not exist: '" 
+                            + name + "'" 
+                            + correctionMessage(name, scope, 
+                                    unit, cancellable), 
                             102);
                     unit.setUnresolvedReferences();
                 }
@@ -495,14 +495,12 @@ public class TypeVisitor extends Visitor {
                                     d.getName() + "'");
                         }
                         else {
-                            String correction = 
-                                    correct(d, null, unit, name, cancellable);
-                            String message = correction==null ? "" :
-                                " (did you mean '" + correction + "'?)";
-                            that.addError("member type declaration does not exist: '" + 
-                                    name + "' in type '" + 
-                                    d.getName() + "'" + 
-                                    message, 100);
+                            that.addError("member type declaration does not exist: '" 
+                                    + name + "' in type '" 
+                                    + d.getName() + "'" 
+                                    + memberCorrectionMessage(name, d, 
+                                            null, unit, cancellable), 
+                                    100);
                             unit.setUnresolvedReferences();
                         }
                     }

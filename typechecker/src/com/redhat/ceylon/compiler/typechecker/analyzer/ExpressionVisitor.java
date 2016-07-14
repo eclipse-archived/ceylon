@@ -7,7 +7,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.check
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCasesDisjoint;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactlyForInterop;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkSupertype;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correct;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correctionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getMatchingParameter;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypeDeclaration;
@@ -6399,12 +6399,11 @@ public class ExpressionVisitor extends Visitor {
                     !isNativeForWrongBackend(
                             scope.getScopedBackends()) &&
                     error) {
-                String correction = correct(scope, unit, name, cancellable);
-                String message = correction==null ? "" :
-                    " (did you mean '" + correction + "'?)";
                 that.addError(
-                        "function or value does not exist: '" +
-                        name + "'" + message, 
+                        "function or value does not exist: '" 
+                            + name + "'" 
+                            + correctionMessage(name, scope, 
+                                    unit, cancellable), 
                         100);
                 unit.setUnresolvedReferences();
             }
@@ -6645,10 +6644,8 @@ public class ExpressionVisitor extends Visitor {
                         d.isMemberAmbiguous(name, unit, 
                                 signature, spread);
                 if (member==null) {
-                    String correction =
-                            correct(d, scope, unit, name, cancellable);
-                    container += correction==null ? "" :
-                        " (did you mean '" + correction + "'?)";
+                    container += AnalyzerUtil.memberCorrectionMessage(name, 
+                            d, scope, unit, cancellable);
                 }
             }
             if (member==null) {
@@ -7046,13 +7043,10 @@ public class ExpressionVisitor extends Visitor {
                     !dynamic &&
                     !isNativeForWrongBackend(
                             scope.getScopedBackends())) {
-                String correction = 
-                        correct(scope, unit, name, cancellable);
-                String message = correction==null ? "" :
-                    " (did you mean '" + correction + "'?)";
                 that.addError(
                         "type does not exist: '" + name + "'"
-                                + message, 
+                            + correctionMessage(name, scope, 
+                                    unit, cancellable), 
                         102);
                 unit.setUnresolvedReferences();
             }
@@ -7074,7 +7068,7 @@ public class ExpressionVisitor extends Visitor {
         }
         return type;
     }
-    
+
     private boolean checkConcreteConstructor(TypedDeclaration member,
             Tree.StaticMemberOrTypeExpression that) {
         if (isConstructor(member)) {
@@ -7415,10 +7409,8 @@ public class ExpressionVisitor extends Visitor {
                         d.isMemberAmbiguous(name, unit, 
                                 signature, spread);
                 if (type==null) {
-                    String correction =
-                            correct(d, scope, unit, name, cancellable);
-                    container += correction==null ? "" :
-                        " (did you mean '" + correction + "'?)";
+                    container += AnalyzerUtil.memberCorrectionMessage(name, 
+                            d, scope, unit, cancellable);
                 }
             }
             if (type==null) {

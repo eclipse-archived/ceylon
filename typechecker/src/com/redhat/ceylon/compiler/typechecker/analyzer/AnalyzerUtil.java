@@ -289,28 +289,26 @@ public class AnalyzerUtil {
                 best.getValue() : null;
     }
     
-    private static String realName(DeclarationWithProximity dwp, Unit unit) {
-        return dwp==null ? null : dwp.getDeclaration().getName(unit);
-    }
-    
-    public static String correct(Scope scope, Unit unit, String name, Cancellable canceller) {
+    private static DeclarationWithProximity correct(
+            Scope scope, Unit unit, String name, 
+            Cancellable canceller) {
         if (canceller != null 
                 && canceller.isCancelled()) {
             return null;
         }
-        return realName(best(name, 
-                scope.getMatchingDeclarations(unit, "", 0, canceller)),
-                unit);
+        return best(name, 
+                scope.getMatchingDeclarations(unit, "", 0, canceller));
     }
-    
-    public static String correct(TypeDeclaration type, Scope scope, Unit unit, String name, Cancellable canceller) {
+
+    private static DeclarationWithProximity correct(
+            TypeDeclaration type, Scope scope, Unit unit, String name, 
+            Cancellable canceller) {
         if (canceller != null 
                 && canceller.isCancelled()) {
             return null;
         }
-        return realName(best(name, 
-                type.getMatchingMemberDeclarations(unit, scope, "", 0, canceller)),
-                unit);
+        return best(name,
+                type.getMatchingMemberDeclarations(unit, scope, "", 0, canceller));
     }
     
     /**
@@ -1432,6 +1430,65 @@ public class AnalyzerUtil {
         return dec instanceof TypedDeclaration && 
                 ((TypedDeclaration) dec)
                     .hasUncheckedNullType();
+    }
+
+    static String correctionMessage(String name, 
+            Scope scope, Unit unit, Cancellable cancellable) {
+        DeclarationWithProximity correction = 
+                correct(scope, unit, name, cancellable);
+        if (correction!=null) {
+            if (correction.equals(name)) {
+                if (correction.isUnimported()) {
+                    return " (did you mean to import it from '" 
+                        + correction.packageName() + "'?)";
+                }
+                else {
+                    return "";
+                }
+            }
+            else {
+                if (correction.isUnimported()) {
+                    return " (did you mean '" 
+                        + correction.realName(unit) + "' from '" 
+                        + correction.packageName() + "'?)";
+                }
+                else {
+                    return " (did you mean '" 
+                        + correction.realName(unit) + "'?)";
+                }
+            }
+        }
+        else {
+            return "";
+        }
+    }
+
+    static String memberCorrectionMessage(String name, 
+            TypeDeclaration d, Scope scope, Unit unit, 
+            Cancellable cancellable) {
+        DeclarationWithProximity correction =
+                correct(d, scope, unit, name, cancellable);
+        if (correction==null) {
+            return "";
+        }
+        else {
+            return " (did you mean '" 
+                + correction.realName(unit) + "'?)";
+        }
+    }
+
+    static String importCorrectionMessage(String name, 
+            Package scope, Unit unit, 
+            Cancellable cancellable) {
+        DeclarationWithProximity correction =
+                correct(scope, unit, name, cancellable);
+        if (correction==null || !correction.isUnimported()) {
+            return "";
+        }
+        else {
+            return " (did you mean '" 
+                + correction.realName(unit) + "'?)";
+        }
     }
 
 }
