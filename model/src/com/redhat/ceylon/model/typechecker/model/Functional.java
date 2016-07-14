@@ -7,15 +7,13 @@ import java.util.List;
  *
  * @author Gavin King
  */
-public interface Functional {
+public interface Functional extends Typed {
 
     public ParameterList getFirstParameterList();
     
     public List<ParameterList> getParameterLists();
 
     public void addParameterList(ParameterList pl);
-
-    public Type getType();
 
     public String getName();
     public String getName(Unit unit);
