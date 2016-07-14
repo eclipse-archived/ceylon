@@ -1437,7 +1437,7 @@ public class AnalyzerUtil {
         DeclarationWithProximity correction = 
                 correct(scope, unit, name, cancellable);
         if (correction!=null) {
-            if (correction.equals(name)) {
+            if (correction.getName().equals(name)) {
                 if (correction.isUnimported()) {
                     return " (did you mean to import it from '" 
                         + correction.packageName() + "'?)";
