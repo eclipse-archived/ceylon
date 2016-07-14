@@ -258,14 +258,17 @@ public class AnalyzerUtil {
             return null;
         }
         final boolean ucase = isUpperCase(name.charAt(0));
-        Map.Entry<String,DeclarationWithProximity> best = 
-                Collections.max(suggestions.entrySet(), 
-                new Comparator<Map.Entry<String,DeclarationWithProximity>>() {
+        DeclarationWithProximity best = 
+                Collections.max(suggestions.values(), 
+                new Comparator<DeclarationWithProximity>() {
             @Override
-            public int compare(Map.Entry<String,DeclarationWithProximity> xe, 
-                               Map.Entry<String,DeclarationWithProximity> ye) {
-                String x = xe.getKey();
-                String y = ye.getKey();
+            public int compare(DeclarationWithProximity xe, 
+                               DeclarationWithProximity ye) {
+                //don't use the keys because for 
+                //unimported declarations they are
+                //qualified names!
+                String x = xe.getName();
+                String y = ye.getName();
                 boolean xucase = isUpperCase(x.charAt(0));
                 boolean yucase = isUpperCase(y.charAt(0));
                 if (ucase==xucase && ucase!=yucase) {
@@ -279,14 +282,14 @@ public class AnalyzerUtil {
                         distance.similarity(name, y));
                 if (comp==0) {
                     comp = - Integer.compare(
-                        xe.getValue().getProximity(), 
-                        ye.getValue().getProximity());
+                        xe.getProximity(), 
+                        ye.getProximity());
                 }
                 return comp;
             }
         });
-        return distance.similarity(name, best.getKey()) > 0.5 ? 
-                best.getValue() : null;
+        return distance.similarity(name, best.getName()) > 0.5 ? 
+                best : null;
     }
     
     private static DeclarationWithProximity correct(
@@ -297,7 +300,24 @@ public class AnalyzerUtil {
             return null;
         }
         return best(name, 
-                scope.getMatchingDeclarations(unit, "", 0, canceller));
+                scope.getMatchingDeclarations(unit, 
+                        //pass a prefix here, or otherwise
+                        //it won't search all importable
+                        //packages
+                        name.substring(0, 1), 
+                        0, canceller));
+    }
+
+    private static DeclarationWithProximity correct(
+            Package scope, String name,
+            Cancellable canceller) {
+        if (canceller != null 
+                && canceller.isCancelled()) {
+            return null;
+        }
+        return best(name, 
+                scope.getMatchingDirectDeclarations(
+                        "", 0, canceller));
     }
 
     private static DeclarationWithProximity correct(
@@ -308,7 +328,8 @@ public class AnalyzerUtil {
             return null;
         }
         return best(name,
-                type.getMatchingMemberDeclarations(unit, scope, "", 0, canceller));
+                type.getMatchingMemberDeclarations(unit, 
+                        scope, "", 0, canceller));
     }
     
     /**
@@ -1481,8 +1502,8 @@ public class AnalyzerUtil {
             Package scope, Unit unit, 
             Cancellable cancellable) {
         DeclarationWithProximity correction =
-                correct(scope, unit, name, cancellable);
-        if (correction==null || !correction.isUnimported()) {
+                correct(scope, name, cancellable);
+        if (correction==null) {
             return "";
         }
         else {

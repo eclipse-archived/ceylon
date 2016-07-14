@@ -258,7 +258,11 @@ public class Module
                                 //that may be imported
                                 prox = proximity+4;
                             }
-                            result.put(d.getQualifiedNameString(), 
+                            result.put(
+                                    //use qualified name here, in order
+                                    //to distinguish unimported declarations
+                                    //with same name in different packages
+                                    d.getQualifiedNameString(), 
                                     new DeclarationWithProximity(d, 
                                             prox, !isLanguagePackage));
                         }
