@@ -199,7 +199,7 @@ public class Module
     }
     
     public Map<String, DeclarationWithProximity> 
-    getAvailableDeclarations(String startingWith, 
+    getAvailableDeclarations(Unit unit, String startingWith, 
             int proximity, Cancellable canceller) {
         Map<String, DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
@@ -270,7 +270,7 @@ public class Module
         if ("Nothing".startsWith(startingWith)) {
             result.put("Nothing", 
                     new DeclarationWithProximity(
-                            new NothingType(languageModule.getUnit()),
+                            unit.getNothingDeclaration(),
                             //same as other "special" 
                             //language module declarations
                             proximity+2));
