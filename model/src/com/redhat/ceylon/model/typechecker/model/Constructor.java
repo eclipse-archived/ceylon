@@ -18,7 +18,6 @@ public class Constructor extends TypeDeclaration implements Functional {
     private static final int ABSTRACT = 1<<13;
     private static final int OVERLOADED = 1<<19;
     private static final int ABSTRACTION = 1<<20;
-    private static final int JS_NEW = 1<<25;
     
     private ParameterList parameterList;
     private List<Declaration> overloads;
@@ -94,20 +93,6 @@ public class Constructor extends TypeDeclaration implements Functional {
     @Override
     public boolean isAbstraction() {
         return (flags&ABSTRACTION)!=0;
-    }
-    
-    @Override
-    public boolean isJsNew() {
-        return (flags&JS_NEW)!=0;
-    }
-    
-    public void setJsNew(boolean $new) {
-        if ($new) {
-            flags|=JS_NEW;
-        }
-        else {
-            flags&=(~JS_NEW);
-        }
     }
     
     @Override

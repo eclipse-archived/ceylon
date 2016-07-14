@@ -33,7 +33,6 @@ public abstract class TypeDeclaration extends Declaration
     private Type selfType;
     private List<Type> brokenSupertypes = null; // delayed allocation
     private boolean inconsistentType;
-    private boolean dynamic;
 	private boolean sealed;
     private List<TypedDeclaration> caseValues;
 
@@ -51,14 +50,6 @@ public abstract class TypeDeclaration extends Declaration
 	
 	public void setSealed(boolean sealed) {
 	    this.sealed = sealed;
-    }
-    
-    public boolean isDynamic() {
-        return dynamic;
-    }
-    
-    public void setDynamic(boolean dynamic) {
-        this.dynamic = dynamic;
     }
     
     public boolean isInconsistentType() {
