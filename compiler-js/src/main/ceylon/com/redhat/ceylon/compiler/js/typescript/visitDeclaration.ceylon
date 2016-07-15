@@ -36,11 +36,6 @@ void visitDeclaration(
                     nameKey->name,
                     dynamicKey->1
                 });
-            writer.writeLine("ex$.``name`` = exports.``name``"); // TODO should not be necessary
-            if (!const) {
-                // TODO probably not necessary either
-            }
-            // TODO ex$.name = exports.name feels wrong; surely tsc can do the right thing by itself?
             // TODO write metamodel stuff
         } catch (Throwable t) {
             t.printStackTrace();

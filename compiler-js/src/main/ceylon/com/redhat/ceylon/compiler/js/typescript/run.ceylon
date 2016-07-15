@@ -19,7 +19,8 @@ shared void run() {
     try (js = Sha1Writer("modules/``moduleName``/``moduleVersion``/``moduleName``-``moduleVersion``.js"),
         model = Sha1Writer("modules/``moduleName``/``moduleVersion``/``moduleName``-``moduleVersion``-model.js")) {
         
-        value options = parseCommandLine(Array(files)).options; // TODO which of tsc’s supported module systems is best for compatibility with Ceylon’s?
+        CompilerOptions options;
+        dynamic { options = eval("({module: 3})"); } // UMD; TODO don’t hardcode enum constant
         value host = createCompilerHost(options);
         Program program;
         dynamic {
@@ -40,6 +41,11 @@ shared void run() {
             },
             moduleName->packageObject
         };
+        // emit program; TODO write in Ceylon
+        dynamic {
+            eval("(function(program,js){program.emit(undefined,function(fileName,data){js.write(data);});})")(program, js);
+            // TODO diagnostics, see https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API#a-minimal-compiler
+        }
         // write JS header
         js.writeLine("(function(define) { define(function(require, ex$, module) {
                       
@@ -50,12 +56,7 @@ shared void run() {
                       m$1.$addmod$(ex$,'``moduleName``/``moduleVersion``');
                       ex$.$mod$ans$=[];
                       ex$.$pkg$ans$``moduleName``=function(){return[m$1.shared()];};");
-        // emit program; TODO write in Ceylon
-        dynamic {
-            eval("(function(program,js){program.emit(undefined,function(fileName,data){js.write(data);});})")(program, js);
-            // TODO diagnostics, see https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API#a-minimal-compiler
-        }
-        // visit: populate model object and export JS values to ex$ object
+        // visit: populate model object and add additional values to ex$ object
         for (sourceFile in program.getSourceFiles()) {
             forEachChild(sourceFile, visitDeclaration(packageObject, js, program));
         }
