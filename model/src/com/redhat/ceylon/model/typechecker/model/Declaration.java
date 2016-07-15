@@ -24,7 +24,7 @@ import com.redhat.ceylon.common.Backends;
  */
 public abstract class Declaration 
         extends Element 
-        implements Referenceable, Annotated {
+        implements Referenceable, Annotated, Named {
     
     private static final int SHARED = 1;
     private static final int FORMAL = 1<<1;
@@ -59,6 +59,7 @@ public abstract class Declaration
         this.visibleScope = visibleScope;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -704,6 +705,7 @@ public abstract class Declaration
     	return getName();
     }
     
+    @Override
     public String getName(Unit unit) {
     	return unit==null ? 
     	        getName() : 
