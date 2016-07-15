@@ -211,3 +211,7 @@ sha1 {
 //"""
 
 
+publishJar {
+    from bootstrapModule
+}
+
