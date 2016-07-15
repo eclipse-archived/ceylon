@@ -972,11 +972,8 @@ public class TypeUtils {
                     if (path != null && !path.isEmpty()) {
                         gen.out(path, ".");
                     }
-                    gen.out(gen.getNames().name(_cont));
-                    if (_cont instanceof ClassOrInterface
-                            && TypeUtils.makeAbstractNative((ClassOrInterface)_cont)) {
-                        gen.out("$$N");
-                    }
+                    final String contName = gen.getNames().name(_cont);
+                    gen.out(contName);
                 }
             }
         }
