@@ -118,7 +118,8 @@ There is an unfortunate interdependency with `language`.
 .TODO
 * Do we need to `-XDignore.symbol.file` when compiling?
 * Mismatch in `compiler-*.jar` artifacts between ANT (1789 files) and Gradle (1777 files).
-* Mismatch in `ceylon-*.jar` artifacts between ANT (154 files) and Gradle (155 files).
+* Mismatch in `ceylon-ant.jar` artifacts between ANT (154 files) and Gradle (155 files).
+* For `bootstrap-ant.jar` need to check `MANIFEST.MF`
 
 == Language
 
@@ -132,7 +133,7 @@ There is an unfortunate interdependency with `compiler-java`.
 * Fix it from going through the Ant build to building everything as part of Gradle direct.
 * Start using `generate-source.gradle` to generate source.
 * Set `generateModuleInfo` according to `jigsaw`.
-
+* Some copy operations in the Ant `build` task need to be investigated.
 
 == Custom build code in buildSrc
 

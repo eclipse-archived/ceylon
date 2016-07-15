@@ -14,7 +14,7 @@ subprojects {
     buildDir = new File(rootProject.projectDir, 'builtByGradle/' + it.path.replace(":", "_").substring(1))
 
     ext {
-        distDir = file(cbp.'build.dist')
+        distDir = file(cbp['build.dist'])
         repoDir = file(cbp.'build.dist.repo')
         globalLibDir = file("${rootProject.projectDir}/lib")
     }

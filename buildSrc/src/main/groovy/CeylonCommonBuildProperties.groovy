@@ -12,24 +12,26 @@ class CeylonCommonBuildProperties implements Plugin<Project> {
 
             // Everything in common-build.properties will be availabe on the 'cbp'
             // property object
-            ext.cbp = propFileLoader.load file(
-                "${rootProject.projectDir}/common-build.properties"
-            ), [ basedir : rootProject.projectDir,
-                 'sun.boot.class.path' : ''
-            ]
+            project.extensions.create 'cbp',  CeylonCommonBuildPropertiesExtension,
+                propFileLoader.load (file(
+                    "${rootProject.projectDir}/common-build.properties"
+                ), [ basedir : rootProject.projectDir,
+                     'sun.boot.class.path' : ''
+                ])
 
-            if(ext.cbp == null) {
-                throw new GradleException ('ext.cbp is not defined. Did you load common-build.properties correctly?')
-            }
+//            if(ext.cbp == null) {
+//                throw new GradleException ('ext.cbp is not defined. Did you load common-build.properties correctly?')
+//            }
 
 
-            ext.requiresCBP = { String propName ->
-
-                if(cbp."${propName}" == null) {
-                    throw new GradleException ("${propName} is not defined in common-build.properties")
-                }
-            }
+            ext.requiresCBP = { String propName -> project.extensions.cbp.requires(propName) }
+//
+//                if(cbp."${propName}" == null) {
+//                    throw new GradleException ("${propName} is not defined in common-build.properties")
+//                }
+//            }
         }
 
     }
+
 }

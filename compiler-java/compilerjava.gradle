@@ -145,74 +145,49 @@ task antJar ( type : Jar ) {
     from sourceSets.antTask.output.resourcesDir
 }
 
-//"""
-//    <target name="bootstrap.jar" depends="compiler.classes">
-//        <mkdir dir="${build.lib}" />
-//        <jar destfile="${build.lib}/ceylon-bootstrap.jar" filesetmanifest="merge">
-//            <fileset dir="${build.classes}">
-//                <include name="com/redhat/ceylon/launcher/Bootstrap*.class" />
-//                <include name="com/redhat/ceylon/launcher/CeylonClassLoader.class" />
-//                <include name="com/redhat/ceylon/launcher/LauncherUtil.class" />
-//                <include name="META-INF/MANIFEST.MF" />
-//            </fileset>
-//        </jar>
-//    </target>
-//
-//    <!-- Rule to build bootstrap module -->
-//    <target name="bootstrap.module" depends="compiler.classes">
-//        <mkdir dir="${build.dist.repo}/${ceylon.bootstrap.dir}" />
-//        <jar destfile="${build.dist.repo}/${ceylon.bootstrap.jar}">
-//            <fileset dir="${build.classes}">
-//                <include name="com/redhat/ceylon/launcher/**" />
-//                <exclude name="com/redhat/ceylon/launcher/Start.class" />
-//            </fileset>
-//            <manifest>
-//                <attribute name="Bundle-SymbolicName" value="ceylon.bootstrap"/>
-//                <attribute name="Bundle-Version" value="${module.ceylon.bootstrap.version}.${qualifier}"/>
-//            </manifest>
-//        </jar>
-//        <antcall target="sha1sum">
-//            <param name="file" value="${build.dist.repo}/${ceylon.bootstrap.jar}" />
-//        </antcall>
-//    </target>
-//"""
+task bootstrapJar( type : Jar ) {
+    group 'Build'
+    description 'Create bootstrap jar'
+    dependsOn classes, processResources
+    destinationDir = jar.destinationDir
+    archiveName = 'ceylon-bootstrap.jar'
+    from sourceSets.main.output.classesDir, {
+        include "com/redhat/ceylon/launcher/Bootstrap*.class"
+        include "com/redhat/ceylon/launcher/CeylonClassLoader.class"
+        include "com/redhat/ceylon/launcher/LauncherUtil.class"
+    }
+    // TODO: Merge manifests?
+    from sourceSets.main.output.resourcesDir, {
+        include name="META-INF/MANIFEST.MF"
+    }
+}
 
-//"""
-//<target name="test.classes" depends="compiler.classes">
-//        <mkdir dir="${build.classes}" />
-//        <javac destdir="${build.classes}" debug="true" encoding="UTF-8"
-// classpathref="test.compile.classpath" target="${compile.java.target}"
-// source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="false">
-//            <src path="${test.ceylond.src}"/>
-//            <src path="${test.src}"/>
-//            <include name="com/redhat/ceylon/compiler/java/test/**" />
-//            <exclude name="com/redhat/ceylon/compiler/java/test/interop/mixed/**" />
-//            <exclude name="com/redhat/ceylon/compiler/java/test/interop/nullable/**" />
-//            <exclude name="com/redhat/ceylon/compiler/java/test/interop/Bug*" />
-//            <exclude name="com/redhat/ceylon/compiler/java/test/interop/Interdep*" />
-//            <exclude name="com/redhat/ceylon/compiler/java/test/interop/JavaRepeatable.java" />
-//            <exclude name="com/redhat/ceylon/compiler/java/test/cmr/modules/bug1062/**" />
-//            <exclude name="com/redhat/ceylon/compiler/java/test/recovery/modules/bug1411/**" />
-//            <exclude name="com/redhat/ceylon/compiler/java/test/issues/*/**" />
-//            <include name="com/redhat/ceylon/tools/**" />
-//            <exclude name="com/redhat/ceylon/tools/test/bug1183/**" />
-//            <include name="com/redhat/ceylon/itest/**" />
-//            <include name="com/redhat/ceylon/launcher/test/**" />
-//            <include name="com/redhat/ceylon/ant/**" />
-//            <include name="com/redhat/ceylon/ceylondoc/test/**" />
-//            <exclude name="com/redhat/ceylon/compiler/java/test/recovery/bug6290/**"/>
-//        </javac>
-//        <copy todir="${build.classes}">
-//            <fileset dir="${test.src}">
-//                <include name="META-INF/**" />
-//                <include name="**/*.txt" />
-//                <include name="**/*.md" />
-//                <include name="**/*.properties" />
-//            </fileset>
-//        </copy>
-//    </target>
-//
-//"""
+task bootstrapModule( type : Jar ) {
+    ext {
+        bmSymbolicName = 'com.redhat.ceylon.bootstrap'
+        bmVersionName = cbp."module.${bmSymbolicName}.version"
+    }
+    manifest {
+        attributes 'Bundle-SymbolicName': bmSymbolicName,
+            'Bundle-Version': bmVersionName + ".${TimeStamp.BUILD}"
+    }
+    group 'Build'
+    description 'Create bootstrap module'
+    dependsOn classes, processResources
+    destinationDir = jar.destinationDir
+    archiveName = "${bundleSymbolicName}-${bundleVersionName}.jar"
+
+    from sourceSets.main.output.classesDir, {
+        include "com/redhat/ceylon/launcher/**"
+        exclude "com/redhat/ceylon/launcher/Start.class"
+    }
+
+}
+
+sha1 {
+    archive bootstrapModule
+    dependsOn bootstrapModule
+}
 
 //"""
 //    <target name="build" depends="compiler.jar,ant.jar,bootstrap.jar,bootstrap.module">
