@@ -391,12 +391,13 @@ public class TypeHierarchyVisitor extends Visitor {
             List<Type> orderedTypes, Class clazz) {
         Type aggregation = buildAggregatedType(orderedTypes);
         for (Type.Members members: aggregation.membersByName.values()) {
-            if (!members.formals.isEmpty() 
-                    && members.nonFormalsNonDefaults.isEmpty()) {
+            if (!members.formals.isEmpty()) {
                 if (members.actualsNonFormals.isEmpty()) {
-                    Declaration example = members.formals.iterator().next();
-                    Declaration declaringType = 
-                            (Declaration) example.getContainer();
+                    Declaration example =
+                            members.formals.iterator().next();
+                    Declaration declaringType =
+                            (Declaration)
+                                example.getContainer();
                     if (!clazz.equals(declaringType)) {
                         addUnimplementedFormal(clazz, example);
                         that.addError("formal member '" + example.getName() + 
@@ -418,7 +419,7 @@ public class TypeHierarchyVisitor extends Visitor {
                         if (!found) {
                             StringBuilder paramTypes = new StringBuilder();
                             List<ParameterList> parameterLists = 
-                                    ((Functional)f).getParameterLists();
+                                    ((Functional) f).getParameterLists();
                             if (!parameterLists.isEmpty()) {
                                 for (Parameter p: parameterLists.get(0).getParameters()) {
                                     if (paramTypes.length()>0) {
@@ -446,6 +447,14 @@ public class TypeHierarchyVisitor extends Visitor {
                         " not implemented in class hierarchy (concrete interface members not yet supported)");
             }*/
         }
+    }
+
+    private static boolean isJavaInterfaceMember(Declaration formal) {
+        return formal.isInterfaceMember() 
+                && formal.getUnit()
+                    .getPackage()
+                    .getModule()
+                    .isJava();
     }
 
     private void addUnimplementedFormal(Class clazz, Declaration member) {
@@ -479,15 +488,38 @@ public class TypeHierarchyVisitor extends Visitor {
                 pourCurrentTypeInfoIntoAggregatedType(currentMembers, aggregateMembers);
                 //if an actual implementation high in the hierarchy is overridden as formal => do not add
                 //remember we go from most specific to most generic type
-                for (Declaration actualNonFormal: 
-                        currentMembers.actualsNonFormals) {
+                for (Declaration actualNonFormal: currentMembers.actualsNonFormals) {
                     for (Declaration formal: aggregateMembers.formals) {
                         if (formal.getName().equals(actualNonFormal.getName())) {
-                            if (!formal.getUnit().getPackage().getModule().isJava() ||
-                                    !formal.isInterfaceMember()) {
+                            if (!isJavaInterfaceMember(formal)) {
                                 aggregateMembers.actualsNonFormals.remove(actualNonFormal);
                                 break;
                             }
+                        }
+                    }
+                }
+            }
+        }
+        //a Java interface method can be implemented by stuff that doesn't
+        //explicitly/directly refine it
+        //TODO: does this logic does correctly account for overloading?
+        for (Type.Members aggregateMembers: aggregation.membersByName.values()) {
+            for (Declaration formal: 
+                    new ArrayList<Declaration>
+                        (aggregateMembers.formals)) {
+                if (isJavaInterfaceMember(formal)) {
+                    for (Declaration concrete: aggregateMembers.defaults) {
+                        if (formal.getName().equals(concrete.getName()) 
+                                && isDefinedInJava(concrete)) {
+                            aggregateMembers.formals.remove(formal);
+                            break;
+                        }
+                    }
+                    for (Declaration concrete: aggregateMembers.nonFormalsNonDefaults) {
+                        if (formal.getName().equals(concrete.getName()) 
+                                && isDefinedInJava(concrete)) {
+                            aggregateMembers.formals.remove(formal);
+                            break;
                         }
                     }
                 }
@@ -698,7 +730,7 @@ public class TypeHierarchyVisitor extends Visitor {
         }
     }
 
-    private boolean isDefinedInJava(Declaration d) {
+    private static boolean isDefinedInJava(Declaration d) {
         if (d.getUnit().getPackage().getModule().isJava()) {
             return true;
         }

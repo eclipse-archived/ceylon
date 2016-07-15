@@ -1,8 +1,9 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correct;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.declaredInPackage;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importCorrectionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.importedPackage;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memberCorrectionMessage;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
@@ -295,21 +296,21 @@ public class ImportVisitor extends Visitor {
         }        
         Declaration d = 
                 importedPackage.getMember(name, null, false);
-        if(d == null){
+        if (d == null) {
             String newName;
-            if(JvmBackendUtil.isInitialLowerCase(name))
+            if (JvmBackendUtil.isInitialLowerCase(name)) {
                 newName = NamingBase.capitalize(name);
-            else
+            }
+            else {
                 newName = NamingBase.getJavaBeanName(name);
+            }
             d = importedPackage.getMember(newName, null, false);
         }
         if (d==null) {
-            String correction = 
-                    correct(importedPackage, unit, name, cancellable);
-            String message = correction==null ? "" :
-                " (did you mean '" + correction + "'?)";
-            id.addError("imported declaration not found: '" + 
-                    name + "'" + message, 
+            id.addError("imported declaration not found: '" 
+                    + name + "'" 
+                    + importCorrectionMessage(name, importedPackage, 
+                            unit, cancellable), 
                     100);
             unit.setUnresolvedReferences();
         }
@@ -363,23 +364,22 @@ public class ImportVisitor extends Visitor {
             i.setAlias(name(alias.getIdentifier()));
         }
         Declaration m = td.getMember(name, null, false);
-        if(m == null){
+        if (m == null) {
             String newName;
-            if(JvmBackendUtil.isInitialLowerCase(name))
+            if (JvmBackendUtil.isInitialLowerCase(name)) {
                 newName = NamingBase.capitalize(name);
-            else
+            }
+            else {
                 newName = NamingBase.getJavaBeanName(name);
+            }
             m = td.getMember(newName, null, false);
         }
         if (m==null) {
-            String correction = 
-                    correct(td, null, unit, name, cancellable);
-            String message = correction==null ? "" :
-                " (did you mean '" + correction + "'?)";
-            id.addError("imported declaration not found: '" + 
-                    name + "' of '" + 
-                    td.getName() + "'" + 
-                    message, 
+            id.addError("imported declaration not found: '" 
+                    + name + "' of '" 
+                    + td.getName() + "'" 
+                    + memberCorrectionMessage(name, td, 
+                            null, unit, cancellable), 
                     100);
             unit.setUnresolvedReferences();
         }

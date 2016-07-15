@@ -27,8 +27,8 @@ public class ClassGenerator {
         //Don't even bother with nodes that have errors
         if (TypeGenerator.errVisitor.hasErrors(that))return;
         final Class d = that.getDeclarationModel();
-        //If it's inside a dynamic interface (or for some other reason dynamic), don't generate anything
-        if (d.isDynamic())return;
+        //If it's inside a dynamic interface, don't generate anything
+        if (d.isClassOrInterfaceMember() && ((ClassOrInterface)d.getContainer()).isDynamic())return;
         final Class natd = (Class)ModelUtil.getNativeDeclaration(d, Backend.JavaScript);
         final boolean headerWithoutBackend = NativeUtil.isHeaderWithoutBackend(that, Backend.JavaScript);
         if (natd!= null && (headerWithoutBackend || NativeUtil.isNativeHeader(that))) {

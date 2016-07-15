@@ -25,6 +25,7 @@ public class MainForTest {
         
         RepositoryManager repositoryManager = CeylonUtils.repoManager()
                 .systemRepo("../dist/dist/repo")
+                .outRepo("test/modules")
                 .logger(new LeakingLogger())
                 .buildManager();
         

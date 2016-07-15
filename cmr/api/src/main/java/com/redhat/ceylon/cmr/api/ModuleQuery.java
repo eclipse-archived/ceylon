@@ -3,6 +3,7 @@ package com.redhat.ceylon.cmr.api;
 import java.util.Arrays;
 
 public class ModuleQuery {
+    protected String namespace;
     protected String name;
     protected Type type;
     protected Retrieval retrieval;
@@ -48,15 +49,31 @@ public class ModuleQuery {
     }
     
     public ModuleQuery(String name, Type type) {
-        this(name, type, Retrieval.ANY);
+        this(null, name, type, Retrieval.ANY);
+    }
+    
+    public ModuleQuery(String namespace, String name, Type type) {
+        this(namespace, name, type, Retrieval.ANY);
     }
     
     public ModuleQuery(String name, Type type, Retrieval retrieval) {
+        this(null, name, type, retrieval);
+    }
+    
+    public ModuleQuery(String namespace, String name, Type type, Retrieval retrieval) {
         this.name = name;
         this.type = type;
         this.retrieval = retrieval;
     }
     
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public void getNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
     public String getName() {
         return name;
     }
@@ -167,7 +184,7 @@ public class ModuleQuery {
 
     @Override
     public String toString() {
-        return "ModuleQuery[name=" + name + ",type=" + type + "]";
+        return "ModuleQuery[ns=" + namespace + ",name=" + name + ",type=" + type + "]";
     }
 
 }

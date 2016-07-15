@@ -25,13 +25,11 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
 import com.redhat.ceylon.cmr.api.AbstractDependencyResolverAndModuleInfoReader;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
-import com.redhat.ceylon.cmr.api.ModuleInfoReader;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Overrides;
@@ -86,7 +84,7 @@ public final class JarUtils extends AbstractDependencyResolverAndModuleInfoReade
 
     @Override
     public ModuleVersionDetails readModuleInfo(String moduleName, String version, File moduleArchive, boolean includeMembers, Overrides overrides) {
-        ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, version);
+        ModuleVersionDetails mvd = new ModuleVersionDetails(null, moduleName, version);
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
         ModuleInfo info = getDependencies(moduleArchive, moduleName, version, overrides);
         if (info != null) {

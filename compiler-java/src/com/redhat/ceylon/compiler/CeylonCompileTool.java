@@ -184,7 +184,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
 
     private List<File> sources = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
-    private List<String> modulesOrFiles = Arrays.asList("*");
+    private List<String> modulesOrFiles = DefaultToolOptions.getCompilerModules(Backend.Java);
     private boolean continueOnErrors;
     private boolean progress = DefaultToolOptions.getCompilerProgress();
     private List<String> javac = Collections.emptyList();
@@ -198,6 +198,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
+    private boolean noSources = false;
+    
     private ModuleSpec jdkProvider;
     {
         String jdkProvider = DefaultToolOptions.getCompilerJdkProvider();
@@ -572,7 +574,14 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         List<File> srcs = applyCwd(this.sources);
         List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles, Backend.Java);
         if (expandedModulesOrFiles.isEmpty()) {
-            throw new ToolUsageError("No modules or source files to compile");
+            String msg = CeylonCompileMessages.msg("error.no.sources");
+            if (ModuleWildcardsHelper.onlyGlobArgs(this.modulesOrFiles)) {
+                errorAppend("ceylon compile: ").errorAppend(msg).errorNewline();
+                noSources = true;
+                return;
+            } else {
+                throw new ToolUsageError(msg);
+            }
         }
         
         for (String moduleOrFile : expandedModulesOrFiles) {
@@ -615,6 +624,10 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
      */
     @Override
     public void run() throws IOException {
+        if (noSources) {
+            // Special case where we exit without error when we didn't find anything to compile
+            return;
+        }
         Result result = compiler.compile(arguments.toArray(new String[arguments.size()]));
         handleExitCode(result.exitCode, compiler.exitState);
     }

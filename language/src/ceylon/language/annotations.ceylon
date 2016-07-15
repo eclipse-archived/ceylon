@@ -311,7 +311,8 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `smallIgnored`,
      `literalNotSmall`,
      `redundantNarrowing`,
-     `redundantIteration`."
+     `redundantIteration`,
+     `missingImportPrefix`."
     String* warnings) 
         => SuppressWarningsAnnotation(*warnings);
 

@@ -24,7 +24,7 @@ import com.redhat.ceylon.common.Backends;
  */
 public abstract class Declaration 
         extends Element 
-        implements Referenceable, Annotated {
+        implements Referenceable, Annotated, Named {
     
     private static final int SHARED = 1;
     private static final int FORMAL = 1<<1;
@@ -59,6 +59,7 @@ public abstract class Declaration
         this.visibleScope = visibleScope;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -475,11 +476,27 @@ public abstract class Declaration
             return null;
         }
     }
-
+    
+    /**
+     * Does this model object "abstract" over several
+     * overloaded declarations with the same name?
+     * 
+     * Always returns false for Ceylon declarations.
+     */
     public boolean isAbstraction() { 
         return false; 
     }
 
+    /**
+     * Is this model object an overloaded declaration 
+     * which shared a name with other declarations in
+     * the same scope?
+     * 
+     * Always returns false for Ceylon declarations.
+     * 
+     * Always false for "abstractions" of overloaded
+     * declarations.
+     */
     public boolean isOverloaded() {
         return false;
     }
@@ -571,6 +588,10 @@ public abstract class Declaration
                                         thatParam.getType();
                                 if (thisParamType!=null && 
                                     thatParamType!=null) {
+                                    thisParamType = 
+                                            unit.getDefiniteType(thisParamType);
+                                    thatParamType = 
+                                            unit.getDefiniteType(thatParamType);
                                     TypeDeclaration thisErasedType = 
                                             erase(thisParamType, unit);
                                     TypeDeclaration thatErasedType = 
@@ -684,6 +705,7 @@ public abstract class Declaration
     	return getName();
     }
     
+    @Override
     public String getName(Unit unit) {
     	return unit==null ? 
     	        getName() : 

@@ -207,7 +207,7 @@ public class ModuleCopycat {
     		ModuleQuery.Type type, 
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
     		Integer jsBinaryMajor, Integer jsBinaryMinor) {
-        ModuleVersionQuery query = new ModuleVersionQuery(name, version, type);
+        ModuleVersionQuery query = new ModuleVersionQuery(null, name, version, type);
         if (jvmBinaryMajor != null) {
             query.setJvmBinaryMajor(jvmBinaryMajor);
         }

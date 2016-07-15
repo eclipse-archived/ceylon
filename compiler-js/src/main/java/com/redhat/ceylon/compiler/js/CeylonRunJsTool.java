@@ -174,9 +174,9 @@ public class CeylonRunJsTool extends RepoUsingTool {
         return f.exists() && f.canExecute();
     }
 
-    private String func = "run";
-    private String compileFlags;
     private String module;
+    private String func;
+    private String compileFlags;
     private String exepath;
     private List<String> args;
     private PrintStream output;
@@ -204,9 +204,11 @@ public class CeylonRunJsTool extends RepoUsingTool {
         this.debug = debug;
     }
 
-    @OptionArgument(argumentName="func")
-    @Description("The function to run, which must be exported from the " +
-    		"given `<module>`. (default: `run`).")
+    @OptionArgument(longName = "run", argumentName = "toplevel")
+    @Description("Specifies the fully qualified name of a toplevel method or class to run. " +
+            "The indicated declaration must be shared by the <module> and have no parameters. " +
+            "The format is: `qualified.package.name::classOrMethodName` with `::` acting as separator " +
+            "between the package name and the toplevel class or method name. (default: `<module>::run`)")
     public void setRun(String func) {
         this.func = func;
     }
@@ -219,7 +221,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         this.compileFlags = compile;
     }
 
-    @Argument(argumentName="module", multiplicity="1", order=1)
+    @Argument(argumentName="module", multiplicity="?", order=1)
     public void setModuleVersion(String moduleVersion) {
         this.module= moduleVersion;
     }
@@ -413,6 +415,20 @@ public class CeylonRunJsTool extends RepoUsingTool {
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
         super.initialize(mainTool);
+        
+        if (module == null) {
+            module = DefaultToolOptions.getRunToolModule(com.redhat.ceylon.common.Backend.Java);
+            if (module != null) {
+                if (func == null) {
+                    func = DefaultToolOptions.getRunToolRun(com.redhat.ceylon.common.Backend.Java);
+                }
+                if (args == null || args.isEmpty()) {
+                    args = DefaultToolOptions.getRunToolArgs(com.redhat.ceylon.common.Backend.Java);
+                }
+            } else {
+                throw new IllegalArgumentException("Missing required argument 'module' to command 'run'");
+            }
+        }
     }
 
     @Override
@@ -470,6 +486,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
         loadDependencies(localRepos, getRepositoryManager(), jsmod, loadedDependencies);
         customizeDependencies(localRepos, getRepositoryManager(), loadedDependencies);
 
+        func = func != null ? func : "run";
         final ProcessBuilder proc = buildProcess(modname, version, func, args, exepath, localRepos, output);
         final Process nodeProcess = proc.start();
         //All this shit because inheritIO doesn't work on fucking Windows

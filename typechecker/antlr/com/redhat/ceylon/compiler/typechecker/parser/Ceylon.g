@@ -179,6 +179,11 @@ packageDescriptor returns [PackageDescriptor packageDescriptor]
 importModule returns [ImportModule importModule]
     : IMPORT
       { $importModule = new ImportModule($IMPORT); }
+      (
+        ins=importNamespace
+        { $importModule.setNamespace($ins.identifier); }
+        SEGMENT_OP
+      )?
       ( 
         c1=CHAR_LITERAL
         { $importModule.setQuotedLiteral(new QuotedLiteral($c1)); }
@@ -201,6 +206,15 @@ importModule returns [ImportModule importModule]
       SEMICOLON
       { $importModule.setEndToken($SEMICOLON); 
         expecting=-1; }
+    ;
+
+importNamespace returns [Identifier identifier]
+    : LIDENTIFIER
+      { $identifier = new Identifier($LIDENTIFIER); }
+    | { displayRecognitionError(getTokenNames(),
+              new MismatchedTokenException(LIDENTIFIER, input), 5001); }
+      UIDENTIFIER
+      { $identifier = new Identifier($UIDENTIFIER); }
     ;
 
 importDeclaration returns [Import importDeclaration]

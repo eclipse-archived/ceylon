@@ -2179,14 +2179,27 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(loadModuleImports){
             List<AnnotationMirror> imports = getAnnotationArrayValue(moduleClass, CEYLON_MODULE_ANNOTATION, "dependencies");
             if(imports != null){
+                boolean supportsNamespaces = ModuleUtil.supportsImportsWithNamespaces(major, minor);
                 for (AnnotationMirror importAttribute : imports) {
-                    String dependencyUri = (String) importAttribute.getValue("name");
-                    if (dependencyUri != null) {
+                    String dependencyName = (String) importAttribute.getValue("name");
+                    if (dependencyName != null) {
+                        String namespace;
+                        if (supportsNamespaces) {
+                            namespace = (String) importAttribute.getValue("namespace");
+                            if (namespace != null && namespace.isEmpty()) {
+                                namespace = null;
+                            }
+                        } else {
+                            if (ModuleUtil.isMavenModule(dependencyName)) {
+                                namespace = "maven";
+                            } else {
+                                namespace = null;
+                            }
+                        }
+
                         String dependencyVersion = (String) importAttribute.getValue("version");
 
-                        String namespace = ModuleUtil.getNamespaceFromUri(dependencyUri);
-                        String depModuleName = ModuleUtil.getModuleNameFromUri(dependencyUri);
-                        Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(depModuleName), dependencyVersion);
+                        Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dependencyName), dependencyVersion);
 
                         Boolean optionalVal = (Boolean) importAttribute.getValue("optional");
 

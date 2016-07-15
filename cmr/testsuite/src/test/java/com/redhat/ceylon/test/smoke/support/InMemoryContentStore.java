@@ -173,4 +173,9 @@ public class InMemoryContentStore implements ContentStore, StructureBuilder {
     public boolean canHandleFolders() {
         return true;
     }
+
+    @Override
+    public Iterable<File> getBaseDirectories() {
+        return Collections.emptyList();
+    }
 }

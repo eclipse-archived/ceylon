@@ -76,5 +76,17 @@ public class DeclarationWithProximity {
     public String toString() {
         return name + ":" + declaration.toString() + "@" + proximity + "(alias: "+alias+")";
     }
+
+    public String packageName() {
+        return declaration.isToplevel() ? 
+                declaration
+                    .getContainer()
+                    .getQualifiedNameString() :
+                null;
+    }
+    
+    public String realName(Unit unit) {
+        return declaration.getName(unit);
+    }
     
 }

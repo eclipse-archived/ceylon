@@ -12,7 +12,8 @@ import java.util.Objects;
  *
  * @author Gavin King
  */
-public abstract class TypedDeclaration extends Declaration {
+public abstract class TypedDeclaration 
+        extends Declaration implements Typed {
     
     private static final int UNCHECKED_NULL = 1<<11;
     private static final int UNBOXED_KNOWN = 1<<12;
@@ -53,7 +54,8 @@ public abstract class TypedDeclaration extends Declaration {
             return type.getDeclaration();
     	}
     }
-
+    
+    @Override
     public Type getType() {
         return type;
     }
