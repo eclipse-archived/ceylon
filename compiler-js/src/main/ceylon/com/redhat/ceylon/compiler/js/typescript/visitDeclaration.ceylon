@@ -27,13 +27,13 @@ void visitDeclaration(
             String name = id.text;
             value type = typechecker.getTypeAtLocation(vdecl);
             container.put(name, JsonObject {
-                    "$t" -> convertTypeForModel(type),
-                    "pa" -> packAnnotations {
+                    typeKey -> convertTypeForModel(type),
+                    packedAnnotationsKey -> packAnnotations {
                         shared = true;
                         variable = !const;
                     },
-                    "mt"->"a",
-                    "nm"->name
+                    metaTypeKey->attributeMetaType,
+                    nameKey->name
                 });
             writer.writeLine("ex$.``name`` = (function(``name``) { return function(){ return ``name``; }; })(exports.``name``);"); // TS emits a variable, Ceylon expects a function – TODO #6320; TODO also this overwrites the TypeScript value, so if any TypeScript code uses this value we’re screwed
             if (!const) {

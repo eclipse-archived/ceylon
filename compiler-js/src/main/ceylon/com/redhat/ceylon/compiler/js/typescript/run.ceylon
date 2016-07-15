@@ -31,10 +31,10 @@ shared void run() {
             "$pkg-pa" -> packAnnotations { shared = true; }
         };
         value ccmm = JsonObject {
-            "$mod-name"->moduleName,
-            "$mod-version"->moduleVersion,
-            "$mod-bin"->binaryVersion,
-            "$mod-deps" -> JsonArray {
+            moduleNameKey->moduleName,
+            moduleVersionKey->moduleVersion,
+            moduleBinaryVersionKey->binaryVersion,
+            moduleDependenciesKey -> JsonArray {
                 "ceylon.language/``languageVersion``"
                 // TODO dependency handling
             },
