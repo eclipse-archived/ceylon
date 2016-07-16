@@ -40,3 +40,6 @@ project(':compiler-java').buildFileName = 'compilerjava.gradle'
 
 include 'language'
 project(':language').buildFileName = 'language.gradle'
+
+include 'compiler-js'
+project(':compiler-js').buildFileName = 'compilerjs.gradle'

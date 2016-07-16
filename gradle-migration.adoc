@@ -135,6 +135,18 @@ There is an unfortunate interdependency with `compiler-java`.
 * Set `generateModuleInfo` according to `jigsaw`.
 * Some copy operations in the Ant `build` task need to be investigated.
 
+== Compiler-js
+
+The directory layout seems to be nearer to a Gradle/Maven convention, but the resources are still
+under `src/main/java`. For this reason there is a `sourceSets` block in the build to find the correct files.
+If those files could simply be moved to the `src/main/resources` folder the whole block can be eliminated.
+
+.TODO
+* Do we need to include test classs fo the `ceylon.language.js`?
+* Not sure about the runtime directory.
+  Should we send those artifacts to `build/libs` or `build/runtime` under Gradle?
+* `jdk5Stubs` seems to refer to an empty collection. We could get rid of it and simplify the build script.
+
 == Custom build code in buildSrc
 
 A `buildSrc` folder has been added to help with some of the delicate and less common feastures of this build.

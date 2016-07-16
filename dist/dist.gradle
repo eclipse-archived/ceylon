@@ -11,37 +11,20 @@ task installCompiler {
     dependsOn ':model:publishInternal'
     dependsOn ':cmr:publishInternal'
     dependsOn ':typechecker:publishInternal'
-//    dependsOn ':compiler-java:publishInternal'
+    dependsOn ':compiler-java:publishInternal'
 }
 
-//<target name="install-compiler"
-// depends="
-//   install-common,
-//   install-cli,
-//   install-langtools-classfile,
-//   install-model,
-//   install-cmr,
-//   install-typechecker,
-//   install-compiler-nodeps"
-//<target name="install-compiler-nodeps">
-//<ant antfile="${project-compiler.dir}/build.xml" target="publish" dir="${project-compiler.dir}" inheritall="false">
-//<property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
-//<property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
-//<property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
-//</ant>
-//    </target>
+task installJS {
 
-//<target name="install-common" depends="install-common-nodeps" />
-//<target name="install-common-nodeps">
-//<ant antfile="${project-common.dir}/build.xml" target="publish" dir="${project-common.dir}" inheritall="false">
-//<property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
-//<property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
-//<property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
-//<property name="buildid" value="${buildid}" />
-//</ant>
-//    </target>
+    dependsOn ':common:publishInternal'
+    dependsOn ':cli:publishInternal'
+    dependsOn ':model:publishInternal'
+    dependsOn ':cmr:publishInternal'
+    dependsOn ':typechecker:publishInternal'
+    dependsOn ':compiler-js:publishInternal'
 
+}
 
 build {
-    dependsOn setupRepo,installCompiler
+    dependsOn setupRepo, installCompiler, installJS
 }
