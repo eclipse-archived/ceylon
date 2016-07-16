@@ -158,7 +158,7 @@ task bootstrapJar( type : Jar ) {
     }
     // TODO: Merge manifests?
     from sourceSets.main.output.resourcesDir, {
-        include name="META-INF/MANIFEST.MF"
+        include "META-INF/MANIFEST.MF"
     }
 }
 
