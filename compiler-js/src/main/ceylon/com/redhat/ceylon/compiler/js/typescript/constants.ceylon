@@ -54,8 +54,14 @@ shared String nameKey = "nm";
 "Key for the dynamic flag of a declaration."
 compilerConstant ("KEY_DYNAMIC")
 shared String dynamicKey = "dyn";
+"Key for the flags of a function or method."
+compilerConstant ("KEY_FLAGS")
+shared String flagsKey = "$ff";
 
 // meta type values
 "Meta type for an attribute or toplevel value."
 compilerConstant ("METATYPE_ATTRIBUTE")
 shared String attributeMetaType = "a";
+"Meta type for a method or toplevel function."
+compilerConstant ("METATYPE_METHOD")
+shared String methodMetaType = "m";

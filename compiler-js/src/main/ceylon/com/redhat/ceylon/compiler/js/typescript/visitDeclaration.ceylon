@@ -41,6 +41,34 @@ void visitDeclaration(
             t.printStackTrace();
         }
     }
+    case (SyntaxKind.FunctionDeclaration | SyntaxKind.MethodDeclaration | SyntaxKind.MethodSignature) {
+        try {
+            FunctionDeclaration fdecl;
+            Identifier id;
+            TypeNode typeNode;
+            dynamic {
+                fdecl = eval("(function(x){return x})")(node); // TODO use assert instead; #6307
+                id = eval("(function(x){return x.name})")(node); // TODO should not be necessary once the backend can handle optional members
+                typeNode = eval("(function(x){return x.type})")(node); // TODO ditto
+            }
+            value name = id.text;
+            value type = typechecker.getTypeAtLocation(typeNode);
+            container.put(name, JsonObject {
+                    metaTypeKey->methodMetaType,
+                    nameKey->name,
+                    // TODO type parameters
+                    typeKey -> convertTypeForModel(type),
+                    // TODO parameter list
+                    flagsKey->0, // void flag has no effect and deferred flag doesn’t seem to be used in JS backend
+                    packedAnnotationsKey -> packAnnotations {
+                        shared = true;
+                        formal = node.kind == SyntaxKind.MethodSignature;
+                    }
+                });
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
     // descend
     case (SyntaxKind.VariableStatement) {
         try {
