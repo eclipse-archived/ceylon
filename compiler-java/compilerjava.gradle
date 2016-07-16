@@ -26,9 +26,9 @@ sourceSets {
         java {
             srcDir 'langtools/src/share/classes'
             include "com/redhat/**"
-            include "com/redhat/ceylon/langtools/tools/javac/**"
-            include "com/redhat/ceylon/langtools/source/**"
-            include "com/redhat/ceylon/javax/**"
+//            include "com/redhat/ceylon/langtools/tools/javac/**"
+//            include "com/redhat/ceylon/langtools/source/**"
+//            include "com/redhat/ceylon/javax/**"
             exclude "**/Java7Checker.java"
             exclude "com/redhat/ceylon/ant/**"
             exclude "com/redhat/ceylon/launcher/**"
@@ -168,7 +168,9 @@ task bootstrapModule( type : Jar ) {
     description 'Create bootstrap module'
     dependsOn classes, processResources
     destinationDir = jar.destinationDir
-    archiveName = "${bundleSymbolicName}-${bundleVersionName}.jar"
+//        ceylon.bootstrap.dir=ceylon/bootstrap/${module.ceylon.bootstrap.version}
+//    ceylon.bootstrap.jar=${ceylon.bootstrap.dir}/ceylon.bootstrap-${module.ceylon.bootstrap.version}.jar
+    archiveName = "ceylon.bootstrap-${bmVersionName}.jar"
 
     from sourceSets.main.output.classesDir, {
         include "com/redhat/ceylon/launcher/**"
