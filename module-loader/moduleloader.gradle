@@ -11,3 +11,5 @@ dependencies {
     compile project(path : ':language', configuration : 'antOutput')
 }
 
+// TODO: Can be removed if language build is pure Gradle
+compileJava.dependsOn ':language:assemble'
