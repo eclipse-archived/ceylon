@@ -38,6 +38,3 @@ sourceSets {
         }
     }
 }
-
-//TODO: Remove this
-test.enabled = false
