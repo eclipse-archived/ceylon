@@ -39,7 +39,7 @@ ext {
 }
 
 if(!ext.properties.containsKey('ceylonSourceLayout')) {
-    ext.ceylonSourceLayout = true
+        ext.ceylonSourceLayout = true
 }
 
 apply plugin: 'java'
