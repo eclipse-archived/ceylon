@@ -232,10 +232,18 @@ Gradle lifecycle tasks to appropriate ones in the Ant build.
 | `cmr-aether` | No tests
 | `cmr-js` | No tests
 | `cmd-webdav` | No tests
-| `common` | Disabled
-| `langtools-classfile | Disabled
-| `model` | Disabled
-| `cmr` | Disabled
-| `cli` | Disabled
+| `common` | Disabled (Fails in `RepositoryTest`)
+| `langtools-classfile | No tests
+| `model` | Working
+| `cmr` | Disabled (17 failing tests).
+| `cli` | Working
+| `compiler-java` | Disabled (compilation failures)
+| `compiler-js` | Disabled (Most tests fail with `LanguageModuleNotFoundException`).
+| `module-loader` | No tests
+| `runtime` | Disabled (requires updates to Gradle script)
+| `language` | Disabled (imported Ant tasks)
+| `tool-provider | Disabled (requires updates to Gradle script)
+| `typechecker` | Disabled (requires updates to Gradle script)
+
 
 |===
