@@ -1,6 +1,7 @@
 ext {
     ceylonModuleName = 'compiler.js'
     ceylonPublishModuleName = 'js'
+    ceylonTestDisabled = true
 
     // This project uses the default Maven-like source layout
     ceylonSourceLayout = false

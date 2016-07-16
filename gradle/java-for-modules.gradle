@@ -163,6 +163,8 @@ clean {
 }
 
 // TODO: Fix tests
-test.enabled = false
-testClasses.enabled = false
-compileTestJava.enabled = false
+if(ext.properties.containsKey('ceylonTestDisabled')) {
+    test.enabled = false
+    testClasses.enabled = false
+    compileTestJava.enabled = false
+}

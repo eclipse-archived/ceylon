@@ -2,6 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 ext {
     ceylonModuleName = 'cli'
+    ceylonTestDisabled = true
 }
 
 apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"

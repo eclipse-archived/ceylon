@@ -225,3 +225,17 @@ Gradle lifecycle tasks to appropriate ones in the Ant build.
 
 .TODO
 * Tests are disabled. Need to fix this
+
+== Test status
+
+|===
+| `cmr-aether` | No tests
+| `cmr-js` | No tests
+| `cmd-webdav` | No tests
+| `common` | Disabled
+| `langtools-classfile | Disabled
+| `model` | Disabled
+| `cmr` | Disabled
+| `cli` | Disabled
+
+|===

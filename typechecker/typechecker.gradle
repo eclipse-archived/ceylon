@@ -1,5 +1,6 @@
 ext {
     ceylonModuleName = 'typechecker'
+    ceylonTestDisabled = true
 }
 
 apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
