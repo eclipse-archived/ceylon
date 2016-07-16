@@ -1,12 +1,8 @@
 import org.gradle.api.GradleException
 
-/**
- * @author Schalk W. Cronjé
- */
 class CeylonCommonBuildPropertiesExtension extends TreeMap<String,String> {
     CeylonCommonBuildPropertiesExtension( Map<String,String> loadedMap ) {
         super(loadedMap)
-//        props = loadedMap
     }
 
     void requires( final String propName ) {
@@ -15,14 +11,8 @@ class CeylonCommonBuildPropertiesExtension extends TreeMap<String,String> {
         }
     }
 
-    def propertyMissing(final String name) {
-        super.get(name)
+    def propertyMissing(final String propName) {
+        super.get(propName)
     }
-
-//    def propertyMissing(final String name) {
-//        props[name]
-//    }
-//
-//    private TreeMap<String,String> props
 
 }
