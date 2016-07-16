@@ -15,6 +15,6 @@ JsonObject convertTypeForModel(Type type) {
         };
     }
     else {
-        throw AssertionError("Not implemented");
+        throw AssertionError("Type of flags ``type.flags`` not implemented");
     }
 }
