@@ -19,7 +19,7 @@ annotation final class CompilerConstantAnnotation(
        has no constant for this key (hard-coded)."""
     // TODO change to optional type one #3956 is implemented
     shared String compilerConstant)
-        satisfies OptionalAnnotation<CompilerConstantAnnotation, ValueDeclaration, Value<String>> {}
+        satisfies OptionalAnnotation<CompilerConstantAnnotation,ValueDeclaration,Value<String>> {}
 annotation CompilerConstantAnnotation compilerConstant(String constant)
         => CompilerConstantAnnotation(constant);
 
