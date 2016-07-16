@@ -28,11 +28,6 @@ Ant & Gradle builds.
 <2> `install-compiler` handled by `publishInternal` task in `common`, `cli`, `;angtools-classfile`,
   `model`, `cmr` ...
 
-// typechecker etc.
-
-.Currently waiting for
-* `typechecker`
-* `compiler-java`
 
 === Commons
 
@@ -47,6 +42,18 @@ Ant & Gradle builds.
 <1> `clean.repo` handled by `cleanRepo` which is a dependency of `clean`.
 <2> `init.repo`, `publish-internal` handled by `publishInternal`.
 <3> `dist` handled by Gradle dependency chain and included `assemble`, `sourceZip`, `sha1` and `jar`
+
+=== Runtime
+
+Needed a special `sourceSet` layout.
+
+As all of the four Ant `javac` tasks ended up in a single JAR and used the same compilation options,
+ I think putting them into a single compilation task was the way to go.
+
+
+.TODO
+* What about those `pom.xml` files that are dotted over the place?
+* Should look to see if we cannot handle the JARs via Gradle's dependency mechanism.
 
 === Cli
 

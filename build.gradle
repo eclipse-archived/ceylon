@@ -10,17 +10,19 @@ buildScan {
     licenseAgree = 'yes'
 }
 
+buildDir = file('builtByGradle')
+
 subprojects {
 
     apply plugin : CeylonCommonBuildProperties
 
     // put all the build artifacts in subfolders of the root "build" folder
 //    buildDir = new File(rootProject.buildDir, it.path.replace(":", "_").substring(1))
-    buildDir = new File(rootProject.projectDir, 'builtByGradle/' + it.path.replace(":", "_").substring(1))
+    buildDir = new File(rootProject.buildDir, it.path.replace(":", "_").substring(1))
 
     ext {
-        distDir = file(cbp['build.dist'])
-        repoDir = file(cbp.'build.dist.repo')
+        distDir = file("${buildDir}/${cbp['build.dist']}")
+        repoDir = file("${buildDir}/${cbp['build.dist.repo']}")
         globalLibDir = file("${rootProject.projectDir}/lib")
     }
 
@@ -28,7 +30,7 @@ subprojects {
 
     repositories {
         flatDir {
-            dirs repoDir, globalLibDir
+            dirs globalLibDir
         }
         mavenCentral()
     }

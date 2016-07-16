@@ -1,5 +1,79 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
+ext {
+    ceylonModuleName = 'runtime'
+    ceylonSourceLayout = false
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+
+
+dependencies {
+    compile project(':common')
+    compile project(':cli')
+    compile project(':model')
+    compile project(':cmr')
+    compile project(':tool-provider')
+    compile project( path : ':language', configuration : 'antOutput')
+}
+
+
+sourceSets {
+    main {
+        java {
+            srcDirs = [
+                'api/src/main/java',
+                'impl/src/main/java',
+                'spi/src/main/java',
+                'bootstrap/src/main/java'
+            ]
+            include '**/*.java'
+        }
+        resources {
+            srcDirs = [ 'bootstrap/src/main/java' ]
+            exclude '**/*.java'
+        }
+    }
+}
+
+task pluginFiles( type : Copy ) {
+    group 'Application'
+    description 'Creates version specific plugins files'
+
+    from 'bin'
+    into "${buildDir}/bin"
+    filter ReplaceTokens, tokens : [ 'ceylon-version' : version ]
+}
+
+assemble {
+    dependsOn pluginFiles
+}
+
+
+//"""
+//    <target name="setup-repo">
+//        <mkdir dir="${ceylon.dist.dir}/repo"/>
+//        <!-- Setup the basic structure of the dist folder by copying the template folder -->
+//        <copy todir="${ceylon.repo.dir}" overwrite="true">
+//            <fileset dir="${basedir}/../runtime/dist/repo">
+//                <include name="**/*.xml"/>
+//            </fileset>
+//            <filtermapper>
+//                <replacestring from="_version_" to="${ceylon.version}"/>
+//            </filtermapper>
+//            <filterset>
+//                <filter token="ceylon-version" value="${ceylon.version}"/>
+//            </filterset>
+//        </copy>
+//        <!-- Now copy the JARs -->
+//        <copy todir="${ceylon.repo.dir}" overwrite="true">
+//            <fileset dir="${basedir}/../runtime/dist/repo">
+//                <include name="**/*.jar"/>
+//            </fileset>
+//        </copy>
+//    </target>
+//"""
+
 task setupRepo( type : Copy ) {
     group "Setup"
     description "Setup the basic structure of the dist folder by copying the template folder"
@@ -17,3 +91,55 @@ task setupRepo( type : Copy ) {
         logger.info "TODO: Copying hardcoded JARs might be better dealt with using Gradle's dependency management"
     }
 }
+
+//
+//"""
+//    <target name="runtime.classes">
+//        <mkdir dir="${build.classes}"/>
+
+//        <javac debug="true"
+//               encoding="UTF-8"
+//               srcdir="${runtime-spi.src}"
+//               destdir="${build.classes}"
+//               classpathref="compiler.classpath"
+//               target="${compile.java.target}"
+//               source="${compile.java.source}"
+//               bootclasspath="${compile.java.bootclasspath}"
+//               includeantruntime="false"/>
+
+//        <javac debug="true"
+//               encoding="UTF-8"
+//               srcdir="${runtime-api.src}"
+//               destdir="${build.classes}"
+//               classpathref="compiler.classpath"
+//               target="${compile.java.target}"
+//               source="${compile.java.source}"
+//               bootclasspath="${compile.java.bootclasspath}"
+//               includeantruntime="false"/>
+
+//        <javac debug="true"
+//               encoding="UTF-8"
+//               srcdir="${runtime-impl.src}"
+//               destdir="${build.classes}"
+//               classpathref="compiler.classpath"
+//               target="${compile.java.target}"
+//               source="${compile.java.source}"
+//               bootclasspath="${compile.java.bootclasspath}"
+//               includeantruntime="false"/>
+
+//        <javac debug="true"
+//               encoding="UTF-8"
+//               srcdir="${runtime-bootstrap.src}"
+//               destdir="${build.classes}"
+//               classpathref="compiler.classpath"
+//               target="${compile.java.target}"
+//               source="${compile.java.source}"
+//               bootclasspath="${compile.java.bootclasspath}"
+//               includeantruntime="false"/
+
+//        <!-- Include META-INF -->
+//        <copy todir="${build.classes}">
+//            <fileset dir="${runtime-bootstrap.src}" excludes="**/*.java"/>
+//        </copy>
+//    </target>
+//

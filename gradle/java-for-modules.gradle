@@ -35,7 +35,7 @@ requiresCBP 'compile.java.source'
 ext {
     bundleSymbolicName = 'com.redhat.ceylon.' + ceylonModuleName
     bundleVersionName = cbp."module.com.redhat.ceylon.${ceylonModuleName}.version"
-    archivePublishDir = cbp.'build.dist.repo' + '/' + cbp."ceylon.${ceylonPublishModuleName}.dir"
+    archivePublishDir = "${repoDir}/" +  cbp."ceylon.${ceylonPublishModuleName}.dir"
 }
 
 if(!ext.properties.containsKey('ceylonSourceLayout')) {
@@ -164,3 +164,5 @@ clean {
 
 // TODO: Fix tests
 test.enabled = false
+testClasses.enabled = false
+compileTestJava.enabled = false

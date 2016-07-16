@@ -2,6 +2,7 @@ apply plugin : LifecycleBasePlugin
 
 task setupRepo {
     dependsOn ':runtime:setupRepo'
+    dependsOn ':runtime:publishInternal'
 }
 
 task installCompiler {
