@@ -1,4 +1,3 @@
-//include 'compiler-js'
 // 'module-loader',
 // 'tool-provider'
 
@@ -43,3 +42,6 @@ project(':language').buildFileName = 'language.gradle'
 
 include 'compiler-js'
 project(':compiler-js').buildFileName = 'compilerjs.gradle'
+
+include 'module-loader'
+project(':module-loader').buildFileName = 'moduleloader.gradle'

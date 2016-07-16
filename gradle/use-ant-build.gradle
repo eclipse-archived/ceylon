@@ -9,3 +9,9 @@ assemble.dependsOn antBuild
 task publishInternal {
     dependsOn antPublish
 }
+
+configurations.maybeCreate('antOutput')
+
+dependencies {
+    antOutput project.files("$buildDir")
+}
