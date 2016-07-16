@@ -17,7 +17,17 @@ void testVarEmptyString() {
     varEmptyString = "";
 }
 
+void testGetVarEmptyString() {
+    String es = getVarEmptyString();
+    assert (es == "");
+    assert (getVarEmptyString() == "");
+    varEmptyString = "a";
+    assert (getVarEmptyString() == "a");
+    varEmptyString = "";
+}
+
 shared void run() {
     testConstEmptyString();
     testVarEmptyString();
+    testGetVarEmptyString();
 }
