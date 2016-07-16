@@ -9,13 +9,17 @@ class Checksum extends DefaultTask {
 
     String algorithm = 'sha1'
 
+    void files(FileCollection fc) {
+        collections+= fc
+    }
+
     void archive(AbstractArchiveTask task) {
         archiveTasks+= task
     }
 
     @InputFiles
     FileCollection getArtifacts() {
-        project.files(archiveTasks.collect {it.outputs.files})
+        project.files(archiveTasks.collect {it.outputs.files}) + project.files(collections)
     }
 
     @OutputFiles
@@ -33,4 +37,5 @@ class Checksum extends DefaultTask {
     }
 
     private List<AbstractArchiveTask> archiveTasks = []
+    private List<FileCollection> collections = []
 }
