@@ -1,7 +1,5 @@
 ext {
     ceylonModuleName = 'model'
-    ceylonTestDisabled = true
-
 }
 
 apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
