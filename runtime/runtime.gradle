@@ -49,30 +49,9 @@ assemble {
     dependsOn pluginFiles
 }
 
+// TODO: Can be removed if language build is pure Gradle
+compileJava.dependsOn ':language:assemble'
 
-//"""
-//    <target name="setup-repo">
-//        <mkdir dir="${ceylon.dist.dir}/repo"/>
-//        <!-- Setup the basic structure of the dist folder by copying the template folder -->
-//        <copy todir="${ceylon.repo.dir}" overwrite="true">
-//            <fileset dir="${basedir}/../runtime/dist/repo">
-//                <include name="**/*.xml"/>
-//            </fileset>
-//            <filtermapper>
-//                <replacestring from="_version_" to="${ceylon.version}"/>
-//            </filtermapper>
-//            <filterset>
-//                <filter token="ceylon-version" value="${ceylon.version}"/>
-//            </filterset>
-//        </copy>
-//        <!-- Now copy the JARs -->
-//        <copy todir="${ceylon.repo.dir}" overwrite="true">
-//            <fileset dir="${basedir}/../runtime/dist/repo">
-//                <include name="**/*.jar"/>
-//            </fileset>
-//        </copy>
-//    </target>
-//"""
 
 task setupRepo( type : Copy ) {
     group "Setup"
