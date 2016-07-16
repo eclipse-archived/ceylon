@@ -21,8 +21,7 @@ sourceSets {
     }
     treegen {
         java {
-            srcDirs = []
-            source sourceSets.main.java
+            srcDirs = ['src',{generateGrammarSource.destinationDirectory}]
             include '**/typechecker/treegen/*.java'
         }
         compileClasspath = configurations.antlr + configurations.compile
