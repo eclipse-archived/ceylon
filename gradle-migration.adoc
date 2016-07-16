@@ -153,6 +153,19 @@ If those files could simply be moved to the `src/main/resources` folder the whol
 
 It needed a special configuration to pick up the `car` file from `language`.
 
+=== Tool-provider
+
+It needed a special configuration to pick up the `car` file from `language`.
+
+There is a `sourceSets` block in the build to find the correct resources files.
+If those files could simply be moved to the `src/main/resources` folder the whole block can be eliminated.
+
+Note that unlike the Ant build, the `*.utf8properties` are included in the block as the `processResources` task
+knows how to take care of them.
+
+.TODO
+* Do we need to set the compiler flag `-XDignore.symbol.file` ?
+
 == Custom build code in buildSrc
 
 A `buildSrc` folder has been added to help with some of the delicate and less common feastures of this build.
