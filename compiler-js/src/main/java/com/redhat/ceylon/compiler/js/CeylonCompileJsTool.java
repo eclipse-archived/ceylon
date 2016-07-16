@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -23,7 +22,9 @@ import com.redhat.ceylon.common.tool.ParsedBy;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
+import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.js.loader.JsModuleManagerFactory;
@@ -80,7 +81,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     private List<File> roots = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
     private String resourceRootName = DefaultToolOptions.getCompilerResourceRootName();
-    private List<String> files = Arrays.asList("*");
+    private List<String> files = DefaultToolOptions.getCompilerModules(Backend.JavaScript);
     private DiagnosticListener diagnosticListener;
     private boolean throwOnError;
     private EnumSet<Warning> suppwarns = EnumUtil.enumsFromStrings(Warning.class,
@@ -315,6 +316,16 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
                 .expandAndParse(files, Backend.JavaScript);
             onlySources = resolver.getSourceFiles();
             onlyResources = resolver.getResourceFiles();
+            
+            if (onlySources.isEmpty()) {
+                String msg = CeylonCompileJsMessages.msg("error.no.sources");
+                if (ModuleWildcardsHelper.onlyGlobArgs(files)) {
+                    errorAppend("ceylon compile-js: ").errorAppend(msg).errorNewline();
+                    return;
+                } else {
+                    throw new ToolUsageError(msg);
+                }
+            }
             
             if (opts.isVerbose()) {
                 append("Adding source directories to typechecker:" + roots).newline();

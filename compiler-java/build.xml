@@ -39,7 +39,6 @@
         <pathelement path="${ceylon.model.lib}" />
         <pathelement path="${ceylon.module-resolver.lib}" />
         <pathelement path="${ceylon.typechecker.lib}" />
-        <pathelement path="${ceylon.language.lib}" />
         <pathelement path="${antlr.lib}" />
         <pathelement path="${txtmark.lib}" />
     </path>
@@ -47,6 +46,7 @@
     <path id="test.compile.classpath">
         <path refid="compiler.classpath" />
         <pathelement path="${build.classes}" />
+        <pathelement path="${ceylon.language.lib}" />
         <pathelement path="${junit.lib}" />
         <pathelement path="${hamcrest.lib}" />
         <pathelement path="${markdownpapers.lib}" />
@@ -142,8 +142,6 @@
         <javac srcdir="${javac.src}:${ceylonc.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="compiler.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="true">
             <compilerarg value="-XDignore.symbol.file" />
             <exclude name="**/Java7Checker.java" />
-            <exclude name="com/redhat/ceylon/tools/Tool.java" />
-            <exclude name="com/redhat/ceylon/tools/Plugin.java" />
             <exclude name="com/redhat/ceylon/ant/**" />
             <exclude name="com/redhat/ceylon/launcher/**" />
             <include name="com/redhat/**" />
