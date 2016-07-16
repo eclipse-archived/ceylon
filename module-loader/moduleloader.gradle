@@ -8,5 +8,6 @@ dependencies {
     compile project(':common')
     compile project(':model')
     compile project(':cmr')
-    compile project(':language')
+    compile project(path : ':language', configuration : 'antOutput')
 }
+

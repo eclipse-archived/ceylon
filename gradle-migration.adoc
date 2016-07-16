@@ -9,7 +9,9 @@ Ant & Gradle builds.
 * bundle-proxy
 * Tests are disabled globally.
 
-== Dist
+== Subprojects
+
+=== Dist
 
 .From dist/build.xml
 [source,xml]
@@ -32,7 +34,7 @@ Ant & Gradle builds.
 * `typechecker`
 * `compiler-java`
 
-== Commons
+=== Commons
 
 .From common/build.xml
 [source,xml]
@@ -46,19 +48,19 @@ Ant & Gradle builds.
 <2> `init.repo`, `publish-internal` handled by `publishInternal`.
 <3> `dist` handled by Gradle dependency chain and included `assemble`, `sourceZip`, `sha1` and `jar`
 
-== Cli
+=== Cli
 
 .TODO
 * Should consider looking at `application` plugins to do a better job of bundling scripts. One task is
   specifically called `startScripts` to mimic a similar fucntionaing task in `application` plugin. This
   was done to deliberately break the build when the refactoring for `application` happens.
 
-== Cmr
+=== Cmr
 
 .TODO
 * 17 tests are currently (disabled test task for moment)
 
-== Cmr-aether
+=== Cmr-aether
 
 Standard Ceylon Java project.
 
@@ -66,15 +68,15 @@ Standard Ceylon Java project.
 * Publishing
 * Source Zip
 
-== Cmr-webdav
+=== Cmr-webdav
 
 Standard Ceylon Java project.
 
-== Model
+=== Model
 
 Standard Ceylon Java project.
 
-== Langtools-classfile
+=== Langtools-classfile
 
 This has been straight-forward to do. There are no `*.utf8properties` files in this project, but it has alerted to the
 `native2ascii` Ant task that was used. The solution (which hopefully will work) is to hook into the lifecycle
@@ -85,7 +87,7 @@ We also set `ceylonPublishModuleName` as this one uses two distinctly named prop
 .TODO
 * Do we need to set `-XDignore.symbol.file`  for `JavaCompile` options?
 
-== Typechecker
+=== Typechecker
 
 Usage of Gradle's builtin `antlr` plugin did not work due to a showstopper bug. Sticking wil the old `build.xml` is not
 ideal as automatic management of artifacts for project dependencies will be lost. Created `CeylonAntlr` plugin to solve
@@ -107,7 +109,7 @@ starts to work.
 .TODO
 * The Ant `antlr.tree` deleted tokens at the end. SHould we still do that?
 
-== Compiler-java
+=== Compiler-java
 
 There is an unfortunate interdependency with `language`.
 
@@ -121,7 +123,7 @@ There is an unfortunate interdependency with `language`.
 * Mismatch in `ceylon-ant.jar` artifacts between ANT (154 files) and Gradle (155 files).
 * For `bootstrap-ant.jar` need to check `MANIFEST.MF`
 
-== Language
+=== Language
 
 We still use the imported Ant buidl to get stuff done. `build.dir` is set as a property on the imported build
 and that seems to be forcing Ant to build into Gradle's `buildDir`.
@@ -135,7 +137,7 @@ There is an unfortunate interdependency with `compiler-java`.
 * Set `generateModuleInfo` according to `jigsaw`.
 * Some copy operations in the Ant `build` task need to be investigated.
 
-== Compiler-js
+=== Compiler-js
 
 The directory layout seems to be nearer to a Gradle/Maven convention, but the resources are still
 under `src/main/java`. For this reason there is a `sourceSets` block in the build to find the correct files.
@@ -146,6 +148,10 @@ If those files could simply be moved to the `src/main/resources` folder the whol
 * Not sure about the runtime directory.
   Should we send those artifacts to `build/libs` or `build/runtime` under Gradle?
 * `jdk5Stubs` seems to refer to an empty collection. We could get rid of it and simplify the build script.
+
+=== Module-loader
+
+It needed a special configuration to pick up the `car` file from `language`.
 
 == Custom build code in buildSrc
 
@@ -189,7 +195,13 @@ It assumes that `ceylonModuleName` is used in a consistent manner throughout a s
 but there some exceptions i.e. `classfile` and 'langtools.classfile`. For this case a subproject can manually set
 `ceylonPublishModuleName` to the `ceylon.XXXX.dir` part.
 
-=== use-ant=build.gradle
+.TODO
+* Tests are disabled. Need to fix this
+
+=== use-ant-build.gradle
 
 For subprojects that have to rely on using the Ant build, applying this will set the appropriate properties and link
 Gradle lifecycle tasks to appropriate ones in the Ant build.
+
+.TODO
+* Tests are disabled. Need to fix this
