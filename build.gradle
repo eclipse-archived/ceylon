@@ -5,6 +5,11 @@ plugins {
     id "com.admc.javaPropFile" version "1.0.0"
 }
 
+buildScan {
+    licenseAgreementUrl = 'https://gradle.com/terms-of-service';
+    licenseAgree = 'yes'
+}
+
 subprojects {
 
     apply plugin : CeylonCommonBuildProperties
