@@ -1102,13 +1102,29 @@ unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
             t5=typeNameWithArguments
             { if ($t5.identifier!=null) {
               qt.setEndToken(null);
-              qt.setIdentifier($t5.identifier);
-            }
+              qt.setIdentifier($t5.identifier); }
             if ($t5.typeArgumentList!=null)
                 bt.setTypeArgumentList($t5.typeArgumentList);
             $expression = new ExtendedTypeExpression(null);
             $expression.setType($type); }
-          )+
+          )
+          (
+            m4=MEMBER_OP
+            { qt = new QualifiedType(null);
+              qt.setOuterType($type);
+              qt.setEndToken($m4);
+              $type=qt; }
+            (
+              t6=typeNameWithArguments
+              { if ($t6.identifier!=null) {
+                qt.setEndToken(null);
+                qt.setIdentifier($t6.identifier); }
+              if ($t6.typeArgumentList!=null)
+                  bt.setTypeArgumentList($t6.typeArgumentList);
+              $expression = new ExtendedTypeExpression(null);
+              $expression.setType($type); }
+            )?
+          )*
         )?
       )?
     | t4=memberNameWithArguments
