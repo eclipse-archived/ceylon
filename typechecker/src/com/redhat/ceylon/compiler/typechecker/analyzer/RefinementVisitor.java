@@ -810,6 +810,15 @@ public class RefinementVisitor extends Visitor {
                             signature, root, 
                             type, rootType);
             for (Declaration refined: interveningRefinements) {
+                TypeDeclaration interveningType = 
+                        (TypeDeclaration) 
+                            refined.getContainer();
+                if (getInterveningRefinements(name, 
+                            signature, root, 
+                            type, interveningType)
+                        .size()>1) {
+                    continue;
+                }
                 if (isOverloadedVersion(refined)) {
                     //if this member is overloaded, the
                     //inherited member it refines must
