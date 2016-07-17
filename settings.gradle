@@ -46,3 +46,6 @@ project(':module-loader').buildFileName = 'moduleloader.gradle'
 
 include 'tool-provider'
 project(':tool-provider').buildFileName = 'toolprovider.gradle'
+
+include 'java-main'
+project(':java-main').buildFileName = 'javamain.gradle'
