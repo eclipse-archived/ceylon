@@ -4,3 +4,7 @@ build/
 **/.DS_Store
 *~
 \#*\#
+.idea
+build
+builtByGradle
+gradle-app.setting

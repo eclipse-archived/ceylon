@@ -1,53 +1,39 @@
+import org.apache.tools.ant.filters.EscapeUnicode
 
-// By default projects use a flat source hierarchy
-subprojects.each { project.ext.defaultSources = false }
+plugins {
+    id 'com.gradle.build-scan' version '1.0'
+    id "com.admc.javaPropFile" version "1.0.0"
+}
+
+buildScan {
+    licenseAgreementUrl = 'https://gradle.com/terms-of-service';
+    licenseAgree = 'yes'
+}
+
+buildDir = file('builtByGradle')
 
 subprojects {
-    apply plugin: 'java'
-    version='1.2.3'
 
-    compileJava.options.encoding = 'UTF-8'
+    apply plugin : CeylonCommonBuildProperties
 
     // put all the build artifacts in subfolders of the root "build" folder
+//    buildDir = new File(rootProject.buildDir, it.path.replace(":", "_").substring(1))
     buildDir = new File(rootProject.buildDir, it.path.replace(":", "_").substring(1))
+
+    ext {
+        distDir = file("${buildDir}/${cbp['build.dist']}")
+        repoDir = file("${buildDir}/${cbp['build.dist.repo']}")
+        globalLibDir = file("${rootProject.projectDir}/lib")
+    }
+
+    version= cbp.'ceylon.version'
 
     repositories {
         flatDir {
-            dirs '../dist/dist/repo', '../lib'
+            dirs globalLibDir
         }
         mavenCentral()
     }
-
-    dependencies {
-        testCompile 'junit:junit:4.11'
-    }
-
-    // Override the default Maven-like source hierarchy for
-    // any projects where `defaultSources == false`
-    afterEvaluate { project ->
-        if (!project.defaultSources) {
-            sourceSets {
-                main {
-                    java {
-                        srcDir 'src'
-                    }
-                    resources {
-                        srcDir 'src'
-                        exclude '**/*.java'
-                    }
-                }
-                test {
-                    java {
-                        srcDir 'test/src'
-                    }
-                    resources {
-                        srcDir 'test/src'
-                        exclude '**/*.java'
-                    }
-                }
-            }
-        }
-    }
-
 }
+
 

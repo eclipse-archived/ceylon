@@ -1,0 +1,23 @@
+
+apply plugin : LifecycleBasePlugin
+ant.properties.'build.dir' = buildDir
+ant.importBuild('build.xml') { "ant${it.capitalize()}".toString() }
+clean.dependsOn antClean
+check.dependsOn antTest
+assemble.dependsOn antBuild
+
+task publishInternal {
+    dependsOn antPublish
+}
+
+configurations.maybeCreate('antOutput')
+
+dependencies {
+    antOutput fileTree("${buildDir}/dist") {
+        include "**/*.jar"
+        include "**/*.car"
+    }
+}
+
+// TODO: Need to fix this when getting tests to work.
+antTest.enabled = false

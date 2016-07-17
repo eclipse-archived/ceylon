@@ -1,0 +1,10 @@
+ext {
+    ceylonModuleName = 'module-resolver-webdav'
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+
+dependencies {
+    compile 'com.github.lookfirst:sardine:5.1'
+}
+

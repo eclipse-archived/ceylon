@@ -1,0 +1,32 @@
+ext {
+    ceylonModuleName = 'tool.provider'
+    ceylonTestDisabled = true
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+
+dependencies {
+    compile project(':common')
+    compile project(':cli')
+    compile project(':model')
+    compile project(':module-loader')
+    compile project(':cmr')
+    compile project(':compiler-java')
+    compile project(':compiler-js')
+    compile project(path : ':language', configuration : 'antOutput')
+}
+
+sourceSets {
+    main {
+        // TODO: If these files could be moved to all be under src/main/resources then this block can be eliminated
+        resources {
+            srcDirs = ['src']
+            include "com/redhat/**/resources/**"
+            include "com/redhat/**/*.properties"
+            include "com/redhat/**/*.utf8properties"
+            include "META-INF/**"
+        }
+    }
+}
+
+// TODO: Do we need to set compiler flag: <compilerarg value="-XDignore.symbol.file" /> ?

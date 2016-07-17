@@ -1,8 +1,0 @@
-
-dependencies {
-    compile project(':common'),
-        project(':model'),
-        project(':cmr'),
-        project(':language')
-}
-

@@ -1,0 +1,170 @@
+import org.apache.tools.ant.filters.EscapeUnicode
+
+// Shorten the recipes required in Gradle scripts byt moving
+// a lot of the common code here.
+// Requires ext.ceylonModuleName to be set before applying this.
+
+apply plugin : CeylonCommonBuildProperties
+
+// ----------------------------------------------------------------------------
+// Fail if prequisite properties are not set in project extension
+// ----------------------------------------------------------------------------
+if(ext.ceylonModuleName == null) {
+    throw new GradleException ('''ceylonModule name was not found. You need to define it in an extension block such as
+
+ext {
+    ceylonModuleName = 'foo'
+}
+
+''')
+}
+
+if(!ext.properties.containsKey('ceylonPublishModuleName')) {
+    ext.ceylonPublishModuleName = ceylonModuleName
+}
+
+// ----------------------------------------------------------------------------
+// Fail if prequisite properties are not in common-build.properties
+// ----------------------------------------------------------------------------
+requiresCBP "module.com.redhat.ceylon.${ceylonModuleName}.version"
+requiresCBP 'build.dist.repo'
+requiresCBP "ceylon.${ceylonPublishModuleName}.dir"
+requiresCBP 'compile.java.target'
+requiresCBP 'compile.java.source'
+
+ext {
+    bundleSymbolicName = 'com.redhat.ceylon.' + ceylonModuleName
+    bundleVersionName = cbp."module.com.redhat.ceylon.${ceylonModuleName}.version"
+    archivePublishDir = "${repoDir}/" +  cbp."ceylon.${ceylonPublishModuleName}.dir"
+}
+
+if(!ext.properties.containsKey('ceylonSourceLayout')) {
+        ext.ceylonSourceLayout = true
+}
+
+apply plugin: 'java'
+
+ext {
+    // By default projects use a flat source hierarchy
+    defaultSources = false
+}
+
+dependencies {
+    testCompile 'junit:junit:4.11'
+}
+
+sourceCompatibility = cbp.'compile.java.source'
+targetCompatibility = cbp.'compile.java.target'
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+assemble {
+    dependsOn 'sha1'
+}
+
+processResources {
+    filesMatching 'com/redhat/**/*.utf8properties', { fcd ->
+        fcd.filter EscapeUnicode
+        fcd.name = fcd.name.replace('.utf8properties','.properties')
+    }
+}
+
+// Override the default Maven-like source hierarchy for
+// any projects where `defaultSources == false`
+if (ext.ceylonSourceLayout) {
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src']
+            }
+            resources {
+                srcDirs = ['src']
+                exclude '**/*.java'
+            }
+        }
+        test {
+            java {
+                srcDirs = ['test/src']
+            }
+            resources {
+                srcDirs = ['test/src']
+                exclude '**/*.java'
+            }
+        }
+    }
+}
+
+
+jar {
+    manifest {
+        attributes 'Bundle-SymbolicName': bundleSymbolicName,
+            'Bundle-Version': bundleVersionName+".${TimeStamp.BUILD}"
+    }
+    archiveName = "${bundleSymbolicName}-${bundleVersionName}.jar"
+}
+
+task sourceZip( type : Zip ) {
+    group 'Build'
+    description 'Archives source files'
+
+    from sourceSets.main.allSource, {
+        include '**/*.java'
+    }
+
+    archiveName = "${bundleSymbolicName}-${bundleVersionName}.src"
+}
+
+task sha1 ( type : Checksum ) {
+    archive jar
+    archive sourceZip
+    dependsOn jar, sourceZip
+}
+
+
+task publishJar( type : Copy ) {
+    group 'Distribution'
+    description 'Copies binary artifacts to distribution area'
+
+    from sha1, {
+        include '**/*.jar.*'
+    }
+
+    from jar
+    into archivePublishDir
+}
+
+task publishSource( type : Copy ) {
+    group 'Distribution'
+    description 'Copies sources artifacts to distribution area'
+
+    from sha1, {
+        include '**/*.src.*'
+    }
+    from sourceZip
+
+    into archivePublishDir
+}
+
+task publishInternal {
+    dependsOn 'publishJar','publishSource'
+}
+
+task cleanRepo ( type : Delete ) {
+    group 'Publish'
+    description 'Deletes published artifacts'
+    delete publishJar.outputs.files
+    delete publishSource.outputs.files
+}
+
+clean {
+    dependsOn cleanRepo
+}
+
+// TODO: Fix tests
+if(ext.properties.containsKey('ceylonTestDisabled')) {
+    test.enabled = false
+    testClasses.enabled = false
+    compileTestJava.enabled = false
+}

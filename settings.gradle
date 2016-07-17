@@ -1,1 +1,48 @@
-include 'common', 'cli', 'langtools-classfile', 'model', 'cmr-aether', 'cmr-webdav', 'cmr-js', 'cmr', 'typechecker', 'compiler-js', 'compiler-java', 'language', 'module-loader', 'tool-provider', 'runtime'
+
+include 'dist'
+project(':dist').buildFileName = 'dist.gradle'
+
+include 'runtime'
+project(':runtime').buildFileName = 'runtime.gradle'
+
+include 'common'
+project(':common').buildFileName = 'common.gradle'
+
+include 'cli'
+project(':cli').buildFileName = 'cli.gradle'
+
+include 'model'
+project(':model').buildFileName = 'model.gradle'
+
+include 'langtools-classfile'
+project(':langtools-classfile').buildFileName = 'langtools.gradle'
+
+include 'cmr'
+project(':cmr').buildFileName = 'cmr.gradle'
+
+include 'cmr-aether'
+project(':cmr-aether').buildFileName = 'aether.gradle'
+
+include 'cmr-webdav'
+project(':cmr-webdav').buildFileName = 'webdav.gradle'
+
+include 'cmr-js'
+project(':cmr-js').buildFileName = 'cmrjs.gradle'
+
+include 'typechecker'
+project(':typechecker').buildFileName = 'typechecker.gradle'
+
+include 'compiler-java'
+project(':compiler-java').buildFileName = 'compilerjava.gradle'
+
+include 'language'
+project(':language').buildFileName = 'language.gradle'
+
+include 'compiler-js'
+project(':compiler-js').buildFileName = 'compilerjs.gradle'
+
+include 'module-loader'
+project(':module-loader').buildFileName = 'moduleloader.gradle'
+
+include 'tool-provider'
+project(':tool-provider').buildFileName = 'toolprovider.gradle'

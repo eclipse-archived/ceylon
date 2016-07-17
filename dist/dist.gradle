@@ -1,0 +1,39 @@
+apply plugin : LifecycleBasePlugin
+
+task setupRepo {
+    dependsOn ':runtime:setupRepo'
+    dependsOn ':runtime:publishInternal'
+}
+
+task installCompiler {
+    dependsOn ':common:publishInternal'
+    dependsOn ':cli:publishInternal'
+    dependsOn ':langtools-classfile:publishInternal'
+    dependsOn ':model:publishInternal'
+    dependsOn ':cmr:publishInternal'
+    dependsOn ':typechecker:publishInternal'
+    dependsOn ':compiler-java:publishInternal'
+}
+
+task installJS {
+
+    dependsOn ':common:publishInternal'
+    dependsOn ':cli:publishInternal'
+    dependsOn ':model:publishInternal'
+    dependsOn ':cmr:publishInternal'
+    dependsOn ':typechecker:publishInternal'
+    dependsOn ':compiler-js:publishInternal'
+
+}
+
+build {
+    dependsOn setupRepo, installCompiler, installJS
+}
+
+//<target name="install-all"
+//depends="setup-repo, install-compiler, install-js, copy-compiler-binaries,
+//copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
+//copy-licenses, install-runtime,
+//add-module-descriptors, generate-buildid"
+//description="Generates all binaries and copies them to the distribution folder">
+//</target>

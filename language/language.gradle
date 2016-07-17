@@ -1,0 +1,16 @@
+ext {
+    ceylonModuleName = 'language'
+}
+
+apply from : "${rootProject.projectDir}/gradle/use-ant-build.gradle"
+
+antBuild.dependsOn ':compiler-java:assemble'
+
+// TODO: Need to fix this when getting tests to work.
+tasks.'antCompile.tests.java.quick'.enabled = false
+tasks.'antCompile.tests.java'.enabled = false
+tasks.'antTest.java.quick'.enabled = false
+tasks.'antTest-quick'.enabled = false
+tasks.'antTest.java'.enabled = false
+tasks.'antTest.js'.enabled = false
+tasks.'antTest.js.quick'.enabled = false

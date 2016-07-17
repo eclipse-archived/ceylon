@@ -1,0 +1,34 @@
+ext {
+    ceylonModuleName = 'common'
+    ceylonTestDisabled = true
+
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+
+dependencies {
+    compile 'org.tautua.markdownpapers:markdownpapers-core:1.2.7'
+}
+
+//"""
+//    <target name="compile.tests">
+//        <mkdir dir="${build.classes}" />
+//        <javac
+//            srcdir="${test.src}"
+//            destdir="${build.classes}"
+//            debug="true"
+//            encoding="UTF8"
+//            classpathref="test.run.classpath"
+//            target="${compile.java.target}"
+//            source="${compile.java.source}"
+//            bootclasspath="${compile.java.bootclasspath}">
+//            <include name="**/*.java" />
+//        </javac>
+//        <copy todir="${build.classes}">
+//            <fileset dir="${test.src}">
+//                <exclude name="**/*.java" />
+//            </fileset>
+//        </copy>
+//    </target>
+//"""
+

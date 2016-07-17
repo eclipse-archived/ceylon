@@ -1,0 +1,249 @@
+= Tracking Gradle Migration
+
+Builds currently go to `builtByGradle` directory instead of `build` in order to make it easier to compare
+Ant & Gradle builds.
+
+== Overall TODO for each project
+
+* ide-quick
+* bundle-proxy
+* Tests are disabled globally.
+
+== Subprojects
+
+=== Dist
+
+.From dist/build.xml
+[source,xml]
+----
+<target name="install-all"
+    depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, <!-- 1 --> <!-- 2 -->
+             copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
+             copy-licenses, install-runtime,
+             add-module-descriptors, generate-buildid"
+    description="Generates all binaries and copies them to the distribution folder">
+</target>
+----
+<1> `setup-repo` handled `:runtime:setupRepo`
+<2> `install-compiler` handled by `publishInternal` task in `common`, `cli`, `;angtools-classfile`,
+  `model`, `cmr` ...
+
+
+=== Commons
+
+.From common/build.xml
+[source,xml]
+----
+<target name="publish"
+    depends="clean.repo,init.repo,dist,publish-internal" <!-- 1 --> <!-- 2 --> <!-- 3 -- >
+    description="Publish both type checker and ceylon.language template module">
+</target>
+----
+<1> `clean.repo` handled by `cleanRepo` which is a dependency of `clean`.
+<2> `init.repo`, `publish-internal` handled by `publishInternal`.
+<3> `dist` handled by Gradle dependency chain and included `assemble`, `sourceZip`, `sha1` and `jar`
+
+=== Runtime
+
+Needed a special `sourceSet` layout.
+
+As all of the four Ant `javac` tasks ended up in a single JAR and used the same compilation options,
+ I think putting them into a single compilation task was the way to go.
+
+
+.TODO
+* What about those `pom.xml` files that are dotted over the place?
+* Should look to see if we cannot handle the JARs via Gradle's dependency mechanism.
+
+=== Cli
+
+.TODO
+* Should consider looking at `application` plugins to do a better job of bundling scripts. One task is
+  specifically called `startScripts` to mimic a similar fucntionaing task in `application` plugin. This
+  was done to deliberately break the build when the refactoring for `application` happens.
+
+=== Cmr
+
+.TODO
+* 17 tests are currently (disabled test task for moment)
+
+=== Cmr-aether
+
+Standard Ceylon Java project.
+
+.TODO
+* Publishing
+* Source Zip
+
+=== Cmr-webdav
+
+Standard Ceylon Java project.
+
+=== Model
+
+Standard Ceylon Java project.
+
+=== Langtools-classfile
+
+This has been straight-forward to do. There are no `*.utf8properties` files in this project, but it has alerted to the
+`native2ascii` Ant task that was used. The solution (which hopefully will work) is to hook into the lifecycle
+`processResources` task, and fix the encodings on the fly using the Ant `EscapeUnicode` filter instead.
+
+We also set `ceylonPublishModuleName` as this one uses two distinctly named property names from `common-build.properties`.
+
+.TODO
+* Do we need to set `-XDignore.symbol.file`  for `JavaCompile` options?
+
+=== Typechecker
+
+Usage of Gradle's builtin `antlr` plugin did not work due to a showstopper bug. Sticking wil the old `build.xml` is not
+ideal as automatic management of artifacts for project dependencies will be lost. Created `CeylonAntlr` plugin to solve
+the problem.
+
+The equivalent of the Ant `treegen` task has been solved by creating a sourceset called `treegen`. This automatically
+ creates a `compileTreegenJava` tasks which is then made dependent on `generateGrammarSource`.
+
+The `tree` used a class called `Generate` to create further Java files for later compilation. It was discovered that
+the `Generate` class has a hardcoded path that starts with `gensrc`.
+For this reason the generated source directory is configured in the subproject to be `gensrc`, but located under the
+build directory. The Gradle `tree` task used the build directory has working directory and references back to the
+project directory to find the `Ceylon.nodes` file. it also manually sets an output directory property so that Gradle
+can have an idea when it is up to date.
+
+Finally `compileJava` has to depend on `tree`, whereafter all of the tasks supplied via `java-for-modules.gradle`,
+starts to work.
+
+.TODO
+* The Ant `antlr.tree` deleted tokens at the end. SHould we still do that?
+
+=== Compiler-java
+
+There is an unfortunate interdependency with `language`.
+
+*Utf8properties*: Unlike the Ant `compiler.classes` the `main` source set will include `*.utf8properties`.
+  The reason for this is that the Gradle task can take care of this in the `processResources` task via a filter,
+  whereas in Ant this hand to be handled via an extra build step.
+
+.TODO
+* Do we need to `-XDignore.symbol.file` when compiling?
+* Mismatch in `compiler-*.jar` artifacts between ANT (1789 files) and Gradle (1777 files).
+* Mismatch in `ceylon-ant.jar` artifacts between ANT (154 files) and Gradle (155 files).
+* For `bootstrap-ant.jar` need to check `MANIFEST.MF`
+
+=== Language
+
+We still use the imported Ant buidl to get stuff done. `build.dir` is set as a property on the imported build
+and that seems to be forcing Ant to build into Gradle's `buildDir`.
+
+There is an unfortunate interdependency with `compiler-java`.
+
+.TODO
+* Publishing
+* Fix it from going through the Ant build to building everything as part of Gradle direct.
+* Start using `generate-source.gradle` to generate source.
+* Set `generateModuleInfo` according to `jigsaw`.
+* Some copy operations in the Ant `build` task need to be investigated.
+
+=== Compiler-js
+
+The directory layout seems to be nearer to a Gradle/Maven convention, but the resources are still
+under `src/main/java`. For this reason there is a `sourceSets` block in the build to find the correct files.
+If those files could simply be moved to the `src/main/resources` folder the whole block can be eliminated.
+
+.TODO
+* Do we need to include test classs fo the `ceylon.language.js`?
+* Not sure about the runtime directory.
+  Should we send those artifacts to `build/libs` or `build/runtime` under Gradle?
+* `jdk5Stubs` seems to refer to an empty collection. We could get rid of it and simplify the build script.
+
+=== Module-loader
+
+It needed a special configuration to pick up the `car` file from `language`.
+
+=== Tool-provider
+
+It needed a special configuration to pick up the `car` file from `language`.
+
+There is a `sourceSets` block in the build to find the correct resources files.
+If those files could simply be moved to the `src/main/resources` folder the whole block can be eliminated.
+
+Note that unlike the Ant build, the `*.utf8properties` are included in the block as the `processResources` task
+knows how to take care of them.
+
+.TODO
+* Do we need to set the compiler flag `-XDignore.symbol.file` ?
+
+== Custom build code in buildSrc
+
+A `buildSrc` folder has been added to help with some of the delicate and less common feastures of this build.
+
+=== Checksum
+
+A checksum task type has been added as `buildSrc/src/main.groovy/CheckSum.groovy`. This task can be used in conjuction
+with any archiver tasks such as `Zip` & `Jar` to create checksums. By default a `sha1` task is added to each Java
+project. This replaces the use of the `sha1sum` tasks in the Ant build.
+
+=== Timestamp
+
+A helper class has been added as `buildSrc/src/main.groovy/TimeStamp.groovy`. It sets a singular timestamp value
+at the beginning of the build which can then be used in all builds via `TimeStamp.BUILD`. This replaces the use of
+the `TStamp` ant task.
+
+=== CeylonCommonBuildProperties
+
+This is a plugin that is applied which loads up the properties from `common-build.properties` and places it on the
+projet extension as a field called `cbp`.
+
+It also provides a `requiresCBP` method that will fail the build if a specific property has not been found in
+`common-build.properties`.
+
+=== CeylonAntlr
+
+A local plugin that mimics a number of conventions of the builtin Gradle `antlr` plugin, but is stripped down in
+functionality and covers just enough to work within the Ceylon build environment.
+
+== Custom build in gradle folder
+
+A number of common functionality not suitable for buildSrc have been added as buildscript in the `gradle` folder
+
+=== java-for-modules.gradle
+
+Adds common `jar` and `publishInternal` configuration. It requires `ceylonModuleName` to be set before including it.
+If `ceylonSourceLayout` is set to `false` before inclusion it will not set up `sourceSets` to use the Ant layout.
+
+It assumes that `ceylonModuleName` is used in a consistent manner throughout a specific manner. This usually works,
+but there some exceptions i.e. `classfile` and 'langtools.classfile`. For this case a subproject can manually set
+`ceylonPublishModuleName` to the `ceylon.XXXX.dir` part.
+
+.TODO
+* Tests are disabled. Need to fix this
+
+=== use-ant-build.gradle
+
+For subprojects that have to rely on using the Ant build, applying this will set the appropriate properties and link
+Gradle lifecycle tasks to appropriate ones in the Ant build.
+
+.TODO
+* Tests are disabled. Need to fix this
+
+== Test status
+
+|===
+| `cmr-aether` | No tests
+| `cmr-js` | No tests
+| `cmd-webdav` | No tests
+| `common` | Disabled (Fails in `RepositoryTest`)
+| `langtools-classfile | No tests
+| `model` | Working
+| `cmr` | Disabled (17 failing tests).
+| `cli` | Working
+| `compiler-java` | Disabled (compilation failures)
+| `compiler-js` | Disabled (Most tests fail with `LanguageModuleNotFoundException`).
+| `module-loader` | No tests
+| `runtime` | Disabled (requires updates to Gradle script)
+| `language` | Disabled (imported Ant tasks)
+| `tool-provider | Disabled (requires updates to Gradle script)
+| `typechecker` | Disabled (requires updates to Gradle script)
+
+
+|===

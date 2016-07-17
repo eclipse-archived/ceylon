@@ -1,0 +1,84 @@
+ext {
+    ceylonModuleName = 'typechecker'
+    ceylonTestDisabled = true
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+apply plugin : CeylonAntlr
+
+dependencies {
+    compile project(':common')
+    compile project(':model')
+    compile project(':cmr')
+    antlr 'org.antlr:antlr:3.4'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src',{generateGrammarSource.destinationDirectory}]
+        }
+        compileClasspath = configurations.antlr + configurations.compile
+    }
+    treegen {
+        java {
+            srcDirs = ['src',{generateGrammarSource.destinationDirectory}]
+            include '**/typechecker/treegen/*.java'
+        }
+        compileClasspath = configurations.antlr + configurations.compile
+        runtimeClasspath = output + compileClasspath
+    }
+}
+
+// TODO: Should we delete these tokens?
+//        <delete>
+//            <fileset dir="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"
+//                     includes="*.tokens"/>
+//        </delete>
+//    </target>
+
+generateGrammarSource {
+
+    destinationDirectory = "${buildDir}/gensrc"
+
+    antlrGroup 'com/redhat/ceylon/compiler/typechecker/parser',
+        fileTree("antlr/com/redhat/ceylon/compiler/typechecker/parser") { include '**/*.g' }
+
+    antlrGroup 'com/redhat/ceylon/compiler/typechecker/treegen',
+        fileTree("antlr/com/redhat/ceylon/compiler/typechecker/treegen") { include '**/*.g' }
+}
+
+compileTreegenJava {
+    dependsOn generateGrammarSource
+}
+
+task tree( type : JavaExec ) {
+    group 'Build'
+    description 'Generates the tree builder code'
+    dependsOn treegenClasses
+
+    ext {
+        genDir = "${generateGrammarSource.destinationDirectory}/com/redhat/ceylon/compiler/typechecker/tree"
+    }
+
+    outputs.dir genDir
+    main 'com.redhat.ceylon.compiler.typechecker.treegen.Generate'
+    classpath sourceSets.treegen.runtimeClasspath
+    args "${projectDir}/antlr/Ceylon.nodes"
+    workingDir buildDir
+
+    doFirst {
+        mkdir genDir
+    }
+}
+
+compileJava {
+    dependsOn tree
+}
+
+// Add generated source to source distribution.
+sourceZip {
+    from ({generateGrammarSource.destinationDirectory}) {
+        include '**/*.java'
+    }
+}
