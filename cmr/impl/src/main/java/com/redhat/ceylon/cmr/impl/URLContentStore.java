@@ -587,7 +587,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             }
             if(version == null || version.isEmpty())
                 throw new RuntimeException("Missing required version");
-            ModuleVersionDetails newVersion = result.addVersion(module, version);
+            ModuleVersionDetails newVersion = result.addVersion(null, module, version);
             if(newVersion != null){
                 if(doc != null && !doc.isEmpty())
                     newVersion.setDoc(doc);
@@ -764,7 +764,7 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
             }else{
                 // TODO See TODO above
                 for (String v : versions) {
-                    ModuleVersionDetails mvd = new ModuleVersionDetails(module, v);
+                    ModuleVersionDetails mvd = new ModuleVersionDetails(null, module, v);
                     mvd.setDoc(doc);
                     mvd.setLicense(license);
                     mvd.getAuthors().addAll(authors);

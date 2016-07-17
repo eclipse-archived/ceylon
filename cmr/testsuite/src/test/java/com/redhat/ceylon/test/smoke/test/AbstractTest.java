@@ -247,6 +247,7 @@ public class AbstractTest {
             Assert.assertEquals(expectedVersion.getArtifactTypes(), version.getArtifactTypes());
             Assert.assertEquals(expectedVersion.isRemote(), version.isRemote());
             Assert.assertEquals(expectedVersion.getOrigin(), version.getOrigin());
+            Assert.assertEquals(expectedVersion.getNamespace(), version.getNamespace());
         }
     }
 

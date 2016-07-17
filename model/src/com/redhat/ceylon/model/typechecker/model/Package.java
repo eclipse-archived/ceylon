@@ -233,7 +233,7 @@ public class Package
         }
         Map<String,DeclarationWithProximity> importables = 
                 getModule()
-                    .getAvailableDeclarations(
+                    .getAvailableDeclarations(unit,
                             startingWith, proximity, canceller);
         List<Map.Entry<String,DeclarationWithProximity>> 
         entriesToAdd =

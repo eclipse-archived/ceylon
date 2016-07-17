@@ -68,16 +68,19 @@ public class Destructurer extends Visitor {
                 }
                 p.visit(this);
                 if (jsw != null) {
+                    final boolean useRest = isVariadic && idx==1;
                     if (isVariadic) {
-                        jsw.write(".skip(");
+                        jsw.write(useRest?".rest":".skip(");
                     } else {
                         jsw.write(".$_get(");
                     }
-                    jsw.write(Integer.toString(idx++), ")");
+                    if (!useRest) {
+                        jsw.write(Integer.toString(idx++), ")");
+                    }
                     if (isVariadic) {
                         if (minLength > 0) {
                             jsw.write(")");
-                        } else {
+                        } else if (!useRest) {
                             jsw.write(".sequence()");
                         }
                     }

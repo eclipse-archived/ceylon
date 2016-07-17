@@ -232,7 +232,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     protected ModuleVersionQuery getModuleVersionQuery(String name, String version, ModuleQuery.Type type, 
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
     		Integer jsBinaryMajor, Integer jsBinaryMinor) {
-        ModuleVersionQuery query = new ModuleVersionQuery(name, version, type);
+        ModuleVersionQuery query = new ModuleVersionQuery(null, name, version, type);
         if (jvmBinaryMajor != null) {
             query.setJvmBinaryMajor(jvmBinaryMajor);
         }
@@ -301,7 +301,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             ArtifactResult result = repoMgr.getArtifactResult(ac);
             if (result != null) {
                 if (forceCompilation || checkCompilation) {
-                    versions = Collections.singletonList(new ModuleVersionDetails(name, result.version()));
+                    versions = Collections.singletonList(new ModuleVersionDetails(null, name, result.version()));
                 } else {
                     return (result.version() != null) ? result.version() : "";
                 }
@@ -606,7 +606,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                     String version = mdr.getModuleVersion();
                     // PS In case the module descriptor was found but could not be parsed
                     // we'll create an invalid details object
-                    ModuleVersionDetails mvd = new ModuleVersionDetails(module != null ? module : "", version != null ? version : "");
+                    ModuleVersionDetails mvd = new ModuleVersionDetails(null, module != null ? module : "", version != null ? version : "");
                     mvd.setLicense(mdr.getModuleLicense());
                     List<String> by = mdr.getModuleAuthors();
                     if (by != null) {

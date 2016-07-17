@@ -179,6 +179,11 @@ packageDescriptor returns [PackageDescriptor packageDescriptor]
 importModule returns [ImportModule importModule]
     : IMPORT
       { $importModule = new ImportModule($IMPORT); }
+      (
+        ins=importNamespace
+        { $importModule.setNamespace($ins.identifier); }
+        SEGMENT_OP
+      )?
       ( 
         c1=CHAR_LITERAL
         { $importModule.setQuotedLiteral(new QuotedLiteral($c1)); }
@@ -201,6 +206,15 @@ importModule returns [ImportModule importModule]
       SEMICOLON
       { $importModule.setEndToken($SEMICOLON); 
         expecting=-1; }
+    ;
+
+importNamespace returns [Identifier identifier]
+    : LIDENTIFIER
+      { $identifier = new Identifier($LIDENTIFIER); }
+    | { displayRecognitionError(getTokenNames(),
+              new MismatchedTokenException(LIDENTIFIER, input), 5001); }
+      UIDENTIFIER
+      { $identifier = new Identifier($UIDENTIFIER); }
     ;
 
 importDeclaration returns [Import importDeclaration]
@@ -1071,7 +1085,7 @@ unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
         m3=MEMBER_OP
         { qt = new QualifiedType(null);
           qt.setOuterType($type);
-          qt.setEndToken($m3); 
+          qt.setEndToken($m3);
           $type=qt; }
         (
           t3=memberNameWithArguments
@@ -1083,6 +1097,18 @@ unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
                 qt.setTypeArgumentList($t3.typeArgumentList);
             $expression = new ExtendedTypeExpression(null);
             $expression.setType($type); }
+        |
+          (
+            t5=typeNameWithArguments
+            { if ($t5.identifier!=null) {
+              qt.setEndToken(null);
+              qt.setIdentifier($t5.identifier);
+            }
+            if ($t5.typeArgumentList!=null)
+                bt.setTypeArgumentList($t5.typeArgumentList);
+            $expression = new ExtendedTypeExpression(null);
+            $expression.setType($type); }
+          )+
         )?
       )?
     | t4=memberNameWithArguments

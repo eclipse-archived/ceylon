@@ -199,7 +199,7 @@ public class Module
     }
     
     public Map<String, DeclarationWithProximity> 
-    getAvailableDeclarations(String startingWith, 
+    getAvailableDeclarations(Unit unit, String startingWith, 
             int proximity, Cancellable canceller) {
         Map<String, DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
@@ -258,7 +258,11 @@ public class Module
                                 //that may be imported
                                 prox = proximity+4;
                             }
-                            result.put(d.getQualifiedNameString(), 
+                            result.put(
+                                    //use qualified name here, in order
+                                    //to distinguish unimported declarations
+                                    //with same name in different packages
+                                    d.getQualifiedNameString(), 
                                     new DeclarationWithProximity(d, 
                                             prox, !isLanguagePackage));
                         }
@@ -270,7 +274,7 @@ public class Module
         if ("Nothing".startsWith(startingWith)) {
             result.put("Nothing", 
                     new DeclarationWithProximity(
-                            new NothingType(unit),
+                            unit.getNothingDeclaration(),
                             //same as other "special" 
                             //language module declarations
                             proximity+2));

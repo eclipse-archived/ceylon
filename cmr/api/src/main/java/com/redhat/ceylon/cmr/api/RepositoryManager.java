@@ -239,4 +239,9 @@ public interface RepositoryManager {
     void refresh(boolean recurse);
     
     Overrides getOverrides();
+
+    /**
+     * Determines if the given namespace is recognized by any of the configured repositories
+     */
+    boolean isValidNamespace(String namespace);
 }

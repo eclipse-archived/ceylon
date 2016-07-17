@@ -395,6 +395,9 @@ public class MetamodelGenerator {
         final Map<String, Object> m = new HashMap<>();
         m.put(KEY_METATYPE, METATYPE_METHOD);
         m.put(KEY_NAME, d.getName());
+        if (d.isDynamic()) {
+            m.put(KEY_DYNAMIC, 1);
+        }
         List<Map<String, Object>> tpl = typeParameters(d.getTypeParameters(), d);
         if (tpl != null) {
             m.put(KEY_TYPE_PARAMS, tpl);
@@ -609,6 +612,9 @@ public class MetamodelGenerator {
         m.put(KEY_NAME, d.getName());
         m.put(KEY_METATYPE, (d instanceof Value && ((Value)d).isTransient()) ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
         m.put(KEY_TYPE, typeMap(d.getType(), d));
+        if (d.isDynamic()) {
+            m.put(KEY_DYNAMIC, 1);
+        }
         parent.put(mname, m);
         encodeAnnotations(d.getAnnotations(), d, m);
         if (d instanceof Value && ((Value) d).getSetter() != null) {

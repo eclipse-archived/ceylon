@@ -116,16 +116,6 @@ public class TypeGenerator {
         final String initname;
         if (d.isAnonymous()) {
             String _initname = gen.getNames().objectName(d);
-            if (objectDeclaration != null
-                    && objectDeclaration.isNativeHeader()
-                    && TypeUtils.makeAbstractNative(objectDeclaration)
-                    && !(_initname.endsWith("$$N") || _initname.endsWith("$$N()"))) {
-                if (_initname.endsWith("()")) {
-                    _initname = _initname.substring(0, _initname.length()-2) + "$$N()";
-                } else {
-                    _initname += "$$N";
-                }
-            }
             if (d.isToplevel()) {
                 initname = "$init$" + _initname.substring(0, _initname.length()-2);
             } else {

@@ -105,7 +105,31 @@ function spread$(a,f,targs,noInvoke) {
   var arg=noInvoke?[].slice.call(a,0):a;
   //if we get only 1 arg and it's a tuple...
   var spridx=arg.length-1;
-  if (arg.length>0 && is$(arg[spridx],{t:Tuple})) {
+  function $checkSpreadArg$() {
+    if (arg.length>0 && is$(arg[spridx],{t:Tuple})) {
+      return true;
+    }
+    //We can get a Sequence, not just a Tuple
+    if (arg.length>0 && is$(arg[spridx],{t:Sequence})) {
+      //In this case we need to check the size of the sequence against the size of the remaining arguments
+      //And check that the remaining parameter types match the sequence's element type
+      var elemento=arg[spridx].$$targs$$.Element$Sequence;
+      var mm=getrtmm$$(f);
+      if (mm && mm.ps && mm.ps.length==arg.length-spridx+arg[spridx].size-1) {
+        //If the argument is already of the parameter's type, forget about it
+        var spreadParmType=mm.ps[spridx].$t;
+        if (typeof(spreadParmType)==='string'&&targs[spreadParmType])spreadParmType=targs[spreadParmType];
+        if (is$(arg[spridx],spreadParmType))return false;
+        //Would it be faster to check against the sequence's actual element instead?
+        for (var i=spridx;i<arg.length;i++) {
+          if (!extendsType(elemento,mm.ps[i]))return false;
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+  if ($checkSpreadArg$()) {
     var tuple0=arg[spridx];
     //Possible spread, check the metamodel
     var mm=getrtmm$$(f);

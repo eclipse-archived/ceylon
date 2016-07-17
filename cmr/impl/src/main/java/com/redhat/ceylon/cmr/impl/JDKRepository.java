@@ -124,7 +124,7 @@ public class JDKRepository extends AbstractRepository {
             String jdkVersion = jdkProvider.getJDKVersion();
             if (query.getVersion() != null && !query.getVersion().equals(jdkVersion))
                 return;
-            final ModuleVersionDetails newVersion = result.addVersion(query.getName(), jdkVersion);
+            final ModuleVersionDetails newVersion = result.addVersion(NAMESPACE, query.getName(), jdkVersion);
             newVersion.setDoc(doc(query.getName()));
             newVersion.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
             newVersion.setVersion(jdkVersion);
@@ -177,7 +177,7 @@ public class JDKRepository extends AbstractRepository {
         }
         
         private ModuleVersionDetails getResult(String module, ModuleQuery query) {
-            ModuleVersionDetails mvd = new ModuleVersionDetails(module, jdkProvider.getJDKVersion());
+            ModuleVersionDetails mvd = new ModuleVersionDetails(NAMESPACE, module, jdkProvider.getJDKVersion());
             mvd.setDoc(doc(module));
             mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
             mvd.setRemote(false);

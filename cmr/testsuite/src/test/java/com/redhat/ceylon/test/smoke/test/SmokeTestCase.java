@@ -717,7 +717,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testListVersion() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
-                new ModuleVersionDetails("", "1.0.0", "The classic Hello World module", "Public domain", set("Stef Epardaud"),
+                new ModuleVersionDetails("ceylon", "", "1.0.0", "The classic Hello World module", "Public domain", set("Stef Epardaud"),
                         deps(), types(new ModuleVersionArtifact(".car", 3, 0)), false, getRepositoryRoot().getAbsolutePath()),
         };
         testListVersions("com.acme.helloworld", null, expected);
@@ -1204,7 +1204,7 @@ public class SmokeTestCase extends AbstractTest {
     @Test
     public void testListVersionJDK() throws Exception {
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
-                new ModuleVersionDetails("", "7", "JDK module java.base", null, set(), deps(), types(new ModuleVersionArtifact(".jar", null, null)), false, "Java Runtime"),
+                new ModuleVersionDetails("jdk", "", "7", "JDK module java.base", null, set(), deps(), types(new ModuleVersionArtifact(".jar", null, null)), false, "Java Runtime"),
         };
         testListVersions("java.base", null, expected, getJDKRepositoryManager());
     }
@@ -1309,15 +1309,15 @@ public class SmokeTestCase extends AbstractTest {
     public void testListVersionBinaryCompat() throws Exception {
     	String path = getRepositoryRoot().getAbsolutePath();
         ModuleVersionDetails[] expected = new ModuleVersionDetails[]{
-                new ModuleVersionDetails("hello", "1.0.0", "A test", "Apache Software License", 
+                new ModuleVersionDetails("ceylon", "hello", "1.0.0", "A test", "Apache Software License", 
                 		set("The Ceylon Team"), 
                 		deps(), 
                 		types(new ModuleVersionArtifact(".car", 3, 0)), false, path),
-                new ModuleVersionDetails("hello", "1.2.0", "A test", "Apache Software License", 
+                new ModuleVersionDetails("ceylon", "hello", "1.2.0", "A test", "Apache Software License", 
                 		set("The Ceylon Team"), 
                 		deps(language), 
                 		types(new ModuleVersionArtifact(".car", 8, 0)), false, path),
-                new ModuleVersionDetails("hello", "1.2.1", "A test", "Apache Software License", 
+                new ModuleVersionDetails("ceylon", "hello", "1.2.1", "A test", "Apache Software License", 
                 		set("The Ceylon Team"), 
                 		deps(language), 
                 		types(new ModuleVersionArtifact(".car", 8, 0)), false, path),
@@ -1325,12 +1325,12 @@ public class SmokeTestCase extends AbstractTest {
         testListVersions("hello", null, expected, getRepositoryManager());
 
         ModuleVersionDetails[] expectedBoth = new ModuleVersionDetails[]{
-                new ModuleVersionDetails("hello", "1.2.0", "A test", "Apache Software License", 
+                new ModuleVersionDetails("ceylon", "hello", "1.2.0", "A test", "Apache Software License", 
                 		set("The Ceylon Team"), 
                 		deps(language), 
                 		types(new ModuleVersionArtifact(".car", 8, 0),
                 				new ModuleVersionArtifact(".js", 8, 0)), false, path),
-                new ModuleVersionDetails("hello", "1.2.1", "A test", "Apache Software License", 
+                new ModuleVersionDetails("ceylon", "hello", "1.2.1", "A test", "Apache Software License", 
                 		set("The Ceylon Team"), 
                 		deps(language), 
                 		types(new ModuleVersionArtifact(".car", 8, 0),
@@ -1341,7 +1341,7 @@ public class SmokeTestCase extends AbstractTest {
         		ModuleQuery.Type.CEYLON_CODE, ModuleQuery.Retrieval.ALL);
 
         ModuleVersionDetails[] expectedSingle = new ModuleVersionDetails[]{
-                new ModuleVersionDetails("hello", "1.2.1", "A test", "Apache Software License", 
+                new ModuleVersionDetails("ceylon", "hello", "1.2.1", "A test", "Apache Software License", 
                 		set("The Ceylon Team"), 
                 		deps(language), 
                 		types(new ModuleVersionArtifact(".car", 8, 0),

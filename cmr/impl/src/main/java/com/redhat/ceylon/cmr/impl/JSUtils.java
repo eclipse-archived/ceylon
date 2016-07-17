@@ -146,7 +146,7 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
                 major = Integer.parseInt(bin);
             }
         }
-        ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, version);
+        ModuleVersionDetails mvd = new ModuleVersionDetails(null, moduleName, version);
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, major, minor));
         mvd.getDependencies().addAll(dependencies);
 

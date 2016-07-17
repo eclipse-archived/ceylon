@@ -13,7 +13,24 @@ nodeList : {
            println("import static com.redhat.ceylon.compiler.typechecker.tree.Tree.*;");
            println("import static com.redhat.ceylon.compiler.typechecker.tree.Tree.Package;\n");
            println("public abstract class Visitor {\n");
-           println("    public void handleException(Exception e, Node that) { that.handleException(e, this); }\n");
+
+           println("    public static interface ExceptionHandler {");
+           println("        /*");
+           println("         * Returns true if the exception has been handled, false if it should be handled");
+           println("         * by the visitor itself");
+           println("         */");
+           println("        boolean handleException(Exception e, Node that);");
+           println("    }");
+           println("    private ExceptionHandler externalExceptionHandler = null;");
+           println("    public Visitor setExceptionHandler(ExceptionHandler exceptionHandler) { externalExceptionHandler = exceptionHandler; return this; }");
+           println("    public void handleException(Exception e, Node that) {");
+           println("        if (externalExceptionHandler != null &&");
+           println("                externalExceptionHandler.handleException(e, that)) {");
+           println("            return;");
+           println("        }");
+           println("        that.handleException(e, this);"); 
+           println("    }");
+           
            println("    public void visitAny(Node that) { that.visitChildren(this); }\n");
            }
            (DESCRIPTION? node)+ 

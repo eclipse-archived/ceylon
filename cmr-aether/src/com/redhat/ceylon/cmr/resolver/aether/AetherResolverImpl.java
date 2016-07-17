@@ -242,6 +242,13 @@ public class AetherResolverImpl implements AetherResolver {
     	return getDependencies(groupId, artifactId, version, null, null, fetchSingleArtifact);
     }
     
+    public File getLocalRepositoryBaseDir() {
+        RepositorySystem repoSystem = newRepositorySystem();
+        DefaultRepositorySystemSession session = newSession( repoSystem );
+        configureSession(repoSystem, session);
+        return session.getLocalRepository().getBasedir();
+    }
+    
     @Override
     public DependencyDescriptor getDependencies(String groupId, String artifactId, String version, 
     		String classifier, String extension, boolean fetchSingleArtifact) 
