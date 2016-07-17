@@ -1553,7 +1553,8 @@ public class RefinementVisitor extends Visitor {
                                 rparam, refinedParameterType,
                                 param, parameterType,
                                 typeNode, forNative);
-                        checkRefiningParameterSmall(typeNode, member.getDeclaration(), param, 
+                        checkRefiningParameterSmall(typeNode, 
+                                member.getDeclaration(), param, 
                                 refinedMember.getDeclaration(), rparam);
                     }
                 }
@@ -1562,12 +1563,17 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkRefiningParameterSmall(Node that, 
-                Declaration member, Parameter param, Declaration refinedMember, Parameter refinedParam) {
+                Declaration member, Parameter param, 
+                Declaration refinedMember, 
+                Parameter refinedParam) {
         if (param.getModel().isSmall()
                 && !refinedParam.getModel().isSmall()) {
-            that.addUsageWarning(Warning.smallIgnored, "small annotation on parameter '"+param.getName()+"' of '"+member.getName()+
-                    "' will be ignored: corresponding parameter '"+refinedParam.getName()+
-                    "' of '"+refinedMember.getName()+"' is not small");
+            that.addUsageWarning(Warning.smallIgnored, 
+                    "small annotation on parameter '" + 
+                    param.getName() + "' of '" + member.getName()+
+                    "' will be ignored: corresponding parameter '" + 
+                    refinedParam.getName() + "' of '" + refinedMember.getName() + 
+                    "' is not small");
         }
         param.getModel().setSmall(refinedParam.getModel().isSmall());
     }
