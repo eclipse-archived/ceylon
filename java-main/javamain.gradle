@@ -1,0 +1,20 @@
+ext {
+    ceylonModuleName = 'java.main'
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+
+dependencies {
+    compile project(':model')
+    compile project(':cmr')
+    compile project(':common')
+    compile project(':langtools-classfile')
+    compile project( path : ':language', configuration : 'antOutput' )
+}
+
+// TODO: Can be removed if language build is pure Gradle
+compileJava.dependsOn ':language:assemble'
+
+['common','cmr','language'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
+}

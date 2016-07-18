@@ -1,4 +1,5 @@
 import org.apache.tools.ant.filters.EscapeUnicode
+import org.apache.tools.ant.filters.ReplaceTokens
 
 // Shorten the recipes required in Gradle scripts byt moving
 // a lot of the common code here.
@@ -33,10 +34,16 @@ requiresCBP 'compile.java.target'
 requiresCBP 'compile.java.source'
 
 ext {
-    bundleSymbolicName = 'com.redhat.ceylon.' + ceylonModuleName
+    bundleVariant = ext.properties.containsKey('ceylonModuleVariant') ? ".${ceylonModuleVariant}" : ''
+    bundleSymbolicName = 'com.redhat.ceylon.' + ceylonModuleName + bundleVariant
     bundleVersionName = cbp."module.com.redhat.ceylon.${ceylonModuleName}.version"
     archivePublishDir = "${repoDir}/" +  cbp."ceylon.${ceylonPublishModuleName}.dir"
 }
+
+//com.read.ceylon.compiler-1.2.3,jar
+//archiveName = "${bundleSymbolicName}-${bundleVersionName}.jar"
+//ceylon.compiler.jar=${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar
+//ceylon.compiler.dir=com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}
 
 if(!ext.properties.containsKey('ceylonSourceLayout')) {
         ext.ceylonSourceLayout = true
@@ -62,6 +69,7 @@ compileJava {
 
 assemble {
     dependsOn 'sha1'
+    dependsOn 'copyPluginFiles'
 }
 
 processResources {
@@ -87,6 +95,7 @@ if (ext.ceylonSourceLayout) {
         test {
             java {
                 srcDirs = ['test/src']
+                include '**/*.java'
             }
             resources {
                 srcDirs = ['test/src']
@@ -128,7 +137,7 @@ task publishJar( type : Copy ) {
     description 'Copies binary artifacts to distribution area'
 
     from sha1, {
-        include '**/*.jar.*'
+        include "**/${bundleSymbolicName}-${bundleVersionName}.jar.*"
     }
 
     from jar
@@ -147,8 +156,30 @@ task publishSource( type : Copy ) {
     into archivePublishDir
 }
 
+task copyPluginFiles( type : Copy ) {
+    group "build"
+    description 'Copies plugin files with correct version information'
+    from 'bin', {
+        include 'ceylon-*.plugin'
+    }
+    into "${buildDir}/bin"
+
+    filter ReplaceTokens, tokens : ['ceylon-version': version ]
+}
+
+task publishPluginFiles( type : Copy ) {
+    group "Distribution"
+    description "Copies bin directory to distribution area"
+    from "${buildDir}/bin", {
+        include 'ceylon-*.plugin'
+    }
+    into repoBinDir
+    dependsOn copyPluginFiles
+}
+
 task publishInternal {
     dependsOn 'publishJar','publishSource'
+    dependsOn publishPluginFiles
 }
 
 task cleanRepo ( type : Delete ) {
@@ -167,4 +198,10 @@ if(ext.properties.containsKey('ceylonTestDisabled')) {
     test.enabled = false
     testClasses.enabled = false
     compileTestJava.enabled = false
+}
+
+afterEvaluate {
+    tasks.withType(JavaCompile) { t ->
+        t.options.compilerArgs ['-Xlint:-options']
+    }
 }

@@ -10,7 +10,13 @@ buildScan {
     licenseAgree = 'yes'
 }
 
-buildDir = file('builtByGradle')
+allprojects {
+    ext {
+        buildPrefix = 'builtByGradle'
+    }
+}
+
+buildDir = file("${buildPrefix}/root")
 
 subprojects {
 
@@ -18,22 +24,29 @@ subprojects {
 
     // put all the build artifacts in subfolders of the root "build" folder
 //    buildDir = new File(rootProject.buildDir, it.path.replace(":", "_").substring(1))
-    buildDir = new File(rootProject.buildDir, it.path.replace(":", "_").substring(1))
+    buildDir = new File(file("${rootProject.projectDir}/${buildPrefix}"), it.path.replace(":", "_").substring(1))
 
     ext {
-        distDir = file("${buildDir}/${cbp['build.dist']}")
-        repoDir = file("${buildDir}/${cbp['build.dist.repo']}")
-        globalLibDir = file("${rootProject.projectDir}/lib")
+        distDir = file("${rootProject.projectDir}/${buildPrefix}/distribution")
+        repoDir = file("${distDir}/repo")
+        samplesDir = file("${distDir}/samples")
+        templatesDir = file("${distDir}/templates")
+        repoLibDir = file("${distDir}/lib")
+        repoBinDir = file("${distDir}/bin")
     }
 
     version= cbp.'ceylon.version'
 
     repositories {
         flatDir {
-            dirs globalLibDir
+            dirs "${rootProject.projectDir}/lib"
         }
+        jcenter()
         mavenCentral()
     }
 }
 
+task dist {
+    dependsOn ':dist:publishInternal'
+}
 

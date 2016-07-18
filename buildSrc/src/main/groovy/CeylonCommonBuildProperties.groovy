@@ -19,17 +19,7 @@ class CeylonCommonBuildProperties implements Plugin<Project> {
                      'sun.boot.class.path' : ''
                 ])
 
-//            if(ext.cbp == null) {
-//                throw new GradleException ('ext.cbp is not defined. Did you load common-build.properties correctly?')
-//            }
-
-
             ext.requiresCBP = { String propName -> project.extensions.cbp.requires(propName) }
-//
-//                if(cbp."${propName}" == null) {
-//                    throw new GradleException ("${propName} is not defined in common-build.properties")
-//                }
-//            }
         }
 
     }

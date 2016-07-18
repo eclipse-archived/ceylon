@@ -30,3 +30,9 @@ sourceSets {
 }
 
 // TODO: Do we need to set compiler flag: <compilerarg value="-XDignore.symbol.file" /> ?
+
+
+['common','cli','model','module-loader','cmr','language'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
+}
+

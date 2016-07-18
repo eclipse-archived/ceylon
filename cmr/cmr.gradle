@@ -38,3 +38,8 @@ sourceSets {
         }
     }
 }
+
+
+['common','model','cmr-aether','cmr-webdav','cmr-js'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
+}

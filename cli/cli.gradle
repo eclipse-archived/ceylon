@@ -24,8 +24,14 @@ task startScripts( type : Copy ) {
 task publishScripts( type : Copy ) {
     group 'Distribution'
     description 'Copies scripts to distribution area'
-    into repoDir
-    from startScripts
+    into repoBinDir
+    from startScripts, {
+        exclude 'ceylon'
+    }
+    from startScripts, {
+        include 'ceylon'
+        fileMode 0755
+    }
 }
 
 assemble {
@@ -34,4 +40,8 @@ assemble {
 
 publishInternal {
     dependsOn publishScripts
+}
+
+['common','cmr','model'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
 }

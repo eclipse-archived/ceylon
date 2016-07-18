@@ -9,3 +9,7 @@ dependencies {
     compile project(':langtools-classfile')
 }
 
+['common','langtools-classfile'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
+}
+

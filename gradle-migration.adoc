@@ -17,17 +17,27 @@ Ant & Gradle builds.
 [source,xml]
 ----
 <target name="install-all"
-    depends="setup-repo, install-compiler, install-js, copy-compiler-binaries, <!-- 1 --> <!-- 2 -->
-             copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
-             copy-licenses, install-runtime,
+    depends="setup-repo, install-compiler, install-js, <!-- 1 --> <!-- 2 -->
+             copy-compiler-binaries, <!-- 3 -->
+             copy-samples, copy-templates, copy-contrib, copy-licenses, <!-- 4 -->
+             copy-jvm-compiler-libraries, <!-- 5 -->
+              install-runtime, <!-- 6 -->
              add-module-descriptors, generate-buildid"
     description="Generates all binaries and copies them to the distribution folder">
 </target>
 ----
 <1> `setup-repo` handled `:runtime:setupRepo`
-<2> `install-compiler` handled by `publishInternal` task in `common`, `cli`, `;angtools-classfile`,
+<2> `install-compiler` handled by `publishInternal` task in `common`, `cli`, `langtools-classfile`,
   `model`, `cmr` ...
+<3> `copy-compiler-binaries` handled by `:cli:startScripts` & `:dist:copyCompilerBinaries`
+<4> `copy-licenses`, `copy-samples`, `copy-templates` & `copy-contrib` handled by `:dist:copySupportFiles`
+<5> `copy-jvm-compiler-libraries` handled by `:compiler-java:publishInternal`.
+<6> `install-runtime` handled by `:distinstallRuntime`.
 
+In addition the `copy-dist-bin` Ant task is handled by
+
+.TODO
+* `ceylon-completion.bash` is copied twice - once in `copyContrib` and once in `copyCompilerBinaries`
 
 === Commons
 
@@ -50,6 +60,7 @@ Needed a special `sourceSet` layout.
 As all of the four Ant `javac` tasks ended up in a single JAR and used the same compilation options,
  I think putting them into a single compilation task was the way to go.
 
+In order to rename `_version_` when copying XML files, the use of `eachFile` was necessary.
 
 .TODO
 * What about those `pom.xml` files that are dotted over the place?
@@ -173,6 +184,11 @@ knows how to take care of them.
 .TODO
 * Do we need to set the compiler flag `-XDignore.symbol.file` ?
 
+=== Java-main
+
+.TODO
+* Do we need to set the compiler flag `-XDignore.symbol.file` ?
+
 == Custom build code in buildSrc
 
 A `buildSrc` folder has been added to help with some of the delicate and less common feastures of this build.
@@ -244,6 +260,4 @@ Gradle lifecycle tasks to appropriate ones in the Ant build.
 | `language` | Disabled (imported Ant tasks)
 | `tool-provider | Disabled (requires updates to Gradle script)
 | `typechecker` | Disabled (requires updates to Gradle script)
-
-
 |===
