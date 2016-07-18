@@ -40,7 +40,6 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -81,8 +80,8 @@ public class AnalyzerUtil {
             return (TypedDeclaration) member;
         }
         else {
-            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && !JvmBackendUtil.isInitialLowerCase(name)){
+            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && !JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.getJavaBeanName(name);
                 member = td.getMember(name, unit, signature, ellipsis);
                 if (member instanceof TypedDeclaration) {
@@ -106,8 +105,8 @@ public class AnalyzerUtil {
                     (TypedDeclaration) member);
         }
         else {
-            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && JvmBackendUtil.isInitialLowerCase(name)){
+            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.capitalize(name);
                 member = 
                         td.getMember(name, unit, signature, ellipsis);
@@ -133,8 +132,8 @@ public class AnalyzerUtil {
             return (TypedDeclaration) result;
         }
         else {
-            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && !JvmBackendUtil.isInitialLowerCase(name)){
+            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && !JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.getJavaBeanName(name);
                 // This method is used for base members, not qualified members
                 // so we don't look for members but we look on the scope, which
@@ -171,8 +170,8 @@ public class AnalyzerUtil {
                     (TypedDeclaration) result);
         }
         else {
-            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && JvmBackendUtil.isInitialLowerCase(name)){
+            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.capitalize(name);
                 // This method is used for base members, not qualified members
                 // so we don't look for members but we look on the scope, which
