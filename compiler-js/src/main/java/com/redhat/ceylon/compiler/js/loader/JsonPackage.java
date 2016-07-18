@@ -578,6 +578,7 @@ public class JsonPackage extends LazyPackage {
             md.setDeclaredVoid((flags & 1) > 0);
             md.setDeferred((flags & 2) > 0);
         }
+        md.setDynamic(m.remove(KEY_DYNAMIC) != null);
         final List<TypeParameter> tparms = parseTypeParameters(
                 (List<Map<String,Object>>)m.get(KEY_TYPE_PARAMS), md, existing);
         final List<TypeParameter> allparms = JsonPackage.merge(tparms, existing);
@@ -616,6 +617,7 @@ public class JsonPackage extends LazyPackage {
         @SuppressWarnings("unchecked")
         final Map<String,Object> _anns = (Map<String,Object>)m.remove(KEY_ANNOTATIONS);
         setAnnotations(d, (Integer)m.remove(KEY_PACKED_ANNS), _anns);
+        d.setDynamic(m.remove(KEY_DYNAMIC) != null);
         if (m.containsKey("var")) {
             ((Value)d).setVariable(true);
         }
