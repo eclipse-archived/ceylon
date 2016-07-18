@@ -1,10 +1,13 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 ext {
     ceylonModuleName = 'compiler'
     ceylonTestDisabled = true
+    ceylonModuleVariant = 'java'
 }
 
 apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
-
+requiresCBP 'module.ceylon.bootstrap.version'
 
 dependencies {
     compile project(':common')
@@ -27,9 +30,6 @@ sourceSets {
         java {
             srcDir 'langtools/src/share/classes'
             include "com/redhat/**"
-//            include "com/redhat/ceylon/langtools/tools/javac/**"
-//            include "com/redhat/ceylon/langtools/source/**"
-//            include "com/redhat/ceylon/javax/**"
             exclude "**/Java7Checker.java"
             exclude "com/redhat/ceylon/ant/**"
             exclude "com/redhat/ceylon/launcher/**"
@@ -52,7 +52,9 @@ sourceSets {
             srcDirs = []
         }
         resources {
+            srcDirs = [ 'src',"${project(':common').projectDir}/src"]
             include "com/redhat/ceylon/ant/antlib.xml"
+            include "com/redhat/ceylon/common/config/messages.properties"
         }
     }
 
@@ -113,6 +115,7 @@ compileJdk6StubsJava {
     dependsOn compileJava
 }
 
+
 assemble {
     dependsOn compileJdk6StubsJava
 }
@@ -123,6 +126,7 @@ jar {
     exclude "com/redhat/ceylon/common/**"
     exclude "com/redhat/ceylon/launcher/**"
 }
+
 
 task antJar ( type : Jar ) {
     group 'Build'
@@ -135,6 +139,7 @@ task antJar ( type : Jar ) {
         include "com/redhat/ceylon/ant/**"
         include "com/redhat/ceylon/common/**"
         include "com/redhat/ceylon/launcher/**"
+        exclude "com/redhat/ceylon/common/log/*.class"
     }
     from sourceSets.antTask.output.resourcesDir
 }
@@ -150,16 +155,18 @@ task bootstrapJar( type : Jar ) {
         include "com/redhat/ceylon/launcher/CeylonClassLoader.class"
         include "com/redhat/ceylon/launcher/LauncherUtil.class"
     }
-    // TODO: Merge manifests?
-    from sourceSets.main.output.resourcesDir, {
-        include "META-INF/MANIFEST.MF"
+
+    manifest {
+        attributes 'Manifest-Version': 1.0,
+            'Main-Class': 'com.redhat.ceylon.launcher.Bootstrap'
     }
 }
+
 
 task bootstrapModule( type : Jar ) {
     ext {
         bmSymbolicName = 'com.redhat.ceylon.bootstrap'
-        bmVersionName = cbp."module.${bmSymbolicName}.version"
+        bmVersionName = cbp."module.ceylon.bootstrap.version"
     }
     manifest {
         attributes 'Bundle-SymbolicName': bmSymbolicName,
@@ -185,29 +192,50 @@ sha1 {
     dependsOn bootstrapModule
 }
 
-//"""
-//    <target name="build" depends="compiler.jar,ant.jar,bootstrap.jar,bootstrap.module">
-//        <mkdir dir="${build.dist}" />
-//        <mkdir dir="${build.bin}" />
-//        <mkdir dir="${build.ceylon.cars}" />
-//
-//        <copy todir="${build.bin}">
-//            <fileset dir="${basedir}/bin">
-//            </fileset>
-//            <filterset>
-//                <filter token="ceylon-version" value="${ceylon.version}"/>
-//            </filterset>
-//        </copy>
-//        <chmod perm="0755">
-//            <fileset dir="${build.bin}">
-//                <include name="ceylon" />
-//            </fileset>
-//        </chmod>
-//    </target>
-//"""
+task publishBootstrapModule( type : Copy ) {
+    group 'Distribution'
+    description 'Copies binary artifacts to distribution area'
 
+    from sha1, {
+        include "**/ceylon.bootstrap-${bootstrapModule.ext.bmVersionName}.jar.*"
+    }
+
+    from bootstrapModule
+    into "${repoDir}/${cbp.'ceylon.bootstrap.dir'}"
+}
 
 publishJar {
     from bootstrapModule
 }
 
+task publishJvmCompilerJars ( type : Copy ) {
+    group "Distribution"
+    description "Copy bootstrap & Ant jars to distribution area"
+    from bootstrapJar
+    from antJar
+    into repoLibDir
+}
+
+publishInternal {
+    dependsOn publishJvmCompilerJars
+    dependsOn publishBootstrapModule
+}
+
+
+//"""
+//    <target name="compiler.jar" depends="compiler.classes">
+//        <mkdir dir="${build.dist.repo}/${ceylon.compiler.dir}" />
+//        <mkdir dir="${build.bin}" />
+
+//        <jar destfile="${build.dist.repo}/${ceylon.compiler.jar}">
+//        <jar destfile="${build.dist.repo}/${ceylon.bootstrap.jar}">
+
+//ceylon.bootstrap.dir=ceylon/bootstrap/${module.ceylon.bootstrap.version}
+//ceylon.bootstrap.jar=${ceylon.bootstrap.dir}/ceylon.bootstrap-${module.ceylon.bootstrap.version}.jar
+//ceylon.bootstrap.lib=${ceylon.repo.dir}/${ceylon.bootstrap.jar}
+
+//ceylon.compiler.dir=com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}
+//ceylon.compiler.jar=${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar
+//ceylon.compiler.lib=${ceylon.repo.dir}/${ceylon.compiler.jar}
+
+//"""
