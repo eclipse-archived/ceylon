@@ -82,3 +82,7 @@ sourceZip {
         include '**/*.java'
     }
 }
+
+['common','cli','cmr','model'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
+}

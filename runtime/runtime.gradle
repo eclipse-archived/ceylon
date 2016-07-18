@@ -60,8 +60,10 @@ task setupRepo( type : Copy ) {
     into repoDir
     from 'dist/repo', {
         include "**/*.xml"
-        filter { it.replaceAll( '_version_',version) }
-        filter ReplaceTokens, tokens : [ 'ceylon-version' : version ]
+        eachFile { fcd ->
+            fcd.path = fcd.path.replace('_version_',version)
+            fcd.filter ReplaceTokens, tokens : [ 'ceylon-version' : version ]
+        }
     }
     from 'dist/repo', {
         include '**/*.jar'
@@ -70,6 +72,10 @@ task setupRepo( type : Copy ) {
     doFirst {
         logger.info "TODO: Copying hardcoded JARs might be better dealt with using Gradle's dependency management"
     }
+}
+
+['common','cmr','language','tool-provider','java-main'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
 }
 
 //

@@ -14,3 +14,7 @@ dependencies {
 
 // TODO: Can be removed if language build is pure Gradle
 compileJava.dependsOn ':language:assemble'
+
+['common','cmr','language'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
+}

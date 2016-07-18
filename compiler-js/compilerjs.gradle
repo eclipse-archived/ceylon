@@ -98,3 +98,8 @@ sha1 {
 assemble {
     dependsOn buildLanguageModule
 }
+
+['common','cli','cmr','typechecker','model'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
+}
+
