@@ -1,11 +1,13 @@
 apply plugin : LifecycleBasePlugin
 
 task setupRepo {
+    group 'Distribution'
     dependsOn ':runtime:setupRepo'
     dependsOn ':runtime:publishInternal'
 }
 
 task installCompiler {
+    group 'Distribution'
     dependsOn ':common:publishInternal'
     dependsOn ':cli:publishInternal'
     dependsOn ':langtools-classfile:publishInternal'
@@ -13,27 +15,112 @@ task installCompiler {
     dependsOn ':cmr:publishInternal'
     dependsOn ':typechecker:publishInternal'
     dependsOn ':compiler-java:publishInternal'
+    mustRunAfter setupRepo
+}
+
+task installRuntime {
+    group 'Distribution'
+    dependsOn ':common:publishInternal'
+    dependsOn ':model:publishInternal'
+    dependsOn ':cmr:publishInternal'
+    dependsOn ':tool-provider:publishInternal'
+    dependsOn ':language:publishInternal'
+    dependsOn ':java-main:publishInternal'
+    mustRunAfter setupRepo
 }
 
 task installJS {
-
+    group 'Distribution'
     dependsOn ':common:publishInternal'
     dependsOn ':cli:publishInternal'
     dependsOn ':model:publishInternal'
     dependsOn ':cmr:publishInternal'
     dependsOn ':typechecker:publishInternal'
     dependsOn ':compiler-js:publishInternal'
-
+    mustRunAfter setupRepo
 }
 
-build {
+task copyCompilerBinaries {
+
+    group 'Distribution'
+    description "Copies scripts and completions scripts to distribution bin area"
+    dependsOn ':cli:startScripts'
+}
+
+
+task copySupportFiles( type : Copy) {
+    group 'Distribution'
+    description "Copy licenses, samples, templates etc."
+    into distDir
+
+    from 'samples', {
+        include "helloworld/**"
+        include "no-module/**"
+        include "with-module/**"
+        include "interop-java/**"
+        include "plugin/**"
+        into 'samples'
+    }
+
+    from 'templates', {
+        into 'templates'
+    }
+
+    from 'contrib', {
+        into 'contrib'
+    }
+
+    from 'bin', {
+        into 'bin'
+    }
+
+    from rootProject.projectDir, {
+        include "LICENSE-ASL"
+        include "LICENSE-LGPL"
+        include "LICENSE-GPL-CP"
+        include "README.md"
+    }
+
+    from projectDir, {
+        include 'NOTICE'
+    }
+}
+
+task publishInternal {
+    group 'Distribution'
+    description "Lifecycle task to cooridnate all internal publish tasks"
     dependsOn setupRepo, installCompiler, installJS
+    dependsOn copyCompilerBinaries, copySupportFiles
+    dependsOn installRuntime
+    // addModuleDescriptors
+    // generateBuildId
 }
 
-//<target name="install-all"
-//depends="setup-repo, install-compiler, install-js, copy-compiler-binaries,
-//copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
-//copy-licenses, install-runtime,
-//add-module-descriptors, generate-buildid"
-//description="Generates all binaries and copies them to the distribution folder">
-//</target>
+
+
+// dist: publish,ide-quick
+// publish: clean-projects,install-all,copy-dist-bin,publish-quick
+// install-all: setup-repo, install-compiler, install-js, copy-compiler-binaries
+//               copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
+//               copy-licenses, install-runtime,
+//               add-module-descriptors, generate-buildid
+// ide-quick:
+// copy-dist-bin: DONE
+// publish-quick: DONE
+// setup-repo:
+// install-compiler:
+// install-js:
+// copy-compiler-binaries:
+// install-runtime: install-common,install-model,install-cmr,install-tool-provider,install-language,
+//                  install-java-main,install-runtime-nodeps"
+
+
+
+task cleanRepo ( type : Delete ) {
+    group "clean"
+    description "Cleans the distribution area"
+    delete repoBinDir
+    delete repoLibDir
+    delete samplesDir
+    delete repoDir
+}
