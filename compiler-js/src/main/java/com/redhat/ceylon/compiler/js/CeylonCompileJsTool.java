@@ -16,6 +16,7 @@ import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.EnumUtil;
+import com.redhat.ceylon.common.tool.NonFatalToolMessage;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ParsedBy;
@@ -320,8 +321,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             if (onlySources.isEmpty()) {
                 String msg = CeylonCompileJsMessages.msg("error.no.sources");
                 if (ModuleWildcardsHelper.onlyGlobArgs(files)) {
-                    errorAppend("ceylon compile-js: ").errorAppend(msg).errorNewline();
-                    return;
+                    throw new NonFatalToolMessage(msg);
                 } else {
                     throw new ToolUsageError(msg);
                 }

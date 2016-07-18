@@ -40,6 +40,7 @@ import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.EnumUtil;
 import com.redhat.ceylon.common.tool.Hidden;
+import com.redhat.ceylon.common.tool.NonFatalToolMessage;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ParsedBy;
@@ -198,7 +199,6 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
-    private boolean noSources = false;
     
     private ModuleSpec jdkProvider;
     {
@@ -576,9 +576,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         if (expandedModulesOrFiles.isEmpty()) {
             String msg = CeylonCompileMessages.msg("error.no.sources");
             if (ModuleWildcardsHelper.onlyGlobArgs(this.modulesOrFiles)) {
-                errorAppend("ceylon compile: ").errorAppend(msg).errorNewline();
-                noSources = true;
-                return;
+                throw new NonFatalToolMessage(msg);
             } else {
                 throw new ToolUsageError(msg);
             }
@@ -624,10 +622,6 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
      */
     @Override
     public void run() throws IOException {
-        if (noSources) {
-            // Special case where we exit without error when we didn't find anything to compile
-            return;
-        }
         Result result = compiler.compile(arguments.toArray(new String[arguments.size()]));
         handleExitCode(result.exitCode, compiler.exitState);
     }
