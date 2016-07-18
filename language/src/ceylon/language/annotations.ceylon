@@ -343,7 +343,7 @@ shared annotation SmallAnnotation small()
 shared final annotation class ServiceAnnotation(contract)
         satisfies SequencedAnnotation<ServiceAnnotation,ClassDeclaration> {
     "The service interface or class that the annotated class provides."
-    ClassOrInterfaceDeclaration contract;
+    shared ClassOrInterfaceDeclaration contract;
 }
 
 "Annotation marking a class as implementing a service. 
