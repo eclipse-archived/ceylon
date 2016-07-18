@@ -16,5 +16,5 @@ shared native class Modulo(shared Anything meta) satisfies Module {
     shared actual native Boolean annotated<Annotation>()
             given Annotation satisfies AnnotationType;
     string = "module " + name + "/" + version;
-    shared actual {Service*} findServiceProviders<Service>(ClassOrInterface<Service> service) => empty;
+    shared actual native {Service*} findServiceProviders<Service>(ClassOrInterface<Service> service) => empty;
 }
