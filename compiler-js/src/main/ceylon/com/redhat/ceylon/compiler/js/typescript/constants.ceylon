@@ -57,6 +57,12 @@ shared String dynamicKey = "dyn";
 "Key for the flags of a function or method."
 compilerConstant ("KEY_FLAGS")
 shared String flagsKey = "$ff";
+"Key for the parameters of a function, method, class or constructor."
+compilerConstant ("KEY_PARAMS")
+shared String parametersKey = "ps";
+"Key to indicate that a parameter has a default value."
+compilerConstant ("KEY_DEFAULT")
+shared String defaultKey = "def";
 
 // meta type values
 "Meta type for an attribute or toplevel value."
@@ -65,3 +71,6 @@ shared String attributeMetaType = "a";
 "Meta type for a method or toplevel function."
 compilerConstant ("METATYPE_METHOD")
 shared String methodMetaType = "m";
+"Meta type for a parameter."
+compilerConstant ("METATYPE_PARAMETER")
+shared String parameterMetaType = "prm";

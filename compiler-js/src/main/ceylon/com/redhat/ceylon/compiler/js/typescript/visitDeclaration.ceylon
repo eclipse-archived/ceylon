@@ -2,6 +2,7 @@ import tsc {
     ...
 }
 import ceylon.json {
+    JsonArray,
     JsonObject
 }
 
@@ -58,7 +59,7 @@ void visitDeclaration(
                     nameKey->name,
                     // TODO type parameters
                     typeKey -> convertTypeForModel(type),
-                    // TODO parameter list
+                    parametersKey -> JsonArray { convertParameterListForModel(fdecl.parameters, typechecker) }, // wrap again because it’s one of potentially many parameter lists
                     flagsKey->0, // void flag has no effect and deferred flag doesn’t seem to be used in JS backend
                     packedAnnotationsKey -> packAnnotations {
                         shared = true;
