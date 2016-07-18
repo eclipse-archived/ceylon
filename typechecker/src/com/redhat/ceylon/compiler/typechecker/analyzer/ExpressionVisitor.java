@@ -430,9 +430,12 @@ public class ExpressionVisitor extends Visitor {
                             that.setPossiblyEmpty(
                                     cc.getPossiblyEmpty() || 
                                     !unit.isNonemptyIterableType(it));
+                            Type absentType = unit.getAbsentType(it);
+                            if (absentType==null) {
+                                absentType = unit.getNullType();
+                            }
                             Type firstType = 
-                                    unionType(
-                                        unit.getAbsentType(it), 
+                                    unionType(absentType, 
                                         cc.getFirstTypeModel(), 
                                         unit);
                             that.setFirstTypeModel(firstType);
