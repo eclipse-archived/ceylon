@@ -26,8 +26,16 @@ void testGetVarEmptyString() {
     varEmptyString = "";
 }
 
+void testStringIdentity() {
+    assert (stringIdentity("") == "");
+    assert (stringIdentity("foo") == "foo");
+    assert (stringIdentity { "bar"; } == "bar");
+    assert (stringIdentity { s = "baz"; } == "baz");
+}
+
 shared void run() {
     testConstEmptyString();
     testVarEmptyString();
     testGetVarEmptyString();
+    testStringIdentity();
 }

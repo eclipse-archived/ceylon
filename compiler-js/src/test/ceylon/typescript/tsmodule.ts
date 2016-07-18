@@ -3,3 +3,6 @@ export var varEmptyString: string = "";
 export function getVarEmptyString(): string {
     return varEmptyString;
 }
+export function stringIdentity(s: string): string {
+    return s;
+}
