@@ -676,6 +676,8 @@ public class TypeHierarchyVisitor extends Visitor {
                         !td.isAbstract() && !td.isAlias()) {
                     for (Declaration d: std.getMembers()) {
                         if (d.isShared() && 
+                                !d.isStaticallyImportable() &&
+                                !isConstructor(d) &&
                                 !isOverloadedVersion(d) && 
                                 isResolvable(d) && 
                                 !errors.contains(d.getName())) {
