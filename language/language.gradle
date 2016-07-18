@@ -2,15 +2,42 @@ ext {
     ceylonModuleName = 'language'
 }
 
-apply from : "${rootProject.projectDir}/gradle/use-ant-build.gradle"
+apply plugin : LifecycleBasePlugin
+apply plugin : CeylonCommonBuildProperties
 
-antBuild.dependsOn ':compiler-java:assemble'
+configurations {
+    antOutput
+}
 
-// TODO: Need to fix this when getting tests to work.
-tasks.'antCompile.tests.java.quick'.enabled = false
-tasks.'antCompile.tests.java'.enabled = false
-tasks.'antTest.java.quick'.enabled = false
-tasks.'antTest-quick'.enabled = false
-tasks.'antTest.java'.enabled = false
-tasks.'antTest.js'.enabled = false
-tasks.'antTest.js.quick'.enabled = false
+dependencies {
+    antOutput fileTree("${buildDir}/dist") {
+        include "**/*.jar"
+        include "**/*.car"
+    }
+}
+
+task invokeAntBuild( type : GradleBuild ) {
+    dir = projectDir
+    buildFile = file('ant-language.gradle')
+    tasks = ['antPublish']
+    startParameter.projectProperties+= [
+        ceylonDistDir  : distDir,
+        ceylonRepoDir  : repoDir,
+        ceylonLibDir   : repoLibDir,
+        ceylonBuildDir : buildDir
+    ]
+
+    // TODO: There are too many of these manual dependencies being listed... feels like duct-tape and string.
+    dependsOn ':compiler-java:assemble', ':compiler-java:publishJvmCompilerJars', ':runtime:setupRepo'
+}
+
+assemble.dependsOn invokeAntBuild
+
+task publishInternal {
+    dependsOn invokeAntBuild
+}
+
+['common','cli','model','cmr','compiler-java','langtools-classfile','typechecker','compiler-js'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
+    invokeAntBuild.dependsOn ":${it}:publishInternal"
+}
