@@ -813,7 +813,8 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Expression e = se.getExpression();
                 knownType = e==null ? null : e.getTypeModel();
                 //TODO: what to do here in case of !is
-                if (knownType!=null) {
+                if (knownType!=null 
+                        && !isTypeUnknown(knownType)) { //TODO: remove this if we make unknown a subtype of Anything) {
                     if (hasUncheckedNulls(e)) {
                         knownType = unit.getOptionalType(knownType);
                     }
