@@ -236,3 +236,43 @@ void casting(Type<LitClass> l){
     Integer i2 = `litValue`.get();
     String j2 = `litParameterisedFunction<String>`("a");
 }
+
+shared class Constructors() {
+    class NonSharedMember {
+        shared new otherCtor(Integer i) {}
+    }
+    void test(){
+        /*
+                 final MemberClassCallableConstructor<? super Constructors, ? extends Constructors.NonSharedMember, ? super Sequence<? extends Integer>> x = 
+                  (MemberClassCallableConstructor<? super Constructors, ? extends Constructors.NonSharedMember, ? super Sequence<? extends Integer>>)
+                  (MemberClassCallableConstructor)
+                  ((Class)typeLiteral(member(Constructors.$TypeDescriptor$, TypeDescriptor.klass(Constructors.NonSharedMember.class))))
+                  .getDeclaredConstructor(TypeDescriptor.tuple(false, false, -1, Integer.$TypeDescriptor$), "otherCtor");
+
+         */
+        value x = `NonSharedMember.otherCtor`;
+    }
+}
+
+void constructors(){
+    class C {
+        shared new c {}
+        shared new d() {}
+    }
+    print(C.c);    
+    value x1 = `C.c`;
+    value x2 = `C.d`;
+    /*
+        final ValueConstructor<? extends C> x1 = 
+         (ValueConstructor<? extends C>)
+         (ValueConstructor)
+         ((MemberClass)typeLiteral(TypeDescriptor.member(TypeDescriptor.functionOrValue(constructors_.class), TypeDescriptor.klass(C.class))))
+          .getDeclaredConstructor(TypeDescriptor.NothingType, "c");
+        final CallableConstructor x2 = 
+         (CallableConstructor)
+         (CallableConstructor)
+         ((MemberClass)typeLiteral(TypeDescriptor.member(TypeDescriptor.functionOrValue(constructors_.class), TypeDescriptor.klass(C.class))))
+          .getDeclaredConstructor(.ceylon.language.Empty.$TypeDescriptor$, "d");
+
+     */
+}
