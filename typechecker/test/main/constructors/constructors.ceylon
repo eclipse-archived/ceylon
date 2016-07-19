@@ -443,3 +443,39 @@ shared class WithIllegalDefaultArg {
         print(a);
     }
 }
+
+
+void notinherited() {
+    
+    class A {
+        shared new () {}
+        shared new create() {}
+        shared new instance {}
+        shared new overload() {}
+    }
+    
+    class B extends A {
+        shared new overload(String s) extends A() {}
+    }
+    
+    void runAB() {
+        value ai = A.instance;
+        @error value bi = B.instance;
+        value ac = A.create();
+        @error value bc = B.create();
+        
+        @error value over1 = B.overload();
+        value over2 = B.overload("");
+    }
+    
+    class C1 {
+        shared new create() {}
+    }
+    
+    class C2 extends C1 {
+        shared new create(String s = "") extends C1.create() {}
+    }
+    
+    C2 c2 = C2.create();
+
+}
