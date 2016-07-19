@@ -60,17 +60,29 @@ task setupRepo( type : Copy ) {
     into repoDir
     from 'dist/repo', {
         include "**/*.xml"
-        eachFile { fcd ->
-            fcd.path = fcd.path.replace('_version_',version)
-            fcd.filter ReplaceTokens, tokens : [ 'ceylon-version' : version ]
-        }
+        filter ReplaceTokens, tokens : [ 'ceylon-version' : version ]
     }
     from 'dist/repo', {
         include '**/*.jar'
     }
+    eachFile { fcd ->
+        fcd.path = fcd.path.replace('_version_',version)
+    }
 
     doFirst {
         logger.info "TODO: Copying hardcoded JARs might be better dealt with using Gradle's dependency management"
+    }
+
+    doLast {
+        // Necessary due to unexpected behaviour in eachFile
+        // See https://discuss.gradle.org/t/modifying-parent-paths-in-a-copy-task-creates-unnecessary-remnants/18567
+        fileTree(destinationDir) {
+            include '**/_version_'
+        }.visit {
+            if(it.isDirectory() && it.name == '_version_') {
+                delete it.file
+            }
+        }
     }
 }
 
