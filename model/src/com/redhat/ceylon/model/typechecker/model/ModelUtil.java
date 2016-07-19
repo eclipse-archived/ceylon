@@ -215,16 +215,17 @@ public class ModelUtil {
                 int sigSize = signature.size();
                 if (hasSeqParam) {
                     size--;
-                    if (sigSize<size) {
-                        return false;
-                    }
                 }
-                else if (sigSize!=size) {
+                else if (sigSize>size) {
                     return false;
                 }
                 for (int i=0; i<size; i++) {
+                    Parameter p = params.get(i);
+                    if (i>=sigSize) {
+                        return p.isDefaulted();
+                    }
                     FunctionOrValue pm = 
-                            params.get(i).getModel();
+                            p.getModel();
                     if (pm==null) {
                         return false;
                     }
@@ -241,8 +242,9 @@ public class ModelUtil {
                     }
                 }
                 if (hasSeqParam) {
+                    Parameter p = params.get(size);
                     FunctionOrValue model = 
-                            params.get(size).getModel();
+                            p.getModel();
                     Type pdt = 
                             model.appliedReference(null, 
                                     NO_TYPE_ARGS)
