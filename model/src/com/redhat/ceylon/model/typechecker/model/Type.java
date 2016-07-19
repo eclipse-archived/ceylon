@@ -3333,7 +3333,14 @@ public class Type extends Reference {
      */
     public Type getUnionOfCases() {
         if (unionOfCases==null) {
-            unionOfCases = getUnionOfCasesInternal();
+            checkDepth();
+            incDepth();
+            try {
+                unionOfCases = getUnionOfCasesInternal();
+            }
+            finally {
+                decDepth();
+            }
         }
         return unionOfCases;
     }
