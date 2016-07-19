@@ -518,7 +518,7 @@ public class Type extends Reference {
                 }
                 else if (covariant && otherInvariant ||
                         invariant && otherCovariant) {
-                    //Inv<out nothing> == Inv<Nothing>
+                    //Inv<out Nothing> == Inv<Nothing>
                     if (!arg.isNothing() || !otherArg.isNothing()) {
                         return false;
                     }

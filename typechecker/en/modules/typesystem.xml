@@ -2473,22 +2473,25 @@ interface NumberLiteral
 		            </para>
 		        </listitem>
 		        <listitem>
-                    <para><literal>A</literal> is <literal>out T</literal>, and 
-                    <literal>B</literal> is <literal>out S</literal>, where <literal>T</literal>
-                    and <literal>S</literal> are supertypes of the upper bounds of
-                    <literal>P</literal>,</para>
+                    <para><literal>A</literal> and <literal>B</literal> are both covariant type
+                    arguments, and both types are supertypes of <literal>P</literal>,</para>
                 </listitem>
                 <listitem>
-                    <para><literal>A</literal> is <literal>in Nothing</literal>, and 
-                    <literal>B</literal> is <literal>out T</literal>, where <literal>T</literal>
-                    is a supertype of the upper bounds of <literal>P</literal>, 
-                    or</para>
+                    <para>either <literal>A</literal> or <literal>B</literal> is a contravariant
+                    type argument with type precisely <literal>Nothing</literal>, and the other 
+                    type argument is covariant and its type is a supertype of <literal>P</literal>,
+                    </para>
                 </listitem>
                 <listitem>
-                    <para><literal>A</literal> is <literal>out S</literal>, and  
-                    <literal>B</literal> is <literal>in Nothing</literal>, where <literal>S</literal>
-                    is a supertype of the upper bounds of <literal>P</literal>.</para>
-	            </listitem>
+                    <para>both <literal>A</literal> and <literal>B</literal> have type precisely 
+                    <literal>Nothing</literal>, and one is an invariant type argument, and the
+                    other is a covariant type argument, or</para>
+                </listitem>
+                <listitem>
+                    <para>both <literal>A</literal> and <literal>B</literal> have types which 
+                    are supertypes of <literal>P</literal>, and one is an invariant type argument, 
+                    and the other is an contravariant type argument.</para>
+                </listitem>
             </itemizedlist>
             
             <!--
@@ -2509,17 +2512,14 @@ interface NumberLiteral
                 <listitem>
                     <para>
                         <literal>B</literal> is a covariant type argument, and
-                        <literal>A</literal> is contravariant, and
                         <literal>T</literal> is a subtype of <literal>B</literal>,
-                        or
                     </para>
                 </listitem>
                 <listitem>
                     <para>
                         <literal>B</literal> is a contravariant type argument, 
-                        and <literal>A</literal> is covariant, and the type 
-                        <literal>B</literal> is precisely <literal>Nothing</literal>, 
-                        or
+                        and the type <literal>B</literal> is precisely 
+                        <literal>Nothing</literal>,
                     </para>
                 </listitem>
                 <listitem>
@@ -2528,7 +2528,6 @@ interface NumberLiteral
                         <literal>A</literal> is not contravariant, and the type
                         <literal>A</literal> is a subtype of the type 
                         <literal>B</literal>,
-                        or
                     </para>
                 </listitem>
                 <listitem>
@@ -2536,7 +2535,21 @@ interface NumberLiteral
                         <literal>B</literal> is a contravariant type argument, and
                         <literal>A</literal> is not covariant, and the type
                         <literal>B</literal> is a subtype of the type
-                        <literal>A</literal>, or
+                        <literal>A</literal>,
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <literal>B</literal> is an invariant type argument,
+                        <literal>A</literal> is a covariant type argument, and
+                        <literal>T</literal> is a subtype of both types, or
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <literal>B</literal> is an invariant type argument,
+                        <literal>A</literal> is a contravariant type argument, and
+                        both types are precisely <literal>Nothing</literal>,
                     </para>
                 </listitem>
                 <listitem>
