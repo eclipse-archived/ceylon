@@ -451,7 +451,7 @@ public abstract class TypeDeclaration extends Declaration
                         signature, variadic);
         if (dec==null) {
             return getMemberInternal(name, 
-                    signature, variadic, false, false)
+                    signature, variadic, false)
                     .getMember();
         }
         else {
@@ -481,7 +481,7 @@ public abstract class TypeDeclaration extends Declaration
                         signature, variadic);
         if (dec==null) {
             return getMemberInternal(name, 
-                    signature, variadic, false, false)
+                    signature, variadic, false)
                     .isAmbiguous();
         }
         else {
@@ -502,22 +502,20 @@ public abstract class TypeDeclaration extends Declaration
             boolean onlyExactMatches) {
         return getMemberInternal(name, 
                 signature, variadic, 
-                onlyExactMatches, false)
+                onlyExactMatches)
                 .getMember();
     }
 
     private SupertypeDeclaration getMemberInternal(
             String name,
             List<Type> signature, boolean variadic, 
-            boolean onlyExactMatches,
-            boolean includeInheritedConstructors) {
+            boolean onlyExactMatches) {
         if (!onlyExactMatches && signature!=null) {
             //first try for an exact match
             SupertypeDeclaration sd = 
                     getMemberInternal(name, 
                             signature, variadic, 
-                            true,
-                            includeInheritedConstructors);
+                            true);
             if (sd.getMember()!=null || sd.isAmbiguous()) {
                 return sd;
             }
@@ -541,8 +539,7 @@ public abstract class TypeDeclaration extends Declaration
             SupertypeDeclaration sd = 
                     getSupertypeDeclaration(name, 
                             signature, variadic, 
-                            onlyExactMatches,
-                            includeInheritedConstructors);
+                            onlyExactMatches, false);
             if (sd.getMember()!=null || sd.isAmbiguous()) {
                 return sd;
             }
@@ -564,15 +561,6 @@ public abstract class TypeDeclaration extends Declaration
             String name, 
             List<Type> signature, boolean variadic, 
             boolean onlyExactMatches) {
-        return getMemberOrParameter(name, signature, variadic, 
-                onlyExactMatches, true);
-    }
-    
-    Declaration getMemberOrParameter(
-            String name, 
-            List<Type> signature, boolean variadic, 
-            boolean onlyExactMatches,   
-            boolean includeInheritedConstructors) {
         //first search for the member or parameter 
         //in the local scope, including non-shared 
         //declarations
@@ -588,8 +576,7 @@ public abstract class TypeDeclaration extends Declaration
                 Declaration supertype = 
                         getSupertypeDeclaration(name, 
                                 signature, variadic, 
-                                onlyExactMatches,
-                                includeInheritedConstructors)
+                                onlyExactMatches, true)
                                 .getMember();
                 if (supertype!=null && 
                         !supertype.isAbstraction()) {
@@ -614,8 +601,7 @@ public abstract class TypeDeclaration extends Declaration
                 //now look for inherited shared declarations
                 dec = getSupertypeDeclaration(name,
                         signature, variadic, 
-                        onlyExactMatches,
-                        includeInheritedConstructors)
+                        onlyExactMatches, true)
                         .getMember();
             }
         }
@@ -717,12 +703,12 @@ public abstract class TypeDeclaration extends Declaration
      * Get the supertype which defines the most-refined
      * member with the given name.
      */
-    SupertypeDeclaration getSupertypeDeclaration(
+    private SupertypeDeclaration getSupertypeDeclaration(
             final String name, 
             final List<Type> signature, 
             final boolean variadic,
             final boolean onlyExactMatches,
-            final boolean includeInheritedConstrictors) {
+            final boolean includeInheritedConstructors) {
         class ExactCriteria implements Type.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
@@ -735,11 +721,11 @@ public abstract class TypeDeclaration extends Declaration
                                 signature, variadic, 
                                 onlyExactMatches);
                 if (dm!=null && 
-                        dm.isShared() && 
-                        (includeInheritedConstrictors ||
-//                         !dm.isStaticallyImportable() &&
-                         !isConstructor(dm)) &&
-                        isResolvable(dm)) {
+                        dm.isShared() &&
+                        isResolvable(dm) &&
+                        (includeInheritedConstructors ||
+//                       !dm.isStaticallyImportable() &&
+                         !isConstructor(dm))) {
                     // only accept abstractions if we 
                     // don't have a signature
                     return !dm.isAbstraction() || 
