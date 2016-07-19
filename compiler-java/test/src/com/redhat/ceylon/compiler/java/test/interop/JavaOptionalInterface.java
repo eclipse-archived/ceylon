@@ -19,15 +19,28 @@
  */
 package com.redhat.ceylon.compiler.java.test.interop;
 
+class JavaClass{}
+
 public interface JavaOptionalInterface {
     JavaOptionalInterface method(JavaOptionalInterface x);
     JavaOptionalInterface method2(JavaOptionalInterface x);
-    
+
+    String stringMethod(String x);
+    String stringMethod2(String x);
+
     JavaOptionalInterface getProp1();
     void setProp1(JavaOptionalInterface x);
 
     JavaOptionalInterface getProp2();
     void setProp2(JavaOptionalInterface x);
+
+    String getStringProp1();
+    void setStringProp1(String x);
+
+    String getStringProp2();
+    void setStringProp2(String x);
+
+    String getStringProp3();
 
     JavaOptionalInterface getProp3();
     JavaOptionalInterface getProp4();
