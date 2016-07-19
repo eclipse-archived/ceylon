@@ -2035,7 +2035,7 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
         </tbody>
         </tgroup>
         </table>
-
+        
         <para>It's important to be aware that in Ceylon, compared to other C-like 
         languages, the logical not operator <literal>!</literal> has a very low
         precedence. The following expressions are equivalent:</para>
@@ -2627,6 +2627,9 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
     </tbody>
     </tgroup>
     </table>
+    
+    <para>Operands within brackets in any subrange operator are parsed as if they
+    were operands of the <literal>..</literal> or <literal>:</literal> operators.</para>
     
     <para>There are two special cases related to sequences. A type <literal>X</literal>
     is a <emphasis>sequence type</emphasis> if <literal>X</literal> is a subtype of 
