@@ -488,35 +488,38 @@ public class Type extends Reference {
                 boolean otherInvariant = 
                         !otherCovariant && 
                         !otherContravariant;
+                Unit unit = getDeclaration().getUnit();
+                if (covariant 
+                        && p.getType().isSubtypeOf(arg)) {
+                    arg = unit.getAnythingType();
+                }
+                if (otherCovariant 
+                        && p.getType().isSubtypeOf(otherArg)) {
+                    otherArg = unit.getAnythingType();
+                }
                 if (contravariant && otherCovariant) {
                     //Inv<in Nothing> == Inv<out Anything> 
-                    if (!arg.isNothing() ||
-                            !intersectionOfSupertypes(p)
-                                .isSubtypeOf(otherArg)) {
+                    if (!arg.isNothing() || !otherArg.isAnything()) {
                         return false;
                     }
                 }
                 else if (covariant && otherContravariant) {
                     //Inv<out Anything> == Inv<in Nothing>
-                    if (!otherArg.isNothing() ||
-                            !intersectionOfSupertypes(p)
-                                .isSubtypeOf(arg)) {
+                    if (!otherArg.isNothing() || !arg.isAnything()) {
                         return false;
                     }
                 }
                 else if (contravariant && otherInvariant ||
                         invariant && otherContravariant) {
                     //Inv<in Anything> == Inv<Anything> 
-                    if (!arg.isAnything() || 
-                        !otherArg.isAnything()) {
+                    if (!arg.isAnything() || !otherArg.isAnything()) {
                         return false;
                     }
                 }
                 else if (covariant && otherInvariant ||
                         invariant && otherCovariant) {
                     //Inv<out nothing> == Inv<Nothing>
-                    if (!arg.isNothing() || 
-                        !otherArg.isNothing()) {
+                    if (!arg.isNothing() || !otherArg.isNothing()) {
                         return false;
                     }
                 }
@@ -752,17 +755,25 @@ public class Type extends Reference {
         List<TypeParameter> typeParameters = 
                 type.getDeclaration()
                     .getTypeParameters();
-        for (TypeParameter tp: typeParameters) {
-            Type arg = supertype.getTypeArguments().get(tp);
-            Type otherArg = type.getTypeArguments().get(tp);
+        for (TypeParameter p: typeParameters) {
+            Type arg = supertype.getTypeArguments().get(p);
+            Type otherArg = type.getTypeArguments().get(p);
             if (arg==null || otherArg==null) {
                 return false;
             }
-            else if (type.isCovariant(tp)) {
-                if (supertype.isContravariant(tp)) {
+            Unit unit = supertype.getDeclaration().getUnit();
+            if (supertype.isCovariant(p)
+                    && p.getType().isSubtypeOf(arg)) {
+                arg = unit.getAnythingType();
+            }
+            if (type.isCovariant(p)
+                    && p.getType().isSubtypeOf(otherArg)) {
+                otherArg = unit.getAnythingType();
+            }
+            if (type.isCovariant(p)) {
+                if (supertype.isContravariant(p)) {
                     //Inv<in T> is a subtype of Inv<out Anything>
-                    if (!tp.getType()
-                            .isSubtypeOf(otherArg)) {
+                    if (!otherArg.isAnything()) {
                         return false;
                     }
                 }
@@ -770,8 +781,8 @@ public class Type extends Reference {
                     return false;
                 }
             }
-            else if (type.isContravariant(tp)) {
-                if (supertype.isCovariant(tp)) {
+            else if (type.isContravariant(p)) {
+                if (supertype.isCovariant(p)) {
                     //Inv<out T> is a subtype of Inv<in Nothing>
                     if (!otherArg.isNothing()) {
                         return false;
@@ -785,9 +796,9 @@ public class Type extends Reference {
                 //type is invariant in p
                 //Inv<out Nothing> is a subtype of Inv<Nothing>
                 //Inv<in Anything> is a subtype of Inv<Anything>
-                if (supertype.isCovariant(tp) && 
+                if (supertype.isCovariant(p) && 
                         !arg.isNothing() ||
-                    supertype.isContravariant(tp) && 
+                    supertype.isContravariant(p) && 
                         !arg.isAnything() ||
                     !arg.isExactlyInternal(otherArg)) {
                     return false;
