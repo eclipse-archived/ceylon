@@ -377,7 +377,6 @@ public class InteropTests extends CompilerTests {
     public void testIopCallsDefaultAccessClassWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("access/CallsDefaultAccessClassWithOverloading",
-                new CompilerError(22, "class cannot be instantiated: 'JavaDefaultAccessClass4' does not have a default constructor"),
                 new CompilerError(22, "illegal argument types in invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' which accepts the given argument types ''")
         );
     }
@@ -400,7 +399,6 @@ public class InteropTests extends CompilerTests {
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("CallsDefaultAccessClassInAnotherPkgWithOverloading",
                 new CompilerError(26, "illegal argument types in invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' which accepts the given argument types ''"),
-                new CompilerError(26, "class cannot be instantiated: 'JavaDefaultAccessClass4' does not have a default constructor"),
                 new CompilerError(27, "type constructor is not visible: 'JavaDefaultAccessClass4'"),
                 new CompilerError(28, "protected constructor is not visible: 'JavaDefaultAccessClass4'")
         );
