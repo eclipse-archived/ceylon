@@ -261,3 +261,23 @@ Gradle lifecycle tasks to appropriate ones in the Ant build.
 | `tool-provider | Disabled (requires updates to Gradle script)
 | `typechecker` | Disabled (requires updates to Gradle script)
 |===
+
+== Other items
+
+[quote,https://github.com/ceylon/ceylon/pull/6378#issuecomment-233606475]
+----
+Another thing is that the Ant build creates a BUILDID file in the distribution folder that contains the (short) Git commit id of the current HEAD of the Git repository that is being used to build things. The same ID is also replaced in the common/src/com/redhat/ceylon/common/Versions.java file.
+Look at the defcurrentcommit task in dist/build.xml for how we do that. (We run git rev-parse --short HEAD)
+But it should also be possible to define the buildid on the command line when executing the gradlew build command in case we're trying to build plain sources (not from a Git repository). In case of Ant we do this by passing -Dbuildid=XXXX on the command line.
+(We haven't done this for ant, but an error message if no Git repository was found and also no -Dbuildid was passed would be great)
+
+Also missing from the root distribution folder are: contrib, LICENSE-ASL, LICENSE-GPL-CP, NOTICE, README.md, samples and templates. These can simply be copied from dist.
+
+
+
+Hah, you actually improved something: in our distribution the bin/ceylon-compile-js.plugin file is missing!
+
+From my previous comment I failed to mention the dist/bin folder. It's contents should also be copied to the distribution's bin folder. (We're missing bin/ceylon-format.plugin)
+
+----
+
