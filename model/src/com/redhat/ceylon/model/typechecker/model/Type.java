@@ -2835,7 +2835,7 @@ public class Type extends Reference {
                                 types);
                     }
                 }
-                return union(types, unit);
+                return preserveUnderlyingType(type, union(types, unit));
             }
             else if (type.isIntersection()) {
                 List<Type> sts = type.getSatisfiedTypes();
@@ -2850,7 +2850,7 @@ public class Type extends Reference {
                                 types, unit);
                     }
                 }
-                return canonicalIntersection(types, unit);
+                return preserveUnderlyingType(type, canonicalIntersection(types, unit));
             }
             else if (type.isTypeParameter()) {
                 TypeParameter tp = (TypeParameter) ptd;
@@ -2916,6 +2916,11 @@ public class Type extends Reference {
             finally {
                 decDepth();
             }
+        }
+
+        private Type preserveUnderlyingType(Type oldType, Type newType) {
+            newType.setUnderlyingType(oldType.getUnderlyingType());
+            return newType;
         }
 
         private Type substitutedAppliedTypeConstructor(
