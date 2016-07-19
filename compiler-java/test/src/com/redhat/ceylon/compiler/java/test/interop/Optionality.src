@@ -1,9 +1,10 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-class OptionalInterface extends .com.redhat.ceylon.compiler.java.test.interop.JavaClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface {
+class OptionalInterface<X> extends .com.redhat.ceylon.compiler.java.test.interop.JavaClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface {
     
-    protected OptionalInterface() {
+    protected OptionalInterface(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
         super();
+        this.$reified$X = $reified$X;
         this.prop1 = null;
         this.prop2 = null;
         this.stringProp1 = null;
@@ -13,8 +14,9 @@ class OptionalInterface extends .com.redhat.ceylon.compiler.java.test.interop.Ja
         this.prop4 = null;
     }
     
-    OptionalInterface(final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x) {
+    OptionalInterface(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x) {
         super();
+        this.$reified$X = $reified$X;
         this.prop1 = x;
         this.prop2 = null;
         this.stringProp1 = "asd";
@@ -23,6 +25,7 @@ class OptionalInterface extends .com.redhat.ceylon.compiler.java.test.interop.Ja
         this.prop3 = x;
         this.prop4 = x;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface method(final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x) {
@@ -349,7 +352,6 @@ class OptionalInterface extends .com.redhat.ceylon.compiler.java.test.interop.Ja
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.interop.OptionalInterface.$TypeDescriptor$;
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.OptionalInterface.class, $reified$X);
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.OptionalInterface.class);
 }

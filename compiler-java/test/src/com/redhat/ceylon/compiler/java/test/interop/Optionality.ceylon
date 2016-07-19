@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @noanno
-class OptionalInterface(JavaOptionalInterface x) extends JavaClass() satisfies JavaOptionalInterface {
+class OptionalInterface<X>(JavaOptionalInterface x) extends JavaClass() satisfies JavaOptionalInterface {
     shared actual JavaOptionalInterface method(JavaOptionalInterface x){
         Object o1 = x.prop1;
         Object o2 = x.method(x);
