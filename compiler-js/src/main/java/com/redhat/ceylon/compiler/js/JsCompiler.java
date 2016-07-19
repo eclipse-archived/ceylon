@@ -28,6 +28,7 @@ import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.js.loader.JsModuleSourceMapper;
 import com.redhat.ceylon.compiler.js.loader.JsonModule;
+import com.redhat.ceylon.compiler.js.loader.NpmAware;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsLogger;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
@@ -262,7 +263,7 @@ public class JsCompiler {
                         if (!om.equals(_m) && (!om.isNative() ||
                                 om.getNativeBackends().supports(Backend.JavaScript))) {
                             Module impmod = ((Package) scope).getModule();
-                            if (impmod instanceof JsonModule && ((JsonModule)impmod).getNpmPath() != null) {
+                            if (impmod instanceof NpmAware && ((NpmAware)impmod).getNpmPath() != null) {
                                 output.get(_m).requireFromNpm(impmod, names);
                             } else {
                                 output.get(_m).require(impmod, names);

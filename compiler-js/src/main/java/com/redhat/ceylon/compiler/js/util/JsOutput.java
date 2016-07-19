@@ -21,6 +21,7 @@ import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.js.loader.JsonModule;
 import com.redhat.ceylon.compiler.js.loader.MetamodelVisitor;
 import com.redhat.ceylon.compiler.js.loader.ModelEncoder;
+import com.redhat.ceylon.compiler.js.loader.NpmAware;
 import com.redhat.ceylon.compiler.typechecker.io.VirtualFile;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -141,7 +142,7 @@ public class JsOutput {
 
     public void requireFromNpm(final Module mod, final JsIdentifierNames names) {
         final String modAlias = names.moduleAlias(mod);
-        final String path = ((JsonModule)mod).getNpmPath();
+        final String path = ((NpmAware)mod).getNpmPath();
         if (requires.put(path, modAlias) == null) {
             //We use our own special "require" which will wrap single functions in a proper exports object
             //If the module name has dashes, we transform that into camel casing.
