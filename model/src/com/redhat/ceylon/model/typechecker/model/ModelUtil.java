@@ -388,7 +388,7 @@ public class ModelUtil {
                                 unit.getDefiniteType(rplt);
                         Type argumentType = 
                                 signature != null && 
-                                signature.size() >= i ? 
+                                i < signature.size() ? 
                                         signature.get(i) : 
                                         null;
                         if (isTypeUnknown(otherType) || 
@@ -399,7 +399,7 @@ public class ModelUtil {
                                 erase(paramType, unit);
                         TypeDeclaration otd = 
                                 erase(otherType, unit);
-                        if(paramType.isExactly(otherType) && 
+                        if (paramType.isExactly(otherType) && 
                                 supportsCoercion(ptd) &&
                                 // do we have different scores?
                                 hasWorseScore(
@@ -419,7 +419,7 @@ public class ModelUtil {
                         }
                     }
                     // check sequenced parameters last
-                    if (dhsp && rhsp){
+                    if (dhsp && rhsp) {
                         Type dplt = 
                                 dpl.get(dplSize).getModel()
                                 .appliedReference(null, 
