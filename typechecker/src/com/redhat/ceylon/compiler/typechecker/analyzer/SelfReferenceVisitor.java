@@ -33,6 +33,7 @@ public class SelfReferenceVisitor extends Visitor {
     private int nestedLevel = -1;
     private boolean defaultArgument;
     private boolean inCaseTypesList;
+    private boolean inExtends;
 
     public SelfReferenceVisitor(TypeDeclaration td) {
         typeDeclaration = td;
@@ -146,18 +147,28 @@ public class SelfReferenceVisitor extends Visitor {
                 resolveTypeAliases(that.getDeclaration());
         if (member!=null
                 && !member.isStaticallyImportable()
-                && isInherited(that.getScope(), member)
-                && !member.getUnit().getPackage().getModule().isJava()) {
+                && isInherited(that.getScope(), member)) {
             Declaration container = 
                     (Declaration) 
-                    member.getContainer();
-            that.addError("inherited member may not be used in initializer of '" +
-                    typeDeclaration.getName() + 
-                    "': '" + member.getName() + 
-                    "' is inherited by '" + 
-                    typeDeclaration.getName() +
-                    "' from '" + 
-                    container.getName() + "'");
+                        member.getContainer();
+            if (inExtends) {
+                that.addError("inherited member may not be used in extends clause of '" +
+                        typeDeclaration.getName() + 
+                        "': '" + member.getName() + 
+                        "' is inherited by '" + 
+                        typeDeclaration.getName() +
+                        "' from '" + 
+                        container.getName() + "'");
+            }
+            else if (!member.getUnit().getPackage().getModule().isJava()) {
+                that.addError("inherited member may not be used in initializer of '" +
+                        typeDeclaration.getName() + 
+                        "': '" + member.getName() + 
+                        "' is inherited by '" + 
+                        typeDeclaration.getName() +
+                        "' from '" + 
+                        container.getName() + "'");
+            }
         }
     }
     
@@ -222,6 +233,13 @@ public class SelfReferenceVisitor extends Visitor {
     @Override
     public void visit(Tree.AnnotationList that) {}
 
+    @Override
+    public void visit(Tree.ExtendedType that) {
+        inExtends = true;
+        super.visit(that);
+        inExtends = false;
+    }
+    
     @Override
     public void visit(Tree.ExtendedTypeExpression that) {
         super.visit(that);
