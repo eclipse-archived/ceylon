@@ -2995,6 +2995,7 @@ public class ExpressionVisitor extends Visitor {
             int paramsSize = paramTypes.size();
             for (int i=0; i<paramsSize && i<argCount; i++) {
                 Type paramType = paramTypes.get(i);
+                paramType = callableFromUnion(paramType);
                 Tree.PositionalArgument arg = args.get(i);
                 if (arg instanceof Tree.ListedArgument &&
                         unit.isCallableType(paramType)) {
@@ -3210,6 +3211,7 @@ public class ExpressionVisitor extends Visitor {
                         paramType = 
                                 unit.getIteratedType(paramType);
                     }
+                    paramType = callableFromUnion(paramType);
                     if (unit.isCallableType(paramType)) {
                         inferParameterTypesFromCallableType(
                                 paramType, param, anon);
@@ -3239,6 +3241,24 @@ public class ExpressionVisitor extends Visitor {
                     stme.setParameterType(tpr.getFullType());
                 }
             }
+        }
+    }
+
+    private Type callableFromUnion(Type paramType) {
+        if (paramType!=null && paramType.isUnion()) {
+            List<Type> cts = paramType.getCaseTypes();
+            List<Type> list = 
+                    new ArrayList<Type>
+                        (cts.size());
+            for (Type ct: cts) {
+                if (unit.isCallableType(ct)) {
+                    list.add(ct);
+                }
+            }
+            return union(list, unit);
+        }
+        else {
+            return paramType;
         }
     }
     
