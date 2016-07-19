@@ -207,7 +207,7 @@ class Assignability() {
     }
     
     @error if (X() is Y) {}
-    @error if (X() is Object ) {}
+    @warn:"redundantNarrowing" if (X() is Object ) {}
     @error if (is Y x = X()) {}
     @warn:"redundantNarrowing" if (is Object x = X()) {}
     
