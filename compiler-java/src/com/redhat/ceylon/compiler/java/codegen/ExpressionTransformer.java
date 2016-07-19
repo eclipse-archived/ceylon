@@ -1205,7 +1205,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             // make sure we cast it to ClassOrInterface
             String metatypeName;
             if (Decl.isConstructor(declaration)) {
-                if (Decl.getConstructedClass(declaration).isToplevel()) {
+                Class constructedClass = Decl.getConstructedClass(declaration);
+                Declaration container = getDeclarationContainer(constructedClass);
+                if (constructedClass.isToplevel() || container instanceof TypeDeclaration == false) {
                     metatypeName = "Class";
                 } else {
                     metatypeName = "MemberClass";
