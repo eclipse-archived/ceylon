@@ -5805,7 +5805,8 @@ public class ExpressionVisitor extends Visitor {
                     Type knownType = term.getTypeModel();
                     if (!isTypeUnknown(knownType)) {
                         if (knownType.isSubtypeOf(type)) {
-                            that.addError("expression type is a subtype of the type: '" +
+                            that.addUsageWarning(Warning.redundantNarrowing,
+                                    "expression type is a subtype of the type: '" +
                                     knownType.asString(unit) + 
                                     "' is assignable to '" +
                                     type.asString(unit) + "'");
