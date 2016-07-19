@@ -2234,7 +2234,11 @@ public abstract class DeclarationVisitor extends Visitor {
             }
         }
         if (hasAnnotation(al, "final", unit)) {
-            if (model instanceof Class) {
+            if (model instanceof ClassAlias) {
+                that.addError("declaration is a class alias, and may not be annotated final", 
+                        1700);
+            }
+            else if (model instanceof Class) {
                 ((Class) model).setFinal(true);
             }
             else {
