@@ -2462,11 +2462,34 @@ interface NumberLiteral
             
             <para>For a generic type <literal>X</literal>, the instantiations <literal>Y</literal> 
             and <literal>Z</literal> of <literal>X</literal> represent the same type if and 
-            only if for every <literal>A</literal> in the list of type arguments specified
-            in <literal>Y</literal> and corresponding <literal>B</literal> in the list of type 
-            arguments specified in <literal>Z</literal>, <literal>A</literal> is exactly the 
-            same type as <literal>B</literal>, and the variance of <literal>A</literal> is
-            the same as <literal>B</literal>.</para>
+            only if for every type parameter <literal>P</literal> of <literal>X</literal> and
+            corresponding type arguments <literal>A</literal> in <literal>Y</literal> and
+            <literal>B</literal> in <literal>Z</literal>:</para>
+            
+            <itemizedlist>
+	            <listitem>
+		            <para><literal>A</literal> is exactly the same type as <literal>B</literal>, 
+		            and the variance of <literal>A</literal> is the same as <literal>B</literal>,
+		            </para>
+		        </listitem>
+		        <listitem>
+                    <para><literal>A</literal> is <literal>out T</literal>, and 
+                    <literal>B</literal> is <literal>out S</literal>, where <literal>T</literal>
+                    and <literal>S</literal> are supertypes of the upper bounds of
+                    <literal>P</literal>,</para>
+                </listitem>
+                <listitem>
+                    <para><literal>A</literal> is <literal>in Nothing</literal>, and 
+                    <literal>B</literal> is <literal>out T</literal>, where <literal>T</literal>
+                    is a supertype of the upper bounds of <literal>P</literal>, 
+                    or</para>
+                </listitem>
+                <listitem>
+                    <para><literal>A</literal> is <literal>out S</literal>, and  
+                    <literal>B</literal> is <literal>in Nothing</literal>, where <literal>S</literal>
+                    is a supertype of the upper bounds of <literal>P</literal>.</para>
+	            </listitem>
+            </itemizedlist>
             
             <!--
             <para>For a generic type <literal>T&lt;n&gt;</literal>, the types 
