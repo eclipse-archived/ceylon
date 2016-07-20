@@ -16,7 +16,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
-import com.redhat.ceylon.cmr.impl.NpmRepository;
+import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.ModuleSpec;
@@ -138,8 +138,8 @@ public class ModuleCopycat {
         assert(context != null);
         if (!jdkProvider.isJDKModule(context.getName())) {
             String module = ModuleUtil.makeModuleName(context.getName(), context.getVersion());
-            // skip NPM imports for now
-            if (!copiedModules.add(module) || NpmRepository.NAMESPACE.equals(context.getNamespace())) {
+            // Skip all duplicates and non-Ceylon imports (for now)
+            if (!copiedModules.add(module) || !DefaultRepository.NAMESPACE.equals(context.getNamespace())) {
                 // Faking a copy here for feedback because it was already done and we never copy twice
                 if (feedback != null) {
                     feedback.beforeCopyModule(context, count++, maxCount);
