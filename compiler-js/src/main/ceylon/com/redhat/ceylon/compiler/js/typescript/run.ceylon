@@ -42,9 +42,21 @@ shared void run() {
             moduleName->packageObject
         };
         // emit program; TODO write in Ceylon
+        EmitResult result;
         dynamic {
-            eval("(function(program,js){program.emit(undefined,function(fileName,data){js.write(data);});})")(program, js);
+            result = eval("(function(program,js){
+                               let result = program.emit(undefined,function(fileName,data){js.write(data);});
+                               result.emittedFiles = result.emittedFiles || [];
+                               result.sourceMaps = result.sourceMaps || [];
+                               return result;
+                           })")(program, js);
             // TODO diagnostics, see https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API#a-minimal-compiler
+        }
+        value diagnostics = array(getPreEmitDiagnostics(program)).sequence().append(array(result.diagnostics).sequence());
+        for (diagnostic in diagnostics) {
+            //value lineAndCharacter = getLineAndCharacterOfPosition(diagnostic.file, diagnostic.start);
+            value message = flattenDiagnosticMessageText(diagnostic.messageText, "\n");
+            process.writeErrorLine(message);
         }
         // write JS header
         js.writeLine("(function(define) { define(function(require, ex$, module) {
@@ -58,6 +70,11 @@ shared void run() {
                       ex$.$pkg$ans$``moduleName``=function(){return[m$1.shared()];};");
         // visit: populate model object and add additional values to ex$ object
         for (sourceFile in program.getSourceFiles()) {
+            if (sourceFile.fileName.endsWith("/lib.d.ts")) {
+                // skip lib file
+                // TODO need to figure out where tsc gets the lib file from, and whether this is supposed to be necessary
+                continue;
+            }
             forEachChild(sourceFile, visitDeclaration(packageObject, js, program));
         }
         // write JS footer
