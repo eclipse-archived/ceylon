@@ -803,4 +803,9 @@ public class InteropTests extends CompilerTests {
     public void testIopNullAnnotations(){
         compile("nullable/NullAnnotationsJava.java", "nullable/NullAnnotations.ceylon");
     }
+
+    @Test
+    public void testIopRawImplementations(){
+        compile("RawJava.java", "Raw.ceylon");
+    }
 }
