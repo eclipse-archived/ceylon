@@ -191,15 +191,17 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         // Now do the actual copying
         final boolean logArtifacts = verbose != null && (verbose.contains("all") || verbose.contains("files"));
         ModuleCopycat copier = new ModuleCopycat(getRepositoryManager(), getOutputRepositoryManager(), log, new ModuleCopycat.CopycatFeedback() {
+            boolean haveCopiedArtifacts = false;
             @Override
             public boolean beforeCopyModule(ArtifactContext ac, int count, int max) throws IOException {
                 String module = ModuleUtil.makeModuleName(ac.getName(), ac.getVersion());
                 msg("copying.module", module, count+1, max).flush();
+                haveCopiedArtifacts = false;
                 return true;
             }
             @Override
             public void afterCopyModule(ArtifactContext ac, int count, int max, boolean copied) throws IOException {
-                if (!logArtifacts) {
+                if (!logArtifacts || !haveCopiedArtifacts) {
                     String msg;
                     if (copied) {
                         msg = OSUtil.color(Messages.msg(bundle, "copying.ok"), OSUtil.Color.green);
@@ -211,6 +213,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             }
             @Override
             public boolean beforeCopyArtifact(ArtifactContext ac, ArtifactResult ar, int count, int max) throws IOException {
+                haveCopiedArtifacts = true;
                 if (logArtifacts) {
                     if (count == 0) {
                         append(" -- ");
@@ -236,6 +239,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             }
             @Override
             public void afterCopyArtifact(ArtifactContext ac, ArtifactResult ar, int count, int max, boolean copied) throws IOException {
+                haveCopiedArtifacts = true;
                 if (logArtifacts) {
                     append(" ").msg((copied) ? "copying.ok" : "copying.skipped").newline().flush();
                 }
