@@ -17,6 +17,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
+import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.ModuleSpec;
@@ -138,8 +139,8 @@ public class ModuleCopycat {
         assert(context != null);
         if (!jdkProvider.isJDKModule(context.getName())) {
             String module = ModuleUtil.makeModuleName(context.getName(), context.getVersion());
-            // Skip all duplicates and non-Ceylon imports (for now)
-            if (!copiedModules.add(module) || !DefaultRepository.NAMESPACE.equals(context.getNamespace())) {
+            // Skip all duplicates and artifacts from repositories that don't support copying
+            if (!copiedModules.add(module) || !canBeCopied(context)) {
                 // Faking a copy here for feedback because it was already done and we never copy twice
                 if (feedback != null) {
                     feedback.beforeCopyModule(context, count++, maxCount);
@@ -194,6 +195,14 @@ public class ModuleCopycat {
                 }
             }
         }
+    }
+
+    // Can the artifact be copied?
+    private boolean canBeCopied(ArtifactContext context) {
+        // Only allow modules from the "ceylon" and "maven" namespaces to be copied
+        return context.getNamespace() == null
+                || DefaultRepository.NAMESPACE.equals(context.getNamespace())
+                || MavenRepository.NAMESPACE.equals(context.getNamespace());
     }
 
     private int countNonJdkDeps(NavigableSet<ModuleDependencyInfo> dependencies) {
