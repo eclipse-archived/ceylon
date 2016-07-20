@@ -212,9 +212,8 @@ public class JarOutputRepositoryManager {
         }
 
         private Properties getPreviousMapping() throws IOException {
-            if (originalJarFile != null) {
-                JarFile jarFile = null;
-                jarFile = new JarFile(originalJarFile);
+            JarFile jarFile = JarUtils.validJar(originalJarFile);
+            if (jarFile != null) {
                 try {
                     JarEntry entry = jarFile.getJarEntry(MAPPING_FILE);
                     if (entry != null) {
@@ -235,9 +234,8 @@ public class JarOutputRepositoryManager {
         }
 
         private Manifest getPreviousManifest() throws IOException {
-            if (originalJarFile != null) {
-                JarFile jarFile = null;
-                jarFile = new JarFile(originalJarFile);
+            JarFile jarFile = JarUtils.validJar(originalJarFile);
+            if (jarFile != null) {
                 try {
                     return jarFile.getManifest();
                 } finally {
@@ -298,7 +296,9 @@ public class JarOutputRepositoryManager {
                 JarCat jc = new JarCat(finalCarFile);
                 jc.cat(metaFirstFile);
                 jc.cat(outputJarFile);
-                jc.cat(originalJarFile, jarFilter);
+                if (originalJarFile != null && JarUtils.isValidJar(originalJarFile)) {
+                    jc.cat(originalJarFile, jarFilter);
+                }
                 jc.close();
                 FileUtil.deleteQuietly(metaFirstFile);
             
