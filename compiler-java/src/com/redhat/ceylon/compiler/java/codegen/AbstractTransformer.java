@@ -1588,6 +1588,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private boolean isErasedUnionOrIntersection(Type producedType) {
+        // makeJavaType does that too, and it reduces some unions into simple cases
+        producedType = simplifyType(producedType);
         if(producedType.isUnion()){
             java.util.List<Type> caseTypes = producedType.getCaseTypes();
             // special case for optional types
