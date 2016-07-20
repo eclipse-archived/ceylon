@@ -79,7 +79,7 @@ public final class bug1923_ implements .java.io.Serializable, .com.redhat.ceylon
         final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> fRefZ = (
             let
             {
-                final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923, ? extends .java.lang.Object> spread$2$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923, ? extends .java.lang.Object>)zs;
+                final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923, ? extends .java.lang.Object> spread$2$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1923, ? extends .java.lang.Object>)(.ceylon.language.Iterable)zs;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Sequential<? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Sequential.class, .ceylon.language.Anything.$TypeDescriptor$), .ceylon.language.Empty.$TypeDescriptor$, "Anything[]()", (short)-1){
                 
