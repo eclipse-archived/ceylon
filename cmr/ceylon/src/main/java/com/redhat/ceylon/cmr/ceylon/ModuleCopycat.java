@@ -181,6 +181,9 @@ public class ModuleCopycat {
                 if (copyModule && !context.isIgnoreDependencies()) {
                     maxCount += countNonJdkDeps(ver.getDependencies());
                     for (ModuleDependencyInfo dep : ver.getDependencies()) {
+                        if("ceylon.language".equals(dep.getName())) {
+                            continue;
+                        }
                         ModuleSpec depModule = new ModuleSpec(dep.getName(), dep.getVersion());
                         ArtifactContext copyContext = depContext.copy();
                         copyContext.setNamespace(dep.getNamespace());
@@ -208,7 +211,8 @@ public class ModuleCopycat {
     private int countNonJdkDeps(NavigableSet<ModuleDependencyInfo> dependencies) {
         int cnt = 0;
         for (ModuleDependencyInfo dep : dependencies) {
-            if (!jdkProvider.isJDKModule(dep.getName())) {
+            if (!jdkProvider.isJDKModule(dep.getName())
+                    && !"ceylon.language".equals(dep.getName())) {
                 cnt++;
             }
         }
