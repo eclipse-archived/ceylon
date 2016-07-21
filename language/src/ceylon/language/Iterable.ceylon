@@ -1242,9 +1242,10 @@ shared interface Iterable<out Element=Anything,
      For any stable `stream`, this operation is equivalent 
      to `zipPairs(stream,stream.rest)`.
      
-     If this is a stream with an unstable iteration order, a 
-     different stream is produced each time `paired` 
-     is evaluated.
+     _If this is a stream with an unstable iteration order,
+     the resulting stream produces a different set of pairs
+     each time it is iterated, thus violating the general
+     contract for an immutable finite stream._
      
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
@@ -1290,10 +1291,11 @@ shared interface Iterable<out Element=Anything,
      
          expand { stream.partition(length) } == stream
      
-     If this is a stream with an unstable iteration order, a 
-     different stream is produced each time `partition()` 
-     is evaluated.
-     
+     _If this is a stream with an unstable iteration order,
+     the resulting stream produces a different set of pairs
+     each time it is iterated, thus violating the general
+     contract for an immutable finite stream._
+          
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
     throws (`class AssertionError`,
