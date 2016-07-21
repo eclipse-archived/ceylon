@@ -224,40 +224,7 @@ public class Module
                                 !isOverloadedVersion(d) &&
                                 isNameMatching(startingWith, d)) {
                             String name = d.getName();
-                            boolean isSpecialValue = 
-                                    isLanguagePackage &&
-                                        name.equals("true") || 
-                                        name.equals("false") || 
-                                        name.equals("null");
-                            boolean isSpecialType = 
-                                    isLanguagePackage &&
-                                        name.equals("String") ||
-                                        name.equals("Integer") ||
-                                        name.equals("Float") ||
-                                        name.equals("Character") ||
-                                        name.equals("Boolean") ||
-                                        name.equals("Byte") ||
-                                        name.equals("Object") ||
-                                        name.equals("Anything");
-                            int prox;
-                            if (isSpecialValue) {
-                                prox = -1;
-                            }
-                            else if (isSpecialType) {
-                                //just less than toplevel
-                                //declarations of the package
-                                prox = proximity+2;
-                            }
-                            else if (isLanguagePackage) {
-                                //just less than toplevel
-                                //declarations of the package
-                                prox = proximity+3;
-                            }
-                            else {
-                                //unimported declarations
-                                //that may be imported
-                                prox = proximity+4;
-                            }
+                            int prox = getProximity(proximity, isLanguagePackage, name);
                             result.put(
                                     //use qualified name here, in order
                                     //to distinguish unimported declarations
@@ -280,6 +247,44 @@ public class Module
                             proximity+2));
         }
         return result;
+    }
+
+    public int getProximity(int initialProximity, boolean isLanguagePackage, String name) {
+        boolean isSpecialValue =
+                isLanguagePackage &&
+                    name.equals("true") ||
+                    name.equals("false") ||
+                    name.equals("null");
+        boolean isSpecialType =
+                isLanguagePackage &&
+                    name.equals("String") ||
+                    name.equals("Integer") ||
+                    name.equals("Float") ||
+                    name.equals("Character") ||
+                    name.equals("Boolean") ||
+                    name.equals("Byte") ||
+                    name.equals("Object") ||
+                    name.equals("Anything");
+        int prox;
+        if (isSpecialValue) {
+            prox = -1;
+        }
+        else if (isSpecialType) {
+            //just less than toplevel
+            //declarations of the package
+            prox = initialProximity+2;
+        }
+        else if (isLanguagePackage) {
+            //just less than toplevel
+            //declarations of the package
+            prox = initialProximity+3;
+        }
+        else {
+            //unimported declarations
+            //that may be imported
+            prox = initialProximity+4;
+        }
+        return prox;
     }
 
     protected boolean isJdkModule(String moduleName) {
