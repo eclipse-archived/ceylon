@@ -1391,7 +1391,7 @@ public class ExpressionVisitor extends Visitor {
                 // interpret this specification as a 
                 // refinement of an inherited member
                 if (d instanceof Value) {
-                    refineValue(that);
+                    refineAttribute(that);
                 }
                 else if (d instanceof Function) {
                     refineMethod(that);
@@ -1548,7 +1548,7 @@ public class ExpressionVisitor extends Visitor {
         return d.appliedReference(supertype, NO_TYPE_ARGS);
     }
     
-    private void refineValue(Tree.SpecifierStatement that) {
+    private void refineAttribute(Tree.SpecifierStatement that) {
         Value refinedValue = (Value) that.getRefined();
         Value value = (Value) that.getDeclaration();
         ClassOrInterface ci = 

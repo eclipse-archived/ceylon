@@ -1938,16 +1938,28 @@ public class RefinementVisitor extends Visitor {
         v.setType(new LazyType(unit) {
             @Override
             public Type initQualifyingType() {
-                return rv.getType().getQualifyingType();
+                Type type = rv.getType();
+                return type==null ? null : 
+                    type.getQualifyingType();
             }
             @Override
             public Map<TypeParameter, Type> 
             initTypeArguments() {
-                return rv.getType().getTypeArguments();
+                Type type = rv.getType();
+                return type==null ? null : 
+                    type.getTypeArguments();
             }
             @Override
             public TypeDeclaration initDeclaration() {
-                return rv.getType().getDeclaration();
+                Type type = rv.getType();
+                return type==null ? null : 
+                    type.getDeclaration();
+            }
+            @Override
+            public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
+                Type type = rv.getType();
+                return type==null ? null : 
+                    type.getVarianceOverrides();
             }
         });
     }
@@ -2042,6 +2054,12 @@ public class RefinementVisitor extends Visitor {
                             return rm.getTypedParameter(p)
                                     .getFullType()
                                     .getDeclaration();
+                        }
+                        @Override
+                        public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
+                            return rm.getTypedParameter(p)
+                                    .getFullType()
+                                    .getVarianceOverrides();
                         }
                     });
                 }
@@ -2163,6 +2181,12 @@ public class RefinementVisitor extends Visitor {
                 Type type = rm.getType();
                 return type==null ? null : 
                     type.getDeclaration();
+            }
+            @Override
+            public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
+                Type type = rm.getType();
+                return type==null ? null : 
+                    type.getVarianceOverrides();
             }
         });
         inheritDefaultedArguments(m);

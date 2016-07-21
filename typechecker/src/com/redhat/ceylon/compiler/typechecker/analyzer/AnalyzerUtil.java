@@ -331,6 +331,45 @@ public class AnalyzerUtil {
                         scope, "", 0, canceller));
     }
     
+    static List<SiteVariance> getVariances(
+            Tree.TypeArguments tas,
+            List<TypeParameter> typeParameters) {
+        if (tas instanceof Tree.TypeArgumentList) {
+            Tree.TypeArgumentList tal = 
+                    (Tree.TypeArgumentList) tas;
+            int size = typeParameters.size();
+            List<SiteVariance> variances = 
+                    new ArrayList<SiteVariance>(size);
+            List<Tree.Type> types = tal.getTypes();
+            int count = types.size();
+            for (int i=0; i<count; i++) {
+                Tree.Type type = types.get(i);
+                if (type instanceof Tree.StaticType) {
+                    Tree.StaticType st = 
+                            (Tree.StaticType) type;
+                    TypeVariance tv = 
+                            st.getTypeVariance();
+                    if (tv!=null) {
+                        boolean contra = 
+                                tv.getText()
+                                  .equals("in");
+                        variances.add(contra?IN:OUT);
+                    }
+                    else {
+                        variances.add(null);
+                    }
+                }
+                else {
+                    variances.add(null);
+                }
+            }
+            return variances;
+        }
+        else {
+            return emptyList();
+        }
+    }
+    
     /**
      * Get the type arguments specified explicitly in the
      * code, or an empty list if no type arguments were
