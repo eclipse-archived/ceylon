@@ -168,11 +168,14 @@ shared interface Collection<out Element=Anything>
        [[unequal|Object.equals]], or
      - one element is an `Object` and the other is `null`."
     throws (`class AssertionError`, 
-            "if [[length]] is nonpositive")
+            "if [[length]] is nonpositive or if `length` is
+             larger than the number of distinct elements of
+             this collection")
     shared {[Element+]*} combinations(
                 "The number of distinct elements in each
                  combination"
                 Integer length) {
+        "length must be strictly positive"
         assert (length>0);
         return object satisfies {[Element+]*} {
             value distinctElements = outer.distinct;
@@ -184,6 +187,10 @@ shared interface Collection<out Element=Anything>
                 
                 value elements = distinctElements.sequence();
                 value size = elements.size;
+                
+                "length is larger than the number of distinct elements"
+                assert (length <= size);
+                
                 value selection = Array(0:length);
                 variable value done = elements.empty;
                 
