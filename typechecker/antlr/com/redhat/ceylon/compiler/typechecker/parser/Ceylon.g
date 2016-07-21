@@ -1975,30 +1975,34 @@ tuple returns [Tuple tuple]
     ;
     
 dynamicObject returns [Dynamic dynamic]
-    @init { NamedArgumentList nal=null; }
-    : DYNAMIC LBRACKET
-      { $dynamic = new Dynamic($DYNAMIC);
-        nal = new NamedArgumentList($LBRACKET); 
-        $dynamic.setNamedArgumentList(nal); }
+    : DYNAMIC
+      { $dynamic = new Dynamic($DYNAMIC); }
+      dynamicArguments
+      { $dynamic.setNamedArgumentList($dynamicArguments.namedArgumentList); }
+    ;
+
+dynamicArguments returns [NamedArgumentList namedArgumentList]
+    : LBRACKET
+      { $namedArgumentList = new NamedArgumentList($LBRACKET); }
       ( //TODO: get rid of the predicate and use the approach
         //      in expressionOrSpecificationStatement
         (namedArgumentStart) 
         => namedArgument
         { if ($namedArgument.namedArgument!=null) 
-              nal.addNamedArgument($namedArgument.namedArgument); }
+              $namedArgumentList.addNamedArgument($namedArgument.namedArgument); }
       | (anonymousArgument)
         => anonymousArgument
         { if ($anonymousArgument.namedArgument!=null) 
-              nal.addNamedArgument($anonymousArgument.namedArgument); }
+              $namedArgumentList.addNamedArgument($anonymousArgument.namedArgument); }
       )*
       ( 
         sequencedArgument
-        { nal.setSequencedArgument($sequencedArgument.sequencedArgument); }
+        { $namedArgumentList.setSequencedArgument($sequencedArgument.sequencedArgument); }
       )?
       RBRACKET
-      { nal.setEndToken($RBRACKET); }
+      { $namedArgumentList.setEndToken($RBRACKET); }
     ;
-    
+
 valueCaseList returns [ExpressionList expressionList]
     : { $expressionList = new ExpressionList(null); }
       ie1=intersectionExpression 
