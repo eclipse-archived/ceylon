@@ -69,7 +69,8 @@ public class SmallDeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.AttributeSetterDefinition that) {
-        if (that.getDeclarationModel().getGetter().isSmall()) {
+        Value getter = that.getDeclarationModel().getGetter();
+        if (getter!=null && getter.isSmall()) {
             // Setter parameter is small if getter is small
             smallDeclaration(that.getDeclarationModel().getParameter().getModel());
         }
