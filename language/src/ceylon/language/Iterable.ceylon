@@ -578,7 +578,10 @@ shared interface Iterable<out Element=Anything,
      
          (1..4).scan(0)(plus)
      
-     results in the stream `{ 0, 1, 3, 6, 10 }`."
+     results in the stream `{ 0, 1, 3, 6, 10 }`.
+     
+     This is a lazy operation and the resulting stream 
+     reflects changes to this stream."
     see (`function fold`)
     shared default 
     {Result+} scan<Result>(Result initial)(
@@ -1100,7 +1103,14 @@ shared interface Iterable<out Element=Anything,
      
          { 1, 2 }.repeat(3)
      
-     evaluates to the stream `{ 1, 2, 1, 2, 1, 2 }`."
+     evaluates to the stream `{ 1, 2, 1, 2, 1, 2 }`.
+     
+     If this is a stream with an unstable iteration order, 
+     the elements of the resulting stream do not occur in 
+     repeating order.
+     
+     This is a lazy operation and the resulting stream 
+     reflects changes to this stream."
     see (`value cycled`)
     shared default 
     {Element*} repeat(Integer times) 
@@ -1232,9 +1242,12 @@ shared interface Iterable<out Element=Anything,
      For any stable `stream`, this operation is equivalent 
      to `zipPairs(stream,stream.rest)`.
      
-     For a stream with an unstable iteration order, a 
-     different stream might be produced each time `paired` 
-     is evaluated."
+     If this is a stream with an unstable iteration order, a 
+     different stream is produced each time `paired` 
+     is evaluated.
+     
+     This is a lazy operation and the resulting stream 
+     reflects changes to this stream."
     shared default 
     {Element[2]*} paired 
             => object satisfies {Element[2]*} {
@@ -1275,7 +1288,14 @@ shared interface Iterable<out Element=Anything,
      For any `stream` and for any strictly positive integer 
      [[length]]:
      
-         expand { stream.partition(length) } == stream"
+         expand { stream.partition(length) } == stream
+     
+     If this is a stream with an unstable iteration order, a 
+     different stream is produced each time `partition()` 
+     is evaluated.
+     
+     This is a lazy operation and the resulting stream 
+     reflects changes to this stream."
     throws (`class AssertionError`,
             "if `length<=0`")
     shared default 
@@ -1432,7 +1452,10 @@ shared interface Iterable<out Element=Anything,
      
          String(\"hello\".interpose(' '))
      
-     evaluates to the string `\"h e l l o\"`."
+     evaluates to the string `\"h e l l o\"`.
+     
+     This is a lazy operation and the resulting stream 
+     reflects changes to this stream."
     throws (`class AssertionError`, "if `step<1`")
     see (`function interleave`)
     shared default 
