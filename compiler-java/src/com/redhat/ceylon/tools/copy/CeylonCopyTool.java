@@ -36,6 +36,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     
     private List<ModuleSpec> modules;
     private boolean withDependencies;
+    private boolean includeLanguage;
     
     private Boolean jvm;
     private Boolean js;
@@ -61,6 +62,12 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     @Description("Recursively copy all dependencies")
     public void setWithDependencies(boolean withDependencies) {
         this.withDependencies = withDependencies;
+    }
+    
+    @Option
+    @Description("Determines if the language module should be copied as well, assumes `--with-dependencies` (default is `false`)")
+    public void setIncludeLanguage(boolean includeLanguage) {
+        this.includeLanguage = includeLanguage;
     }
 
     @Option
@@ -121,6 +128,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
 
     @Override
     public void initialize(CeylonTool mainTool) {
+        withDependencies = withDependencies || includeLanguage;
     }
     
     @Override
@@ -251,7 +259,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
                 errorNewline();
             }
         });
-        copier.copyModules(acs);
+        copier.includeLanguage(includeLanguage).copyModules(acs);
     }
 
     @Override

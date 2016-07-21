@@ -43,6 +43,7 @@ public class ModuleCopycat {
     private CopycatFeedback feedback;
     private Logger log;
     private JdkProvider jdkProvider;
+    private boolean includeLanguage;
     
     private Set<String> copiedModules;
     private int count;
@@ -104,6 +105,19 @@ public class ModuleCopycat {
         this.copiedModules = new HashSet<>();
         // FIXME: probably needs to be an option
         this.jdkProvider = new JdkProvider();
+    }
+    
+    /**
+     * Determines if the language module and it's dependencies should be copied as well.
+     * By default the language module and it's dependencies will be skipped.
+     * For this to work <code>isIgnoreDependencies()</code> must not be set to true
+     * on the toplevel artifact context to copy.
+     * @param includeLanguage
+     * @return
+     */
+    public ModuleCopycat includeLanguage(boolean includeLanguage) {
+        this.includeLanguage = includeLanguage;
+        return this;
     }
     
     /**
@@ -181,7 +195,7 @@ public class ModuleCopycat {
                 if (copyModule && !context.isIgnoreDependencies()) {
                     maxCount += countNonJdkDeps(ver.getDependencies());
                     for (ModuleDependencyInfo dep : ver.getDependencies()) {
-                        if("ceylon.language".equals(dep.getName())) {
+                        if (skipModule(dep.getName())) {
                             continue;
                         }
                         ModuleSpec depModule = new ModuleSpec(dep.getName(), dep.getVersion());
@@ -200,6 +214,10 @@ public class ModuleCopycat {
         }
     }
 
+    private boolean skipModule(String name) {
+        return "ceylon.language".equals(name) && !includeLanguage;
+    }
+    
     // Can the artifact be copied?
     private boolean canBeCopied(ArtifactContext context) {
         // Only allow modules from the "ceylon" and "maven" namespaces to be copied
@@ -212,7 +230,7 @@ public class ModuleCopycat {
         int cnt = 0;
         for (ModuleDependencyInfo dep : dependencies) {
             if (!jdkProvider.isJDKModule(dep.getName())
-                    && !"ceylon.language".equals(dep.getName())) {
+                    && !skipModule(dep.getName())) {
                 cnt++;
             }
         }
