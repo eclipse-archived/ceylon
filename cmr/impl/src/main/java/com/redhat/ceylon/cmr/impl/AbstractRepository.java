@@ -467,6 +467,7 @@ public abstract class AbstractRepository implements CmrRepository {
             // try every known suffix
             boolean found = false;
             boolean foundInfo = false;
+            boolean binaryShouldMatch = false;
             boolean binaryMatch = false;
             ModuleVersionDetails mvd = new ModuleVersionDetails(getNamespace(), name, version);
             String[] suffixes = lookup.getType().getSuffixes();
@@ -487,6 +488,7 @@ public abstract class AbstractRepository implements CmrRepository {
                     }
                 }
                 if (shouldCheckBinaryVersion(suffix)) {
+                    binaryShouldMatch = true;
                     if (!checkBinaryVersion(name, version, artifact, lookup, suffix)) {
                         if (lookup.getRetrieval() == Retrieval.ALL) {
                             break;
@@ -518,9 +520,7 @@ public abstract class AbstractRepository implements CmrRepository {
             // read the artifact's information
             if (((found && memberName == null) || foundInfo)
                     && (lookup.getRetrieval() == Retrieval.ANY || suffixesToFind.isEmpty())
-                    && ((lookup.getJvmBinaryMajor() == null && lookup.getJvmBinaryMinor() == null
-                         && lookup.getJsBinaryMajor() == null && lookup.getJsBinaryMinor() == null) 
-                    		|| binaryMatch)) {
+                    && (!binaryShouldMatch || binaryMatch)) {
                 mvd.setRemote(root.isRemote());
                 mvd.setOrigin(getDisplayString());
                 result.addVersion(mvd);
