@@ -8,6 +8,7 @@ Ant & Gradle builds.
 * ide-quick
 * bundle-proxy
 * Tests are disabled globally.
+* Jigsaw support via `-Pjigsaw=1`
 
 == Subprojects
 
@@ -218,6 +219,29 @@ It also provides a `requiresCBP` method that will fail the build if a specific p
 A local plugin that mimics a number of conventions of the builtin Gradle `antlr` plugin, but is stripped down in
 functionality and covers just enough to work within the Ceylon build environment.
 
+=== CeylonBuildOsgiPLugin
+
+Activates OSGI support.
+
+* Adds a `ceylon` extension to the `jar` task.
+* Adds a method `setAsOsgiArchive()` to every `Jar` task, which can be called to invoke OSGI support on the task,
+  This means that the `ceylon` extension will become available to be used in th task configuration and that the
+  manifest will be converted an OSGI manifest.
+* OSGI-enabled `Jar` tasks will automatically configure the OSGI metadata based upon information configured in
+  the `ceylon` block.
+* Also adds a `moduleXml` task which is of type `CeylonBuildModuleXml`.
+
+=== CeylonBuildXml
+
+It's primary purpose is to copy a `module.xml` file into the build directory and perform substitutionts. Such
+a file can then be added to a JAR and/or be copied to the distribution area.
+
+=== CeylonOsgiArchiveTaskExtension
+
+Adds a number of configurations which can be used to configure the necessary OSGI metadata in way that is very
+specific to the Ceylon build. The file has been well documented and can be used as reference.
+
+===
 == Custom build in gradle folder
 
 A number of common functionality not suitable for buildSrc have been added as buildscript in the `gradle` folder

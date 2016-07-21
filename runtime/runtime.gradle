@@ -60,10 +60,12 @@ task setupRepo( type : Copy ) {
     into repoDir
     from 'dist/repo', {
         include "**/*.xml"
+        exclude "**/ceylon/**" // <-- we do this as we have moved ceylon modules to their own subprojects.
         filter ReplaceTokens, tokens : [ 'ceylon-version' : version ]
     }
     from 'dist/repo', {
         include '**/*.jar'
+        exclude "**/ceylon/**" // <-- we do this as we have moved ceylon modules to their own subprojects.
     }
     eachFile { fcd ->
         fcd.path = fcd.path.replace('_version_',version)
@@ -89,55 +91,3 @@ task setupRepo( type : Copy ) {
 ['common','cmr','language','tool-provider','java-main'].each {
     publishInternal.dependsOn ":${it}:publishInternal"
 }
-
-//
-//"""
-//    <target name="runtime.classes">
-//        <mkdir dir="${build.classes}"/>
-
-//        <javac debug="true"
-//               encoding="UTF-8"
-//               srcdir="${runtime-spi.src}"
-//               destdir="${build.classes}"
-//               classpathref="compiler.classpath"
-//               target="${compile.java.target}"
-//               source="${compile.java.source}"
-//               bootclasspath="${compile.java.bootclasspath}"
-//               includeantruntime="false"/>
-
-//        <javac debug="true"
-//               encoding="UTF-8"
-//               srcdir="${runtime-api.src}"
-//               destdir="${build.classes}"
-//               classpathref="compiler.classpath"
-//               target="${compile.java.target}"
-//               source="${compile.java.source}"
-//               bootclasspath="${compile.java.bootclasspath}"
-//               includeantruntime="false"/>
-
-//        <javac debug="true"
-//               encoding="UTF-8"
-//               srcdir="${runtime-impl.src}"
-//               destdir="${build.classes}"
-//               classpathref="compiler.classpath"
-//               target="${compile.java.target}"
-//               source="${compile.java.source}"
-//               bootclasspath="${compile.java.bootclasspath}"
-//               includeantruntime="false"/>
-
-//        <javac debug="true"
-//               encoding="UTF-8"
-//               srcdir="${runtime-bootstrap.src}"
-//               destdir="${build.classes}"
-//               classpathref="compiler.classpath"
-//               target="${compile.java.target}"
-//               source="${compile.java.source}"
-//               bootclasspath="${compile.java.bootclasspath}"
-//               includeantruntime="false"/
-
-//        <!-- Include META-INF -->
-//        <copy todir="${build.classes}">
-//            <fileset dir="${runtime-bootstrap.src}" excludes="**/*.java"/>
-//        </copy>
-//    </target>
-//
