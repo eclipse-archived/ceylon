@@ -141,6 +141,94 @@ shared interface Collection<out Element=Anything>
         };
     };
     
+    "The combinations of elements of this collection, of the
+     given positive [[size|length]], as a stream of nonempty 
+     [[sequences|Sequence]]. That is, a stream producing 
+     every distinct selection of `length` elements of this 
+     collection.
+     
+     For example,
+     
+         \"ABCD\".combinations(2).map(String)
+     
+     is the stream of strings
+     `{ \"AB\", \"AC\", \"AD\", \"BC\", \"BD\", \"CD\" }`.
+     
+     If this collection is empty, the resulting stream is
+     empty.
+     
+     The combinations are enumerated lexicographically
+     according to the order in which each distinct element 
+     of this collection is first produced by its iterator.
+     No combination is repeated.
+     
+     Two elements are considered distinct if either:
+     
+     - they are both instances of `Object`, and are 
+       [[unequal|Object.equals]], or
+     - one element is an `Object` and the other is `null`."
+    throws (`class AssertionError`, 
+            "if [[length]] is nonpositive")
+    shared {[Element+]*} combinations(
+                "The number of distinct elements in each
+                 combination"
+                Integer length) {
+        assert (length>0);
+        return object satisfies {[Element+]*} {
+            value distinctElements = outer.distinct;
+            
+            empty => outer.empty;
+            
+            iterator()
+                    => object satisfies Iterator<[Element+]> {
+                
+                value elements = distinctElements.sequence();
+                value size = elements.size;
+                value selection = Array(0:length);
+                variable value done = elements.empty;
+                
+                shared actual [Element+]|Finished next() {
+                    if (done) {
+                        return finished;
+                    }
+                    value current = selection.collect((i) {
+                        if (exists e = elements.getFromFirst(i)) {
+                            return e;
+                        }
+                        else {
+                            assert (is Element null);
+                            return null;
+                        }
+                    });
+                    assert (nonempty current);
+                    
+                    variable value i = length-1;
+                    while (true) {
+                        if (i<0) {
+                            done = true;
+                            break;
+                        }
+                        assert (exists s = selection.getFromFirst(i));
+                        if (s == size-length+i) {
+                            i--;
+                        }
+                        else {
+                            variable value j = s;
+                            while (i<length) {
+                                selection.set(i++, ++j);
+                            }
+                            break;
+                        }
+                    }
+                    
+                    return current;
+                }
+                
+            };
+            
+        };
+    }
+    
 }
 
 "Used by [[Collection.permutations]] to group nulls together."

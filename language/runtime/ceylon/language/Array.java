@@ -2752,6 +2752,11 @@ public final class Array<Element>
     }
 
     @Override @Ignore
+    public Iterable<? extends Sequence<? extends Element>, ? extends java.lang.Object> combinations(long length) {
+        return $ceylon$language$Collection$impl().combinations(length);
+    }
+
+    @Override @Ignore
     public Iterable$impl<? extends Element, ? extends java.lang.Object> $ceylon$language$Iterable$impl() {
         return new Iterable$impl<Element,java.lang.Object>($reifiedElement,Null.$TypeDescriptor$, this);
     }
