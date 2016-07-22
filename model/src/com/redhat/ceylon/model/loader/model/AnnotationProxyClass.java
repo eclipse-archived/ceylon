@@ -70,4 +70,9 @@ public class AnnotationProxyClass extends Class {
             });
         }
     }
+
+    @Override
+    public boolean isJava() {
+        return true;
+    }
 }

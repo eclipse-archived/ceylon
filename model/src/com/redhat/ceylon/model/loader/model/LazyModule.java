@@ -144,6 +144,7 @@ public abstract class LazyModule extends Module {
 
     protected abstract AbstractModelLoader getModelLoader();
 
+    @Override
     public boolean isJava() {
         return isJava;
     }
