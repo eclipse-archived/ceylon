@@ -80,8 +80,7 @@ abstract class AbstractCeylonOsgiArchiveTaskExtension {
     String getRequireBundle() {
         List<String> optRes = this.optionalResolution
         moduleContent.dependencies.module.findAll { module ->
-            !(excludedModuleNames.contains(module.@name.toString()) /*||
-                module.@name=='ceylon.language' && bundleSymbolicName == 'com.redhat.ceylon.model'*/)
+            !(excludedModuleNames.contains(module.@name.toString()))
         }.collect { module ->
             String attr = "${module.@name};bundle-version=${module.@slot}"
             if(module.@export == 'true') {

@@ -70,7 +70,6 @@ class CeylonOsgiExternalArchiveTaskExtension  extends AbstractCeylonOsgiArchiveT
 
         if(!seedAttributes.empty) {
             hasOsgi = seedAttributes['Bundle-Version']?.size()
-
             bundleVersion = seedAttributes['Bundle-Version'] ?: module.@slot
             newBundleVersion = suggestNewBundleVersion(bundleVersion)
         }
