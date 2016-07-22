@@ -105,6 +105,7 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
+import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -678,6 +679,14 @@ public class ExpressionTransformer extends AbstractTransformer {
             if(isCallable)
                 break;
         }
+        if(commonType.getQualifyingType() != null
+                && expectedType.getQualifyingType() != null){
+            return needsCast(commonType.getQualifyingType(),
+                    expectedType.getQualifyingType(),
+                    expectedTypeNotRaw,
+                    expectedTypeHasConstrainedTypeParameters,
+                    downCast);
+        }
         return false;
     }
 
@@ -731,13 +740,16 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (!type.getTypeArgumentList().isEmpty()) {
             return true;
         }
-        if (type.getCaseTypes() != null) {
+        if (type.getDeclaration() instanceof UnionType
+                && type.getCaseTypes() != null) {
             for (Type ct : type.getCaseTypes()) {
                 if (hasTypeParameters(ct)) {
                     return true;
                 }
             }
         }
+        if(type.getQualifyingType() != null)
+            return hasTypeParameters(type.getQualifyingType());
         return false;
     }
 
