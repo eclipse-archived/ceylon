@@ -9,6 +9,15 @@ dependencies {
     compile project(':langtools-classfile')
 }
 
+jar {
+    ceylon {
+        excludedModuleNames 'ceylon.language'
+        importJavaxModel true
+        dynamicImports 'ceylon.language.*' : version,
+            'com.redhat.ceylon.compiler.java.*' : version
+    }
+}
+
 ['common','langtools-classfile'].each {
     publishInternal.dependsOn ":${it}:publishInternal"
 }

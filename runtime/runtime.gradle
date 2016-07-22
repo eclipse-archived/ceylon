@@ -9,6 +9,10 @@ ext {
 apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
 
 
+ext {
+    externalDepsDestinationDir = "${buildDir}/ceylon-runtime"
+}
+
 dependencies {
     compile project(':common')
     compile project(':cli')
@@ -17,7 +21,6 @@ dependencies {
     compile project(':tool-provider')
     compile project( path : ':language', configuration : 'antOutput')
 }
-
 
 sourceSets {
     main {
@@ -46,98 +49,86 @@ task pluginFiles( type : Copy ) {
     filter ReplaceTokens, tokens : [ 'ceylon-version' : version ]
 }
 
-assemble {
-    dependsOn pluginFiles
+task addModuleDescriptorsForExternalDependencies {
+    group "Build"
+    description "Lifecycle task for handling external dependencies"
 }
 
-// TODO: Can be removed if language build is pure Gradle
-compileJava.dependsOn ':language:assemble'
+task fakeClasseDirForExternalDependencies  {
+    ext {
+        outputDir = file("${externalDepsDestinationDir}/classes")
+    }
+    outputs.dir outputDir
+    doFirst {
+        mkdir outputDir
+    }
+}
 
+// Add tasks for each of the external JARs
+(fileTree('dist/repo') {
+    include '**/*.jar'
+    exclude "**/ceylon/**" // <-- we do this as we have moved ceylon modules to their own subprojects.
+}).files.each { jarFile ->
+    String taskNamePostfix = jarFile.name[0..-5]
+    String relativePath = CeylonBuildUtil.relativeTo(jarFile.parentFile.absoluteFile,file('dist/repo'))
+
+    Task moduleTask = tasks.create( "addModuleXml_${taskNamePostfix}", CeylonBuildModuleXml) {
+        group "Build"
+        description "Prepare module.xml for ${taskNamePostfix}"
+        sourceModule new File(jarFile.parentFile,'module.xml')
+        destinationDir "${externalDepsDestinationDir}/${relativePath}"
+    }
+
+    Task osgiJar = tasks.create( "addOsgiManifest_${taskNamePostfix}", Jar ) {
+        group "Build"
+        description "Add OSGI data to manifest for ${taskNamePostfix}"
+        archiveName jarFile.name
+        destinationDir  file("${externalDepsDestinationDir}/${relativePath}")
+        dependsOn moduleTask
+        dependsOn fakeClasseDirForExternalDependencies
+        setAsOsgiExternalArchive()
+
+        from zipTree(jarFile), {
+            exclude 'META-INF/MANIFEST.MF'
+        }
+
+        manifest {
+            classesDir fakeClasseDirForExternalDependencies.outputDir
+        }
+
+        ceylon {
+            seedFrom jarFile
+            moduleLocation {moduleTask.destinationFile}
+            forceNewOsgiManifest relativePath.matches(~/.+[\\\/](logmanager|slf4j)[\\\/].+/)
+        }
+
+        from moduleTask, {
+            into "META-INF/jbossmodules/${relativePath}"
+        }
+
+        doFirst { mkdir manifest.classesDir }
+    }
+
+    addModuleDescriptorsForExternalDependencies.dependsOn osgiJar, moduleTask
+}
+
+assemble {
+    dependsOn pluginFiles, addModuleDescriptorsForExternalDependencies
+}
 
 task setupRepo( type : Copy ) {
     group "Setup"
     description "Setup the basic structure of the dist folder by copying the template folder"
+    dependsOn addModuleDescriptorsForExternalDependencies
     into repoDir
-    from 'dist/repo', {
-        include "**/*.xml"
-        filter ReplaceTokens, tokens : [ 'ceylon-version' : version ]
-    }
-    from 'dist/repo', {
-        include '**/*.jar'
-    }
-    eachFile { fcd ->
-        fcd.path = fcd.path.replace('_version_',version)
-    }
-
-    doFirst {
-        logger.info "TODO: Copying hardcoded JARs might be better dealt with using Gradle's dependency management"
-    }
-
-    doLast {
-        // Necessary due to unexpected behaviour in eachFile
-        // See https://discuss.gradle.org/t/modifying-parent-paths-in-a-copy-task-creates-unnecessary-remnants/18567
-        fileTree(destinationDir) {
-            include '**/_version_'
-        }.visit {
-            if(it.isDirectory() && it.name == '_version_') {
-                delete it.file
-            }
-        }
-    }
+    from externalDepsDestinationDir
 }
 
 ['common','cmr','language','tool-provider','java-main'].each {
     publishInternal.dependsOn ":${it}:publishInternal"
 }
 
-//
-//"""
-//    <target name="runtime.classes">
-//        <mkdir dir="${build.classes}"/>
+// TODO: Can be removed if language build is pure Gradle
+compileJava.dependsOn ':language:assemble'
 
-//        <javac debug="true"
-//               encoding="UTF-8"
-//               srcdir="${runtime-spi.src}"
-//               destdir="${build.classes}"
-//               classpathref="compiler.classpath"
-//               target="${compile.java.target}"
-//               source="${compile.java.source}"
-//               bootclasspath="${compile.java.bootclasspath}"
-//               includeantruntime="false"/>
 
-//        <javac debug="true"
-//               encoding="UTF-8"
-//               srcdir="${runtime-api.src}"
-//               destdir="${build.classes}"
-//               classpathref="compiler.classpath"
-//               target="${compile.java.target}"
-//               source="${compile.java.source}"
-//               bootclasspath="${compile.java.bootclasspath}"
-//               includeantruntime="false"/>
-
-//        <javac debug="true"
-//               encoding="UTF-8"
-//               srcdir="${runtime-impl.src}"
-//               destdir="${build.classes}"
-//               classpathref="compiler.classpath"
-//               target="${compile.java.target}"
-//               source="${compile.java.source}"
-//               bootclasspath="${compile.java.bootclasspath}"
-//               includeantruntime="false"/>
-
-//        <javac debug="true"
-//               encoding="UTF-8"
-//               srcdir="${runtime-bootstrap.src}"
-//               destdir="${build.classes}"
-//               classpathref="compiler.classpath"
-//               target="${compile.java.target}"
-//               source="${compile.java.source}"
-//               bootclasspath="${compile.java.bootclasspath}"
-//               includeantruntime="false"/
-
-//        <!-- Include META-INF -->
-//        <copy todir="${build.classes}">
-//            <fileset dir="${runtime-bootstrap.src}" excludes="**/*.java"/>
-//        </copy>
-//    </target>
-//
