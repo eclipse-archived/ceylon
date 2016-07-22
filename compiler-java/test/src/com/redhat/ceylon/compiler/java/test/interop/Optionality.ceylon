@@ -91,3 +91,9 @@ class OptionalInterface<X>(JavaOptionalInterface x) extends JavaClass() satisfie
     
     shared actual Correspondence<Object,Object> correspondence => nothing;
 }
+
+object classSubClass extends OptionalityClass() {
+    OptionalityClass? realClass = null;
+    type => realClass?.type;
+    typeMethod() => realClass?.type;
+}

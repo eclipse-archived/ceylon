@@ -19,6 +19,12 @@
  */
 package com.redhat.ceylon.compiler.java.test.interop;
 
+
+class OptionalityClass{
+    public String getType(){ return null; }
+    public String typeMethod(){ return null; }
+}
+
 class JavaClass{}
 
 public interface JavaOptionalInterface {
