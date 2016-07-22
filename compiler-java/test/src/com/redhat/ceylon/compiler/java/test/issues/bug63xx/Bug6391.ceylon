@@ -18,18 +18,25 @@
  * MA  02110-1301, USA.
  */
 
-shared class CeylonProjectBuild<A, B, C, D>(){
+@noanno
+shared class CeylonProjectBuild<A, B>()        
+        given A satisfies Object
+        given B satisfies A {
     shared class BuildMessage() {}
-    shared class SourceFileMessage() extends BuildMessage(){}
+    shared class SourceFileMessage() extends BuildMessage(){
+        shared void f(){}
+    }
 }
+@noanno
 shared class Module(){}
+@noanno
 shared class VirtualFile(){}
 
-void bug6391(){
-    CeylonProjectBuild<Module,VirtualFile,VirtualFile,VirtualFile>.BuildMessage f = nothing;
-    CeylonProjectBuild<out Anything,out Anything,out Anything,out Anything>.BuildMessage dest = f;
-    if(is CeylonProjectBuild<out Anything,out Anything,out Anything,out Anything>
+@noanno
+void bug6391(CeylonProjectBuild<Module,VirtualFile>.BuildMessage f){
+    CeylonProjectBuild<out Anything,out Anything>.BuildMessage dest = f;
+    if(is CeylonProjectBuild<out Anything,out Anything>
             .SourceFileMessage f){
-        print(f);
+        f.f();
     }
 }
