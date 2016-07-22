@@ -202,7 +202,7 @@ class ValueParameterRef<T> implements .com.redhat.ceylon.compiler.java.runtime.m
             
             @.java.lang.Override
             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
-                final .com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef<T>.Inner $instance$ = (.com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef<T>.Inner)$param$0;
+                final .com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef<T>.Inner $instance$ = (.com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef<T>.Inner)(.com.redhat.ceylon.compiler.java.test.expression.ref.ValueParameterRef.Inner)$param$0;
                 return .ceylon.language.String.instance($instance$.getBar());
             }
         };
