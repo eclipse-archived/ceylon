@@ -259,7 +259,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         // respect the refining definition of optionality
         nonWideningType = propagateOptionality(declaration.getType(), nonWideningType);
         BoxingStrategy boxing = CodegenUtil.getBoxingStrategy(nonWideningTypedRef.getDeclaration());
-        return transformExpression(expr, boxing, nonWideningType);
+        int flags = 0;
+        if(declaration.hasUncheckedNullType())
+            flags = ExpressionTransformer.EXPR_TARGET_ACCEPTS_NULL;
+        return transformExpression(expr, boxing, nonWideningType, flags);
     }
 
     private Type propagateOptionality(Type type, Type nonWideningType) {

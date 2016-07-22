@@ -3696,9 +3696,13 @@ public class ClassTransformer extends AbstractTransformer {
                     TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
                     Type nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
                     
+                    int flags = 0;
+                    if(declarationModel.hasUncheckedNullType())
+                        flags |= ExpressionTransformer.EXPR_TARGET_ACCEPTS_NULL;
                     JCExpression expr = expressionGen().transformExpression(specOrInit.getExpression(), 
                             CodegenUtil.getBoxingStrategy(declarationModel), 
-                            nonWideningType);
+                            nonWideningType,
+                            flags);
                     expr = convertToIntIfHashAttribute(declarationModel, expr);
                     builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(expr))));
                 }
