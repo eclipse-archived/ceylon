@@ -10,10 +10,10 @@ class CeylonBuildOsgiPlugin implements Plugin<Project> {
 
     static final String EXTENSION_NAME = 'ceylon'
 
-    static void addOsgiTaskExtension(AbstractArchiveTask archiveTask) {
-        archiveTask.extensions.create(EXTENSION_NAME, CeylonOsgiArchiveTaskExtension, archiveTask)
+    static void addOsgiTaskExtension(AbstractArchiveTask archiveTask,Class extType) {
+        def ceylon = archiveTask.extensions.create(EXTENSION_NAME, extType, archiveTask)
         archiveTask.doFirst {
-            CeylonBuildOsgiPlugin.configureManifest(archiveTask)
+            ceylon.configureManifestForTask()
         }
     }
 
@@ -22,17 +22,12 @@ class CeylonBuildOsgiPlugin implements Plugin<Project> {
             archiveTask.manifest = archiveTask.project.osgiManifest ()
             archiveTask.manifest.classesDir = archiveTask.project.sourceSets.main.output.classesDir
             archiveTask.manifest.classpath = archiveTask.project.configurations.getByName("runtime")
-            addOsgiTaskExtension(archiveTask)
+            addOsgiTaskExtension(archiveTask,CeylonOsgiArchiveTaskExtension)
         }
-    }
-
-    static void configureManifest(Jar task) {
-        CeylonOsgiArchiveTaskExtension metadata = task.extensions.getByName(EXTENSION_NAME)
-        task.manifest.name = metadata.bundleSymbolicName
-        task.manifest {
-            metadata.manifestInstructions.each { k,v ->
-                instructionReplace k,v
-            }
+        archiveTask.ext.setAsOsgiExternalArchive = {
+            archiveTask.manifest = archiveTask.project.osgiManifest ()
+            archiveTask.manifest.classpath = archiveTask.project.fileTree('.') {exclude '**'}
+            addOsgiTaskExtension(archiveTask,CeylonOsgiExternalArchiveTaskExtension)
         }
     }
 
@@ -45,7 +40,7 @@ class CeylonBuildOsgiPlugin implements Plugin<Project> {
                 if(task.name != 'jar') {
                     CeylonBuildOsgiPlugin.addOsgiArchiveMethod(task)
                 } else {
-                    CeylonBuildOsgiPlugin.addOsgiTaskExtension(task)
+                    CeylonBuildOsgiPlugin.addOsgiTaskExtension(task,CeylonOsgiArchiveTaskExtension)
                 }
             }
             tasks.whenTaskAdded { task ->

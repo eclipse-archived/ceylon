@@ -1,13 +1,8 @@
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.artifacts.Configuration
-import org.gradle.api.file.FileCollection
-import org.gradle.api.file.FileTree
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.SkipWhenEmpty
 import org.gradle.api.tasks.TaskAction
 
 // This has been written because Gradle's Antlr plugin is broken. It is
@@ -47,7 +42,7 @@ class CeylonAntlr implements Plugin<Project> {
             Map<String,Set<String>> ret = [:]
             this.groups.each { String relPath, def inputFiles ->
                 ret[relPath] = project.files(inputFiles).files.collect { File f ->
-                    CeylonAntlr.relativeTo(f,project.projectDir)
+                    CeylonBuildUtil.relativeTo(f,project.projectDir)
                 } as Set
             }
             ret
@@ -60,7 +55,7 @@ class CeylonAntlr implements Plugin<Project> {
 
             antlrGroups.each { String relPath, Set<String> inputFiles ->
                 File out = new File(root,relPath)
-                String outPath = CeylonAntlr.relativeTo(out,project.projectDir)
+                String outPath = CeylonBuildUtil.relativeTo(out,project.projectDir)
                 out.mkdirs()
                 project.javaexec {
                     main 'org.antlr.Tool'
@@ -76,9 +71,6 @@ class CeylonAntlr implements Plugin<Project> {
 
     }
 
-    static String relativeTo(final File thisPath,final File toThatPath) {
-        toThatPath.toPath().relativize( thisPath.toPath() ).toFile().toString()
-    }
 }
 
 
