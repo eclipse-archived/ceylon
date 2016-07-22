@@ -72,4 +72,8 @@ class Range<Element>()
     "Returns the range itself, since a range cannot contain 
      null elements."
     shared actual Range<Element> coalesced => this;
+    
+    "Returns the range itself, since a range cannot contain 
+     duplicate elements."
+    shared actual Range<Element> distinct => this;
 }
