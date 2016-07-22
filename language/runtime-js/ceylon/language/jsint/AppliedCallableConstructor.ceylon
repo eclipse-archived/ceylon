@@ -24,4 +24,5 @@ shared native class AppliedCallableConstructor<out Type=Anything, in Arguments=N
   shared actual native Map<TypeParameter, TypeArgument> typeArgumentWithVariances;
   shared actual native TypeArgument[] typeArgumentWithVarianceList;
   shared native actual Boolean equals(Object other);
+  shared native actual Integer hash;
 }
