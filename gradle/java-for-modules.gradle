@@ -40,21 +40,12 @@ ext {
     archivePublishDir = "${repoDir}/" +  cbp."ceylon.${ceylonPublishModuleName}.dir"
 }
 
-//com.read.ceylon.compiler-1.2.3,jar
-//archiveName = "${bundleSymbolicName}-${bundleVersionName}.jar"
-//ceylon.compiler.jar=${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar
-//ceylon.compiler.dir=com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}
-
 if(!ext.properties.containsKey('ceylonSourceLayout')) {
         ext.ceylonSourceLayout = true
 }
 
 apply plugin: 'java'
-
-ext {
-    // By default projects use a flat source hierarchy
-    defaultSources = false
-}
+apply plugin : CeylonBuildOsgiPlugin
 
 dependencies {
     testCompile 'junit:junit:4.11'
@@ -106,12 +97,39 @@ if (ext.ceylonSourceLayout) {
 }
 
 
-jar {
-    manifest {
-        attributes 'Bundle-SymbolicName': bundleSymbolicName,
-            'Bundle-Version': bundleVersionName+".${TimeStamp.BUILD}"
+moduleXml {
+    sourceModule {
+        new File(project.file("${project(':runtime').projectDir}/dist/repo/" +
+            cbp."ceylon.${ceylonPublishModuleName}.dir").parentFile, '/_version_/module.xml')
     }
+}
+
+//jar {
+//    manifest {
+//        attributes 'Bundle-SymbolicName': bundleSymbolicName,
+//            'Bundle-Version': bundleVersionName+".${TimeStamp.BUILD}"
+//    }
+//    archiveName = "${bundleSymbolicName}-${bundleVersionName}.jar"
+//}
+
+
+
+jar {
+    dependsOn moduleXml
+
+    ceylon {
+        importJavaxModel  false
+        bundleSymbolicName project.ext.bundleSymbolicName
+        exportedBundleVersion project.ext.bundleVersionName+".${TimeStamp.BUILD}"
+        moduleLocation {moduleXml.destinationFile}
+    }
+
+    from moduleXml, {
+        into "META-INF/jbossmodules/" + cbp."ceylon.${ceylonPublishModuleName}.dir"
+    }
+
     archiveName = "${bundleSymbolicName}-${bundleVersionName}.jar"
+
 }
 
 task sourceZip( type : Zip ) {
@@ -131,7 +149,6 @@ task sha1 ( type : Checksum ) {
     dependsOn jar, sourceZip
 }
 
-
 task publishJar( type : Copy ) {
     group 'Distribution'
     description 'Copies binary artifacts to distribution area'
@@ -141,6 +158,7 @@ task publishJar( type : Copy ) {
     }
 
     from jar
+    from moduleXml
     into archivePublishDir
 }
 

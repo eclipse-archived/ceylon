@@ -86,14 +86,57 @@ task copySupportFiles( type : Copy) {
     }
 }
 
+task generateBuildId {
+
+    group "Build"
+    description "Generates teh BUILDID file"
+
+    ext {
+        hasGitRepository = file("${rootProject.projectDir}/.git").exists()
+        providedBuildId = project.properties.buildid ?: System.getProperty('buildid')
+        idFile = file("${distDir}/BUILDID")
+
+        getRevision = { OutputStream os->
+            if (hasGitRepository) {
+                project.exec {
+                    standardOutput = os
+                    commandLine 'git','rev-parse', '--short', 'HEAD'
+                }
+                os.toString()
+            } else if (providedBuildId) {
+                os << providedBuildId
+                providedBuildId
+            }
+        }
+    }
+
+
+    doFirst {
+        idFile.withOutputStream { os ->
+            getRevision(os)
+        }
+    }
+
+    outputs.upToDateWhen {
+        idFile.exists() && getRevision( new ByteArrayOutputStream() ) == idFile.text
+    }
+
+    outputs.file idFile
+    enabled = hasGitRepository || providedBuildId != null
+
+    if(!ext.hasGitRepository && ext.providedBuildId == null) {
+        logger.error "Git repository not found and -Pbuildid / -Dbuilid was not specified."
+    }
+}
+
+
 task publishInternal {
     group 'Distribution'
     description "Lifecycle task to cooridnate all internal publish tasks"
     dependsOn setupRepo, installCompiler, installJS
     dependsOn copyCompilerBinaries, copySupportFiles
     dependsOn installRuntime
-    // addModuleDescriptors
-    // generateBuildId
+    dependsOn generateBuildId
 }
 
 
@@ -124,3 +167,4 @@ task cleanRepo ( type : Delete ) {
     delete samplesDir
     delete repoDir
 }
+

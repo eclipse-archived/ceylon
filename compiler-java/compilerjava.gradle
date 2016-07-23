@@ -8,6 +8,7 @@ ext {
 
 apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
 requiresCBP 'module.ceylon.bootstrap.version'
+requiresCBP 'ceylon.bootstrap.dir'
 
 dependencies {
     compile project(':common')
@@ -125,6 +126,10 @@ jar {
     exclude "com/redhat/ceylon/ant/**"
     exclude "com/redhat/ceylon/common/**"
     exclude "com/redhat/ceylon/launcher/**"
+
+    ceylon {
+        importJavaxModel true
+    }
 }
 
 
@@ -162,27 +167,44 @@ task bootstrapJar( type : Jar ) {
     }
 }
 
+task bootstrapModuleXml( type : CeylonBuildModuleXml ) {
+    description "Create module.xml for the bootstrap JAR"
+    sourceModule {
+        new File(project.file("${project(':runtime').projectDir}/dist/repo/" +
+            cbp."ceylon.bootstrap.dir").parentFile, '/_version_/module.xml')
+    }
+    destinationDir = {"${moduleXml.destinationDir}/bootstrap"}
+}
 
 task bootstrapModule( type : Jar ) {
+    group 'Build'
+    description 'Create bootstrap module'
+    setAsOsgiArchive()
+    dependsOn classes, processResources, bootstrapModuleXml
+    destinationDir = jar.destinationDir
+
     ext {
         bmSymbolicName = 'com.redhat.ceylon.bootstrap'
         bmVersionName = cbp."module.ceylon.bootstrap.version"
     }
-    manifest {
-        attributes 'Bundle-SymbolicName': bmSymbolicName,
-            'Bundle-Version': bmVersionName + ".${TimeStamp.BUILD}"
+
+    ceylon {
+        importJavaxModel  false
+        bundleSymbolicName bmSymbolicName
+        exportedBundleVersion bmVersionName+".${TimeStamp.BUILD}"
+        moduleLocation {bootstrapModuleXml.destinationFile}
+        forceOptionalResolutionFor 'ceylon.runtime'
     }
-    group 'Build'
-    description 'Create bootstrap module'
-    dependsOn classes, processResources
-    destinationDir = jar.destinationDir
-//        ceylon.bootstrap.dir=ceylon/bootstrap/${module.ceylon.bootstrap.version}
-//    ceylon.bootstrap.jar=${ceylon.bootstrap.dir}/ceylon.bootstrap-${module.ceylon.bootstrap.version}.jar
+
     archiveName = "ceylon.bootstrap-${bmVersionName}.jar"
 
     from sourceSets.main.output.classesDir, {
         include "com/redhat/ceylon/launcher/**"
         exclude "com/redhat/ceylon/launcher/Start.class"
+    }
+
+    from bootstrapModuleXml, {
+        into "META-INF/jbossmodules/" + cbp."ceylon.bootstrap.dir"
     }
 
 }
@@ -221,21 +243,4 @@ publishInternal {
     dependsOn publishBootstrapModule
 }
 
-
-//"""
-//    <target name="compiler.jar" depends="compiler.classes">
-//        <mkdir dir="${build.dist.repo}/${ceylon.compiler.dir}" />
-//        <mkdir dir="${build.bin}" />
-
-//        <jar destfile="${build.dist.repo}/${ceylon.compiler.jar}">
-//        <jar destfile="${build.dist.repo}/${ceylon.bootstrap.jar}">
-
-//ceylon.bootstrap.dir=ceylon/bootstrap/${module.ceylon.bootstrap.version}
-//ceylon.bootstrap.jar=${ceylon.bootstrap.dir}/ceylon.bootstrap-${module.ceylon.bootstrap.version}.jar
-//ceylon.bootstrap.lib=${ceylon.repo.dir}/${ceylon.bootstrap.jar}
-
-//ceylon.compiler.dir=com/redhat/ceylon/compiler/java/${module.com.redhat.ceylon.compiler.version}
-//ceylon.compiler.jar=${ceylon.compiler.dir}/com.redhat.ceylon.compiler.java-${module.com.redhat.ceylon.compiler.version}.jar
-//ceylon.compiler.lib=${ceylon.repo.dir}/${ceylon.compiler.jar}
-
-//"""
+// TODO: Do something different for Jigsaw
