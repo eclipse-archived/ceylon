@@ -64,8 +64,9 @@ Needed a special `sourceSet` layout.
 As all of the four Ant `javac` tasks ended up in a single JAR and used the same compilation options,
  I think putting them into a single compilation task was the way to go.
 
-In an relaier restructuring effort there was an issue with stray `_version_` folders be left around.
-This problem has now been eliminated due to the new way that OSIGi headers are being added.
+In an earlier https://github.com/ceylon/ceylon/pull/6378[#6378] restructuring effort there was an
+issue with stray `_version_` folders be left around.
+This problem has now been eliminated due to the new way that <<OSGIHeader,OSGi headers>> are being added.
 
 .TODO
 * What about those `pom.xml` files that are dotted over the place?
@@ -126,7 +127,7 @@ Finally `compileJava` has to depend on `tree`, whereafter all of the tasks suppl
 starts to work.
 
 .TODO
-* The Ant `antlr.tree` deleted tokens at the end. SHould we still do that?
+* The Ant `antlr.tree` deleted tokens at the end. Should we still do that?
 
 === Compiler-java
 
@@ -285,6 +286,87 @@ Gradle lifecycle tasks to appropriate ones in the Ant build.
 | `typechecker` | Disabled (requires updates to Gradle script)
 |===
 
+[[OSGIheaders]]
+== Generating OSGI headers
+
+In order to deal with OSGI headers, the  GRadle `osgi` plugin is applied and a custom task extension is
+added to the 'jar` task. This is activated by applying the `CeylonBuildOsgiPlugin`. Other Jar tasks can have this
+fucntionality actived by adding `setAsOsgiExternalArchive()` (for external artifcats) or
+`setAsOsgiArchive()` (for  Ceylon-specific artifacts) to the configuration block. Both cases enable a new
+extension block called `ceylon` but the configuration options are slightly different:
+
+[cols="4*"]
+|===
+| Option
+| `setAsOsgiExternalArchive`
+| `setAsOsgiArchive`
+| Usage
+
+| `bundleSymbolicName`
+| -
+| *Y*
+| Set the symbolic name for this bundle. Affects `Bundle-SymbolicName`.
+
+| `bundleVersion`
+| -
+| *Y*
+| Sets an OSGI bundle version. If not set will use the value from `exportedBundleVersion`.
+  Affects `Bundle-Version`.
+
+| `dynamicImports`
+| -
+| *Y*
+| Provide one or more modules that will be be dynamically imported. This is done in key-value format i.e.
+  `PackagePattern : BundleVersion`.
+
+| `excludeModuleNames`
+| *Y*
+| *Y*
+| Provide one or more modules than are excluded above and beyond the standard list. Using this with the
+  assignment operator will ovveride all existing excluded modules.
+
+| `exportedBundleVersion`
+| -
+| *Y*
+| Sets the exported bundle version. Affects `Export-Package`.
+
+| `externalBundleQualifier`
+| *Y*
+| -
+| A postfix to identify external dependencies which make up parts of the Ceylon distribution.
+  Defaults to 'CEYLON-DEPENDENCIES-v0'.
+
+| `forceNewOsgiManifest`
+| *Y*
+| -
+| If set to `true`, a new OSGI manifest will be created irrespective of whether the JAR contains a
+  valid OSGI manifest. Defaults to `false.
+
+| `forceOptionalResolutionFor`
+| *Y*
+| *Y*
+| Provide one or more module names for which `resolution:=optional` will be added to
+   `Require-Bundle` attribute irrespective of whther the module is marked `optional` or not
+
+| `importJavaxModel`
+| *Y*
+| *Y*
+| Set to `true` if ``javax.lang.model.*` needs to be imported. Defaults to `false`.
+
+| `moduleLocation`
+| *Y*
+| *Y*
+| Sets the location of the `module.xml` file in a lazy-evaluatable manner as long as Gradle's
+`project.file` method can resolve it.
+
+| `seedFrom`
+| *Y*
+| -
+| Path to a JAR where to read the original manifest from.
+
+|===
+
+
 == Other items
 
 [quote,https://github.com/ceylon/ceylon/pull/6378#issuecomment-233606475]
@@ -296,9 +378,7 @@ But it should also be possible to define the buildid on the command line when ex
 
 Also missing from the root distribution folder are: contrib, LICENSE-ASL, LICENSE-GPL-CP, NOTICE, README.md, samples and templates. These can simply be copied from dist.
 
-
-
-Hah, you actually improved something: in our distribution the bin/ceylon-compile-js.plugin file is missing!
+Hah, you actually improved something: in our distribution the bin/ceylon-compile-js.pluin file is missing!
 
 From my previous comment I failed to mention the dist/bin folder. It's contents should also be copied to the distribution's bin folder. (We're missing bin/ceylon-format.plugin)
 
