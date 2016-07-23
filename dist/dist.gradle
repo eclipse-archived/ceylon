@@ -86,14 +86,46 @@ task copySupportFiles( type : Copy) {
     }
 }
 
+task generateBuildId {
+
+    group "Build"
+    description "Generates teh BUILDID file"
+
+    ext {
+        idFile = file("${distDir}/BUILDID")
+
+        getRevision = { OutputStream os ->
+            project.exec {
+                standardOutput = os
+                commandLine 'git','rev-parse', '--short', 'HEAD'
+            }
+            os.toString()
+        }
+    }
+
+
+    doFirst {
+        idFile.withOutputStream { os ->
+            getRevision(os)
+        }
+    }
+
+    outputs.upToDateWhen {
+        idFile.exists() && getRevision( new ByteArrayOutputStream() ) == idFile.text
+    }
+
+    outputs.file idFile
+    enabled = file("${rootProject.projectDir}/.git").exists()
+}
+
+
 task publishInternal {
     group 'Distribution'
     description "Lifecycle task to cooridnate all internal publish tasks"
     dependsOn setupRepo, installCompiler, installJS
     dependsOn copyCompilerBinaries, copySupportFiles
     dependsOn installRuntime
-    // addModuleDescriptors
-    // generateBuildId
+    dependsOn generateBuildId
 }
 
 
