@@ -86,10 +86,11 @@ task copySupportFiles( type : Copy) {
     }
 }
 
+// TODO: Migrate this to a compiled task in buildSrc.
 task generateBuildId {
 
     group "Build"
-    description "Generates teh BUILDID file"
+    description "Generates the BUILDID file"
 
     ext {
         hasGitRepository = file("${rootProject.projectDir}/.git").exists()
@@ -150,12 +151,12 @@ task publishInternal {
 // ide-quick:
 // copy-dist-bin: DONE
 // publish-quick: DONE
-// setup-repo:
-// install-compiler:
-// install-js:
-// copy-compiler-binaries:
+// setup-repo: DONE
+// install-compiler: DONE
+// install-js: DONE
+// copy-compiler-binaries: DONE
 // install-runtime: install-common,install-model,install-cmr,install-tool-provider,install-language,
-//                  install-java-main,install-runtime-nodeps"
+//                  install-java-main,install-runtime-nodeps <-- ALL DONE
 
 
 
