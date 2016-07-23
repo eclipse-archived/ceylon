@@ -17,7 +17,6 @@ import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.impl.DefaultRepository;
-import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.ModuleSpec;
@@ -195,7 +194,7 @@ public class ModuleCopycat {
                 if (copyModule && !context.isIgnoreDependencies()) {
                     maxCount += countNonJdkDeps(ver.getDependencies());
                     for (ModuleDependencyInfo dep : ver.getDependencies()) {
-                        if (skipModule(dep.getName())) {
+                        if (skipDependency(dep)) {
                             continue;
                         }
                         ModuleSpec depModule = new ModuleSpec(dep.getName(), dep.getVersion());
@@ -214,23 +213,23 @@ public class ModuleCopycat {
         }
     }
 
-    private boolean skipModule(String name) {
-        return "ceylon.language".equals(name) && !includeLanguage;
+    private boolean skipDependency(ModuleDependencyInfo dep) {
+        return ("ceylon.language".equals(dep.getName()) && !includeLanguage)
+                || dep.getNamespace() != null;
     }
     
     // Can the artifact be copied?
     private boolean canBeCopied(ArtifactContext context) {
-        // Only allow modules from the "ceylon" and "maven" namespaces to be copied
+        // Only allow modules from the "ceylon" namespace to be copied
         return context.getNamespace() == null
-                || DefaultRepository.NAMESPACE.equals(context.getNamespace())
-                || MavenRepository.NAMESPACE.equals(context.getNamespace());
+                || DefaultRepository.NAMESPACE.equals(context.getNamespace());
     }
 
     private int countNonJdkDeps(NavigableSet<ModuleDependencyInfo> dependencies) {
         int cnt = 0;
         for (ModuleDependencyInfo dep : dependencies) {
             if (!jdkProvider.isJDKModule(dep.getName())
-                    && !skipModule(dep.getName())) {
+                    && !skipDependency(dep)) {
                 cnt++;
             }
         }
