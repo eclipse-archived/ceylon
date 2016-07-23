@@ -54,10 +54,6 @@ dependencies {
 sourceCompatibility = cbp.'compile.java.source'
 targetCompatibility = cbp.'compile.java.target'
 
-compileJava {
-    options.encoding = 'UTF-8'
-}
-
 assemble {
     dependsOn 'sha1'
     dependsOn 'copyPluginFiles'
@@ -103,16 +99,6 @@ moduleXml {
             cbp."ceylon.${ceylonPublishModuleName}.dir").parentFile, '/_version_/module.xml')
     }
 }
-
-//jar {
-//    manifest {
-//        attributes 'Bundle-SymbolicName': bundleSymbolicName,
-//            'Bundle-Version': bundleVersionName+".${TimeStamp.BUILD}"
-//    }
-//    archiveName = "${bundleSymbolicName}-${bundleVersionName}.jar"
-//}
-
-
 
 jar {
     dependsOn moduleXml
@@ -221,5 +207,6 @@ if(ext.properties.containsKey('ceylonTestDisabled')) {
 afterEvaluate {
     tasks.withType(JavaCompile) { t ->
         t.options.compilerArgs ['-Xlint:-options']
+        t.options.encoding = 'UTF-8'
     }
 }
