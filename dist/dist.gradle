@@ -96,7 +96,7 @@ task generateBuildId {
         providedBuildId = project.properties.buildid ?: System.getProperty('buildid')
         idFile = file("${distDir}/BUILDID")
 
-        getRevision = { OutputStream os,boolean silent=false ->
+        getRevision = { OutputStream os->
             if (hasGitRepository) {
                 project.exec {
                     standardOutput = os
@@ -106,11 +106,6 @@ task generateBuildId {
             } else if (providedBuildId) {
                 os << providedBuildId
                 providedBuildId
-            } else {
-                if(buildid == null && !silent) {
-                    logger.error "Git executable not found -Pbuildid / -Dbuilid was not specified."
-                }
-                null
             }
         }
     }
@@ -123,11 +118,15 @@ task generateBuildId {
     }
 
     outputs.upToDateWhen {
-        idFile.exists() && getRevision( new ByteArrayOutputStream(),true ) == idFile.text
+        idFile.exists() && getRevision( new ByteArrayOutputStream() ) == idFile.text
     }
 
     outputs.file idFile
     enabled = hasGitRepository || providedBuildId != null
+
+    if(!ext.hasGitRepository && ext.providedBuildId == null) {
+        logger.error "Git repository not found and -Pbuildid / -Dbuilid was not specified."
+    }
 }
 
 
