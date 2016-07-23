@@ -23,7 +23,8 @@ Ant & Gradle builds.
              copy-samples, copy-templates, copy-contrib, copy-licenses, <!-- 4 -->
              copy-jvm-compiler-libraries, <!-- 5 -->
               install-runtime, <!-- 6 -->
-             add-module-descriptors, generate-buildid"
+             add-module-descriptors, <!-- 7 -->
+             generate-buildid"
     description="Generates all binaries and copies them to the distribution folder">
 </target>
 ----
@@ -34,6 +35,8 @@ Ant & Gradle builds.
 <4> `copy-licenses`, `copy-samples`, `copy-templates` & `copy-contrib` handled by `:dist:copySupportFiles`
 <5> `copy-jvm-compiler-libraries` handled by `:compiler-java:publishInternal`.
 <6> `install-runtime` handled by `:distinstallRuntime`.
+<7> `add-module-descriptors` is not handle in two ways. For Ceylon-specific artifacts this is part of the build
+  in each subproject. For external artifacts this is indirectly covered by `:runtime:setupRepo`.
 
 In addition the `copy-dist-bin` Ant task is handled by
 
@@ -61,7 +64,8 @@ Needed a special `sourceSet` layout.
 As all of the four Ant `javac` tasks ended up in a single JAR and used the same compilation options,
  I think putting them into a single compilation task was the way to go.
 
-In order to rename `_version_` when copying XML files, the use of `eachFile` was necessary.
+In an relaier restructuring effort there was an issue with stray `_version_` folders be left around.
+This problem has now been eliminated due to the new way that OSIGi headers are being added.
 
 .TODO
 * What about those `pom.xml` files that are dotted over the place?
@@ -82,10 +86,6 @@ In order to rename `_version_` when copying XML files, the use of `eachFile` was
 === Cmr-aether
 
 Standard Ceylon Java project.
-
-.TODO
-* Publishing
-* Source Zip
 
 === Cmr-webdav
 
@@ -150,7 +150,6 @@ and that seems to be forcing Ant to build into Gradle's `buildDir`.
 There is an unfortunate interdependency with `compiler-java`.
 
 .TODO
-* Publishing
 * Fix it from going through the Ant build to building everything as part of Gradle direct.
 * Start using `generate-source.gradle` to generate source.
 * Set `generateModuleInfo` according to `jigsaw`.
