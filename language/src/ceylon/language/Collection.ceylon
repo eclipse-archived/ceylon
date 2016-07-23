@@ -98,12 +98,12 @@ shared interface Collection<out Element=Anything>
         value multiset =
             outer
             .indexed
-            .group((entry) => entry.item else nullElement)
+            .group((_->item) => item else nullElement)
             .items
             .sort((x,y) => x.first.key<=>y.first.key)
             .indexed
             .flatMap((index->entries) 
-                    => entries.map((entry) => index->entry.item));
+                => entries.map((_->item) => index->item));
         
         empty => multiset.empty;
         
@@ -119,11 +119,11 @@ shared interface Collection<out Element=Anything>
                     initial = false;
                 }
                 else if (exists i -> [key->_, __]
-                        = elements.paired.locateLast((pair)
-                            => pair[0].key < pair[1].key)) {
+                        = elements.paired.locateLast(
+                            ([m->_, n->__]) => m < n)) {
                     assert (exists j
-                            = elements.lastIndexWhere((elem) 
-                                => elem.key > key));
+                        = elements.lastIndexWhere(
+                            (k->_) => k > key));
                     elements.swap(i,j);
                     for (k in 0 : (size-i-1)/2) {
                         elements.swap(i+1+k, size-1-k);
@@ -199,7 +199,8 @@ shared interface Collection<out Element=Anything>
                         return finished;
                     }
                     value current = selection.collect((i) {
-                        if (exists e = elements.getFromFirst(i)) {
+                        if (exists e 
+                            = elements.getFromFirst(i)) {
                             return e;
                         }
                         else {
@@ -215,7 +216,8 @@ shared interface Collection<out Element=Anything>
                             done = true;
                             break;
                         }
-                        assert (exists s = selection.getFromFirst(i));
+                        assert (exists s 
+                                = selection.getFromFirst(i));
                         if (s == size-length+i) {
                             i--;
                         }
