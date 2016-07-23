@@ -92,14 +92,26 @@ task generateBuildId {
     description "Generates teh BUILDID file"
 
     ext {
+        hasGitRepository = file("${rootProject.projectDir}/.git").exists()
+        providedBuildId = project.properties.buildid ?: System.getProperty('buildid')
         idFile = file("${distDir}/BUILDID")
 
-        getRevision = { OutputStream os ->
-            project.exec {
-                standardOutput = os
-                commandLine 'git','rev-parse', '--short', 'HEAD'
+        getRevision = { OutputStream os,boolean silent=false ->
+            if (hasGitRepository) {
+                project.exec {
+                    standardOutput = os
+                    commandLine 'git','rev-parse', '--short', 'HEAD'
+                }
+                os.toString()
+            } else if (providedBuildId) {
+                os << providedBuildId
+                providedBuildId
+            } else {
+                if(buildid == null && !silent) {
+                    logger.error "Git executable not found -Pbuildid / -Dbuilid was not specified."
+                }
+                null
             }
-            os.toString()
         }
     }
 
@@ -111,11 +123,11 @@ task generateBuildId {
     }
 
     outputs.upToDateWhen {
-        idFile.exists() && getRevision( new ByteArrayOutputStream() ) == idFile.text
+        idFile.exists() && getRevision( new ByteArrayOutputStream(),true ) == idFile.text
     }
 
     outputs.file idFile
-    enabled = file("${rootProject.projectDir}/.git").exists()
+    enabled = hasGitRepository || providedBuildId != null
 }
 
 
