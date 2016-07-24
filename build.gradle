@@ -53,7 +53,7 @@ task dist {
 }
 
 task clean ( type : Delete ) {
-    delete buildDir
+    delete buildPrefix
 }
 
 task 'clean-all' {
