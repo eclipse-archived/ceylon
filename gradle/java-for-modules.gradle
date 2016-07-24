@@ -24,6 +24,10 @@ if(!ext.properties.containsKey('ceylonPublishModuleName')) {
     ext.ceylonPublishModuleName = ceylonModuleName
 }
 
+if(!ext.properties.containsKey('ceylonNamespace')) {
+    ext.ceylonNamespace = 'com.redhat.ceylon'
+}
+
 // ----------------------------------------------------------------------------
 // Fail if prequisite properties are not in common-build.properties
 // ----------------------------------------------------------------------------
@@ -35,7 +39,7 @@ requiresCBP 'compile.java.source'
 
 ext {
     bundleVariant = ext.properties.containsKey('ceylonModuleVariant') ? ".${ceylonModuleVariant}" : ''
-    bundleSymbolicName = 'com.redhat.ceylon.' + ceylonModuleName + bundleVariant
+    bundleSymbolicName = ceylonNamespace + '.' + ceylonModuleName + bundleVariant
     bundleVersionName = cbp."module.com.redhat.ceylon.${ceylonModuleName}.version"
     archivePublishDir = "${repoDir}/" +  cbp."ceylon.${ceylonPublishModuleName}.dir"
 }

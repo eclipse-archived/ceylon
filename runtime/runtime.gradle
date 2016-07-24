@@ -2,6 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 ext {
     ceylonModuleName = 'runtime'
+    ceylonNamespace = 'ceylon'
     ceylonSourceLayout = false
     ceylonTestDisabled = true
 }
@@ -10,7 +11,7 @@ apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
 
 
 ext {
-    externalDepsDestinationDir = "${buildDir}/ceylon-runtime"
+    externalDepsDestinationDir = "${buildDir}/ceylon-externals"
 }
 
 dependencies {
@@ -115,7 +116,8 @@ task sha1Externals( type : Checksum ) {
     }
 
     sha1Externals.archive osgiJar
-    addModuleDescriptorsForExternalDependencies.dependsOn osgiJar, moduleTask
+    sha1Externals.dependsOn osgiJar
+    addModuleDescriptorsForExternalDependencies.dependsOn osgiJar, moduleTask, sha1Externals
 }
 
 assemble {
