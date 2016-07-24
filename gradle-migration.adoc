@@ -38,8 +38,6 @@ Ant & Gradle builds.
 <7> `add-module-descriptors` is not handle in two ways. For Ceylon-specific artifacts this is part of the build
   in each subproject. For external artifacts this is indirectly covered by `:runtime:setupRepo`.
 
-In addition the `copy-dist-bin` Ant task is handled by
-
 .TODO
 * `ceylon-completion.bash` is copied twice - once in `copyContrib` and once in `copyCompilerBinaries`
 
