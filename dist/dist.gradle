@@ -1,4 +1,5 @@
 apply plugin : LifecycleBasePlugin
+apply plugin : CeylonBuildInfoPlugin
 
 task setupRepo {
     group 'Distribution'
@@ -86,48 +87,10 @@ task copySupportFiles( type : Copy) {
     }
 }
 
-// TODO: Migrate this to a compiled task in buildSrc.
-task generateBuildId {
-
+task generateBuildId ( type : CeylonBuildIdGenerator ) {
     group "Build"
     description "Generates the BUILDID file"
-
-    ext {
-        hasGitRepository = file("${rootProject.projectDir}/.git").exists()
-        providedBuildId = project.properties.buildid ?: System.getProperty('buildid')
-        idFile = file("${distDir}/BUILDID")
-
-        getRevision = { OutputStream os->
-            if (hasGitRepository) {
-                project.exec {
-                    standardOutput = os
-                    commandLine 'git','rev-parse', '--short', 'HEAD'
-                }
-                os.toString()
-            } else if (providedBuildId) {
-                os << providedBuildId
-                providedBuildId
-            }
-        }
-    }
-
-
-    doFirst {
-        idFile.withOutputStream { os ->
-            getRevision(os)
-        }
-    }
-
-    outputs.upToDateWhen {
-        idFile.exists() && getRevision( new ByteArrayOutputStream() ) == idFile.text
-    }
-
-    outputs.file idFile
-    enabled = hasGitRepository || providedBuildId != null
-
-    if(!ext.hasGitRepository && ext.providedBuildId == null) {
-        logger.error "Git repository not found and -Pbuildid / -Dbuilid was not specified."
-    }
+    outputFile "${distDir}/BUILDID"
 }
 
 
