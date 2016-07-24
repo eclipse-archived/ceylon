@@ -64,6 +64,11 @@ task fakeClasseDirForExternalDependencies  {
     }
 }
 
+task sha1Externals( type : Checksum ) {
+    group "Build"
+    description "Create SHA1 checksum for external dependencies"
+}
+
 // Add tasks for each of the external JARs
 (fileTree('dist/repo') {
     include '**/*.jar'
@@ -109,6 +114,7 @@ task fakeClasseDirForExternalDependencies  {
         doFirst { mkdir manifest.classesDir }
     }
 
+    sha1Externals.archive osgiJar
     addModuleDescriptorsForExternalDependencies.dependsOn osgiJar, moduleTask
 }
 
