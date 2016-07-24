@@ -223,11 +223,8 @@ task publishBootstrapModule( type : Copy ) {
     }
 
     from bootstrapModule
+    from bootstrapModuleXml
     into "${repoDir}/${cbp.'ceylon.bootstrap.dir'}"
-}
-
-publishJar {
-    from bootstrapModule
 }
 
 task publishJvmCompilerJars ( type : Copy ) {
