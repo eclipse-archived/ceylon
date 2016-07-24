@@ -136,14 +136,21 @@ task zip ( type : Zip ) {
     enabled = ceylonBuildInfo.revisionInfo != null
 }
 
-
+task cleanRepo ( type : Delete ) {
+    group "clean"
+    description "Cleans the distribution area"
+    delete repoBinDir
+    delete repoLibDir
+    delete samplesDir
+    delete repoDir
+}
 
 // dist: publish,ide-quick
 // publish: clean-projects,install-all,copy-dist-bin,publish-quick
 // install-all: setup-repo, install-compiler, install-js, copy-compiler-binaries
 //               copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
 //               copy-licenses, install-runtime,
-//               add-module-descriptors, generate-buildid
+//               add-module-descriptors, generate-buildid <-- ALL DONE
 // ide-quick:
 // copy-dist-bin: DONE
 // publish-quick: DONE
@@ -153,15 +160,56 @@ task zip ( type : Zip ) {
 // copy-compiler-binaries: DONE
 // install-runtime: install-common,install-model,install-cmr,install-tool-provider,install-language,
 //                  install-java-main,install-runtime-nodeps <-- ALL DONE
-
-
-
-task cleanRepo ( type : Delete ) {
-    group "clean"
-    description "Cleans the distribution area"
-    delete repoBinDir
-    delete repoLibDir
-    delete samplesDir
-    delete repoDir
-}
+// copy-herd
+// test
+// test-quick (test-item)
+//
+// update:
+// status:
+// release:
+// nightly:
+// git-status:
+// git-update:
+//
+// package: clean-projects, install-all, generate-spec, generate-apidoc, generate-tooldoc,
+//          copy-dist-bin, zip
+//
+// osgi:
+// osgi-internal:
+// osgi-quick:
+// osgi-p2:
+// osgi-p2-internal:
+// osgi-p2-quick:
+//
+// generate-spec:
+// generate-apidoc:
+// generate--tooldoc:
+// generate-tooldoc-man:
+//
+// setup-sdk:
+// setup-admins-sdk:
+// status-sdk:
+// update-sdk:
+// clean-sdk:
+// sdk:
+//
+// setup-ide:
+// setup-admins-ide:
+// status-ide:
+// update-ide:
+// clean-ide:
+// ide
+// ide-quick (ide-item)
+//
+// eclipse:
+// eclipse-switch-to-last-release-updates:
+// eclipse-switch-back-to-master:
+// eclipse-rebuild-last-release-updates:
+//
+// intellij:
+//
+// status-all: status,status-sdk,status-ide
+// update-all: update,update-sdk,update-ide
+// clean-all: clean,clean-projects,clean-sdk,clean-ide
+// do-all: dist,sdk,eclipse
 
