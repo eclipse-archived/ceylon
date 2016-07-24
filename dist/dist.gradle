@@ -2,10 +2,6 @@ apply plugin : LifecycleBasePlugin
 apply plugin : CeylonBuildInfoPlugin
 apply plugin : CeylonCommonBuildProperties
 
-//ext {
-//    version = cbp.'ceylon-version'
-//}
-
 task setupRepo {
     group 'Distribution'
     dependsOn ':runtime:setupRepo'
@@ -99,21 +95,13 @@ task generateBuildId ( type : CeylonBuildIdGenerator ) {
 }
 
 
-task publishInternal {
-    group 'Distribution'
-    description "Lifecycle task to cooridnate all internal publish tasks"
+task zip ( type : Zip ) {
+
     dependsOn setupRepo, installCompiler, installJS
     dependsOn copyCompilerBinaries, copySupportFiles
     dependsOn installRuntime
     dependsOn generateBuildId
-}
 
-
-task zip ( type : Zip ) {
-
-    ext {
-
-    }
     group "Publish"
     description "Creates the distribution Zip"
     from distDir, {
@@ -134,6 +122,12 @@ task zip ( type : Zip ) {
     baseName = 'ceylon'
 
     enabled = ceylonBuildInfo.revisionInfo != null
+}
+
+task publishInternal {
+    group 'Distribution'
+    description "Lifecycle task to coordinate all internal publish tasks"
+    dependsOn zip
 }
 
 task cleanRepo ( type : Delete ) {
