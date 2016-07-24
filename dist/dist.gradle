@@ -1,4 +1,6 @@
 apply plugin : LifecycleBasePlugin
+apply plugin : CeylonBuildInfoPlugin
+apply plugin : CeylonCommonBuildProperties
 
 task setupRepo {
     group 'Distribution'
@@ -86,78 +88,47 @@ task copySupportFiles( type : Copy) {
     }
 }
 
-task generateBuildId {
-
+task generateBuildId ( type : CeylonBuildIdGenerator ) {
     group "Build"
-    description "Generates teh BUILDID file"
-
-    ext {
-        hasGitRepository = file("${rootProject.projectDir}/.git").exists()
-        providedBuildId = project.properties.buildid ?: System.getProperty('buildid')
-        idFile = file("${distDir}/BUILDID")
-
-        getRevision = { OutputStream os->
-            if (hasGitRepository) {
-                project.exec {
-                    standardOutput = os
-                    commandLine 'git','rev-parse', '--short', 'HEAD'
-                }
-                os.toString()
-            } else if (providedBuildId) {
-                os << providedBuildId
-                providedBuildId
-            }
-        }
-    }
-
-
-    doFirst {
-        idFile.withOutputStream { os ->
-            getRevision(os)
-        }
-    }
-
-    outputs.upToDateWhen {
-        idFile.exists() && getRevision( new ByteArrayOutputStream() ) == idFile.text
-    }
-
-    outputs.file idFile
-    enabled = hasGitRepository || providedBuildId != null
-
-    if(!ext.hasGitRepository && ext.providedBuildId == null) {
-        logger.error "Git repository not found and -Pbuildid / -Dbuilid was not specified."
-    }
+    description "Generates the BUILDID file"
+    outputFile "${distDir}/BUILDID"
 }
 
 
-task publishInternal {
-    group 'Distribution'
-    description "Lifecycle task to cooridnate all internal publish tasks"
+task zip ( type : Zip ) {
+
     dependsOn setupRepo, installCompiler, installJS
     dependsOn copyCompilerBinaries, copySupportFiles
     dependsOn installRuntime
     dependsOn generateBuildId
+
+    group "Publish"
+    description "Creates the distribution Zip"
+    from distDir, {
+        include '**'
+        exclude 'bin/ceylon*'
+    }
+    from distDir, {
+        include 'bin/*.plugin'
+    }
+    from distDir, {
+        include 'bin/ceylon*'
+        exclude 'bin/*.plugin'
+        fileMode 0755
+    }
+    into "ceylon-${version}"
+    destinationDir buildDir
+    version = "${project.version}-${ceylonBuildInfo.revisionInfo}"
+    baseName = 'ceylon'
+
+    enabled = ceylonBuildInfo.revisionInfo != null
 }
 
-
-
-// dist: publish,ide-quick
-// publish: clean-projects,install-all,copy-dist-bin,publish-quick
-// install-all: setup-repo, install-compiler, install-js, copy-compiler-binaries
-//               copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
-//               copy-licenses, install-runtime,
-//               add-module-descriptors, generate-buildid
-// ide-quick:
-// copy-dist-bin: DONE
-// publish-quick: DONE
-// setup-repo:
-// install-compiler:
-// install-js:
-// copy-compiler-binaries:
-// install-runtime: install-common,install-model,install-cmr,install-tool-provider,install-language,
-//                  install-java-main,install-runtime-nodeps"
-
-
+task publishInternal {
+    group 'Distribution'
+    description "Lifecycle task to coordinate all internal publish tasks"
+    dependsOn zip
+}
 
 task cleanRepo ( type : Delete ) {
     group "clean"
@@ -167,4 +138,72 @@ task cleanRepo ( type : Delete ) {
     delete samplesDir
     delete repoDir
 }
+
+// dist: publish,ide-quick
+// publish: clean-projects,install-all,copy-dist-bin,publish-quick
+// install-all: setup-repo, install-compiler, install-js, copy-compiler-binaries
+//               copy-samples, copy-templates, copy-contrib, copy-jvm-compiler-libraries,
+//               copy-licenses, install-runtime,
+//               add-module-descriptors, generate-buildid <-- ALL DONE
+// ide-quick:
+// copy-dist-bin: DONE
+// publish-quick: DONE
+// setup-repo: DONE
+// install-compiler: DONE
+// install-js: DONE
+// copy-compiler-binaries: DONE
+// install-runtime: install-common,install-model,install-cmr,install-tool-provider,install-language,
+//                  install-java-main,install-runtime-nodeps <-- ALL DONE
+// copy-herd
+// test
+// test-quick (test-item)
+//
+// update:
+// status:
+// release:
+// nightly:
+// git-status:
+// git-update:
+//
+// package: clean-projects, install-all, generate-spec, generate-apidoc, generate-tooldoc,
+//          copy-dist-bin, zip
+//
+// osgi:
+// osgi-internal:
+// osgi-quick:
+// osgi-p2:
+// osgi-p2-internal:
+// osgi-p2-quick:
+//
+// generate-spec:
+// generate-apidoc:
+// generate--tooldoc:
+// generate-tooldoc-man:
+//
+// setup-sdk:
+// setup-admins-sdk:
+// status-sdk:
+// update-sdk:
+// clean-sdk:
+// sdk:
+//
+// setup-ide:
+// setup-admins-ide:
+// status-ide:
+// update-ide:
+// clean-ide:
+// ide
+// ide-quick (ide-item)
+//
+// eclipse:
+// eclipse-switch-to-last-release-updates:
+// eclipse-switch-back-to-master:
+// eclipse-rebuild-last-release-updates:
+//
+// intellij:
+//
+// status-all: status,status-sdk,status-ide
+// update-all: update,update-sdk,update-ide
+// clean-all: clean,clean-projects,clean-sdk,clean-ide
+// do-all: dist,sdk,eclipse
 

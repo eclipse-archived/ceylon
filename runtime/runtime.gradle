@@ -2,6 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 ext {
     ceylonModuleName = 'runtime'
+    ceylonNamespace = 'ceylon'
     ceylonSourceLayout = false
     ceylonTestDisabled = true
 }
@@ -10,7 +11,7 @@ apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
 
 
 ext {
-    externalDepsDestinationDir = "${buildDir}/ceylon-runtime"
+    externalDepsDestinationDir = "${buildDir}/ceylon-externals"
 }
 
 dependencies {
@@ -64,6 +65,11 @@ task fakeClasseDirForExternalDependencies  {
     }
 }
 
+task sha1Externals( type : Checksum ) {
+    group "Build"
+    description "Create SHA1 checksum for external dependencies"
+}
+
 // Add tasks for each of the external JARs
 (fileTree('dist/repo') {
     include '**/*.jar'
@@ -109,7 +115,9 @@ task fakeClasseDirForExternalDependencies  {
         doFirst { mkdir manifest.classesDir }
     }
 
-    addModuleDescriptorsForExternalDependencies.dependsOn osgiJar, moduleTask
+    sha1Externals.archive osgiJar
+    sha1Externals.dependsOn osgiJar
+    addModuleDescriptorsForExternalDependencies.dependsOn osgiJar, moduleTask, sha1Externals
 }
 
 assemble {
@@ -122,6 +130,7 @@ task setupRepo( type : Copy ) {
     dependsOn addModuleDescriptorsForExternalDependencies
     into repoDir
     from externalDepsDestinationDir
+    exclude 'classes'
 }
 
 ['common','cmr','language','tool-provider','java-main'].each {

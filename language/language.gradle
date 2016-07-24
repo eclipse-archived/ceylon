@@ -33,8 +33,21 @@ task invokeAntBuild( type : GradleBuild ) {
 
 assemble.dependsOn invokeAntBuild
 
-task publishInternal {
-    dependsOn invokeAntBuild
+task languageModuleXml( type : CeylonBuildModuleXml ) {
+    description "Create module.xml for the language JAR"
+    sourceModule {
+        new File(project.file("${project(':runtime').projectDir}/dist/repo/" +
+            cbp."ceylon.language.dir").parentFile, '/_version_/module.xml')
+    }
+    destinationDir = {"${buildDir}/ceylon-module"}
+}
+
+
+task publishInternal( type : Copy ) {
+    dependsOn invokeAntBuild, languageModuleXml
+
+    from languageModuleXml
+    into "${repoDir}/${cbp.'ceylon.language.dir'}"
 }
 
 ['common','cli','model','cmr','compiler-java','langtools-classfile','typechecker','compiler-js'].each {
