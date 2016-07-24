@@ -5,13 +5,14 @@ import org.gradle.api.tasks.TaskAction
 class CeylonBuildIdGenerator extends DefaultTask {
 
     CeylonBuildIdGenerator() {
-        buildInfo = project.extensions.getByType(CeylonBuildInfoPlugin.BuildInfo)
-        enabled = buildInfo.hasGitRepository || buildInfo.providedBuildId != null
+        this.buildInfo = project.extensions.getByType(CeylonBuildInfoPlugin.BuildInfo)
+        enabled = this.buildInfo.hasGitRepository || this.buildInfo.providedBuildId != null
+
 
         outputs.upToDateWhen {
             if(this.outputFile !=null) {
                 File out = getOutputFile()
-                out.exists() && buildInfo.revisionInfo == out.text
+                out.exists() && project.extensions.getByType(CeylonBuildInfoPlugin.BuildInfo).revisionInfo == out.text
             } else {
                 false
             }
