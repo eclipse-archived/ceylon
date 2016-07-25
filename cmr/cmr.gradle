@@ -2,7 +2,7 @@
 ext {
     ceylonModuleName = 'module-resolver'
     ceylonSourceLayout = false
-    ceylonTestDisabled = true
+//    ceylonTestDisabled = true
 }
 
 apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
@@ -39,6 +39,11 @@ sourceSets {
     }
 }
 
+
+test {
+    // there are '@Suite.SuiteClasses` in this test set - only run them.
+    include '**/AllCmrTests.class'
+}
 
 ['common','model','cmr-aether','cmr-webdav','cmr-js'].each {
     publishInternal.dependsOn ":${it}:publishInternal"
