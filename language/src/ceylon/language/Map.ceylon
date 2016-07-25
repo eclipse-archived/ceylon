@@ -94,17 +94,17 @@ shared interface Map<out Key=Object, out Item=Anything>
      belonging to this map."
     see (`function defines`)
     shared actual default Boolean contains(Object entry) {
-        if (is Object->Anything entry, defines(entry.key)) {
-            value item = get(entry.key);
-            value entryItem = entry.item;
-            return
-                if (exists item, exists entryItem)
-                then item == entryItem 
-                else entryItem exists == item exists;
+        if (is Object->Anything entry) {
+            value key -> it = entry;
+            if (defines(key)) {
+                value item = get(key);
+                return 
+                    if (exists it, exists item)
+                    then item == it
+                    else it exists == item exists;
+            }
         }
-        else {
-            return false;
-        }
+        return false;
     }
     
     distinct => this;
@@ -141,9 +141,8 @@ shared interface Map<out Key=Object, out Item=Anything>
     class Items() extends Object() 
                   satisfies Collection<Item> {
         contains(Object item) 
-                => outer.any((entry) 
-                    => if (exists it = entry.item) 
-                            then it==item 
+                => outer.any((_->it) 
+                    => if (exists it) then it==item 
                             else false);
         iterator() => outer.map(Entry.item).iterator();
         size => outer.size;
@@ -179,8 +178,8 @@ shared interface Map<out Key=Object, out Item=Anything>
     shared default Map<Item&Object, [Key+]> inverse() 
             => coalescedMap
                 .summarize<Item&Object,ElementEntry<Key>>
-                    (Entry.item, (keys, Key->Item entry) 
-                        => ElementEntry(keys, entry.key));
+                    (Entry.item, (keys, key->_) 
+                        => ElementEntry(keys, key));
                 //not very useful, since the entries of a
                 //map don't usually have a very meaningful
                 //order (except for TreeMaps!)
@@ -194,19 +193,14 @@ shared interface Map<out Key=Object, out Item=Anything>
     shared actual default Boolean equals(Object that) {
         if (is Map<Object,Anything> that,
             that.size==size) {
-            for (entry in this) {
-                value thatItem = that[entry.key];
-                if (exists thisItem = entry.item) {
-                    if (exists thatItem) {
-                        if (thatItem!=thisItem) {
-                            return false;
-                        }
-                    }
-                    else {
+            for (key -> thisItem in this) {
+                value thatItem = that[key];
+                if (exists thisItem, exists thatItem) {
+                    if (thatItem!=thisItem) {
                         return false;
                     }
                 }
-                else if (thatItem exists) {
+                else if (thisItem exists!=thatItem exists) {
                     return false;
                 }
             }
@@ -220,7 +214,7 @@ shared interface Map<out Key=Object, out Item=Anything>
     }
     
     shared actual default Integer hash {
-        variable Integer hashCode = 0;
+        variable value hashCode = 0;
         for (elem in this) {
             hashCode += elem.hash;
         }
@@ -416,8 +410,8 @@ shared interface Map<out Key=Object, out Item=Anything>
         
         iterator()
                 => { for (entry in outer) 
-                     if (exists it=entry.item) 
-                            entry.key->it }
+                     if (exists it = entry.item) 
+                            entry.key -> it }
                         .iterator();
         
         clone() => outer.clone().coalescedMap;
