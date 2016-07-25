@@ -1,0 +1,50 @@
+apply plugin : LifecycleBasePlugin
+apply from : 'task-generator.gradle'
+
+ext {
+    externalDepsDestinationDir = file("${buildDir}/ceylon-externals")
+    externalsSourceDir = file("${project(':runtime').projectDir}/dist/repo")
+}
+
+task sha1Externals( type : Checksum ) {
+    group "Build"
+    description "Create SHA1 checksum for external dependencies"
+}
+
+task addModuleDescriptorsForExternalDependencies {
+    group "Build"
+    description "Lifecycle task for handling external dependencies"
+    dependsOn sha1Externals
+}
+
+task setupRepo( type : Copy ) {
+    group "Setup"
+    description "Setup the basic structure of the dist folder by copying the template folder"
+    dependsOn addModuleDescriptorsForExternalDependencies
+    into repoDir
+    from externalDepsDestinationDir
+    exclude 'classes'
+}
+
+task cleanRepo {
+    dependsOn cleanSetupRepo
+}
+
+assemble {
+    dependsOn addModuleDescriptorsForExternalDependencies
+}
+
+clean {
+    dependsOn cleanRepo
+}
+
+createCeylonTasksFor externalsSourceDir,
+    externalDepsDestinationDir,
+    sha1Externals,
+    addModuleDescriptorsForExternalDependencies,
+    fileTree(externalsSourceDir) {
+        include '**/*.jar'
+        exclude "**/ceylon/**" // <-- we do this as we have moved ceylon modules to their own subprojects.
+    }
+
+

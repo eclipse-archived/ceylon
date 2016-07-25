@@ -1,0 +1,67 @@
+apply plugin : CeylonBuildOsgiPlugin
+
+ext.createTasksFor = { File baseFile,File jarFile, File depsDestination, Task checksum, Task parentLifecycleTask ->
+    String taskNamePostfix = jarFile.name[0..-5]
+    String relativePath = CeylonBuildUtil.relativeTo(jarFile.parentFile.absoluteFile,baseFile)
+    File depsFullDestination = project.file("${depsDestination}/${relativePath}")
+
+    Task fakeClasses = tasks.getByName('fakeClassesDirForExternalDependencies')
+
+    Task moduleTask = tasks.create( "addModuleXml_${taskNamePostfix}", CeylonBuildModuleXml) {
+        group "Build"
+        description "Prepare module.xml for ${taskNamePostfix}"
+        sourceModule new File(jarFile.parentFile,'module.xml')
+        destinationDir depsFullDestination
+    }
+
+    Task osgiJar = tasks.create( "addOsgiManifest_${taskNamePostfix}", Jar ) {
+        group "Build"
+        description "Add OSGI data to manifest for ${taskNamePostfix}"
+        archiveName jarFile.name
+        destinationDir  depsFullDestination
+        dependsOn moduleTask
+        dependsOn fakeClasses
+        setAsOsgiExternalArchive()
+
+        from zipTree(jarFile), {
+            exclude 'META-INF/MANIFEST.MF'
+        }
+
+        manifest {
+            classesDir fakeClasses.outputDir
+        }
+
+        ceylon {
+            seedFrom jarFile
+            moduleLocation {moduleTask.destinationFile}
+            forceNewOsgiManifest relativePath.matches(~/.+[\\\/](logmanager|slf4j)[\\\/].+/)
+        }
+
+        from moduleTask, {
+            into "META-INF/jbossmodules/${relativePath}"
+        }
+
+        doFirst { mkdir manifest.classesDir }
+    }
+
+    checksum.archive osgiJar
+    checksum.dependsOn osgiJar
+    parentLifecycleTask.dependsOn osgiJar, moduleTask
+
+}
+
+ext.createCeylonTasksFor = { File baseFile, File depsDestination, Task checksum, Task parentLifecycleTask, FileCollection jars ->
+    jars.files.each {
+        createTasksFor baseFile, it, depsDestination, checksum, parentLifecycleTask
+    }
+}
+
+task fakeClassesDirForExternalDependencies  {
+    ext {
+        outputDir = file("${buildDir}/classes/fake")
+    }
+    outputs.dir outputDir
+    doFirst {
+        mkdir outputDir
+    }
+}

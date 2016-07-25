@@ -4,7 +4,7 @@ apply plugin : CeylonCommonBuildProperties
 
 task setupRepo {
     group 'Distribution'
-    dependsOn ':runtime:setupRepo'
+    dependsOn ':runtime-externals:setupRepo'
     dependsOn ':runtime:publishInternal'
 }
 

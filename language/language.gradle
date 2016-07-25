@@ -28,7 +28,7 @@ task invokeAntBuild( type : GradleBuild ) {
     ]
 
     // TODO: There are too many of these manual dependencies being listed... feels like duct-tape and string.
-    dependsOn ':compiler-java:assemble', ':compiler-java:publishJvmCompilerJars', ':runtime:setupRepo'
+    dependsOn ':compiler-java:assemble', ':compiler-java:publishJvmCompilerJars', ':runtime-externals:setupRepo'
 }
 
 assemble.dependsOn invokeAntBuild

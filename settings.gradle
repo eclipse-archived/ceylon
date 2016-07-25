@@ -5,6 +5,9 @@ project(':dist').buildFileName = 'dist.gradle'
 include 'runtime'
 project(':runtime').buildFileName = 'runtime.gradle'
 
+include 'runtime-externals'
+project(':runtime-externals').buildFileName = 'runtime-externals.gradle'
+
 include 'common'
 project(':common').buildFileName = 'common.gradle'
 
