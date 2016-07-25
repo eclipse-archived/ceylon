@@ -939,7 +939,8 @@ public class ModelUtil {
     private static int countTypeParameters(
             Declaration declaration, Type receivingType) {
         int count = 0;
-        boolean containsFunctionOrValueInterface = containsFunctionOrValueInterface(receivingType);
+        boolean containsFunctionOrValueInterface
+                = containsFunctionOrValueInterface(receivingType);
         while (true) {
             if (declaration instanceof Generic) {
                 Generic g = (Generic) declaration;
