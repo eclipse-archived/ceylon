@@ -280,7 +280,7 @@ Gradle lifecycle tasks to appropriate ones in the Ant build.
 | `common` | Working
 | `langtools-classfile | No tests
 | `model` | Working
-| `cmr` | Disabled (17 failing tests).
+| `cmr` | Disabled (2 failing tests - 6 more is run by JDK8).
 | `cli` | Working
 | `compiler-java` | Disabled (compilation failures)
 | `compiler-js` | Disabled (Most tests fail with `LanguageModuleNotFoundException`).
@@ -294,7 +294,7 @@ Gradle lifecycle tasks to appropriate ones in the Ant build.
 [[OSGIheaders]]
 == Generating OSGI headers
 
-In order to deal with OSGI headers, the  GRadle `osgi` plugin is applied and a custom task extension is
+In order to deal with OSGI headers, the  GRradle `osgi` plugin is applied and a custom task extension is
 added to the 'jar` task. This is activated by applying the `CeylonBuildOsgiPlugin`. Other Jar tasks can have this
 fucntionality actived by adding `setAsOsgiExternalArchive()` (for external artifcats) or
 `setAsOsgiArchive()` (for  Ceylon-specific artifacts) to the configuration block. Both cases enable a new
