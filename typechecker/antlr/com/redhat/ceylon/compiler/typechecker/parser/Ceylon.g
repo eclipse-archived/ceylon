@@ -1102,13 +1102,29 @@ unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
             t5=typeNameWithArguments
             { if ($t5.identifier!=null) {
               qt.setEndToken(null);
-              qt.setIdentifier($t5.identifier);
-            }
+              qt.setIdentifier($t5.identifier); }
             if ($t5.typeArgumentList!=null)
                 bt.setTypeArgumentList($t5.typeArgumentList);
             $expression = new ExtendedTypeExpression(null);
             $expression.setType($type); }
-          )+
+          )
+          (
+            m4=MEMBER_OP
+            { qt = new QualifiedType(null);
+              qt.setOuterType($type);
+              qt.setEndToken($m4);
+              $type=qt; }
+            (
+              t6=typeNameWithArguments
+              { if ($t6.identifier!=null) {
+                qt.setEndToken(null);
+                qt.setIdentifier($t6.identifier); }
+              if ($t6.typeArgumentList!=null)
+                  bt.setTypeArgumentList($t6.typeArgumentList);
+              $expression = new ExtendedTypeExpression(null);
+              $expression.setType($type); }
+            )?
+          )*
         )?
       )?
     | t4=memberNameWithArguments
@@ -1959,30 +1975,34 @@ tuple returns [Tuple tuple]
     ;
     
 dynamicObject returns [Dynamic dynamic]
-    @init { NamedArgumentList nal=null; }
-    : DYNAMIC LBRACKET
-      { $dynamic = new Dynamic($DYNAMIC);
-        nal = new NamedArgumentList($LBRACKET); 
-        $dynamic.setNamedArgumentList(nal); }
+    : DYNAMIC
+      { $dynamic = new Dynamic($DYNAMIC); }
+      dynamicArguments
+      { $dynamic.setNamedArgumentList($dynamicArguments.namedArgumentList); }
+    ;
+
+dynamicArguments returns [NamedArgumentList namedArgumentList]
+    : LBRACKET
+      { $namedArgumentList = new NamedArgumentList($LBRACKET); }
       ( //TODO: get rid of the predicate and use the approach
         //      in expressionOrSpecificationStatement
         (namedArgumentStart) 
         => namedArgument
         { if ($namedArgument.namedArgument!=null) 
-              nal.addNamedArgument($namedArgument.namedArgument); }
+              $namedArgumentList.addNamedArgument($namedArgument.namedArgument); }
       | (anonymousArgument)
         => anonymousArgument
         { if ($anonymousArgument.namedArgument!=null) 
-              nal.addNamedArgument($anonymousArgument.namedArgument); }
+              $namedArgumentList.addNamedArgument($anonymousArgument.namedArgument); }
       )*
       ( 
         sequencedArgument
-        { nal.setSequencedArgument($sequencedArgument.sequencedArgument); }
+        { $namedArgumentList.setSequencedArgument($sequencedArgument.sequencedArgument); }
       )?
       RBRACKET
-      { nal.setEndToken($RBRACKET); }
+      { $namedArgumentList.setEndToken($RBRACKET); }
     ;
-    
+
 valueCaseList returns [ExpressionList expressionList]
     : { $expressionList = new ExpressionList(null); }
       ie1=intersectionExpression 

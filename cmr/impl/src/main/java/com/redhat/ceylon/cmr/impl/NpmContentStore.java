@@ -70,6 +70,7 @@ public class NpmContentStore extends AbstractContentStore {
                 baseDirectories.add(baseDir);
             }
         }
+        baseDirectories.add(out);
         return baseDirectories;
     }
     

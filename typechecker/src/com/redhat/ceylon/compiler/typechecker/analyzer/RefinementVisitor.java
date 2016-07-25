@@ -810,6 +810,15 @@ public class RefinementVisitor extends Visitor {
                             signature, root, 
                             type, rootType);
             for (Declaration refined: interveningRefinements) {
+                TypeDeclaration interveningType = 
+                        (TypeDeclaration) 
+                            refined.getContainer();
+                if (getInterveningRefinements(name, 
+                            signature, root, 
+                            type, interveningType)
+                        .size()>1) {
+                    continue;
+                }
                 if (isOverloadedVersion(refined)) {
                     //if this member is overloaded, the
                     //inherited member it refines must
@@ -1553,7 +1562,8 @@ public class RefinementVisitor extends Visitor {
                                 rparam, refinedParameterType,
                                 param, parameterType,
                                 typeNode, forNative);
-                        checkRefiningParameterSmall(typeNode, member.getDeclaration(), param, 
+                        checkRefiningParameterSmall(typeNode, 
+                                member.getDeclaration(), param, 
                                 refinedMember.getDeclaration(), rparam);
                     }
                 }
@@ -1562,12 +1572,17 @@ public class RefinementVisitor extends Visitor {
     }
 
     private void checkRefiningParameterSmall(Node that, 
-                Declaration member, Parameter param, Declaration refinedMember, Parameter refinedParam) {
+                Declaration member, Parameter param, 
+                Declaration refinedMember, 
+                Parameter refinedParam) {
         if (param.getModel().isSmall()
                 && !refinedParam.getModel().isSmall()) {
-            that.addUsageWarning(Warning.smallIgnored, "small annotation on parameter '"+param.getName()+"' of '"+member.getName()+
-                    "' will be ignored: corresponding parameter '"+refinedParam.getName()+
-                    "' of '"+refinedMember.getName()+"' is not small");
+            that.addUsageWarning(Warning.smallIgnored, 
+                    "small annotation on parameter '" + 
+                    param.getName() + "' of '" + member.getName()+
+                    "' will be ignored: corresponding parameter '" + 
+                    refinedParam.getName() + "' of '" + refinedMember.getName() + 
+                    "' is not small");
         }
         param.getModel().setSmall(refinedParam.getModel().isSmall());
     }
@@ -1832,8 +1847,16 @@ public class RefinementVisitor extends Visitor {
                                     tdcontainer;
                         if (!tdcontainer.equals(realScope) && 
                                 ci.inherits(tdci)) {
-                            if (td.isVariable() && td.getUnit().getPackage().getModule().isJava()) {
-                                //allow assignment to variable member of Java supertype
+                            boolean lazy = 
+                                    that.getSpecifierExpression() 
+                                        instanceof Tree.LazySpecifierExpression;
+                            if (!lazy && td.isVariable() 
+                                    && td.getUnit()
+                                        .getPackage()
+                                        .getModule()
+                                        .isJava()) {
+                                //allow assignment to variable 
+                                //member of Java supertype
                             }
                             // interpret this specification as a 
                             // refinement of an inherited member
@@ -1915,16 +1938,28 @@ public class RefinementVisitor extends Visitor {
         v.setType(new LazyType(unit) {
             @Override
             public Type initQualifyingType() {
-                return rv.getType().getQualifyingType();
+                Type type = rv.getType();
+                return type==null ? null : 
+                    type.getQualifyingType();
             }
             @Override
             public Map<TypeParameter, Type> 
             initTypeArguments() {
-                return rv.getType().getTypeArguments();
+                Type type = rv.getType();
+                return type==null ? null : 
+                    type.getTypeArguments();
             }
             @Override
             public TypeDeclaration initDeclaration() {
-                return rv.getType().getDeclaration();
+                Type type = rv.getType();
+                return type==null ? null : 
+                    type.getDeclaration();
+            }
+            @Override
+            public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
+                Type type = rv.getType();
+                return type==null ? null : 
+                    type.getVarianceOverrides();
             }
         });
     }
@@ -2019,6 +2054,12 @@ public class RefinementVisitor extends Visitor {
                             return rm.getTypedParameter(p)
                                     .getFullType()
                                     .getDeclaration();
+                        }
+                        @Override
+                        public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
+                            return rm.getTypedParameter(p)
+                                    .getFullType()
+                                    .getVarianceOverrides();
                         }
                     });
                 }
@@ -2140,6 +2181,12 @@ public class RefinementVisitor extends Visitor {
                 Type type = rm.getType();
                 return type==null ? null : 
                     type.getDeclaration();
+            }
+            @Override
+            public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
+                Type type = rm.getType();
+                return type==null ? null : 
+                    type.getVarianceOverrides();
             }
         });
         inheritDefaultedArguments(m);

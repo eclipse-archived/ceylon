@@ -40,7 +40,6 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -81,8 +80,8 @@ public class AnalyzerUtil {
             return (TypedDeclaration) member;
         }
         else {
-            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && !JvmBackendUtil.isInitialLowerCase(name)){
+            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && !JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.getJavaBeanName(name);
                 member = td.getMember(name, unit, signature, ellipsis);
                 if (member instanceof TypedDeclaration) {
@@ -106,8 +105,8 @@ public class AnalyzerUtil {
                     (TypedDeclaration) member);
         }
         else {
-            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && JvmBackendUtil.isInitialLowerCase(name)){
+            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.capitalize(name);
                 member = 
                         td.getMember(name, unit, signature, ellipsis);
@@ -133,8 +132,8 @@ public class AnalyzerUtil {
             return (TypedDeclaration) result;
         }
         else {
-            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && !JvmBackendUtil.isInitialLowerCase(name)){
+            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && !JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.getJavaBeanName(name);
                 // This method is used for base members, not qualified members
                 // so we don't look for members but we look on the scope, which
@@ -171,8 +170,8 @@ public class AnalyzerUtil {
                     (TypedDeclaration) result);
         }
         else {
-            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && JvmBackendUtil.isInitialLowerCase(name)){
+            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.capitalize(name);
                 // This method is used for base members, not qualified members
                 // so we don't look for members but we look on the scope, which
@@ -330,6 +329,45 @@ public class AnalyzerUtil {
         return best(name,
                 type.getMatchingMemberDeclarations(unit, 
                         scope, "", 0, canceller));
+    }
+    
+    static List<SiteVariance> getVariances(
+            Tree.TypeArguments tas,
+            List<TypeParameter> typeParameters) {
+        if (tas instanceof Tree.TypeArgumentList) {
+            Tree.TypeArgumentList tal = 
+                    (Tree.TypeArgumentList) tas;
+            int size = typeParameters.size();
+            List<SiteVariance> variances = 
+                    new ArrayList<SiteVariance>(size);
+            List<Tree.Type> types = tal.getTypes();
+            int count = types.size();
+            for (int i=0; i<count; i++) {
+                Tree.Type type = types.get(i);
+                if (type instanceof Tree.StaticType) {
+                    Tree.StaticType st = 
+                            (Tree.StaticType) type;
+                    TypeVariance tv = 
+                            st.getTypeVariance();
+                    if (tv!=null) {
+                        boolean contra = 
+                                tv.getText()
+                                  .equals("in");
+                        variances.add(contra?IN:OUT);
+                    }
+                    else {
+                        variances.add(null);
+                    }
+                }
+                else {
+                    variances.add(null);
+                }
+            }
+            return variances;
+        }
+        else {
+            return emptyList();
+        }
     }
     
     /**

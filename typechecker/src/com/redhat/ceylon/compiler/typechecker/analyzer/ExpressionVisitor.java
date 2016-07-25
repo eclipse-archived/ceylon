@@ -430,9 +430,12 @@ public class ExpressionVisitor extends Visitor {
                             that.setPossiblyEmpty(
                                     cc.getPossiblyEmpty() || 
                                     !unit.isNonemptyIterableType(it));
+                            Type absentType = unit.getAbsentType(it);
+                            if (absentType==null) {
+                                absentType = unit.getNullType();
+                            }
                             Type firstType = 
-                                    unionType(
-                                        unit.getAbsentType(it), 
+                                    unionType(absentType, 
                                         cc.getFirstTypeModel(), 
                                         unit);
                             that.setFirstTypeModel(firstType);
@@ -810,7 +813,8 @@ public class ExpressionVisitor extends Visitor {
                 Tree.Expression e = se.getExpression();
                 knownType = e==null ? null : e.getTypeModel();
                 //TODO: what to do here in case of !is
-                if (knownType!=null) {
+                if (knownType!=null 
+                        && !isTypeUnknown(knownType)) { //TODO: remove this if we make unknown a subtype of Anything) {
                     if (hasUncheckedNulls(e)) {
                         knownType = unit.getOptionalType(knownType);
                     }
@@ -1387,7 +1391,7 @@ public class ExpressionVisitor extends Visitor {
                 // interpret this specification as a 
                 // refinement of an inherited member
                 if (d instanceof Value) {
-                    refineValue(that);
+                    refineAttribute(that);
                 }
                 else if (d instanceof Function) {
                     refineMethod(that);
@@ -1544,7 +1548,7 @@ public class ExpressionVisitor extends Visitor {
         return d.appliedReference(supertype, NO_TYPE_ARGS);
     }
     
-    private void refineValue(Tree.SpecifierStatement that) {
+    private void refineAttribute(Tree.SpecifierStatement that) {
         Value refinedValue = (Value) that.getRefined();
         Value value = (Value) that.getDeclaration();
         ClassOrInterface ci = 
@@ -2992,6 +2996,7 @@ public class ExpressionVisitor extends Visitor {
             int paramsSize = paramTypes.size();
             for (int i=0; i<paramsSize && i<argCount; i++) {
                 Type paramType = paramTypes.get(i);
+                paramType = callableFromUnion(paramType);
                 Tree.PositionalArgument arg = args.get(i);
                 if (arg instanceof Tree.ListedArgument &&
                         unit.isCallableType(paramType)) {
@@ -3207,6 +3212,7 @@ public class ExpressionVisitor extends Visitor {
                         paramType = 
                                 unit.getIteratedType(paramType);
                     }
+                    paramType = callableFromUnion(paramType);
                     if (unit.isCallableType(paramType)) {
                         inferParameterTypesFromCallableType(
                                 paramType, param, anon);
@@ -3236,6 +3242,24 @@ public class ExpressionVisitor extends Visitor {
                     stme.setParameterType(tpr.getFullType());
                 }
             }
+        }
+    }
+
+    private Type callableFromUnion(Type paramType) {
+        if (paramType!=null && paramType.isUnion()) {
+            List<Type> cts = paramType.getCaseTypes();
+            List<Type> list = 
+                    new ArrayList<Type>
+                        (cts.size());
+            for (Type ct: cts) {
+                if (unit.isCallableType(ct)) {
+                    list.add(ct);
+                }
+            }
+            return union(list, unit);
+        }
+        else {
+            return paramType;
         }
     }
     
@@ -5781,7 +5805,8 @@ public class ExpressionVisitor extends Visitor {
                     Type knownType = term.getTypeModel();
                     if (!isTypeUnknown(knownType)) {
                         if (knownType.isSubtypeOf(type)) {
-                            that.addError("expression type is a subtype of the type: '" +
+                            that.addUsageWarning(Warning.redundantNarrowing,
+                                    "expression type is a subtype of the type: '" +
                                     knownType.asString(unit) + 
                                     "' is assignable to '" +
                                     type.asString(unit) + "'");

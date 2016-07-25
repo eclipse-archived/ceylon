@@ -16,6 +16,7 @@ import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
+import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.common.ModuleSpec;
@@ -41,6 +42,7 @@ public class ModuleCopycat {
     private CopycatFeedback feedback;
     private Logger log;
     private JdkProvider jdkProvider;
+    private boolean includeLanguage;
     
     private Set<String> copiedModules;
     private int count;
@@ -105,6 +107,19 @@ public class ModuleCopycat {
     }
     
     /**
+     * Determines if the language module and it's dependencies should be copied as well.
+     * By default the language module and it's dependencies will be skipped.
+     * For this to work <code>isIgnoreDependencies()</code> must not be set to true
+     * on the toplevel artifact context to copy.
+     * @param includeLanguage
+     * @return
+     */
+    public ModuleCopycat includeLanguage(boolean includeLanguage) {
+        this.includeLanguage = includeLanguage;
+        return this;
+    }
+    
+    /**
      * This method basically calls <code>copyModule</code> on each of the artifact
      * contexts in the list it gets passed.
      * @param contexts
@@ -137,7 +152,8 @@ public class ModuleCopycat {
         assert(context != null);
         if (!jdkProvider.isJDKModule(context.getName())) {
             String module = ModuleUtil.makeModuleName(context.getName(), context.getVersion());
-            if (!copiedModules.add(module)) {
+            // Skip all duplicates and artifacts from repositories that don't support copying
+            if (!copiedModules.add(module) || !canBeCopied(context)) {
                 // Faking a copy here for feedback because it was already done and we never copy twice
                 if (feedback != null) {
                     feedback.beforeCopyModule(context, count++, maxCount);
@@ -178,8 +194,12 @@ public class ModuleCopycat {
                 if (copyModule && !context.isIgnoreDependencies()) {
                     maxCount += countNonJdkDeps(ver.getDependencies());
                     for (ModuleDependencyInfo dep : ver.getDependencies()) {
+                        if (skipDependency(dep)) {
+                            continue;
+                        }
                         ModuleSpec depModule = new ModuleSpec(dep.getName(), dep.getVersion());
                         ArtifactContext copyContext = depContext.copy();
+                        copyContext.setNamespace(dep.getNamespace());
                         copyContext.setName(depModule.getName());
                         copyContext.setVersion(depModule.getVersion());
                         copyModuleInternal(copyContext);
@@ -193,10 +213,23 @@ public class ModuleCopycat {
         }
     }
 
+    private boolean skipDependency(ModuleDependencyInfo dep) {
+        return ("ceylon.language".equals(dep.getName()) && !includeLanguage)
+                || dep.getNamespace() != null;
+    }
+    
+    // Can the artifact be copied?
+    private boolean canBeCopied(ArtifactContext context) {
+        // Only allow modules from the "ceylon" namespace to be copied
+        return context.getNamespace() == null
+                || DefaultRepository.NAMESPACE.equals(context.getNamespace());
+    }
+
     private int countNonJdkDeps(NavigableSet<ModuleDependencyInfo> dependencies) {
         int cnt = 0;
         for (ModuleDependencyInfo dep : dependencies) {
-            if (!jdkProvider.isJDKModule(dep.getName())) {
+            if (!jdkProvider.isJDKModule(dep.getName())
+                    && !skipDependency(dep)) {
                 cnt++;
             }
         }

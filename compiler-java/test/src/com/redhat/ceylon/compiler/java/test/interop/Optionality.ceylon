@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 @noanno
-class OptionalInterface(JavaOptionalInterface x) satisfies JavaOptionalInterface {
+class OptionalInterface<X>(JavaOptionalInterface x) extends JavaClass() satisfies JavaOptionalInterface {
     shared actual JavaOptionalInterface method(JavaOptionalInterface x){
         Object o1 = x.prop1;
         Object o2 = x.method(x);
@@ -71,12 +71,29 @@ class OptionalInterface(JavaOptionalInterface x) satisfies JavaOptionalInterface
         }
         return null;
     }
+    shared actual String stringMethod(String x){
+        return x;
+    }
+    shared actual String? stringMethod2(String? x){
+        return x;
+    }
     
     shared actual variable JavaOptionalInterface prop1 = x;
     shared actual variable JavaOptionalInterface? prop2 = null;
+
+    shared actual variable String stringProp1 = "asd";
+    shared actual variable String? stringProp2 = null;
+    variable String? bla = null;
+    shared actual String? stringProp3 => bla;
 
     shared actual JavaOptionalInterface prop3 = x;
     shared actual JavaOptionalInterface? prop4 = x;
     
     shared actual Correspondence<Object,Object> correspondence => nothing;
+}
+
+object classSubClass extends OptionalityClass() {
+    OptionalityClass? realClass = null;
+    type => realClass?.type;
+    typeMethod() => realClass?.type;
 }

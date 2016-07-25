@@ -944,6 +944,138 @@ final class casting_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
         major = 8,
         minor = 1)
+@.ceylon.language.SharedAnnotation$annotation$
+@.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.metamodel.Constructors.NonSharedMember.class)})
+public class Constructors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Constructors() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("otherCtor")
+    public static final class NonSharedMember$otherCtor {
+        
+        NonSharedMember$otherCtor() {
+        }
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.test.metamodel.Constructors.NonSharedMember$otherCtor NonSharedMember$otherCtor = null;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
+    @.com.redhat.ceylon.compiler.java.metadata.Name("NonSharedMember")
+    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.Constructors.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
+    class NonSharedMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        @.ceylon.language.SharedAnnotation$annotation$
+        @.com.redhat.ceylon.compiler.java.metadata.Name("otherCtor")
+        public NonSharedMember(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+        .com.redhat.ceylon.compiler.java.test.metamodel.Constructors.NonSharedMember$otherCtor $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
+        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+        final long i$param$) {
+        }
+        
+        @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.metamodel.Constructors.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.Constructors.NonSharedMember.class));
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    private final void test$priv$() {
+        final .ceylon.language.meta.model.MemberClassCallableConstructor<? super .com.redhat.ceylon.compiler.java.test.metamodel.Constructors, ? extends .com.redhat.ceylon.compiler.java.test.metamodel.Constructors.NonSharedMember, ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>> x = (.ceylon.language.meta.model.MemberClassCallableConstructor<? super .com.redhat.ceylon.compiler.java.test.metamodel.Constructors, ? extends .com.redhat.ceylon.compiler.java.test.metamodel.Constructors.NonSharedMember, ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>>)(.ceylon.language.meta.model.MemberClassCallableConstructor)((.ceylon.language.meta.model.MemberClass).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.metamodel.Constructors.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.Constructors.NonSharedMember.class)))).getDeclaredConstructor(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "otherCtor");
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.metamodel.Constructors();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.metamodel.Constructors.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.metamodel.Constructors.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1C"})
+final class constructors_ {
+    
+    private constructors_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void constructors() {
+        
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
+        @.com.redhat.ceylon.compiler.java.metadata.Name("C")
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+        @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
+        class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("c")
+            final class c_ {
+                
+                c_() {
+                }
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Name("c")
+            @.com.redhat.ceylon.compiler.java.metadata.Enumerated
+            private C(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+            C.c_ $name$) {
+            }
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("d")
+            class d_ {
+                
+                d_() {
+                }
+            }
+            
+            @.ceylon.language.SharedAnnotation$annotation$
+            @.com.redhat.ceylon.compiler.java.metadata.Name("d")
+            private C(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+            C.d_ $name$) {
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.metamodel.constructors_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class));
+            }
+        }
+        final C $instance$C$c = new C((C.c_)null);
+        .ceylon.language.print_.print($instance$C$c);
+        final .ceylon.language.meta.model.ValueConstructor<? extends C> x1 = (.ceylon.language.meta.model.ValueConstructor<? extends C>)(.ceylon.language.meta.model.ValueConstructor)((.ceylon.language.meta.model.Class).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.metamodel.constructors_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class)))).getDeclaredConstructor(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "c");
+        final .ceylon.language.meta.model.CallableConstructor x2 = (.ceylon.language.meta.model.CallableConstructor)(.ceylon.language.meta.model.CallableConstructor)((.ceylon.language.meta.model.Class).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.metamodel.constructors_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class)))).getDeclaredConstructor(.ceylon.language.Empty.$TypeDescriptor$, "d");
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 @.com.redhat.ceylon.compiler.java.metadata.Name("litValue")
 final class litValue_ {

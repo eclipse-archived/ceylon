@@ -1447,6 +1447,12 @@ public final class Tuple<Element, First extends Element,
     }
     
     @Override @Ignore
+    public Iterable<? extends Sequence<? extends Element>, ? extends java.lang.Object>
+    combinations(long length) {
+        return $ceylon$language$Collection$impl().combinations(length);
+    }
+    
+    @Override @Ignore
     public <Group> Map<? extends Group, ? extends Sequence<? extends Element>>
     group(TypeDescriptor $reifiedGroup, Callable<? extends Group> fun) {
         return $ceylon$language$Iterable$impl().group($reifiedGroup, fun);

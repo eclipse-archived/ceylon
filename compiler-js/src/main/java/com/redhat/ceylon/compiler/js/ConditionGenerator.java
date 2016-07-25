@@ -352,6 +352,8 @@ public class ConditionGenerator {
         if (anoserque == null) {
             if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(expr.getTypeModel())) {
                 gen.out("else throw ", gen.getClAlias(), "Exception('Ceylon switch over unknown type does not cover all cases')");
+            } else {
+                gen.out("else throw ", gen.getClAlias(), "Exception('Supposedly exhaustive switch was not exhaustive')");
             }
         } else {
             final Tree.Variable elsevar = anoserque.getVariable();

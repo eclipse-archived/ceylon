@@ -111,6 +111,7 @@ import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -1209,7 +1210,7 @@ public abstract class AbstractTransformer implements Transformation {
             Type typedSignatureArg = typedSignature.get(i);
             if(signatureArg != null
                     && typedSignatureArg != null
-                    && !com.redhat.ceylon.model.typechecker.model.ModelUtil.matches(signatureArg, typedSignatureArg, typeFact()))
+                    && !ModelUtil.matches(signatureArg, typedSignatureArg, typeFact()))
                 return false;
         }
         return true;
@@ -1587,6 +1588,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private boolean isErasedUnionOrIntersection(Type producedType) {
+        // makeJavaType does that too, and it reduces some unions into simple cases
+        producedType = simplifyType(producedType);
         if(producedType.isUnion()){
             java.util.List<Type> caseTypes = producedType.getCaseTypes();
             // special case for optional types

@@ -131,6 +131,14 @@ public class SupertypeVisitor extends Visitor {
                 brokenHierarchy(type, that, unit);
                 return;
             }
+            
+            try {
+                type.getType().getUnionOfCases();
+            }
+            catch (DecidabilityException re) {
+                brokenSelfType(type, that);
+            }
+            
             if (stn!=null) {
                 for (Tree.StaticType st: stn.getTypes()) {
                     Type t = st.getTypeModel();
@@ -157,16 +165,26 @@ public class SupertypeVisitor extends Visitor {
         }
     }
 
-    private void brokenHierarchy(TypeDeclaration d, 
+    private void brokenSelfType(TypeDeclaration type, Tree.TypeDeclaration that) {
+        if (displayErrors) {
+            that.addError("inheritance hierarchy is undecidable: " + 
+                    "coverage analysis did not terminate for '" +
+                    type.getName() + "'");
+        }
+        type.getCaseTypes().clear();
+        type.clearProducedTypeCache();
+    }
+
+    private void brokenHierarchy(TypeDeclaration type, 
             Tree.TypeDeclaration that, Unit unit) {
         if (displayErrors) {
             that.addError("inheritance hierarchy is undecidable: " + 
                     "could not canonicalize the intersection of all supertypes of '" +
-                    d.getName() + "'");
+                    type.getName() + "'");
         }
-        d.getSatisfiedTypes().clear();
-        d.setExtendedType(unit.getBasicType());
-        d.clearProducedTypeCache();
+        type.getSatisfiedTypes().clear();
+        type.setExtendedType(unit.getBasicType());
+        type.clearProducedTypeCache();
     }
 
     private void brokenExtendedType(TypeDeclaration d, 

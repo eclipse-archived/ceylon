@@ -1847,7 +1847,8 @@ public class GenerateJsVisitor extends Visitor {
 
     private boolean accessThroughGetter(Declaration d) {
         return (d instanceof FunctionOrValue) && !(d instanceof Function)
-                && !AttributeGenerator.defineAsProperty(d);
+                && !AttributeGenerator.defineAsProperty(d)
+                && !d.isDynamic();
     }
     
     void supervisit(final Tree.QualifiedMemberOrTypeExpression that) {

@@ -24,14 +24,14 @@ final class IBug2062$impl<Element> implements .java.io.Serializable {
     }
     
     public <Other>.java.lang.Object append(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Other, final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.SBug2062<? extends Other> other) {
-        final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062 v = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062)(
+        final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062 v = (
             let
             {
-                .java.lang.Object $ceylontmp$ifResult$0;
+                .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element> $ceylontmp$ifResult$0;
                 .ceylon.language.Sequential<? extends Other> others$2;
                 if ((others$2 = other.getElements()) instanceof .ceylon.language.Sequence) {
                     final .ceylon.language.Sequence<? extends Other> others$3 = (.ceylon.language.Sequence<? extends Other>)(.ceylon.language.Sequence)others$2;
-                    $ceylontmp$ifResult$0 = $this.<Other>child($reified$Other, others$3);
+                    $ceylontmp$ifResult$0 = (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>)$this.<Other>child($reified$Other, others$3);
                 } else {
                     $ceylontmp$ifResult$0 = $this;
                 }
@@ -55,7 +55,7 @@ final class IBug2062$impl<Element> implements .java.io.Serializable {
             }
             returning $ceylontmp$ifResult$4;
         );
-        final .ceylon.language.meta.model.ClassOrInterface x = (.ceylon.language.meta.model.ClassOrInterface)(
+        final .ceylon.language.meta.model.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>> x = (.ceylon.language.meta.model.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>>)(.ceylon.language.meta.model.ClassOrInterface)(
             let
             {
                 .java.lang.Object $ceylontmp$ifResult$8;
@@ -69,7 +69,7 @@ final class IBug2062$impl<Element> implements .java.io.Serializable {
             }
             returning $ceylontmp$ifResult$8;
         );
-        final .ceylon.language.meta.model.ClassOrInterface x2 = (.ceylon.language.meta.model.ClassOrInterface)(
+        final .ceylon.language.meta.model.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>> x2 = (.ceylon.language.meta.model.ClassOrInterface<? extends .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062<? extends Element>>)(.ceylon.language.meta.model.ClassOrInterface)(
             let
             {
                 .java.lang.Object $ceylontmp$ifResult$12;

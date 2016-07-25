@@ -816,4 +816,12 @@ public abstract class Declaration
     public void setAliases(List<String> aliases){
         this.aliases = aliases;
     }
+    
+    /**
+     * To be overridden in sub types
+     * @return true if this is a Java declaration
+     */
+    public boolean isJava(){
+        return false;
+    }
 }

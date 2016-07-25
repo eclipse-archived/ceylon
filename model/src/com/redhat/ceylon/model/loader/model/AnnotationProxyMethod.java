@@ -80,4 +80,8 @@ public class AnnotationProxyMethod extends Function {
         }
     }
 
+    @Override
+    public boolean isJava() {
+        return true;
+    }
 }

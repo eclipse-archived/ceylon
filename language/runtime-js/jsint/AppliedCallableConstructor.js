@@ -48,6 +48,9 @@ function AppliedCallableConstructor$jsint(tipo,$$targs$$,that,myTargs) {
       atr$(that,'string',function(){
           return AppliedCallableConstructor$jsint.$$.prototype.$prop$getString.get.call(this);
       },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getString.$crtmm$);
+      atr$(that,'hash',function(){
+          return AppliedCallableConstructor$jsint.$$.prototype.$prop$getHash.get.call(this);
+      },undefined,AppliedCallableConstructor$jsint.$$.prototype.$prop$getHash.$crtmm$);
     }
   }
   $_Function$meta$model({Arguments$Function:$$targs$$.Arguments$AppliedCallableConstructor,

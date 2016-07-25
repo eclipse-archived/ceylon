@@ -492,7 +492,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryClassMethodSpecifierDeferred.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodSpecifierDeferred_main",
-                "function or value does not exist: 'asdfClassMethodSpecifierDeferred' (did you mean 'expressionRecoveryClassMethodSpecifierDeferred_main'?)",
+                "function or value does not exist: 'asdfClassMethodSpecifierDeferred'",
                 // in the deferred case we throw when an instance is initialized
                 // rather than when the method is called.
                 1);
@@ -557,7 +557,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryInterfaceAttributeBody.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceAttributeBody_main",
-                "function or value does not exist: 'asdfInterfaceAttributeBody' (did you mean 'expressionRecoveryInterfaceAttributeBody_main'?)", 
+                "function or value does not exist: 'asdfInterfaceAttributeBody'", 
                 1, 2, 3);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryInterfaceAttributeBody");
     }
@@ -603,10 +603,10 @@ public class RecoveryTests extends CompilerTests {
                 "expression/ExpressionRecoveryFunctionSpecifier.ceylon");
         runWithUnresolvedCompilationError(
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionSpecifier",
-                "function or value does not exist: 'asdfFunctionSpecifier' (did you mean 'expressionRecoveryFunctionSpecifier'?)");
+                "function or value does not exist: 'asdfFunctionSpecifier'");
         runWithUnresolvedCompilationError(
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionSpecifierMpl_main",
-                "function or value does not exist: 'asdfFunctionSpecifierMpl' (did you mean 'expressionRecoveryFunctionSpecifierMpl'?)");
+                "function or value does not exist: 'asdfFunctionSpecifierMpl'");
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionSpecifier_");
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionSpecifierMpl_");
     }
@@ -636,7 +636,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryValueRefinementSpecifier.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueRefinementSpecifier_main",
-                "function or value does not exist: 'asdfValueRefinementSpecifier' (did you mean 'expressionRecoveryValueRefinementSpecifier_main'?)",
+                "function or value does not exist: 'asdfValueRefinementSpecifier'",
                 1, 2);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryValueRefinementSpecifier");
     }
@@ -656,7 +656,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryVariableValueInit.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryVariableValueInit_main",
-                "function or value does not exist: 'asdfVariableValueInit' (did you mean 'expressionRecoveryVariableValueInit'?)", 
+                "function or value does not exist: 'asdfVariableValueInit'", 
                 1);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryVariableValueInit_");
     }

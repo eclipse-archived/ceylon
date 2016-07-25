@@ -61,7 +61,7 @@ final class javaArrayInForComprehension_ {
                 .ceylon.language.Float.instance(7.0),
                 .ceylon.language.Float.instance(8.0),
                 .ceylon.language.Float.instance(9.0)});
-        if (((.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)abc).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        if (((.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)abc).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
@@ -95,7 +95,7 @@ final class javaArrayInForComprehension_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "abc == {for (s in (toArray<ObjectArray<String>,String>(abc))) s}.sequence()"));
         }
-        if (((.ceylon.language.Sequence<? extends .java.lang.String>)(.ceylon.language.Sequence)jabc).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        if (((.ceylon.language.Sequence<? extends .java.lang.String>)(.ceylon.language.Sequence)jabc).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.java.lang.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class)){
@@ -129,7 +129,7 @@ final class javaArrayInForComprehension_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "jabc == {for (s in (toArray<ObjectArray<JString>,JString>(jabc))) s}.sequence()"));
         }
-        if (((.ceylon.language.Sequence<? extends .ceylon.language.Boolean>)(.ceylon.language.Sequence)yesNo).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        if (((.ceylon.language.Sequence<? extends .ceylon.language.Boolean>)(.ceylon.language.Sequence)yesNo).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Boolean, .java.lang.Object>(.ceylon.language.Boolean.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Boolean> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Boolean>(.ceylon.language.Boolean.$TypeDescriptor$){
@@ -163,7 +163,7 @@ final class javaArrayInForComprehension_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "yesNo == {for (s in (toArray<BooleanArray,Boolean>(yesNo))) s}.sequence()"));
         }
-        if (((.ceylon.language.Sequence<? extends .ceylon.language.Byte>)(.ceylon.language.Sequence)cafebabe).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Byte, .java.lang.Object>(.ceylon.language.Byte.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        if (((.ceylon.language.Sequence<? extends .ceylon.language.Byte>)(.ceylon.language.Sequence)cafebabe).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Byte, .java.lang.Object>(.ceylon.language.Byte.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Byte> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Byte>(.ceylon.language.Byte.$TypeDescriptor$){
@@ -197,7 +197,7 @@ final class javaArrayInForComprehension_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "cafebabe == {for (s in (toArray<ByteArray,Byte>(cafebabe))) s}.sequence()"));
         }
-        if (((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)_123).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        if (((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)_123).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -231,7 +231,7 @@ final class javaArrayInForComprehension_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "_123 == {for (s in (toArray<ShortArray,Integer>(_123))) s}.sequence()"));
         }
-        if (((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)_123).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        if (((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)_123).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -265,7 +265,7 @@ final class javaArrayInForComprehension_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "_123 == {for (s in (toArray<IntArray,Integer>(_123))) s}.sequence()"));
         }
-        if (((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)_123).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        if (((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)_123).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -299,7 +299,7 @@ final class javaArrayInForComprehension_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "_123 == {for (s in (toArray<LongArray,Integer>(_123))) s}.sequence()"));
         }
-        if (((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)_789).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        if (((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)_789).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$){
@@ -333,7 +333,7 @@ final class javaArrayInForComprehension_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "_789 == {for (s in (toArray<FloatArray,Float>(_789))) s}.sequence()"));
         }
-        if (((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)_789).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        if (((.ceylon.language.Sequence<? extends .ceylon.language.Float>)(.ceylon.language.Sequence)_789).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Float> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Float>(.ceylon.language.Float.$TypeDescriptor$){
@@ -367,7 +367,7 @@ final class javaArrayInForComprehension_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "_789 == {for (s in (toArray<DoubleArray,Float>(_789))) s}.sequence()"));
         }
-        if (((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)xyz).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        if (((.ceylon.language.Sequence<? extends .ceylon.language.Character>)(.ceylon.language.Sequence)xyz).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Character> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor$){
@@ -401,7 +401,7 @@ final class javaArrayInForComprehension_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "xyz == {for (s in (toArray<CharArray,Character>(xyz))) s}.sequence()"));
         }
-        if (((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)_123).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        if (((.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)_123).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -435,7 +435,7 @@ final class javaArrayInForComprehension_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "_123 == {for (s in (toArray<IntArray,Integer>(_123) of Ints)) s}.sequence()"));
         }
-        if (((.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)abc).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        if (((.ceylon.language.Sequence<? extends .ceylon.language.String>)(.ceylon.language.Sequence)abc).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
@@ -469,7 +469,7 @@ final class javaArrayInForComprehension_ {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "abc == {for (s in (toArray<ObjectArray<String>,String>(abc) of Strings)) s}.sequence()"));
         }
-        if (((.ceylon.language.Sequence<? extends .java.lang.String>)(.ceylon.language.Sequence)jabc).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+        if (((.ceylon.language.Sequence<? extends .java.lang.String>)(.ceylon.language.Sequence)jabc).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.java.lang.String> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class)){
@@ -604,7 +604,7 @@ final class javaArrayInForComprehension_ {
                 .ceylon.language.Integer.instance(6L),
                 .ceylon.language.Integer.instance(3L),
                 .ceylon.language.Integer.instance(6L),
-                .ceylon.language.Integer.instance(9L)})).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+                .ceylon.language.Integer.instance(9L)})).equals(new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){

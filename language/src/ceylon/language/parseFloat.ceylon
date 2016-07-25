@@ -42,7 +42,18 @@ class ParseFloatState of
  syntax for a `Float` literal in the Ceylon language 
  except that it may optionally begin with a sign 
  character (`+` or `-`) and may not contain grouping 
- underscore characters."
+ underscore characters. That is, an optional sign character,
+ followed by a string of decimal digits, followed by an
+ optional decimal point and string of decimal digits, 
+ followed by an optional decimal exponent, for example 
+ `e+10` or `E-5`, or SI magnitude, `k`, `M`, `G`, `T`, `P`, 
+ `m`, `u`, `n`, `p`, or `f`.
+ 
+     Float: Sign? Digits ('.' Digits)? (Magnitude|Exponent)
+     Sign: '+' | '-'
+     Magnitude: 'k' | 'M' | 'G' | 'T' | 'P' | 'm' | 'u' | 'n' | 'p' | 'f'
+     Exponent: ('e'|'E') Sign? Digits
+     Digits: ('0'..'9')+"
 see (`function formatFloat`, 
      `function parseInteger`)
 tagged("Numbers", "Basic types")

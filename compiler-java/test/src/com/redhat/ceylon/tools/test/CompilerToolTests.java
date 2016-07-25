@@ -33,6 +33,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.tool.NonFatalToolMessage;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.ToolUsageError;
@@ -439,7 +440,7 @@ public class CompilerToolTests extends AbstractToolTests {
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                     options("--src=test/src/com/redhat/ceylon/tools/test/empty"));
             Assert.fail("Tool should have thrown an exception");
-        } catch (ToolUsageError e) {
+        } catch (NonFatalToolMessage e) {
             Assert.assertEquals("No modules or source files to compile", e.getMessage());
         }
         

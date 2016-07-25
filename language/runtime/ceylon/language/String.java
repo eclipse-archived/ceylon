@@ -2994,6 +2994,12 @@ public final class String
     }
     
     @Ignore
+    public static Iterable<? extends Sequence<? extends Character>, ? extends java.lang.Object>
+    combinations(java.lang.String value, long length) {
+        return instance(value).combinations(length);
+    }
+    
+    @Ignore
     public static <Group> Iterable<? extends Entry<? extends Group, ? extends Sequence<? extends Character>>, ? extends java.lang.Object>
     group(java.lang.String value, TypeDescriptor $reifiedGroup, Callable<? extends Group> fun) {
         return instance(value).group($reifiedGroup, fun);
@@ -3023,6 +3029,11 @@ public final class String
     @Override @Ignore
     public Iterable<? extends Sequence<? extends Character>, ? extends java.lang.Object> getPermutations() {
         return $ceylon$language$Collection$impl().getPermutations();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Sequence<? extends Character>, ? extends java.lang.Object> combinations(long length) {
+        return $ceylon$language$Collection$impl().combinations(length);
     }
 
     @Override @Ignore

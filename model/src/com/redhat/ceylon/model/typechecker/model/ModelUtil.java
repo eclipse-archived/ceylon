@@ -215,16 +215,17 @@ public class ModelUtil {
                 int sigSize = signature.size();
                 if (hasSeqParam) {
                     size--;
-                    if (sigSize<size) {
-                        return false;
-                    }
                 }
-                else if (sigSize!=size) {
+                else if (sigSize>size) {
                     return false;
                 }
                 for (int i=0; i<size; i++) {
+                    Parameter p = params.get(i);
+                    if (i>=sigSize) {
+                        return p.isDefaulted();
+                    }
                     FunctionOrValue pm = 
-                            params.get(i).getModel();
+                            p.getModel();
                     if (pm==null) {
                         return false;
                     }
@@ -241,8 +242,9 @@ public class ModelUtil {
                     }
                 }
                 if (hasSeqParam) {
+                    Parameter p = params.get(size);
                     FunctionOrValue model = 
-                            params.get(size).getModel();
+                            p.getModel();
                     Type pdt = 
                             model.appliedReference(null, 
                                     NO_TYPE_ARGS)
@@ -386,7 +388,7 @@ public class ModelUtil {
                                 unit.getDefiniteType(rplt);
                         Type argumentType = 
                                 signature != null && 
-                                signature.size() >= i ? 
+                                i < signature.size() ? 
                                         signature.get(i) : 
                                         null;
                         if (isTypeUnknown(otherType) || 
@@ -397,7 +399,7 @@ public class ModelUtil {
                                 erase(paramType, unit);
                         TypeDeclaration otd = 
                                 erase(otherType, unit);
-                        if(paramType.isExactly(otherType) && 
+                        if (paramType.isExactly(otherType) && 
                                 supportsCoercion(ptd) &&
                                 // do we have different scores?
                                 hasWorseScore(
@@ -417,7 +419,7 @@ public class ModelUtil {
                         }
                     }
                     // check sequenced parameters last
-                    if (dhsp && rhsp){
+                    if (dhsp && rhsp) {
                         Type dplt = 
                                 dpl.get(dplSize).getModel()
                                 .appliedReference(null, 
@@ -3170,5 +3172,40 @@ public class ModelUtil {
     /** Is the given value the result of an enumerated ("singleton") constructor */
     public static boolean isEnumeratedConstructor(Value value) {
         return value.getType().getDeclaration() instanceof Constructor;
+    }
+
+    public static boolean containsRawType(Type type) {
+        if(type == null || type.isNothing())
+            return false;
+        if(type.isRaw())
+            return true;
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration == null)
+            return false;
+        if(declaration instanceof UnionType){
+            for(Type t : declaration.getCaseTypes()){
+                if(containsRawType(t)){
+                    return true;
+                }
+            }
+            return false;
+        }
+        if(declaration instanceof IntersectionType){
+            for(Type t : declaration.getSatisfiedTypes()){
+                if(containsRawType(t)){
+                    return true;
+                }
+            }
+            return false;
+        }
+        Type qualifyingType = type.getQualifyingType();
+        if(qualifyingType != null && containsRawType(qualifyingType))
+            return true;
+        for(Type t : type.getTypeArgumentList()){
+            if(containsRawType(t)){
+                return true;
+            }
+        }
+        return false;
     }
 }
