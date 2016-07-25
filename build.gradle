@@ -38,9 +38,6 @@ subprojects {
     version= cbp.'ceylon.version'
 
     repositories {
-        flatDir {
-            dirs "${rootProject.projectDir}/lib"
-        }
         jcenter()
         mavenCentral()
     }
