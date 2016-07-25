@@ -277,7 +277,7 @@ Gradle lifecycle tasks to appropriate ones in the Ant build.
 | `cmr-aether` | No tests
 | `cmr-js` | No tests
 | `cmd-webdav` | No tests
-| `common` | Disabled (Fails in `RepositoryTest`)
+| `common` | Working
 | `langtools-classfile | No tests
 | `model` | Working
 | `cmr` | Disabled (17 failing tests).
