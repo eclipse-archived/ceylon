@@ -282,7 +282,7 @@ Gradle lifecycle tasks to appropriate ones in the Ant build.
 | `model` | Working
 | `cmr` | Disabled (2 failing tests - 6 more is run by JDK8).
 | `cli` | Working
-| `compiler-java` | Disabled (compilation failures)
+| `compiler-java` | Disabled (compilation failures). Similar issue with `ant test`.
 | `compiler-js` | Disabled (Most tests fail with `LanguageModuleNotFoundException`).
 | `module-loader` | No tests
 | `runtime` | Disabled (requires updates to Gradle script)
