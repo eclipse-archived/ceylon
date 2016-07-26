@@ -62,12 +62,14 @@ Needed a special `sourceSet` layout.
 As all of the four Ant `javac` tasks ended up in a single JAR and used the same compilation options,
  I think putting them into a single compilation task was the way to go.
 
-In an earlier https://github.com/ceylon/ceylon/pull/6378[#6378] restructuring effort there was an
-issue with stray `_version_` folders be left around.
-This problem has now been eliminated due to the new way that <<OSGIHeader,OSGi headers>> are being added.
+* What about those `pom.xml` files that are dotted over the place?
+
+=== Runtime-external
+
+This a restructuring from `runtime` which looks after the external runtime dependencies. This just allows
+for a cleaner build.
 
 .TODO
-* What about those `pom.xml` files that are dotted over the place?
 * Should look to see if we cannot handle the JARs via Gradle's dependency mechanism.
 
 === Cli
