@@ -2,8 +2,8 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 ext {
     ceylonModuleName = 'compiler'
-    ceylonTestDisabled = true
     ceylonModuleVariant = 'java'
+    ceylonTestDisabled = true
 }
 
 apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
@@ -17,13 +17,31 @@ dependencies {
     compile project(':model')
     compile project(':cmr')
     compile project(':typechecker')
-    compile 'org.apache.ant:ant:1.8.2'
-    compile 'com.github.rjeschke:txtmark:0.13'
-    compile 'org.antlr:antlr:3.4'
+    compile antDep
+    compile txtmarkDep
+    compile antlrDep
 
-    testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
-    testCompile group: 'org.tautua.markdownpapers', name: 'markdownpapers-core', version: '1.2.7'
-    testCompile group: 'org.jboss.modules', name: 'jboss-modules', version: '1.4.4.Final'
+//    testCompile group: 'org.hamcrest', name: 'hamcrest-core', version: '1.3'
+    testCompile markdownPapersDep
+    testCompile jbossDep
+
+    testRuntime project(':cmr-webdav')
+    testRuntime project(':cmr-aether')
+    testRuntime sardineDep
+    testRuntime apacheCommonsCodecDep
+    testRuntime apacheCommonsLoggingDep
+    testRuntime jsonSmartDep
+//    <pathelement path="${ceylon.compiler.lib}" />
+//    <pathelement path="${ceylon.language.lib}" />
+//    <pathelement path="${ceylon-tests.car}" />
+//    <pathelement path="${maven-support.lib}" />
+//    <pathelement path="${shrinkwrap-maven-uberjar.lib}" />
+//    <pathelement path="${jboss-logmanager.lib}" />
+//    <pathelement path="${slf4j-simple.lib}" />
+//    <pathelement path="${slf4j-api.lib}" />
+//    <pathelement path="${sardine.lib}" />
+//    <pathelement path="${httpcore.lib}" />
+//    <pathelement path="${httpclient.lib}" />
 }
 
 sourceSets {
@@ -48,16 +66,16 @@ sourceSets {
         }
     }
 
-    antTask {
-        java {
-            srcDirs = []
-        }
-        resources {
-            srcDirs = [ 'src',"${project(':common').projectDir}/src"]
-            include "com/redhat/ceylon/ant/antlib.xml"
-            include "com/redhat/ceylon/common/config/messages.properties"
-        }
-    }
+//    antTask {
+//        java {
+//            srcDirs = []
+//        }
+//        resources {
+//            srcDirs = [ 'src',"${project(':common').projectDir}/src"]
+//            include "com/redhat/ceylon/ant/antlib.xml"
+//            include "com/redhat/ceylon/common/config/messages.properties"
+//        }
+//    }
 
     test {
         java {
@@ -133,40 +151,6 @@ jar {
 }
 
 
-task antJar ( type : Jar ) {
-    group 'Build'
-    description 'Create Ant tasks jar'
-    dependsOn classes,processAntTaskResources
-
-    destinationDir = jar.destinationDir
-    archiveName = 'ceylon-ant.jar'
-    from sourceSets.main.output.classesDir, {
-        include "com/redhat/ceylon/ant/**"
-        include "com/redhat/ceylon/common/**"
-        include "com/redhat/ceylon/launcher/**"
-        exclude "com/redhat/ceylon/common/log/*.class"
-    }
-    from sourceSets.antTask.output.resourcesDir
-}
-
-task bootstrapJar( type : Jar ) {
-    group 'Build'
-    description 'Create bootstrap jar'
-    dependsOn classes, processResources
-    destinationDir = jar.destinationDir
-    archiveName = 'ceylon-bootstrap.jar'
-    from sourceSets.main.output.classesDir, {
-        include "com/redhat/ceylon/launcher/Bootstrap*.class"
-        include "com/redhat/ceylon/launcher/CeylonClassLoader.class"
-        include "com/redhat/ceylon/launcher/LauncherUtil.class"
-    }
-
-    manifest {
-        attributes 'Manifest-Version': 1.0,
-            'Main-Class': 'com.redhat.ceylon.launcher.Bootstrap'
-    }
-}
-
 task bootstrapModuleXml( type : CeylonBuildModuleXml ) {
     description "Create module.xml for the bootstrap JAR"
     sourceModule {
@@ -227,16 +211,7 @@ task publishBootstrapModule( type : Copy ) {
     into "${repoDir}/${cbp.'ceylon.bootstrap.dir'}"
 }
 
-task publishJvmCompilerJars ( type : Copy ) {
-    group "Distribution"
-    description "Copy bootstrap & Ant jars to distribution area"
-    from bootstrapJar
-    from antJar
-    into repoLibDir
-}
-
 publishInternal {
-    dependsOn publishJvmCompilerJars
     dependsOn publishBootstrapModule
 }
 
