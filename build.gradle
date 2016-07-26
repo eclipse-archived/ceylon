@@ -11,6 +11,8 @@ buildScan {
 }
 
 allprojects {
+    apply from : "${rootProject.projectDir}/dependencies.gradle"
+
     ext {
         buildPrefix = 'builtByGradle'
     }
@@ -40,6 +42,13 @@ subprojects {
     repositories {
         jcenter()
         mavenCentral()
+    }
+
+    afterEvaluate {
+        tasks.withType(JavaCompile) { t ->
+            t.options.compilerArgs ['-Xlint:-options']
+            t.options.encoding = 'UTF-8'
+        }
     }
 }
 
