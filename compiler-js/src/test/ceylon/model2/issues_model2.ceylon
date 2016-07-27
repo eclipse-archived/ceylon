@@ -196,4 +196,11 @@ void issues() {
     check5871(`C5871.Baz`, C5871().getMclassModel());
     check5871(`C5871.Baz.icc`, C5871().Baz().getCons1Model());
     check5871(`C5871.Baz.ivc`, C5871().Baz().getCons2Model());
+
+    class C6363 {
+        shared new c {}
+        shared new d() {}
+    }
+    check(`C6363`.getValueConstructors() nonempty, "#6363.1");
+    check(`C6363`.getCallableConstructors() nonempty, "#6363.2");
 }
