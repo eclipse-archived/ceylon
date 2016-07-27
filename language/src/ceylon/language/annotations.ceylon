@@ -340,3 +340,17 @@ shared final annotation class SmallAnnotation()
  32-bit IEEE float."
 shared annotation SmallAnnotation small() 
         => SmallAnnotation();
+
+
+"The annotation class for the [[since]] annotation."
+shared final sealed annotation class SinceAnnotation(
+    "The version of the module when this declaration was added."
+    shared String version)
+        satisfies OptionalAnnotation<SinceAnnotation,Annotated> {}
+
+"Annotation to indicate at which moment the annotated declaration
+ was added to the module."
+shared annotation SinceAnnotation since(
+    "The version of the module when this declaration was added."
+    String version) 
+        => SinceAnnotation(version);
