@@ -1,6 +1,7 @@
 function(anntypes,$m) {
   var mm=getrtmm$$(this.tipo);
-  var pref=mm.d[mm.d.length-1];
+  var pref=this.tipo.toString().substring(9);
+  pref=pref.substring(0,pref.indexOf('('));
   var cs=coiclsannconstrs$(this,anntypes,pref+"$c_",this.$$targs$$.Type$AppliedClass,$m.Arguments$getDeclaredCallableConstructors);
   if (cs.length===0) {
     cs=coiclsannconstrs$(this,anntypes,pref+"_",this.$$targs$$.Type$AppliedClass,$m.Arguments$getDeclaredCallableConstructors);
