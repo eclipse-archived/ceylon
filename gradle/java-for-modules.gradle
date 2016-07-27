@@ -207,10 +207,3 @@ if(ext.properties.containsKey('ceylonTestDisabled') && ext.ceylonTestDisabled ==
     testClasses.enabled = false
     compileTestJava.enabled = false
 }
-
-afterEvaluate {
-    tasks.withType(JavaCompile) { t ->
-        t.options.compilerArgs ['-Xlint:-options']
-        t.options.encoding = 'UTF-8'
-    }
-}
