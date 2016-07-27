@@ -201,12 +201,12 @@ public class MetamodelHelper {
     private static void constructorLiteral(final Type ltype, final Constructor cd,
             final Tree.MetaLiteral meta, final GenerateJsVisitor gen) {
         Class _pc = (Class)cd.getContainer();
-        if (_pc.isToplevel()) {
-            gen.out(gen.getClAlias(), "$init$Applied",
+        if (_pc.isClassOrInterfaceMember()) {
+            gen.out(gen.getClAlias(), "$init$AppliedMemberClass",
                     cd.isValueConstructor() ? "Value" : "Callable",
                     "Constructor$jsint()(");
         } else {
-            gen.out(gen.getClAlias(), "$init$AppliedMemberClass",
+            gen.out(gen.getClAlias(), "$init$Applied",
                     cd.isValueConstructor() ? "Value" : "Callable",
                     "Constructor$jsint()(");
         }
