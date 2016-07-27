@@ -253,6 +253,11 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.String>, ? extends .java.lang.Object> combinations(final long length) {
+        return $ceylon$language$Collection$this$.combinations(length);
+    }
+    
+    @.java.lang.Override
     public boolean getEmpty() {
         return $ceylon$language$Collection$this$.getEmpty();
     }
@@ -1241,6 +1246,11 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     @.java.lang.Override
     public .ceylon.language.Collection$impl<? extends .ceylon.language.String> $ceylon$language$Collection$impl() {
         return $ceylon$language$Collection$this$;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.String>, ? extends .java.lang.Object> combinations(final long length) {
+        return $ceylon$language$Collection$this$.combinations(length);
     }
     
     @.java.lang.Override
