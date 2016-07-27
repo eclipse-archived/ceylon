@@ -199,7 +199,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         
         // Now do the actual copying
         final boolean logArtifacts = verbose != null && (verbose.contains("all") || verbose.contains("files"));
-        ModuleCopycat copier = new ModuleCopycat(getRepositoryManager(), getOutputRepositoryManager(), log, new ModuleCopycat.CopycatFeedback() {
+        ModuleCopycat copier = new ModuleCopycat(getRepositoryManager(), getOutputRepositoryManager(), getLogger(), new ModuleCopycat.CopycatFeedback() {
             boolean haveSeenArtifacts = false;
             @Override
             public boolean beforeCopyModule(ArtifactContext ac, int count, int max) throws IOException {
