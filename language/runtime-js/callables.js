@@ -134,67 +134,34 @@ function spread$(a,f,targs,noInvoke) {
     //Possible spread, check the metamodel
     var mm=getrtmm$$(f);
     var params = mm && mm.ps || [];
-    if (params.length===arg.length && params[spridx].seq>0) {
-      var tcheck=params[spridx].$t;
-      if ((tcheck.t===Sequential||tcheck.t===Sequence)&&is$(tuple0,tcheck)) {
-        return arg;
-      } else if (is$(tuple0,{t:Sequence,a:{Element$Sequence:tcheck}})){
-        return arg;
+    spridx=params.length-1
+    if (params[spridx].seq>0) {
+      //Last parameter is variadic
+      if (params.length===arg.length) {
+        //Simple, direct spread
+        var tcheck=params[spridx].$t;
+        if ((tcheck.t===Sequential||tcheck.t===Sequence)&&is$(tuple0,tcheck)) {
+          return arg;
+        } else if (is$(tuple0,{t:Sequence,a:{Element$Sequence:tcheck}})){
+          return arg;
+        }
+      } else if (params.length>arg.length && params.length<=tuple0.size) {
+        //Map tuple elements to parameters, leave remaining for the sequenced param
+        var sparg=new Array(params.length);
+        for (var i=0;i<spridx;i++) {
+          sparg[i]=tuple0.getFromFirst(i);
+        }
+        sparg[spridx]=tuple0.spanFrom(spridx);
+        return sparg;
       }
     }
-    if (params.length===tuple0.size+spridx) {
+    if (params.length===tuple0.size) {
       //Simple mapping
       var all=[];
-      for (var i=0; i<spridx;i++) {
-        all.push(arg[i]);
+      for (var i=0; i<params.length;i++) {
+        all.push(tuple0.getFromFirst(i));
       }
-      var j=0;
-      for (var i=spridx; i<params.length;i++){
-        var tet=params[i].$t;
-        if (typeof(tet)==='string'&&targs)tet=targs[tet];
-        if ((params[i].def && tuple0.getFromFirst(j)===undefined) || is$(tuple0.$_get(j),tet)) {
-          all.push(tuple0.getFromFirst(j));
-        }
-        j++
-      }
-      if (all.length===params.length) {
-        return all;
-      }
-    }
-    //If f has only 1 param and it's not sequenced, get its type
-    var a1t=params.length===1 && params[spridx].seq===undefined ? params[spridx].$t : undefined;
-    //If it's a type param, get the type argument
-    if (typeof(a1t)==='string')a1t=targs && targs[a1t];
-    //If the tuple type matches the param type, it's NOT a spread
-    //(it's just a regular 1-param func which happens to receive a tuple)
-    if (!a1t || (is$(tuple0,a1t) && extendsType(a1t,{t:Iterable}))) {
-      return arg;
-    }
-    var typecheck;
-    if (a1t && targs && targs.Arguments$Callable) {
-      typecheck=targs.Arguments$Callable;
-      if (typecheck && typecheck.t && typecheck.t==='T' && typecheck.l
-          && typecheck.l.length===1 && typecheck.l[0].seq) {
-        //after all, it is NOT a spread
-        return arg;
-      }
-    } else if (a1t && tuple0.$$targs$$) {
-      if (tuple0.$$targs$$.First$Tuple) {
-        typecheck={t:Tuple,a:tuple0.$$targs$$};
-      } else if (tuple0.$$targs$$.t==='T') {
-        typecheck=tuple0.$$targs$$;
-      } else if (tuple0.$$targs$$.Element$Iterable) {
-        typecheck={t:Iterable,a:tuple0.$$targs$$.Element$Iterable};
-      }
-    }
-    if (params.length>1 || (params.length===1
-        && (params[0].seq || !extendsType(a1t, typecheck)))) {
-      var a=tuple0.nativeArray ? tuple0.nativeArray():undefined;
-      if (a===undefined) {
-        a=[];
-        for (var i=0;i<tuple0.size;i++)a.push(tuple0.$_get(i));
-      }
-      arg=a;
+      return all;
     }
   }
   if (noInvoke) {
