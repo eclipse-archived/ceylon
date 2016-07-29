@@ -125,12 +125,14 @@ shared final sealed annotation class NativeAnnotation(backends)
     "The compiler backend that this native annotation applies to,
      or the empty string to declare the annotated element is a
      native header."
+    since("1.2.0")
     shared String* backends;
 }
 
 "Annotation to mark a member whose implementation is defined 
  in platform-native code."
 shared annotation NativeAnnotation native(
+    since("1.2.0")
     String* backends)
         => NativeAnnotation(*backends);
 
@@ -240,6 +242,7 @@ shared annotation TagsAnnotation tagged(
         => TagsAnnotation(*tags);
 
 "The annotation class for the [[aliased]] annotation."
+since("1.2.0")
 shared final sealed annotation class AliasesAnnotation(
     "The aliases, in plain text."
     shared String* aliases)
@@ -247,6 +250,7 @@ shared final sealed annotation class AliasesAnnotation(
 
 "Annotation to specify a list of aliases that tools such as auto-completion and
  quick-fixes should consider, to help users find a declaration using its aliases."
+since("1.2.0")
 shared annotation AliasesAnnotation aliased(
     "The aliases, in plain text."
     String* aliases)
@@ -277,6 +281,7 @@ shared annotation OptionalImportAnnotation optional()
 
 "The annotation class for the [[suppressWarnings]] 
  annotation."
+since("1.2.0")
 shared final sealed annotation class SuppressWarningsAnnotation(
     "The warning types to suppress."
     shared String* warnings)
@@ -286,6 +291,7 @@ shared final sealed annotation class SuppressWarningsAnnotation(
 "Annotation to suppress compilation warnings of the 
  [[specified types|warnings]] when typechecking the 
  annotated program element."
+since("1.2.0")
 shared annotation SuppressWarningsAnnotation suppressWarnings(
     "The warning types to suppress.
      
@@ -317,6 +323,7 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
         => SuppressWarningsAnnotation(*warnings);
 
 "The annotation class for the [[serializable]] annotation."
+since("1.2.0")
 shared final annotation class SerializableAnnotation()
         satisfies OptionalAnnotation<SerializableAnnotation,ClassDeclaration> {
 }
@@ -326,6 +333,7 @@ shared final annotation class SerializableAnnotation()
  A serializable class may have instances that cannot be 
  serialized if those instances have reachable references to 
  instances of non-serializable classes."
+since("1.2.0")
 shared annotation SerializableAnnotation serializable() 
         => SerializableAnnotation();
 

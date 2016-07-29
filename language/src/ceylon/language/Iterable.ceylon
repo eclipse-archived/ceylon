@@ -281,6 +281,7 @@ shared interface Iterable<out Element=Anything,
     "A [[Range]] containing all indexes of this stream, or 
      `[]` if this list is empty. The resulting range is
      equal to `0:size`."
+    since("1.2.0")
     shared default Range<Integer>|[] indexes() => 0:size;
     
     "A stream containing all but the first element of this 
@@ -339,6 +340,7 @@ shared interface Iterable<out Element=Anything,
      surpassing the performance of `for` loops on the JVM.
      Thus, `each()` is sometimes preferred in highly 
      performance-critical low-level code._"
+    since("1.2.0")
     shared default void each(
         "The function to be called for each element in the
          stream."
@@ -459,6 +461,7 @@ shared interface Iterable<out Element=Anything,
      If the type argument `Type` is not explicitly specified,
      [[Nothing]] is inferred, and the resulting stream is 
      empty."
+    since("1.2.0")
     shared default
     {Element&Type*} narrow<Type>() 
             => { for (elem in this) if (is Type elem) elem };
@@ -677,6 +680,7 @@ shared interface Iterable<out Element=Anything,
     see (`function locateLast`, `function locations`,
          `function find`, 
          `function List.firstIndexWhere`)
+    since("1.2.0")
     shared default 
     <Integer->Element&Object>? locate(
         "The predicate the element must satisfy."
@@ -705,6 +709,7 @@ shared interface Iterable<out Element=Anything,
     see (`function locate`, `function locations`,
          `function findLast`, 
          `function List.lastIndexWhere`)
+    since("1.2.0")
     shared default 
     <Integer->Element&Object>? locateLast(
         "The predicate the element must satisfy."
@@ -735,6 +740,7 @@ shared interface Iterable<out Element=Anything,
      stream."
     see (`function locate`, `function locateLast`, 
          `function List.indexesWhere`)
+    since("1.2.0")
     shared default
     {<Integer->Element&Object>*} locations(
         "The predicate the element must satisfy."
@@ -1524,6 +1530,7 @@ shared interface Iterable<out Element=Anything,
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
     see(`function set`)
+    since("1.2.0")
     shared default Iterable<Element,Absent> distinct
             => object satisfies Iterable<Element,Absent> {
         iterator() 
@@ -1674,6 +1681,7 @@ shared interface Iterable<out Element=Anything,
      
      This is an eager operation, and the resulting map does
      not reflect changes to this stream."
+    since("1.2.0")
     shared Map<Element&Object,Integer> frequencies()
             => coalesced.summarize(identity, 
                     (Integer? count, _) 
@@ -1695,6 +1703,7 @@ shared interface Iterable<out Element=Anything,
      
      This is an eager operation, and the resulting map does
      not reflect changes to this stream."
+    since("1.2.0")
     shared Map<Element&Object,Result> tabulate<Result>(
         "A function that produces an item for the given
          [[key]], an element of this stream."
@@ -1724,6 +1733,7 @@ shared interface Iterable<out Element=Anything,
      This is an eager operation, and the resulting map does
      not reflect changes to this stream."
     see(`function summarize`)
+    since("1.2.0")
     shared Map<Group,[Element+]> group<Group>(
         "The grouping function that assigns a key to the
          given [[element]]. Multiple elements may be 
@@ -1775,6 +1785,7 @@ shared interface Iterable<out Element=Anything,
      This is an eager operation, and the resulting map does
      not reflect changes to this stream."
     see(`function group`, `function fold`)
+    since("1.2.0")
     shared Map<Group,Result> summarize<Group,Result>(
         "The grouping function that assigns a key to the
          given [[element]]. Multiple elements may be 

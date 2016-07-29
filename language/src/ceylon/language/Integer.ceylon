@@ -61,6 +61,7 @@ shared native final class Integer(Integer integer)
     shared actual native Integer times(Integer other);
     shared actual native Integer divided(Integer other);
     shared actual native Integer remainder(Integer other);
+    since("1.2.0")
     shared actual native Integer modulo(Integer modulus);
     
     "Determines if this integer is a factor of the given 
@@ -243,6 +244,7 @@ shared native final class Integer(Integer integer)
      
      This method never throws an [[OverflowException]]."
     see (`value float`)
+    since("1.2.0")
     shared native Float nearestFloat;
 
     shared actual native Integer predecessor => minus(1);

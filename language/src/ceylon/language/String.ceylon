@@ -583,6 +583,7 @@ shared native final class String(characters)
     see (`value Character.lowercased`, 
          `value Character.uppercased`,
          `function compareCorresponding`)
+    since("1.2.0")
     shared native Comparison compareIgnoringCase(String other)
             => compareCorresponding(this, other, 
                 (Character x, Character y) 
@@ -631,6 +632,7 @@ shared native final class String(characters)
     see (`value Character.lowercased`, 
          `value Character.uppercased`,
          `function corresponding`)
+    since("1.2.0")
     shared native Boolean equalsIgnoringCase(String that)
             => corresponding(this, that, 
                 charsEqualIgnoringCase);
@@ -739,6 +741,7 @@ shared native final class String(characters)
            [[destinationPosition]] is negative, 
          - if `size < sourcePosition+length`, or 
          - if `destination.size < destinationPosition+length`.")
+    since("1.2.0")
     shared native 
     void copyTo(
         "The array into which to copy the elements."

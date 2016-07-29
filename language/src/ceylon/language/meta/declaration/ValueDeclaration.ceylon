@@ -48,6 +48,7 @@ shared sealed interface ValueDeclaration
         satisfies FunctionOrValueDeclaration & NestableDeclaration & GettableDeclaration {
     
     "True if this declaration is annotated with [[late|ceylon.language::late]]."
+    since("1.2.0")
     shared formal Boolean late;
     
     "True if this declaration is annotated with [[variable|ceylon.language::variable]]."

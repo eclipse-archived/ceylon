@@ -67,26 +67,31 @@ shared sealed interface ClassDeclaration
      (for a class with a parameter list) or
      the default constructor, or null if the class lacks 
      both a parameter list and a default constructor."
+    since("1.2.0")
     shared formal CallableConstructorDeclaration? defaultConstructor;
     
     "The list of parameter declarations for this class. 
      Returns `null` if the class lacks both a parameter list and a 
      default constructor."
+    since("1.2.0")
     shared formal FunctionOrValueDeclaration[]? parameterDeclarations;
     
     "Gets a parameter declaration by name. 
      Returns `null` if this class lacks both a parameter list and a 
      default constructor, 
      or if no such parameter exists in the parameter list."
+    since("1.2.0")
     shared formal FunctionOrValueDeclaration? getParameterDeclaration(String name);
     
     "True if the current declaration is an annotation class or function."
+    since("1.2.0")
     shared formal Boolean annotation;
     
     "True if the class has an [[abstract|ceylon.language::abstract]] annotation."
     shared formal Boolean abstract;
 
     "True if the class is serializable class."
+    since("1.2.0")
     shared formal Boolean serializable;
 
     "True if the class is an anonymous class, as is the case for the class of object value declarations."
@@ -148,13 +153,16 @@ shared sealed interface ClassDeclaration
      Returns `null` if no such constructor matches. 
      This includes unshared constructors but not inherited constructors 
      (since constructors are not members)."
+    since("1.2.0")
     shared formal <CallableConstructorDeclaration|ValueConstructorDeclaration>? getConstructorDeclaration(String name);
     
     "Returns the list of constructors declared on this class. This includes unshared constructors."
+    since("1.2.0")
     shared formal ConstructorDeclaration[] constructorDeclarations();
     
     "Returns the list of constructors declared on this class that are annotated with the 
      given `Annotation` type argument. This includes unshared constructors."
+    since("1.2.0")
     shared formal ConstructorDeclaration[] annotatedConstructorDeclarations<Annotation>()
             given Annotation satisfies AnnotationType;
 }

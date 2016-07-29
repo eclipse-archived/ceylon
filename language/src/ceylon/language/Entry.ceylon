@@ -26,6 +26,7 @@ class Entry<out Key,out Item>(key, item)
     
     "An `Entry` with the key and item of this entry if this 
      entry's item is non-null, or `null` otherwise."
+    since("1.2.0")
     shared <Key->Item&Object>? coalesced
             => if (exists item) then key->item else null;
     

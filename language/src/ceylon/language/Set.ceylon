@@ -186,6 +186,7 @@ shared interface Set<out Element=Object>
  This is an eager operation and the resulting set does not 
  reflect changes to the given [[stream]]."
 see(`value Iterable.distinct`)
+since("1.2.0")
 shared Set<Element> set<Element>(
     "The stream of elements."
     {Element*} stream,

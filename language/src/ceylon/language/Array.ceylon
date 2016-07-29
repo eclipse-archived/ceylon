@@ -36,6 +36,7 @@ shared final serializable native class Array<Element>
     throws (`class AssertionError`, 
         "if `size>runtime.maxArraySize`")
     see (`value runtime.maxArraySize`)
+    since("1.2.0")
     shared native new ofSize(
             "The size of the resulting array. If the size is 
              non-positive, an empty array will be created."
@@ -194,6 +195,7 @@ shared final serializable native class Array<Element>
      before and after this operation."
     throws (`class AssertionError`,
         "if either of the given indices is out of bounds") 
+    since("1.2.0")
     shared native
     void swap(
             "The index of the first element."
@@ -215,6 +217,7 @@ shared final serializable native class Array<Element>
      after this operation."
     throws (`class AssertionError`,
         "if either of the given indices is out of bounds") 
+    since("1.2.0")
     shared native
     void move(
             "The source index of the element to move."

@@ -93,6 +93,7 @@ shared interface Collection<out Element=Anything>
      - they are both instances of `Object`, and are 
        [[unequal|Object.equals]], or
      - one element is an `Object` and the other is `null`."
+    since("1.2.0")
     shared {[Element+]*} permutations 
             => object satisfies {[Element+]*} {
         value multiset =
