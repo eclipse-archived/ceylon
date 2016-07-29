@@ -331,6 +331,7 @@ shared annotation SerializableAnnotation serializable()
 
 
 "The annotation class for the [[small]] annotation."
+since("1.2.3")
 shared final annotation class SmallAnnotation()
         satisfies OptionalAnnotation<SmallAnnotation,ValueDeclaration|FunctionDeclaration> {
 }
@@ -338,11 +339,13 @@ shared final annotation class SmallAnnotation()
 "Annotation to hint to the compiler that an `Integer` or `Float` 
  typed value or function can be represented using a 32-bit signed integer or 
  32-bit IEEE float."
+since("1.2.3")
 shared annotation SmallAnnotation small() 
         => SmallAnnotation();
 
 
 "The annotation class for the [[since]] annotation."
+since("1.2.3")
 shared final sealed annotation class SinceAnnotation(
     "The version of the module when this declaration was added."
     shared String version)
@@ -350,6 +353,7 @@ shared final sealed annotation class SinceAnnotation(
 
 "Annotation to indicate at which moment the annotated declaration
  was added to the module."
+since("1.2.3")
 shared annotation SinceAnnotation since(
     "The version of the module when this declaration was added."
     String version) 

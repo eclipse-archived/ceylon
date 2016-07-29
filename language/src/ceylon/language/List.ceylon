@@ -906,6 +906,7 @@ shared interface List<out Element=Anything>
      given [[transformation|List.mapElements.mapping]] 
      function to its associated element in this list. This 
      is a lazy operation, returning a view of this list."
+    since("1.2.3")
     shared default 
     List<Result> mapElements<Result>(
         "The function that transforms an index/item pair of
