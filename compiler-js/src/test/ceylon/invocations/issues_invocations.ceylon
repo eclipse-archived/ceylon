@@ -126,6 +126,8 @@ void spreadIssues4({Integer*} x) => check(x=={1,2,3},"spreadIssues4");
 void spreadIssues5<Args>(Anything(*Args) g, Args a)
     given Args satisfies Anything[]
   => g(*a);
+void issue6066_1({Anything*} t) => check(t.sequence()==[1,2,3],"#6066.1 ``t``");
+void issue6066_2({Anything*} t) => check(t.sequence()==[[1,2,3]],"#6066.2 ``t``");
 
 void testIssues() {
   objectIssue306.foo().call();
