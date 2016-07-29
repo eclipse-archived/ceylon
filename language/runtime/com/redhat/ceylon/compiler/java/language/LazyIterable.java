@@ -17,45 +17,45 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
  */
 public abstract class LazyIterable<Element, Absent> 
 extends BaseIterable<Element, Absent>{
-	
+    
     private final class LazyIterator 
     extends BaseIterator<Element> {
-    	
-	    int index = 0;
-	    Iterator<? extends Element> rest = null;
-	    
-	    private LazyIterator() {
-		    super($reifiedElement);
-	    }
-	    
-	    @SuppressWarnings({ "unchecked" })
-	    @Override
-	    public Object next() {
-	        if (rest != null) {
-	            return rest.next();
-	        } 
-	        else if (index >= $numExpressions) {
-	            return finished_.get_();
-	        }
-	        else {
-	        	Object result = $evaluate$(index++);
-	        	if ($spread && index == $numExpressions) {
-	        		Iterable<? extends Element, ?> iterable = 
-	        				(Iterable<? extends Element,?>) result;
-	        		rest = iterable.iterator();
-	        		result = rest.next();
-	        	}
-	        	return result;
-	        }
-	    }
-	    
-	    @Override
-	    public String toString() {
-	    	return LazyIterable.this.toString() + ".iterator()";
-	    }
+        
+        int index = 0;
+        Iterator<? extends Element> rest = null;
+        
+        private LazyIterator() {
+            super($reifiedElement);
+        }
+        
+        @SuppressWarnings({ "unchecked" })
+        @Override
+        public Object next() {
+            if (rest != null) {
+                return rest.next();
+            } 
+            else if (index >= $numExpressions) {
+                return finished_.get_();
+            }
+            else {
+                Object result = $evaluate$(index++);
+                if ($spread && index == $numExpressions) {
+                    Iterable<? extends Element, ?> iterable = 
+                            (Iterable<? extends Element,?>) result;
+                    rest = iterable.iterator();
+                    result = rest.next();
+                }
+                return result;
+            }
+        }
+        
+        @Override
+        public String toString() {
+            return LazyIterable.this.toString() + ".iterator()";
+        }
     }
     
-	private final TypeDescriptor $reifiedElement;
+    private final TypeDescriptor $reifiedElement;
     private final int $numExpressions;
     private final boolean $spread;
     
@@ -90,7 +90,7 @@ extends BaseIterable<Element, Absent>{
         else if ($spread) {
             // do we have at least one non-spread expression?
             return $numExpressions > 1 ? 
-            		false : super.getEmpty(); // with spread we just don't know
+                    false : super.getEmpty(); // with spread we just don't know
         }
         else{
             // we have at least one non-spread expression
@@ -113,7 +113,7 @@ extends BaseIterable<Element, Absent>{
             return super.longerThan(length);
         }
         else {
-        	return $numExpressions > length;
+            return $numExpressions > length;
         }
     }
     
@@ -123,7 +123,7 @@ extends BaseIterable<Element, Absent>{
             return super.shorterThan(length);
         }
         else {
-        	return $numExpressions < length;
+            return $numExpressions < length;
         }
     }
     
