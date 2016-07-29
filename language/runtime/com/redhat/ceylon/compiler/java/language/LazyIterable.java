@@ -29,24 +29,53 @@ extends BaseIterable<Element, Absent>{
         }
         
         @SuppressWarnings({ "unchecked" })
-        @Override
-        public Object next() {
-            if (rest != null) {
-                return rest.next();
-            } 
-            else if (index >= $numExpressions) {
-                return finished_.get_();
+        public Iterator<? extends Element> flatten() {
+            if ($spread && index == $numExpressions - 1) {
+                Iterable<? extends Element, ?> iterable =
+                        (Iterable<? extends Element,?>) $evaluate$(index);
+                return iterable.iterator();
             }
             else {
+                return null;
+            }
+        }
+
+        @SuppressWarnings({ "unchecked" })
+        @Override
+        public Object next() {
+            if (index < $numExpressions) {
                 Object result = $evaluate$(index++);
                 if ($spread && index == $numExpressions) {
                     Iterable<? extends Element, ?> iterable = 
                             (Iterable<? extends Element,?>) result;
                     rest = iterable.iterator();
-                    result = rest.next();
+                } else {
+                    return result;
                 }
-                return result;
             }
+
+            if (rest == null) {
+                return finished_.get_();
+            }
+
+            while (true) {
+                if (rest instanceof LazyIterable.LazyIterator) {
+                    LazyIterable<Element, ?>.LazyIterator lazyRest =
+                            (LazyIterable<Element, ?>.LazyIterator) rest;
+                    Iterator<? extends Element> replacement = lazyRest.flatten();
+                    if (replacement != null) {
+                        rest = replacement;
+                    }
+                    else {
+                        break;
+                    }
+                }
+                else {
+                    break;
+                }
+            }
+
+            return rest.next();
         }
         
         @Override
