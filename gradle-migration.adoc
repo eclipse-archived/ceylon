@@ -9,6 +9,7 @@ Ant & Gradle builds.
 * bundle-proxy
 * Tests are disabled globally.
 * Jigsaw support via `-Pjigsaw=1`
+* Documentation building
 
 == Subprojects
 
