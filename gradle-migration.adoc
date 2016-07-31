@@ -178,6 +178,8 @@ Ant Build and executed it once the appropriate properties for Ant as been setup.
 .TODO
 * The current Git plugin that is being used does a `git pull` instead of `git pull --rebase`. Waiting on
 https://github.com/seu-as-code/seu-as-code.plugins/issues/26[seu-as-code.plugins #26] to be fixed.
+* Still uses `org.osgi.imple.bundle.bindex-2.2.0` from the `lib` folder. Need to know whether it is to be found in an
+internet repo.
 
 === Tool-provider
 
