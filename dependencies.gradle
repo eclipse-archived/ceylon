@@ -2,8 +2,10 @@ ext {
     mavenVer       = '3.3.9'
     mavenAetherVer = '1.1.0'
     slf4jVer       = '1.6.1'
+    bndVer         = '3.2.0'
 
     antDep                  = 'org.apache.ant:ant:1.8.2'
+    antContribDep           = 'ant-contrib:ant-contrib:1.0b3'
     antlrDep                = 'org.antlr:antlr:3.4' // complete
     apacheCommonsCodecDep   = 'commons-codec:commons-codec:1.8'
     apacheCommonsLoggingDep = 'commons-logging:commons-logging:1.1.1'
@@ -20,12 +22,14 @@ ext {
     mavenAetherTransFileDep = "org.eclipse.aether:aether-transport-file:${mavenAetherVer}"
     mavenAetherTransHttpDep = "org.eclipse.aether:aether-transport-http:${mavenAetherVer}"
 //    mavenAetherUtilDep      = ":${mavenAetherVer}"
+    osgiBindexDep           = ":org.osgi.impl.bundle.bindex:2.2.0"
+    osgiBndDep              = "biz.aQute.bnd:biz.aQute.bnd:${bndVer}"
+    osgiBndAntDep           = "biz.aQute.bnd:org.osgi.impl.bundle.repoindex.ant:${bndVer}"
     sardineDep              = 'com.github.lookfirst:sardine:5.1'
     slf4jApiDep             = "org.slf4j:slf4j-api:${slf4jVer}"
     slf4jSimpleDep          = "org.slf4j:slf4j-simple:${slf4jVer}"
     txtmarkDep              = 'com.github.rjeschke:txtmark:0.13'
 }
-
 
 //maven-artifact.lib=${runtime.repo.path}/org/apache/maven/maven-artifact/${maven.version}/org.apache.maven.maven-artifact-${maven.version}.jar
 //maven-model.lib=${runtime.repo.path}/org/apache/maven/maven-model/${maven.version}/org.apache.maven.maven-model-${maven.version}.jar
