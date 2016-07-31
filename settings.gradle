@@ -58,3 +58,4 @@ project(':tool-provider').buildFileName = 'toolprovider.gradle'
 include 'typechecker'
 project(':typechecker').buildFileName = 'typechecker.gradle'
 
+include 'sdk-build'

@@ -66,11 +66,10 @@ task 'clean-all' {
     group "ceylon cross project"
     description "Cleans everything here and in linked projects"
     dependsOn clean
-//    dependsOn 'clean-sdk'
+    dependsOn 'clean-sdk'
 //    dependsOn 'clean-ide'
 }
 
-/*
 task 'clean-sdk' {
     group "ceylon cross project"
     description "Cleans the SDK"
@@ -83,6 +82,7 @@ task sdk {
     dependsOn ':ceylon-sdk:publishInternal'
 }
 
+/*
 //clean-sdk - calls ant clean in the ../ceylon-sdk folder
 //    sdk - calls ant publish ide-quick in the ../ceylon-sdk folder
 //clean-ide - calls ant clean in the ../ceylon-.formatter, ../ceylon.tool.converter.java2ceylon, ../ceylon-ide-common, ../ceylon-ide-eclipse and ../ceylon-ide-intellij folders

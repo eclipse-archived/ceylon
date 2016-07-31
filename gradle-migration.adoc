@@ -169,6 +169,16 @@ for a cleaner build.
 .TODO
 * Should look to see if we cannot handle the JARs via Gradle's dependency mechanism.
 
+=== Sdk-build
+
+Newly added subproject to wrap around SDK building. It used the top-level build.gradle to setup a correct environment
+for the Ant Build and uses a Git plugin for Gradle to handle updates etc. A second level build (`ant.gradle`) loads the
+Ant Build and executed it once the appropriate properties for Ant as been setup.
+
+.TODO
+* The current Git plugin that is being used does a `git pull` instead of `git pull --rebase`. Waiting on
+https://github.com/seu-as-code/seu-as-code.plugins/issues/26[seu-as-code.plugins #26] to be fixed.
+
 === Tool-provider
 
 It needed a special configuration to pick up the `car` file from `language`.
