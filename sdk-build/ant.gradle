@@ -1,0 +1,22 @@
+//ant.properties.'ceylon.dist.dir' = project.properties.ceylonDistDir
+//ant.properties.'ceylon.repo.dir' = project.properties.ceylonRepoDir
+// ceylon.main.dir
+//     <property name="ceylon.executable" value="${ceylon.main.dir}/dist/dist/bin/ceylon"/>
+//             <pathelement location="${ceylon.main.dir}/lib/ant-contrib-1.0b3.jar"/>
+//'''    <taskdef resource="taskdef.properties">
+//        <classpath>
+//            <pathelement path="${ceylon.main.dir}/lib/org.osgi.impl.bundle.repoindex.ant-2.1.2.jar" />
+//        </classpath>
+//    </taskdef>
+//
+//    <taskdef resource="aQute/bnd/ant/taskdef.properties"
+//          classpath="${ceylon.main.dir}/lib/biz.aQute.bnd-2.3.0.jar"/>
+//
+//    <taskdef name="bindex" classname="org.osgi.impl.bundle.bindex.ant.BindexTask"
+//          classpath="${ceylon.main.dir}/lib/org.osgi.impl.bundle.bindex-2.2.0.jar"/>
+//'''
+
+ant.properties.'build.dir' = project.properties.ceylonBuildDir
+ant.properties.'ceylon.main.dir' = project.properties.ceylonMainDir
+ant.properties.'ceylon.ant.lib' = project.properties.ceylonAntJar
+ant.importBuild("${project.properties.antProjectDir}/build.xml") { "ant${it.capitalize()}".toString() }

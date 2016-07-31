@@ -40,6 +40,11 @@ sourceSets {
 }
 
 
+test {
+    // there are '@Suite.SuiteClasses` in this test set - only run them.
+    include '**/AllCmrTests.class'
+}
+
 ['common','model','cmr-aether','cmr-webdav','cmr-js'].each {
     publishInternal.dependsOn ":${it}:publishInternal"
 }

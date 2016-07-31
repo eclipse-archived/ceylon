@@ -9,8 +9,81 @@ Ant & Gradle builds.
 * bundle-proxy
 * Tests are disabled globally.
 * Jigsaw support via `-Pjigsaw=1`
+* Documentation building
 
 == Subprojects
+
+=== Ant-plugin
+
+This is the first action at restructuring the `compiler-java` build. All of the sources are still in the
+`java-compiler` source area, but the ANT plugin is now build separately with artifacts ending up in it's own
+build directory without polluting the `compiler-java` area. This has simplified the `compiler-java` build as well.
+
+=== Ceylon-bootstrap
+
+This is the second action at restructuring the `compiler-java` build. All of the sources are still in the
+`java-compiler` source area, but the bootrstao JAR is now build separately with artifacts ending up in it's own
+build directory without polluting the `compiler-java` area. This has simplified the `compiler-java` build as well.
+
+=== Cli
+
+.TODO
+* Should consider looking at `application` plugins to do a better job of bundling scripts. One task is
+  specifically called `startScripts` to mimic a similar fucntionaing task in `application` plugin. This
+  was done to deliberately break the build when the refactoring for `application` happens.
+
+=== Cmr
+
+.TODO
+* 17 tests are currently (disabled test task for moment)
+
+=== Cmr-aether
+
+Standard Ceylon Java project.
+
+=== Cmr-webdav
+
+Standard Ceylon Java project.
+
+=== Commons
+
+.From common/build.xml
+[source,xml]
+----
+<target name="publish"
+    depends="clean.repo,init.repo,dist,publish-internal" <!-- 1 --> <!-- 2 --> <!-- 3 -- >
+    description="Publish both type checker and ceylon.language template module">
+</target>
+----
+<1> `clean.repo` handled by `cleanRepo` which is a dependency of `clean`.
+<2> `init.repo`, `publish-internal` handled by `publishInternal`.
+<3> `dist` handled by Gradle dependency chain and included `assemble`, `sourceZip`, `sha1` and `jar`
+
+=== Compiler-java
+
+There is an unfortunate interdependency with `language`.
+
+*Utf8properties*: Unlike the Ant `compiler.classes` the `main` source set will include `*.utf8properties`.
+  The reason for this is that the Gradle task can take care of this in the `processResources` task via a filter,
+  whereas in Ant this hand to be handled via an extra build step.
+
+.TODO
+* Do we need to `-XDignore.symbol.file` when compiling?
+* Mismatch in `compiler-*.jar` artifacts between ANT (1789 files) and Gradle (1777 files).
+* Mismatch in `ceylon-ant.jar` artifacts between ANT (154 files) and Gradle (155 files).
+* For `bootstrap-ant.jar` need to check `MANIFEST.MF`
+
+=== Compiler-js
+
+The directory layout seems to be nearer to a Gradle/Maven convention, but the resources are still
+under `src/main/java`. For this reason there is a `sourceSets` block in the build to find the correct files.
+If those files could simply be moved to the `src/main/resources` folder the whole block can be eliminated.
+
+.TODO
+* Do we need to include test classs fo the `ceylon.language.js`?
+* Not sure about the runtime directory.
+  Should we send those artifacts to `build/libs` or `build/runtime` under Gradle?
+* `jdk5Stubs` seems to refer to an empty collection. We could get rid of it and simplify the build script.
 
 === Dist
 
@@ -41,58 +114,11 @@ Ant & Gradle builds.
 .TODO
 * `ceylon-completion.bash` is copied twice - once in `copyContrib` and once in `copyCompilerBinaries`
 
-=== Commons
 
-.From common/build.xml
-[source,xml]
-----
-<target name="publish"
-    depends="clean.repo,init.repo,dist,publish-internal" <!-- 1 --> <!-- 2 --> <!-- 3 -- >
-    description="Publish both type checker and ceylon.language template module">
-</target>
-----
-<1> `clean.repo` handled by `cleanRepo` which is a dependency of `clean`.
-<2> `init.repo`, `publish-internal` handled by `publishInternal`.
-<3> `dist` handled by Gradle dependency chain and included `assemble`, `sourceZip`, `sha1` and `jar`
-
-=== Runtime
-
-Needed a special `sourceSet` layout.
-
-As all of the four Ant `javac` tasks ended up in a single JAR and used the same compilation options,
- I think putting them into a single compilation task was the way to go.
-
-In an earlier https://github.com/ceylon/ceylon/pull/6378[#6378] restructuring effort there was an
-issue with stray `_version_` folders be left around.
-This problem has now been eliminated due to the new way that <<OSGIHeader,OSGi headers>> are being added.
+=== Java-main
 
 .TODO
-* What about those `pom.xml` files that are dotted over the place?
-* Should look to see if we cannot handle the JARs via Gradle's dependency mechanism.
-
-=== Cli
-
-.TODO
-* Should consider looking at `application` plugins to do a better job of bundling scripts. One task is
-  specifically called `startScripts` to mimic a similar fucntionaing task in `application` plugin. This
-  was done to deliberately break the build when the refactoring for `application` happens.
-
-=== Cmr
-
-.TODO
-* 17 tests are currently (disabled test task for moment)
-
-=== Cmr-aether
-
-Standard Ceylon Java project.
-
-=== Cmr-webdav
-
-Standard Ceylon Java project.
-
-=== Model
-
-Standard Ceylon Java project.
+* Do we need to set the compiler flag `-XDignore.symbol.file` ?
 
 === Langtools-classfile
 
@@ -104,6 +130,67 @@ We also set `ceylonPublishModuleName` as this one uses two distinctly named prop
 
 .TODO
 * Do we need to set `-XDignore.symbol.file`  for `JavaCompile` options?
+
+=== Language
+
+We still use the imported Ant build to get stuff done. `build.dir` is set as a property on the imported build
+and that seems to be forcing Ant to build into Gradle's `buildDir`.
+
+There is an unfortunate interdependency with `compiler-java`.
+
+.TODO
+* Fix it from going through the Ant build to building everything as part of Gradle direct.
+* Start using `generate-source.gradle` to generate source.
+* Set `generateModuleInfo` according to `jigsaw`.
+* Some copy operations in the Ant `build` task need to be investigated.
+
+=== Model
+
+Standard Ceylon Java project.
+
+=== Module-loader
+
+It needed a special configuration to pick up the `car` file from `language`.
+
+=== Runtime
+
+Needed a special `sourceSet` layout.
+
+As all of the four Ant `javac` tasks ended up in a single JAR and used the same compilation options,
+ I think putting them into a single compilation task was the way to go.
+
+* What about those `pom.xml` files that are dotted over the place?
+
+=== Runtime-external
+
+This a restructuring from `runtime` which looks after the external runtime dependencies. This just allows
+for a cleaner build.
+
+.TODO
+* Should look to see if we cannot handle the JARs via Gradle's dependency mechanism.
+
+=== Sdk-build
+
+Newly added subproject to wrap around SDK building. It used the top-level build.gradle to setup a correct environment
+for the Ant Build and uses a Git plugin for Gradle to handle updates etc. A second level build (`ant.gradle`) loads the
+Ant Build and executed it once the appropriate properties for Ant as been setup.
+
+.TODO
+* The current Git plugin that is being used does a `git pull` instead of `git pull --rebase`. Waiting on
+https://github.com/seu-as-code/seu-as-code.plugins/issues/26[seu-as-code.plugins #26] to be fixed.
+
+=== Tool-provider
+
+It needed a special configuration to pick up the `car` file from `language`.
+
+There is a `sourceSets` block in the build to find the correct resources files.
+If those files could simply be moved to the `src/main/resources` folder the whole block can be eliminated.
+
+Note that unlike the Ant build, the `*.utf8properties` are included in the block as the `processResources` task
+knows how to take care of them.
+
+.TODO
+* Do we need to set the compiler flag `-XDignore.symbol.file` ?
 
 === Typechecker
 
@@ -126,67 +213,6 @@ starts to work.
 
 .TODO
 * The Ant `antlr.tree` deleted tokens at the end. Should we still do that?
-
-=== Compiler-java
-
-There is an unfortunate interdependency with `language`.
-
-*Utf8properties*: Unlike the Ant `compiler.classes` the `main` source set will include `*.utf8properties`.
-  The reason for this is that the Gradle task can take care of this in the `processResources` task via a filter,
-  whereas in Ant this hand to be handled via an extra build step.
-
-.TODO
-* Do we need to `-XDignore.symbol.file` when compiling?
-* Mismatch in `compiler-*.jar` artifacts between ANT (1789 files) and Gradle (1777 files).
-* Mismatch in `ceylon-ant.jar` artifacts between ANT (154 files) and Gradle (155 files).
-* For `bootstrap-ant.jar` need to check `MANIFEST.MF`
-
-=== Language
-
-We still use the imported Ant buidl to get stuff done. `build.dir` is set as a property on the imported build
-and that seems to be forcing Ant to build into Gradle's `buildDir`.
-
-There is an unfortunate interdependency with `compiler-java`.
-
-.TODO
-* Fix it from going through the Ant build to building everything as part of Gradle direct.
-* Start using `generate-source.gradle` to generate source.
-* Set `generateModuleInfo` according to `jigsaw`.
-* Some copy operations in the Ant `build` task need to be investigated.
-
-=== Compiler-js
-
-The directory layout seems to be nearer to a Gradle/Maven convention, but the resources are still
-under `src/main/java`. For this reason there is a `sourceSets` block in the build to find the correct files.
-If those files could simply be moved to the `src/main/resources` folder the whole block can be eliminated.
-
-.TODO
-* Do we need to include test classs fo the `ceylon.language.js`?
-* Not sure about the runtime directory.
-  Should we send those artifacts to `build/libs` or `build/runtime` under Gradle?
-* `jdk5Stubs` seems to refer to an empty collection. We could get rid of it and simplify the build script.
-
-=== Module-loader
-
-It needed a special configuration to pick up the `car` file from `language`.
-
-=== Tool-provider
-
-It needed a special configuration to pick up the `car` file from `language`.
-
-There is a `sourceSets` block in the build to find the correct resources files.
-If those files could simply be moved to the `src/main/resources` folder the whole block can be eliminated.
-
-Note that unlike the Ant build, the `*.utf8properties` are included in the block as the `processResources` task
-knows how to take care of them.
-
-.TODO
-* Do we need to set the compiler flag `-XDignore.symbol.file` ?
-
-=== Java-main
-
-.TODO
-* Do we need to set the compiler flag `-XDignore.symbol.file` ?
 
 == Custom build code in buildSrc
 
@@ -277,12 +303,12 @@ Gradle lifecycle tasks to appropriate ones in the Ant build.
 | `cmr-aether` | No tests
 | `cmr-js` | No tests
 | `cmd-webdav` | No tests
-| `common` | Disabled (Fails in `RepositoryTest`)
+| `common` | Working
 | `langtools-classfile | No tests
 | `model` | Working
-| `cmr` | Disabled (17 failing tests).
+| `cmr` | Disabled (2 failing tests - 6 more is run by JDK8).
 | `cli` | Working
-| `compiler-java` | Disabled (compilation failures)
+| `compiler-java` | Disabled (compilation failures). Similar issue with `ant test`.
 | `compiler-js` | Disabled (Most tests fail with `LanguageModuleNotFoundException`).
 | `module-loader` | No tests
 | `runtime` | Disabled (requires updates to Gradle script)
@@ -294,7 +320,7 @@ Gradle lifecycle tasks to appropriate ones in the Ant build.
 [[OSGIheaders]]
 == Generating OSGI headers
 
-In order to deal with OSGI headers, the  GRadle `osgi` plugin is applied and a custom task extension is
+In order to deal with OSGI headers, the  GRradle `osgi` plugin is applied and a custom task extension is
 added to the 'jar` task. This is activated by applying the `CeylonBuildOsgiPlugin`. Other Jar tasks can have this
 fucntionality actived by adding `setAsOsgiExternalArchive()` (for external artifcats) or
 `setAsOsgiArchive()` (for  Ceylon-specific artifacts) to the configuration block. Both cases enable a new
