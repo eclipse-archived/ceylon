@@ -171,6 +171,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     public static final int EXPR_WIDEN_PRIM = 1 << 9;
 
+    /** 
+     * Use this when the expression is guaranteed to not be a base member. This allows us to
+     * differentiate `null` (BaseMemberExpression) from other things of type "null" which get
+     * stored in temp vars erased to `Object`, for erasure and casts.
+     */
+    public static final int EXPR_IS_NOT_BASE_MEMBER = 1 << 10;
+
     static{
         // only there to make sure this class is initialised before the enums defined in it, otherwise we
         // get an initialisation error
@@ -321,6 +328,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }else if(term instanceof Tree.IfExpression){
             // special case to be able to pass expected type to if op
             result = transform((Tree.IfExpression)term, expectedType);
+            flags |= EXPR_IS_NOT_BASE_MEMBER;
         }else if(term instanceof Tree.SwitchExpression){
             // special case to be able to pass expected type to switch op
             result = transform((Tree.SwitchExpression)term, expectedType);
@@ -476,6 +484,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (isNull(exprType)){
                     // don't add cast for null
                     if(!isNullValue(exprType)
+                            // well, unless it's a complex expression which stores that null value in
+                            // temp vars whose type erase to Object
+                            || (flags & EXPR_IS_NOT_BASE_MEMBER) != 0
                             // include a cast even for null for interop and disambiguating bw overloads and null values
                             // of different types using the "of" operator
                             || downCast){
