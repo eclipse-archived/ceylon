@@ -5335,8 +5335,10 @@ public abstract class AbstractTransformer implements Transformation {
             tupleElementTypes.set(tupleElementTypes.size()-1, typeFact.getSequentialElementType(restType));
             atLeastOne = restType.getDeclaration().inherits(typeFact().getSequenceDeclaration());
             // the last rest element may be a type param, in which case we resolve it at runtime
-            needsRestSplit = !restType.getDeclaration().equals(typeFact.getSequenceDeclaration())
-                    && !restType.getDeclaration().equals(typeFact.getSequentialDeclaration());
+            needsRestSplit = 
+                    restType.getDeclaration() instanceof ClassOrInterface == false
+                    || (!restType.getDeclaration().equals(typeFact.getSequenceDeclaration())
+                        && !restType.getDeclaration().equals(typeFact.getSequentialDeclaration()));
         }
         
         int firstDefaulted;
