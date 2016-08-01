@@ -70,6 +70,11 @@ public class BmeGenerator {
         } else {
             final boolean isCallable = !forInvoke && (decl instanceof Functional
                     || bme.getUnit().getCallableDeclaration().equals(bme.getTypeModel().getDeclaration()));
+            if (isCallable && decl.isParameter()) {
+                //Callables passed as arguments are already wrapped in JsCallable
+                gen.out(exp);
+                return;
+            }
             String who = isCallable && decl.isMember() ? gen.getMember(bme, decl, null) : null;
             if (who == null || who.isEmpty()) {
                 //We may not need to wrap this in certain cases
