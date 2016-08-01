@@ -2521,6 +2521,9 @@ public class Flow {
         void checkEffectivelyFinal(DiagnosticPosition pos, VarSymbol sym) {
             if (currentTree != null &&
                     sym.owner.kind == MTH &&
+                    // Ceylon: don't consider synthetic vars with NOPOS to be
+                    // declared before the current tree
+                    sym.pos != Position.NOPOS &&
                     sym.pos < currentTree.getStartPosition()) {
                 switch (currentTree.getTag()) {
                     case CLASSDEF:
