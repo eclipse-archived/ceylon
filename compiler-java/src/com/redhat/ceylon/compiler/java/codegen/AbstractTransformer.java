@@ -5495,7 +5495,7 @@ public abstract class AbstractTransformer implements Transformation {
         // Here we can use getContainer, we don't care about scopes
         Scope container = declaration.getContainer();
         while(container != null){
-            if(container instanceof Specification)
+            if(container instanceof Specification && ((Specification) container).getDeclaration() != null)
                 // TypedDeclaration are always Scopes in theory
                 container = (Scope) ((Specification) container).getDeclaration();
             if(container instanceof Package)
