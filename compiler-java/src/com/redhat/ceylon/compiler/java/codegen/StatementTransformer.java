@@ -2563,7 +2563,8 @@ public class StatementTransformer extends AbstractTransformer {
                         JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
                         outer.append(at(stmt).If(failtest_id, at(stmt).Block(0, failblock), null));
                     } else {
-                        outer.appendList(failblock);
+                        // else blocks may declare variables so they need to be in a block
+                        outer.append(at(stmt).Block(0, failblock));
                     }
                 }
                 
