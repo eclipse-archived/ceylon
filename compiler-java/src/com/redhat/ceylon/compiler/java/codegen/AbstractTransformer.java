@@ -120,6 +120,7 @@ import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.Specification;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -5494,6 +5495,9 @@ public abstract class AbstractTransformer implements Transformation {
         // Here we can use getContainer, we don't care about scopes
         Scope container = declaration.getContainer();
         while(container != null){
+            if(container instanceof Specification)
+                // TypedDeclaration are always Scopes in theory
+                container = (Scope) ((Specification) container).getDeclaration();
             if(container instanceof Package)
                 return null;
             if(container instanceof Declaration){
