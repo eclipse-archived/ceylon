@@ -38,8 +38,6 @@ git {
         url "https://github.com/${githubOrgOrUser}/${githubRepoName}.git"
         directory localRepoFolder
         branch 'HEAD'
-//        username gitUsername
-//        password gitPassword
         singleBranch false
     }
 }
@@ -83,6 +81,11 @@ task createAntBuildEnvironment( type : Copy ) {
     }
 
     dependsOn ':dist:publishInternal'
+
+    if(!localRepoExists) {
+        dependsOn setup
+    }
+
 }
 
 task invokeAntBuild( type : GradleBuild ) {
@@ -97,10 +100,6 @@ task invokeAntBuild( type : GradleBuild ) {
     ]
 
     mustRunAfter update, setup
-
-    if(!localRepoExists) {
-        dependsOn setup
-    }
 
     dependsOn createAntBuildEnvironment
 }

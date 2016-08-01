@@ -24,8 +24,6 @@ subprojects {
 
     apply plugin : CeylonCommonBuildProperties
 
-    // put all the build artifacts in subfolders of the root "build" folder
-//    buildDir = new File(rootProject.buildDir, it.path.replace(":", "_").substring(1))
     buildDir = new File(file("${rootProject.projectDir}/${buildPrefix}"), it.path.replace(":", "_").substring(1))
 
     ext {
@@ -73,13 +71,13 @@ task 'clean-all' {
 task 'clean-sdk' {
     group "ceylon cross project"
     description "Cleans the SDK"
-    dependsOn ':ceylon-sdk:clean'
+    dependsOn ':sdk-build:clean'
 }
 
 task sdk {
     group "ceylon cross project"
     description 'Builds the SDK'
-    dependsOn ':ceylon-sdk:publishInternal'
+    dependsOn ':sdk-build:publishInternal'
 }
 
 /*
