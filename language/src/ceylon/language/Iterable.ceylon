@@ -1814,124 +1814,7 @@ shared interface Iterable<out Element=Anything,
          [[next element]] with that key."
         Result accumulating(Result? partial, Element element))
             given Group satisfies Object
-            => object extends Object() 
-                      satisfies Map<Group,Result> {
-        
-        alias MaybeEntry => GroupEntry<Group,Result>?;
-        
-        variable value store 
-                = Array.ofSize {
-            size = 16;
-            element = null of MaybeEntry;
-        };
-        
-        function hash(Object group, Integer size) 
-                => group.hash.magnitude % size;
-        
-        function rebuild(Array<MaybeEntry> store) {
-            value newStore 
-                    = Array.ofSize {
-                size = store.size*2;
-                element = null of MaybeEntry;
-            };
-            for (groups in store) {
-                variable value group = groups;
-                while (exists g = group) {
-                    value index = hash {
-                        group = g.group;
-                        size = newStore.size;
-                    };
-                    newStore.set(index,
-                        GroupEntry { 
-                            next = newStore[index]; 
-                            group = g.group; 
-                            elements = g.elements; 
-                        });
-                    group = g.next;
-                }
-            }
-            return newStore;
-        }
-        
-        variable value count = 0;
-        for (element in outer) {
-            value group = grouping(element);
-            value index = hash {
-                group = group;
-                size = store.size;
-            };
-            value entries = store[index];
-            if (exists entries, 
-                exists entry = entries.get(group)) {
-                entry.elements = accumulating {
-                    partial = entry.elements;
-                    element = element;
-                };
-                //keep iterating
-            }
-            else {
-                store.set(index, 
-                    GroupEntry {
-                        next = entries;
-                        group = group;
-                        elements = accumulating {
-                            partial = null;
-                            element = element;
-                        };
-                    });
-                count++;
-                if (count>store.size*2) {
-                    store = rebuild(store);
-                }
-            }
-        }
-        
-        size => count;
-        
-        iterator() 
-                => object satisfies Iterator<Group->Result> {
-            variable value index = 0;
-            variable GroupEntry<Group,Result>? entry = null;
-            shared actual <Group->Result>|Finished next() {
-                GroupEntry<Group,Result> result;
-                if (exists e = entry) {
-                    entry = e.next;
-                    result = e;
-                }
-                else {
-                    while (true) {
-                        if (index>=store.size) {
-                            return finished;
-                        }
-                        else {
-                            entry = store[index++];
-                            if (exists e = entry) {
-                                entry = e.next;
-                                result = e;
-                                break;
-                            }
-                        }
-                    }
-                }
-                return result.group -> result.elements;
-            }
-        };
-        
-        clone() => this;
-        
-        function group(Object key) 
-                => store[hash(key, store.size)]?.get(key);
-        
-        defines(Object key) => group(key) exists;
-        
-        get(Object key) => group(key)?.elements;
-        
-        shared actual Result|Default getOrDefault<Default>
-                (Object key, Default default)
-                => if (exists group = group(key))
-                then group.elements else default;
-        
-    };
+            => Summary(this, grouping, accumulating);
     
     "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
      `z` are the `string` representations of the elements of 
@@ -2052,5 +1935,129 @@ class GroupEntry<Group,Result>(next, group, elements)
         }
         return null;
     }
+    
+}
+
+see(`function Iterable.summarize`)
+class Summary<Element,Group,Result>(
+    {Element*} elements,
+    Group grouping(Element element),
+    Result accumulating(Result? partial, Element element))
+            extends Object() satisfies Map<Group,Result>
+            given Group satisfies Object {
+        
+    alias MaybeEntry => GroupEntry<Group,Result>?;
+    
+    variable value store 
+            = Array.ofSize {
+        size = 16;
+        element = null of MaybeEntry;
+    };
+    
+    function hash(Object group, Integer size) 
+            => group.hash.magnitude % size;
+    
+    function rebuild(Array<MaybeEntry> store) {
+        value newStore 
+                = Array.ofSize {
+            size = store.size*2;
+            element = null of MaybeEntry;
+        };
+        for (groups in store) {
+            variable value group = groups;
+            while (exists g = group) {
+                value index = hash {
+                    group = g.group;
+                    size = newStore.size;
+                };
+                newStore.set(index,
+                    GroupEntry { 
+                        next = newStore[index]; 
+                        group = g.group; 
+                        elements = g.elements; 
+                    });
+                group = g.next;
+            }
+        }
+        return newStore;
+    }
+    
+    variable value count = 0;
+    for (element in elements) {
+        value group = grouping(element);
+        value index = hash {
+            group = group;
+            size = store.size;
+        };
+        value entries = store[index];
+        if (exists entries, 
+            exists entry = entries.get(group)) {
+            entry.elements = accumulating {
+                partial = entry.elements;
+                element = element;
+            };
+            //keep iterating
+        }
+        else {
+            store.set(index, 
+                GroupEntry {
+                    next = entries;
+                    group = group;
+                    elements = accumulating {
+                        partial = null;
+                        element = element;
+                    };
+                });
+            count++;
+            if (count>store.size*2) {
+                store = rebuild(store);
+            }
+        }
+    }
+    
+    size => count;
+    
+    iterator() 
+            => object satisfies Iterator<Group->Result> {
+        variable value index = 0;
+        variable GroupEntry<Group,Result>? entry = null;
+        shared actual <Group->Result>|Finished next() {
+            GroupEntry<Group,Result> result;
+            if (exists e = entry) {
+                entry = e.next;
+                result = e;
+            }
+            else {
+                while (true) {
+                    if (index>=store.size) {
+                        return finished;
+                    }
+                    else {
+                        entry = store[index++];
+                        if (exists e = entry) {
+                            entry = e.next;
+                            result = e;
+                            break;
+                        }
+                    }
+                }
+            }
+            return result.group -> result.elements;
+        }
+    };
+    
+    clone() => this;
+    
+    function group(Object key) 
+            => store[hash(key, store.size)]?.get(key);
+    
+    defines(Object key) => group(key) exists;
+    
+    get(Object key) => group(key)?.elements;
+    
+    shared actual Result|Default getOrDefault<Default>
+            (Object key, Default default)
+            => if (exists group = group(key))
+            then group.elements else default;
     
 }

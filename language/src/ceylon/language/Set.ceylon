@@ -196,8 +196,14 @@ shared Set<Element> set<Element>(
     Element choosing(Element earlier, Element later) 
             => earlier)
         given Element satisfies Object
-        => object extends Object() 
-        satisfies Set<Element&Object> {
+        => IterableSet(stream, choosing);
+
+class IterableSet<Element>(
+    {Element*} stream,
+    Element choosing(Element earlier, Element later))
+        extends Object()
+        satisfies Set<Element>
+        given Element satisfies Object {
     
     value elements =
             stream.summarize(identity,
@@ -216,9 +222,7 @@ shared Set<Element> set<Element>(
     
     clone() => this;
     
-};
-
-
+}
 
 "An immutable [[Set]] with no elements."
 tagged("Collections")
