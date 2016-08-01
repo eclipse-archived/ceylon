@@ -74,6 +74,7 @@ following platforms to make sure it works:
 ### OSX
 
 - OSX 10 Lion (10.8.5) JDK 1.7.0_40 (Oracle) Node 0.10.17
+- OSX 11 El Capitan (10.11.6) JDK 1.7.0_80 (Oracle) Node 0.10.35
 
 ## License
 
