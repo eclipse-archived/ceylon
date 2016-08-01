@@ -98,6 +98,7 @@ shared sealed interface ClassDeclaration
     shared formal Boolean anonymous;
 
     "This anonymous class' object value declaration if this class is an anonymous class. `null` otherwise."
+    since("1.1.0")
     shared formal ValueDeclaration? objectValue;
 
     "True if the class has a [[final|ceylon.language::final]] annotation."

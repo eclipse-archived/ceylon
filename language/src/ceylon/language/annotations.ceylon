@@ -65,6 +65,7 @@ shared annotation FinalAnnotation final()
         => FinalAnnotation();
                 
 "The annotation class for the [[sealed]] annotation."
+since("1.1.0")
 shared final sealed annotation class SealedAnnotation()
         satisfies OptionalAnnotation<SealedAnnotation,
                 ClassOrInterfaceDeclaration|ConstructorDeclaration> {}
@@ -75,6 +76,7 @@ shared final sealed annotation class SealedAnnotation()
  not be extended or instantiated outside of the module in 
  which it is defined. A `sealed` constructor may not be
  invoked outside of the module in which it is defined."
+since("1.1.0")
 shared annotation SealedAnnotation sealed()
         => SealedAnnotation();
 

@@ -24,6 +24,7 @@
  constraint is violated."
 see (`interface Destroyable`)
 tagged("Basic types")
+since("1.1.0")
 shared interface Obtainable satisfies Usable {
     
     "Obtain this resource. Called before the body of a `try` 

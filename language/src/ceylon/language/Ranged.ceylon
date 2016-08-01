@@ -159,6 +159,7 @@ shared interface Ranged<in Index, out Element, out Subrange>
      
      When the given index does not belong to this ranged 
      object, the behavior is implementation dependent."
+    since("1.1.0")
     shared formal Subrange measure(Index from, Integer length);
     
 }

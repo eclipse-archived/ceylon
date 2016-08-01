@@ -230,6 +230,7 @@ shared final serializable native class Array<Element>
      array. This operation works by side-effect, modifying 
      the array. The array always contains the same elements 
      before and after this operation."
+    since("1.1.0")
     shared native 
     void reverseInPlace();
     
@@ -239,6 +240,7 @@ shared final serializable native class Array<Element>
      by side-effect, modifying the array.  The array always 
      contains the same elements before and after this 
      operation."
+    since("1.1.0")
     shared native 
     void sortInPlace(
         "A comparison function that compares pairs of

@@ -24,6 +24,7 @@
 see (`function everyPair`, 
      `function compareCorresponding`)
 tagged("Comparisons", "Streams")
+since("1.1.0")
 shared Boolean corresponding<First,Second>(
     {First*} firstIterable, {Second*} secondIterable,
     "The predicate function that compares an element of the

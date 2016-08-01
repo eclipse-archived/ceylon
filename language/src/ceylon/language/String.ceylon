@@ -173,6 +173,7 @@ shared native final class String(characters)
      `\\n` or `\\r\\n`, except for the very last line. The 
      empty string is considered a single line of text."
     see (`value lines`)
+    since("1.1.0")
     shared native {String+} linesWithBreaks
             => split('\n'.equals, false, false)
             .partition(2)
@@ -495,6 +496,7 @@ shared native final class String(characters)
      string."
     throws (`class AssertionError`,
             "if the given [[substring]] is empty")
+    since("1.1.0")
     shared native String replaceFirst(String substring, 
                                       String replacement) {
         "string to replace must be nonempty"
@@ -513,6 +515,7 @@ shared native final class String(characters)
      string."
     throws (`class AssertionError`,
             "if the given [[substring]] is empty")
+    since("1.1.0")
     shared native String replaceLast(String substring, 
                                      String replacement) {
         "string to replace must be nonempty"
@@ -660,6 +663,7 @@ shared native final class String(characters)
      a string of the given minimum [[size]], centering the
      string. If this string is not smaller than the given 
      `size`, return this string."
+    since("1.1.0")
     shared native String pad(Integer size, 
         "The padding character"
         Character character=' ') {
@@ -684,6 +688,7 @@ shared native final class String(characters)
      producing a string of the given minimum [[size]]. If 
      this string is not smaller than the given `size`, 
      return this string."
+    since("1.1.0")
     shared native String padLeading(Integer size, 
         "The padding character"
         Character character=' ') {
@@ -703,6 +708,7 @@ shared native final class String(characters)
      producing a string of the given minimum [[size]].  If 
      this string is not smaller than the given `size`, 
      return this string."
+    since("1.1.0")
     shared native String padTrailing(Integer size, 
         "The padding character"
         Character character=' ') {

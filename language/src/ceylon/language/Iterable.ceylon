@@ -256,6 +256,7 @@ shared interface Iterable<out Element=Anything,
      iteration order, a different value might be produced 
      each time `getFromFirst(index)` is called for a given
      integer `index`."
+    since("1.1.0")
     shared default Element? getFromFirst(Integer index) {
         variable value current = 0;
         for (element in this) {
@@ -272,6 +273,7 @@ shared interface Iterable<out Element=Anything,
      of this stream, in the same order they occur in this
      stream. This operation eagerly evaluates and collects 
      every element of the stream."
+    since("1.1.0")
     shared default Element[] sequence()
             => let (array = Array(this)) 
                 if (array.empty)
@@ -299,6 +301,7 @@ shared interface Iterable<out Element=Anything,
      stream. For a stream with an unstable iteration order, 
      a different stream might be produced each time 
      `exceptLast` is evaluated."
+    since("1.1.0")
     shared default {Element*} exceptLast
             => object satisfies {Element*} {
         iterator()
@@ -405,6 +408,7 @@ shared interface Iterable<out Element=Anything,
      
          { \"hello\", \"hola\", \"world\", \"mundo\" }"
     see (`function expand`)
+    since("1.1.0")
     shared default 
     Iterable<Result,Absent|OtherAbsent>
     flatMap<Result,OtherAbsent>(
@@ -529,6 +533,7 @@ shared interface Iterable<out Element=Anything,
      
      results in the integer `5050`." 
     see (`function fold`)
+    since("1.1.0")
     shared default 
     Result|Element|Absent reduce<Result>(
         "The accumulating function that accepts an
@@ -585,6 +590,7 @@ shared interface Iterable<out Element=Anything,
      
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
+    since("1.1.0")
     see (`function fold`)
     shared default 
     {Result+} scan<Result>(Result initial)(
@@ -788,6 +794,7 @@ shared interface Iterable<out Element=Anything,
     see (`function package.max`, `function package.min`,
          `function byIncreasing`, `function byDecreasing`,
          `function package.comparing`)
+    since("1.1.0")
     shared default 
     Element|Absent max(
         "The function comparing pairs of elements."
@@ -817,6 +824,7 @@ shared interface Iterable<out Element=Anything,
      
          {Boolean+}(Object) fun = (-1..1).spread(Object.equals);
          print(fun(0)); //prints { false, true, false }"
+    since("1.1.0")
     shared default 
     Iterable<Result,Absent>(*Args) 
     spread<Result,Args>(Result(*Args) method(Element element))
@@ -981,6 +989,7 @@ shared interface Iterable<out Element=Anything,
     see (`function List.sublistFrom`,
          `function skipWhile`,
          `function take`)
+    since("1.1.0")
     shared default 
     {Element*} skip(Integer skipping) {
         if (skipping <= 0) {
@@ -1012,6 +1021,7 @@ shared interface Iterable<out Element=Anything,
          `function List.initial`,
          `function takeWhile`,
          `function skip`)
+    since("1.1.0")
     shared default 
     {Element*} take(Integer taking) {
         if (taking <= 0) {
@@ -1039,6 +1049,7 @@ shared interface Iterable<out Element=Anything,
      given [[predicate function|skipping]] returns `false`."
     see (`function skip`,
          `function takeWhile`)
+    since("1.1.0")
     shared default 
     {Element*} skipWhile(
         "The function that returns `false` when the 
@@ -1074,6 +1085,7 @@ shared interface Iterable<out Element=Anything,
      returns `false`."
     see (`function take`,
          `function skipWhile`)
+    since("1.1.0")
     shared default 
     {Element*} takeWhile(
         "The function that returns `false` when the 
@@ -1255,6 +1267,7 @@ shared interface Iterable<out Element=Anything,
      
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
+    since("1.1.0")
     shared default 
     {Element[2]*} paired 
             => object satisfies {Element[2]*} {
@@ -1306,6 +1319,7 @@ shared interface Iterable<out Element=Anything,
      reflects changes to this stream."
     throws (`class AssertionError`,
             "if `length<=0`")
+    since("1.1.0")
     shared default 
     Iterable<[Element+],Absent> partition(
         "The length of the sequences in the resulting stream,
@@ -1365,6 +1379,7 @@ shared interface Iterable<out Element=Anything,
      
          { head, *stream }"
     see (`function chain`)
+    since("1.1.0")
     shared default 
     {Element|Other+} follow<Other>(Other head) 
             => { head, *this };
@@ -1404,6 +1419,7 @@ shared interface Iterable<out Element=Anything,
      
      evaluates to the stream 
      `{ [1,'a'], [1,'b'], [2,'a'], [2,'b'], [3,'a'], [3,'b'] }`."
+    since("1.1.0")
     shared default 
     Iterable<[Element,Other],Absent|OtherAbsent>
     product<Other,OtherAbsent>
@@ -1466,6 +1482,7 @@ shared interface Iterable<out Element=Anything,
      reflects changes to this stream."
     throws (`class AssertionError`, "if `step<1`")
     see (`function interleave`)
+    since("1.1.0")
     shared default 
     Iterable<Element|Other,Absent> interpose<Other>(
         "The value to interpose between blocks of 

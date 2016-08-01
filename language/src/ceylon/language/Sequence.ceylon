@@ -322,6 +322,7 @@ shared sealed interface Sequence<out Element=Anything>
 by ("Gavin")
 see (`function Iterable.sequence`)
 tagged("Sequences")
+since("1.1.0")
 shared [Element+]|Absent sequence<Element,Absent=Null>
         (Iterable<Element, Absent> elements)
         given Absent satisfies Null {

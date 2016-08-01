@@ -22,6 +22,7 @@ shared sealed interface Module
     shared formal Package? findImportedPackage(String name);
 
     "Searches for a resource by its path inside the module."
+    since("1.1.0")
     shared formal Resource? resourceByPath(String path);
 }
 

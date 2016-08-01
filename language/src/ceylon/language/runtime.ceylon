@@ -27,6 +27,7 @@ shared native object runtime  {
     "The number of bits of [[Integer]] instances which may 
      be manipulated via the methods inherited from
      [[Binary]]."
+    since("1.1.0")
     shared native Integer integerAddressableSize;
     
     "The smallest [[Integer]] value that can be represented 
@@ -54,6 +55,7 @@ shared native object runtime  {
      only. In practice it is usually impossible to allocate 
      an array of this size, due to memory constraints."
     see (`class Array`)
+    since("1.1.0")
     shared native Integer maxArraySize;
     
     "The largest finite [[Float]] value that can be 

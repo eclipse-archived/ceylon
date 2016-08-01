@@ -25,10 +25,12 @@ shared interface Invertible<Other> of Other
     given Other satisfies Invertible<Other> {
     
     "The additive inverse of this value."
+    since("1.1.0")
     shared formal Other negated;
     
     "The difference between this number and the given 
      number. Must produce the value `x + -y`."
+    since("1.1.0")
     shared default Other minus(Other other) => this + -other;
     
 }

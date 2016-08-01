@@ -136,6 +136,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      map. An element can be stored under more than one key 
      in the map, and so it can occur more than once in the 
      resulting collection."
+    since("1.1.0")
     shared default Collection<Item> items => Items();
     
     "A bag of items."
@@ -298,6 +299,7 @@ shared interface Map<out Key=Object, out Item=Anything>
     "Produces a map by applying a [[filtering]] function 
      to the [[keys]] of this map. This is a lazy operation, 
      returning a view of this map."
+    since("1.1.0")
     shared default 
     Map<Key,Item> filterKeys(
         "The predicate function that filters the keys of 
@@ -346,6 +348,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      
      This is a lazy operation producing a view of this map
      and the given map."
+    since("1.1.0")
     shared default
     Map<Key|OtherKey,Item|OtherItem> 
     patch<OtherKey,OtherItem>
