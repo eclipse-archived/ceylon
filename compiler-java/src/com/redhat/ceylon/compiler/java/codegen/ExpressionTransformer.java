@@ -3947,7 +3947,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             if ((Strategy.generateInstantiator(builder.getPrimaryDeclaration())
                     || builder.getPrimaryDeclaration() instanceof Class)
-                    && outerDeclaration instanceof Interface) {
+                    && outerDeclaration instanceof Interface
+                    && !((Interface)outerDeclaration).isJava()) {
                 // If the subclass is inner to an interface then it will be 
                 // generated inner to the companion and we need to qualify the 
                 // super(), *unless* the subclass is nested within the same 
