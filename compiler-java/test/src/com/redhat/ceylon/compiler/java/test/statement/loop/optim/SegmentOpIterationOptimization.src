@@ -99,7 +99,9 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
             final long withElse = i$35 + start$33;
             sum += withElse;
         }
-        sum = 0L;
+        {
+            sum = 0L;
+        }
         final long start$37 = 1L;
         final long length$38 = 10L;
         loop_9: for (long i$39 = 0; i$39 < length$38; i$39++) {
