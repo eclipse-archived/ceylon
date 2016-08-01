@@ -651,7 +651,12 @@ public abstract class CompilerTests {
         compile(options, ceylon);
         return run(main);
     }
-    
+
+    protected Object compileAndRun(List<String> options, String main, ModuleWithArtifact module, String... ceylon) {
+        compile(options, ceylon);
+        return run(main, module);
+    }
+
     protected Object compileAndRun(String main, String... ceylon) {
         return compileAndRun(defaultOptions, main, ceylon);
     }

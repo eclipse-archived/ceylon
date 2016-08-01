@@ -34,7 +34,7 @@ public class IssuesTests_6000_6499 extends CompilerTests {
 
     @Override
     protected ModuleWithArtifact getDestModuleWithArtifact(String main){
-        return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug62xx", "1");
+        return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues", "1");
     }
     
     @Override
@@ -128,7 +128,8 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     @Test
     public void testBug6207() {
         compile("bug62xx/Bug6207.ceylon");
-        run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6207");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6207",
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug62xx", "1"));
     }
     
     @Test
@@ -156,6 +157,7 @@ public class IssuesTests_6000_6499 extends CompilerTests {
         
         compileAndRun(options,
                 "com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6231.$static.run",
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug62xx", "1"),
                 "bug62xx/bug6231/static/run.ceylon");
     }
     
@@ -173,7 +175,8 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     @Test
     public void testBug6253() {
         compile("bug62xx/Bug6253.ceylon");
-        run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6253run");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6253run",
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug62xx", "1"));
     }
     
     @Test
