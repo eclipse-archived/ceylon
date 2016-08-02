@@ -4261,7 +4261,6 @@ public class ClassTransformer extends AbstractTransformer {
 
     List<JCStatement> transformSpecifiedMethodBody(Tree.MethodDeclaration  def, SpecifierExpression specifierExpression) {
         final Function model = def.getDeclarationModel();
-        List<JCStatement> body;
         Tree.MethodDeclaration methodDecl = def;
         boolean isLazy = specifierExpression instanceof Tree.LazySpecifierExpression;
         boolean returnNull = false;
@@ -4280,7 +4279,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Callable, just transform the expr to use as the method body.
             Tree.FunctionArgument fa = (Tree.FunctionArgument)term;
             Type resultType = model.getType();
-            returnNull = isAnything(resultType) && fa.getExpression().getUnboxed();
+            returnNull = Decl.isUnboxedVoid(model);
             final java.util.List<Tree.Parameter> lambdaParams = fa.getParameterLists().get(0).getParameters();
             final java.util.List<Tree.Parameter> defParams = def.getParameterLists().get(0).getParameters();
             List<Substitution> substitutions = List.nil();
@@ -4289,12 +4288,22 @@ public class ClassTransformer extends AbstractTransformer {
                         (TypedDeclaration)lambdaParams.get(ii).getParameterModel().getModel(), 
                         defParams.get(ii).getParameterModel().getName()));
             }
-            bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), 
+            List<JCStatement> body = null;
+            if(fa.getExpression() != null)
+                bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), 
                             returnNull ? BoxingStrategy.INDIFFERENT : CodegenUtil.getBoxingStrategy(model), 
                             resultType);
+            else{
+                body = gen().statementGen().transformBlock(fa.getBlock());
+                // useless but satisfies branch checking
+                bodyExpr = null;
+            }
             for (Substitution subs : substitutions) {
                 subs.close();
             }
+            // if we have a whole body we're done
+            if(body != null)
+                return body;
         } else if (!isLazy && typeFact().isCallableType(term.getTypeModel())) {
             returnNull = isAnything(term.getTypeModel()) && term.getUnboxed();
             Function method = methodDecl.getDeclarationModel();
@@ -4358,6 +4367,7 @@ public class ClassTransformer extends AbstractTransformer {
             // The innermost of an MPL method declared void needs to return null
             returnNull = Decl.isUnboxedVoid(model) && Decl.isMpl(model);
         }
+        List<JCStatement> body;
         if (!Decl.isUnboxedVoid(model)
                 || Decl.isMpl(model)
                 || Strategy.useBoxedVoid(model)) {
