@@ -388,6 +388,10 @@ public class Unit {
         return (Interface) getLanguageModuleDeclaration("Correspondence");
     }
     
+    public Interface getCorrespondenceMutatorDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("CorrespondenceMutator");
+    }
+    
     public Class getAnythingDeclaration() {
         return (Class) getLanguageModuleDeclaration("Anything");
     }

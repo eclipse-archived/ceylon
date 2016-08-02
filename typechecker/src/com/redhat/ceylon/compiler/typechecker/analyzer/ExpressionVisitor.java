@@ -5451,18 +5451,73 @@ public class ExpressionVisitor extends Visitor {
     
     private void visitAssignOperator(Tree.AssignOp that) {
         Type rhst = rightType(that);
-        Type lhst = leftType(that);
-        if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            Type leftHandType = lhst;
-            // allow assigning null to java properties that could after all be null
-            if (hasUncheckedNulls(that.getLeftTerm())) {
-                leftHandType = 
-                        unit.getOptionalType(leftHandType);
+        if (!isTypeUnknown(rhst)) {
+            if (that.getLeftTerm() instanceof Tree.IndexExpression) {
+                Tree.IndexExpression idx = (Tree.IndexExpression)that.getLeftTerm();
+                if (idx.getElementOrRange() instanceof Tree.Element) {
+                    Type pt = type(idx);
+                    if (that.getTypeModel() != null && pt != null) {
+                        Interface cd = 
+                                unit.getCorrespondenceDeclaration();
+                        Type cst = pt.getSupertype(cd);
+                        if (cst != null) {
+                            // If we have a Correspondence there *must* be a
+                            // CorrespondenceMutator too to be able to assign
+                            Interface cmd = 
+                                    unit.getCorrespondenceMutatorDeclaration();
+                            Type cmst = pt.getSupertype(cmd);
+                            if (cmst != null) {
+                                List<Type> cdargs = 
+                                        cst.getTypeArgumentList();
+                                List<Type> cmdargs = 
+                                        cmst.getTypeArgumentList();
+                                // FIXME these checks are almost certainly incorrect
+                                if (!cdargs.get(0).equals(cmdargs.get(0)) ||
+                                        !cdargs.get(1).equals(cmdargs.get(1))) {
+                                    idx.getPrimary()
+                                        .addError("illegal receiving type for index assignment: '" +
+                                                pt.getDeclaration()
+                                                    .getName(unit) + 
+                                                "' is not a subtype of 'CorrespondenceMutator<" +
+                                                cdargs.get(0) +
+                                                "," +
+                                                cdargs.get(1) +
+                                                ">");
+                                } else {
+                                    checkAssignable(rhst, cmdargs.get(1),
+                                            that.getRightTerm(), 
+                                            "assigned expression must be assignable to '" +
+                                            cmdargs.get(1) +
+                                            "' of 'CorrespondenceMutator'");
+                                }
+                            } else {
+                                idx.getPrimary()
+                                    .addError("illegal receiving type for index assignment: '" +
+                                            pt.getDeclaration()
+                                                .getName(unit) + 
+                                            "' is not a subtype of 'CorrespondenceMutator'");
+                            }
+                        }
+                    }
+                } else {
+                    idx.getPrimary()
+                        .addError("ranged index assignment is not supported");
+                }
+            } else {
+                Type lhst = leftType(that);
+                if (!isTypeUnknown(lhst)) {
+                    Type leftHandType = lhst;
+                    // allow assigning null to java properties that could after all be null
+                    if (hasUncheckedNulls(that.getLeftTerm())) {
+                        leftHandType = 
+                                unit.getOptionalType(leftHandType);
+                    }
+                    checkAssignable(rhst, leftHandType, 
+                            that.getRightTerm(), 
+                            "assigned expression must be assignable to declared type", 
+                            2100);
+                }
             }
-            checkAssignable(rhst, leftHandType, 
-                    that.getRightTerm(), 
-                    "assigned expression must be assignable to declared type", 
-                    2100);
         }
         that.setTypeModel(rhst);
 //      that.setTypeModel(lhst); //this version is easier on backend
@@ -5862,6 +5917,7 @@ public class ExpressionVisitor extends Visitor {
                     that.addUnsupportedError("assignment to expression involving ?. or *. not supported");
                 }
             }
+        } else if (that instanceof Tree.IndexExpression) {
         }
         else {
             that.addError("expression cannot be assigned");
