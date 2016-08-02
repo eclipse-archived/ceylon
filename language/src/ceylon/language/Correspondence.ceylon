@@ -117,3 +117,15 @@ shared interface Correspondence<in Key, out Item=Anything>
             => { for (key in keys) get(key) };
     
 }
+
+since("1.2.3")
+shared interface CorrespondenceMutator<in Key, in Item>
+        given Key satisfies Object {
+    "Sets the value defined for the given key.
+     
+     For any instance `c` of `CorrespondenceMutator`, `c.put(key, value)` 
+     may be written using the item operator:
+     
+         c[key] = value"
+    shared formal void set(Key key, Item item);
+}
