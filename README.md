@@ -60,7 +60,7 @@ following platforms to make sure it works:
 
 ### Linux
 
-- Ubuntu "quantal" 12.10 (64 bit) JDK 1.7.0_09 (IcedTea) Node 0.10.15
+- Ubuntu "wily" 15.10 (64 bit) JDK 1.7.0_95 (IcedTea) Node 0.10.25
 - Fedora 23 (64 bit), JDK 1.8.0_77 (OpenJDK)
 - Fedora 22 (64 bit), JDK 1.8.0_72 (OpenJDK)
 - Fedora 22 (64 bit), JDK 1.7.0_71 (Oracle)
