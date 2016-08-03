@@ -4807,7 +4807,7 @@ public abstract class AbstractTransformer implements Transformation {
      * (not including {@code tp}) has contraints dependent on {@code tp}.  
      * 
      * Partial hack for https://github.com/ceylon/ceylon-compiler/issues/920
-     * We need to find if a covariant param has other type parameters with bounds to this one
+     * We need to find if a co/contravariant param has other type parameters with bounds to this one
      * For example if we have "Foo<out A, out B>() given B satisfies A" then we can't generate
      * the following signature: "Foo<? extends Object, ? extends String" because the subtype of
      * String that can satisfy B is not necessarily the subtype of Object that we used for A.
