@@ -1514,6 +1514,7 @@ class NamedArgumentInvocation extends Invocation {
         boolean prevNoExpressionlessReturn = gen.statementGen().noExpressionlessReturn;
         boolean prevSyntheticClassBody = gen.expressionGen().withinSyntheticClassBody(Decl.isMpl(model) || gen.expressionGen().isWithinSyntheticClassBody()); 
         try {
+            gen.expressionGen().withinSyntheticClassBody(true);
             gen.statementGen().noExpressionlessReturn = gen.isAnything(model.getType());
             if (methodArg.getBlock() != null) {
                 body = gen.statementGen().transformBlock(methodArg.getBlock());
