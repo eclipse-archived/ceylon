@@ -58,17 +58,12 @@ extends BaseIterable<Element, Absent>{
                 return finished_.get_();
             }
 
-            while (true) {
-                if (rest instanceof LazyIterable.LazyIterator) {
-                    LazyIterable<Element, ?>.LazyIterator lazyRest =
-                            (LazyIterable<Element, ?>.LazyIterator) rest;
-                    Iterator<? extends Element> replacement = lazyRest.flatten();
-                    if (replacement != null) {
-                        rest = replacement;
-                    }
-                    else {
-                        break;
-                    }
+            while (rest instanceof LazyIterable.LazyIterator) {
+                LazyIterable<Element, ?>.LazyIterator lazyRest =
+                        (LazyIterable<Element, ?>.LazyIterator) rest;
+                Iterator<? extends Element> replacement = lazyRest.flatten();
+                if (replacement != null) {
+                    rest = replacement;
                 }
                 else {
                     break;
