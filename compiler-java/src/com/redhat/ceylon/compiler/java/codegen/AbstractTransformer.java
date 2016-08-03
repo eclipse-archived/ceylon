@@ -4872,7 +4872,7 @@ public abstract class AbstractTransformer implements Transformation {
         Type type = parameter.getType();
         return hasConstrainedTypeParameters(type);
     }
-    private boolean hasConstrainedTypeParameters(Type type) {
+    protected boolean hasConstrainedTypeParameters(Type type) {
         if(type.isTypeParameter()){
             TypeParameter tp = (TypeParameter) type.getDeclaration();
             return !tp.getSatisfiedTypes().isEmpty() && !tp.isContravariant();

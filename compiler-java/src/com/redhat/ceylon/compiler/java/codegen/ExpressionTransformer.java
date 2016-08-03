@@ -5540,7 +5540,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                 else
                     lhs = transformSuperOf(indexedExpr, indexedExpr.getPrimary(), method);
             }else{
-                lhs = transformExpression(indexedExpr.getPrimary(), BoxingStrategy.BOXED, leftType);
+                int flags = 0;
+                // this is pretty much disgusting, but all I found. Given a Ranged<Integer,Integer,Integer[]> type
+                // we don't notice that this type can't be cast to without a raw cast because it has constrained
+                // type params in its hierarchy. hasConstrainedTypeParameters only checks that type, and we want
+                // to check Ranged<Index, Element, Subrange> instead, which has those constraints, which is why we
+                // do it on the declaration type. Honestly this should probably rather be an inheritance check in
+                // applyErasureAndCasts but that'd be costly and complex and likely introduce lots of other issues.
+                // See https://github.com/ceylon/ceylon/issues/6365
+                if(leftType.getDeclaration() instanceof ClassOrInterface 
+                        && hasConstrainedTypeParameters(leftType.getDeclaration().getType()))
+                    flags |= EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS;
+                lhs = transformExpression(indexedExpr.getPrimary(), BoxingStrategy.BOXED, leftType, flags);
             }
             
             JCExpression result;
