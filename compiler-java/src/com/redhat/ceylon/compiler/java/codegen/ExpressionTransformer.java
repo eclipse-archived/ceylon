@@ -7183,9 +7183,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     JCExpression makePrivateAccessUpcast(Tree.StaticMemberOrTypeExpression qmte, JCExpression qual) {
         Type pt = Decl.getPrivateAccessType(qmte);
+        int flags = JT_RAW;
         // By definition the member has private access, so if it's an interface
         // member we want the companion.
-        return make().TypeCast(makeJavaType(pt, JT_COMPANION | JT_RAW), qual);
+        if(pt.getDeclaration() instanceof Interface)
+            flags |= JT_COMPANION;
+        return make().TypeCast(makeJavaType(pt, flags), qual);
     }
 
     public JCTree transform(Tree.ObjectExpression expr) {
