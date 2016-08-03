@@ -1118,7 +1118,7 @@ public abstract class AbstractTransformer implements Transformation {
             return null;
         if(!skipType){
             TypedDeclaration member = (TypedDeclaration) typeDecl.getDirectMember(decl.getName(), signature, false, isOverloaded);
-            if(member != null)
+            if(member != null && !member.isStaticallyImportable())
                 return member;
         }
         // look up
