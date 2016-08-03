@@ -45,8 +45,11 @@ function jsc$2(f$,parms,targs) {
     }
   }
   if (f$.$flattened$||f$.$unflattened$)return f$;
-  var f=function c1(){
+  var f=function c2(){
     return f$.apply(undefined,arguments);
+  };
+  if (targs) {
+    f.$$targs$$=targs;
   }
   f.$crtmm$=f$.$crtmm$;
   f.getT$all=f$.getT$all;
@@ -67,7 +70,7 @@ function nop$(){return null;}
 function JsCallable(o,f,targs) {
   if (o===null || o===undefined) return nop$;
   if (f.jsc$)f=f.jsc$;
-  var f2=function c2() {
+  var f2=function c4() {
     var arg=spread$(arguments,f,targs,1);
     if (targs)arg.push(targs);
     return f.apply(o, arg);
@@ -86,9 +89,18 @@ JsCallable.$crtmm$=function(){return{sts:[{t:Callable,a:{Return$Callable:'Return
 function jsc$3(o,f,targs) {
   if (o===null || o===undefined) return nop$;
   if (f.jsc$)f=f.jsc$;
-  var f2=function c2() {
-    return f.apply(o, arguments);
-  };
+  var f2;
+  if (targs) {
+    f2=function c5() {
+      var a=[].slice.call(arguments,0);
+      a.push(targs);
+      return f.apply(o, a);
+    };
+  } else {
+    f2=function c6() {
+      return f.apply(o, arguments);
+    };
+  }
   f2.c2$=f;
   f2.$$targs$$=targs;
   f2.equals=function(x){
@@ -171,6 +183,61 @@ function spread$(a,f,targs,noInvoke) {
   return f.apply(undefined,arg);
 }
 ex$.spread$=spread$;
+
+function spread$2(f) {
+  var args=[].slice.call(arguments,1);
+  var mm=getrtmm$$(f);
+  if (mm) {
+    var params=mm.ps||[];
+    var targs=args.length===params.length+1?args[args.length-1]:undefined;
+    if (args.length>params.length && !targs) {
+      //WTF just call this
+      console.log("SPREAD with",args.length,"and just",params.length,"parameters");
+      return f.apply(undefined,args);
+    }
+    var a=[];
+    var j=0;
+    if (params.length===1 && args.length===(targs?2:1) && is$(args[0],{t:Sequential}) && args[0].size===1) {
+      var pt=params[0].$t;
+      if (typeof(pt)==='string') {
+        if (f.$$targs$$ && f.$$targs$$[pt])pt=f.$$targs$$[pt];
+        else if (targs && targs[pt])pt=targs[pt];
+        else console.log("SPREAD can't resolve",pt,"with",targs?Object.keys(targs):"no type arguments");
+      }
+      if (is$(args[0].first,pt)) {
+        a.push(args[0].first);
+        params=[];
+      }
+    }
+    for (var i=0;i<params.length;i++) {
+      var e=args[j];
+      var pt=params[i].$t;
+      if (typeof(pt)==='string') {
+        if (f.$$targs$$ && f.$$targs$$[pt])pt=f.$$targs$$[pt];
+        else if (targs && targs[pt])pt=targs[pt];
+        else console.log("SPREAD can't resolve",pt,"with",targs?Object.keys(targs):"no type arguments");
+      }
+      if (params[i].seq>0) {
+        a.push(e);
+        j++;
+      } else if (is$(e,pt)) {
+        a.push(e);
+        j++;
+      } else if (is$(e.first,pt)) {
+        a.push(e.first);
+        args[j]=e.rest;
+      } else if ((is$(e,{t:Empty}) || e.size===0) && params[i].def>0) {
+        a.push(undefined);
+      } else {
+        console.log("SPREAD WTF2",e&&e.string,"vs",params[i]);
+      }
+    }
+    if (targs)a.push(targs);
+    return f.apply(undefined,a);
+  }
+  return f.apply(undefined,args);
+}
+ex$.spread$2=spread$2;
 
 //This is used for spread method references
 //Pass it a list (or Iterable, really) and a function to execute on the item with the specified arguments

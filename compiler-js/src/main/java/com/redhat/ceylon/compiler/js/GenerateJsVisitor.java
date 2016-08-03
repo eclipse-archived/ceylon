@@ -1905,7 +1905,7 @@ public class GenerateJsVisitor extends Visitor {
                     if (BmeGenerator.hasTypeParameters(that)) {
                         BmeGenerator.printGenericMethodReference(this, that, "$O$", "$O$."+names.name(d));
                     } else {
-                        out(getClAlias(), "JsCallable($O$,$O$.", names.name(d), ")");
+                        out(getClAlias(), "jsc$3($O$,$O$.", names.name(d), ")");
                     }
                     out(";}");
                 }
@@ -2107,7 +2107,7 @@ public class GenerateJsVisitor extends Visitor {
                 } else if (fromType.isCharacter()) {
                     out(getClAlias(), "Character(");
                 } else if (fromTypeName.startsWith("ceylon.language::Callable<")) {
-                    out(getClAlias(), "$JsCallable(");
+                    out(getClAlias(), "jsc$2(");
                     return 4;
                 } else {
                     return 0;
@@ -2128,7 +2128,7 @@ public class GenerateJsVisitor extends Visitor {
                         return 0;
                     }
                 }
-                out(getClAlias(), "$JsCallable(");
+                out(getClAlias(), "jsc$2(");
                 return 4;
             } else {
                 return 3;
@@ -2235,7 +2235,7 @@ public class GenerateJsVisitor extends Visitor {
             out("=");
             int box = boxUnboxStart(expr, term);
             expr.visit(this);
-            if (box == 4) out("/*TODO: callable targs 6*/");
+            if (box == 4) out("/*TODO: callable targs 6.1*/");
             boxUnboxEnd(box);
             out(";");
             return;
@@ -2423,7 +2423,7 @@ public class GenerateJsVisitor extends Visitor {
             out("=");
             int box = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
             that.getRightTerm().visit(this);
-            if (box == 4) out("/*TODO: callable targs 6*/");
+            if (box == 4) out("/*TODO: callable targs 6.2*/");
             boxUnboxEnd(box);
             return;
         }
