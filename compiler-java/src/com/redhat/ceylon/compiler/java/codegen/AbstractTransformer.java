@@ -2508,7 +2508,9 @@ public abstract class AbstractTransformer implements Transformation {
                         // - Foo<T> if Foo is invariant in T,
                         // - Foo<? extends T> if Foo is covariant in T, or
                         // - Foo<? super T> if Foo is contravariant in T
-                        if (((flags & JT_CLASS_NEW) == 0) && simpleType.isContravariant(tp)) {
+                        // FIXME: it may be necessary to uncomment this in the future,
+                        // see https://github.com/ceylon/ceylon/issues/6365
+                        if (((flags & JT_CLASS_NEW) == 0) && simpleType.isContravariant(tp)/* && !isDependedOn*/) {
                             jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, JT_TYPE_ARGUMENT));
                         } else if (((flags & JT_CLASS_NEW) == 0) && simpleType.isCovariant(tp) && !isDependedOn) {
                             jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, JT_TYPE_ARGUMENT));
@@ -2530,7 +2532,10 @@ public abstract class AbstractTransformer implements Transformation {
                     // - Foo<? super T> if Foo is contravariant in T
                     if (((flags & JT_CLASS_NEW) == 0) 
                             && simpleType.isContravariant(tp)
-                            && (!isAnything || tp.isContravariant())) {
+                            && (!isAnything || tp.isContravariant())
+                            // FIXME: it may be necessary to uncomment this in the future,
+                            // see https://github.com/ceylon/ceylon/issues/6365
+                            /*&& !isDependedOn*/) {
                         // DO NOT trust use-site contravariance for Anything, because we consider "in Anything" to be the same
                         // as "Anything". Only look at declaration-site contravariance
                         jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, JT_TYPE_ARGUMENT));
