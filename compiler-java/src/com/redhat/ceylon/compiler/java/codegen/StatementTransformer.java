@@ -1638,8 +1638,13 @@ public class StatementTransformer extends AbstractTransformer {
                 body = body.prepend(makeLoopEntered());
             }
             
-            JCStatement forLoop = make().Labelled(label, make().ForeachLoop(loopvar, 
-                    expressionGen().transformExpression(forIterator.getSpecifierExpression().getExpression()), 
+            Expression expression = forIterator.getSpecifierExpression().getExpression();
+            Type expectedType = expression.getTypeModel();
+            // Make sure that Set<String>&List<String> get cast to Iterable<String>
+            if(willEraseToObject(expectedType))
+                expectedType = expectedType.getSupertype(typeFact().getJavaIterableDeclaration());
+            JCExpression loopexpr = expressionGen().transformExpression(expression, BoxingStrategy.BOXED, expectedType);
+            JCStatement forLoop = make().Labelled(label, make().ForeachLoop(loopvar, loopexpr, 
                     make().Block(0, body)));
             ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
             result.add(forLoop);
