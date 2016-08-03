@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Continue;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForStatement;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.RangeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
@@ -4403,7 +4404,7 @@ public class StatementTransformer extends AbstractTransformer {
                 boolean isCheap;
                 if (item instanceof Tree.IsCase) {
                     isCheap = isTypeTestCheap(null, dummy, 
-                            ((Tree.IsCase) item).getType().getTypeModel(), 
+                            getIsCaseType((Tree.IsCase) item), 
                             getSwitchExpressionType(switchClause));
                 } else if (item instanceof Tree.MatchCase) {
                     // will be primitive equality test
@@ -4654,6 +4655,13 @@ public class StatementTransformer extends AbstractTransformer {
         return at(caseClause).If(tests, block, last);
     }
 
+    private Type getIsCaseType(IsCase item) {
+        Type type = item.getType().getTypeModel();
+        if(type.isUnknown())
+            return item.getVariable().getDeclarationModel().getType();
+        return type;
+    }
+
     /**
      * Transform a "case(is ...)"
      * @param selectorAlias
@@ -4669,7 +4677,7 @@ public class StatementTransformer extends AbstractTransformer {
         at(isCase);
         // Use the type of the variable, which is more precise than the type we test for.
         Type varType = isCase.getVariable().getDeclarationModel().getType();
-        Type caseType = isCase.getType().getTypeModel();
+        Type caseType = getIsCaseType(isCase);
         // note: There's no point using makeOptimizedTypeTest() because cases are disjoint
         // anyway and the cheap cases get evaluated first.
         JCExpression cond = makeTypeTest(null, selectorAlias, caseType , expressionType);
