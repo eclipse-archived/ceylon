@@ -112,11 +112,30 @@ and will have prepared the project to be opened in Eclipse if you want.
 
 You can now type:
 
-    ceylon compile my.first.module
-    ceylon run my.first.module/1.0.0
+    $ ceylon compile my.first.module
+    Note: Created module my.first.module/1.0.0
+    $ ceylon run my.first.module/1.0.0
+    Hello, World!
 
 to compile and run the newly created module. (You can also type `ant` if
 you let the tool create Ant build files).
+
+We'll be making a small change to the code so you can see what files
+are involved. For this run you favorite editor, here we'll just use `vi`:
+
+    $ vi source/my/first/module/run.ceylon
+
+Now change the second line to read:
+
+    shared void hello(String name = "Ceylon") {
+
+and save and exit. When you now repeat the compile and run commands
+the output should read:
+
+    Hello, Ceylon
+
+This is the very simplisitc start of an interesting journey in learning
+to program in Ceylon. For much more information continue to the next section.
 
 ## Learn more
 
