@@ -1705,20 +1705,7 @@ shared interface Iterable<out Element=Anything,
             given Group satisfies Object
             => summarize<Group,ElementEntry<Element>>
                     (grouping, ElementEntry)
-                .mapItems((_, elements) {
-                    //TODO: give Array a special-purpose 
-                    //      constructor for this
-                    value size = elements.size;
-                    value array = Array.ofSize {
-                        size = size;
-                        element = elements.first;
-                    };
-                    variable value i = size;
-                    for (element in elements) {
-                        array.set(--i, element);
-                    }
-                    return ArraySequence(array);
-                });
+               .mapItems((_, item) => item.reversedSequence());
     
     "Efficiently [[group]] and [[fold]] the elements of this
      stream in a single step.
@@ -1782,8 +1769,7 @@ String commaList({Anything*} elements)
         => ", ".join { for (e in elements) stringify(e) };
 
 class ElementEntry<Element>(next, element)
-        extends Object()
-        satisfies [Element+] {
+        satisfies {Element+} {
     
     shared Element element;
     shared ElementEntry<Element>? next;
@@ -1861,6 +1847,20 @@ class ElementEntry<Element>(next, element)
         }
     };
     
+    shared [Element+] reversedSequence() {
+        //TODO: give Array a special-purpose 
+        //      constructor for this
+        value size = this.size;
+        value array = Array.ofSize {
+            size = size;
+            element = first;
+        };
+        variable value i = size;
+        for (element in this) {
+            array.set(--i, element);
+        }
+        return ArraySequence(array);
+    }
 }
 
 class GroupEntry<Group,Result>(next, group, elements)

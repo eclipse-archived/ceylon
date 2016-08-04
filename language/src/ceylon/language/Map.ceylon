@@ -182,11 +182,12 @@ shared interface Map<out Key=Object, out Item=Anything>
             => coalescedMap
                 .summarize<Item&Object,ElementEntry<Key>>
                     (Entry.item, (keys, key->_) 
-                        => ElementEntry(keys, key));
+                        => ElementEntry(keys, key))
                 //not very useful, since the entries of a
                 //map don't usually have a very meaningful
                 //order (except for TreeMaps!)
-                //.mapItems((_, item) => item.reversed);
+                //but we do need to convert it to a Sequence
+                .mapItems((_, item) => item.reversedSequence());
     
     "Two maps are considered equal iff they have the same 
      _entry sets_. The entry set of a `Map` is the set of 
