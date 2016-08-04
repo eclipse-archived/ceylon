@@ -22,13 +22,33 @@ If you installed Ceylon using your system's or a third-party's package manager
 like apt-get, dnf, sdkman or brew there's nothing more for you to do, everything
 should just work fine.
 
-If on the other hand you downloaded and extracted the ZIP file you might want
-to consider adding the `ceylon` command to your `PATH`. On Linux and Mac you
-can do this either by adding the `bin` folder to your `PATH` environment variable
-or by creating a symbolic link to `bin/ceylon` in an appropriate place like `~/bin`.
-On Windows you can search for "advanced system settings", click the
-"Environment Variables" button and add the path to the `bin` folder to the `PATH`
-variable.
+If on the other hand you downloaded and extracted the ZIP file you should see
+the following files and folders:
+
+- `bin`            - Unix/Windows commands
+- `contrib`        - Sample Ceylon command-line plugins
+- `doc`            - Documentation about Ceylon including the spec in HTML and PDF format
+- `lib`            - Required libraries for the Ceylon commands
+- `repo`           - Required bootstrap Ceylon modules (language, tools)
+- `samples`        - Sample Ceylon modules
+- `templates`      - Templates for new Ceylon projects
+- `BUILDID`        - The Git commit id used to build this distribution
+- `LICENSE-ASL`    - The Ceylon ASL license
+- `LICENSE-GPL-CP` - The Ceylon GPL/CP license
+- `LICENSE-LGPL`   - The Ceylon LGPL license
+- `NOTICE`         - 3rd party licenses
+- `README.md`      - This file
+
+The all-important `ceylon` command that is used for everything from compiling and
+running code to creating projects and copying modules can be found in the `bin`
+folder.
+
+For ease of use you might want to consider adding the `ceylon` command to
+your `PATH`. On Linux and Mac you can do this either by adding the `bin` folder to
+your `PATH` environment variable or by creating a symbolic link to `bin/ceylon`
+in an appropriate place like `~/bin`. On Windows you can search for "advanced system
+settings", click the "Environment Variables" button and add the path to the `bin`
+folder to the `PATH` variable.
 
 NB: If you don't add Ceylon to your path you will have to always type the path to
 the `bin/ceylon` command. So in every example that follows you'll need to change
