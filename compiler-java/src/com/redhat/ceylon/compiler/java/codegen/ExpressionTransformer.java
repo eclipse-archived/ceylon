@@ -6920,7 +6920,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (useSite instanceof Functional) {
                     return target == OutputElement.CONSTRUCTOR;
                 } else if (useSite instanceof Value) {
-                    return target == OutputElement.GETTER;
+                    // If the constructor has a getter we can't annotate, let's
+                    // put the annotations on the constructor
+                    Class constructedClass = Decl.getConstructedClass((Declaration) useSite);
+                    // See CeylonVisitor.transformSingletonConstructor for those tests
+                    if(constructedClass.isToplevel() || constructedClass.isClassMember())
+                        return target == OutputElement.GETTER;
+                    return target == OutputElement.CONSTRUCTOR;
                 }
             } else if (useSite instanceof Class) {
                 if (((Class)useSite).getParameterList() != null
