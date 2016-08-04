@@ -1986,18 +1986,23 @@ public final class Array<Element>
                             Util.toInt(length));
                 }
                 else {
-                    // unbox as necessary
+                    // Box. Given that the special types String, Integer, etc. are all
+                    // final, widening will always be to a type like Object or Number<>
+                    // for which the value will be stored in boxed form. Arrays that
+                    // hold subtypes of the special types will be empty. We can
+                    // therefore write the values obtained by src.getFromFirst() directly
+                    // to the destination array (i.e. without using destination.set())
+                    java.lang.Object[] dst = (java.lang.Object[]) destination.array;
                     int srcIndex = Util.toInt(sourcePosition);
                     int dstIndex = Util.toInt(destinationPosition);
                     int len = Util.toInt(length);
-
                     if (srcIndex < 0 || dstIndex < 0
                             || srcIndex + len > getSize()
                             || dstIndex + len > destination.getSize()) {
                         throw new AssertionError("Index out of bounds");
                     }
                     while (len-- > 0) {
-                        destination.set(dstIndex++, getFromFirst(srcIndex++));
+                        dst[dstIndex++] = getFromFirst(srcIndex++);
                     }
                 }
             }
