@@ -2879,7 +2879,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(!keepField(fieldMirror, isCeylon, isFromJDK))
                 continue;
             String name = fieldMirror.getName();
-            if(!JvmBackendUtil.isInitialLowerCase(name)){
+            if(!isCeylon && !JvmBackendUtil.isInitialLowerCase(name)){
                 String newName = NamingBase.getJavaBeanName(name);
                 if(!fieldNames.contains(newName)
                         && !addingFieldWouldConflictWithMember(klass, newName)
@@ -3530,7 +3530,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             method.setName(methodName+"_method");
         else{
             String ceylonName = JvmBackendUtil.strip(methodName, isCeylon, method.isShared());
-            if(!JvmBackendUtil.isInitialLowerCase(ceylonName))
+            if(!isCeylon && !JvmBackendUtil.isInitialLowerCase(ceylonName))
                 ceylonName = NamingBase.getJavaBeanName(ceylonName);
             method.setName(ceylonName);
         }

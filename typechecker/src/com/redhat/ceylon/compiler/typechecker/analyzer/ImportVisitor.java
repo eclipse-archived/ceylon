@@ -305,6 +305,9 @@ public class ImportVisitor extends Visitor {
                 newName = NamingBase.getJavaBeanName(name);
             }
             d = importedPackage.getMember(newName, null, false);
+            // only do this for Java declarations we fudge
+            if(d != null && !d.isJava())
+                d = null;
         }
         if (d==null) {
             id.addError("imported declaration not found: '" 
@@ -364,7 +367,7 @@ public class ImportVisitor extends Visitor {
             i.setAlias(name(alias.getIdentifier()));
         }
         Declaration m = td.getMember(name, null, false);
-        if (m == null) {
+        if (m == null && td.isJava()) {
             String newName;
             if (JvmBackendUtil.isInitialLowerCase(name)) {
                 newName = NamingBase.capitalize(name);
