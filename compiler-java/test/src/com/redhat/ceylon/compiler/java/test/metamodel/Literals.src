@@ -1038,6 +1038,7 @@ final class constructors_ {
                 }
             }
             
+            @.ceylon.language.SharedAnnotation$annotation$
             @.com.redhat.ceylon.compiler.java.metadata.Name("c")
             @.com.redhat.ceylon.compiler.java.metadata.Enumerated
             private C(@.com.redhat.ceylon.compiler.java.metadata.Ignore
