@@ -751,7 +751,7 @@ shared native final class String(characters)
     shared native 
     void copyTo(
         "The array into which to copy the elements."
-        Array<Character> destination,
+        Array<in Character> destination,
         "The index of the first element in this array to 
          copy."
         Integer sourcePosition = 0,
