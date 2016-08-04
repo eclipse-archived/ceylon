@@ -45,6 +45,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Condition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Continue;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForStatement;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.RangeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
@@ -1637,8 +1638,13 @@ public class StatementTransformer extends AbstractTransformer {
                 body = body.prepend(makeLoopEntered());
             }
             
-            JCStatement forLoop = make().Labelled(label, make().ForeachLoop(loopvar, 
-                    expressionGen().transformExpression(forIterator.getSpecifierExpression().getExpression()), 
+            Expression expression = forIterator.getSpecifierExpression().getExpression();
+            Type expectedType = expression.getTypeModel();
+            // Make sure that Set<String>&List<String> get cast to Iterable<String>
+            if(willEraseToObject(expectedType))
+                expectedType = expectedType.getSupertype(typeFact().getJavaIterableDeclaration());
+            JCExpression loopexpr = expressionGen().transformExpression(expression, BoxingStrategy.BOXED, expectedType);
+            JCStatement forLoop = make().Labelled(label, make().ForeachLoop(loopvar, loopexpr, 
                     make().Block(0, body)));
             ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
             result.add(forLoop);
@@ -2563,7 +2569,8 @@ public class StatementTransformer extends AbstractTransformer {
                         JCIdent failtest_id = at(stmt).Ident(currentForFailVariable);
                         outer.append(at(stmt).If(failtest_id, at(stmt).Block(0, failblock), null));
                     } else {
-                        outer.appendList(failblock);
+                        // else blocks may declare variables so they need to be in a block
+                        outer.append(at(stmt).Block(0, failblock));
                     }
                 }
                 
@@ -4402,7 +4409,7 @@ public class StatementTransformer extends AbstractTransformer {
                 boolean isCheap;
                 if (item instanceof Tree.IsCase) {
                     isCheap = isTypeTestCheap(null, dummy, 
-                            ((Tree.IsCase) item).getType().getTypeModel(), 
+                            getIsCaseType((Tree.IsCase) item), 
                             getSwitchExpressionType(switchClause));
                 } else if (item instanceof Tree.MatchCase) {
                     // will be primitive equality test
@@ -4653,6 +4660,13 @@ public class StatementTransformer extends AbstractTransformer {
         return at(caseClause).If(tests, block, last);
     }
 
+    private Type getIsCaseType(IsCase item) {
+        Type type = item.getType().getTypeModel();
+        if(type.isUnknown())
+            return item.getVariable().getDeclarationModel().getType();
+        return type;
+    }
+
     /**
      * Transform a "case(is ...)"
      * @param selectorAlias
@@ -4668,7 +4682,7 @@ public class StatementTransformer extends AbstractTransformer {
         at(isCase);
         // Use the type of the variable, which is more precise than the type we test for.
         Type varType = isCase.getVariable().getDeclarationModel().getType();
-        Type caseType = isCase.getType().getTypeModel();
+        Type caseType = getIsCaseType(isCase);
         // note: There's no point using makeOptimizedTypeTest() because cases are disjoint
         // anyway and the cheap cases get evaluated first.
         JCExpression cond = makeTypeTest(null, selectorAlias, caseType , expressionType);

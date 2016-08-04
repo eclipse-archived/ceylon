@@ -385,7 +385,7 @@ public class CeylonEnter extends Enter {
             sp.log("Generating AST");
         }
         int i=1;
-        int size = trees.size();
+        int size = countCeylonFiles(trees);
         for (JCCompilationUnit tree : trees) {
             if (tree instanceof CeylonCompilationUnit) {
                 CeylonCompilationUnit ceylonTree = (CeylonCompilationUnit) tree;
@@ -419,6 +419,9 @@ public class CeylonEnter extends Enter {
                 }
             }
         }
+        if(sp != null){
+            sp.clearLine();
+        }
         timer.startTask("Ceylon error generation");
         printGeneratorErrors();
         timer.endTask();
@@ -427,6 +430,16 @@ public class CeylonEnter extends Enter {
             modelLoader.printStats();
     }
 
+    private int countCeylonFiles(List<JCCompilationUnit> trees) {
+        int cnt = 0;
+        for (JCCompilationUnit tree : trees) {
+            if (tree instanceof CeylonCompilationUnit) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+    
     private boolean isVerbose(String key) {
         return verbose || options.get(Option.VERBOSE.text + ":" + key) != null;
     }

@@ -256,6 +256,7 @@ shared interface Iterable<out Element=Anything,
      iteration order, a different value might be produced 
      each time `getFromFirst(index)` is called for a given
      integer `index`."
+    since("1.1.0")
     shared default Element? getFromFirst(Integer index) {
         variable value current = 0;
         for (element in this) {
@@ -272,6 +273,7 @@ shared interface Iterable<out Element=Anything,
      of this stream, in the same order they occur in this
      stream. This operation eagerly evaluates and collects 
      every element of the stream."
+    since("1.1.0")
     shared default Element[] sequence()
             => let (array = Array(this)) 
                 if (array.empty)
@@ -281,6 +283,7 @@ shared interface Iterable<out Element=Anything,
     "A [[Range]] containing all indexes of this stream, or 
      `[]` if this list is empty. The resulting range is
      equal to `0:size`."
+    since("1.2.0")
     shared default Range<Integer>|[] indexes() => 0:size;
     
     "A stream containing all but the first element of this 
@@ -298,6 +301,7 @@ shared interface Iterable<out Element=Anything,
      stream. For a stream with an unstable iteration order, 
      a different stream might be produced each time 
      `exceptLast` is evaluated."
+    since("1.1.0")
     shared default {Element*} exceptLast
             => object satisfies {Element*} {
         iterator()
@@ -339,6 +343,7 @@ shared interface Iterable<out Element=Anything,
      surpassing the performance of `for` loops on the JVM.
      Thus, `each()` is sometimes preferred in highly 
      performance-critical low-level code._"
+    since("1.2.0")
     shared default void each(
         "The function to be called for each element in the
          stream."
@@ -403,6 +408,7 @@ shared interface Iterable<out Element=Anything,
      
          { \"hello\", \"hola\", \"world\", \"mundo\" }"
     see (`function expand`)
+    since("1.1.0")
     shared default 
     Iterable<Result,Absent|OtherAbsent>
     flatMap<Result,OtherAbsent>(
@@ -459,6 +465,7 @@ shared interface Iterable<out Element=Anything,
      If the type argument `Type` is not explicitly specified,
      [[Nothing]] is inferred, and the resulting stream is 
      empty."
+    since("1.2.0")
     shared default
     {Element&Type*} narrow<Type>() 
             => { for (elem in this) if (is Type elem) elem };
@@ -526,6 +533,7 @@ shared interface Iterable<out Element=Anything,
      
      results in the integer `5050`." 
     see (`function fold`)
+    since("1.1.0")
     shared default 
     Result|Element|Absent reduce<Result>(
         "The accumulating function that accepts an
@@ -582,6 +590,7 @@ shared interface Iterable<out Element=Anything,
      
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
+    since("1.1.0")
     see (`function fold`)
     shared default 
     {Result+} scan<Result>(Result initial)(
@@ -677,6 +686,7 @@ shared interface Iterable<out Element=Anything,
     see (`function locateLast`, `function locations`,
          `function find`, 
          `function List.firstIndexWhere`)
+    since("1.2.0")
     shared default 
     <Integer->Element&Object>? locate(
         "The predicate the element must satisfy."
@@ -705,6 +715,7 @@ shared interface Iterable<out Element=Anything,
     see (`function locate`, `function locations`,
          `function findLast`, 
          `function List.lastIndexWhere`)
+    since("1.2.0")
     shared default 
     <Integer->Element&Object>? locateLast(
         "The predicate the element must satisfy."
@@ -735,6 +746,7 @@ shared interface Iterable<out Element=Anything,
      stream."
     see (`function locate`, `function locateLast`, 
          `function List.indexesWhere`)
+    since("1.2.0")
     shared default
     {<Integer->Element&Object>*} locations(
         "The predicate the element must satisfy."
@@ -782,6 +794,7 @@ shared interface Iterable<out Element=Anything,
     see (`function package.max`, `function package.min`,
          `function byIncreasing`, `function byDecreasing`,
          `function package.comparing`)
+    since("1.1.0")
     shared default 
     Element|Absent max(
         "The function comparing pairs of elements."
@@ -811,6 +824,7 @@ shared interface Iterable<out Element=Anything,
      
          {Boolean+}(Object) fun = (-1..1).spread(Object.equals);
          print(fun(0)); //prints { false, true, false }"
+    since("1.1.0")
     shared default 
     Iterable<Result,Absent>(*Args) 
     spread<Result,Args>(Result(*Args) method(Element element))
@@ -975,6 +989,7 @@ shared interface Iterable<out Element=Anything,
     see (`function List.sublistFrom`,
          `function skipWhile`,
          `function take`)
+    since("1.1.0")
     shared default 
     {Element*} skip(Integer skipping) {
         if (skipping <= 0) {
@@ -1006,6 +1021,7 @@ shared interface Iterable<out Element=Anything,
          `function List.initial`,
          `function takeWhile`,
          `function skip`)
+    since("1.1.0")
     shared default 
     {Element*} take(Integer taking) {
         if (taking <= 0) {
@@ -1033,6 +1049,7 @@ shared interface Iterable<out Element=Anything,
      given [[predicate function|skipping]] returns `false`."
     see (`function skip`,
          `function takeWhile`)
+    since("1.1.0")
     shared default 
     {Element*} skipWhile(
         "The function that returns `false` when the 
@@ -1068,6 +1085,7 @@ shared interface Iterable<out Element=Anything,
      returns `false`."
     see (`function take`,
          `function skipWhile`)
+    since("1.1.0")
     shared default 
     {Element*} takeWhile(
         "The function that returns `false` when the 
@@ -1249,6 +1267,7 @@ shared interface Iterable<out Element=Anything,
      
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
+    since("1.1.0")
     shared default 
     {Element[2]*} paired 
             => object satisfies {Element[2]*} {
@@ -1300,6 +1319,7 @@ shared interface Iterable<out Element=Anything,
      reflects changes to this stream."
     throws (`class AssertionError`,
             "if `length<=0`")
+    since("1.1.0")
     shared default 
     Iterable<[Element+],Absent> partition(
         "The length of the sequences in the resulting stream,
@@ -1359,6 +1379,7 @@ shared interface Iterable<out Element=Anything,
      
          { head, *stream }"
     see (`function chain`)
+    since("1.1.0")
     shared default 
     {Element|Other+} follow<Other>(Other head) 
             => { head, *this };
@@ -1398,6 +1419,7 @@ shared interface Iterable<out Element=Anything,
      
      evaluates to the stream 
      `{ [1,'a'], [1,'b'], [2,'a'], [2,'b'], [3,'a'], [3,'b'] }`."
+    since("1.1.0")
     shared default 
     Iterable<[Element,Other],Absent|OtherAbsent>
     product<Other,OtherAbsent>
@@ -1460,6 +1482,7 @@ shared interface Iterable<out Element=Anything,
      reflects changes to this stream."
     throws (`class AssertionError`, "if `step<1`")
     see (`function interleave`)
+    since("1.1.0")
     shared default 
     Iterable<Element|Other,Absent> interpose<Other>(
         "The value to interpose between blocks of 
@@ -1524,6 +1547,7 @@ shared interface Iterable<out Element=Anything,
      This is a lazy operation and the resulting stream 
      reflects changes to this stream."
     see(`function set`)
+    since("1.2.0")
     shared default Iterable<Element,Absent> distinct
             => object satisfies Iterable<Element,Absent> {
         iterator() 
@@ -1674,6 +1698,7 @@ shared interface Iterable<out Element=Anything,
      
      This is an eager operation, and the resulting map does
      not reflect changes to this stream."
+    since("1.2.0")
     shared Map<Element&Object,Integer> frequencies()
             => coalesced.summarize(identity, 
                     (Integer? count, _) 
@@ -1695,6 +1720,7 @@ shared interface Iterable<out Element=Anything,
      
      This is an eager operation, and the resulting map does
      not reflect changes to this stream."
+    since("1.2.0")
     shared Map<Element&Object,Result> tabulate<Result>(
         "A function that produces an item for the given
          [[key]], an element of this stream."
@@ -1724,6 +1750,7 @@ shared interface Iterable<out Element=Anything,
      This is an eager operation, and the resulting map does
      not reflect changes to this stream."
     see(`function summarize`)
+    since("1.2.0")
     shared Map<Group,[Element+]> group<Group>(
         "The grouping function that assigns a key to the
          given [[element]]. Multiple elements may be 
@@ -1775,6 +1802,7 @@ shared interface Iterable<out Element=Anything,
      This is an eager operation, and the resulting map does
      not reflect changes to this stream."
     see(`function group`, `function fold`)
+    since("1.2.0")
     shared Map<Group,Result> summarize<Group,Result>(
         "The grouping function that assigns a key to the
          given [[element]]. Multiple elements may be 
@@ -1786,124 +1814,7 @@ shared interface Iterable<out Element=Anything,
          [[next element]] with that key."
         Result accumulating(Result? partial, Element element))
             given Group satisfies Object
-            => object extends Object() 
-                      satisfies Map<Group,Result> {
-        
-        alias MaybeEntry => GroupEntry<Group,Result>?;
-        
-        variable value store 
-                = Array.ofSize {
-            size = 16;
-            element = null of MaybeEntry;
-        };
-        
-        function hash(Object group, Integer size) 
-                => group.hash.magnitude % size;
-        
-        function rebuild(Array<MaybeEntry> store) {
-            value newStore 
-                    = Array.ofSize {
-                size = store.size*2;
-                element = null of MaybeEntry;
-            };
-            for (groups in store) {
-                variable value group = groups;
-                while (exists g = group) {
-                    value index = hash {
-                        group = g.group;
-                        size = newStore.size;
-                    };
-                    newStore.set(index,
-                        GroupEntry { 
-                            next = newStore[index]; 
-                            group = g.group; 
-                            elements = g.elements; 
-                        });
-                    group = g.next;
-                }
-            }
-            return newStore;
-        }
-        
-        variable value count = 0;
-        for (element in outer) {
-            value group = grouping(element);
-            value index = hash {
-                group = group;
-                size = store.size;
-            };
-            value entries = store[index];
-            if (exists entries, 
-                exists entry = entries.get(group)) {
-                entry.elements = accumulating {
-                    partial = entry.elements;
-                    element = element;
-                };
-                //keep iterating
-            }
-            else {
-                store.set(index, 
-                    GroupEntry {
-                        next = entries;
-                        group = group;
-                        elements = accumulating {
-                            partial = null;
-                            element = element;
-                        };
-                    });
-                count++;
-                if (count>store.size*2) {
-                    store = rebuild(store);
-                }
-            }
-        }
-        
-        size => count;
-        
-        iterator() 
-                => object satisfies Iterator<Group->Result> {
-            variable value index = 0;
-            variable GroupEntry<Group,Result>? entry = null;
-            shared actual <Group->Result>|Finished next() {
-                GroupEntry<Group,Result> result;
-                if (exists e = entry) {
-                    entry = e.next;
-                    result = e;
-                }
-                else {
-                    while (true) {
-                        if (index>=store.size) {
-                            return finished;
-                        }
-                        else {
-                            entry = store[index++];
-                            if (exists e = entry) {
-                                entry = e.next;
-                                result = e;
-                                break;
-                            }
-                        }
-                    }
-                }
-                return result.group -> result.elements;
-            }
-        };
-        
-        clone() => this;
-        
-        function group(Object key) 
-                => store[hash(key, store.size)]?.get(key);
-        
-        defines(Object key) => group(key) exists;
-        
-        get(Object key) => group(key)?.elements;
-        
-        shared actual Result|Default getOrDefault<Default>
-                (Object key, Default default)
-                => if (exists group = group(key))
-                then group.elements else default;
-        
-    };
+            => Summary(this, grouping, accumulating);
     
     "A string of form `\"{ x, y, z }\"` where `x`, `y`, and 
      `z` are the `string` representations of the elements of 
@@ -2024,5 +1935,129 @@ class GroupEntry<Group,Result>(next, group, elements)
         }
         return null;
     }
+    
+}
+
+see(`function Iterable.summarize`)
+class Summary<Element,Group,Result>(
+    {Element*} elements,
+    Group grouping(Element element),
+    Result accumulating(Result? partial, Element element))
+            extends Object() satisfies Map<Group,Result>
+            given Group satisfies Object {
+        
+    alias MaybeEntry => GroupEntry<Group,Result>?;
+    
+    variable value store 
+            = Array.ofSize {
+        size = 16;
+        element = null of MaybeEntry;
+    };
+    
+    function hash(Object group, Integer size) 
+            => group.hash.magnitude % size;
+    
+    function rebuild(Array<MaybeEntry> store) {
+        value newStore 
+                = Array.ofSize {
+            size = store.size*2;
+            element = null of MaybeEntry;
+        };
+        for (groups in store) {
+            variable value group = groups;
+            while (exists g = group) {
+                value index = hash {
+                    group = g.group;
+                    size = newStore.size;
+                };
+                newStore.set(index,
+                    GroupEntry { 
+                        next = newStore[index]; 
+                        group = g.group; 
+                        elements = g.elements; 
+                    });
+                group = g.next;
+            }
+        }
+        return newStore;
+    }
+    
+    variable value count = 0;
+    for (element in elements) {
+        value group = grouping(element);
+        value index = hash {
+            group = group;
+            size = store.size;
+        };
+        value entries = store[index];
+        if (exists entries, 
+            exists entry = entries.get(group)) {
+            entry.elements = accumulating {
+                partial = entry.elements;
+                element = element;
+            };
+            //keep iterating
+        }
+        else {
+            store.set(index, 
+                GroupEntry {
+                    next = entries;
+                    group = group;
+                    elements = accumulating {
+                        partial = null;
+                        element = element;
+                    };
+                });
+            count++;
+            if (count>store.size*2) {
+                store = rebuild(store);
+            }
+        }
+    }
+    
+    size => count;
+    
+    iterator() 
+            => object satisfies Iterator<Group->Result> {
+        variable value index = 0;
+        variable GroupEntry<Group,Result>? entry = null;
+        shared actual <Group->Result>|Finished next() {
+            GroupEntry<Group,Result> result;
+            if (exists e = entry) {
+                entry = e.next;
+                result = e;
+            }
+            else {
+                while (true) {
+                    if (index>=store.size) {
+                        return finished;
+                    }
+                    else {
+                        entry = store[index++];
+                        if (exists e = entry) {
+                            entry = e.next;
+                            result = e;
+                            break;
+                        }
+                    }
+                }
+            }
+            return result.group -> result.elements;
+        }
+    };
+    
+    clone() => this;
+    
+    function group(Object key) 
+            => store[hash(key, store.size)]?.get(key);
+    
+    defines(Object key) => group(key) exists;
+    
+    get(Object key) => group(key)?.elements;
+    
+    shared actual Result|Default getOrDefault<Default>
+            (Object key, Default default)
+            => if (exists group = group(key))
+            then group.elements else default;
     
 }

@@ -68,9 +68,9 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     protected int timeout = -1;
     protected boolean noDefRepos;
     protected boolean offline;
-    protected Logger log;
-
+    
     private RepositoryManager rm;
+    private Logger log;
     
     private Appendable out = System.out;
     private Appendable error = System.err;
@@ -94,7 +94,6 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
 
     public RepoUsingTool(ResourceBundle bundle) {
         this.bundle = bundle;
-        this.log = createLogger();
     }
     
     protected Logger createLogger() {
@@ -192,6 +191,13 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return true;
     }
     
+    public Logger getLogger() {
+        if (log == null) {
+            log = createLogger();
+        }
+        return log;
+    }
+    
     protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilder(boolean forInput) {
         return createRepositoryManagerBuilderNoOut(forInput);
     }
@@ -209,7 +215,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 .offline(offline)
                 .timeout(timeout)
                 .isJDKIncluded(includeJDK())
-                .logger(log);
+                .logger(getLogger());
         return rmb;
     }
     

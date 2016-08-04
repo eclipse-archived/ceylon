@@ -362,7 +362,7 @@ function detpl$(t) {
       for(var i=0;i<count;i++)ret[i]=null;
       return ret;
     }
-    if (args.t===Sequential || args.t===Sequence || args.t===Range) {
+    if (args.t===Sequential || args.t===Sequence || args.t===Range || args.t===Iterable) {
       var ret=Array(count+1);
       for (var i=0;i<count;i++)ret[i]=null;
       ret[count]=args;

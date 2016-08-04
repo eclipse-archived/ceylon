@@ -90,8 +90,10 @@ final class bug1227_again_ {
                 }
             }
         }
-        from$14 = 1L;
-        final long from$33 = from$14;
+        {
+            from$14 = 1L;
+            final long from$33 = from$14;
+        }
         from = from$14;
         return from;
     }

@@ -38,6 +38,7 @@
 tagged("Numbers")
 see (`function formatInteger`,
      `function parseFloat`)
+since("1.2.0")
 shared String formatFloat(
         "The floating point value to format."
         Float float,

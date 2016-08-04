@@ -1,0 +1,153 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug63xx;
+
+interface Bug6304I {
+    
+    public .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304I$impl $com$redhat$ceylon$compiler$java$test$issues$bug63xx$Bug6304I$impl();
+    
+    public void id1();
+    
+    public abstract boolean id1$b();
+    
+    public void id1(final boolean b);
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304I.class);
+}
+final class Bug6304I$impl implements .java.io.Serializable {
+    
+    Bug6304I$impl(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304I $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304I $this;
+    
+    public void id1() {
+        (
+            let
+            {
+                boolean $ceylontmp$b$0 = id1$b();
+                id1$canonical$($ceylontmp$b$0);
+            }
+            returning null;
+        );
+    }
+    
+    public final boolean id1$b() {
+        return false;
+    }
+    
+    private void id1$canonical$(final boolean b) {
+    }
+    
+    public void id1(final boolean b) {
+        (
+            let
+            {
+                id1$canonical$(b);
+            }
+            returning null;
+        );
+    }
+}
+class Bug6304C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    Bug6304C() {
+    }
+    
+    public final void id2() {
+        (
+            let
+            {
+                boolean $ceylontmp$b$1 = id2$b();
+                id2$canonical$($ceylontmp$b$1);
+            }
+            returning null;
+        );
+    }
+    
+    public final boolean id2$b() {
+        return false;
+    }
+    
+    private void id2$canonical$(final boolean b) {
+    }
+    
+    public final void id2(final boolean b) {
+        (
+            let
+            {
+                id2$canonical$(b);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304C.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304C.class);
+}
+class Bug6304 extends .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304C implements .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304I {
+    
+    Bug6304() {
+        super();
+        this.$com$redhat$ceylon$compiler$java$test$issues$bug63xx$Bug6304I$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304I$impl(this);
+    }
+    protected final .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304I$impl $com$redhat$ceylon$compiler$java$test$issues$bug63xx$Bug6304I$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304I$impl $com$redhat$ceylon$compiler$java$test$issues$bug63xx$Bug6304I$impl() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug63xx$Bug6304I$this$;
+    }
+    
+    @.java.lang.Override
+    public final boolean id1$b() {
+        return $com$redhat$ceylon$compiler$java$test$issues$bug63xx$Bug6304I$this$.id1$b();
+    }
+    
+    @.java.lang.Override
+    public void id1() {
+        (
+            let
+            {
+                boolean $ceylontmp$b$2 = id1$b();
+                id1$canonical$($ceylontmp$b$2);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public final void id1(final boolean b) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug63xx$Bug6304I$this$.id1(b);
+    }
+    
+    private void id1$canonical$(final boolean b) {
+        $com$redhat$ceylon$compiler$java$test$issues$bug63xx$Bug6304I$this$.id1(b);
+    }
+    
+    private final void foo$priv$() {
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304I arg$3$argthis$ = .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304.this;
+                boolean arg$3$0 = arg$3$argthis$.id1$b();
+                id1(arg$3$0);
+            }
+            returning null;
+        );
+        (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304C arg$4$argthis$ = .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304.this;
+                boolean arg$4$0 = arg$4$argthis$.id2$b();
+                id2(arg$4$0);
+            }
+            returning null;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6304.class);
+}

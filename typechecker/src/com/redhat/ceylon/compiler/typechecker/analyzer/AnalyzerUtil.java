@@ -80,7 +80,8 @@ public class AnalyzerUtil {
             return (TypedDeclaration) member;
         }
         else {
-            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
+            if (td.isJava()
+                    && isForBackend(scope.getScopedBackends(), Backend.Java) 
                     && !JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.getJavaBeanName(name);
                 member = td.getMember(name, unit, signature, ellipsis);
@@ -105,7 +106,8 @@ public class AnalyzerUtil {
                     (TypedDeclaration) member);
         }
         else {
-            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
+            if (td.isJava()
+                    && isForBackend(scope.getScopedBackends(), Backend.Java) 
                     && JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.capitalize(name);
                 member = 
@@ -143,12 +145,16 @@ public class AnalyzerUtil {
                 // the one we wanted to import, so try imports first.
                 result = unit.getImportedDeclaration(name, 
                         signature, ellipsis);
-                if(result instanceof TypedDeclaration)
+                if(result != null && !result.isJava()){
+                    result = null;
+                }else if(result instanceof TypedDeclaration)
                     return (TypedDeclaration) result;
                 result = 
                         scope.getMemberOrParameter(unit, 
                                 name, signature, ellipsis);
-                if (result instanceof TypedDeclaration) {
+                if(result != null && !result.isJava()){
+                    result = null;
+                }else if (result instanceof TypedDeclaration) {
                     return (TypedDeclaration) result;
                 }
             }
@@ -181,7 +187,9 @@ public class AnalyzerUtil {
                 // the one we wanted to import, so try imports first.
                 result = unit.getImportedDeclaration(name, 
                         signature, ellipsis);
-                if (result instanceof TypeDeclaration) {
+                if(result != null && !result.isJava()){
+                    result = null;
+                }else if (result instanceof TypeDeclaration) {
                     return (TypeDeclaration) result;
                 }
                 else if (result instanceof TypedDeclaration) {
@@ -191,7 +199,9 @@ public class AnalyzerUtil {
                 result = 
                         scope.getMemberOrParameter(unit, 
                                 name, signature, ellipsis);
-                if (result instanceof TypeDeclaration) {
+                if(result != null && !result.isJava()){
+                    result = null;
+                }else if (result instanceof TypeDeclaration) {
                     return (TypeDeclaration) result;
                 }
                 else if (result instanceof TypedDeclaration) {

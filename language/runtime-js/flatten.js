@@ -13,7 +13,7 @@ function flatten(tf, $$$mptypes) {
   if (mm && mm.ps) {
     if (mm.ps.length===1) {
       t0=mm.ps[0].$t;
-      if (!(t0.t===Sequential || t0.t===Sequence)) {
+      if (!(t0.t===Sequential || t0.t===Sequence || t0.t===Iterable)) {
         var ps0t=mm.ps[0].$t;
         if (typeof(ps0t)==='string') {
           ps0t=tf_targs[ps0t];

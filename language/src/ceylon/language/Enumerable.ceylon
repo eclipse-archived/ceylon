@@ -63,6 +63,7 @@ shared interface Enumerable<Other> of Other
     throws (`class OverflowException`, 
             "if the neighbour cannot be represented as an 
              instance of the type")
+    since("1.1.0")
     shared formal Other neighbour(Integer offset);
     
     shared actual default Other successor => neighbour(1);
@@ -75,9 +76,11 @@ shared interface Enumerable<Other> of Other
     throws (`class OverflowException`,
             "if the offset cannot be represented as an 
              integer")
+    since("1.1.0")
     shared formal Integer offset(Other other);
     
     "The sign of the offset from the given value."
+    since("1.1.0")
     shared default Integer offsetSign(Other other)
             => offset(other).sign;
     

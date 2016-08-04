@@ -371,7 +371,7 @@ public class Operators {
         gen.supervisit(that);
         gen.out(",");
         if (isMethod) {
-            gen.out(gen.getClAlias(), "JsCallable(", lhsVar, ",");
+            gen.out(gen.getClAlias(), "jsc$3(", lhsVar, ",");
         }
         gen.out(gen.getClAlias(),"nn$(", lhsVar, ")?");
         if (isMethod && !((Function)that.getDeclaration()).getTypeParameters().isEmpty()) {

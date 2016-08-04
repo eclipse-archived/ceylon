@@ -17,6 +17,7 @@
    has optional type.
    """
 see(`interface ClassWithInitializerDeclaration`)
+since("1.2.0")
 shared sealed interface ClassWithConstructorsDeclaration 
         satisfies ClassDeclaration {
 }

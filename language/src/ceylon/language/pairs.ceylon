@@ -64,6 +64,7 @@ mapPairs<Result,First,Second,FirstAbsent,SecondAbsent>(
  
      findPair(p, xs, ys) == zipPairs(xs, ys).find(unflatten(p))"
 tagged("Streams")
+since("1.1.0")
 shared [First,Second]? findPair<First,Second>(
     "The binary predicate function to apply to each pair of 
      elements."
@@ -95,6 +96,7 @@ shared [First,Second]? findPair<First,Second>(
 see (`function corresponding`,
      `function anyPair`)
 tagged("Streams")
+since("1.1.0")
 shared Boolean everyPair<First,Second>(
     "The binary predicate function to apply to each pair of 
      elements."
@@ -125,6 +127,7 @@ shared Boolean everyPair<First,Second>(
      anyPair(p, xs, ys) == zipPairs(xs, ys).any(unflatten(p))"
 see (`function everyPair`)
 tagged("Streams")
+since("1.1.0")
 shared Boolean anyPair<First,Second>(
     "The binary predicate function to apply to each pair of 
      elements."
@@ -154,6 +157,7 @@ shared Boolean anyPair<First,Second>(
  
      foldPairs(z, f, xs, ys) == zipPairs(xs, ys).fold(z)(unflatten(f))"
 tagged("Streams")
+since("1.1.0")
 shared Result foldPairs<Result,First,Second>(
     Result initial,
     "The accumulating function to apply to each pair of 

@@ -1,0 +1,20 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug63xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.issues.bug63xx::Bug6377Java.Bar")
+class Bug6377 extends .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6377Java.Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    Bug6377() {
+        super();
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6377.$TypeDescriptor$;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6377.class);
+}

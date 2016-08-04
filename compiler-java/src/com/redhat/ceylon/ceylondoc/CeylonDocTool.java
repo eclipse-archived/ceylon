@@ -206,11 +206,11 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             setLinks(Arrays.asList(linkValues));
         }
         
-        this.richLog = new CeylondLogger(true);
+        this.richLog = new CeylondLogger(true, isVerbose());
     }
 
     protected Logger createLogger() {
-        return new CeylondLogger(false);
+        return new CeylondLogger(false, isVerbose("cmr"));
     }
     
     @OptionArgument(argumentName="encoding")
@@ -421,7 +421,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         builder.moduleManagerFactory(new ModuleManagerFactory(){
             @Override
             public ModuleManager createModuleManager(Context context) {
-                return new CeylonDocModuleManager(CeylonDocTool.this, context, modules, outputRepositoryManager, bootstrapCeylon, log);
+                return new CeylonDocModuleManager(CeylonDocTool.this, context, modules, outputRepositoryManager, bootstrapCeylon, getLogger());
             }
 
             @Override
@@ -635,7 +635,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         boolean documentedOne = false;
         for(Module module : modules){
             if (isEmpty(module)) {
-                log.warning(CeylondMessages.msg("warn.moduleHasNoDeclaration", module.getNameAsString()));
+                getLogger().warning(CeylondMessages.msg("warn.moduleHasNoDeclaration", module.getNameAsString()));
             } else {
                 documentedOne = true;
             }
@@ -658,7 +658,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             repositoryPutArtifact(outputRepositoryManager, artifactDocs, getOutputFolder(module, null));
         }
         if (!documentedOne) {
-            log.warning(CeylondMessages.msg("warn.couldNotFindAnyDeclaration"));
+            getLogger().warning(CeylondMessages.msg("warn.couldNotFindAnyDeclaration"));
         }
 
         if (browse) {
@@ -673,7 +673,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                     try {
                         Desktop.getDesktop().browse(docIndex.toURI());
                     } catch (Exception e) {
-                        log.error(CeylondMessages.msg("error.unableBrowseModuleDoc", docIndex.toURI()));
+                        getLogger().error(CeylondMessages.msg("error.unableBrowseModuleDoc", docIndex.toURI()));
                     }
                 }
             }
@@ -1284,10 +1284,6 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         return typeChecker;
     }
     
-    protected Logger getLogger() {
-        return log;
-    }
-
     protected void warningMissingDoc(String name, Referenceable scope) {
         if (!ignoreMissingDoc) {
             richLog.warning(CeylondMessages.msg("warn.missingDoc", name, getPosition(getNode(scope))));

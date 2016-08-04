@@ -16,6 +16,7 @@
    of the body of the `try`."
 see (`interface Obtainable`)
 tagged("Basic types")
+since("1.1.0")
 shared interface Destroyable satisfies Usable {
     
     "Destroy this resource. Called when execution of the 

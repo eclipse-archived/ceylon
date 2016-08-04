@@ -36,6 +36,7 @@ shared native object system {
     
     "Returns the IANA character set name representing the 
      default character encoding for this system."
+    since("1.1.0")
     shared native String characterEncoding;
     
     string => "system";

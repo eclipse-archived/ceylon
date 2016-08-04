@@ -225,6 +225,7 @@ class Measure<Element>(first, size)
      0:0     // []
      5:0     // []
      0:-5    // []"
+since("1.1.0")
 shared Range<Element>|[] measure<Element>
         (Element first, Integer size)
         given Element satisfies Enumerable<Element>

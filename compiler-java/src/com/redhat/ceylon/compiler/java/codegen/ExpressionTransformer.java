@@ -171,6 +171,13 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     public static final int EXPR_WIDEN_PRIM = 1 << 9;
 
+    /** 
+     * Use this when the expression is guaranteed to not be a base member. This allows us to
+     * differentiate `null` (BaseMemberExpression) from other things of type "null" which get
+     * stored in temp vars erased to `Object`, for erasure and casts.
+     */
+    public static final int EXPR_IS_NOT_BASE_MEMBER = 1 << 10;
+
     static{
         // only there to make sure this class is initialised before the enums defined in it, otherwise we
         // get an initialisation error
@@ -321,6 +328,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }else if(term instanceof Tree.IfExpression){
             // special case to be able to pass expected type to if op
             result = transform((Tree.IfExpression)term, expectedType);
+            flags |= EXPR_IS_NOT_BASE_MEMBER;
         }else if(term instanceof Tree.SwitchExpression){
             // special case to be able to pass expected type to switch op
             result = transform((Tree.SwitchExpression)term, expectedType);
@@ -476,6 +484,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (isNull(exprType)){
                     // don't add cast for null
                     if(!isNullValue(exprType)
+                            // well, unless it's a complex expression which stores that null value in
+                            // temp vars whose type erase to Object
+                            || (flags & EXPR_IS_NOT_BASE_MEMBER) != 0
                             // include a cast even for null for interop and disambiguating bw overloads and null values
                             // of different types using the "of" operator
                             || downCast){
@@ -3452,17 +3463,18 @@ public class ExpressionTransformer extends AbstractTransformer {
             int argIndex, BoxingStrategy boxingStrategy) {
         ExpressionAndType exprAndType;
         JCExpression expr = invocation.getTransformedArgumentExpression(argIndex);
-        JCExpression type = makeJavaType(invocation.getParameterType(argIndex), boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
+        Type paramType = invocation.getParameterType(argIndex);
+        JCExpression type = makeJavaType(paramType, boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
         Class ctedClass = Decl.getConstructedClass(invocation.getPrimaryDeclaration());
         if (argIndex == 0
-                && typeFact().isOptionalType(invocation.getParameterType(argIndex))
+                && typeFact().isOptionalType(paramType)
                 && invocation.getArgumentType(argIndex).isSubtypeOf(typeFact().getNullType())
                 && ctedClass != null && (ctedClass.hasConstructors()|| ctedClass.isSerializable())) {
             // we've invoking the default constructor, whose first parameter has optional type
             // with a null argument: That will be ambiguous wrt any named constructors
             // with otherwise identical signitures, so we need a typecast to
             // disambiguate
-            expr = make().TypeCast(makeJavaType(invocation.getParameterType(argIndex), boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0), expr);
+            expr = make().TypeCast(makeJavaType(paramType, boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0), expr);
         }
         exprAndType = new ExpressionAndType(expr, type);
         return exprAndType;
@@ -3947,7 +3959,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             
             if ((Strategy.generateInstantiator(builder.getPrimaryDeclaration())
                     || builder.getPrimaryDeclaration() instanceof Class)
-                    && outerDeclaration instanceof Interface) {
+                    && outerDeclaration instanceof Interface
+                    && !((Interface)outerDeclaration).isJava()) {
                 // If the subclass is inner to an interface then it will be 
                 // generated inner to the companion and we need to qualify the 
                 // super(), *unless* the subclass is nested within the same 
@@ -5005,23 +5018,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && !Decl.isLocalToInitializer(decl)
                 && !isWithinSuperInvocation()) {
             // First check whether the expression is captured from an enclosing scope
-            TypeDeclaration outer = null;
-            // get the ClassOrInterface container of the declaration
-            Scope stop = Decl.getClassOrInterfaceContainer(decl, false);
-            if (stop instanceof TypeDeclaration) {// reified scope
-                Scope scope = expr.getScope();
-                while (!(scope instanceof Package)) {
-                    if (scope.equals(stop)) {
-                        outer = (TypeDeclaration)stop;
-                        break;
-                    }
-                    scope = scope.getContainer();
-                }
-            }
-            // If not it might be inherited...
-            if (outer == null) {
-                outer = expr.getScope().getInheritingDeclaration(decl);
-            }
+            TypeDeclaration outer = Decl.getOuterScopeOfMemberInvocation(expr, decl);
             if (outer != null) {
                 Type targetType = expr.getTarget().getQualifyingType();
                 Type declarationContainerType = ((TypeDeclaration)outer).getType();
@@ -5528,7 +5525,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                 else
                     lhs = transformSuperOf(indexedExpr, indexedExpr.getPrimary(), method);
             }else{
-                lhs = transformExpression(indexedExpr.getPrimary(), BoxingStrategy.BOXED, leftType);
+                int flags = 0;
+                // this is pretty much disgusting, but all I found. Given a Ranged<Integer,Integer,Integer[]> type
+                // we don't notice that this type can't be cast to without a raw cast because it has constrained
+                // type params in its hierarchy. hasConstrainedTypeParameters only checks that type, and we want
+                // to check Ranged<Index, Element, Subrange> instead, which has those constraints, which is why we
+                // do it on the declaration type. Honestly this should probably rather be an inheritance check in
+                // applyErasureAndCasts but that'd be costly and complex and likely introduce lots of other issues.
+                // See https://github.com/ceylon/ceylon/issues/6365
+                if(leftType.getDeclaration() instanceof ClassOrInterface 
+                        && hasConstrainedTypeParameters(leftType.getDeclaration().getType()))
+                    flags |= EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS;
+                lhs = transformExpression(indexedExpr.getPrimary(), BoxingStrategy.BOXED, leftType, flags);
             }
             
             JCExpression result;
@@ -7160,9 +7168,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     JCExpression makePrivateAccessUpcast(Tree.StaticMemberOrTypeExpression qmte, JCExpression qual) {
         Type pt = Decl.getPrivateAccessType(qmte);
+        int flags = JT_RAW;
         // By definition the member has private access, so if it's an interface
         // member we want the companion.
-        return make().TypeCast(makeJavaType(pt, JT_COMPANION | JT_RAW), qual);
+        if(pt.getDeclaration() instanceof Interface)
+            flags |= JT_COMPANION;
+        return make().TypeCast(makeJavaType(pt, flags), qual);
     }
 
     public JCTree transform(Tree.ObjectExpression expr) {

@@ -61,6 +61,7 @@ shared native final class Integer(Integer integer)
     shared actual native Integer times(Integer other);
     shared actual native Integer divided(Integer other);
     shared actual native Integer remainder(Integer other);
+    since("1.2.0")
     shared actual native Integer modulo(Integer modulus);
     
     "Determines if this integer is a factor of the given 
@@ -229,6 +230,7 @@ shared native final class Integer(Integer integer)
          exception in this case.)")
     see (`value runtime.maxExactIntegralFloat`,
          `value nearestFloat`)
+    since("1.1.0")
     shared native Float float;
 
     "The nearest [[Float]] to this number. 
@@ -243,6 +245,7 @@ shared native final class Integer(Integer integer)
      
      This method never throws an [[OverflowException]]."
     see (`value float`)
+    since("1.2.0")
     shared native Float nearestFloat;
 
     shared actual native Integer predecessor => minus(1);
@@ -268,6 +271,7 @@ shared native final class Integer(Integer integer)
          i == 2*k
      
      Thus, `i` is even if and only if `i%2 == 0`."
+    since("1.1.0")
     shared native Boolean even => 2.divides(this);
     
     aliased("absolute")
@@ -310,6 +314,7 @@ shared native final class Integer(Integer integer)
     "A [[Byte]] whose [[signed|Byte.signed]] and
      [[unsigned|Byte.unsigned]] interpretations are 
      congruent modulo 256 to this integer."
+    since("1.1.0")
     shared native Byte byte => Byte(this);
     
 }

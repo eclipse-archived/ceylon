@@ -86,6 +86,7 @@ shared interface List<out Element=Anything>
      to an element of this list, or `null` otherwise. The
      last element of the list has index `0`, and the first
      element has index [[lastIndex]]."
+    since("1.1.0")
     shared default Element? getFromLast(Integer index)
             => getFromFirst(size-1-index);
     
@@ -280,6 +281,7 @@ shared interface List<out Element=Anything>
      
      This is a lazy operation, returning a view of this list."
     see (`function skip`)
+    since("1.1.0")
     shared default 
     List<Element> sublistFrom(Integer from) 
             => from<=0 then this else Rest(from); 
@@ -290,6 +292,7 @@ shared interface List<out Element=Anything>
      This is a lazy operation, returning a view of this list."
     see (`function take`,
         `function initial`)
+    since("1.1.0")
     shared default 
     List<Element> sublistTo(Integer to) 
             => to<0 then [] else Sublist(to);
@@ -299,6 +302,7 @@ shared interface List<out Element=Anything>
      [[to]].
      
      This is a lazy operation, returning a view of this list."
+    since("1.1.0")
     shared default 
     List<Element> sublist(Integer from, Integer to) 
             => sublistTo(to).sublistFrom(from);
@@ -338,6 +342,7 @@ shared interface List<out Element=Anything>
      
      If `length<0`, or if `from` is outside the range 
      `0..size`, return this list."
+    since("1.1.0")
     shared default 
     List<Element|Other> patch<Other>(
         "The list of new elements."
@@ -383,6 +388,7 @@ shared interface List<out Element=Anything>
      null and satisfies the given 
      [[predicate function|selecting]]."
     see (`function locations`)
+    since("1.1.0")
     shared default 
     {Integer*} indexesWhere(
         "The predicate function the indexed elements must 
@@ -397,6 +403,7 @@ shared interface List<out Element=Anything>
      not null and satisfies the given 
      [[predicate function|selecting]]."
     see (`function locate`)
+    since("1.1.0")
     shared default 
     Integer? firstIndexWhere(
         "The predicate function the indexed elements must 
@@ -417,6 +424,7 @@ shared interface List<out Element=Anything>
      not null and satisfies the given 
      [[predicate function|selecting]]."
     see (`function locateLast`)
+    since("1.1.0")
     shared default 
     Integer? lastIndexWhere(
         "The predicate function the indexed elements must 
@@ -532,6 +540,7 @@ shared interface List<out Element=Anything>
          list.slice(index) == [list[...index-1], list[index...]]
      
      This is an eager operation."
+    since("1.1.0")
     shared default 
     List<Element>[2] slice(Integer index)
             => [this[...index-1], this[index...]];
@@ -906,6 +915,7 @@ shared interface List<out Element=Anything>
      given [[transformation|List.mapElements.mapping]] 
      function to its associated element in this list. This 
      is a lazy operation, returning a view of this list."
+    since("1.2.3")
     shared default 
     List<Result> mapElements<Result>(
         "The function that transforms an index/item pair of

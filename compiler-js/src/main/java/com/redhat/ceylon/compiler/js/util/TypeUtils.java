@@ -1108,6 +1108,8 @@ public class TypeUtils {
                         gen.out(gen.getNames().typeArgsParamName((Function)tpowner), ".",
                                 gen.getNames().typeParameterName(tparm));
                     }
+                } else if (resolveTargsFromScope && tpowner instanceof TypeDeclaration && (nodeIsDecl ? ((Tree.Declaration)node).getDeclarationModel() == tpowner : true)  && ModelUtil.contains((Scope)tpowner, node.getScope())) {
+                    typeNameOrList(node, tparm.getType(), gen, false);
                 } else {
                     gen.out("'", gen.getNames().typeParameterName(tparm), "'");
                 }

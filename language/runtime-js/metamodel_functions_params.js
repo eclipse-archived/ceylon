@@ -6,7 +6,7 @@ function validate$params(ps,t,msg,nothrow) {
   if (!ps) {
     if (t.t===Empty||(t.t===Sequential&&t.a&&t.a.Element$Sequential&&t.a.Element$Sequential.t===Anything))return true;
   } else if (ps.length==0) {
-    if (t.t===Empty)return true;
+    if (t.t===Empty || t.t===Sequential)return true;
   } else if (t.t==='T') {
     if (ps.length==t.l.length) {
       //TODO check each parameter

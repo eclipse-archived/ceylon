@@ -20,6 +20,7 @@ import ceylon.language.meta.declaration {
        ValueConstructorDeclaration dollars = `new Currency.usd`;
    """
 see (`interface CallableConstructorDeclaration`)
+since("1.2.0")
 shared sealed interface ValueConstructorDeclaration 
         satisfies GettableDeclaration & ConstructorDeclaration {
     

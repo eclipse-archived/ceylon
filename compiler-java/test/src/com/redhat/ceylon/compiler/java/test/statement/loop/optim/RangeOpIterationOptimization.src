@@ -185,7 +185,9 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
                 sum += withElse;
             }             while (false);
         }         while ($ceylontmp$increasing$73 ? withElse$77 - $ceylontmp$last$72 != 0L : withElse$77 - $ceylontmp$last$72 != 0L);
-        sum = 0L;
+        {
+            sum = 0L;
+        }
         final long $ceylontmp$first$80 = 10L;
         final long $ceylontmp$last$81 = 1L;
         final boolean $ceylontmp$increasing$82 = .ceylon.language.Integer.offset($ceylontmp$last$81, $ceylontmp$first$80) >= 0;

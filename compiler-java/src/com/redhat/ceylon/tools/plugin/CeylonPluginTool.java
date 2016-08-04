@@ -405,7 +405,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
             roots[d] = new IOUtils.ZipRoot(scriptFolder, "");
         }
         File scriptZipFile = IOUtils.zipFolders(roots);
-        File scriptZipSha1File = ShaSigner.sign(scriptZipFile, log, verbose != null);
+        File scriptZipSha1File = ShaSigner.sign(scriptZipFile, getLogger(), verbose != null);
         
         if(!repositoryRemoveArtifact(outputRepositoryManager, artifactScriptsZip)) return true;
         if(!repositoryRemoveArtifact(outputRepositoryManager, artifactScriptsZip.getSha1Context())) return true;

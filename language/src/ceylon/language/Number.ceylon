@@ -73,10 +73,12 @@ shared interface Number<Other> of Other
     
     "The result of multiplying this number by the given 
      [[Integer]]."
+    since("1.1.0")
     shared formal Other timesInteger(Integer integer);
     
     "The result of adding this number to the given 
      [[Integer]]."
+    since("1.1.0")
     shared formal Other plusInteger(Integer integer);
     
     "The result of raising this number to the given 
@@ -85,6 +87,7 @@ shared interface Number<Other> of Other
     throws (`class AssertionError`, 
             "if the exponent is a negative power and this is 
              an integral numeric type")
+    since("1.1.0")
     shared formal Other powerOfInteger(Integer integer);
     
     "Compares this number with the given number, returning:

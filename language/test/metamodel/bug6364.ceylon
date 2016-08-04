@@ -18,7 +18,10 @@ shared void bug6364() {
     value x1 = `C.c`;
     try{
         x1.get();
-        assert(false);
+        if (runtime.name=="jvm") {
+            "JVM does not support this, see #6364"
+            assert(false);
+        }
     }catch(StorageException x){
         // success
     }

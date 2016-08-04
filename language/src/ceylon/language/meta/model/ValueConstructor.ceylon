@@ -24,6 +24,7 @@ import ceylon.language.meta.declaration{ValueConstructorDeclaration}
         print(ctor.get());
         
    """
+since("1.2.0")
 shared sealed interface ValueConstructor<out Type=Object>
         satisfies ValueModel<Type> & Gettable<Type> {
     

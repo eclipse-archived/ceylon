@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
@@ -1200,6 +1201,11 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
     public void location(CallBuilder callBuilder) {
         callBuilder.location(null);
     }
+    @Override
+    protected Type getArgumentType(int argIndex) {
+        // those are the same in this case
+        return super.getParameterType(argIndex);
+    }
 }
 
 /**
@@ -1514,6 +1520,7 @@ class NamedArgumentInvocation extends Invocation {
         boolean prevNoExpressionlessReturn = gen.statementGen().noExpressionlessReturn;
         boolean prevSyntheticClassBody = gen.expressionGen().withinSyntheticClassBody(Decl.isMpl(model) || gen.expressionGen().isWithinSyntheticClassBody()); 
         try {
+            gen.expressionGen().withinSyntheticClassBody(true);
             gen.statementGen().noExpressionlessReturn = gen.isAnything(model.getType());
             if (methodArg.getBlock() != null) {
                 body = gen.statementGen().transformBlock(methodArg.getBlock());
@@ -1708,12 +1715,15 @@ class NamedArgumentInvocation extends Invocation {
                 && !gen.expressionGen().isWithinSyntheticClassBody()) {
             if (Decl.withinClassOrInterface(getPrimaryDeclaration())) {
                 // a member method
-                thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() ? JT_COMPANION : 0));
-                if (Decl.withinInterface(getPrimaryDeclaration())
+                thisType = gen.makeJavaType(target.getQualifyingType(), 
+                        JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() 
+                                ? JT_COMPANION : 0));
+                TypeDeclaration outer = Decl.getOuterScopeOfMemberInvocation((StaticMemberOrTypeExpression) getPrimary(), getPrimaryDeclaration());
+                if (outer instanceof Interface
                         && getPrimaryDeclaration().isShared()) {
                     defaultedParameterInstance = gen.naming.makeQuotedThis();
                 } else {
-                    defaultedParameterInstance = gen.naming.makeQualifiedThis(gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() ? JT_COMPANION : 0)));
+                    defaultedParameterInstance = gen.naming.makeQualifiedThis(gen.makeJavaType(((TypeDeclaration)outer).getType(), JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() ? JT_COMPANION : 0)));
                 }
             } else {
                 // a local or toplevel function

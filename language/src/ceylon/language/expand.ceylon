@@ -13,6 +13,7 @@ see (`function Iterable.flatMap`,
     `function concatenate`, 
     `function Iterable.chain`)
 tagged("Streams")
+since("1.1.0")
 shared Iterable<Element,OuterAbsent|InnerAbsent>
         expand<Element,OuterAbsent,InnerAbsent>
         (Iterable<Iterable<Element,InnerAbsent>,OuterAbsent> iterables)

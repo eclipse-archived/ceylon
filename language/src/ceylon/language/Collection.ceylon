@@ -93,6 +93,7 @@ shared interface Collection<out Element=Anything>
      - they are both instances of `Object`, and are 
        [[unequal|Object.equals]], or
      - one element is an `Object` and the other is `null`."
+    since("1.2.0")
     shared {[Element+]*} permutations 
             => object satisfies {[Element+]*} {
         value multiset =
@@ -171,6 +172,7 @@ shared interface Collection<out Element=Anything>
             "if [[length]] is nonpositive or if `length` is
              larger than the number of distinct elements of
              this collection")
+    since("1.2.3")
     shared {[Element+]*} combinations(
                 "The number of distinct elements in each
                  combination"

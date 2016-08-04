@@ -71,6 +71,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      Note that high-quality implementations of `Map` should 
      refine this default implementation."
     see (`function get`)
+    since("1.2.0")
     shared default Item|Default getOrDefault<Default>
             (Object key, Default default) {
         if (defines(key)) {
@@ -135,6 +136,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      map. An element can be stored under more than one key 
      in the map, and so it can occur more than once in the 
      resulting collection."
+    since("1.1.0")
     shared default Collection<Item> items => Items();
     
     "A bag of items."
@@ -175,6 +177,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      
      This is an eager operation, and the resulting map does
      not reflect changes to this map."
+    since("1.2.0")
     shared default Map<Item&Object, [Key+]> inverse() 
             => coalescedMap
                 .summarize<Item&Object,ElementEntry<Key>>
@@ -283,6 +286,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      [[given default value|defaultValue]]. The item `null` 
      does not ocur in the resulting map."
     see (`value coalescedMap`)
+    since("1.2.0")
     shared default
     Map<Key,Item&Object|Default>
     defaultNullItems<Default>(
@@ -295,6 +299,7 @@ shared interface Map<out Key=Object, out Item=Anything>
     "Produces a map by applying a [[filtering]] function 
      to the [[keys]] of this map. This is a lazy operation, 
      returning a view of this map."
+    since("1.1.0")
     shared default 
     Map<Key,Item> filterKeys(
         "The predicate function that filters the keys of 
@@ -343,6 +348,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      
      This is a lazy operation producing a view of this map
      and the given map."
+    since("1.1.0")
     shared default
     Map<Key|OtherKey,Item|OtherItem> 
     patch<OtherKey,OtherItem>
@@ -392,6 +398,7 @@ shared interface Map<out Key=Object, out Item=Anything>
     "A map with every entry of this map whose item is
      non-null."
     see (`function defaultNullItems`)
+    since("1.2.0")
     shared default
     Map<Key,Item&Object> coalescedMap 
             => object
@@ -432,6 +439,7 @@ shared interface Map<out Key=Object, out Item=Anything>
  
  This is an eager operation and the resulting map does not 
  reflect changes to the given [[stream]]."
+since("1.2.0")
 shared Map<Key,Item> map<Key,Item>(
     "The stream of entries."
     {<Key->Item>*} stream,

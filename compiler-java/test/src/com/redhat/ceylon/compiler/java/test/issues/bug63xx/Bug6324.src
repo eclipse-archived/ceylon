@@ -1,0 +1,49 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug63xx;
+
+public class Bug6324 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Bug6324() {
+    }
+    
+    private final void accept$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> something) {
+    }
+    
+    private final void fun$priv$() {
+        (
+            let
+            {
+                .ceylon.language.Callable arg$0$0 = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6324>(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6324.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Bug6324()", (short)-1){
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6324 $call$() {
+                        return .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6324.this;
+                    }
+                };
+                accept$priv$(arg$0$0);
+            }
+            returning null;
+        );
+        
+        final class something_ {
+            
+            private something_() {
+            }
+            
+            .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6324 something() {
+                return .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6324.this;
+            }
+        }
+        final something_ something = new something_();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        new .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6324();
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6324.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.Bug6324.class);
+}

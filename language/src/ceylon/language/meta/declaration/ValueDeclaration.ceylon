@@ -48,15 +48,18 @@ shared sealed interface ValueDeclaration
         satisfies FunctionOrValueDeclaration & NestableDeclaration & GettableDeclaration {
     
     "True if this declaration is annotated with [[late|ceylon.language::late]]."
+    since("1.2.0")
     shared formal Boolean late;
     
     "True if this declaration is annotated with [[variable|ceylon.language::variable]]."
     shared formal Boolean variable;
 
     "True if this declaration is an `object` declaration, whose type is an anonymous class."
+    since("1.1.0")
     shared formal Boolean objectValue;
     
     "This value's anonymous class declaration if this value is an object declaration. `null` otherwise."
+    since("1.1.0")
     shared formal ClassDeclaration? objectClass;
 
     "Applies this value declaration in order to obtain a value model. 

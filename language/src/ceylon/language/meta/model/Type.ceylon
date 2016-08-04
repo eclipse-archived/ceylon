@@ -31,8 +31,10 @@ interface Type<out Target=Anything> /* of ClassOrInterface
     shared formal Boolean exactly(AppliedType<> type);
     
     "The union of this type with the other type."
+    since("1.2.0")
     shared formal Type<Target|Other> union<Other>(Type<Other> other);
     
     "The intersection of this type with the other type."
+    since("1.2.0")
     shared formal Type<Target&Other> intersection<Other>(Type<Other> other);
 }

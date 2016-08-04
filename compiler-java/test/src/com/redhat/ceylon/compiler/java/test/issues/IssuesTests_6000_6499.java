@@ -34,7 +34,7 @@ public class IssuesTests_6000_6499 extends CompilerTests {
 
     @Override
     protected ModuleWithArtifact getDestModuleWithArtifact(String main){
-        return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug62xx", "1");
+        return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues", "1");
     }
     
     @Override
@@ -128,7 +128,8 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     @Test
     public void testBug6207() {
         compile("bug62xx/Bug6207.ceylon");
-        run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6207");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6207",
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug62xx", "1"));
     }
     
     @Test
@@ -156,6 +157,7 @@ public class IssuesTests_6000_6499 extends CompilerTests {
         
         compileAndRun(options,
                 "com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6231.$static.run",
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug62xx", "1"),
                 "bug62xx/bug6231/static/run.ceylon");
     }
     
@@ -173,7 +175,8 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     @Test
     public void testBug6253() {
         compile("bug62xx/Bug6253.ceylon");
-        run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6253run");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6253run",
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug62xx", "1"));
     }
     
     @Test
@@ -194,8 +197,47 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     }
     
     @Test
+    public void testBug6287() {
+        assertErrors("bug62xx/Bug6287",
+                new CompilerError(1, "imported declaration not found: 'string' (did you mean 'stringify'?)"),
+                new CompilerError(4, "type declaration does not exist: 'string'"),
+                new CompilerError(5, "function or value does not exist: 'string'"));
+    }
+    
+    @Test
     public void testBug6283() {
         compareWithJavaSource("bug62xx/Bug6283");
+    }
+
+    @Test
+    public void testBug6304() {
+        compareWithJavaSource("bug63xx/Bug6304");
+    }
+
+    @Test
+    public void testBug6310() {
+        compile("bug63xx/bug6310/Bug6310.ceylon", "bug63xx/bug6310/module.ceylon", "bug63xx/bug6310/Bug6310Java.java");
+    }
+
+    @Test
+    public void testBug6323() {
+        compile("bug63xx/Bug6323Java.java");
+        compareWithJavaSource("bug63xx/Bug6323");
+    }
+
+    @Test
+    public void testBug6324() {
+        compareWithJavaSource("bug63xx/Bug6324");
+    }
+
+    @Test
+    public void testBug6325() {
+        compareWithJavaSource("bug63xx/Bug6325");
+    }
+
+    @Test
+    public void testBug6330() {
+        compareWithJavaSource("bug63xx/Bug6330");
     }
 
     @Test
@@ -204,7 +246,54 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     }
 
     @Test
+    public void testBug6354() {
+        compareWithJavaSource("bug63xx/Bug6354");
+    }
+
+    @Test
+    public void testBug6360() {
+        compareWithJavaSource("bug63xx/Bug6360");
+    }
+
+    @Test
+    public void testBug6365() {
+        compareWithJavaSource("bug63xx/Bug6365");
+    }
+
+    @Test
+    public void testBug6377() {
+        compile("bug63xx/Bug6377Java.java");
+        compareWithJavaSource("bug63xx/Bug6377");
+    }
+
+    @Test
+    public void testBug6379() {
+        compareWithJavaSource("bug63xx/Bug6379");
+    }
+
+    @Test
     public void testBug6391() {
         compareWithJavaSource("bug63xx/Bug6391");
+    }
+
+    @Test
+    public void testBug6392() {
+        compareWithJavaSource("bug63xx/Bug6392");
+    }
+
+    @Test
+    public void testBug6401() {
+        compareWithJavaSource("bug64xx/Bug6401");
+    }
+
+    @Test
+    public void testBug6404() {
+        compareWithJavaSource("bug64xx/Bug6404");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6404");
+    }
+
+    @Test
+    public void testBug6409() {
+        compareWithJavaSource("bug64xx/Bug6409");
     }
 }

@@ -27,6 +27,7 @@ shared native object runtime  {
     "The number of bits of [[Integer]] instances which may 
      be manipulated via the methods inherited from
      [[Binary]]."
+    since("1.1.0")
     shared native Integer integerAddressableSize;
     
     "The smallest [[Integer]] value that can be represented 
@@ -54,20 +55,24 @@ shared native object runtime  {
      only. In practice it is usually impossible to allocate 
      an array of this size, due to memory constraints."
     see (`class Array`)
+    since("1.1.0")
     shared native Integer maxArraySize;
     
     "The largest finite [[Float]] value that can be 
      represented by the runtime."
+    since("1.2.0")
     shared native Float maxFloatValue;
 
     "The smallest positive nonzero [[Float]] value that can 
      be represented by the runtime."
+    since("1.2.0")
     shared native Float minFloatValue;
     
     "The _machine epsilon_ for [[floating point|Float]]
      values. That is, the smallest value `e` such that:
      
          1.0 + e > 1.0"
+    since("1.2.0")
     shared native Float epsilon; 
     
     "The largest [[Integer]] that can be exactly represented
@@ -75,6 +80,7 @@ shared native object runtime  {
      of this value is the smallest `Integer` that can be
      exactly represented as a `Float`."
     see (`value Integer.float`)
+    since("1.2.0")
     shared native Integer maxExactIntegralFloat;
     
     string => "runtime [``name`` / ``version``]";
