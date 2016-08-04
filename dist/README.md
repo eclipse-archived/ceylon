@@ -205,18 +205,6 @@ The Ceylon distribution is and contains work released
 This software uses a number of other works, the license terms of 
 which are documented in the `NOTICE` file that accompanied this code.
 
-### Repository
-
-The content of this code repository, [available here on GitHub][ceylon], 
-is released under the ASL v2.0 as provided in the `LICENSE-ASL` file 
-that accompanied this code.
-
-[ceylon]: https://github.com/ceylon/ceylon
-
-By submitting a "pull request" or otherwise contributing to this 
-repository, you agree to license your contribution under the license 
-mentioned above.
-
 ## Acknowledgement
 
 We're deeply indebted to the community volunteers who contributed a 
