@@ -1200,6 +1200,11 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
     public void location(CallBuilder callBuilder) {
         callBuilder.location(null);
     }
+    @Override
+    protected Type getArgumentType(int argIndex) {
+        // those are the same in this case
+        return super.getParameterType(argIndex);
+    }
 }
 
 /**

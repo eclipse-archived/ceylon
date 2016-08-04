@@ -3463,17 +3463,18 @@ public class ExpressionTransformer extends AbstractTransformer {
             int argIndex, BoxingStrategy boxingStrategy) {
         ExpressionAndType exprAndType;
         JCExpression expr = invocation.getTransformedArgumentExpression(argIndex);
-        JCExpression type = makeJavaType(invocation.getParameterType(argIndex), boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
+        Type paramType = invocation.getParameterType(argIndex);
+        JCExpression type = makeJavaType(paramType, boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0);
         Class ctedClass = Decl.getConstructedClass(invocation.getPrimaryDeclaration());
         if (argIndex == 0
-                && typeFact().isOptionalType(invocation.getParameterType(argIndex))
+                && typeFact().isOptionalType(paramType)
                 && invocation.getArgumentType(argIndex).isSubtypeOf(typeFact().getNullType())
                 && ctedClass != null && (ctedClass.hasConstructors()|| ctedClass.isSerializable())) {
             // we've invoking the default constructor, whose first parameter has optional type
             // with a null argument: That will be ambiguous wrt any named constructors
             // with otherwise identical signitures, so we need a typecast to
             // disambiguate
-            expr = make().TypeCast(makeJavaType(invocation.getParameterType(argIndex), boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0), expr);
+            expr = make().TypeCast(makeJavaType(paramType, boxingStrategy == BoxingStrategy.BOXED ? JT_NO_PRIMITIVES : 0), expr);
         }
         exprAndType = new ExpressionAndType(expr, type);
         return exprAndType;
