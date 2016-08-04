@@ -5018,23 +5018,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && !Decl.isLocalToInitializer(decl)
                 && !isWithinSuperInvocation()) {
             // First check whether the expression is captured from an enclosing scope
-            TypeDeclaration outer = null;
-            // get the ClassOrInterface container of the declaration
-            Scope stop = Decl.getClassOrInterfaceContainer(decl, false);
-            if (stop instanceof TypeDeclaration) {// reified scope
-                Scope scope = expr.getScope();
-                while (!(scope instanceof Package)) {
-                    if (scope.equals(stop)) {
-                        outer = (TypeDeclaration)stop;
-                        break;
-                    }
-                    scope = scope.getContainer();
-                }
-            }
-            // If not it might be inherited...
-            if (outer == null) {
-                outer = expr.getScope().getInheritingDeclaration(decl);
-            }
+            TypeDeclaration outer = Decl.getOuterScopeOfMemberInvocation(expr, decl);
             if (outer != null) {
                 Type targetType = expr.getTarget().getQualifyingType();
                 Type declarationContainerType = ((TypeDeclaration)outer).getType();

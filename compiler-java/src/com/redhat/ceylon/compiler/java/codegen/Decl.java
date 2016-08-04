@@ -1072,4 +1072,27 @@ public class Decl {
         }
         return null;
     }
+    
+    public static TypeDeclaration getOuterScopeOfMemberInvocation(Tree.StaticMemberOrTypeExpression expr, 
+            Declaration decl){
+        // First check whether the expression is captured from an enclosing scope
+        TypeDeclaration outer = null;
+        // get the ClassOrInterface container of the declaration
+        Scope stop = Decl.getClassOrInterfaceContainer(decl, false);
+        if (stop instanceof TypeDeclaration) {// reified scope
+            Scope scope = expr.getScope();
+            while (!(scope instanceof Package)) {
+                if (scope.equals(stop)) {
+                    outer = (TypeDeclaration)stop;
+                    break;
+                }
+                scope = scope.getContainer();
+            }
+        }
+        // If not it might be inherited...
+        if (outer == null) {
+            outer = expr.getScope().getInheritingDeclaration(decl);
+        }
+        return outer;
+    }
 }
