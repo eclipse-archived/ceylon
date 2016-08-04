@@ -38,7 +38,7 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 
 ## Building the distribution
 
-Go to the `dist` folder and follow the instructions in the [`README`](/dist/README.md).
+Go to the `dist` folder and follow the instructions in the [`BUILD.md`](/dist/BUILD.md) file.
 
 ## Source code
 

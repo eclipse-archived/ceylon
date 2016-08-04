@@ -27,6 +27,7 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 import com.redhat.ceylon.common.BooleanUtil;
+import com.redhat.ceylon.common.IOUtil;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
@@ -722,8 +723,12 @@ public class JvmBackendUtil {
 
             @Override
             public byte[] getContents(String path) {
-                // TODO Auto-generated method stub
-                return null;
+                // this is used by the metamodel module resource system
+                try{
+                    return IOUtil.readStream(getClass().getClassLoader().getResourceAsStream(path));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
             
             @Override

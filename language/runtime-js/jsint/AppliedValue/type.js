@@ -1,2 +1,2 @@
 var t = getrtmm$$(this.tipo);
-return typeLiteral$meta({Type$typeLiteral:t.$t});
+return typeLiteral$meta({Type$typeLiteral:t.$t||t.super});
