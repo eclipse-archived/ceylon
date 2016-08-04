@@ -197,6 +197,14 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     }
     
     @Test
+    public void testBug6287() {
+        assertErrors("bug62xx/Bug6287",
+                new CompilerError(1, "imported declaration not found: 'string' (did you mean 'stringify'?)"),
+                new CompilerError(4, "type declaration does not exist: 'string'"),
+                new CompilerError(5, "function or value does not exist: 'string'"));
+    }
+    
+    @Test
     public void testBug6283() {
         compareWithJavaSource("bug62xx/Bug6283");
     }
