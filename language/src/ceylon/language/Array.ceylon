@@ -121,7 +121,7 @@ shared final serializable native class Array<Element>
     void copyTo(
         "The array into which to copy the elements, which 
          may be this array."
-        Array<Element> destination,
+        Array<in Element> destination,
         "The index of the first element in this array to 
          copy."
         Integer sourcePosition = 0,
