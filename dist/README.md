@@ -36,9 +36,10 @@ the `bin/ceylon` command. So in every example that follows you'll need to change
 
 ## Trying it out
 
-To see if Ceylon was installed correctly type:
+To see if Ceylon was installed correctly type (the `$` is an indication of your
+command line prompt and should *not* be typed when trying these examples):
 
-    ceylon --version
+    $ ceylon --version
 
 You should see something like:
 
@@ -48,7 +49,7 @@ You should see something like:
 
 To see the list of subcommand that `ceylon` supports just type
 
-    ceylon
+    $ ceylon
 
 You should see a short synopsis and then a list of subcommands like this (you
 might see more options):
@@ -79,7 +80,7 @@ might see more options):
 Then to see a more detailed explanation of a particular subcommand, use the `help`
 subcommand. For example, to get help on the `compile` subcommand type:
 
-    ceylon help compile
+    $ ceylon help compile
 
 ## Running the sample programs
 
@@ -93,7 +94,7 @@ A very easy we to quickly set up a module to compile is to use the `ceylon new`
 command which creates the basic folder structure with the neccesary files.
 Create an empty folder, change into it and type:
 
-    ceylon new hello-world
+    $ ceylon new hello-world
 
 It will then ask you a series of questions:
 
