@@ -154,6 +154,11 @@ public class Package
     @Override
     public Declaration getMember(String name, 
             List<Type> signature, boolean variadic) {
+        if (signature==null 
+                && name.equals("Nothing")
+                && isLanguagePackage()) {
+            return getUnit().getNothingDeclaration();
+        }
         return getDirectMember(name, signature, variadic);
     }
 
