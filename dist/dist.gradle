@@ -82,11 +82,11 @@ task copySupportFiles( type : Copy) {
         include "LICENSE-ASL"
         include "LICENSE-LGPL"
         include "LICENSE-GPL-CP"
-        include "README.md"
     }
 
     from projectDir, {
         include 'NOTICE'
+        include "README.md"
     }
 }
 
