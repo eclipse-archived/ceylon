@@ -13,6 +13,7 @@ public final class bug6362_ {
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void bug6362() {
+        final VariableBox<C> $instance$C$c = new VariableBox<C>(null);
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
                 major = 8,
@@ -63,7 +64,7 @@ public final class bug6362_ {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.bug6362_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class));
             }
         }
-        final C $instance$C$c = new C((C.c_)null);
+        $instance$C$c.ref = new C((C.c_)null);
         final .ceylon.language.meta.model.Class c = (.ceylon.language.meta.model.Class).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.bug6362_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class)));
         if (((.ceylon.language.Sequential<? extends .ceylon.language.meta.model.ValueModel>)c.getValueConstructors()).getSize() == 1L) {
         } else {

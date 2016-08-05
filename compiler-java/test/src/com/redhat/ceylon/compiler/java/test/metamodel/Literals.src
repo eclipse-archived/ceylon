@@ -1018,6 +1018,7 @@ final class constructors_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void constructors() {
+        final VariableBox<C> $instance$C$c = new VariableBox<C>(null);
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
                 major = 8,
@@ -1068,8 +1069,8 @@ final class constructors_ {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.metamodel.constructors_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class));
             }
         }
-        final C $instance$C$c = new C((C.c_)null);
-        .ceylon.language.print_.print($instance$C$c);
+        $instance$C$c.ref = new C((C.c_)null);
+        .ceylon.language.print_.print($instance$C$c.ref);
         final .ceylon.language.meta.model.ValueConstructor<? extends C> x1 = (.ceylon.language.meta.model.ValueConstructor<? extends C>)(.ceylon.language.meta.model.ValueConstructor)((.ceylon.language.meta.model.Class).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.metamodel.constructors_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class)))).getDeclaredConstructor(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "c");
         final .ceylon.language.meta.model.CallableConstructor x2 = (.ceylon.language.meta.model.CallableConstructor)(.ceylon.language.meta.model.CallableConstructor)((.ceylon.language.meta.model.Class).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.metamodel.constructors_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class)))).getDeclaredConstructor(.ceylon.language.Empty.$TypeDescriptor$, "d");
     }
