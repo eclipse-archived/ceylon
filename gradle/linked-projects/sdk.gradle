@@ -1,0 +1,5 @@
+ext {
+    githubRepoName = 'ceylon-sdk'
+}
+
+apply from : 'linked-project.gradle'

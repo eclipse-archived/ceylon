@@ -1,7 +1,4 @@
-plugins {
-    id 'de.qaware.seu.as.code.git' version '2.2.0'
-}
-
+apply plugin : 'de.qaware.seu.as.code.git'
 apply plugin : LifecycleBasePlugin
 
 configurations {
@@ -9,7 +6,7 @@ configurations {
 }
 
 repositories {
-    // TODO: Still refering back to lib directory, because the lib cannot be foudn on the 'net.
+    // TODO: Still refering back to lib directory, because the lib cannot be found on the 'net.
     flatDir {
         dirs "${rootProject.projectDir}/lib"
     }
@@ -25,7 +22,6 @@ dependencies {
 
 ext {
     githubOrgOrUser = project.properties.ceylonGitHubOrgOrUser ?: 'ceylon'
-    githubRepoName = 'ceylon-sdk'
     localRepoFolder   = file("${buildDir}/${githubRepoName}")
     localRepoBuildDir = file("${buildDir}/build-${githubRepoName}")
     localRepoMainDir  = file("${localRepoBuildDir}/main")
@@ -34,30 +30,36 @@ ext {
 }
 
 git {
-    sdk {
+    linkedProject {
         url "https://github.com/${githubOrgOrUser}/${githubRepoName}.git"
         directory localRepoFolder
         branch 'HEAD'
         singleBranch false
+
+        options {
+            pull {
+                rebase = true
+            }
+        }
     }
 }
 
 task setup {
     group "Git Lifecycle"
     description "Clones a new repo for ${githubRepoName}"
-    dependsOn 'gitCloneSdk'
+    dependsOn 'gitCloneLinkedProject'
 }
 
 task update {
     group "Git Lifecycle"
     description "Updated ${githubRepoName} to latest version"
-    dependsOn localRepoExists ? 'gitPullSdk' : 'gitCloneSdk'
+    dependsOn localRepoExists ? 'gitPullLinkedProject' : 'gitCloneLinkedProject'
 }
 
 task status {
     group "Git Lifecycle"
     description "Shows git status for ${githubRepoName}"
-    dependsOn 'gitStatusSdk'
+    dependsOn 'gitStatusLinkedProject'
     enabled = localRepoExists
 }
 
@@ -90,7 +92,7 @@ task createAntBuildEnvironment( type : Copy ) {
 
 task invokeAntBuild( type : GradleBuild ) {
     dir = localRepoFolder
-    buildFile = file('ant.gradle')
+    buildFile = file('ant-wrapper.gradle')
     tasks = ['antPublish']
     startParameter.projectProperties+= [
         ceylonBuildDir : localRepoBuildDir,
@@ -100,8 +102,13 @@ task invokeAntBuild( type : GradleBuild ) {
     ]
 
     mustRunAfter update, setup
-
     dependsOn createAntBuildEnvironment
+
+    startParameter.projectCacheDir = new File(
+        gradle.startParameter.projectCacheDir ?
+            "${gradle.startParameter.projectCacheDir}" : "${rootProject.projectDir}/.gradle",
+        project.name.replace(":", "_")
+    )
 }
 
 build {
