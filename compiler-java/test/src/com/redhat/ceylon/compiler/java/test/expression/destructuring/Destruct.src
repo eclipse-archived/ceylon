@@ -226,14 +226,14 @@ final class variadicDestructuring_ {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> rest = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)((.ceylon.language.Sequence)$pattern$tuple$22).skip(2).sequence();
         final .ceylon.language.Sequence $pattern$tuple$24 = tup;
         final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence)$pattern$tuple$24).getFromFirst(0)).longValue();
-        final .ceylon.language.Sequence pair = (.ceylon.language.Sequence)(
+        final .ceylon.language.Sequence pair = (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.<.java.lang.Object>sequentialToTuple(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Float.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), (
             let
             {
                 .ceylon.language.Sequential tail$25 = ((.ceylon.language.Sequence)$pattern$tuple$24).skip(1).sequence();
                 if (tail$25.shorterThan(2)) throw new .ceylon.language.AssertionError("length of pair is less than minimum length of its static type [Float, String]");
             }
             returning (.ceylon.language.Sequence)tail$25;
-        );
+        ));
         final .ceylon.language.Sequence $pattern$tuple$26 = pair;
         final double ff = ((.ceylon.language.Float)((.ceylon.language.Sequence)$pattern$tuple$26).getFromFirst(0)).doubleValue();
         final .java.lang.String ss = ((.ceylon.language.String)((.ceylon.language.Sequence)$pattern$tuple$26).getFromFirst(1)).toString();
