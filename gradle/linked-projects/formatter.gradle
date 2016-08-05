@@ -1,0 +1,21 @@
+if(!project.properties.RUNNING_ANT_BUILD) {
+    ext {
+        githubRepoName = 'ceylon.formatter'
+    }
+
+    apply from : 'linked-project.gradle'
+
+    // Need to override location as formatter project uses a build.preopties file which
+    // cannot be overridden by setting appropriate ant.properties
+    localRepoMainDir = file("${buildDir}/ceylon")
+
+    dependencies {
+        antBuildEnv "biz.aQute.bnd:org.osgi.impl.bundle.repoindex.ant:2.1.2", {
+            force = true
+        }
+    }
+} else {
+    ant.properties.'out.repo' = project.properties.ceylonBuildDir + '/modules'
+    ant.properties.'eclipse.project.path' = file("${project.properties.ceylonBuildDir}/../../ide-eclipse/ceylon-ide-eclipse")
+    apply from : 'ant-wrapper.gradle'
+}

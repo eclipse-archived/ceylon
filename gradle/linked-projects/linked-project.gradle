@@ -72,7 +72,7 @@ clean {
 }
 
 task createAntBuildEnvironment( type : Copy ) {
-    into localRepoMainDir
+    into {localRepoMainDir}
 
     from configurations.antBuildEnv, {
         into 'lib'
@@ -82,7 +82,7 @@ task createAntBuildEnvironment( type : Copy ) {
         into 'dist/dist'
     }
 
-    dependsOn ':dist:publishInternal'
+//    dependsOn ':dist:publishInternal'
 
     if(!localRepoExists) {
         dependsOn setup
@@ -95,8 +95,11 @@ task invokeAntBuild( type : GradleBuild ) {
     buildFile = file('ant-wrapper.gradle')
     tasks = ['antPublish']
     startParameter.projectProperties+= [
+        RUN_ANT_BUILD  : 1,
         ceylonBuildDir : localRepoBuildDir,
         ceylonMainDir  : localRepoMainDir,
+        ceylonDistDir  : localRepoDistDir,
+
         ceylonAntJar   : "${repoLibDir}/ceylon-ant.jar",
         antProjectDir  : localRepoFolder
     ]

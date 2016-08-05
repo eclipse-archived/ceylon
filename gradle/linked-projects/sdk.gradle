@@ -1,5 +1,14 @@
-ext {
-    githubRepoName = 'ceylon-sdk'
-}
+if(!project.properties.RUNNING_ANT_BUILD) {
+    ext {
+        githubRepoName = 'ceylon-sdk'
+    }
 
-apply from : 'linked-project.gradle'
+    apply from : 'linked-project.gradle'
+
+    dependencies {
+        antBuildEnv osgiBndAntDep
+    }
+} else {
+    ant.properties.'ceylon.ant.lib' = project.properties.ceylonAntJar
+    apply from : 'ant-wrapper.gradle'
+}

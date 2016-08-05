@@ -61,18 +61,14 @@ project(':typechecker').buildFileName = 'typechecker.gradle'
 // ----------------------------------------------------------------------------
 // Linked projects
 // ----------------------------------------------------------------------------
-def linkedCeylonModules = [
-    'ceylon.formatter','ceylon.tool.converter.java2ceylon','ceylon-ide-common'
-]
-
 ['sdk','ceylon.formatter','ceylon.tool.converter.java2ceylon','ceylon-ide-common','ceylon-ide-eclipse',
  'ceylon-ide-intellij'].each { proj ->
 
 }
 
-['sdk'].each { proj ->
+['sdk','formatter'].each { proj ->
     String projName = "${proj}-build"
-    includeFlat('sdk-build')
+    includeFlat(projName)
     project(':'+projName).buildFileName = "${proj}.gradle"
     project(':'+projName).projectDir = file("gradle/linked-projects")
 }

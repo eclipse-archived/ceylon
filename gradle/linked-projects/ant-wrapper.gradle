@@ -1,4 +1,4 @@
 ant.properties.'build.dir' = project.properties.ceylonBuildDir
 ant.properties.'ceylon.main.dir' = project.properties.ceylonMainDir
-ant.properties.'ceylon.ant.lib' = project.properties.ceylonAntJar
 ant.importBuild("${project.properties.antProjectDir}/build.xml") { "ant${it.capitalize()}".toString() }
+
