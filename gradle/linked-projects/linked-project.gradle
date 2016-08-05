@@ -16,17 +16,26 @@ dependencies {
     antBuildEnv antContribDep
     antBuildEnv antlrDep
     antBuildEnv osgiBndDep
-    antBuildEnv osgiBndAntDep
     antBuildEnv osgiBindexDep
+
+    if(project.properties.forceRepoIndexAnt) {
+        antBuildEnv "biz.aQute.bnd:org.osgi.impl.bundle.repoindex.ant:${forceRepoIndexAnt}", {
+            force = true
+        }
+    } else {
+        antBuildEnv osgiBndAntDep
+    }
 }
 
 ext {
     githubOrgOrUser = project.properties.ceylonGitHubOrgOrUser ?: 'ceylon'
+    localRepoMainDir  = file("${buildDir}/ceylon")
     localRepoFolder   = file("${buildDir}/${githubRepoName}")
     localRepoBuildDir = file("${buildDir}/build-${githubRepoName}")
-    localRepoMainDir  = file("${localRepoBuildDir}/main")
     localRepoExists   = file("${localRepoFolder}/.git").exists()
     localRepoDistDir  = file("${localRepoMainDir}/dist/dist")
+
+
 }
 
 git {
