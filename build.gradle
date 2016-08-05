@@ -66,7 +66,7 @@ task 'clean-all' {
     description "Cleans everything here and in linked projects"
     dependsOn clean
     dependsOn 'clean-sdk'
-//    dependsOn 'clean-ide'
+    dependsOn 'clean-ide'
 }
 
 task 'clean-sdk' {
@@ -79,6 +79,18 @@ task sdk {
     group "ceylon cross project"
     description 'Builds the SDK'
     dependsOn ':sdk-build:publishInternal'
+}
+
+task ide {
+    group "ceylon cross project"
+    description 'Builds the IDE plugins & related modules'
+    dependsOn ':formatter-build:publishInternal'
+}
+
+task 'clean-ide' {
+    group "ceylon cross project"
+    description 'Cleans the IDE plugins & related modules'
+    dependsOn ':formatter-build:clean'
 }
 
 /*
