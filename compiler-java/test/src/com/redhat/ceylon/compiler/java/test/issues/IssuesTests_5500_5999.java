@@ -135,7 +135,13 @@ public class IssuesTests_5500_5999 extends CompilerTests {
     public void testBug5947() {
         compile("bug59xx/bug5947.ceylon");
     }
-    
+
+    @Test
+    public void testBug5958() {
+        compareWithJavaSource("bug59xx/bug5958");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug59xx.bug5958");
+    }
+
     @Test
     public void testBug5953() {
         compile("bug59xx/bug5953.ceylon");
