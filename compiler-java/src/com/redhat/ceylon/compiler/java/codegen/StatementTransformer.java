@@ -4951,6 +4951,13 @@ public class StatementTransformer extends AbstractTransformer {
                         } else {
                             fullGetExpr = make().Apply(null, makeQualIdent(fullGetExpr, "sequence"), List.<JCExpression>nil());
                         }
+                        // make sure to put the thing into a tuple if that's what we asked for
+                        if(vt.getDeclaration().inherits(typeFact().getTupleDeclaration())){
+                            Type iteratedType = typeFact().getIteratedType(vt);
+                            JCExpression typeArg = makeJavaType(iteratedType, JT_NO_PRIMITIVES);
+                            JCExpression reifiedTypeArg = makeReifiedTypeArgument(iteratedType);
+                            fullGetExpr = utilInvocation().sequentialToTuple(typeArg, reifiedTypeArg, fullGetExpr);
+                        }
                     }
                 } else {
                     fullGetExpr = null;
