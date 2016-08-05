@@ -58,5 +58,9 @@ project(':tool-provider').buildFileName = 'toolprovider.gradle'
 include 'typechecker'
 project(':typechecker').buildFileName = 'typechecker.gradle'
 
-include 'dist/linked-projects/sdk-build'
-project(file('dist/linked-projects/sdk-build')).name = ':sdk-build'
+//include 'dist/linked-projects/sdk-build'
+//project(file('dist/linked-projects/sdk-build')).name = ':sdk-build'
+includeFlat('sdk-build')
+project(':sdk-build').projectDir = file('dist/linked-projects/sdk-build')
+project(':sdk-build').buildFileName = 'build.gradle'
+
