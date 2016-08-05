@@ -43,11 +43,15 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAssign;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCNewClass;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.langtools.tools.javac.util.Name;
+import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -314,16 +318,19 @@ public class CeylonVisitor extends Visitor {
             classBuilder.getContainingClassBuilder().defs(adb.build());
         } else {
             // LOCAL
-            
-            classBuilder.after(gen.makeVar(FINAL, field, 
+            // we have to first make an empty box
+            JCNewClass initialValue = gen.make().NewClass(null, null, 
                     gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
-                    gen.make().NewClass(null, null, 
-                            gen.naming.makeTypeDeclarationExpression(null, Decl.getConstructedClass(ctor.getEnumerated())), 
-                            List.<JCExpression>of(
-                                    gen.make().TypeCast(
-                                            gen.naming.makeNamedConstructorType(ctor.getEnumerated(), false),
-                                    gen.makeNull())), null)));
-            gen.naming.addVariableSubst(singletonModel, field.getName());
+                    List.<JCExpression>of(
+                            gen.make().TypeCast(
+                                    gen.naming.makeNamedConstructorType(ctor.getEnumerated(), false),
+                            gen.makeNull())), null);
+            JCVariableDecl box = gen.makeVariableBoxDecl(gen.makeNull(), singletonModel);
+            classBuilder.before(box);
+            
+            // then do the class, and after that, assign our instance to the box
+            JCAssign assign = gen.make().Assign(gen.makeSelect(field.getName(), NamingBase.getGetterName(singletonModel)), initialValue);
+            classBuilder.after(gen.make().Exec(assign));
         }
     }
     

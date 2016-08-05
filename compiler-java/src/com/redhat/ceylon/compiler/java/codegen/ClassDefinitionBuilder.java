@@ -243,7 +243,7 @@ public class ClassDefinitionBuilder {
                     && concreteInterfaceMemberDefs.constructors.isEmpty()));
     }
 
-    private void before(JCTree also) {
+    void before(JCTree also) {
         this.before.append(also);
     }
     

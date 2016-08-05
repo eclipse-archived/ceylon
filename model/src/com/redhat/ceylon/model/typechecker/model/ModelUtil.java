@@ -3172,7 +3172,21 @@ public class ModelUtil {
     
     /** Is the given value the result of an enumerated ("singleton") constructor */
     public static boolean isEnumeratedConstructor(Value value) {
-        return value.getType().getDeclaration() instanceof Constructor;
+        return value != null
+                && value.getType() != null
+                && value.getType().getDeclaration() instanceof Constructor;
+    }
+
+    /** 
+     * Is the given value the result of an enumerated ("singleton") constructor
+     * that we store in a local variable
+     */
+    public static boolean isEnumeratedConstructorInLocalVariable(Value value) {
+        if(isEnumeratedConstructor(value)){
+            Class constructedClass = getConstructedClass(value);
+            return !(constructedClass.isToplevel() || constructedClass.isClassMember());
+        }
+        return false;
     }
 
     public static boolean containsRawType(Type type) {
