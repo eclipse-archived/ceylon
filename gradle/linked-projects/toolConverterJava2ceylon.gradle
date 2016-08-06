@@ -7,7 +7,5 @@ if(!project.properties.RUNNING_ANT_BUILD) {
     apply from : 'linked-project.gradle'
 
 } else {
-//    ant.properties.'out.repo' = project.properties.ceylonBuildDir + '/modules'
-//    ant.properties.'eclipse.project.path' = file("${project.properties.ceylonBuildDir}/../../ide-eclipse/ceylon-ide-eclipse")
     apply from : 'ant-wrapper.gradle'
 }

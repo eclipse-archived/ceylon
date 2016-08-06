@@ -1,0 +1,11 @@
+if(!project.properties.RUNNING_ANT_BUILD) {
+    ext {
+        githubRepoName = 'ceylon-ide-common'
+        forceRepoIndexAnt = '2.1.2'
+    }
+
+    apply from : 'linked-project.gradle'
+
+} else {
+    apply from : 'ant-wrapper.gradle'
+}

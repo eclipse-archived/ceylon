@@ -85,14 +85,14 @@ task ide {
     group "ceylon cross project"
     description 'Builds the IDE plugins & related modules'
     dependsOn ':formatter-build:publishInternal'
-    dependsOn ':tool.converter.java2ceylon-build:publishInternal'
+    dependsOn ':toolConverterJava2ceylon-build:publishInternal'
 }
 
 task 'clean-ide' {
     group "ceylon cross project"
     description 'Cleans the IDE plugins & related modules'
     dependsOn ':formatter-build:clean'
-    dependsOn ':tool.converter.java2ceylon-build:clean'
+    dependsOn ':toolConverterJava2ceylon-build:clean'
 }
 
 /*
