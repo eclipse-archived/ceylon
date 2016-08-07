@@ -16,6 +16,7 @@ allprojects {
 
     ext {
         buildPrefix = 'builtByGradle'
+        buildRelease = false
     }
 }
 
@@ -34,6 +35,8 @@ subprojects {
         templatesDir = file("${distDir}/templates")
         repoLibDir = file("${distDir}/lib")
         repoBinDir = file("${distDir}/bin")
+        embeddedRepoDir = file("${rootProject.projectDir}/${buildPrefix}/embeddedRepository")
+        versionQualifier = buildRelease ? '' : ".${TimeStamp.BUILD}"
     }
 
     version= cbp.'ceylon.version'
@@ -58,7 +61,9 @@ task dist {
 }
 
 task clean ( type : Delete ) {
-    delete buildPrefix
+    delete buildDir
+    delete distDir
+    delete embeddedRepoDir
 }
 
 task 'clean-all' {
@@ -86,6 +91,8 @@ task ide {
     description 'Builds the IDE plugins & related modules'
     dependsOn ':formatter-build:publishInternal'
     dependsOn ':toolConverterJava2ceylon-build:publishInternal'
+    dependsOn ':ideCommon-build:publishInternal'
+    dependsOn ':ideEclipse-build:publishInternal'
 }
 
 task 'clean-ide' {
@@ -93,6 +100,8 @@ task 'clean-ide' {
     description 'Cleans the IDE plugins & related modules'
     dependsOn ':formatter-build:clean'
     dependsOn ':toolConverterJava2ceylon-build:clean'
+    dependsOn ':ideCommon-build:clean'
+    dependsOn ':ideEclipse-build:clean'
 }
 
 /*

@@ -2,6 +2,10 @@ apply plugin : LifecycleBasePlugin
 apply plugin : CeylonBuildInfoPlugin
 apply plugin : CeylonCommonBuildProperties
 
+ext {
+    emdeddedRepoDir = "${buildDir}/embeddedRepository"
+}
+
 task setupRepo {
     group 'Distribution'
     dependsOn ':runtime-externals:setupRepo'
@@ -141,6 +145,20 @@ task cleanRepo ( type : Delete ) {
     delete repoDir
 }
 
+// Mass-create linked projects
+['sdk'].each { linkedProject ->
+    ['','setup','status','update','clean'].each { linkedTask ->
+        String localTaskName = linkedTask.empty ? linkedProject : "${linkedTask}-${linkedProject}"
+        String linkedTaskName = linkedTask.empty ? 'publishInternal' : linkedTask
+        group "Linked Build for ${linkedProject} (Legacy)"
+        description "Ported task from Ant Build: Use ':${linkedProject}-build:${linkedTask}' instead."
+        tasks.create(localTaskName) {
+            dependsOn ":${linkedProject}-build:${linkedTaskName}"
+        }
+    }
+}
+
+
 // dist: publish,ide-quick
 // publish: clean-projects,install-all,copy-dist-bin,publish-quick
 // install-all: setup-repo, install-compiler, install-js, copy-compiler-binaries
@@ -182,12 +200,13 @@ task cleanRepo ( type : Delete ) {
 // generate--tooldoc:
 // generate-tooldoc-man:
 //
-// setup-sdk:
+
+// setup-sdk: DONE
 // setup-admins-sdk:
-// status-sdk:
-// update-sdk:
-// clean-sdk:
-// sdk:
+// status-sdk: DONE
+// update-sdk: DONE
+// clean-sdk: DONE
+// sdk: DONE
 //
 // setup-ide:
 // setup-admins-ide:
