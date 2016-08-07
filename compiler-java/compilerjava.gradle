@@ -175,7 +175,7 @@ task bootstrapModule( type : Jar ) {
     ceylon {
         importJavaxModel  false
         bundleSymbolicName bmSymbolicName
-        exportedBundleVersion bmVersionName+".${TimeStamp.BUILD}"
+        exportedBundleVersion bmVersionName + versionQualifier
         moduleLocation {bootstrapModuleXml.destinationFile}
         forceOptionalResolutionFor 'ceylon.runtime'
     }

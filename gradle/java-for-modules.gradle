@@ -110,7 +110,7 @@ jar {
     ceylon {
         importJavaxModel  false
         bundleSymbolicName project.ext.bundleSymbolicName
-        exportedBundleVersion project.ext.bundleVersionName+".${TimeStamp.BUILD}"
+        exportedBundleVersion project.ext.bundleVersionName+versionQualifier
         moduleLocation {moduleXml.destinationFile}
     }
 
