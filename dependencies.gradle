@@ -21,7 +21,8 @@ ext {
 //    mavenAetherSpiDep       = ":${mavenAetherVer}"
     mavenAetherTransFileDep = "org.eclipse.aether:aether-transport-file:${mavenAetherVer}"
     mavenAetherTransHttpDep = "org.eclipse.aether:aether-transport-http:${mavenAetherVer}"
-//    mavenAetherUtilDep      = ":${mavenAetherVer}"
+//    mavenAetherUtilDep      = ":${mavenAetherVer\// https://mvnrepository.com/artifact/org.osgi/org.osgi.core
+    osgiCoreDep             = 'org.osgi:org.osgi.core:4.3.1'
     osgiBindexDep           = ":org.osgi.impl.bundle.bindex:2.2.0"
     osgiBndDep              = "biz.aQute.bnd:biz.aQute.bnd:${bndVer}"
     osgiBndAntDep           = "biz.aQute.bnd:org.osgi.impl.bundle.repoindex.ant:${bndVer}"
