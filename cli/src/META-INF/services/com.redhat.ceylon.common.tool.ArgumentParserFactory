@@ -1,1 +1,2 @@
 com.redhat.ceylon.common.tool.StandardArgumentParsers
+com.redhat.ceylon.common.tool.CeylonArgumentParsers
