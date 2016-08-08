@@ -1,0 +1,40 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug59xx;
+
+final class bug5958_ {
+    
+    private bug5958_() {
+    }
+    
+    static void bug5958() {
+        final VariableBox<C> foo = new VariableBox<C>(null);
+        final VariableBox<C> $instance$C$instance = new VariableBox<C>(null);
+        
+        class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+            
+            public final C theInstance() {
+                return $instance$C$instance.ref;
+            }
+            
+            private final void f$priv$() {
+                .ceylon.language.print_.print(foo.ref);
+            }
+            
+            final class instance_ {
+                
+                instance_() {
+                }
+            }
+            
+            private C(C.instance_ $name$) {
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.issues.bug59xx.bug5958_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(C.class));
+            }
+        }
+        $instance$C$instance.ref = new C((C.instance_)null);
+        .ceylon.language.print_.print($instance$C$instance.ref);
+        .ceylon.language.print_.print($instance$C$instance.ref.theInstance());
+    }
+}

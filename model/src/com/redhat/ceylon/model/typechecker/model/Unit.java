@@ -293,11 +293,11 @@ public class Unit {
                 languagePackage = 
                         languageModule.getPackage(LANGUAGE_MODULE_NAME);
             }
-            if (languagePackage != null) {
+            if (languagePackage!=null) {
                 Declaration d = 
                         languagePackage.getMember(name, 
                                 null, false);
-                if (d != null && d.isShared()) {
+                if (d!=null && d.isShared()) {
                     return d;
                 }
             }

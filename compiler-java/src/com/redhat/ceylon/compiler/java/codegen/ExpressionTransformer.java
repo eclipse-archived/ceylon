@@ -4151,7 +4151,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                             callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
                         }
                     } else {
-                        callBuilder.fieldRead(naming.makeName((TypedDeclaration)member, Naming.NA_IDENT));
+                        // Local enumerated constructor values are boxed
+                        qualExpr = naming.makeQualifiedName(null, (TypedDeclaration)member, Naming.NA_Q_LOCAL_INSTANCE);
+                        qualExpr = gen().makeSelect(qualExpr, naming.selector((TypedDeclaration)member));
+                        callBuilder.fieldRead(qualExpr);
                     }
                     
                     return callBuilder.build();
@@ -4910,10 +4913,21 @@ public class ExpressionTransformer extends AbstractTransformer {
                     qualExpr = makeQualifiedDollarThis((Tree.BaseMemberExpression)expr);
                 }
             }
-            
+            boolean isEnumeratedConstructorGetter = false;
+            if((decl instanceof Value && Decl.isEnumeratedConstructor((Value)decl))){
+                Class constructedClass = Decl.getConstructedClass(decl);
+                // See CeylonVisitor.transformSingletonConstructor for that logic
+                if(constructedClass.isToplevel() || constructedClass.isClassMember())
+                    isEnumeratedConstructorGetter = true;
+                else{
+                    // Local enumerated constructor values are boxed
+                    useGetter = false; // local class will use a field
+                    qualExpr = naming.makeQualifiedName(primaryExpr, (TypedDeclaration)decl, Naming.NA_Q_LOCAL_INSTANCE);
+                    selector = naming.selector((TypedDeclaration)decl);
+                }
+            }
             if (qualExpr == null 
-                    && (decl.isStaticallyImportable()
-                            || (decl instanceof Value && Decl.isEnumeratedConstructor((Value)decl)))
+                    && (decl.isStaticallyImportable() || isEnumeratedConstructorGetter)
                     // make sure we only do this for things contained in a type, as otherwise
                     // it breaks for qualified calls to static methods in interfaces in Java 8
                     // it only breaks for interfaces because they are statically importable
@@ -6920,7 +6934,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (useSite instanceof Functional) {
                     return target == OutputElement.CONSTRUCTOR;
                 } else if (useSite instanceof Value) {
-                    return target == OutputElement.GETTER;
+                    // If the constructor has a getter we can't annotate, let's
+                    // put the annotations on the constructor
+                    Class constructedClass = Decl.getConstructedClass((Declaration) useSite);
+                    // See CeylonVisitor.transformSingletonConstructor for those tests
+                    if(constructedClass.isToplevel() || constructedClass.isClassMember())
+                        return target == OutputElement.GETTER;
+                    return target == OutputElement.CONSTRUCTOR;
                 }
             } else if (useSite instanceof Class) {
                 if (((Class)useSite).getParameterList() != null

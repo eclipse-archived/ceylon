@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.loader;
 
+import com.redhat.ceylon.common.JVMModuleUtil;
+import com.redhat.ceylon.model.loader.NamingBase.Prefix;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaBeanValue;
 import com.redhat.ceylon.model.loader.model.OutputElement;
@@ -116,6 +118,24 @@ public class NamingBase {
         $superarg$,
         $pattern$,
         $instance$, $array$
+    }
+
+    public static String prefixName(Prefix prefix, String s) {
+        return prefix.toString() + s;
+    }
+
+    public static String prefixName(Prefix prefix, String... rest) {
+        if (rest.length == 0) {
+            throw new RuntimeException();
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(prefix);
+        for (String s : rest) {
+            sb.append(s).append('$');
+        }
+        
+        sb.setLength(sb.length()-1);// remove last $
+        return sb.toString();
     }
 
     public static String suffixName(Suffix suffix, String s) {
@@ -254,7 +274,11 @@ public class NamingBase {
                 && (!ModelUtil.isLocalToInitializer(decl) || enumeratedConstructor) 
                 && !indirect) {
             if(enumeratedConstructor) {
-                return getGetterName(((Class)decl.getContainer()).getName() + "$" + decl.getName());
+                Class constructedClass = ModelUtil.getConstructedClass(decl);
+                // See CeylonVisitor.transformSingletonConstructor for that logic
+                if(constructedClass.isToplevel() || constructedClass.isClassMember())
+                    return getGetterName(((Class)decl.getContainer()).getName() + "$" + decl.getName());
+                return name(Unfix.ref);
             }
             return getErasedGetterName(decl);
         } else if (decl instanceof TypedDeclaration && JvmBackendUtil.isBoxedVariable((TypedDeclaration)decl)) {
@@ -361,6 +385,18 @@ public class NamingBase {
             return "string";
         } else {
             throw new RuntimeException("Illegal java getter/setter name " + getterName);
+        }
+    }
+
+    public static String getValueConstructorFieldNameAsString(Value singletonModel) {
+        Class clz = (Class)singletonModel.getContainer();
+        if (clz.isToplevel()) {
+            return JVMModuleUtil.quoteIfJavaKeyword(singletonModel.getName());
+        }
+        else if (clz.isClassMember()){
+            return prefixName(Prefix.$instance$, clz.getName(), singletonModel.getName());
+        } else {
+            return prefixName(Prefix.$instance$, clz.getName(), singletonModel.getName());
         }
     }
 }

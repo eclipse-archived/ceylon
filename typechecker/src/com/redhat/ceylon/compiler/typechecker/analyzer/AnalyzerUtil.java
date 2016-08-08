@@ -263,6 +263,7 @@ public class AnalyzerUtil {
     
     private static DeclarationWithProximity best(final String name, 
             Map<String,DeclarationWithProximity> suggestions) {
+        suggestions.remove(name); //don't ever suggest the name itself
         if (suggestions.isEmpty()) {
             return null;
         }

@@ -1159,20 +1159,6 @@ public class TypeUtils {
             gen.out("{t:'i");
             subs = pt.getSatisfiedTypes();
         } else if (pt.isUnion()) {
-            //It still could be a Tuple with first optional type
-            List<Type> cts = pt.getCaseTypes();
-            if (cts.size()==2) {
-                Type ct1 = cts.get(0);
-                Type ct2 = cts.get(1);
-                if (ct1.isEmpty() && ct2.isTuple() ||
-                    ct2.isEmpty() && ct1.isTuple()) {
-                    //yup...
-                    gen.out("{t:'T',l:");
-                    encodeTupleAsParameterListForRuntime(resolveTargs, node, pt,false,gen);
-                    gen.out("}");
-                    return true;
-                }
-            }
             gen.out("{t:'u");
             subs = pt.getCaseTypes();
         } else if (pt.isTuple()) {

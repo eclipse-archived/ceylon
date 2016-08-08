@@ -73,24 +73,6 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class Naming extends NamingBase implements LocalId {
 
-    private static String prefixName(Prefix prefix, String s) {
-        return prefix.toString() + s;
-    }
-    
-    private static String prefixName(Prefix prefix, String... rest) {
-        if (rest.length == 0) {
-            throw new RuntimeException();
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append(prefix);
-        for (String s : rest) {
-            sb.append(s).append('$');
-        }
-        
-        sb.setLength(sb.length()-1);// remove last $
-        return sb.toString();
-    }
-    
     static String compoundName(String name, String name2) {
         return name + "$" + name2;
     }
@@ -1215,6 +1197,9 @@ public class Naming extends NamingBase implements LocalId {
     }
     
     String getVariableBoxName(TypedDeclaration declaration) {
+        if(declaration instanceof Value
+                && ModelUtil.isEnumeratedConstructorInLocalVariable((Value)declaration))
+            return getValueConstructorFieldNameAsString((Value) declaration);
         return declaration.getName();
     }
     
@@ -2147,15 +2132,7 @@ public class Naming extends NamingBase implements LocalId {
     }
     
     protected SyntheticName getValueConstructorFieldName(Value singletonModel) {
-        Class clz = (Class)singletonModel.getContainer();
-        if (clz.isToplevel()) {
-            return synthetic(Naming.quoteFieldName(singletonModel.getName()));
-        }
-        else if (clz.isClassMember()){
-            return synthetic(Prefix.$instance$, clz.getName(), singletonModel.getName());
-        } else {
-            return synthetic(Prefix.$instance$, clz.getName(), singletonModel.getName());
-        }
+        return synthetic(getValueConstructorFieldNameAsString(singletonModel));
     }
 }
 

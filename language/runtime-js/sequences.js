@@ -96,6 +96,8 @@ function $init$sarg(){if(sarg$.$$===undefined){
       $$4.$$targs$$={Element$Iterator:sarg.$$targs$$.Element$Iterable};
       Iterator($$4.$$targs$$,$$4);
       $$4.i=0;
+      $$4.e=sarg.e;
+      $$4.s=sarg.s;
       return $$4;
     };
     iter.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$cont:iterator,sts:[{t:Iterator,a:{Element$Iterator:'T$LazyIterable'}}],d:['$','LazyIterable','$m','iterator','$o','it']};};
@@ -103,9 +105,16 @@ function $init$sarg(){if(sarg$.$$===undefined){
       initTypeProto(iter,'LazyIterable.iterator',Basic,Iterator);
       iter.$$.prototype.next=function(){
         if (this.sp)return this.sp.next();
-        var e=this.outer$.e(this.i);
-        if (e===finished() && this.outer$.s) {
-          var a=this.outer$.s();
+        var e=this.e(this.i);
+        if (e===finished() && this.s) {
+          var a=this.s();
+          //If spread is also LazyIter, get its elements and spread and continue iterating over those
+          if (a.getT$name && a.getT$name()==='ceylon.language::LazyIterable') {
+            this.i=0;
+            this.s=a.s;
+            this.e=a.e;
+            return this.next();
+          }
           this.sp=(Array.isArray(a)?$arr$(a,{t:Anything}):a).iterator();
           e=this.sp.next();
         } else {

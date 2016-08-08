@@ -251,8 +251,21 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     }
 
     @Test
+    public void testBug6358() {
+        compile("bug63xx/Bug6358.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug63xx.bug6358");
+    }
+
+    @Test
     public void testBug6360() {
         compareWithJavaSource("bug63xx/Bug6360");
+    }
+
+    @Test
+    public void testBug6362() throws Throwable {
+        compareWithJavaSource("bug63xx/Bug6362");
+        runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.issues/1", 
+                Arrays.asList("--run", "com.redhat.ceylon.compiler.java.test.issues.bug63xx::bug6362"));
     }
 
     @Test

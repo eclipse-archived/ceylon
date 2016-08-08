@@ -335,11 +335,12 @@ public class JvmBackendUtil {
      * via a {@code VariableBox}
      */
     public static boolean isBoxedVariable(TypedDeclaration attr) {
-        return ModelUtil.isNonTransientValue(attr)
+        return (ModelUtil.isNonTransientValue(attr)
                 && ModelUtil.isLocalNotInitializer(attr)
                 && ((attr.isVariable() && attr.isCaptured())
                         // self-captured objects must also be boxed like variables
-                        || attr.isSelfCaptured());
+                        || attr.isSelfCaptured()))
+                || (attr instanceof Value && ModelUtil.isEnumeratedConstructorInLocalVariable((Value) attr));
     }
 
     private static String getArrayName(TypeDeclaration decl) {

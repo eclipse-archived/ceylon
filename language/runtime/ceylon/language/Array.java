@@ -1937,51 +1937,74 @@ public final class Array<Element>
     }
     
     @Ignore
-    public long copyTo$sourcePosition(Array<Element> destination){
+    public long copyTo$sourcePosition(Array<? super Element> destination){
         return 0L;
     }
 
     @Ignore
-    public long copyTo$destinationPosition(Array<Element> destination, 
+    public long copyTo$destinationPosition(Array<? super Element> destination, 
             long sourcePosition){
         return 0L;
     }
 
     @Ignore
-    public long copyTo$length(Array<Element> destination, 
+    public long copyTo$length(Array<? super Element> destination, 
             long sourcePosition, long destinationPosition){
         return Math.min(size-sourcePosition,
                 destination.getSize()-destinationPosition);
     }
 
     @Ignore
-    public void copyTo(Array<Element> destination){
+    public void copyTo(Array<? super Element> destination){
         copyTo(destination, 0L, 0L);
     }
 
     @Ignore
-    public void copyTo(Array<Element> destination, long sourcePosition) {
+    public void copyTo(Array<? super Element> destination, long sourcePosition) {
         copyTo(destination, sourcePosition, 0L);
     }
 
     @Ignore
-    public void copyTo(Array<Element> destination, 
+    public void copyTo(Array<? super Element> destination, 
             long sourcePosition, long destinationPosition) {
         copyTo(destination, sourcePosition, destinationPosition, 
                 copyTo$length(destination, sourcePosition, destinationPosition));
     }
 
-    public void copyTo(@Name("destination") Array<Element> destination, 
+    public void copyTo(@Name("destination")
+                       @TypeInfo("ceylon.language::Array<in Element>") Array<? super Element> destination,
                        @Name("sourcePosition") @Defaulted long sourcePosition, 
                        @Name("destinationPosition") @Defaulted long destinationPosition, 
                        @Name("length") @Defaulted long length) {
         if (length>0) {
             try {
-                arraycopy(array, 
-                        Util.toInt(sourcePosition), 
-                        destination.array, 
-                        Util.toInt(destinationPosition), 
-                        Util.toInt(length));
+                if (elementType == destination.elementType) {
+                    arraycopy(array,
+                            Util.toInt(sourcePosition),
+                            destination.array,
+                            Util.toInt(destinationPosition),
+                            Util.toInt(length));
+                }
+                else {
+                    // Box. Given that the special types String, Integer, etc. are all
+                    // final, widening will always be to a type like Object or Number<>
+                    // for which the value will be stored in boxed form. Arrays that
+                    // hold subtypes of the special types will be empty. We can
+                    // therefore write the values obtained by src.getFromFirst() directly
+                    // to the destination array (i.e. without using destination.set())
+                    java.lang.Object[] dst = (java.lang.Object[]) destination.array;
+                    int srcIndex = Util.toInt(sourcePosition);
+                    int dstIndex = Util.toInt(destinationPosition);
+                    int len = Util.toInt(length);
+                    if (srcIndex < 0 || dstIndex < 0
+                            || srcIndex + len > getSize()
+                            || dstIndex + len > destination.getSize()) {
+                        throw new AssertionError("Index out of bounds");
+                    }
+                    while (len-- > 0) {
+                        dst[dstIndex++] = getFromFirst(srcIndex++);
+                    }
+                }
             }
             catch (IndexOutOfBoundsException iob) {
                 throw new AssertionError(iob.getMessage());
