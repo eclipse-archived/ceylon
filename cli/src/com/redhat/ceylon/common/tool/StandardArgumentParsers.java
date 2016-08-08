@@ -34,6 +34,13 @@ public class StandardArgumentParsers extends ArgumentParserFactory {
         }
     };
     
+    public static final ArgumentParser<Long> LONG_PARSER = new ArgumentParser<Long>() {
+        @Override
+        public Long parse(String argument, Tool tool) {
+            return Long.valueOf(argument);
+        }
+    };
+    
     public static final ArgumentParser<URI> URI_PARSER = new ArgumentParser<URI>() {
         @Override
         public URI parse(String argument, Tool tool) {
@@ -182,6 +189,9 @@ public class StandardArgumentParsers extends ArgumentParserFactory {
         } else if (Integer.class.isAssignableFrom(setterType)
                 || Integer.TYPE.isAssignableFrom(setterType)) {
             return INTEGER_PARSER;
+        } else if (Long.class.isAssignableFrom(setterType)
+                || Long.TYPE.isAssignableFrom(setterType)) {
+            return LONG_PARSER;
         } else if (Boolean.class.isAssignableFrom(setterType)
                 || Boolean.TYPE.isAssignableFrom(setterType)) {
             return BOOLEAN_PARSER;
