@@ -194,7 +194,7 @@ public abstract class ToolLoader {
                 throw new ModelException("Error instantiating the given @ParserFactory", e);
             }
         }
-        return StandardArgumentParsers.forClass(setterType, this, isSimpleType);
+        return ArgumentParserFactory.instance(setterType, this, isSimpleType);
     }
     
     private <T extends Tool, A> void addMethod(Class<T> cls, ToolModel<T> model,

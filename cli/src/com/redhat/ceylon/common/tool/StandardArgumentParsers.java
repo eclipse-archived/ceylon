@@ -11,7 +11,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class StandardArgumentParsers {
+public class StandardArgumentParsers extends ArgumentParserFactory {
 
     public static final ArgumentParser<String> CHAR_SEQUENCE_PARSER = new ArgumentParser<String>() {
         @Override
@@ -176,7 +176,7 @@ public class StandardArgumentParsers {
         }
     }
     
-    public static ArgumentParser<?> forClass(Class<?> setterType, ToolLoader toolLoader, boolean isSimpleType) {
+    public ArgumentParser<?> forClass(Class<?> setterType, ToolLoader toolLoader, boolean isSimpleType) {
         if (CharSequence.class.isAssignableFrom(setterType)) {
             return CHAR_SEQUENCE_PARSER;
         } else if (Integer.class.isAssignableFrom(setterType)
