@@ -1,0 +1,402 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin : 'java'
+apply plugin : CeylonBuildInfoPlugin
+
+repositories {
+    // TODO: Still refering back to lib directory, because the lib cannot be found on the 'net.
+    flatDir {
+        dirs "${rootProject.projectDir}/lib"
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
+
+configurations {
+    embeddedRepo
+    bindexAntTasks
+    repoIndexAntTasks
+    xsltAntTasks
+}
+
+dependencies {
+    compile project(':common')
+    compile project(':model')
+    compile project(':cmr')
+    compile project(':typechecker')
+    compile project(':compiler-java')
+    compile project(path : ':language', configuration : 'antOutput')
+
+    compile osgiCoreDep
+    embeddedRepo osgiCoreDep
+    bindexAntTasks osgiBindexDep
+    repoIndexAntTasks osgiBndAntDep
+    xsltAntTasks antContribDep
+}
+
+ext {
+    localDistDir     = file("${buildDir}/dist")
+    localPluginsDir   = file("${localDistDir}/plugins")
+    localFeaturesDir = file("${localDistDir}/features")
+    embeddedRepoDir  = file("${buildDir}/embeddedRepository")
+    zipDir           = file("${buildDir}/distributions")
+
+    makeOsgiManifest = {
+        from 'meta-inf-templates/MANIFEST.MF', {
+            eachEntry {
+                value = value.replaceAll ~/@ceylon-version@/, project.version
+
+                if(key == 'Bundle-Version') {
+                    value = "${project.version}${versionQualifier}"
+                }
+            }
+        }
+    }
+
+    includedBundles = '''
+com.redhat.ceylon.dist
+ceylon.bootstrap
+ceylon.language
+com.redhat.ceylon.common
+com.redhat.ceylon.model
+com.redhat.ceylon.langtools.classfile
+com.redhat.ceylon.module-resolver
+'''
+
+}
+
+
+ant.taskdef(
+    name : 'bindex',
+    classname : 'org.osgi.impl.bundle.bindex.ant.BindexTask',
+    classpath : configurations.bindexAntTasks.asPath
+)
+
+ant.typedef(
+    resource : 'taskdef.properties',
+    classpath : configurations.repoIndexAntTasks.asPath
+)
+
+ant.taskdef(
+    resource: 'net/sf/antcontrib/antcontrib.properties',
+    classpath : configurations.xsltAntTasks.asPath
+)
+
+jar {
+    description 'Creates distribution OSGI JAR'
+    manifest makeOsgiManifest
+    archiveName "com.redhat.ceylon.dist_${version}${versionQualifier}.jar"
+
+    from distDir, {
+        include "lib/ceylon-bootstrap.jar"
+        include "repo/**/ceylon.bootstrap*.jar"
+    }
+}
+
+task moduleProperties( type : Copy ) {
+    group 'OSGI Distribution'
+    description 'Creates module.properties file'
+    from 'module.properties'
+    into buildDir
+    filter ReplaceTokens, tokens : [ 'ceylon-version' : project.version ]
+}
+
+task cleanEmbeddedRepository( type : Delete ) {
+    group 'OSGI Distribution'
+    description 'Clean the embedded repository'
+    delete embeddedRepoDir
+}
+
+task importOsgiCore( type : AntCeylonImportJarTask ) {
+    group 'OSGI Distribution'
+    description "Imports ${osgiCoreDep} into repository"
+
+    classpath "${repoLibDir}/ceylon-ant.jar"
+    module "org.osgi.core/${osgiVer}"
+    jarFile {
+        configurations.getByName('embeddedRepo').singleFile
+    }
+    destinationDir "${embeddedRepoDir}/repo"
+}
+
+task importDistJar( type : AntCeylonImportJarTask ) {
+    group 'OSGI Distribution'
+    description "Imports dist jar into repository"
+
+    classpath "${repoLibDir}/ceylon-ant.jar"
+    module "org.osgi.core/${osgiVer}"
+    jarFile {jar.archivePath}
+    descriptor { "${buildDir}/module.properties" }
+    destinationDir "${embeddedRepoDir}/repo"
+
+    dependsOn jar, moduleProperties
+}
+
+task embeddedRepository ( type : Copy ) {
+
+    dependsOn ':dist:zip'
+    into embeddedRepoDir
+
+    from distDir, {
+        include 'repo'
+        include 'bin'
+        include 'lib'
+    }
+
+    from 'embeddedRepository', {
+        include '.classpath'
+        include '.project'
+    }
+
+    from 'embeddedRepository/meta-inf-templates', {
+        include 'MANIFEST.MF'
+        into 'META-INF'
+        filter ReplaceTokens, tokens : ['ceylon-version' : project.version]
+    }
+
+    dependsOn importOsgiCore, importDistJar
+}
+
+
+task repoJar( type : Jar ) {
+    group = jar.group
+    description 'Creates repository OSGI JAR'
+    destinationDir = jar.destinationDir
+    archiveName = "com.redhat.ceylon.dist.repo_${version}${versionQualifier}.jar"
+    manifest makeOsgiManifest
+
+    from embeddedRepoDir, {
+        include 'lib'
+        include 'bin'
+        include 'repo'
+    }
+
+    dependsOn embeddedRepository
+}
+
+
+task copyPluginJars( type : Copy ) {
+    dependsOn embeddedRepository
+
+    from { fileTree("${embeddedRepoDir}/repo") {
+        include '**/*.jar'
+        include '**/*.car'
+        exclude "**/org.osgi.core-*.jar"
+    }.files }
+
+    from jar
+    from repoJar
+
+    into localPluginsDir
+}
+
+assemble {
+    dependsOn repoJar
+}
+
+task createR5Obr {
+    group 'OSGI Distribution'
+    description "Ceylon Distribution Bundles - R5 OBR format"
+    dependsOn copyPluginJars
+
+    ext {
+        index = file("${localDistDir}/index.xml")
+    }
+
+    outputs.file index
+    inputs.dir localPluginsDir
+
+    doFirst {
+        ant.repoindex(
+            out : index.absolutePath,
+            pretty : 'true',
+            compressed : 'false',
+            rooturl : localDistDir.toURI()
+        ) {
+            fileset  dir : localPluginsDir.absolutePath, includes : '*.jar'
+        }
+    }
+}
+
+task createObr {
+    group 'OSGI Distribution'
+    description "Ceylon Distribution Bundles - Old OBR format"
+    dependsOn copyPluginJars
+
+    ext {
+        index = file("${localDistDir}/index.xml")
+    }
+
+    outputs.file index
+    inputs.dir localPluginsDir
+
+    doFirst {
+        ant.bindex(
+            quiet : 'true',
+            repositoryFile : index.absolutePath,
+            root : localDistDir.absolutePath
+        ) {
+            fileset  dir : localPluginsDir.absolutePath, includes : '*.jar'
+        }
+    }
+}
+
+task generateOsgiFeatures {
+    group 'OSGI Distribution'
+    description "Creates OSGI feature file"
+
+    ext {
+        xslFile = file('karaf/generateKarafRuntimeDistributionFeature.xsl')
+        featureId = 'ceylon.distribution.runtime'
+        featureVersion = project.version
+        featureFile = file("${localFeaturesDir}/${featureId}_${featureVersion}")
+    }
+    dependsOn createR5Obr
+    inputs.files createR5Obr.index, xslFile
+    outputs.file featureFile
+
+    doFirst {
+        mkdir featureFile.parentFile
+
+        ant.xslt(
+            style : xslFile,
+            in    : file(createR5Obr.index),
+            out   : featureFile
+        ) {
+            param name : 'featureId', expression : featureId
+            param name : 'featureVersion', expression : featureVersion
+            param name : 'includedBundles', expression : includedBundles
+        }
+    }
+}
+
+task generateOsgiP2Features {
+    group 'OSGI Distribution'
+    description "Creates OSGI P2 feature files"
+
+    ext {
+        featureVersion = "${project.version}${versionQualifier}"
+
+        runtimeXsl = file('p2/generateRuntimeDistributionFeature.xsl')
+        runtimeFeatureId = 'com.redhat.ceylon.dist.runtime.feature'
+        runtimeFeatureFile = file("${localFeaturesDir}/${runtimeFeatureId}_${featureVersion}")
+
+        distXsl = file('p2/generateDistributionFeature.xsl')
+        distFeatureId = 'com.redhat.ceylon.dist.feature'
+        distFeatureFile = file("${localFeaturesDir}/${distFeatureId}_${featureVersion}")
+
+        depsXsl = file('p2/generateFixedDependenciesFeature.xsl')
+        depsFeatureId = 'com.redhat.ceylon.dist.dependencies.feature'
+        depsFeatureFile = file("${localFeaturesDir}/${depsFeatureId}_${featureVersion}")
+    }
+
+    dependsOn createR5Obr
+    inputs.files createR5Obr.index, runtimeXsl, distXsl, depsXsl
+    outputs.files runtimeFeatureFile, distFeatureFile, depsFeatureFile
+
+    doFirst {
+        mkdir localFeaturesDir
+
+        ant.xslt(
+            style : runtimeXsl,
+            in    : file(createR5Obr.index),
+            out   : runtimeFeatureFile
+        ) {
+            param name : 'featureId', expression : runtimeFeatureId
+            param name : 'featureVersion', expression : featureVersion
+            param name : 'includedBundles', expression : includedBundles
+        }
+
+        ant.xslt(
+            style : distXsl,
+            in    : file(createR5Obr.index),
+            out   : distFeatureFile
+        ) {
+            param name : 'featureId', expression : distFeatureId
+            param name : 'featureVersion', expression : featureVersion
+            param name : 'includedBundles', expression : ''
+        }
+
+        ant.xslt(
+            style : depsXsl,
+            in    : file(createR5Obr.index),
+            out   : depsFeatureFile
+        ) {
+            param name : 'featureId', expression : depsFeatureId
+            param name : 'featureVersion', expression : featureVersion
+            param name : 'includedBundles', expression : ''
+        }
+    }
+}
+
+task osgi {
+    group "OSGI Distribution"
+    description "Creates Ceylon OSGI distribution"
+    dependsOn repoJar, copyPluginJars, createR5Obr, createObr, generateOsgiFeatures
+}
+
+task osgiP2 ( type : AntCeylonP2Task ) {
+    group "OSGI Distribution"
+    description "Creates Ceylon OSGI P2 distribution"
+    dependsOn osgi, generateOsgiP2Features, embeddedRepository
+
+    classpath "${repoLibDir}/ceylon-ant.jar"
+    sysRepo "${embeddedRepoDir}/repo"
+    destinationDir localDistDir
+    repositoryName 'Ceylon Distribution Bundles'
+    categoryPrefix 'com.redhat.ceylon.dist'
+    categoriesFile 'p2/category.xml'
+
+    addModule 'com.redhat.ceylon.dist', project.version
+    addModule 'com.redhat.ceylon.dist.repo', "${project.version}${versionQualifier}"
+    addModule 'ceylon.bootstrap', project.version
+    addModule 'ceylon.runtime', project.version
+    addModule 'org.slf4j.simple', slf4jVer
+    addModule 'com.redhat.ceylon.tool.provider', project.version
+    addModule 'com.redhat.ceylon.compiler.java', project.version
+    addModule 'com.redhat.ceylon.compiler.js', project.version
+    addModule 'com.redhat.ceylon.typechecker', project.version
+    addModule 'com.redhat.ceylon.java.main', project.version
+}
+
+task distZip( type : Zip ) {
+    group 'OSGI Distribution'
+    description 'Creates ZIP of OSGI distribution'
+    dependsOn osgiP2
+    destinationDir zipDir
+    version "${project.version}-${ceylonBuildInfo.revisionInfo}"
+    baseName 'ceylon-osgi'
+
+    from localDistDir, {
+        include '**'
+    }
+}
+
+task pluginDistZip( type : Zip ) {
+    group 'OSGI Distribution'
+    description 'Creates ZIP of plugin JARs in OSGI distribution'
+    dependsOn osgiP2
+    destinationDir zipDir
+    version "${project.version}-${ceylonBuildInfo.revisionInfo}"
+    baseName 'ceylon-osgi-plugins'
+
+    from localPluginsDir, {
+        include '**'
+    }
+}
+
+task publishInternal ( type : Copy ) {
+    group 'OSGI Distribution'
+    description 'Copies ZIPs to distribution folder'
+    dependsOn osgiP2
+    into osgiDistDir
+    from distZip
+    from pluginDistZip
+}
+

@@ -17,6 +17,15 @@ allprojects {
     ext {
         buildPrefix = 'builtByGradle'
         buildRelease = false
+        versionQualifier = buildRelease ? '' : ".${TimeStamp.BUILD}"
+
+        distDir =      file("${rootProject.projectDir}/${buildPrefix}/distribution")
+        repoDir =      file("${distDir}/repo")
+        samplesDir =   file("${distDir}/samples")
+        templatesDir = file("${distDir}/templates")
+        repoLibDir =   file("${distDir}/lib")
+        repoBinDir =   file("${distDir}/bin")
+        osgiDistDir =  file("${rootProject.projectDir}/${buildPrefix}/osgi-distribution")
     }
 }
 
@@ -27,17 +36,6 @@ subprojects {
     apply plugin : CeylonCommonBuildProperties
 
     buildDir = new File(file("${rootProject.projectDir}/${buildPrefix}"), it.path.replace(":", "_").substring(1))
-
-    ext {
-        distDir = file("${rootProject.projectDir}/${buildPrefix}/distribution")
-        repoDir = file("${distDir}/repo")
-        samplesDir = file("${distDir}/samples")
-        templatesDir = file("${distDir}/templates")
-        repoLibDir = file("${distDir}/lib")
-        repoBinDir = file("${distDir}/bin")
-        embeddedRepoDir = file("${rootProject.projectDir}/${buildPrefix}/embeddedRepository")
-        versionQualifier = buildRelease ? '' : ".${TimeStamp.BUILD}"
-    }
 
     version= cbp.'ceylon.version'
 
@@ -58,12 +56,13 @@ task dist {
     group "publish"
     description "Creates the Ceylon distribution"
     dependsOn ':dist:publishInternal'
+    dependsOn ':dist-osgi:publishInternal'
 }
 
 task clean ( type : Delete ) {
     delete buildDir
     delete distDir
-    delete embeddedRepoDir
+//    delete embeddedRepoDir
 }
 
 task 'clean-all' {
@@ -101,7 +100,7 @@ task 'clean-ide' {
     dependsOn ':formatter-build:clean'
     dependsOn ':toolConverterJava2ceylon-build:clean'
     dependsOn ':ideCommon-build:clean'
-    dependsOn ':ideEclipse-build:clean'
+//    dependsOn ':ideEclipse-build:clean'
 }
 
 /*
