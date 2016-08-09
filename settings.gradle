@@ -31,6 +31,10 @@ project(':compiler-js').buildFileName = 'compilerjs.gradle'
 include 'dist'
 project(':dist').buildFileName = 'dist.gradle'
 
+includeFlat 'dist-osgi'
+project(':dist-osgi').projectDir = file("dist/osgi")
+project(':dist-osgi').buildFileName = "osgi.gradle"
+
 include 'java-main'
 project(':java-main').buildFileName = 'javamain.gradle'
 
@@ -61,11 +65,7 @@ project(':typechecker').buildFileName = 'typechecker.gradle'
 // ----------------------------------------------------------------------------
 // Linked projects
 // ----------------------------------------------------------------------------
-['sdk','ceylon.formatter','ceylon.tool.converter.java2ceylon','ceylon-ide-common','ceylon-ide-eclipse',
- 'ceylon-ide-intellij'].each { proj ->
-
-}
-
+// ,'ideEclipse', 'ideIntellij'
 ['sdk','formatter','toolConverterJava2ceylon','ideCommon'].each { proj ->
     String projName = "${proj}-build"
     includeFlat(projName)

@@ -145,6 +145,14 @@ task cleanRepo ( type : Delete ) {
     delete repoDir
 }
 
+task osgi {
+    dependsOn ':dist-osgi:publishInternal'
+}
+
+task 'osgi-p2' {
+    dependsOn ':dist-osgi:publishInternal'
+}
+
 // Mass-create linked projects
 ['sdk'].each { linkedProject ->
     ['','setup','status','update','clean'].each { linkedTask ->
