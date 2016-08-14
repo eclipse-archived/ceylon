@@ -13,10 +13,7 @@ JsonArray convertParameterListForModel(NodeArray<ParameterDeclaration> list, Typ
             value name = "param_`` generatedNameCounter++ ``";
             for (param in list) {
                 if (param.name.kind == SyntaxKind.Identifier) {
-                    Identifier id;
-                    dynamic {
-                        id = eval("(function(x){return x})")(param.name); // TODO use assert instead; #6307
-                    }
+                    assert (is Identifier id = param.name);
                     if (id.text == name) {
                         break;
                     }
@@ -30,10 +27,7 @@ JsonArray convertParameterListForModel(NodeArray<ParameterDeclaration> list, Typ
     String parameterName(ParameterDeclaration param) {
         switch (param.name.kind)
         case (SyntaxKind.Identifier) {
-            Identifier id;
-            dynamic {
-                id = eval("(function(x){return x})")(param.name); // TODO use assert instead; 6307
-            }
+            assert (is Identifier id = param.name);
             return id.text;
         }
         case (SyntaxKind.ObjectBindingPattern | SyntaxKind.ArrayBindingPattern) {

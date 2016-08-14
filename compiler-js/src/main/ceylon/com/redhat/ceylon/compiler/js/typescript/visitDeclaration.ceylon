@@ -18,11 +18,12 @@ void visitDeclaration(
     case (SyntaxKind.VariableDeclaration) {
         try {
             Identifier id;
-            VariableDeclaration vdecl;
-            Boolean const;
             dynamic {
                 id = eval("(function(node){return node.name})")(node); // TODO necessary to dress the name as Identifier (could be BindingPattern). do this properly
-                vdecl = eval("(function(x){return x})")(node); // TODO use assert instead; #6307
+            }
+            assert (is VariableDeclaration vdecl = node);
+            Boolean const;
+            dynamic {
                 const = eval("(function(vdecl, constflags){return (vdecl.parent.flags & constflags) != 0})")(vdecl, NodeFlags.Const); // TODO can we write this in Ceylon?
             }
             String name = id.text;
@@ -44,11 +45,10 @@ void visitDeclaration(
     }
     case (SyntaxKind.FunctionDeclaration | SyntaxKind.MethodDeclaration | SyntaxKind.MethodSignature) {
         try {
-            FunctionDeclaration fdecl;
+            assert (is FunctionDeclaration fdecl = node);
             Identifier id;
             TypeNode typeNode;
             dynamic {
-                fdecl = eval("(function(x){return x})")(node); // TODO use assert instead; #6307
                 id = eval("(function(x){return x.name})")(node); // TODO should not be necessary once the backend can handle optional members
                 typeNode = eval("(function(x){return x.type})")(node); // TODO ditto
             }
@@ -79,10 +79,7 @@ void visitDeclaration(
                 exported = eval("(function(flags, exportFlag) { return (flags & exportFlag) != 0; })")(node.flags, NodeFlags.Export);
             }
             if (exported) {
-                VariableStatement decl;
-                dynamic {
-                    decl = eval("(function(x){return x})")(node); // TODO use assert instead; #6307
-                }
+                assert (is VariableStatement decl = node);
                 forEachChild(decl.declarationList, visitDeclaration(container, writer, program));
             }
         } catch (Throwable t) { t.printStackTrace(); }
