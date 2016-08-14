@@ -826,12 +826,14 @@ public class RefinementVisitor extends Visitor {
                     legallyOverloaded = true;
                 }
                 found = true;
+                boolean checkTypes = true;
                 if (member instanceof Function) {
                     if (!(refined instanceof Function)) {
                         that.addError(
                                 "refined declaration is not a method: " + 
                                 message(member) + 
                                 " refines " + message(refined));
+                        checkTypes = false;
                     }
                 }
                 else if (member instanceof Class) {
@@ -840,6 +842,7 @@ public class RefinementVisitor extends Visitor {
                                 "refined declaration is not a class: " + 
                                 message(member) + 
                                 " refines " + message(refined));
+                        checkTypes = false;
                     }
                 }
                 else if (member instanceof TypedDeclaration) {
@@ -849,6 +852,7 @@ public class RefinementVisitor extends Visitor {
                                 "refined declaration is not an attribute: " + 
                                 message(member) + 
                                 " refines " + message(refined));
+                        checkTypes = false;
                     }
                     else if (refined instanceof TypedDeclaration) {
                         if (((TypedDeclaration) refined).isVariable() && 
@@ -884,7 +888,7 @@ public class RefinementVisitor extends Visitor {
                             " refines " + message(refined), 
                             500);
                 }
-                if (!type.isInconsistentType()) {
+                if (checkTypes && !type.isInconsistentType()) {
                     checkRefinedTypeAndParameterTypes(that, 
                             member, type, refined);
                 }
