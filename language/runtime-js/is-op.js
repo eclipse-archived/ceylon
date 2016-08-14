@@ -42,6 +42,13 @@ function is$(obj,type,containers){
             }
           }
         }
+      } else if (type.t.dynmem$) {
+        try {
+          dre$$(obj, type);
+          return true;
+        } catch (e) {
+          return false;
+        }
       }
       return false;
     }
