@@ -1372,7 +1372,7 @@ public abstract class DeclarationVisitor extends Visitor {
         Function m = that.getDeclarationModel();
         m.setImplemented(sie != null);
         if (m.isFormal() && sie!=null) {
-            that.addError("formal methods may not have a specification", 
+            that.addError("formal method may not have a specification", 
                     1307);
         }
         Tree.Type type = that.getType();
