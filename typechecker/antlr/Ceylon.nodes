@@ -742,7 +742,8 @@
 
 "An index (element access by key) expression."
 ^(INDEX_EXPRESSION:POSTFIX_EXPRESSION
-    ELEMENT_OR_RANGE)
+    ELEMENT_OR_RANGE
+    boolean assigned;)
 
 "An element index or element range."
 ^(abstract ELEMENT_OR_RANGE)

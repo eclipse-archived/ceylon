@@ -4976,73 +4976,13 @@ public class ExpressionVisitor extends Visitor {
             if (eor==null) {
                 that.addError("malformed index expression");
             }
-            else if (!isTypeUnknown(pt) && 
+            else if (!that.getAssigned() &&
+                     !isTypeUnknown(pt) && 
                      !involvesUnknownTypes(eor)) {
                 if (eor instanceof Tree.Element) {
-                    Type kt = null;
-                    Type vt = null;
                     Interface cd = 
                             unit.getCorrespondenceDeclaration();
-                    Type cst = pt.getSupertype(cd);
-                    if (cst != null) {
-                        List<Type> args = 
-                                cst.getTypeArgumentList();
-						kt = args.get(0);
-						vt = unit.getOptionalType(args.get(1));
-                    }
-                    if (cst==null) {
-                        Interface ld = 
-                                unit.getJavaListDeclaration();
-                        cst = pt.getSupertype(ld);
-                        if (cst != null) {
-                            List<Type> args = 
-                                    cst.getTypeArgumentList();
-    						kt = unit.getIntegerType();
-    						vt = unit.getOptionalType(args.get(0));
-                        }
-                    }
-                    if (cst==null) {
-                        Interface md = 
-                                unit.getJavaMapDeclaration();
-                        cst = pt.getSupertype(md);
-                        if (cst != null) {
-                            List<Type> args =
-                                    cst.getTypeArgumentList();
-    						kt = args.get(0);
-    						vt = unit.getOptionalType(args.get(1));
-                        }
-                    }
-                    if (cst==null) {
-                        boolean objectArray = 
-                                unit.isJavaObjectArrayType(pt);
-                        boolean primitiveArray = 
-                                unit.isJavaPrimitiveArrayType(pt);
-                        if (objectArray || primitiveArray) {
-                            cst = pt;
-                            kt = unit.getIntegerType();
-                            Type et = unit.getJavaArrayElementType(pt);
-                            vt = primitiveArray ? et : unit.getOptionalType(et);
-                        }
-                    }
-                    
-                    if (cst==null) {
-                        that.getPrimary()
-                            .addError("illegal receiving type for index expression: '" +
-                                    pt.getDeclaration()
-                                        .getName(unit) + 
-                                    "' is not a subtype of 'Correspondence'");
-                    }
-                    else {
-                        Tree.Element e = (Tree.Element) eor;
-                        Tree.Expression ee = 
-                                e.getExpression();
-                        checkAssignable(ee.getTypeModel(), 
-                                kt, ee, 
-                                "index must be assignable to key type");
-                        that.setTypeModel(vt);
-                        Tree.Term t = ee.getTerm();
-                        refineTypeForTupleElement(that, pt, t);
-                    }
+                    checkIndexElement(that, pt, cd, true, "Correspondence");
                 }
                 else {
                     Interface rd = unit.getRangedDeclaration();
@@ -5096,6 +5036,104 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
+    }
+
+    private Type checkIndexElement(Tree.IndexExpression that,
+            Type pt, Interface cd, boolean nullable,
+            String superTypeName) {
+        Type kt = null;
+        Type vt = null;
+        Tree.ElementOrRange eor = 
+                that.getElementOrRange();
+        Type cst = pt.getSupertype(cd);
+        if (cst != null) {
+            List<Type> args = 
+                    cst.getTypeArgumentList();
+        	kt = args.get(0);
+        	vt = args.get(1);
+        	if (nullable) {
+                vt = unit.getOptionalType(vt);
+        	}
+        }
+        if (cst==null) {
+            Interface ld = 
+                    unit.getJavaListDeclaration();
+            cst = pt.getSupertype(ld);
+            if (cst != null) {
+                List<Type> args = 
+                        cst.getTypeArgumentList();
+        		kt = unit.getIntegerType();
+        		vt = unit.getOptionalType(args.get(0));
+            }
+        }
+        if (cst==null) {
+            Interface md = 
+                    unit.getJavaMapDeclaration();
+            cst = pt.getSupertype(md);
+            if (cst != null) {
+                List<Type> args =
+                        cst.getTypeArgumentList();
+        		kt = args.get(0);
+        		vt = unit.getOptionalType(args.get(1));
+            }
+        }
+        if (cst==null) {
+            boolean objectArray = 
+                    unit.isJavaObjectArrayType(pt);
+            boolean primitiveArray = 
+                    unit.isJavaPrimitiveArrayType(pt);
+            if (objectArray || primitiveArray) {
+                cst = pt;
+                kt = unit.getIntegerType();
+                Type et = unit.getJavaArrayElementType(pt);
+                vt = primitiveArray ? et : unit.getOptionalType(et);
+            }
+        }
+        
+        if (cst==null) {
+            that.getPrimary()
+                .addError("illegal receiving type for index expression: '" +
+                        pt.getDeclaration()
+                            .getName(unit) + 
+                        "' is not a subtype of '" + superTypeName + "'");
+        }
+        else {
+            Tree.Element e = (Tree.Element) eor;
+            Tree.Expression ee = 
+                    e.getExpression();
+            checkAssignable(ee.getTypeModel(), 
+                    kt, ee, 
+                    "index must be assignable to key type");
+            that.setTypeModel(vt);
+            Tree.Term t = ee.getTerm();
+            refineTypeForTupleElement(that, pt, t);
+        }
+        
+        return vt;
+    }
+
+    public boolean isJavaNullableMutator(Type pt, Interface cd) {
+        boolean nullable = false;
+        Type cst = pt.getSupertype(cd);
+        if (cst==null) {
+            Interface ld = unit.getJavaListDeclaration();
+            cst = pt.getSupertype(ld);
+            if (cst != null) {
+                nullable = true;
+            }
+        }
+        if (cst==null) {
+            Interface md = unit.getJavaMapDeclaration();
+            cst = pt.getSupertype(md);
+            if (cst != null) {
+                nullable = true;
+            }
+        }
+        if (cst==null) {
+            boolean objectArray = unit.isJavaObjectArrayType(pt);
+            nullable = objectArray;
+        }
+        return nullable;
     }
 
     private void refineTypeForTupleElement(
@@ -5229,6 +5267,11 @@ public class ExpressionVisitor extends Visitor {
         if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression m = 
                     (Tree.MemberOrTypeExpression) term;
+            m.setAssigned(true);
+        }
+        else if (term instanceof Tree.IndexExpression) {
+            Tree.IndexExpression m = 
+                    (Tree.IndexExpression) term;
             m.setAssigned(true);
         }
     }
@@ -5457,46 +5500,21 @@ public class ExpressionVisitor extends Visitor {
                 if (idx.getElementOrRange() instanceof Tree.Element) {
                     Type pt = type(idx);
                     if (that.getTypeModel() != null && pt != null) {
-                        Interface cd = 
-                                unit.getCorrespondenceDeclaration();
-                        Type cst = pt.getSupertype(cd);
-                        if (cst != null) {
-                            // If we have a Correspondence there *must* be a
-                            // CorrespondenceMutator too to be able to assign
-                            Interface cmd = 
-                                    unit.getCorrespondenceMutatorDeclaration();
-                            Type cmst = pt.getSupertype(cmd);
-                            if (cmst != null) {
-                                List<Type> cdargs = 
-                                        cst.getTypeArgumentList();
-                                List<Type> cmdargs = 
-                                        cmst.getTypeArgumentList();
-                                // FIXME these checks are almost certainly incorrect
-                                if (!cdargs.get(0).equals(cmdargs.get(0)) ||
-                                        !cdargs.get(1).equals(cmdargs.get(1))) {
-                                    idx.getPrimary()
-                                        .addError("illegal receiving type for index assignment: '" +
-                                                pt.getDeclaration()
-                                                    .getName(unit) + 
-                                                "' is not a subtype of 'CorrespondenceMutator<" +
-                                                cdargs.get(0) +
-                                                "," +
-                                                cdargs.get(1) +
-                                                ">");
-                                } else {
-                                    checkAssignable(rhst, cmdargs.get(1),
-                                            that.getRightTerm(), 
-                                            "assigned expression must be assignable to '" +
-                                            cmdargs.get(1) +
-                                            "' of 'CorrespondenceMutator'");
-                                }
-                            } else {
-                                idx.getPrimary()
-                                    .addError("illegal receiving type for index assignment: '" +
-                                            pt.getDeclaration()
-                                                .getName(unit) + 
-                                            "' is not a subtype of 'CorrespondenceMutator'");
-                            }
+                        Interface cmd = 
+                                unit.getCorrespondenceMutatorDeclaration();
+                        Type vt = checkIndexElement(idx, pt, cmd, false, "CorrespondenceMutator");
+                        if (vt != null) {
+                            checkAssignable(rhst, vt,
+                                    that.getRightTerm(), 
+                                    "assigned expression must be assignable to '" +
+                                    vt.asString() +
+                                    "' of 'CorrespondenceMutator'");
+                        } else {
+                            idx.getPrimary()
+                                .addError("illegal receiving type for index assignment: '" +
+                                        pt.getDeclaration()
+                                            .getName(unit) + 
+                                        "' is not a subtype of 'CorrespondenceMutator'");
                         }
                     }
                 } else {
