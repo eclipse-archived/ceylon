@@ -5779,7 +5779,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             Unit unit = op.getUnit();
             Type pt = idx.getPrimary().getTypeModel();
             Tree.Element elem = (Tree.Element)idx.getElementOrRange();
-            if (pt.getSupertype(unit.getCorrespondenceDeclaration()) != null) {
+            if (pt.getSupertype(unit.getCorrespondenceMutatorDeclaration()) != null) {
                 JCExpression iex = transformExpression(elem.getExpression(), BoxingStrategy.BOXED, elem.getExpression().getTypeModel());
                 result = makeIndexAssignMethod(leftTerm, "set", iex, rhs);
             } else if (pt.getSupertype(unit.getJavaListDeclaration()) != null) {
@@ -5800,11 +5800,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
                 return at(op).Assign(make().Indexed(selector, iex), rhs);
             } else {
-                return makeErroneous(leftTerm, "compiler bug: ranged index assignment type '" + pt + "' is not yet supported");
+                return makeErroneous(leftTerm, "compiler bug: index assignment for type '" + pt + "' is not supported");
             }
             return result;
         } else {
-            return makeErroneous(leftTerm, "compiler bug: ranged index assignment is not yet supported");
+            return makeErroneous(leftTerm, "compiler bug: ranged index assignment is not supported");
         }
     }
     
