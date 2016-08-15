@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.ASTRING_LITERAL;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.AVERBATIM_STRING;
+import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.LPAREN;
+import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.RPAREN;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_END;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_MID;
 import static com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer.STRING_START;
@@ -740,7 +742,10 @@ public class LiteralVisitor extends Visitor {
             }
         }
         if (k>0 && funBody==null) {
-            letClause.setExpression(funExpression);
+            Tree.Expression wrapExpression = new Tree.Expression(new CommonToken(LPAREN, "("));
+            wrapExpression.setTerm(funExpression);
+            wrapExpression.setEndToken(new CommonToken(RPAREN, ")"));
+            letClause.setExpression(wrapExpression);
             that.setExpression(createLetExpression(letClause));
         }
         super.visit(that);
