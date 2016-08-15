@@ -1344,7 +1344,7 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         if (v.isFormal() && sie!=null) {
             that.addError("formal attributes may not have a value", 
-                    1307);
+                    1102);
         }
         Tree.Type type = that.getType();
         if (type instanceof Tree.ValueModifier) {
@@ -1373,7 +1373,7 @@ public abstract class DeclarationVisitor extends Visitor {
         m.setImplemented(sie != null);
         if (m.isFormal() && sie!=null) {
             that.addError("formal method may not have a specification", 
-                    1307);
+                    1102);
         }
         Tree.Type type = that.getType();
         if (type instanceof Tree.FunctionModifier) {
