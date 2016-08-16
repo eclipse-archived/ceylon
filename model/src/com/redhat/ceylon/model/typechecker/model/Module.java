@@ -197,20 +197,26 @@ public class Module
             return getAllVisiblePackages();
         }
     }
-    
-    public Map<String, DeclarationWithProximity> 
-    getAvailableDeclarations(Unit unit, String startingWith, 
-            int proximity, Cancellable canceller) {
-        Map<String, DeclarationWithProximity> result = 
+
+    public Map<String, DeclarationWithProximity>
+    getAvailableDeclarationsInCurrentModule(Unit unit, String startingWith,
+                             int proximity, Cancellable canceller) {
+        return getAvailableDeclarationsInternal(unit, startingWith, proximity, canceller, getPackages());
+    }
+
+    private Map<String, DeclarationWithProximity>
+    getAvailableDeclarationsInternal(Unit unit, String startingWith,
+                             int proximity, Cancellable canceller, List<Package> packages) {
+        Map<String, DeclarationWithProximity> result =
                 new TreeMap<String,DeclarationWithProximity>();
-        for (Package p: getPackagesToScan(startingWith)) {
+        for (Package p: packages) {
             if (canceller != null
                     && canceller.isCancelled()) {
                 return Collections.emptyMap();
             }
-            boolean isLanguagePackage = 
+            boolean isLanguagePackage =
                     p.isLanguagePackage();
-            boolean isDefaultPackage = 
+            boolean isDefaultPackage =
                     p.isDefaultPackage();
             if (!isDefaultPackage) {
                 for (Declaration d: p.getMembers()) {
@@ -219,8 +225,8 @@ public class Module
                         return Collections.emptyMap();
                     }
                     try {
-                        if (isResolvable(d) && 
-                                d.isShared() && 
+                        if (isResolvable(d) &&
+                                d.isShared() &&
                                 !isOverloadedVersion(d) &&
                                 isNameMatching(startingWith, d)) {
                             String name = d.getName();
@@ -229,8 +235,8 @@ public class Module
                                     //use qualified name here, in order
                                     //to distinguish unimported declarations
                                     //with same name in different packages
-                                    d.getQualifiedNameString(), 
-                                    new DeclarationWithProximity(d, 
+                                    d.getQualifiedNameString(),
+                                    new DeclarationWithProximity(d,
                                             prox, !isLanguagePackage));
                         }
                     }
@@ -239,14 +245,20 @@ public class Module
             }
         }
         if ("Nothing".startsWith(startingWith)) {
-            result.put("Nothing", 
+            result.put("Nothing",
                     new DeclarationWithProximity(
                             unit.getNothingDeclaration(),
-                            //same as other "special" 
+                            //same as other "special"
                             //language module declarations
                             proximity+2));
         }
         return result;
+    }
+
+    public Map<String, DeclarationWithProximity>
+    getAvailableDeclarations(Unit unit, String startingWith, 
+            int proximity, Cancellable canceller) {
+        return getAvailableDeclarationsInternal(unit, startingWith, proximity, canceller, getPackagesToScan(startingWith));
     }
 
     public int getProximity(int initialProximity, boolean isLanguagePackage, String name) {
