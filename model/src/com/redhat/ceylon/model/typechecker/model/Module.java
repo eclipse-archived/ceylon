@@ -18,7 +18,8 @@ import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.typechecker.context.TypeCache;
 
 public class Module 
-        implements Referenceable, Annotated, Comparable<Module> {
+        implements Referenceable, Annotated, 
+                   Comparable<Module> {
 
     public static final String LANGUAGE_MODULE_NAME = "ceylon.language";
     public static final String DEFAULT_MODULE_NAME = "default";
@@ -199,14 +200,18 @@ public class Module
     }
 
     public Map<String, DeclarationWithProximity>
-    getAvailableDeclarationsInCurrentModule(Unit unit, String startingWith,
-                             int proximity, Cancellable canceller) {
-        return getAvailableDeclarationsInternal(unit, startingWith, proximity, canceller, getPackages());
+    getAvailableDeclarationsInCurrentModule(Unit unit, 
+            String startingWith, int proximity, 
+            Cancellable canceller) {
+        return getAvailableDeclarationsInternal(unit, 
+                startingWith, proximity, canceller, 
+                getPackages());
     }
 
     private Map<String, DeclarationWithProximity>
-    getAvailableDeclarationsInternal(Unit unit, String startingWith,
-                             int proximity, Cancellable canceller, List<Package> packages) {
+    getAvailableDeclarationsInternal(Unit unit, 
+            String startingWith, int proximity, 
+            Cancellable canceller, List<Package> packages) {
         Map<String, DeclarationWithProximity> result =
                 new TreeMap<String,DeclarationWithProximity>();
         for (Package p: packages) {
@@ -229,15 +234,16 @@ public class Module
                                 d.isShared() &&
                                 !isOverloadedVersion(d) &&
                                 isNameMatching(startingWith, d)) {
-                            String name = d.getName();
-                            int prox = getProximity(proximity, isLanguagePackage, name);
                             result.put(
                                     //use qualified name here, in order
                                     //to distinguish unimported declarations
                                     //with same name in different packages
                                     d.getQualifiedNameString(),
                                     new DeclarationWithProximity(d,
-                                            prox, !isLanguagePackage));
+                                            getProximity(proximity, 
+                                                isLanguagePackage, 
+                                                d.getName()),
+                                            !isLanguagePackage));
                         }
                     }
                     catch (Exception e) {}
@@ -256,12 +262,16 @@ public class Module
     }
 
     public Map<String, DeclarationWithProximity>
-    getAvailableDeclarations(Unit unit, String startingWith, 
-            int proximity, Cancellable canceller) {
-        return getAvailableDeclarationsInternal(unit, startingWith, proximity, canceller, getPackagesToScan(startingWith));
+    getAvailableDeclarations(Unit unit, 
+            String startingWith, int proximity, 
+            Cancellable canceller) {
+        return getAvailableDeclarationsInternal(unit, 
+                startingWith, proximity, canceller, 
+                getPackagesToScan(startingWith));
     }
 
-    public int getProximity(int initialProximity, boolean isLanguagePackage, String name) {
+    public int getProximity(int initialProximity, 
+            boolean isLanguagePackage, String name) {
         boolean isSpecialValue =
                 isLanguagePackage &&
                     name.equals("true") ||
@@ -451,7 +461,8 @@ public class Module
     public boolean equals(Object obj) {
         if (obj instanceof Module) {
             Module b = (Module) obj;
-            return getSignature().equals(b.getSignature());
+            return getSignature()
+                    .equals(b.getSignature());
         }
         else {
             return false;
