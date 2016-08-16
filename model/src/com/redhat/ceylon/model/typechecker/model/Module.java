@@ -240,7 +240,7 @@ public class Module
                                     //with same name in different packages
                                     d.getQualifiedNameString(),
                                     new DeclarationWithProximity(d,
-                                            getProximity(proximity, 
+                                            getUnimportedProximity(proximity, 
                                                 isLanguagePackage, 
                                                 d.getName()),
                                             !isLanguagePackage));
@@ -270,7 +270,7 @@ public class Module
                 getPackagesToScan(startingWith));
     }
 
-    public int getProximity(int initialProximity, 
+    public static int getUnimportedProximity(int initialProximity, 
             boolean isLanguagePackage, String name) {
         boolean isSpecialValue =
                 isLanguagePackage &&
