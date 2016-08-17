@@ -30,6 +30,34 @@ class Rectangle(width, height) satisfies Scalable<Float,Rectangle> {
     }
 }
 
+class Test4148() satisfies Correspondence<Integer,String> & CorrespondenceMutator<Integer,String> {
+  variable String x = "";
+  shared actual void set(Integer k, String v) {
+    if (k == 0) {
+      x = v;
+    }
+  }
+  shared actual String? get(Integer k) => k==0 then x else null;
+  shared actual Boolean defines(Integer k) => k==0;
+}
+
+void test4148() {
+  value t = Test4148();
+  check((t[0] = "ok") == "ok", "#4148.1");
+  if (exists v=t[0]) {
+    check(v == "ok", "#4148.2");
+  } else {
+    fail("#4148.2");
+  }
+  String p = "ok" + (t[0] = "!");
+  check(p == "ok!", "#4148.3");
+  if (exists v=t[0]) {
+    check(v == "!", "#4148.4");
+  } else {
+    fail("#4148.4");
+  }
+}
+
 @test
 shared void operators() {
     String? maybe = "hello";
@@ -132,4 +160,5 @@ shared void operators() {
     value scaleTestRectangle = Rectangle(2.0, 3.0);
     check(2.0**scaleTestRectangle == Rectangle(4.0, 6.0), "scaling ``2.0**Rectangle(2.0, 3.0)``");
     check(scaleTestRectangle.invert().width ** Rectangle(scaleTestRectangle.width, scaleTestRectangle.width) == Rectangle(9.0, 9.0), "scaling: LHS must be evaluated first!");
+    test4148();
 }
