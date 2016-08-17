@@ -40,7 +40,7 @@ class CeylonOsgiExternalArchiveTaskExtension  extends AbstractCeylonOsgiArchiveT
                 return "${srcBundleVersion}.0.0.${externalBundleQualifier}"
                 break
             case ~/^[0-9]+\.[0-9]+\.[0-9]+\.[^.]+$/ :
-                return "${srcBundleVersion}.${externalBundleQualifier}"
+                return "${srcBundleVersion}-${externalBundleQualifier}"
                 break
             default:
                 throw new GradleException("External dependency (${bundleSymbolicName}) with a non-supported version")
