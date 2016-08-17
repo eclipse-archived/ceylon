@@ -2421,18 +2421,21 @@ public class GenerateJsVisitor extends Visitor {
                 ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel());
         if (that.getLeftTerm() instanceof Tree.IndexExpression) {
             Tree.IndexExpression iex = (Tree.IndexExpression)that.getLeftTerm();
-            iex.getPrimary().visit(this);
             if (leftDynamic) {
+                iex.getPrimary().visit(this);
                 out("[");
                 ((Tree.Element)iex.getElementOrRange()).getExpression().visit(this);
                 out("]=");
                 that.getRightTerm().visit(this);
             } else {
+                final String tv = createRetainedTempVar();
+                out("(", tv, "=");
+                that.getRightTerm().visit(this);
+                out(",");
+                iex.getPrimary().visit(this);
                 out(".set(");
                 ((Tree.Element)iex.getElementOrRange()).getExpression().visit(this);
-                out(",");
-                that.getRightTerm().visit(this);
-                out(")");
+                out(",", tv, "), ", tv, ")");
             }
             return;
         }
