@@ -45,7 +45,19 @@ public class Module
     private List<ModuleImport> overridenImports = null;
     private Backends nativeBackends = Backends.ANY;
 
+    private LanguageModuleCache languageModuleCache = null;
+
     public Module() {}
+    
+    public LanguageModuleCache getLanguageModuleCache() {
+        assert(isLanguageModule());
+        synchronized(this) {
+            if (languageModuleCache == null) {
+                languageModuleCache = new LanguageModuleCache(this);
+            }
+            return languageModuleCache;
+        }
+    }
     
     /**
      * Whether or not the module is available in the
