@@ -2842,12 +2842,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         // attr
         // (let $tmp = OP(attr); attr = $tmp; $tmp)
         if(term instanceof Tree.BaseMemberExpression
+            || (term instanceof Tree.IndexExpression)
             // special case for java statics Foo.attr where Foo does not need to be evaluated
             || (term instanceof Tree.QualifiedMemberExpression
                     && ((Tree.QualifiedMemberExpression)term).getStaticMethodReference())){
             JCExpression getter;
             if(term instanceof Tree.BaseMemberExpression)
                 getter = transform((Tree.BaseMemberExpression)term, null);
+            else if (term instanceof Tree.IndexExpression)
+                getter = null;
             else
                 getter = transformMemberExpression((Tree.QualifiedMemberExpression)term, null, null);
             at(operator);
@@ -5257,7 +5260,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             return lhs;
         }
         
-        public JCTree transform(Tree.IndexExpression indexExpr) {
+        public JCExpression transform(Tree.IndexExpression indexExpr) {
             JCExpression result = transformIndexed(indexExpr);
             // Because tuple index access has the type of the indexed element
             // (not the union of types in the sequential) a typecast may be required.
@@ -5430,7 +5433,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    public JCTree transform(Tree.IndexExpression indexedExpr) {
+    public JCExpression transform(Tree.IndexExpression indexedExpr) {
         // depends on the operator
         Tree.ElementOrRange elementOrRange = indexedExpr.getElementOrRange();
         if (elementOrRange instanceof Tree.Element) {
