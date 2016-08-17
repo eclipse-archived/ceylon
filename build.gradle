@@ -17,7 +17,7 @@ allprojects {
     ext {
         buildPrefix = 'builtByGradle'
         buildRelease = false
-        versionQualifier = buildRelease ? '' : ".${TimeStamp.BUILD}"
+        versionQualifier = ".${TimeStamp.BUILD}"
 
         distDir =      file("${rootProject.projectDir}/${buildPrefix}/distribution")
         repoDir =      file("${distDir}/repo")
@@ -26,6 +26,7 @@ allprojects {
         repoLibDir =   file("${distDir}/lib")
         repoBinDir =   file("${distDir}/bin")
         osgiDistDir =  file("${rootProject.projectDir}/${buildPrefix}/osgi-distribution")
+        osgiDistPluginsDir = file("${osgiDistDir}/plugins")
     }
 }
 
@@ -112,5 +113,24 @@ task 'clean-ide' {
 
 */
 
+// TODO: Remove this task after migration. It is only here to compare outputs of Ant vs Gradle
+task migrationReports {
+    description "TEMPORARY: Creates comparison listings in root"
 
+    ext {
+        makeListing = { rootDir ->
+            String baseDir = file(rootDir).absolutePath
+            fileTree(rootDir).files.collect {
+                it.absolutePath.replace("${baseDir}/",'')
+            }.sort().join("\n")
+        }
+    }
+    doLast {
+        mkdir buildDir
+        file("${buildDir}/dist-gradle.txt").text = makeListing(distDir)
+        file("${buildDir}/dist-ant.txt").text = makeListing('dist/dist')
+        file("${buildDir}/osgi-dist-gradle.txt").text = makeListing(osgiDistDir).replaceAll(~/v\d{8}-\d{4}/,'vXxxxYyZz-AaBb')
+        file("${buildDir}/osgi-dist-ant.txt").text = makeListing('dist/osgi/build/dist').replaceAll(~/v\d{8}-\d{4}/,'vXxxxYyZz-AaBb')
+    }
+}
 
