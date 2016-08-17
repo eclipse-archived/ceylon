@@ -1924,6 +1924,9 @@ public class StatementTransformer extends AbstractTransformer {
         /** Makes the expression for incrementing the index */
         protected JCExpression makeStepExpr() {
             Type intType = typeFact().getIntegerType();
+            if (intType.isCached()) {
+                intType = intType.clone();
+            }
             intType.setUnderlyingType("int");
             return expressionGen().transformExpression(step, BoxingStrategy.UNBOXED, 
                     intType);

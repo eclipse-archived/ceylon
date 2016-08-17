@@ -4455,6 +4455,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             Type type = expr.getTarget().getQualifyingType();
             if(expr.getMemberOperator() instanceof Tree.SafeMemberOp && !isOptional(type)){
                 Type optionalType = typeFact().getOptionalType(type);
+                if (optionalType.isCached()) {
+                    optionalType = optionalType.clone();
+                }
                 optionalType.setUnderlyingType(type.getUnderlyingType());
                 type = optionalType;
             }
@@ -5444,6 +5447,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 leftType = primaryType.getSupertype(typeFact().getJavaListDeclaration());
                 if (leftType != null) {
                     Type rightType = typeFact().getIntegerType();
+                    if (rightType.isCached()) {
+                        rightType = rightType.clone();
+                    }
                     rightType.setUnderlyingType("int");
                     transformer = new JavaListIndexTransformer(indexedExpr, leftType, rightType, getTypeArgument(leftType, 0));
                 } else {
@@ -5453,6 +5459,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                         transformer = new JavaMapIndexTransformer(indexedExpr, leftType, rightType, getTypeArgument(leftType, 1));
                     } else if (isJavaArray(primaryType)) {
                         Type rightType = typeFact().getIntegerType();
+                        if (rightType.isCached()) {
+                            rightType = rightType.clone();
+                        }
                         rightType.setUnderlyingType("int");
                         Type elementType;
                         if (isJavaObjectArray(primaryType)) {
@@ -6457,6 +6466,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         Type exprType;
         if (small && returnType.isInteger()) {
             exprType = typeFact().getIntegerType();
+            if (exprType.isCached()) {
+                exprType = exprType.clone();
+            }
             exprType.setUnderlyingType("int");
         } else {
             exprType = typeFact().getIntegerType();

@@ -169,8 +169,15 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
 
         Type type = decl.getType();
         if(type != null){
-            if(isRaw(type))
-                type.setRaw(true);
+            if(isRaw(type)) {
+                if (type.isCached()) {
+                    Type clone = type.clone();
+                    clone.setRaw(true);
+                    decl.setType(clone);
+                } else {
+                    type.setRaw(true);
+                }
+            }
         }
     }
 
@@ -216,8 +223,13 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if(!Decl.equal(refinedDeclaration, declaration)){
             // simple case
             if(type.getUnderlyingType() == null
-                && refinedDeclaration.getType() != null)
+                && refinedDeclaration.getType() != null) {
+                if (type.isCached()) {
+                    type = type.clone();
+                }
                 type.setUnderlyingType(refinedDeclaration.getType().getUnderlyingType());
+                declaration.setType(type);
+            }
             // special case for variadics
             if(Decl.isValueParameter(refinedDeclaration)){
                 Parameter parameter = ((FunctionOrValue) refinedDeclaration).getInitializerParameter();
@@ -227,7 +239,11 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
                     if(refinedIteratedType.getUnderlyingType() != null){
                         Type ourIteratedType = type.getTypeArgumentList().get(0);
                         if(ourIteratedType.getUnderlyingType() == null){
+                            if (ourIteratedType.isCached()) {
+                                ourIteratedType = ourIteratedType.clone();
+                            }
                             ourIteratedType.setUnderlyingType(refinedIteratedType.getUnderlyingType());
+                            type.getTypeArgumentList().set(0, ourIteratedType);
                             // make sure we remove those types from the cache otherwise UGLY things happen
                             TypeCache cache = type.getDeclaration().getUnit().getCache();
                             if(cache != null){
