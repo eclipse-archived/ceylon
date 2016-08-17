@@ -2417,8 +2417,26 @@ public class GenerateJsVisitor extends Visitor {
     public void visit(final Tree.AssignOp that) {
         String returnValue = null;
         StaticMemberOrTypeExpression lhsExpr = null;
-        
-        if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
+        final boolean leftDynamic = isInDynamicBlock() &&
+                ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel());
+        if (that.getLeftTerm() instanceof Tree.IndexExpression) {
+            Tree.IndexExpression iex = (Tree.IndexExpression)that.getLeftTerm();
+            iex.getPrimary().visit(this);
+            if (leftDynamic) {
+                out("[");
+                ((Tree.Element)iex.getElementOrRange()).getExpression().visit(this);
+                out("]=");
+                that.getRightTerm().visit(this);
+            } else {
+                out(".set(");
+                ((Tree.Element)iex.getElementOrRange()).getExpression().visit(this);
+                out(",");
+                that.getRightTerm().visit(this);
+                out(")");
+            }
+            return;
+        }
+        if (leftDynamic) {
             that.getLeftTerm().visit(this);
             out("=");
             int box = boxUnboxStart(that.getRightTerm(), that.getLeftTerm());
