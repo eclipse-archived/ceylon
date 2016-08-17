@@ -2415,6 +2415,7 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.AssignOp that) {
+        if (errVisitor.hasErrors(that))return;
         String returnValue = null;
         StaticMemberOrTypeExpression lhsExpr = null;
         final boolean leftDynamic = isInDynamicBlock() &&
@@ -2817,6 +2818,7 @@ public class GenerateJsVisitor extends Visitor {
 
     private void assignOp(final Tree.AssignmentOp that, final String functionName,
             final Map<TypeParameter, Type> targs) {
+        if (errVisitor.hasErrors(that))return;
         Term lhs = that.getLeftTerm();
         final boolean isNative="||".equals(functionName)||"&&".equals(functionName);
         if (lhs instanceof BaseMemberExpression) {
@@ -2888,6 +2890,8 @@ public class GenerateJsVisitor extends Visitor {
                 }
                 out(")");
             }
+        } else if (lhs instanceof Tree.IndexExpression) {
+            lhs.addUnsupportedError("Index expressions are not supported in this kind of assignment.");
         }
     }
 
