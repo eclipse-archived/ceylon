@@ -425,4 +425,11 @@ David Festal @davidfestal 11:28
 This Ceylon repository will also be embedded inside an additional OSGI bundle
 (com.redhat.ceylon.dist.repo_<version>.jar), to provide an embedded Ceylon repository inside OSGI containers
 (eclipse for example)
+
+@ysb33r : to avoid bad surprises in P2 provisionning because of version ordering between - and C
+- is before C in lexical order
+
+Tako Schotanus @quintesse 09:39
+@ysb33r ah, and it seems that for OSGi the qualifier MUST be separated from the version number by a dash while all other separators must be dots. That seems to be the reason you can't just blindly add -XXX or .XXX on the end unfortunatly
+So if the version before it already contains a dash you have to use a dot, otherwise a dash
 ////

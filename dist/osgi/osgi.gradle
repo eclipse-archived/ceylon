@@ -41,8 +41,8 @@ dependencies {
 }
 
 ext {
-    localDistDir     = file("${buildDir}/dist")
-    localPluginsDir   = file("${localDistDir}/plugins")
+    localDistDir     = osgiDistDir
+    localPluginsDir  = osgiDistPluginsDir
     localFeaturesDir = file("${localDistDir}/features")
     embeddedRepoDir  = file("${buildDir}/embeddedRepository")
     zipDir           = file("${buildDir}/distributions")
@@ -143,7 +143,7 @@ task embeddedRepository ( type : Copy ) {
     dependsOn ':dist:zip'
     into embeddedRepoDir
 
-    from distDir, {
+    from osgiDistDir, {
         include 'repo'
         include 'bin'
         include 'lib'
@@ -230,7 +230,7 @@ task createObr {
     dependsOn copyPluginJars
 
     ext {
-        index = file("${localDistDir}/index.xml")
+        index = file("${localDistDir}/repository.xml")
     }
 
     outputs.file index

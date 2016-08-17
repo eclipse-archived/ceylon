@@ -44,9 +44,40 @@ ext.createTasksFor = { File baseFile,File jarFile, File depsDestination, Task ch
         doFirst { mkdir manifest.classesDir }
     }
 
+    Task osgiDistJar = tasks.create( "publishOsgiDisJar_${taskNamePostfix}") {
+        group 'OSGI Distribution'
+        description "Copies a ${taskNamePostfix} JAR suitable for the Ceylon OSGI Distribution"
+        dependsOn osgiJar
+
+        ext {
+            outputDir = file("${osgiDistDir}/plugins")
+            getOutputFileName = { osgiTask ->
+                Map<String,String> attrs = [:]
+                osgiTask.archivePath.withInputStream { input ->
+                    java.util.jar.Attributes mainAttributes = new java.util.jar.JarInputStream(input).manifest.mainAttributes
+                    mainAttributes.keySet().each { k ->
+                        attrs[k.toString()] = mainAttributes.getValue(k).toString()
+                    }
+                }
+                "${attrs['Bundle-SymbolicName']}_${attrs['Bundle-Version']}.jar"
+            }
+        }
+
+        outputs.file { file("${outputDir}/${getOutputFileName(osgiJar)}") }
+
+        doFirst {
+            project.copy {
+                from osgiJar
+                into outputDir
+                rename ~/.+/,getOutputFileName(osgiJar)
+            }
+        }
+
+    }
+
     checksum.archive osgiJar
     checksum.dependsOn osgiJar
-    parentLifecycleTask.dependsOn osgiJar, moduleTask
+    parentLifecycleTask.dependsOn osgiJar, moduleTask, osgiDistJar
 
 }
 

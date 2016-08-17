@@ -152,6 +152,14 @@ task publishJar( type : Copy ) {
     into archivePublishDir
 }
 
+task publishOsgiDistJar( type : Copy ) {
+    group 'OSGI Distribution'
+    description 'Copies a JAR suitable for the Ceylon OSGI Distribution'
+    from jar
+    into osgiDistPluginsDir
+    rename ~/.+/,"${bundleSymbolicName}_${jar.ceylon.bundleVersion}.jar"
+}
+
 task publishSource( type : Copy ) {
     group 'Distribution'
     description 'Copies sources artifacts to distribution area'
@@ -187,7 +195,7 @@ task publishPluginFiles( type : Copy ) {
 
 task publishInternal {
     dependsOn 'publishJar','publishSource'
-    dependsOn publishPluginFiles
+    dependsOn publishPluginFiles, publishOsgiDistJar
 }
 
 task cleanRepo ( type : Delete ) {

@@ -193,6 +193,14 @@ task bootstrapModule( type : Jar ) {
 
 }
 
+task publishBootstrapOsgiModule( type : Copy ) {
+    group 'OSGI Distribution'
+    description 'Copies binary artifacts to OSGI distribution area'
+    from bootstrapModule
+    into "${osgiDistDir}/plugins"
+    rename ~/.+/, "ceylon.bootstrap_${version}${versionQualifier}.jar"
+}
+
 sha1 {
     archive bootstrapModule
     dependsOn bootstrapModule
@@ -212,7 +220,7 @@ task publishBootstrapModule( type : Copy ) {
 }
 
 publishInternal {
-    dependsOn publishBootstrapModule
+    dependsOn publishBootstrapModule, publishBootstrapOsgiModule
 }
 
 // TODO: Do something different for Jigsaw
