@@ -49,12 +49,26 @@ void test4148() {
   } else {
     fail("#4148.2");
   }
-  String p = "ok" + (t[0] = "!");
+  variable String p = "ok" + (t[0] = "!");
   check(p == "ok!", "#4148.3");
   if (exists v=t[0]) {
     check(v == "!", "#4148.4");
   } else {
     fail("#4148.4");
+  }
+  value a = Array{""};
+  check((a[0] = "ok") == "ok", "#4148.5");
+  if (exists v=a[0]) {
+    check(a == "ok", "#4148.6");
+  } else {
+    fail("#4148.6");
+  }
+  p = "ok" + (a[0] = "!");
+  check(p == "ok!", "#4148.7");
+  if (exists v=a[0]) {
+    check(v == "!", "#4148.8");
+  } else {
+    fail("#4148.8");
   }
 }
 
