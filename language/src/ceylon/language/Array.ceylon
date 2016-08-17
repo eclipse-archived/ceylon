@@ -24,6 +24,7 @@
 tagged("Collections")
 shared final serializable native class Array<Element>
         satisfies SearchableList<Element> &
+                  CorrespondenceMutator<Integer,Element> &
                   Ranged<Integer,Element,Array<Element>> {
     
     "Create an array with the given [[elements]]."
@@ -88,7 +89,7 @@ shared final serializable native class Array<Element>
         "if the given index is out of bounds, that is, if 
          `index<0` or if `index>lastIndex`")
     shared native 
-    void set(
+    actual void set(
         "The index of the element to replace."
         Integer index,
         "The new element."
