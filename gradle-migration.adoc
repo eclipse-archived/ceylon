@@ -114,6 +114,13 @@ If those files could simply be moved to the `src/main/resources` folder the whol
 .TODO
 * `ceylon-completion.bash` is copied twice - once in `copyContrib` and once in `copyCompilerBinaries`
 
+== Dist-osgi
+
+* Does not wrtie anything back to source.
+** Distribution files are written to `${buildPrefix}/osgi-distribution` folder
+** Embedded Repository is in ``${buildPrefix}/dist-isgo/embeddRepository`
+* Running `dist` task from root project will also cause the full OSGI distribution
+to be built.
 
 === Java-main
 
