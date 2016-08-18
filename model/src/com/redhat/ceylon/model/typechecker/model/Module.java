@@ -50,13 +50,11 @@ public class Module
     public Module() {}
     
     public LanguageModuleCache getLanguageModuleCache() {
-        assert(isLanguageModule());
-        synchronized(this) {
-            if (languageModuleCache == null) {
-                languageModuleCache = new LanguageModuleCache(this);
-            }
-            return languageModuleCache;
+        if (languageModuleCache == null) {
+            assert(isLanguageModule());
+            languageModuleCache = new LanguageModuleCache(this);
         }
+        return languageModuleCache;
     }
     
     /**

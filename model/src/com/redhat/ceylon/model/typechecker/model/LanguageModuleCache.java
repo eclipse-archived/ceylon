@@ -3,6 +3,15 @@ package com.redhat.ceylon.model.typechecker.model;
 import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 
 public class LanguageModuleCache  implements LanguageModuleProvider {
+    
+    private static final class CacheTypeFactory extends Unit {
+        public Type getType(TypeDeclaration td) {
+            Type result = super.getType(td);
+            result.setCached();
+            return result;
+        }
+    }
+
     private final Module module;
 
     LanguageModuleCache(Module module) {
@@ -170,13 +179,7 @@ public class LanguageModuleCache  implements LanguageModuleProvider {
                 Package languagePackage =
                         module.getPackage(Module.LANGUAGE_MODULE_NAME);
                 if (languagePackage != null) {
-                    typeFactory = new Unit() {
-                        public Type getType(TypeDeclaration td) {
-                            Type result = super.getType(td);
-                            result.setCached();
-                            return result;
-                        };
-                    };
+                    typeFactory = new CacheTypeFactory();
                     typeFactory.setPackage(languagePackage);
                 }
             }
