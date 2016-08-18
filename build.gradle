@@ -124,13 +124,21 @@ task migrationReports {
                 it.absolutePath.replace("${baseDir}/",'')
             }.sort().join("\n")
         }
+
+        makeTimeStampSanitizedListing = { rootDir ->
+            String baseDir = file(rootDir).absolutePath
+            fileTree(rootDir).files.collect {
+                it.absolutePath.replace("${baseDir}/",'').replaceAll(~/v\d{8}-\d{4}/,'vXxxxYyZz-AaBb')
+            }.sort().unique().join("\n")
+
+        }
     }
     doLast {
         mkdir buildDir
         file("${buildDir}/dist-gradle.txt").text = makeListing(distDir)
         file("${buildDir}/dist-ant.txt").text = makeListing('dist/dist')
-        file("${buildDir}/osgi-dist-gradle.txt").text = makeListing(osgiDistDir).replaceAll(~/v\d{8}-\d{4}/,'vXxxxYyZz-AaBb')
-        file("${buildDir}/osgi-dist-ant.txt").text = makeListing('dist/osgi/build/dist').replaceAll(~/v\d{8}-\d{4}/,'vXxxxYyZz-AaBb')
+        file("${buildDir}/osgi-dist-gradle.txt").text = makeTimeStampSanitizedListing(osgiDistDir)
+        file("${buildDir}/osgi-dist-ant.txt").text = makeTimeStampSanitizedListing('dist/osgi/build/dist')
     }
 
     mustRunAfter sdk, ide, dist
