@@ -2415,24 +2415,28 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.AssignOp that) {
+        if (errVisitor.hasErrors(that))return;
         String returnValue = null;
         StaticMemberOrTypeExpression lhsExpr = null;
         final boolean leftDynamic = isInDynamicBlock() &&
                 ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel());
         if (that.getLeftTerm() instanceof Tree.IndexExpression) {
             Tree.IndexExpression iex = (Tree.IndexExpression)that.getLeftTerm();
-            iex.getPrimary().visit(this);
             if (leftDynamic) {
+                iex.getPrimary().visit(this);
                 out("[");
                 ((Tree.Element)iex.getElementOrRange()).getExpression().visit(this);
                 out("]=");
                 that.getRightTerm().visit(this);
             } else {
+                final String tv = createRetainedTempVar();
+                out("(", tv, "=");
+                that.getRightTerm().visit(this);
+                out(",");
+                iex.getPrimary().visit(this);
                 out(".set(");
                 ((Tree.Element)iex.getElementOrRange()).getExpression().visit(this);
-                out(",");
-                that.getRightTerm().visit(this);
-                out(")");
+                out(",", tv, "), ", tv, ")");
             }
             return;
         }
@@ -2814,6 +2818,7 @@ public class GenerateJsVisitor extends Visitor {
 
     private void assignOp(final Tree.AssignmentOp that, final String functionName,
             final Map<TypeParameter, Type> targs) {
+        if (errVisitor.hasErrors(that))return;
         Term lhs = that.getLeftTerm();
         final boolean isNative="||".equals(functionName)||"&&".equals(functionName);
         if (lhs instanceof BaseMemberExpression) {
@@ -2885,6 +2890,8 @@ public class GenerateJsVisitor extends Visitor {
                 }
                 out(")");
             }
+        } else if (lhs instanceof Tree.IndexExpression) {
+            lhs.addUnsupportedError("Index expressions are not supported in this kind of assignment.");
         }
     }
 
