@@ -144,9 +144,9 @@ task embeddedRepository ( type : Copy ) {
     into embeddedRepoDir
 
     from osgiDistDir, {
-        include 'repo'
-        include 'bin'
-        include 'lib'
+        include 'repo/**'
+        include 'bin/**'
+        include 'lib/**'
     }
 
     from 'embeddedRepository', {
@@ -255,8 +255,9 @@ task generateOsgiFeatures {
         xslFile = file('karaf/generateKarafRuntimeDistributionFeature.xsl')
         featureId = 'ceylon.distribution.runtime'
         featureVersion = project.version
-        featureFile = file("${localFeaturesDir}/${featureId}_${featureVersion}")
+        featureFile = file("${localDistDir}/karaf-features.xml")
     }
+
     dependsOn createR5Obr
     inputs.files createR5Obr.index, xslFile
     outputs.file featureFile
@@ -285,15 +286,15 @@ task generateOsgiP2Features {
 
         runtimeXsl = file('p2/generateRuntimeDistributionFeature.xsl')
         runtimeFeatureId = 'com.redhat.ceylon.dist.runtime.feature'
-        runtimeFeatureFile = file("${localFeaturesDir}/${runtimeFeatureId}_${featureVersion}")
+        runtimeFeatureFile = file("${localFeaturesDir}/${runtimeFeatureId}_${featureVersion}/feature.xml")
 
         distXsl = file('p2/generateDistributionFeature.xsl')
         distFeatureId = 'com.redhat.ceylon.dist.feature'
-        distFeatureFile = file("${localFeaturesDir}/${distFeatureId}_${featureVersion}")
+        distFeatureFile = file("${localFeaturesDir}/${distFeatureId}_${featureVersion}/feature.xml")
 
         depsXsl = file('p2/generateFixedDependenciesFeature.xsl')
         depsFeatureId = 'com.redhat.ceylon.dist.dependencies.feature'
-        depsFeatureFile = file("${localFeaturesDir}/${depsFeatureId}_${featureVersion}")
+        depsFeatureFile = file("${localFeaturesDir}/${depsFeatureId}_${featureVersion}/feature.xml")
     }
 
     dependsOn createR5Obr
@@ -334,6 +335,7 @@ task generateOsgiP2Features {
         }
     }
 }
+
 
 task osgi {
     group "OSGI Distribution"
