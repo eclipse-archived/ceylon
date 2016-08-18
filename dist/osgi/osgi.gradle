@@ -130,7 +130,7 @@ task importDistJar( type : AntCeylonImportJarTask ) {
     description "Imports dist jar into repository"
 
     classpath "${repoLibDir}/ceylon-ant.jar"
-    module "org.osgi.core/${osgiVer}"
+    module "com.redhat.ceylon.dist/${project.version}"
     jarFile {jar.archivePath}
     descriptor { "${buildDir}/module.properties" }
     destinationDir "${embeddedRepoDir}/repo"
@@ -140,10 +140,13 @@ task importDistJar( type : AntCeylonImportJarTask ) {
 
 task embeddedRepository ( type : Copy ) {
 
+    group 'OSGI Distribution'
+    description 'Creates an embedded repository suitable for use in Eclipse'
+
     dependsOn ':dist:zip'
     into embeddedRepoDir
 
-    from osgiDistDir, {
+    from distDir, {
         include 'repo/**'
         include 'bin/**'
         include 'lib/**'
