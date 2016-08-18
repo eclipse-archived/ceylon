@@ -183,7 +183,7 @@ public class ModelUtil {
                 !decl.isAbstraction());
     }
 
-    static boolean hasMatchingSignature(
+    public static boolean hasMatchingSignature(
             Declaration dec, 
             List<Type> signature, boolean variadic) {
         return hasMatchingSignature(dec, 
