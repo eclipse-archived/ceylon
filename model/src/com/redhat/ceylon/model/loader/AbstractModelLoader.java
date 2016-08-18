@@ -3562,6 +3562,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             method.setUncheckedNullType(true);
             break;
         }
+        if (type.isCached()) {
+            type = type.clone();
+        }
+        
         method.setType(type);
 
         // now its parameters
@@ -3770,6 +3774,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Module module = ModelUtil.getModuleContainer(klass);
         Type type = obtainType(fieldMirror.getType(), fieldMirror, klass, module, VarianceLocation.INVARIANT,
                 "field '"+value.getName()+"'", klass);
+        if (type.isCached()) {
+            type = type.clone();
+        }
+        
         if (value.isEnumValue()) {
             Class enumValueType = new Class();
             enumValueType.setValueConstructor(true);
@@ -3909,6 +3917,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(type == null)
             type = obtainType(methodMirror.getReturnType(), methodMirror, klass, module, VarianceLocation.INVARIANT,
                               "getter '"+methodName+"'", klass);
+        if (type.isCached()) {
+            type = type.clone();
+        }
         // special case for hash attributes which we want to pretend are of type long internally
         if(value.isShared() && methodName.equals("hash"))
             type.setUnderlyingType("long");
@@ -4244,6 +4255,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }
                 }
             }
+            if (type.isCached()) {
+                type = type.clone();
+            }
+            
             type.setRaw(isRaw(ModelUtil.getModuleContainer(container), typeMirror));
             
             FunctionOrValue value = null;
@@ -4325,6 +4340,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private Type makeOptionalTypePreserveUnderlyingType(Type type, Module module) {
         Type optionalType = getOptionalType(type, module);
+        if (optionalType.isCached()) {
+            optionalType = optionalType.clone();
+        }
         optionalType.setUnderlyingType(type.getUnderlyingType());
         return optionalType;
     }
@@ -4802,7 +4820,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Type type = m.getType();
         if (JvmBackendUtil.isJavaArray(type.getDeclaration())) {
             String name = type.getDeclaration().getQualifiedNameString();
-            final Type elementType;
+            Type elementType;
             String underlyingType = null;
             if(name.equals("java.lang::ObjectArray")){
                 Type eType = type.getTypeArgumentList().get(0);
@@ -4821,6 +4839,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     underlyingType = "java.lang.Class";
                 } else {
                     elementType = eType;   
+                    if (elementType.isCached()) {
+                        elementType = type.clone();
+                        type.getTypeArgumentList().set(0, elementType);
+                    }
                 }
                 // TODO Enum elements
             } else if(name.equals("java.lang::LongArray")) {
@@ -4846,6 +4868,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             } else {
                 throw new RuntimeException();
             }
+            
+            if (elementType.isCached()) {
+                elementType = elementType.clone();
+            }
+            
             elementType.setUnderlyingType(underlyingType);
             Type iterableType = unit.getIterableType(elementType);
             return iterableType;
@@ -5182,6 +5209,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (typeName != null) {
             Type ret = decodeType(typeName, scope, moduleScope, targetType, target);
             // even decoded types need to fit with the reality of the underlying type
+            if (ret.isCached()) {
+                ret = ret.clone();
+            }
             ret.setUnderlyingType(getUnderlyingType(type, TypeLocation.TOPLEVEL));
             return ret;
         } else {
@@ -5232,6 +5262,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         type = applyTypeMapping(type, location);
         
         Type ret = getNonPrimitiveType(moduleScope, type, scope, variance);
+        if (ret.isCached()) {
+            ret = ret.clone();
+        }
+
         if (ret.getUnderlyingType() == null) {
             ret.setUnderlyingType(getUnderlyingType(originalType, location));
         }
@@ -5446,6 +5480,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(siteVarianceMap != null){
                     ret.setVarianceOverrides(siteVarianceMap);
                 }
+                if (ret.isCached()) {
+                    ret = ret.clone();
+                }
                 ret.setUnderlyingType(type.getQualifiedName());
                 ret.setRaw(isRaw);
 
@@ -5460,6 +5497,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // that one may have type arguments
             Type qualifyingType = getNonPrimitiveType(moduleScope, type.getQualifyingType(), scope, variance);
             Type ret = declaration.appliedType(qualifyingType, Collections.<Type>emptyList());
+            if (ret.isCached()) {
+                ret = ret.clone();
+            }
             ret.setUnderlyingType(type.getQualifiedName());
             ret.setRaw(isRaw);
             return ret;
@@ -5493,6 +5533,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 return declaration.getType();
 
             Type ret = applyTypeArguments(moduleScope, declaration, type, scope, VarianceLocation.CONTRAVARIANT, TypeMappingMode.GENERATOR, rawDeclarationsSeen);
+            if (ret.isCached()) {
+                ret = ret.clone();
+            }
             
             if (ret.getUnderlyingType() == null) {
                 ret.setUnderlyingType(getUnderlyingType(type, TypeLocation.TYPE_PARAM));

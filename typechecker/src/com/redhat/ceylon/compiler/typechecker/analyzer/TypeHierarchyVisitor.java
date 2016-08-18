@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.hasMatchingSignature;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
@@ -27,6 +28,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
@@ -502,22 +504,22 @@ public class TypeHierarchyVisitor extends Visitor {
         }
         //a Java interface method can be implemented by stuff that doesn't
         //explicitly/directly refine it
-        //TODO: does this logic does correctly account for overloading?
         for (Type.Members aggregateMembers: aggregation.membersByName.values()) {
             for (Declaration formal: 
                     new ArrayList<Declaration>
                         (aggregateMembers.formals)) {
                 if (isJavaInterfaceMember(formal)) {
+                    boolean overloaded = isOverloadedVersion(formal);
+                    List<com.redhat.ceylon.model.typechecker.model.Type> 
+                        signature = overloaded ? ModelUtil.getSignature(formal) : null;
                     for (Declaration concrete: aggregateMembers.defaults) {
-                        if (formal.getName().equals(concrete.getName()) 
-                                && isDefinedInJava(concrete)) {
+                        if (isRefinement(formal, overloaded, signature, concrete)) {
                             aggregateMembers.formals.remove(formal);
                             break;
                         }
                     }
                     for (Declaration concrete: aggregateMembers.nonFormalsNonDefaults) {
-                        if (formal.getName().equals(concrete.getName()) 
-                                && isDefinedInJava(concrete)) {
+                        if (isRefinement(formal, overloaded, signature, concrete)) {
                             aggregateMembers.formals.remove(formal);
                             break;
                         }
@@ -526,6 +528,13 @@ public class TypeHierarchyVisitor extends Visitor {
             }
         }
         return aggregation;
+    }
+
+    private static boolean isRefinement(Declaration formal, boolean overloaded,
+            List<com.redhat.ceylon.model.typechecker.model.Type> signature, Declaration concrete) {
+        return formal.getName().equals(concrete.getName()) 
+                && isDefinedInJava(concrete)
+                && (!overloaded || hasMatchingSignature(concrete, signature, false));
     }
 
     //sort type hierarchy from most abstract to most concrete

@@ -52,6 +52,7 @@ public class Type extends Reference {
     private Type resolvedAliases;
     private TypeParameter typeConstructorParameter;
     private boolean typeConstructor;
+    private boolean isCached;
     
     // cache
     private int hashCode;
@@ -59,6 +60,45 @@ public class Type extends Reference {
     
     private Map<TypeParameter,SiteVariance> varianceOverrides = 
             EMPTY_VARIANCE_MAP;
+    
+    public void setCached() {
+        isCached = true;
+    }
+    
+    public boolean isCached() {
+        return isCached;
+    }
+    
+    public Type clone() {
+        Type newType = new Type();
+        newType.declaration = declaration;
+        newType.exactlyNothing = exactlyNothing;
+        newType.hashCode = hashCode;
+        newType.isRaw = isRaw;
+        newType.typeConstructor = typeConstructor;
+        newType.typeConstructorParameter = typeConstructorParameter;
+        newType.underlyingType = underlyingType;
+        newType.varianceOverrides = varianceOverrides;
+        if (qualifyingType != null) {
+            newType.qualifyingType = qualifyingType.clone();
+        }
+        if (typeArguments.isEmpty()) {
+            newType.typeArguments = ModelUtil.EMPTY_TYPE_ARG_MAP;
+        } else {
+            newType.typeArguments = new HashMap<TypeParameter,Type>(typeArguments.size());
+            for (Map.Entry<TypeParameter, Type> entry : typeArguments.entrySet()) {
+                newType.typeArguments.put(entry.getKey(), entry.getValue().clone());
+            }
+        }
+
+        if (unionOfCases != null) {
+            newType.getUnionOfCases();
+        }
+        if (resolvedAliases != null) {
+            newType.resolveAliases();
+        }
+        return newType;
+    }
     
     public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
         return varianceOverrides;
@@ -2919,6 +2959,10 @@ public class Type extends Reference {
         }
 
         private Type preserveUnderlyingType(Type oldType, Type newType) {
+            if (newType.isCached()) {
+                newType = newType.clone();
+            }
+
             newType.setUnderlyingType(oldType.getUnderlyingType());
             return newType;
         }
@@ -3459,6 +3503,9 @@ public class Type extends Reference {
     }
     
     public void setUnderlyingType(String underlyingType) {
+        if (isCached) {
+            throw new IllegalArgumentException("Type.setRaw() called on a cached type.");
+        }
         this.underlyingType = underlyingType;
         // if we have a resolvedAliases cache, update it too
         if (resolvedAliases != null && 
@@ -3597,6 +3644,9 @@ public class Type extends Reference {
     }
 
     public void setRaw(boolean isRaw) {
+        if (isCached) {
+            throw new IllegalArgumentException("Type.setRaw() called on a cached type.");
+        }
         this.isRaw = isRaw;
         // if we have a resolvedAliases cache, update it too
         if (resolvedAliases != null && 
@@ -4386,6 +4436,9 @@ public class Type extends Reference {
                             type.getQualifyingType(), 
                             resultArgs);
             result.setVarianceOverrides(varianceResults);
+            if (result.isCached()) {
+                result = result.clone();
+            }
             result.setUnderlyingType(type.getUnderlyingType());
             return result;
         }

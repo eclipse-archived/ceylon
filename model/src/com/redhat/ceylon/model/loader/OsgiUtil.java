@@ -381,10 +381,14 @@ public class OsgiUtil {
             resultParts.add(ceylonQualifiers.get("final").toString());
         }
         
-        // Now join all the resulting parts together separated by dots
+        // Now join all the resulting parts together. The first 4
+        // elements get separated by dots, the rest by dashes
         StringBuffer result = new StringBuffer();
-        for (String part : resultParts) {
-            if (result.length() > 0) {
+        for (int i=0; i < resultParts.size(); i++) {
+            String part = resultParts.get(i);
+            if (i > 3) {
+                result.append("-");
+            } else if (i > 0) {
                 result.append(".");
             }
             result.append(part);

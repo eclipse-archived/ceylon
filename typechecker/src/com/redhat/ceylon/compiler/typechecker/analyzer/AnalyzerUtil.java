@@ -1488,7 +1488,7 @@ public class AnalyzerUtil {
                 unit.getPackage()
                     .getQualifiedNameString();
         String name = name(that.getIdentifier());
-        return "ceylon.language".equals(pname) &&
+        return Module.LANGUAGE_MODULE_NAME.equals(pname) &&
                 ("Anything".equalsIgnoreCase(name) ||
                 "Object".equalsIgnoreCase(name) ||
                 "Basic".equalsIgnoreCase(name) ||
