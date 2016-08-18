@@ -28,15 +28,6 @@ allprojects {
         osgiDistDir =  file("${rootProject.projectDir}/${buildPrefix}/osgi-distribution")
         osgiDistPluginsDir = file("${osgiDistDir}/plugins")
     }
-}
-
-buildDir = file("${buildPrefix}/root")
-
-subprojects {
-
-    apply plugin : CeylonCommonBuildProperties
-
-    buildDir = new File(file("${rootProject.projectDir}/${buildPrefix}"), it.path.replace(":", "_").substring(1))
 
     version= cbp.'ceylon.version'
 
@@ -57,13 +48,10 @@ task dist {
     group "publish"
     description "Creates the Ceylon distribution"
     dependsOn ':dist:publishInternal'
-    dependsOn ':dist-osgi:publishInternal'
 }
 
 task clean ( type : Delete ) {
-    delete buildDir
-    delete distDir
-//    delete embeddedRepoDir
+    delete buildPrefix
 }
 
 task 'clean-all' {
@@ -71,37 +59,19 @@ task 'clean-all' {
     description "Cleans everything here and in linked projects"
     dependsOn clean
     dependsOn 'clean-sdk'
-    dependsOn 'clean-ide'
+//    dependsOn 'clean-ide'
 }
 
 task 'clean-sdk' {
     group "ceylon cross project"
     description "Cleans the SDK"
-    dependsOn ':sdk-build:clean'
+    dependsOn ':ceylon-sdk:clean'
 }
 
 task sdk {
     group "ceylon cross project"
     description 'Builds the SDK'
-    dependsOn ':sdk-build:publishInternal'
-}
-
-task ide {
-    group "ceylon cross project"
-    description 'Builds the IDE plugins & related modules'
-    dependsOn ':formatter-build:publishInternal'
-    dependsOn ':toolConverterJava2ceylon-build:publishInternal'
-    dependsOn ':ideCommon-build:publishInternal'
-    dependsOn ':ideEclipse-build:publishInternal'
-}
-
-task 'clean-ide' {
-    group "ceylon cross project"
-    description 'Cleans the IDE plugins & related modules'
-    dependsOn ':formatter-build:clean'
-    dependsOn ':toolConverterJava2ceylon-build:clean'
-    dependsOn ':ideCommon-build:clean'
-//    dependsOn ':ideEclipse-build:clean'
+    dependsOn ':ceylon-sdk:publishInternal'
 }
 
 /*
@@ -113,24 +83,5 @@ task 'clean-ide' {
 
 */
 
-// TODO: Remove this task after migration. It is only here to compare outputs of Ant vs Gradle
-task migrationReports {
-    description "TEMPORARY: Creates comparison listings in root"
 
-    ext {
-        makeListing = { rootDir ->
-            String baseDir = file(rootDir).absolutePath
-            fileTree(rootDir).files.collect {
-                it.absolutePath.replace("${baseDir}/",'')
-            }.sort().join("\n")
-        }
-    }
-    doLast {
-        mkdir buildDir
-        file("${buildDir}/dist-gradle.txt").text = makeListing(distDir)
-        file("${buildDir}/dist-ant.txt").text = makeListing('dist/dist')
-        file("${buildDir}/osgi-dist-gradle.txt").text = makeListing(osgiDistDir).replaceAll(~/v\d{8}-\d{4}/,'vXxxxYyZz-AaBb')
-        file("${buildDir}/osgi-dist-ant.txt").text = makeListing('dist/osgi/build/dist').replaceAll(~/v\d{8}-\d{4}/,'vXxxxYyZz-AaBb')
-    }
-}
 
