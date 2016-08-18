@@ -5041,6 +5041,12 @@ public class ExpressionVisitor extends Visitor {
     private Type checkIndexElement(Tree.IndexExpression that,
             Type pt, Interface cd, boolean nullable,
             String superTypeName) {
+        if (dynamic && 
+                isTypeUnknown(pt)) {
+            // In dynamic blocks we allow index assignments
+            // on any dynamic types
+            return null;
+        }
         Type kt = null;
         Type vt = null;
         Tree.ElementOrRange eor = 
@@ -5509,12 +5515,6 @@ public class ExpressionVisitor extends Visitor {
                                     "assigned expression must be assignable to '" +
                                     vt.asString() +
                                     "' of 'CorrespondenceMutator'");
-                        } else {
-                            idx.getPrimary()
-                                .addError("illegal receiving type for index assignment: '" +
-                                        pt.getDeclaration()
-                                            .getName(unit) + 
-                                        "' is not a subtype of 'CorrespondenceMutator'");
                         }
                     }
                 } else {
