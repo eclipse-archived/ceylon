@@ -2466,6 +2466,11 @@ public class ModelUtil {
             TypeDeclaration td) {
         Type extendedType = td.getExtendedType();
         List<Type> satisfiedTypes = td.getSatisfiedTypes();
+        if (satisfiedTypes.isEmpty()) {
+            return extendedType==null ? 
+                    td.getUnit().getAnythingType() : 
+                    extendedType;
+        }
         List<Type> list = 
                 new ArrayList<Type>
                     (satisfiedTypes.size()+1);
