@@ -530,11 +530,13 @@ public class Type extends Reference {
                         !otherContravariant;
                 Unit unit = getDeclaration().getUnit();
                 if (covariant 
-                        && intersectionOfSupertypes(p).isSubtypeOf(arg)) {
+                        && intersectionOfSupertypes(p)
+                            .isSubtypeOf(arg)) {
                     arg = unit.getAnythingType();
                 }
                 if (otherCovariant 
-                        && intersectionOfSupertypes(p).isSubtypeOf(otherArg)) {
+                        && intersectionOfSupertypes(p)
+                            .isSubtypeOf(otherArg)) {
                     otherArg = unit.getAnythingType();
                 }
                 if (contravariant && otherCovariant) {
@@ -803,11 +805,13 @@ public class Type extends Reference {
             }
             Unit unit = supertype.getDeclaration().getUnit();
             if (supertype.isCovariant(p)
-                    && intersectionOfSupertypes(p).isSubtypeOf(arg)) {
+                    && intersectionOfSupertypes(p)
+                        .isSubtypeOf(arg)) {
                 arg = unit.getAnythingType();
             }
             if (type.isCovariant(p)
-                    && intersectionOfSupertypes(p).isSubtypeOf(otherArg)) {
+                    && intersectionOfSupertypes(p)
+                        .isSubtypeOf(otherArg)) {
                 otherArg = unit.getAnythingType();
             }
             if (type.isCovariant(p)) {
