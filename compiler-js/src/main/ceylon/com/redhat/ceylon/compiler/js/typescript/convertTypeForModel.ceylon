@@ -8,11 +8,7 @@ import ceylon.json {
 JsonObject convertTypeForModel(Type type) {
     switch (type.flags)
     case (TypeFlags.String) {
-        return JsonObject {
-            "md"->"$",
-            "pk"->"$",
-            "nm"->"String"
-        };
+        return stringTypeForModel;
     }
     else {
         throw AssertionError("Type of flags ``type.flags`` not implemented");

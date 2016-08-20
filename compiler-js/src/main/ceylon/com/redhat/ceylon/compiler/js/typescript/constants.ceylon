@@ -4,6 +4,10 @@ import ceylon.language.meta.declaration {
 import ceylon.language.meta.model {
     Value
 }
+import ceylon.json {
+    JsonArray,
+    JsonObject
+}
 
 // general constants
 
@@ -74,3 +78,11 @@ shared String methodMetaType = "m";
 "Meta type for a parameter."
 compilerConstant ("METATYPE_PARAMETER")
 shared String parameterMetaType = "prm";
+
+// commonly used objects
+
+JsonObject stringTypeForModel = JsonObject {
+    "md"->"$",
+    "pk"->"$",
+    "nm"->"String"
+};
