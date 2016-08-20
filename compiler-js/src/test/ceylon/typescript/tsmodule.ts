@@ -9,3 +9,6 @@ export function stringIdentity(s: string): string {
 export function numberIdentity(n: number): number {
     return n;
 }
+export function booleanIdentity(b: boolean): boolean {
+    return b;
+}

@@ -40,10 +40,16 @@ void testNumberIdentity() {
     assert (numberIdentity(1) == 1);
 }
 
+void testBooleanIdentity() {
+    assert (booleanIdentity(true));
+    assert (!booleanIdentity(false));
+}
+
 shared void run() {
     testConstEmptyString();
     testVarEmptyString();
     testGetVarEmptyString();
     testStringIdentity();
     testNumberIdentity();
+    testBooleanIdentity();
 }
