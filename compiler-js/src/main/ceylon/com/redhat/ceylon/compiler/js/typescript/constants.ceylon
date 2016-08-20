@@ -100,3 +100,8 @@ JsonObject floatOrIntegerTypeForModel = JsonObject {
     "comp"->"u",
     "l"->JsonArray { floatTypeForModel, integerTypeForModel }
 };
+JsonObject booleanTypeForModel = JsonObject {
+    "md"->"$",
+    "pk"->"$",
+    "nm"->"Boolean"
+};
