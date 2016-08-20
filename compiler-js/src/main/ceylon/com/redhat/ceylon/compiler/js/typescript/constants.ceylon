@@ -86,3 +86,17 @@ JsonObject stringTypeForModel = JsonObject {
     "pk"->"$",
     "nm"->"String"
 };
+JsonObject floatTypeForModel = JsonObject {
+    "md"->"$",
+    "pk"->"$",
+    "nm"->"Float"
+};
+JsonObject integerTypeForModel = JsonObject {
+    "md"->"$",
+    "pk"->"$",
+    "nm"->"Integer"
+};
+JsonObject floatOrIntegerTypeForModel = JsonObject {
+    "comp"->"u",
+    "l"->JsonArray { floatTypeForModel, integerTypeForModel }
+};

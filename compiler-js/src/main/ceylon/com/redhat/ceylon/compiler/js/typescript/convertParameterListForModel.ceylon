@@ -44,7 +44,10 @@ JsonArray convertParameterListForModel(NodeArray<ParameterDeclaration> list, Typ
             JsonObject {
                 nameKey -> parameterName(param),
                 metaTypeKey->parameterMetaType,
-                typeKey -> convertTypeForModel(typechecker.getTypeAtLocation(param)),
+                typeKey -> convertTypeForModel {
+                    type = typechecker.getTypeAtLocation(param);
+                    parameterType = true;
+                },
                 packedAnnotationsKey -> packAnnotations(),
                 if (isDefaulted(param))
                     defaultKey->1
