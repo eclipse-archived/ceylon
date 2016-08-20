@@ -33,9 +33,17 @@ void testStringIdentity() {
     assert (stringIdentity { s = "baz"; } == "baz");
 }
 
+void testNumberIdentity() {
+    assert (numberIdentity(4.2) == 4.2);
+    assert (numberIdentity(1.0) == 1.0);
+    assert (numberIdentity(1) == 1.0);
+    assert (numberIdentity(1) == 1);
+}
+
 shared void run() {
     testConstEmptyString();
     testVarEmptyString();
     testGetVarEmptyString();
     testStringIdentity();
+    testNumberIdentity();
 }

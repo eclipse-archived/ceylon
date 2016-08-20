@@ -6,3 +6,6 @@ export function getVarEmptyString(): string {
 export function stringIdentity(s: string): string {
     return s;
 }
+export function numberIdentity(n: number): number {
+    return n;
+}
