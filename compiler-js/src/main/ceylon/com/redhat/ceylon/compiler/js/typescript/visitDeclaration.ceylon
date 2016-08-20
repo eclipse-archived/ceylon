@@ -47,13 +47,11 @@ void visitDeclaration(
         try {
             assert (is FunctionDeclaration fdecl = node);
             Identifier id;
-            TypeNode typeNode;
             dynamic {
                 id = eval("(function(x){return x.name})")(node); // TODO should not be necessary once the backend can handle optional members
-                typeNode = eval("(function(x){return x.type})")(node); // TODO ditto
             }
             value name = id.text;
-            value type = typechecker.getTypeAtLocation(typeNode);
+            value type = typechecker.getReturnTypeOfSignature(typechecker.getSignatureFromDeclaration(fdecl));
             container.put(name, JsonObject {
                     metaTypeKey->methodMetaType,
                     nameKey->name,
