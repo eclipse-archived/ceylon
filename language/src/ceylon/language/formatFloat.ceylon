@@ -88,14 +88,15 @@ shared String formatFloat(
         14 - exponent(magnitude);
     };
 
-    "The float, but with 0 to ~15 fractional digits shifted to the whole part"
+    "The float, but with all meaningful digits shifted to the
+     first ~15 positions of the whole part"
     value normalized = scaleByPowerOfTen(magnitude, decimalMoveRight);
 
-    "The usable digits: [[normalized]] as an [[integer]] after rounding"
+    "The usable digits: [[normalized]] as an [[Integer]] after rounding"
     variable value integer = halfEven(normalized).integer;
 
-    "The number of digits of [[integer]] that are
-     to the right of the decimal point in [[float]]"
+    "The number of digits of [[integer]] that are to the right of
+     the decimal point in [[float]]. May be negative."
     variable value fractionalPartDigits = decimalMoveRight;
 
     "Have any digits to the right of the '.' been emitted?"
@@ -130,7 +131,7 @@ shared String formatFloat(
     if (emittedFractional) {
         result.appendCharacter('.');
     }
-    if (integer.zero) {
+    if (integer == 0) {
         result.appendCharacter('0');
     }
     else {
@@ -145,7 +146,7 @@ shared String formatFloat(
             result.appendCharacter('0'.neighbour(digit));
         }
     }
-    if (float.negative) {
+    if (float < 0.0) {
         result.appendCharacter('-');
     }
     return(result.string.reversed);
@@ -154,7 +155,7 @@ shared String formatFloat(
 Integer exponent(variable Float f)
     =>  let (l10 = log10(f.magnitude))
         // now, compute the floor
-        if (l10.fractionalPart == 0.0 || l10.positive)
+        if (l10.fractionalPart == 0.0 || l10 > 0.0)
         then l10.wholePart.integer
         else l10.wholePart.integer - 1;
 
