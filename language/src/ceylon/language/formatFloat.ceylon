@@ -1,3 +1,7 @@
+import java.lang {
+    JVMMath=Math
+}
+
 "The string decimal representation of the given 
  [[floating point number|float]]. If the given number is 
  [[negative|Float.negative]], the string representation will 
@@ -43,92 +47,159 @@ shared String formatFloat(
         "The floating point value to format."
         Float float,
         "The minimum number of allowed decimal places.
-         
+
          If `minDecimalPlaces<=0`, the result may have no
          decimal point."
-        Integer minDecimalPlaces=1,
+        variable Integer minDecimalPlaces=1,
         "The maximum number of allowed decimal places.
-         
+
          If `maxDecimalPlaces<=0`, the result always has no
          decimal point."
-        Integer maxDecimalPlaces=9) {
-    if (float.undefined || float.infinite) {
+        variable Integer maxDecimalPlaces=9) {
+
+    // let's not be rude and throw
+    if (maxDecimalPlaces < 0) {
+        maxDecimalPlaces = 0;
+    }
+    if (minDecimalPlaces < 0) {
+        minDecimalPlaces = 0;
+    }
+    if (maxDecimalPlaces < minDecimalPlaces) {
+        maxDecimalPlaces = minDecimalPlaces;
+    }
+
+    // handle 0, undefined, and infinities
+    if (float == 0) {
+        if (minDecimalPlaces > 0) {
+            return "0.``"0".repeat(minDecimalPlaces)``";
+        }
+        return "0";
+    }
+    else if (float.undefined || float.infinite) {
         return float.string;
     }
-    Float magnitude = float.magnitude;
-    variable Integer i = maxDecimalPlaces;
-    Float maxExactIntegralFloat 
-            = runtime.maxExactIntegralFloat.float;
-    while (i>0 && 
-        magnitude > maxExactIntegralFloat/10^i) {
-        //reduce the number of computed decimal places, 
-        //so that magnitude * 10^i will fit into a Float
-        i--;
+
+    value result = StringBuilder();
+    value magnitude = float.magnitude;
+    value decimalMoveRight = smallest {
+        // Don't include more fractional digits than
+        // necessary. See rounding (halfEven) below.
+        maxDecimalPlaces;
+        14 - exponent(magnitude);
+    };
+
+    "The float, but with 0 to ~15 fractional digits shifted to the whole part"
+    value normalized = scaleByPowerOfTen(magnitude, decimalMoveRight);
+
+    "The usable digits: [[normalized]] as an [[integer]] after rounding"
+    variable value integer = halfEven(normalized).integer;
+
+    "The number of digits of [[integer]] that are
+     to the right of the decimal point in [[float]]"
+    variable value fractionalPartDigits = decimalMoveRight;
+
+    "Have any digits to the right of the '.' been emitted?"
+    variable value emittedFractional = false;
+
+    if (minDecimalPlaces > fractionalPartDigits) {
+        // we have fewer fractional digits than we need
+        if (fractionalPartDigits > 0) {
+            result.append("0".repeat(
+                minDecimalPlaces - fractionalPartDigits));
+        } else {
+            result.append("0".repeat(minDecimalPlaces));
+        }
+        emittedFractional = true;
     }
-    Integer decimalPlaces = i;
-    variable Boolean previousZero = false;
-    variable {Character*} digits = {};
-    while (true) {
-        Float scaled = scaleByPowerOfTen(magnitude, i);
-        Float fractional = scaled.fractionalPart;
-        Float whole = scaled.wholePart;
-        Integer d = (fractional * 10).integer;
-        Integer digit;
-        if (previousZero) {
-            digit = 
-                    //detect rounding error in floating point
-                    //multiplication magnitude * 10^i above
-                    (fractional * 100).integer > d * 10
-                        then (d==9 then 0 else d + 1)
-                        else d;
-        }
-        else {
-            digit = d;
-        }
-        Character c = (digit + zeroInt).character;
-        digits = digits.follow(c);
-        if (whole == 0.0) {
-            break;
-        }
-        previousZero = digit==0;
-        i--;
+    while (fractionalPartDigits > maxDecimalPlaces) {
+        // we have more fractional digits than we need
+        integer /= 10;
+        fractionalPartDigits--;
     }
-    String string = String(digits.exceptLast);
-    Integer point = string.size - decimalPlaces;
-    String wholePart;
-    String fractionalPart;
-    if (point>0) {
-        wholePart = string[0:point];
-        fractionalPart = string[point...];
+    while (fractionalPartDigits > 0) {
+        // emit fractional part of 'integer'
+        value digit = integer % 10;
+        integer /= 10;
+        if (digit != 0 || emittedFractional
+                || fractionalPartDigits <= minDecimalPlaces) {
+            result.appendCharacter('0'.neighbour(digit));
+            emittedFractional = true;
+        }
+        fractionalPartDigits--;
+    }
+    if (emittedFractional) {
+        result.appendCharacter('.');
+    }
+    if (integer.zero) {
+        result.appendCharacter('0');
     }
     else {
-        wholePart = "0"; 
-        fractionalPart 
-                = string.padLeading(maxDecimalPlaces, '0');
+        if (fractionalPartDigits < 0) {
+            // we have fewer whole part digits than we need
+            result.append("0".repeat(-fractionalPartDigits));
+        }
+        while (integer != 0) {
+            // emit whole part
+            value digit = integer % 10;
+            integer /= 10;
+            result.appendCharacter('0'.neighbour(digit));
+        }
     }
-    
-    String normalized = 
-            fractionalPart
-                .trimTrailing('0'.equals)
-                .padTrailing(minDecimalPlaces, '0');
-    String signed = 
-            float.negative
-                then "-" + wholePart
-                else wholePart;
-    return normalized.empty 
-            then signed 
-            else signed + "." + normalized;
+    if (float.negative) {
+        result.appendCharacter('-');
+    }
+    return(result.string.reversed);
 }
 
+Integer exponent(variable Float f)
+    =>  let (l10 = log10(f.magnitude))
+        // now, compute the floor
+        if (l10.fractionalPart == 0.0 || l10.positive)
+        then l10.wholePart.integer
+        else l10.wholePart.integer - 1;
+
 Float scaleByPowerOfTen(Float float, Integer power) {
-    Float scale =
-            let (magnitude = power.magnitude)
-            //there are only 15 decimal places of precision
-            //in IEEE double-precision floating point number 
+    value scale =
+            let (magnitude = power.magnitude) 
             if (magnitude <= 15)
                 then (10^magnitude).nearestFloat     //fast
                 else 10.0.powerOfInteger(magnitude); //slow
     return if (power < 0) 
             then float / scale 
             else float * scale;
+}
+
+Float twoFiftyTwo = (2^52).float;
+
+Float halfEven(Float num) {
+    if (num.infinite ||
+            num.undefined ||
+            num.fractionalPart == 0.0) {
+        return num;
+    }
+
+    variable value result = num.magnitude;
+    if (result >= twoFiftyTwo) {
+        return num;
+    }
+
+    // else, round
+    result = (twoFiftyTwo + result) - twoFiftyTwo;
+    return result * num.sign.float;
+}
+
+native
+Float log10(Float num);
+
+native("jvm")
+Float log10(Float num)
+    =>  JVMMath.log10(num);
+
+native("js")
+Float log10(Float num) {
+    dynamic {
+        Float n = Math.log(num);
+        Float d = Math.\iLN10;
+        return n / d;
+    }
 }
