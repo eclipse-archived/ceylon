@@ -45,6 +45,13 @@ void testBooleanIdentity() {
     assert (!booleanIdentity(false));
 }
 
+suppressWarnings ("unusedDeclaration")
+void testVoidFunction() {
+    Anything a1 = voidFunction(1);
+    Anything a2 = voidFunction("string");
+    Anything a3 = voidFunction(testVoidFunction);
+}
+
 shared void run() {
     testConstEmptyString();
     testVarEmptyString();
@@ -52,4 +59,5 @@ shared void run() {
     testStringIdentity();
     testNumberIdentity();
     testBooleanIdentity();
+    testVoidFunction();
 }

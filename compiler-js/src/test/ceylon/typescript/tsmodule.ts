@@ -12,3 +12,6 @@ export function numberIdentity(n: number): number {
 export function booleanIdentity(b: boolean) { // return type omitted: tests type inference support
     return b;
 }
+export function voidFunction(value: any): void {
+    // do nothing
+}
