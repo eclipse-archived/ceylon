@@ -105,3 +105,8 @@ JsonObject booleanTypeForModel = JsonObject {
     "pk"->"$",
     "nm"->"Boolean"
 };
+JsonObject anythingTypeForModel = JsonObject {
+    "md"->"$",
+    "pk"->"$",
+    "nm"->"Anything"
+};

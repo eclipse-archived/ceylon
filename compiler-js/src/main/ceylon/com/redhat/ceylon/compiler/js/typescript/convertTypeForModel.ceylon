@@ -25,6 +25,9 @@ JsonObject convertTypeForModel(type, parameterType = false) {
     case (TypeFlags.Boolean) {
         return booleanTypeForModel;
     }
+    case (TypeFlags.Void | TypeFlags.Any) {
+        return anythingTypeForModel;
+    }
     else {
         throw AssertionError("Type of flags ``type.flags`` not implemented");
     }
