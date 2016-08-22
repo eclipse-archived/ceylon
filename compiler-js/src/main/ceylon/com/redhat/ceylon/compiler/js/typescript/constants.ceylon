@@ -73,6 +73,12 @@ shared String attributesKey = "$at";
 "Key for the methods of a class or interface."
 compilerConstant ("KEY_METHODS")
 shared String methodsKey = "$m";
+"Key for the module of a type."
+compilerConstant ("KEY_MODULE")
+shared String moduleKey = "md";
+"Key for the package of a type."
+compilerConstant ("KEY_PACKAGE")
+shared String packageKey = "pk";
 
 // meta type values
 "Meta type for an attribute or toplevel value."
@@ -88,34 +94,40 @@ shared String parameterMetaType = "prm";
 compilerConstant ("METATYPE_CLASS")
 shared String classMetaType = "c";
 
+// module / package values
+"Abbreviation for the current module or package."
+shared String currentModuleOrPackage = ".";
+"Abbreviation for the language module or package."
+shared String languageModuleOrPackage = "$";
+
 // commonly used objects
 
 JsonObject stringTypeForModel = JsonObject {
-    "md"->"$",
-    "pk"->"$",
-    "nm"->"String"
+    moduleKey->languageModuleOrPackage,
+    packageKey->languageModuleOrPackage,
+    nameKey->"String"
 };
 JsonObject floatTypeForModel = JsonObject {
-    "md"->"$",
-    "pk"->"$",
-    "nm"->"Float"
+    moduleKey->languageModuleOrPackage,
+    packageKey->languageModuleOrPackage,
+    nameKey->"Float"
 };
 JsonObject integerTypeForModel = JsonObject {
-    "md"->"$",
-    "pk"->"$",
-    "nm"->"Integer"
+    moduleKey->languageModuleOrPackage,
+    packageKey->languageModuleOrPackage,
+    nameKey->"Integer"
 };
 JsonObject floatOrIntegerTypeForModel = JsonObject {
     "comp"->"u",
     "l"->JsonArray { floatTypeForModel, integerTypeForModel }
 };
 JsonObject booleanTypeForModel = JsonObject {
-    "md"->"$",
-    "pk"->"$",
-    "nm"->"Boolean"
+    moduleKey->languageModuleOrPackage,
+    packageKey->languageModuleOrPackage,
+    nameKey->"Boolean"
 };
 JsonObject anythingTypeForModel = JsonObject {
-    "md"->"$",
-    "pk"->"$",
-    "nm"->"Anything"
+    moduleKey->languageModuleOrPackage,
+    packageKey->languageModuleOrPackage,
+    nameKey->"Anything"
 };
