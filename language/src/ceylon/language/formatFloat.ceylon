@@ -16,7 +16,7 @@ import java.lang {
  respectively, so that by default the string representation
  always contains a decimal point, and never contains more 
  than nine decimal places. The decimal representation is 
- truncated so that the number of decimal places never 
+ rounded so that the number of decimal places never
  exceeds the specified maximum.
  
  For example:
@@ -27,6 +27,7 @@ import java.lang {
  - `formatFloat(1234.0,0)` is `\"1234\"`
  - `formatFloat(1234.1234,6)` is `\"1234.123400\"`
  - `formatFloat(1234.1234,0,2)` is `\"1234.12\"`
+ - `formatFloat(1234.123456,0,5)` is `\"1234.12346\"`
  - `formatFloat(0.0001,2,2)` is `\"0.00\"`
  - `formatFloat(0.0001,0,2)` is `\"0\"`
  
