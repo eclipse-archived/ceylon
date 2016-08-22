@@ -43,7 +43,21 @@ public class Unit implements LanguageModuleProvider {
     private boolean unresolvedReferences;
     
     public List<Import> getImports() {
-        return imports;
+        synchronized (imports) {
+            return new ArrayList<Import>(imports);
+        }
+    }
+
+    public void addImport(Import imp) {
+        synchronized (imports) {
+            imports.add(imp);
+        }
+    }
+
+    public void removeImport(Import imp) {
+        synchronized (imports) {
+            imports.remove(imp);
+        }
     }
 
     public List<ImportList> getImportLists() {
@@ -125,7 +139,8 @@ public class Unit implements LanguageModuleProvider {
     public String getAliasedName(Declaration dec, String defaultValue) {
         for (Import i: getImports()) {
             if (!i.isAmbiguous() &&
-                    i.getDeclaration().equals(getAbstraction(dec))) {
+                    i.getDeclaration()
+                        .equals(getAbstraction(dec))) {
                 return i.getAlias();
             }
         }
@@ -209,7 +224,7 @@ public class Unit implements LanguageModuleProvider {
             int proximity, Cancellable canceller) {
         Map<String, DeclarationWithProximity> result = 
                 new TreeMap<String, DeclarationWithProximity>();
-        for (Import i: new ArrayList<Import>(getImports())) {
+        for (Import i: getImports()) {
             if (canceller != null
                     && canceller.isCancelled()) {
                 return Collections.emptyMap();
@@ -233,7 +248,7 @@ public class Unit implements LanguageModuleProvider {
             String startingWith, int proximity, Cancellable canceller) {
         Map<String, DeclarationWithProximity> result = 
                 new TreeMap<String, DeclarationWithProximity>();
-        for (Import i: new ArrayList<Import>(getImports())) {
+        for (Import i: getImports()) {
             if (canceller != null
                     && canceller.isCancelled()) {
                 return Collections.emptyMap();
