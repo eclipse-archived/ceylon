@@ -93,6 +93,9 @@ shared String parameterMetaType = "prm";
 "Meta type for a class."
 compilerConstant ("METATYPE_CLASS")
 shared String classMetaType = "c";
+"Meta type for a interface."
+compilerConstant ("METATYPE_INTERFACE")
+shared String interfaceMetaType = "i";
 
 // module / package values
 "Abbreviation for the current module or package."

@@ -146,6 +146,62 @@ void visitDeclaration(
             t.printStackTrace();
         }
     }
+    case (SyntaxKind.InterfaceDeclaration) {
+        try {
+            assert (is InterfaceDeclaration idecl = node);
+            Identifier id;
+            dynamic {
+                id = eval("(function(x){return x.name})")(node); // TODO should not be necessary once the backend can handle optional members
+            }
+            value name = id.text;
+            MutableList<PropertyDeclaration> properties = ArrayList<PropertyDeclaration>(idecl.members.size);
+            MutableList<MethodDeclaration> methods = ArrayList<MethodDeclaration>(idecl.members.size);
+            for (member in idecl.members) {
+                switch (member.kind)
+                case (SyntaxKind.PropertyDeclaration | SyntaxKind.PropertySignature) {
+                    PropertyDeclaration property;
+                    dynamic {
+                        property = eval("(function(x){x.getT$all=undefined;x.$$=undefined;return x})")(member);
+                    }
+                    //assert (is PropertyDeclaration property = member); // TODO use assert
+                    properties.add(property);
+                }
+                case (SyntaxKind.MethodDeclaration | SyntaxKind.MethodSignature) {
+                    MethodDeclaration method;
+                    dynamic {
+                        method = eval("(function(x){x.getT$all=undefined;x.$$=undefined;return x})")(member);
+                    }
+                    //assert (is MethodDeclaration method = member); // TODO use assesrt
+                    methods.add(method);
+                }
+                // TODO index signature, call signature
+                else {
+                    process.writeErrorLine("Unknown interface member kind ``member.kind``");
+                }
+            }
+            JsonObject iface = JsonObject {
+                metaTypeKey->interfaceMetaType,
+                nameKey->name,
+                dynamicKey->1,
+                packedAnnotationsKey -> packAnnotations {
+                    shared = true;
+                }
+            };
+            if (!properties.empty) {
+                JsonObject attributes = JsonObject { };
+                properties.collect(visitDeclaration(attributes, writer, program));
+                iface.put(attributesKey, attributes);
+            }
+            if (!methods.empty) {
+                JsonObject methds = JsonObject { };
+                methods.collect(visitDeclaration(methds, writer, program));
+                iface.put(methodsKey, methds);
+            }
+            container.put(name, iface);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
     // descend
     case (SyntaxKind.VariableStatement) {
         try {

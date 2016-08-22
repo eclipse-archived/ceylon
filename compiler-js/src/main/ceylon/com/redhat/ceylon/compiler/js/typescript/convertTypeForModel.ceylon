@@ -23,7 +23,7 @@ JsonObject convertTypeForModel(type, parameterType = false) {
         return booleanTypeForModel;
     } else if (hasTypeFlag(type.flags, TypeFlags.Void) || hasTypeFlag(type.flags, TypeFlags.Any)) {
         return anythingTypeForModel;
-    } else if (hasTypeFlag(type.flags, TypeFlags.Reference)) {
+    } else if (hasTypeFlag(type.flags, TypeFlags.Reference) || hasTypeFlag(type.flags, TypeFlags.Interface)) {
         // flags also contain e. g. TypeFlags.Class – I think we can ignore that
         dynamic {
             dynamic symbol = eval("(function(x){return x.symbol})")(type); // TODO use assert
