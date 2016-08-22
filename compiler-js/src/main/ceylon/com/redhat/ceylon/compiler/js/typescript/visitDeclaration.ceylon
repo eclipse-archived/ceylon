@@ -30,7 +30,7 @@ void visitDeclaration(
             //assert (is VariableDeclaration vdecl = node); // TODO use assert
             Boolean const;
             dynamic {
-                const = eval("(function(vdecl, constflags){return (vdecl.parent.flags & constflags) != 0})")(vdecl, NodeFlags.Const); // TODO can we write this in Ceylon?
+                const = hasNodeFlag(eval("(function(v){return v.parent.flags})")(vdecl), NodeFlags.Const);
             }
             String name = id.text;
             value type = typechecker.getTypeAtLocation(vdecl);
@@ -149,11 +149,7 @@ void visitDeclaration(
     // descend
     case (SyntaxKind.VariableStatement) {
         try {
-            Boolean exported;
-            dynamic {
-                // TODO can we write this in Ceylon?
-                exported = eval("(function(flags, exportFlag) { return (flags & exportFlag) != 0; })")(node.flags, NodeFlags.Export);
-            }
+            Boolean exported = hasNodeFlag(node.flags, NodeFlags.Export);
             if (exported) {
                 assert (is VariableStatement decl = node);
                 forEachChild(decl.declarationList, visitDeclaration(container, writer, program));
