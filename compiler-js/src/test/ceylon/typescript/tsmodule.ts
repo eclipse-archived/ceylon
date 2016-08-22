@@ -26,4 +26,7 @@ export class StringBox {
     getS(): string {
         return this.s;
     }
+    self(): StringBox {
+        return this;
+    }
 }

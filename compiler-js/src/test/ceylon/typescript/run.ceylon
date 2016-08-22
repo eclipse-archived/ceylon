@@ -61,6 +61,8 @@ void testStringBox() {
     assert (sb.getS() == "s3");
     sb.setS("s4");
     assert (sb.s == "s4");
+    StringBox sb2 = sb.self();
+    assert (sb2 == sb);
 }
 
 shared void run() {
