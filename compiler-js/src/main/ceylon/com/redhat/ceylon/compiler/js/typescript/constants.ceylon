@@ -67,6 +67,12 @@ shared String parametersKey = "ps";
 "Key to indicate that a parameter has a default value."
 compilerConstant ("KEY_DEFAULT")
 shared String defaultKey = "def";
+"Key for the attributes of a class or interface."
+compilerConstant ("KEY_ATTRIBUTES")
+shared String attributesKey = "$at";
+"Key for the methods of a class or interface."
+compilerConstant ("KEY_METHODS")
+shared String methodsKey = "$m";
 
 // meta type values
 "Meta type for an attribute or toplevel value."
@@ -78,6 +84,9 @@ shared String methodMetaType = "m";
 "Meta type for a parameter."
 compilerConstant ("METATYPE_PARAMETER")
 shared String parameterMetaType = "prm";
+"Meta type for a class."
+compilerConstant ("METATYPE_CLASS")
+shared String classMetaType = "c";
 
 // commonly used objects
 
