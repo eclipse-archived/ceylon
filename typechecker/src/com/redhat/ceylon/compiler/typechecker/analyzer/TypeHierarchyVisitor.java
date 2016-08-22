@@ -1,17 +1,39 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.hasMatchingSignature;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
-import com.redhat.ceylon.model.typechecker.model.*;
-
-import java.util.*;
-
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.*;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
+import com.redhat.ceylon.model.typechecker.model.Reference;
+import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  * Checks associated to the traversal of the hierarchy:
@@ -394,9 +416,7 @@ public class TypeHierarchyVisitor extends Visitor {
                         boolean variadic = f.isVariadic();
                         for (Declaration a: members.actualsNonFormals) {
                             if (f.getRefinedDeclaration()
-                                    .equals(a.getRefinedDeclaration())
-                                //work around model loader bug!
-                                || isRefinement(f, true, signature, variadic, a)) {
+                                    .equals(a.getRefinedDeclaration())) {
                                 found = true;
                                 break;
                             }
@@ -497,15 +517,13 @@ public class TypeHierarchyVisitor extends Visitor {
                         signature = overloaded ? ModelUtil.getSignature(formal) : null;
                     boolean variadic = formal.isVariadic();
                     for (Declaration concrete: aggregateMembers.defaults) {
-                        if (isDefinedInJava(concrete)
-                                && isRefinement(formal, overloaded, signature, variadic, concrete)) {
+                        if (isJavaRefinement(formal, overloaded, signature, variadic, concrete)) {
                             aggregateMembers.formals.remove(formal);
                             break;
                         }
                     }
                     for (Declaration concrete: aggregateMembers.nonFormalsNonDefaults) {
-                        if (isDefinedInJava(concrete)
-                                && isRefinement(formal, overloaded, signature, variadic, concrete)) {
+                        if (isJavaRefinement(formal, overloaded, signature, variadic, concrete)) {
                             aggregateMembers.formals.remove(formal);
                             break;
                         }
@@ -516,10 +534,11 @@ public class TypeHierarchyVisitor extends Visitor {
         return aggregation;
     }
 
-    private static boolean isRefinement(Declaration formal, boolean overloaded,
+    private static boolean isJavaRefinement(Declaration formal, boolean overloaded,
             List<com.redhat.ceylon.model.typechecker.model.Type> signature, 
             boolean variadic, Declaration concrete) {
         return formal.getName().equals(concrete.getName())
+                && isDefinedInJava(concrete)
                 && (!overloaded || hasMatchingSignature(concrete, signature, variadic));
     }
 
