@@ -15,3 +15,15 @@ export function booleanIdentity(b: boolean) { // return type omitted: tests type
 export function voidFunction(value: any): void {
     // do nothing
 }
+export class StringBox {
+    s: string;
+    constructor(s: string) {
+        this.s = s;
+    }
+    setS(s: string): void {
+        this.s = s;
+    }
+    getS(): string {
+        return this.s;
+    }
+}

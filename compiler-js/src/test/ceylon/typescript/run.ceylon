@@ -52,6 +52,17 @@ void testVoidFunction() {
     Anything a3 = voidFunction(testVoidFunction);
 }
 
+void testStringBox() {
+    value sb = StringBox("s1");
+    assert (sb.s == "s1");
+    sb.setS("s2");
+    assert (sb.getS() == "s2");
+    sb.s = "s3";
+    assert (sb.getS() == "s3");
+    sb.setS("s4");
+    assert (sb.s == "s4");
+}
+
 shared void run() {
     testConstEmptyString();
     testVarEmptyString();
@@ -60,4 +71,5 @@ shared void run() {
     testNumberIdentity();
     testBooleanIdentity();
     testVoidFunction();
+    testStringBox();
 }
