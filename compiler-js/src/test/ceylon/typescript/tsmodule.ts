@@ -15,6 +15,12 @@ export function booleanIdentity(b: boolean) { // return type omitted: tests type
 export function voidFunction(value: any): void {
     // do nothing
 }
+export interface IStringBox {
+    s: string;
+    setS(s: string): void;
+    getS(): string;
+    self(): IStringBox;
+}
 export class StringBox {
     s: string;
     constructor(s: string) {
@@ -29,4 +35,7 @@ export class StringBox {
     self(): StringBox {
         return this;
     }
+}
+export function makeIStringBox(s: string): IStringBox {
+    return new StringBox(s);
 }

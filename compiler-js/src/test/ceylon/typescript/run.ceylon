@@ -65,6 +65,19 @@ void testStringBox() {
     assert (sb2 == sb);
 }
 
+void testIStringBox() {
+    IStringBox sb = makeIStringBox("s1");
+    assert (sb.s == "s1");
+    sb.setS("s2");
+    assert (sb.getS() == "s2");
+    sb.s = "s3";
+    assert (sb.getS() == "s3");
+    sb.setS("s4");
+    assert (sb.s == "s4");
+    IStringBox sb2 = sb.self();
+    assert (sb2 == sb);
+}
+
 shared void run() {
     testConstEmptyString();
     testVarEmptyString();
@@ -74,4 +87,5 @@ shared void run() {
     testBooleanIdentity();
     testVoidFunction();
     testStringBox();
+    testIStringBox();
 }
