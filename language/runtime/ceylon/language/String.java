@@ -1106,8 +1106,11 @@ public final class String
 
     public boolean longerThan(@TypeInfo("ceylon.language::Integer")
     @Name("length") long length) {
+        if (value.length()<=length) {
+            return false;
+        }
         try {
-            value.offsetByCodePoints(0, Util.toInt(length+1));
+            value.offsetByCodePoints(0, (int)length+1);
             return true;
         }
         catch (IndexOutOfBoundsException iobe) {
@@ -1118,8 +1121,11 @@ public final class String
     @Ignore
     public static boolean longerThan(java.lang.String value, 
             long length) {
+        if (value.length()<=length) {
+            return false;
+        }
         try {
-            value.offsetByCodePoints(0, Util.toInt(length+1));
+            value.offsetByCodePoints(0, (int)length+1);
             return true;
         }
         catch (IndexOutOfBoundsException iobe) {
@@ -1129,8 +1135,11 @@ public final class String
 
     public boolean shorterThan(@TypeInfo("ceylon.language::Integer")
     @Name("length") long length) {
+        if (value.length()<length) {
+            return true;
+        }
         try {
-            value.offsetByCodePoints(0, Util.toInt(length));
+            value.offsetByCodePoints(0, (int)length);
             return false;
         }
         catch (IndexOutOfBoundsException iobe) {
@@ -1141,8 +1150,11 @@ public final class String
     @Ignore
     public static boolean shorterThan(java.lang.String value, 
             long length) {
+        if (value.length()<length) {
+            return true;
+        }
         try {
-            value.offsetByCodePoints(0, Util.toInt(length));
+            value.offsetByCodePoints(0, (int)length);
             return false;
         }
         catch (IndexOutOfBoundsException iobe) {
