@@ -309,4 +309,12 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     public void testBug6409() {
         compareWithJavaSource("bug64xx/Bug6409");
     }
+
+    @Test
+    public void testBug6433() {
+        assertErrors("bug64xx/Bug6433",
+                new CompilerError(22, "overloaded formal member 'append(CharSequence?)' of 'Appendable' not implemented in class hierarchy"),
+                new CompilerError(22, "overloaded formal member 'append(CharSequence?, Integer, Integer)' of 'Appendable' not implemented in class hierarchy")
+                );
+    }
 }
