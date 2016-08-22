@@ -4026,7 +4026,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     return;
                 // we already set the actual bit for member classes, we just need the refined decl
                 if(decl.isActual()){
-                    Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), false);
+                    Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), klass.isVariadic());
                     decl.setRefinedDeclaration(refined);
                 }
             }else{ // Function or Value
@@ -4045,12 +4045,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     boolean actual = methodMirror.getAnnotation(CEYLON_LANGUAGE_ACTUAL_ANNOTATION) != null;
                     decl.setActual(actual);
                     if(actual){
-                        Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), false);
+                        Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), decl.isVariadic());
                         decl.setRefinedDeclaration(refined);
                     }
                 }else{
                     if(isOverridingMethod(methodMirror)){
-                        Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), false);
+                        Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), decl.isVariadic());
                         if(refined instanceof FieldValue == false){
                             decl.setActual(true);
                             decl.setRefinedDeclaration(refined);
