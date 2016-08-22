@@ -1,4 +1,6 @@
-import tsc { ... }
+import tsc {
+    ...
+}
 
 "Initial lowercase form of [[name]]."
 throws (`class AssertionError`, "If [[name]] is empty.")

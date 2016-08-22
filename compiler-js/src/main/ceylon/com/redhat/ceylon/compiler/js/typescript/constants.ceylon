@@ -119,7 +119,7 @@ JsonObject integerTypeForModel = JsonObject {
 };
 JsonObject floatOrIntegerTypeForModel = JsonObject {
     "comp"->"u",
-    "l"->JsonArray { floatTypeForModel, integerTypeForModel }
+    "l" -> JsonArray { floatTypeForModel, integerTypeForModel }
 };
 JsonObject booleanTypeForModel = JsonObject {
     moduleKey->languageModuleOrPackage,

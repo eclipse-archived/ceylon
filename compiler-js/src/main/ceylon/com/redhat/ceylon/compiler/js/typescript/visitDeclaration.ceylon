@@ -129,12 +129,12 @@ void visitDeclaration(
                 }
             };
             if (!properties.empty) {
-                JsonObject attributes = JsonObject {};
+                JsonObject attributes = JsonObject { };
                 properties.collect(visitDeclaration(attributes, writer, program));
                 klass.put(attributesKey, attributes);
             }
             if (!methods.empty) {
-                JsonObject methds = JsonObject {};
+                JsonObject methds = JsonObject { };
                 methods.collect(visitDeclaration(methds, writer, program));
                 klass.put(methodsKey, methds);
             }
