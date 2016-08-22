@@ -159,15 +159,30 @@ Integer exponent(variable Float f)
         then l10.wholePart.integer
         else l10.wholePart.integer - 1;
 
-Float scaleByPowerOfTen(Float float, Integer power) {
-    value scale =
-            let (magnitude = power.magnitude) 
-            if (magnitude <= 15)
-                then (10^magnitude).nearestFloat     //fast
-                else 10.0.powerOfInteger(magnitude); //slow
-    return if (power < 0) 
-            then float / scale 
-            else float * scale;
+Float scaleByPowerOfTen(Float float, variable Integer power) {
+    function doScale(Float float, Integer power) {
+        value scale =
+                let (magnitude = power.magnitude)
+                if (magnitude <= 15)
+                    then (10^magnitude).nearestFloat     //fast
+                    else 10.0.powerOfInteger(magnitude); //slow
+        return if (power < 0)
+                then float / scale
+                else float * scale;
+    }
+    // don't attempt to create a float larger than 1.0e308.
+    variable value result = float;
+    while (power > 0) {
+        value amount = smallest(308, power);
+        result = doScale(result, amount);
+        power -= amount;
+    }
+    while (power < 0) {
+        value amount = largest(-308, power);
+        result = doScale(result, amount);
+        power -= amount;
+    }
+    return result;
 }
 
 Float twoFiftyTwo = (2^52).float;
