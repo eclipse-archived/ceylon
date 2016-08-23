@@ -89,6 +89,7 @@ import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
+import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -5060,10 +5061,27 @@ public class ExpressionTransformer extends AbstractTransformer {
                         qualExpr = applyVarianceCasts(qualExpr, targetType, varianceCastResult, 0);
                     }
                 }
-            } else if (decl.isClassMember()
-                    && ((Class)decl.getContainer()).isAnonymous()
-                    && ((Class)decl.getContainer()).isToplevel()) {
-                Class container = (Class)decl.getContainer();
+            } else if (decl.isClassOrInterfaceMember()){
+                Class container;
+                if(((ClassOrInterface)decl.getContainer()).isAnonymous()
+                    && ((ClassOrInterface)decl.getContainer()).isToplevel()) {
+                    // easy
+                    container = (Class)decl.getContainer();
+                }else{
+                    // find the import
+                    Import foundImport = null;
+                    for(Import imp : expr.getUnit().getImports()){
+                        if(!imp.isAmbiguous()
+                                && imp.getTypeDeclaration() != null
+                                && imp.getDeclaration().equals(decl)){
+                            foundImport = imp;
+                            break;
+                        }
+                    }
+                    if(foundImport == null)
+                        throw new BugException(expr, decl.getQualifiedNameString() + " was not found as an import");
+                    container = (Class) foundImport.getTypeDeclaration();
+                }
                 Value value = (Value)((Package)container.getContainer()).getMember(container.getName(), null, false);
                 qualExpr = make().Apply(null,
                         naming.makeName(value, Naming.NA_FQ | Naming.NA_WRAPPER | Naming.NA_MEMBER),
