@@ -24,10 +24,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 
 
 public class IssuesTests_6000_6499 extends CompilerTests {
@@ -316,5 +318,15 @@ public class IssuesTests_6000_6499 extends CompilerTests {
                 new CompilerError(22, "overloaded formal member 'append(CharSequence?)' of 'Appendable' not implemented in class hierarchy"),
                 new CompilerError(22, "overloaded formal member 'append(CharSequence?, Integer, Integer)' of 'Appendable' not implemented in class hierarchy")
                 );
+    }
+
+    @Test
+    public void testBug6442() throws Throwable {
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compile("bug64xx/bug6442/run.ceylon");
+        runInJBossModulesSameVM("run", "com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6442/1", 
+                Arrays.asList("--run", "com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6442::run",
+                        "--overrides", getPackagePath()+"/bug64xx/bug6442/overrides.xml"));
     }
 }
