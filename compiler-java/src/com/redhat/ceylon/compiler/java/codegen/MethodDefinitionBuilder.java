@@ -381,6 +381,8 @@ public class MethodDefinitionBuilder
         if (parameter.getModel().getTypeErased()) {
             return false;
         }
+        // make sure we resolve aliases
+        nonWideningType = nonWideningType.resolveAliases();
         Declaration method = parameter.getDeclaration();
         TypeDeclaration paramTypeDecl = nonWideningType.getDeclaration();
         if (paramTypeDecl instanceof TypeParameter
