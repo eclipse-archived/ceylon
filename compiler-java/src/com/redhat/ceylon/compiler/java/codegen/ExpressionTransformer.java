@@ -5409,15 +5409,36 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     class JavaArrayIndexTransformer extends AbstractIndexTransformer {
 
+        private Type returnType;
+
         JavaArrayIndexTransformer(Tree.IndexExpression indexExpr, Type leftType, Type rightType, Type elementType) {
             super(indexExpr, leftType, rightType, elementType);
+            returnType = indexExpr.getTypeModel();
         }
 
         @Override
         protected JCExpression transformIndexed(Tree.IndexExpression indexExpr) {
+            JCExpression arrayExpr = transformPrimary(indexExpr);
             JCExpression index = transformIndex((Tree.Element)indexExpr.getElementOrRange());
-            JCExpression result = make().Indexed(transformPrimary(indexExpr), index);
-            return result;
+            
+            if(typeFact().isOptionalType(returnType)){
+                SyntheticName listName = naming.temp("array");
+                SyntheticName indexName = naming.temp("index");
+                return at(indexExpr).LetExpr(
+                        List.<JCStatement>of(
+                                makeVar(listName, makeJavaType(leftType, JT_NO_PRIMITIVES), arrayExpr),
+                                makeVar(indexName, make().Type(syms().intType), index)
+                                ), 
+                        make().Conditional(
+                                make().Binary(JCTree.Tag.AND, 
+                                        make().Binary(JCTree.Tag.GE, indexName.makeIdent(), make().Literal(0)),
+                                        make().Binary(JCTree.Tag.LT, indexName.makeIdent(),   
+                                                naming.makeQualIdent(listName.makeIdent(), "length"))), 
+                                make().Indexed(listName.makeIdent(), indexName.makeIdent()), 
+                                makeNull()));
+            }else{
+                return at(indexExpr).Indexed(arrayExpr, index);
+            }
         }
         
         @Override
