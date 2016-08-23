@@ -6,8 +6,22 @@ final class javaArrayIndex_ {
     }
     
     static void javaArrayIndex() {
-        final .ceylon.language.String r0 = ((.ceylon.language.String[])(.java.lang.Object).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
-        final .ceylon.language.String r1 = ((.ceylon.language.String[])(.java.lang.Object).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final .ceylon.language.String r0 = (
+            let
+            {
+                .ceylon.language.String[] $ceylontmp$array$0 = (.ceylon.language.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
+                int $ceylontmp$index$1 = .com.redhat.ceylon.compiler.java.Util.toInt(0L);
+            }
+            returning $ceylontmp$index$1 >= 0 && $ceylontmp$index$1 < $ceylontmp$array$0.length ? $ceylontmp$array$0[$ceylontmp$index$1] : null;
+        );
+        final .ceylon.language.String r1 = (
+            let
+            {
+                .ceylon.language.String[] $ceylontmp$array$2 = (.ceylon.language.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
+                int $ceylontmp$index$3 = .com.redhat.ceylon.compiler.java.Util.toInt(0L);
+            }
+            returning $ceylontmp$index$3 >= 0 && $ceylontmp$index$3 < $ceylontmp$array$2.length ? $ceylontmp$array$2[$ceylontmp$index$3] : null;
+        );
         final boolean b0 = ((boolean[])(.java.lang.Object).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
         final byte o0 = ((byte[])(.java.lang.Object).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
         final long s0 = ((short[])(.java.lang.Object).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
