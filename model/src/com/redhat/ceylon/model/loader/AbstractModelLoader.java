@@ -4456,7 +4456,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private Type logModelResolutionException(ModelResolutionException x, Scope container, String message) {
-        return logModelResolutionException(x.getMessage(), container, message);
+        String exceptionMessage = x.getMessage();
+        Throwable causer = x;
+        while(causer.getCause() != null){
+            exceptionMessage = exceptionMessage + " caused by: " + causer.getCause();
+            causer = causer.getCause();
+        }
+        return logModelResolutionException(exceptionMessage, container, message);
     }
     
     private Type logModelResolutionException(final String exceptionMessage, Scope container, final String message) {
