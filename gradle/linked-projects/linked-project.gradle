@@ -5,8 +5,10 @@ configurations {
     antBuildEnv
 }
 
+//buildDir = file("${linkedProjectRootDir}/${githubRepoName}")
+
 repositories {
-    // TODO: Still refering back to lib directory, because the lib cannot be found on the 'net.
+    // TODO: Still referring back to lib directory, because the lib cannot be found on the 'net.
     flatDir {
         dirs "${rootProject.projectDir}/lib"
     }
@@ -29,13 +31,12 @@ dependencies {
 
 ext {
     githubOrgOrUser = project.properties.ceylonGitHubOrgOrUser ?: 'ceylon'
-    localRepoMainDir  = file("${buildDir}/ceylon")
-    localRepoFolder   = file("${buildDir}/${githubRepoName}")
-    localRepoBuildDir = file("${buildDir}/build-${githubRepoName}")
+    localRepoMainDir  = file("${linkedProjectRootDir}/ceylon")
+    localRepoFolder   = file("${linkedProjectRootDir}/${githubRepoName}")
+//    localRepoBuildDir = file("${buildDir}/build-${githubRepoName}")
     localRepoExists   = file("${localRepoFolder}/.git").exists()
     localRepoDistDir  = file("${localRepoMainDir}/dist/dist")
-
-
+    localOsgiDir  = file("${localRepoMainDir}/dist/osgi")
 }
 
 git {
@@ -77,8 +78,9 @@ task status {
 
 clean {
     delete = []
-    delete localRepoBuildDir
+//    delete localRepoBuildDir
 }
+
 
 task createAntBuildEnvironment( type : Copy ) {
     into {localRepoMainDir}
@@ -87,16 +89,19 @@ task createAntBuildEnvironment( type : Copy ) {
         into 'lib'
     }
 
-    from distDir, {
-        into 'dist/dist'
-    }
-
-//    dependsOn ':dist:publishInternal'
+//    from distDir, {
+//        into 'dist/dist'
+//    }
+//
+//    from osgiDistDir, {
+//        into 'dist/osgi/build/dist'
+//    }
 
     if(!localRepoExists) {
         dependsOn setup
     }
 
+    dependsOn ':dist:createAntEnvironmentForLinkedProjects'
 }
 
 task invokeAntBuild( type : GradleBuild ) {
@@ -105,7 +110,7 @@ task invokeAntBuild( type : GradleBuild ) {
     tasks = ['antPublish']
     startParameter.projectProperties+= [
         RUN_ANT_BUILD  : 1,
-        ceylonBuildDir : localRepoBuildDir,
+//        ceylonBuildDir : localRepoBuildDir,
         ceylonMainDir  : localRepoMainDir,
         ceylonDistDir  : localRepoDistDir,
 

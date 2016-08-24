@@ -1,6 +1,8 @@
 if(!project.properties.RUNNING_ANT_BUILD) {
     ext {
         githubRepoName = 'ceylon-sdk'
+        osgiBndDep = "biz.aQute.bnd:biz.aQute.bnd:2.3.0"
+        osgiBndAntDep = "biz.aQute.bnd:org.osgi.impl.bundle.repoindex.ant:2.1.2"
     }
 
     apply from : 'linked-project.gradle'
@@ -8,6 +10,13 @@ if(!project.properties.RUNNING_ANT_BUILD) {
     dependencies {
         antBuildEnv osgiBndAntDep
     }
+
+    invokeAntBuild.tasks = [ 'antPublish','antIde-quick']
+
+    if(!project(':ideEclipse-build').ext.localRepoExists) {
+        invokeAntBuild.dependsOn ':ideEclipse-build:setup'
+    }
+
 } else {
     ant.properties.'ceylon.ant.lib' = project.properties.ceylonAntJar
     apply from : 'ant-wrapper.gradle'

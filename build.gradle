@@ -27,6 +27,8 @@ allprojects {
         repoBinDir =   file("${distDir}/bin")
         osgiDistDir =  file("${rootProject.projectDir}/${buildPrefix}/osgi-distribution")
         osgiDistPluginsDir = file("${osgiDistDir}/plugins")
+        linkedProjectRootDir = file("${rootProject.projectDir}/${buildPrefix}/linked-projects")
+
     }
 }
 
@@ -93,6 +95,7 @@ task ide {
     dependsOn ':toolConverterJava2ceylon-build:publishInternal'
     dependsOn ':ideCommon-build:publishInternal'
     dependsOn ':ideEclipse-build:publishInternal'
+//    dependsOn ':ideIntellij-build:publishInternal'
 }
 
 task 'clean-ide' {
@@ -102,6 +105,7 @@ task 'clean-ide' {
     dependsOn ':toolConverterJava2ceylon-build:clean'
     dependsOn ':ideCommon-build:clean'
 //    dependsOn ':ideEclipse-build:clean'
+//    dependsOn ':ideIntellij-build:clean'
 }
 
 /*
