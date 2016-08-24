@@ -34,10 +34,18 @@ import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.model.loader.model.OutputElement;
+import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
+import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -50,10 +58,10 @@ public class AnnotationUtil {
     /**
      * Returns the set of output program elements that the given annotation 
      * could be applied to. If the {@code errors} flag is true then add 
-     * warnings/errors to the tree about ambigous/impossible targets.
+     * warnings/errors to the tree about ambiguous/impossible targets.
      */
     public static EnumSet<OutputElement> interopAnnotationTargeting(EnumSet<OutputElement> outputs,
-            Tree.Annotation annotation, boolean errors) {
+            Tree.Annotation annotation, boolean errors, boolean warnings) {
         Declaration annoCtor = ((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration();
         if (annoCtor instanceof AnnotationProxyMethod) {
             AnnotationProxyMethod proxyCtor = (AnnotationProxyMethod)annoCtor;
@@ -68,7 +76,7 @@ public class AnnotationUtil {
             actualTargets.retainAll(outputs);
             
             if (actualTargets.size() > 1) {
-                if (errors) {
+                if (warnings) {
                     StringBuffer sb = new StringBuffer();
                     sb.append("ambiguous annotation target: ").append(annoCtor.getName());
                     sb.append(" could be applied to several targets, use one of ");
@@ -201,7 +209,7 @@ public class AnnotationUtil {
         for (int i=0; i<annotations.size(); i++) {
             Tree.Annotation ann = annotations.get(i);
             Type t = ann.getTypeModel();
-            EnumSet<OutputElement> mainTargets = interopAnnotationTargeting(outputs, ann, false);
+            EnumSet<OutputElement> mainTargets = interopAnnotationTargeting(outputs, ann, false, false);
             if (t!=null && mainTargets != null) {
                 TypeDeclaration td = t.getDeclaration();
                 if (!ModelUtil.isCeylonDeclaration(td)) {
@@ -212,7 +220,7 @@ public class AnnotationUtil {
                             TypeDeclaration otd = ot.getDeclaration();
                             if (otd.equals(td)) {
                                 // check if they have the same targets (if not that's fine)
-                                EnumSet<OutputElement> dupeTargets = interopAnnotationTargeting(outputs, other, false);
+                                EnumSet<OutputElement> dupeTargets = interopAnnotationTargeting(outputs, other, false, false);
                                 if(dupeTargets != null){
                                     EnumSet<OutputElement> sameTargets = intersection(mainTargets, dupeTargets);
                                     if(!sameTargets.isEmpty()){
@@ -233,5 +241,89 @@ public class AnnotationUtil {
         EnumSet<OutputElement> intersect = EnumSet.copyOf(mainTargets);
         intersect.retainAll(dupeTargets);
         return intersect;
+    }
+
+    /**
+     * Whether an annotation (with the given {@code annotationCtorDecl} 
+     * annotation constructor) used on the given declaration ({@code useSite})
+     * should be added to the Java annotations of the given generated program 
+     * elements ({@code target}) 
+     * @param annotationCtorDecl
+     * @param useSite
+     * @param target
+     * @return
+     */
+    public static boolean isNaturalTarget(
+            Function annotationCtorDecl, // use site is either a Declaration, or a Package, or a Module, 
+            // or a Tree.ImportModule. Yes that's ugly as hell, but
+            // there's no supertype for annotated things, nor a "model" for 
+            // module imports
+            Object useSite, OutputElement target) {
+        EnumSet<AnnotationTarget> interopTargets;
+        if (annotationCtorDecl instanceof AnnotationProxyMethod) {
+            AnnotationProxyMethod annotationProxyMethod = (AnnotationProxyMethod)annotationCtorDecl;
+            if (annotationProxyMethod.getAnnotationTarget() == target) {
+                // Foo__WHATEVER, so honour the WHATEVER
+                return true;
+            }
+            interopTargets = annotationProxyMethod.getProxyClass().getAnnotationTarget(); 
+        } else {
+            interopTargets = null;
+        }
+        if (useSite instanceof Declaration) {
+            if (ModelUtil.isConstructor((Declaration)useSite)) {
+                if (useSite instanceof Functional) {
+                    return target == OutputElement.CONSTRUCTOR;
+                } else if (useSite instanceof Value) {
+                    // If the constructor has a getter we can't annotate, let's
+                    // put the annotations on the constructor
+                    Class constructedClass = Decl.getConstructedClass((Declaration) useSite);
+                    // See CeylonVisitor.transformSingletonConstructor for those tests
+                    if(constructedClass.isToplevel() || constructedClass.isClassMember())
+                        return target == OutputElement.GETTER;
+                    return target == OutputElement.CONSTRUCTOR;
+                }
+            } else if (useSite instanceof Class) {
+                if (((Class)useSite).getParameterList() != null
+                        && interopTargets != null
+                        && interopTargets.contains(AnnotationTarget.CONSTRUCTOR)
+                        && !interopTargets.contains(AnnotationTarget.TYPE)) {
+                    return target == OutputElement.CONSTRUCTOR;
+                }
+                return target == OutputElement.TYPE;
+            } else  if (useSite instanceof Interface) {
+                return target == OutputElement.TYPE;
+            } else if (useSite instanceof Value) {
+                Value value = (Value)useSite;
+                boolean p = value.isParameter()
+                        && target == OutputElement.PARAMETER;
+                if (annotationCtorDecl instanceof AnnotationProxyMethod) {
+                    if (value.isLate() || value.isVariable()) {
+                        return target == OutputElement.SETTER;
+                    } else if (!value.isTransient()) {
+                        return target == OutputElement.FIELD;
+                    } else {
+                        return target == OutputElement.GETTER;
+                    }
+                } else {
+                    return p || target == OutputElement.GETTER;
+                }
+            } else if (useSite instanceof Setter) {
+                return target == OutputElement.SETTER;
+            } else if (useSite instanceof Function) {
+                return target == OutputElement.METHOD;
+            } else if (useSite instanceof Constructor) {
+                return target == OutputElement.CONSTRUCTOR;
+            } else if (useSite instanceof TypeAlias) {
+                return target == OutputElement.TYPE;
+            } 
+        } else if (useSite instanceof Package) {
+            return target == OutputElement.TYPE;
+        } else if (useSite instanceof Module) {
+            return target == OutputElement.TYPE;
+        } else if (useSite instanceof Tree.ImportModule) {
+            return target == OutputElement.FIELD;
+        }
+        throw new RuntimeException(""+useSite);
     }
 }

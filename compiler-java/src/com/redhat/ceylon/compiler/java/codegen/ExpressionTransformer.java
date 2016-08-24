@@ -6971,14 +6971,15 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (annotationList != null) {
             
             if (annotationList.getAnonymousAnnotation() != null
-                    && isNaturalTarget((Function)typeFact().getLanguageModuleDeclaration("doc"),  useSite, target)) {
+                    && AnnotationUtil.isNaturalTarget((Function)typeFact().getLanguageModuleDeclaration("doc"),  useSite, target)) {
                 transformAnonymousAnnotation(annotationList.getAnonymousAnnotation(), annotationSet);
             }
             if (annotationList.getAnnotations() != null) {
                 for (Tree.Annotation annotation : annotationList.getAnnotations()) {
                     Function annoCtorDecl = ((Function)((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration());
-                    EnumSet<OutputElement> possibleTargets = AnnotationUtil.interopAnnotationTargeting(outputs, annotation, false);
-                    if ((isNaturalTarget(annoCtorDecl, useSite, target)
+                    boolean isNaturalTarget = AnnotationUtil.isNaturalTarget(annoCtorDecl, useSite, target);
+                    EnumSet<OutputElement> possibleTargets = AnnotationUtil.interopAnnotationTargeting(outputs, annotation, false, false);
+                    if ((isNaturalTarget
                             && possibleTargets == null)
                             || 
                             (possibleTargets != null 
@@ -7013,7 +7014,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Special case: Generate a @java.lang.Deprecated() if Ceylon deprecated
         if (annotationList != null) {
             for (Tree.Annotation annotation : annotationList.getAnnotations()) {
-                if (isNaturalTarget((Function)typeFact().getLanguageModuleDeclaration("deprecated"), useSite, target) && isDeprecatedAnnotation(annotation.getPrimary())) {
+                if (AnnotationUtil.isNaturalTarget((Function)typeFact().getLanguageModuleDeclaration("deprecated"), useSite, target) && isDeprecatedAnnotation(annotation.getPrimary())) {
                     result.append(make().Annotation(make().Type(syms().deprecatedType), List.<JCExpression>nil()));
                 }
             }
@@ -7022,90 +7023,6 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result.toList();
     }
     
-    /**
-     * Whether an annotation (with the given {@code annotationCtorDecl} 
-     * annotation constructor) used on the given declaration ({@code useSite})
-     * should be added to the Java annotations of the given generated program 
-     * elements ({@code target}) 
-     * @param annotationCtorDecl
-     * @param useSite
-     * @param target
-     * @return
-     */
-    private boolean isNaturalTarget(
-            Function annotationCtorDecl, // use site is either a Declaration, or a Package, or a Module, 
-            // or a Tree.ImportModule. Yes that's ugly as hell, but
-            // there's no supertype for annotated things, nor a "model" for 
-            // module imports
-            Object useSite, OutputElement target) {
-        EnumSet<AnnotationTarget> interopTargets;
-        if (annotationCtorDecl instanceof AnnotationProxyMethod) {
-            AnnotationProxyMethod annotationProxyMethod = (AnnotationProxyMethod)annotationCtorDecl;
-            if (annotationProxyMethod.getAnnotationTarget() == target) {
-                // Foo__WHATEVER, so honour the WHATEVER
-                return true;
-            }
-            interopTargets = annotationProxyMethod.getProxyClass().getAnnotationTarget(); 
-        } else {
-            interopTargets = null;
-        }
-        if (useSite instanceof Declaration) {
-            if (ModelUtil.isConstructor((Declaration)useSite)) {
-                if (useSite instanceof Functional) {
-                    return target == OutputElement.CONSTRUCTOR;
-                } else if (useSite instanceof Value) {
-                    // If the constructor has a getter we can't annotate, let's
-                    // put the annotations on the constructor
-                    Class constructedClass = Decl.getConstructedClass((Declaration) useSite);
-                    // See CeylonVisitor.transformSingletonConstructor for those tests
-                    if(constructedClass.isToplevel() || constructedClass.isClassMember())
-                        return target == OutputElement.GETTER;
-                    return target == OutputElement.CONSTRUCTOR;
-                }
-            } else if (useSite instanceof Class) {
-                if (((Class)useSite).getParameterList() != null
-                        && interopTargets != null
-                        && interopTargets.contains(AnnotationTarget.CONSTRUCTOR)
-                        && !interopTargets.contains(AnnotationTarget.TYPE)) {
-                    return target == OutputElement.CONSTRUCTOR;
-                }
-                return target == OutputElement.TYPE;
-            } else  if (useSite instanceof Interface) {
-                return target == OutputElement.TYPE;
-            } else if (useSite instanceof Value) {
-                Value value = (Value)useSite;
-                boolean p = value.isParameter()
-                        && target == OutputElement.PARAMETER;
-                if (annotationCtorDecl instanceof AnnotationProxyMethod) {
-                    if (value.isLate() || value.isVariable()) {
-                        return target == OutputElement.SETTER;
-                    } else if (!value.isTransient()) {
-                        return target == OutputElement.FIELD;
-                    } else {
-                        return target == OutputElement.GETTER;
-                    }
-                } else {
-                    return p || target == OutputElement.GETTER;
-                }
-            } else if (useSite instanceof Setter) {
-                return target == OutputElement.SETTER;
-            } else if (useSite instanceof Function) {
-                return target == OutputElement.METHOD;
-            } else if (useSite instanceof Constructor) {
-                return target == OutputElement.CONSTRUCTOR;
-            } else if (useSite instanceof TypeAlias) {
-                return target == OutputElement.TYPE;
-            } 
-        } else if (useSite instanceof Package) {
-            return target == OutputElement.TYPE;
-        } else if (useSite instanceof Module) {
-            return target == OutputElement.TYPE;
-        } else if (useSite instanceof Tree.ImportModule) {
-            return target == OutputElement.FIELD;
-        }
-        throw new RuntimeException(""+useSite);
-    }
-
     void transformAnnotation(Tree.Annotation invocation, 
             Map<Class, ListBuffer<JCAnnotation>> annotationSet) {
         at(invocation);
