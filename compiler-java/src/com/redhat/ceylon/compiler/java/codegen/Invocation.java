@@ -279,9 +279,22 @@ abstract class Invocation {
                 Tree.QualifiedMemberOrTypeExpression type = (Tree.QualifiedMemberOrTypeExpression)getPrimary();
                 Declaration declaration = type.getDeclaration();
                 if (Decl.isConstructor(declaration)) {
-                    if (Decl.withinInterface(Decl.getConstructedClass(declaration))) {
+                    Class constructedClass = Decl.getConstructedClass(declaration);
+                    if (Decl.withinInterface(constructedClass)) {
                         if (Strategy.generateInstantiator(declaration)) {
-                            actualPrimExpr = primaryExpr != null ? primaryExpr : gen.naming.makeQuotedThis();
+                            // Stef: this is disgusting and some of that logic has to be duplicated for base member/type
+                            // expressions. it reeks of special-cases that should not be
+                            Interface containerInterface = (Interface)constructedClass.getContainer();
+                            if(primaryExpr != null)
+                                actualPrimExpr = primaryExpr;
+                            else if(type.getPrimary() instanceof Tree.BaseTypeExpression
+                                    // if we are within an interface impl class, access it via our $this
+                                    && gen.expressionGen().needDollarThis((Tree.BaseTypeExpression)type.getPrimary()))
+                                actualPrimExpr = gen.naming.makeQuotedThis();
+                            else
+                                // otherwise we're within a class that implements that interface,
+                                // access it via our companion
+                                actualPrimExpr = gen.naming.makeCompanionFieldName(containerInterface);
                         } else {
                             actualPrimExpr = null;
                         }

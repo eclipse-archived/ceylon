@@ -4921,7 +4921,9 @@ public class ExpressionTransformer extends AbstractTransformer {
 
                 qualExpr = addThisOrObjectQualifierIfRequired(qualExpr, expr, decl);
 
-                if (qualExpr == null && needDollarThis(expr)) {
+                if (qualExpr == null 
+                        && expr instanceof Tree.BaseMemberExpression
+                        && needDollarThis(expr)) {
                     qualExpr = makeQualifiedDollarThis((Tree.BaseMemberExpression)expr);
                 }
             }
@@ -5214,8 +5216,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         return naming.makeQualifiedDollarThis(qualifiedCompanionThis);
     }
 
-    private boolean needDollarThis(Tree.StaticMemberOrTypeExpression expr) {
-        if (expr instanceof Tree.BaseMemberExpression) {
+    boolean needDollarThis(Tree.StaticMemberOrTypeExpression expr) {
+        if (expr instanceof Tree.BaseMemberExpression
+                || expr instanceof Tree.BaseTypeExpression) {
             // We need to add a `$this` prefix to the member expression if:
             // * The member was declared on an interface I and
             // * The member is being used in the companion class of I or 
