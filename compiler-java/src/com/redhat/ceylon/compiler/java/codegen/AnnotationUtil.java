@@ -176,7 +176,9 @@ public class AnnotationUtil {
                 result.add(GETTER);
             } else if (declarationModel.isToplevel()) {
                 result.add(GETTER);
-                result.add(FIELD);
+                // only non-lazy get fields
+                if(!declarationModel.isTransient())
+                    result.add(FIELD);
             } else {
                 if (declarationModel.isParameter()) {
                     result.add(PARAMETER);
@@ -187,7 +189,9 @@ public class AnnotationUtil {
         }
         
         if (result.contains(GETTER) 
-                && (declarationModel.isVariable() || declarationModel.isLate())) {
+                // variables with lazy value MUST have a distinct setter
+                && ((declarationModel.isVariable() && !declarationModel.isTransient()) 
+                        || declarationModel.isLate())) {
             result.add(SETTER);
         }
         return result;
