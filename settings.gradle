@@ -31,9 +31,9 @@ project(':compiler-js').buildFileName = 'compilerjs.gradle'
 include 'dist'
 project(':dist').buildFileName = 'dist.gradle'
 
-includeFlat 'dist-osgi'
-project(':dist-osgi').projectDir = file("dist/osgi")
-project(':dist-osgi').buildFileName = "osgi.gradle"
+include 'dist:osgi'
+//project(':dist:osgi').projectDir = file("dist/osgi")
+project(':dist:osgi').buildFileName = "osgi.gradle"
 
 include 'java-main'
 project(':java-main').buildFileName = 'javamain.gradle'

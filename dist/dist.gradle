@@ -146,11 +146,11 @@ task cleanRepo ( type : Delete ) {
 }
 
 task osgi {
-    dependsOn ':dist-osgi:publishInternal'
+    dependsOn ':dist:osgi:publishInternal'
 }
 
 task 'osgi-p2' {
-    dependsOn ':dist-osgi:publishInternal'
+    dependsOn ':dist:osgi:publishInternal'
 }
 
 task createAntEnvironmentForLinkedProjects ( type : Copy ) {
@@ -164,7 +164,7 @@ task createAntEnvironmentForLinkedProjects ( type : Copy ) {
         into 'dist/osgi/build/dist'
     }
 
-    from "${project(':dist-osgi').projectDir}/p2", {
+    from "${project(':dist:osgi').projectDir}/p2", {
         into 'dist/osgi/p2'
     }
 

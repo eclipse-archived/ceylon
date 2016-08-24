@@ -59,7 +59,7 @@ task dist {
     group "publish"
     description "Creates the Ceylon distribution"
     dependsOn ':dist:publishInternal'
-    dependsOn ':dist-osgi:publishInternal'
+    dependsOn ':dist:osgi:publishInternal'
 }
 
 task clean ( type : Delete ) {
@@ -143,10 +143,10 @@ task migrationReports {
         file("${buildDir}/dist-ant.txt").text = makeListing('dist/dist')
         file("${buildDir}/osgi-dist-gradle.txt").text = makeTimeStampSanitizedListing(osgiDistDir)
         file("${buildDir}/osgi-dist-ant.txt").text = makeTimeStampSanitizedListing('dist/osgi/build/dist')
-        file("${buildDir}/osgi-embeddedrepo-gradle.txt").text = makeListing("${project(':dist-osgi').buildDir}/embeddedRepository/repo")
+        file("${buildDir}/osgi-embeddedrepo-gradle.txt").text = makeListing("${project(':dist:osgi').buildDir}/embeddedRepository/repo")
         file("${buildDir}/osgi-embeddedrepo-ant.txt").text = makeListing('dist/osgi/embeddedRepository/repo')
     }
 
-    mustRunAfter sdk, ide, dist, ':dist-osgi:embeddedRepository'
+    mustRunAfter sdk, ide, dist, ':dist:osgi:embeddedRepository'
 }
 
