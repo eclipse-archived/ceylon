@@ -485,6 +485,8 @@ public class CeylonTransformer extends AbstractTransformer {
         
         // For captured local variable Values, use a VariableBox
         if (Decl.isBoxedVariable(declarationModel)) {
+            // we're not calling build so we need to restore the class builder
+            builder.restoreClassBuilder();
             if (expressionError != null) {
                 return List.<JCTree>of(this.makeThrowUnresolvedCompilationError(expressionError));
             } else {
@@ -497,6 +499,8 @@ public class CeylonTransformer extends AbstractTransformer {
         if (block == null && expression == null && !Decl.isToplevel(declarationModel)) {
             JCExpression typeExpr = makeJavaType(getGetterInterfaceType(declarationModel));
             JCTree.JCVariableDecl var = makeVar(attrClassName, typeExpr, null);
+            // we're not calling build so we need to restore the class builder
+            builder.restoreClassBuilder();
             return List.<JCTree>of(var);
         }
         
@@ -585,6 +589,8 @@ public class CeylonTransformer extends AbstractTransformer {
         
         if (Decl.isLocal(declarationModel)) {
             if (expressionError != null) {
+                // we're not calling build so we need to restore the class builder
+                builder.restoreClassBuilder();
                 return List.<JCTree>of(this.makeThrowUnresolvedCompilationError(expressionError));
             }
             builder.classAnnotations(makeAtLocalDeclaration(declarationModel.getQualifier(), false));

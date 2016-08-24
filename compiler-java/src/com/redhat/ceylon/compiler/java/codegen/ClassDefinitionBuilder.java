@@ -219,12 +219,16 @@ public class ClassDefinitionBuilder {
             klasses.append(klass);
             klasses.appendList(after.toList());
         }
-        
-        gen.replace(getContainingClassBuilder());
+
+        restoreClassBuilder();
         
         return klasses.toList();
     }
 
+
+    public void restoreClassBuilder() {
+        gen.replace(getContainingClassBuilder());
+    }
 
     private boolean isInterface() {
         return (modifiers & INTERFACE) != 0;
