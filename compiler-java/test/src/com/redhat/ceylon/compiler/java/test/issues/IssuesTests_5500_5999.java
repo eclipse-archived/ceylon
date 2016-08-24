@@ -39,9 +39,6 @@ import org.junit.Test;
 
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
-import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
-import com.redhat.ceylon.javax.tools.DiagnosticListener;
-import com.redhat.ceylon.javax.tools.FileObject;
 
 
 public class IssuesTests_5500_5999 extends CompilerTests {
@@ -54,6 +51,11 @@ public class IssuesTests_5500_5999 extends CompilerTests {
     @Override
     protected String transformDestDir(String name) {
         return name + "-5500-5999";
+    }
+
+    @Test
+    public void testBug5787() {
+        compareWithJavaSource("bug57xx/bug5787");
     }
 
     @Test
