@@ -5307,7 +5307,13 @@ public abstract class AbstractTransformer implements Transformation {
             Scope container = tp.getContainer();
             JCExpression qualifier = null;
             if(container instanceof Class){
-                qualifier = naming.makeQualifiedThis(makeJavaType(((Class)container).getType(), JT_RAW));
+                if(!expressionGen().isWithinSuperInvocation(container))
+                    qualifier = naming.makeQualifiedThis(makeJavaType(((Class)container).getType(), JT_RAW));
+                else{
+                    // within a super invocation we haven't set the instance variable yet so we can't qualify
+                    // so we use the constructor parameter
+                    return makeUnquotedIdent(name);
+                }
             }else if(container instanceof Interface){
                 qualifier = naming.makeQualifiedThis(makeJavaType(((Interface)container).getType(), JT_COMPANION | JT_RAW));
             }else if(container instanceof Function){

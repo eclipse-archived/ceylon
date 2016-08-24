@@ -3023,23 +3023,27 @@ public class ExpressionTransformer extends AbstractTransformer {
             TransformedInvocationPrimary transformedPrimary, CallBuilder callBuilder) {
         ListBuffer<ExpressionAndType> result = new ListBuffer<ExpressionAndType>();
         withinInvocation(false);
-        appendImplicitArguments(invocation, transformedPrimary, result);
         // Explicit arguments
         if (invocation instanceof SuperInvocation) {
             withinSuperInvocation(((SuperInvocation)invocation).getSub());
+            // for super calls, implicit arguments must be within a super invocation guard
+            appendImplicitArguments(invocation, transformedPrimary, result);
             result.addAll(transformArgumentsForSimpleInvocation((SimpleInvocation)invocation, callBuilder));
             withinSuperInvocation(null);
-        } else if (invocation instanceof NamedArgumentInvocation) {
-            result.addAll(transformArgumentsForNamedInvocation((NamedArgumentInvocation)invocation));
-        } else if (invocation instanceof CallableSpecifierInvocation) {
-            result.addAll(transformArgumentsForCallableSpecifier((CallableSpecifierInvocation)invocation));
-        } else if (invocation instanceof SimpleInvocation) {
-            if(invocation.isUnknownArguments())
-                result.add(transformUnknownArguments((SimpleInvocation) invocation, callBuilder));
-            else
-                result.addAll(transformArgumentsForSimpleInvocation((SimpleInvocation)invocation, callBuilder));
         } else {
-            throw BugException.unhandledCase(invocation);
+            appendImplicitArguments(invocation, transformedPrimary, result);
+            if (invocation instanceof NamedArgumentInvocation) {
+                result.addAll(transformArgumentsForNamedInvocation((NamedArgumentInvocation)invocation));
+            } else if (invocation instanceof CallableSpecifierInvocation) {
+                result.addAll(transformArgumentsForCallableSpecifier((CallableSpecifierInvocation)invocation));
+            } else if (invocation instanceof SimpleInvocation) {
+                if(invocation.isUnknownArguments())
+                    result.add(transformUnknownArguments((SimpleInvocation) invocation, callBuilder));
+                else
+                    result.addAll(transformArgumentsForSimpleInvocation((SimpleInvocation)invocation, callBuilder));
+            } else {
+                throw BugException.unhandledCase(invocation);
+            }
         }
         withinInvocation(true);
         return result.toList();
@@ -6644,6 +6648,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         return withinSuperInvocation != null;
     }
 
+    boolean isWithinSuperInvocation(Scope container) {
+        return Decl.equalScopeDecl(container, withinSuperInvocation);
+    }
+
     void withinSuperInvocation(ClassOrInterface forDefinition) {
         this.withinSuperInvocation = forDefinition;
     }
@@ -7397,5 +7405,4 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         return make().LetExpr(defs.toList(), expr);
     }
-    
 }
