@@ -59,6 +59,11 @@ public class IssuesTests_5500_5999 extends CompilerTests {
     }
 
     @Test
+    public void testBug5751() {
+        compilesWithoutWarnings("bug57xx/bug5751/bug5751.ceylon");
+    }
+
+    @Test
     public void testBug5774() {
         compile("bug57xx/bug5774/bug5774.ceylon");
     }
