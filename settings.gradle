@@ -67,9 +67,9 @@ project(':typechecker').buildFileName = 'typechecker.gradle'
 // ----------------------------------------------------------------------------
 // ,'ideEclipse', 'ideIntellij'
 ['sdk','formatter','toolConverterJava2ceylon','ideCommon','ideEclipse'].each { proj ->
-    String projName = "${proj}-build"
-    includeFlat(projName)
-    project(':'+projName).buildFileName = "${proj}.gradle"
+    String projName = "linked:${proj}"
+    include(projName)
     project(':'+projName).projectDir = file("gradle/linked-projects")
+    project(':'+projName).buildFileName = "${proj}.gradle"
 }
 

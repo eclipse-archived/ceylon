@@ -6,11 +6,11 @@ if(!project.properties.RUNNING_ANT_BUILD) {
 
     apply from : 'linked-project.gradle'
     invokeAntBuild.tasks = ['antBuild']
-    invokeAntBuild.dependsOn ':formatter-build:publishInternal'
-    invokeAntBuild.dependsOn ':toolConverterJava2ceylon-build:publishInternal'
-    invokeAntBuild.dependsOn ':ideCommon-build:publishInternal'
+    invokeAntBuild.dependsOn ':linked:formatter:publishInternal'
+    invokeAntBuild.dependsOn ':linked:toolConverterJava2ceylon:publishInternal'
+    invokeAntBuild.dependsOn ':linked:ideCommon:publishInternal'
 //    task addSdk( type : Copy ) {
-//        dependsOn ':sdk-build:invokeAntBuild'
+//        dependsOn 'linked::sdk:invokeAntBuild'
 //        into file("${buildDir}/ceylon-sdk")
 //
 //        from "${project(':sdk-build').buildDir}/ceylon-sdk", {

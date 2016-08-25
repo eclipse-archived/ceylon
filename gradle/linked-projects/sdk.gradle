@@ -13,8 +13,8 @@ if(!project.properties.RUNNING_ANT_BUILD) {
 
     invokeAntBuild.tasks = [ 'antPublish','antIde-quick']
 
-    if(!project(':ideEclipse-build').ext.localRepoExists) {
-        invokeAntBuild.dependsOn ':ideEclipse-build:setup'
+    if(!project(':linked:ideEclipse').ext.localRepoExists) {
+        invokeAntBuild.dependsOn ':linked:ideEclipse:setup'
     }
 
 } else {

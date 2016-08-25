@@ -178,9 +178,9 @@ task createAntEnvironmentForLinkedProjects ( type : Copy ) {
         String localTaskName = linkedTask.empty ? linkedProject : "${linkedTask}-${linkedProject}"
         String linkedTaskName = linkedTask.empty ? 'publishInternal' : linkedTask
         group "Linked Build for ${linkedProject} (Legacy)"
-        description "Ported task from Ant Build: Use ':${linkedProject}-build:${linkedTask}' instead."
+        description "Ported task from Ant Build: Use ':linked:${linkedProject}:${linkedTask}' instead."
         tasks.create(localTaskName) {
-            dependsOn ":${linkedProject}-build:${linkedTaskName}", createAntEnvironmentForLinkedProjects
+            dependsOn ":linked:${linkedProject}:${linkedTaskName}", createAntEnvironmentForLinkedProjects
         }
     }
 }

@@ -79,33 +79,33 @@ task 'clean-all' {
 task 'clean-sdk' {
     group "ceylon cross project"
     description "Cleans the SDK"
-    dependsOn ':sdk-build:clean'
+    dependsOn ':linked:sdk:clean'
 }
 
 task sdk {
     group "ceylon cross project"
     description 'Builds the SDK'
-    dependsOn ':sdk-build:publishInternal'
+    dependsOn ':linked:sdk:publishInternal'
 }
 
 task ide {
     group "ceylon cross project"
     description 'Builds the IDE plugins & related modules'
-    dependsOn ':formatter-build:publishInternal'
-    dependsOn ':toolConverterJava2ceylon-build:publishInternal'
-    dependsOn ':ideCommon-build:publishInternal'
-    dependsOn ':ideEclipse-build:publishInternal'
-//    dependsOn ':ideIntellij-build:publishInternal'
+    dependsOn ':linked:formatter:publishInternal'
+    dependsOn ':linked:toolConverterJava2ceylon:publishInternal'
+    dependsOn ':linked:ideCommon:publishInternal'
+    dependsOn ':linked:ideEclipse:publishInternal'
+//    dependsOn ':linked:ideIntellij:publishInternal'
 }
 
 task 'clean-ide' {
     group "ceylon cross project"
     description 'Cleans the IDE plugins & related modules'
-    dependsOn ':formatter-build:clean'
-    dependsOn ':toolConverterJava2ceylon-build:clean'
-    dependsOn ':ideCommon-build:clean'
-//    dependsOn ':ideEclipse-build:clean'
-//    dependsOn ':ideIntellij-build:clean'
+    dependsOn ':linked:formatter:clean'
+    dependsOn ':linked:toolConverterJava2ceylon:clean'
+    dependsOn ':linked:ideCommon:clean'
+//    dependsOn ':linked:ideEclipse:clean'
+//    dependsOn ':linked:ideIntellij:clean'
 }
 
 /*
