@@ -1058,7 +1058,11 @@ public class AnnotationVisitor extends Visitor {
                      ta.isIntersection() || 
                      unit.getDefiniteType(ta).isUnion() ||
                      ta.isTypeParameter())) {
-                that.addError(
+                Tree.TypeArguments tas = that.getTypeArguments();
+                Node errNode = 
+                        tas instanceof Tree.TypeArgumentList ?
+                                tas : that;
+                errNode.addError(
                         "illegal Java array element type: arrays with element type '" 
                                 + ta.asString(unit) + "' may not be instantiated");
             }
