@@ -368,6 +368,10 @@ public class ModuleSourceMapper {
 		return null;
 	}
 
+	public Module getJdkProviderModule() {
+	    return null;
+	}
+
 	public JdkProvider getJdkProvider() {
 		return defaultJdkProvider;
 	}

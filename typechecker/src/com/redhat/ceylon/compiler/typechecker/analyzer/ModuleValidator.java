@@ -101,11 +101,11 @@ public class ModuleValidator {
                 LinkedList<Module> dependencyTree = new LinkedList<Module>();
                 // only verify modules we compile (and default/language), as that makes us traverse their dependencies anyways
                 Set<Module> compiledModules = moduleManagerUtil.getCompiledModules();
-                Module jdkModule = moduleManagerUtil.getJdkModule();
+                Module jdkProviderModule = moduleManagerUtil.getJdkProviderModule();
                 List<Module> modules = new ArrayList<Module>(compiledModules.size()+2);
-                if(jdkModule != null){
-                    ModuleImport synthimp = new ModuleImport(null, jdkModule, false, false);
-                    resolveModuleIfRequired(jdkModule, true, synthimp, ImportDepth.First, dependencyTree, searchedArtifacts);
+                if(jdkProviderModule != null){
+                    ModuleImport synthimp = new ModuleImport(null, jdkProviderModule, false, false);
+                    resolveModuleIfRequired(jdkProviderModule, true, synthimp, ImportDepth.First, dependencyTree, searchedArtifacts);
                 }
                 // we must resolve the language module first because it contains definitions that must be in the classpath
                 // before any other JVM class is loaded, including the module descriptor annotations themselves

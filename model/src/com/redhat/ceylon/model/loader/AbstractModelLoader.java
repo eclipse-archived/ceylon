@@ -5827,12 +5827,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return moduleManager.findLoadedModule(name, version);
     }
     
-    public Module getJDKBaseModule() {
+    public Module getJdkProviderModule() {
         String jdkModuleSpec = getAlternateJdkModuleSpec();
         if(jdkModuleSpec != null){
             ModuleSpec spec = ModuleSpec.parse(jdkModuleSpec);
             return findModule(spec.getName(), spec.getVersion());
         }
+        return null;
+    }
+
+    public Module getJDKBaseModule() {
         return findModule(JAVA_BASE_MODULE_NAME, jdkProvider.getJDKVersion());
     }
 

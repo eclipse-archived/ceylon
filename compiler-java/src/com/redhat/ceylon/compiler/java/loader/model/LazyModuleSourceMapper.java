@@ -71,7 +71,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         LazyModuleManager moduleManager = getModuleManager();
         boolean moduleLoadedFromSource = moduleManager.isModuleLoadedFromSource(moduleName);
         boolean isLanguageModule = module == module.getLanguageModule();
-        if(moduleManager.getModelLoader().getJDKBaseModule() == module){
+        if(moduleManager.getModelLoader().getJdkProviderModule() == module){
         	moduleManager.getModelLoader().setupAlternateJdk(module, artifact);
         }
         
@@ -220,7 +220,12 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
     public Module getJdkModule() {
     	return getModuleManager().getModelLoader().getJDKBaseModule();
     }
-    
+
+    @Override
+    public Module getJdkProviderModule() {
+        return getModuleManager().getModelLoader().getJdkProviderModule();
+    }
+
     @Override
     public JdkProvider getJdkProvider() {
     	return getModuleManager().getModelLoader().getJdkProvider();
