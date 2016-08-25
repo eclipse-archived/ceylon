@@ -840,6 +840,22 @@ void checkFormatInteger() {
     } else {
         fail("UNKNOWN INTEGER SIZE `` runtime.integerSize `` - please add number formatInteger() tests for this platform");
     }
+    check(formatInteger(1, 10, ',') == "1", "formatInteger() grouping #1");
+    check(formatInteger(100, 10, ',') == "100", "formatInteger() grouping #2");
+    check(formatInteger(1_000, 10, ',') == "1,000", "formatInteger() grouping #3");
+    check(formatInteger(100_000, 10, ',') == "100,000", "formatInteger() grouping #4");
+    check(formatInteger(1_000_000, 10, ',') == "1,000,000", "formatInteger() grouping #5");
+    check(formatInteger(#f, 16, ' ') == "f", "formatInteger() grouping #6");
+    check(formatInteger(#ffff, 16, ' ') == "ffff", "formatInteger() grouping #7");
+    check(formatInteger(#f_ffff, 16, ' ') == "f ffff", "formatInteger() grouping #8");
+    check(formatInteger(#ffff_ffff, 16, ' ') == "ffff ffff", "formatInteger() grouping #9");
+    check(formatInteger(#f_ffff_ffff, 16, ' ') == "f ffff ffff", "formatInteger() grouping #10");
+    check(formatInteger($1, 2, ' ') == "1", "formatInteger() grouping #11");
+    check(formatInteger($1111, 2, ' ') == "1111", "formatInteger() grouping #12");
+    check(formatInteger($1_1111, 2, ' ') == "1 1111", "formatInteger() grouping #13");
+    check(formatInteger($1111_1111, 2, ' ') == "1111 1111", "formatInteger() grouping #14");
+    check(formatInteger($1_1111_1111, 2, ' ') == "1 1111 1111", "formatInteger() grouping #15");
+    check(formatInteger(1_000_000, 11, ',') == "623351", "formatInteger() grouping #16");
 }
 
 void checkParseFloat() {
