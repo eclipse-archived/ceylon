@@ -22,13 +22,16 @@ package com.redhat.ceylon.compiler.java.test.issues;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Assume;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.ErrorCollector;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 
 
@@ -320,6 +323,18 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     @Test
     public void testBug6421() {
         compareWithJavaSource("bug64xx/Bug6421");
+    }
+
+    @Ignore("Requires Android")
+    @Test
+    public void testBug6422() {
+        String project = "../../../AndroidStudioProjects/MyApplication2/app";
+        String src = project+"/src/main/ceylon";
+        List<String> options = Arrays.asList("-jdk-provider", "android/23", "-src", src,
+                "-rep", project+"/build/intermediates/ceylon-android/repository");
+        ErrorCollector c = new ErrorCollector();
+        List<String> modules = Arrays.asList("com.example.android.myapplication");
+        assertCompilesOk(c, getCompilerTask(options, c, modules).call2());
     }
 
     @Test
