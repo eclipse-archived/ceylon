@@ -346,6 +346,11 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     }
 
     @Test
+    public void testBug6435() {
+        compareWithJavaSource("bug64xx/Bug6435");
+    }
+
+    @Test
     public void testBug6442() throws Throwable {
         Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
                 || JDKUtils.jdk == JDKUtils.JDK.JDK9);
