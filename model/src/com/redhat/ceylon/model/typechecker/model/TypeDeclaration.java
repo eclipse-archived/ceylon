@@ -1209,8 +1209,12 @@ public abstract class TypeDeclaration extends Declaration
         return false;
     }
 
+    public boolean isCallable() {
+        return false;
+    }
+    
     public EnumSet<AnnotationTarget> getAnnotationTarget() {
         return null;
     }
-    
+
 }

@@ -4202,6 +4202,10 @@ public class Type extends Reference {
         return getDeclaration().isEntry();
     }
     
+    public boolean isCallable() {
+        return getDeclaration().isCallable();
+    }
+
     boolean isDeclaredType() {
         return isClassOrInterface() || isTypeParameter();
     }
