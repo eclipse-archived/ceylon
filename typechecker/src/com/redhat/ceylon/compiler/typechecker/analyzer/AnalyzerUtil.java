@@ -756,10 +756,17 @@ public class AnalyzerUtil {
 
     static String notAssignableMessage(Type type,
             Type supertype, Node node) {
-        return typingMessage(type, 
-                " is not assignable to ", 
-                supertype, 
-                node.getUnit());
+        Unit unit = node.getUnit();
+        String result = 
+                typingMessage(type,
+                    " is not assignable to ",
+                    supertype, unit);
+        if (unit.isCallableType(type)
+                && unit.getCallableReturnType(type)
+                    .isSubtypeOf(supertype)) {
+            result += " (specify arguments to the function reference)";
+        }
+        return result;
     }
 
     static void checkAssignable(Type type, 
