@@ -411,7 +411,15 @@ public class Unit implements LanguageModuleProvider {
     public Interface getCorrespondenceMutatorDeclaration() {
         return (Interface) getLanguageModuleDeclaration("CorrespondenceMutator");
     }
-    
+
+    public Interface getIndexedCorrespondenceMutatorDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("IndexedCorrespondenceMutator");
+    }
+
+    public Interface getKeyedCorrespondenceMutatorDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("KeyedCorrespondenceMutator");
+    }
+
     @Override
     public Class getAnythingDeclaration() {
         Module theLanguageModule = getLanguageModule();

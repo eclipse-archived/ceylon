@@ -5765,7 +5765,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             lhs = addInterfaceImplAccessorIfRequired(lhs, (Tree.StaticMemberOrTypeExpression) leftTerm, decl);
             lhs = addThisOrObjectQualifierIfRequired(lhs, (Tree.StaticMemberOrTypeExpression)leftTerm, decl);
         } else if (leftTerm instanceof Tree.IndexExpression) {
-            return transformIndexAssignment(op, leftTerm, lhs, rhs);
+            // in this case lhs is null anyway, so let's discard it
+            return transformIndexAssignment(op, (Tree.IndexExpression)leftTerm, rhs);
         } else {
             // instanceof Tree.ParameterizedExpression
             decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)((Tree.ParameterizedExpression)leftTerm).getPrimary()).getDeclaration();
@@ -5836,47 +5837,57 @@ public class ExpressionTransformer extends AbstractTransformer {
         return result;
     }
 
-    private JCExpression transformIndexAssignment(Node op, Tree.Term leftTerm, JCExpression lhs, JCExpression rhs) {
+    private JCExpression transformIndexAssignment(Node op, Tree.IndexExpression idx, JCExpression rhs) {
         JCExpression result = null;
-        Tree.IndexExpression idx = (Tree.IndexExpression)leftTerm;
         if (idx.getElementOrRange() instanceof Tree.Element) {
             Unit unit = op.getUnit();
             Type pt = idx.getPrimary().getTypeModel();
             Tree.Element elem = (Tree.Element)idx.getElementOrRange();
-            if (pt.getSupertype(unit.getCorrespondenceMutatorDeclaration()) != null) {
-                JCExpression iex = transformExpression(elem.getExpression(), BoxingStrategy.BOXED, elem.getExpression().getTypeModel());
-                result = makeIndexAssignMethod(leftTerm, "set", iex, rhs);
-            } else if (pt.getSupertype(unit.getJavaListDeclaration()) != null) {
+            Type primaryType;
+            if ((primaryType = pt.getSupertype(unit.getIndexedCorrespondenceMutatorDeclaration())) != null) {
+                JCExpression iex = transformExpression(elem.getExpression(), BoxingStrategy.UNBOXED, elem.getExpression().getTypeModel());
+                result = makeIndexAssignMethod(idx, "set", iex, rhs, primaryType);
+            } else if ((primaryType = pt.getSupertype(unit.getKeyedCorrespondenceMutatorDeclaration())) != null) {
+                    JCExpression iex = transformExpression(elem.getExpression(), BoxingStrategy.BOXED, elem.getExpression().getTypeModel());
+                    result = makeIndexAssignMethod(idx, "put", iex, rhs, primaryType);
+            } else if ((primaryType = pt.getSupertype(unit.getJavaListDeclaration())) != null) {
                 JCExpression iex = transformExpression(elem.getExpression(), BoxingStrategy.UNBOXED, elem.getExpression().getTypeModel());
                 if (!elem.getExpression().getSmall()) {
                     iex = utilInvocation().toInt(iex);
                 }
-                result = makeIndexAssignMethod(leftTerm, "set", iex, rhs);
-            } else if (pt.getSupertype(unit.getJavaMapDeclaration()) != null) {
+                result = makeIndexAssignMethod(idx, "set", iex, rhs, primaryType);
+            } else if ((primaryType = pt.getSupertype(unit.getJavaMapDeclaration())) != null) {
                 JCExpression iex = transformExpression(elem.getExpression(), BoxingStrategy.BOXED, elem.getExpression().getTypeModel());
-                result = makeIndexAssignMethod(leftTerm, "put", iex, rhs);
-            } else if (unit.isJavaObjectArrayType(pt) || unit.isJavaPrimitiveArrayType(pt)) {
-                TypedDeclaration decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)((Tree.IndexExpression)leftTerm).getPrimary()).getDeclaration();
-                JCExpression selector = naming.makeQualifiedName(null, decl, Naming.NA_IDENT);
+                result = makeIndexAssignMethod(idx, "put", iex, rhs, primaryType);
+            } else if ((primaryType = pt.getSupertype(unit.getJavaObjectArrayDeclaration())) != null 
+                    || (primaryType = pt.getSupertype(unit.getJavaIntArrayDeclaration())) != null
+                    || (primaryType = pt.getSupertype(unit.getJavaShortArrayDeclaration())) != null
+                    || (primaryType = pt.getSupertype(unit.getJavaLongArrayDeclaration())) != null
+                    || (primaryType = pt.getSupertype(unit.getJavaByteArrayDeclaration())) != null
+                    || (primaryType = pt.getSupertype(unit.getJavaCharArrayDeclaration())) != null
+                    || (primaryType = pt.getSupertype(unit.getJavaBooleanArrayDeclaration())) != null
+                    || (primaryType = pt.getSupertype(unit.getJavaFloatArrayDeclaration())) != null
+                    || (primaryType = pt.getSupertype(unit.getJavaDoubleArrayDeclaration())) != null
+                    ) {
+                JCExpression lhs = transformExpression(idx.getPrimary(), BoxingStrategy.BOXED, primaryType);
                 JCExpression iex = transformExpression(elem.getExpression(), BoxingStrategy.UNBOXED, elem.getExpression().getTypeModel());
                 if (!elem.getExpression().getSmall()) {
                     iex = utilInvocation().toInt(iex);
                 }
-                return at(op).Assign(make().Indexed(selector, iex), rhs);
+                return at(op).Assign(make().Indexed(lhs, iex), rhs);
             } else {
-                return makeErroneous(leftTerm, "compiler bug: index assignment for type '" + pt + "' is not supported");
+                return makeErroneous(idx, "compiler bug: index assignment for type '" + pt + "' is not supported");
             }
             return result;
         } else {
-            return makeErroneous(leftTerm, "compiler bug: ranged index assignment is not supported");
+            return makeErroneous(idx, "compiler bug: ranged index assignment is not supported");
         }
     }
     
-    private JCExpression makeIndexAssignMethod(Tree.Term leftTerm, String method, JCExpression index, JCExpression rhs) {
-        TypedDeclaration decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)((Tree.IndexExpression)leftTerm).getPrimary()).getDeclaration();
-        JCExpression selector = naming.makeQualifiedName(null, decl, Naming.NA_IDENT);
+    private JCExpression makeIndexAssignMethod(Tree.IndexExpression leftTerm, String method, JCExpression index, JCExpression rhs, Type expectedPrimaryType) {
+        JCExpression lhs = transformExpression(leftTerm.getPrimary(), BoxingStrategy.BOXED, expectedPrimaryType);
         return make().Apply(List.<JCTree.JCExpression>nil(),
-                makeQualIdent(selector, method),
+                makeQualIdent(lhs, method),
                 List.<JCTree.JCExpression>of(index, rhs));
     }
     

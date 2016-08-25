@@ -4982,7 +4982,7 @@ public class ExpressionVisitor extends Visitor {
                 if (eor instanceof Tree.Element) {
                     Interface cd = 
                             unit.getCorrespondenceDeclaration();
-                    checkIndexElement(that, pt, cd, true, "Correspondence");
+                    checkIndexElement(that, pt, cd, true, "Correspondence", false);
                 }
                 else {
                     Interface rd = unit.getRangedDeclaration();
@@ -5040,7 +5040,7 @@ public class ExpressionVisitor extends Visitor {
 
     private Type checkIndexElement(Tree.IndexExpression that,
             Type pt, Interface cd, boolean nullable,
-            String superTypeName) {
+            String superTypeName, boolean allowIndexedCorrespondenceMutator) {
         if (dynamic && 
                 isTypeUnknown(pt)) {
             // In dynamic blocks we allow index assignments
@@ -5060,6 +5060,20 @@ public class ExpressionVisitor extends Visitor {
         	if (nullable) {
                 vt = unit.getOptionalType(vt);
         	}
+        }
+        if (cst==null && allowIndexedCorrespondenceMutator) {
+            Interface ld = 
+                    unit.getIndexedCorrespondenceMutatorDeclaration();
+            cst = pt.getSupertype(ld);
+            if (cst != null) {
+                List<Type> args = 
+                        cst.getTypeArgumentList();
+                kt = unit.getIntegerType();
+                vt = args.get(0);
+                if (nullable) {
+                    vt = unit.getOptionalType(vt);
+                }
+            }
         }
         if (cst==null) {
             Interface ld = 
@@ -5101,7 +5115,8 @@ public class ExpressionVisitor extends Visitor {
                 .addError("illegal receiving type for index expression: '" +
                         pt.getDeclaration()
                             .getName(unit) + 
-                        "' is not a subtype of '" + superTypeName + "'");
+                        "' is not a subtype of '" + superTypeName + "'" +
+                        (allowIndexedCorrespondenceMutator ? " or 'IndexedCorrespondenceMutator'" : ""));
         }
         else {
             Tree.Element e = (Tree.Element) eor;
@@ -5507,8 +5522,8 @@ public class ExpressionVisitor extends Visitor {
                     Type pt = type(idx);
                     if (that.getTypeModel() != null && pt != null) {
                         Interface cmd = 
-                                unit.getCorrespondenceMutatorDeclaration();
-                        Type vt = checkIndexElement(idx, pt, cmd, false, "CorrespondenceMutator");
+                                unit.getKeyedCorrespondenceMutatorDeclaration();
+                        Type vt = checkIndexElement(idx, pt, cmd, false, "KeyedCorrespondenceMutator", true);
                         if (vt != null) {
                             checkAssignable(rhst, vt,
                                     that.getRightTerm(), 
