@@ -1768,13 +1768,12 @@ shared interface Iterable<out Element=Anything,
 String commaList({Anything*} elements)
         => ", ".join { for (e in elements) stringify(e) };
 
-class ElementEntry<Element>(next, element)
-        satisfies {Element+} {
+class ElementEntry<Element>(next, element) {
     
     shared Element element;
     shared ElementEntry<Element>? next;
     
-    first => element;
+    shared Element first => element;
     
     shared Boolean has(Anything element) {
         variable ElementEntry<Element>? entry = this;
@@ -1795,57 +1794,15 @@ class ElementEntry<Element>(next, element)
         return false;
     }
     
-    shared actual Element? getFromFirst(Integer index) {
-        if (index<0) {
-            return null;
-        }
-        else {
-            variable ElementEntry<Element> entry = this;
-            for (i in 0:index) {
-                if (exists next = entry.next) {
-                    entry = next;
-                }
-                else {
-                    return null;
-                }
-            }
-            return entry.element;
-        }
-    }
-    
-    rest => next else [];
-    
-    shared actual Element last {
-        variable ElementEntry<Element> entry = this;
-        while (exists next = entry.next) {
-            entry = next;
-        }
-        return entry.element;
-    }
-    
-    shared actual Integer size {
+    shared Integer size {
         variable value count = 1;
-        variable ElementEntry<Element> entry = this;
+        variable value entry = this;
         while (exists next = entry.next) {
             entry = next;
             count++;
         }
         return count;
     }
-    
-    iterator() 
-            => object satisfies Iterator<Element> {
-        variable ElementEntry<Element>? entry = outer;
-        shared actual Element|Finished next() {
-            if (exists e = entry) {
-                entry = e.next;
-                return e.element;
-            }
-            else {
-                return finished;
-            }
-        }
-    };
     
     shared [Element+] reversedSequence() {
         //TODO: give Array a special-purpose 
@@ -1856,8 +1813,10 @@ class ElementEntry<Element>(next, element)
             element = first;
         };
         variable value i = size;
-        for (element in this) {
-            array.set(--i, element);
+        variable ElementEntry<Element>? entry = this;
+        while (exists next = entry) {
+            array.set(--i, next.element);
+            entry = next.next;
         }
         return ArraySequence(array);
     }
