@@ -86,6 +86,23 @@ void test4148Keyed() {
   }
 }
 
+void test4148Array(){
+    value a = Array{""};
+    check((a[0] = "ok") == "ok", "#4148.5");
+    if (exists v=a[0]) {
+        check(v == "ok", "#4148.6");
+    } else {
+        fail("#4148.6");
+    }
+    value p = "ok" + (a[0] = "!");
+    check(p == "ok!", "#4148.7");
+    if (exists v=a[0]) {
+        check(v == "!", "#4148.8");
+    } else {
+        fail("#4148.8");
+    }
+}
+
 @test
 shared void operators() {
     String? maybe = "hello";
@@ -190,4 +207,5 @@ shared void operators() {
     check(scaleTestRectangle.invert().width ** Rectangle(scaleTestRectangle.width, scaleTestRectangle.width) == Rectangle(9.0, 9.0), "scaling: LHS must be evaluated first!");
     test4148Keyed();
     test4148Indexed();
+    test4148Array();
 }
