@@ -1092,6 +1092,13 @@ void checkFormatFloat() {
     check(formatFloat(1.111111111111115, 0, 100) == "1.11111111111112", "formatFloat halfeven rounding #7");
     check(formatFloat(1.111111111111145, 0, 100) == "1.11111111111114", "formatFloat halfeven rounding #8");
 
+    check(formatFloat(0.1, 1, 1, ',') == "0,1", "formatFloat separators #1");
+    check(formatFloat(0.1, 1, 1, '.', ',') == "0.1", "formatFloat separators #2");
+    check(formatFloat(111.1, 1, 1, '.', ',') == "111.1", "formatFloat separators #3");
+    check(formatFloat(1111.1, 1, 1, '.', ',') == "1,111.1", "formatFloat separators #4");
+    check(formatFloat(111111.1, 1, 1, '.', ',') == "111,111.1", "formatFloat separators #5");
+    check(formatFloat(1.0e20, 1, 1, '.', ',') == "100,000,000,000,000,000,000.0", "formatFloat separators #6");
+
     void checkNanComparisons<T>(T nan, T zero) 
             given T satisfies Comparable<T> {
         check(!nan == zero, "generic nan comparison");
