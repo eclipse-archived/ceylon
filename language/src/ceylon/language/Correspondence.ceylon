@@ -119,13 +119,36 @@ shared interface Correspondence<in Key, out Item=Anything>
 }
 
 since("1.2.3")
-shared interface CorrespondenceMutator<in Key, in Item>
+tagged("Collections")
+shared interface CorrespondenceMutator<in Item>
+        of IndexedCorrespondenceMutator<Item>
+        | KeyedCorrespondenceMutator<Nothing,Item> {}
+
+since("1.2.3")
+tagged("Collections")
+shared interface IndexedCorrespondenceMutator<in Element> 
+        satisfies CorrespondenceMutator<Element> {
+
+    "Sets the item defined by the given index.
+     
+     For any instance `c` of `IndexedCorrespondenceMutator`, `c.set(index, item)` 
+     may be written using the item assignment operator:
+     
+         c[index] = item"
+    shared formal void set(Integer index, Element item);
+}
+
+since("1.2.3")
+tagged("Collections")
+shared interface KeyedCorrespondenceMutator<in Key, in Item>
+        satisfies CorrespondenceMutator<Item>
         given Key satisfies Object {
-    "Sets the value defined for the given key.
+
+    "Sets the item defined by the given key.
      
-     For any instance `c` of `CorrespondenceMutator`, `c.put(key, value)` 
-     may be written using the item operator:
+     For any instance `c` of `KeyedCorrespondenceMutator`, `c.put(key, item)` 
+     may be written using the item assignment operator:
      
-         c[key] = value"
-    shared formal void set(Key key, Item item);
+         c[key] = item"
+    shared formal void put(Key key, Item item);
 }
