@@ -5035,18 +5035,24 @@ public class ExpressionTransformer extends AbstractTransformer {
     private JCExpression addThisOrObjectQualifierIfRequired(
             JCExpression qualExpr, Tree.StaticMemberOrTypeExpression expr,
             Declaration decl) {
+        // find out the real target 
+        Declaration typeDecl;
+        if(Decl.isConstructor(decl))
+            typeDecl = Decl.getConstructedClass(decl);
+        else
+            typeDecl = decl;
         if (qualExpr == null 
                 // statics are not members that can be inherited
                 && !decl.isStaticallyImportable()
-                && !Decl.isConstructor(decl)
-                && decl.isMember()
+                && (!Decl.isConstructor(decl) || !Decl.isConstructor(typeDecl))
+                && typeDecl.isMember()
                 // dodge variable refinements with assert/is (these will be turned to locals
                 // and have a name mapping)
                 && expr.getTarget().getDeclaration() == decl
-                && !Decl.isLocalToInitializer(decl)
+                && !Decl.isLocalToInitializer(typeDecl)
                 && !isWithinSuperInvocation()) {
             // First check whether the expression is captured from an enclosing scope
-            TypeDeclaration outer = Decl.getOuterScopeOfMemberInvocation(expr, decl);
+            TypeDeclaration outer = Decl.getOuterScopeOfMemberInvocation(expr, typeDecl);
             if (outer != null) {
                 Type targetType = expr.getTarget().getQualifyingType();
                 Type declarationContainerType = ((TypeDeclaration)outer).getType();
@@ -5067,12 +5073,12 @@ public class ExpressionTransformer extends AbstractTransformer {
                         qualExpr = applyVarianceCasts(qualExpr, targetType, varianceCastResult, 0);
                     }
                 }
-            } else if (decl.isClassOrInterfaceMember()){
-                Class container;
-                if(((ClassOrInterface)decl.getContainer()).isAnonymous()
-                    && ((ClassOrInterface)decl.getContainer()).isToplevel()) {
+            } else if (typeDecl.isClassOrInterfaceMember()){
+                ClassOrInterface container;
+                if(((ClassOrInterface)typeDecl.getContainer()).isAnonymous()
+                    && ((ClassOrInterface)typeDecl.getContainer()).isToplevel()) {
                     // easy
-                    container = (Class)decl.getContainer();
+                    container = (Class)typeDecl.getContainer();
                 }else{
                     // find the import
                     Import foundImport = null;
