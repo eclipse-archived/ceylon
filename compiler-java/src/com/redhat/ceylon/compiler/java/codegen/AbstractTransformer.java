@@ -2315,13 +2315,10 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isJavaEnumType(Type type) {
-        Module jdkBaseModule = loader().getJDKBaseModule();
-        Package javaLang = jdkBaseModule.getPackage("java.lang");
-        TypeDeclaration enumDecl = (TypeDeclaration)javaLang.getDirectMember("Enum", null, false);
         if (type.isClass() && type.getDeclaration().isAnonymous()) {
             type = type.getExtendedType();
         }
-        return type.isSubtypeOf(enumDecl.appliedType(null, Collections.singletonList(type)));
+        return type.isSubtypeOf(typeFact().getJavaEnumType(type));
     }
 
     public JCExpression makeParameterisedType(Type type, Type generalType, final int flags, 

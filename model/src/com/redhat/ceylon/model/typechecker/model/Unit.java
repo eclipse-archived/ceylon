@@ -663,7 +663,17 @@ public class Unit implements LanguageModuleProvider {
             return (Interface) lang.getMember("AutoCloseable", null, false);
         }
     }
-    
+
+    public Class getJavaEnumDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Class) lang.getMember("Enum", null, false);
+        }
+    }
+
     protected Package getJavaLangPackage() {
         return getPackage().getModule().getPackage("java.lang");
     }
@@ -1277,6 +1287,10 @@ public class Unit implements LanguageModuleProvider {
     
     public Type getJavaAutoCloseableType() {
         return getType(getJavaAutoCloseableDeclaration());
+    }
+
+    public Type getJavaEnumType(Type et) {
+        return appliedType(getJavaEnumDeclaration(), et);
     }
 
     public Type getSequenceType(Type et) {
