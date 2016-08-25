@@ -56,7 +56,34 @@ shared String formatFloat(
 
          If `maxDecimalPlaces<=0`, the result always has no
          decimal point."
-        variable Integer maxDecimalPlaces=9) {
+        variable Integer maxDecimalPlaces=9,
+        "The character to use as the decimal separator.
+
+         `decimalSeparator` may not be '-' or a digit as
+         defined by the Unicode general category *Nd*."
+        Character decimalSeparator = '.',
+        "If not `null`, `thousandsSeparator` will be used to
+         separate each group of three digits, starting
+         immediately to the left of the decimal separator.
+
+         `thousandsSeparator` may not be equal to the
+         decimalSeparator and may not be '-' or a digit as
+         defined by the Unicode general category *Nd*."
+        Character? thousandsSeparator = null) {
+
+    if (exists thousandsSeparator) {
+        "thousandsSeparator may not be '-' or a numeric digit."
+        assert (!thousandsSeparator.digit
+                && !thousandsSeparator == '-');
+
+        "The same character may not be used for both
+         thousandsSeparator and decimalSeparator."
+        assert (thousandsSeparator != decimalSeparator);
+    }
+
+    "The decimalSeparator may not be '-' or a numeric digit."
+    assert (!decimalSeparator.digit
+            && !decimalSeparator == '-');
 
     // let's not be rude and throw
     if (maxDecimalPlaces < 0) {
@@ -72,13 +99,16 @@ shared String formatFloat(
     // handle 0, undefined, and infinities
     if (float == 0) {
         if (minDecimalPlaces > 0) {
-            return "0.``"0".repeat(minDecimalPlaces)``";
+            return "0``decimalSeparator````"0".repeat(minDecimalPlaces)``";
         }
         return "0";
     }
     else if (float.undefined || float.infinite) {
         return float.string;
     }
+
+    variable value wholeDigitNumber = 0;
+    value thousands = thousandsSeparator?.string else "";
 
     value result = StringBuilder();
     value magnitude = float.magnitude;
@@ -130,18 +160,26 @@ shared String formatFloat(
         fractionalPartDigits--;
     }
     if (emittedFractional) {
-        result.appendCharacter('.');
+        result.appendCharacter(decimalSeparator);
     }
     if (integer == 0) {
         result.appendCharacter('0');
     }
     else {
-        if (fractionalPartDigits < 0) {
+        while (fractionalPartDigits++ < 0) {
             // we have fewer whole part digits than we need
-            result.append("0".repeat(-fractionalPartDigits));
+            if (3.divides(wholeDigitNumber++)
+                    && wholeDigitNumber != 1) {
+                result.append(thousands);
+            }
+            result.appendCharacter('0');
         }
         while (integer != 0) {
             // emit whole part
+            if (3.divides(wholeDigitNumber++)
+                    && wholeDigitNumber != 1) {
+                result.append(thousands);
+            }
             value digit = integer % 10;
             integer /= 10;
             result.appendCharacter('0'.neighbour(digit));
