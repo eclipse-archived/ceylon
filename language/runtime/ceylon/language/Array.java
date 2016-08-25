@@ -49,10 +49,11 @@ import ceylon.language.serialization.ReachableReference;
 @TypeParameters(@TypeParameter(value = "Element"))
 @SatisfiedTypes({
     "ceylon.language::SearchableList<Element>",
-    "ceylon.language::Ranged<ceylon.language::Integer,Element,ceylon.language::Array<Element>>"
+    "ceylon.language::Ranged<ceylon.language::Integer,Element,ceylon.language::Array<Element>>",
+    "ceylon.language::IndexedCorrespondenceMutator<Element>",
 })
 public final class Array<Element>
-        implements Serializable, SearchableList<Element>,
+        implements Serializable, SearchableList<Element>, IndexedCorrespondenceMutator<Element>,
                     ReifiedType, java.io.Serializable {
     
     private static final long serialVersionUID = 8612707712992151156L;
@@ -1382,7 +1383,8 @@ public final class Array<Element>
         }
     }
 
-    public void set(
+    @Override
+    public java.lang.Object set(
             @Name("index") @TypeInfo("ceylon.language::Integer") long index,
             @Name("element") @TypeInfo("Element") Element element) {
         if (index<0) {
@@ -1412,6 +1414,7 @@ public final class Array<Element>
             else
                 setJavaItem(element, idx);
         }
+        return null;
     }
     
     public void swap(

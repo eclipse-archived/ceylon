@@ -1627,61 +1627,6 @@ shared interface Iterable<out Element=Anything,
         };
     };
     
-    /*"Create a new immutable [[Set]] containing every element 
-     produced by this stream that is not null.
-     
-     For example:
-     
-         {0, 1, 1, 2, 3, null, 3, 3}.elements()
-     
-     is the set `{0, 1, 2, 3}`.
-     
-     This is an eager operation and the resulting set does
-     not reflect changes to this stream."
-    aliased("set")
-    see(`value distinct`)
-    shared default Set<Element&Object> elements()
-            => object extends Object() 
-                      satisfies Set<Element&Object> {
-        value elements =
-                outer.coalesced
-                    .summarize(identity,
-                        (Boolean? _, e) => true);
-        
-        clone() => this;
-        
-        iterator() => elements.keys.iterator();
-        
-        contains(Object element) => elements.defines(element);
-        
-        shared actual Set<Element&Object> 
-                complement<Other>(Set<Other> set)
-                given Other satisfies Object 
-                => filter((e) => !e in set)
-                .elements();
-        
-        shared actual Set<Element&Object|Other> 
-                exclusiveUnion<Other>(Set<Other> set)
-                given Other satisfies Object 
-                => filter((e) => !e in set)
-                .chain(set.filter((e) => !e in this))
-                .elements();
-        
-        shared actual Set<Element&Other&Object> 
-                intersection<Other>(Set<Other> set)
-                given Other satisfies Object
-                => filter((e) => e in set)
-                .narrow<Other>()
-                .elements();
-        
-        shared actual Set<Element&Object|Other> 
-                union<Other>(Set<Other> set)
-                given Other satisfies Object 
-                => chain(set)
-                .elements();
-        
-    };*/
-    
     "Produce a [[Map]] mapping elements to frequencies where
      each [[entry|Entry]] maps a distinct non-null element 
      of this stream to the number of times the element was 
@@ -1760,20 +1705,7 @@ shared interface Iterable<out Element=Anything,
             given Group satisfies Object
             => summarize<Group,ElementEntry<Element>>
                     (grouping, ElementEntry)
-                .mapItems((_, elements) {
-                    //TODO: give Array a special-purpose 
-                    //      constructor for this
-                    value size = elements.size;
-                    value array = Array.ofSize {
-                        size = size;
-                        element = elements.first;
-                    };
-                    variable value i = size;
-                    for (element in elements) {
-                        array.set(--i, element);
-                    }
-                    return ArraySequence(array);
-                });
+               .mapItems((_, item) => item.reversedSequence());
     
     "Efficiently [[group]] and [[fold]] the elements of this
      stream in a single step.
@@ -1836,14 +1768,12 @@ shared interface Iterable<out Element=Anything,
 String commaList({Anything*} elements)
         => ", ".join { for (e in elements) stringify(e) };
 
-class ElementEntry<Element>(next, element)
-        extends Object()
-        satisfies [Element+] {
+class ElementEntry<Element>(next, element) {
     
     shared Element element;
     shared ElementEntry<Element>? next;
     
-    first => element;
+    shared Element first => element;
     
     shared Boolean has(Anything element) {
         variable ElementEntry<Element>? entry = this;
@@ -1864,37 +1794,9 @@ class ElementEntry<Element>(next, element)
         return false;
     }
     
-    shared actual Element? getFromFirst(Integer index) {
-        if (index<0) {
-            return null;
-        }
-        else {
-            variable ElementEntry<Element> entry = this;
-            for (i in 0:index) {
-                if (exists next = entry.next) {
-                    entry = next;
-                }
-                else {
-                    return null;
-                }
-            }
-            return entry.element;
-        }
-    }
-    
-    rest => next else [];
-    
-    shared actual Element last {
-        variable ElementEntry<Element> entry = this;
-        while (exists next = entry.next) {
-            entry = next;
-        }
-        return entry.element;
-    }
-    
-    shared actual Integer size {
+    shared Integer size {
         variable value count = 1;
-        variable ElementEntry<Element> entry = this;
+        variable value entry = this;
         while (exists next = entry.next) {
             entry = next;
             count++;
@@ -1902,20 +1804,22 @@ class ElementEntry<Element>(next, element)
         return count;
     }
     
-    iterator() 
-            => object satisfies Iterator<Element> {
-        variable ElementEntry<Element>? entry = outer;
-        shared actual Element|Finished next() {
-            if (exists e = entry) {
-                entry = e.next;
-                return e.element;
-            }
-            else {
-                return finished;
-            }
+    shared [Element+] reversedSequence() {
+        //TODO: give Array a special-purpose 
+        //      constructor for this
+        value size = this.size;
+        value array = Array.ofSize {
+            size = size;
+            element = first;
+        };
+        variable value i = size;
+        variable ElementEntry<Element>? entry = this;
+        while (exists next = entry) {
+            array.set(--i, next.element);
+            entry = next.next;
         }
-    };
-    
+        return ArraySequence(array);
+    }
 }
 
 class GroupEntry<Group,Result>(next, group, elements)

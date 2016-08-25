@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.hasMatchingSignature;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
@@ -27,6 +28,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
@@ -409,9 +411,12 @@ public class TypeHierarchyVisitor extends Visitor {
                 for (Declaration f: members.formals) {
                     if (isOverloadedVersion(f)) {
                         boolean found = false;
+                        List<com.redhat.ceylon.model.typechecker.model.Type>
+                                signature = ModelUtil.getSignature(f);
+                        boolean variadic = f.isVariadic();
                         for (Declaration a: members.actualsNonFormals) {
-                            if (a.getRefinedDeclaration()
-                                    .equals(f.getRefinedDeclaration())) {
+                            if (f.getRefinedDeclaration()
+                                    .equals(a.getRefinedDeclaration())) {
                                 found = true;
                                 break;
                             }
@@ -502,22 +507,23 @@ public class TypeHierarchyVisitor extends Visitor {
         }
         //a Java interface method can be implemented by stuff that doesn't
         //explicitly/directly refine it
-        //TODO: does this logic does correctly account for overloading?
         for (Type.Members aggregateMembers: aggregation.membersByName.values()) {
             for (Declaration formal: 
                     new ArrayList<Declaration>
                         (aggregateMembers.formals)) {
                 if (isJavaInterfaceMember(formal)) {
+                    boolean overloaded = isOverloadedVersion(formal);
+                    List<com.redhat.ceylon.model.typechecker.model.Type> 
+                        signature = overloaded ? ModelUtil.getSignature(formal) : null;
+                    boolean variadic = formal.isVariadic();
                     for (Declaration concrete: aggregateMembers.defaults) {
-                        if (formal.getName().equals(concrete.getName()) 
-                                && isDefinedInJava(concrete)) {
+                        if (isJavaRefinement(formal, overloaded, signature, variadic, concrete)) {
                             aggregateMembers.formals.remove(formal);
                             break;
                         }
                     }
                     for (Declaration concrete: aggregateMembers.nonFormalsNonDefaults) {
-                        if (formal.getName().equals(concrete.getName()) 
-                                && isDefinedInJava(concrete)) {
+                        if (isJavaRefinement(formal, overloaded, signature, variadic, concrete)) {
                             aggregateMembers.formals.remove(formal);
                             break;
                         }
@@ -526,6 +532,14 @@ public class TypeHierarchyVisitor extends Visitor {
             }
         }
         return aggregation;
+    }
+
+    private static boolean isJavaRefinement(Declaration formal, boolean overloaded,
+            List<com.redhat.ceylon.model.typechecker.model.Type> signature, 
+            boolean variadic, Declaration concrete) {
+        return formal.getName().equals(concrete.getName())
+                && isDefinedInJava(concrete)
+                && (!overloaded || hasMatchingSignature(concrete, signature, variadic));
     }
 
     //sort type hierarchy from most abstract to most concrete

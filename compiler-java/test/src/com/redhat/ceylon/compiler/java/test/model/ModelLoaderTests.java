@@ -74,8 +74,8 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.langtools.source.util.TaskEvent;
-import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.langtools.source.util.TaskEvent.Kind;
+import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.langtools.tools.javac.api.JavacTaskImpl;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.model.cmr.JDKUtils;
@@ -103,6 +103,8 @@ import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 @RunWith(Parameterized.class)
@@ -1730,5 +1732,41 @@ public class ModelLoaderTests extends CompilerTests {
         };
         verifyCompilerClassLoading("Any.ceylon", tester, defaultOptions);
         verifyRuntimeClassLoading(tester);
+    }
+
+    @Test
+    public void bug6437(){
+        compile("Bug6437JavaClass.java", "Bug6437JavaInterface.java");
+        verifyCompilerClassLoading("Bug6437.ceylon", new RunnableTest(){
+            @Override
+            public void test(ModelLoader loader) {
+                Module mod = loader.getLoadedModule(moduleForJavaModelLoading(), moduleVersionForJavaModelLoading());
+                Assert.assertNotNull(mod);
+                Package p = mod.getDirectPackage(packageForJavaModelLoading());
+                Assert.assertNotNull(p);
+                Declaration javaType = p.getDirectMember("Bug6437", null, false);
+                Assert.assertNotNull(javaType);
+                
+                Unit unit = mod.getUnit();
+                Type optionalString = unit.getOptionalType(unit.getStringType());
+                Type seqOfOptionalString = unit.getSequentialDeclaration().appliedType(null, Arrays.asList(optionalString));
+                List<Type> types = Arrays.asList(seqOfOptionalString);
+                // check the method which returns a java list
+                Function javaMethod = (Function) javaType.getMember("getJavaIdentifiers", types, true);
+                Assert.assertNotNull(javaMethod);
+                Assert.assertTrue(javaMethod.getContainer() instanceof Class);
+                Class klass = (Class) javaMethod.getContainer();
+                Assert.assertEquals("Bug6437JavaClass", klass.getName());
+                Assert.assertEquals("List<String>", javaMethod.getType().asString());
+                
+                TypedDeclaration refinedDeclaration = (TypedDeclaration) javaMethod.getRefinedDeclaration();
+                System.err.println(refinedDeclaration);
+                Assert.assertNotNull(refinedDeclaration);
+                Assert.assertTrue(refinedDeclaration.getContainer() instanceof Interface);
+                Interface interf = (Interface) refinedDeclaration.getContainer();
+                Assert.assertEquals("Bug6437JavaInterface", interf.getName());
+                Assert.assertEquals("List<String>", refinedDeclaration.getType().asString());
+            }
+        });
     }
 }

@@ -25,10 +25,10 @@ public abstract class Reference {
     
     Reference() {}
 
-    private Map<TypeParameter, Type> typeArguments = 
+    protected Map<TypeParameter, Type> typeArguments = 
             EMPTY_TYPE_ARG_MAP;
     
-    private Type qualifyingType;
+    protected Type qualifyingType;
     
     //cache
     private Map<TypeParameter, Type> 
@@ -41,7 +41,7 @@ public abstract class Reference {
     void setQualifyingType(Type qualifyingType) {
         this.qualifyingType = qualifyingType;
     }
-    
+        
     public abstract Declaration getDeclaration();
 
     public Map<TypeParameter, Type> getTypeArguments() {

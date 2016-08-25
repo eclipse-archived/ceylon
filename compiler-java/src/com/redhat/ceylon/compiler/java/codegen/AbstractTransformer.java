@@ -2315,13 +2315,10 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isJavaEnumType(Type type) {
-        Module jdkBaseModule = loader().getJDKBaseModule();
-        Package javaLang = jdkBaseModule.getPackage("java.lang");
-        TypeDeclaration enumDecl = (TypeDeclaration)javaLang.getDirectMember("Enum", null, false);
         if (type.isClass() && type.getDeclaration().isAnonymous()) {
             type = type.getExtendedType();
         }
-        return type.isSubtypeOf(enumDecl.appliedType(null, Collections.singletonList(type)));
+        return type.isSubtypeOf(typeFact().getJavaEnumType(type));
     }
 
     public JCExpression makeParameterisedType(Type type, Type generalType, final int flags, 
@@ -5307,7 +5304,13 @@ public abstract class AbstractTransformer implements Transformation {
             Scope container = tp.getContainer();
             JCExpression qualifier = null;
             if(container instanceof Class){
-                qualifier = naming.makeQualifiedThis(makeJavaType(((Class)container).getType(), JT_RAW));
+                if(!expressionGen().isWithinSuperInvocation(container))
+                    qualifier = naming.makeQualifiedThis(makeJavaType(((Class)container).getType(), JT_RAW));
+                else{
+                    // within a super invocation we haven't set the instance variable yet so we can't qualify
+                    // so we use the constructor parameter
+                    return makeUnquotedIdent(name);
+                }
             }else if(container instanceof Interface){
                 qualifier = naming.makeQualifiedThis(makeJavaType(((Interface)container).getType(), JT_COMPANION | JT_RAW));
             }else if(container instanceof Function){

@@ -1042,7 +1042,7 @@ void checkFormatFloat() {
     check(formatFloat(1234.5678,4,4)=="1234.5678", "formatFloat(1234.5678,4,4)");
     check(formatFloat(5678.1234)=="5678.1234", "formatFloat(5678.1234)");
     check(formatFloat(5678.1234,4,4)=="5678.1234", "formatFloat(5678.1234,4,4)");
-    check(formatFloat(1234.5678,2,2)=="1234.56", "formatFloat(1234.5678,2,2)");
+    check(formatFloat(1234.5678,2,2)=="1234.57", "formatFloat(1234.5678,2,2)");
     check(formatFloat(5678.1234,3,3)=="5678.123", "formatFloat(5678.1234,3,3)");
     check(formatFloat(1234.1234)=="1234.1234", "formatFloat(1234.1234)");
     check(formatFloat(1234.1234,4,4)=="1234.1234", "formatFloat(1234.1234,4,4)");
@@ -1074,7 +1074,24 @@ void checkFormatFloat() {
     check(formatFloat(-1.234e+20)=="-123400000000000000000.0", "formatFloat(-1.234e+20)");
     check(formatFloat(-1.234e+25)=="-12340000000000000000000000.0", "formatFloat(-1.234e+25)");
     check(formatFloat(-1.234e+30)=="-1234000000000000000000000000000.0", "formatFloat(-1.234e+30)");
-    
+
+    value minFloatExpected = "0." + "0".repeat(323) + "494065645841247";
+    value minFloatActual = formatFloat(runtime.minFloatValue, 1, 400);
+    check(minFloatActual == minFloatExpected, "formatFloat(min)");
+    value maxFloatExpectedJS  = "179769313486231" + "0".repeat(294) + ".0";
+    value maxFloatExpectedJVM = "179769313486232" + "0".repeat(294) + ".0";
+    value maxFloatActual = formatFloat(runtime.maxFloatValue, 1, 400);
+    check(maxFloatActual in [maxFloatExpectedJS, maxFloatExpectedJVM], "formatFloat(max)");
+
+    check(formatFloat(0.99, 0, 0) == "1", "formatFloat halfeven rounding #1");
+    check(formatFloat(0.99, 1, 1) == "1.0", "formatFloat halfeven rounding #2");
+    check(formatFloat(1.1525, 1, 1) == "1.2", "formatFloat halfeven rounding #3");
+    check(formatFloat(1.1525, 3, 3) == "1.152", "formatFloat halfeven rounding #4");
+    check(formatFloat(-1.1525, 1, 1) == "-1.2", "formatFloat halfeven rounding #5");
+    check(formatFloat(-1.1525, 3, 3) == "-1.152", "formatFloat halfeven rounding #6");
+    check(formatFloat(1.111111111111115, 0, 100) == "1.11111111111112", "formatFloat halfeven rounding #7");
+    check(formatFloat(1.111111111111145, 0, 100) == "1.11111111111114", "formatFloat halfeven rounding #8");
+
     void checkNanComparisons<T>(T nan, T zero) 
             given T satisfies Comparable<T> {
         check(!nan == zero, "generic nan comparison");

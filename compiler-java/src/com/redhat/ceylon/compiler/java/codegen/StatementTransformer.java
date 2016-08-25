@@ -594,7 +594,8 @@ public class StatementTransformer extends AbstractTransformer {
                     elseBlock = null;
                 else
                     elseBlock = at(elsePart).Block(0, List.<JCStatement>of(make().Exec(makeErroneous(thenPart, "Only block or expression allowed"))));
-                    
+                
+                at(conditions.get(conditions.size() - 1));
                 result.append(make().If(ifVar.makeIdent(), thenBlock, elseBlock));
             }
             return result.toList();   
@@ -1923,6 +1924,9 @@ public class StatementTransformer extends AbstractTransformer {
         /** Makes the expression for incrementing the index */
         protected JCExpression makeStepExpr() {
             Type intType = typeFact().getIntegerType();
+            if (intType.isCached()) {
+                intType = intType.clone();
+            }
             intType.setUnderlyingType("int");
             return expressionGen().transformExpression(step, BoxingStrategy.UNBOXED, 
                     intType);

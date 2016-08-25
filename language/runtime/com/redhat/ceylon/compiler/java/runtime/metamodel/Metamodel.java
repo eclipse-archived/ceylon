@@ -666,6 +666,9 @@ public class Metamodel {
         if(declaration instanceof com.redhat.ceylon.model.typechecker.model.NothingType){
             return (ceylon.language.meta.model.Type<T>)ceylon.language.meta.model.nothingType_.get_();
         }
+        if(declaration instanceof UnknownType){
+            ((UnknownType) declaration).reportErrors();
+        }
         throw Metamodel.newModelError("Declaration type not supported yet: "+declaration);
     }
 

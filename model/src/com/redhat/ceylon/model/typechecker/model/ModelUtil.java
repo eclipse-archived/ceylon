@@ -183,7 +183,7 @@ public class ModelUtil {
                 !decl.isAbstraction());
     }
 
-    static boolean hasMatchingSignature(
+    public static boolean hasMatchingSignature(
             Declaration dec, 
             List<Type> signature, boolean variadic) {
         return hasMatchingSignature(dec, 
@@ -2466,6 +2466,11 @@ public class ModelUtil {
             TypeDeclaration td) {
         Type extendedType = td.getExtendedType();
         List<Type> satisfiedTypes = td.getSatisfiedTypes();
+        if (satisfiedTypes.isEmpty()) {
+            return extendedType==null ? 
+                    td.getUnit().getAnythingType() : 
+                    extendedType;
+        }
         List<Type> list = 
                 new ArrayList<Type>
                     (satisfiedTypes.size()+1);

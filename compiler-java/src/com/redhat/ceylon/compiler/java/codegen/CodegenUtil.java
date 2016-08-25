@@ -117,8 +117,15 @@ public class CodegenUtil {
 
     static void markRaw(Term node) {
         Type type = node.getTypeModel();
-        if(type != null)
-            type.setRaw(true);
+        if(type != null) {
+            if (type.isCached()) {
+                Type clone = type.clone();
+                clone.setRaw(true);
+                node.setTypeModel(clone);
+            } else {
+                type.setRaw(true);                
+            }
+        }
     }
     
     static boolean hasTypeErased(Term node){
