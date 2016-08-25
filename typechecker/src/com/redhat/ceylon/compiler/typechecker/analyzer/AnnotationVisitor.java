@@ -1056,7 +1056,8 @@ public class AnnotationVisitor extends Visitor {
             if (!ModelUtil.isTypeUnknown(ta) && 
                     (ta.isNothing() || 
                      ta.isIntersection() || 
-                     unit.getDefiniteType(ta).isUnion())) {
+                     unit.getDefiniteType(ta).isUnion() ||
+                     ta.isTypeParameter())) {
                 that.addError(
                         "illegal Java array element type: arrays with element type '" 
                                 + ta.asString(unit) + "' may not be instantiated");
