@@ -6,29 +6,119 @@ final class javaArrayIndex_ {
     }
     
     static void javaArrayIndex() {
+        final .ceylon.language.String[] ar0 = (.ceylon.language.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
         final .ceylon.language.String r0 = (
             let
             {
-                .ceylon.language.String[] $ceylontmp$array$0 = (.ceylon.language.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
+                .ceylon.language.String[] $ceylontmp$array$0 = ar0;
                 int $ceylontmp$index$1 = .com.redhat.ceylon.compiler.java.Util.toInt(0L);
             }
             returning $ceylontmp$index$1 >= 0 && $ceylontmp$index$1 < $ceylontmp$array$0.length ? $ceylontmp$array$0[$ceylontmp$index$1] : null;
         );
+        final .java.lang.String r0x = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$op$2 = .ceylon.language.String.instance("a");
+                ar0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = $ceylontmp$op$2;
+            }
+            returning $ceylontmp$op$2;
+        ).toString();
+        final .ceylon.language.String[] ar1 = (.ceylon.language.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
         final .ceylon.language.String r1 = (
             let
             {
-                .ceylon.language.String[] $ceylontmp$array$2 = (.ceylon.language.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
-                int $ceylontmp$index$3 = .com.redhat.ceylon.compiler.java.Util.toInt(0L);
+                .ceylon.language.String[] $ceylontmp$array$3 = ar1;
+                int $ceylontmp$index$4 = .com.redhat.ceylon.compiler.java.Util.toInt(0L);
             }
-            returning $ceylontmp$index$3 >= 0 && $ceylontmp$index$3 < $ceylontmp$array$2.length ? $ceylontmp$array$2[$ceylontmp$index$3] : null;
+            returning $ceylontmp$index$4 >= 0 && $ceylontmp$index$4 < $ceylontmp$array$3.length ? $ceylontmp$array$3[$ceylontmp$index$4] : null;
         );
-        final boolean b0 = ((boolean[])(.java.lang.Object).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
-        final byte o0 = ((byte[])(.java.lang.Object).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
-        final long s0 = ((short[])(.java.lang.Object).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
-        final long i0 = ((int[])(.java.lang.Object).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
-        final long l0 = ((long[])(.java.lang.Object).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
-        final double f0 = ((float[])(.java.lang.Object).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
-        final double d0 = ((double[])(.java.lang.Object).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
-        final int c0 = ((char[])(.java.lang.Object).ceylon.language.nothing_.get_())[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final .java.lang.String r1x = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$op$5 = .ceylon.language.String.instance("a");
+                ar1[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = $ceylontmp$op$5;
+            }
+            returning $ceylontmp$op$5;
+        ).toString();
+        final boolean[] ab0 = (boolean[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        final boolean b0 = ab0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final boolean b0x = (
+            let
+            {
+                boolean $ceylontmp$op$6 = true;
+                ab0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = $ceylontmp$op$6;
+            }
+            returning $ceylontmp$op$6;
+        );
+        final byte[] ao0 = (byte[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        final byte o0 = ao0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final byte o0x = (
+            let
+            {
+                byte $ceylontmp$op$7 = (byte)1L;
+                ao0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = $ceylontmp$op$7;
+            }
+            returning $ceylontmp$op$7;
+        );
+        final short[] as0 = (short[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        final long s0 = as0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final long s0x = (
+            let
+            {
+                long $ceylontmp$op$8 = .com.redhat.ceylon.compiler.java.Util.toShort(1L);
+                as0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = .com.redhat.ceylon.compiler.java.Util.toShort($ceylontmp$op$8);
+            }
+            returning $ceylontmp$op$8;
+        );
+        final int[] ai0 = (int[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        final long i0 = ai0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final long i0x = (
+            let
+            {
+                long $ceylontmp$op$9 = .com.redhat.ceylon.compiler.java.Util.toInt(1L);
+                ai0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = .com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$op$9);
+            }
+            returning $ceylontmp$op$9;
+        );
+        final long[] al0 = (long[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        final long l0 = al0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final long l0x = (
+            let
+            {
+                long $ceylontmp$op$10 = 1L;
+                al0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = $ceylontmp$op$10;
+            }
+            returning $ceylontmp$op$10;
+        );
+        final float[] af0 = (float[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        final double f0 = af0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final double f0x = (
+            let
+            {
+                double $ceylontmp$op$11 = (float)1.0;
+                af0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = (float)$ceylontmp$op$11;
+            }
+            returning $ceylontmp$op$11;
+        );
+        final double[] ad0 = (double[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        final double d0 = ad0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final double d0x = (
+            let
+            {
+                double $ceylontmp$op$12 = 1.0;
+                ad0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = $ceylontmp$op$12;
+            }
+            returning $ceylontmp$op$12;
+        );
+        final char[] ac0 = (char[])(.java.lang.Object).ceylon.language.nothing_.get_();
+        final int c0 = ac0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)];
+        final int c0x = (
+            let
+            {
+                int $ceylontmp$op$13 = (char)97;
+                ac0[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = (char)$ceylontmp$op$13;
+            }
+            returning $ceylontmp$op$13;
+        );
     }
 }
