@@ -2434,7 +2434,12 @@ public class GenerateJsVisitor extends Visitor {
                 that.getRightTerm().visit(this);
                 out(",");
                 iex.getPrimary().visit(this);
-                out(".set(");
+                TypeDeclaration td = iex.getPrimary().getTypeModel().getDeclaration();
+                if (td != null && td.inherits(iex.getUnit().getKeyedCorrespondenceMutatorDeclaration())) {
+                    out(".put(");
+                } else {
+                    out(".set(");
+                }
                 ((Tree.Element)iex.getElementOrRange()).getExpression().visit(this);
                 out(",", tv, "), ", tv, ")");
             }
