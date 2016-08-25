@@ -354,4 +354,9 @@ public class IssuesTests_6000_6499 extends CompilerTests {
                 Arrays.asList("--run", "com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6442::run",
                         "--overrides", getPackagePath()+"/bug64xx/bug6442/overrides.xml"));
     }
+
+    @Test
+    public void testBug6447() {
+        compareWithJavaSource("bug64xx/Bug6447");
+    }
 }
