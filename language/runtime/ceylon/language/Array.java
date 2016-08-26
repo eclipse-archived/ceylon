@@ -1383,6 +1383,7 @@ public final class Array<Element>
         }
     }
 
+    @TypeInfo(declaredVoid = true, value = "ceylon.language::Anything")
     @Override
     public java.lang.Object set(
             @Name("index") @TypeInfo("ceylon.language::Integer") long index,
