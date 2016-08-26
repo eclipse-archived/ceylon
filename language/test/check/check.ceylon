@@ -10,7 +10,7 @@ shared void check(Boolean assertion, String message="") {
     assertions++;
     if (!assertion) {
         failures++;
-        print("assertion failed \"``message``\"");
+        print("**** ASSERTION FAILED \"``message``\" ****");
     }
 }
 
@@ -18,7 +18,7 @@ shared void checkEqual(Object actual, Object expected, String message="") {
     assertions++;
     if (actual != expected) {
         failures++;
-        print("assertion failed \"``message``\": '``actual``'!='``expected``'");
+        print("**** ASSERTION FAILED \"``message``\": '``actual``'!='``expected``' ****");
     }
 }
 
@@ -28,12 +28,19 @@ shared void fail(String message) {
 
 shared void results() {
     print("assertions ``assertions``, failures ``failures``");
-    if (runtime.name=="node.js" && failures>0) {
-        process.exit(1);
+}
+
+shared void resultsAndAssert() {
+    results();
+    if (failures!=0) {
+        throw Exception("There were ``failures`` failures (out of ``assertions`` assertions)");
     }
 }
 
-shared Integer assertionCount() { return assertions; }
+shared void resultsAndExit() {
+    results();
+    process.exit(failures == 0 then 0 else 1);
+}
 
 @test
 shared void test() {
