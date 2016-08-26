@@ -1232,7 +1232,7 @@ public abstract class CompilerTests {
                 line = reader.readLine();
             }
             if (!found) {
-                Assert.fail("missing expected line");
+                Assert.fail("missing expected line: \"" + expectedLine + "\"");
             }
         }
     }
