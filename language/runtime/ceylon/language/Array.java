@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.NeedsVoidBridge;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -1383,6 +1384,10 @@ public final class Array<Element>
         }
     }
 
+    // IMPORT: this creates a void set() bridge method so that older users of Array.set()V keep working
+    // with the new Array.set()LObject; signature
+    // See https://github.com/ceylon/ceylon/issues/4148
+    @NeedsVoidBridge
     @TypeInfo(declaredVoid = true, value = "ceylon.language::Anything")
     @Override
     public java.lang.Object set(
