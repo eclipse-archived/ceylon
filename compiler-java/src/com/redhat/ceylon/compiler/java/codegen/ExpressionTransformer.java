@@ -5612,7 +5612,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // do it on the declaration type. Honestly this should probably rather be an inheritance check in
                 // applyErasureAndCasts but that'd be costly and complex and likely introduce lots of other issues.
                 // See https://github.com/ceylon/ceylon/issues/6365
-                if(leftType.getDeclaration() instanceof ClassOrInterface 
+                if(leftType.getDeclaration() instanceof ClassOrInterface
+                        // even more disgusting: https://github.com/ceylon/ceylon/issues/6450
+                        && !isCeylonString(primaryType)
                         && hasConstrainedTypeParameters(leftType.getDeclaration().getType()))
                     flags |= EXPR_EXPECTED_TYPE_HAS_CONSTRAINED_TYPE_PARAMETERS;
                 lhs = transformExpression(indexedExpr.getPrimary(), BoxingStrategy.BOXED, leftType, flags);
