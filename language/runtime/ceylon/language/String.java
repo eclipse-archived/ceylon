@@ -270,6 +270,22 @@ public final class String
         return value.isEmpty();
     }
 
+    public boolean getWhitespace() {
+        return getWhitespace(value);
+    }
+
+    @Ignore
+    public static boolean getWhitespace(java.lang.String value) {
+        for (int offset = 0, length = value.length(); offset < length;) {
+            int codePoint = value.codePointAt(offset);
+            if (!java.lang.Character.isWhitespace(codePoint)) {
+                return false;
+            }
+            offset += java.lang.Character.charCount(codePoint);
+        }
+        return true;
+    }
+
 //    @Override
 //    @TypeInfo("ceylon.language::Null|ceylon.language::Character")
 //    public Character get(@Name("index") Integer key) {
@@ -2195,7 +2211,7 @@ public final class String
     @Ignore
     public static Character find(java.lang.String value, 
             Callable<? extends Boolean> f) {
-        for (int offset = 0; offset < value.length();) {
+        for (int offset = 0, length = value.length(); offset < length;) {
             int codePoint = value.codePointAt(offset);
             Character ch = Character.instance(codePoint);
             if(f.$call$(ch).booleanValue()) {
@@ -2220,7 +2236,7 @@ public final class String
     public static Character findLast(java.lang.String value, 
             Callable<? extends Boolean> f) {
         Character result = null;
-        for (int offset = 0; offset < value.length();) {
+        for (int offset = 0, length = value.length(); offset < length;) {
             int codePoint = value.codePointAt(offset);
             Character ch = Character.instance(codePoint);
             if(f.$call$(ch).booleanValue()) {
@@ -2406,7 +2422,9 @@ public final class String
     @Ignore
     public static Integer 
     firstIndexWhere(java.lang.String value, Callable<? extends Boolean> fun) {
-        for (int offset = 0, index = 0; offset<value.length();) {
+        for (int offset = 0, index = 0, 
+                length = value.length(); 
+                offset < length;) {
             int cp = value.codePointAt(offset);
             offset+=java.lang.Character.charCount(cp);
             if (fun.$call$(Character.instance(cp)).booleanValue()) {
@@ -2501,8 +2519,9 @@ public final class String
         }
         int initial = value.codePointAt(0);
         java.lang.Object partial = Character.instance(initial);
-        for (int offset = java.lang.Character.charCount(initial); 
-                offset < value.length();) {
+        for (int offset = java.lang.Character.charCount(initial), 
+                length = value.length();
+                offset < length;) {
             int codePoint = value.codePointAt(offset);
             partial = f.$call$(partial, Character.instance(codePoint));
             offset += java.lang.Character.charCount(codePoint);
@@ -2518,13 +2537,13 @@ public final class String
             @FunctionalParameter("!(element)")
             @TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             Callable<? extends java.lang.Object> step) {
-        return each(value,step);
+        return each(value, step);
     }
     
     @Ignore
     public static java.lang.Object each(java.lang.String value, 
             Callable<? extends java.lang.Object> f) {
-        for (int offset = 0; offset < value.length();) {
+        for (int offset = 0, length = value.length(); offset < length;) {
             int codePoint = value.codePointAt(offset);
             f.$call$(Character.instance(codePoint));
             offset += java.lang.Character.charCount(codePoint);
@@ -2545,7 +2564,7 @@ public final class String
     @Ignore
     public static boolean any(java.lang.String value, 
             Callable<? extends Boolean> f) {
-        for (int offset = 0; offset < value.length();) {
+        for (int offset = 0, length = value.length(); offset < length;) {
             int codePoint = value.codePointAt(offset);
             if (f.$call$(Character.instance(codePoint)).booleanValue()) {
                 return true;
@@ -2568,7 +2587,7 @@ public final class String
     @Ignore
     public static boolean every(java.lang.String value, 
             Callable<? extends Boolean> f) {
-        for (int offset = 0; offset < value.length();) {
+        for (int offset = 0, length = value.length(); offset < length;) {
             int codePoint = value.codePointAt(offset);
             if(!f.$call$(Character.instance(codePoint)).booleanValue()) {
                 return false;
@@ -2622,7 +2641,7 @@ public final class String
     public static long count(java.lang.String value, 
             Callable<? extends Boolean> f) {
         int count = 0;
-        for (int offset = 0; offset < value.length();) {
+        for (int offset = 0, length = value.length(); offset < length;) {
             int codePoint = value.codePointAt(offset);
             if(f.$call$(Character.instance(codePoint)).booleanValue()) {
                 count++;
