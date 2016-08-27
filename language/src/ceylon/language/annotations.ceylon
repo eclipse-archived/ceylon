@@ -318,9 +318,12 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `syntaxDeprecation`,
      `smallIgnored`,
      `literalNotSmall`,
+     `disjointEquals`,
+     `disjointContainment`,
      `redundantNarrowing`,
      `redundantIteration`,
-     `missingImportPrefix`."
+     `missingImportPrefix`,
+     `uncheckedTypeArguments`."
     String* warnings) 
         => SuppressWarningsAnnotation(*warnings);
 

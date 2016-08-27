@@ -4564,4 +4564,51 @@ public class Type extends Reference {
         return true;
     }
 
+    public boolean hasUnreifiedInstances(Type knownType) {
+        TypeDeclaration td = getDeclaration();
+        //TODO!!
+//        if (td instanceof TypeParameter) { 
+//            return true;
+//        }
+        if (knownType!=null) {
+            TypeDeclaration ktd = knownType.getDeclaration();
+            Type pst = td.getType().getSupertype(ktd);
+            if (pst!=null) {
+                boolean allOccur = true;
+                for (TypeParameter tp: td.getTypeParameters()) {
+                    allOccur = allOccur
+                            //TODO: is this exactly correct?
+                            && pst.involvesDeclaration(tp);
+                }
+                if (allOccur) {
+                    Type st = getSupertype(ktd);
+                    if (st!=null && knownType.isSubtypeOf(st)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        List<TypeParameter> params = td.getTypeParameters();
+        List<Type> args = getTypeArgumentList();
+        for (int i=0; i<args.size(); i++) {
+            Type at = args.get(i);
+            if (at!=null) {
+                if (td.isJava()) {
+                    TypeParameter tp = params.get(i);
+                    if (!(isCovariant(tp) 
+                            && intersectionOfSupertypes(tp)
+                                .isSubtypeOf(at)) && 
+                        !(isContravariant(tp) 
+                            && at.isNothing())) {
+                        return true;
+                    }
+                }
+                if (at.hasUnreifiedInstances(null)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

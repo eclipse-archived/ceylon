@@ -789,9 +789,6 @@ public class ExpressionVisitor extends Visitor {
         Type type = 
                 t==null ? null : 
                     t.getTypeModel();
-        if (!isTypeUnknown(type)) {
-            checkReified(t, type);
-        }
         if (v!=null) {
 //            if (type!=null && !that.getNot()) {
 //                v.getType().setTypeModel(type);
@@ -821,6 +818,9 @@ public class ExpressionVisitor extends Visitor {
                 //TODO: what to do here in case of !is
                 if (knownType!=null 
                         && !isTypeUnknown(knownType)) { //TODO: remove this if we make unknown a subtype of Anything) {
+                    if (!isTypeUnknown(type)) {
+                        checkReified(t, type, knownType);
+                    }
                     if (hasUncheckedNulls(e)) {
                         knownType = unit.getOptionalType(knownType);
                     }
@@ -882,11 +882,17 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkReified(Tree.Type t, Type type) {
+    private void checkReified(Tree.Type t, Type type, Type knownType) {
         if (!type.isReified()) {
             t.addError("type is not reified: '" + 
                     type.asString(unit) + 
                     "' involves a type parameter declared in Java");
+        }
+        else if (type.hasUnreifiedInstances(knownType)) {
+            t.addUsageWarning(Warning.uncheckedTypeArguments,
+                    "condition might not be fully checked: '" + 
+                    type.asString(unit) + 
+                    "' involves a type argument that is unchecked for Java types");
         }
     }
     
@@ -5902,11 +5908,11 @@ public class ExpressionVisitor extends Visitor {
         if (rt!=null) {
             Type type = rt.getTypeModel();
             if (!isTypeUnknown(type)) {
-                checkReified(rt, type);
                 Tree.Term term = that.getTerm();
                 if (term!=null) {
                     Type knownType = term.getTypeModel();
                     if (!isTypeUnknown(knownType)) {
+                        checkReified(rt, type, knownType);
                         if (knownType.isSubtypeOf(type)) {
                             that.addUsageWarning(Warning.redundantNarrowing,
                                     "expression type is a subtype of the type: '" +

@@ -27,7 +27,6 @@ import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.language.LongArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
-import com.redhat.ceylon.compiler.java.language.ReifiedTypeError;
 import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -336,7 +335,8 @@ public class Metamodel {
             // that's so that we don't have to worry about type applications 
             // such as like <out Anything> which is true even in the absence 
             // of reified type arguments
-            throw new ReifiedTypeError("Cannot determine whether " + instance.getClass() + " is a " + type);
+//            throw new ReifiedTypeError("Cannot determine whether " + instance.getClass() + " is a " + type);
+            result = true; //I can do it in Java, so what the hell ;-)
         }
         
         return result;

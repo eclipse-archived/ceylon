@@ -25,7 +25,8 @@ public enum Warning {
     disjointContainment,
     redundantNarrowing, 
     redundantIteration,
-    missingImportPrefix
+    missingImportPrefix,
+    uncheckedTypeArguments
     /*
      * Don't forget to update the documentation
      * of the suppressWarnings annotation in
