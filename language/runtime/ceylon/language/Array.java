@@ -53,6 +53,10 @@ import ceylon.language.serialization.ReachableReference;
     "ceylon.language::Ranged<ceylon.language::Integer,Element,ceylon.language::Array<Element>>",
     "ceylon.language::IndexedCorrespondenceMutator<Element>",
 })
+@SharedAnnotation$annotation$
+@FinalAnnotation$annotation$
+@SerializableAnnotation$annotation$
+@NativeAnnotation$annotation$(backends={})
 public final class Array<Element>
         implements Serializable, SearchableList<Element>, IndexedCorrespondenceMutator<Element>,
                     ReifiedType, java.io.Serializable {

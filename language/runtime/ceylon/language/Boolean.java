@@ -14,6 +14,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @CaseTypes({"ceylon.language::true", "ceylon.language::false"})
 @SatisfiedTypes({})
 @ValueType
+@SharedAnnotation$annotation$
+@AbstractAnnotation$annotation$
+@NativeAnnotation$annotation$(backends={})
 public abstract class Boolean 
         implements ReifiedType, java.io.Serializable {
 

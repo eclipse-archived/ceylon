@@ -43,6 +43,9 @@ import ceylon.language.impl.BaseIterator;
             arguments = {"Gavin"}),
     @Annotation("shared"),
     @Annotation("final")})
+@SharedAnnotation$annotation$
+@FinalAnnotation$annotation$
+@NativeAnnotation$annotation$(backends={})
 public final class String
     implements Comparable<String>, SearchableList<Character>,
                Summable<String>, ReifiedType,
