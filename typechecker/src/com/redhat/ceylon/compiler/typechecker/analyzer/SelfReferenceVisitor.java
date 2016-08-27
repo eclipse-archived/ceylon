@@ -160,7 +160,7 @@ public class SelfReferenceVisitor extends Visitor {
                         "' from '" + 
                         container.getName() + "'");
             }
-            else if (!member.getUnit().getPackage().getModule().isJava()) {
+            else if (!member.isJava()) {
                 that.addError("inherited member may not be used in initializer of '" +
                         typeDeclaration.getName() + 
                         "': '" + member.getName() + 

@@ -456,10 +456,7 @@ public class TypeHierarchyVisitor extends Visitor {
 
     private static boolean isJavaInterfaceMember(Declaration formal) {
         return formal.isInterfaceMember() 
-                && formal.getUnit()
-                    .getPackage()
-                    .getModule()
-                    .isJava();
+                && formal.isJava();
     }
 
     private void addUnimplementedFormal(Class clazz, Declaration member) {
@@ -747,11 +744,13 @@ public class TypeHierarchyVisitor extends Visitor {
     }
 
     private static boolean isDefinedInJava(Declaration d) {
-        if (d.getUnit().getPackage().getModule().isJava()) {
+        if (d.isJava()) {
             return true;
         }
-        Declaration rd = d.getRefinedDeclaration();
-        return rd!=null && !rd.equals(d) && isDefinedInJava(rd);
+        else {
+            Declaration rd = d.getRefinedDeclaration();
+            return rd!=null && !rd.equals(d) && isDefinedInJava(rd);
+        }
     }
 
 }

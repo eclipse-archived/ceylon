@@ -1857,10 +1857,7 @@ public class RefinementVisitor extends Visitor {
                                     that.getSpecifierExpression() 
                                         instanceof Tree.LazySpecifierExpression;
                             if (!lazy && td.isVariable() 
-                                    && td.getUnit()
-                                        .getPackage()
-                                        .getModule()
-                                        .isJava()) {
+                                    && td.isJava()) {
                                 //allow assignment to variable 
                                 //member of Java supertype
                             }
@@ -1894,14 +1891,14 @@ public class RefinementVisitor extends Visitor {
     private void refineAttribute(Value sv, 
             Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that, 
-            ClassOrInterface c) {
-        ClassOrInterface ci = 
+            final ClassOrInterface c) {
+        final ClassOrInterface ci = 
                 (ClassOrInterface) 
                     sv.getContainer();
         final String name = sv.getName();
         Declaration refined = 
                 ci.getRefinedMember(name, null, false);
-        Value root = 
+        final Value root = 
                 refined instanceof Value ? 
                         (Value) refined : sv;
         final Reference rv = getRefinedMember(sv, c);
@@ -1948,9 +1945,9 @@ public class RefinementVisitor extends Visitor {
                 for (Declaration d: getInterveningRefinements(name, null, root, c, ci)) {
                     addToIntersection(list,
                             c.getType().getTypedReference(d, NO_TYPE_ARGS).getType(),
-                            unit);
+                            getUnit());
                 }
-                IntersectionType it = new IntersectionType(unit); 
+                IntersectionType it = new IntersectionType(getUnit()); 
                 it.setSatisfiedTypes(list);
                 return it.canonicalize().getType();
             }
@@ -1985,15 +1982,15 @@ public class RefinementVisitor extends Visitor {
     private void refineMethod(final Function sm, 
             Tree.BaseMemberExpression bme,
             Tree.SpecifierStatement that, 
-            ClassOrInterface c) {
-        ClassOrInterface ci = 
+            final ClassOrInterface c) {
+        final ClassOrInterface ci = 
                 (ClassOrInterface) 
                     sm.getContainer();
         final String name = sm.getName();
         final List<Type> signature = getSignature(sm);
         Declaration refined = 
                 ci.getRefinedMember(name, signature, false);
-        Function root = 
+        final Function root = 
                 refined instanceof Function ? 
                         (Function) refined : sm;
         if (!sm.isFormal() && !sm.isDefault()
@@ -2188,9 +2185,9 @@ public class RefinementVisitor extends Visitor {
                 for (Declaration d: getInterveningRefinements(name, signature, root, c, ci)) {
                     addToIntersection(list,
                             c.getType().getTypedReference(d, NO_TYPE_ARGS).getType(),
-                            unit);
+                            getUnit());
                 }
-                IntersectionType it = new IntersectionType(unit); 
+                IntersectionType it = new IntersectionType(getUnit()); 
                 it.setSatisfiedTypes(list);
                 return it.canonicalize().getType();
             }
