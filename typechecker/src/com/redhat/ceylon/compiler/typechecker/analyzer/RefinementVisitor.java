@@ -166,7 +166,7 @@ public class RefinementVisitor extends Visitor {
                 }
             }
             
-            if ((dec.isNativeImplementation())
+            if (dec.isNativeImplementation()
                     || isNativeMember(dec)) {
                 checkNative(that, dec);
             }
@@ -1165,6 +1165,10 @@ public class RefinementVisitor extends Visitor {
 	                refinedTypeParams.get(i);
 	        TypeParameter refiningTypeParam = 
 	                refiningTypeParams.get(i);
+	        
+	        refiningTypeParam.setReified(
+	                refinedTypeParam.isReified());
+	        
 	        Type refinedProducedType = 
 	                refinedTypeParam.getType();
 	        List<Type> refinedBounds = 

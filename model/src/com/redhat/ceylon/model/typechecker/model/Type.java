@@ -4545,5 +4545,23 @@ public class Type extends Reference {
             }
         }
     }
+    
+    public boolean isReified() {
+        TypeDeclaration td = getDeclaration();
+        if (td instanceof TypeParameter) {
+            TypeParameter tp = (TypeParameter) td;
+            if (!tp.isReified()) {
+                return false;
+            }
+        }
+        else {
+            for (Type t: getTypeArgumentList()) {
+                if (t!=null && !t.isReified()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
 }

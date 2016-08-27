@@ -789,6 +789,9 @@ public class ExpressionVisitor extends Visitor {
         Type type = 
                 t==null ? null : 
                     t.getTypeModel();
+        if (!isTypeUnknown(type)) {
+            checkReified(t, type);
+        }
         if (v!=null) {
 //            if (type!=null && !that.getNot()) {
 //                v.getType().setTypeModel(type);
@@ -812,7 +815,9 @@ public class ExpressionVisitor extends Visitor {
                 //this is a bit ugly (the parser sends us a SyntheticVariable
                 //instead of the real StaticType which it very well knows!)
                 Tree.Expression e = se.getExpression();
-                knownType = e==null ? null : e.getTypeModel();
+                knownType = 
+                        e==null ? null : 
+                            e.getTypeModel();
                 //TODO: what to do here in case of !is
                 if (knownType!=null 
                         && !isTypeUnknown(knownType)) { //TODO: remove this if we make unknown a subtype of Anything) {
@@ -874,6 +879,14 @@ public class ExpressionVisitor extends Visitor {
             
             v.getType().setTypeModel(it);
             v.getDeclarationModel().setType(it);
+        }
+    }
+
+    private void checkReified(Tree.Type t, Type type) {
+        if (!type.isReified()) {
+            t.addError("type is not reified: '" + 
+                    type.asString(unit) + 
+                    "' involves a type parameter declared in Java");
         }
     }
     
@@ -5889,6 +5902,7 @@ public class ExpressionVisitor extends Visitor {
         if (rt!=null) {
             Type type = rt.getTypeModel();
             if (!isTypeUnknown(type)) {
+                checkReified(rt, type);
                 Tree.Term term = that.getTerm();
                 if (term!=null) {
                     Type knownType = term.getTypeModel();
