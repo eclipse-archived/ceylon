@@ -34,7 +34,7 @@ void test4() {
 
 
 class Cc() {
-    shared default Anything i = null;
+    shared default Integer|String? i = null;
 }
 
 class Dd() extends Cc() {
@@ -45,6 +45,7 @@ class Dd() extends Cc() {
 shared void rund() {
     print(Dd());
     @error print(Dd().i + 1);
+    @type:"Integer|Null|String" value i = Dd().i; 
 }
 
 class Ee() extends Dd() {
