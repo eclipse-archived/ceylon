@@ -299,14 +299,16 @@ public final class Array<Element>
             //      because it would break javaObjectArray()
             java.lang.String[] stringArray = new java.lang.String[size];
             for (int i=0; i<size; i++) {
-                String string = (String) elements.getFromFirst(i);
-                stringArray[i] = string==null ? null : string.value;
+                String e = (String) elements.getFromFirst(i);
+                checkElement(e);
+                stringArray[i] = e.value;
             }
             return stringArray;
         case CeylonInteger:
             long[] longPrecisionArray = new long[size];
             for (int i=0; i<size; i++) {
                 Integer e = (Integer) elements.getFromFirst(i);
+                checkElement(e);
                 longPrecisionArray[i] = e.value;
             }
             return longPrecisionArray;
@@ -314,6 +316,7 @@ public final class Array<Element>
             double[] doublePrecisionArray = new double[size];
             for (int i=0; i<size; i++) {
                 Float e = (Float) elements.getFromFirst(i);
+                checkElement(e);
                 doublePrecisionArray[i] = e.value;
             }
             return doublePrecisionArray;
@@ -321,6 +324,7 @@ public final class Array<Element>
             int[] codepointArray = new int[size];
             for (int i=0; i<size; i++) {
                 Character e = (Character) elements.getFromFirst(i);
+                checkElement(e);
                 codepointArray[i] = e.codePoint;
             }
             return codepointArray;
@@ -328,6 +332,7 @@ public final class Array<Element>
             boolean[] boolArray = new boolean[size];
             for (int i=0; i<size; i++) {
                 Boolean e = (Boolean) elements.getFromFirst(i);
+                checkElement(e);
                 boolArray[i] = e.booleanValue();
             }
             return boolArray;
@@ -335,63 +340,80 @@ public final class Array<Element>
             byte[] bitsArray = new byte[size];
             for (int i=0; i<size; i++) {
                 Byte e = (Byte) elements.getFromFirst(i);
+                checkElement(e);
                 bitsArray[i] = e.value;
             }
             return bitsArray;
         case JavaBoolean:
             boolean[] booleanArray = new boolean[size];
             for (int i=0; i<size; i++) {
-                booleanArray[i] = (java.lang.Boolean)
+                java.lang.Boolean e = (java.lang.Boolean)
                         elements.getFromFirst(i);
+                checkElement(e);
+                booleanArray[i] = e;
             }
             return booleanArray;
         case JavaCharacter:
             char[] charArray = new char[size];
             for (int i=0; i<size; i++) {
-                charArray[i] = (java.lang.Character)
+                java.lang.Character e = (java.lang.Character)
                         elements.getFromFirst(i);
+                checkElement(e);
+                charArray[i] = e;
             }
             return charArray;
         case JavaFloat:
             float[] floatArray = new float[size];
             for (int i=0; i<size; i++) {
-                floatArray[i] = (java.lang.Float)
+                java.lang.Float e = (java.lang.Float)
                         elements.getFromFirst(i);
+                checkElement(e);
+                floatArray[i] = e;
             }
             return floatArray;
         case JavaDouble:
             double[] doubleArray = new double[size];
             for (int i=0; i<size; i++) {
-                doubleArray[i] = (java.lang.Double)
+                java.lang.Double e = (java.lang.Double)
                         elements.getFromFirst(i);
+                checkElement(e);
+                doubleArray[i] = e;
             }
             return doubleArray;
         case JavaByte:
             byte[] byteArray = new byte[size];
             for (int i=0; i<size; i++) {
-                byteArray[i] = (java.lang.Byte)
+                java.lang.Byte e = (java.lang.Byte)
                         elements.getFromFirst(i);
+                checkElement(e);
+                byteArray[i] = e;
             }
             return byteArray;
         case JavaShort:
             short[] shortArray = new short[size];
             for (int i=0; i<size; i++) {
-                shortArray[i] = (java.lang.Short)
+                java.lang.Short e = (java.lang.Short)
                         elements.getFromFirst(i);
+                checkElement(e);
+                shortArray[i] = e;
             }
             return shortArray;
         case JavaInteger:
             int[] intArray = new int[size];
             for (int i=0; i<size; i++) {
-                intArray[i] = (java.lang.Integer)
+                java.lang.Integer e = (java.lang.Integer)
                         elements.getFromFirst(i);
+                checkElement(e);
+                intArray[i] = e;
             }
             return intArray;
         case JavaLong:
             long[] longArray = new long[size];
             for (int i=0; i<size; i++) {
-                longArray[i] = (java.lang.Long)
+                java.lang.Long e = (java.lang.Long)
                         elements.getFromFirst(i);
+                checkElement(e);
+                longArray[i] = e;
             }
             return longArray;
         default:
@@ -399,10 +421,21 @@ public final class Array<Element>
                     $reifiedElement.getArrayElementClass();
             java.lang.Object[] objectArray = (java.lang.Object[]) 
                     java.lang.reflect.Array.newInstance(clazz, size);
+            boolean containsNull = $reifiedElement.containsNull();
             for (int i=0; i<size; i++) {
-                objectArray[i] = elements.getFromFirst(i);
+                Element e = elements.getFromFirst(i);
+                if (!containsNull) {
+                    checkElement(e);
+                }
+                objectArray[i] = e;
             }
             return objectArray;
+        }
+    }
+
+    private static void checkElement(java.lang.Object e) {
+        if (e==null) {
+            throw new AssertionError("missing element");
         }
     }
 
