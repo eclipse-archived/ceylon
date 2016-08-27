@@ -1212,7 +1212,9 @@ public class ExpressionVisitor extends Visitor {
         Value dec = that.getDeclarationModel();
         Tree.SpecifierOrInitializerExpression sie = 
                 that.getSpecifierOrInitializerExpression();
-        inferType(that, sie);
+        if (!dec.isActual() || isTypeUnknown(dec.getType())) {
+            inferType(that, sie);
+        }
         Tree.Type type = that.getType();
         if (type!=null) {
             Type t = type.getTypeModel();
