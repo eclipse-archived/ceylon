@@ -890,9 +890,9 @@ public class ExpressionVisitor extends Visitor {
         }
         else if (type.hasUnreifiedInstances(knownType)) {
             t.addUsageWarning(Warning.uncheckedTypeArguments,
-                    "condition might not be fully checked: '" + 
+                    "type condition might not be fully checked at runtime: '" + 
                     type.asString(unit) + 
-                    "' involves a type argument that is unchecked for Java types");
+                    "' involves a type argument that is unchecked for Java class instances");
         }
     }
     
