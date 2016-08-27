@@ -2070,7 +2070,9 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 Type returnType = e.getTypeModel();
-                inferFunctionType(that, returnType);
+                if (!m.isActual() || isTypeUnknown(m.getType())) {
+                    inferFunctionType(that, returnType);
+                }
                 if (type!=null && 
                         !(type instanceof Tree.DynamicModifier)) {
                     checkFunctionType(returnType, type, se);
