@@ -1549,10 +1549,10 @@ public class AnalyzerUtil {
         DeclarationWithProximity correction =
                 correct(d, scope, unit, name, cancellable);
         if (correction==null) {
-            return " might be misspelled or is not imported";
+            return " might be misspelled";
         }
         else {
-            return " might be misspelled or is not imported (did you mean '" 
+            return " might be misspelled (did you mean '" 
                 + correction.realName(unit) + "'?)";
         }
     }
