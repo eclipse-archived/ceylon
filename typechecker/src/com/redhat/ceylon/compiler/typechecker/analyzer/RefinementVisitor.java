@@ -15,6 +15,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.messa
 import static com.redhat.ceylon.compiler.typechecker.analyzer.DeclarationVisitor.setVisibleScope;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.ExpressionVisitor.getRefinedMember;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInheritedDeclarations;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
@@ -52,6 +53,7 @@ import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.LazyType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
@@ -1896,9 +1898,9 @@ public class RefinementVisitor extends Visitor {
         ClassOrInterface ci = 
                 (ClassOrInterface) 
                     sv.getContainer();
+        final String name = sv.getName();
         Declaration refined = 
-                ci.getRefinedMember(sv.getName(), 
-                        null, false);
+                ci.getRefinedMember(name, null, false);
         Value root = 
                 refined instanceof Value ? 
                         (Value) refined : sv;
@@ -1916,7 +1918,7 @@ public class RefinementVisitor extends Visitor {
                 that.getSpecifierExpression() 
                     instanceof Tree.LazySpecifierExpression;
         Value v = new Value();
-        v.setName(sv.getName());
+        v.setName(name);
         v.setShared(true);
         v.setActual(true);
         v.getAnnotations().add(new Annotation("shared"));
@@ -1940,28 +1942,40 @@ public class RefinementVisitor extends Visitor {
         that.setRefined(sv);
         unit.addDeclaration(v);
         v.setType(new LazyType(unit) {
+            Type intersection() {
+                List<Type> list = new ArrayList<Type>();
+//                list.add(rv.getType());
+                for (Declaration d: getInterveningRefinements(name, null, root, c, ci)) {
+                    addToIntersection(list,
+                            c.getType().getTypedReference(d, NO_TYPE_ARGS).getType(),
+                            unit);
+                }
+                IntersectionType it = new IntersectionType(unit); 
+                it.setSatisfiedTypes(list);
+                return it.canonicalize().getType();
+            }
             @Override
             public Type initQualifyingType() {
-                Type type = rv.getType();
+                Type type = intersection();
                 return type==null ? null : 
                     type.getQualifyingType();
             }
             @Override
             public Map<TypeParameter, Type> 
             initTypeArguments() {
-                Type type = rv.getType();
+                Type type = intersection();
                 return type==null ? null : 
                     type.getTypeArguments();
             }
             @Override
             public TypeDeclaration initDeclaration() {
-                Type type = rv.getType();
+                Type type = intersection();
                 return type==null ? null : 
                     type.getDeclaration();
             }
             @Override
             public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
-                Type type = rv.getType();
+                Type type = intersection();
                 return type==null ? null : 
                     type.getVarianceOverrides();
             }
@@ -1975,9 +1989,10 @@ public class RefinementVisitor extends Visitor {
         ClassOrInterface ci = 
                 (ClassOrInterface) 
                     sm.getContainer();
+        final String name = sm.getName();
+        final List<Type> signature = getSignature(sm);
         Declaration refined = 
-                ci.getRefinedMember(sm.getName(), 
-                        getSignature(sm), false);
+                ci.getRefinedMember(name, signature, false);
         Function root = 
                 refined instanceof Function ? 
                         (Function) refined : sm;
@@ -1988,7 +2003,7 @@ public class RefinementVisitor extends Visitor {
         }
         final Reference rm = getRefinedMember(sm,c);
         Function m = new Function();
-        m.setName(sm.getName());
+        m.setName(name);
         List<Tree.ParameterList> paramLists;
         List<TypeParameter> typeParams;
         Tree.Term me = that.getBaseMemberExpression();
@@ -2167,28 +2182,40 @@ public class RefinementVisitor extends Visitor {
             spec.setDeclaration(m);
         }
         m.setType(new LazyType(unit) {
+            Type intersection() {
+                List<Type> list = new ArrayList<Type>();
+//                list.add(rm.getType());
+                for (Declaration d: getInterveningRefinements(name, signature, root, c, ci)) {
+                    addToIntersection(list,
+                            c.getType().getTypedReference(d, NO_TYPE_ARGS).getType(),
+                            unit);
+                }
+                IntersectionType it = new IntersectionType(unit); 
+                it.setSatisfiedTypes(list);
+                return it.canonicalize().getType();
+            }
             @Override
             public Type initQualifyingType() {
-                Type type = rm.getType();
+                Type type = intersection();
                 return type==null ? null : 
                     type.getQualifyingType();
             }
             @Override
-            public Map<TypeParameter,Type> 
+            public Map<TypeParameter, Type> 
             initTypeArguments() {
-                Type type = rm.getType();
+                Type type = intersection();
                 return type==null ? null : 
                     type.getTypeArguments();
             }
             @Override
             public TypeDeclaration initDeclaration() {
-                Type type = rm.getType();
+                Type type = intersection();
                 return type==null ? null : 
                     type.getDeclaration();
             }
             @Override
             public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
-                Type type = rm.getType();
+                Type type = intersection();
                 return type==null ? null : 
                     type.getVarianceOverrides();
             }
