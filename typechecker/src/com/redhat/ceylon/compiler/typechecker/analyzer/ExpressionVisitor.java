@@ -26,6 +26,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSam
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.involvesTypeParams;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isIndirectInvocation;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memberCorrectionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.notAssignableMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.spreadType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
@@ -6514,7 +6515,7 @@ public class ExpressionVisitor extends Visitor {
                             scope.getScopedBackends()) &&
                     error) {
                 that.addError(
-                        "function or value does not exist: '" 
+                        "function or value is not defined: '" 
                             + name + "'" 
                             + correctionMessage(name, scope, 
                                     unit, cancellable), 
@@ -6758,7 +6759,7 @@ public class ExpressionVisitor extends Visitor {
                         d.isMemberAmbiguous(name, unit, 
                                 signature, spread);
                 if (member==null) {
-                    container += AnalyzerUtil.memberCorrectionMessage(name, 
+                    container += memberCorrectionMessage(name, 
                             d, scope, unit, cancellable);
                 }
             }
@@ -6769,7 +6770,7 @@ public class ExpressionVisitor extends Visitor {
                                 name + "' for " + container);
                     }
                     else {
-                        that.addError("method or attribute does not exist: '" +
+                        that.addError("method or attribute is not defined: '" +
                                 name + "' in " + container, 
                                 100);
                         unit.setUnresolvedReferences();
@@ -6844,7 +6845,7 @@ public class ExpressionVisitor extends Visitor {
                     receiverType.getTypedMember(member, 
                             typeArgs, that.getAssigned());
             /*if (ptr==null) {
-                that.addError("member method or attribute does not exist: " + 
+                that.addError("method or attribute is not defined: " + 
                         member.getName(unit) + " of type " + 
                         receiverType.getDeclaration().getName(unit));
             }
@@ -7158,7 +7159,7 @@ public class ExpressionVisitor extends Visitor {
                     !isNativeForWrongBackend(
                             scope.getScopedBackends())) {
                 that.addError(
-                        "type does not exist: '" + name + "'"
+                        "type is not defined: '" + name + "'"
                             + correctionMessage(name, scope, 
                                     unit, cancellable), 
                         102);
@@ -7534,7 +7535,7 @@ public class ExpressionVisitor extends Visitor {
                                 name + "' for " + container);
                     }
                     else {
-                        that.addError("member type does not exist: '" +
+                        that.addError("member type is not defined: '" +
                                 name + "' in " + container, 
                                 100);
                         unit.setUnresolvedReferences();
@@ -9478,7 +9479,7 @@ public class ExpressionVisitor extends Visitor {
                     setMemberMetatype(that, result);
                 }
                 else {
-                    that.addError("function or value does not exist: '" +
+                    that.addError("function or value is not defined: '" +
                             name(id) + "'", 100);
                     unit.setUnresolvedReferences();
                 }
@@ -9498,7 +9499,7 @@ public class ExpressionVisitor extends Visitor {
             					name + "' for " + container);
             		}
             		else {
-            			that.addError("method or attribute does not exist: '" +
+            			that.addError("method or attribute is not defined: '" +
             					name + "' in " + container);
             		}
             	}

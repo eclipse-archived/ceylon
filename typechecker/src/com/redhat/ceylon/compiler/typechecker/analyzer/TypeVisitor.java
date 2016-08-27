@@ -394,7 +394,7 @@ public class TypeVisitor extends Visitor {
             if (type==null) {
                 if (!isNativeForWrongBackend(
                         scope.getScopedBackends())) {
-                    that.addError("type declaration does not exist: '" 
+                    that.addError("type is not defined: '" 
                             + name + "'" 
                             + correctionMessage(name, scope, 
                                     unit, cancellable), 
@@ -495,7 +495,7 @@ public class TypeVisitor extends Visitor {
                                     d.getName() + "'");
                         }
                         else {
-                            that.addError("member type declaration does not exist: '" 
+                            that.addError("member type is not defined: '" 
                                     + name + "' in type '" 
                                     + d.getName() + "'" 
                                     + memberCorrectionMessage(name, d, 
@@ -1477,7 +1477,7 @@ public class TypeVisitor extends Visitor {
                     .getDirectMember(name, null, false);
         if (a==null) {
             //Now done in ExpressionVisitor!
-//            that.addError("parameter declaration does not exist: '" + p.getName() + "'");
+//            that.addError("parameter is not defined: '" + p.getName() + "'");
         }
         else if (!isLegalParameter(a)) {
             that.addError("parameter is not a reference value or function: '" + 

@@ -1365,12 +1365,14 @@ public class AnalyzerUtil {
                         .getModule();
             Package pkg = module.getPackage(nameToImport);
             if (pkg != null) {
-                if (pkg.getModule().equals(module)) {
+                Module pkgMod = pkg.getModule();
+                if (pkgMod.equals(module)) {
                     return pkg;
                 }
                 if (!pkg.isShared()) {
                     path.addError("imported package is not shared: '" + 
-                            nameToImport + "'", 402);
+                            nameToImport + "' is not annotated 'shared' in '" +
+                            pkgMod.getNameAsString() + "'", 402);
                 }
 //                if (module.isDefault() && 
 //                        !pkg.getModule().isDefault() &&
@@ -1387,7 +1389,7 @@ public class AnalyzerUtil {
                 for (ModuleImport mi: module.getImports()) {
                     if (findModuleInTransitiveImports(
                             mi.getModule(), 
-                            pkg.getModule(), 
+                            pkgMod, 
                             visited)) {
                         return pkg; 
                     }
@@ -1437,10 +1439,11 @@ public class AnalyzerUtil {
             Package pkg = module.getPackage(nameToImport);
             if (pkg != null) {
                 Module mod = pkg.getModule();
-                if (!pkg.getNameAsString()
-                        .equals(mod.getNameAsString())) {
+                String moduleName = mod.getNameAsString();
+                if (!pkg.getNameAsString().equals(moduleName)) {
                     path.addError("not a module: '" + 
-                            nameToImport + "'");
+                            nameToImport + "' is a package belonging to '" +
+                            moduleName + "'");
                     return null;
                 }
                 if (mod.equals(module)) {
@@ -1516,7 +1519,7 @@ public class AnalyzerUtil {
         if (correction!=null) {
             if (correction.getName().equals(name)) {
                 if (correction.isUnimported()) {
-                    return " (did you mean to import it from '" 
+                    return " might be misspelled or is not imported (did you mean to import it from '" 
                         + correction.packageName() + "'?)";
                 }
                 else {
@@ -1525,18 +1528,18 @@ public class AnalyzerUtil {
             }
             else {
                 if (correction.isUnimported()) {
-                    return " (did you mean '" 
+                    return " might be misspelled or is not imported (did you mean '" 
                         + correction.realName(unit) + "' from '" 
                         + correction.packageName() + "'?)";
                 }
                 else {
-                    return " (did you mean '" 
+                    return " might be misspelled or is not imported (did you mean '" 
                         + correction.realName(unit) + "'?)";
                 }
             }
         }
         else {
-            return "";
+            return " might be misspelled or is not imported";
         }
     }
 
@@ -1546,10 +1549,10 @@ public class AnalyzerUtil {
         DeclarationWithProximity correction =
                 correct(d, scope, unit, name, cancellable);
         if (correction==null) {
-            return "";
+            return " might be misspelled or is not imported";
         }
         else {
-            return " (did you mean '" 
+            return " might be misspelled or is not imported (did you mean '" 
                 + correction.realName(unit) + "'?)";
         }
     }
@@ -1560,10 +1563,10 @@ public class AnalyzerUtil {
         DeclarationWithProximity correction =
                 correct(scope, name, cancellable);
         if (correction==null) {
-            return "";
+            return " might be misspelled or does not belong to this package";
         }
         else {
-            return " (did you mean '" 
+            return " might be misspelled or does not belong to this package (did you mean '" 
                 + correction.realName(unit) + "'?)";
         }
     }
