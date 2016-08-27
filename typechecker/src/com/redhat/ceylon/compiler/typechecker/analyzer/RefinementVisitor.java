@@ -1272,7 +1272,7 @@ public class RefinementVisitor extends Visitor {
                 }
                 else {
                     t = intersectionType(
-                            refiningType, refinedType, 
+                            refinedType, refiningType, 
                             unit);
                 }
                 td.setType(t);
