@@ -22,7 +22,8 @@
  with Java, and for some performance-critical low-level 
  programming tasks."
 tagged("Collections")
-shared final serializable native class Array<Element>
+shared final serializable native 
+class Array<Element>
         satisfies SearchableList<Element> &
                   Ranged<Integer,Element,Array<Element>> &
                   IndexedCorrespondenceMutator<Element> {
