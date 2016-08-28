@@ -2478,6 +2478,12 @@ public abstract class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Assertion that) {
+        Tree.ConditionList cl = that.getConditionList();
+        if (cl!=null) {
+            for (Tree.Condition c: cl.getConditions()) {
+                c.setAssertion(true);
+            }
+        }
         Declaration d = beginDeclaration(null);
         super.visit(that);
         endDeclaration(d);

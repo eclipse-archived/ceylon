@@ -39,6 +39,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.checkNotJvm;
 import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.declarationScope;
+import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.getBackends;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
@@ -76,6 +77,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -819,7 +821,7 @@ public class ExpressionVisitor extends Visitor {
                 if (knownType!=null 
                         && !isTypeUnknown(knownType)) { //TODO: remove this if we make unknown a subtype of Anything) {
                     if (!isTypeUnknown(type)) {
-                        checkReified(t, type, knownType);
+                        checkReified(t, type, knownType, that.getAssertion());
                     }
                     if (hasUncheckedNulls(e)) {
                         knownType = unit.getOptionalType(knownType);
@@ -882,21 +884,31 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void checkReified(Tree.Type t, Type type, Type knownType) {
+    private void checkReified(Tree.Type t, Type type, Type knownType, boolean assertion) {
         if (!type.isReified()) {
             t.addError("type is not reified: '" + 
                     type.asString(unit) + 
                     "' involves a type parameter declared in Java");
         }
-        else if (type.hasUnreifiedInstances(knownType)) {
-            t.addUsageWarning(Warning.uncheckedTypeArguments,
-                    "type condition might not be fully checked at runtime: '" + 
-                    type.asString(unit) + 
-                    "' involves a type argument that is unchecked for Java class instances");
+        else if (getBackends(t).supports(Backend.Java) && 
+                type.hasUnreifiedInstances(knownType)) {
+            if (assertion) {
+                t.addUsageWarning(Warning.uncheckedTypeArguments,
+                        "type condition might not be fully checked at runtime: '" + 
+                        type.asString(unit) + 
+                        "' involves a type argument that is unchecked for Java class instances",
+                        Backend.Java);
+            }
+            else {
+                t.addUnsupportedError("type condition cannot be fully checked at runtime: '" + 
+                        type.asString(unit) + 
+                        "' involves a type argument that is unchecked for Java class instances",
+                        Backend.Java);
+            }
         }
     }
-    
-	private Type narrow(Type type,
+
+    private Type narrow(Type type,
             Type knownType, boolean not) {
 	    Type it;
 	    if (not) {
@@ -5916,7 +5928,7 @@ public class ExpressionVisitor extends Visitor {
                 if (term!=null) {
                     Type knownType = term.getTypeModel();
                     if (!isTypeUnknown(knownType)) {
-                        checkReified(rt, type, knownType);
+                        checkReified(rt, type, knownType, false);
                         if (knownType.isSubtypeOf(type)) {
                             that.addUsageWarning(Warning.redundantNarrowing,
                                     "expression type is a subtype of the type: '" +
