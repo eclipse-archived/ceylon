@@ -752,7 +752,7 @@ public class LiteralVisitor extends Visitor {
                 new Tree.LetExpression(null);
         let.setLetClause(letClause);
         Tree.Expression expression = 
-                new Tree.ParExpression(null);
+                new Tree.Expression(null);
         expression.setTerm(let);
         return expression;
     }
