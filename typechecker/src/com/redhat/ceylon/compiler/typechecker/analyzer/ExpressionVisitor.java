@@ -8130,6 +8130,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     if (t!=null) {
                         Type pt = t.getTypeModel();
+                        checkReified(t, pt, st, false);
 //                        if (!isTypeUnknown(pt)) {
                         Type it = 
                                 intersectionType(pt, st, unit);
