@@ -37,6 +37,8 @@ shared void resultsAndAssert() {
     }
 }
 
+shared Integer assertionCount() => assertions;
+
 shared void resultsAndExit() {
     results();
     process.exit(failures == 0 then 0 else 1);
