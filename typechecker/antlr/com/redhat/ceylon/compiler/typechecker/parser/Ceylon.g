@@ -2452,7 +2452,7 @@ specificationStart
 
 parExpression returns [Expression expression] 
     : LPAREN 
-      { $expression = new Expression($LPAREN); }
+      { $expression = new ParExpression($LPAREN); }
       functionOrExpression
       { if ($functionOrExpression.expression!=null)
             $expression.setTerm($functionOrExpression.expression.getTerm()); }

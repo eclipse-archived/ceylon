@@ -682,6 +682,9 @@
 ^(EXPRESSION:ATOM 
     TERM)
 
+"An parenthesized expression."
+^(PAR_EXPRESSION:EXPRESSION)
+
 "The receiver of a member reference or invocation expression."
 ^(abstract PRIMARY:TERM)
 ^(abstract POSTFIX_EXPRESSION:PRIMARY
