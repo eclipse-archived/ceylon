@@ -32,7 +32,6 @@ include 'dist'
 project(':dist').buildFileName = 'dist.gradle'
 
 include 'dist:osgi'
-//project(':dist:osgi').projectDir = file("dist/osgi")
 project(':dist:osgi').buildFileName = "osgi.gradle"
 
 include 'java-main'
