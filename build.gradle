@@ -27,6 +27,7 @@ allprojects {
         repoBinDir =   file("${distDir}/bin")
         osgiDistDir =  file("${rootProject.projectDir}/${buildPrefix}/osgi-distribution")
         osgiDistPluginsDir = file("${osgiDistDir}/plugins")
+        osgiDistFeaturesDir = file("${osgiDistDir}/features")
         linkedProjectRootDir = file("${rootProject.projectDir}/${buildPrefix}/linked-projects")
 
     }

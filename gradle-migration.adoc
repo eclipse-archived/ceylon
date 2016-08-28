@@ -118,9 +118,14 @@ If those files could simply be moved to the `src/main/resources` folder the whol
 
 * Does not wrtie anything back to source.
 ** Distribution files are written to `${buildPrefix}/osgi-distribution` folder
-** Embedded Repository is in ``${buildPrefix}/dist-isgo/embeddRepository`
+** Embedded Repository is in ``${buildPrefix}/dist_osgi/embeddRepository`
 * Running `dist` task from root project will also cause the full OSGI distribution
 to be built.
+
+.TODO
+* `addModule 'com.redhat.ceylon.dist.repo', "${project.version}${versionQualifier}"` is current disabled.
+  Not sure if it is needed as the Ant build produces the same warning.
+
 
 === Java-main
 

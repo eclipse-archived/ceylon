@@ -168,7 +168,7 @@ task createAntEnvironmentForLinkedProjects ( type : Copy ) {
         into 'dist/osgi/p2'
     }
 
-//    dependsOn publishInternal, osgi, 'osgi-p2'
+    dependsOn publishInternal, osgi, 'osgi-p2'
 
 }
 
