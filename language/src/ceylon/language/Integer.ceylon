@@ -17,8 +17,8 @@
  `int`, either `int.float` throws an [[OverflowException]], 
  or the expression `int.float==int` evaluates to `true`.
  
- An integer is represented as a sequence of bits. Not all of 
- the bits in the representation may be addressed by the 
+ An integer is representable as a sequence of bits. Not all 
+ of the bits in the representation may be addressed by the 
  methods inherited from [[Binary]]:
  
  - For the JVM runtime, the bits at all indices (0 to 63) 
