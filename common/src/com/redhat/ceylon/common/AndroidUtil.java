@@ -17,9 +17,17 @@ public class AndroidUtil {
             app = Class.forName("android.app.ActivityThread")
                     .getMethod("currentApplication").invoke(null);
             isRunningAndroid = app != null;
-        } catch (IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | NoSuchMethodException
-                | SecurityException | ClassNotFoundException e) {
+        } catch (IllegalAccessException e) {
+            isRunningAndroid = false;
+        } catch (IllegalArgumentException e) {
+            isRunningAndroid = false;
+        } catch (InvocationTargetException e) {
+            isRunningAndroid = false;
+        } catch (NoSuchMethodException e) {
+            isRunningAndroid = false;
+        } catch (SecurityException e) {
+            isRunningAndroid = false;
+        } catch (ClassNotFoundException e) {
             isRunningAndroid = false;
         }
         return isRunningAndroid;
@@ -33,7 +41,7 @@ public class AndroidUtil {
             Class<?> dexFileClass = Class.forName("dalvik.system.DexFile");
             Object dexFile = dexFileClass.getConstructor(String.class).newInstance(codePath);
             Enumeration<String> entries = (Enumeration<String>) dexFileClass.getMethod("entries").invoke(dexFile);
-            List<String> dexEntries = new LinkedList<>();
+            List<String> dexEntries = new LinkedList<String>();
             while(entries.hasMoreElements()){
                 String entry = entries.nextElement();
                 entry = entry.replace('.', '/')+".class";
@@ -41,8 +49,19 @@ public class AndroidUtil {
             }
             dexFileClass.getMethod("close").invoke(dexFile);
             return dexEntries;
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                | NoSuchMethodException | SecurityException | ClassNotFoundException | InstantiationException e) {
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        } catch (SecurityException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
             throw new RuntimeException(e);
         }
     }
