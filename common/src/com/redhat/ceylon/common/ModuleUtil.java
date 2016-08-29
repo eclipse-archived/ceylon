@@ -5,8 +5,15 @@ import java.util.regex.Pattern;
 
 public abstract class ModuleUtil {
 
-    public static final Pattern moduleIdPattern = Pattern.compile("[\\p{IsLowercase}_][\\p{IsAlphabetic}\\p{IsDigit}_]*");
-    
+    public static final Pattern moduleIdPattern =
+            AndroidUtil.isRunningAndroid()
+            // Android does not support Unicode block family tests, but claims its ASCII properties are Unicode
+            // https://developer.android.com/reference/java/util/regex/Pattern.html#ubpc
+            ? Pattern.compile("[\\p{Lower}_][\\p{Alpha}\\p{Digit}_]*")
+            // The JDK however claims that ASCII and Unicode block properties differ
+            // https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html#sum
+            : Pattern.compile("[\\p{IsLowercase}_][\\p{IsAlphabetic}\\p{IsDigit}_]*");
+
     private ModuleUtil() {
     }
 

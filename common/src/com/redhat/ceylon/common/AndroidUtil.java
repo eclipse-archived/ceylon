@@ -1,4 +1,4 @@
-package com.redhat.ceylon.model.loader;
+package com.redhat.ceylon.common;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Enumeration;
@@ -7,17 +7,22 @@ import java.util.List;
 
 public class AndroidUtil {
 
+    private static Boolean isRunningAndroid;
+    
     public static boolean isRunningAndroid(){
+        if(isRunningAndroid != null)
+            return isRunningAndroid;
         Object app;
         try {
             app = Class.forName("android.app.ActivityThread")
                     .getMethod("currentApplication").invoke(null);
-            return app != null;
+            isRunningAndroid = app != null;
         } catch (IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException | NoSuchMethodException
                 | SecurityException | ClassNotFoundException e) {
-            return false;
+            isRunningAndroid = false;
         }
+        return isRunningAndroid;
     }
     
     public static List<String> getDexEntries() {
