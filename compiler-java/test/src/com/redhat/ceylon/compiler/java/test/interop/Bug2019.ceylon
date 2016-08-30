@@ -13,7 +13,7 @@ shared void bug2019() {
     jb.setPubDef("value");
     
     s = jb.pubPriv;
-    @error:"method or attribute does not exist: 'setPubPriv' in type 'JavaBug2019'"
+    @error:"method or attribute is not defined: 'setPubPriv' in type 'JavaBug2019'"
     jb.setPubPriv("value");
     
     
@@ -28,7 +28,7 @@ shared void bug2019() {
     
     @error:"protected method or attribute is not visible: 'protPriv' of type 'JavaBug2019'"
     s = jb.protPriv;
-    @error:"method or attribute does not exist: 'setProtPriv' in type 'JavaBug2019'"
+    @error:"method or attribute is not defined: 'setProtPriv' in type 'JavaBug2019'"
     jb.setProtPriv("value");
     
     
@@ -43,20 +43,20 @@ shared void bug2019() {
     
     @error:"package private method or attribute is not visible: 'defPriv' of type 'JavaBug2019'"
     s = jb.defPriv;
-    @error:"method or attribute does not exist: 'setDefPriv' in type 'JavaBug2019'"
+    @error:"method or attribute is not defined: 'setDefPriv' in type 'JavaBug2019'"
     jb.setDefPriv("value");
     
     
-    @error:"method or attribute does not exist: 'privPub' in type 'JavaBug2019'"
+    @error:"method or attribute is not defined: 'privPub' in type 'JavaBug2019'"
     s = jb.privPub;
     jb.setPrivPub("value");
     
-    @error:"method or attribute does not exist: 'privProt' in type 'JavaBug2019'"
+    @error:"method or attribute is not defined: 'privProt' in type 'JavaBug2019'"
     s = jb.privProt;
     @error:"protected method or attribute is not visible: 'setPrivProt' of type 'JavaBug2019'"
     jb.setPrivProt("value");
     
-    @error:"method or attribute does not exist: 'privDef' in type 'JavaBug2019'"
+    @error:"method or attribute is not defined: 'privDef' in type 'JavaBug2019'"
     s = jb.privDef;
     @error:"package private method or attribute is not visible: 'setPrivDef' of type 'JavaBug2019'"
     jb.setPrivDef("value");

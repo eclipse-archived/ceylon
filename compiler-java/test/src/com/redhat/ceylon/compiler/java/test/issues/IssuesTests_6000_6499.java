@@ -193,7 +193,7 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     public void testBug6272() {
         assertErrors("bug62xx/Bug6272",
                 new CompilerError(8, "argument of unknown type assigned to inferred type parameter: 'Item' of 'HashMap'"),
-                new CompilerError(8, "function or value does not exist: 'bar'"));
+                new CompilerError(8, "function or value is not defined: 'bar' might be misspelled or is not imported"));
     }
     
     @Test
@@ -204,9 +204,9 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     @Test
     public void testBug6287() {
         assertErrors("bug62xx/Bug6287",
-                new CompilerError(1, "imported declaration not found: 'string' (did you mean 'stringify'?)"),
-                new CompilerError(4, "type declaration does not exist: 'string'"),
-                new CompilerError(5, "function or value does not exist: 'string'"));
+                new CompilerError(1, "imported declaration not found: 'string' might be misspelled or does not belong to this package (did you mean 'stringify'?)"),
+                new CompilerError(4, "type is not defined: 'string' might be misspelled or is not imported"),
+                new CompilerError(5, "function or value is not defined: 'string' might be misspelled or is not imported"));
     }
     
     @Test

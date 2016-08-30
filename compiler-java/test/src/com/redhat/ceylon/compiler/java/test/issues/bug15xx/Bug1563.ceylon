@@ -28,9 +28,10 @@ void bug1563(){
 void bug1563_helper<T,U>() 
         given T satisfies Object 
         given U satisfies Object {
-    
-    value array1 = ObjectArray<T>(0);
-    assert(array1 is ObjectArray<Integer>);
+
+    // disallowed by typechecker now
+    //value array1 = ObjectArray<T>(0);
+    //assert(array1 is ObjectArray<Integer>);
     
     value array2 = ObjectArray<ObjectArray<T>>(0);
     assert(array2 is ObjectArray<ObjectArray<Integer>>);

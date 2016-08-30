@@ -566,7 +566,7 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeErrorHandling() {
         testNativeErrors("NativeErrorHandling",
-                new CompilerError(22, "function or value does not exist: 'foo'")
+                new CompilerError(22, "function or value is not defined: 'foo' might be misspelled or is not imported")
         );
     }
     
