@@ -40,6 +40,7 @@ public class ModelUtil {
     
     static final Map<TypeParameter, SiteVariance> EMPTY_VARIANCE_MAP = 
             emptyMap();
+    
     /**
      * Is the second scope contained by the first scope?
      */
