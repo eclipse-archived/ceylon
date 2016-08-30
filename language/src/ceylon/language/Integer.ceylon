@@ -277,12 +277,12 @@ shared native final class Integer(Integer integer)
     aliased("absolute")
     shared actual native Integer magnitude 
             => this < 0 then -this else this;
-        
+    
     shared actual native Integer sign
             =>   if (this < 0) then -1
             else if (this > 0) then 1
             else 0;
-        
+    
     shared actual native Boolean negative => this < 0;
     shared actual native Boolean positive => this > 0;
     
@@ -291,7 +291,7 @@ shared native final class Integer(Integer integer)
     
     shared actual native Integer timesInteger(Integer integer)
             => times(integer);
-        
+    
     shared actual native Integer plusInteger(Integer integer)
             => plus(integer);
     
@@ -305,7 +305,7 @@ shared native final class Integer(Integer integer)
     
     see (`function formatInteger`)
     shared actual native String string;
-
+    
     shared actual native Boolean largerThan(Integer other); 
     shared actual native Boolean smallerThan(Integer other); 
     shared actual native Boolean notSmallerThan(Integer other); 
