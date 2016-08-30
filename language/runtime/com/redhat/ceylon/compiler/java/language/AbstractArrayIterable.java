@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.java.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+
 import ceylon.language.AssertionError;
 import ceylon.language.Boolean;
 import ceylon.language.Callable;
@@ -7,9 +10,6 @@ import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.emptyIterator_;
 import ceylon.language.impl.BaseIterable;
-
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 /**
  * Abstract implementation of {@link ceylon.language.Iterable} 
@@ -232,7 +232,9 @@ extends BaseIterable<Element, ceylon.language.Null> {
         int end = start+len;
         for (int i=start; i<end; i+=this.step) {
             Element elem = get(this.array,i);
-            if (selecting.$call$(elem).booleanValue()) {
+            if (elem!=null 
+                    && selecting.$call$(elem)
+                        .booleanValue()) {
                 return elem;
             }
         }
@@ -245,7 +247,9 @@ extends BaseIterable<Element, ceylon.language.Null> {
         int end = start+len;
         for (int i=start; i<end; i+=this.step) {
             Element elem = get(this.array,i);
-            if (selecting.$call$(elem).booleanValue()) {
+            if (elem!=null 
+                    && selecting.$call$(elem)
+                        .booleanValue()) {
                 return elem;
             }
         }
