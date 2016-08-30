@@ -625,10 +625,10 @@ shared interface Iterable<out Element=Anything,
             };
     };
     
-    "The first element of this stream which satisfies the 
-     [[given predicate function|selecting]], if any, or 
-     `null` if there is no such element. For an infinite 
-     stream, this method might not terminate.
+    "The first element of this stream which is not null and
+     satisfies the [[given predicate function|selecting]], 
+     if any, or `null` if there is no such element. For an 
+     infinite stream, this method might not terminate.
      
      For example, the expression
      
@@ -648,10 +648,10 @@ shared interface Iterable<out Element=Anything,
         return null;
     }
     
-    "The last element of this stream which satisfies the 
-     [[given predicate function|selecting]], if any, or 
-     `null` if there is no such element. For an infinite 
-     stream, this method will not terminate.
+    "The last element of this stream which is not null and
+     satisfies the [[given predicate function|selecting]], 
+     if any, or `null` if there is no such element. For an 
+     infinite stream, this method will not terminate.
      
      For example, the expression
      
@@ -672,11 +672,11 @@ shared interface Iterable<out Element=Anything,
         return last;
     }
     
-    "The first element of this stream which satisfies the 
-     [[given predicate function|selecting]], if any, 
-     together with its position in the stream, or `null` if 
-     there is no such element. For an infinite stream, this 
-     method might not terminate.
+    "The first element of this stream which is not null and
+     satisfies the [[given predicate function|selecting]], 
+     if any, together with its position in the stream, or 
+     `null` if there is no such element. For an infinite 
+     stream, this method might not terminate.
      
      For example, the expression
      
@@ -701,11 +701,11 @@ shared interface Iterable<out Element=Anything,
         return null;
     }
     
-    "The last element of this stream which satisfies the 
-     [[given predicate function|selecting]], if any, 
-     together with its position in the stream, or `null` if 
-     there is no such element. For an infinite stream, this 
-     method might not terminate.
+    "The last element of this stream which is not null and
+     satisfies the [[given predicate function|selecting]], 
+     if any, together with its position in the stream, or 
+     `null` if there is no such element. For an infinite 
+     stream, this method might not terminate.
      
      For example, the expression
      
@@ -732,8 +732,9 @@ shared interface Iterable<out Element=Anything,
     }
     
     "A stream producing all elements of this stream which
-     satisfy the [[given predicate function|selecting]],
-     together with their positions in the stream.
+     are not null and which satisfy the 
+     [[given predicate function|selecting]], together with 
+     their positions in the stream.
      
      For example, the expression
      
