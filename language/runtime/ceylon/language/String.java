@@ -270,6 +270,7 @@ public final class String
         return value.isEmpty();
     }
 
+    @Transient
     public boolean getWhitespace() {
         return getWhitespace(value);
     }
