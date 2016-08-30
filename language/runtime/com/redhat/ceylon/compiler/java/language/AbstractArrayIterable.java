@@ -151,10 +151,11 @@ extends BaseIterable<Element, ceylon.language.Null> {
         if (skip <= 0) {
             return this;
         }
-        return newInstance(this.array, 
-                this.start+(int)skip*this.step, 
-                this.len-(int)skip, 
-                this.step);
+        int start = this.start+(int)skip*step;
+        int len = this.len-(int)skip;
+        if (len<0) len = 0;
+        int step = this.step;
+        return newInstance(this.array, start, len, step);
     }
     
     @Override
