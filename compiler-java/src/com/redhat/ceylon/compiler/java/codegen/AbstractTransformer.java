@@ -4586,10 +4586,14 @@ public abstract class AbstractTransformer implements Transformation {
             }
         }
         // we can optimise it if we've got a ClassOrInterface with only Anything type parameters
-        if(type.getDeclaration() instanceof ClassOrInterface == false)
+        TypeDeclaration typeDeclaration = type.getDeclaration();
+        if(typeDeclaration instanceof ClassOrInterface == false)
             return false;
         for(Entry<TypeParameter, Type> entry : type.getTypeArguments().entrySet()){
             TypeParameter tp = entry.getKey();
+            // skip type params for qualifying types
+            if(!tp.getDeclaration().equals(typeDeclaration))
+                continue;
             if(!type.isCovariant(tp)) {
                 return false;
             }
