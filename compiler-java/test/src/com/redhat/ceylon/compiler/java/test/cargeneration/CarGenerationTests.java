@@ -26,7 +26,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -46,9 +45,6 @@ import com.redhat.ceylon.compiler.java.test.ErrorCollector;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.MetaInfServices;
 import com.redhat.ceylon.javax.tools.Diagnostic;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
-
-import junit.framework.Assert;
 
 public class CarGenerationTests extends CompilerTests {
     
@@ -416,7 +412,8 @@ public class CarGenerationTests extends CompilerTests {
         assertNotNull(impls);
         assertContains(impls, "services.HelloWorld");
         assertContains(impls, "services.Gday");
-        assertEquals(2, impls.size());
+        assertContains(impls, "services.Bonjour");
+        assertEquals(3, impls.size());
         assertEquals(1, services.size());
     }
 
