@@ -251,6 +251,7 @@ public class CeylonDocToolTests {
         assertParametersLinks(destDir);
         assertThrows(destDir);
         assertSee(destDir);
+        assertSince(destDir);
         assertIcons(destDir);
         assertInnerTypesDoc(destDir);
         assertDeprecated(destDir);
@@ -1013,7 +1014,13 @@ public class CeylonDocToolTests {
         assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<div class='see section'><span class='title'>See also </span><span class='value'><a class='link' href='StubClass.type.html#methodWithSee' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.methodWithSee'><code><span class='identifier'>methodWithSee\\(\\)</span></code></a>"/*, <a class='link' href='stubObject.object.html#foo' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubObject.foo'>stubObject.foo</a>"*/));
         assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<div class='see section'><span class='title'>See also </span><span class='value'><a class='link' href='StubClass.type.html#attributeWithSee' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.attributeWithSee'><code><span class='identifier'>attributeWithSee</span></code></a>, <code><a class='link' href='StubException.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubException'><span class='type-identifier'>StubException</span></a></code>, <code><a class='link' href='a/A1.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A1'><span class='type-identifier'>A1</span></a></code>, <code><a class='link' href='a/A2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A2'><span class='type-identifier'>AliasA2</span></a>"));
     }
-    
+
+    private void assertSince(File destDir) throws Exception {
+        assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<div class='since section'><span class='title'>Since </span><span class='value'>6.6.6-class</span>"));
+        assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<div class='since section'><span class='title'>Since </span><span class='value'>6.6.6-attribute</span>"));
+        assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<div class='since section'><span class='title'>Since </span><span class='value'>6.6.6-method</span>"));
+    }
+
     private void assertIcons(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubInterface.type.html", Pattern.compile("<i class='icon-interface'><i class='icon-decoration-enumerated'></i></i><span class='sub-navbar-name'><span class='type-identifier'>StubInterface</span></span>"));
         assertMatchInFile(destDir, "StubInterface.type.html", Pattern.compile("<td id='formalMethodFromStubInterface' nowrap><i class='icon-shared-member'><i class='icon-decoration-formal'></i></i>"));

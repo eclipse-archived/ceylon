@@ -29,6 +29,7 @@ see(`class`, `interface StubInterface`, `value stubTopLevelAttribute`, `function
 tagged("stubTag1", "stubTag2")
 throws(`class StubException`)
 aliased("StubClassAlias")
+since("6.6.6-class")
 shared class StubClass(
   "Initializer parameter `a`" Integer a,
   "Initializer parameter `b`" Integer b,
@@ -42,6 +43,10 @@ shared class StubClass(
     "The stub attribute with `see`."
     see(`function methodWithSee`/* NOT SUPPORTED YET:, `stubObject.foo`*/)
     shared Integer attributeWithSee = 0;
+
+    "The stub attribute with `since`."
+    since("6.6.6-attribute")
+    shared Integer attributeWithSince = 0;
     
     "The stub attribute with `tagged`."
     tagged("stubTag1")
@@ -71,6 +76,10 @@ shared class StubClass(
     "The stub method with `see`."
     see(`value attributeWithSee`, `class StubException`, `class A1`, `class AliasA2`)
     shared void methodWithSee() {}
+
+    "The stub method with `since`."
+    since("6.6.6-method")
+    shared void methodWithSince() {}
     
     "The stub method with `tagged` and long description <i>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</i>"
     tagged("stubTag2")
