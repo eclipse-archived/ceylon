@@ -269,7 +269,15 @@ public abstract class Node {
     public void addError(String message, int code, Backend backend) {
         addError( new AnalysisError(this, message, code, backend) );
     }
+
+    public void addError(String message, ErrorCode errorCode) {
+        addError( new AnalysisError(this, message, errorCode) );
+    }
     
+    public void addError(String message, ErrorCode errorCode, Backend backend) {
+        addError( new AnalysisError(this, message, errorCode, backend) );
+    }
+
     public void addUnexpectedError(String message) {
         addError( new UnexpectedError(this, message) );
     }

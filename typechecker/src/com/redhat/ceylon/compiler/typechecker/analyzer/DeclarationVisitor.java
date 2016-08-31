@@ -39,6 +39,7 @@ import java.util.Map;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
+import com.redhat.ceylon.compiler.typechecker.tree.ErrorCode;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -915,7 +916,7 @@ public abstract class DeclarationVisitor extends Visitor {
         if (hasAnnotation(that.getAnnotationList(), "service", that.getUnit())) {
             if (!c.getTypeParameters().isEmpty()) {
                 that.addError("service class may not be generic",
-                        1603);
+                        ErrorCode.SERVICE_CLASS_CANNOT_BE_GENERIC);
             }
         }
     }

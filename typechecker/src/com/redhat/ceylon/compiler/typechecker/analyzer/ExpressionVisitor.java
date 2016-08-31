@@ -81,6 +81,7 @@ import java.util.Set;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
+import com.redhat.ceylon.compiler.typechecker.tree.ErrorCode;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
@@ -2322,17 +2323,17 @@ public class ExpressionVisitor extends Visitor {
                 if (!c.getType().getFullType().isSubtypeOf(that.getUnit().getCallableDeclaration().appliedType(null, Arrays.asList(
                         that.getUnit().getAnythingType(), that.getUnit().getEmptyType())))) {
                     that.addError("service class have a parameter list or default constructor and be instantiable with an empty argument list",
-                            1604);
+                            ErrorCode.SERVICE_CLASS_ERROR);
                 }
                 if (c.inherits(service)) {
                     ModelUtil.getModule(c).addService(service, c);
                 } else {
                     that.addError("service class does not implement service '" + service + "'",
-                            1604);
+                            ErrorCode.SERVICE_CLASS_ERROR);
                 }
             } else {
                 that.addError("service must be an interface or class",
-                        1604);
+                        ErrorCode.SERVICE_CLASS_ERROR);
             }
         }
     }
