@@ -122,6 +122,14 @@ shared void testArrays() {
     check("{ 2, 4 }"==Array{1,2,3,4,5,6}.take(5).skip(1).by(2).string, "Array take 5 skip 1 by 2");
     check("{ 3 }"==Array{1,2,3,4,5,6}.by(2).take(2).skip(1).string, "Array by 2 take 2 skip 1");
     
+    check(Array { 1, 2, 3 }.skip(1).find((_) => true)?.equals(2) else false, "array.skip(1).find()");
+    check(Array { 1, 2, 3 }.skip(1).findLast((_) => true)?.equals(3) else false, "array.skip(1).findLast()");
+    check(Array { 1, 2, 3 }.by(2).last?.equals(3) else false, "array.by(2).last");
+    check(Array { 1, null, 2 }.skip(1).find(Integer.even)?.equals(2) else false, "array.skip(1).find() with nulls");
+    check(Array { 1, 2, null, 3 }.skip(1).findLast(Integer.even)?.equals(2) else false, "array.skip(1).findLast() with nulls");
+    check(Array { 1, 2, 3 }.by(2).find(3.equals)?.equals(3) else false, "array.by(2).find()");
+    check(Array { 1 }.skip(1).skip(1).empty, "array.skip(1).skip(1) past end");
+    
     value ae = AssertionError("");
     value assertionErrors = arrayOfSize<AssertionError>(2, ae);
     value assertionErrors2 = Array<AssertionError>([ae, ae]);
