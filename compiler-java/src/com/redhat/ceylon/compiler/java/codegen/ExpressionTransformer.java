@@ -4889,9 +4889,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 selector = null;
             } else if (!isWithinInvocation()) {
                 selector = null;
-            } else {
-                // not toplevel, not within method, must be a class member
+            } else if (decl.isClassOrInterfaceMember()){
                 selector = naming.selector((Function)decl);
+            } else {
+                selector = null;
             }
         }
         boolean isCtor = decl instanceof Function && ((Function)decl).getTypeDeclaration() instanceof Constructor;
