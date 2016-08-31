@@ -86,7 +86,7 @@ shared void testArrays() {
     
     check(Array{1,2,3}.take(-1).size==0, "Array take -1 ``Array{1,2,3}.take(-1)``");
     check(Array{1,2,3}.take(0).size==0, "Array take 0 ``Array{1,2,3}.take(0)``");
-    check("{}"==Array{1,2,3}.take(0).string, "Array take 0 ``Array{1,2,3}.take(0)``");
+    check(Array{1,2,3}.take(0).string in ["{}", "[]"], "Array take 0 ``Array{1,2,3}.take(0)``");
     check("{ 1 }"==Array{1,2,3}.take(1).string, "Array take 1 ``Array{1,2,3}.take(1)``");
     check("{ 1, 2 }"==Array{1,2,3}.take(2).string, "Array take 2 ``Array{1,2,3}.take(2)``");
     check("{ 1, 2, 3 }"==Array{1,2,3}.take(3).string, "Array take 3 ``Array{1,2,3}.take(3)``");
@@ -96,8 +96,8 @@ shared void testArrays() {
     check([1, 2, 3]==Array{1,2,3}.skip(0), "Array skip 0 ``Array{1,2,3}.skip(0)``");
     check("{ 2, 3 }"==Array{1,2,3}.skip(1).string, "Array skip 1 ``Array{1,2,3}.skip(1)``");
     check("{ 3 }"==Array{1,2,3}.skip(2).string, "Array skip 2 ``Array{1,2,3}.skip(2)``");
-    check("{}"==Array{1,2,3}.skip(3).string, "Array skip 3 ``Array{1,2,3}.skip(3)``");
-    check("{}"==Array{1,2,3}.skip(4).string, "Array skip 4 ``Array{1,2,3}.skip(4)``");
+    check(Array{1,2,3}.skip(3).string in ["{}", "[]"], "Array skip 3 ``Array{1,2,3}.skip(3)``");
+    check(Array{1,2,3}.skip(4).string in ["{}", "[]"], "Array skip 4 ``Array{1,2,3}.skip(4)``");
     
     try {
         Array{1,2,3}.by(-1);
