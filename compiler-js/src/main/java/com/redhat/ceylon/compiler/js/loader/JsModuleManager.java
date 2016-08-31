@@ -53,7 +53,7 @@ public class JsModuleManager extends ModuleManager {
             }
             //Add language module as a dependency
             //This will cause the dependency to be loaded later
-            ModuleImport imp = new ModuleImport(dep, false, false);
+            ModuleImport imp = new ModuleImport(null, dep, false, false);
             module.addImport(imp);
             module.setLanguageModule(dep);
             //Fix 280 part 1 -- [Tako] I have the feeling this can't be correct

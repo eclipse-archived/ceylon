@@ -1,9 +1,12 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel.decl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.AnnotatedElement;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
@@ -179,6 +182,22 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
             if (target.exists() && target.isFile() && target.canRead()) {
                 return new FileResource(target);
             }
+        }
+        //One last shot: we might be in a fat jar
+        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(fullPath)) {
+            if (stream != null) {
+                byte[] buf = new byte[16384];
+                ByteArrayOutputStream bout = new ByteArrayOutputStream();
+                int bytesRead = stream.read(buf);
+                while (bytesRead > 0) {
+                    bout.write(buf,0,bytesRead);
+                    bytesRead = stream.read(buf);
+                }
+                return new ByteArrayResource(bout.toByteArray(), new URI("classpath:" + fullPath));
+            }
+        } catch (IOException | URISyntaxException ex) {
+            throw new ceylon.language.Exception(new ceylon.language.String(
+                    "Searching for resource " + path), ex);
         }
         
         return null;

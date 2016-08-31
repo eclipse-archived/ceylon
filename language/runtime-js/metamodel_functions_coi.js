@@ -10,7 +10,16 @@ function coigetcoi$(coi,name$2,types$3,$$$mptypes,noInherit){
   if(types$3===undefined){types$3=empty();}
   var mm = getrtmm$$(_tipo);
   var nom = name$2 + '$' + mm.d[mm.d.length-1];
+  //When we get an object function we need to go deeper to get its type
+  if (!_tipo.$$ && mm.$t) {
+    _tipo=mm.$t.t;
+  }
   var ic = _tipo.$$.prototype[nom];
+  if (!ic) {
+    //If we're looking for an attribute, the naming is different
+    var nom2='$prop$get'+name$2[0].toUpperCase()+name$2.substring(1);
+    ic=_tipo.$$.prototype[nom2];
+  }
   if (!ic) {
     if (noInherit)return null;
     var pere=mm['super'];
@@ -197,6 +206,13 @@ function coimtd$(coi,name,types,$$$mptypes,noInherit){
   }
   if (types===undefined)types=empty();
   var _tipo=mmfca$(coi.tipo,$$$mptypes.Container$getMethod);
+  if (_tipo && !_tipo.$$) {
+    //if _tipo is an object, go deeper to get its type
+    var mm=getrtmm$$(_tipo);
+    if (mm && mm.$t) {
+      _tipo=mm.$t.t;
+    }
+  }
   var fun = findMethodByNameFromPrototype$(_tipo.$$.prototype, name);
   if(!fun)
     return null;

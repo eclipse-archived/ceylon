@@ -81,7 +81,7 @@ public class Versions {
      * 1.2.1, 1.2.2, 1.2.3 is 8.0 for JVM, 9.0 for JS
      */
     public static final int JVM_BINARY_MAJOR_VERSION = 8;
-    public static final int JVM_BINARY_MINOR_VERSION = 0;
+    public static final int JVM_BINARY_MINOR_VERSION = 1;
     public static final int JS_BINARY_MAJOR_VERSION = 9;
     public static final int JS_BINARY_MINOR_VERSION = 1;
     
@@ -128,7 +128,7 @@ public class Versions {
     public static final int V1_2_2_JS_BINARY_MINOR_VERSION = 0;
 
     public static final int V1_2_3_JVM_BINARY_MAJOR_VERSION = 8;
-    public static final int V1_2_3_JVM_BINARY_MINOR_VERSION = 0;
+    public static final int V1_2_3_JVM_BINARY_MINOR_VERSION = 1;
 
     public static final int V1_2_3_JS_BINARY_MAJOR_VERSION = 9;
     public static final int V1_2_3_JS_BINARY_MINOR_VERSION = 0;
@@ -147,8 +147,7 @@ public class Versions {
      * @return true if the current version of ceylon can consume the given binary version
      */
     public static boolean isJvmBinaryVersionSupported(int major, int minor){
-        return major == JVM_BINARY_MAJOR_VERSION
-                && minor == JVM_BINARY_MINOR_VERSION;
+        return major == JVM_BINARY_MAJOR_VERSION;
     }
     
     /**
@@ -158,8 +157,7 @@ public class Versions {
      * @return true if the current version of ceylon can consume the given binary version
      */
     public static boolean isJsBinaryVersionSupported(int major, int minor){
-        return major == JS_BINARY_MAJOR_VERSION
-                && minor == JS_BINARY_MINOR_VERSION;
+        return major == JS_BINARY_MAJOR_VERSION;
     }
 
     /**
@@ -171,7 +169,7 @@ public class Versions {
      * @return true if the given consumer version of ceylon can consume the given binary version
      */
     public static boolean isBinaryVersionCompatible(int consumerMajor, int consumerMinor, int major, int minor){
-        return consumerMajor == major && consumerMinor == minor;
+        return consumerMajor == major;
     }
     
     /**

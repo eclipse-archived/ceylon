@@ -221,7 +221,7 @@ public abstract class AbstractTestTool extends RepoUsingTool {
     private String findTestVersionInDependecies(String moduleAndVersion) {
         String moduleName = ModuleUtil.moduleName(moduleAndVersion);
         String moduleVersion = ModuleUtil.moduleVersion(moduleAndVersion);
-        ModuleDependencyInfo root = new ModuleDependencyInfo(moduleName, moduleVersion, false, false);
+        ModuleDependencyInfo root = new ModuleDependencyInfo(null, moduleName, moduleVersion, false, false);
         Queue<ModuleDependencyInfo> queue = new LinkedList<ModuleDependencyInfo>();
         queue.add(root);
         

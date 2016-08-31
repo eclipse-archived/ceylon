@@ -26,16 +26,18 @@ import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
-@Summary("Copies modules from one module repository to another")
+@Summary("Copies modules from one Ceylon module repository to another")
 @Description("Copies a module or a set of modules from one repository " +
 		"to another. If set for recursive copying it will also copy " +
 		"all the module's dependencies and their dependencies until the " +
-		"entire module tree has been copied.")
+		"entire module tree has been copied. NB: This tool will only copy " +
+		"between Ceylon repositories.")
 @RemainingSections(OutputRepoUsingTool.DOCSECTION_REPOSITORIES)
 public class CeylonCopyTool extends OutputRepoUsingTool {
     
     private List<ModuleSpec> modules;
     private boolean withDependencies;
+    private boolean includeLanguage;
     
     private Boolean jvm;
     private Boolean js;
@@ -61,6 +63,12 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     @Description("Recursively copy all dependencies")
     public void setWithDependencies(boolean withDependencies) {
         this.withDependencies = withDependencies;
+    }
+    
+    @Option
+    @Description("Determines if the language module should be copied as well, assumes `--with-dependencies` (default is `false`)")
+    public void setIncludeLanguage(boolean includeLanguage) {
+        this.includeLanguage = includeLanguage;
     }
 
     @Option
@@ -121,6 +129,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
 
     @Override
     public void initialize(CeylonTool mainTool) {
+        withDependencies = withDependencies || includeLanguage;
     }
     
     @Override
@@ -182,7 +191,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
                 		ModuleQuery.Type.ALL, null, null, null, null);
                 module = new ModuleSpec(module.getName(), version);
             }
-            ArtifactContext ac = new ArtifactContext(module.getName(), module.getVersion(), artifactsArray);
+            ArtifactContext ac = new ArtifactContext(null, module.getName(), module.getVersion(), artifactsArray);
             ac.setIgnoreDependencies(!withDependencies);
             ac.setForceOperation(true);
             acs.add(ac);
@@ -190,27 +199,33 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         
         // Now do the actual copying
         final boolean logArtifacts = verbose != null && (verbose.contains("all") || verbose.contains("files"));
-        ModuleCopycat copier = new ModuleCopycat(getRepositoryManager(), getOutputRepositoryManager(), log, new ModuleCopycat.CopycatFeedback() {
+        ModuleCopycat copier = new ModuleCopycat(getRepositoryManager(), getOutputRepositoryManager(), getLogger(), new ModuleCopycat.CopycatFeedback() {
+            boolean haveSeenArtifacts = false;
             @Override
             public boolean beforeCopyModule(ArtifactContext ac, int count, int max) throws IOException {
                 String module = ModuleUtil.makeModuleName(ac.getName(), ac.getVersion());
                 msg("copying.module", module, count+1, max).flush();
+                haveSeenArtifacts = false;
                 return true;
             }
             @Override
             public void afterCopyModule(ArtifactContext ac, int count, int max, boolean copied) throws IOException {
-                if (!logArtifacts) {
+                if (!logArtifacts || !haveSeenArtifacts) {
                     String msg;
                     if (copied) {
                         msg = OSUtil.color(Messages.msg(bundle, "copying.ok"), OSUtil.Color.green);
                     } else {
                         msg = OSUtil.color(Messages.msg(bundle, "copying.skipped"), OSUtil.Color.yellow);
                     }
-                    append(") ").append(msg).newline().flush();
+                    if (haveSeenArtifacts) {
+                        append(")");
+                    }
+                    append(" ").append(msg).newline().flush();
                 }
             }
             @Override
             public boolean beforeCopyArtifact(ArtifactContext ac, ArtifactResult ar, int count, int max) throws IOException {
+                haveSeenArtifacts = true;
                 if (logArtifacts) {
                     if (count == 0) {
                         append(" -- ");
@@ -236,6 +251,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             }
             @Override
             public void afterCopyArtifact(ArtifactContext ac, ArtifactResult ar, int count, int max, boolean copied) throws IOException {
+                haveSeenArtifacts = true;
                 if (logArtifacts) {
                     append(" ").msg((copied) ? "copying.ok" : "copying.skipped").newline().flush();
                 }
@@ -247,7 +263,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
                 errorNewline();
             }
         });
-        copier.copyModules(acs);
+        copier.includeLanguage(includeLanguage).copyModules(acs);
     }
 
     @Override

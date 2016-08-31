@@ -68,9 +68,9 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     protected int timeout = -1;
     protected boolean noDefRepos;
     protected boolean offline;
-    protected Logger log;
-
+    
     private RepositoryManager rm;
+    private Logger log;
     
     private Appendable out = System.out;
     private Appendable error = System.err;
@@ -94,7 +94,6 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
 
     public RepoUsingTool(ResourceBundle bundle) {
         this.bundle = bundle;
-        this.log = createLogger();
     }
     
     protected Logger createLogger() {
@@ -192,6 +191,13 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return true;
     }
     
+    public Logger getLogger() {
+        if (log == null) {
+            log = createLogger();
+        }
+        return log;
+    }
+    
     protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilder(boolean forInput) {
         return createRepositoryManagerBuilderNoOut(forInput);
     }
@@ -209,7 +215,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 .offline(offline)
                 .timeout(timeout)
                 .isJDKIncluded(includeJDK())
-                .logger(log);
+                .logger(getLogger());
         return rmb;
     }
     
@@ -232,7 +238,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     protected ModuleVersionQuery getModuleVersionQuery(String name, String version, ModuleQuery.Type type, 
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
     		Integer jsBinaryMajor, Integer jsBinaryMinor) {
-        ModuleVersionQuery query = new ModuleVersionQuery(name, version, type);
+        ModuleVersionQuery query = new ModuleVersionQuery(null, name, version, type);
         if (jvmBinaryMajor != null) {
             query.setJvmBinaryMajor(jvmBinaryMajor);
         }
@@ -295,13 +301,13 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         
         if (ModuleUtil.isDefaultModule(name) || version != null) {
             // If we have the default module or a version we first try it the quick way
-            ArtifactContext ac = new ArtifactContext(name, version, type.getSuffixes());
+            ArtifactContext ac = new ArtifactContext(null, name, version, type.getSuffixes());
             ac.setIgnoreDependencies(true);
             ac.setThrowErrorIfMissing(false);
             ArtifactResult result = repoMgr.getArtifactResult(ac);
             if (result != null) {
                 if (forceCompilation || checkCompilation) {
-                    versions = Collections.singletonList(new ModuleVersionDetails(name, result.version()));
+                    versions = Collections.singletonList(new ModuleVersionDetails(null, name, result.version()));
                 } else {
                     return (result.version() != null) ? result.version() : "";
                 }
@@ -545,7 +551,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
 
     private boolean shouldRecompile(boolean checkCompilation, RepositoryManager repoMgr, String name, String version, ModuleQuery.Type type) throws IOException {
         if (checkCompilation) {
-            ArtifactContext ac = new ArtifactContext(name, version, type.getSuffixes());
+            ArtifactContext ac = new ArtifactContext(null, name, version, type.getSuffixes());
             ac.setIgnoreDependencies(true);
             ac.setThrowErrorIfMissing(false);
             File artifile = repoMgr.getArtifact(ac);
@@ -606,7 +612,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                     String version = mdr.getModuleVersion();
                     // PS In case the module descriptor was found but could not be parsed
                     // we'll create an invalid details object
-                    ModuleVersionDetails mvd = new ModuleVersionDetails(module != null ? module : "", version != null ? version : "");
+                    ModuleVersionDetails mvd = new ModuleVersionDetails(null, module != null ? module : "", version != null ? version : "");
                     mvd.setLicense(mdr.getModuleLicense());
                     List<String> by = mdr.getModuleAuthors();
                     if (by != null) {
@@ -614,7 +620,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                     }
                     SortedSet<ModuleDependencyInfo> dependencies = new TreeSet<>();
                     for(Object[] dep : mdr.getModuleImports()){
-                        dependencies.add(new ModuleDependencyInfo((String)dep[0], (String)dep[1], (Boolean)dep[2], (Boolean)dep[3]));
+                        dependencies.add(new ModuleDependencyInfo((String)dep[0], (String)dep[1], (String)dep[2], (Boolean)dep[3], (Boolean)dep[4]));
                     }
                     mvd.setDependencies(dependencies);
                     mvd.setRemote(false);
@@ -820,7 +826,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     public void initialize(CeylonTool mainTool) throws Exception {
         super.initialize(mainTool);
         if (overrides != null) {
-            File of = new File(cwd, overrides);
+            File of = FileUtil.applyCwd(cwd, new File(overrides));
             if (!of.exists()) {
                 throw new IllegalArgumentException("Overrides file '"+of+"' does not exist");
             }

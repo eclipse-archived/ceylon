@@ -24,4 +24,9 @@ public class FieldValue extends Value {
     protected Class<?> getModelClass() {
         return getClass().getSuperclass(); 
     }
+
+    @Override
+    public boolean isJava() {
+        return true;
+    }
 }

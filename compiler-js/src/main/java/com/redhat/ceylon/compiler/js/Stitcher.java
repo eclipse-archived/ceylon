@@ -76,20 +76,6 @@ public class Stitcher {
                     .userRepos(opts.getRepos()).outRepo(opts.getOutRepo()).buildManager());
             langmodtc.usageWarnings(false);
         }
-        final File mod2 = new File(clJsFileDir, "module.ceylon");
-        if (!mod2.exists()) {
-            try (FileWriter w2 = new FileWriter(mod2);
-                    FileReader r2 = new FileReader(new File(clSrcFileDir, "module.ceylon"))) {
-                char[] c = new char[512];
-                int r = r2.read(c);
-                while (r != -1) {
-                    w2.write(c, 0, r);
-                    r = r2.read(c);
-                }
-                mod2.deleteOnExit();
-            } finally {
-            }
-        }
         final TypeChecker tc = langmodtc.getTypeChecker();
         tc.process(true);
         if (tc.getErrors() > 0) {

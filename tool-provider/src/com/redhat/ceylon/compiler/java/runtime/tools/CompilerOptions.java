@@ -11,7 +11,6 @@ public class CompilerOptions extends Options {
     private List<File> sourcePath = new LinkedList<>();
     private List<File> resourcePath = new LinkedList<>();
     private String outputRepository;
-    private String workingDirectory;
     private Writer outWriter;
 
     public List<String> getModules() {
@@ -59,13 +58,6 @@ public class CompilerOptions extends Options {
     }
     public void setOutputRepository(String outputRepository) {
         this.outputRepository = outputRepository;
-    }
-
-    public String getWorkingDirectory() {
-        return workingDirectory;
-    }
-    public void setWorkingDirectory(String workingDirectory) {
-        this.workingDirectory = workingDirectory;
     }
 
     public Writer getOutWriter() {

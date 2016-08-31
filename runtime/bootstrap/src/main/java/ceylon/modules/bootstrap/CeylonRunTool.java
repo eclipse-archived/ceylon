@@ -20,8 +20,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
@@ -71,7 +72,7 @@ import ceylon.modules.bootstrap.loader.InitialModuleLoader;
         "## Configuration file" +
         "\n\n" +
         "The run tool accepts the following option from the Ceylon configuration file: " +
-        "`runtool.compile` " +
+        "`runtool.compile`, `runtool.run`, `runtool.module` and multiple `runtool.arg` " +
         "(the equivalent option on the command line always has precedence)." +
         "\n\n" +
         "## EXAMPLE" +
@@ -93,10 +94,12 @@ public class CeylonRunTool extends RepoUsingTool {
     /** The (Ceylon) name of the functional to run, e.g. {@code foo.bar::baz} */
     private String run;
     private String compileFlags;
-    private List<String> args = Collections.emptyList();
+    private List<String> args;
     private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
-    private boolean upgradeDist = true;
+    private boolean upgradeDist = DefaultToolOptions.getLinkWithCurrentDistribution();
+    
+    private Map<String,String> extraModules = new HashMap<String,String>();
 
     public CeylonRunTool() {
         super(CeylonMessages.RESOURCE_BUNDLE);
@@ -108,7 +111,7 @@ public class CeylonRunTool extends RepoUsingTool {
         this.flatClasspath = flatClasspath;
     }
 
-    @Argument(argumentName = "module", multiplicity = "1", order = 1)
+    @Argument(argumentName = "module", multiplicity = "?", order = 1)
     public void setModule(String moduleNameOptVersion) {
         this.moduleNameOptVersion = moduleNameOptVersion;
     }
@@ -126,9 +129,10 @@ public class CeylonRunTool extends RepoUsingTool {
     }
 
     @OptionArgument(longName = "run", argumentName = "toplevel")
-    @Description("Specifies the fully qualified name of a toplevel method or class with no parameters. " +
+    @Description("Specifies the fully qualified name of a toplevel method or class to run. " +
+            "The indicated declaration must be shared by the <module> and have no parameters. " +
             "The format is: `qualified.package.name::classOrMethodName` with `::` acting as separator " +
-            "between the package name and the toplevel class or method name.")
+            "between the package name and the toplevel class or method name. (default: `<module>::run`)")
     public void setRun(String run) {
         this.run = run;
     }
@@ -164,10 +168,28 @@ public class CeylonRunTool extends RepoUsingTool {
     public void setLinkWithCurrentDistribution(boolean downgradeDist) {
         this.upgradeDist = !downgradeDist;
     }
+    
+    public void addExtraModule(String module, String version) {
+        this.extraModules.put(module, version);
+    }
 
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
         super.initialize(mainTool);
+        
+        if (moduleNameOptVersion == null) {
+            moduleNameOptVersion = DefaultToolOptions.getRunToolModule(com.redhat.ceylon.common.Backend.Java);
+            if (moduleNameOptVersion != null) {
+                if (run == null) {
+                    run = DefaultToolOptions.getRunToolRun(com.redhat.ceylon.common.Backend.Java);
+                }
+                if (args == null || args.isEmpty()) {
+                    args = DefaultToolOptions.getRunToolArgs(com.redhat.ceylon.common.Backend.Java);
+                }
+            } else {
+                throw new IllegalArgumentException("Missing required argument 'module' to command 'run'");
+            }
+        }
     }
 
     @Override
@@ -278,16 +300,16 @@ public class CeylonRunTool extends RepoUsingTool {
                     if (runtimeModule == null) {
                         org.jboss.modules.Module.setModuleLogger(new NoGreetingJDKModuleLogger());
                         System.setProperty("boot.module.loader", InitialModuleLoader.class.getName());
-                        org.jboss.modules.Main.main(setupArguments(argList, sysRep, ceylonVersion));
+                        org.jboss.modules.Main.main(moduleArguments(argList, sysRep, ceylonVersion));
                         // set runtime module
                         ModuleLoader ml = Module.getBootModuleLoader();
                         runtimeModule = ml.loadModule(ModuleIdentifier.create(CEYLON_RUNTIME, ceylonVersion));
                     } else {
-                        runtimeModule.run(moduleArguments(argList));
+                        runtimeModule.run(moduleArguments(argList, null, null));
                     }
                 }
             } else {
-                runtimeModule.run(moduleArguments(argList));
+                runtimeModule.run(moduleArguments(argList, null, null));
             }
         } catch (Error err) {
             throw err;
@@ -309,12 +331,17 @@ public class CeylonRunTool extends RepoUsingTool {
                 options.addUserRepository(userRepository.toASCIIString());
             }
         }
+        if (getCwd() != null) {
+            options.setWorkingDirectory(getCwd().getAbsolutePath());
+        }
         options.setOffline(offline);
         options.setSystemRepository(systemRepo);
         options.setVerboseCategory(verbose);
         options.setRun(run);
         options.setOverrides(overrides);
         options.setDowngradeDist(!upgradeDist);
+        options.setExtraModules(extraModules);
+        
         try {
             Runner runner = CeylonToolProvider.getRunner(Backend.Java, options, module, version);
             runner.run(args.toArray(new String[args.size()]));
@@ -323,21 +350,21 @@ public class CeylonRunTool extends RepoUsingTool {
         }
     }
 
-    private String[] setupArguments(List<String> argList, String sysRep, String ceylonVersion) {
-        ArrayList<String> setupArgs = new ArrayList<String>();
-        setupArgs.addAll(Arrays.asList(
-                "-mp", sysRep,
-                CEYLON_RUNTIME + ":" + ceylonVersion,
-                "+executable", "ceylon.modules.jboss.runtime.JBossRuntime"));
-        setupArgs.addAll(argList);
-        String[] args = setupArgs.toArray(new String[setupArgs.size()]);
-        return args;
-    }
-    
-    private String[] moduleArguments(List<String> argList) {
+    private String[] moduleArguments(List<String> argList, String sysRep, String ceylonVersion) {
         ArrayList<String> moduleArgs = new ArrayList<String>();
-        moduleArgs.addAll(Arrays.asList(
-                "+executable", "ceylon.modules.jboss.runtime.JBossRuntime"));
+        if (sysRep != null) {
+            moduleArgs.add("-mp");
+            moduleArgs.add(sysRep);
+        }
+        if (ceylonVersion != null) {
+            moduleArgs.add(CEYLON_RUNTIME + ":" + ceylonVersion);
+        }
+        moduleArgs.add("+executable");
+        moduleArgs.add("ceylon.modules.jboss.runtime.JBossRuntime");
+        if (cwd != null) {
+            moduleArgs.add("-cwd");
+            moduleArgs.add(cwd.getAbsolutePath());
+        }
         moduleArgs.addAll(argList);
         String[] args = moduleArgs.toArray(new String[moduleArgs.size()]);
         return args;

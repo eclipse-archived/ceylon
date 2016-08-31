@@ -278,14 +278,14 @@ atr$(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',funct
     for (var i=0; i < casos.length; i++) {
       if (typeof(casos[i])==='string') {
         ct.push(OpenTvar$jsint(OpenTypeParam$jsint(this, casos[i])));
-        if (!ta.contains(OpenTypeVariable$meta$declaration))ta.push(OpenTypeVariable$meta$declaration);
+        if (!$arr$cnt(ta,OpenTypeVariable$meta$declaration))ta.push(OpenTypeVariable$meta$declaration);
       } else {
         var _t=casos[i];
         if (typeof(_t)==='function')_t=getrtmm$$(_t).$t;
         var ot=_openTypeFromTarg(_t);
         ct.push(ot);
-        if (is$(ot,{t:OpenClassType$meta$declaration}) && !ta.contains(OpenClassType$meta$declaration))ta.push(OpenClassType$meta$declaration);
-        else if (is$(ot,{t:OpenInterfaceType$meta$declaration})&&!ta.contains(OpenInterfaceType$meta$declaration))ta.push(OpenInterfaceType$meta$declaration);
+        if (is$(ot,{t:OpenClassType$meta$declaration}) && !$arr$cnt(ta,OpenClassType$meta$declaration))ta.push(OpenClassType$meta$declaration);
+        else if (is$(ot,{t:OpenInterfaceType$meta$declaration})&&!$arr$cnt(ta,OpenInterfaceType$meta$declaration))ta.push(OpenInterfaceType$meta$declaration);
       }
     }
     if (ta.length===0)ta={t:OpenType$meta$declaration};
@@ -299,15 +299,13 @@ atr$(ClassOrInterfaceDeclaration$meta$declaration.$$.prototype,'caseTypes',funct
   return empty();
 },undefined,function(){return{mod:$CCMM$,$t:{t:Sequential,a:{Element$Sequential:{t:OpenType$meta$declaration}}},$cont:ClassOrInterfaceDeclaration$meta$declaration,an:function(){return[shared(),formal()];},d:['ceylon.language.meta.declaration','ClassOrInterfaceDeclaration','$at','caseTypes']};});
 ClassOrInterfaceDeclaration$meta$declaration.$$.prototype.$_apply=function(types,$mptypes){
+  if (this.tipo===Nothing)return nothingType$meta$model();
   var _t = {t:this.tipo};
   var _m = getrtmm$$(this.tipo);
   validate$typeparams(_t,_m.tp,types);
-  if (this.$_abstract || this.anonymous) {
-    throw InvocationException$meta$model(this.name+" class cannot be instantiated");
-  }
   if (!extendsType(_t, $mptypes.Type$apply))
     throw IncompatibleTypeException$meta$model("ClassOrInterface<"+this.name+"> is not compatible with expected type: ClassOrInterface<" + qname$($mptypes.Type$apply)+">. Try passing the type argument explicitly with: apply<" + this.name+">");
-  if ($mptypes.Type$apply.a)_t.a=$mptypes.Type$apply.a;
+  if ($mptypes.Type$apply.a && !_t.a)_t.a=$mptypes.Type$apply.a;
   var rv=this.meta.mt==='i'?AppliedInterface$jsint(_t.t, {Type$AppliedInterface:_t}):
     AppliedClass$jsint(_t.t, {Type$AppliedClass:_t,Arguments$AppliedClass:$mptypes.Arguments$apply});
   if (_t.a)rv.$targs=_t.a;

@@ -357,6 +357,13 @@ public class TransTypes extends TreeTranslator {
             MethodSymbol meth = (MethodSymbol)sym;
             MethodSymbol bridge = meth.binaryImplementation(origin, types);
             MethodSymbol impl = meth.implementation(origin, types, true, overrideBridgeFilter);
+
+            // Ceylon: hack for compat for https://github.com/ceylon/ceylon/issues/4148
+            if(impl != null
+                    && impl.attribute(syms.ceylonAtNeedsVoidBridgeType.tsym) != null){
+                addVoidBridge(pos, impl, origin, bridges);
+            }
+
             if (bridge == null ||
                 bridge == meth ||
                 (impl != null && !bridge.owner.isSubClass(impl.owner, types))) {
@@ -968,6 +975,32 @@ public class TransTypes extends TreeTranslator {
             : make.Return(coerce(call, member.erasure(types).getReturnType()));
         md.body = make.Block(0, List.of(stat));
         c.members().enter(member);
+        bridges.append(md);
+    }
+
+    // Ceylon: compat hack for https://github.com/ceylon/ceylon/issues/4148
+    private void addVoidBridge(DiagnosticPosition pos,
+            MethodSymbol member,
+            ClassSymbol c,
+            ListBuffer<JCTree> bridges) {
+        Type.MethodType implErasure = (Type.MethodType)member.erasure(types);
+        Type.MethodType bridgeType = new Type.MethodType(implErasure.argtypes, syms.voidType, implErasure.thrown, implErasure.tsym);
+        long flags = (member.flags() & AccessFlags) | SYNTHETIC | BRIDGE | OVERRIDE_BRIDGE;
+        MethodSymbol bridge = new MethodSymbol(flags, member.name, bridgeType, c);
+        bridge.params = createBridgeParams(member, bridge, implErasure);
+
+        JCMethodDecl md = make.MethodDef(bridge, null);
+        JCExpression receiver = make.This(c.type);
+        Type calltype = erasure(member.type.getReturnType());
+        JCExpression call =
+                make.Apply(null,
+                        make.Select(receiver, member).setType(calltype),
+                        translateArgs(make.Idents(md.params),
+                                implErasure.getParameterTypes(), null))
+                .setType(calltype);
+        JCStatement stat = make.Exec(call);
+        md.body = make.Block(0, List.of(stat));
+        c.members().enter(bridge);
         bridges.append(md);
     }
 

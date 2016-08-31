@@ -25,6 +25,7 @@ import static com.redhat.ceylon.langtools.tools.javac.code.Flags.FINAL;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.PUBLIC;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.STATIC;
 import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.VOID;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,19 +42,23 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.langtools.tools.javac.util.Name;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -376,6 +381,8 @@ public class MethodDefinitionBuilder
         if (parameter.getModel().getTypeErased()) {
             return false;
         }
+        // make sure we resolve aliases
+        nonWideningType = nonWideningType.resolveAliases();
         Declaration method = parameter.getDeclaration();
         TypeDeclaration paramTypeDecl = nonWideningType.getDeclaration();
         if (paramTypeDecl instanceof TypeParameter
@@ -511,6 +518,11 @@ public class MethodDefinitionBuilder
                 } else {
                     flags |= AbstractTransformer.JT_NARROWED;
                 }
+                if((flags & AbstractTransformer.JT_RAW) == 0 
+                        && !Decl.equal(refinedParameter, mov)
+                        && implementsRawParameter(mov)){
+                    flags |= AbstractTransformer.JT_RAW;
+                }
             }
         }
         // keep in sync with gen.willEraseToBestBounds()
@@ -532,6 +544,77 @@ public class MethodDefinitionBuilder
             flags |= AbstractTransformer.JT_RAW;
         }
         return new NonWideningParam(flags, modifiers, nonWideningType, nonWideningDecl);
+    }
+
+    private boolean implementsRawParameter(FunctionOrValue decl) {
+        if(ModelUtil.containsRawType(decl.getType()))
+            return true;
+        // Taken pretty much straight from JvmBackendUtil.getTopmostRefinement
+        Functional func = (Functional)JvmBackendUtil.getParameterized((FunctionOrValue)decl);
+        if(func == null || func instanceof TypedDeclaration == false)
+            return false;
+        Declaration kk = getFirstRefinedDeclaration((TypedDeclaration)func);
+        // error recovery
+        if(kk instanceof Functional == false)
+            return false;
+        Functional refinedFunc = (Functional) kk;
+        // shortcut if the functional doesn't override anything
+        if (ModelUtil.equal((Declaration)refinedFunc, (Declaration)func)) {
+            return false;
+        }
+        if (func.getParameterLists().size() != refinedFunc.getParameterLists().size()) {
+            // invalid input
+            return false;
+        }
+        for (int ii = 0; ii < func.getParameterLists().size(); ii++) {
+            if (func.getParameterLists().get(ii).getParameters().size() != refinedFunc.getParameterLists().get(ii).getParameters().size()) {
+                // invalid input
+                return false;
+            }
+            // find the index of the parameter in the declaration
+            int index = 0;
+            for (Parameter px : func.getParameterLists().get(ii).getParameters()) {
+                if (px.getModel() == null || px.getModel().equals(decl)) {
+                    // And return the corresponding parameter from the refined declaration
+                    FunctionOrValue refinedDecl = refinedFunc.getParameterLists().get(ii).getParameters().get(index).getModel();
+                    return implementsRawParameter(refinedDecl);
+                }
+                index++;
+            }
+            continue;
+        }
+        // invalid input
+        return false;
+    }
+
+    private Declaration getFirstRefinedDeclaration(TypedDeclaration member) {
+        if(!member.isActual() || Decl.equal(member, member.getRefinedDeclaration()))
+            return null;
+        // Taken pretty much straight from RefinementVisitor
+        ClassOrInterface type = (ClassOrInterface) member.getContainer();
+        java.util.List<Type> signature = ModelUtil.getSignature(member);
+        
+        Declaration root = type.getRefinedMember(name, signature, false);
+        if(root == null)
+            return null;
+        TypeDeclaration rootType =  (TypeDeclaration) root.getContainer();
+        
+        java.util.List<Declaration> interveningRefinements = 
+                ModelUtil.getInterveningRefinements(name, 
+                        signature, root, 
+                        type, rootType);
+        for (Declaration refined: interveningRefinements) {
+            TypeDeclaration interveningType = (TypeDeclaration) refined.getContainer();
+            if (getInterveningRefinements(name, 
+                        signature, root, 
+                        type, interveningType)
+                    .size()>1) {
+                continue;
+            }
+            // first?
+            return refined;
+        }
+        return null;
     }
 
     public MethodDefinitionBuilder isOverride(boolean isOverride) {

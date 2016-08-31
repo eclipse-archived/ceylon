@@ -687,11 +687,11 @@ public class AnnotationVisitor extends Visitor {
             if (pack == null) {
                 if (DOC_LINK_MODULE.equals(kind)) {
                     that.addUsageWarning(Warning.doclink, 
-                                "module does not exist: '" + 
+                                "module is missing: '" + 
                                         packageName + "'");
                 } else {
                     that.addUsageWarning(Warning.doclink, 
-                                "package does not exist: '" + 
+                                "package is missing: '" + 
                                         packageName + "'");
                 }
             }
@@ -705,7 +705,7 @@ public class AnnotationVisitor extends Visitor {
                         that.setModule(pack.getModule());
                     } else {
                         that.addUsageWarning(Warning.doclink,
-                                    "module does not exist: '" + 
+                                    "module is missing: '" + 
                                             packageName + "'");
                     }
                 }
@@ -722,7 +722,7 @@ public class AnnotationVisitor extends Visitor {
         }
         if (base==null) {
             that.addUsageWarning(Warning.doclink,
-                    "declaration does not exist: '" + 
+                    "declaration is missing: '" + 
                     (names.length > 0 ? names[0] : text) + "'");
         }
         else {
@@ -747,7 +747,7 @@ public class AnnotationVisitor extends Visitor {
                             base.getMember(names[i], null, false);
                     if (qualified==null) {
                         that.addUsageWarning(Warning.doclink,
-                                    "member declaration or parameter does not exist: '" + 
+                                    "member declaration or parameter is missing: '" + 
                                             names[i] + "'");
                         break;
                     }
@@ -820,7 +820,8 @@ public class AnnotationVisitor extends Visitor {
         }*/
         if (dec!=null) {
             if (!dec.isAnnotation()) {
-                primary.addError("not an annotation constructor");
+                primary.addError("not an annotation constructor: '" 
+                        + dec.getName(that.getUnit()) + "'");
             }
             else {
                 checkAnnotationArguments(null, 
@@ -1021,10 +1022,10 @@ public class AnnotationVisitor extends Visitor {
                         sb.setLength(sb.length()-2);
                     }
                     sb.append("'");
-                    that.addError("ambiguous invocation of overloaded method or class: " +
+                    that.addError("illegal argument types in invocation of overloaded method or class: " +
                             "there must be exactly one overloaded declaration of '" + 
                             dec.getName(unit) + 
-                            "' that accepts the given argument types" + sb);
+                            "' which accepts the given argument types" + sb);
                 }
             }
         }
@@ -1055,8 +1056,13 @@ public class AnnotationVisitor extends Visitor {
             if (!ModelUtil.isTypeUnknown(ta) && 
                     (ta.isNothing() || 
                      ta.isIntersection() || 
-                     unit.getDefiniteType(ta).isUnion())) {
-                that.addError(
+                     unit.getDefiniteType(ta).isUnion() ||
+                     ta.isTypeParameter())) {
+                Tree.TypeArguments tas = that.getTypeArguments();
+                Node errNode = 
+                        tas instanceof Tree.TypeArgumentList ?
+                                tas : that;
+                errNode.addError(
                         "illegal Java array element type: arrays with element type '" 
                                 + ta.asString(unit) + "' may not be instantiated");
             }

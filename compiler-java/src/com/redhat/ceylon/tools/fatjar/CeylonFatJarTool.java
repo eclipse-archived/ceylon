@@ -122,7 +122,7 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
                 firstModuleName = moduleName;
                 firstModuleVersion = version;
             }
-            loadModule(moduleName, version);
+            loadModule(null, moduleName, version);
             if(!force)
                 errorOnConflictingModule(moduleName, version);
         }

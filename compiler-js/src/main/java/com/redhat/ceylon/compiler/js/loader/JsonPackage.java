@@ -49,6 +49,7 @@ import java.util.Map;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
+import com.redhat.ceylon.compiler.js.GenerateJsVisitor;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
@@ -162,9 +163,6 @@ public class JsonPackage extends LazyPackage {
     private void loadDeclarations() {
         if (loaded) return;
         loaded = true;
-        //Ugly ass hack - add Nothing to the model
-        nothing.setContainer(this);
-        nothing.setUnit(u2);
         if (!isShared()) {
             setShared(model.remove("$pkg-shared") != null);
         }
@@ -193,6 +191,11 @@ public class JsonPackage extends LazyPackage {
                     throw new IllegalArgumentException("Missing metatype from entry " + m + " under " + e.getKey());
                 } else if (m.get(KEY_METATYPE) instanceof ClassOrInterface) {
                     refineMembers((ClassOrInterface)m.get(KEY_METATYPE));
+                } else if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof Value) {
+                    TypeDeclaration td = ((Value)m.get(MetamodelGenerator.KEY_METATYPE)).getTypeDeclaration();
+                    if (td != null) {
+                        refineMembers((ClassOrInterface)td);
+                    }
                 }
             }
         }
@@ -220,6 +223,7 @@ public class JsonPackage extends LazyPackage {
             }
             cls.setAbstract(m.remove("abstract") != null);
             cls.setAnonymous(m.remove("$anon") != null);
+            cls.setDynamic(m.remove(KEY_DYNAMIC) != null);
             cls.setContainer(parent);
             cls.setName(name);
             cls.setUnit(u2);
@@ -243,7 +247,7 @@ public class JsonPackage extends LazyPackage {
             }
         }
         //This is to avoid circularity
-        if (!(getModule().getLanguageModule()==getModule() && ("Nothing".equals(name) || "Anything".equals(name)))) {
+        if (!(isLanguagePackage() && ("Nothing".equals(name) || "Anything".equals(name)))) {
             if (cls.getExtendedType() == null) {
                 if (m.containsKey("super")) {
                     Type father = getTypeFromJson((Map<String,Object>)m.get("super"),
@@ -269,9 +273,7 @@ public class JsonPackage extends LazyPackage {
                 cnst.setScope(cls);
                 cnst.setUnit(cls.getUnit());
                 cnst.setExtendedType(cls.getType());
-                if (cons.getValue().containsKey(KEY_JS_NEW)) {
-                    cnst.setJsNew((Boolean)cons.getValue().remove(KEY_JS_NEW));
-                }
+                cnst.setDynamic(cons.getValue().remove(KEY_DYNAMIC) != null);
                 setAnnotations(cnst, (Integer)cons.getValue().remove(KEY_PACKED_ANNS),
                         (Map<String,Object>)cons.getValue().remove(KEY_ANNOTATIONS));
                 final List<Map<String,Object>> modelPlist = (List<Map<String,Object>>)cons.getValue().remove(
@@ -306,7 +308,7 @@ public class JsonPackage extends LazyPackage {
                     cf.setVisibleScope(cnst.getVisibleScope());
                     cf.setShared(cnst.isShared());
                     cf.setDeprecated(cnst.isDeprecated());
-                    cf.setJsNew(cnst.isJsNew());
+                    cf.setDynamic(cnst.isDynamic());
                     cls.addMember(cf);
                 }
             }
@@ -341,6 +343,12 @@ public class JsonPackage extends LazyPackage {
             for (Map.Entry<String,Map<String,Object>> cdef : cdefs.entrySet()) {
                 loadClass(cdef.getKey(), cdef.getValue(), cls, allparms);
             }
+        }
+        if (cls.isDynamic() &&
+                (getModule().getJsMajor()<9 ||
+                    (getModule().getJsMajor()==9 && getModule().getJsMinor()<1))) {
+            // previous versions did not set dynamic flag on members
+            cls.makeMembersDynamic();
         }
         return cls;
     }
@@ -575,6 +583,7 @@ public class JsonPackage extends LazyPackage {
             md.setDeclaredVoid((flags & 1) > 0);
             md.setDeferred((flags & 2) > 0);
         }
+        md.setDynamic(m.remove(KEY_DYNAMIC) != null);
         final List<TypeParameter> tparms = parseTypeParameters(
                 (List<Map<String,Object>>)m.get(KEY_TYPE_PARAMS), md, existing);
         final List<TypeParameter> allparms = JsonPackage.merge(tparms, existing);
@@ -613,6 +622,7 @@ public class JsonPackage extends LazyPackage {
         @SuppressWarnings("unchecked")
         final Map<String,Object> _anns = (Map<String,Object>)m.remove(KEY_ANNOTATIONS);
         setAnnotations(d, (Integer)m.remove(KEY_PACKED_ANNS), _anns);
+        d.setDynamic(m.remove(KEY_DYNAMIC) != null);
         if (m.containsKey("var")) {
             ((Value)d).setVariable(true);
         }
@@ -733,6 +743,12 @@ public class JsonPackage extends LazyPackage {
             for (Map.Entry<String,Map<String,Object>> cdef : cdefs.entrySet()) {
                 loadClass(cdef.getKey(), cdef.getValue(), t, allparms);
             }
+        }
+        if (t.isDynamic() &&
+                (getModule().getJsMajor()<9 ||
+                    (getModule().getJsMajor()==9 && getModule().getJsMinor()<1))) {
+            // previous versions did not set dynamic flag on members
+            t.makeMembersDynamic();
         }
         return t;
     }
@@ -1128,8 +1144,13 @@ public class JsonPackage extends LazyPackage {
         final Map<String,Object> map = model == null ? null : (Map<String,Object>)model.get(name);
         if (map == null) {
             if ("Nothing".equals(name)) {
-                //Load Nothing from language module, regardless of what this package is
-                return nothing;
+                if (isLanguagePackage()) {
+                    return nothing;
+                } else if (getModule().getJsMajor()<9 ||
+                        (getModule().getJsMajor()==9 && getModule().getJsMinor()<1)) {
+                    //Older versions wrongly referenced a local Nothing, maintain backwards compat
+                    return nothing;
+                }
             } else if ("$U".equals(name)) {
                 return unknown;
             }

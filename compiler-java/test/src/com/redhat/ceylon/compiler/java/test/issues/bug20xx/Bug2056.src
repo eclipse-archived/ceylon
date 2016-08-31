@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 class Bug2056 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     Bug2056() {
@@ -9,7 +11,9 @@ class Bug2056 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             let
             {
                 
-                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
                 @.com.redhat.ceylon.compiler.java.metadata.Attribute
                 @.com.redhat.ceylon.compiler.java.metadata.Name("s")
                 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.language::Getter<ceylon.language::String()>"})

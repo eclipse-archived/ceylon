@@ -15,5 +15,13 @@ final class javaListIndex_ {
             }
             returning $ceylontmp$index$1 >= 0 && $ceylontmp$index$1 < $ceylontmp$list$0.size() ? $ceylontmp$list$0.get($ceylontmp$index$1) : null;
         );
+        final .java.lang.String r = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$op$2 = .ceylon.language.String.instance("a");
+                l.set(.com.redhat.ceylon.compiler.java.Util.toInt(0L), $ceylontmp$op$2);
+            }
+            returning $ceylontmp$op$2;
+        ).toString();
     }
 }

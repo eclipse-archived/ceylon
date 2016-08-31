@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.loader.mirror;
 
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.VarSymbol;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
@@ -47,6 +48,14 @@ public class JavacVariable implements VariableMirror {
             annotations = JavacUtil.getAnnotations(varSymbol);
         }
         return annotations.get(type);
+    }
+    
+    @Override
+    public Set<String> getAnnotationNames() {
+        if (annotations == null) {
+            annotations = JavacUtil.getAnnotations(varSymbol);
+        }
+        return annotations.keySet();
     }
 
     @Override

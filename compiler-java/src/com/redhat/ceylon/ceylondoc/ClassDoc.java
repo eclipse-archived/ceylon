@@ -427,6 +427,7 @@ public class ClassDoc extends ClassOrPackageDoc {
         around("div class='doc'", getDoc(klass, linkRenderer()));
         writeBy(klass);
         writeSee(klass);
+        writeSince(klass);
         close("div");
 
         open("div class='tab-pane' id='tabTypeHierarchy'");

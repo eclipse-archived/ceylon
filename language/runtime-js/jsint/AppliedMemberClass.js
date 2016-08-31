@@ -97,10 +97,10 @@ function AppliedMemberClass$jsint(tipo,$$targs$$,that,myTargs){
   atr$(that,'hash',function(){return coihash$(that);},undefined,_proto.$prop$getHash.$crtmm$);
   atr$(that,'container',function(){return coicont$(that); },undefined,_proto.$prop$getContainer.$crtmm$);
   atr$(that,'declaringType',function(){return coicont$(that); },undefined,_proto.$prop$getDeclaringType.$crtmm$);
+  set_type_args(that,$$targs$$,AppliedMemberClass$jsint);
   MemberClass$meta$model(that.$$targs$$===undefined?$$targs$$:{Arguments$MemberClass:that.$$targs$$.Arguments$AppliedMemberClass,
                          Type$MemberClass:that.$$targs$$.Type$AppliedMemberClass,
                          Container$MemberClass:that.$$targs$$.Container$AppliedMemberClass},that);
-  set_type_args(that,$$targs$$,AppliedMemberClass$jsint);
   that.tipo=tipo;
   return that;
 }

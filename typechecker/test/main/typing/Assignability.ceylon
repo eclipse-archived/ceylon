@@ -171,8 +171,8 @@ class Assignability() {
     if (sequenceofx[0] exists) {}
     
     //@error if (exists "Hello") {}
-    @error if (exists something) {}
-    if (exists @error s = something) {}
+    @warn:"redundantNarrowing" if (exists something) {}
+    @warn:"redundantNarrowing" if (exists s = something) {}
     
     if (exists X x = nothing) {
         print(x.hello);
@@ -187,16 +187,16 @@ class Assignability() {
         print(y.name);
     }
     
-    if (exists @error X x = something) {
+    @warn:"redundantNarrowing" if (exists X x = something) {
         print(x.hello);
     }
     
-    if (exists @error xx = something) {
+    @warn:"redundantNarrowing" if (exists xx = something) {
         print(xx.hello);
     }
     
-    @error if (something.hello exists) {}
-    if (exists @error h = something.hello) {}
+    @warn:"redundantNarrowing" if (something.hello exists) {}
+    @warn:"redundantNarrowing" if (exists h = something.hello) {}
     
     @error if (is Y something) {
         @error print(something.name);
@@ -207,9 +207,9 @@ class Assignability() {
     }
     
     @error if (X() is Y) {}
-    @error if (X() is Object ) {}
+    @warn:"redundantNarrowing" if (X() is Object ) {}
     @error if (is Y x = X()) {}
-    @error if (is Object x = X()) {}
+    @warn:"redundantNarrowing" if (is Object x = X()) {}
     
     X[]? seq = null;
     
@@ -246,16 +246,16 @@ class Assignability() {
     
     @error for (@error X x in 46) {}
     
-    @error for (Integer i in []) {
+    @warn:"redundantIteration" for (Integer i in []) {
         print(i.string);
     }
     for (Integer i in {-1,+2}) {
         print(i.string);
     }
     @error if ({} nonempty) {}
-    @error if ([-2,+0,+1] nonempty) {}
-    if (nonempty @error e = {}) {}
-    if (nonempty @error s = [-2,+0,+1]) {}
+    @warn:"redundantNarrowing" if ([-2,+0,+1] nonempty) {}
+    @error if (nonempty e = {}) {}
+    @warn:"redundantNarrowing" if (nonempty s = [-2,+0,+1]) {}
     Integer[] ints = [-2,+0,+1];
     if (nonempty ints) {
         Integer i = ints.first;
@@ -478,3 +478,38 @@ class Assignability() {
     //}
     
 }
+
+void test6397_1() {
+    class C<out T>() given T satisfies Object {
+        C<Anything> ca = nothing;
+        C<Object> co  = ca;
+        @error C<String> cs1 = ca;
+        @error C<String> cs2 = co;
+    }
+    C<Anything> ca = nothing;
+    C<Object> co  = ca;
+    @error C<String> cs1 = ca;
+    @error C<String> cs2 = co;
+}
+
+void test6397_2() {
+    interface I<out T> of A<T> | B<T> {}
+    class B<out T>() satisfies I<T> {}
+    class A<out T>() satisfies I<T> {
+        void foo() {
+            I<T> x0 = this;
+            switch (x1 = x0 of A<T> | B<T>)
+            case (is A<Anything>) {
+                A<T> i = x1;
+                I<T> j = x1 of A<T>;
+                I<T> k = x1; // error
+            }
+            else {}
+        }
+    }
+}
+
+class Test_6397_3<out T>(Test_6397_3<Anything> ca) {
+    @error Test_6397_3<T> ct = ca of Test_6397_3<T>;
+}
+

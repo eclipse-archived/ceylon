@@ -64,6 +64,9 @@ function AppliedAttribute(pname, atr,$$targs$$,that){
   that.equals=function(o) {
     return is$(o,{t:AppliedAttribute}) && o.tipo===atr;
   }
+  atr$(that,'hash',function(){
+    return this.string.hash;
+  },undefined,function(){return{mod:$CCMM$,$t:{t:Integer},$cont:AppliedAttribute,pa:67,d:['ceylon.language','Object','$at','hash']};});
   return that;
 }
 AppliedAttribute.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},tp:{Get:{dv:'out','def':{t:Anything}},Set:{dv:'in','def':{t:Nothing}},Container:{dv:'in'}},sts:[{t:Attribute$meta$model,a:{Get:'Get',Set:'Set',Container:'Container'}}],pa:1,d:['ceylon.language.meta.model','Attribute']};};

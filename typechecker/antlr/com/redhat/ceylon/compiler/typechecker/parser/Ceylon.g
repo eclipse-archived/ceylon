@@ -179,6 +179,11 @@ packageDescriptor returns [PackageDescriptor packageDescriptor]
 importModule returns [ImportModule importModule]
     : IMPORT
       { $importModule = new ImportModule($IMPORT); }
+      (
+        ins=importNamespace
+        { $importModule.setNamespace($ins.identifier); }
+        SEGMENT_OP
+      )?
       ( 
         c1=CHAR_LITERAL
         { $importModule.setQuotedLiteral(new QuotedLiteral($c1)); }
@@ -201,6 +206,15 @@ importModule returns [ImportModule importModule]
       SEMICOLON
       { $importModule.setEndToken($SEMICOLON); 
         expecting=-1; }
+    ;
+
+importNamespace returns [Identifier identifier]
+    : LIDENTIFIER
+      { $identifier = new Identifier($LIDENTIFIER); }
+    | { displayRecognitionError(getTokenNames(),
+              new MismatchedTokenException(LIDENTIFIER, input), 5001); }
+      UIDENTIFIER
+      { $identifier = new Identifier($UIDENTIFIER); }
     ;
 
 importDeclaration returns [Import importDeclaration]
@@ -1071,7 +1085,7 @@ unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
         m3=MEMBER_OP
         { qt = new QualifiedType(null);
           qt.setOuterType($type);
-          qt.setEndToken($m3); 
+          qt.setEndToken($m3);
           $type=qt; }
         (
           t3=memberNameWithArguments
@@ -1083,6 +1097,34 @@ unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
                 qt.setTypeArgumentList($t3.typeArgumentList);
             $expression = new ExtendedTypeExpression(null);
             $expression.setType($type); }
+        |
+          (
+            t5=typeNameWithArguments
+            { if ($t5.identifier!=null) {
+              qt.setEndToken(null);
+              qt.setIdentifier($t5.identifier); }
+            if ($t5.typeArgumentList!=null)
+                bt.setTypeArgumentList($t5.typeArgumentList);
+            $expression = new ExtendedTypeExpression(null);
+            $expression.setType($type); }
+          )
+          (
+            m4=MEMBER_OP
+            { qt = new QualifiedType(null);
+              qt.setOuterType($type);
+              qt.setEndToken($m4);
+              $type=qt; }
+            (
+              t6=typeNameWithArguments
+              { if ($t6.identifier!=null) {
+                qt.setEndToken(null);
+                qt.setIdentifier($t6.identifier); }
+              if ($t6.typeArgumentList!=null)
+                  bt.setTypeArgumentList($t6.typeArgumentList);
+              $expression = new ExtendedTypeExpression(null);
+              $expression.setType($type); }
+            )?
+          )*
         )?
       )?
     | t4=memberNameWithArguments
@@ -1933,30 +1975,34 @@ tuple returns [Tuple tuple]
     ;
     
 dynamicObject returns [Dynamic dynamic]
-    @init { NamedArgumentList nal=null; }
-    : DYNAMIC LBRACKET
-      { $dynamic = new Dynamic($DYNAMIC);
-        nal = new NamedArgumentList($LBRACKET); 
-        $dynamic.setNamedArgumentList(nal); }
+    : DYNAMIC
+      { $dynamic = new Dynamic($DYNAMIC); }
+      dynamicArguments
+      { $dynamic.setNamedArgumentList($dynamicArguments.namedArgumentList); }
+    ;
+
+dynamicArguments returns [NamedArgumentList namedArgumentList]
+    : LBRACKET
+      { $namedArgumentList = new NamedArgumentList($LBRACKET); }
       ( //TODO: get rid of the predicate and use the approach
         //      in expressionOrSpecificationStatement
         (namedArgumentStart) 
         => namedArgument
         { if ($namedArgument.namedArgument!=null) 
-              nal.addNamedArgument($namedArgument.namedArgument); }
+              $namedArgumentList.addNamedArgument($namedArgument.namedArgument); }
       | (anonymousArgument)
         => anonymousArgument
         { if ($anonymousArgument.namedArgument!=null) 
-              nal.addNamedArgument($anonymousArgument.namedArgument); }
+              $namedArgumentList.addNamedArgument($anonymousArgument.namedArgument); }
       )*
       ( 
         sequencedArgument
-        { nal.setSequencedArgument($sequencedArgument.sequencedArgument); }
+        { $namedArgumentList.setSequencedArgument($sequencedArgument.sequencedArgument); }
       )?
       RBRACKET
-      { nal.setEndToken($RBRACKET); }
+      { $namedArgumentList.setEndToken($RBRACKET); }
     ;
-    
+
 valueCaseList returns [ExpressionList expressionList]
     : { $expressionList = new ExpressionList(null); }
       ie1=intersectionExpression 
@@ -2404,9 +2450,9 @@ specificationStart
     : LIDENTIFIER parameters* (SPECIFY|COMPUTE)
     ;
 
-parExpression returns [Expression expression] 
+parExpression returns [ParExpression expression] 
     : LPAREN 
-      { $expression = new Expression($LPAREN); }
+      { $expression = new ParExpression($LPAREN); }
       functionOrExpression
       { if ($functionOrExpression.expression!=null)
             $expression.setTerm($functionOrExpression.expression.getTerm()); }
@@ -4044,10 +4090,18 @@ matchCaseCondition returns [MatchCase item]
     ;
 
 isCaseCondition returns [IsCase item]
+    @init { StaticType t = null; } 
     : IS_OP 
       { $item = new IsCase($IS_OP); }
       type
-      { $item.setType($type.type); }
+      { t = $type.type;
+        $item.setType(t); }
+      (
+        MEMBER_OP
+        { QualifiedType qt = new QualifiedType($MEMBER_OP);
+          qt.setOuterType(t);
+          $item.setType(qt);  }
+      )?
     ;
 
 satisfiesCaseCondition returns [SatisfiesCase item]

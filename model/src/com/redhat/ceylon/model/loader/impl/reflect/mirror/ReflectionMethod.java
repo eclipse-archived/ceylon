@@ -11,6 +11,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
@@ -63,6 +64,11 @@ public class ReflectionMethod implements MethodMirror {
             annotations = ReflectionUtils.getAnnotations((AnnotatedElement)method);
         }
         return annotations;
+    }
+
+    @Override
+    public Set<String> getAnnotationNames() {
+        return getAnnotations().keySet();
     }
 
     @Override

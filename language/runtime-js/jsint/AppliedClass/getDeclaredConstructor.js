@@ -1,7 +1,11 @@
 function(nm,$mpt){
   var mm=getrtmm$$(this.tipo);
-  var fnOld=mm.d[mm.d.length-1]+"_"+(nm===''?'$c$':nm);
-  var fnNew=mm.d[mm.d.length-1]+"$c_"+(nm===''?'$c$':nm);
+  var tname=mm.d[mm.d.length-1];
+  if (reservedWords$.indexOf(tname)>=0) {
+    tname='$_'+tname;
+  }
+  var fnOld=tname+"_"+(nm===''?'$c$':nm);
+  var fnNew=tname+"$c_"+(nm===''?'$c$':nm);
   var cn=this.tipo[fnNew]||this.tipo[fnOld];
   if (cn) {
     mm=getrtmm$$(cn);

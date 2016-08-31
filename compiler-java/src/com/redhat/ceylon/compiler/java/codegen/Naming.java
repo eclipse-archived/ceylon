@@ -36,10 +36,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
 import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
-import com.redhat.ceylon.langtools.tools.javac.tree.TreeMaker;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCFieldAccess;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCIdent;
+import com.redhat.ceylon.langtools.tools.javac.tree.TreeMaker;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.langtools.tools.javac.util.Names;
@@ -48,20 +48,19 @@ import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaMethod;
 import com.redhat.ceylon.model.loader.model.LazyClass;
-import com.redhat.ceylon.model.loader.model.LazyElement;
-import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.loader.model.LazyFunction;
+import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.loader.model.LazyValue;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.ControlBlock;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
-import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -74,24 +73,6 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 
 public class Naming extends NamingBase implements LocalId {
 
-    private static String prefixName(Prefix prefix, String s) {
-        return prefix.toString() + s;
-    }
-    
-    private static String prefixName(Prefix prefix, String... rest) {
-        if (rest.length == 0) {
-            throw new RuntimeException();
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append(prefix);
-        for (String s : rest) {
-            sb.append(s).append('$');
-        }
-        
-        sb.setLength(sb.length()-1);// remove last $
-        return sb.toString();
-    }
-    
     static String compoundName(String name, String name2) {
         return name + "$" + name2;
     }
@@ -725,7 +706,9 @@ public class Naming extends NamingBase implements LocalId {
     }
     
     static boolean aliasConstructorParameterName(FunctionOrValue mov) {
-        return mov.getContainer() instanceof Constructor && !mov.isShared() && !mov.isCaptured();
+        // Do not take capture into account for constructors, 
+        // see https://github.com/ceylon/ceylon/issues/5787
+        return mov.getContainer() instanceof Constructor && !mov.isShared();
     }
     
     private static String getAliasedParameterName(FunctionOrValue parameter) {
@@ -1216,6 +1199,9 @@ public class Naming extends NamingBase implements LocalId {
     }
     
     String getVariableBoxName(TypedDeclaration declaration) {
+        if(declaration instanceof Value
+                && ModelUtil.isEnumeratedConstructorInLocalVariable((Value)declaration))
+            return getValueConstructorFieldNameAsString((Value) declaration);
         return declaration.getName();
     }
     
@@ -2148,15 +2134,7 @@ public class Naming extends NamingBase implements LocalId {
     }
     
     protected SyntheticName getValueConstructorFieldName(Value singletonModel) {
-        Class clz = (Class)singletonModel.getContainer();
-        if (clz.isToplevel()) {
-            return synthetic(Naming.quoteFieldName(singletonModel.getName()));
-        }
-        else if (clz.isClassMember()){
-            return synthetic(Prefix.$instance$, clz.getName(), singletonModel.getName());
-        } else {
-            return synthetic(Prefix.$instance$, clz.getName(), singletonModel.getName());
-        }
+        return synthetic(getValueConstructorFieldNameAsString(singletonModel));
     }
 }
 

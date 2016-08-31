@@ -14,19 +14,20 @@ function $arr$sa$(arr,t,ne) {
 }
 ex$.$arr$sa$=$arr$sa$;
 
-Array.prototype.equals=function arrayEquals(o) {
+function $arr$eq(a,o) {
   if (o===undefined||o===null||typeof(o.length)!='number')return false;
-  if (o.length===this.length) {
-    for (var i=0;i<this.length;i++) {
-      if (this[i]===undefined) {
+  if (o.length===a.length) {
+    for (var i=0;i<a.length;i++) {
+      if (a[i]===undefined) {
         if (o[i]!==undefined)return false;
-      } else if (this[i]===null) {
+      } else if (a[i]===null) {
         if (o[i]!==null)return false;
-      } else if (!this[i].equals(o[i]))return false;
+      } else if (!$eq$(a[i],o[i]))return false;
     }
   }
   return false;
 }
+ex$.$arr$eq=$arr$eq;
 //Ceylon Iterable to Native Array
 function $ci2na$(ci){
   if (ci===undefined||ci===empty())return [];
@@ -36,16 +37,23 @@ function $ci2na$(ci){
   }
   return a;
 }
-Array.prototype.contains=function arrayContains(o){
-  for (var i=0;i<this.length;i++) {
-    if (o===null) {
-      if (this[i]===null)return true;
-    } else if (o===undefined) {
-      if (this[i]===undefined)return true;
-    } else if (this[i].equals(o)) return true;
+function $arr$cnt(a,o){
+  if (o===null) {
+    for (var i=0;i<a.length;i++) {
+      if (a[i]===null)return true;
+    }
+  } else if (o===undefined) {
+    for (var i=0;i<a.length;i++) {
+      if (a[i]===undefined)return true;
+    }
+  } else {
+    for (var i=0;i<a.length;i++) {
+      if ($eq$(a[i],o)) return true;
+    }
   }
   return false;
 }
+ex$.$arr$cnt=$arr$cnt;
 empty().nativeArray=function(){return [];}
 
 atr$(arrprot$,'string', function() {
@@ -88,6 +96,8 @@ function $init$sarg(){if(sarg$.$$===undefined){
       $$4.$$targs$$={Element$Iterator:sarg.$$targs$$.Element$Iterable};
       Iterator($$4.$$targs$$,$$4);
       $$4.i=0;
+      $$4.e=sarg.e;
+      $$4.s=sarg.s;
       return $$4;
     };
     iter.$crtmm$=function(){return{mod:$CCMM$,'super':{t:Basic},$cont:iterator,sts:[{t:Iterator,a:{Element$Iterator:'T$LazyIterable'}}],d:['$','LazyIterable','$m','iterator','$o','it']};};
@@ -95,9 +105,16 @@ function $init$sarg(){if(sarg$.$$===undefined){
       initTypeProto(iter,'LazyIterable.iterator',Basic,Iterator);
       iter.$$.prototype.next=function(){
         if (this.sp)return this.sp.next();
-        var e=this.outer$.e(this.i);
-        if (e===finished() && this.outer$.s) {
-          var a=this.outer$.s();
+        var e=this.e(this.i);
+        if (e===finished() && this.s) {
+          var a=this.s();
+          //If spread is also LazyIter, get its elements and spread and continue iterating over those
+          if (a.getT$name && a.getT$name()==='ceylon.language::LazyIterable') {
+            this.i=0;
+            this.s=a.s;
+            this.e=a.e;
+            return this.next();
+          }
           this.sp=(Array.isArray(a)?$arr$(a,{t:Anything}):a).iterator();
           e=this.sp.next();
         } else {

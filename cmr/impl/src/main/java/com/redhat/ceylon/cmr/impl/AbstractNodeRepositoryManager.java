@@ -430,12 +430,15 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         log.debug("Looking for " + context);
 
         for (CmrRepository repository : repositories) {
-            if(context.isMaven() && !repository.isMaven()){
-                log.debug("  -> Skipping non-Maven repo for Maven lookup");
+            if (context.getNamespace() != null
+                    && !context.getNamespace().equals(repository.getNamespace())) {
+                log.debug("  -> Skipping repo that does not handle namespace: " + context.getNamespace());
                 continue;
             }
-            if(!context.isMaven() && repository.isMaven()){
-                log.debug("  -> Skipping Maven repo for non-Maven lookup");
+            if (context.getNamespace() == null &&
+                    repository.getNamespace() != null &&
+                    !DefaultRepository.NAMESPACE.equals(repository.getNamespace())) {
+                log.debug("  -> Skipping non-Ceylon repo for Ceylon lookup");
                 continue;
             }
             Node child = fromRepository(repository, context, addLeaf);
@@ -482,7 +485,10 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     public ModuleSearchResult completeModules(ModuleQuery query) {
         ModuleSearchResult result = new ModuleSearchResult();
         for (CmrRepository root : getRepositories()) {
-            root.completeModules(query, result);
+            if (query.getNamespace() == null
+                    || query.getNamespace().equals(root.getNamespace())) {
+                root.completeModules(query, result);
+            }
         }
         return result;
     }
@@ -491,7 +497,10 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     public ModuleVersionResult completeVersions(ModuleVersionQuery query) {
         ModuleVersionResult result = new ModuleVersionResult(query.getName());
         for (CmrRepository root : getRepositories()) {
-            root.completeVersions(query, result);
+            if (query.getNamespace() == null
+                    || query.getNamespace().equals(root.getNamespace())) {
+                root.completeVersions(query, result);
+            }
         }
         return result;
     }
@@ -502,7 +511,10 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             // that's pretty simple
             ModuleSearchResult result = new ModuleSearchResult();
             for (CmrRepository root : getRepositories()) {
-                root.searchModules(query, result);
+                if (query.getNamespace() == null
+                        || query.getNamespace().equals(root.getNamespace())) {
+                    root.searchModules(query, result);
+                }
             }
             return result;
         } else {
@@ -520,13 +532,16 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
             }
             Long start = query.getStart();
             for (CmrRepository root : repos) {
-                ModuleSearchResult result = new ModuleSearchResult();
-                // adapt the start index if required
-                if (pagingInfo != null)
-                    query.setStart(pagingInfo[i]);
-                root.searchModules(query, result);
-                results[i++] = result;
-                names.addAll(result.getModuleNames());
+                if (query.getNamespace() == null
+                        || query.getNamespace().equals(root.getNamespace())) {
+                    ModuleSearchResult result = new ModuleSearchResult();
+                    // adapt the start index if required
+                    if (pagingInfo != null)
+                        query.setStart(pagingInfo[i]);
+                    root.searchModules(query, result);
+                    results[i++] = result;
+                    names.addAll(result.getModuleNames());
+                }
             }
             // restore the query start
             query.setStart(start);
@@ -595,5 +610,17 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         for (CmrRepository root : getRepositories()) {
             root.refresh(recurse);
         }
+    }
+
+    @Override
+    public boolean isValidNamespace(String namespace) {
+        for (CmrRepository root : getRepositories()) {
+            if (namespace == null && DefaultRepository.NAMESPACE.equals(root.getNamespace())) {
+                return true;
+            } else if (namespace != null && namespace.equals(root.getNamespace())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

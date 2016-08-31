@@ -70,4 +70,5 @@ shared void bytes() {
   check(b==Byte(0), "255++");
   check(Byte(1)..Byte(3) == [Byte(1), Byte(2), Byte(3)], "1..3");
   check(Byte(255)..Byte(1) == [Byte(255), Byte(0), Byte(1)], "255..1");
+  check(every { for (bit in 0:8) $11111111.byte.get(bit) }, "All bits should be set #6315");
 }

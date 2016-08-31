@@ -48,8 +48,12 @@ import java.util.Set;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 
+import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonClassWriter;
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
@@ -106,6 +110,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Position;
 import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage;
 import com.redhat.ceylon.langtools.tools.javac.util.Position.LineMap;
 import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage.Language;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -145,6 +150,7 @@ public class LanguageCompiler extends JavaCompiler {
     private List<JavaFileObject> resourceFileObjects;
     private Map<String,CeylonFileObject> moduleNamesToFileObjects = new HashMap<String,CeylonFileObject>();
     private SourceLanguage sourceLanguage;
+    private boolean addModuleTrees = true;
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(final Context context) {
@@ -547,8 +553,10 @@ public class LanguageCompiler extends JavaCompiler {
                 moduleNamesToFileObjects .put(name, cfo);
             }
         }
-        for (JCCompilationUnit moduleTree : moduleTrees) {
-            trees = trees.append(moduleTree);
+        if(addModuleTrees){
+            for (JCCompilationUnit moduleTree : moduleTrees) {
+                trees = trees.append(moduleTree);
+            }
         }
         return trees;
     }
@@ -851,7 +859,35 @@ public class LanguageCompiler extends JavaCompiler {
 
     @Override
     public void initProcessAnnotations(Iterable<? extends Processor> processors) {
-        // don't do anything, which will leave the "processAnnotations" field to false
+        java.util.List<String> aptModules = options.getMulti(Option.CEYLONAPT);
+        if(aptModules != null){
+            CeyloncFileManager dfm = (CeyloncFileManager) fileManager;
+            RepositoryManager repositoryManager = dfm.getRepositoryManager();
+            Set<ModuleSpec> visited = new HashSet<>();
+            for(String aptModule : aptModules){
+                ModuleSpec moduleSpec = ModuleSpec.parse(aptModule);
+                addDependenciesToAptPath(repositoryManager, moduleSpec, visited);
+            }
+            // we only run APT if asked explicitly with the --apt flag
+            super.initProcessAnnotations(processors);
+        }
+        // else don't do anything, which will leave the "processAnnotations" field to false
+    }
+
+    private void addDependenciesToAptPath(RepositoryManager repositoryManager, ModuleSpec moduleSpec, Set<ModuleSpec> visited) {
+        if(!visited.add(moduleSpec))
+            return;
+
+        String ns = ModuleUtil.getNamespaceFromUri(moduleSpec.getName());
+        String name = ModuleUtil.getModuleNameFromUri(moduleSpec.getName());
+        ArtifactContext context = new ArtifactContext(ns, name, moduleSpec.getVersion(), ArtifactContext.JAR);
+        ArtifactResult result = repositoryManager.getArtifactResult(context);
+        ceylonEnter.addModuleToAptPath(moduleSpec, result);
+
+        for(ArtifactResult dep : result.dependencies()){
+            ModuleSpec depSpec = new ModuleSpec(dep.name(), dep.version());
+            addDependenciesToAptPath(repositoryManager, depSpec, visited);
+        }
     }
 
     @Override
@@ -871,5 +907,44 @@ public class LanguageCompiler extends JavaCompiler {
         timer.startTask("Generate");
         super.generate(queue, results);
         timer.endTask();
+    }
+    
+    @Override
+    public void initRound(JavaCompiler prev) {
+        super.initRound(prev);
+        // round compilers don't add module trees, it's already done by the first one
+        addModuleTrees = false;
+        PhasedUnits oldPUs = ((LanguageCompiler)prev).phasedUnits;
+        ModuleManager moduleManager = phasedUnits.getModuleManager();
+        ModuleSourceMapper moduleSourceMapper = phasedUnits.getModuleSourceMapper();
+        for(PhasedUnit pu : oldPUs.getPhasedUnits()){
+            if(pu instanceof CeylonPhasedUnit){
+                CeylonPhasedUnit cpu = (CeylonPhasedUnit) pu;
+                // FIXME: this is bad in many ways
+                String pkgName;
+                try {
+                    pkgName = getPackage(((CeylonPhasedUnit) pu).getFileObject());
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    continue;
+                }
+                // make a Package with no module yet, we will resolve them later
+                /*
+                 * Stef: see javadoc for findOrCreateModulelessPackage() for why this is here.
+                 */
+                com.redhat.ceylon.model.typechecker.model.Package p = modelLoader.findOrCreateModulelessPackage(pkgName == null ? "" : pkgName);
+                CeylonPhasedUnit newPu = new CeylonPhasedUnit(pu.getUnitFile(), pu.getSrcDir(), pu.getCompilationUnit(), 
+                        p, moduleManager, moduleSourceMapper, ceylonContext, 
+                        cpu.getFileObject(), cpu.getLineMap());
+                phasedUnits.addPhasedUnit(pu.getUnitFile(), newPu);
+            }else{
+                phasedUnits.addPhasedUnit(pu.getUnitFile(), pu);
+            }
+        }
+    }
+
+    public void setAddModuleTrees(boolean addModuleTrees) {
+        this.addModuleTrees = addModuleTrees;
     }
 }

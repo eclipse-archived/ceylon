@@ -59,7 +59,7 @@ public class ResourceArtifactCreatorImpl implements ArtifactCreator {
         if(toCopy.isEmpty())
             return Collections.emptySet();
         
-        final ArtifactContext ac = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.RESOURCES);
+        final ArtifactContext ac = new ArtifactContext(null, moduleName, moduleVersion, ArtifactContext.RESOURCES);
         ac.setThrowErrorIfMissing(false);
         
         File resDir = Files.createTempDirectory("ceylon-resources-").toFile();

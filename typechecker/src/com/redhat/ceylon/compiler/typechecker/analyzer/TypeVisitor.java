@@ -1,12 +1,13 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correct;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correctionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isVeryAbstractClass;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memberCorrectionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.setTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
@@ -33,6 +34,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeSpecifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -72,15 +74,18 @@ public class TypeVisitor extends Visitor {
     
     private Unit unit;
 
+    private Cancellable cancellable;
     private boolean inDelegatedConstructor;
     private boolean inTypeLiteral;
     private boolean inExtendsOrClassAlias;
     
-    public TypeVisitor() {
+    public TypeVisitor(Cancellable cancellable) {
+        this.cancellable = cancellable;
     }
     
-    public TypeVisitor(Unit unit) {
+    public TypeVisitor(Unit unit, Cancellable cancellable) {
         this.unit = unit;
+        this.cancellable = cancellable;
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
@@ -389,11 +394,10 @@ public class TypeVisitor extends Visitor {
             if (type==null) {
                 if (!isNativeForWrongBackend(
                         scope.getScopedBackends())) {
-                    String correction = correct(scope, unit, name);
-                    String message = correction==null ? "" :
-                        " (did you mean '" + correction + "'?)";
-                    that.addError("type declaration does not exist: '" + 
-                            name + "'" + message, 
+                    that.addError("type is not defined: '" 
+                            + name + "'" 
+                            + correctionMessage(name, scope, 
+                                    unit, cancellable), 
                             102);
                     unit.setUnresolvedReferences();
                 }
@@ -491,14 +495,12 @@ public class TypeVisitor extends Visitor {
                                     d.getName() + "'");
                         }
                         else {
-                            String correction = 
-                                    correct(d, null, unit, name);
-                            String message = correction==null ? "" :
-                                " (did you mean '" + correction + "'?)";
-                            that.addError("member type declaration does not exist: '" + 
-                                    name + "' in type '" + 
-                                    d.getName() + "'" + 
-                                    message, 100);
+                            that.addError("member type is not defined: '" 
+                                    + name + "' in type '" 
+                                    + d.getName() + "'" 
+                                    + memberCorrectionMessage(name, d, 
+                                            null, unit, cancellable), 
+                                    100);
                             unit.setUnresolvedReferences();
                         }
                     }
@@ -1136,6 +1138,9 @@ public class TypeVisitor extends Visitor {
     private static void inheritedType(Tree.StaticType st) {
         if (st instanceof Tree.SimpleType) {
             ((Tree.SimpleType) st).setInherited(true);
+            if (st instanceof Tree.QualifiedType) {
+                inheritedType(((Tree.QualifiedType) st).getOuterType());
+            }
         }
     }
 
@@ -1472,7 +1477,7 @@ public class TypeVisitor extends Visitor {
                     .getDirectMember(name, null, false);
         if (a==null) {
             //Now done in ExpressionVisitor!
-//            that.addError("parameter declaration does not exist: '" + p.getName() + "'");
+//            that.addError("parameter is not defined: '" + p.getName() + "'");
         }
         else if (!isLegalParameter(a)) {
             that.addError("parameter is not a reference value or function: '" + 

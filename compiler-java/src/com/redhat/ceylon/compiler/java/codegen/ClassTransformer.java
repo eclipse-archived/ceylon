@@ -90,6 +90,7 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCPrimitiveTypeTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCReturn;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCSwitch;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCThrow;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
@@ -1519,7 +1520,7 @@ public class ClassTransformer extends AbstractTransformer {
                     && (value.isShared() || value.isCaptured())) {
                 return true;
             }
-        } else if (member instanceof Function) {
+        } /*else if (member instanceof Function) {
             Function function = (Function)member;
             
             if (function.isShortcutRefinement()
@@ -1530,7 +1531,7 @@ public class ClassTransformer extends AbstractTransformer {
                            || function.isActual())) {
                 return true;
             }
-        }
+        }*/
         return false;
     }
     
@@ -3425,6 +3426,7 @@ public class ClassTransformer extends AbstractTransformer {
         boolean createField = Strategy.createField(parameter, model) && !lazy;
         boolean concrete = Decl.withinInterface(decl)
                 && decl.getSpecifierOrInitializerExpression() != null;
+        JCThrow err = null;
         if (!lazy && 
                 (concrete || 
                         (!Decl.isFormal(decl) 
@@ -3440,10 +3442,17 @@ public class ClassTransformer extends AbstractTransformer {
             
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
-                Value declarationModel = model;
-                initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
-                        CodegenUtil.getBoxingStrategy(declarationModel), 
-                        nonWideningType);
+                Tree.Expression expression = decl.getSpecifierOrInitializerExpression().getExpression();
+                HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getTerm());
+                if (error != null) {
+                    initialValue = null;
+                    err = makeThrowUnresolvedCompilationError(error.getErrorMessage().getMessage());
+                } else {
+                    Value declarationModel = model;
+                    initialValue = expressionGen().transformExpression(expression, 
+                            CodegenUtil.getBoxingStrategy(declarationModel), 
+                            nonWideningType);
+                }
             }
 
             int flags = 0;
@@ -3469,13 +3478,15 @@ public class ClassTransformer extends AbstractTransformer {
                         annos = annos.prependList(makeAtNoInitCheck());
                     }
                     // fields should be ignored, they are accessed by the getters
-                    classBuilder.field(modifiers, attrName, type, initialValue, !useField, annos);
-                    if (model.isLate() && CodegenUtil.needsLateInitField(model, typeFact())) {
-                        classBuilder.field(PRIVATE | Flags.VOLATILE | Flags.TRANSIENT, Naming.getInitializationFieldName(attrName), 
-                                make().Type(syms().booleanType), 
-                                make().Literal(false), false, makeAtIgnore());
+                    if (err == null) {
+                        classBuilder.field(modifiers, attrName, type, initialValue, !useField, annos);
+                        if (model.isLate() && CodegenUtil.needsLateInitField(model, typeFact())) {
+                            classBuilder.field(PRIVATE | Flags.VOLATILE | Flags.TRANSIENT, Naming.getInitializationFieldName(attrName), 
+                                    make().Type(syms().booleanType), 
+                                    make().Literal(false), false, makeAtIgnore());
+                        }
                     }
-                }        
+                }
             }
             
             // A shared attribute might be initialized in a for statement, so
@@ -3492,7 +3503,11 @@ public class ClassTransformer extends AbstractTransformer {
             if (!withinInterface || model.isShared()) {
                 // Generate getter in main class or interface (when shared)
                 at(decl.getType());
-                classBuilder.attribute(makeGetter(decl, false, lazy));
+                AttributeDefinitionBuilder getter = makeGetter(decl, false, lazy);
+                if (err != null) {
+                    getter.getterBlock(make().Block(0, List.<JCStatement>of(err)));
+                }
+                classBuilder.attribute(getter);
             }
             if (withinInterface && lazy) {
                 // Generate getter in companion class
@@ -3619,7 +3634,8 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= Decl.isVariable(cdecl) || Decl.isLate(cdecl) ? 0 : FINAL;
-        result |= PRIVATE;
+        if(!CodegenUtil.hasCompilerAnnotation(cdecl, "packageProtected"))
+            result |= PRIVATE;
         
         return result;
     }
@@ -3680,9 +3696,13 @@ public class ClassTransformer extends AbstractTransformer {
                     TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
                     Type nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
                     
+                    int flags = 0;
+                    if(declarationModel.hasUncheckedNullType())
+                        flags |= ExpressionTransformer.EXPR_TARGET_ACCEPTS_NULL;
                     JCExpression expr = expressionGen().transformExpression(specOrInit.getExpression(), 
                             CodegenUtil.getBoxingStrategy(declarationModel), 
-                            nonWideningType);
+                            nonWideningType,
+                            flags);
                     expr = convertToIntIfHashAttribute(declarationModel, expr);
                     builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(expr))));
                 }
@@ -4241,7 +4261,6 @@ public class ClassTransformer extends AbstractTransformer {
 
     List<JCStatement> transformSpecifiedMethodBody(Tree.MethodDeclaration  def, SpecifierExpression specifierExpression) {
         final Function model = def.getDeclarationModel();
-        List<JCStatement> body;
         Tree.MethodDeclaration methodDecl = def;
         boolean isLazy = specifierExpression instanceof Tree.LazySpecifierExpression;
         boolean returnNull = false;
@@ -4260,7 +4279,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Callable, just transform the expr to use as the method body.
             Tree.FunctionArgument fa = (Tree.FunctionArgument)term;
             Type resultType = model.getType();
-            returnNull = isAnything(resultType) && fa.getExpression().getUnboxed();
+            returnNull = Decl.isUnboxedVoid(model);
             final java.util.List<Tree.Parameter> lambdaParams = fa.getParameterLists().get(0).getParameters();
             final java.util.List<Tree.Parameter> defParams = def.getParameterLists().get(0).getParameters();
             List<Substitution> substitutions = List.nil();
@@ -4269,12 +4288,22 @@ public class ClassTransformer extends AbstractTransformer {
                         (TypedDeclaration)lambdaParams.get(ii).getParameterModel().getModel(), 
                         defParams.get(ii).getParameterModel().getName()));
             }
-            bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), 
+            List<JCStatement> body = null;
+            if(fa.getExpression() != null)
+                bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), 
                             returnNull ? BoxingStrategy.INDIFFERENT : CodegenUtil.getBoxingStrategy(model), 
                             resultType);
+            else{
+                body = gen().statementGen().transformBlock(fa.getBlock());
+                // useless but satisfies branch checking
+                bodyExpr = null;
+            }
             for (Substitution subs : substitutions) {
                 subs.close();
             }
+            // if we have a whole body we're done
+            if(body != null)
+                return body;
         } else if (!isLazy && typeFact().isCallableType(term.getTypeModel())) {
             returnNull = isAnything(term.getTypeModel()) && term.getUnboxed();
             Function method = methodDecl.getDeclarationModel();
@@ -4338,6 +4367,7 @@ public class ClassTransformer extends AbstractTransformer {
             // The innermost of an MPL method declared void needs to return null
             returnNull = Decl.isUnboxedVoid(model) && Decl.isMpl(model);
         }
+        List<JCStatement> body;
         if (!Decl.isUnboxedVoid(model)
                 || Decl.isMpl(model)
                 || Strategy.useBoxedVoid(model)) {

@@ -20,6 +20,10 @@
 package com.redhat.ceylon.tools.test;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.jar.Attributes;
@@ -76,6 +80,45 @@ public class FatJarToolTests extends AbstractToolTests {
             Manifest manifest = new Manifest(zf.getInputStream(manifestEntry));
             Attributes attributes = manifest.getMainAttributes();
             Assert.assertEquals("ceylon.language.run_", attributes.getValue("Main-Class"));
+        }
+    }
+
+    @Test
+    public void testResources() throws Throwable {
+        compile(Arrays.asList("-out", getOutPath(), 
+                "-src", getPackagePath()+"fatjar/source",
+                "-res", getPackagePath()+"fatjar/resource"), 
+                "fatjar/source/com/foo/module.ceylon",
+                "fatjar/source/com/foo/run.ceylon",
+                "fatjar/resource/com/foo/bar.txt");
+        
+        ToolModel<CeylonFatJarTool> model = pluginLoader.loadToolModel("fat-jar");
+        Assert.assertNotNull(model);
+        File out = new File(getOutPath(), "fatjar.jar");
+        CeylonFatJarTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.asList(
+                        "--rep", "../dist/dist/repo",
+                        "--rep", getOutPath(),
+                        "--out", out.getAbsolutePath(),
+                        "com.foo/1"));
+        tool.run();
+        
+        Assert.assertTrue(out.exists());
+        
+        URLClassLoader classLoader = new CleanupClassLoader(new URL[]{out.toURL()}, null);
+        try{
+            try{
+                Class<?> klass = classLoader.loadClass("com.foo.run_");
+                Method run = klass.getMethod("main", String[].class);
+                run.invoke(null, new Object[]{new String[0]});
+            }catch(InvocationTargetException x){
+                Throwable cause = x.getCause();
+                // make sure toString() loads all the classes it needs before we close the CL and rethrow
+                cause.toString();
+                throw cause;
+            }
+        }finally{
+            classLoader.close();
         }
     }
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
@@ -79,13 +80,13 @@ public class CeylonTestJsTool extends AbstractTestTool {
 
         CeylonRunJsTool ceylonRunJsTool = new CeylonRunJsTool() {
             @Override
-            protected void customizeDependencies(List<File> localRepos, RepositoryManager repoman) throws IOException {
+            protected void customizeDependencies(List<File> localRepos, RepositoryManager repoman, Set<String> loadedDependencies) throws IOException {
                 for (String moduleAndVersion : moduleAndVersionList) {
                     String modName = ModuleUtil.moduleName(moduleAndVersion);
                     String modVersion = ModuleUtil.moduleVersion(moduleAndVersion);
                     File artifact = getArtifact(repoman, modName, modVersion, true);
                     localRepos.add(getRepoDir(modName, artifact));
-                    loadDependencies(localRepos, repoman, artifact);
+                    loadDependencies(localRepos, repoman, artifact, loadedDependencies);
                 }
             };
         };

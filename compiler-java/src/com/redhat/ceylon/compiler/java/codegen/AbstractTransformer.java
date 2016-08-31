@@ -44,6 +44,7 @@ import java.util.TreeSet;
 import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.ceylondoc.Util;
+import com.redhat.ceylon.cmr.impl.DefaultRepository;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.Versions;
@@ -100,8 +101,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.LanguageAnnotation;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
-import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
-import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -112,6 +111,7 @@ import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -120,11 +120,13 @@ import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+import com.redhat.ceylon.model.typechecker.model.Specification;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.util.TypePrinter;
 
 /**
@@ -132,14 +134,38 @@ import com.redhat.ceylon.model.typechecker.util.TypePrinter;
  */
 public abstract class AbstractTransformer implements Transformation {
 
-    private final static TypePrinter typeSerialiser = new TypePrinter(
-            true,//printAbbreviated 
-            true,//printTypeParameters 
-            false,//printTypeParameterDetail 
-            true,//printQualifyingType 
-            false,//escapeLowercased 
-            true,//printFullyQualified 
-            true);//printQualifier
+    // the @TypeInfo of a static inner class should not include type arguments
+    // for the qualifying classes. See #2388
+    static class TypeSerializer extends TypePrinter {
+        TypeSerializer() {
+            super(
+                true,//printAbbreviated 
+                true,//printTypeParameters 
+                false,//printTypeParameterDetail 
+                true,//printQualifyingType 
+                false,//escapeLowercased 
+                true,//printFullyQualified 
+                true);//printQualifier
+        }
+        /** The type being serialized */
+        private Type type;
+        public String serialize(Type pt, Unit unit) {
+            this.type = pt;
+            String result = super.print(pt, unit);
+            this.type = null;
+            return result;
+        }
+        @Override
+        protected boolean printTypeParameters(Type pt) {
+            return super.printTypeParameters() 
+                    && (pt == type
+                        || type == null
+                        || type.getDeclaration() == null 
+                        || type.getDeclaration().isToplevel() 
+                        || !type.getDeclaration().isStaticallyImportable());
+        }
+    };
+    private final TypeSerializer typeSerialiser = new TypeSerializer(); 
 
     private Context context;
     private TreeMaker make;
@@ -1092,7 +1118,7 @@ public abstract class AbstractTransformer implements Transformation {
             return null;
         if(!skipType){
             TypedDeclaration member = (TypedDeclaration) typeDecl.getDirectMember(decl.getName(), signature, false, isOverloaded);
-            if(member != null)
+            if(member != null && !member.isStaticallyImportable())
                 return member;
         }
         // look up
@@ -1185,7 +1211,7 @@ public abstract class AbstractTransformer implements Transformation {
             Type typedSignatureArg = typedSignature.get(i);
             if(signatureArg != null
                     && typedSignatureArg != null
-                    && !com.redhat.ceylon.model.typechecker.model.ModelUtil.matches(signatureArg, typedSignatureArg, typeFact()))
+                    && !ModelUtil.matches(signatureArg, typedSignatureArg, typeFact()))
                 return false;
         }
         return true;
@@ -1563,6 +1589,8 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     private boolean isErasedUnionOrIntersection(Type producedType) {
+        // makeJavaType does that too, and it reduces some unions into simple cases
+        producedType = simplifyType(producedType);
         if(producedType.isUnion()){
             java.util.List<Type> caseTypes = producedType.getCaseTypes();
             // special case for optional types
@@ -2287,13 +2315,10 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     boolean isJavaEnumType(Type type) {
-        Module jdkBaseModule = loader().getJDKBaseModule();
-        Package javaLang = jdkBaseModule.getPackage("java.lang");
-        TypeDeclaration enumDecl = (TypeDeclaration)javaLang.getDirectMember("Enum", null, false);
         if (type.isClass() && type.getDeclaration().isAnonymous()) {
             type = type.getExtendedType();
         }
-        return type.isSubtypeOf(enumDecl.appliedType(null, Collections.singletonList(type)));
+        return type.isSubtypeOf(typeFact().getJavaEnumType(type));
     }
 
     public JCExpression makeParameterisedType(Type type, Type generalType, final int flags, 
@@ -2304,7 +2329,7 @@ public abstract class AbstractTransformer implements Transformation {
         ListBuffer<JCExpression> typeArgs = null;
         if(index >= firstQualifyingTypeWithTypeParameters) {
             int taFlags = flags;
-            if (qualifyingTypes != null && index < qualifyingTypes.size()) {
+            if (qualifyingTypes != null && index < qualifyingTypes.size()-1) {
                 // The qualifying types before the main one should
                 // have type parameters with proper variance
                 taFlags &= ~(JT_EXTENDS | JT_SATISFIES);
@@ -2480,7 +2505,9 @@ public abstract class AbstractTransformer implements Transformation {
                         // - Foo<T> if Foo is invariant in T,
                         // - Foo<? extends T> if Foo is covariant in T, or
                         // - Foo<? super T> if Foo is contravariant in T
-                        if (((flags & JT_CLASS_NEW) == 0) && simpleType.isContravariant(tp)) {
+                        // FIXME: it may be necessary to uncomment this in the future,
+                        // see https://github.com/ceylon/ceylon/issues/6365
+                        if (((flags & JT_CLASS_NEW) == 0) && simpleType.isContravariant(tp)/* && !isDependedOn*/) {
                             jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, JT_TYPE_ARGUMENT));
                         } else if (((flags & JT_CLASS_NEW) == 0) && simpleType.isCovariant(tp) && !isDependedOn) {
                             jta = make().Wildcard(make().TypeBoundKind(BoundKind.EXTENDS), makeJavaType(ta, JT_TYPE_ARGUMENT));
@@ -2502,7 +2529,10 @@ public abstract class AbstractTransformer implements Transformation {
                     // - Foo<? super T> if Foo is contravariant in T
                     if (((flags & JT_CLASS_NEW) == 0) 
                             && simpleType.isContravariant(tp)
-                            && (!isAnything || tp.isContravariant())) {
+                            && (!isAnything || tp.isContravariant())
+                            // FIXME: it may be necessary to uncomment this in the future,
+                            // see https://github.com/ceylon/ceylon/issues/6365
+                            /*&& !isDependedOn*/) {
                         // DO NOT trust use-site contravariance for Anything, because we consider "in Anything" to be the same
                         // as "Anything". Only look at declaration-site contravariance
                         jta = make().Wildcard(make().TypeBoundKind(BoundKind.SUPER), makeJavaType(ta, JT_TYPE_ARGUMENT));
@@ -3016,6 +3046,13 @@ public abstract class AbstractTransformer implements Transformation {
                 spec = List.<JCExpression>of(dependencyName, dependencyVersion);
             else
                 spec = List.<JCExpression>of(dependencyName);
+            
+            if (dependency.getNamespace() != null
+                    && !DefaultRepository.NAMESPACE.equals(dependency.getNamespace())) {
+                JCExpression dependencyNamespace = make().Assign(naming.makeUnquotedIdent("namespace"),
+                        make().Literal(dependency.getNamespace()));
+                spec = spec.append(dependencyNamespace);
+            }
             
             if (Util.getAnnotation(dependency, "shared") != null) {
                 JCExpression exported = make().Assign(naming.makeUnquotedIdent("export"), make().Literal(true));
@@ -3599,11 +3636,13 @@ public abstract class AbstractTransformer implements Transformation {
         return makeJavaTypeAnnotations(type, declaredVoid, 
                 CodegenUtil.hasTypeErased(decl),
                 CodegenUtil.hasUntrustedType(decl),
-                needsJavaTypeAnnotations(decl));
+                needsJavaTypeAnnotations(decl),
+                decl.hasUncheckedNullType());
     }
 
     private List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Type type, boolean declaredVoid, 
-                                                              boolean hasTypeErased, boolean untrusted, boolean required) {
+                                                              boolean hasTypeErased, boolean untrusted, 
+                                                              boolean required, boolean uncheckedNull) {
         if (!required)
             return List.nil();
         String name = serialiseTypeSignature(type);
@@ -3624,13 +3663,17 @@ public abstract class AbstractTransformer implements Transformation {
             annotationArgs.add(
                     make().Assign(naming.makeUnquotedIdent("untrusted"), make().Literal(untrusted)));
         }
+        if (uncheckedNull) {
+            annotationArgs.add(
+                    make().Assign(naming.makeUnquotedIdent("uncheckedNull"), make().Literal(uncheckedNull)));
+        }
         return makeModelAnnotation(syms().ceylonAtTypeInfoType, annotationArgs.toList());
     }
     
     private String serialiseTypeSignature(Type type){
         // resolve aliases
         type = type.resolveAliases();
-        return typeSerialiser.print(type, typeFact);
+        return typeSerialiser.serialize(type, typeFact);
     }
     
     /*
@@ -4543,10 +4586,14 @@ public abstract class AbstractTransformer implements Transformation {
             }
         }
         // we can optimise it if we've got a ClassOrInterface with only Anything type parameters
-        if(type.getDeclaration() instanceof ClassOrInterface == false)
+        TypeDeclaration typeDeclaration = type.getDeclaration();
+        if(typeDeclaration instanceof ClassOrInterface == false)
             return false;
         for(Entry<TypeParameter, Type> entry : type.getTypeArguments().entrySet()){
             TypeParameter tp = entry.getKey();
+            // skip type params for qualifying types
+            if(!tp.getDeclaration().equals(typeDeclaration))
+                continue;
             if(!type.isCovariant(tp)) {
                 return false;
             }
@@ -4761,7 +4808,7 @@ public abstract class AbstractTransformer implements Transformation {
      * (not including {@code tp}) has contraints dependent on {@code tp}.  
      * 
      * Partial hack for https://github.com/ceylon/ceylon-compiler/issues/920
-     * We need to find if a covariant param has other type parameters with bounds to this one
+     * We need to find if a co/contravariant param has other type parameters with bounds to this one
      * For example if we have "Foo<out A, out B>() given B satisfies A" then we can't generate
      * the following signature: "Foo<? extends Object, ? extends String" because the subtype of
      * String that can satisfy B is not necessarily the subtype of Object that we used for A.
@@ -4826,7 +4873,7 @@ public abstract class AbstractTransformer implements Transformation {
         Type type = parameter.getType();
         return hasConstrainedTypeParameters(type);
     }
-    private boolean hasConstrainedTypeParameters(Type type) {
+    protected boolean hasConstrainedTypeParameters(Type type) {
         if(type.isTypeParameter()){
             TypeParameter tp = (TypeParameter) type.getDeclaration();
             return !tp.getSatisfiedTypes().isEmpty() && !tp.isContravariant();
@@ -5261,7 +5308,13 @@ public abstract class AbstractTransformer implements Transformation {
             Scope container = tp.getContainer();
             JCExpression qualifier = null;
             if(container instanceof Class){
-                qualifier = naming.makeQualifiedThis(makeJavaType(((Class)container).getType(), JT_RAW));
+                if(!expressionGen().isWithinSuperInvocation(container))
+                    qualifier = naming.makeQualifiedThis(makeJavaType(((Class)container).getType(), JT_RAW));
+                else{
+                    // within a super invocation we haven't set the instance variable yet so we can't qualify
+                    // so we use the constructor parameter
+                    return makeUnquotedIdent(name);
+                }
             }else if(container instanceof Interface){
                 qualifier = naming.makeQualifiedThis(makeJavaType(((Interface)container).getType(), JT_COMPANION | JT_RAW));
             }else if(container instanceof Function){
@@ -5294,8 +5347,10 @@ public abstract class AbstractTransformer implements Transformation {
             tupleElementTypes.set(tupleElementTypes.size()-1, typeFact.getSequentialElementType(restType));
             atLeastOne = restType.getDeclaration().inherits(typeFact().getSequenceDeclaration());
             // the last rest element may be a type param, in which case we resolve it at runtime
-            needsRestSplit = !restType.getDeclaration().equals(typeFact.getSequenceDeclaration())
-                    && !restType.getDeclaration().equals(typeFact.getSequentialDeclaration());
+            needsRestSplit = 
+                    restType.getDeclaration() instanceof ClassOrInterface == false
+                    || (!restType.getDeclaration().equals(typeFact.getSequenceDeclaration())
+                        && !restType.getDeclaration().equals(typeFact.getSequentialDeclaration()));
         }
         
         int firstDefaulted;
@@ -5454,6 +5509,9 @@ public abstract class AbstractTransformer implements Transformation {
         // Here we can use getContainer, we don't care about scopes
         Scope container = declaration.getContainer();
         while(container != null){
+            if(container instanceof Specification && ((Specification) container).getDeclaration() != null)
+                // TypedDeclaration are always Scopes in theory
+                container = (Scope) ((Specification) container).getDeclaration();
             if(container instanceof Package)
                 return null;
             if(container instanceof Declaration){

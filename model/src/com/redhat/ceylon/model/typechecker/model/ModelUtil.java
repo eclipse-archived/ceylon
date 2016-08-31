@@ -40,6 +40,7 @@ public class ModelUtil {
     
     static final Map<TypeParameter, SiteVariance> EMPTY_VARIANCE_MAP = 
             emptyMap();
+    
     /**
      * Is the second scope contained by the first scope?
      */
@@ -183,7 +184,7 @@ public class ModelUtil {
                 !decl.isAbstraction());
     }
 
-    static boolean hasMatchingSignature(
+    public static boolean hasMatchingSignature(
             Declaration dec, 
             List<Type> signature, boolean variadic) {
         return hasMatchingSignature(dec, 
@@ -215,16 +216,17 @@ public class ModelUtil {
                 int sigSize = signature.size();
                 if (hasSeqParam) {
                     size--;
-                    if (sigSize<size) {
-                        return false;
-                    }
                 }
-                else if (sigSize!=size) {
+                else if (sigSize>size) {
                     return false;
                 }
                 for (int i=0; i<size; i++) {
+                    Parameter p = params.get(i);
+                    if (i>=sigSize) {
+                        return p.isDefaulted();
+                    }
                     FunctionOrValue pm = 
-                            params.get(i).getModel();
+                            p.getModel();
                     if (pm==null) {
                         return false;
                     }
@@ -241,8 +243,9 @@ public class ModelUtil {
                     }
                 }
                 if (hasSeqParam) {
+                    Parameter p = params.get(size);
                     FunctionOrValue model = 
-                            params.get(size).getModel();
+                            p.getModel();
                     Type pdt = 
                             model.appliedReference(null, 
                                     NO_TYPE_ARGS)
@@ -318,11 +321,27 @@ public class ModelUtil {
                 isTypeUnknown(defParamType)) {
             return false;
         }
-        if (!erase(defArgType, unit)
-                .inherits(erase(defParamType, unit)) &&
-                notUnderlyingTypesEqual(defParamType, 
+        TypeDeclaration erasedArgType = 
+                erase(defArgType, unit);
+        TypeDeclaration erasedParamType = 
+                erase(defParamType, unit);
+        if (!erasedArgType
+                .inherits(erasedParamType) 
+                && notUnderlyingTypesEqual(
+                        defParamType, 
                         defArgType)) {
             return false;
+        }
+        TypeDeclaration oa = 
+                unit.getJavaObjectArrayDeclaration();
+        if (oa!=null 
+                && erasedArgType.equals(oa) 
+                && erasedParamType.equals(oa)) {
+            Type argElementType = 
+                    unit.getJavaArrayElementType(defArgType);
+            Type paramElementType = 
+                    unit.getJavaArrayElementType(defParamType);
+            return matches(argElementType, paramElementType, unit);
         }
         return true;
     }
@@ -386,7 +405,7 @@ public class ModelUtil {
                                 unit.getDefiniteType(rplt);
                         Type argumentType = 
                                 signature != null && 
-                                signature.size() >= i ? 
+                                i < signature.size() ? 
                                         signature.get(i) : 
                                         null;
                         if (isTypeUnknown(otherType) || 
@@ -397,7 +416,7 @@ public class ModelUtil {
                                 erase(paramType, unit);
                         TypeDeclaration otd = 
                                 erase(otherType, unit);
-                        if(paramType.isExactly(otherType) && 
+                        if (paramType.isExactly(otherType) && 
                                 supportsCoercion(ptd) &&
                                 // do we have different scores?
                                 hasWorseScore(
@@ -417,7 +436,7 @@ public class ModelUtil {
                         }
                     }
                     // check sequenced parameters last
-                    if (dhsp && rhsp){
+                    if (dhsp && rhsp) {
                         Type dplt = 
                                 dpl.get(dplSize).getModel()
                                 .appliedReference(null, 
@@ -743,7 +762,27 @@ public class ModelUtil {
                                         paramType, otherType)) {
                             atLeastOneBetter = true;
                         }
-                        
+                        TypeDeclaration oa = 
+                                unit.getJavaObjectArrayDeclaration();
+                        if (oa!=null 
+                                && ptd.equals(oa) 
+                                && otd.equals(oa)) {
+                            Type paramElementType = 
+                                    unit.getJavaArrayElementType(paramType);
+                            Type otherElementType = 
+                                    unit.getJavaArrayElementType(otherType);
+                            TypeDeclaration petd = 
+                                    erase(paramElementType, unit);
+                            TypeDeclaration oetd = 
+                                    erase(otherElementType, unit);
+                            if (!petd.inherits(oetd)) {
+                                return false;
+                            }
+                            if (petd.inherits(oetd) &&
+                                    !oetd.inherits(petd)) {
+                                atLeastOneBetter = true;
+                            }
+                        }
                     }
                     // check sequenced parameters last
                     if (dhsp && rhsp) {
@@ -937,7 +976,8 @@ public class ModelUtil {
     private static int countTypeParameters(
             Declaration declaration, Type receivingType) {
         int count = 0;
-        boolean containsFunctionOrValueInterface = containsFunctionOrValueInterface(receivingType);
+        boolean containsFunctionOrValueInterface
+                = containsFunctionOrValueInterface(receivingType);
         while (true) {
             if (declaration instanceof Generic) {
                 Generic g = (Generic) declaration;
@@ -2463,6 +2503,11 @@ public class ModelUtil {
             TypeDeclaration td) {
         Type extendedType = td.getExtendedType();
         List<Type> satisfiedTypes = td.getSatisfiedTypes();
+        if (satisfiedTypes.isEmpty()) {
+            return extendedType==null ? 
+                    td.getUnit().getAnythingType() : 
+                    extendedType;
+        }
         List<Type> list = 
                 new ArrayList<Type>
                     (satisfiedTypes.size()+1);
@@ -3169,6 +3214,55 @@ public class ModelUtil {
     
     /** Is the given value the result of an enumerated ("singleton") constructor */
     public static boolean isEnumeratedConstructor(Value value) {
-        return value.getType().getDeclaration() instanceof Constructor;
+        return value != null
+                && value.getType() != null
+                && value.getType().getDeclaration() instanceof Constructor;
+    }
+
+    /** 
+     * Is the given value the result of an enumerated ("singleton") constructor
+     * that we store in a local variable
+     */
+    public static boolean isEnumeratedConstructorInLocalVariable(Value value) {
+        if(isEnumeratedConstructor(value)){
+            Class constructedClass = getConstructedClass(value);
+            return !(constructedClass.isToplevel() || constructedClass.isClassMember());
+        }
+        return false;
+    }
+
+    public static boolean containsRawType(Type type) {
+        if(type == null || type.isNothing())
+            return false;
+        if(type.isRaw())
+            return true;
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration == null)
+            return false;
+        if(declaration instanceof UnionType){
+            for(Type t : declaration.getCaseTypes()){
+                if(containsRawType(t)){
+                    return true;
+                }
+            }
+            return false;
+        }
+        if(declaration instanceof IntersectionType){
+            for(Type t : declaration.getSatisfiedTypes()){
+                if(containsRawType(t)){
+                    return true;
+                }
+            }
+            return false;
+        }
+        Type qualifyingType = type.getQualifyingType();
+        if(qualifyingType != null && containsRawType(qualifyingType))
+            return true;
+        for(Type t : type.getTypeArgumentList()){
+            if(containsRawType(t)){
+                return true;
+            }
+        }
+        return false;
     }
 }

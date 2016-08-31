@@ -11,6 +11,10 @@ public abstract class LazyType extends Type {
         this.unit = unit;
     }
     
+    protected Unit getUnit() {
+        return unit;
+    }
+    
     @Override
     public TypeDeclaration getDeclaration() {
         if (initialized) {
@@ -32,6 +36,7 @@ public abstract class LazyType extends Type {
             else {
                 setDeclaration(dec);
                 setTypeArguments(initTypeArguments());
+                setVarianceOverrides(initVarianceOverrides());
                 setQualifyingType(initQualifyingType());
                 return dec; 
             }
@@ -52,4 +57,8 @@ public abstract class LazyType extends Type {
         return null;
     }
     
+    public Map<TypeParameter, SiteVariance> initVarianceOverrides() {
+        return ModelUtil.EMPTY_VARIANCE_MAP;
+    }
+
 }

@@ -40,21 +40,37 @@ public class RepositoryManagerBuilder {
     }
 
     public RepositoryManagerBuilder(Logger log) {
-        this(log, true, 0, Proxy.NO_PROXY);
+        this(log, true, 0, Proxy.NO_PROXY, (String)null);
+    }
+
+    public RepositoryManagerBuilder(Logger log, String currentDirectory) {
+        this(log, true, 0, Proxy.NO_PROXY, currentDirectory);
     }
 
     public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, Proxy proxy) {
-        this(log, offline, timeout, proxy, null);
+        this(log, offline, timeout, proxy, null, null);
+    }
+
+    public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory) {
+        this(log, offline, timeout, proxy, currentDirectory, null);
     }
 
     public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides) {
-        this(log, offline, timeout, proxy, overrides, true);
+        this(log, offline, timeout, proxy, null, overrides, true);
+    }
+
+    public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory, Overrides overrides) {
+        this(log, offline, timeout, proxy, currentDirectory, overrides, true);
     }
     
     public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides, boolean upgradeDist) {
+        this(log, offline, timeout, proxy, null, overrides, upgradeDist);
+    }
+    
+    public RepositoryManagerBuilder(Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory, Overrides overrides, boolean upgradeDist) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class, int.class, Proxy.class, Overrides.class, boolean.class);
-            delegate = ctor.newInstance(log, offline, timeout, proxy, overrides, upgradeDist);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(Logger.class, boolean.class, int.class, Proxy.class, String.class, Overrides.class, boolean.class);
+            delegate = ctor.newInstance(log, offline, timeout, proxy, currentDirectory, overrides, upgradeDist);
         } catch (java.lang.reflect.InvocationTargetException e) {
             Throwable tex = e.getTargetException();
             if (tex instanceof RuntimeException) {
@@ -70,17 +86,29 @@ public class RepositoryManagerBuilder {
     }
 
     public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy) {
-        this(mainRepository, log, offline, timeout, proxy, null);
+        this(mainRepository, log, offline, timeout, proxy, (String)null);
     }
 
+    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory) {
+        this(mainRepository, log, offline, timeout, proxy, currentDirectory, null);
+    }
+
+    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory, Overrides overrides) {
+        this(mainRepository, log, offline, timeout, proxy, currentDirectory, overrides, true);
+    }
+    
     public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides) {
-        this(mainRepository, log, offline, timeout, proxy, overrides, true);
+        this(mainRepository, log, offline, timeout, proxy, null, overrides, true);
     }
     
     public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, Overrides overrides, boolean upgradeDist) {
+        this(mainRepository, log, offline, timeout, proxy, null, overrides, upgradeDist);
+    }
+
+    public RepositoryManagerBuilder(File mainRepository, Logger log, boolean offline, int timeout, Proxy proxy, String currentDirectory, Overrides overrides, boolean upgradeDist) {
         try {
-            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class, int.class, Proxy.class, Overrides.class, boolean.class);
-            delegate = ctor.newInstance(mainRepository, log, offline, timeout, proxy, overrides, upgradeDist);
+            Constructor<? extends RepositoryManagerBuilder> ctor = getDelegateClass().getConstructor(File.class, Logger.class, boolean.class, int.class, Proxy.class, String.class, Overrides.class, boolean.class);
+            delegate = ctor.newInstance(mainRepository, log, offline, timeout, proxy, currentDirectory, overrides, upgradeDist);
         } catch (java.lang.reflect.InvocationTargetException e) {
             Throwable tex = e.getTargetException();
             if (tex instanceof RuntimeException) {

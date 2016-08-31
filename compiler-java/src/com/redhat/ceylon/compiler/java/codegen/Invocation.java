@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
@@ -84,7 +85,8 @@ abstract class Invocation {
                         || primaryDeclaration.getName().equals("set"))) {
                 return false;
             } else {
-                return Decl.isValueTypeDecl(qmePrimary)
+                return ((Tree.QualifiedMemberOrTypeExpression) primary).getMemberOperator() instanceof Tree.MemberOp
+                        && Decl.isValueTypeDecl(qmePrimary)
                         && (CodegenUtil.isUnBoxed(qmePrimary) || gen.isJavaArray(qmePrimary.getTypeModel()));
             }
         } else {
@@ -277,9 +279,22 @@ abstract class Invocation {
                 Tree.QualifiedMemberOrTypeExpression type = (Tree.QualifiedMemberOrTypeExpression)getPrimary();
                 Declaration declaration = type.getDeclaration();
                 if (Decl.isConstructor(declaration)) {
-                    if (Decl.withinInterface(Decl.getConstructedClass(declaration))) {
+                    Class constructedClass = Decl.getConstructedClass(declaration);
+                    if (Decl.withinInterface(constructedClass)) {
                         if (Strategy.generateInstantiator(declaration)) {
-                            actualPrimExpr = primaryExpr != null ? primaryExpr : gen.naming.makeQuotedThis();
+                            // Stef: this is disgusting and some of that logic has to be duplicated for base member/type
+                            // expressions. it reeks of special-cases that should not be
+                            Interface containerInterface = (Interface)constructedClass.getContainer();
+                            if(primaryExpr != null)
+                                actualPrimExpr = primaryExpr;
+                            else if(type.getPrimary() instanceof Tree.BaseTypeExpression
+                                    // if we are within an interface impl class, access it via our $this
+                                    && gen.expressionGen().needDollarThis((Tree.BaseTypeExpression)type.getPrimary()))
+                                actualPrimExpr = gen.naming.makeQuotedThis();
+                            else
+                                // otherwise we're within a class that implements that interface,
+                                // access it via our companion
+                                actualPrimExpr = gen.naming.makeCompanionFieldName(containerInterface);
                         } else {
                             actualPrimExpr = null;
                         }
@@ -1199,6 +1214,11 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
     public void location(CallBuilder callBuilder) {
         callBuilder.location(null);
     }
+    @Override
+    protected Type getArgumentType(int argIndex) {
+        // those are the same in this case
+        return super.getParameterType(argIndex);
+    }
 }
 
 /**
@@ -1513,6 +1533,7 @@ class NamedArgumentInvocation extends Invocation {
         boolean prevNoExpressionlessReturn = gen.statementGen().noExpressionlessReturn;
         boolean prevSyntheticClassBody = gen.expressionGen().withinSyntheticClassBody(Decl.isMpl(model) || gen.expressionGen().isWithinSyntheticClassBody()); 
         try {
+            gen.expressionGen().withinSyntheticClassBody(true);
             gen.statementGen().noExpressionlessReturn = gen.isAnything(model.getType());
             if (methodArg.getBlock() != null) {
                 body = gen.statementGen().transformBlock(methodArg.getBlock());
@@ -1707,12 +1728,15 @@ class NamedArgumentInvocation extends Invocation {
                 && !gen.expressionGen().isWithinSyntheticClassBody()) {
             if (Decl.withinClassOrInterface(getPrimaryDeclaration())) {
                 // a member method
-                thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() ? JT_COMPANION : 0));
-                if (Decl.withinInterface(getPrimaryDeclaration())
+                thisType = gen.makeJavaType(target.getQualifyingType(), 
+                        JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() 
+                                ? JT_COMPANION : 0));
+                TypeDeclaration outer = Decl.getOuterScopeOfMemberInvocation((StaticMemberOrTypeExpression) getPrimary(), getPrimaryDeclaration());
+                if (outer instanceof Interface
                         && getPrimaryDeclaration().isShared()) {
                     defaultedParameterInstance = gen.naming.makeQuotedThis();
                 } else {
-                    defaultedParameterInstance = gen.naming.makeThis();
+                    defaultedParameterInstance = gen.naming.makeQualifiedThis(gen.makeJavaType(((TypeDeclaration)outer).getType(), JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() ? JT_COMPANION : 0)));
                 }
             } else {
                 // a local or toplevel function

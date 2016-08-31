@@ -104,8 +104,12 @@ public class JarOutputRepositoryManager {
             // make sure we clear on return and throw, so we don't try to flush again on throw
             openJars.clear();
         }
+        // Not the most elegant solution, we close all JAR files but we only
+        // rethrow the last exception (if any)
         if (ex instanceof IOException) {
             throw (IOException)ex;
+        } else if (ex instanceof RuntimeException) {
+            throw (RuntimeException)ex;
         }
     }
     
@@ -169,7 +173,7 @@ public class JarOutputRepositoryManager {
         		Options options, CeyloncFileManager ceyloncFileManager, MultiTaskListener taskListener) throws IOException{
             this.options = options;
             this.repoManager = repoManager;
-            this.carContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
+            this.carContext = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.CAR);
             this.log = log;
             this.cmrLog = new JavacLogger(options, Log.instance(ceyloncFileManager.getContext()));
             AbstractModelLoader modelLoader = CeylonModelLoader.instance(ceyloncFileManager.getContext());
@@ -222,9 +226,8 @@ public class JarOutputRepositoryManager {
         }
         
         private Properties getPreviousMapping() throws IOException {
-            if (originalJarFile != null) {
-                JarFile jarFile = null;
-                jarFile = new JarFile(originalJarFile);
+            JarFile jarFile = JarUtils.validJar(originalJarFile);
+            if (jarFile != null) {
                 try {
                     JarEntry entry = jarFile.getJarEntry(MAPPING_FILE);
                     if (entry != null) {
@@ -245,9 +248,8 @@ public class JarOutputRepositoryManager {
         }
 
         private Manifest getPreviousManifest() throws IOException {
-            if (originalJarFile != null) {
-                JarFile jarFile = null;
-                jarFile = new JarFile(originalJarFile);
+            JarFile jarFile = JarUtils.validJar(originalJarFile);
+            if (jarFile != null) {
                 try {
                     return jarFile.getManifest();
                 } finally {
@@ -309,7 +311,9 @@ public class JarOutputRepositoryManager {
                 JarCat jc = new JarCat(finalCarFile);
                 jc.cat(metaFirstFile);
                 jc.cat(outputJarFile);
-                jc.cat(originalJarFile, jarFilter);
+                if (originalJarFile != null && JarUtils.isValidJar(originalJarFile)) {
+                    jc.cat(originalJarFile, jarFilter);
+                }
                 jc.close();
                 FileUtil.deleteQuietly(metaFirstFile);
             
@@ -332,8 +336,6 @@ public class JarOutputRepositoryManager {
                         }
                     }
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             } catch (RuntimeException e) {
                 throw e;
             } finally {

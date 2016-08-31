@@ -138,30 +138,33 @@ final class erasureCasting_ {
                 }
             }.sequence();
         );
-        .java.lang.Object elem$12;
-        .ceylon.language.Iterator<? extends .java.lang.Object> erasedValue$iterator$$13 = ((.ceylon.language.Iterable)erasedSequence).iterator();
-        loop_0: while (!((elem$12 = erasedValue$iterator$$13.next()) instanceof .ceylon.language.Finished)) {
-            final .java.lang.Object erasedValue = elem$12;
+        boolean loopentered$12 = false;
+        .java.lang.Object elem$13;
+        .ceylon.language.Iterator<? extends .java.lang.Object> erasedValue$iterator$$14 = ((.ceylon.language.Iterable)erasedSequence).iterator();
+        loop_0: while (!((elem$13 = erasedValue$iterator$$14.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$12 = true;
+            final .java.lang.Object erasedValue = elem$13;
         }
+        if (!loopentered$12) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> sequenceOfInts = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)(
             let
             {
-                final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, ? extends .java.lang.Object> spread$14$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, ? extends .java.lang.Object>)(.ceylon.language.Iterable)erasedSequence;
+                final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, ? extends .java.lang.Object> spread$15$iterable$ = (.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A, ? extends .java.lang.Object>)(.ceylon.language.Iterable)erasedSequence;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
                 
                 @.java.lang.Override
                 public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                        final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A> spread$14$iterator$ = spread$14$iterable$.iterator();
+                        final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A> spread$15$iterator$ = spread$15$iterable$.iterator();
                         
                         @.java.lang.Override
                         public final .java.lang.Object next() {
-                            .java.lang.Object spread$14$element$;
-                            if (!((spread$14$element$ = spread$14$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                                spread$14$element$ = .ceylon.language.Integer.instance(((.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A)spread$14$element$).$int());
+                            .java.lang.Object spread$15$element$;
+                            if (!((spread$15$element$ = spread$15$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$15$element$ = .ceylon.language.Integer.instance(((.com.redhat.ceylon.compiler.java.test.expression.erasure.EC_A)spread$15$element$).$int());
                             }
-                            return spread$14$element$;
+                            return spread$15$element$;
                         }
                     };
                 }
@@ -176,37 +179,6 @@ final class erasureCasting_ {
         final long nonRawTupleFirst = ((.ceylon.language.Integer)(.java.lang.Object)nonRawTuple.getFirst()).longValue();
         final int unboxedInteger = ((.ceylon.language.Character)(.java.lang.Object)((.ceylon.language.Sequence<? extends .ceylon.language.Character>).ceylon.language.String.sequence("abc").<.ceylon.language.Character>withLeading(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(100))).getFirst()).intValue();
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> nonEmptySequence = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
-            
-            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                    {
-                        $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).iterator();
-                    }
-                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
-                    private .ceylon.language.Integer c;
-                    private boolean c$exhausted$;
-                    
-                    private final boolean c() {
-                        final .java.lang.Object $ceylontmp$item$15 = $iterator$0.next();
-                        c$exhausted$ = $ceylontmp$item$15 == .ceylon.language.finished_.get_();
-                        if (c$exhausted$) {
-                            return false;
-                        } else {
-                            c = (.ceylon.language.Integer)$ceylontmp$item$15;
-                            return true;
-                        }
-                    }
-                    
-                    public final .java.lang.Object next() {
-                        if (this.c()) {
-                            final .ceylon.language.Integer c = this.c;
-                            return c;
-                        } else return .ceylon.language.finished_.get_();
-                    }
-                };
-            }
-        }.sequence();
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> integerSequential = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
             
             public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
@@ -237,6 +209,37 @@ final class erasureCasting_ {
                 };
             }
         }.sequence();
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> integerSequential = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)(.ceylon.language.Sequence)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType){
+            
+            public final .ceylon.language.Iterator<.ceylon.language.Integer> iterator() {
+                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
+                    {
+                        $iterator$0 = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L)).iterator();
+                    }
+                    private final .ceylon.language.Iterator<? extends .ceylon.language.Integer> $iterator$0;
+                    private .ceylon.language.Integer c;
+                    private boolean c$exhausted$;
+                    
+                    private final boolean c() {
+                        final .java.lang.Object $ceylontmp$item$17 = $iterator$0.next();
+                        c$exhausted$ = $ceylontmp$item$17 == .ceylon.language.finished_.get_();
+                        if (c$exhausted$) {
+                            return false;
+                        } else {
+                            c = (.ceylon.language.Integer)$ceylontmp$item$17;
+                            return true;
+                        }
+                    }
+                    
+                    public final .java.lang.Object next() {
+                        if (this.c()) {
+                            final .ceylon.language.Integer c = this.c;
+                            return c;
+                        } else return .ceylon.language.finished_.get_();
+                    }
+                };
+            }
+        }.sequence();
         final .ceylon.language.Sequence tupleOfSequentialSomething = (.ceylon.language.Sequence)(.java.lang.Object).ceylon.language.nothing_.get_();
         final .ceylon.language.Sequential<? extends .ceylon.language.String> sequenceOfStrings2 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)tupleOfSequentialSomething.getFromFirst(1L);
         final .ceylon.language.Sequence<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>> sequenceOfSequenceOfStrings = (.ceylon.language.Sequence<? extends .ceylon.language.Sequential<? extends .ceylon.language.String>>)(.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.tuple_spanFrom(tupleOfSequentialSomething, .ceylon.language.Integer.instance(1L));
@@ -246,11 +249,11 @@ final class erasureCasting_ {
         final .java.lang.Object n2 = (
             let
             {
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$17$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
-                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$17$reified$1 = .ceylon.language.Null.$TypeDescriptor$;
-                .ceylon.language.Iterable arg$17$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$18$reified$0 = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$18$reified$1 = .ceylon.language.Null.$TypeDescriptor$;
+                .ceylon.language.Iterable arg$18$0 = (.ceylon.language.Iterable).ceylon.language.empty_.get_();
             }
-            returning .ceylon.language.min_.<.ceylon.language.Comparable, .java.lang.Object>min(arg$17$reified$0, arg$17$reified$1, arg$17$0);
+            returning .ceylon.language.min_.<.ceylon.language.Comparable, .java.lang.Object>min(arg$18$reified$0, arg$18$reified$1, arg$18$0);
         );
     }
 }
@@ -260,9 +263,9 @@ final class valueOrNada_ {
     }
     
     static <Value, Nada>void valueOrNada(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Nada, final .java.lang.Object valueOrNada) {
-        .java.lang.Object valueOrNada$19;
-        if ((valueOrNada$19 = valueOrNada) != null) {
-            final Value valueOrNada$20 = (Value)valueOrNada$19;
+        .java.lang.Object valueOrNada$20;
+        if ((valueOrNada$20 = valueOrNada) != null) {
+            final Value valueOrNada$21 = (Value)valueOrNada$20;
         }
     }
 }
@@ -385,9 +388,9 @@ final class EC_ErasedMember$impl<Element, Absent> implements .java.io.Serializab
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p$21 = defaultedParams$p();
+                .java.lang.Object $ceylontmp$p$22 = defaultedParams$p();
             }
-            returning defaultedParams$canonical$($ceylontmp$p$21);
+            returning defaultedParams$canonical$($ceylontmp$p$22);
         );
     }
     
@@ -415,9 +418,9 @@ final class EC_ErasedMember$impl<Element, Absent> implements .java.io.Serializab
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p$22 = $default$Class$p();
+                .java.lang.Object $ceylontmp$p$23 = $default$Class$p();
             }
-            returning new Class($ceylontmp$p$22);
+            returning new Class($ceylontmp$p$23);
         );
     }
     
@@ -476,9 +479,9 @@ class EC_ErasedMemberImpl<Element> implements .com.redhat.ceylon.compiler.java.r
         return (
             let
             {
-                .java.lang.Object $ceylontmp$p$23 = defaultedParams$p();
+                .java.lang.Object $ceylontmp$p$24 = defaultedParams$p();
             }
-            returning defaultedParams$canonical$($ceylontmp$p$23);
+            returning defaultedParams$canonical$($ceylontmp$p$24);
         );
     }
     

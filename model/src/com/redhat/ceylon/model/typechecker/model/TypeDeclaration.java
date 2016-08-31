@@ -4,6 +4,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeade
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.hasMatchingSignature;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNameMatching;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
@@ -19,11 +20,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 
 public abstract class TypeDeclaration extends Declaration 
-        implements ImportableScope, Cloneable, Generic {
+        implements ImportableScope, Cloneable, Generic, Typed {
 
     private Type extendedType;
     private List<Type> satisfiedTypes = 
@@ -34,7 +34,6 @@ public abstract class TypeDeclaration extends Declaration
     private Type selfType;
     private List<Type> brokenSupertypes = null; // delayed allocation
     private boolean inconsistentType;
-    private boolean dynamic;
 	private boolean sealed;
     private List<TypedDeclaration> caseValues;
 
@@ -52,14 +51,6 @@ public abstract class TypeDeclaration extends Declaration
 	
 	public void setSealed(boolean sealed) {
 	    this.sealed = sealed;
-    }
-    
-    public boolean isDynamic() {
-        return dynamic;
-    }
-    
-    public void setDynamic(boolean dynamic) {
-        this.dynamic = dynamic;
     }
     
     public boolean isInconsistentType() {
@@ -210,6 +201,7 @@ public abstract class TypeDeclaration extends Declaration
      * use outside the body of the declaration, but this is 
      * not really correct!
      */
+    @Override
     public Type getType() {
         Type type = new Type();
         type.setQualifyingType(getMemberContainerType());
@@ -415,8 +407,12 @@ public abstract class TypeDeclaration extends Declaration
             return false;
         }
         if (result==null) {
-            return signature!=null == 
-                    candidate instanceof Functional;
+//            return signature!=null == 
+//                    candidate instanceof Functional;
+            //helps to produce a better error message
+            //when a value refines a function and
+            //vice-versa
+            return true;
         }
         if (!(result instanceof Functional)) {
             return signature!=null;
@@ -547,7 +543,7 @@ public abstract class TypeDeclaration extends Declaration
             SupertypeDeclaration sd = 
                     getSupertypeDeclaration(name, 
                             signature, variadic, 
-                            onlyExactMatches);
+                            onlyExactMatches, false);
             if (sd.getMember()!=null || sd.isAmbiguous()) {
                 return sd;
             }
@@ -584,7 +580,7 @@ public abstract class TypeDeclaration extends Declaration
                 Declaration supertype = 
                         getSupertypeDeclaration(name, 
                                 signature, variadic, 
-                                onlyExactMatches)
+                                onlyExactMatches, true)
                                 .getMember();
                 if (supertype!=null && 
                         !supertype.isAbstraction()) {
@@ -609,7 +605,7 @@ public abstract class TypeDeclaration extends Declaration
                 //now look for inherited shared declarations
                 dec = getSupertypeDeclaration(name,
                         signature, variadic, 
-                        onlyExactMatches)
+                        onlyExactMatches, true)
                         .getMember();
             }
         }
@@ -711,11 +707,12 @@ public abstract class TypeDeclaration extends Declaration
      * Get the supertype which defines the most-refined
      * member with the given name.
      */
-    SupertypeDeclaration getSupertypeDeclaration(
+    private SupertypeDeclaration getSupertypeDeclaration(
             final String name, 
             final List<Type> signature, 
             final boolean variadic,
-            final boolean onlyExactMatches) {
+            final boolean onlyExactMatches,
+            final boolean includeInheritedConstructors) {
         class ExactCriteria implements Type.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
@@ -728,8 +725,11 @@ public abstract class TypeDeclaration extends Declaration
                                 signature, variadic, 
                                 onlyExactMatches);
                 if (dm!=null && 
-                        dm.isShared() && 
-                        isResolvable(dm)) {
+                        dm.isShared() &&
+                        isResolvable(dm) &&
+                        (includeInheritedConstructors ||
+//                       !dm.isStaticallyImportable() &&
+                         !isConstructor(dm))) {
                     // only accept abstractions if we 
                     // don't have a signature
                     return !dm.isAbstraction() || 
@@ -857,11 +857,15 @@ public abstract class TypeDeclaration extends Declaration
     
     public Map<String,DeclarationWithProximity> 
     getImportableDeclarations(Unit unit, String startingWith, 
-            List<Import> imports, int proximity) {
+            List<Import> imports, int proximity, Cancellable canceller) {
         //TODO: fix copy/paste from below!
         Map<String,DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
         for (Declaration dec: getMembers()) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                return Collections.emptyMap();
+            }
             if (isResolvable(dec) && 
                     dec.isShared() && 
             		!isOverloadedVersion(dec) &&
@@ -892,9 +896,13 @@ public abstract class TypeDeclaration extends Declaration
                         startingWith, proximity, canceller);
         //Inherited declarations hide outer and imported declarations
         result.putAll(getMatchingMemberDeclarations(unit, 
-                null, startingWith, proximity));
+                null, startingWith, proximity, canceller));
         //Local declarations always hide inherited declarations, even if non-shared
         for (Declaration dec: getMembers()) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                return Collections.emptyMap();
+            }
             if (isResolvable(dec) && 
                     !isOverloadedVersion(dec) ) {
                 if (isNameMatching(startingWith, dec)) {
@@ -916,7 +924,7 @@ public abstract class TypeDeclaration extends Declaration
 
     public Map<String,DeclarationWithProximity> 
     getMatchingMemberDeclarations(Unit unit, Scope scope, 
-            String startingWith, int proximity) {
+            String startingWith, int proximity, Cancellable canceller) {
         Map<String,DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
         for (Type st: getSatisfiedTypes()) {
@@ -924,7 +932,7 @@ public abstract class TypeDeclaration extends Declaration
                     st.getDeclaration()
                         .getMatchingMemberDeclarations(unit, 
                                 scope, startingWith, 
-                                proximity+1));
+                                proximity+1, canceller));
         }
         Type et = getExtendedType();
         if (et!=null) {
@@ -932,9 +940,13 @@ public abstract class TypeDeclaration extends Declaration
                     et.getDeclaration()
                         .getMatchingMemberDeclarations(unit, 
                                 scope, startingWith, 
-                                proximity+1));
+                                proximity+1, canceller));
         }
         for (Declaration member: getMembers()) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                return Collections.emptyMap();
+            }
             if (isResolvable(member) && 
                     !isOverloadedVersion(member) &&
                 (member.isShared() || 
@@ -957,7 +969,7 @@ public abstract class TypeDeclaration extends Declaration
         //premature optimization so that we don't have to 
         //call d.getName(unit) on *every* member
         result.putAll(unit.getMatchingImportedDeclarations(
-                this, startingWith, proximity));
+                this, startingWith, proximity, canceller));
         return result;
     }
 
@@ -1197,13 +1209,12 @@ public abstract class TypeDeclaration extends Declaration
         return false;
     }
 
-    @Override
-    public Backends getScopedBackends() {
-        return super.getScopedBackends();
+    public boolean isCallable() {
+        return false;
     }
     
     public EnumSet<AnnotationTarget> getAnnotationTarget() {
         return null;
     }
-    
+
 }

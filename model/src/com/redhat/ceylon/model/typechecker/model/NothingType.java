@@ -11,6 +11,9 @@ import java.util.List;
 public class NothingType extends TypeDeclaration {
     
     public NothingType(Unit unit) {
+        if (unit==null) {
+            throw new IllegalArgumentException("null unit");
+        }
         this.unit = unit;
     }
     

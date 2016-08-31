@@ -4,6 +4,8 @@ function is$(obj,type,containers){
       return isOfTypes(obj, type);
     } else if (type.t===Finished) {
       return obj===finished();
+    } else if (type.t===$_String && typeof(obj)==='string') {
+      return true;
     }
     if(obj===null||obj===undefined){
       return type.t===Null||type.t===Anything;
@@ -182,6 +184,26 @@ function is$(obj,type,containers){
         }
       }
       return true;
+    } else {
+      // try narrowing to subtype if both current and requested type are dynamic
+      var objtype = obj.getT$all()[obj.getT$name()];
+      if (objtype && objtype.dynmem$ && type.t.dynmem$ && extendsType(type, {t:objtype}, true)) {
+        var _getT$all = obj.getT$all;
+        var _$$ = obj.$$;
+        try {
+          // undress the object
+          obj.getT$all = undefined;
+          obj.$$ = undefined;
+          // try to redress it with subtype
+          dre$$(obj, type);
+          return true;
+        } catch (e) {
+          // redress with old info
+          obj.getT$all = _getT$all;
+          obj.$$ = _$$;
+          return false;
+        }
+      }
     }
   }
   return false;

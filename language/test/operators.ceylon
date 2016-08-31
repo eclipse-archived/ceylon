@@ -30,6 +30,79 @@ class Rectangle(width, height) satisfies Scalable<Float,Rectangle> {
     }
 }
 
+class Test4148Keyed() satisfies Correspondence<Integer,String> & KeyedCorrespondenceMutator<Integer,String> {
+  variable String x = "";
+  shared actual void put(Integer k, String v) {
+    if (k == 0) {
+      x = v;
+    }
+  }
+  shared actual String? get(Integer k) => k==0 then x else null;
+  shared actual Boolean defines(Integer k) => k==0;
+}
+
+class Test4148Indexed() satisfies Correspondence<Integer,String> & IndexedCorrespondenceMutator<String> {
+    variable String x = "";
+    shared actual void set(Integer k, String v) {
+        if (k == 0) {
+            x = v;
+        }
+    }
+    shared actual String? get(Integer k) => k==0 then x else null;
+    shared actual Boolean defines(Integer k) => k==0;
+}
+
+void test4148Indexed() {
+    value t = Test4148Indexed();
+    check((t[0] = "ok") == "ok", "#4148Indexed.1");
+    if (exists v=t[0]) {
+        check(v == "ok", "#4148Indexed.2");
+    } else {
+        fail("#4148Indexed.2");
+    }
+    String p = "ok" + (t[0] = "!");
+    check(p == "ok!", "#4148Indexed.3");
+    if (exists v=t[0]) {
+        check(v == "!", "#4148Indexed.4");
+    } else {
+        fail("#4148Indexed.4");
+    }
+}
+
+void test4148Keyed() {
+  value t = Test4148Keyed();
+  check((t[0] = "ok") == "ok", "#4148Keyed.1");
+  if (exists v=t[0]) {
+    check(v == "ok", "#4148Keyed.2");
+  } else {
+    fail("#4148Keyed.2");
+  }
+  String p = "ok" + (t[0] = "!");
+  check(p == "ok!", "#4148Keyed.3");
+  if (exists v=t[0]) {
+    check(v == "!", "#4148Keyed.4");
+  } else {
+    fail("#4148Keyed.4");
+  }
+}
+
+void test4148Array(){
+    value a = Array{""};
+    check((a[0] = "ok") == "ok", "#4148.5");
+    if (exists v=a[0]) {
+        check(v == "ok", "#4148.6");
+    } else {
+        fail("#4148.6");
+    }
+    value p = "ok" + (a[0] = "!");
+    check(p == "ok!", "#4148.7");
+    if (exists v=a[0]) {
+        check(v == "!", "#4148.8");
+    } else {
+        fail("#4148.8");
+    }
+}
+
 @test
 shared void operators() {
     String? maybe = "hello";
@@ -132,4 +205,7 @@ shared void operators() {
     value scaleTestRectangle = Rectangle(2.0, 3.0);
     check(2.0**scaleTestRectangle == Rectangle(4.0, 6.0), "scaling ``2.0**Rectangle(2.0, 3.0)``");
     check(scaleTestRectangle.invert().width ** Rectangle(scaleTestRectangle.width, scaleTestRectangle.width) == Rectangle(9.0, 9.0), "scaling: LHS must be evaluated first!");
+    test4148Keyed();
+    test4148Indexed();
+    test4148Array();
 }

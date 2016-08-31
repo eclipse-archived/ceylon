@@ -19,6 +19,7 @@ import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.checkNotJvm
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getVarianceMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isImplemented;
@@ -64,6 +65,7 @@ import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.Specification;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
@@ -778,6 +780,7 @@ public abstract class DeclarationVisitor extends Visitor {
         unit.getImportLists().add(il);
         that.setImportList(il);
         il.setContainer(scope);
+        il.setUnit(unit);
         Scope o = enterScope(il);
         super.visit(that);
         exitScope(o);
@@ -1049,6 +1052,9 @@ public abstract class DeclarationVisitor extends Visitor {
         if (i.isNativeImplementation()) {
             addMissingHeaderMembers(i);
         }
+        if (i.isDynamic()) {
+            i.makeMembersDynamic();
+        }
         // Required by IDE to be omitted: https://github.com/ceylon/ceylon-compiler/issues/2326
 //        if (that.getDynamic()) {
 //            checkDynamic(that);
@@ -1305,6 +1311,10 @@ public abstract class DeclarationVisitor extends Visitor {
         exitScope(o);
     }
     
+    private boolean mustHaveExplicitType(FunctionOrValue fov) {
+        return fov.isShared() && !fov.isActual();
+    }
+    
     @Override
     public void visit(Tree.AttributeDeclaration that) {
         Value v = new Value();
@@ -1340,7 +1350,7 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         if (v.isFormal() && sie!=null) {
             that.addError("formal attributes may not have a value", 
-                    1307);
+                    1102);
         }
         Tree.Type type = that.getType();
         if (type instanceof Tree.ValueModifier) {
@@ -1353,13 +1363,13 @@ public abstract class DeclarationVisitor extends Visitor {
                             200);
                 }
             }
-            else if (v.isShared()) {
+            else if (mustHaveExplicitType(v)) {
                 type.addError("shared value must explicitly specify a type", 
                         200);
             }
         }
     }
-    
+
     @Override
     public void visit(Tree.MethodDeclaration that) {
         super.visit(that);
@@ -1368,8 +1378,8 @@ public abstract class DeclarationVisitor extends Visitor {
         Function m = that.getDeclarationModel();
         m.setImplemented(sie != null);
         if (m.isFormal() && sie!=null) {
-            that.addError("formal methods may not have a specification", 
-                    1307);
+            that.addError("formal method may not have a specification", 
+                    1102);
         }
         Tree.Type type = that.getType();
         if (type instanceof Tree.FunctionModifier) {
@@ -1382,7 +1392,7 @@ public abstract class DeclarationVisitor extends Visitor {
                             200);
                 }
             }
-            else if (m.isShared()) {
+            else if (mustHaveExplicitType(m)) {
                 type.addError("shared function must explicitly specify a return type", 
                         200);
             }
@@ -1400,7 +1410,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 type.addError("toplevel function must explicitly specify a return type", 
                         200);
             }
-            else if (m.isShared() && !dynamic) {
+            else if (mustHaveExplicitType(m) && !dynamic) {
                 type.addError("shared function must explicitly specify a return type", 
                         200);
             }
@@ -1423,7 +1433,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 type.addError("toplevel getter must explicitly specify a type", 
                         200);
             }
-            else if (g.isShared() && !dynamic) {
+            else if (mustHaveExplicitType(g) && !dynamic) {
                 type.addError("shared getter must explicitly specify a type", 
                         200);
             }
@@ -1461,7 +1471,6 @@ public abstract class DeclarationVisitor extends Visitor {
         unit.addDeclaration(v);
         Scope sc = getContainer(that);
         sc.addMember(v);
-        
         s.setParameter(p);
         super.visit(that);
         exitScope(o);
@@ -2233,7 +2242,11 @@ public abstract class DeclarationVisitor extends Visitor {
             }
         }
         if (hasAnnotation(al, "final", unit)) {
-            if (model instanceof Class) {
+            if (model instanceof ClassAlias) {
+                that.addError("declaration is a class alias, and may not be annotated final", 
+                        1700);
+            }
+            else if (model instanceof Class) {
                 ((Class) model).setFinal(true);
             }
             else {
@@ -2483,6 +2496,12 @@ public abstract class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Assertion that) {
+        Tree.ConditionList cl = that.getConditionList();
+        if (cl!=null) {
+            for (Tree.Condition c: cl.getConditions()) {
+                c.setAssertion(true);
+            }
+        }
         Declaration d = beginDeclaration(null);
         super.visit(that);
         endDeclaration(d);
@@ -2620,6 +2639,15 @@ public abstract class DeclarationVisitor extends Visitor {
                             AnalyzerUtil.getTypeArguments(
                                     tal, null, tps));
                 }
+                @Override
+                public Map<TypeParameter, SiteVariance> 
+                initVarianceOverrides() {
+                    TypeDeclaration dec = getDeclaration();
+                    List<TypeParameter> tps = 
+                            dec.getTypeParameters();
+                    return getVarianceMap(dec, null, 
+                            AnalyzerUtil.getVariances(tal, tps));
+                }
             };
             that.setTypeModel(t);
         }
@@ -2666,6 +2694,17 @@ public abstract class DeclarationVisitor extends Visitor {
                                 AnalyzerUtil.getTypeArguments(
                                         tal, ot, tps));
                     }
+                }
+                @Override
+                public Map<TypeParameter, SiteVariance> 
+                initVarianceOverrides() {
+                    TypeDeclaration dec = getDeclaration();
+                    List<TypeParameter> tps = 
+                            dec.getTypeParameters();
+                    Type ot = 
+                            outerType.getTypeModel();
+                    return getVarianceMap(dec, ot, 
+                            AnalyzerUtil.getVariances(tal, tps));
                 }
             };
             that.setTypeModel(t);

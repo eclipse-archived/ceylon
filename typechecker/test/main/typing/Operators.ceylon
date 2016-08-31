@@ -94,10 +94,10 @@ class Operators() {
     @type:"Boolean" value x29 = none exists;
     //@type:"Boolean" value x29n = exists none;
     
-    @error @type:"Boolean" value x30 = 1 exists;
+    @warn:"redundantNarrowing" @type:"Boolean" value x30 = 1 exists;
     //@error @type:"Boolean" value x30n = exists 1;
     
-    @error @type:"Boolean" value x73 = null exists;
+    @warn:"redundantNarrowing" @type:"Boolean" value x73 = null exists;
     //@error @type:"Boolean" value x73n = exists null;
     
     @error @type:"Boolean" value x70 = {} nonempty;
@@ -111,7 +111,7 @@ class Operators() {
     Object one = 1;
     @type:"Boolean" value x31 = one is Integer;
     //@type:"Boolean" value x31n = is Integer one;
-    @error value x31e = 1 is Integer;
+    @warn:"redundantNarrowing" value x31e = 1 is Integer;
     
     @type:"Boolean" value x32 = none is X;
     //@type:"Boolean" value x32n = is X none;    
@@ -161,7 +161,7 @@ class Operators() {
     @type:"Sequence<String>" value x47 = helloworld*.uppercased;
     @type:"Null|Sequential<Character>" value x48 = helloworld[1]?.sequence();
     @type:"Sequence<Sequential<Character>>" value x49 = helloworld*.sequence();
-    @type:"Sequence<Iterable<String,Null>>" value x50 = helloworld*.lines;
+    @type:"Sequence<Iterable<String,Nothing>>" value x50 = helloworld*.lines;
     @type:"Null|String" value x51 = helloworld[1]?.normalized;
     @type:"Null|Iterable<String,Nothing>" value x512 = helloworld[1]?.split((Character c) => c==' ');
     @type:"Sequence<String>" value x52 = helloworld*.normalized;
@@ -284,7 +284,7 @@ class Operators() {
     Float result = x>0.0 then x else 0.0;
     
     //@error String str1 = null ? null ? "hello";
-    @error String str2 = null else null else "hello";
+    @warn:"redundantNarrowing" String str2 = null else null else "hello";
 
     String? nostring = null;
     //@type:"String" value str3 = nostring ? nostring ? "hello";

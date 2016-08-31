@@ -54,8 +54,6 @@ class JavaEntry<K,V>(K->V entry)
         }
         if (is JMap<out Anything,out Anything> that) {
         }
-        if (is JMap<out Anything,out Integer> that) {
-        }
         return false;
     }
     shared actual Integer hash => 31;

@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug20xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Foo")
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(javaClassName = "Bar")})
 @.com.redhat.ceylon.compiler.java.metadata.LocalContainer(
@@ -15,7 +17,9 @@ interface bug2032$Foo_ {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     abstract .java.lang.Object Bar$new$();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"::bug2032$Foo_"})
 public final class bug2032_ {
@@ -37,7 +41,9 @@ public final class bug2032_ {
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             private final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2032$Foo_ $this;
             
-            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
             @.ceylon.language.SharedAnnotation$annotation$
             @.ceylon.language.FormalAnnotation$annotation$
             @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2032$Foo_.class)

@@ -22,12 +22,17 @@ package com.redhat.ceylon.compiler.java.test.issues;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.ErrorCollector;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 
 
 public class IssuesTests_6000_6499 extends CompilerTests {
@@ -63,6 +68,11 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     @Test
     public void testBug6078() {
         compareWithJavaSource("bug60xx/Bug6078");
+    }
+    
+    @Test
+    public void testBug6096() {
+        compareWithJavaSource("bug60xx/Bug6096");
     }
     
     @Test
@@ -121,6 +131,13 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     }
     
     @Test
+    public void testBug6207() {
+        compile("bug62xx/Bug6207.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6207",
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug62xx", "1"));
+    }
+    
+    @Test
     public void testBug6213A() {
         compareWithJavaSource("bug62xx/Bug6213A");
     }
@@ -145,6 +162,7 @@ public class IssuesTests_6000_6499 extends CompilerTests {
         
         compileAndRun(options,
                 "com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6231.$static.run",
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug62xx", "1"),
                 "bug62xx/bug6231/static/run.ceylon");
     }
     
@@ -162,7 +180,8 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     @Test
     public void testBug6253() {
         compile("bug62xx/Bug6253.ceylon");
-        run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6253run");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug62xx.bug6253run",
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.issues.bug62xx", "1"));
     }
     
     @Test
@@ -170,4 +189,189 @@ public class IssuesTests_6000_6499 extends CompilerTests {
         compareWithJavaSource("bug62xx/Bug6267");
     }
     
+    @Test
+    public void testBug6272() {
+        assertErrors("bug62xx/Bug6272",
+                new CompilerError(8, "argument of unknown type assigned to inferred type parameter: 'Item' of 'HashMap'"),
+                new CompilerError(8, "function or value is not defined: 'bar' might be misspelled or is not imported"));
+    }
+    
+    @Test
+    public void testBug6277() {
+        compareWithJavaSource("bug62xx/Bug6277");
+    }
+    
+    @Test
+    public void testBug6287() {
+        assertErrors("bug62xx/Bug6287",
+                new CompilerError(1, "imported declaration not found: 'string' might be misspelled or does not belong to this package (did you mean 'stringify'?)"),
+                new CompilerError(4, "type is not defined: 'string' might be misspelled or is not imported"),
+                new CompilerError(5, "function or value is not defined: 'string' might be misspelled or is not imported"));
+    }
+    
+    @Test
+    public void testBug6283() {
+        compareWithJavaSource("bug62xx/Bug6283");
+    }
+
+    @Test
+    public void testBug6304() {
+        compareWithJavaSource("bug63xx/Bug6304");
+    }
+
+    @Test
+    public void testBug6310() {
+        compile("bug63xx/bug6310/Bug6310.ceylon", "bug63xx/bug6310/module.ceylon", "bug63xx/bug6310/Bug6310Java.java");
+    }
+
+    @Test
+    public void testBug6323() {
+        compile("bug63xx/Bug6323Java.java");
+        compareWithJavaSource("bug63xx/Bug6323");
+    }
+
+    @Test
+    public void testBug6324() {
+        compareWithJavaSource("bug63xx/Bug6324");
+    }
+
+    @Test
+    public void testBug6325() {
+        compareWithJavaSource("bug63xx/Bug6325");
+    }
+
+    @Test
+    public void testBug6330() {
+        compareWithJavaSource("bug63xx/Bug6330");
+    }
+
+    @Test
+    public void testBug6344() {
+        compareWithJavaSource("bug63xx/Bug6344");
+    }
+
+    @Test
+    public void testBug6354() {
+        compareWithJavaSource("bug63xx/Bug6354");
+    }
+
+    @Test
+    public void testBug6358() {
+        compile("bug63xx/Bug6358.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug63xx.bug6358");
+    }
+
+    @Test
+    public void testBug6360() {
+        compareWithJavaSource("bug63xx/Bug6360");
+    }
+
+    @Test
+    public void testBug6362() throws Throwable {
+        compareWithJavaSource("bug63xx/Bug6362");
+        runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.issues/1", 
+                Arrays.asList("--run", "com.redhat.ceylon.compiler.java.test.issues.bug63xx::bug6362"));
+    }
+
+    @Test
+    public void testBug6365() {
+        compareWithJavaSource("bug63xx/Bug6365");
+    }
+
+    @Test
+    public void testBug6377() {
+        compile("bug63xx/Bug6377Java.java");
+        compareWithJavaSource("bug63xx/Bug6377");
+    }
+
+    @Test
+    public void testBug6379() {
+        compareWithJavaSource("bug63xx/Bug6379");
+    }
+
+    @Test
+    public void testBug6391() {
+        compareWithJavaSource("bug63xx/Bug6391");
+    }
+
+    @Test
+    public void testBug6392() {
+        compareWithJavaSource("bug63xx/Bug6392");
+    }
+
+    @Test
+    public void testBug6401() {
+        compareWithJavaSource("bug64xx/Bug6401");
+    }
+
+    @Test
+    public void testBug6404() {
+        compareWithJavaSource("bug64xx/Bug6404");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6404");
+    }
+
+    @Test
+    public void testBug6409() {
+        compareWithJavaSource("bug64xx/Bug6409");
+    }
+
+    @Test
+    public void testBug6420() {
+        compareWithJavaSource("bug64xx/Bug6420");
+    }
+
+    @Test
+    public void testBug6421() {
+        compareWithJavaSource("bug64xx/Bug6421");
+    }
+
+    @Ignore("Requires Android")
+    @Test
+    public void testBug6422() {
+        String project = "../../../AndroidStudioProjects/MyApplication2/app";
+        String src = project+"/src/main/ceylon";
+        List<String> options = Arrays.asList("-jdk-provider", "android/23", "-src", src,
+                "-rep", project+"/build/intermediates/ceylon-android/repository");
+        ErrorCollector c = new ErrorCollector();
+        List<String> modules = Arrays.asList("com.example.android.myapplication");
+        assertCompilesOk(c, getCompilerTask(options, c, modules).call2());
+    }
+
+    @Test
+    public void testBug6433() {
+        assertErrors("bug64xx/Bug6433",
+                new CompilerError(22, "overloaded formal member 'append(CharSequence?)' of 'Appendable' not implemented in class hierarchy"),
+                new CompilerError(22, "overloaded formal member 'append(CharSequence?, Integer, Integer)' of 'Appendable' not implemented in class hierarchy")
+                );
+    }
+
+    @Test
+    public void testBug6435() {
+        compareWithJavaSource("bug64xx/Bug6435");
+    }
+
+    @Test
+    public void testBug6442() throws Throwable {
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compile("bug64xx/bug6442/run.ceylon");
+        runInJBossModulesSameVM("run", "com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6442/1", 
+                Arrays.asList("--run", "com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6442::run",
+                        "--overrides", getPackagePath()+"/bug64xx/bug6442/overrides.xml"));
+    }
+
+    @Test
+    public void testBug6447() {
+        compareWithJavaSource("bug64xx/Bug6447");
+    }
+
+    @Test
+    public void testBug6450() {
+        compareWithJavaSource("bug64xx/Bug6450");
+    }
+
+    @Test
+    public void testBug6459() {
+        compareWithJavaSource("bug64xx/Bug6459");
+    }
 }

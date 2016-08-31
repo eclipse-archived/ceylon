@@ -12,29 +12,37 @@ import java.util.Objects;
  *
  * @author Gavin King
  */
-public abstract class TypedDeclaration extends Declaration {
+public abstract class TypedDeclaration 
+        extends Declaration implements Typed {
     
     private static final int UNCHECKED_NULL = 1<<11;
     private static final int UNBOXED_KNOWN = 1<<12;
     private static final int UNBOXED = 1<<13;
     private static final int TYPE_ERASED = 1<<14;
     private static final int UNTRUSTED_TYPE = 1<<15;
-    private static final int DYNAMIC = 1<<16;
+    private static final int DYNAMICALLY_TYPED = 1<<16;
     
     private Type type;
     
     private TypedDeclaration originalDeclaration;
     
+    /**
+     * Whether this declaration is dynamically typed, that is,
+     * has the {@code dynamic} keyword as return type.
+     */
     public boolean isDynamicallyTyped() {
-        return (flags&DYNAMIC)!=0;
+        return (flags&DYNAMICALLY_TYPED)!=0;
     }
     
+    /**
+     * @see #isDynamicallyTyped()
+     */
     public void setDynamicallyTyped(boolean dynamicallyTyped) {
         if (dynamicallyTyped) {
-            flags|=DYNAMIC;
+            flags|=DYNAMICALLY_TYPED;
         }
         else {
-            flags&=(~DYNAMIC);
+            flags&=(~DYNAMICALLY_TYPED);
         }
     }
         
@@ -46,7 +54,8 @@ public abstract class TypedDeclaration extends Declaration {
             return type.getDeclaration();
     	}
     }
-
+    
+    @Override
     public Type getType() {
         return type;
     }

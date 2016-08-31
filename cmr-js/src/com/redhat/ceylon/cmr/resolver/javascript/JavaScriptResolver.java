@@ -43,4 +43,16 @@ public class JavaScriptResolver {
         }
     }
 
+    public static Map<String,Object> readNpmDescriptor(File npmFile) throws IOException {
+        if (npmFile.exists() && npmFile.isFile() && npmFile.canRead()) {
+            //Parse json, get "main", that's the file we need
+            try (FileReader reader = new FileReader(npmFile)){
+                @SuppressWarnings("unchecked")
+                Map<String,Object> descriptor = (Map<String,Object>)JSONValue.parse(reader);
+                return descriptor;
+            }
+        } else {
+            return null;
+        }
+    }
 }

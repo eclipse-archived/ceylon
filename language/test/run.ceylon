@@ -1,4 +1,5 @@
-shared void run() {
+void runTests() {
+    print("** Running Language Module Tests **");
     testInlineExpressions();
     print("Equality");
     equality();
@@ -84,24 +85,26 @@ shared void run() {
     
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
+}
 
+shared void run() {
+    initAssert();
+    runTests();
     results();
 }
 
 shared void runAndAssert() {
-    run();
-    print("There were ``failureCount`` failures (out of ``assertionCount`` assertions)");
-    if (failureCount!=0) {
-        throw Exception("There were ``failureCount`` failures (out of ``assertionCount`` assertions)");
-    }
+    initAssert();
+    runTests();
+    resultsAndAssert();
 }
 
 shared void runAndExit() {
-    run();
-    if (failureCount!=0) {
-        print("There were ``failureCount`` failures (out of ``assertionCount`` assertions)");
-    }
-    process.exit(failureCount ==0 then 0 else 1);   
+    initAssert();
+    runTests();
+    resultsAndExit();
 }
 
-shared void test() { run(); }
+shared void test() {
+    run();
+}

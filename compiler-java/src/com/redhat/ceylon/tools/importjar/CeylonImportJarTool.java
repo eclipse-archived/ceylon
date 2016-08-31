@@ -260,7 +260,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     }
     
     private LegacyImporter createImporter() {
-        LegacyImporter importer = new LegacyImporter(module.getName(), module.getVersion(), applyCwd(jarFile), applyCwd(sourceJarFile), getOutputRepositoryManager(), getRepositoryManager(), log, new ImporterFeedback() {
+        LegacyImporter importer = new LegacyImporter(module.getName(), module.getVersion(), applyCwd(jarFile), applyCwd(sourceJarFile), getOutputRepositoryManager(), getRepositoryManager(), getLogger(), new ImporterFeedback() {
             @Override
             public void beforeDependencies() throws IOException {
                 msg("info.checkingDependencies").newline();
@@ -386,13 +386,13 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                             newline();
                             String modver = md.getName() + "/" + md.getLastVersion().getVersion();
                             append("        ").append(modver);
-                            dep = new ModuleDependencyInfo(md.getName(), md.getLastVersion().getVersion(), false, true);
+                            dep = new ModuleDependencyInfo(null, md.getName(), md.getLastVersion().getVersion(), false, true);
                         }
                     } else {
                         ModuleDetails md = suggestions.iterator().next();
                         String modver = md.getName() + "/" + md.getLastVersion().getVersion();
                         msg("info.try.importing", modver);
-                        dep = new ModuleDependencyInfo(md.getName(), md.getLastVersion().getVersion(), false, true);
+                        dep = new ModuleDependencyInfo(null, md.getName(), md.getLastVersion().getVersion(), false, true);
                     }
                 }
                 return dep;

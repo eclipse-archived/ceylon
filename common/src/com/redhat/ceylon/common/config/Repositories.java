@@ -122,6 +122,7 @@ public class Repositories {
     private static final String REPO_NAME_USER = "USER";
     private static final String REPO_NAME_REMOTE = "REMOTE";
     private static final String REPO_NAME_MAVEN = "MAVEN";
+    private static final String REPO_NAME_NPM = "NPM";
     
     private static final String ITEM_PASSWORD = "password";
     private static final String ITEM_PASSWORD_KS = "password-keystore";
@@ -247,6 +248,9 @@ public class Repositories {
             } else if (REPO_NAME_MAVEN.equals(repoName)) {
                 // aether:
                 return new SimpleRepository(REPO_NAME_MAVEN, "aether:", null);
+            } else if (REPO_NAME_NPM.equals(repoName)) {
+                // npm:
+                return new SimpleRepository(REPO_NAME_NPM, "npm:", null);
             }
             return null;
         }
@@ -454,10 +458,11 @@ public class Repositories {
     public Repository[] getOtherLookupRepositories() {
         Repository[] repos = getRepositoriesByType(REPO_TYPE_OTHER_LOOKUP);
         if (repos == null) {
-            repos = new Repository[2];
+            repos = new Repository[3];
             // By default "https://modules.ceylon-lang.org" and "aether:"
             repos[0] = getRepository(REPO_NAME_REMOTE);
             repos[1] = getRepository(REPO_NAME_MAVEN);
+            repos[2] = getRepository(REPO_NAME_NPM);
         }
         return repos;
     }

@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
  // line 1
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 1
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon( // line 1
+        major = 8, // line 1
+        minor = 1) // line 1
 class Doer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable { // line 1
      // line 1
     @.com.redhat.ceylon.compiler.java.metadata.Jpa // line 1
@@ -23,7 +25,9 @@ class Doer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer.class);
 } // line 2
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 1
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon( // line 1
+        major = 8, // line 1
+        minor = 1) // line 1
 @.com.redhat.ceylon.compiler.java.metadata.Method // line 1
 final class anonymous_ {
      // line 6

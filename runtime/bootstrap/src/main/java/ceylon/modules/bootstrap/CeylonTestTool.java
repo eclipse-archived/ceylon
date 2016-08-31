@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -103,6 +104,15 @@ public class CeylonTestTool extends AbstractTestTool {
         ceylonRunTool.setVerbose(verbose);
         ceylonRunTool.setCompile(compileFlags);
         ceylonRunTool.setCwd(cwd);
+        
+        if (flatClasspath) {
+            for (String moduleAndVersion : moduleAndVersionList) {
+                String moduleName = ModuleUtil.moduleName(moduleAndVersion);
+                String moduleVersion = ModuleUtil.moduleVersion(moduleAndVersion);
+                ceylonRunTool.addExtraModule(moduleName, moduleVersion);
+            }
+        }
+        
         try{
             ceylonRunTool.run();
         }catch(Throwable x){

@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.fordebug.lines; // line 1
  // line 1
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 1
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon( // line 1
+        major = 8, // line 1
+        minor = 1) // line 1
 @.ceylon.language.SharedAnnotation$annotation$ // line 1
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true) // line 1
 public class CtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable { // line 1
@@ -39,7 +41,9 @@ public class CtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model
     @.com.redhat.ceylon.compiler.java.metadata.Ignore // line 12
     public static final .com.redhat.ceylon.compiler.java.test.fordebug.lines.CtorSuper.constructor2_ constructor2_ = null; // line 12
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 12
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon( // line 12
+            major = 8, // line 12
+            minor = 1) // line 12
     @.com.redhat.ceylon.compiler.java.metadata.Ignore // line 12
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("constructor2") // line 12
     public static final class constructor2_ {
@@ -75,7 +79,9 @@ public class CtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.fordebug.lines.CtorSuper.class);
 } // line 19
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 1
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon( // line 1
+        major = 8, // line 1
+        minor = 1) // line 1
 @.ceylon.language.SharedAnnotation$annotation$ // line 19
 @.com.redhat.ceylon.compiler.java.metadata.Class( // line 19
         constructors = true, // line 19
@@ -101,7 +107,9 @@ public class CtorSuper2 extends .com.redhat.ceylon.compiler.java.test.fordebug.l
     @.com.redhat.ceylon.compiler.java.metadata.Ignore // line 29
     public static final .com.redhat.ceylon.compiler.java.test.fordebug.lines.CtorSuper2.constructor2_ constructor2_ = null; // line 29
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8) // line 29
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon( // line 29
+            major = 8, // line 29
+            minor = 1) // line 29
     @.com.redhat.ceylon.compiler.java.metadata.Ignore // line 29
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("constructor2") // line 29
     public static final class constructor2_ {

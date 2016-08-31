@@ -1,4 +1,11 @@
-import check { check,results,fail }
+import check {
+    check,
+    fail,
+    initAssert,
+    results,
+    resultsAndAssert,
+    resultsAndExit
+}
 import ceylon.language.meta{
     type, 
     annotations, optionalAnnotation, sequencedAnnotations
@@ -931,7 +938,8 @@ shared void checkParameterAnnotations() {
     check(`alias Alias`.annotated<SharedAnnotation>(), "Alias.annotated()");
 }
 
-shared void run() {
+void runTests() {
+    print("** Running Annotations Tests **");
     checkAToplevelAttributeAnnotations();
     checkAToplevelGetterSetterAnnotations();
     checkAToplevelFunctionAnnotations();
@@ -953,8 +961,26 @@ shared void run() {
     compilerBug1699();
     compilerBug2116();
     checkParameterAnnotations();
-        
-    print("Annotation tests OK");
+}
+
+shared void run() {
+    initAssert();
+    runTests();
     results();
 }
-shared void test() { run(); }
+
+shared void runAndAssert() {
+    initAssert();
+    runTests();
+    resultsAndAssert();
+}
+
+shared void runAndExit() {
+    initAssert();
+    runTests();
+    resultsAndExit();
+}
+
+shared void test() {
+    run();
+}

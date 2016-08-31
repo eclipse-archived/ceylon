@@ -5,8 +5,6 @@ import static java.util.Collections.emptyList;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.redhat.ceylon.common.Backends;
-
 /**
  * A function. Note that a function must have at least one 
  * parameter list.
@@ -18,7 +16,6 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
     private static final int VOID = 1<<22;
     private static final int DEFERRED = 1<<23;
     private static final int NO_NAME = 1<<24;
-    private static final int JS_NEW = 1<<25;
     
     private List<TypeParameter> typeParameters = emptyList();
     private List<ParameterList> parameterLists = new ArrayList<ParameterList>(1);
@@ -123,25 +120,6 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
     @Override
     public boolean isNamed() {
         return (flags&NO_NAME)==0;
-    }
-
-    @Override
-    public boolean isJsNew() {
-        return (flags&JS_NEW)!=0;
-    }
-    
-    public void setJsNew(boolean $new) {
-        if ($new) {
-            flags|=JS_NEW;
-        }
-        else {
-            flags&=(~JS_NEW);
-        }
-    }
-    
-    @Override
-    public Backends getScopedBackends() {
-        return super.getScopedBackends();
     }
     
     @Override

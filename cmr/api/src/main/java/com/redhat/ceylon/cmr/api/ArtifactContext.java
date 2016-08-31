@@ -25,6 +25,7 @@ import java.util.Objects;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -85,6 +86,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
         return all.toArray(tmp);
     }
     
+    private String namespace;
     private String name;
     private String version;
     private String[] suffixes = {CAR};
@@ -98,18 +100,20 @@ public class ArtifactContext implements Serializable, ContentOptions {
     private ArtifactCallback callback;
     private Repository repository;
 
-    public ArtifactContext(String name, String version) {
+    public ArtifactContext(String namespace, String name, String version) {
+        this.namespace = namespace;
         this.name = name;
         this.version = version;
+        assert(ModuleUtil.validNamespace(namespace));
     }
 
-    public ArtifactContext(String name, String version, String... suffixes) {
-        this(name, version);
+    public ArtifactContext(String namespace, String name, String version, String... suffixes) {
+        this(namespace, name, version);
         this.suffixes = suffixes;
     }
 
-    private ArtifactContext(String name, String version, Repository repository, String... suffixes) {
-        this(name, version);
+    private ArtifactContext(String namespace, String name, String version, Repository repository, String... suffixes) {
+        this(namespace, name, version);
         this.suffixes = suffixes;
         this.repository = repository;
     }
@@ -136,7 +140,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
         if (suffixes.length == 1) {
             if (isShaAllowed(suffixes[0])) {
                 String[] sha1Suffixes = { suffixes[0] + SHA1 };
-                return new ArtifactContext(name, version, sha1Suffixes);
+                return new ArtifactContext(namespace, name, version, sha1Suffixes);
             }
         }
         return null;
@@ -152,7 +156,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
         if (suffixes.length == 1) {
             if (!suffixes[0].endsWith(ZIP) && isDirectoryName(suffixes[0])) {
                 String[] sha1Suffixes = { suffixes[0] + ZIP };
-                return new ArtifactContext(name, version, sha1Suffixes);
+                return new ArtifactContext(namespace, name, version, sha1Suffixes);
             }
         }
         return null;
@@ -181,7 +185,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     }
 
     public ArtifactContext getSibling(ArtifactResult result, String... suffixes) {
-        ArtifactContext sibling = new ArtifactContext(result.name(), result.version(), result.repository(), suffixes);
+        ArtifactContext sibling = new ArtifactContext(result.namespace(), result.name(), result.version(), result.repository(), suffixes);
         sibling.copySettingsFrom(this);
         return sibling;
     }
@@ -207,15 +211,15 @@ public class ArtifactContext implements Serializable, ContentOptions {
         }
     }
 
-    public boolean isMaven(){
-        return name != null
-                && (name.startsWith("maven:")
-                        || name.indexOf(':') != -1);
+    public String getNamespace() {
+        return namespace;
     }
-    
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
     public String getName() {
-        if(name != null && name.startsWith("maven:"))
-            return name.substring("maven:".length());
         return name;
     }
 
@@ -407,6 +411,9 @@ public class ArtifactContext implements Serializable, ContentOptions {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
+        if (namespace != null) {
+            str.append(getNamespace()).append(":");
+        }
         str.append(getName()).append("-").append(getVersion());
         if (suffixes.length == 1 && !isDirectoryName(suffixes[0]) && !isFullName(suffixes[0])) {
             str.append(suffixes[0]);
@@ -434,7 +441,7 @@ public class ArtifactContext implements Serializable, ContentOptions {
     }
     
     public ArtifactContext copy() {
-        ArtifactContext ac = new ArtifactContext(name, version, suffixes);
+        ArtifactContext ac = new ArtifactContext(namespace, name, version, suffixes);
         ac.copySettingsFrom(this);
         ac.repository = repository;
         return ac;

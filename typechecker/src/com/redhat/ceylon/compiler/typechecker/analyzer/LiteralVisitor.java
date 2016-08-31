@@ -617,23 +617,19 @@ public class LiteralVisitor extends Visitor {
                         switchId = bme.getIdentifier();
                     }
                     else {
-                        boolean found = false;
                         for (Tree.CaseClause cc: switchCaseList.getCaseClauses()) {
                             Tree.CaseItem item = cc.getCaseItem();
                             if (item instanceof Tree.IsCase) {
                                 return;
                             }
                             if (item instanceof Tree.PatternCase) {
-                                found = true;
+                                Tree.Identifier id = new Tree.Identifier(null);
+                                id.setText("_");
+                                switchId = id;
+                                switched.setVariable(createVariable(id, expression));
+                                switched.setExpression(null);
+                                return;
                             }
-                        }
-                        if (found) {
-                            Tree.Identifier id = new Tree.Identifier(null);
-                            id.setText("_");
-                            switchId = id;
-                            switched.setVariable(createVariable(id, expression));
-                            switched.setExpression(null);
-                            return;
                         }
                     }
                 }
@@ -657,6 +653,7 @@ public class LiteralVisitor extends Visitor {
             that.setCaseItem(createIsCase(type, id));
             Tree.Destructure destructure = 
                     destructure(pattern, id);
+            destructure.setPatternCase(true);
             Tree.Expression e = that.getExpression();
             Tree.Block b = that.getBlock();
             if (e!=null) {
@@ -706,8 +703,9 @@ public class LiteralVisitor extends Visitor {
         List<Tree.ParameterList> parameterLists = 
                 that.getParameterLists();
         final Tree.Block funBody = that.getBlock();
-        final Tree.Expression funExpression = 
-                that.getExpression();
+        final Tree.ParExpression funExpression =
+                new Tree.ParExpression(null);
+        funExpression.setTerm(that.getExpression());
         final Tree.LetClause letClause = 
                 new Tree.LetClause(null);
         int k = 0;

@@ -27,6 +27,8 @@ import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.js.loader.JsModuleSourceMapper;
+import com.redhat.ceylon.compiler.js.loader.JsonModule;
+import com.redhat.ceylon.compiler.js.loader.NpmAware;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsLogger;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
@@ -260,7 +262,12 @@ public class JsCompiler {
                         Module om = pkg.getModule();
                         if (!om.equals(_m) && (!om.isNative() ||
                                 om.getNativeBackends().supports(Backend.JavaScript))) {
-                            output.get(_m).require(((Package) scope).getModule(), names);
+                            Module impmod = ((Package) scope).getModule();
+                            if (impmod instanceof NpmAware && ((NpmAware)impmod).getNpmPath() != null) {
+                                output.get(_m).requireFromNpm(impmod, names);
+                            } else {
+                                output.get(_m).require(impmod, names);
+                            }
                         }
                     }
                 }
@@ -281,7 +288,7 @@ public class JsCompiler {
                             }
                             if (m.getJsMajor() == 0) {
                                 //Load the module (most likely we're in the IDE if we need to do this)
-                                ArtifactContext ac = new ArtifactContext(m.getNameAsString(),
+                                ArtifactContext ac = new ArtifactContext(null, m.getNameAsString(),
                                         m.getVersion(), ArtifactContext.JS_MODEL);
                                 ac.setIgnoreDependencies(true);
                                 ac.setThrowErrorIfMissing(false);
@@ -313,18 +320,31 @@ public class JsCompiler {
             }
 
             //Then generate the JS code
+            List<PhasedUnit> pkgs = new ArrayList<>(4);
             if (srcFiles == null && !phasedUnits.isEmpty()) {
                 for (PhasedUnit pu: phasedUnits) {
-                    exitCode = compileUnit(pu, names);
-                    generatedCode = true;
-                    if (exitCode != 0) {
-                        return false;
+                    if ("module.ceylon".equals(pu.getUnitFile().getName())) {
+                        final int t = compileUnit(pu);
+                        generatedCode = true;
+                        if (t != 0) {
+                            return false;
+                        }
                     }
-                    if (stopOnError()) {
-                        logger.error("Errors found. Compilation stopped.");
+                }
+                for (PhasedUnit pu: phasedUnits) {
+                    if ("package.ceylon".equals(pu.getUnitFile().getName())) {
+                        pkgs.add(pu);
+                        continue;
+                    } else if ("module.ceylon".equals(pu.getUnitFile().getName())) {
+                        continue;
+                    }
+                    final int t = compileUnit(pu);
+                    generatedCode = true;
+                    if (t == 1) {
+                        return false;
+                    } else if (t == 2) {
                         break;
                     }
-                    getOutput(pu).addSource(getFullPath(pu));
                 }
             } else if(srcFiles != null && !srcFiles.isEmpty()
                          // For the specific case of the Stitcher
@@ -337,6 +357,16 @@ public class JsCompiler {
                     lastUnit = phasedUnits.get(0);
                 }
                 
+                for (PhasedUnit pu: phasedUnits) {
+                    if ("module.ceylon".equals(pu.getUnitFile().getName())) {
+                        final int t = compileUnit(pu);
+                        generatedCode = true;
+                        if (t != 0) {
+                            return false;
+                        }
+                    }
+                }
+
                 for (File path : srcFiles) {
                     if (path.getPath().endsWith(ArtifactContext.JS)) {
                         //Just output the file
@@ -366,20 +396,32 @@ public class JsCompiler {
                         for (PhasedUnit pu : phasedUnits) {
                             File unitFile = getFullPath(pu);
                             if (path.equals(unitFile)) {
-                                exitCode = compileUnit(pu, names);
+                                if (path.getName().equals("package.ceylon")) {
+                                    pkgs.add(pu);
+                                    continue;
+                                } else if (path.getName().equals("module.ceylon")) {
+                                    continue;
+                                }
+                                final int t = compileUnit(pu);
                                 generatedCode = true;
-                                if (exitCode != 0) {
+                                if (t == 1) {
                                     return false;
+                                } else if (t == 2) {
+                                    break;
                                 }
-                                if (stopOnError()) {
-                                    logger.error("Errors found. Compilation stopped.");
-                                    return false;
-                                }
-                                getOutput(pu).addSource(unitFile);
                                 lastUnit = pu;
                             }
                         }
                     }
+                }
+            }
+            for (PhasedUnit pu: pkgs) {
+                final int t = compileUnit(pu);
+                generatedCode = true;
+                if (t == 1) {
+                    return false;
+                } else if (t == 2) {
+                    break;
                 }
             }
             if(!generatedCode){
@@ -392,6 +434,19 @@ public class JsCompiler {
             }
         }
         return errCount == 0 && exitCode == 0;
+    }
+
+    private int compileUnit(PhasedUnit pu) throws IOException {
+        exitCode = compileUnit(pu, names);
+        if (exitCode != 0) {
+            return 1;
+        }
+        if (stopOnError()) {
+            logger.error("Errors found. Compilation stopped.");
+            return 2;
+        }
+        getOutput(pu).addSource(getFullPath(pu));
+        return 0;
     }
 
     VirtualFile findFile(File path) {
@@ -460,7 +515,7 @@ public class JsCompiler {
     /** Closes all output writers and puts resulting artifacts in the output repo. */
     protected int finish() throws IOException {
         int result = 0;
-        String outDir = opts.getOutRepo();
+        String outDir = CeylonUtils.resolveRepoUrl(opts.getOutRepo());
         if(!isURL(outDir)){
             File root = new File(outDir);
             if (root.exists()) {
@@ -499,14 +554,14 @@ public class JsCompiler {
                 logger.info("Created module "+moduleName+"/"+moduleVersion);
             }
             if (compilingLanguageModule) {
-                ArtifactContext artifact = new ArtifactContext("delete", "me", ArtifactContext.JS);
+                ArtifactContext artifact = new ArtifactContext(null, "delete", "me", ArtifactContext.JS);
                 artifact.setForceOperation(true);
                 outRepo.putArtifact(artifact, jsart);
             } else {
-                final ArtifactContext artifact = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.JS);
+                final ArtifactContext artifact = new ArtifactContext(null, moduleName, moduleVersion, ArtifactContext.JS);
                 artifact.setForceOperation(true);
                 outRepo.putArtifact(artifact, jsart);
-                final ArtifactContext martifact = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.JS_MODEL);
+                final ArtifactContext martifact = new ArtifactContext(null, moduleName, moduleVersion, ArtifactContext.JS_MODEL);
                 martifact.setForceOperation(true);
                 outRepo.putArtifact(martifact, modart);
                 //js file signature
@@ -539,7 +594,7 @@ public class JsCompiler {
                     try (FileWriter fw = new FileWriter(npmfile)) {
                         fw.write(npmdesc);
                     }
-                    final ArtifactContext npmArtifact = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.NPM_DESCRIPTOR);
+                    final ArtifactContext npmArtifact = new ArtifactContext(null, moduleName, moduleVersion, ArtifactContext.NPM_DESCRIPTOR);
                     npmArtifact.setForceOperation(true);
                     outRepo.putArtifact(npmArtifact, npmfile);
                 }

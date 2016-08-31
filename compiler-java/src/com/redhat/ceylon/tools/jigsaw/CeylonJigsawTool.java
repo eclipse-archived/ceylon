@@ -118,7 +118,7 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
                     null);
             if(version == null)
                 return;
-            loadModule(moduleName, version);
+            loadModule(null, moduleName, version);
             if(!force)
                 errorOnConflictingModule(moduleName, version);
         }

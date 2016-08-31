@@ -1,6 +1,7 @@
 """An abstraction of things that have a value which be [[got|get]], 
    and possibley set.  
    """
+since("1.2.0")
 shared sealed interface Gettable<out Get=Anything, in Set=Nothing> {
     
     "Reads the current value for this value binding. Note that in the case of getter

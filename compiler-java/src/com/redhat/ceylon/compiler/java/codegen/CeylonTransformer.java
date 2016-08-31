@@ -23,6 +23,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 
 import java.util.Iterator;
+import java.util.Stack;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
@@ -34,6 +35,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.main.Option;
@@ -135,7 +137,7 @@ public class CeylonTransformer extends AbstractTransformer {
     }
 
     private enum WantedDeclaration {
-        Normal, Annotation, AnnotationSequence;
+        Normal, Annotation, AnnotationSequence, InterfaceImpl;
     }
     
     private List<JCTree> makeDefs(CompilationUnit t) {
@@ -146,49 +148,73 @@ public class CeylonTransformer extends AbstractTransformer {
             public void loadFromSource(Declaration decl) {
                 if(!checkNative(decl))
                     return;
+                Stack<Tree.Declaration> ancestors = new Stack<>();
                 long flags = decl instanceof Tree.AnyInterface ? Flags.INTERFACE : 0;
                 String name = Naming.toplevelClassName("", decl);
                 
-                defs.add(makeClassDef(decl, flags, name, WantedDeclaration.Normal));
+                defs.add(makeClassDef(decl, flags, name, WantedDeclaration.Normal, defs, ancestors));
                 if(decl instanceof Tree.AnyInterface){
                     String implName = Naming.getImplClassName(name);
-                    defs.add(makeClassDef(decl, 0, implName, WantedDeclaration.Normal));
+                    defs.add(makeClassDef(decl, 0, implName, WantedDeclaration.InterfaceImpl, defs, ancestors));
                 }
+                
                 // only do it for Bootstrap where we control the annotations, because it's so dodgy ATM
-                if(options.get(Option.BOOTSTRAPCEYLON) != null
-                        && decl instanceof Tree.AnyClass
+                if(/*options.get(Option.BOOTSTRAPCEYLON) != null
+                        && */decl instanceof Tree.AnyClass
                         && TreeUtil.hasAnnotation(decl.getAnnotationList(), "annotation", decl.getUnit())){
                     String annotationName = Naming.suffixName(Suffix.$annotation$, name);
-                    defs.add(makeClassDef(decl, Flags.ANNOTATION | Flags.INTERFACE, annotationName, WantedDeclaration.Annotation));
+                    defs.add(makeClassDef(decl, Flags.ANNOTATION | Flags.INTERFACE, annotationName, WantedDeclaration.Annotation, 
+                            defs, ancestors));
                     
-                    for(Tree.StaticType sat : ((Tree.AnyClass)decl).getSatisfiedTypes().getTypes()){
-                        if(sat instanceof Tree.BaseType 
-                                && ((Tree.BaseType) sat).getIdentifier().getText().equals("SequencedAnnotation")){
-                            String annotationsName = Naming.suffixName(Suffix.$annotations$, name);
-                            defs.add(makeClassDef(decl, Flags.ANNOTATION | Flags.INTERFACE, annotationsName, WantedDeclaration.AnnotationSequence));
+                    if(((Tree.AnyClass)decl).getSatisfiedTypes() != null){
+                        for(Tree.StaticType sat : ((Tree.AnyClass)decl).getSatisfiedTypes().getTypes()){
+                            if(sat instanceof Tree.BaseType 
+                                    && ((Tree.BaseType) sat).getIdentifier().getText().equals("SequencedAnnotation")){
+                                String annotationsName = Naming.suffixName(Suffix.$annotations$, name);
+                                defs.add(makeClassDef(decl, Flags.ANNOTATION | Flags.INTERFACE, 
+                                        annotationsName, WantedDeclaration.AnnotationSequence, defs, ancestors));
+                            }
                         }
                     }
                 }
             }
 
-            private JCTree makeClassDef(Declaration decl, long flags, String name, WantedDeclaration wantedDeclaration) {
+            private JCTree makeClassDef(Tree.Declaration decl, long flags, String name, WantedDeclaration wantedDeclaration,
+                    ListBuffer<JCTree> toplevelDeclarations, Stack<Tree.Declaration> ancestors) {
                 ListBuffer<JCTree.JCTypeParameter> typarams = new ListBuffer<JCTree.JCTypeParameter>();
                 if(decl instanceof Tree.ClassOrInterface){
                     Tree.ClassOrInterface classDecl = (ClassOrInterface) decl;
-                    if(classDecl.getTypeParameterList() != null){
-                        for(Tree.TypeParameterDeclaration typeParamDecl : classDecl.getTypeParameterList().getTypeParameterDeclarations()){
-                            // we don't need a valid name, just a name, and making it BOGUS helps us find it later if it turns out
-                            // we failed to reset everything properly
-                            typarams.add(make().TypeParameter(names().fromString("BOGUS-"+typeParamDecl.getIdentifier().getText()), List.<JCExpression>nil()));
+                    if(decl instanceof Tree.AnyInterface){
+                        // interfaces are pulled up and catch container type params
+                        for(Tree.Declaration ancestor : ancestors){
+                            if(ancestor instanceof Tree.ClassOrInterface){
+                                addTypeParameters(typarams, (Tree.ClassOrInterface)ancestor);
+                            }
                         }
                     }
+                    addTypeParameters(typarams, classDecl);
                 }
 
-                return make().ClassDef(make().Modifiers(flags | Flags.PUBLIC), names().fromString(name), 
-                        typarams.toList(), null, List.<JCExpression>nil(), makeClassBody(decl, wantedDeclaration));
+                ancestors.push(decl);
+                JCTree ret = make().ClassDef(make().Modifiers(flags | Flags.PUBLIC), names().fromString(name), 
+                        typarams.toList(), null, List.<JCExpression>nil(), 
+                        makeClassBody(decl, wantedDeclaration, toplevelDeclarations, ancestors));
+                ancestors.pop();
+                return ret;
             }
 
-            private List<JCTree> makeClassBody(Declaration decl, WantedDeclaration wantedDeclaration) {
+            private void addTypeParameters(ListBuffer<JCTypeParameter> typarams, Tree.ClassOrInterface classDecl) {
+                if(classDecl.getTypeParameterList() != null){
+                    for(Tree.TypeParameterDeclaration typeParamDecl : classDecl.getTypeParameterList().getTypeParameterDeclarations()){
+                        // we don't need a valid name, just a name, and making it BOGUS helps us find it later if it turns out
+                        // we failed to reset everything properly
+                        typarams.add(make().TypeParameter(names().fromString("BOGUS-"+typeParamDecl.getIdentifier().getText()), List.<JCExpression>nil()));
+                    }
+                }
+            }
+
+            private List<JCTree> makeClassBody(Declaration decl, WantedDeclaration wantedDeclaration,
+                    ListBuffer<JCTree> toplevelDeclarations, Stack<Tree.Declaration> ancestors) {
                 // only do it for Bootstrap where we control the annotations, because it's so dodgy ATM
                 if(wantedDeclaration == WantedDeclaration.Annotation){
                     ListBuffer<JCTree> body = new ListBuffer<JCTree>();
@@ -230,7 +256,47 @@ public class CeylonTransformer extends AbstractTransformer {
                                 null);
                     return List.<JCTree>of(method);
                 }
-                return List.<JCTree>nil();
+                
+                ListBuffer<JCTree> defs = new ListBuffer<>();
+                java.util.List<Statement> statements = null;
+                if(decl instanceof Tree.ClassDefinition)
+                    statements = ((Tree.ClassDefinition) decl).getClassBody().getStatements();
+                else if(decl instanceof Tree.InterfaceDefinition){
+                    // only walk interface members if we're generating the impl class
+                    if(wantedDeclaration == WantedDeclaration.InterfaceImpl)
+                        statements = ((Tree.InterfaceDefinition) decl).getInterfaceBody().getStatements();
+                }
+                if(statements != null){
+                    for(Tree.Statement member : statements){
+                        if(member instanceof Tree.ClassOrInterface
+                                && checkNative((Tree.Declaration) member)){
+                            long flags = member instanceof Tree.AnyInterface ? Flags.INTERFACE : 0;
+                            String initialName = Naming.toplevelClassName("", (Tree.Declaration) member);
+                            String name;
+                            if(member instanceof Tree.AnyInterface){
+                                // interfaces are pulled to the toplevel
+                                StringBuffer strbuf = new StringBuffer();
+                                for(Tree.Declaration part : ancestors)
+                                    strbuf.append(part.getIdentifier().getText()).append("$");
+                                name = strbuf.append(initialName).toString();
+                            }else{
+                                name = initialName;
+                            }
+
+                            JCTree def = makeClassDef((Tree.Declaration) member, flags, name, 
+                                    WantedDeclaration.Normal, toplevelDeclarations, ancestors);
+                            if(member instanceof Tree.AnyInterface){
+                                toplevelDeclarations.add(def);
+                                String implName = Naming.getImplClassName(initialName);
+                                defs.add(makeClassDef((Tree.Declaration)member, 0, implName, 
+                                        WantedDeclaration.InterfaceImpl, defs, ancestors));
+                            }else
+                                defs.add(def);
+                            // FIXME: interfaces impl?
+                        }
+                    }
+                }
+                return defs.toList();
             }
 
             private JCExpression getAnnotationTypeFor(Tree.Type type) {
@@ -253,6 +319,8 @@ public class CeylonTransformer extends AbstractTransformer {
                             || name.equals("InterfaceDeclaration")
                             || name.equals("ClassOrInterfaceDeclaration"))
                         return make().Type(syms().stringType);
+                    // probably an enum value then
+                    return make().TypeArray(make().Type(syms().stringType));
                 }
                 if(type instanceof Tree.SequencedType){
                     return make().TypeArray(getAnnotationTypeFor(((Tree.SequencedType) type).getType()));
@@ -417,6 +485,8 @@ public class CeylonTransformer extends AbstractTransformer {
         
         // For captured local variable Values, use a VariableBox
         if (Decl.isBoxedVariable(declarationModel)) {
+            // we're not calling build so we need to restore the class builder
+            builder.restoreClassBuilder();
             if (expressionError != null) {
                 return List.<JCTree>of(this.makeThrowUnresolvedCompilationError(expressionError));
             } else {
@@ -429,6 +499,8 @@ public class CeylonTransformer extends AbstractTransformer {
         if (block == null && expression == null && !Decl.isToplevel(declarationModel)) {
             JCExpression typeExpr = makeJavaType(getGetterInterfaceType(declarationModel));
             JCTree.JCVariableDecl var = makeVar(attrClassName, typeExpr, null);
+            // we're not calling build so we need to restore the class builder
+            builder.restoreClassBuilder();
             return List.<JCTree>of(var);
         }
         
@@ -517,6 +589,8 @@ public class CeylonTransformer extends AbstractTransformer {
         
         if (Decl.isLocal(declarationModel)) {
             if (expressionError != null) {
+                // we're not calling build so we need to restore the class builder
+                builder.restoreClassBuilder();
                 return List.<JCTree>of(this.makeThrowUnresolvedCompilationError(expressionError));
             }
             builder.classAnnotations(makeAtLocalDeclaration(declarationModel.getQualifier(), false));

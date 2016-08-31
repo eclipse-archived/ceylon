@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.jar.JarInputStream;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Pack200;
 import java.util.jar.Pack200.Packer;
@@ -19,10 +18,10 @@ import java.util.jar.Pack200.Unpacker;
 import java.util.zip.ZipEntry;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.log.Logger;
 
 public final class JarUtils {
 
@@ -103,8 +102,8 @@ public final class JarUtils {
 
     protected static void copyMissingFromOriginal(File originalFile, JarOutputStream jarOutputStream,
             JarEntryFilter filter, Set<String> folders) throws IOException {
-        if (originalFile != null) {
-            JarFile jarFile = new JarFile(originalFile);
+        JarFile jarFile = validJar(originalFile);
+        if (jarFile != null) {
             Enumeration<JarEntry> entries = jarFile.entries();
             while(entries.hasMoreElements()){
                 JarEntry entry = entries.nextElement();
@@ -128,6 +127,30 @@ public final class JarUtils {
             }
             jarFile.close();
         }
+    }
+
+    public static JarFile validJar(File originalFile) {
+        if (originalFile != null && originalFile.isFile() && originalFile.canRead()) {
+            try {
+                return new JarFile(originalFile);
+            } catch (IOException e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    public static boolean isValidJar(File originalFile) {
+        JarFile jarFile = validJar(originalFile);
+        if (jarFile != null) {
+            try {
+                jarFile.close();
+            } catch (IOException e) {
+                // Ignore
+            }
+            return true;
+        }
+        return false;
     }
 
     /**

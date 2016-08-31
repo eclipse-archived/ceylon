@@ -33,7 +33,9 @@ import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.OverridesRuntimeResolver;
 import com.redhat.ceylon.cmr.api.PathFilterParser;
 import com.redhat.ceylon.cmr.impl.AbstractArtifactResult;
+import com.redhat.ceylon.cmr.impl.BytecodeUtils;
 import com.redhat.ceylon.cmr.impl.Configuration;
+import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.cmr.impl.OSGiDependencyResolver;
 import com.redhat.ceylon.cmr.impl.PropertiesDependencyResolver;
 import com.redhat.ceylon.cmr.impl.XmlDependencyResolver;
@@ -41,6 +43,7 @@ import com.redhat.ceylon.cmr.maven.MavenBackupDependencyResolver;
 import com.redhat.ceylon.common.Java9ModuleUtil;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleSpec.Option;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.langtools.classfile.Annotation;
@@ -167,7 +170,7 @@ public class Main {
             public final boolean optional, shared;
 
             public Dependency(String name, String version, boolean optional, boolean shared) {
-                super(null, name, version);
+                super(null, null, name, version);
                 this.optional = optional;
                 this.shared = shared;
             }
@@ -235,7 +238,7 @@ public class Main {
             public final List<Dependency> dependencies = new LinkedList<Dependency>();
 
             public Module(String name, String version, Type type, File jar) {
-                super(null, name, version);
+                super(null, null, name, version);
                 this.type = type;
                 this.jar = jar;
             }
@@ -244,6 +247,11 @@ public class Main {
                 dependencies.add(new Dependency(name, version, optional, shared));
             }
             
+            @Override
+            public String namespace() {
+                return null;
+            }
+
             @Override
             public int hashCode() {
                 int ret = 31;
@@ -469,7 +477,7 @@ public class Main {
         // information from the jar/car file itself.
         private Module searchJars(String name, String version) {
             if(overrides != null){
-                ArtifactContext ctx = new ArtifactContext(name, version);
+                ArtifactContext ctx = new ArtifactContext(null, name, version);
                 ArtifactContext replacement = overrides.replace(ctx);
                 if(replacement != null){
                     name = replacement.getName();
@@ -704,12 +712,27 @@ public class Main {
                 Object moduleDependencies = ClassFileUtil.getAnnotationValue(classFile, moduleAnnotation, "dependencies");
                 ArtifactOverrides ao = null;
                 if(overrides != null){
-                    ao = overrides.getArtifactOverrides(new ArtifactContext(name, version));
+                    ao = overrides.getArtifactOverrides(new ArtifactContext(null, name, version));
                 }
                 if(moduleDependencies instanceof Object[]){
+                    int[] binver = BytecodeUtils.getBinaryVersions(classFile);
+                    boolean supportsNamespaces = binver != null && ModuleUtil.supportsImportsWithNamespaces(binver[0], binver[1]);
                     for(Object dependency : (Object[])moduleDependencies){
                     	Annotation dependencyAnnotation = (Annotation) dependency;
                         String depName = (String)ClassFileUtil.getAnnotationValue(classFile, dependencyAnnotation, "name");
+                        String depNamespace;
+                        if (supportsNamespaces) {
+                            depNamespace = (String)ClassFileUtil.getAnnotationValue(classFile, dependencyAnnotation, "namespace");
+                            if (depNamespace != null && depNamespace.isEmpty()) {
+                                depNamespace = null;
+                            }
+                        } else {
+                            if (ModuleUtil.isMavenModule(depName)) {
+                                depNamespace = MavenRepository.NAMESPACE;
+                            } else {
+                                depNamespace = null;
+                            }
+                        }
                         String depVersion = (String)ClassFileUtil.getAnnotationValue(classFile, dependencyAnnotation, "version");
                         Boolean optional = (Boolean)ClassFileUtil.getAnnotationValue(classFile, dependencyAnnotation, "optional");
                         if(optional == null)
@@ -721,10 +744,11 @@ public class Main {
                             throw new IOException("Invalid module import");
                         
                         if(overrides != null){
-                            ArtifactContext depCtx = new ArtifactContext(depName, depVersion);
+                            ArtifactContext depCtx = new ArtifactContext(depNamespace, depName, depVersion);
                             ArtifactContext replacement = overrides.replace(depCtx);
                             if(replacement != null){
                                 depCtx = replacement;
+                                depNamespace = replacement.getNamespace();
                                 depName = replacement.getName();
                                 depVersion = replacement.getVersion();
                             }

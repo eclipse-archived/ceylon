@@ -43,6 +43,9 @@ import ceylon.language.impl.BaseIterator;
             arguments = {"Gavin"}),
     @Annotation("shared"),
     @Annotation("final")})
+@SharedAnnotation$annotation$
+@FinalAnnotation$annotation$
+@NativeAnnotation$annotation$(backends={})
 public final class String
     implements Comparable<String>, SearchableList<Character>,
                Summable<String>, ReifiedType,
@@ -124,7 +127,7 @@ public final class String
             buf.append(s.value);
         return instance(buf.toString());
     }
-
+    
     public java.lang.String getUppercased() {
         return getUppercased(value);
     }
@@ -265,6 +268,23 @@ public final class String
     @Ignore
     public static boolean getEmpty(java.lang.String value) {
         return value.isEmpty();
+    }
+
+    @Transient
+    public boolean getWhitespace() {
+        return getWhitespace(value);
+    }
+
+    @Ignore
+    public static boolean getWhitespace(java.lang.String value) {
+        for (int offset = 0, length = value.length(); offset < length;) {
+            int codePoint = value.codePointAt(offset);
+            if (!java.lang.Character.isWhitespace(codePoint)) {
+                return false;
+            }
+            offset += java.lang.Character.charCount(codePoint);
+        }
+        return true;
     }
 
 //    @Override
@@ -776,7 +796,13 @@ public final class String
         }
         if (sublist instanceof String) {
             String string = (String) sublist;
-            int start = value.offsetByCodePoints(0, (int)from);
+            int start;
+            try {
+                start = value.offsetByCodePoints(0, (int)from);
+            }
+            catch (IndexOutOfBoundsException iobe) {
+                return null;
+            }
             int index = value.indexOf(string.value, start);
             if (index >= 0) {
                 return Integer.instance(from + 
@@ -1037,7 +1063,10 @@ public final class String
     }
     
     @Override
-    public boolean startsWith(@Name("substring") List<?> substring) {
+    public boolean startsWith(
+            @Name("substring")
+            @TypeInfo("ceylon.language::List<ceylon.language::Anything>")
+            List<?> substring) {
         if (substring instanceof String) {
             return value.startsWith(((String)substring).value);
         }
@@ -1058,7 +1087,10 @@ public final class String
     }
     
     @Override
-    public boolean endsWith(@Name("substring") List<?> substring) {
+    public boolean endsWith(
+            @Name("substring")
+            @TypeInfo("ceylon.language::List<ceylon.language::Anything>")
+            List<?> substring) {
         if (substring instanceof String) {
             return value.endsWith(((String)substring).value);
         }
@@ -1094,8 +1126,11 @@ public final class String
 
     public boolean longerThan(@TypeInfo("ceylon.language::Integer")
     @Name("length") long length) {
+        if (value.length()<=length) {
+            return false;
+        }
         try {
-            value.offsetByCodePoints(0, Util.toInt(length+1));
+            value.offsetByCodePoints(0, (int)length+1);
             return true;
         }
         catch (IndexOutOfBoundsException iobe) {
@@ -1106,8 +1141,11 @@ public final class String
     @Ignore
     public static boolean longerThan(java.lang.String value, 
             long length) {
+        if (value.length()<=length) {
+            return false;
+        }
         try {
-            value.offsetByCodePoints(0, Util.toInt(length+1));
+            value.offsetByCodePoints(0, (int)length+1);
             return true;
         }
         catch (IndexOutOfBoundsException iobe) {
@@ -1117,8 +1155,11 @@ public final class String
 
     public boolean shorterThan(@TypeInfo("ceylon.language::Integer")
     @Name("length") long length) {
+        if (value.length()<length) {
+            return true;
+        }
         try {
-            value.offsetByCodePoints(0, Util.toInt(length));
+            value.offsetByCodePoints(0, (int)length);
             return false;
         }
         catch (IndexOutOfBoundsException iobe) {
@@ -1129,8 +1170,11 @@ public final class String
     @Ignore
     public static boolean shorterThan(java.lang.String value, 
             long length) {
+        if (value.length()<length) {
+            return true;
+        }
         try {
-            value.offsetByCodePoints(0, Util.toInt(length));
+            value.offsetByCodePoints(0, (int)length);
             return false;
         }
         catch (IndexOutOfBoundsException iobe) {
@@ -1333,20 +1377,32 @@ public final class String
 
     @Ignore
     public static java.lang.String measure(java.lang.String value, 
-            final long from, final long length) {
-        long len = getSize(value);
-        if (from >= len || length <= 0) {
+            long from, long length) {
+        long len = value.length();
+        if (len==0 || from>=len || length<=0 || from+length<=0) {
             return "";
         }
-        long resultLength;
-        if (from + length > len) {
-            resultLength = len - from;
+        if (from<0) {
+            length += from;
+            from = 0;
         }
-        else {
-            resultLength = length;
+        int start;
+        try {
+            start = value.offsetByCodePoints(0, Util.toInt(from));
         }
-        int start = value.offsetByCodePoints(0, Util.toInt(from));
-        int end = value.offsetByCodePoints(start, Util.toInt(resultLength));
+        catch (IndexOutOfBoundsException ioobe) {
+            return "";
+        }
+        if (start+length>=len) {
+            return value.substring(start);
+        }
+        int end;
+        try {
+            end = value.offsetByCodePoints(start, Util.toInt(length));
+        }
+        catch (IndexOutOfBoundsException ioobe) {
+            return value.substring(start);
+        }
         return value.substring(start, end);
     }
 
@@ -1393,11 +1449,17 @@ public final class String
         if (from <= 0) {
             return value;
         }
-        long len = getSize(value);
+        long len = value.length();
         if (len == 0 || from >= len) {
             return "";
         }
-        int start = value.offsetByCodePoints(0, Util.toInt(from));
+        int start;
+        try {
+            start = value.offsetByCodePoints(0, Util.toInt(from));
+        }
+        catch (IndexOutOfBoundsException ioobe) {
+            return "";
+        }
         return value.substring(start);
     }
     
@@ -1592,14 +1654,20 @@ public final class String
     @Ignore
     public static java.lang.String spanTo(java.lang.String value, 
             final long to) {
-        long len = getSize(value);
-        if (len == 0 || to < 0) {
+        long len = value.length();
+        if (len==0 || to<0) {
             return "";
         }
-        if (to >= len) {
+        if (to>=len) {
             return value;
         }
-        int end = value.offsetByCodePoints(0, Util.toInt(to+1));
+        int end;
+        try {
+            end = value.offsetByCodePoints(0, Util.toInt(to+1));
+        }
+        catch (IndexOutOfBoundsException ioobe) {
+            return value;
+        }
         return value.substring(0, end);
     }
     
@@ -1607,7 +1675,7 @@ public final class String
     @Ignore
     public static java.lang.String span(java.lang.String value, 
             long from, long to) {
-        long len = getSize(value);
+        long len = value.length();
         if (len == 0) {
             return "";
         }
@@ -1621,13 +1689,25 @@ public final class String
             return "";
         }
         long begin = from < 0 ? 0 : from;
-        int start = value.offsetByCodePoints(0, Util.toInt(begin));
+        int start;
+        try {
+            start = value.offsetByCodePoints(0, Util.toInt(begin));
+        }
+        catch (IndexOutOfBoundsException ioobe) {
+            return "";
+        }
         java.lang.String result;
         if (to >= len) {
             result = value.substring(start);
         }
         else {
-            int end = value.offsetByCodePoints(start, Util.toInt(to+1 - begin));
+            int end;
+            try {
+                end = value.offsetByCodePoints(start, Util.toInt(to+1 - begin));
+            }
+            catch (IndexOutOfBoundsException ioobe) {
+                return value.substring(start);
+            }
             result = value.substring(start, end);
         }
         return reverse ? getReversed(result) : result;
@@ -1975,7 +2055,7 @@ public final class String
         }
     };
     
-    @TypeInfo("{ceylon.language::String*}")
+    @TypeInfo("{ceylon.language::String+}")
     @Transient
     public Iterable<? extends String, ?> getLines() {
         return split(NEWLINES, true, false).map($TypeDescriptor$, TRIM_RETURNS);
@@ -1987,7 +2067,7 @@ public final class String
         return split(value, NEWLINES, true, false).map($TypeDescriptor$, TRIM_RETURNS);
     }
 
-    @TypeInfo("{ceylon.language::String*}")
+    @TypeInfo("{ceylon.language::String+}")
     @Transient
     public Iterable<? extends String, ?> getLinesWithBreaks() {
         return split(NEWLINES, false, false).partition(2)
@@ -2132,7 +2212,7 @@ public final class String
     @Ignore
     public static Character find(java.lang.String value, 
             Callable<? extends Boolean> f) {
-        for (int offset = 0; offset < value.length();) {
+        for (int offset = 0, length = value.length(); offset < length;) {
             int codePoint = value.codePointAt(offset);
             Character ch = Character.instance(codePoint);
             if(f.$call$(ch).booleanValue()) {
@@ -2157,7 +2237,7 @@ public final class String
     public static Character findLast(java.lang.String value, 
             Callable<? extends Boolean> f) {
         Character result = null;
-        for (int offset = 0; offset < value.length();) {
+        for (int offset = 0, length = value.length(); offset < length;) {
             int codePoint = value.codePointAt(offset);
             Character ch = Character.instance(codePoint);
             if(f.$call$(ch).booleanValue()) {
@@ -2312,21 +2392,16 @@ public final class String
                     int index = 0;
                     @Override
                     public java.lang.Object next() {
-                        if (offset>=value.length()) {
-                            return finished_.get_();
-                        }
                         while (true) {
-                            int cp = value.codePointAt(offset);
-                            offset+=java.lang.Character.charCount(cp);
                             if (offset>=value.length()) {
                                 return finished_.get_();
                             }
-                            else {
-                                if (fun.$call$(Character.instance(cp)).booleanValue()) {
-                                    return Integer.instance(index++);
-                                }
-                                index++;
+                            int cp = value.codePointAt(offset);
+                            offset+=java.lang.Character.charCount(cp);
+                            if (fun.$call$(Character.instance(cp)).booleanValue()) {
+                                return Integer.instance(index++);
                             }
+                            index++;
                         }
                     }
                 };
@@ -2348,7 +2423,9 @@ public final class String
     @Ignore
     public static Integer 
     firstIndexWhere(java.lang.String value, Callable<? extends Boolean> fun) {
-        for (int offset = 0, index = 0; offset<value.length();) {
+        for (int offset = 0, index = 0, 
+                length = value.length(); 
+                offset < length;) {
             int cp = value.codePointAt(offset);
             offset+=java.lang.Character.charCount(cp);
             if (fun.$call$(Character.instance(cp)).booleanValue()) {
@@ -2443,8 +2520,9 @@ public final class String
         }
         int initial = value.codePointAt(0);
         java.lang.Object partial = Character.instance(initial);
-        for (int offset = java.lang.Character.charCount(initial); 
-                offset < value.length();) {
+        for (int offset = java.lang.Character.charCount(initial), 
+                length = value.length();
+                offset < length;) {
             int codePoint = value.codePointAt(offset);
             partial = f.$call$(partial, Character.instance(codePoint));
             offset += java.lang.Character.charCount(codePoint);
@@ -2460,13 +2538,13 @@ public final class String
             @FunctionalParameter("!(element)")
             @TypeInfo("ceylon.language::Callable<ceylon.language::Anything,ceylon.language::Tuple<ceylon.language::Character,ceylon.language::Character,ceylon.language::Empty>>")
             Callable<? extends java.lang.Object> step) {
-        return each(value,step);
+        return each(value, step);
     }
     
     @Ignore
     public static java.lang.Object each(java.lang.String value, 
             Callable<? extends java.lang.Object> f) {
-        for (int offset = 0; offset < value.length();) {
+        for (int offset = 0, length = value.length(); offset < length;) {
             int codePoint = value.codePointAt(offset);
             f.$call$(Character.instance(codePoint));
             offset += java.lang.Character.charCount(codePoint);
@@ -2487,7 +2565,7 @@ public final class String
     @Ignore
     public static boolean any(java.lang.String value, 
             Callable<? extends Boolean> f) {
-        for (int offset = 0; offset < value.length();) {
+        for (int offset = 0, length = value.length(); offset < length;) {
             int codePoint = value.codePointAt(offset);
             if (f.$call$(Character.instance(codePoint)).booleanValue()) {
                 return true;
@@ -2510,7 +2588,7 @@ public final class String
     @Ignore
     public static boolean every(java.lang.String value, 
             Callable<? extends Boolean> f) {
-        for (int offset = 0; offset < value.length();) {
+        for (int offset = 0, length = value.length(); offset < length;) {
             int codePoint = value.codePointAt(offset);
             if(!f.$call$(Character.instance(codePoint)).booleanValue()) {
                 return false;
@@ -2564,7 +2642,7 @@ public final class String
     public static long count(java.lang.String value, 
             Callable<? extends Boolean> f) {
         int count = 0;
-        for (int offset = 0; offset < value.length();) {
+        for (int offset = 0, length = value.length(); offset < length;) {
             int codePoint = value.codePointAt(offset);
             if(f.$call$(Character.instance(codePoint)).booleanValue()) {
                 count++;
@@ -2858,35 +2936,35 @@ public final class String
     }
     
     @Ignore
-    public long copyTo$sourcePosition(Array<Character> destination){
+    public long copyTo$sourcePosition(Array<? super Character> destination){
         return 0;
     }
 
     @Ignore
-    public long copyTo$destinationPosition(Array<Character> destination, 
+    public long copyTo$destinationPosition(Array<? super Character> destination, 
             long sourcePosition){
         return 0;
     }
 
     @Ignore
-    public long copyTo$length(Array<Character> destination, 
+    public long copyTo$length(Array<? super Character> destination, 
             long sourcePosition, long destinationPosition){
         return Math.min(value.length()-sourcePosition,
                 destination.getSize()-destinationPosition);
     }
 
     @Ignore
-    public static void copyTo(java.lang.String value, Array<Character> destination){
+    public static void copyTo(java.lang.String value, Array<? super Character> destination){
         copyTo(value, destination, 0, 0);
     }
 
     @Ignore
-    public static void copyTo(java.lang.String value, Array<Character> destination, long sourcePosition){
+    public static void copyTo(java.lang.String value, Array<? super Character> destination, long sourcePosition){
         copyTo(value, destination, sourcePosition, 0);
     }
 
     @Ignore
-    public static void copyTo(java.lang.String value, Array<Character> destination, 
+    public static void copyTo(java.lang.String value, Array<? super Character> destination, 
             long sourcePosition, long destinationPosition){
         copyTo(value, destination, 
                 sourcePosition, destinationPosition, 
@@ -2895,17 +2973,17 @@ public final class String
     }
 
     @Ignore
-    public void copyTo(Array<Character> destination){
+    public void copyTo(Array<? super Character> destination){
         copyTo(value, destination, 0, 0);
     }
 
     @Ignore
-    public void copyTo(Array<Character> destination, long sourcePosition){
+    public void copyTo(Array<? super Character> destination, long sourcePosition){
         copyTo(value, destination, sourcePosition, 0);
     }
 
     @Ignore
-    public void copyTo(Array<Character> destination, 
+    public void copyTo(Array<? super Character> destination, 
             long sourcePosition, long destinationPosition){
         copyTo(value, destination, 
                 sourcePosition, destinationPosition, 
@@ -2914,21 +2992,33 @@ public final class String
 
     @Ignore
     public static void copyTo(java.lang.String value,
-            Array<Character> destination, 
+            Array<? super Character> destination, 
             long sourcePosition, 
             long destinationPosition, 
             long length){
         int count = 0;
         int src = Util.toInt(sourcePosition);
         int dest = Util.toInt(destinationPosition);
-        int[] array = (int[]) destination.toArray();
+
         try {
-            for (int index = value.offsetByCodePoints(0,src); 
-                    count<length;) {
-                int codePoint = value.codePointAt(index);
-                array[count+dest] = codePoint;
-                index += java.lang.Character.charCount(codePoint);
-                count++;
+            if (destination.toArray() instanceof int[]) {
+                int[] array = (int[]) destination.toArray();
+                for (int index = value.offsetByCodePoints(0,src); 
+                        count<length;) {
+                    int codePoint = value.codePointAt(index);
+                    array[count+dest] = codePoint;
+                    index += java.lang.Character.charCount(codePoint);
+                    count++;
+                }
+            } else {
+                java.lang.Object[] array = (java.lang.Object[]) destination.toArray();
+                for (int index = value.offsetByCodePoints(0,src); 
+                        count<length;) {
+                    int codePoint = value.codePointAt(index);
+                    array[count+dest] = Character.instance(codePoint);
+                    index += java.lang.Character.charCount(codePoint);
+                    count++;
+                }
             }
         }
         catch (IndexOutOfBoundsException iob) {
@@ -2936,9 +3026,10 @@ public final class String
         }
     }
 
-    public void copyTo(@Name("destination") Array<Character> destination, 
-                       @Name("sourcePosition") @Defaulted long sourcePosition, 
-                       @Name("destinationPosition") @Defaulted long destinationPosition, 
+    public void copyTo(@TypeInfo("ceylon.language::Array<in ceylon.language::Character>")
+                       @Name("destination") Array<? super Character> destination,
+                       @Name("sourcePosition") @Defaulted long sourcePosition,
+                       @Name("destinationPosition") @Defaulted long destinationPosition,
                        @Name("length") @Defaulted long length){
         copyTo(value, destination, sourcePosition, destinationPosition, length);
     }
@@ -2948,6 +3039,12 @@ public final class String
     public static Iterable<? extends Sequence<? extends Character>, ? extends java.lang.Object>
     getPermutations(java.lang.String value) {
         return instance(value).getPermutations();
+    }
+    
+    @Ignore
+    public static Iterable<? extends Sequence<? extends Character>, ? extends java.lang.Object>
+    combinations(java.lang.String value, long length) {
+        return instance(value).combinations(length);
     }
     
     @Ignore
@@ -2980,6 +3077,11 @@ public final class String
     @Override @Ignore
     public Iterable<? extends Sequence<? extends Character>, ? extends java.lang.Object> getPermutations() {
         return $ceylon$language$Collection$impl().getPermutations();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Sequence<? extends Character>, ? extends java.lang.Object> combinations(long length) {
+        return $ceylon$language$Collection$impl().combinations(length);
     }
 
     @Override @Ignore
@@ -3414,5 +3516,88 @@ public final class String
             Callable<? extends Result> arg1) {
         return $ceylon$language$List$impl().mapElements(arg0, arg1);
     }
+    
+    @Ignore
+    public final long indexOf(java.lang.String string) {
+        return indexOf(value, string);
+    }
+    
+    @Ignore
+    public final long indexOf$from(java.lang.String string) {
+        return 0;
+    }
+    
+    @TypeInfo("ceylon.language::Integer")
+    public final long indexOf(@Name("string")
+    @TypeInfo("ceylon.language::String")
+    final java.lang.String string, @Name("from")
+    @Defaulted
+    @TypeInfo("ceylon.language::Integer")
+    final long from) {
+        return indexOf(value, string, from);
+    }
+    
+    public static long indexOf(java.lang.String value, java.lang.String string) {
+        return value.indexOf(string);
+    }
+    
+    public static long indexOf(java.lang.String value, java.lang.String string, long from) {
+        if (from>value.length()) {
+            return -1;
+        }
+        if (from<0) {
+            from = 0;
+        }
+        int start;
+        try {
+            start = value.offsetByCodePoints(0, (int)from);
+        }
+        catch (IndexOutOfBoundsException iobe) {
+            return -1;
+        }
+        return value.indexOf(string, start);
+    }
+    
+    @Ignore
+    public final long lastIndexOf(java.lang.String string) {
+        return lastIndexOf(value, string);
+    }
+    
+    @Ignore
+    public final long lastIndexOf$from(java.lang.String string) {
+        return Long.MAX_VALUE;
+    }
+    
+    @TypeInfo("ceylon.language::Integer")
+    public final long lastIndexOf(@Name("string")
+    @TypeInfo("ceylon.language::String")
+    java.lang.String string, @Name("to")
+    @Defaulted
+    @TypeInfo("ceylon.language::Integer")
+    final long to) {
+        return lastIndexOf(value, string, to);
+    }
+    
+    public static long lastIndexOf(java.lang.String value, java.lang.String string) {
+        return value.lastIndexOf(string);
+    }
+    
+    public static long lastIndexOf(java.lang.String value, java.lang.String string, long to) {
+        if (to>value.length()) {
+            return lastIndexOf(value, string);
+        }
+        if (to<0) {
+            return -1;
+        }
+        int start;
+        try {
+            start = value.offsetByCodePoints(0, (int)to);
+        }
+        catch (IndexOutOfBoundsException iobe) {
+            return lastIndexOf(value, string);
+        }
+        return value.lastIndexOf(string, start);
+    }
+    
 
 }

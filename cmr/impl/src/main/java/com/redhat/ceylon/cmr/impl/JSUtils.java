@@ -146,7 +146,7 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
                 major = Integer.parseInt(bin);
             }
         }
-        ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, version);
+        ModuleVersionDetails mvd = new ModuleVersionDetails(null, moduleName, version);
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, major, minor));
         mvd.getDependencies().addAll(dependencies);
 
@@ -213,8 +213,10 @@ public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader
                 optional = m.containsKey("opt");
                 exported = m.containsKey("exp");
             }
-            String name = ModuleUtil.moduleName(module);
-            deps.add(new ModuleDependencyInfo(name, ModuleUtil.moduleVersion(module), optional, exported));
+            String depUri = ModuleUtil.moduleName(module);
+            String namespace = ModuleUtil.getNamespaceFromUri(depUri);
+            String modName = ModuleUtil.getModuleNameFromUri(depUri);
+            deps.add(new ModuleDependencyInfo(namespace, modName, ModuleUtil.moduleVersion(module), optional, exported));
         }
         ModuleInfo result = new ModuleInfo(moduleName, version, null, deps);
         if(overrides != null)

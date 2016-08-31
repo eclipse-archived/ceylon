@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.js;
 
 import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
@@ -27,6 +29,7 @@ public class Destructurer extends Visitor {
     private final Set<Tree.Variable> added = new HashSet<>();
     private final Set<Value> attribs = new HashSet<>();
     private final Set<Value> caps = new HashSet<>();
+    private final Map<Tree.Variable, Integer> spread = new IdentityHashMap<>();
 
     /** Generate the code for the specified pattern. If null is passed instead of a
      * generator, no code is output but the patterns are still visited and their
@@ -57,14 +60,30 @@ public class Destructurer extends Visitor {
         int idx=0;
         for (Tree.Pattern p : that.getPatterns()) {
             if (p instanceof Tree.VariablePattern) {
+                final boolean isVariadic = ((Tree.VariablePattern)p).getVariable().getType() instanceof Tree.SequencedType;
+                final int minLength = isVariadic ? p.getUnit().getTupleMinimumLength(
+                        ((Tree.VariablePattern) p).getVariable().getDeclarationModel().getType()) : 0;
+                if (minLength > 0) {
+                    spread.put(((Tree.VariablePattern) p).getVariable(), minLength);
+                }
                 p.visit(this);
                 if (jsw != null) {
-                    if (((Tree.VariablePattern)p).getVariable().getType() instanceof Tree.SequencedType) {
-                        jsw.write(".spanFrom(");
+                    final boolean useRest = isVariadic && idx==1;
+                    if (isVariadic) {
+                        jsw.write(useRest?".rest":".skip(");
                     } else {
                         jsw.write(".$_get(");
                     }
-                    jsw.write(Integer.toString(idx++), ")");
+                    if (!useRest) {
+                        jsw.write(Integer.toString(idx++), ")");
+                    }
+                    if (isVariadic) {
+                        if (minLength > 0) {
+                            jsw.write(")");
+                        } else if (!useRest) {
+                            jsw.write(".sequence()");
+                        }
+                    }
                 }
             } else {
                 added.addAll(new Destructurer(p, gen, directAccess, expvar+".$_get("+(idx++)+")",
@@ -111,7 +130,14 @@ public class Destructurer extends Visitor {
             jsw.write(",");
         }
         if (jsw != null) {
-            jsw.write(names.name(d), "=",expvar);
+            jsw.write(names.name(d), "=");
+            int minLength = spread.containsKey(v) ? spread.get(v) : 0;
+            if (minLength > 0) {
+                jsw.write(gen.getClAlias(), "$cksprdstr$(", Integer.toString(minLength),
+                        ",\'", v.getDeclarationModel().getType().asString(), "','",
+                        v.getIdentifier().getText(), "','", v.getLocation(), "','", v.getUnit().getFilename(), "',");
+            }
+            jsw.write(expvar);
         }
     }
 

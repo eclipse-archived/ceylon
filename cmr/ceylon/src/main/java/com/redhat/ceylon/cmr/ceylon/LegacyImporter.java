@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -342,7 +341,7 @@ public class LegacyImporter {
                 if (!jdkModules.isEmpty()) {
                     feedback.beforeJdkModules();
                     for (String mod : jdkModules) {
-                        ModuleDependencyInfo dep = new ModuleDependencyInfo(mod, jdkProvider.getJDKVersion(), 
+                        ModuleDependencyInfo dep = new ModuleDependencyInfo(null, mod, jdkProvider.getJDKVersion(), 
                         		false, publicApiJdkModules.contains(mod));
                         feedback.dependency(DependencyResults.DEP_JDK, dep);
                         expectedDependencies.add(dep);
@@ -422,14 +421,14 @@ public class LegacyImporter {
      * module name and version.
      */
     public LegacyImporter publish() {
-        ArtifactContext context = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.JAR);
+        ArtifactContext context = new ArtifactContext(null, moduleName, moduleVersion, ArtifactContext.JAR);
         context.setForceOperation(true);
         outRepoman.putArtifact(context, jarFile);
         
         ShaSigner.signArtifact(outRepoman, context, jarFile, log);
         
         if (sourceJarFile != null) {
-            ArtifactContext sourceJarContext = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.LEGACY_SRC);
+            ArtifactContext sourceJarContext = new ArtifactContext(null, moduleName, moduleVersion, ArtifactContext.LEGACY_SRC);
             context.setForceOperation(true);
             outRepoman.putArtifact(sourceJarContext, sourceJarFile);
             
@@ -439,9 +438,9 @@ public class LegacyImporter {
         if (descriptorFile != null) {
             ArtifactContext descriptorContext = null;
             if (descriptorFile.toString().toLowerCase().endsWith(".xml")) {
-                descriptorContext = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.MODULE_XML);
+                descriptorContext = new ArtifactContext(null, moduleName, moduleVersion, ArtifactContext.MODULE_XML);
             } else if (descriptorFile.toString().toLowerCase().endsWith(".properties")) {
-                descriptorContext = new ArtifactContext(moduleName, moduleVersion, ArtifactContext.MODULE_PROPERTIES);
+                descriptorContext = new ArtifactContext(null, moduleName, moduleVersion, ArtifactContext.MODULE_PROPERTIES);
             }
             descriptorContext.setForceOperation(true);
             outRepoman.putArtifact(descriptorContext, descriptorFile);
@@ -486,7 +485,7 @@ public class LegacyImporter {
                 if (jdkProvider.isJDKModule(name)) {
                 	usage = scanner.removeMatchingJdkClasses(name);
                 } else {
-                    ArtifactContext context = new ArtifactContext(name, dep.getVersion(), ArtifactContext.CAR, ArtifactContext.JAR);
+                    ArtifactContext context = new ArtifactContext(dep.getNamespace(), name, version, ArtifactContext.CAR, ArtifactContext.JAR);
                     ArtifactResult result = lookupRepoman.getArtifactResult(context);
                     File artifact = result != null ? result.artifact() : null;
                     if (artifact != null && artifact.exists()) {
@@ -518,7 +517,7 @@ public class LegacyImporter {
                         if (!dep.isExport()) {
                             feedback.dependency(DependencyResults.DEP_OK, dep);
                         } else {
-                            dep = new ModuleDependencyInfo(dep.getName(), dep.getVersion(), dep.isOptional(), false);
+                            dep = new ModuleDependencyInfo(null, dep.getName(), dep.getVersion(), dep.isOptional(), false);
                             feedback.dependency(DependencyResults.DEP_MARK_UNSHARED, dep);
                         }
                         break;
@@ -526,14 +525,14 @@ public class LegacyImporter {
                         if (dep.isExport()) {
                             feedback.dependency(DependencyResults.DEP_OK, dep);
                         } else {
-                            dep = new ModuleDependencyInfo(dep.getName(), dep.getVersion(), dep.isOptional(), true);
+                            dep = new ModuleDependencyInfo(null, dep.getName(), dep.getVersion(), dep.isOptional(), true);
                             feedback.dependency(DependencyResults.DEP_MARK_SHARED, dep);
                             hasProblems = true;
                         }
                         break;
                     default:
                     	// not used at all
-                    	dep = new ModuleDependencyInfo(dep.getName(), dep.getVersion(), dep.isOptional(), false);
+                    	dep = new ModuleDependencyInfo(null, dep.getName(), dep.getVersion(), dep.isOptional(), false);
                     	feedback.dependency(DependencyResults.DEP_OK_UNUSED, dep);
                     }
                 }
@@ -563,7 +562,7 @@ public class LegacyImporter {
                 	continue;
 				log.info(" dep "+dep.name()+"/"+dep.version());
 				// look it up
-				ArtifactContext context = new ArtifactContext(dep.name(), dep.version(), ArtifactContext.CAR, ArtifactContext.JAR);
+				ArtifactContext context = new ArtifactContext(dep.namespace(), dep.name(), dep.version(), ArtifactContext.CAR, ArtifactContext.JAR);
 				ArtifactResult depResult = lookupRepoman.getArtifactResult(context);
                 File artifact = depResult != null ? depResult.artifact() : null;
         		log.info("Result: "+depResult);
@@ -649,7 +648,7 @@ public class LegacyImporter {
 
     private Set<ModuleDetails> findSuggestions(String pkg) {
         Set<ModuleDetails> suggestions = new TreeSet<>();
-        ModuleVersionQuery query = new ModuleVersionQuery("", null, ModuleQuery.Type.JVM);
+        ModuleVersionQuery query = new ModuleVersionQuery(null, "", null, ModuleQuery.Type.JVM);
         query.setJvmBinaryMajor(Versions.JVM_BINARY_MAJOR_VERSION);
         query.setJvmBinaryMinor(Versions.JVM_BINARY_MINOR_VERSION);
         query.setMemberName(pkg);

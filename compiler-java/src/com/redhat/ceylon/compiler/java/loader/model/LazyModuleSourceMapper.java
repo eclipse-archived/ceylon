@@ -71,7 +71,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         LazyModuleManager moduleManager = getModuleManager();
         boolean moduleLoadedFromSource = moduleManager.isModuleLoadedFromSource(moduleName);
         boolean isLanguageModule = module == module.getLanguageModule();
-        if(moduleManager.getModelLoader().getJDKBaseModule() == module){
+        if(moduleManager.getModelLoader().getJdkProviderModule() == module){
         	moduleManager.getModelLoader().setupAlternateJdk(module, artifact);
         }
         
@@ -138,7 +138,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
 
                     ModuleImport depImport = moduleManager.findImport(module, dependency);
                     if (depImport == null) {
-                        moduleImport = new ModuleImport(dependency, dep.importType() == ImportType.OPTIONAL, dep.importType() == ImportType.EXPORT, Backend.Java);
+                        moduleImport = new ModuleImport(dep.namespace(), dependency, dep.importType() == ImportType.OPTIONAL, dep.importType() == ImportType.EXPORT, Backend.Java);
                         module.addImport(moduleImport);
                     }
                 }
@@ -149,25 +149,23 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                 // default modules don't have any module descriptors so we can't check them
                 Overrides overrides = getContext().getRepositoryManager().getOverrides();
                 if (overrides != null) {
-                    if (overrides.getArtifactOverrides(new ArtifactContext(artifact.name(), artifact.version())) != null) {
-                        Set<ModuleDependencyInfo> existingModuleDependencies = new HashSet<>();
-                        for (ModuleImport i : lazyModule.getImports()) {
-                            Module m = i.getModule();
-                            if (m != null) {
-                                existingModuleDependencies.add(new ModuleDependencyInfo(m.getNameAsString(), m.getVersion(), i.isOptional(), i.isExport()));
-                            }
+                    Set<ModuleDependencyInfo> existingModuleDependencies = new HashSet<>();
+                    for (ModuleImport i : lazyModule.getImports()) {
+                        Module m = i.getModule();
+                        if (m != null) {
+                            existingModuleDependencies.add(new ModuleDependencyInfo(i.getNamespace(), m.getNameAsString(), m.getVersion(), i.isOptional(), i.isExport()));
                         }
-                        ModuleInfo sourceModuleInfo = new ModuleInfo(artifact.name(), artifact.version(), null, existingModuleDependencies);
-                        ModuleInfo newModuleInfo = overrides.applyOverrides(artifact.name(), artifact.version(), sourceModuleInfo);
-                        List<ModuleImport> newModuleImports = new ArrayList<>();
-                        for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {
-                            Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dep.getName()), dep.getVersion());
-                            Backends backends = dependency.getNativeBackends();
-                            moduleImport = new ModuleImport(dependency, dep.isOptional(), dep.isExport(), backends);
-                            newModuleImports.add(moduleImport);
-                        }
-                        module.overrideImports(newModuleImports);
                     }
+                    ModuleInfo sourceModuleInfo = new ModuleInfo(artifact.name(), artifact.version(), null, existingModuleDependencies);
+                    ModuleInfo newModuleInfo = overrides.applyOverrides(artifact.name(), artifact.version(), sourceModuleInfo);
+                    List<ModuleImport> newModuleImports = new ArrayList<>();
+                    for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {
+                        Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dep.getName()), dep.getVersion());
+                        Backends backends = dependency.getNativeBackends();
+                        ModuleImport newImport = new ModuleImport(dep.getNamespace(), dependency, dep.isOptional(), dep.isExport(), backends);
+                        newModuleImports.add(newImport);
+                    }
+                    module.overrideImports(newModuleImports);
                 }
                 if(!Versions.isJvmBinaryVersionSupported(lazyModule.getJvmMajor(), lazyModule.getJvmMinor())){
                     attachErrorToDependencyDeclaration(moduleImport,
@@ -190,7 +188,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         // special case for the java modules, which we only get when using the wrong version
         String name = moduleImport.getModule().getNameAsString();
         JdkProvider jdkProvider = getJdkProvider();
-        if(jdkProvider.isJDKModule(name)){
+        if(jdkProvider != null && jdkProvider.isJDKModule(name)){
             error = "imported module '" + name + "' depends on JDK version '\"" + 
                     moduleImport.getModule().getVersion() +
                     "\"' and you're compiling with Java " + jdkProvider.getJDKVersion();
@@ -222,7 +220,12 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
     public Module getJdkModule() {
     	return getModuleManager().getModelLoader().getJDKBaseModule();
     }
-    
+
+    @Override
+    public Module getJdkProviderModule() {
+        return getModuleManager().getModelLoader().getJdkProviderModule();
+    }
+
     @Override
     public JdkProvider getJdkProvider() {
     	return getModuleManager().getModelLoader().getJdkProvider();

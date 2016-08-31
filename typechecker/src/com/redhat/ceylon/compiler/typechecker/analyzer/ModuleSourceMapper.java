@@ -98,7 +98,18 @@ public class ModuleSourceMapper {
                                                   //        function (which calls module.setAvailable()) will be called by the typeChecker
                                                   //        BEFORE the ModuleValidator.verifyModuleDependencyTree() call that uses 
                                                   //        isAvailable()
-                moduleManager.bindPackageToModule(currentPkg, currentModule);
+                Package pkg = currentModule.getDirectPackage(currentPkg.getNameAsString());
+                if (pkg == null) {
+                    moduleManager.bindPackageToModule(currentPkg, currentModule);
+                } else {
+                    // Tako: this is a work-around for the fact that the Package gets
+                    // created before the Module it belongs to and that with multiple
+                    // source folders we could end up with duplicate Packages.
+                    // So we pop the newly created Package and replace it with the
+                    // existing one we found in the Module
+                    packageStack.pollLast();
+                    packageStack.addLast(pkg);
+                }
             }
             else {
                 addErrorToModule(new ArrayList<String>(), 
@@ -302,7 +313,7 @@ public class ModuleSourceMapper {
     public void resolveModule(ArtifactResult artifact, Module module, ModuleImport moduleImport, LinkedList<Module> dependencyTree, List<PhasedUnits> phasedUnitsOfDependencies, boolean forCompiledModule) {
         //This implementation relies on the ability to read the model from source
         //the compiler for example subclasses this to read lazily and from the compiled model
-        ArtifactContext artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.SRC);
+        ArtifactContext artifactContext = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.SRC);
         RepositoryManager repositoryManager = context.getRepositoryManager();
         Exception exceptionOnGetArtifact = null;
         ArtifactResult sourceArtifact = null;
@@ -355,6 +366,10 @@ public class ModuleSourceMapper {
 
 	public Module getJdkModule() {
 		return null;
+	}
+
+	public Module getJdkProviderModule() {
+	    return null;
 	}
 
 	public JdkProvider getJdkProvider() {

@@ -218,4 +218,13 @@ public abstract class ClassOrInterface extends TypeDeclaration {
         ModelUtil.clearProducedTypeCache(this);
     }
     
+    public void makeMembersDynamic() {
+        for (Declaration m : getMembers()) {
+            m.setDynamic(true);
+            if (m instanceof ClassOrInterface) {
+                ((ClassOrInterface)m).makeMembersDynamic();
+            }
+        }
+    }
+    
 }

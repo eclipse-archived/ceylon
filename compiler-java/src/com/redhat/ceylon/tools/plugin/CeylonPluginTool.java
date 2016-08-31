@@ -278,7 +278,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
             }
         }else{
             // obtain it from the repo
-            ArtifactContext context = new ArtifactContext(module.getName(), version, ArtifactContext.SCRIPTS_ZIPPED);
+            ArtifactContext context = new ArtifactContext(null, module.getName(), version, ArtifactContext.SCRIPTS_ZIPPED);
             ArtifactResult result = repositoryManager.getArtifactResult(context);
             if(result == null){
                 String err = getModuleNotFoundErrorMessage(repositoryManager, module.getName(), version);
@@ -396,7 +396,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         } else {
             version = null;
         }
-        ArtifactContext artifactScriptsZip = new ArtifactContext(module.getName(), version, ArtifactContext.SCRIPTS_ZIPPED);
+        ArtifactContext artifactScriptsZip = new ArtifactContext(null, module.getName(), version, ArtifactContext.SCRIPTS_ZIPPED);
         
         // make the doc zip roots
         IOUtils.ZipRoot[] roots = new IOUtils.ZipRoot[existingScriptFolders.size()];
@@ -405,7 +405,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
             roots[d] = new IOUtils.ZipRoot(scriptFolder, "");
         }
         File scriptZipFile = IOUtils.zipFolders(roots);
-        File scriptZipSha1File = ShaSigner.sign(scriptZipFile, log, verbose != null);
+        File scriptZipSha1File = ShaSigner.sign(scriptZipFile, getLogger(), verbose != null);
         
         if(!repositoryRemoveArtifact(outputRepositoryManager, artifactScriptsZip)) return true;
         if(!repositoryRemoveArtifact(outputRepositoryManager, artifactScriptsZip.getSha1Context())) return true;

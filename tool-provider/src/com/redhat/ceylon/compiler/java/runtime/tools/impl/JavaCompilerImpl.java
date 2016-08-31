@@ -29,11 +29,11 @@ public class JavaCompilerImpl implements Compiler {
 
     // if this is not here, this task will be wrapped into a TaskListener that does not implement CeylonTaskListener
     @Trusted
-    private static class CompilationListenerAdapter implements DiagnosticListener<JavaFileObject>, CeylonTaskListener {
+    public static class CompilationListenerAdapter implements DiagnosticListener<JavaFileObject>, CeylonTaskListener {
 
         private CompilationListener listener;
 
-        CompilationListenerAdapter(CompilationListener listener) {
+        public CompilationListenerAdapter(CompilationListener listener) {
             this.listener = listener;
         }
 
@@ -110,7 +110,7 @@ public class JavaCompilerImpl implements Compiler {
         return state.ceylonState == CeylonState.OK;
     }
 
-    private List<String> translateOptions(CompilerOptions options) {
+    protected List<String> translateOptions(CompilerOptions options) {
         List<String> translatedOptions = new ArrayList<String>();
         // FIXME: translate every option
         if(options.isVerbose()) {
@@ -162,6 +162,12 @@ public class JavaCompilerImpl implements Compiler {
             if (javaOptions.getJdkProvider() != null) {
                 translatedOptions.add(Option.CEYLONJDKPROVIDER.getText());
                 translatedOptions.add(javaOptions.getJdkProvider());
+            }
+            if (javaOptions.getAptModules() != null) {
+                for(String aptModule : javaOptions.getAptModules()){
+                    translatedOptions.add(Option.CEYLONAPT.getText());
+                    translatedOptions.add(aptModule);
+                }
             }
         }
         return translatedOptions;

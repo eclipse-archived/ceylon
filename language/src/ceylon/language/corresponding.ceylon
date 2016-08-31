@@ -24,6 +24,7 @@
 see (`function everyPair`, 
      `function compareCorresponding`)
 tagged("Comparisons", "Streams")
+since("1.1.0")
 shared Boolean corresponding<First,Second>(
     {First*} firstIterable, {Second*} secondIterable,
     "The predicate function that compares an element of the
@@ -85,6 +86,7 @@ shared Boolean corresponding<First,Second>(
  both evaluate to `smaller`."
 see (`function corresponding`)
 tagged("Comparisons", "Streams")
+since("1.2.3")
 shared Comparison compareCorresponding<First,Second>(
     {First*} firstIterable, {Second*} secondIterable,
     "The comparison function that compares an element of the

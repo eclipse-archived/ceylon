@@ -85,6 +85,7 @@ public class MetamodelGenerator {
 
     private final Map<String, Object> model = new HashMap<>();
     private static final Map<String,Object> unknownTypeMap = new HashMap<>();
+    private static final Map<String,Object> nothingTypeMap = new HashMap<>();
     private final Module module;
 
     public MetamodelGenerator(Module module) {
@@ -110,6 +111,9 @@ public class MetamodelGenerator {
                     continue;
                 }
                 String impath = String.format("%s/%s", mi.getModule().getNameAsString(), mi.getModule().getVersion());
+                if (mi.getNamespace() != null) {
+                    impath = mi.getNamespace() + ":" + impath;
+                }
                 if (mi.isOptional() || mi.isExport() || mi.isNative()) {
                     Map<String,Object> optimp = new HashMap<>(3);
                     optimp.put("path",impath);
@@ -134,6 +138,10 @@ public class MetamodelGenerator {
         }
         if (unknownTypeMap.isEmpty()) {
             unknownTypeMap.put(KEY_NAME, "$U");
+        }
+        if (nothingTypeMap.isEmpty()) {
+            nothingTypeMap.put(KEY_NAME, "Nothing");
+            nothingTypeMap.put(KEY_PACKAGE, "$");
         }
     }
 
@@ -191,6 +199,8 @@ public class MetamodelGenerator {
     private Map<String, Object> typeMap(Type pt, Declaration from) {
         if (ModelUtil.isTypeUnknown(pt)) {
             return unknownTypeMap;
+        } else if (pt.isNothing()) {
+            return nothingTypeMap;
         }
         Map<String, Object> m = new HashMap<>();
         if (pt.isUnion() || pt.isIntersection()) {
@@ -385,6 +395,9 @@ public class MetamodelGenerator {
         final Map<String, Object> m = new HashMap<>();
         m.put(KEY_METATYPE, METATYPE_METHOD);
         m.put(KEY_NAME, d.getName());
+        if (d.isDynamic()) {
+            m.put(KEY_DYNAMIC, 1);
+        }
         List<Map<String, Object>> tpl = typeParameters(d.getTypeParameters(), d);
         if (tpl != null) {
             m.put(KEY_TYPE_PARAMS, tpl);
@@ -599,6 +612,9 @@ public class MetamodelGenerator {
         m.put(KEY_NAME, d.getName());
         m.put(KEY_METATYPE, (d instanceof Value && ((Value)d).isTransient()) ? METATYPE_GETTER : METATYPE_ATTRIBUTE);
         m.put(KEY_TYPE, typeMap(d.getType(), d));
+        if (d.isDynamic()) {
+            m.put(KEY_DYNAMIC, 1);
+        }
         parent.put(mname, m);
         encodeAnnotations(d.getAnnotations(), d, m);
         if (d instanceof Value && ((Value) d).getSetter() != null) {

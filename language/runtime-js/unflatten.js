@@ -5,7 +5,7 @@ function unflatten(ff, $$$mptypes) {
   if (mm && mm.ps) {
     if (mm.ps.length===0)return ff;
     var last=mm.ps[mm.ps.length-1];
-    var iadic=variadicness(last.$t);
+    var iadic=last.seq;
     if (is$(last,{t:Tuple}))iadic=0;
     var ru;
     if (iadic && mm.ps.length===1) {

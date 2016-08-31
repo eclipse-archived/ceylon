@@ -70,20 +70,25 @@ public class BmeGenerator {
         } else {
             final boolean isCallable = !forInvoke && (decl instanceof Functional
                     || bme.getUnit().getCallableDeclaration().equals(bme.getTypeModel().getDeclaration()));
+            final boolean hasTparms = hasTypeParameters(bme);
+            if (isCallable && (decl.isParameter() || (decl.isToplevel() && !hasTparms))) {
+                //Callables passed as arguments are already wrapped in JsCallable
+                gen.out(exp);
+                return;
+            }
             String who = isCallable && decl.isMember() ? gen.getMember(bme, decl, null) : null;
             if (who == null || who.isEmpty()) {
                 //We may not need to wrap this in certain cases
                 ClassOrInterface cont = ModelUtil.getContainingClassOrInterface(bme.getScope());
                 who = cont == null ? "0" : gen.getNames().self(cont);
             }
-            final boolean hasTparms = hasTypeParameters(bme);
             if (isCallable && (who != null || hasTparms)) {
                 if (hasTparms) {
                     //Function refs with type arguments must be passed as a special function
                     printGenericMethodReference(gen, bme, who, exp);
                 } else {
                     //Member methods must be passed as JsCallables
-                    gen.out(gen.getClAlias(), "JsCallable(", who, ",", exp, ")");
+                    gen.out(gen.getClAlias(), "jsc$3(", who, ",", exp, ")");
                 }
             } else {
                 gen.out(exp);
@@ -132,7 +137,7 @@ public class BmeGenerator {
     static void printGenericMethodReference(final GenerateJsVisitor gen,
             final Tree.StaticMemberOrTypeExpression expr, final String who, final String member) {
         //Function refs with type arguments must be passed as a special function
-        gen.out(gen.getClAlias(), "JsCallable(", who, ",", member, ",");
+        gen.out(gen.getClAlias(), "jsc$3(", who, ",", member, ",");
         TypeUtils.printTypeArguments(expr, createTypeArguments(expr), gen, false,
                 expr.getTypeModel().getVarianceOverrides());
         gen.out(")");
@@ -264,6 +269,9 @@ public class BmeGenerator {
                     gen.qualify(that, d);
                 }
             } else {
+                if (d instanceof Class && ((Class)d).isDynamic()) {
+                    gen.out("new ");
+                }
                 gen.qualify(that, d);
             }
             gen.out(gen.getNames().name(d));

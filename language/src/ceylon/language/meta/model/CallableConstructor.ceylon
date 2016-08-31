@@ -28,6 +28,7 @@ import ceylon.language.meta.declaration{CallableConstructorDeclaration}
    [[typeArguments]] and [[typeArgumentList]] refer to the type arguments 
    of the constructor's class.
    """
+since("1.2.0")
 shared sealed interface CallableConstructor<out Type=Object, in Arguments=Nothing>
         satisfies FunctionModel<Type, Arguments> & Applicable<Type, Arguments>
         given Arguments satisfies Anything[] {

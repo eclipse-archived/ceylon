@@ -23,7 +23,7 @@ class Bug2039 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         }
     }
     
-    public Bug2039(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2039.test2_ $name$, final .java.lang.Object ret) {
+    public Bug2039(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2039.test2_ $name$, final .java.lang.Object ret$param$) {
         
         final class somef_ {
             
@@ -41,7 +41,7 @@ class Bug2039 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             }
             
             .java.lang.Object somef(final .ceylon.language.Sequential<? extends .java.lang.Object> b) {
-                return ret;
+                return ret$param$;
             }
         }
         final somef_ somef = new somef_();

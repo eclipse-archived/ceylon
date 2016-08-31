@@ -308,6 +308,14 @@ public abstract class BoxingVisitor extends Visitor {
         if(member == null)
             return;
         propagateFromDeclaration(that, member);
+        // also copy the underlying type, mostly useful for java primitive arrays
+        if(member.getType().getUnderlyingType() != null){
+            Type type = that.getTypeModel();
+            if(type.isCached())
+                type = type.clone();
+            type.setUnderlyingType(member.getType().getUnderlyingType());
+            that.setTypeModel(type);
+        }
     }
 
     @Override

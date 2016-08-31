@@ -9,6 +9,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.loader.model.OutputElement;
+import com.redhat.ceylon.model.typechecker.model.Function;
 
 public class UnsupportedVisitor extends Visitor {
     
@@ -58,71 +59,88 @@ public class UnsupportedVisitor extends Visitor {
     public void visit(Tree.AttributeGetterDefinition that) {
         if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
-        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList(), that);
         super.visit(that);
     }
 
     public void visit(Tree.AttributeSetterDefinition that) {
         if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
-        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList(), that);
         super.visit(that);
     }
     
     public void visit(Tree.AttributeDeclaration that) {
         if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
-        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList(), that);
         super.visit(that);
     }
     
     public void visit(Tree.ObjectDefinition that) {
         if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
-        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList(), that);
         super.visit(that);
     }
     
     public void visit(Tree.AnyClass that) {
         if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
-        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList(), that);
         super.visit(that);
     }
     
     public void visit(Tree.Constructor that) {
         if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
-        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList(), that);
         super.visit(that);
     }
     
     public void visit(Tree.Enumerated that) {
         if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
-        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList(), that);
         super.visit(that);
     }
     
     public void visit(Tree.AnyInterface that) {
         if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
-        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList(), that);
         super.visit(that);
     }
     
     public void visit(Tree.AnyMethod that) {
         if (!NativeUtil.isForBackend(that, Backend.Java))
             return;
-        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList());
+        interopAnnotationTargeting(AnnotationUtil.outputs(that), that.getAnnotationList(), that);
         super.visit(that);
     }
 
     private void interopAnnotationTargeting(EnumSet<OutputElement> outputs,
-            Tree.AnnotationList annotationList) {
+            Tree.AnnotationList annotationList,
+            Tree.Declaration annotated) {
+        OutputElement target = null;
+        // in theory we could do this for every type of decl that has a natural target, but
+        // let's do them as they come. See https://github.com/ceylon/ceylon/issues/5751
+        if(annotated instanceof Tree.AttributeDeclaration){
+            if(((Tree.AttributeDeclaration) annotated).getSpecifierOrInitializerExpression() instanceof Tree.LazySpecifierExpression)
+                target = OutputElement.METHOD;
+            else
+                target = OutputElement.FIELD;
+        }
+        Object useSite = annotated.getDeclarationModel();
         List<Annotation> annotations = annotationList.getAnnotations();
         for (Tree.Annotation annotation : annotations) {
-            AnnotationUtil.interopAnnotationTargeting(outputs, annotation, true);
+            Function annoCtorDecl = ((Function)((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration());
+            boolean addWarnings = true;
+            // only add warnings if we don't have a natural target to pick from
+            if(target != null){
+                addWarnings = !AnnotationUtil.isNaturalTarget(annoCtorDecl, useSite, target);
+            }
+            AnnotationUtil.interopAnnotationTargeting(outputs, annotation, true, addWarnings);
         }
         AnnotationUtil.duplicateInteropAnnotation(outputs, annotations);
     }    

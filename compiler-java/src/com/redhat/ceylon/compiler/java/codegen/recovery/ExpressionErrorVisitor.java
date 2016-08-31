@@ -97,4 +97,13 @@ public class ExpressionErrorVisitor
         }
     }
     
+    @Override
+    public void visit(Tree.MemberOrTypeExpression that) {
+        if (that.getDeclaration() != null
+                && that.getDeclaration().isDropped()) {
+            throw new HasErrorException(that, refersToBrokenDeclaration(that));
+        }
+        super.visit(that);
+    }
+    
 }

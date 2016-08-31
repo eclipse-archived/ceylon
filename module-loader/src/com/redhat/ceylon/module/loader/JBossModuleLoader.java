@@ -42,7 +42,7 @@ public class JBossModuleLoader extends BaseModuleLoaderImpl {
         
         private void preloadModules() throws ModuleNotFoundException{
             try {
-                loadModule(module, modver, false, false, null);
+                loadModule(null, module, modver, false, false, null);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

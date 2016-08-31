@@ -43,7 +43,7 @@ public abstract class AbstractAetherTest {
     protected CmrRepository createAetherRepository() throws Exception {
         URL settingsURL = getClass().getClassLoader().getResource("maven-settings/settings.xml");
         String settingsXml = new File(settingsURL.toURI()).getPath();
-        return AetherRepository.createRepository(log, settingsXml, false, 60000);
+        return AetherRepository.createRepository(log, settingsXml, false, 60000, new File("").getAbsolutePath());
     }
     
     protected static void initLogger(Logger logger, boolean verbose) {

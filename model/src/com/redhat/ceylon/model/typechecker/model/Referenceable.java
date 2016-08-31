@@ -7,7 +7,6 @@ package com.redhat.ceylon.model.typechecker.model;
  * @author Gavin King
  *
  */
-public interface Referenceable {
-	public Unit getUnit();
+public interface Referenceable extends Sourced {
 	public String getNameAsString();
 }

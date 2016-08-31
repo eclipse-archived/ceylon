@@ -103,6 +103,6 @@ public abstract class OutputRepoUsingTool extends RepoUsingTool {
     }
 
     protected void signArtifact(ArtifactContext context, File jarFile){
-        ShaSigner.signArtifact(getOutputRepositoryManager(), context, jarFile, log);
+        ShaSigner.signArtifact(getOutputRepositoryManager(), context, jarFile, getLogger());
     }
 }

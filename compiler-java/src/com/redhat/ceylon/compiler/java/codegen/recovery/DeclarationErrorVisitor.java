@@ -57,6 +57,9 @@ class DeclarationErrorVisitor extends Visitor {
         try {
             plan = Errors.GENERATE;
             target.visit(this);
+            if (target.getDeclarationModel() != null) {
+                target.getDeclarationModel().setDropped(plan instanceof Drop);
+            }
             return plan;
         } finally {
             plan = oldPlan;

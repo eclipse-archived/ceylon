@@ -22,9 +22,11 @@
  with Java, and for some performance-critical low-level 
  programming tasks."
 tagged("Collections")
-shared final serializable native class Array<Element>
+shared final serializable native 
+class Array<Element>
         satisfies SearchableList<Element> &
-                  Ranged<Integer,Element,Array<Element>> {
+                  Ranged<Integer,Element,Array<Element>> &
+                  IndexedCorrespondenceMutator<Element> {
     
     "Create an array with the given [[elements]]."
     shared native new ({Element*} elements) {}
@@ -36,6 +38,7 @@ shared final serializable native class Array<Element>
     throws (`class AssertionError`, 
         "if `size>runtime.maxArraySize`")
     see (`value runtime.maxArraySize`)
+    since("1.2.0")
     shared native new ofSize(
             "The size of the resulting array. If the size is 
              non-positive, an empty array will be created."
@@ -86,7 +89,7 @@ shared final serializable native class Array<Element>
     throws (`class AssertionError`,
         "if the given index is out of bounds, that is, if 
          `index<0` or if `index>lastIndex`")
-    shared native 
+    shared actual native 
     void set(
         "The index of the element to replace."
         Integer index,
@@ -120,7 +123,7 @@ shared final serializable native class Array<Element>
     void copyTo(
         "The array into which to copy the elements, which 
          may be this array."
-        Array<Element> destination,
+        Array<in Element> destination,
         "The index of the first element in this array to 
          copy."
         Integer sourcePosition = 0,
@@ -194,6 +197,7 @@ shared final serializable native class Array<Element>
      before and after this operation."
     throws (`class AssertionError`,
         "if either of the given indices is out of bounds") 
+    since("1.2.0")
     shared native
     void swap(
             "The index of the first element."
@@ -215,6 +219,7 @@ shared final serializable native class Array<Element>
      after this operation."
     throws (`class AssertionError`,
         "if either of the given indices is out of bounds") 
+    since("1.2.0")
     shared native
     void move(
             "The source index of the element to move."
@@ -227,6 +232,7 @@ shared final serializable native class Array<Element>
      array. This operation works by side-effect, modifying 
      the array. The array always contains the same elements 
      before and after this operation."
+    since("1.1.0")
     shared native 
     void reverseInPlace();
     
@@ -236,6 +242,7 @@ shared final serializable native class Array<Element>
      by side-effect, modifying the array.  The array always 
      contains the same elements before and after this 
      operation."
+    since("1.1.0")
     shared native 
     void sortInPlace(
         "A comparison function that compares pairs of

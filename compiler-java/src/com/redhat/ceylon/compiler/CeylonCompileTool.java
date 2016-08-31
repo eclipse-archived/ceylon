@@ -40,6 +40,7 @@ import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.EnumUtil;
 import com.redhat.ceylon.common.tool.Hidden;
+import com.redhat.ceylon.common.tool.NonFatalToolMessage;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ParsedBy;
@@ -184,7 +185,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
 
     private List<File> sources = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
-    private List<String> modulesOrFiles = Arrays.asList("*");
+    private List<String> modulesOrFiles = DefaultToolOptions.getCompilerModules(Backend.Java);
     private boolean continueOnErrors;
     private boolean progress = DefaultToolOptions.getCompilerProgress();
     private List<String> javac = Collections.emptyList();
@@ -198,10 +199,17 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
+    
     private ModuleSpec jdkProvider;
     {
         String jdkProvider = DefaultToolOptions.getCompilerJdkProvider();
         this.jdkProvider = jdkProvider != null ? ModuleSpec.parse(jdkProvider) : null;
+    }
+    private List<ModuleSpec> aptModules;
+    {
+        String[] aptModules = DefaultToolOptions.getCompilerAptModules();
+        if(aptModules != null)
+            setAptModule(Arrays.asList(aptModules));
     }
 
     public CeylonCompileTool() {
@@ -217,7 +225,19 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     public void setJdkProviderSpec(ModuleSpec jdkProvider) {
         this.jdkProvider = jdkProvider;
     }
-    
+
+    @OptionArgument(longName="apt", argumentName="module")
+    @Description("Specifies the name of the module providing the JDK (default: the underlying JDK).")
+    public void setAptModule(List<String> aptModules) {
+        if(aptModules != null){
+            this.aptModules = new ArrayList<ModuleSpec>(aptModules.size());
+            for(String mod : aptModules)
+                this.aptModules.add(ModuleSpec.parse(mod));
+        }else{
+            this.aptModules = null;
+        }
+    }
+
     @Option(longName="flat-classpath")
     @Description("Launches the Ceylon module using a flat classpath.")
     public void setFlatClasspath(boolean flatClasspath) {
@@ -398,13 +418,21 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         if (cwd != null) {
             arguments.add("-cwd");
             arguments.add(cwd.getPath());
+            validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.CEYLONCWD, "-cwd", cwd.getPath());
         }
         
         if(jdkProvider != null){
             arguments.add("-jdk-provider");
             arguments.add(jdkProvider.toString());
         }
-        
+
+        if(aptModules != null){
+            for(ModuleSpec mod : aptModules){
+                arguments.add("-apt");
+                arguments.add(mod.toString());
+            }
+        }
+
         for (File source : applyCwd(this.sources)) {
             arguments.add("-src");
             arguments.add(source.getPath());
@@ -546,7 +574,12 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         List<File> srcs = applyCwd(this.sources);
         List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles, Backend.Java);
         if (expandedModulesOrFiles.isEmpty()) {
-            throw new ToolUsageError("No modules or source files to compile");
+            String msg = CeylonCompileMessages.msg("error.no.sources");
+            if (ModuleWildcardsHelper.onlyGlobArgs(this.modulesOrFiles)) {
+                throw new NonFatalToolMessage(msg);
+            } else {
+                throw new ToolUsageError(msg);
+            }
         }
         
         for (String moduleOrFile : expandedModulesOrFiles) {

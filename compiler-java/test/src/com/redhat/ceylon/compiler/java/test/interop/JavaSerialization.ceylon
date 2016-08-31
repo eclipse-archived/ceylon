@@ -51,42 +51,49 @@ class JavaSerializationValueCtors {
 "Return an object to serialize"
 shared Object javaSerialization() {
                                    // expect ==, expect ===
-    value result = ArrayList<[Object, Boolean, Boolean?]>{};
-    
-    result.add([1, true, null]);
-    result.add(["s", true, null]);
-    result.add([true, true, true]);
-    result.add([larger, true, true]);
-    result.add(["c", true, null]);
-    result.add([JavaSerializationBasic<Integer>("S", 42), true, false]);
-    result.add([ArrayList<String>{"hello", "World"}, true, false]);
-    result.add([HashMap<String, String>{"hello" -> "World"}, true, false]);
-    result.add([JavaSerializationExplicit(), true, false]);
-    result.add([JavaSerializationValueCtors.foo, true, true]);
-    result.add([JavaSerializationValueCtors.foo.Inner.bar, true, true]);
-    result.add([JavaSerializationValueCtors().Inner.bar, false, false]);
-    result.add([JavaSerializationValueCtors.foo.obj, true, true]);
-    result.add([JavaSerializationValueCtors().obj, false, false]);
+    value result = ArrayList<[Object, Boolean, Boolean?, String?]>{};
+    result.add([1, true, null, null]);
+    result.add(["s", true, null, null]);
+    result.add([true, true, true, null]);
+    result.add([larger, true, true, null]);
+    result.add(["c", true, null, null]);
+    result.add([JavaSerializationBasic<Integer>("S", 42), true, false, null]);
+    result.add([ArrayList<String>{"hello", "World"}, true, false, null]);
+    result.add([HashMap<String, String>{"hello" -> "World"}, true, false, null]);
+    result.add([JavaSerializationExplicit(), true, false, null]);
+    result.add([JavaSerializationValueCtors.foo, true, true, null]);
+    result.add([JavaSerializationValueCtors.foo.Inner.bar, true, true, null]);
+    result.add([JavaSerializationValueCtors().Inner.bar, false, false, null]);
+    result.add([JavaSerializationValueCtors.foo.obj, true, true, null]);
+    result.add([JavaSerializationValueCtors().obj, false, false, null]);
+    variable value ii = 0;
+    result.add([{ii++, ii++, ii++}, false, null, "[0, 1, 2]"]);
+    variable value jj = 0;
+    result.add([{for (x in 1..3) x+jj++}, false, null, "[1, 3, 5]"]);
+    value capture = 2;
+    value f = () { assert(capture == 2); };
+    result.add([f, false, null, "Anything()"]);
     return result;
 }
 
 "Compare the given original object with someting that's been 
  serialized and deserialized."
 shared void javaSerializationCompare(Basic orig, Basic rt) {
-    assert(is ArrayList<[Object, Boolean, Boolean?]> orig);
-    assert(is ArrayList<[Object, Boolean, Boolean?]> rt);
+    assert(is ArrayList<[Object, Boolean, Boolean?, String?]> orig);
+    assert(is ArrayList<[Object, Boolean, Boolean?, String?]> rt);
     assert(!orig === rt);
     
     value origit = orig.iterator();
     value rtit = rt.iterator();
-    while (is [Object, Boolean, Boolean?] item=origit.next()) {
-        assert(is [Object, Boolean, Boolean?] rtitem = rtit.next());
+    while (is [Object, Boolean, Boolean?, String?] item=origit.next()) {
+        assert(is [Object, Boolean, Boolean?, String?] rtitem = rtit.next());
         value o = item[0];
         value rto = rtitem[0];
         value eq = item[1];
         value rteq = rtitem[1];
         value id = item[2];
         value rtid = rtitem[2];
+        value str = item[3];
         if (eq) {
             assert(rteq);
             if (eq) {
@@ -117,6 +124,14 @@ shared void javaSerializationCompare(Basic orig, Basic rt) {
             }
         } else {
             assert(!rtid exists);
+        }
+        if (exists str) {
+            if (rto.string != str) {
+                throw AssertionError("rto.string ``rto.string`` was supposed to == ``str``, but it wasn't");
+            }
+        }
+        if( is Anything() rto){
+            rto();
         }
         
     }

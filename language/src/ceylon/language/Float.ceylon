@@ -208,13 +208,14 @@ shared native final class Float(Float float)
     throws (`class OverflowException`,
         "if the the [[wholePart]] of this value is too large 
          or too small to be represented as an `Integer`")
+    since("1.1.0")
     shared native Integer integer;
     
     shared actual native Float timesInteger(Integer integer)
             => times(integer.nearestFloat);
     
     shared actual native Float plusInteger(Integer integer)
-            => plus(integer.float);
+            => plus(integer.nearestFloat);
     
     "The result of raising this number to the given integer
      power, where the following indeterminate forms evaluate 

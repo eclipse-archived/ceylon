@@ -44,7 +44,7 @@ final class Bug6178$impl implements .java.io.Serializable {
         (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug61xx.Bug6178$impl arg$1$argthis$ = this;
+                .com.redhat.ceylon.compiler.java.test.issues.bug61xx.Bug6178$impl arg$1$argthis$ = .com.redhat.ceylon.compiler.java.test.issues.bug61xx.Bug6178$impl.this;
                 boolean arg$1$0 = arg$1$argthis$.method$boolean();
                 method$priv$(arg$1$0);
             }

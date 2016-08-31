@@ -112,6 +112,9 @@ public class TypeUtils {
                 t = (TypeDeclaration)t.getContainer();
             }
             gen.out(qualifiedTypeContainer(node, imported, t, gen));
+            boolean isAnonCallable = t.isAnonymous() && t.getExtendedType() != null &&
+                    t.getExtendedType().getDeclaration() != null &&
+                    t.getExtendedType().getDeclaration().equals(t.getUnit().getCallableDeclaration());
             boolean _init = (!imported && pt.getDeclaration().isDynamic()) || t.isAnonymous();
             if (_init && !pt.getDeclaration().isToplevel()) {
                 Declaration dynintc = ModelUtil.getContainingClassOrInterface(node.getScope());
@@ -120,12 +123,17 @@ public class TypeUtils {
                     _init=false;
                 }
             }
-            if (_init) {
+            if (_init && !isAnonCallable) {
                 gen.out("$init$");
             }
 
             if (!outputTypeList(null, pt, gen, skipSelfDecl)) {
-                if (t.isAnonymous()) {
+                if (isAnonCallable) {
+                    gen.out("{t:");
+                    outputQualifiedTypename(node, true, pt.getExtendedType(), gen, skipSelfDecl);
+                    gen.out("}");
+                    return;
+                } else if (t.isAnonymous()) {
                     gen.out(gen.getNames().objectName(t));
                 } else {
                     gen.out(gen.getNames().name(t));
@@ -964,11 +972,8 @@ public class TypeUtils {
                     if (path != null && !path.isEmpty()) {
                         gen.out(path, ".");
                     }
-                    gen.out(gen.getNames().name(_cont));
-                    if (_cont instanceof ClassOrInterface
-                            && TypeUtils.makeAbstractNative((ClassOrInterface)_cont)) {
-                        gen.out("$$N");
-                    }
+                    final String contName = gen.getNames().name(_cont);
+                    gen.out(contName);
                 }
             }
         }
@@ -1103,6 +1108,8 @@ public class TypeUtils {
                         gen.out(gen.getNames().typeArgsParamName((Function)tpowner), ".",
                                 gen.getNames().typeParameterName(tparm));
                     }
+                } else if (resolveTargsFromScope && tpowner instanceof TypeDeclaration && (nodeIsDecl ? ((Tree.Declaration)node).getDeclarationModel() == tpowner : true)  && ModelUtil.contains((Scope)tpowner, node.getScope())) {
+                    typeNameOrList(node, tparm.getType(), gen, false);
                 } else {
                     gen.out("'", gen.getNames().typeParameterName(tparm), "'");
                 }
@@ -1152,20 +1159,6 @@ public class TypeUtils {
             gen.out("{t:'i");
             subs = pt.getSatisfiedTypes();
         } else if (pt.isUnion()) {
-            //It still could be a Tuple with first optional type
-            List<Type> cts = pt.getCaseTypes();
-            if (cts.size()==2) {
-                Type ct1 = cts.get(0);
-                Type ct2 = cts.get(1);
-                if (ct1.isEmpty() && ct2.isTuple() ||
-                    ct2.isEmpty() && ct1.isTuple()) {
-                    //yup...
-                    gen.out("{t:'T',l:");
-                    encodeTupleAsParameterListForRuntime(resolveTargs, node, pt,false,gen);
-                    gen.out("}");
-                    return true;
-                }
-            }
             gen.out("{t:'u");
             subs = pt.getCaseTypes();
         } else if (pt.isTuple()) {

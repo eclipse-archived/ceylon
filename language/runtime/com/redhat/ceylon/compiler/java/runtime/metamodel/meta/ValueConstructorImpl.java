@@ -3,11 +3,8 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel.meta;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
@@ -25,9 +22,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
-import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaBeanValue;
 import com.redhat.ceylon.model.loader.model.LazyValue;
+import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
@@ -49,7 +46,7 @@ import ceylon.language.meta.model.ValueConstructor;
 public class ValueConstructorImpl<Get> 
         implements ValueConstructor<Get>, ReifiedType {
 
-    private static final Class<?>[] NO_PARAMS = new Class<?>[0];
+    private static final java.lang.Class<?>[] NO_PARAMS = new java.lang.Class<?>[0];
     
 //    private final ceylon.language.meta.model.Type<Get> type;
     @Ignore
@@ -105,7 +102,7 @@ public class ValueConstructorImpl<Get>
             if(decl instanceof JavaBeanValue){
                 java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
                 getterName = ((JavaBeanValue) decl).getGetterName();
-                Class<?>[] params = NO_PARAMS;
+                java.lang.Class<?>[] params = NO_PARAMS;
                 boolean isJavaArray = MethodHandleUtil.isJavaArray(javaClass);
                 if(isJavaArray)
                     params = MethodHandleUtil.getJavaArrayGetArrayParameterTypes(javaClass, getterName);
@@ -122,13 +119,15 @@ public class ValueConstructorImpl<Get>
                 return m;
             } else if (ModelUtil.isEnumeratedConstructor(decl)) {
                 java.lang.Class<?> javaClass = Metamodel.getJavaClass((com.redhat.ceylon.model.typechecker.model.ClassOrInterface)decl.getContainer());
-                if (ModelUtil.getConstructedClass(decl).isMember()) {
+                Class constructedClass = ModelUtil.getConstructedClass(decl);
+                if (constructedClass.isMember()) {
                     // the getter for member classes is on the enclosing class.
                     javaClass = javaClass.getEnclosingClass();
-                }
+                }else if(ModelUtil.isLocalNotInitializer(constructedClass))
+                    return null; // local class has no way to get the value
                 getterName = NamingBase.getGetterName(decl);
                 
-                Class<?>[] params = NO_PARAMS;
+                java.lang.Class<?>[] params = NO_PARAMS;
                 // if it is shared we may want to get an inherited getter, but if it's private we need the declared method to return it
                 Method m = javaClass.getDeclaredMethod(getterName, params);
                 return m;
@@ -143,6 +142,9 @@ public class ValueConstructorImpl<Get>
     private void initField(Object instance, Type valueType) {
         com.redhat.ceylon.model.typechecker.model.Value decl = (com.redhat.ceylon.model.typechecker.model.Value) declaration.declaration;
         Method m = getJavaMethod(declaration);
+        // local classes have no getters
+        if(m == null)
+            return;
         String getterName = m.getName();
         try {
             if(decl instanceof JavaBeanValue){
@@ -192,6 +194,8 @@ public class ValueConstructorImpl<Get>
     public Get get() {
         if($reifiedGet.equals(null_.$TypeDescriptor$))
             return null;
+        if(getter == null)
+            throw new StorageException("Attribute "+declaration.getName()+" is local so it has no physical storage allocated and cannot be read by the metamodel");
         try {
             return (Get) getter.invokeExact();
         } catch (Throwable e) {

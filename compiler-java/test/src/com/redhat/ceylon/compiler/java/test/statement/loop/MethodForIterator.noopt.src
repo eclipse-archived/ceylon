@@ -6,18 +6,22 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     public final void m(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> seq) {
-        .java.lang.Object elem$0;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$1 = seq.iterator();
-        loop_0: while (!((elem$0 = i$iterator$$1.next()) instanceof .ceylon.language.Finished)) {
-            final long i = ((.ceylon.language.Integer)elem$0).longValue();
+        boolean loopentered$0 = false;
+        .java.lang.Object elem$1;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$2 = seq.iterator();
+        loop_0: while (!((elem$1 = i$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$0 = true;
+            final long i = ((.ceylon.language.Integer)elem$1).longValue();
             if (i > 5L) {
             }
         }
+        if (!loopentered$0) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
     }
     
     public final void m2() {
-        .java.lang.Object elem$3;
-        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$4 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+        boolean loopentered$4 = false;
+        .java.lang.Object elem$5;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$6 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
             @.java.lang.Override
             protected final .java.lang.Object $evaluate$(int $index$) {
@@ -37,11 +41,14 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
                 }
             }
         }.iterator();
-        loop_1: while (!((elem$3 = s$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
-            final .java.lang.String s = ((.ceylon.language.String)elem$3).toString();
+        loop_1: while (!((elem$5 = s$iterator$$6.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$4 = true;
+            final .java.lang.String s = ((.ceylon.language.String)elem$5).toString();
         }
-        .java.lang.Object elem$5;
-        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$6 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.null_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+        if (!loopentered$4) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        boolean loopentered$7 = false;
+        .java.lang.Object elem$8;
+        .ceylon.language.Iterator<? extends .ceylon.language.String> s$iterator$$9 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.null_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
             @.java.lang.Override
             protected final .java.lang.Object $evaluate$(int $index$) {
@@ -61,11 +68,14 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
                 }
             }
         }.iterator();
-        loop_2: while (!((elem$5 = s$iterator$$6.next()) instanceof .ceylon.language.Finished)) {
-            final .ceylon.language.String s = (.ceylon.language.String)elem$5;
+        loop_2: while (!((elem$8 = s$iterator$$9.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$7 = true;
+            final .ceylon.language.String s = (.ceylon.language.String)elem$8;
         }
-        .java.lang.Object elem$7;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$8 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+        if (!loopentered$7) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        boolean loopentered$10 = false;
+        .java.lang.Object elem$11;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$12 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
             @.java.lang.Override
             protected final .java.lang.Object $evaluate$(int $index$) {
@@ -85,11 +95,14 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
                 }
             }
         }.iterator();
-        loop_3: while (!((elem$7 = n$iterator$$8.next()) instanceof .ceylon.language.Finished)) {
-            final long n = ((.ceylon.language.Integer)elem$7).longValue();
+        loop_3: while (!((elem$11 = n$iterator$$12.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$10 = true;
+            final long n = ((.ceylon.language.Integer)elem$11).longValue();
         }
-        .java.lang.Object elem$9;
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$10 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.null_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
+        if (!loopentered$10) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        boolean loopentered$13 = false;
+        .java.lang.Object elem$14;
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> n$iterator$$15 = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Integer, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.null_.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
             @.java.lang.Override
             protected final .java.lang.Object $evaluate$(int $index$) {
@@ -109,14 +122,16 @@ class MethodForIterator implements .com.redhat.ceylon.compiler.java.runtime.mode
                 }
             }
         }.iterator();
-        loop_4: while (!((elem$9 = n$iterator$$10.next()) instanceof .ceylon.language.Finished)) {
-            final .ceylon.language.Integer n = (.ceylon.language.Integer)elem$9;
+        loop_4: while (!((elem$14 = n$iterator$$15.next()) instanceof .ceylon.language.Finished)) {
+            loopentered$13 = true;
+            final .ceylon.language.Integer n = (.ceylon.language.Integer)elem$14;
         }
-        .java.lang.String s$11 = "wim";
-        int length$12 = s$11.length();
-        loop_5: for (int index$13 = 0; index$13 < length$12; ) {
-            final int c = s$11.codePointAt(index$13);
-            index$13 += .java.lang.Character.charCount(c);
+        if (!loopentered$13) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
+        .java.lang.String s$17 = "wim";
+        int length$18 = s$17.length();
+        loop_5: for (int index$19 = 0; index$19 < length$18; ) {
+            final int c = s$17.codePointAt(index$19);
+            index$19 += .java.lang.Character.charCount(c);
         }
     }
     

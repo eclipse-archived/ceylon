@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.loader.mirror;
 
+import java.util.Set;
+
 /**
  * Represents an annotated program element (class, method, constructor, field, parameter)
  * 
@@ -16,4 +18,9 @@ public interface AnnotatedMirror {
      * Gets an annotation by annotation type name (fully qualified annotation class name)
      */
     AnnotationMirror getAnnotation(String type);
+
+    /**
+     * Gets all annotation names
+     */
+    Set<String> getAnnotationNames();
 }

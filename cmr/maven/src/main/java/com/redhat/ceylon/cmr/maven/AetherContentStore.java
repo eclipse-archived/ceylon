@@ -20,7 +20,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.common.log.Logger;
@@ -42,13 +45,17 @@ public class AetherContentStore extends AbstractContentStore {
 
     private final AetherUtils utils;
 
-    public AetherContentStore(Logger log, String settingsXml, boolean offline, int timeout) {
+    public AetherContentStore(Logger log, String settingsXml, boolean offline, int timeout, String currentDirectory) {
         super(log, offline, timeout);
-        utils = new AetherUtils(log, settingsXml, offline, timeout);
+        utils = new AetherUtils(log, settingsXml, offline, timeout, currentDirectory);
     }
 
     AetherUtils getUtils() {
         return utils;
+    }
+
+    public Iterable<File> getBaseDirectories() {
+        return Arrays.asList(utils.getLocalRepositoryBaseDir());
     }
 
     public OpenNode createRoot() {

@@ -483,13 +483,64 @@ public class TypePrinter {
         if (elemtypes==null) {
             return false;
         }
-        Type t = union(elemtypes, unit);
-        Type typeArg = args.getTypeArgumentList().get(0);
-        if (typeArg==null) {
-            return false;
-        }
-        else {
-            return t.isExactly(typeArg);
+
+        int index = -1;
+        boolean optional = false;
+
+        while (true) {
+            index++;
+            if (args.isUnion()) {
+                //one of the two must be []
+                List<Type> cts = args.getCaseTypes();
+                if (cts.size() != 2) {
+                    return false;
+                }
+                Type ct0 = cts.get(0);
+                Type ct1 = cts.get(1);
+                if (ct0.isEmpty()) {
+                    args = ct1;
+                }
+                else if (ct1.isEmpty()) {
+                    args = ct0;
+                }
+                else {
+                    return false;
+                }
+                optional = true;
+            }
+            else if (optional &&
+                    !args.isSequential() &&
+                    !args.isEmpty()) {
+                //after the first optional,
+                //the rest must be optional
+                return false;
+            }
+            if (args.isTuple()) {
+                List<Type> tal = args.getTypeArgumentList();
+                if (tal.size() < 3) {
+                    return false;
+                }
+                Type t = union(elemtypes.subList(
+                        index, elemtypes.size()), unit);
+                Type typeArg = tal.get(0);
+                if (typeArg==null ||
+                        !t.isExactly(typeArg)) {
+                    return false;
+                }
+                //check Rest
+                args = tal.get(2);
+                if (args==null) {
+                    return false;
+                }
+            }
+            else if (args.isEmpty()
+                    || args.isSequential()
+                    || args.isSequence()) {
+                return true;
+            }
+            else {
+                return false;
+            }
         }
     }
 
@@ -582,6 +633,10 @@ public class TypePrinter {
         }
     }
 
+    protected boolean printTypeParameters(Type pt) {
+        return printTypeParameters();
+    }
+    
     protected String getSimpleProducedTypeName(Type pt, 
             Unit unit) {
         StringBuilder ptn = new StringBuilder();
@@ -612,7 +667,7 @@ public class TypePrinter {
         List<Type> args = pt.getTypeArgumentList();
         List<TypeParameter> params = ptd.getTypeParameters();
         if (!pt.isTypeConstructor() && 
-                printTypeParameters() && 
+                printTypeParameters(pt) && 
                 !args.isEmpty()) {
             ptn.append(lt());
             boolean first = true;

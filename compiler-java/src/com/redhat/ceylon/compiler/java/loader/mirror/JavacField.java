@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.loader.mirror;
 
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
@@ -48,6 +49,14 @@ public class JavacField implements FieldMirror {
             annotations = JavacUtil.getAnnotations(fieldSymbol);
         }
         return annotations.get(type);
+    }
+
+    @Override
+    public Set<String> getAnnotationNames() {
+        if (annotations == null) {
+            annotations = JavacUtil.getAnnotations(fieldSymbol);
+        }
+        return annotations.keySet();
     }
 
     @Override
@@ -90,5 +99,4 @@ public class JavacField implements FieldMirror {
         }
         return type;
     }
-
 }

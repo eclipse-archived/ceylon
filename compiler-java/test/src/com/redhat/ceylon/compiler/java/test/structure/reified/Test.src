@@ -1,17 +1,99 @@
 package com.redhat.ceylon.compiler.java.test.structure.reified;
 
 public interface TestInterface<Key, Value> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, Value> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, Value>.Inner Inner$new$();
+}
+public final class TestInterface$impl<Key, Value> implements .java.io.Serializable {
+    
+    public TestInterface$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, Value> $this) {
+        this.$reified$Key = $reified$Key;
+        this.$reified$Value = $reified$Value;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
+    private final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, Value> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
+        this.$reified$Value = $reified$Value;
+        this.$reified$Key = $reified$Key;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, Value>.Inner Inner$new$() {
+        return new Inner();
+    }
+    
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Inner() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface.class, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl.this.$reified$Key, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl.this.$reified$Value), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl.Inner.class));
+        }
+    }
 }
 public interface TestInterface2<Key, Value> {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2$impl<? extends Key, ? extends Value> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface2$impl();
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2$impl<? extends Key, ? extends Value>.Inner Inner$new$();
+}
+public final class TestInterface2$impl<Key, Value> implements .java.io.Serializable {
+    
+    public TestInterface2$impl(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2<? extends Key, ? extends Value> $this) {
+        this.$reified$Key = $reified$Key;
+        this.$reified$Value = $reified$Value;
+        this.$this = $this;
+    }
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
+    private .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
+    private final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2<? extends Key, ? extends Value> $this;
+    
+    public void $refine$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
+        this.$reified$Value = $reified$Value;
+        this.$reified$Key = $reified$Key;
+    }
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2$impl<? extends Key, ? extends Value>.Inner Inner$new$() {
+        return new Inner();
+    }
+    
+    public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        protected Inner() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2.class, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2$impl.this.$reified$Key, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2$impl.this.$reified$Value), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface2$impl.Inner.class));
+        }
+    }
 }
 public class TestClass<Key, Value> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<Key, .ceylon.language.Integer>, .java.io.Serializable {
     
     public TestClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value) {
         this.$reified$Key = $reified$Key;
         this.$reified$Value = $reified$Value;
+        this.$com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this$ = new .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, .ceylon.language.Integer>($reified$Key, .ceylon.language.Integer.$TypeDescriptor$, this);
     }
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Key;
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value;
+    protected final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this$;
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, .ceylon.language.Integer> $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$impl() {
+        return $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this$;
+    }
+    
+    @.java.lang.Override
+    public final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<Key, .ceylon.language.Integer>.Inner Inner$new$() {
+        return $com$redhat$ceylon$compiler$java$test$structure$reified$TestInterface$this$.Inner$new$();
+    }
     
     public static void main(.java.lang.String[] args) {
         .ceylon.language.process_.get_().setupArguments(args);
@@ -93,9 +175,19 @@ final class test_ {
                 .com.redhat.ceylon.compiler.java.metadata.Variance.NONE}, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$))) {
             final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<? extends .java.lang.Object, .ceylon.language.Integer> obj$36 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<? extends .java.lang.Object, .ceylon.language.Integer>)(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)obj$35;
         }
+        .java.lang.Object obj$38;
+        if ((obj$38 = obj) instanceof .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<? extends .java.lang.Object, ? extends .java.lang.Object> obj$39 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface<? extends .java.lang.Object, ? extends .java.lang.Object>)(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface)obj$38;
+        }
+        .java.lang.Object obj$41;
+        if ((obj$41 = obj) instanceof .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl.Inner) {
+            final .com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<? extends .java.lang.Object, ? extends .java.lang.Object>.Inner obj$42 = (.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl<? extends .java.lang.Object, ? extends .java.lang.Object>.Inner)(.com.redhat.ceylon.compiler.java.test.structure.reified.TestInterface$impl.Inner)obj$41;
+        }
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class first_ {
     

@@ -439,7 +439,7 @@ $specialiseForNumber$(Integer, 'get', function(){return {mod:$CCMM$,$t:{t:$_Bool
 
 JSNum$proto.set=function(idx,bit) {
   if (idx<0 || idx>31) {
-    return this;
+    return this|0;
   } 
   if (bit === undefined) { bit = true; }
   var mask = 1 << idx;
@@ -450,7 +450,7 @@ $specialiseForNumber$(Integer, 'set', function(){return {mod:$CCMM$,$t:{t:Intege
 
 JSNum$proto.flip = function(idx) {
     if (idx < 0 || idx >31) {
-        return this;
+        return this|0;
     } 
     var mask = 1 << idx;
     return this ^ mask;
@@ -523,3 +523,5 @@ $specialiseForNumber$(Integer, 'nearestFloat', function(){return {mod:$CCMM$,$t:
 
 ex$.Integer=Integer;
 ex$.Float=Float;
+
+nativeJSParseFloat=parseFloat;

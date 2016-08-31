@@ -22,5 +22,15 @@ public enum Warning {
     smallIgnored,
     literalNotSmall, 
     disjointEquals,
-    disjointContainment
+    disjointContainment,
+    redundantNarrowing, 
+    redundantIteration,
+    missingImportPrefix,
+    uncheckedTypeArguments
+    /*
+     * Don't forget to update the documentation
+     * of the suppressWarnings annotation in
+     * language/src/ceylon/language/annotations.ceylon
+     * when adding new warnings.
+     */
 }
