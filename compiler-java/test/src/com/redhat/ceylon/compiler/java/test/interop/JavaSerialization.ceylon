@@ -52,7 +52,6 @@ class JavaSerializationValueCtors {
 shared Object javaSerialization() {
                                    // expect ==, expect ===
     value result = ArrayList<[Object, Boolean, Boolean?, String?]>{};
-    /*
     result.add([1, true, null, null]);
     result.add(["s", true, null, null]);
     result.add([true, true, true, null]);
@@ -67,7 +66,6 @@ shared Object javaSerialization() {
     result.add([JavaSerializationValueCtors().Inner.bar, false, false, null]);
     result.add([JavaSerializationValueCtors.foo.obj, true, true, null]);
     result.add([JavaSerializationValueCtors().obj, false, false, null]);
-    */
     variable value ii = 0;
     result.add([{ii++, ii++, ii++}, false, null, "[0, 1, 2]"]);
     variable value jj = 0;
