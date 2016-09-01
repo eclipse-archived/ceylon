@@ -548,7 +548,8 @@
 ^(CONDITION_LIST
     CONDITION*)
 
-^(abstract CONDITION)
+^(abstract CONDITION
+    boolean assertion;)
 ^(BOOLEAN_CONDITION:CONDITION
     EXPRESSION)
 ^(abstract EXISTS_OR_NONEMPTY_CONDITION:CONDITION
@@ -681,6 +682,9 @@
 "An expression."
 ^(EXPRESSION:ATOM 
     TERM)
+
+"An parenthesized expression."
+^(PAR_EXPRESSION:EXPRESSION)
 
 "The receiver of a member reference or invocation expression."
 ^(abstract PRIMARY:TERM)

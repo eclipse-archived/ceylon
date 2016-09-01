@@ -311,7 +311,7 @@ public class CeylonModuleRunner extends ParentRunner<Runner> {
         String checkCountName = null;
         for(String m : modulesUsingCheckFunction){
             if(moduleName.equals(m)){
-                checkCountName = "failureCount_";
+                checkCountName = "failures_";
                 break;
             }
         }

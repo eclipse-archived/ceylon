@@ -92,9 +92,7 @@ final class bug6391_ {
     
     static void bug6391(final .com.redhat.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild<.com.redhat.ceylon.compiler.java.test.issues.bug63xx.Module, .com.redhat.ceylon.compiler.java.test.issues.bug63xx.VirtualFile>.BuildMessage f) {
         final .com.redhat.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild<.java.lang.Object, ? extends .java.lang.Object>.BuildMessage dest = (.com.redhat.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild<.java.lang.Object, ? extends .java.lang.Object>.BuildMessage)(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.BuildMessage)f;
-        if ((.java.lang.Object)f instanceof .com.redhat.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.SourceFileMessage && .com.redhat.ceylon.compiler.java.Util.isReified(f, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.class, new .com.redhat.ceylon.compiler.java.metadata.Variance[]{
-                .com.redhat.ceylon.compiler.java.metadata.Variance.OUT,
-                .com.redhat.ceylon.compiler.java.metadata.Variance.OUT}, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.SourceFileMessage.class)))) {
+        if ((.java.lang.Object)f instanceof .com.redhat.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.SourceFileMessage) {
             ((.com.redhat.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild<.java.lang.Object, ? extends .java.lang.Object>.SourceFileMessage)(.com.redhat.ceylon.compiler.java.test.issues.bug63xx.CeylonProjectBuild.SourceFileMessage)f).f();
         }
     }

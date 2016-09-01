@@ -4202,6 +4202,10 @@ public class Type extends Reference {
         return getDeclaration().isEntry();
     }
     
+    public boolean isCallable() {
+        return getDeclaration().isCallable();
+    }
+
     boolean isDeclaredType() {
         return isClassOrInterface() || isTypeParameter();
     }
@@ -4540,6 +4544,97 @@ public class Type extends Reference {
                 t.collectDeclarations(results);
             }
         }
+    }
+    
+    public boolean isReified() {
+        TypeDeclaration td = getDeclaration();
+        if (td instanceof TypeParameter) {
+            TypeParameter tp = (TypeParameter) td;
+            if (!tp.isReified()) {
+                return false;
+            }
+        }
+        else {
+            for (Type t: getTypeArgumentList()) {
+                if (t!=null && !t.isReified()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean hasUnreifiedInstances(Type knownType) {
+        TypeDeclaration td = getDeclaration();
+        //TODO!!
+//        if (td instanceof TypeParameter) { 
+//            return true;
+//        }
+        if (knownType!=null) {
+            if (td instanceof ClassOrInterface) {
+                Unit unit = td.getUnit();
+                List<TypeParameter> tps = 
+                        td.getTypeParameters();
+                List<Type> args;
+                Map<TypeParameter,SiteVariance> vars;
+                if (tps.isEmpty()) {
+                    args = NO_TYPE_ARGS;
+                    vars = EMPTY_VARIANCE_MAP;
+                }
+                else {
+                    args = new ArrayList<Type>();
+                    vars = new HashMap<TypeParameter,SiteVariance>();
+                    for (TypeParameter tp: tps) {
+                        args.add(unit.getAnythingType());
+                        vars.put(tp, OUT);
+                    }
+                }
+                Type type = td.appliedType(null, args);
+                type.setVarianceOverrides(vars);
+                if (intersectionType(knownType, type, unit)
+                        .isSubtypeOf(this)) {
+                    return false;
+                }
+                
+                TypeDeclaration ktd = knownType.getDeclaration();
+                Type pst = td.getType().getSupertype(ktd);
+                if (pst!=null) {
+                    boolean allOccur = true;
+                    for (TypeParameter tp: td.getTypeParameters()) {
+                        allOccur = allOccur
+                                //TODO: is this exactly correct?
+                                && pst.involvesDeclaration(tp);
+                    }
+                    if (allOccur) {
+                        Type st = getSupertype(ktd);
+                        if (st!=null && knownType.isSubtypeOf(st)) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        List<TypeParameter> params = td.getTypeParameters();
+        List<Type> args = getTypeArgumentList();
+        for (int i=0; i<args.size(); i++) {
+            Type at = args.get(i);
+            if (at!=null) {
+                if (td.isJava()) {
+                    TypeParameter tp = params.get(i);
+                    if (!(isCovariant(tp) 
+                            && intersectionOfSupertypes(tp)
+                                .isSubtypeOf(at)) && 
+                        !(isContravariant(tp) 
+                            && at.isNothing())) {
+                        return true;
+                    }
+                }
+                if (at.hasUnreifiedInstances(null)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

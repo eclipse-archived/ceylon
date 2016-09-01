@@ -79,7 +79,7 @@ public class CeyloncTool {
             for (String cls : classes)
                 if (!SourceVersion.isName(cls) // implicit null check
                         && !"default".equals(cls)) // FIX for ceylon because default is not a valid name for Java
-                    throw new IllegalArgumentException("Not a valid class name: " + cls);
+                    ;//throw new IllegalArgumentException("Not a valid class name: " + cls);
         }
 
         if (fileManager == null)

@@ -66,7 +66,7 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
     }
     
     @Option
-    @Description("Determines if the language module should be copied as well, assumes `--with-dependencies` (default is `false`)")
+    @Description("Determines if the language module should be copied as well, implies `--with-dependencies` (default is `false`)")
     public void setIncludeLanguage(boolean includeLanguage) {
         this.includeLanguage = includeLanguage;
     }

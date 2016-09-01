@@ -8,6 +8,7 @@ import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ public class Module
     private String signature;
     private List<ModuleImport> overridenImports = null;
     private Backends nativeBackends = Backends.ANY;
+    private Map<ClassOrInterface, Set<Class>> services = null;
 
     private LanguageModuleCache languageModuleCache = null;
 
@@ -509,5 +511,21 @@ public class Module
 
     public void setJsMinor(int jsMinor) {
         this.jsMinor = jsMinor;
+    }
+    
+    public void addService(ClassOrInterface serviceIface, Class serviceImpl) {
+        if (services == null) {
+            services = new HashMap<ClassOrInterface, Set<Class>>();
+        }
+        Set<Class> impls = services.get(serviceIface);
+        if (impls == null) {
+            impls = new HashSet<Class>(1);
+            services.put(serviceIface, impls);
+        }
+        impls.add(serviceImpl);
+    }
+    
+    public Map<ClassOrInterface, Set<Class>> getServices() {
+        return services != null ? services : Collections.<ClassOrInterface, Set<Class>>emptyMap();
     }
 }

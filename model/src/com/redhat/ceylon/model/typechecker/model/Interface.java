@@ -8,6 +8,7 @@ public class Interface extends ClassOrInterface {
     private static final int EMPTY = 1<<2;
     private static final int SEQUENCE = 1<<3;
     private static final int SEQUENTIAL = 1<<4;
+    private static final int CALLABLE = 1<<5;
     
     private String javaCompanionClassName;
     private Boolean companionClassNeeded;
@@ -36,6 +37,8 @@ public class Interface extends ClassOrInterface {
                             code = SEQUENCE; break;
                         case "Sequential":
                             code = SEQUENTIAL; break;
+                        case "Callable":
+                            code = CALLABLE; break;
                         default:
                             code = -1;
                         }
@@ -69,6 +72,11 @@ public class Interface extends ClassOrInterface {
         return code == ITERABLE;
     }
 
+    @Override
+    public boolean isCallable() {
+        setCode();
+        return code == CALLABLE;
+    }
     @Override
     public boolean inherits(TypeDeclaration dec) {
         if (dec==null) {

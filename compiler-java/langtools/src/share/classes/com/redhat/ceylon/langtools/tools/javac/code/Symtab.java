@@ -263,6 +263,7 @@ public class Symtab {
     public final Type ceylonAtTransientType;
     public final Type ceylonAtCompileTimeErrorType;
     public final Type ceylonAtNoInitCheckType;
+    public final Type ceylonAtNeedsVoidBridgeType;
     
     public final Type ceylonAtBooleanValueType;
     public final Type ceylonAtBooleanExprsType;
@@ -741,6 +742,7 @@ public class Symtab {
         
         
         ceylonAtNoInitCheckType = enterClass("com.redhat.ceylon.compiler.java.metadata.NoInitCheck");
+        ceylonAtNeedsVoidBridgeType = enterClass("com.redhat.ceylon.compiler.java.metadata.NeedsVoidBridge");
         
         synthesizeEmptyInterfaceIfMissing(autoCloseableType);
         synthesizeEmptyInterfaceIfMissing(cloneableType);

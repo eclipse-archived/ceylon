@@ -2450,9 +2450,9 @@ specificationStart
     : LIDENTIFIER parameters* (SPECIFY|COMPUTE)
     ;
 
-parExpression returns [Expression expression] 
+parExpression returns [ParExpression expression] 
     : LPAREN 
-      { $expression = new Expression($LPAREN); }
+      { $expression = new ParExpression($LPAREN); }
       functionOrExpression
       { if ($functionOrExpression.expression!=null)
             $expression.setTerm($functionOrExpression.expression.getTerm()); }

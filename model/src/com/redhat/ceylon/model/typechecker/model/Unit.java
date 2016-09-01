@@ -1523,14 +1523,17 @@ public class Unit implements LanguageModuleProvider {
     }
     
     public boolean isJavaObjectArrayType(Type pt) {
-        TypeDeclaration dec = pt.resolveAliases().getDeclaration();
+        TypeDeclaration dec = 
+                pt.resolveAliases()
+                    .getDeclaration();
         return dec instanceof Class &&
                 dec.equals(getJavaObjectArrayDeclaration());
     }
     
     public boolean isJavaPrimitiveArrayType(Type pt) {
         TypeDeclaration dec = 
-                pt.resolveAliases().getDeclaration();
+                pt.resolveAliases()
+                    .getDeclaration();
         return dec instanceof Class &&
                 (dec.equals(getJavaIntArrayDeclaration()) ||
                 dec.equals(getJavaShortArrayDeclaration()) ||
@@ -1543,7 +1546,8 @@ public class Unit implements LanguageModuleProvider {
     }
     
     public boolean isJavaArrayType(Type pt) {
-        return isJavaObjectArrayType(pt) || isJavaPrimitiveArrayType(pt);
+        return isJavaObjectArrayType(pt) 
+            || isJavaPrimitiveArrayType(pt);
     }
     
     public boolean isUsableType(Type pt) {

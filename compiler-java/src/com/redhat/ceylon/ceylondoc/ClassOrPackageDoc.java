@@ -318,12 +318,14 @@ public abstract class ClassOrPackageDoc extends CeylonDoc {
             writeThrows(d);        
             writeBy(d);
             writeSee(d);
+            writeSince(d);
             writeLinkToRefinedDeclaration((FunctionOrValue)d);
         }
         if (d instanceof TypeAlias) {
             writeAnnotations(d);
             writeBy(d);
             writeSee(d);
+            writeSince(d);
         }
         writeAliases(d);
         close("div"); // description

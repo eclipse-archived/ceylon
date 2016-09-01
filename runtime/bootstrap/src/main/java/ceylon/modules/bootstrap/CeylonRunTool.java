@@ -300,16 +300,16 @@ public class CeylonRunTool extends RepoUsingTool {
                     if (runtimeModule == null) {
                         org.jboss.modules.Module.setModuleLogger(new NoGreetingJDKModuleLogger());
                         System.setProperty("boot.module.loader", InitialModuleLoader.class.getName());
-                        org.jboss.modules.Main.main(setupArguments(argList, sysRep, ceylonVersion));
+                        org.jboss.modules.Main.main(moduleArguments(argList, sysRep, ceylonVersion));
                         // set runtime module
                         ModuleLoader ml = Module.getBootModuleLoader();
                         runtimeModule = ml.loadModule(ModuleIdentifier.create(CEYLON_RUNTIME, ceylonVersion));
                     } else {
-                        runtimeModule.run(moduleArguments(argList));
+                        runtimeModule.run(moduleArguments(argList, null, null));
                     }
                 }
             } else {
-                runtimeModule.run(moduleArguments(argList));
+                runtimeModule.run(moduleArguments(argList, null, null));
             }
         } catch (Error err) {
             throw err;
@@ -331,6 +331,9 @@ public class CeylonRunTool extends RepoUsingTool {
                 options.addUserRepository(userRepository.toASCIIString());
             }
         }
+        if (getCwd() != null) {
+            options.setWorkingDirectory(getCwd().getAbsolutePath());
+        }
         options.setOffline(offline);
         options.setSystemRepository(systemRepo);
         options.setVerboseCategory(verbose);
@@ -347,21 +350,21 @@ public class CeylonRunTool extends RepoUsingTool {
         }
     }
 
-    private String[] setupArguments(List<String> argList, String sysRep, String ceylonVersion) {
-        ArrayList<String> setupArgs = new ArrayList<String>();
-        setupArgs.addAll(Arrays.asList(
-                "-mp", sysRep,
-                CEYLON_RUNTIME + ":" + ceylonVersion,
-                "+executable", "ceylon.modules.jboss.runtime.JBossRuntime"));
-        setupArgs.addAll(argList);
-        String[] args = setupArgs.toArray(new String[setupArgs.size()]);
-        return args;
-    }
-    
-    private String[] moduleArguments(List<String> argList) {
+    private String[] moduleArguments(List<String> argList, String sysRep, String ceylonVersion) {
         ArrayList<String> moduleArgs = new ArrayList<String>();
-        moduleArgs.addAll(Arrays.asList(
-                "+executable", "ceylon.modules.jboss.runtime.JBossRuntime"));
+        if (sysRep != null) {
+            moduleArgs.add("-mp");
+            moduleArgs.add(sysRep);
+        }
+        if (ceylonVersion != null) {
+            moduleArgs.add(CEYLON_RUNTIME + ":" + ceylonVersion);
+        }
+        moduleArgs.add("+executable");
+        moduleArgs.add("ceylon.modules.jboss.runtime.JBossRuntime");
+        if (cwd != null) {
+            moduleArgs.add("-cwd");
+            moduleArgs.add(cwd.getAbsolutePath());
+        }
         moduleArgs.addAll(argList);
         String[] args = moduleArgs.toArray(new String[moduleArgs.size()]);
         return args;

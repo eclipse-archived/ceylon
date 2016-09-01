@@ -11,6 +11,10 @@ public abstract class LazyType extends Type {
         this.unit = unit;
     }
     
+    protected Unit getUnit() {
+        return unit;
+    }
+    
     @Override
     public TypeDeclaration getDeclaration() {
         if (initialized) {

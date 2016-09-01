@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.java.language;
 
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+
 import ceylon.language.AssertionError;
 import ceylon.language.Boolean;
 import ceylon.language.Callable;
@@ -7,9 +10,6 @@ import ceylon.language.Iterator;
 import ceylon.language.Null;
 import ceylon.language.emptyIterator_;
 import ceylon.language.impl.BaseIterable;
-
-import com.redhat.ceylon.compiler.java.metadata.Ignore;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 /**
  * Abstract implementation of {@link ceylon.language.Iterable} 
@@ -80,6 +80,10 @@ extends BaseIterable<Element, ceylon.language.Null> {
     
     protected abstract Element get(ArrayType array, int index);
 
+    Element unsafeGet(int index) {
+        return get(this.array, this.start + this.step * index);
+    }
+
     @Ignore
     public ArrayType arrayValue() {
         return array;
@@ -94,20 +98,20 @@ extends BaseIterable<Element, ceylon.language.Null> {
     public Element getFirst() {
         return this.getEmpty() ? 
                 null : 
-                get(this.array, this.start);
+                unsafeGet(0);
     }
 
     @Override
     public Element getLast() {
         return this.getEmpty() ? 
                 null : 
-                get(this.array, this.start+this.step*this.len-1);
+                unsafeGet(this.len - 1);
     }
 
     @Override
     public AbstractArrayIterable<Element, ArrayType> getRest() {
         return getEmpty() ? 
-                this : 
+                this :
                 newInstance(this.array, 
                 		this.start+this.step, 
                 		this.len-1, 
@@ -117,7 +121,7 @@ extends BaseIterable<Element, ceylon.language.Null> {
     @Ignore
     @Override
     public long getSize() {
-        return Math.max(0, this.len);
+        return this.len;
     }
 
     @SuppressWarnings("unchecked")
@@ -151,10 +155,11 @@ extends BaseIterable<Element, ceylon.language.Null> {
         if (skip <= 0) {
             return this;
         }
-        return newInstance(this.array, 
-                this.start+(int)skip*this.step, 
-                this.len-(int)skip, 
-                this.step);
+        int start = this.start+(int)skip*step;
+        int len = this.len-(int)skip;
+        if (len<0) len = 0;
+        int step = this.step;
+        return newInstance(this.array, start, len, step);
     }
     
     @Override
@@ -181,9 +186,8 @@ extends BaseIterable<Element, ceylon.language.Null> {
     @Override
     public java.lang.Object each(
             Callable<? extends java.lang.Object> step) {
-        int end = start+len;
-        for (int i=start; i<end; i+=this.step) {
-            step.$call$(get(this.array,i));
+        for (int i=0; i<len; i++) {
+            step.$call$(unsafeGet(i));
         }
         return null;
     }
@@ -193,9 +197,8 @@ extends BaseIterable<Element, ceylon.language.Null> {
     Callable<? extends Boolean> selecting) {
         // FIXME Very inefficient for primitive types due to boxing
         int count=0;
-        int end = start+len;
-        for (int i=start; i<end; i+=this.step) {
-            if (selecting.$call$(get(this.array,i)).booleanValue()) {
+        for (int i=0; i<len; i++) {
+            if (selecting.$call$(unsafeGet(i)).booleanValue()) {
                 count++;
             }
         }
@@ -205,9 +208,8 @@ extends BaseIterable<Element, ceylon.language.Null> {
     @Override
     public boolean any(
     Callable<? extends Boolean> selecting) {
-        int end = start+len;
-        for (int i=start; i<end; i+=this.step) {
-            if (selecting.$call$(get(this.array,i)).booleanValue()) {
+        for (int i=0; i<len; i++) {
+            if (selecting.$call$(unsafeGet(i)).booleanValue()) {
                 return true;
             }
         }
@@ -217,9 +219,8 @@ extends BaseIterable<Element, ceylon.language.Null> {
     @Override
     public boolean every(
     Callable<? extends Boolean> selecting) {
-        int end = start+len;
-        for (int i=start; i<end; i+=this.step) {
-            if (!selecting.$call$(get(this.array,i)).booleanValue()) {
+        for (int i=0; i<len; i++) {
+            if (!selecting.$call$(unsafeGet(i)).booleanValue()) {
                 return false;
             }
         }
@@ -229,10 +230,11 @@ extends BaseIterable<Element, ceylon.language.Null> {
     @Override
     public Element find(
     Callable<? extends Boolean> selecting) {
-        int end = start+len;
-        for (int i=start; i<end; i+=this.step) {
-            Element elem = get(this.array,i);
-            if (selecting.$call$(elem).booleanValue()) {
+        for (int i=0; i<len; i++) {
+            Element elem = unsafeGet(i);
+            if (elem!=null 
+                    && selecting.$call$(elem)
+                        .booleanValue()) {
                 return elem;
             }
         }
@@ -242,10 +244,11 @@ extends BaseIterable<Element, ceylon.language.Null> {
     @Override
     public Element findLast(
     Callable<? extends Boolean> selecting) {
-        int end = start+len;
-        for (int i=start; i<end; i+=this.step) {
-            Element elem = get(this.array,i);
-            if (selecting.$call$(elem).booleanValue()) {
+        for (int i=len-1; i>=0; i--) {
+            Element elem = unsafeGet(i);
+            if (elem!=null 
+                    && selecting.$call$(elem)
+                        .booleanValue()) {
                 return elem;
             }
         }
@@ -259,11 +262,10 @@ extends BaseIterable<Element, ceylon.language.Null> {
         if (len==0) {
             return null;
         }
-        java.lang.Object partial = get(this.array,start);
-        int end = start+len;
-        for (int i=start+1; i<end; i+=this.step) {
+        java.lang.Object partial = unsafeGet(0);
+        for (int i=1; i<len; i++) {
             partial = accumulating.$call$(partial,
-                    get(this.array,i));
+                    unsafeGet(i));
         }
         return partial;
     }

@@ -1,8 +1,12 @@
 @noanno
-shared interface TestInterface<Key, Value>{}
+shared interface TestInterface<Key, Value>{
+    shared class Inner() {}
+}
 
 @noanno
-shared interface TestInterface2<out Key, out Value>{}
+shared interface TestInterface2<out Key, out Value>{
+    shared class Inner() {}
+}
 
 @noanno
 shared class TestClass<Key, Value>() 
@@ -42,6 +46,12 @@ void test<Key,Value>(Object obj) given Key satisfies Object {
     }
     // just one
     if(is TestInterface<out Anything,Integer> obj){
+    }
+    // optimised
+    if (is TestInterface<out Anything, out Anything> obj){
+    }    
+    // optimised too
+    if (is TestInterface<out Anything, out Anything>.Inner obj){
     }
 }
 

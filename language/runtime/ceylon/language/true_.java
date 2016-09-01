@@ -14,6 +14,8 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @Object
 @Class(extendsType = "ceylon.language::Boolean")
 @ValueType
+@SharedAnnotation$annotation$
+@NativeAnnotation$annotation$(backends={})
 public final class true_ extends Boolean {
 
     private static final long serialVersionUID = -6256274272803665251L;

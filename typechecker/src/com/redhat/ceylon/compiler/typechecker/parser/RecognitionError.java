@@ -6,6 +6,7 @@ import java.util.Map;
 import org.antlr.runtime.RecognitionException;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.compiler.typechecker.tree.ErrorCode;
 import com.redhat.ceylon.compiler.typechecker.tree.Message;
 
 public abstract class RecognitionError implements Message {
@@ -23,6 +24,11 @@ public abstract class RecognitionError implements Message {
 		}
 	}
 	
+    @Override
+    public ErrorCode getErrorCode() {
+        return ErrorCode.getErrorCode(getCode());
+    }
+
 	@Override
 	public boolean isWarning() {
 	    return false;

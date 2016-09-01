@@ -374,7 +374,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryClassDp.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassDp",
-                "function or value does not exist: 'asdfClassDp'");
+                "function or value is not defined: 'asdfClassDp' might be misspelled or is not imported");
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassDp");
     }
     
@@ -402,7 +402,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryClassInitValueInit.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitValueInit",
-                "function or value does not exist: 'asdfClassInitValueInit'", 
+                "function or value is not defined: 'asdfClassInitValueInit' might be misspelled or is not imported", 
                 1);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitValueInit");
     }
@@ -412,7 +412,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryClassInitVariableValueInit.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitVariableValueInit",
-                "function or value does not exist: 'asdfClassInitVariableValueInit'", 
+                "function or value is not defined: 'asdfClassInitVariableValueInit' might be misspelled or is not imported", 
                 1);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitVariableValueInit");
     }
@@ -422,7 +422,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryClassInitValueSpecifier.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitValueSpecifier",
-                "function or value does not exist: 'asdfClassInitValueSpecifier'", 
+                "function or value is not defined: 'asdfClassInitValueSpecifier' might be misspelled or is not imported", 
                 1);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitValueSpecifier");
     }
@@ -432,7 +432,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryClassInitValueSpecifierDeferred.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitValueSpecifierDeferred",
-                "function or value does not exist: 'asdfClassInitValueSpecifierDeferred'", 
+                "function or value is not defined: 'asdfClassInitValueSpecifierDeferred' might be misspelled or is not imported", 
                 1, 2);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitValueSpecifierDeferred");
     }
@@ -442,7 +442,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryClassInitIf.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitIf",
-                "function or value does not exist: 'asdfClassInitIf'", 
+                "function or value is not defined: 'asdfClassInitIf' might be misspelled or is not imported", 
                 1);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassInitIf");
     }
@@ -453,13 +453,13 @@ public class RecoveryTests extends CompilerTests {
                 "expression/ExpressionRecoveryClassMethodDp.ceylon");
         runWithUnresolvedCompilationError(
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodDp_throw",
-                "function or value does not exist: 'asdfClassMethodDp'", 
+                "function or value is not defined: 'asdfClassMethodDp' might be misspelled or is not imported", 
                 1, 2);
         run("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodDp_nothrow",
                 1, 2, 5, 10);
         runWithUnresolvedCompilationError(
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodDp_throw2",
-                "function or value does not exist: 'asdfClassMethodDp'",
+                "function or value is not defined: 'asdfClassMethodDp' might be misspelled or is not imported",
                 1, 2, 3);
         run("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodDp_nothrow2",
                 1, 2, 3, 5, 10);
@@ -472,7 +472,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryClassMethodBody.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodBody_main",
-                "function or value does not exist: 'asdfClassMethodBody'", 
+                "function or value is not defined: 'asdfClassMethodBody' might be misspelled or is not imported", 
                 1, 2, 3);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassMethodBody");
     }
@@ -482,7 +482,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryClassMethodSpecifier.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodSpecifier_main",
-                "function or value does not exist: 'asdfClassMethodSpecifier'", 
+                "function or value is not defined: 'asdfClassMethodSpecifier' might be misspelled or is not imported", 
                 1, 2);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassMethodSpecifier");
     }
@@ -492,7 +492,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryClassMethodSpecifierDeferred.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassMethodSpecifierDeferred_main",
-                "function or value does not exist: 'asdfClassMethodSpecifierDeferred'",
+                "function or value is not defined: 'asdfClassMethodSpecifierDeferred' might be misspelled or is not imported",
                 // in the deferred case we throw when an instance is initialized
                 // rather than when the method is called.
                 1);
@@ -503,7 +503,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryClassAttributeBody.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryClassAttributeBody_main",
-                "function or value does not exist: 'asdfClassAttributeBody'", 
+                "function or value is not defined: 'asdfClassAttributeBody' might be misspelled or is not imported", 
                 1, 2, 3);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryClassAttributeBody");
     }
@@ -524,13 +524,13 @@ public class RecoveryTests extends CompilerTests {
                 "expression/ExpressionRecoveryInterfaceMethodDp.ceylon");
         runWithUnresolvedCompilationError(
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceMethodDp_throw",
-                "function or value does not exist: 'asdfInterfaceMethodDp'", 
+                "function or value is not defined: 'asdfInterfaceMethodDp' might be misspelled or is not imported", 
                 1, 2);
         run("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceMethodDp_nothrow",
                 1, 2, 5, 10);
         runWithUnresolvedCompilationError(
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceMethodDp_throw2",
-                "function or value does not exist: 'asdfInterfaceMethodDp'",
+                "function or value is not defined: 'asdfInterfaceMethodDp' might be misspelled or is not imported",
                 1, 2, 3);
         run("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceMethodDp_nothrow2",
                 1, 2, 3, 5, 10);
@@ -543,11 +543,11 @@ public class RecoveryTests extends CompilerTests {
                 "expression/ExpressionRecoveryInterfaceMethodBody.ceylon");
         runWithUnresolvedCompilationError(
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceMethodBody_main",
-                "function or value does not exist: 'asdfInterfaceMethodBody'", 
+                "function or value is not defined: 'asdfInterfaceMethodBody' might be misspelled or is not imported", 
                 1, 2, 3);
         runWithUnresolvedCompilationError(
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceMethodBody_main2",
-                "function or value does not exist: 'asdfInterfaceMethodBody'", 
+                "function or value is not defined: 'asdfInterfaceMethodBody' might be misspelled or is not imported", 
                 1, 2, 3);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryInterfaceMethodBody");
     }
@@ -557,7 +557,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryInterfaceAttributeBody.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryInterfaceAttributeBody_main",
-                "function or value does not exist: 'asdfInterfaceAttributeBody'", 
+                "function or value is not defined: 'asdfInterfaceAttributeBody' might be misspelled or is not imported", 
                 1, 2, 3);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryInterfaceAttributeBody");
     }
@@ -577,7 +577,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryFunctionDp.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionDp",
-                "function or value does not exist: 'asdfFunctionDp'");
+                "function or value is not defined: 'asdfFunctionDp' might be misspelled or is not imported");
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionDp_");
     }
     
@@ -587,11 +587,11 @@ public class RecoveryTests extends CompilerTests {
                 "expression/ExpressionRecoveryFunctionBody.ceylon");
         runWithUnresolvedCompilationError(
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionBody",
-                "function or value does not exist: 'asdfFunctionBody'",
+                "function or value is not defined: 'asdfFunctionBody' might be misspelled or is not imported",
                 1);
         runWithUnresolvedCompilationError(
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionBodyMpl_main",
-                "function or value does not exist: 'asdfFunctionBodyMpl'",
+                "function or value is not defined: 'asdfFunctionBodyMpl' might be misspelled or is not imported",
                 1,2);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionBody_");
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionBodyMpl_");
@@ -603,10 +603,10 @@ public class RecoveryTests extends CompilerTests {
                 "expression/ExpressionRecoveryFunctionSpecifier.ceylon");
         runWithUnresolvedCompilationError(
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionSpecifier",
-                "function or value does not exist: 'asdfFunctionSpecifier'");
+                "function or value is not defined: 'asdfFunctionSpecifier' might be misspelled or is not imported");
         runWithUnresolvedCompilationError(
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionSpecifierMpl_main",
-                "function or value does not exist: 'asdfFunctionSpecifierMpl'");
+                "function or value is not defined: 'asdfFunctionSpecifierMpl' might be misspelled or is not imported");
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionSpecifier_");
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryFunctionSpecifierMpl_");
     }
@@ -616,7 +616,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryValueBody.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueBody_main",
-                "function or value does not exist: 'asdfValueBody'",
+                "function or value is not defined: 'asdfValueBody' might be misspelled or is not imported",
                 1,2);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueBody_");
     }
@@ -626,7 +626,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryValueSpecifier.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueSpecifier_main",
-                "function or value does not exist: 'asdfValueSpecifier'",
+                "function or value is not defined: 'asdfValueSpecifier' might be misspelled or is not imported",
                 1);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueSpecifier_");
     }
@@ -636,7 +636,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryValueRefinementSpecifier.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueRefinementSpecifier_main",
-                "function or value does not exist: 'asdfValueRefinementSpecifier'",
+                "function or value is not defined: 'asdfValueRefinementSpecifier' might be misspelled or is not imported",
                 1, 2);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.ExpressionRecoveryValueRefinementSpecifier");
     }
@@ -646,7 +646,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryValueInit.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueInit_main",
-                "function or value does not exist: 'asdfValueInit'",
+                "function or value is not defined: 'asdfValueInit' might be misspelled or is not imported",
                 1);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryValueInit_");
     }
@@ -656,7 +656,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryVariableValueInit.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryVariableValueInit_main",
-                "function or value does not exist: 'asdfVariableValueInit'", 
+                "function or value is not defined: 'asdfVariableValueInit' might be misspelled or is not imported", 
                 1);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryVariableValueInit_");
     }
@@ -666,7 +666,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoverySetterBody.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoverySetterBody_main",
-                "function or value does not exist: 'asdfSetterBody'",
+                "function or value is not defined: 'asdfSetterBody' might be misspelled or is not imported",
                 1, 2);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoverySetterBody_");
     }
@@ -676,7 +676,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoverySetterSpecifier.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoverySetterSpecifier_main",
-                "function or value does not exist: 'asdfSetterSpecifier'",
+                "function or value is not defined: 'asdfSetterSpecifier' might be misspelled or is not imported",
                 1,2);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoverySetterSpecifier_");
     }
@@ -686,7 +686,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryIf.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryIf",
-                "function or value does not exist: 'asdfIf'",
+                "function or value is not defined: 'asdfIf' might be misspelled or is not imported",
                 1);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryIf_");
     }
@@ -696,7 +696,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryElseIf.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryElseIf",
-                "function or value does not exist: 'asdfElseIf'",
+                "function or value is not defined: 'asdfElseIf' might be misspelled or is not imported",
                 1);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryElseIf_");
     }
@@ -706,7 +706,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryIfBlock.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryIfBlock",
-                "function or value does not exist: 'asdfIfBlock'",
+                "function or value is not defined: 'asdfIfBlock' might be misspelled or is not imported",
                 1, 2);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryIfBlock_");
     }
@@ -716,7 +716,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryForClause.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryForClause",
-                "function or value does not exist: 'asdfForClause'",
+                "function or value is not defined: 'asdfForClause' might be misspelled or is not imported",
                 1);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryForClause_");
     }
@@ -726,7 +726,7 @@ public class RecoveryTests extends CompilerTests {
         compileAndRunWithUnresolvedCompilationError(
                 "expression/ExpressionRecoveryAssertVariable.ceylon",
                 "com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryAssertVariable",
-                "function or value does not exist: 'baz'", 
+                "function or value is not defined: 'baz' might be misspelled or is not imported", 
                 1);
         checkClassHasCompileTimeErrorAnnotation("com.redhat.ceylon.compiler.java.test.recovery.expression.expressionRecoveryAssertVariable_");
     }
@@ -998,7 +998,7 @@ public class RecoveryTests extends CompilerTests {
                 new CompilerError(2, "source code imports two different versions of module 'ceylon.file': version '0.5' and version '1.1.0'"),
                 new CompilerError(2, "cannot find module artifact fooxhilio.bastardo-77.9(.car|.jar)\n"
                 +"  \t- dependency tree: unknownmodule/1.0.0 -> fooxhilio.bastardo/77.9"),
-                new CompilerError(4, "function or value does not exist: 'nanoTime'"),
+                new CompilerError(4, "function or value is not defined: 'nanoTime' might be misspelled or is not imported"),
                 new CompilerError(4, "type does not exist: 'Test'"),
                 new CompilerError(4, "unsupported module name: this namespace is used by Java platform modules"),
                 new CompilerError(5, "duplicate declaration name: 'run'"),
@@ -1008,8 +1008,8 @@ public class RecoveryTests extends CompilerTests {
                 new CompilerError(10, "case must be a toplevel anonymous class: 'moribund' is not toplevel"),
                 new CompilerError(10, "case must be a toplevel anonymous class: 'resurrected' is not toplevel"),
                 new CompilerError(12, "imported declaration not found: 'newServer_bogus'"),
-                new CompilerError(30, "function or value does not exist: 'newServer_bogus'"),
-                new CompilerError(135, "function or value does not exist: 'array'"),
+                new CompilerError(30, "function or value is not defined: 'newServer_bogus' might be misspelled or is not imported"),
+                new CompilerError(135, "function or value is not defined: 'array' might be misspelled or is not imported"),
                 new CompilerError(138, "could not determine type of function or value reference: 'cells'"),
                 new CompilerError(139, "could not determine type of function or value reference: 'c'"),
                 new CompilerError(140, "could not determine type of function or value reference: 'c'")
@@ -1061,7 +1061,7 @@ public class RecoveryTests extends CompilerTests {
 
         TreeSet<CompilerError> actualErrors = c.get(Diagnostic.Kind.ERROR);
         compareErrors(actualErrors,
-                new CompilerError(23, "type does not exist: 'ERROR'")
+                new CompilerError(23, "type is not defined: 'ERROR' might be misspelled or is not imported")
         );
         
         File carFile = getModuleArchive("default", null);

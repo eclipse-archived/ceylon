@@ -17,8 +17,8 @@
  `int`, either `int.float` throws an [[OverflowException]], 
  or the expression `int.float==int` evaluates to `true`.
  
- An integer is represented as a sequence of bits. Not all of 
- the bits in the representation may be addressed by the 
+ An integer is representable as a sequence of bits. Not all 
+ of the bits in the representation may be addressed by the 
  methods inherited from [[Binary]]:
  
  - For the JVM runtime, the bits at all indices (0 to 63) 
@@ -277,12 +277,12 @@ shared native final class Integer(Integer integer)
     aliased("absolute")
     shared actual native Integer magnitude 
             => this < 0 then -this else this;
-        
+    
     shared actual native Integer sign
             =>   if (this < 0) then -1
             else if (this > 0) then 1
             else 0;
-        
+    
     shared actual native Boolean negative => this < 0;
     shared actual native Boolean positive => this > 0;
     
@@ -291,7 +291,7 @@ shared native final class Integer(Integer integer)
     
     shared actual native Integer timesInteger(Integer integer)
             => times(integer);
-        
+    
     shared actual native Integer plusInteger(Integer integer)
             => plus(integer);
     
@@ -305,7 +305,7 @@ shared native final class Integer(Integer integer)
     
     see (`function formatInteger`)
     shared actual native String string;
-
+    
     shared actual native Boolean largerThan(Integer other); 
     shared actual native Boolean smallerThan(Integer other); 
     shared actual native Boolean notSmallerThan(Integer other); 

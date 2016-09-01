@@ -703,8 +703,9 @@ public class LiteralVisitor extends Visitor {
         List<Tree.ParameterList> parameterLists = 
                 that.getParameterLists();
         final Tree.Block funBody = that.getBlock();
-        final Tree.Expression funExpression = 
-                that.getExpression();
+        final Tree.ParExpression funExpression =
+                new Tree.ParExpression(null);
+        funExpression.setTerm(that.getExpression());
         final Tree.LetClause letClause = 
                 new Tree.LetClause(null);
         int k = 0;
