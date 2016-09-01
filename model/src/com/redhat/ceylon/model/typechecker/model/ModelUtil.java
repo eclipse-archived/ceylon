@@ -40,6 +40,7 @@ public class ModelUtil {
     
     static final Map<TypeParameter, SiteVariance> EMPTY_VARIANCE_MAP = 
             emptyMap();
+    
     /**
      * Is the second scope contained by the first scope?
      */
@@ -183,7 +184,7 @@ public class ModelUtil {
                 !decl.isAbstraction());
     }
 
-    static boolean hasMatchingSignature(
+    public static boolean hasMatchingSignature(
             Declaration dec, 
             List<Type> signature, boolean variadic) {
         return hasMatchingSignature(dec, 
@@ -320,11 +321,27 @@ public class ModelUtil {
                 isTypeUnknown(defParamType)) {
             return false;
         }
-        if (!erase(defArgType, unit)
-                .inherits(erase(defParamType, unit)) &&
-                notUnderlyingTypesEqual(defParamType, 
+        TypeDeclaration erasedArgType = 
+                erase(defArgType, unit);
+        TypeDeclaration erasedParamType = 
+                erase(defParamType, unit);
+        if (!erasedArgType
+                .inherits(erasedParamType) 
+                && notUnderlyingTypesEqual(
+                        defParamType, 
                         defArgType)) {
             return false;
+        }
+        TypeDeclaration oa = 
+                unit.getJavaObjectArrayDeclaration();
+        if (oa!=null 
+                && erasedArgType.equals(oa) 
+                && erasedParamType.equals(oa)) {
+            Type argElementType = 
+                    unit.getJavaArrayElementType(defArgType);
+            Type paramElementType = 
+                    unit.getJavaArrayElementType(defParamType);
+            return matches(argElementType, paramElementType, unit);
         }
         return true;
     }
@@ -745,7 +762,27 @@ public class ModelUtil {
                                         paramType, otherType)) {
                             atLeastOneBetter = true;
                         }
-                        
+                        TypeDeclaration oa = 
+                                unit.getJavaObjectArrayDeclaration();
+                        if (oa!=null 
+                                && ptd.equals(oa) 
+                                && otd.equals(oa)) {
+                            Type paramElementType = 
+                                    unit.getJavaArrayElementType(paramType);
+                            Type otherElementType = 
+                                    unit.getJavaArrayElementType(otherType);
+                            TypeDeclaration petd = 
+                                    erase(paramElementType, unit);
+                            TypeDeclaration oetd = 
+                                    erase(otherElementType, unit);
+                            if (!petd.inherits(oetd)) {
+                                return false;
+                            }
+                            if (petd.inherits(oetd) &&
+                                    !oetd.inherits(petd)) {
+                                atLeastOneBetter = true;
+                            }
+                        }
                     }
                     // check sequenced parameters last
                     if (dhsp && rhsp) {
@@ -2466,6 +2503,11 @@ public class ModelUtil {
             TypeDeclaration td) {
         Type extendedType = td.getExtendedType();
         List<Type> satisfiedTypes = td.getSatisfiedTypes();
+        if (satisfiedTypes.isEmpty()) {
+            return extendedType==null ? 
+                    td.getUnit().getAnythingType() : 
+                    extendedType;
+        }
         List<Type> list = 
                 new ArrayList<Type>
                     (satisfiedTypes.size()+1);

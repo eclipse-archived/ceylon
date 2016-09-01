@@ -840,6 +840,22 @@ void checkFormatInteger() {
     } else {
         fail("UNKNOWN INTEGER SIZE `` runtime.integerSize `` - please add number formatInteger() tests for this platform");
     }
+    check(formatInteger(1, 10, ',') == "1", "formatInteger() grouping #1");
+    check(formatInteger(100, 10, ',') == "100", "formatInteger() grouping #2");
+    check(formatInteger(1_000, 10, ',') == "1,000", "formatInteger() grouping #3");
+    check(formatInteger(100_000, 10, ',') == "100,000", "formatInteger() grouping #4");
+    check(formatInteger(1_000_000, 10, ',') == "1,000,000", "formatInteger() grouping #5");
+    check(formatInteger(#f, 16, ' ') == "f", "formatInteger() grouping #6");
+    check(formatInteger(#ffff, 16, ' ') == "ffff", "formatInteger() grouping #7");
+    check(formatInteger(#f_ffff, 16, ' ') == "f ffff", "formatInteger() grouping #8");
+    check(formatInteger(#ffff_ffff, 16, ' ') == "ffff ffff", "formatInteger() grouping #9");
+    check(formatInteger(#f_ffff_ffff, 16, ' ') == "f ffff ffff", "formatInteger() grouping #10");
+    check(formatInteger($1, 2, ' ') == "1", "formatInteger() grouping #11");
+    check(formatInteger($1111, 2, ' ') == "1111", "formatInteger() grouping #12");
+    check(formatInteger($1_1111, 2, ' ') == "1 1111", "formatInteger() grouping #13");
+    check(formatInteger($1111_1111, 2, ' ') == "1111 1111", "formatInteger() grouping #14");
+    check(formatInteger($1_1111_1111, 2, ' ') == "1 1111 1111", "formatInteger() grouping #15");
+    check(formatInteger(1_000_000, 11, ',') == "623351", "formatInteger() grouping #16");
 }
 
 void checkParseFloat() {
@@ -1042,7 +1058,7 @@ void checkFormatFloat() {
     check(formatFloat(1234.5678,4,4)=="1234.5678", "formatFloat(1234.5678,4,4)");
     check(formatFloat(5678.1234)=="5678.1234", "formatFloat(5678.1234)");
     check(formatFloat(5678.1234,4,4)=="5678.1234", "formatFloat(5678.1234,4,4)");
-    check(formatFloat(1234.5678,2,2)=="1234.56", "formatFloat(1234.5678,2,2)");
+    check(formatFloat(1234.5678,2,2)=="1234.57", "formatFloat(1234.5678,2,2)");
     check(formatFloat(5678.1234,3,3)=="5678.123", "formatFloat(5678.1234,3,3)");
     check(formatFloat(1234.1234)=="1234.1234", "formatFloat(1234.1234)");
     check(formatFloat(1234.1234,4,4)=="1234.1234", "formatFloat(1234.1234,4,4)");
@@ -1074,7 +1090,31 @@ void checkFormatFloat() {
     check(formatFloat(-1.234e+20)=="-123400000000000000000.0", "formatFloat(-1.234e+20)");
     check(formatFloat(-1.234e+25)=="-12340000000000000000000000.0", "formatFloat(-1.234e+25)");
     check(formatFloat(-1.234e+30)=="-1234000000000000000000000000000.0", "formatFloat(-1.234e+30)");
-    
+
+    value minFloatExpected = "0." + "0".repeat(323) + "494065645841247";
+    value minFloatActual = formatFloat(runtime.minFloatValue, 1, 400);
+    check(minFloatActual == minFloatExpected, "formatFloat(min)");
+    value maxFloatExpectedJS  = "179769313486231" + "0".repeat(294) + ".0";
+    value maxFloatExpectedJVM = "179769313486232" + "0".repeat(294) + ".0";
+    value maxFloatActual = formatFloat(runtime.maxFloatValue, 1, 400);
+    check(maxFloatActual in [maxFloatExpectedJS, maxFloatExpectedJVM], "formatFloat(max)");
+
+    check(formatFloat(0.99, 0, 0) == "1", "formatFloat halfeven rounding #1");
+    check(formatFloat(0.99, 1, 1) == "1.0", "formatFloat halfeven rounding #2");
+    check(formatFloat(1.1525, 1, 1) == "1.2", "formatFloat halfeven rounding #3");
+    check(formatFloat(1.1525, 3, 3) == "1.152", "formatFloat halfeven rounding #4");
+    check(formatFloat(-1.1525, 1, 1) == "-1.2", "formatFloat halfeven rounding #5");
+    check(formatFloat(-1.1525, 3, 3) == "-1.152", "formatFloat halfeven rounding #6");
+    check(formatFloat(1.111111111111115, 0, 100) == "1.11111111111112", "formatFloat halfeven rounding #7");
+    check(formatFloat(1.111111111111145, 0, 100) == "1.11111111111114", "formatFloat halfeven rounding #8");
+
+    check(formatFloat(0.1, 1, 1, ',') == "0,1", "formatFloat separators #1");
+    check(formatFloat(0.1, 1, 1, '.', ',') == "0.1", "formatFloat separators #2");
+    check(formatFloat(111.1, 1, 1, '.', ',') == "111.1", "formatFloat separators #3");
+    check(formatFloat(1111.1, 1, 1, '.', ',') == "1,111.1", "formatFloat separators #4");
+    check(formatFloat(111111.1, 1, 1, '.', ',') == "111,111.1", "formatFloat separators #5");
+    check(formatFloat(1.0e20, 1, 1, '.', ',') == "100,000,000,000,000,000,000.0", "formatFloat separators #6");
+
     void checkNanComparisons<T>(T nan, T zero) 
             given T satisfies Comparable<T> {
         check(!nan == zero, "generic nan comparison");

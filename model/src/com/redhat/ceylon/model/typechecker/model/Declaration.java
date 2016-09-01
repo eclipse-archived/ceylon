@@ -599,6 +599,21 @@ public abstract class Declaration
                                     if (!thisErasedType.equals(thatErasedType)) {
                                         return false;
                                     }
+                                    TypeDeclaration oa = 
+                                            unit.getJavaObjectArrayDeclaration();
+                                    if (oa!=null 
+                                            && thisErasedType.equals(oa) 
+                                            && thatErasedType.equals(oa)) {
+                                        Type thisElementType = 
+                                                unit.getJavaArrayElementType(
+                                                        thisParamType);
+                                        Type thatElementType = 
+                                                unit.getJavaArrayElementType(
+                                                        thatParamType);
+                                        if (!thisElementType.equals(thatElementType)) {
+                                            return false;
+                                        }
+                                    }
                                 }
                                 else if (thisParamType!=thatParamType) {
                                     return false;

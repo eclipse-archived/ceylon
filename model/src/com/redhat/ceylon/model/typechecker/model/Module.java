@@ -8,6 +8,7 @@ import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,8 @@ import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.typechecker.context.TypeCache;
 
 public class Module 
-        implements Referenceable, Annotated, Comparable<Module> {
+        implements Referenceable, Annotated, 
+                   Comparable<Module> {
 
     public static final String LANGUAGE_MODULE_NAME = "ceylon.language";
     public static final String DEFAULT_MODULE_NAME = "default";
@@ -43,8 +45,19 @@ public class Module
     private String signature;
     private List<ModuleImport> overridenImports = null;
     private Backends nativeBackends = Backends.ANY;
+    private Map<ClassOrInterface, Set<Class>> services = null;
+
+    private LanguageModuleCache languageModuleCache = null;
 
     public Module() {}
+    
+    public LanguageModuleCache getLanguageModuleCache() {
+        if (languageModuleCache == null) {
+            assert(isLanguageModule());
+            languageModuleCache = new LanguageModuleCache(this);
+        }
+        return languageModuleCache;
+    }
     
     /**
      * Whether or not the module is available in the
@@ -197,20 +210,30 @@ public class Module
             return getAllVisiblePackages();
         }
     }
-    
-    public Map<String, DeclarationWithProximity> 
-    getAvailableDeclarations(Unit unit, String startingWith, 
-            int proximity, Cancellable canceller) {
-        Map<String, DeclarationWithProximity> result = 
+
+    public Map<String, DeclarationWithProximity>
+    getAvailableDeclarationsInCurrentModule(Unit unit, 
+            String startingWith, int proximity, 
+            Cancellable canceller) {
+        return getAvailableDeclarationsInternal(unit, 
+                startingWith, proximity, canceller, 
+                getPackages());
+    }
+
+    private Map<String, DeclarationWithProximity>
+    getAvailableDeclarationsInternal(Unit unit, 
+            String startingWith, int proximity, 
+            Cancellable canceller, List<Package> packages) {
+        Map<String, DeclarationWithProximity> result =
                 new TreeMap<String,DeclarationWithProximity>();
-        for (Package p: getPackagesToScan(startingWith)) {
+        for (Package p: packages) {
             if (canceller != null
                     && canceller.isCancelled()) {
                 return Collections.emptyMap();
             }
-            boolean isLanguagePackage = 
+            boolean isLanguagePackage =
                     p.isLanguagePackage();
-            boolean isDefaultPackage = 
+            boolean isDefaultPackage =
                     p.isDefaultPackage();
             if (!isDefaultPackage) {
                 for (Declaration d: p.getMembers()) {
@@ -219,19 +242,20 @@ public class Module
                         return Collections.emptyMap();
                     }
                     try {
-                        if (isResolvable(d) && 
-                                d.isShared() && 
+                        if (isResolvable(d) &&
+                                d.isShared() &&
                                 !isOverloadedVersion(d) &&
                                 isNameMatching(startingWith, d)) {
-                            String name = d.getName();
-                            int prox = getProximity(proximity, isLanguagePackage, name);
                             result.put(
                                     //use qualified name here, in order
                                     //to distinguish unimported declarations
                                     //with same name in different packages
-                                    d.getQualifiedNameString(), 
-                                    new DeclarationWithProximity(d, 
-                                            prox, !isLanguagePackage));
+                                    d.getQualifiedNameString(),
+                                    new DeclarationWithProximity(d,
+                                            getUnimportedProximity(proximity, 
+                                                isLanguagePackage, 
+                                                d.getName()),
+                                            !isLanguagePackage));
                         }
                     }
                     catch (Exception e) {}
@@ -239,17 +263,27 @@ public class Module
             }
         }
         if ("Nothing".startsWith(startingWith)) {
-            result.put("Nothing", 
+            result.put("Nothing",
                     new DeclarationWithProximity(
                             unit.getNothingDeclaration(),
-                            //same as other "special" 
+                            //same as other "special"
                             //language module declarations
                             proximity+2));
         }
         return result;
     }
 
-    public int getProximity(int initialProximity, boolean isLanguagePackage, String name) {
+    public Map<String, DeclarationWithProximity>
+    getAvailableDeclarations(Unit unit, 
+            String startingWith, int proximity, 
+            Cancellable canceller) {
+        return getAvailableDeclarationsInternal(unit, 
+                startingWith, proximity, canceller, 
+                getPackagesToScan(startingWith));
+    }
+
+    public static int getUnimportedProximity(int initialProximity, 
+            boolean isLanguagePackage, String name) {
         boolean isSpecialValue =
                 isLanguagePackage &&
                     name.equals("true") ||
@@ -439,7 +473,8 @@ public class Module
     public boolean equals(Object obj) {
         if (obj instanceof Module) {
             Module b = (Module) obj;
-            return getSignature().equals(b.getSignature());
+            return getSignature()
+                    .equals(b.getSignature());
         }
         else {
             return false;
@@ -476,5 +511,21 @@ public class Module
 
     public void setJsMinor(int jsMinor) {
         this.jsMinor = jsMinor;
+    }
+    
+    public void addService(ClassOrInterface serviceIface, Class serviceImpl) {
+        if (services == null) {
+            services = new HashMap<ClassOrInterface, Set<Class>>();
+        }
+        Set<Class> impls = services.get(serviceIface);
+        if (impls == null) {
+            impls = new HashSet<Class>(1);
+            services.put(serviceIface, impls);
+        }
+        impls.add(serviceImpl);
+    }
+    
+    public Map<ClassOrInterface, Set<Class>> getServices() {
+        return services != null ? services : Collections.<ClassOrInterface, Set<Class>>emptyMap();
     }
 }

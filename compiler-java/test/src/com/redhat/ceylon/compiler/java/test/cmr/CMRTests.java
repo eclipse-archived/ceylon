@@ -1080,7 +1080,7 @@ public class CMRTests extends CompilerTests {
     public void testMdlUsesJavaWithoutImportingIt() throws IOException{
         assertErrors("modules/jdk/usesJavaWithoutImportingIt/Foo",
                 new CompilerError(20, "package not found in imported modules: 'java.lang' (add module import to module descriptor of 'com.redhat.ceylon.compiler.java.test.cmr.modules.jdk.usesJavaWithoutImportingIt')"),
-                new CompilerError(23, "function or value does not exist: 'nanoTime'"));
+                new CompilerError(23, "function or value is not defined: 'nanoTime' might be misspelled or is not imported"));
     }
 
     @Test
@@ -1092,7 +1092,7 @@ public class CMRTests extends CompilerTests {
         
         assertErrors("modules/jdk/defaultUsesJavaWithoutImportingIt/Foo",
                 new CompilerError(20, "package not found in imported modules: 'java.lang' (define a module and add module import to its module descriptor)"),
-                new CompilerError(23, "function or value does not exist: 'nanoTime'"));
+                new CompilerError(23, "function or value is not defined: 'nanoTime' might be misspelled or is not imported"));
     }
 
     @Test
@@ -1658,7 +1658,7 @@ public class CMRTests extends CompilerTests {
         Assert.assertEquals(Boolean.FALSE, result);
         
         compareErrors(collector.get(Diagnostic.Kind.ERROR),
-                new CompilerError(2, "imported package is not shared: 'b.hidden'"));
+                new CompilerError(2, "imported package is not shared: 'b.hidden' is not annotated 'shared' in 'b'"));
     }
 
     private ModuleImport getModuleImport(Module m, String name) {

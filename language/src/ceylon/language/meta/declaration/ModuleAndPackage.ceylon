@@ -1,4 +1,5 @@
 import ceylon.language { AnnotationType = Annotation }
+import ceylon.language.meta.model{ ClassOrInterface }
 
 "A `module` declaration
  from a `module.ceylon` compilation unit"
@@ -24,6 +25,25 @@ shared sealed interface Module
     "Searches for a resource by its path inside the module."
     since("1.1.0")
     shared formal Resource? resourceByPath(String path);
+    
+    "Find providers of the given service.
+     
+     Returns all the service providers accessible to this module that:
+     
+     * are annotated with the [[service]] annotation, and
+     * have the given class or interface as argument to the [[service]] annotation.
+     
+     The returned service providers will be returned in an 
+     unspecified and platform-dependent order.
+     
+     A provider usually does not provide the underlying functionality 
+     itself, but:
+     
+     * provides sufficient information to allow clients to decide 
+       which provider is best able to satisfy its needs, and
+     * provides a means to access the underlying functionality 
+       (for example, by serving as a factory)."
+    shared formal {Service*} findServiceProviders<Service>(ClassOrInterface<Service> service);
 }
 
 "Model of an `import` declaration 

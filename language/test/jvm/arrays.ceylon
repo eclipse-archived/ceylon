@@ -5,6 +5,7 @@ import check {
     check
 }
 
+@test
 shared void testArrays() {
     // contravariant Array.copyTo() types
     value ceylonStringArray = Array<String>((0..1).map(Object.string));

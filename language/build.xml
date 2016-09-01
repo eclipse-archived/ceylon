@@ -636,30 +636,35 @@
         </ceylon-run>
         <ceylon-run
             sysrep="${build.test.repo}"
+            run="metamodel::runAndAssert"
             module="metamodel/0.1"
             resultproperty="test.ceylon.result.3">
             <rep url="${build.test}"/>
         </ceylon-run>
         <ceylon-run
             sysrep="${build.test.repo}"
+            run="annotations::runAndAssert"
             module="annotations/0.1"
             resultproperty="test.ceylon.result.4">
             <rep url="${build.test}"/>
         </ceylon-run>
-            <ceylon-run
-                sysrep="${build.test.repo}"
-                module="jvm/0.1"
-                resultproperty="test.ceylon.result.5">
-                <rep url="${build.test}"/>
-            </ceylon-run>
         <ceylon-run
             sysrep="${build.test.repo}"
+            run="jvm::runAndAssert"
+            module="jvm/0.1"
+            resultproperty="test.ceylon.result.5">
+            <rep url="${build.test}"/>
+        </ceylon-run>
+        <ceylon-run
+            sysrep="${build.test.repo}"
+            run="resmod::runAndAssert"
             module="resmod/0.1"
             resultproperty="test.ceylon.result.6">
             <rep url="${build.test}"/>
         </ceylon-run>
         <ceylon-run
             sysrep="${build.test.repo}"
+            run="serialization::runAndAssert"
             module="serialization/0.1"
             resultproperty="test.ceylon.result.7">
             <rep url="${build.test}"/>
@@ -734,26 +739,31 @@
         description="compile and run the Node.js tests (requires node)">
         <ceylon-run-js
             sysrep="${build.test.repo}"
+            run="runAndAssert"
             module="default">
             <rep url="build/test" />
         </ceylon-run-js>
         <ceylon-run-js
             sysrep="${build.test.repo}"
+            run="metamodel::runAndAssert"
             module="metamodel/0.1">
             <rep url="${build.test}"/>
         </ceylon-run-js>
         <ceylon-run-js
             sysrep="${build.test.repo}"
+            run="annotations::runAndAssert"
             module="annotations/0.1">
             <rep url="${build.test}"/>
         </ceylon-run-js>
         <ceylon-run-js
             sysrep="${build.test.repo}"
+            run="resmod::runAndAssert"
             module="resmod/0.1">
             <rep url="${build.test}"/>
         </ceylon-run-js>
         <ceylon-run-js
             sysrep="${build.test.repo}"
+            run="serialization::runAndAssert"
             module="serialization/0.1">
             <rep url="${build.test}"/>
         </ceylon-run-js>

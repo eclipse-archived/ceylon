@@ -1,3 +1,9 @@
+import check {
+    initAssert,
+    results,
+    resultsAndAssert,
+    resultsAndExit
+}
 import ceylon.language.serialization{...}
 import ceylon.language.meta.declaration {
     ValueDeclaration,
@@ -545,11 +551,32 @@ shared void docExample() {
     assert(umpaLumpa2.employer === wonkaInc2);
 }
 
-shared void run() {
+void runTests() {
+    print("** Running Serialization Tests **");
     testDeserializationOfObject();
     testDeserializationOfObject2();
     testDeserializationOfMemberObject();
     testDeserializationOfArrays();
 }
-shared void test() { run(); }
 
+shared void run() {
+    initAssert();
+    runTests();
+    results();
+}
+
+shared void runAndAssert() {
+    initAssert();
+    runTests();
+    resultsAndAssert();
+}
+
+shared void runAndExit() {
+    initAssert();
+    runTests();
+    resultsAndExit();
+}
+
+shared void test() {
+    run();
+}

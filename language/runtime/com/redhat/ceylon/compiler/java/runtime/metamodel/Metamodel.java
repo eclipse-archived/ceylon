@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.BooleanArray;
 import com.redhat.ceylon.compiler.java.language.ByteArray;
@@ -26,7 +27,6 @@ import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.language.LongArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
-import com.redhat.ceylon.compiler.java.language.ReifiedTypeError;
 import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -335,7 +335,8 @@ public class Metamodel {
             // that's so that we don't have to worry about type applications 
             // such as like <out Anything> which is true even in the absence 
             // of reified type arguments
-            throw new ReifiedTypeError("Cannot determine whether " + instance.getClass() + " is a " + type);
+//            throw new ReifiedTypeError("Cannot determine whether " + instance.getClass() + " is a " + type);
+            result = true; //I can do it in Java, so what the hell ;-)
         }
         
         return result;
@@ -458,17 +459,20 @@ public class Metamodel {
         }
     }
 
-    public static com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ModuleImpl getOrCreateMetamodel(com.redhat.ceylon.model.typechecker.model.Module declaration){
-        return getOrCreateMetamodel(declaration, null, false /* not optional */);
+    public static com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ModuleImpl getOrCreateMetamodel(
+            com.redhat.ceylon.model.typechecker.model.Module declaration){
+        return getOrCreateMetamodel(null, declaration, null, false /* not optional */);
     }
 
-    private static com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ModuleImpl getOrCreateMetamodel(com.redhat.ceylon.model.typechecker.model.Module declaration,
+    private static com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ModuleImpl getOrCreateMetamodel(
+            String namespace,
+            com.redhat.ceylon.model.typechecker.model.Module declaration,
             Set<com.redhat.ceylon.model.typechecker.model.Module> visitedModules, boolean optional){
         synchronized(getLock()){
             com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ModuleImpl ret = typeCheckModulesToRuntimeModel.get(declaration);
             if(ret == null){
                 // make sure it is loaded
-                loadModule(declaration, visitedModules, optional);
+                loadModule(namespace, declaration, visitedModules, optional);
                 if(!declaration.isAvailable())
                     return null;
                 ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ModuleImpl(declaration); 
@@ -478,7 +482,9 @@ public class Metamodel {
         }
     }
 
-    private static void loadModule(com.redhat.ceylon.model.typechecker.model.Module declaration, 
+    private static void loadModule(
+            String namespace,
+            com.redhat.ceylon.model.typechecker.model.Module declaration, 
             Set<com.redhat.ceylon.model.typechecker.model.Module> visitedModules, boolean optional) {
         // don't do if not running JBoss modules
         if(!isJBossModules()){
@@ -497,7 +503,8 @@ public class Metamodel {
             ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
             if(contextClassLoader instanceof CeylonModuleClassLoader) {
                 // this will return null for bootstrap modules
-                CeylonModuleClassLoader newModuleClassLoader = ((CeylonModuleClassLoader) contextClassLoader).loadModule(declaration.getNameAsString(), declaration.getVersion());
+                String modname = ModuleUtil.makeModuleName(namespace, declaration.getNameAsString(), null);
+                CeylonModuleClassLoader newModuleClassLoader = ((CeylonModuleClassLoader) contextClassLoader).loadModule(modname, declaration.getVersion());
             
                 // if we can force it loaded, let's do
                 if(newModuleClassLoader != null){
@@ -530,8 +537,10 @@ public class Metamodel {
             for(ModuleImport mi : declaration.getImports()){
                 com.redhat.ceylon.model.typechecker.model.Module importedModule = mi.getModule();
                 // make sure we don't run in circles
-                if(importedModule != null && !visitedModules.contains(importedModule))
-                    getOrCreateMetamodel(importedModule, visitedModules, mi.isOptional());
+                if(importedModule != null && !visitedModules.contains(importedModule)) {
+                    String ns = mi.getNamespace() != null ? mi.getNamespace() : namespace;
+                    getOrCreateMetamodel(ns, importedModule, visitedModules, mi.isOptional());
+                }
             }
         } catch (ModuleLoadException e) {
             // it's not an issue if we don't find the default module, it's always created but not always
@@ -665,6 +674,9 @@ public class Metamodel {
         }
         if(declaration instanceof com.redhat.ceylon.model.typechecker.model.NothingType){
             return (ceylon.language.meta.model.Type<T>)ceylon.language.meta.model.nothingType_.get_();
+        }
+        if(declaration instanceof UnknownType){
+            ((UnknownType) declaration).reportErrors();
         }
         throw Metamodel.newModelError("Declaration type not supported yet: "+declaration);
     }
@@ -1205,7 +1217,7 @@ public class Metamodel {
         ceylon.language.meta.declaration.Module[] array = new ceylon.language.meta.declaration.Module[view.length];
         int i=0;
         for(com.redhat.ceylon.model.typechecker.model.Module module : view){
-            ModuleImpl mod = getOrCreateMetamodel(module, null, true); // optional means don't throw if it's not available
+            ModuleImpl mod = getOrCreateMetamodel(null, module, null, true); // optional means don't throw if it's not available
             // skip unavailable modules
             if(mod != null)
                 array[i++] = mod;
@@ -1222,7 +1234,7 @@ public class Metamodel {
         // FIXME: this probably needs synchronisation to avoid new modules loaded during traversal
         com.redhat.ceylon.model.typechecker.model.Module module = moduleManager.findLoadedModule(name, version);
         // consider it optional to get null rather than exception
-        return module != null ? getOrCreateMetamodel(module, null, true) : null;
+        return module != null ? getOrCreateMetamodel(null, module, null, true) : null;
     }
 
     /**
@@ -1231,7 +1243,7 @@ public class Metamodel {
     public static Module getDefaultModule() {
         com.redhat.ceylon.model.typechecker.model.Module module = moduleManager.getModules().getDefaultModule();
         // consider it optional to get null rather than exception
-        return module != null ? getOrCreateMetamodel(module, null, true) : null;
+        return module != null ? getOrCreateMetamodel(null, module, null, true) : null;
     }
 
     public static List<Type> getParameterProducedTypes(List<Parameter> parameters, Reference producedReference) {

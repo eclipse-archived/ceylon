@@ -39,6 +39,7 @@ import java.util.Map;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
+import com.redhat.ceylon.compiler.typechecker.tree.ErrorCode;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -912,6 +913,12 @@ public abstract class DeclarationVisitor extends Visitor {
             that.addError("class may not be both formal and final: '" + 
                     name(identifier) + "'");
         }
+        if (hasAnnotation(that.getAnnotationList(), "service", that.getUnit())) {
+            if (!c.getTypeParameters().isEmpty()) {
+                that.addError("service class may not be generic",
+                        ErrorCode.SERVICE_CLASS_CANNOT_BE_GENERIC);
+            }
+        }
     }
     
     @Override
@@ -1344,7 +1351,7 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         if (v.isFormal() && sie!=null) {
             that.addError("formal attributes may not have a value", 
-                    1307);
+                    1102);
         }
         Tree.Type type = that.getType();
         if (type instanceof Tree.ValueModifier) {
@@ -1372,8 +1379,8 @@ public abstract class DeclarationVisitor extends Visitor {
         Function m = that.getDeclarationModel();
         m.setImplemented(sie != null);
         if (m.isFormal() && sie!=null) {
-            that.addError("formal methods may not have a specification", 
-                    1307);
+            that.addError("formal method may not have a specification", 
+                    1102);
         }
         Tree.Type type = that.getType();
         if (type instanceof Tree.FunctionModifier) {
@@ -2341,7 +2348,19 @@ public abstract class DeclarationVisitor extends Visitor {
                     getAnnotationSequenceArgument(aliased);
             model.setAliases(aliases);
         }
-        buildAnnotations(al, model.getAnnotations());        
+        if (hasAnnotation(al, "service", unit)) {
+            if (!(model instanceof Class 
+                    && model.isToplevel()
+                    && model.isShared())) {
+                that.addError("declaration is not a shared top level class, and may not be annotated service",
+                        1601);
+            }
+            if (((Class)model).isAbstract()) {
+                that.addError("declaration is an abstract class, and may not be annotated service",
+                        1601);
+            }
+        }
+        buildAnnotations(al, model.getAnnotations());
     }
 
     public static void setVisibleScope(Declaration model) {
@@ -2478,6 +2497,12 @@ public abstract class DeclarationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Assertion that) {
+        Tree.ConditionList cl = that.getConditionList();
+        if (cl!=null) {
+            for (Tree.Condition c: cl.getConditions()) {
+                c.setAssertion(true);
+            }
+        }
         Declaration d = beginDeclaration(null);
         super.visit(that);
         endDeclaration(d);

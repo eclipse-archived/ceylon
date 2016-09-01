@@ -30,6 +30,14 @@ public class AnalysisMessage implements Message {
     public AnalysisMessage(Node treeNode, String message, int code) {
         this(treeNode, message, code, null);
     }
+
+    public AnalysisMessage(Node treeNode, String message, ErrorCode errorCode) {
+        this(treeNode, message, errorCode, null);
+    }
+
+    public AnalysisMessage(Node treeNode, String message, ErrorCode errorCode, Backend backend) {
+        this(treeNode, message, errorCode == null ? ErrorCode.UNKNOWN.code : errorCode.code, null);
+    }
     
     public AnalysisMessage(Node treeNode, String message, int code, Backend backend) {
         this.treeNode = treeNode;
@@ -66,5 +74,10 @@ public class AnalysisMessage implements Message {
     @Override
     public String toString() {
         return message;
+    }
+
+    @Override
+    public ErrorCode getErrorCode() {
+        return ErrorCode.getErrorCode(code);
     }
 }

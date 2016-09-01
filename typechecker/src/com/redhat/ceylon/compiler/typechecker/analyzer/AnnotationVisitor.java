@@ -687,11 +687,11 @@ public class AnnotationVisitor extends Visitor {
             if (pack == null) {
                 if (DOC_LINK_MODULE.equals(kind)) {
                     that.addUsageWarning(Warning.doclink, 
-                                "module does not exist: '" + 
+                                "module is missing: '" + 
                                         packageName + "'");
                 } else {
                     that.addUsageWarning(Warning.doclink, 
-                                "package does not exist: '" + 
+                                "package is missing: '" + 
                                         packageName + "'");
                 }
             }
@@ -705,7 +705,7 @@ public class AnnotationVisitor extends Visitor {
                         that.setModule(pack.getModule());
                     } else {
                         that.addUsageWarning(Warning.doclink,
-                                    "module does not exist: '" + 
+                                    "module is missing: '" + 
                                             packageName + "'");
                     }
                 }
@@ -722,7 +722,7 @@ public class AnnotationVisitor extends Visitor {
         }
         if (base==null) {
             that.addUsageWarning(Warning.doclink,
-                    "declaration does not exist: '" + 
+                    "declaration is missing: '" + 
                     (names.length > 0 ? names[0] : text) + "'");
         }
         else {
@@ -747,7 +747,7 @@ public class AnnotationVisitor extends Visitor {
                             base.getMember(names[i], null, false);
                     if (qualified==null) {
                         that.addUsageWarning(Warning.doclink,
-                                    "member declaration or parameter does not exist: '" + 
+                                    "member declaration or parameter is missing: '" + 
                                             names[i] + "'");
                         break;
                     }
@@ -1056,8 +1056,13 @@ public class AnnotationVisitor extends Visitor {
             if (!ModelUtil.isTypeUnknown(ta) && 
                     (ta.isNothing() || 
                      ta.isIntersection() || 
-                     unit.getDefiniteType(ta).isUnion())) {
-                that.addError(
+                     unit.getDefiniteType(ta).isUnion() ||
+                     ta.isTypeParameter())) {
+                Tree.TypeArguments tas = that.getTypeArguments();
+                Node errNode = 
+                        tas instanceof Tree.TypeArgumentList ?
+                                tas : that;
+                errNode.addError(
                         "illegal Java array element type: arrays with element type '" 
                                 + ta.asString(unit) + "' may not be instantiated");
             }

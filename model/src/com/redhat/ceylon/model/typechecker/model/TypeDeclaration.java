@@ -407,8 +407,12 @@ public abstract class TypeDeclaration extends Declaration
             return false;
         }
         if (result==null) {
-            return signature!=null == 
-                    candidate instanceof Functional;
+//            return signature!=null == 
+//                    candidate instanceof Functional;
+            //helps to produce a better error message
+            //when a value refines a function and
+            //vice-versa
+            return true;
         }
         if (!(result instanceof Functional)) {
             return signature!=null;
@@ -1205,8 +1209,12 @@ public abstract class TypeDeclaration extends Declaration
         return false;
     }
 
+    public boolean isCallable() {
+        return false;
+    }
+    
     public EnumSet<AnnotationTarget> getAnnotationTarget() {
         return null;
     }
-    
+
 }

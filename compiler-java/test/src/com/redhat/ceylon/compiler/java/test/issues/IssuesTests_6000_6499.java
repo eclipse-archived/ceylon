@@ -22,12 +22,17 @@ package com.redhat.ceylon.compiler.java.test.issues;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.compiler.java.test.ErrorCollector;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 
 
 public class IssuesTests_6000_6499 extends CompilerTests {
@@ -188,7 +193,7 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     public void testBug6272() {
         assertErrors("bug62xx/Bug6272",
                 new CompilerError(8, "argument of unknown type assigned to inferred type parameter: 'Item' of 'HashMap'"),
-                new CompilerError(8, "function or value does not exist: 'bar'"));
+                new CompilerError(8, "function or value is not defined: 'bar' might be misspelled or is not imported"));
     }
     
     @Test
@@ -199,9 +204,9 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     @Test
     public void testBug6287() {
         assertErrors("bug62xx/Bug6287",
-                new CompilerError(1, "imported declaration not found: 'string' (did you mean 'stringify'?)"),
-                new CompilerError(4, "type declaration does not exist: 'string'"),
-                new CompilerError(5, "function or value does not exist: 'string'"));
+                new CompilerError(1, "imported declaration not found: 'string' might be misspelled or does not belong to this package (did you mean 'stringify'?)"),
+                new CompilerError(4, "type is not defined: 'string' might be misspelled or is not imported"),
+                new CompilerError(5, "function or value is not defined: 'string' might be misspelled or is not imported"));
     }
     
     @Test
@@ -308,5 +313,65 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     @Test
     public void testBug6409() {
         compareWithJavaSource("bug64xx/Bug6409");
+    }
+
+    @Test
+    public void testBug6420() {
+        compareWithJavaSource("bug64xx/Bug6420");
+    }
+
+    @Test
+    public void testBug6421() {
+        compareWithJavaSource("bug64xx/Bug6421");
+    }
+
+    @Ignore("Requires Android")
+    @Test
+    public void testBug6422() {
+        String project = "../../../AndroidStudioProjects/MyApplication2/app";
+        String src = project+"/src/main/ceylon";
+        List<String> options = Arrays.asList("-jdk-provider", "android/23", "-src", src,
+                "-rep", project+"/build/intermediates/ceylon-android/repository");
+        ErrorCollector c = new ErrorCollector();
+        List<String> modules = Arrays.asList("com.example.android.myapplication");
+        assertCompilesOk(c, getCompilerTask(options, c, modules).call2());
+    }
+
+    @Test
+    public void testBug6433() {
+        assertErrors("bug64xx/Bug6433",
+                new CompilerError(22, "overloaded formal member 'append(CharSequence?)' of 'Appendable' not implemented in class hierarchy"),
+                new CompilerError(22, "overloaded formal member 'append(CharSequence?, Integer, Integer)' of 'Appendable' not implemented in class hierarchy")
+                );
+    }
+
+    @Test
+    public void testBug6435() {
+        compareWithJavaSource("bug64xx/Bug6435");
+    }
+
+    @Test
+    public void testBug6442() throws Throwable {
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compile("bug64xx/bug6442/run.ceylon");
+        runInJBossModulesSameVM("run", "com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6442/1", 
+                Arrays.asList("--run", "com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6442::run",
+                        "--overrides", getPackagePath()+"/bug64xx/bug6442/overrides.xml"));
+    }
+
+    @Test
+    public void testBug6447() {
+        compareWithJavaSource("bug64xx/Bug6447");
+    }
+
+    @Test
+    public void testBug6450() {
+        compareWithJavaSource("bug64xx/Bug6450");
+    }
+
+    @Test
+    public void testBug6459() {
+        compareWithJavaSource("bug64xx/Bug6459");
     }
 }

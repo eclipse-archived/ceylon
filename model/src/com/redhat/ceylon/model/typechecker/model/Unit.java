@@ -28,7 +28,7 @@ import java.util.TreeMap;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.typechecker.context.TypeCache;
 
-public class Unit {
+public class Unit implements LanguageModuleProvider {
 
     private Package pkg;
     private List<Import> imports = new ArrayList<Import>();
@@ -43,7 +43,21 @@ public class Unit {
     private boolean unresolvedReferences;
     
     public List<Import> getImports() {
-        return imports;
+        synchronized (imports) {
+            return new ArrayList<Import>(imports);
+        }
+    }
+
+    public void addImport(Import imp) {
+        synchronized (imports) {
+            imports.add(imp);
+        }
+    }
+
+    public void removeImport(Import imp) {
+        synchronized (imports) {
+            imports.remove(imp);
+        }
     }
 
     public List<ImportList> getImportLists() {
@@ -125,7 +139,8 @@ public class Unit {
     public String getAliasedName(Declaration dec, String defaultValue) {
         for (Import i: getImports()) {
             if (!i.isAmbiguous() &&
-                    i.getDeclaration().equals(getAbstraction(dec))) {
+                    i.getDeclaration()
+                        .equals(getAbstraction(dec))) {
                 return i.getAlias();
             }
         }
@@ -209,7 +224,7 @@ public class Unit {
             int proximity, Cancellable canceller) {
         Map<String, DeclarationWithProximity> result = 
                 new TreeMap<String, DeclarationWithProximity>();
-        for (Import i: new ArrayList<Import>(getImports())) {
+        for (Import i: getImports()) {
             if (canceller != null
                     && canceller.isCancelled()) {
                 return Collections.emptyMap();
@@ -233,7 +248,7 @@ public class Unit {
             String startingWith, int proximity, Cancellable canceller) {
         Map<String, DeclarationWithProximity> result = 
                 new TreeMap<String, DeclarationWithProximity>();
-        for (Import i: new ArrayList<Import>(getImports())) {
+        for (Import i: getImports()) {
             if (canceller != null
                     && canceller.isCancelled()) {
                 return Collections.emptyMap();
@@ -384,60 +399,137 @@ public class Unit {
         return null;
     }
     
+    @Override
     public Interface getCorrespondenceDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Correspondence");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getCorrespondenceDeclaration();
+        }
+        return null;
     }
     
+    public Interface getCorrespondenceMutatorDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("CorrespondenceMutator");
+    }
+
+    public Interface getIndexedCorrespondenceMutatorDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("IndexedCorrespondenceMutator");
+    }
+
+    public Interface getKeyedCorrespondenceMutatorDeclaration() {
+        return (Interface) getLanguageModuleDeclaration("KeyedCorrespondenceMutator");
+    }
+
+    @Override
     public Class getAnythingDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Anything");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getAnythingDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Class getNullDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Null");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getNullDeclaration();
+        }
+        return null;
     }
     
     public Value getNullValueDeclaration() {
         return (Value) getLanguageModuleDeclaration("null");
     }
     
+    @Override
     public Interface getEmptyDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Empty");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getEmptyDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getSequenceDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Sequence");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getSequenceDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Class getObjectDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Object");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getObjectDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Class getBasicDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Basic");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getBasicDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getIdentifiableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Identifiable");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getIdentifiableDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Class getThrowableDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Throwable");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getThrowableDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Class getErrorDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Error");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getErrorDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Class getExceptionDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Exception");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getExceptionDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getCategoryDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Category");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getCategoryDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getIterableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Iterable");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getIterableDeclaration();
+        }
+        return null;
     }
 
     public Interface getJavaIterableDeclaration() {
@@ -579,7 +671,17 @@ public class Unit {
             return (Interface) lang.getMember("AutoCloseable", null, false);
         }
     }
-    
+
+    public Class getJavaEnumDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Class) lang.getMember("Enum", null, false);
+        }
+    }
+
     protected Package getJavaLangPackage() {
         return getPackage().getModule().getPackage("java.lang");
     }
@@ -588,64 +690,139 @@ public class Unit {
         return getPackage().getModule().getPackage("java.util");
     }
     
+    @Override
     public Interface getSequentialDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Sequential");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getSequentialDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getListDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("List");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getListDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getCollectionDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Collection");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getCollectionDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getIteratorDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Iterator");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getIteratorDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getCallableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Callable");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getCallableDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getScalableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Scalable");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getScalableDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getSummableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Summable");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getSummableDeclaration();
+        }
+        return null;
     }
      
+    @Override
     public Interface getNumericDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Numeric");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getNumericDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getIntegralDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Integral");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getIntegralDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getInvertableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Invertible");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getInvertableDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getExponentiableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Exponentiable");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getExponentiableDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getSetDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Set");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getSetDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getMapDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Map");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getMapDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Class getComparisonDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Comparison");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getComparisonDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Class getBooleanDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Boolean");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getBooleanDeclaration();
+        }
+        return null;
     }
     
     public Value getTrueValueDeclaration() {
@@ -656,76 +833,166 @@ public class Unit {
         return (Value) getLanguageModuleDeclaration("false");
     }
     
+    @Override
     public Class getStringDeclaration() {
-        return (Class) getLanguageModuleDeclaration("String");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getStringDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Class getFloatDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Float");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getFloatDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Class getIntegerDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Integer");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getIntegerDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Class getCharacterDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Character");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getCharacterDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Class getByteDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Byte");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getByteDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getComparableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Comparable");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getComparableDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getUsableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Usable");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getUsableDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getDestroyableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Destroyable");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getDestroyableDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getObtainableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Obtainable");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getObtainableDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getOrdinalDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Ordinal");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getOrdinalDeclaration();
+        }
+        return null;
     }
         
+    @Override
     public Interface getEnumerableDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Enumerable");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getEnumerableDeclaration();
+        }
+        return null;
     }
         
+    @Override
     public Class getRangeDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Range");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getRangeDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Class getSpanDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Span");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getSpanDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Class getMeasureDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Measure");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getMeasureDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Class getTupleDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Tuple");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getTupleDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public TypeDeclaration getArrayDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Array");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getArrayDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public Interface getRangedDeclaration() {
-        return (Interface) getLanguageModuleDeclaration("Ranged");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getRangedDeclaration();
+        }
+        return null;
     }
         
+    @Override
     public Class getEntryDeclaration() {
-        return (Class) getLanguageModuleDeclaration("Entry");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getEntryDeclaration();
+        }
+        return null;
     }
     
     Type getCallableType(Reference ref, Type rt) {
@@ -857,83 +1124,181 @@ public class Unit {
     }
 
     public Type getUnknownType() {
-        return new UnknownType(this).getType();
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getUnknownType();
+        }
+        return null;
     }
     
+    @Override
     public Type getNothingType() {
-        return getType(getNothingDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getNothingType();
+        }
+        return null;
     }
 
+    @Override
     public Type getEmptyType() {
-        return getType(getEmptyDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getEmptyType();
+        }
+        return null;
     }
     
+    @Override
     public Type getAnythingType() {
-        return getType(getAnythingDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getAnythingType();
+        }
+        return null;
     }
     
+    @Override
     public Type getObjectType() {
-        return getType(getObjectDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getObjectType();
+        }
+        return null;
     }
     
+    @Override
     public Type getIdentifiableType() {
-        return getType(getIdentifiableDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getIdentifiableType();
+        }
+        return null;
     }
     
+    @Override
     public Type getBasicType() {
-        return getType(getBasicDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getBasicType();
+        }
+        return null;
     }
 
+    @Override
     public Type getNullType() {
-        return getType(getNullDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getNullType();
+        }
+        return null;
     }
     
+    @Override
     public Type getThrowableType() {
-        return getType(getThrowableDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getThrowableType();
+        }
+        return null;
     }
     
+    @Override
     public Type getExceptionType() {
-        return getType(getExceptionDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getExceptionType();
+        }
+        return null;
     }
     
+    @Override
     public Type getBooleanType() {
-        return getType(getBooleanDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getBooleanType();
+        }
+        return null;
     }
     
+    @Override
     public Type getStringType() {
-        return getType(getStringDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getStringType();
+        }
+        return null;
     }
     
+    @Override
     public Type getIntegerType() {
-        return getType(getIntegerDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getIntegerType();
+        }
+        return null;
     }
     
+    @Override
     public Type getFloatType() {
-        return getType(getFloatDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getFloatType();
+        }
+        return null;
     }
     
+    @Override
     public Type getCharacterType() {
-        return getType(getCharacterDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getCharacterType();
+        }
+        return null;
     }
     
+    @Override
     public Type getByteType() {
-        return getType(getByteDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getByteType();
+        }
+        return null;
     }
     
+    @Override
     public Type getComparisonType() {
-        return getType(getComparisonDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getComparisonType();
+        }
+        return null;
     }
     
+    @Override
     public Type getDestroyableType() {
-        return getType(getDestroyableDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getDestroyableType();
+        }
+        return null;
     }
 
+    @Override
     public Type getObtainableType() {
-        return getType(getObtainableDeclaration());
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getObtainableType();
+        }
+        return null;
     }
     
     public Type getJavaAutoCloseableType() {
         return getType(getJavaAutoCloseableDeclaration());
+    }
+
+    public Type getJavaEnumType(Type et) {
+        return appliedType(getJavaEnumDeclaration(), et);
     }
 
     public Type getSequenceType(Type et) {
@@ -1158,14 +1523,17 @@ public class Unit {
     }
     
     public boolean isJavaObjectArrayType(Type pt) {
-        TypeDeclaration dec = pt.resolveAliases().getDeclaration();
+        TypeDeclaration dec = 
+                pt.resolveAliases()
+                    .getDeclaration();
         return dec instanceof Class &&
                 dec.equals(getJavaObjectArrayDeclaration());
     }
     
     public boolean isJavaPrimitiveArrayType(Type pt) {
         TypeDeclaration dec = 
-                pt.resolveAliases().getDeclaration();
+                pt.resolveAliases()
+                    .getDeclaration();
         return dec instanceof Class &&
                 (dec.equals(getJavaIntArrayDeclaration()) ||
                 dec.equals(getJavaShortArrayDeclaration()) ||
@@ -1178,7 +1546,8 @@ public class Unit {
     }
     
     public boolean isJavaArrayType(Type pt) {
-        return isJavaObjectArrayType(pt) || isJavaPrimitiveArrayType(pt);
+        return isJavaObjectArrayType(pt) 
+            || isJavaPrimitiveArrayType(pt);
     }
     
     public boolean isUsableType(Type pt) {
@@ -1237,8 +1606,13 @@ public class Unit {
                     .inherits(getCallableDeclaration());
     }
     
+    @Override
     public NothingType getNothingDeclaration() {
-        return new NothingType(this);
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getNothingDeclaration();
+        }
+        return null;
     }
     
     public Type denotableType(Type type) {
@@ -1325,11 +1699,14 @@ public class Unit {
                     }
                     Type qt = type.getQualifyingType();
                     Type dt = dec.appliedType(qt, typeArguments);
-                    dt.setUnderlyingType(type.getUnderlyingType());
                     dt.setVarianceOverrides(type.getVarianceOverrides());
                     dt.setTypeConstructor(type.isTypeConstructor());
                     dt.setTypeConstructorParameter(
                             type.getTypeConstructorParameter());
+                    if (dt.isCached()) {
+                        dt = dt.clone();
+                    }
+                    dt.setUnderlyingType(type.getUnderlyingType());
                     dt.setRaw(type.isRaw());
                     return dt;
                 }
@@ -2395,20 +2772,40 @@ public class Unit {
         return getType(getLanguageModuleDeclarationTypeDeclaration("ValueDeclaration"));
     }
     
+    @Override
     public TypeDeclaration getAnnotationDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("Annotation");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getAnnotationDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public TypeDeclaration getConstrainedAnnotationDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("ConstrainedAnnotation");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getConstrainedAnnotationDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public TypeDeclaration getSequencedAnnotationDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("SequencedAnnotation");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getSequencedAnnotationDeclaration();
+        }
+        return null;
     }
     
+    @Override
     public TypeDeclaration getOptionalAnnotationDeclaration() {
-        return (TypeDeclaration) getLanguageModuleDeclaration("OptionalAnnotation");
+        Module theLanguageModule = getLanguageModule();
+        if (theLanguageModule != null) {
+            return theLanguageModule.getLanguageModuleCache().getOptionalAnnotationDeclaration();
+        }
+        return null;
     }
     
     public TypeDeclaration getDeclarationDeclaration() {

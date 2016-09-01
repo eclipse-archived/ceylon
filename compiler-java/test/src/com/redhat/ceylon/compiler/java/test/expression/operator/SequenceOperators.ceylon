@@ -18,12 +18,13 @@
  * MA  02110-1301, USA.
  */
 @noanno
-shared abstract class SequenceOperators() satisfies List<String> {
+shared abstract class SequenceOperators() satisfies List<String> & IndexedCorrespondenceMutator<String> {
     
     equals(Object o) => false;
     hash => 1;
     
     Correspondence<Integer, String> c1 = [""];
+    IndexedCorrespondenceMutator<String> c1mut = nothing;
     Correspondence<Integer,String>? c2 = [""];
     String[] sequence = [];
     
@@ -38,10 +39,19 @@ shared abstract class SequenceOperators() satisfies List<String> {
         //s = super[1];
         //s = (super of List<String>)[1];
         s = super.get(1);
-// M5:
-//        if (c1 satisfies OpenCorrespondence<Integer, String>) {
-//            c1[n1] = s;
-//        }
+        if (is IndexedCorrespondenceMutator<String> c1) {
+            c1[1] = "a";
+            c1[box(1)] = "a";
+            s = (c1[1] = "a");
+            c1.set(1, "a");
+        }
+        this[1] = "a";
+        this.c1mut[1] = "a";
+        if (is KeyedCorrespondenceMutator<String, String> c1) {
+            c1["foo"] = "a";
+            s = (c1["foo"] = "a");
+            c1.put("foo", "a");
+        }
 // M?:        
 //        Integer[] indices = {1, 2, 3};
 //        variable String[] seq1 = c1[indices];

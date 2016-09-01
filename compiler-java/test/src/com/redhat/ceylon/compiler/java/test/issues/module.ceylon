@@ -24,4 +24,5 @@ module com.redhat.ceylon.compiler.java.test.issues "1" {
     import java.logging "7";
     import javax.annotation "7";
     import ceylon.math "1.2.0";
+    import ceylon.io "1.2.0";
 }

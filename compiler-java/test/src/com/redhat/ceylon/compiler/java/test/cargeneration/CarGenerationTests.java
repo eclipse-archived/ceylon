@@ -30,6 +30,8 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -41,6 +43,7 @@ import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
+import com.redhat.ceylon.compiler.java.tools.MetaInfServices;
 import com.redhat.ceylon.javax.tools.Diagnostic;
 
 public class CarGenerationTests extends CompilerTests {
@@ -359,6 +362,91 @@ public class CarGenerationTests extends CompilerTests {
             assertEquals("META-INF/MANIFEST.MF", entry.getName());
             assertTrue(!entry.isDirectory());
         }
+    }
+    
+    /** Plain module compilation*/
+    @Test
+    public void testCarWithServicesGreet() throws IOException {
+        ErrorCollector ec = new ErrorCollector();
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(getPackagePath() + "services/greet1/source");
+        options.addAll(defaultOptions);
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                ec,
+                Arrays.asList("services"));
+        assertTrue(task.call());
+        
+        File carFile = getModuleArchive("services", "1.0");
+        assertTrue(carFile.exists());
+        Map<String, Set<String>> services = MetaInfServices.parseAllServices(carFile);
+        Set<String> impls = services.get("services.Greeter");
+        assertNotNull(impls);
+        assertContains(impls, "services.HelloWorld");
+        assertContains(impls, "services.Bonjour");
+        assertEquals(2, impls.size());
+        assertEquals(1, services.size());
+    }
+    
+    /** Whole module recompilation */
+    @Test
+    public void testCarWithServicesGreetRecompile() throws IOException {
+        // first compile the old version
+        testCarWithServicesGreet();
+        
+        // then recompile
+        ErrorCollector ec = new ErrorCollector();
+        List<String> options = new LinkedList<String>();
+        options.add("-src");
+        options.add(getPackagePath() + "services/greet2/source");
+        options.addAll(defaultOptions);
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                ec,
+                Arrays.asList("services"));
+        assertTrue(task.call());
+        
+        File carFile = getModuleArchive("services", "1.0");
+        assertTrue(carFile.exists());
+        Map<String, Set<String>> services = MetaInfServices.parseAllServices(carFile);
+        Set<String> impls = services.get("services.Greeter");
+        assertNotNull(impls);
+        assertContains(impls, "services.HelloWorld");
+        assertContains(impls, "services.Gday");
+        assertContains(impls, "services.Bonjour");
+        assertEquals(3, impls.size());
+        assertEquals(1, services.size());
+    }
+
+    protected static void assertContains(Set<String> impls, String member) {
+        assertTrue(impls + " is missing expected member " + member, impls.contains(member));
+    }
+    
+    /** Incremental compilation (adding a service implementation) */
+    @Test
+    public void testCarWithServicesGreetIncremental() throws IOException {
+        // first compile the old version
+        testCarWithServicesGreet();
+        
+        // then recompile
+        ErrorCollector ec = new ErrorCollector();
+        List<String> options = new LinkedList<String>(defaultOptions);
+        options.add("-src");
+        options.add(getPackagePath() + "services/greet2/source");
+        CeyloncTaskImpl task = getCompilerTask(options, 
+                ec,
+                Arrays.asList(getPackagePath() + "services/greet2/source/services/Gday.ceylon"));
+        assertTrue(task.call());
+        
+        File carFile = getModuleArchive("services", "1.0");
+        assertTrue(carFile.exists());
+        Map<String, Set<String>> services = MetaInfServices.parseAllServices(carFile);
+        Set<String> impls = services.get("services.Greeter");
+        assertNotNull(impls);
+        assertContains(impls, "services.HelloWorld");
+        assertContains(impls, "services.Bonjour");
+        assertContains(impls, "services.Gday");
+        assertEquals(3, impls.size());
+        assertEquals(1, services.size());
     }
     
 }

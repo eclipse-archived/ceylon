@@ -1520,7 +1520,7 @@ public class ClassTransformer extends AbstractTransformer {
                     && (value.isShared() || value.isCaptured())) {
                 return true;
             }
-        } else if (member instanceof Function) {
+        } /*else if (member instanceof Function) {
             Function function = (Function)member;
             
             if (function.isShortcutRefinement()
@@ -1531,7 +1531,7 @@ public class ClassTransformer extends AbstractTransformer {
                            || function.isActual())) {
                 return true;
             }
-        }
+        }*/
         return false;
     }
     

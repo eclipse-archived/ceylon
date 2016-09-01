@@ -160,7 +160,7 @@ public class ImportVisitor extends Visitor {
                             dec.isNativeHeader()) {
                         //this case only happens in the IDE,
                         //due to reuse of the Unit
-                        unit.getImports().remove(o);
+                        unit.removeImport(o);
                         il.getImports().remove(o);
                     }
                     else if (!dec.isNative()) {
@@ -168,7 +168,7 @@ public class ImportVisitor extends Visitor {
                         o.setAmbiguous(true);
                     }
                 }
-                unit.getImports().add(i);
+                unit.addImport(i);
                 il.getImports().add(i);
             }
         }
@@ -471,13 +471,13 @@ public class ImportVisitor extends Visitor {
             else {
                 Import o = unit.getImport(alias);
                 if (o==null) {
-                    unit.getImports().add(i);
+                    unit.addImport(i);
                     il.getImports().add(i);
                 }
                 else if (o.isWildcardImport()) {
-                    unit.getImports().remove(o);
+                    unit.removeImport(o);
                     il.getImports().remove(o);
-                    unit.getImports().add(i);
+                    unit.addImport(i);
                     il.getImports().add(i);
                 }
                 else {
@@ -493,7 +493,7 @@ public class ImportVisitor extends Visitor {
         String alias = i.getAlias();
         if (alias!=null) {
             if (il.getImport(alias)==null) {
-                unit.getImports().add(i);
+                unit.addImport(i);
                 il.getImports().add(i);
             }
             else {

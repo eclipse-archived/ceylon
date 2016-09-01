@@ -15,7 +15,7 @@
    
    - `x == (x/y)*y + x%y`
    
-   for any instance `y` other than `0`.
+   for any instance `x` and any instance `y` other than `0`.
    
    All `Integral` numeric types are also [[Enumerable]], so 
    ranges of integral values may be produced using the 
@@ -40,15 +40,29 @@ shared interface Integral<Other> of Other
         given Other satisfies Integral<Other> {
     
     "The remainder, after dividing this number by the given 
-     number."
-    see (`function Numeric.divided`, `function modulo`)
+     number. The sign of the remainder depends upon the sign
+     of this number, and of the argument [[divisor|other]]:
+     
+     - if this dividend is positive, the remainder has the
+       opposite sign as the divisor, or is `0`,
+     - if this dividend is negative, the remainder has the
+       same sign as the divisor, or is `0`, or
+     - if this dividend is zero, the remainder is always 
+       `0`.
+     
+     Thus, in order to satisfy the identity 
+     `x == (x/y)*y + x%y`, [[division|divided]] for an 
+     integral numeric type must round toward `0`, the 
+     additive identity."
+    see (`function divided`, `function modulo`)
     shared formal Other remainder(Other other);
 
     "The modulo, after dividing this number by the given 
      number. This differs from [[remainder]] in that the
-     result is always positive."
-    see (`function Numeric.divided`, `function remainder`)
-    throws (`class AssertionError`, "If the modulus is not strictly positive")
+     result is always positive or `0`."
+    see (`function divided`, `function remainder`)
+    throws (`class AssertionError`, 
+            "If the modulus is not strictly positive")
     shared default Other modulo(Other modulus){
         if (!modulus.positive) {
             throw AssertionError("modulus must be positive: ``modulus``");

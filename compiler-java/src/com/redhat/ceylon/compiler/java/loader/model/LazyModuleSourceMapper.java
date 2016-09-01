@@ -71,7 +71,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         LazyModuleManager moduleManager = getModuleManager();
         boolean moduleLoadedFromSource = moduleManager.isModuleLoadedFromSource(moduleName);
         boolean isLanguageModule = module == module.getLanguageModule();
-        if(moduleManager.getModelLoader().getJDKBaseModule() == module){
+        if(moduleManager.getModelLoader().getJdkProviderModule() == module){
         	moduleManager.getModelLoader().setupAlternateJdk(module, artifact);
         }
         
@@ -149,25 +149,23 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                 // default modules don't have any module descriptors so we can't check them
                 Overrides overrides = getContext().getRepositoryManager().getOverrides();
                 if (overrides != null) {
-                    if (overrides.getArtifactOverrides(new ArtifactContext(artifact.namespace(), artifact.name(), artifact.version())) != null) {
-                        Set<ModuleDependencyInfo> existingModuleDependencies = new HashSet<>();
-                        for (ModuleImport i : lazyModule.getImports()) {
-                            Module m = i.getModule();
-                            if (m != null) {
-                                existingModuleDependencies.add(new ModuleDependencyInfo(i.getNamespace(), m.getNameAsString(), m.getVersion(), i.isOptional(), i.isExport()));
-                            }
+                    Set<ModuleDependencyInfo> existingModuleDependencies = new HashSet<>();
+                    for (ModuleImport i : lazyModule.getImports()) {
+                        Module m = i.getModule();
+                        if (m != null) {
+                            existingModuleDependencies.add(new ModuleDependencyInfo(i.getNamespace(), m.getNameAsString(), m.getVersion(), i.isOptional(), i.isExport()));
                         }
-                        ModuleInfo sourceModuleInfo = new ModuleInfo(artifact.name(), artifact.version(), null, existingModuleDependencies);
-                        ModuleInfo newModuleInfo = overrides.applyOverrides(artifact.name(), artifact.version(), sourceModuleInfo);
-                        List<ModuleImport> newModuleImports = new ArrayList<>();
-                        for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {
-                            Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dep.getName()), dep.getVersion());
-                            Backends backends = dependency.getNativeBackends();
-                            moduleImport = new ModuleImport(dep.getNamespace(), dependency, dep.isOptional(), dep.isExport(), backends);
-                            newModuleImports.add(moduleImport);
-                        }
-                        module.overrideImports(newModuleImports);
                     }
+                    ModuleInfo sourceModuleInfo = new ModuleInfo(artifact.name(), artifact.version(), null, existingModuleDependencies);
+                    ModuleInfo newModuleInfo = overrides.applyOverrides(artifact.name(), artifact.version(), sourceModuleInfo);
+                    List<ModuleImport> newModuleImports = new ArrayList<>();
+                    for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {
+                        Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dep.getName()), dep.getVersion());
+                        Backends backends = dependency.getNativeBackends();
+                        ModuleImport newImport = new ModuleImport(dep.getNamespace(), dependency, dep.isOptional(), dep.isExport(), backends);
+                        newModuleImports.add(newImport);
+                    }
+                    module.overrideImports(newModuleImports);
                 }
                 if(!Versions.isJvmBinaryVersionSupported(lazyModule.getJvmMajor(), lazyModule.getJvmMinor())){
                     attachErrorToDependencyDeclaration(moduleImport,
@@ -222,7 +220,12 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
     public Module getJdkModule() {
     	return getModuleManager().getModelLoader().getJDKBaseModule();
     }
-    
+
+    @Override
+    public Module getJdkProviderModule() {
+        return getModuleManager().getModelLoader().getJdkProviderModule();
+    }
+
     @Override
     public JdkProvider getJdkProvider() {
     	return getModuleManager().getModelLoader().getJdkProvider();

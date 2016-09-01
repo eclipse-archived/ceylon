@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.AndroidUtil;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.RuntimeResolver;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
-import com.redhat.ceylon.model.loader.AndroidUtil;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.StaticMetamodelLoader;
 import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModule;

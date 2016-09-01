@@ -52,6 +52,7 @@ public class Type extends Reference {
     private Type resolvedAliases;
     private TypeParameter typeConstructorParameter;
     private boolean typeConstructor;
+    private boolean isCached;
     
     // cache
     private int hashCode;
@@ -59,6 +60,45 @@ public class Type extends Reference {
     
     private Map<TypeParameter,SiteVariance> varianceOverrides = 
             EMPTY_VARIANCE_MAP;
+    
+    public void setCached() {
+        isCached = true;
+    }
+    
+    public boolean isCached() {
+        return isCached;
+    }
+    
+    public Type clone() {
+        Type newType = new Type();
+        newType.declaration = declaration;
+        newType.exactlyNothing = exactlyNothing;
+        newType.hashCode = hashCode;
+        newType.isRaw = isRaw;
+        newType.typeConstructor = typeConstructor;
+        newType.typeConstructorParameter = typeConstructorParameter;
+        newType.underlyingType = underlyingType;
+        newType.varianceOverrides = varianceOverrides;
+        if (qualifyingType != null) {
+            newType.qualifyingType = qualifyingType.clone();
+        }
+        if (typeArguments.isEmpty()) {
+            newType.typeArguments = ModelUtil.EMPTY_TYPE_ARG_MAP;
+        } else {
+            newType.typeArguments = new HashMap<TypeParameter,Type>(typeArguments.size());
+            for (Map.Entry<TypeParameter, Type> entry : typeArguments.entrySet()) {
+                newType.typeArguments.put(entry.getKey(), entry.getValue().clone());
+            }
+        }
+
+        if (unionOfCases != null) {
+            newType.getUnionOfCases();
+        }
+        if (resolvedAliases != null) {
+            newType.resolveAliases();
+        }
+        return newType;
+    }
     
     public Map<TypeParameter, SiteVariance> getVarianceOverrides() {
         return varianceOverrides;
@@ -490,11 +530,13 @@ public class Type extends Reference {
                         !otherContravariant;
                 Unit unit = getDeclaration().getUnit();
                 if (covariant 
-                        && p.getType().isSubtypeOf(arg)) {
+                        && intersectionOfSupertypes(p)
+                            .isSubtypeOf(arg)) {
                     arg = unit.getAnythingType();
                 }
                 if (otherCovariant 
-                        && p.getType().isSubtypeOf(otherArg)) {
+                        && intersectionOfSupertypes(p)
+                            .isSubtypeOf(otherArg)) {
                     otherArg = unit.getAnythingType();
                 }
                 if (contravariant && otherCovariant) {
@@ -763,11 +805,13 @@ public class Type extends Reference {
             }
             Unit unit = supertype.getDeclaration().getUnit();
             if (supertype.isCovariant(p)
-                    && p.getType().isSubtypeOf(arg)) {
+                    && intersectionOfSupertypes(p)
+                        .isSubtypeOf(arg)) {
                 arg = unit.getAnythingType();
             }
             if (type.isCovariant(p)
-                    && p.getType().isSubtypeOf(otherArg)) {
+                    && intersectionOfSupertypes(p)
+                        .isSubtypeOf(otherArg)) {
                 otherArg = unit.getAnythingType();
             }
             if (type.isCovariant(p)) {
@@ -2919,6 +2963,10 @@ public class Type extends Reference {
         }
 
         private Type preserveUnderlyingType(Type oldType, Type newType) {
+            if (newType.isCached()) {
+                newType = newType.clone();
+            }
+
             newType.setUnderlyingType(oldType.getUnderlyingType());
             return newType;
         }
@@ -3459,6 +3507,9 @@ public class Type extends Reference {
     }
     
     public void setUnderlyingType(String underlyingType) {
+        if (isCached) {
+            throw new IllegalArgumentException("Type.setRaw() called on a cached type.");
+        }
         this.underlyingType = underlyingType;
         // if we have a resolvedAliases cache, update it too
         if (resolvedAliases != null && 
@@ -3597,6 +3648,9 @@ public class Type extends Reference {
     }
 
     public void setRaw(boolean isRaw) {
+        if (isCached) {
+            throw new IllegalArgumentException("Type.setRaw() called on a cached type.");
+        }
         this.isRaw = isRaw;
         // if we have a resolvedAliases cache, update it too
         if (resolvedAliases != null && 
@@ -4148,6 +4202,10 @@ public class Type extends Reference {
         return getDeclaration().isEntry();
     }
     
+    public boolean isCallable() {
+        return getDeclaration().isCallable();
+    }
+
     boolean isDeclaredType() {
         return isClassOrInterface() || isTypeParameter();
     }
@@ -4386,6 +4444,9 @@ public class Type extends Reference {
                             type.getQualifyingType(), 
                             resultArgs);
             result.setVarianceOverrides(varianceResults);
+            if (result.isCached()) {
+                result = result.clone();
+            }
             result.setUnderlyingType(type.getUnderlyingType());
             return result;
         }
@@ -4483,6 +4544,97 @@ public class Type extends Reference {
                 t.collectDeclarations(results);
             }
         }
+    }
+    
+    public boolean isReified() {
+        TypeDeclaration td = getDeclaration();
+        if (td instanceof TypeParameter) {
+            TypeParameter tp = (TypeParameter) td;
+            if (!tp.isReified()) {
+                return false;
+            }
+        }
+        else {
+            for (Type t: getTypeArgumentList()) {
+                if (t!=null && !t.isReified()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean hasUnreifiedInstances(Type knownType) {
+        TypeDeclaration td = getDeclaration();
+        //TODO!!
+//        if (td instanceof TypeParameter) { 
+//            return true;
+//        }
+        if (knownType!=null) {
+            if (td instanceof ClassOrInterface) {
+                Unit unit = td.getUnit();
+                List<TypeParameter> tps = 
+                        td.getTypeParameters();
+                List<Type> args;
+                Map<TypeParameter,SiteVariance> vars;
+                if (tps.isEmpty()) {
+                    args = NO_TYPE_ARGS;
+                    vars = EMPTY_VARIANCE_MAP;
+                }
+                else {
+                    args = new ArrayList<Type>();
+                    vars = new HashMap<TypeParameter,SiteVariance>();
+                    for (TypeParameter tp: tps) {
+                        args.add(unit.getAnythingType());
+                        vars.put(tp, OUT);
+                    }
+                }
+                Type type = td.appliedType(null, args);
+                type.setVarianceOverrides(vars);
+                if (intersectionType(knownType, type, unit)
+                        .isSubtypeOf(this)) {
+                    return false;
+                }
+                
+                TypeDeclaration ktd = knownType.getDeclaration();
+                Type pst = td.getType().getSupertype(ktd);
+                if (pst!=null) {
+                    boolean allOccur = true;
+                    for (TypeParameter tp: td.getTypeParameters()) {
+                        allOccur = allOccur
+                                //TODO: is this exactly correct?
+                                && pst.involvesDeclaration(tp);
+                    }
+                    if (allOccur) {
+                        Type st = getSupertype(ktd);
+                        if (st!=null && knownType.isSubtypeOf(st)) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        List<TypeParameter> params = td.getTypeParameters();
+        List<Type> args = getTypeArgumentList();
+        for (int i=0; i<args.size(); i++) {
+            Type at = args.get(i);
+            if (at!=null) {
+                if (td.isJava()) {
+                    TypeParameter tp = params.get(i);
+                    if (!(isCovariant(tp) 
+                            && intersectionOfSupertypes(tp)
+                                .isSubtypeOf(at)) && 
+                        !(isContravariant(tp) 
+                            && at.isNothing())) {
+                        return true;
+                    }
+                }
+                if (at.hasUnreifiedInstances(null)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

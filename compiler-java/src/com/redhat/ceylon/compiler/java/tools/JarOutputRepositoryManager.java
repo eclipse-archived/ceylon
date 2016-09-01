@@ -57,6 +57,8 @@ import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.loader.OsgiUtil;
+import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
 public class JarOutputRepositoryManager {
@@ -165,6 +167,7 @@ public class JarOutputRepositoryManager {
         private JarEntryManifestFileObject manifest;
         private Log log;
 		private JdkProvider jdkProvider;
+        private Map<ClassOrInterface, Set<Class>> services;
 
         public ProgressiveJar(RepositoryManager repoManager, Module module, Log log, 
         		Options options, CeyloncFileManager ceyloncFileManager, MultiTaskListener taskListener) throws IOException{
@@ -192,6 +195,7 @@ public class JarOutputRepositoryManager {
             this.osgiProvidedBundles = options.get(Option.CEYLONOSGIPROVIDEDBUNDLES);
             this.writeMavenManifest = !options.isSet(Option.CEYLONNOPOM) && !module.isDefaultModule();
             this.writeJava9Module= options.isSet(Option.CEYLONJIGSAW) && !module.isDefaultModule();
+            this.services = module.getServices();
             
             // Determine the special path that signals that the files it contains
             // should be moved to the root of the output JAR/CAR
@@ -211,6 +215,16 @@ public class JarOutputRepositoryManager {
             this.jarOutputStream = new JarOutputStream(new FileOutputStream(outputJarFile));
         }
 
+        private Map<String, Set<String>> getPreviousServices() throws IOException {
+            Map<String, Set<String>> result;
+            if (originalJarFile != null) {
+                result = MetaInfServices.parseAllServices(originalJarFile);
+            } else {
+                result = new HashMap<String, Set<String>>(0);
+            }
+            return result;
+        }
+        
         private Properties getPreviousMapping() throws IOException {
             JarFile jarFile = JarUtils.validJar(originalJarFile);
             if (jarFile != null) {
@@ -288,6 +302,7 @@ public class JarOutputRepositoryManager {
                 // Add META-INF/mapping.txt
                 Properties previousMapping = getPreviousMapping();
                 JarEntryFilter jarFilter = getJarFilter(previousMapping, copiedSourceFiles);
+                writeServicesJarEntry(manifestFirst, foldersAdded, previousMapping, jarFilter);
                 writeMappingJarEntry(manifestFirst, foldersAdded, previousMapping, jarFilter);
                 
                 manifestFirst.close();
@@ -380,6 +395,67 @@ public class JarOutputRepositoryManager {
 
         private void writeJava9Module(Set<String> foldersAlreadyAdded, JarOutputStream manifestFirst, Module module) {
         	Java9Util.writeModuleDescriptor(manifestFirst, new Java9Util.Java9ModuleDescriptor(module));
+        }
+
+        /** 
+         * Add {@code META-INF/services/} entries for each of the services 
+         * we've seen, plus all those which were already present 
+         * (incremental compilation).
+         * @throws IOException 
+         */
+        private void writeServicesJarEntry(JarOutputStream outputStream, Set<String> foldersAlreadyAdded,
+                Properties previousMapping, JarEntryFilter filter) throws IOException {
+            
+            // First convert declarations into their java names
+            Map<String, Set<String>> compiledServices = new HashMap<String, Set<String>>(services.size());
+            for (Map.Entry<ClassOrInterface, Set<Class>> entry : services.entrySet()) {
+                ClassOrInterface service = entry.getKey();
+                Set<Class> impls = entry.getValue();
+                HashSet<String> implNames = new HashSet<String>(impls.size());
+                for (Class impl : impls) {
+                    // TODO quoting
+                    implNames.add(JVMModuleUtil.quoteJavaKeywords(impl.getQualifiedNameString().replace("::", ".")));
+                }
+                // TODO quoting (binary name)
+                compiledServices.put(JVMModuleUtil.quoteJavaKeywords(service.getQualifiedNameString().replace("::", ".")), implNames);
+            }
+            
+            // Now figure out which of the previous services we need to keep
+            Map<String, Set<String>> previousServices = getPreviousServices();
+            
+            // Find out which service interfaces have been deleted, and delete those keys from previousServices
+            // Find out which service implementations have been deleted, and delete those values from previousServices
+            // Now remove all the old service implementations which we compiled from the values of previousServices
+            // Now add all the service implementations which we compiled
+            
+            // TODO for now 
+            for (Map.Entry<String, Set<String>> e : compiledServices.entrySet()) {
+                Set<String> set = previousServices.get(e.getKey());
+                if (set == null) {
+                    previousServices.put(e.getKey(), e.getValue());
+                } else {
+                    set.addAll(e.getValue());
+                }
+            }
+            
+            JarUtils.makeFolder(foldersAlreadyAdded, outputStream, META_INF+"/services/");
+            
+            MetaInfServices.writeAllServices(outputStream, previousServices);
+            
+            /*
+            Properties newMapping = new Properties();
+            newMapping.putAll(writtenClassesMapping);
+            if (previousMapping != null) {
+                // Add the previous mapping entries that are not related to an updated source file 
+                for (String classFullName : previousMapping.stringPropertyNames()) {
+                    if (!filter.avoid(classFullName)) {
+                        newMapping.setProperty(classFullName, previousMapping.getProperty(classFullName));
+                    }
+                }
+            }
+            // Write the mapping file to the Jar
+            
+            */
         }
 
         /** 

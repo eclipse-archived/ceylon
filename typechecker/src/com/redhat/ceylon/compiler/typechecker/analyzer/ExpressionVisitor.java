@@ -26,6 +26,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSam
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.involvesTypeParams;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isIndirectInvocation;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memberCorrectionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.notAssignableMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.spreadType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
@@ -38,6 +39,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.checkNotJvm;
 import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.declarationScope;
+import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.getBackends;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
@@ -69,14 +71,17 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
+import com.redhat.ceylon.compiler.typechecker.tree.ErrorCode;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
@@ -811,10 +816,15 @@ public class ExpressionVisitor extends Visitor {
                 //this is a bit ugly (the parser sends us a SyntheticVariable
                 //instead of the real StaticType which it very well knows!)
                 Tree.Expression e = se.getExpression();
-                knownType = e==null ? null : e.getTypeModel();
+                knownType = 
+                        e==null ? null : 
+                            e.getTypeModel();
                 //TODO: what to do here in case of !is
                 if (knownType!=null 
                         && !isTypeUnknown(knownType)) { //TODO: remove this if we make unknown a subtype of Anything) {
+                    if (!isTypeUnknown(type)) {
+                        checkReified(t, type, knownType, that.getAssertion());
+                    }
                     if (hasUncheckedNulls(e)) {
                         knownType = unit.getOptionalType(knownType);
                     }
@@ -875,8 +885,32 @@ public class ExpressionVisitor extends Visitor {
             v.getDeclarationModel().setType(it);
         }
     }
-    
-	private Type narrow(Type type,
+
+    private void checkReified(Tree.Type t, Type type, Type knownType, boolean assertion) {
+        if (!type.isReified()) {
+            t.addError("type is not reified: '" + 
+                    type.asString(unit) + 
+                    "' involves a type parameter declared in Java");
+        }
+        else if (getBackends(t).supports(Backend.Java) && 
+                type.hasUnreifiedInstances(knownType)) {
+            if (assertion) {
+                t.addUsageWarning(Warning.uncheckedTypeArguments,
+                        "type condition might not be fully checked at runtime: '" + 
+                        type.asString(unit) + 
+                        "' involves a type argument that is unchecked for Java class instances",
+                        Backend.Java);
+            }
+            else {
+                t.addUnsupportedError("type condition cannot be fully checked at runtime: '" + 
+                        type.asString(unit) + 
+                        "' involves a type argument that is unchecked for Java class instances",
+                        Backend.Java);
+            }
+        }
+    }
+
+    private Type narrow(Type type,
             Type knownType, boolean not) {
 	    Type it;
 	    if (not) {
@@ -1192,7 +1226,9 @@ public class ExpressionVisitor extends Visitor {
         Value dec = that.getDeclarationModel();
         Tree.SpecifierOrInitializerExpression sie = 
                 that.getSpecifierOrInitializerExpression();
-        inferType(that, sie);
+        if (!dec.isActual() || isTypeUnknown(dec.getType())) {
+            inferType(that, sie);
+        }
         Tree.Type type = that.getType();
         if (type!=null) {
             Type t = type.getTypeModel();
@@ -2048,7 +2084,9 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 Type returnType = e.getTypeModel();
-                inferFunctionType(that, returnType);
+                if (!m.isActual() || isTypeUnknown(m.getType())) {
+                    inferFunctionType(that, returnType);
+                }
                 if (type!=null && 
                         !(type instanceof Tree.DynamicModifier)) {
                     checkFunctionType(returnType, type, se);
@@ -2255,6 +2293,47 @@ public class ExpressionVisitor extends Visitor {
                         checkClassAliasParameters(alias, that, ie);
                     }
                 }
+            }
+        }
+    }
+    
+    @Override
+    public void visit(Tree.Annotation that) {
+        super.visit(that);
+        Tree.BaseMemberExpression p = 
+                (Tree.BaseMemberExpression) 
+                    that.getPrimary();
+        if (p.getDeclaration() != null 
+                && p.getDeclaration().equals(that.getUnit().getLanguageModuleDeclaration("service"))) {
+            Declaration d = null;
+            if (that.getPositionalArgumentList() != null) {
+                Tree.PositionalArgument argument = that.getPositionalArgumentList().getPositionalArguments().get(0);
+                if (argument instanceof Tree.ListedArgument) {
+                    d = ((Tree.MetaLiteral)((Tree.ListedArgument)argument).getExpression().getTerm()).getDeclaration();
+                }
+            } else if (that.getNamedArgumentList() != null) {
+                Tree.NamedArgument namedArgument = that.getNamedArgumentList().getNamedArguments().get(0);
+                if (namedArgument instanceof Tree.SpecifiedArgument) {
+                    d = ((Tree.MetaLiteral)((Tree.SpecifiedArgument)namedArgument).getSpecifierExpression().getExpression().getTerm()).getDeclaration(); 
+                }
+            }
+            if (d instanceof ClassOrInterface) {
+                ClassOrInterface service = (ClassOrInterface)d;
+                Class c = (Class)returnDeclaration;
+                if (!c.getType().getFullType().isSubtypeOf(that.getUnit().getCallableDeclaration().appliedType(null, Arrays.asList(
+                        that.getUnit().getAnythingType(), that.getUnit().getEmptyType())))) {
+                    that.addError("service class have a parameter list or default constructor and be instantiable with an empty argument list",
+                            ErrorCode.SERVICE_CLASS_ERROR);
+                }
+                if (c.inherits(service)) {
+                    ModelUtil.getModule(c).addService(service, c);
+                } else {
+                    that.addError("service class does not implement service '" + service + "'",
+                            ErrorCode.SERVICE_CLASS_ERROR);
+                }
+            } else {
+                that.addError("service must be an interface or class",
+                        ErrorCode.SERVICE_CLASS_ERROR);
             }
         }
     }
@@ -4976,73 +5055,13 @@ public class ExpressionVisitor extends Visitor {
             if (eor==null) {
                 that.addError("malformed index expression");
             }
-            else if (!isTypeUnknown(pt) && 
+            else if (!that.getAssigned() &&
+                     !isTypeUnknown(pt) && 
                      !involvesUnknownTypes(eor)) {
                 if (eor instanceof Tree.Element) {
-                    Type kt = null;
-                    Type vt = null;
                     Interface cd = 
                             unit.getCorrespondenceDeclaration();
-                    Type cst = pt.getSupertype(cd);
-                    if (cst != null) {
-                        List<Type> args = 
-                                cst.getTypeArgumentList();
-						kt = args.get(0);
-						vt = unit.getOptionalType(args.get(1));
-                    }
-                    if (cst==null) {
-                        Interface ld = 
-                                unit.getJavaListDeclaration();
-                        cst = pt.getSupertype(ld);
-                        if (cst != null) {
-                            List<Type> args = 
-                                    cst.getTypeArgumentList();
-    						kt = unit.getIntegerType();
-    						vt = unit.getOptionalType(args.get(0));
-                        }
-                    }
-                    if (cst==null) {
-                        Interface md = 
-                                unit.getJavaMapDeclaration();
-                        cst = pt.getSupertype(md);
-                        if (cst != null) {
-                            List<Type> args =
-                                    cst.getTypeArgumentList();
-    						kt = args.get(0);
-    						vt = unit.getOptionalType(args.get(1));
-                        }
-                    }
-                    if (cst==null) {
-                        boolean objectArray = 
-                                unit.isJavaObjectArrayType(pt);
-                        boolean primitiveArray = 
-                                unit.isJavaPrimitiveArrayType(pt);
-                        if (objectArray || primitiveArray) {
-                            cst = pt;
-                            kt = unit.getIntegerType();
-                            Type et = unit.getJavaArrayElementType(pt);
-                            vt = primitiveArray ? et : unit.getOptionalType(et);
-                        }
-                    }
-                    
-                    if (cst==null) {
-                        that.getPrimary()
-                            .addError("illegal receiving type for index expression: '" +
-                                    pt.getDeclaration()
-                                        .getName(unit) + 
-                                    "' is not a subtype of 'Correspondence'");
-                    }
-                    else {
-                        Tree.Element e = (Tree.Element) eor;
-                        Tree.Expression ee = 
-                                e.getExpression();
-                        checkAssignable(ee.getTypeModel(), 
-                                kt, ee, 
-                                "index must be assignable to key type");
-                        that.setTypeModel(vt);
-                        Tree.Term t = ee.getTerm();
-                        refineTypeForTupleElement(that, pt, t);
-                    }
+                    checkIndexElement(that, pt, cd, true, "Correspondence", false);
                 }
                 else {
                     Interface rd = unit.getRangedDeclaration();
@@ -5096,6 +5115,125 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
+    }
+
+    private Type checkIndexElement(Tree.IndexExpression that,
+            Type pt, Interface cd, boolean nullable,
+            String superTypeName, boolean allowIndexedCorrespondenceMutator) {
+        if (dynamic && 
+                isTypeUnknown(pt)) {
+            // In dynamic blocks we allow index assignments
+            // on any dynamic types
+            return null;
+        }
+        Type kt = null;
+        Type vt = null;
+        Tree.ElementOrRange eor = 
+                that.getElementOrRange();
+        Type cst = pt.getSupertype(cd);
+        if (cst != null) {
+            List<Type> args = 
+                    cst.getTypeArgumentList();
+        	kt = args.get(0);
+        	vt = args.get(1);
+        	if (nullable) {
+                vt = unit.getOptionalType(vt);
+        	}
+        }
+        if (cst==null && allowIndexedCorrespondenceMutator) {
+            Interface ld = 
+                    unit.getIndexedCorrespondenceMutatorDeclaration();
+            cst = pt.getSupertype(ld);
+            if (cst != null) {
+                List<Type> args = 
+                        cst.getTypeArgumentList();
+                kt = unit.getIntegerType();
+                vt = args.get(0);
+                if (nullable) {
+                    vt = unit.getOptionalType(vt);
+                }
+            }
+        }
+        if (cst==null) {
+            Interface ld = 
+                    unit.getJavaListDeclaration();
+            cst = pt.getSupertype(ld);
+            if (cst != null) {
+                List<Type> args = 
+                        cst.getTypeArgumentList();
+        		kt = unit.getIntegerType();
+        		vt = unit.getOptionalType(args.get(0));
+            }
+        }
+        if (cst==null) {
+            Interface md = 
+                    unit.getJavaMapDeclaration();
+            cst = pt.getSupertype(md);
+            if (cst != null) {
+                List<Type> args =
+                        cst.getTypeArgumentList();
+        		kt = args.get(0);
+        		vt = unit.getOptionalType(args.get(1));
+            }
+        }
+        if (cst==null) {
+            boolean objectArray = 
+                    unit.isJavaObjectArrayType(pt);
+            boolean primitiveArray = 
+                    unit.isJavaPrimitiveArrayType(pt);
+            if (objectArray || primitiveArray) {
+                cst = pt;
+                kt = unit.getIntegerType();
+                Type et = unit.getJavaArrayElementType(pt);
+                vt = primitiveArray ? et : unit.getOptionalType(et);
+            }
+        }
+        
+        if (cst==null) {
+            that.getPrimary()
+                .addError("illegal receiving type for index expression: '" +
+                        pt.getDeclaration()
+                            .getName(unit) + 
+                        "' is not a subtype of '" + superTypeName + "'" +
+                        (allowIndexedCorrespondenceMutator ? " or 'IndexedCorrespondenceMutator'" : ""));
+        }
+        else {
+            Tree.Element e = (Tree.Element) eor;
+            Tree.Expression ee = 
+                    e.getExpression();
+            checkAssignable(ee.getTypeModel(), 
+                    kt, ee, 
+                    "index must be assignable to key type");
+            that.setTypeModel(vt);
+            Tree.Term t = ee.getTerm();
+            refineTypeForTupleElement(that, pt, t);
+        }
+        
+        return vt;
+    }
+
+    public boolean isJavaNullableMutator(Type pt, Interface cd) {
+        boolean nullable = false;
+        Type cst = pt.getSupertype(cd);
+        if (cst==null) {
+            Interface ld = unit.getJavaListDeclaration();
+            cst = pt.getSupertype(ld);
+            if (cst != null) {
+                nullable = true;
+            }
+        }
+        if (cst==null) {
+            Interface md = unit.getJavaMapDeclaration();
+            cst = pt.getSupertype(md);
+            if (cst != null) {
+                nullable = true;
+            }
+        }
+        if (cst==null) {
+            boolean objectArray = unit.isJavaObjectArrayType(pt);
+            nullable = objectArray;
+        }
+        return nullable;
     }
 
     private void refineTypeForTupleElement(
@@ -5229,6 +5367,11 @@ public class ExpressionVisitor extends Visitor {
         if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression m = 
                     (Tree.MemberOrTypeExpression) term;
+            m.setAssigned(true);
+        }
+        else if (term instanceof Tree.IndexExpression) {
+            Tree.IndexExpression m = 
+                    (Tree.IndexExpression) term;
             m.setAssigned(true);
         }
     }
@@ -5451,18 +5594,42 @@ public class ExpressionVisitor extends Visitor {
     
     private void visitAssignOperator(Tree.AssignOp that) {
         Type rhst = rightType(that);
-        Type lhst = leftType(that);
-        if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            Type leftHandType = lhst;
-            // allow assigning null to java properties that could after all be null
-            if (hasUncheckedNulls(that.getLeftTerm())) {
-                leftHandType = 
-                        unit.getOptionalType(leftHandType);
+        if (!isTypeUnknown(rhst)) {
+            if (that.getLeftTerm() instanceof Tree.IndexExpression) {
+                Tree.IndexExpression idx = (Tree.IndexExpression)that.getLeftTerm();
+                if (idx.getElementOrRange() instanceof Tree.Element) {
+                    Type pt = type(idx);
+                    if (that.getTypeModel() != null && pt != null) {
+                        Interface cmd = 
+                                unit.getKeyedCorrespondenceMutatorDeclaration();
+                        Type vt = checkIndexElement(idx, pt, cmd, false, "KeyedCorrespondenceMutator", true);
+                        if (vt != null) {
+                            checkAssignable(rhst, vt,
+                                    that.getRightTerm(), 
+                                    "assigned expression must be assignable to '" +
+                                    vt.asString() +
+                                    "' of 'CorrespondenceMutator'");
+                        }
+                    }
+                } else {
+                    idx.getPrimary()
+                        .addError("ranged index assignment is not supported");
+                }
+            } else {
+                Type lhst = leftType(that);
+                if (!isTypeUnknown(lhst)) {
+                    Type leftHandType = lhst;
+                    // allow assigning null to java properties that could after all be null
+                    if (hasUncheckedNulls(that.getLeftTerm())) {
+                        leftHandType = 
+                                unit.getOptionalType(leftHandType);
+                    }
+                    checkAssignable(rhst, leftHandType, 
+                            that.getRightTerm(), 
+                            "assigned expression must be assignable to declared type", 
+                            2100);
+                }
             }
-            checkAssignable(rhst, leftHandType, 
-                    that.getRightTerm(), 
-                    "assigned expression must be assignable to declared type", 
-                    2100);
         }
         that.setTypeModel(rhst);
 //      that.setTypeModel(lhst); //this version is easier on backend
@@ -5804,6 +5971,7 @@ public class ExpressionVisitor extends Visitor {
                 if (term!=null) {
                     Type knownType = term.getTypeModel();
                     if (!isTypeUnknown(knownType)) {
+                        checkReified(rt, type, knownType, false);
                         if (knownType.isSubtypeOf(type)) {
                             that.addUsageWarning(Warning.redundantNarrowing,
                                     "expression type is a subtype of the type: '" +
@@ -5862,6 +6030,7 @@ public class ExpressionVisitor extends Visitor {
                     that.addUnsupportedError("assignment to expression involving ?. or *. not supported");
                 }
             }
+        } else if (that instanceof Tree.IndexExpression) {
         }
         else {
             that.addError("expression cannot be assigned");
@@ -6425,7 +6594,7 @@ public class ExpressionVisitor extends Visitor {
                             scope.getScopedBackends()) &&
                     error) {
                 that.addError(
-                        "function or value does not exist: '" 
+                        "function or value is not defined: '" 
                             + name + "'" 
                             + correctionMessage(name, scope, 
                                     unit, cancellable), 
@@ -6669,7 +6838,7 @@ public class ExpressionVisitor extends Visitor {
                         d.isMemberAmbiguous(name, unit, 
                                 signature, spread);
                 if (member==null) {
-                    container += AnalyzerUtil.memberCorrectionMessage(name, 
+                    container += memberCorrectionMessage(name, 
                             d, scope, unit, cancellable);
                 }
             }
@@ -6680,7 +6849,7 @@ public class ExpressionVisitor extends Visitor {
                                 name + "' for " + container);
                     }
                     else {
-                        that.addError("method or attribute does not exist: '" +
+                        that.addError("method or attribute is not defined: '" +
                                 name + "' in " + container, 
                                 100);
                         unit.setUnresolvedReferences();
@@ -6755,7 +6924,7 @@ public class ExpressionVisitor extends Visitor {
                     receiverType.getTypedMember(member, 
                             typeArgs, that.getAssigned());
             /*if (ptr==null) {
-                that.addError("member method or attribute does not exist: " + 
+                that.addError("method or attribute is not defined: " + 
                         member.getName(unit) + " of type " + 
                         receiverType.getDeclaration().getName(unit));
             }
@@ -7069,7 +7238,7 @@ public class ExpressionVisitor extends Visitor {
                     !isNativeForWrongBackend(
                             scope.getScopedBackends())) {
                 that.addError(
-                        "type does not exist: '" + name + "'"
+                        "type is not defined: '" + name + "'"
                             + correctionMessage(name, scope, 
                                     unit, cancellable), 
                         102);
@@ -7445,7 +7614,7 @@ public class ExpressionVisitor extends Visitor {
                                 name + "' for " + container);
                     }
                     else {
-                        that.addError("member type does not exist: '" +
+                        that.addError("member type is not defined: '" +
                                 name + "' in " + container, 
                                 100);
                         unit.setUnresolvedReferences();
@@ -8004,6 +8173,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     if (t!=null) {
                         Type pt = t.getTypeModel();
+                        checkReified(t, pt, st, false);
 //                        if (!isTypeUnknown(pt)) {
                         Type it = 
                                 intersectionType(pt, st, unit);
@@ -9389,7 +9559,7 @@ public class ExpressionVisitor extends Visitor {
                     setMemberMetatype(that, result);
                 }
                 else {
-                    that.addError("function or value does not exist: '" +
+                    that.addError("function or value is not defined: '" +
                             name(id) + "'", 100);
                     unit.setUnresolvedReferences();
                 }
@@ -9409,7 +9579,7 @@ public class ExpressionVisitor extends Visitor {
             					name + "' for " + container);
             		}
             		else {
-            			that.addError("method or attribute does not exist: '" +
+            			that.addError("method or attribute is not defined: '" +
             					name + "' in " + container);
             		}
             	}

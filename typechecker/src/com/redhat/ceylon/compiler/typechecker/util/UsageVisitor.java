@@ -12,12 +12,17 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isTypeUnknown;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrType;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ImportMemberOrTypeList;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
  *
@@ -39,9 +44,12 @@ public class UsageVisitor extends Visitor {
     public void visit(Tree.ImportMemberOrType that) {
         super.visit(that);
         if (!referenced(that)) {
+            Declaration declaration = that.getDeclarationModel();
             that.addUsageWarning(Warning.unusedImport,
-                "import is never used: '" + 
-                    that.getDeclarationModel().getName() + "'");
+                "import is never used: " + 
+                kind(declaration) + 
+                " '" + declaration.getName() + 
+                "' has no local references");
     	}
     }
 
@@ -55,9 +63,11 @@ public class UsageVisitor extends Visitor {
         			referenced=referenced||rc.isReferenced(od);
         		}
         	}
-        	ImportMemberOrTypeList imtl = that.getImportMemberOrTypeList();
+        	Tree.ImportMemberOrTypeList imtl = 
+        	        that.getImportMemberOrTypeList();
         	if (imtl!=null) {
-        		for (ImportMemberOrType m: imtl.getImportMemberOrTypes()) {
+        		for (Tree.ImportMemberOrType m: 
+        		        imtl.getImportMemberOrTypes()) {
 					referenced=referenced||referenced(m);
         		}
         		if (imtl.getImportWildcard()!=null) {
@@ -83,10 +93,15 @@ public class UsageVisitor extends Visitor {
         		!(declaration instanceof TypeParameter &&
         		    ((TypeParameter) declaration).getDeclaration() 
         		            instanceof TypeParameter)) {
-            if (bs.none() || isForBackend(bs, that.getUnit().getSupportedBackends())) {
+            if (bs.none() 
+                    || isForBackend(bs, 
+                            that.getUnit()
+                                .getSupportedBackends())) {
                 that.addUsageWarning(Warning.unusedDeclaration,
-                        "declaration is never used: '" + 
-                            declaration.getName() + "'");
+                        "declaration is never used: " + 
+                        kind(declaration) +
+                        " '" + declaration.getName() + 
+                        "' has no local references");
             }
         }
     }
@@ -97,12 +112,45 @@ public class UsageVisitor extends Visitor {
         if (!hasErrorOrWarning(that)) {
             Type type = that.getTypeModel();
             if (!isTypeUnknown(type) && type.isNothing()) {
-                Backends inBackends = that.getScope().getScopedBackends();
-                if (inBackends.none() || isForBackend(inBackends, that.getUnit().getSupportedBackends())) {
+                Backends inBackends = 
+                        that.getScope()
+                            .getScopedBackends();
+                if (inBackends.none() 
+                        || isForBackend(inBackends, 
+                                that.getUnit()
+                                    .getSupportedBackends())) {
                     that.addUsageWarning(Warning.expressionTypeNothing,
                             "expression has type 'Nothing'");
                 }
             }
         }
+    }
+
+    private static String kind(Declaration declaration) {
+        if (declaration instanceof Function) {
+            return "function";
+        }
+        if (declaration instanceof Value) {
+            return "value";
+        }
+        if (declaration instanceof Setter) {
+            return "setter";
+        }
+        if (declaration instanceof Class) {
+            return "class";
+        }
+        if (declaration instanceof Interface) {
+            return "interface";
+        }
+        if (declaration instanceof TypeParameter) {
+            return "type parameter";
+        }
+        if (declaration instanceof Constructor) {
+            return "constructor";
+        }
+        if (declaration instanceof TypeAlias) {
+            return "type alias";
+        }
+        return "declaration";
     }
 }

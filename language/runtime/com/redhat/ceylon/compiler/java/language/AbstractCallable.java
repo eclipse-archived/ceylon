@@ -31,8 +31,11 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
     @TypeParameter(value="Arguments", satisfies="ceylon.language::Sequential<ceylon.language::Anything>", variance=Variance.IN)
 })
 @SatisfiedTypes("ceylon.language::Callable<Return,Arguments>")
-public abstract class AbstractCallable<Return> implements Callable<Return>, ReifiedType {
+public abstract class AbstractCallable<Return> implements Callable<Return>, ReifiedType, java.io.Serializable {
     
+    @Ignore
+    private static final long serialVersionUID = -7333656004037052501L;
+
     @Ignore
     private final TypeDescriptor $reifiedArguments;
     @Ignore

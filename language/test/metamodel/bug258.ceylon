@@ -40,7 +40,7 @@ shared void bug258(){
     assert (exceptionMessage(x).get() == x.message);
 
     value exceptionPrintStackTrace = `Exception.printStackTrace`;
-    print("Don't panic");
+    process.writeErrorLine("Don't panic");
     exceptionPrintStackTrace(x)();
-    print("Don't panic: that last stack trace was part of the test");
+    process.writeErrorLine("Don't panic: that last stack trace was part of the test");
 }

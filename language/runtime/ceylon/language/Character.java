@@ -17,6 +17,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @SatisfiedTypes({"ceylon.language::Comparable<ceylon.language::Character>",
 		        "ceylon.language::Enumerable<ceylon.language::Character>"})
 @ValueType
+@SharedAnnotation$annotation$
+@FinalAnnotation$annotation$
+@NativeAnnotation$annotation$(backends={})
 public final class Character
         implements Comparable<Character>, 
                    Enumerable<Character>, 

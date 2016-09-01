@@ -1,4 +1,11 @@
-import check { check, results, fail }
+import check {
+    check,
+    fail,
+    initAssert,
+    results,
+    resultsAndAssert,
+    resultsAndExit
+}
 import ceylon.language.meta { modules }
 
 @test
@@ -38,8 +45,29 @@ shared void testModResources() {
         }
     }
 }
-shared void run() {
+void runTests() {
+    print("** Running resmod Tests **");
     testModResources();
 }
-shared void test() { run(); }
 
+shared void run() {
+    initAssert();
+    runTests();
+    results();
+}
+
+shared void runAndAssert() {
+    initAssert();
+    runTests();
+    resultsAndAssert();
+}
+
+shared void runAndExit() {
+    initAssert();
+    runTests();
+    resultsAndExit();
+}
+
+shared void test() {
+    run();
+}

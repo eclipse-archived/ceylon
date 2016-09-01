@@ -706,7 +706,9 @@ public class Naming extends NamingBase implements LocalId {
     }
     
     static boolean aliasConstructorParameterName(FunctionOrValue mov) {
-        return mov.getContainer() instanceof Constructor && !mov.isShared() && !mov.isCaptured();
+        // Do not take capture into account for constructors, 
+        // see https://github.com/ceylon/ceylon/issues/5787
+        return mov.getContainer() instanceof Constructor && !mov.isShared();
     }
     
     private static String getAliasedParameterName(FunctionOrValue parameter) {
