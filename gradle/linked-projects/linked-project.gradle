@@ -78,6 +78,8 @@ task status {
 clean {
     delete = []
 //    delete localRepoBuildDir
+
+    dependsOn 'cleanAntBuild'
 }
 
 
@@ -125,6 +127,13 @@ task invokeAntBuild( type : GradleBuild ) {
             "${gradle.startParameter.projectCacheDir}" : "${rootProject.projectDir}/.gradle",
         project.name.replace(":", "_")
     )
+}
+
+task cleanAntBuild( type : GradleBuild ) {
+    dir = invokeAntBuild.dir
+    buildFile = invokeAntBuild.buildFile
+    tasks = [ 'antClean']
+    startParameter = invokeAntBuild.startParameter
 }
 
 build {
