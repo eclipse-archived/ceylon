@@ -1,6 +1,6 @@
 # Ceylon
 
-This is the 1.2.3 _"Total Internal Reflection"_ release of the Ceylon 
+This is the 1.3.0 _"Total Internal Reflection"_ release of the Ceylon 
 command line tools. This is a production version of the platform.
 
 Ceylon is a modern, modular, statically typed programming language 
@@ -63,7 +63,7 @@ command line prompt and should *not* be typed when trying these examples):
 
 You should see something like:
 
-    ceylon version 1.2.3 1cac978 (Total Internal Reflection)
+    ceylon version 1.3.0 1cac978 (Total Internal Reflection)
 
 ## Tool usage
 
