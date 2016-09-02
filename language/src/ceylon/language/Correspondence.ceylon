@@ -118,13 +118,13 @@ shared interface Correspondence<in Key, out Item=Anything>
     
 }
 
-since("1.2.3")
+since("1.3.0")
 tagged("Collections")
 shared interface CorrespondenceMutator<in Item>
         of IndexedCorrespondenceMutator<Item>
         | KeyedCorrespondenceMutator<Nothing,Item> {}
 
-since("1.2.3")
+since("1.3.0")
 tagged("Collections")
 shared interface IndexedCorrespondenceMutator<in Element> 
         satisfies CorrespondenceMutator<Element> {
@@ -138,7 +138,7 @@ shared interface IndexedCorrespondenceMutator<in Element>
     shared formal void set(Integer index, Element item);
 }
 
-since("1.2.3")
+since("1.3.0")
 tagged("Collections")
 shared interface KeyedCorrespondenceMutator<in Key, in Item>
         satisfies CorrespondenceMutator<Item>

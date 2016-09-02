@@ -18,7 +18,7 @@ shared native object language {
     shared Integer releaseVersion => 0;
     
     "The Ceylon language version qualifier."
-    since("1.2.3")
+    since("1.3.0")
     shared String versionQualifier => "";
     
     "The Ceylon language release name."
