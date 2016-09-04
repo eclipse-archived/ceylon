@@ -39,7 +39,6 @@ import java.util.Map;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
-import com.redhat.ceylon.compiler.typechecker.tree.ErrorCode;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -928,8 +927,7 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         if (hasAnnotation(that.getAnnotationList(), "service", that.getUnit())) {
             if (!c.getTypeParameters().isEmpty()) {
-                that.addError("service class may not be generic",
-                        ErrorCode.SERVICE_CLASS_CANNOT_BE_GENERIC);
+                that.addError("service class may not be generic");
             }
         }
     }
@@ -2362,13 +2360,14 @@ public abstract class DeclarationVisitor extends Visitor {
             model.setAliases(aliases);
         }
         if (hasAnnotation(al, "service", unit)) {
-            if (!(model instanceof Class 
-                    && model.isToplevel()
-                    && model.isShared())) {
-                that.addError("declaration is not a shared top level class, and may not be annotated service",
-                        1601);
+            if (!(model instanceof Class) || !model.isToplevel()) {
+                that.addError("declaration is not a toplevel class, and may not be annotated service");
             }
-            if (((Class)model).isAbstract()) {
+            else if (!model.isShared()) {
+                that.addError("declaration is not a shared, and may not be annotated service",
+                        705);
+            }
+            else if (((Class) model).isAbstract()) {
                 that.addError("declaration is an abstract class, and may not be annotated service",
                         1601);
             }
