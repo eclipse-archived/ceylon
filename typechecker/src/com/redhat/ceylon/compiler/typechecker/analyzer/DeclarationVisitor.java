@@ -226,16 +226,20 @@ public abstract class DeclarationVisitor extends Visitor {
                 } else if (!isHeader &&
                         !backends.none() &&
                         !backends.supports(mbackends)) {
-                    that.addError("native backend name on declaration conflicts with its scope: '" +
-                            name + "'");
+                    that.addError("native backend for declaration conflicts with its scope: native implementation '" +
+                            name + "' for '\"" + 
+                            mbackends.names() +
+                            "\"' occurs in a scope which only supports '\"" + 
+                            backends.names() +
+                            "\"'");
                 }
                 if (isHeader && existImplementations(model)) {
-                    that.addError("native header must be defined before its implementations: '" +
-                            name + "'");
+                    that.addError("native header must be declared before its implementations: the native header '" +
+                            name + "' is declared after an implementation");
                 }
                 if (model instanceof Interface
                         && ((Interface)model).isAlias()) {
-                    that.addError("interface alias can not be native: '" +
+                    that.addError("interface alias may not be marked native: '" +
                             name + "' (add a body if a native interface was intended)");
                 }
                 model.setNativeBackends(mbackends);
@@ -248,7 +252,7 @@ public abstract class DeclarationVisitor extends Visitor {
                     if (!isHeader && 
                             mustHaveHeader(model)) {
                         that.addError("shared native implementation must have a header: '" +
-                                model.getName() + "'");
+                                model.getName() + "' has no native header");
                     }
                 }
                 if (member == null) {
@@ -269,12 +273,17 @@ public abstract class DeclarationVisitor extends Visitor {
                                     c.getConstructor(),
                                     name);
                         }
-                    } else {
-                        member = model.getContainer().getDirectMemberForBackend(
-                                model.getName(), model.getNativeBackends());
+                    }
+                    else {
+                        member = model.getContainer()
+                                    .getDirectMemberForBackend(
+                                        model.getName(), 
+                                        mbackends);
                         if (member != null && member != model) {
-                            that.addError("duplicate native implementation: '" + 
-                                    name + "'");
+                            that.addError("duplicate native implementationimplementation: the implementation '" + 
+                                        name + "' for '\"" + 
+                                        mbackends.names() +
+                                        "\"' is not unique");
                             unit.getDuplicateDeclarations()
                                 .add(member);
                         }
@@ -286,8 +295,8 @@ public abstract class DeclarationVisitor extends Visitor {
                                 member.getOverloads();
                         if (isHeader && 
                                 member.isNativeHeader()) {
-                            that.addError("duplicate native header: '" + 
-                                    name + "'");
+                            that.addError("duplicate native header: the header for '" + 
+                                    name + "' is not unique");
                             unit.getDuplicateDeclarations()
                                 .add(member);
                         }
@@ -297,8 +306,10 @@ public abstract class DeclarationVisitor extends Visitor {
                                             mbackends, model, 
                                             overloads);
                             if (overload != null) {
-                                that.addError("duplicate native implementation: '" + 
-                                        name + "'");
+                                that.addError("duplicate native implementation: the implementation '" + 
+                                        name + "' for '\"" + 
+                                        mbackends.names() +
+                                        "\"' is not unique");
                                 unit.getDuplicateDeclarations()
                                     .add(overload);
                             }
@@ -320,13 +331,15 @@ public abstract class DeclarationVisitor extends Visitor {
                                                 .getDeclaration();
                                 objHdrCls.getOverloads()
                                     .add(objImplCls);
-                            } else if (that instanceof Tree.Constructor) {
+                            }
+                            else if (that instanceof Tree.Constructor) {
                                 Tree.Constructor c = 
                                         (Tree.Constructor) 
                                             that;
                                 Declaration cd = 
                                         c.getConstructor();
-                                FunctionOrValue fov = (FunctionOrValue) member;
+                                FunctionOrValue fov = 
+                                        (FunctionOrValue) member;
                                 Constructor hdr = 
                                         (Constructor) 
                                             fov.getType()
@@ -339,11 +352,11 @@ public abstract class DeclarationVisitor extends Visitor {
                     else {
                         if (isHeader) {
                             that.addError("native header for non-native declaration: '" + 
-                                    name + "'");
+                                    name + "' is not declared native");
                         }
                         else {
                             that.addError("native implementation for non-native header: '" + 
-                                    name + "'");
+                                    name + "' is not declared native");
                         }
                     }
                 }
@@ -351,7 +364,7 @@ public abstract class DeclarationVisitor extends Visitor {
             else if (!(model instanceof Setter) && !isHeader) {
                 if (!canBeNative) {
                     that.addError("native declaration is not a class, constructor, method, attribute or object: '" + 
-                            name + "'");
+                            name + "' may not be annotated 'native'");
                 }
             }
         }
@@ -555,8 +568,8 @@ public abstract class DeclarationVisitor extends Visitor {
                         }
                         else {
                             dup = true;
-                            that.addError("duplicate declaration name: '" + 
-                                    name + "'");
+                            that.addError("duplicate declaration: the name '" + 
+                                    name + "' is not unique in this scope");
                         }
                         if (dup) {
                             unit.getDuplicateDeclarations()
@@ -582,34 +595,34 @@ public abstract class DeclarationVisitor extends Visitor {
                     .getDirectMemberForBackend(name, 
                         getNativeBackend(al, unit));
         if (member==null) {
-            that.addError("setter with no matching getter: '" + 
-                    name + "'");
+            that.addError("setter with no matching getter: there is no getter named '" + 
+                    name + "' already declared in this scope (declare a matching getter earlier in this scope)");
         }
         else if (!(member instanceof Value)) {
             that.addError("setter name does not resolve to matching getter: '" + 
-                    name + "'");
+                    name + "' is not a getter");
         }
         else if (member.isNative() && !setter.isNative()) {
             setter.setGetter((Value)member);
-            that.addError("setter must be marked native: '" +
-                    name + "'");
+            that.addError("setter must be marked native: the getter '" +
+                    name + "' is annotated 'native'");
         }
         else if (!member.isNative() && setter.isNative()) {
             setter.setGetter((Value)member);
-            that.addError("native setter for non-native getter: '" +
-                    name + "'");
+            that.addError("setter may not be marked native: the getter '" +
+                    name + "' is not annotated 'native'");
         }
         else if (!((Value) member).isTransient() && 
                 !isNativeHeader(member)) {
             that.addError("matching value is a reference or is forward-declared: '" + 
-                    name + "'");
+                    name + "' is not a getter");
         }
         else {
             Value getter = (Value) member;
             setter.setGetter(getter);
             if (getter.isVariable()) {
                 that.addError("duplicate setter for getter: '" + 
-                        name + "'");
+                        name + "' already has a setter");
             }
             else {
                 getter.setSetter(setter);
