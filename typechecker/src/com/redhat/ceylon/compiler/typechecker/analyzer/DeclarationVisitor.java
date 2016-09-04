@@ -2364,11 +2364,11 @@ public abstract class DeclarationVisitor extends Visitor {
                 that.addError("declaration is not a toplevel class, and may not be annotated service");
             }
             else if (!model.isShared()) {
-                that.addError("declaration is not a shared, and may not be annotated service",
+                that.addError("class is not shared, and may not be annotated service",
                         705);
             }
             else if (((Class) model).isAbstract()) {
-                that.addError("declaration is an abstract class, and may not be annotated service",
+                that.addError("class is abstract, and may not be annotated service",
                         1601);
             }
         }
