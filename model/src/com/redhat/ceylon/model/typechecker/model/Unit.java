@@ -189,10 +189,26 @@ public class Unit implements LanguageModuleProvider {
      *         to the namespace of the compilation unit
      */
     static boolean isToplevelImport(Import i, Declaration d) {
-        return d.isToplevel() || 
+        return d.isToplevel() ||
             d.isStaticallyImportable() ||
             isToplevelClassConstructor(i.getTypeDeclaration(), d) ||
             isToplevelAnonymousClass(i.getTypeDeclaration());
+    }
+    
+    public boolean isEffectivelyToplevel(String alias, Declaration d) {
+        if (d.isToplevel()) {
+            return true;
+        }
+        else {
+            for (Import i: getImports()) {
+                if (i.getAlias().equals(alias) &&
+                        i.getDeclaration().equals(d) &&
+                        isToplevelImport(i, d)) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
     
     /**

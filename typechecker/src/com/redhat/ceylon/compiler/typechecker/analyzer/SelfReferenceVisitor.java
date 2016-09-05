@@ -161,6 +161,15 @@ public class SelfReferenceVisitor extends Visitor {
                         container.getName() + "'");
             }
             else if (!member.isJava()) {
+                if (that instanceof Tree.BaseMemberOrTypeExpression) {
+                    Tree.BaseMemberOrTypeExpression bme = 
+                            (Tree.BaseMemberOrTypeExpression) that;
+                    String id = bme.getIdentifier().getText();
+                    if (that.getUnit()
+                            .isEffectivelyToplevel(id, member)) {
+                        return; //EARLY EXIT!!!
+                    }
+                }
                 that.addError("inherited member may not be used in initializer of '" +
                         typeDeclaration.getName() + 
                         "': '" + member.getName() + 
