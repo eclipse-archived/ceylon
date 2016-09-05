@@ -37,7 +37,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class LiteralVisitor extends Visitor {
 
+    private static final String GENERATED_PREFIX = "_$$_";
+    
     private int indent;
+    
     static final Pattern DOC_LINK_PATTERN = 
             Pattern.compile("\\[\\[(([^\"`|\\[\\]]*\\|)?((module )|(package )|(class )|(interface )|(function )|(value )|(alias ))?(((\\w|\\.)+)::)?(\\w*)(\\.(\\w*))*(\\(\\))?)\\]\\]");
     private static Pattern CHARACTER_ESCAPE_PATTERN = 
@@ -509,6 +512,9 @@ public class LiteralVisitor extends Visitor {
         super.visit(that);
         if (!that.isMissingToken()) {
             String text = that.getText();
+            if (text.startsWith(GENERATED_PREFIX)) {
+                return;
+            }
             int index = 0;
             while (index<text.length()) {
                 int cp = text.codePointAt(index);
@@ -721,7 +727,7 @@ public class LiteralVisitor extends Visitor {
                     Tree.Pattern pattern = pp.getPattern();
                     Tree.Identifier id = 
                             new Tree.Identifier(null);
-                    id.setText("_" + k);
+                    id.setText(GENERATED_PREFIX + k);
                     Tree.Parameter param = 
                             createParameter(id, 
                                     asType(pattern));
