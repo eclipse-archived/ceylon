@@ -138,7 +138,7 @@ public class RefinementVisitor extends Visitor {
             if (dec.isShared() && !mayBeShared) {
                 that.addError(
                         "shared declaration is not a member of a class, interface, or package: " +
-                                message(dec), 
+                                message(dec) + " may not be annotated 'shared'", 
                         1200);
             }
             
@@ -161,8 +161,8 @@ public class RefinementVisitor extends Visitor {
             else {
                 checkNonMember(that, dec);
                 if (isOverloadedVersion(dec)) {
-                    that.addError("name is not unique in scope: '" + 
-                            dec.getName() + "'");
+                    that.addError("duplicate declaration: the name '" + 
+                            dec.getName() + "' is not unique in this scope");
                 }
             }
             
