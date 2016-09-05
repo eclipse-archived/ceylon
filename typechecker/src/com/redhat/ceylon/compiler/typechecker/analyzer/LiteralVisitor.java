@@ -37,7 +37,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class LiteralVisitor extends Visitor {
 
-    private static final String GENERATED_PREFIX = "_$$_";
+    private static final String GENERATED_PREFIX = "$pattern$param$";
     
     private int indent;
     
