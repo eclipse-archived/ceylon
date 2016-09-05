@@ -172,7 +172,7 @@ shared interface Collection<out Element=Anything>
             "if [[length]] is nonpositive or if `length` is
              larger than the number of distinct elements of
              this collection")
-    since("1.2.3")
+    since("1.3.0")
     shared {[Element+]*} combinations(
                 "The number of distinct elements in each
                  combination"

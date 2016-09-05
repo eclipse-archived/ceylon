@@ -134,7 +134,7 @@ shared interface Correspondence<in Key, out Item=Anything>
  
  Most `CorrespondenceMutator`s are also instances of
  [[Correspondence]]."
-since("1.2.3")
+since("1.3.0")
 tagged("Collections")
 see (`interface Correspondence`, 
      `interface KeyedCorrespondenceMutator`,
@@ -148,7 +148,7 @@ shared interface CorrespondenceMutator<in Item>
  of adjacent indices.
  
  Many `IndexedCorrespondenceMutator`s are [[List]]s."
-since("1.2.3")
+since("1.3.0")
 tagged("Collections")
 see (`interface KeyedCorrespondenceMutator`)
 shared interface IndexedCorrespondenceMutator<in Element> 
@@ -174,7 +174,7 @@ shared interface IndexedCorrespondenceMutator<in Element>
  new key/item association.
  
  Many `KeyedCorrespondenceMutator`s are [[Map]]s."
-since("1.2.3")
+since("1.3.0")
 tagged("Collections")
 see (`interface IndexedCorrespondenceMutator`)
 shared interface KeyedCorrespondenceMutator<in Key, in Item>
