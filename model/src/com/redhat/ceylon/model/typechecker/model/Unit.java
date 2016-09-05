@@ -204,7 +204,7 @@ public class Unit implements LanguageModuleProvider {
             boolean ellipsis) {
         for (Import i: getImports()) {
             TypeDeclaration itd = i.getTypeDeclaration();
-            if (itd!=null && itd.equals(td) && 
+            if (itd!=null && td.inherits(itd) && 
                     !i.isAmbiguous() &&
                     i.getAlias().equals(name)) {
                 //in case of an overloaded member, this will
