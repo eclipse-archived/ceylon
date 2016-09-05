@@ -820,7 +820,7 @@ public class RecoveryTests extends CompilerTests {
         TreeSet<CompilerError> actualErrors = c.get(Diagnostic.Kind.ERROR);
         compareErrors(actualErrors,
 //                new CompilerError(21, "cannot find module artifact notfound-1(.car|.jar)\n  \t- dependency tree: okmodule/1.0.0 -> notfound/1"),
-                new CompilerError(20, "duplicate declaration name: 'run'"));
+                new CompilerError(20, "duplicate declaration: the name 'run' is not unique in this scope"));
         
         File carFile = getModuleArchive("default", null);
         assertTrue(carFile.exists());

@@ -646,7 +646,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
     @Test
     public void testBug1761A() {
         assertErrors("bug17xx/Bug1761A",
-                new CompilerError(2, "shared declaration is not a member of a class, interface, or package: 'Bar' in 'bug1761A'"));
+                new CompilerError(2, "shared declaration is not a member of a class, interface, or package: 'Bar' in 'bug1761A' may not be annotated 'shared'"));
     }
     @Test
     public void testBug1761B() {
