@@ -7403,6 +7403,12 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
         }
+        Tree.MemberOperator op = that.getMemberOperator();
+        if (op instanceof Tree.SpreadOp 
+                && unwrapExpressionUntilTerm(p) 
+                    instanceof Tree.Super) {
+            p.addError("spread member operator may not be applied to 'super' reference");
+        }
     }
 
     void resetSuperReference(
