@@ -71,7 +71,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -2296,104 +2295,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    @Override
-    public void visit(Tree.Annotation that) {
-        super.visit(that);
-        Tree.BaseMemberExpression p = 
-                (Tree.BaseMemberExpression) 
-                    that.getPrimary();
-        Declaration pd = p.getDeclaration();
-        if (pd != null) {
-            Declaration sd = 
-                    that.getUnit()
-                        .getLanguageModuleDeclaration("service");
-            if (pd.equals(sd)) {
-                checkServiceImplementation(getService(that), that);
-            }
-        }
-    }
-
-    private static Declaration getService(Tree.Annotation that) {
-        
-        Tree.PositionalArgumentList pal = 
-                that.getPositionalArgumentList();
-        if (pal!=null) {
-            List<Tree.PositionalArgument> args = 
-                    pal.getPositionalArguments();
-            if (!args.isEmpty()) {
-                Tree.PositionalArgument argument = 
-                        args.get(0);
-                if (argument instanceof Tree.ListedArgument) {
-                    Tree.ListedArgument la = 
-                            (Tree.ListedArgument)
-                            argument;
-                    return getDeclaration(la.getExpression());
-                }
-            }
-        }
-        
-        Tree.NamedArgumentList nal = 
-                that.getNamedArgumentList();
-        if (nal!=null) {
-            List<Tree.NamedArgument> args = 
-                    nal.getNamedArguments();
-            if (!args.isEmpty()) {
-                Tree.NamedArgument namedArgument = 
-                        args.get(0);
-                if (namedArgument instanceof Tree.SpecifiedArgument) {
-                    Tree.SpecifiedArgument sa = 
-                            (Tree.SpecifiedArgument)
-                            namedArgument;
-                    Tree.SpecifierExpression se = 
-                            sa.getSpecifierExpression();
-                    if (se!=null) {
-                        return getDeclaration(se.getExpression());
-                    }
-                }
-            }
-        }
-        
-        return null;
-    }
-
-    private void checkServiceImplementation(Declaration d, Node that) {
-        if (returnDeclaration instanceof Class) {
-            Class impl = (Class) returnDeclaration; //TODO: this is nasty!!
-            if (d instanceof ClassOrInterface) {
-                ClassOrInterface service = (ClassOrInterface) d;
-                Unit unit = that.getUnit();
-                Interface cd = unit.getCallableDeclaration();
-                Type at = unit.getAnythingType();
-                Type et = unit.getEmptyType();
-                Type ct = cd.appliedType(null, Arrays.asList(at, et));
-                if (!impl.getType().getFullType().isSubtypeOf(ct)) {
-                    that.addError("service class must have a parameter list or default constructor and be instantiable with an empty argument list");
-                }
-                if (impl.inherits(service)) {
-                    ModelUtil.getModule(impl).addService(service, impl);
-                }
-                else {
-                    that.addError("service class does not implement service '" + service + "'");
-                }
-            }
-            else {
-                that.addError("service must be an interface or class");
-            }
-        }
-    }
-
-    private static Declaration getDeclaration(Tree.Expression ex) {
-        if (ex!=null) {
-            Tree.Term term = ex.getTerm();
-            if (term instanceof Tree.MetaLiteral) {
-                Tree.MetaLiteral lit = 
-                        (Tree.MetaLiteral) term;
-                return lit.getDeclaration();
-            }
-        }
-        return null;
-    }
-
     private void checkClassAliasParameters(Class alias, 
             Tree.ClassDeclaration that, 
             Tree.InvocationExpression ie) {
