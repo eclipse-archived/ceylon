@@ -279,7 +279,7 @@ public abstract class DeclarationVisitor extends Visitor {
                                         model.getName(), 
                                         mbackends);
                         if (member != null && member != model) {
-                            that.addError("duplicate native implementationimplementation: the implementation '" + 
+                            that.addError("duplicate native implementation: the implementation '" + 
                                         name + "' for '\"" + 
                                         mbackends.names() +
                                         "\"' is not unique");
