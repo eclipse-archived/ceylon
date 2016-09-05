@@ -40,7 +40,6 @@ public class LiteralVisitor extends Visitor {
     private static final String GENERATED_PREFIX = "$pattern$param$";
     
     private int indent;
-    private int func;
     
     static final Pattern DOC_LINK_PATTERN = 
             Pattern.compile("\\[\\[(([^\"`|\\[\\]]*\\|)?((module )|(package )|(class )|(interface )|(function )|(value )|(alias ))?(((\\w|\\.)+)::)?(\\w*)(\\.(\\w*))*(\\(\\))?)\\]\\]");
@@ -728,7 +727,7 @@ public class LiteralVisitor extends Visitor {
                     Tree.Pattern pattern = pp.getPattern();
                     Tree.Identifier id = 
                             new Tree.Identifier(null);
-                    id.setText(GENERATED_PREFIX + func + "$" + k);
+                    id.setText(GENERATED_PREFIX + k);
                     Tree.Parameter param = 
                             createParameter(id, 
                                     asType(pattern));
@@ -747,7 +746,6 @@ public class LiteralVisitor extends Visitor {
                 }
             }
         }
-        func++;
         if (k>0 && funBody==null) {
             letClause.setExpression(funExpression);
             that.setExpression(createLetExpression(letClause));
