@@ -460,3 +460,9 @@ void testOperatorsOnUnions() {
     iof = +iof;
 
 }
+
+class SpreadsSuper() satisfies {Integer*} {
+    @error super*.plus(0);
+    this*.plus(0);
+    iterator() => {0}.iterator();
+}
