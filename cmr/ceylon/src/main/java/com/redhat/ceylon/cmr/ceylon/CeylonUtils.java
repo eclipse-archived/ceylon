@@ -559,22 +559,17 @@ public class CeylonUtils {
 
         private void addRepo(RepositoryManagerBuilder builder, Repositories.Repository repoInfo) {
             if (repoInfo != null) {
-                try {
-                    String path = builder.repositoryBuilder().absolute(cwd, repoInfo.getUrl());
-                    if(!avoidRepository(path)){
-                        RepositoryBuilderConfig cfg = new RepositoryBuilderConfig(log, isOffline(config), getTimeout(config), getProxy(config), cwd.getAbsolutePath());
-                        CmrRepository repo = builder.repositoryBuilder().buildRepository(path, cfg);
-                        builder.addRepository(repo);
-                    }
-                } catch (Exception e) {
-                    log.debug("Failed to add repository as input repository: " + repoInfo.getUrl() + ": " + e.getMessage());
-                }
+                addRepo(builder, repoInfo.getUrl());
             }
         }
 
         private void addRepo(RepositoryManagerBuilder builder, Repositories repositories, String repoUrl) {
+            repoUrl = resolveRepoUrl(repositories, repoUrl);
+            addRepo(builder, repoUrl);
+        }
+
+        private void addRepo(RepositoryManagerBuilder builder, String repoUrl) {
             try {
-                repoUrl = resolveRepoUrl(repositories, repoUrl);
                 String path = builder.repositoryBuilder().absolute(cwd, repoUrl);
                 if(!avoidRepository(path)){
                     RepositoryBuilderConfig cfg = new RepositoryBuilderConfig(log, isOffline(config), getTimeout(config), getProxy(config), cwd.getAbsolutePath());
