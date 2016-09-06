@@ -531,7 +531,7 @@ public class TypeVisitor extends Visitor {
                 !inExtendsOrClassAlias && 
                 !inDelegatedConstructor) {
             that.addError("constructor is not a type: '" + 
-                    dec.getName(unit) + "'");
+                    dec.getName(unit) + "' is a constructor");
         }
         
         Tree.TypeArgumentList tal = 

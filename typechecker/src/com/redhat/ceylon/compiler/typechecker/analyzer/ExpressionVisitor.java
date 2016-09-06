@@ -7745,6 +7745,10 @@ public class ExpressionVisitor extends Visitor {
             List<Type> typeArgs, 
             Tree.TypeArguments tal) {
         checkMemberOperator(receivingType, that);
+        if (memberType instanceof Constructor) {
+            that.addError("constructor is not a type: '" + 
+                    memberType.getName(unit) + "' is a constructor");
+        }
         Type receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
