@@ -21,7 +21,9 @@ import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.LanguageModuleCache;
 import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -46,6 +48,17 @@ public class LazyPackage extends Package {
     @Override
     public Declaration getMember(String name, List<Type> signature, boolean ellipsis) {
         // FIXME: what use is this method in the type checker?
+        if (signature==null 
+            && name.equals("Nothing")
+            && isLanguagePackage()) {
+            LanguageModuleCache languageModuleCache = getModule().getLanguageModuleCache();
+            if (languageModuleCache != null) {
+                NothingType nothingDeclaration = languageModuleCache.getNothingDeclaration();
+                if (nothingDeclaration != null) {
+                    return nothingDeclaration;
+                }
+            }
+        }
         return getDirectMember(name, signature, ellipsis);
     }
     
