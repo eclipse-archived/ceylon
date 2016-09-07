@@ -6851,10 +6851,15 @@ public class ExpressionVisitor extends Visitor {
     private void checkSuperMember(
             Tree.QualifiedMemberOrTypeExpression that,
             List<Type> signature, boolean spread) {
+        Tree.Primary primary = that.getPrimary();
         Tree.Term term = 
-                eliminateParensAndWidening(
-                        that.getPrimary());
+                eliminateParensAndWidening(primary);
         if (term instanceof Tree.Super) {
+            Tree.MemberOperator op = 
+                    that.getMemberOperator();
+            if (op instanceof Tree.SpreadOp) {
+                primary.addError("spread member operator may not be applied to 'super' reference");
+            }
             checkSuperInvocation(that, signature, spread);
         }
     }
@@ -7402,12 +7407,6 @@ public class ExpressionVisitor extends Visitor {
                     that.addError("direct function references do not have members");
                 }
             }
-        }
-        Tree.MemberOperator op = that.getMemberOperator();
-        if (op instanceof Tree.SpreadOp 
-                && unwrapExpressionUntilTerm(p) 
-                    instanceof Tree.Super) {
-            p.addError("spread member operator may not be applied to 'super' reference");
         }
     }
 
