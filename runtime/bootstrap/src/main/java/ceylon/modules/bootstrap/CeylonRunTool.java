@@ -19,7 +19,6 @@ package ceylon.modules.bootstrap;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -284,8 +283,8 @@ public class CeylonRunTool extends RepoUsingTool {
             argList.add("-auto-export-maven-dependencies");
         }
 
-        if (repo != null) {
-            for (URI repo : this.repo) {
+        if (repos != null) {
+            for (URI repo : this.repos) {
                 argList.add("-rep");
                 argList.add(repo.toString());
             }
@@ -326,8 +325,8 @@ public class CeylonRunTool extends RepoUsingTool {
     
     private void startInFlatClasspath(String module, String version) {
         JavaRunnerOptions options = new JavaRunnerOptions();
-        if(repo != null) {
-            for (URI userRepository : repo) {
+        if(repos != null) {
+            for (URI userRepository : repos) {
                 options.addUserRepository(userRepository.toASCIIString());
             }
         }

@@ -557,8 +557,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add("-nodefreps");
         }
         
-        if (repo != null) {
-            for (URI uri : this.repo) {
+        if (repos != null) {
+            for (URI uri : this.repos) {
                 arguments.add("-rep");
                 arguments.add(uri.toString());
             }

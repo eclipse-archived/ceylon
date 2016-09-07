@@ -96,6 +96,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             .overrides(conf.overrides)
             .upgradeDist(conf.upgradeDist)
             .noDefaultRepos(conf.noDefaultRepositories)
+            .noOutRepo(true)
             .userRepos(conf.repositories)
             .offline(offline || conf.offline)
             .logger(log)
