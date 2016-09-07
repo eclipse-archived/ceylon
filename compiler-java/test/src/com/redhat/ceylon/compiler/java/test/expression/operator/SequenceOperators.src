@@ -681,62 +681,26 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                 }
             }.sequence();
         );
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spreadMemberOnSuper = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
-            
-            @.java.lang.Override
-            public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                    final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$14$iterator$ = $ceylon$language$List$this$.iterator();
-                    
-                    @.java.lang.Override
-                    public final .java.lang.Object next() {
-                        .java.lang.Object spread$14$element$;
-                        if (!((spread$14$element$ = spread$14$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                            spread$14$element$ = .ceylon.language.Integer.instance(((.ceylon.language.String)spread$14$element$).getSize());
-                        }
-                        return spread$14$element$;
-                    }
-                };
-            }
-        }.sequence();
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spreadMemberOnSuperOf = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
-            
-            @.java.lang.Override
-            public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                    final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$15$iterator$ = $ceylon$language$List$this$.iterator();
-                    
-                    @.java.lang.Override
-                    public final .java.lang.Object next() {
-                        .java.lang.Object spread$15$element$;
-                        if (!((spread$15$element$ = spread$15$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                            spread$15$element$ = .ceylon.language.Integer.instance(((.ceylon.language.String)spread$15$element$).getSize());
-                        }
-                        return spread$15$element$;
-                    }
-                };
-            }
-        }.sequence();
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> intSequence = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> spreadMemberWithBoxedType = (
             let
             {
-                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$16$iterable$ = intSequence;
+                final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> spread$14$iterable$ = intSequence;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Integer, .java.lang.Object>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
                 
                 @.java.lang.Override
                 public final .ceylon.language.Iterator<? extends .ceylon.language.Integer> iterator() {
                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$){
-                        final .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$16$iterator$ = spread$16$iterable$.iterator();
+                        final .ceylon.language.Iterator<? extends .ceylon.language.Integer> spread$14$iterator$ = spread$14$iterable$.iterator();
                         
                         @.java.lang.Override
                         public final .java.lang.Object next() {
-                            .java.lang.Object spread$16$element$;
-                            if (!((spread$16$element$ = spread$16$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                                spread$16$element$ = ((.ceylon.language.Integer)spread$16$element$).getWholePart();
+                            .java.lang.Object spread$14$element$;
+                            if (!((spread$14$element$ = spread$14$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$14$element$ = ((.ceylon.language.Integer)spread$14$element$).getWholePart();
                             }
-                            return spread$16$element$;
+                            return spread$14$element$;
                         }
                     };
                 }
@@ -746,8 +710,32 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
         spreadInvoke = (
             let
             {
+                final .ceylon.language.Iterable<? extends .ceylon.language.List<? extends .ceylon.language.Character>, ? extends .java.lang.Object> spread$15$iterable$ = sequence;
+                final .ceylon.language.Integer spread$15$arg$0 = .ceylon.language.Integer.instance(0L);
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
+                
+                @.java.lang.Override
+                public final .ceylon.language.Iterator<? extends .ceylon.language.Character> iterator() {
+                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$)){
+                        final .ceylon.language.Iterator<? extends .ceylon.language.List<? extends .ceylon.language.Character>> spread$15$iterator$ = spread$15$iterable$.iterator();
+                        
+                        @.java.lang.Override
+                        public final .java.lang.Object next() {
+                            .java.lang.Object spread$15$element$;
+                            if (!((spread$15$element$ = spread$15$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$15$element$ = ((.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$15$element$).get(spread$15$arg$0);
+                            }
+                            return spread$15$element$;
+                        }
+                    };
+                }
+            }.sequence();
+        );
+        spreadInvoke = (
+            let
+            {
                 final .ceylon.language.Iterable<? extends .ceylon.language.List<? extends .ceylon.language.Character>, ? extends .java.lang.Object> spread$17$iterable$ = sequence;
-                final .ceylon.language.Integer spread$17$arg$0 = .ceylon.language.Integer.instance(0L);
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
                 
@@ -760,7 +748,14 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                         public final .java.lang.Object next() {
                             .java.lang.Object spread$17$element$;
                             if (!((spread$17$element$ = spread$17$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                                spread$17$element$ = ((.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$17$element$).get(spread$17$arg$0);
+                                spread$17$element$ = (
+                                    let
+                                    {
+                                        .ceylon.language.List<? extends .ceylon.language.Character> arg$16$callable$ = (.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$17$element$;
+                                        .ceylon.language.Integer arg$16$0 = .ceylon.language.Integer.instance(0L);
+                                    }
+                                    returning arg$16$callable$.get(arg$16$0);
+                                );
                             }
                             return spread$17$element$;
                         }
@@ -771,29 +766,23 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
         spreadInvoke = (
             let
             {
-                final .ceylon.language.Iterable<? extends .ceylon.language.List<? extends .ceylon.language.Character>, ? extends .java.lang.Object> spread$19$iterable$ = sequence;
+                final .ceylon.language.Iterable<? extends .ceylon.language.List<? extends .ceylon.language.Character>, ? extends .java.lang.Object> spread$18$iterable$ = this;
+                final .ceylon.language.Integer spread$18$arg$0 = .ceylon.language.Integer.instance(0L);
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
                 
                 @.java.lang.Override
                 public final .ceylon.language.Iterator<? extends .ceylon.language.Character> iterator() {
                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$)){
-                        final .ceylon.language.Iterator<? extends .ceylon.language.List<? extends .ceylon.language.Character>> spread$19$iterator$ = spread$19$iterable$.iterator();
+                        final .ceylon.language.Iterator<? extends .ceylon.language.List<? extends .ceylon.language.Character>> spread$18$iterator$ = spread$18$iterable$.iterator();
                         
                         @.java.lang.Override
                         public final .java.lang.Object next() {
-                            .java.lang.Object spread$19$element$;
-                            if (!((spread$19$element$ = spread$19$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                                spread$19$element$ = (
-                                    let
-                                    {
-                                        .ceylon.language.List<? extends .ceylon.language.Character> arg$18$callable$ = (.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$19$element$;
-                                        .ceylon.language.Integer arg$18$0 = .ceylon.language.Integer.instance(0L);
-                                    }
-                                    returning arg$18$callable$.get(arg$18$0);
-                                );
+                            .java.lang.Object spread$18$element$;
+                            if (!((spread$18$element$ = spread$18$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$18$element$ = ((.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$18$element$).get(spread$18$arg$0);
                             }
-                            return spread$19$element$;
+                            return spread$18$element$;
                         }
                     };
                 }
@@ -803,7 +792,6 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
             let
             {
                 final .ceylon.language.Iterable<? extends .ceylon.language.List<? extends .ceylon.language.Character>, ? extends .java.lang.Object> spread$20$iterable$ = this;
-                final .ceylon.language.Integer spread$20$arg$0 = .ceylon.language.Integer.instance(0L);
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
                 
@@ -816,7 +804,14 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                         public final .java.lang.Object next() {
                             .java.lang.Object spread$20$element$;
                             if (!((spread$20$element$ = spread$20$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                                spread$20$element$ = ((.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$20$element$).get(spread$20$arg$0);
+                                spread$20$element$ = (
+                                    let
+                                    {
+                                        .ceylon.language.List<? extends .ceylon.language.Character> arg$19$callable$ = (.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$20$element$;
+                                        .ceylon.language.Integer arg$19$0 = .ceylon.language.Integer.instance(0L);
+                                    }
+                                    returning arg$19$callable$.get(arg$19$0);
+                                );
                             }
                             return spread$20$element$;
                         }
@@ -824,155 +819,26 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                 }
             }.sequence();
         );
-        spreadInvoke = (
-            let
-            {
-                final .ceylon.language.Iterable<? extends .ceylon.language.List<? extends .ceylon.language.Character>, ? extends .java.lang.Object> spread$22$iterable$ = this;
-            }
-            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
-                
-                @.java.lang.Override
-                public final .ceylon.language.Iterator<? extends .ceylon.language.Character> iterator() {
-                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$)){
-                        final .ceylon.language.Iterator<? extends .ceylon.language.List<? extends .ceylon.language.Character>> spread$22$iterator$ = spread$22$iterable$.iterator();
-                        
-                        @.java.lang.Override
-                        public final .java.lang.Object next() {
-                            .java.lang.Object spread$22$element$;
-                            if (!((spread$22$element$ = spread$22$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                                spread$22$element$ = (
-                                    let
-                                    {
-                                        .ceylon.language.List<? extends .ceylon.language.Character> arg$21$callable$ = (.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$22$element$;
-                                        .ceylon.language.Integer arg$21$0 = .ceylon.language.Integer.instance(0L);
-                                    }
-                                    returning arg$21$callable$.get(arg$21$0);
-                                );
-                            }
-                            return spread$22$element$;
-                        }
-                    };
-                }
-            }.sequence();
-        );
-        spreadInvoke = (
-            let
-            {
-                final .ceylon.language.Integer spread$23$arg$0 = .ceylon.language.Integer.instance(0L);
-            }
-            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
-                
-                @.java.lang.Override
-                public final .ceylon.language.Iterator<? extends .ceylon.language.Character> iterator() {
-                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$)){
-                        final .ceylon.language.Iterator<? extends .ceylon.language.List<? extends .ceylon.language.Character>> spread$23$iterator$ = $ceylon$language$List$this$.iterator();
-                        
-                        @.java.lang.Override
-                        public final .java.lang.Object next() {
-                            .java.lang.Object spread$23$element$;
-                            if (!((spread$23$element$ = spread$23$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                                spread$23$element$ = ((.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$23$element$).get(spread$23$arg$0);
-                            }
-                            return spread$23$element$;
-                        }
-                    };
-                }
-            }.sequence();
-        );
-        spreadInvoke = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
-            
-            @.java.lang.Override
-            public final .ceylon.language.Iterator<? extends .ceylon.language.Character> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$)){
-                    final .ceylon.language.Iterator<? extends .ceylon.language.List<? extends .ceylon.language.Character>> spread$25$iterator$ = $ceylon$language$List$this$.iterator();
-                    
-                    @.java.lang.Override
-                    public final .java.lang.Object next() {
-                        .java.lang.Object spread$25$element$;
-                        if (!((spread$25$element$ = spread$25$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                            spread$25$element$ = (
-                                let
-                                {
-                                    .ceylon.language.List<? extends .ceylon.language.Character> arg$24$callable$ = (.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$25$element$;
-                                    .ceylon.language.Integer arg$24$0 = .ceylon.language.Integer.instance(0L);
-                                }
-                                returning arg$24$callable$.get(arg$24$0);
-                            );
-                        }
-                        return spread$25$element$;
-                    }
-                };
-            }
-        }.sequence();
-        spreadInvoke = (
-            let
-            {
-                final .ceylon.language.Integer spread$26$arg$0 = .ceylon.language.Integer.instance(0L);
-            }
-            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
-                
-                @.java.lang.Override
-                public final .ceylon.language.Iterator<? extends .ceylon.language.Character> iterator() {
-                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$)){
-                        final .ceylon.language.Iterator<? extends .ceylon.language.List<? extends .ceylon.language.Character>> spread$26$iterator$ = $ceylon$language$List$this$.iterator();
-                        
-                        @.java.lang.Override
-                        public final .java.lang.Object next() {
-                            .java.lang.Object spread$26$element$;
-                            if (!((spread$26$element$ = spread$26$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                                spread$26$element$ = ((.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$26$element$).get(spread$26$arg$0);
-                            }
-                            return spread$26$element$;
-                        }
-                    };
-                }
-            }.sequence();
-        );
-        spreadInvoke = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.Character, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
-            
-            @.java.lang.Override
-            public final .ceylon.language.Iterator<? extends .ceylon.language.Character> iterator() {
-                return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Character.$TypeDescriptor$)){
-                    final .ceylon.language.Iterator<? extends .ceylon.language.List<? extends .ceylon.language.Character>> spread$28$iterator$ = $ceylon$language$List$this$.iterator();
-                    
-                    @.java.lang.Override
-                    public final .java.lang.Object next() {
-                        .java.lang.Object spread$28$element$;
-                        if (!((spread$28$element$ = spread$28$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                            spread$28$element$ = (
-                                let
-                                {
-                                    .ceylon.language.List<? extends .ceylon.language.Character> arg$27$callable$ = (.ceylon.language.List<? extends .ceylon.language.Character>)(.ceylon.language.List)spread$28$element$;
-                                    .ceylon.language.Integer arg$27$0 = .ceylon.language.Integer.instance(0L);
-                                }
-                                returning arg$27$callable$.get(arg$27$0);
-                            );
-                        }
-                        return spread$28$element$;
-                    }
-                };
-            }
-        }.sequence();
         final .ceylon.language.Sequential<? extends .ceylon.language.String> empty = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
         final .ceylon.language.Sequential<? extends .ceylon.language.String> upperCasedEmpty = (
             let
             {
-                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$29$iterable$ = empty;
+                final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> spread$21$iterable$ = empty;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
                 
                 @.java.lang.Override
                 public final .ceylon.language.Iterator<? extends .ceylon.language.String> iterator() {
                     return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$){
-                        final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$29$iterator$ = spread$29$iterable$.iterator();
+                        final .ceylon.language.Iterator<? extends .ceylon.language.String> spread$21$iterator$ = spread$21$iterable$.iterator();
                         
                         @.java.lang.Override
                         public final .java.lang.Object next() {
-                            .java.lang.Object spread$29$element$;
-                            if (!((spread$29$element$ = spread$29$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                                spread$29$element$ = .ceylon.language.String.instance(((.ceylon.language.String)spread$29$element$).getUppercased());
+                            .java.lang.Object spread$21$element$;
+                            if (!((spread$21$element$ = spread$21$iterator$.next()) instanceof .ceylon.language.Finished)) {
+                                spread$21$element$ = .ceylon.language.String.instance(((.ceylon.language.String)spread$21$element$).getUppercased());
                             }
-                            return spread$29$element$;
+                            return spread$21$element$;
                         }
                     };
                 }
@@ -1158,10 +1024,10 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
         return (
             let
             {
-                long $ceylontmp$from$30 = patch$from($reified$Other, list);
-                long $ceylontmp$length$31 = patch$length($reified$Other, list, $ceylontmp$from$30);
+                long $ceylontmp$from$22 = patch$from($reified$Other, list);
+                long $ceylontmp$length$23 = patch$length($reified$Other, list, $ceylontmp$from$22);
             }
-            returning patch$canonical$($reified$Other, list, $ceylontmp$from$30, $ceylontmp$length$31);
+            returning patch$canonical$($reified$Other, list, $ceylontmp$from$22, $ceylontmp$length$23);
         );
     }
     
@@ -1175,9 +1041,9 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
         return (
             let
             {
-                long $ceylontmp$length$32 = patch$length($reified$Other, list, from);
+                long $ceylontmp$length$24 = patch$length($reified$Other, list, from);
             }
-            returning patch$canonical$($reified$Other, list, from, $ceylontmp$length$32);
+            returning patch$canonical$($reified$Other, list, from, $ceylontmp$length$24);
         );
     }
     
@@ -1412,9 +1278,9 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
         return (
             let
             {
-                long $ceylontmp$step$33 = interpose$step($reified$Other, element);
+                long $ceylontmp$step$25 = interpose$step($reified$Other, element);
             }
-            returning interpose$canonical$($reified$Other, element, $ceylontmp$step$33);
+            returning interpose$canonical$($reified$Other, element, $ceylontmp$step$25);
         );
     }
     
@@ -1579,9 +1445,9 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
         return (int)(
             let
             {
-                long $ceylontmp$hash$35 = 1L;
+                long $ceylontmp$hash$27 = 1L;
             }
-            returning $ceylontmp$hash$35 ^ $ceylontmp$hash$35 >>> 32;
+            returning $ceylontmp$hash$27 ^ $ceylontmp$hash$27 >>> 32;
         );
     }
     

@@ -90,8 +90,8 @@ shared abstract class SequenceOperators() satisfies List<String> & IndexedCorres
         
         Integer[] spreadMemberWithUnboxedType = sequence*.size;
         Integer[] spreadMemberOnThis = this*.size;
-        Integer[] spreadMemberOnSuper = super*.size;
-        Integer[] spreadMemberOnSuperOf = (super of List<String>)*.size;
+        //Integer[] spreadMemberOnSuper = super*.size;
+        //Integer[] spreadMemberOnSuperOf = (super of List<String>)*.size;
         Integer[] intSequence = [1];
         Integer[] spreadMemberWithBoxedType = intSequence*.wholePart;
         variable Character?[] spreadInvoke;
@@ -99,10 +99,10 @@ shared abstract class SequenceOperators() satisfies List<String> & IndexedCorres
         spreadInvoke = sequence*.get{index = 0;};
         spreadInvoke = this*.get(0);
         spreadInvoke = this*.get{index = 0;};
-        spreadInvoke = super*.get(0);
-        spreadInvoke = super*.get{index = 0;};
-        spreadInvoke = (super of List<String>)*.get(0);
-        spreadInvoke = (super of List<String>)*.get{index = 0;};
+        //spreadInvoke = super*.get(0);
+        //spreadInvoke = super*.get{index = 0;};
+        //spreadInvoke = (super of List<String>)*.get(0);
+        //spreadInvoke = (super of List<String>)*.get{index = 0;};
 
         String[] empty = [];
         String[] upperCasedEmpty = empty*.uppercased;
