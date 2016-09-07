@@ -19,7 +19,7 @@ void visitDeclaration(
     value typechecker = program.getTypeChecker();
     switch (node.kind)
     // actually handled cases
-    case (SyntaxKind.VariableDeclaration | SyntaxKind.PropertyDeclaration | SyntaxKind.PropertySignature) {
+    case (SyntaxKind.\iVariableDeclaration | SyntaxKind.\iPropertyDeclaration | SyntaxKind.\iPropertySignature) {
         try {
             Identifier id;
             VariableDeclaration vdecl;
@@ -30,7 +30,7 @@ void visitDeclaration(
             //assert (is VariableDeclaration vdecl = node); // TODO use assert
             Boolean const;
             dynamic {
-                const = hasNodeFlag(eval("(function(v){return v.parent.flags})")(vdecl), NodeFlags.Const);
+                const = hasNodeFlag(eval("(function(v){return v.parent.flags})")(vdecl), NodeFlags.\iConst);
             }
             String name = id.text;
             value type = typechecker.getTypeAtLocation(vdecl);
@@ -49,7 +49,7 @@ void visitDeclaration(
             t.printStackTrace();
         }
     }
-    case (SyntaxKind.FunctionDeclaration | SyntaxKind.MethodDeclaration | SyntaxKind.MethodSignature) {
+    case (SyntaxKind.\iFunctionDeclaration | SyntaxKind.\iMethodDeclaration | SyntaxKind.\iMethodSignature) {
         try {
             //assert (is FunctionDeclaration fdecl = node);
             FunctionDeclaration fdecl;
@@ -69,14 +69,14 @@ void visitDeclaration(
                     flagsKey->0, // void flag has no effect and deferred flag doesn’t seem to be used in JS backend
                     packedAnnotationsKey -> packAnnotations {
                         shared = true;
-                        formal = node.kind == SyntaxKind.MethodSignature;
+                        formal = node.kind == SyntaxKind.\iMethodSignature;
                     }
                 });
         } catch (Throwable t) {
             t.printStackTrace();
         }
     }
-    case (SyntaxKind.ClassDeclaration) {
+    case (SyntaxKind.\iClassDeclaration) {
         try {
             assert (is ClassDeclaration cdecl = node);
             Identifier id;
@@ -89,7 +89,7 @@ void visitDeclaration(
             variable ConstructorDeclaration? constructor = null;
             for (member in cdecl.members) {
                 switch (member.kind)
-                case (SyntaxKind.Constructor) {
+                case (SyntaxKind.\iConstructor) {
                     "Class can only have one constructor"
                     assert (!constructor exists);
                     ConstructorDeclaration consdecl;
@@ -99,7 +99,7 @@ void visitDeclaration(
                     //assert (is ConstructorDeclaration consdecl = member); // TODO use assert
                     constructor = consdecl;
                 }
-                case (SyntaxKind.PropertyDeclaration) {
+                case (SyntaxKind.\iPropertyDeclaration) {
                     PropertyDeclaration property;
                     dynamic {
                         property = eval("(function(x){x.getT$all=undefined;x.$$=undefined;return x})")(member);
@@ -107,7 +107,7 @@ void visitDeclaration(
                     //assert (is PropertyDeclaration property = member); // TODO use assert
                     properties.add(property);
                 }
-                case (SyntaxKind.MethodDeclaration) {
+                case (SyntaxKind.\iMethodDeclaration) {
                     MethodDeclaration method;
                     dynamic {
                         method = eval("(function(x){x.getT$all=undefined;x.$$=undefined;return x})")(member);
@@ -146,7 +146,7 @@ void visitDeclaration(
             t.printStackTrace();
         }
     }
-    case (SyntaxKind.InterfaceDeclaration) {
+    case (SyntaxKind.\iInterfaceDeclaration) {
         try {
             assert (is InterfaceDeclaration idecl = node);
             Identifier id;
@@ -158,7 +158,7 @@ void visitDeclaration(
             MutableList<MethodDeclaration> methods = ArrayList<MethodDeclaration>(idecl.members.size);
             for (member in idecl.members) {
                 switch (member.kind)
-                case (SyntaxKind.PropertyDeclaration | SyntaxKind.PropertySignature) {
+                case (SyntaxKind.\iPropertyDeclaration | SyntaxKind.\iPropertySignature) {
                     PropertyDeclaration property;
                     dynamic {
                         property = eval("(function(x){x.getT$all=undefined;x.$$=undefined;return x})")(member);
@@ -166,7 +166,7 @@ void visitDeclaration(
                     //assert (is PropertyDeclaration property = member); // TODO use assert
                     properties.add(property);
                 }
-                case (SyntaxKind.MethodDeclaration | SyntaxKind.MethodSignature) {
+                case (SyntaxKind.\iMethodDeclaration | SyntaxKind.\iMethodSignature) {
                     MethodDeclaration method;
                     dynamic {
                         method = eval("(function(x){x.getT$all=undefined;x.$$=undefined;return x})")(member);
@@ -203,20 +203,20 @@ void visitDeclaration(
         }
     }
     // descend
-    case (SyntaxKind.VariableStatement) {
+    case (SyntaxKind.\iVariableStatement) {
         try {
-            Boolean exported = hasNodeFlag(node.flags, NodeFlags.Export);
+            Boolean exported = hasNodeFlag(node.flags, NodeFlags.\iExport);
             if (exported) {
                 assert (is VariableStatement decl = node);
                 forEachChild(decl.declarationList, visitDeclaration(container, writer, program));
             }
         } catch (Throwable t) { t.printStackTrace(); }
     }
-    case (SyntaxKind.VariableDeclarationList) {
+    case (SyntaxKind.\iVariableDeclarationList) {
         forEachChild(node, visitDeclaration(container, writer, program));
     }
     // ignore
-    case (SyntaxKind.EndOfFileToken) {
+    case (SyntaxKind.\iEndOfFileToken) {
     }
     else {
         process.writeErrorLine("Unknown declaration kind ``node.kind``");

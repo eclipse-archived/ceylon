@@ -12,7 +12,7 @@ JsonArray convertParameterListForModel(NodeArray<ParameterDeclaration> list, Typ
         while (generatedNameCounter > 0) {
             value name = "param_`` generatedNameCounter++ ``";
             for (param in list) {
-                if (param.name.kind == SyntaxKind.Identifier) {
+                if (param.name.kind == SyntaxKind.\iIdentifier) {
                     assert (is Identifier id = param.name);
                     if (id.text == name) {
                         break;
@@ -26,11 +26,11 @@ JsonArray convertParameterListForModel(NodeArray<ParameterDeclaration> list, Typ
     }
     String parameterName(ParameterDeclaration param) {
         switch (param.name.kind)
-        case (SyntaxKind.Identifier) {
+        case (SyntaxKind.\iIdentifier) {
             assert (is Identifier id = param.name);
             return id.text;
         }
-        case (SyntaxKind.ObjectBindingPattern | SyntaxKind.ArrayBindingPattern) {
+        case (SyntaxKind.\iObjectBindingPattern | SyntaxKind.\iArrayBindingPattern) {
             return generateName();
         }
     }
