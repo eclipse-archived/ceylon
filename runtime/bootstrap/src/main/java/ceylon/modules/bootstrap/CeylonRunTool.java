@@ -163,7 +163,7 @@ public class CeylonRunTool extends RepoUsingTool {
             + "This might fail with a linker error at runtime. For example "
             + "if the module depended on an API present in the more "
             + "recent version, but absent from " + Versions.CEYLON_VERSION_NUMBER +". "
-                    + "Allowed arguments are upgrade, downgrade or abort. Default: upgrade")
+            + "Allowed arguments are upgrade, downgrade or abort. Default: upgrade")
     public void setLinkWithCurrentDistribution(boolean downgradeDist) {
         this.upgradeDist = !downgradeDist;
     }
@@ -172,6 +172,11 @@ public class CeylonRunTool extends RepoUsingTool {
         this.extraModules.put(module, version);
     }
 
+    @Override
+    protected boolean shouldUpgradeDist() {
+        return upgradeDist;
+    }
+    
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
         super.initialize(mainTool);
@@ -204,7 +209,7 @@ public class CeylonRunTool extends RepoUsingTool {
         
         String module = ModuleUtil.moduleName(moduleNameOptVersion);
         String version = checkModuleVersionsOrShowSuggestions(
-                getRepositoryManager(upgradeDist),
+                getRepositoryManager(),
                 module,
                 ModuleUtil.moduleVersion(moduleNameOptVersion),
                 ModuleQuery.Type.JVM,

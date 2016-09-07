@@ -194,7 +194,14 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     /**
      * For subclasses that do not want to read from the output repo
      */
-    protected boolean doNotReadFromOutputRepo(){
+    protected boolean doNotReadFromOutputRepo() {
+        return true;
+    }
+    
+    /**
+     * For subclasses that want to override the behavior of distribution linking
+     */
+    protected boolean shouldUpgradeDist() {
         return true;
     }
     
@@ -219,6 +226,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 .offline(offline)
                 .timeout(timeout)
                 .isJDKIncluded(includeJDK())
+                .upgradeDist(shouldUpgradeDist())
                 .logger(getLogger());
         return rmb;
     }
@@ -228,13 +236,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     }
 
     protected synchronized RepositoryManager getRepositoryManager() {
-        return getRepositoryManager(true);
-    }
-    
-    protected synchronized RepositoryManager getRepositoryManager(boolean upgradeDist) {
         if (rm == null) {
             CeylonUtils.CeylonRepoManagerBuilder rmb = createRepositoryManagerBuilder();
-            rmb.upgradeDist(upgradeDist);
             rm = rmb.buildManager();   
         }
         return rm;

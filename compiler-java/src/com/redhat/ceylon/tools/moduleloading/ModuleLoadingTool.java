@@ -58,6 +58,11 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         this.jdkProviderModule = jdkProviderModule;
     }
 
+    @Override
+    protected boolean shouldUpgradeDist(){
+        return upgradeDist;
+    }
+    
 	protected String moduleVersion(String moduleNameOptVersion) throws IOException {
 		return checkModuleVersionsOrShowSuggestions(
 				getRepositoryManager(),
@@ -105,7 +110,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         }
         loadedVersions.add(version);
         
-        RepositoryManager repositoryManager = getRepositoryManager(upgradeDist);
+        RepositoryManager repositoryManager = getRepositoryManager();
         ArtifactContext artifactContext = new ArtifactContext(namespace, name, version, ArtifactContext.CAR, ArtifactContext.JAR);
         ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
         if(result == null || result.artifact() == null || !result.artifact().exists()){
