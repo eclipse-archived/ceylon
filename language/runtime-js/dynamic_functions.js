@@ -48,7 +48,7 @@ function dre$$(object, type, loc) {
           proptype=getrtmm$$(proptype);
         }
         if (actual.indexOf(expected[i])<0 && object[expected[i]]===undefined) {
-          if (extendsType({t:Null},proptype.$t)) {
+          if (proptype && extendsType({t:Null},proptype.$t)) {
             object[expected[i]]=null;
           } else {
             throw new Error("Native object is missing property '" + expected[i] + "' " + loc);
