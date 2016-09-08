@@ -2879,7 +2879,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         if (!qmte.getStaticMethodReference() 
-                && unit.isCallableType(pt)) {
+                && pt.isCallable()) {
             qmte.addUsageWarning(Warning.expressionTypeCallable, 
                     "operation is not meaningful for function references: receiver is of type 'Callable'");
         }
@@ -8008,7 +8008,7 @@ public class ExpressionVisitor extends Visitor {
                 checkAssignable(et, 
                         unit.getObjectType(), e, 
                         "interpolated expression must not be an optional type");
-                if (unit.isCallableType(et)) {
+                if (et.isCallable()) {
                     e.addUsageWarning(Warning.expressionTypeCallable, 
                             "interpolated function reference does not have a meaningful representation: expression is of type 'Callable'");
                 }
