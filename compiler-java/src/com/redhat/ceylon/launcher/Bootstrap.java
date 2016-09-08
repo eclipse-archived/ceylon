@@ -181,7 +181,7 @@ public class Bootstrap {
         return lst.toArray(buf);
     }
 
-    private void setupDistHome(Config cfg) throws Exception {
+    protected void setupDistHome(Config cfg) throws Exception {
         // If hash doesn't exist in dists folder we must download & install
         if (!cfg.distributionDir.exists()) {
             install(cfg);

@@ -591,12 +591,16 @@ public class JsCompiler {
                             opts.isGenerateSourceArchive(), resFiles != null && !resFiles.isEmpty())
                             .generateDescriptor();
                     File npmfile = File.createTempFile("npm", "json");
-                    try (FileWriter fw = new FileWriter(npmfile)) {
-                        fw.write(npmdesc);
+                    try{
+                        try (FileWriter fw = new FileWriter(npmfile)) {
+                            fw.write(npmdesc);
+                        }
+                        final ArtifactContext npmArtifact = new ArtifactContext(null, moduleName, moduleVersion, ArtifactContext.NPM_DESCRIPTOR);
+                        npmArtifact.setForceOperation(true);
+                        outRepo.putArtifact(npmArtifact, npmfile);
+                    }finally{
+                        npmfile.delete();
                     }
-                    final ArtifactContext npmArtifact = new ArtifactContext(null, moduleName, moduleVersion, ArtifactContext.NPM_DESCRIPTOR);
-                    npmArtifact.setForceOperation(true);
-                    outRepo.putArtifact(npmArtifact, npmfile);
                 }
             }
             FileUtil.deleteQuietly(jsart);

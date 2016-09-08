@@ -323,9 +323,13 @@ public class CompatTests extends CompilerTests {
     @Test
     public void classpathCompiled1299With121NoDowngrade() throws Throwable {
         File err = File.createTempFile("compattest", "out");
-        mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
-                new ModuleSpec("compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err, false);
-        assertFileContainsLine(err, "Module ceylon.language/1.2.99 not found in the following repositories:");
+        try {
+            mainApiClasspath("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
+                    new ModuleSpec("compiled1299", "1.0.0"), Collections.<ModuleSpec>emptyList(), 1, err, false);
+            assertFileContainsLine(err, "Module ceylon.language/1.2.99 not found in the following repositories:");
+        } finally {
+            err.delete();
+        }
     }
     
     @Test
