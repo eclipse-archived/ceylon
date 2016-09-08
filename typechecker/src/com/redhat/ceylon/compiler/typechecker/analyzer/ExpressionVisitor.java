@@ -2878,7 +2878,8 @@ public class ExpressionVisitor extends Visitor {
                 checkIterable(pt, p);
             }
         }
-        if (unit.isCallableType(pt)) {
+        if (!qmte.getStaticMethodReference() 
+                && unit.isCallableType(pt)) {
             qmte.addUsageWarning(Warning.expressionTypeCallable, 
                     "operation is not meaningful for function references: receiver is of type 'Callable'");
         }
