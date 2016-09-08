@@ -2878,6 +2878,10 @@ public class ExpressionVisitor extends Visitor {
                 checkIterable(pt, p);
             }
         }
+        if (unit.isCallableType(pt)) {
+            qmte.addUsageWarning(Warning.expressionTypeCallable, 
+                    "operation is not meaningful for function references: receiver is of type 'Callable'");
+        }
     }
 
     private Type unwrap(Type type, 
@@ -8003,6 +8007,10 @@ public class ExpressionVisitor extends Visitor {
                 checkAssignable(et, 
                         unit.getObjectType(), e, 
                         "interpolated expression must not be an optional type");
+                if (unit.isCallableType(et)) {
+                    e.addUsageWarning(Warning.expressionTypeCallable, 
+                            "interpolated function reference does not have a meaningful representation: expression is of type 'Callable'");
+                }
             }
         }
         that.setTypeModel(unit.getStringType());

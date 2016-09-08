@@ -306,6 +306,7 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `compilerAnnotation`,
      `doclink`,
      `expressionTypeNothing`,
+     `expressionTypeCallable`,
      `unusedDeclaration`,
      `unusedImport`,
      `ceylonNamespace`,
