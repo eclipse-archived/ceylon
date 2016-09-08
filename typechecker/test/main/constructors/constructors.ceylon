@@ -479,3 +479,27 @@ void notinherited() {
     C2 c2 = C2.create();
 
 }
+
+
+class WithAssertion {
+    assert (exists arg = process.arguments[0]);
+    String stuff;
+    shared new (String greeting) {
+        print(greeting + arg);
+        stuff = arg;
+    }
+    shared new withGreeting(String greeting) {
+        print(greeting + arg);
+        stuff = arg;
+    }
+    
+    shared void do(String greeting) {
+        print(greeting + arg);
+    }
+}
+
+
+shared void testWithAssertion() {
+    WithAssertion("Hello").do("Hello");
+    WithAssertion.withGreeting("Hello").do("Hello");
+}

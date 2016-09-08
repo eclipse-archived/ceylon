@@ -18,6 +18,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.checkNotJvm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getContainingClassOrInterface;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeader;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getRealScope;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getVarianceMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionOfSupertypes;
@@ -947,8 +948,9 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         visitDeclaration(that, c, false);
         Type at;
-        if (scope instanceof Class) {
-            Class clazz = (Class) scope;
+        Scope realScope = getRealScope(scope);
+        if (realScope instanceof Class) {
+            Class clazz = (Class) realScope;
             Type ot = clazz.getType();
             c.setExtendedType(ot);
             at = c.appliedType(ot, NO_TYPE_ARGS);
