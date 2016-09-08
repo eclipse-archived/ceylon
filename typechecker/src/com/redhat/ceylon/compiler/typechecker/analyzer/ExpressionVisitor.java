@@ -7657,9 +7657,11 @@ public class ExpressionVisitor extends Visitor {
             td = unwrap(pt, that).getDeclaration();
         }
         if (td != null && td.isNativeImplementation()) {
-            TypeDeclaration _td = (TypeDeclaration)ModelUtil.getNativeHeader(td);
-            if (_td != null) {
-                td = _td;
+            TypeDeclaration header = 
+                    (TypeDeclaration)
+                        getNativeHeader(td);
+            if (header!=null) {
+                td = header;
             }
         }
         return td;
@@ -7719,10 +7721,11 @@ public class ExpressionVisitor extends Visitor {
                         getTypeArguments(tal, 
                                 pt.getQualifyingType(), 
                                 params);
-                acceptsTypeArguments(type, null, typeArgs, 
-                        tal, that);
+                acceptsTypeArguments(type, null, 
+                        typeArgs, tal, that);
             }
-            if (pt.isTypeConstructor() && !that.getMetamodel()) {
+            if (pt.isTypeConstructor() 
+                    && !that.getMetamodel()) {
                 checkNotJvm(that, 
                         "type functions are not supported on the JVM");
             }
