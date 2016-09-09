@@ -54,6 +54,11 @@ public class FlatRepository extends DefaultRepository {
         return new FlatArtifactResult(this, manager, node);
     }
     
+    @Override
+    public boolean supportsNamespace(String searchedNamespace) {
+        return true;
+    }
+    
     protected static class FlatArtifactResult extends DefaultArtifactResult {
 
         public FlatArtifactResult(CmrRepository repository, RepositoryManager manager, Node node) {

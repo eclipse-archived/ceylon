@@ -443,20 +443,16 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         log.debug("Looking for " + context);
 
         for (CmrRepository repository : repositories) {
-            if (context.getNamespace() != null
-                    && !context.getNamespace().equals(repository.getNamespace())) {
-                log.debug("  -> Skipping repo that does not handle namespace: " + context.getNamespace());
-                continue;
-            }
-            if (context.getNamespace() == null &&
-                    repository.getNamespace() != null &&
-                    !DefaultRepository.NAMESPACE.equals(repository.getNamespace())) {
-                log.debug("  -> Skipping non-Ceylon repo for Ceylon lookup");
+            log.debug(" Looking in " + repository);
+            if(!repository.supportsNamespace(context.getNamespace())){
+                log.debug(" -> does not support namespace "+context.getNamespace());
                 continue;
             }
             Node child = fromRepository(repository, context, addLeaf);
-            if (child != null)
+            if (child != null){
+                log.debug(" -> Found");
                 return child;
+            }
 
             log.debug("  -> Not Found");
         }

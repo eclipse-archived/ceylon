@@ -827,4 +827,18 @@ public abstract class AbstractRepository implements CmrRepository {
     protected Overrides getOverrides(){
         return getRoot().getService(Overrides.class);
     }
+    
+    @Override
+    public boolean supportsNamespace(String searchedNamespace) {
+        if (searchedNamespace != null
+                && !searchedNamespace.equals(getNamespace())) {
+            return false;
+        }
+        if (searchedNamespace == null &&
+                getNamespace() != null &&
+                !DefaultRepository.NAMESPACE.equals(getNamespace())) {
+            return false;
+        }
+        return true;
+    }
 }
