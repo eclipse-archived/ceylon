@@ -92,6 +92,10 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 		return jdkProvider.isJDKModule(moduleName);
 	}
 
+	protected boolean isProvided(String moduleName, String version) {
+	    return false;
+	}
+
 	private boolean internalLoadModule(String namespace, String name, String version) throws IOException {
         String key = name + "/" + version;
         if(loadedModules.containsKey(key))
@@ -102,6 +106,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
             loadedModules.put(key, null);
             return true;
         }
+        boolean provided = isProvided(name, version);
         // remember which version we loaded
         SortedSet<String> loadedVersions = loadedModuleVersions.get(name);
         if(loadedVersions == null){
@@ -110,6 +115,8 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         }
         loadedVersions.add(version);
         
+        // Resolve even provided modules but not their dependencies since they're meaningless
+        // because they can change on the container
         RepositoryManager repositoryManager = getRepositoryManager();
         ArtifactContext artifactContext = new ArtifactContext(namespace, name, version, ArtifactContext.CAR, ArtifactContext.JAR);
         ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
@@ -121,7 +128,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         }
         // save even missing optional modules as nulls to not re-resolve them
         loadedModules.put(key, result);
-        if(result != null){
+        if(result != null && !provided){
             for(ArtifactResult dep : result.dependencies()){
                 if(dep.importType() != ImportType.OPTIONAL){
                     internalLoadModule(dep.namespace(), dep.name(), dep.version());

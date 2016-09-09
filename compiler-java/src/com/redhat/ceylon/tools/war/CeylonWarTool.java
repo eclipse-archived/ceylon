@@ -11,9 +11,11 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 
@@ -22,12 +24,14 @@ import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
+import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 
 @Summary("Generates a WAR file from a compiled `.car` file")
@@ -53,6 +57,21 @@ public class CeylonWarTool extends ModuleLoadingTool {
 
     static final String WAR_MODULE = "com.redhat.ceylon.war";
     
+    private String moduleNameOptVersion;
+    private final List<EntrySpec> entrySpecs = new ArrayList<>();
+    private final List<String> excludedModules = new ArrayList<>();
+    private final List<String> providedModules = new ArrayList<>();
+    private String out = null;
+    private String name = null;
+    private String resourceRoot;
+    private boolean staticMetamodel;
+    
+    @Option(longName="static-metamodel")
+    @Description("Generate a static metamodel, skip the WarInitializer (default: false).")
+    public void setStaticMetamodel(boolean staticMetamodel) {
+        this.staticMetamodel = staticMetamodel;
+    }
+
     @Argument(argumentName="module-with-version", multiplicity = "1")
     public void setModule(String module) {
         this.moduleNameOptVersion = module;
@@ -101,26 +120,58 @@ public class CeylonWarTool extends ModuleLoadingTool {
             }
         }
     }
-    
+
+    @OptionArgument(argumentName="moduleOrFile", shortName='p')
+    @Description("Excludes modules from the WAR file by treating them as provided. Can be a module name or " + 
+            "a file containing module names. Can be specified multiple times. Note that "+
+            "this excludes the module from the WAR file, but if your modules require that "+
+            "module to be present at runtime it will still be required and may cause your "+
+            "application to fail to start if it is not provided at runtime. The only difference "+
+            "between this and `--exclude-module` is that provided modules are listed in the metamodel.")
+    public void setProvidedModule(List<String> exclusions) {
+        for (String each : exclusions) {
+            File xFile = new File(each);
+            if (xFile.exists() && xFile.isFile()) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(xFile))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        this.providedModules.add(line);
+                    }
+                } catch (IOException e) {
+                    throw new ToolUsageError(CeylonWarMessages.msg("exclude.file.failure", each), 
+                            e);
+                }
+            } else {
+                this.providedModules.add(each);
+            }
+        }
+    }
+
     @Override
     public void run() throws Exception {
         final String moduleName = ModuleUtil.moduleName(this.moduleNameOptVersion);
         final String moduleVersion = moduleVersion(this.moduleNameOptVersion);
         final Properties properties = new Properties();
         
-        if (!loadModule(null, moduleName, moduleVersion) ||
-                !loadModule(null, WAR_MODULE, Versions.CEYLON_VERSION_NUMBER)) {
+        if (!loadModule(null, moduleName, moduleVersion)) {
             throw new ToolUsageError(CeylonWarMessages.msg("abort.missing.modules"));
         }
-        
-        addLibEntries();
+        // only require the war module if not using a static metamodel
+        if (!staticMetamodel
+                && !loadModule(null, WAR_MODULE, Versions.CEYLON_VERSION_NUMBER)) {
+            throw new ToolUsageError(CeylonWarMessages.msg("abort.missing.modules"));
+        }
+
+        List<ArtifactResult> staticMetamodelEntries = new ArrayList<>(this.loadedModules.size());
+        addLibEntries(staticMetamodelEntries);
         
         properties.setProperty("moduleName", moduleName);
         properties.setProperty("moduleVersion", moduleVersion);
         
         addSpec(new PropertiesEntrySpec(properties, "META-INF/module.properties"));    
         
-        if (!addResources(entrySpecs)) {
+        if (!addResources(entrySpecs) && !staticMetamodel) {
+            // we only add this if there's no static metamodel
             debug("adding.entry", "default web.xml");
             addSpec(new URLEntrySpec(CeylonWarTool.class
                             .getClassLoader()
@@ -134,7 +185,7 @@ public class CeylonWarTool extends ModuleLoadingTool {
         }
         
         final File jarFile = applyCwd(this.out == null ? new File(this.name) : new File(this.out, this.name));
-        writeJarFile(jarFile);
+        writeJarFile(jarFile, staticMetamodelEntries);
                 
         append(CeylonWarMessages.msg("archive.created", moduleName, moduleVersion, jarFile.getAbsolutePath()));
         newline();
@@ -146,6 +197,12 @@ public class CeylonWarTool extends ModuleLoadingTool {
                 this.excludedModules.contains(moduleName);
     }
 
+    @Override
+    protected boolean isProvided(String moduleName, String version) {
+        return super.isProvided(moduleName, version)
+                || this.providedModules.contains(moduleName);
+    }
+    
     protected void addSpec(EntrySpec spec) {
         debug("adding.entry", spec.name);
         this.entrySpecs.add(spec);
@@ -208,15 +265,20 @@ public class CeylonWarTool extends ModuleLoadingTool {
         return webXmlAdded;
     }
     
-    protected void addLibEntries() throws MalformedURLException { 
+    protected void addLibEntries(List<ArtifactResult> staticMetamodelEntries) throws MalformedURLException { 
         final List<String> libs = new ArrayList<>();
 
         for (Map.Entry<String, ArtifactResult> entry : this.loadedModules.entrySet()) {
-                ArtifactResult module = entry.getValue();
+            ArtifactResult module = entry.getValue();
             if (module == null) {
                 // it's an optional, missing module (likely java.*) 
                 continue;
             }
+            staticMetamodelEntries.add(module);
+            
+            // write the metamodel, but not the jar, for provided modules
+            if(isProvided(module.name(), module.version()))
+                continue;
             
             final File artifact = module.artifact();
             final String moduleName = entry.getKey();
@@ -243,13 +305,19 @@ public class CeylonWarTool extends ModuleLoadingTool {
         addSpec(new StringEntrySpec(libList.toString(), "META-INF/libs.txt"));
     }
     
-    protected void writeJarFile(File jarFile) throws IOException {
+    protected void writeJarFile(File jarFile, List<ArtifactResult> staticMetamodelEntries) throws IOException {
         try (JarOutputStream out = 
                 new JarOutputStream(new 
                         BufferedOutputStream(new 
                                 FileOutputStream(jarFile)))) {
             for (EntrySpec entry : entrySpecs) {
                 entry.write(out);
+            }
+            if(staticMetamodel){
+                // FIXME: this is not done properly
+                Set<String> added = new HashSet<>();
+                JvmBackendUtil.writeStaticMetamodel(out, added, staticMetamodelEntries, jdkProvider, 
+                        new HashSet<>(providedModules));
             }
         }
     }
@@ -314,11 +382,4 @@ public class CeylonWarTool extends ModuleLoadingTool {
         
         final private Properties properties;
     }
-    
-    private String moduleNameOptVersion;
-    private final List<EntrySpec> entrySpecs = new ArrayList<>();
-    private final List<String> excludedModules = new ArrayList<>();
-    private String out = null;
-    private String name = null;
-    private String resourceRoot;
 }

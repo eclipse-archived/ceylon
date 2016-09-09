@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
@@ -185,7 +186,8 @@ public class CeylonFatJarTool extends ModuleLoadingTool {
                     }
                 }
             }
-            JvmBackendUtil.writeStaticMetamodel(zipFile, added, staticMetamodelEntries, jdkProvider);
+            JvmBackendUtil.writeStaticMetamodel(zipFile, added, staticMetamodelEntries, jdkProvider,
+                    Collections.<String>emptySet());
             zipFile.flush();
         }
         flush();
