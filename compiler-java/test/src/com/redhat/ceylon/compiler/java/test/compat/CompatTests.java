@@ -133,10 +133,10 @@ public class CompatTests extends CompilerTests {
         
         // with the default upgrade dist behaviour
         runInJBossModules("run", "depends120", 
-        		Arrays.asList("--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules"),
+        		Arrays.asList("--rep", "modules", "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules"),
         		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
         runInJBossModules("run", "depends120", 
-        		Arrays.asList("--flat-classpath", "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules"),
+        		Arrays.asList("--flat-classpath", "--rep", "modules", "--rep", "test/src/com/redhat/ceylon/compiler/java/test/compat/modules"),
         		Arrays.asList(Versions.CEYLON_VERSION_NUMBER), null, null);
         runInMainApi("test/src/com/redhat/ceylon/compiler/java/test/compat/modules", 
                 new ModuleSpec("depends120", "1.0.0"), "depends120.run_", Arrays.asList(Versions.CEYLON_VERSION_NUMBER), false);

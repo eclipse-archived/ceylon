@@ -1182,6 +1182,8 @@ public abstract class CompilerTests {
         a.add("--sysrep");
         a.add(getSysRepPath());
         a.add("--rep");
+        a.add("modules");
+        a.add("--rep");
         a.add(rep);
         if (distDowngrade) {
             a.add("--link-with-current-distribution");
