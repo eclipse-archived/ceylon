@@ -450,11 +450,13 @@ public class JvmBackendUtil {
         meta.mkdirs();
         File metamodel = new File(meta, "metamodel");
         try(FileWriter ret = new FileWriter(metamodel)){
-            writeStaticMetamodel(ret, entries, jdkProvider);
+            writeStaticMetamodel(ret, entries, jdkProvider, Collections.<String>emptySet());
         }
     }
 
-    public static void writeStaticMetamodel(ZipOutputStream outputZip, Set<String> added, List<ArtifactResult> entries, JdkProvider jdkProvider) throws IOException {
+    public static void writeStaticMetamodel(ZipOutputStream outputZip, Set<String> added, 
+            List<ArtifactResult> entries, JdkProvider jdkProvider,
+            Set<String> providedModules) throws IOException {
         if(added.add("META-INF/")){
             ZipEntry entry = new ZipEntry("META-INF/");
             outputZip.putNextEntry(entry);
@@ -466,10 +468,10 @@ public class JvmBackendUtil {
         outputZip.putNextEntry(new ZipEntry("META-INF/ceylon/metamodel"));
         Writer ret = new OutputStreamWriter(outputZip);
 
-        writeStaticMetamodel(ret, entries, jdkProvider);
+        writeStaticMetamodel(ret, entries, jdkProvider, providedModules);
     }
 
-    private static void writeStaticMetamodel(Writer ret, List<ArtifactResult> entries, JdkProvider jdkProvider) throws IOException {
+    private static void writeStaticMetamodel(Writer ret, List<ArtifactResult> entries, JdkProvider jdkProvider, Set<String> providedModules) throws IOException {
         if(jdkProvider.isAlternateJdk()){
             for (String jdkModule : jdkProvider.getJDKModuleNames()) {
                 ret.write("="+jdkModule+"/"+jdkProvider.getJDKVersion()+"\n");
@@ -480,23 +482,26 @@ public class JvmBackendUtil {
         }
 
         for(ArtifactResult entry : entries){
-            writeStaticMetamodel(ret, entry, jdkProvider);
+            writeStaticMetamodel(ret, entry, jdkProvider, providedModules);
         }
         ret.flush();
     }
 
-    private static void writeStaticMetamodel(Writer metamodelOs, ArtifactResult entry, JdkProvider jdkProvider) throws IOException {
+    private static void writeStaticMetamodel(Writer metamodelOs, ArtifactResult entry, JdkProvider jdkProvider, Set<String> providedModules) throws IOException {
         metamodelOs.write("="+entry.name()+"/"+entry.version()+"\n");
-        for (ArtifactResult dep : entry.dependencies()) {
-            switch(dep.importType()){
-            case EXPORT:
-                metamodelOs.write("+");
-                break;
-            case OPTIONAL:
-                metamodelOs.write("?");
-                break;
+        // skip dependencies of provided modules as they're not trusted
+        if(!providedModules.contains(entry.name())){
+            for (ArtifactResult dep : entry.dependencies()) {
+                switch(dep.importType()){
+                case EXPORT:
+                    metamodelOs.write("+");
+                    break;
+                case OPTIONAL:
+                    metamodelOs.write("?");
+                    break;
+                }
+                metamodelOs.write(dep.name()+"/"+dep.version()+"\n");
             }
-            metamodelOs.write(dep.name()+"/"+dep.version()+"\n");
         }
         listPackages(metamodelOs, entry.name(), entry.artifact(), jdkProvider);
     }
@@ -745,6 +750,11 @@ public class JvmBackendUtil {
                 } catch (URISyntaxException e) {
                     throw new RuntimeException(e);
                 }
+            }
+            
+            @Override
+            public String toString() {
+                return "StaticMetamodelArtifact for module "+name+"/"+version;
             }
         };
         staticMetamodelLoader.loadModule(module.getName(), module.getVersion(), artifact);
