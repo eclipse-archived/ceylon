@@ -727,8 +727,14 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     // either no repositories are specified or that the default
     // output repository (normally "modules") is one of them
     private boolean compilationPossible() {
-        return repos == null ||
-                getRepositoryAsStrings().contains(DefaultToolOptions.getCompilerOutputRepo());
+        if (repos != null) {
+            List<File> files = FileUtil.pathsToFileList(getRepositoryAsStrings());
+            File out = new File(DefaultToolOptions.getCompilerOutputRepo(), "dummy");
+            File path = FileUtil.selectPath(files, out.getPath());
+            return path != null;
+        } else {
+            return true;
+        }
     }
     
     protected List<String> getCompilerFlags() {
