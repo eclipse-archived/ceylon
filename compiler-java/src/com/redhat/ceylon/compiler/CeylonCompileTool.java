@@ -569,7 +569,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add(EnumUtil.enumsToString(suppressWarnings));
         }
         
-        addJavacArguments(arguments);
+        addJavacArguments(arguments, javac);
         
         List<File> srcs = applyCwd(this.sources);
         List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles, Backend.Java);
@@ -647,7 +647,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         }
     }
 
-    private void addJavacArguments(List<String> arguments) {
+    public static void addJavacArguments(List<String> arguments, List<String> javac) {
         Helper helper = new Helper();
         for (String argument : javac) {
             helper.lastError = null;
