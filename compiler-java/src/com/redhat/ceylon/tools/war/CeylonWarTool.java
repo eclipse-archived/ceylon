@@ -45,13 +45,27 @@ import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
         + "the generated WAR file. Dependencies which are provided by "
         + "the application container "
         + "(and thus not required to be in `WEB-INF/lib`) can be "
-        + "excluded using `--exclude-module`.")
-@RemainingSections( "## Overriding web.xml\n\n" +
+        + "excluded using `--provided-module`.")
+@RemainingSections( "## Static metamodel or WarInitializer \n\n" +
+        "Ceylon can set up the run-time metamodel using either " +
+        "a listener " + 
+        "(ceylon.war.WarInitializer) that is " +
+        "set in the default web.xml. Or by generating a static metamodel " + 
+        "file.\n\n" +
+        "## Static metamodel \n\n" +
+        "If you want to run on WildFly or other application servers that remove provided jars from "+
+        "the `lib/` folder, you should try the `--static-metamodel` argument and marking your provided "+
+        "modules with `--provided-module`.\n\n"+
+        "## WarInitializer \n\n" +
+        "On non-WildFly application servers you should leave `ceylon war` do the default of generating "+
+        "a `web.xml` file for you which will call the `WarInitializer` listener to set up the metamodel "+
+        "based on the contents of the `lib/` folder at run-time.\n\n"+
+        "### Overriding web.xml\n\n" +
         "If you provide a custom `WEB-INF/web.xml` file in your WAR " +
         "resource-root, you'll need to include the listener " + 
         "(ceylon.war.WarInitializer) that is " +
         "set in the default web.xml. Without that listener, the " + 
-        "metamodel will not be properly initialized.\n\n" + 
+        "metamodel will not be properly initialized.\n\n"+
         OutputRepoUsingTool.DOCSECTION_REPOSITORIES)
 public class CeylonWarTool extends ModuleLoadingTool {
 
