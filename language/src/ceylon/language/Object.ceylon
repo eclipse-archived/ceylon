@@ -85,7 +85,7 @@ shared abstract class Object()
      bits with the 32 highest-order bits, before returning
      the value to the caller."
     see (`function identityHash`)
-    shared formal Integer hash;
+    shared formal small Integer hash;
     
     "A developer-friendly string representing the instance. 
      Concatenates the name of the concrete class of the 
