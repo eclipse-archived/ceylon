@@ -50,6 +50,12 @@ public class FlatRepository extends DefaultRepository {
     }
     
     @Override
+    public String[] getArtifactNames(ArtifactContext context) {
+        String replacedName = context.getName().replace(':', '.');
+        return getArtifactNames(replacedName, context.getVersion(), context.getSuffixes());
+    }
+    
+    @Override
     protected ArtifactResult getArtifactResultInternal(RepositoryManager manager, Node node) {
         return new FlatArtifactResult(this, manager, node);
     }

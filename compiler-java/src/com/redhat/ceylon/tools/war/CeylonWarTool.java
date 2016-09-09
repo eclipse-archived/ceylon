@@ -223,7 +223,7 @@ public class CeylonWarTool extends ModuleLoadingTool {
 
             // use "-" for the version separator
             // use ".jar" so they'll get loaded by the container classloader
-            final String name = ModuleUtil.moduleName(moduleName)
+            final String name = ModuleUtil.moduleName(moduleName).replace(":", ".")
                                     + "-" + ModuleUtil.moduleVersion(moduleName) + ".jar";
             if (name.contains("/") || name.contains("\\") || name.length() == 0) {
                 throw new ToolUsageError(CeylonWarMessages.msg("module.name.illegal", name));
