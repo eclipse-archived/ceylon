@@ -822,8 +822,10 @@ shared interface List<out Element=Anything>
         
         assert (length>=0);
         assert (0<=from<=outer.size);
+
+        value exactLength => smallest(length, outer.size-from);
         
-        size => outer.size+list.size-length;
+        size => outer.size+list.size-exactLength;
         
         lastIndex 
                 => let (size = this.size) 
@@ -835,9 +837,9 @@ shared interface List<out Element=Anything>
                 else if (index-from<list.size) then
                     list.getFromFirst(index-from)
                 else
-                    outer.getFromFirst(index-list.size+length);
+                    outer.getFromFirst(index-list.size+exactLength);
         
-        clone() => outer.clone().Patch(list.clone(),from,length);
+        clone() => outer.clone().Patch(list.clone(),from,exactLength);
         
         iterator() 
                 => let (iter = outer.iterator(), 
@@ -846,7 +848,7 @@ shared interface List<out Element=Anything>
                 variable value index = -1;
                 shared actual Element|Other|Finished next() {
                     if (++index==from) {
-                        for (skip in 0:length) {
+                        for (skip in 0:exactLength) {
                             iter.next();
                         }
                     }

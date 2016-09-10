@@ -164,6 +164,10 @@ shared void lists() {
     check("hellogoodbye".patch(" ", 5)=="hello goodbye".sequence(), "list patch 2");
     check((1..10).patch([1,0,-1],5)==[1,2,3,4,5,1,0,-1,6,7,8,9,10], "list patch 3");
     check((1..10).patch([],1,8)==[1,10], "list patch 4");
+    check([].patch([0], 0, 0) == [0], "list patch 5");
+    check([].patch([0], 0, 1) == [0], "list patch 6");
+    check([].patch([0], 0, 2) == [0], "list patch 7");
+    check([].patch([0], 0, 100).size == 1, "list patch 8");
     
     check ((1..5).append(4..1)==[1,2,3,4,5,4,3,2,1], "list append");
     check ((1..5).prepend(5..0)==[5,4,3,2,1,0,1,2,3,4,5], "list prepend ``(1..5).prepend(5..0)``");
