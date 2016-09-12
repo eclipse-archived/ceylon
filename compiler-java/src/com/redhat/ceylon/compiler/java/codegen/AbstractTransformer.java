@@ -575,10 +575,11 @@ public abstract class AbstractTransformer implements Transformation {
             Type type = declarationModel.getType();
             JCStatement transStat;
             HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getExpression());
+            int flags = CodegenUtil.downcastForSmall(expression.getExpression(), declarationModel) ? ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK : 0;
             if (error != null) {
                 transStat = this.makeThrowUnresolvedCompilationError(error);
             } else {
-                transStat = make().Return(expressionGen().transformExpression(expression.getExpression(), boxing, type));
+                transStat = make().Return(expressionGen().transformExpression(expression.getExpression(), boxing, type, flags));
             }
             stats = List.<JCStatement>of(transStat);
         }

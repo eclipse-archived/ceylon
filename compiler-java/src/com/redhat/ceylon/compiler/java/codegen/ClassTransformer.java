@@ -3444,6 +3444,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (decl.getSpecifierOrInitializerExpression() != null) {
                 Tree.Expression expression = decl.getSpecifierOrInitializerExpression().getExpression();
                 HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getTerm());
+                int flags = CodegenUtil.downcastForSmall(expression, model) ? ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK : 0;
                 if (error != null) {
                     initialValue = null;
                     err = makeThrowUnresolvedCompilationError(error.getErrorMessage().getMessage());
@@ -3451,7 +3452,7 @@ public class ClassTransformer extends AbstractTransformer {
                     Value declarationModel = model;
                     initialValue = expressionGen().transformExpression(expression, 
                             CodegenUtil.getBoxingStrategy(declarationModel), 
-                            nonWideningType);
+                            nonWideningType, flags);
                 }
             }
 
@@ -3699,6 +3700,9 @@ public class ClassTransformer extends AbstractTransformer {
                     int flags = 0;
                     if(declarationModel.hasUncheckedNullType())
                         flags |= ExpressionTransformer.EXPR_TARGET_ACCEPTS_NULL;
+                    if (CodegenUtil.downcastForSmall(specOrInit.getExpression(), decl.getDeclarationModel()))
+                        flags |=  ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK;
+                    
                     JCExpression expr = expressionGen().transformExpression(specOrInit.getExpression(), 
                             CodegenUtil.getBoxingStrategy(declarationModel), 
                             nonWideningType,
@@ -4367,6 +4371,16 @@ public class ClassTransformer extends AbstractTransformer {
             // The innermost of an MPL method declared void needs to return null
             returnNull = Decl.isUnboxedVoid(model) && Decl.isMpl(model);
         }
+        
+        if (CodegenUtil.downcastForSmall(term, model)) {
+            bodyExpr = expressionGen().applyErasureAndBoxing(bodyExpr, term.getTypeModel(),
+                    false,
+                    !CodegenUtil.isUnBoxed(term), 
+                    CodegenUtil.getBoxingStrategy(model), 
+                    model.getType(),
+                    ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK);
+        }
+        
         List<JCStatement> body;
         if (!Decl.isUnboxedVoid(model)
                 || Decl.isMpl(model)

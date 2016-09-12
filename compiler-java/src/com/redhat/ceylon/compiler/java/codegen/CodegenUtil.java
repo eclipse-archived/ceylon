@@ -460,4 +460,9 @@ public class CodegenUtil {
         }
         return false;
     }
+    
+    public static boolean downcastForSmall(Tree.Term expr, Declaration decl) {
+        return !expr.getSmall() && (Decl.isSmall(decl)
+                || Decl.isSmall(decl.getRefinedDeclaration()));
+    }
 }

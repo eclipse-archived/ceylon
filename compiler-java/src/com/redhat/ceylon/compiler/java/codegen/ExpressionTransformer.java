@@ -272,6 +272,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         int flags = 0;
         if(declaration.hasUncheckedNullType())
             flags = ExpressionTransformer.EXPR_TARGET_ACCEPTS_NULL;
+        if (CodegenUtil.downcastForSmall(expr, declaration)) 
+            flags |= ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK;
         return transformExpression(expr, boxing, nonWideningType, flags);
     }
 
@@ -3000,6 +3002,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (invocation.erasedArgument(unwrapExpressionUntilTerm(expr))) {
                 flags |= EXPR_DOWN_CAST;
             }
+            if (!expr.getSmall() && invocation.getParameterSmall(argIndex)) {
+                flags |=  ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK;
+            }
             JCExpression ret = transformExpression(expr, 
                     boxingStrategy, 
                     type, flags);
@@ -5681,8 +5686,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
                 targetType = nonWideningType(typedRef, nonWideningTypedRef);
             }
+            int flags = decl.hasUncheckedNullType() ? EXPR_TARGET_ACCEPTS_NULL : 0;
+            flags |= leftTerm.getSmall() && !rightTerm.getSmall() ? EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK : 0;
             rhs = transformExpression(rightTerm, boxing, targetType, 
-                                      decl.hasUncheckedNullType() ? EXPR_TARGET_ACCEPTS_NULL : 0);
+                                      flags);
         } else if (leftTerm instanceof Tree.IndexExpression) {
             Tree.IndexExpression idx = (Tree.IndexExpression)leftTerm;
             Unit unit = op.getUnit();

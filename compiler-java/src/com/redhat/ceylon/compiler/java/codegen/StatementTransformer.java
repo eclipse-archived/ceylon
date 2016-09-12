@@ -3506,9 +3506,10 @@ public class StatementTransformer extends AbstractTransformer {
                 if (error != null) {
                     return List.<JCStatement>of(this.makeThrowUnresolvedCompilationError(error));
                 }
+                int flags = CodegenUtil.downcastForSmall(initOrSpec.getExpression(), decl.getDeclarationModel()) ? ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK : 0;
                 initialValue = expressionGen().transformExpression(initOrSpec.getExpression(), 
                         CodegenUtil.getBoxingStrategy(decl.getDeclarationModel()), 
-                        decl.getDeclarationModel().getType());
+                        decl.getDeclarationModel().getType(), flags);
             } else if (decl.getDeclarationModel().isVariable()) {
                 // Java's definite initialization doesn't always work 
                 // so give variable attribute declarations without 
@@ -3615,7 +3616,8 @@ public class StatementTransformer extends AbstractTransformer {
                     noExpressionlessReturn = false;
                     // we can cast to TypedDeclaration here because return with expressions are only in Function or Value
                     TypedDeclaration declaration = (TypedDeclaration)ret.getDeclaration();
-                    returnExpr = expressionGen().transformExpression(declaration, expr.getTerm());
+                    returnExpr = expressionGen().transformExpression(declaration, 
+                            expr.getTerm());
                     // make sure all returns from hash are properly turned into ints
                     returnExpr = convertToIntIfHashAttribute(declaration, returnExpr);
                 } finally {

@@ -679,6 +679,10 @@ public class MethodDefinitionBuilder
         if(method.isActual()
                 && CodegenUtil.hasTypeErased(method))
             flags |= AbstractTransformer.JT_RAW;
+        if (method.isShortcutRefinement()
+                && Decl.isSmall(method.getRefinedDeclaration())) {
+            flags |= AbstractTransformer.JT_SMALL;
+        }
         return resultType(makeResultType(nonWideningTypedRef.getDeclaration(), nonWideningType, flags), method);
     }
     
