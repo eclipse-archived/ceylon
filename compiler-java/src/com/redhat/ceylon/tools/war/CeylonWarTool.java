@@ -198,11 +198,15 @@ public class CeylonWarTool extends ModuleLoadingTool {
             debug("default.name", this.name);
         }
         
-        final File jarFile = applyCwd(this.out == null ? new File(this.name) : new File(this.out, this.name));
+        final File jarFile = getJarFile();
         writeJarFile(jarFile, staticMetamodelEntries);
                 
         append(CeylonWarMessages.msg("archive.created", moduleName, moduleVersion, jarFile.getAbsolutePath()));
         newline();
+    }
+
+    protected File getJarFile() {
+        return applyCwd(this.out == null ? new File(this.name) : new File(this.out, this.name));
     }
 
     @Override
