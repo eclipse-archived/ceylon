@@ -27,14 +27,17 @@ How to do a release of Ceylon.
 
 # The release
 
-1. Tag every project
+1. Create a release branch
+  - $ git checkout -b version-**1.2.1**
+  - $ git push --set-upstream origin version-**1.2.1**
+2. Tag every project
   -  $ git tag **1.2.1**
   -  $ git push --tags
-2. Do the release zip
+3. Do the release zip
   -  $ mkdir /tmp/ceylon
   -  $ docker pull ceylon/ceylon-build
   -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build **1.2.1**
-3. Copy the zip to downloads.ceylon-lang.org:
+4. Copy the zip to downloads.ceylon-lang.org:
   -  $ scp /tmp/ceylon/ceylon-**1.2.1**.zip **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 
 # Build the Debian file
