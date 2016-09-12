@@ -116,6 +116,10 @@ public class StructureTests extends CompilerTests {
         compareWithJavaSource("attribute/SmallInteger");
     }
     @Test
+    public void testAtrSmallConversion(){
+        compareWithJavaSource("attribute/SmallConversion");
+    }
+    @Test
     public void testAtrSmallFloat(){
         compareWithJavaSource("attribute/SmallFloat");
     }
