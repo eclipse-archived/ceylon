@@ -357,14 +357,16 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     @Override
     public boolean isSameFile(ArtifactContext context, File srcFile) throws RepositoryException {
         boolean same = false;
-        Node dstParent = getOrCreateParent(context);
-        Node newChild = dstParent.getChild(srcFile.getName());
-        if (newChild != null) {
-            try {
-                File existing = newChild.getContent(File.class);
-                same = FileUtil.sameFile(srcFile, existing);
-            } catch (IOException e) {
-                throw new RepositoryException(e);
+        if (!cache.getRoot().isRemote()) {
+            Node dstParent = getOrCreateParent(context);
+            Node newChild = dstParent.getChild(srcFile.getName());
+            if (newChild != null) {
+                try {
+                    File existing = newChild.getContent(File.class);
+                    same = FileUtil.sameFile(srcFile, existing);
+                } catch (IOException e) {
+                    throw new RepositoryException(e);
+                }
             }
         }
         return same;
