@@ -12,14 +12,14 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 public class JBossModuleLoader extends BaseModuleLoaderImpl {
 
     public JBossModuleLoader() {
-        this(null);
+        this(null, null);
     }
 
     /*
      * Used by reflection in com.redhat.ceylon.common.tool.ToolLoader
      */
-    public JBossModuleLoader(ClassLoader delegateClassLoader) {
-        this(null, delegateClassLoader, false);
+    public JBossModuleLoader(RepositoryManager repoManager, ClassLoader delegateClassLoader) {
+        this(repoManager, delegateClassLoader, false);
     }
 
     public JBossModuleLoader(RepositoryManager repositoryManager, ClassLoader delegateClassLoader, boolean verbose) {
