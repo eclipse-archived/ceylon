@@ -54,7 +54,7 @@ import com.redhat.ceylon.common.Versions;
  */
 public class Bootstrap {
 
-    public static final String CEYLON_DOWNLOAD_BASE_URL = "https://downloads.ceylon-lang.org/cli/";
+    public static final String CEYLON_DOWNLOAD_BASE_URL = "https://ceylon-lang.org/download/dist/";
     
     public static final String FILE_BOOTSTRAP_PROPERTIES = "ceylon-bootstrap.properties";
     public static final String FILE_BOOTSTRAP_JAR = "ceylon-bootstrap.jar";
@@ -375,7 +375,7 @@ public class Bootstrap {
         if (uri.getScheme() != null) {
             return uri;
         } else {
-            return new URI(CEYLON_DOWNLOAD_BASE_URL + "ceylon-" + dist + ".zip");
+            return new URI(CEYLON_DOWNLOAD_BASE_URL + dist.replace('.', '_'));
         }
     }
     

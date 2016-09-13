@@ -165,7 +165,7 @@ public class CeylonBootstrapTool extends CeylonBaseTool {
             } else {
                 version = Versions.CEYLON_VERSION_NUMBER;
             }
-            return new URI(Bootstrap.CEYLON_DOWNLOAD_BASE_URL + "ceylon-" + version + ".zip");
+            return new URI(Bootstrap.CEYLON_DOWNLOAD_BASE_URL + version.replace('.', '_'));
         } else {
             return distribution;
         }
