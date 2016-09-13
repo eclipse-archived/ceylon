@@ -75,9 +75,9 @@
  - `ranged[x..y]==ranged[x:n]`."
 see (`interface List`, 
      `interface Sequence`, 
-     `class String`)
-shared interface Ranged<in Index, out Element, out Subrange> 
-        of Subrange
+     `class String`, 
+     `class StringBuilder`)
+shared interface Ranged<in Index, out Element, out Subrange>
         satisfies {Element*}
         given Subrange satisfies Ranged<Index,Element,Subrange> {
     

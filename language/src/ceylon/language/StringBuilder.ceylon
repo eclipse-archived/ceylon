@@ -18,6 +18,7 @@ import java.lang {
 tagged("Strings")
 shared native final class StringBuilder() 
         satisfies SearchableList<Character> &
+                  Ranged<Integer,Character,String> &
                   IndexedCorrespondenceMutator<Character> { 
     
     "The number of characters in the current content, that 
@@ -229,6 +230,7 @@ shared native final class StringBuilder()
 
 shared native("jvm") final class StringBuilder() 
         satisfies SearchableList<Character> &
+                  Ranged<Integer,Character,String> &
                   IndexedCorrespondenceMutator<Character> {
     
     value builder = JStringBuilder();
@@ -586,6 +588,7 @@ shared native("jvm") final class StringBuilder()
 
 shared native("js") final class StringBuilder() 
         satisfies SearchableList<Character> &
+                  Ranged<Integer,Character,String> &
                   IndexedCorrespondenceMutator<Character> {
     
     shared actual native("js") variable String string = "";
