@@ -46,7 +46,7 @@ class RepositoryBuilderImpl implements RepositoryBuilder {
     private static final LocalRepositoryBuilder localBuilder;
     
     static {
-        builders = ServiceLoader.load(RepositoryBuilder.class);
+        builders = ServiceLoader.load(RepositoryBuilder.class, RepositoryBuilderImpl.class.getClassLoader());
         localBuilder = new LocalRepositoryBuilder();
     }
     
