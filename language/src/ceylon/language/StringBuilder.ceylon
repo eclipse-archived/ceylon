@@ -19,15 +19,28 @@ tagged("Strings")
 shared native final class StringBuilder() 
         satisfies SearchableList<Character> { 
     
-    "The number characters in the current content, that is, 
-     the [[size|String.size]] of the produced [[string]]."
+    "The number of characters in the current content, that 
+     is, the [[size|String.size]] of the produced [[string]]."
     shared actual native Integer size;
+    
+    "Determines if the current content holds at least one
+     character."
+    shared actual native Boolean empty;
     
     shared actual native Integer? lastIndex;
     
     "The resulting string. If no characters have been
      appended, the empty string."
     shared actual native variable String string;
+    
+    "A copy of this `StringBuilder`, whose content is 
+     initially the same as the current content of this
+     instance."
+    shared actual StringBuilder clone() {
+        value clone = StringBuilder();
+        clone.string = string;
+        return clone;
+    }
     
     shared actual native Iterator<Character> iterator();
     
@@ -213,6 +226,9 @@ shared native("jvm") final class StringBuilder()
     
     shared actual native("jvm") Integer size 
             => builder.codePointCount(0, builder.length());
+    
+    shared actual native("jvm") Boolean empty
+            => builder.length() == 0;
     
     shared actual native("jvm") Integer? lastIndex 
             => if (builder.length() == 0)
@@ -565,6 +581,8 @@ shared native("js") final class StringBuilder()
     shared actual native("js") variable String string = "";
         
     shared actual native("js") Integer size => string.size;
+    
+    shared actual native("js") Boolean empty => string.empty;
     
     shared actual native("js") Integer? lastIndex 
             => if (string.size == 0)
