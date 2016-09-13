@@ -10,6 +10,7 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.AndroidUtil;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.RuntimeResolver;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
@@ -125,7 +126,8 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
                     findImport(module, dependency);
             if (depImport == null) {
                 ModuleImport moduleImport = 
-                        new ModuleImport(dep.namespace(), dependency, false, false, Backend.Java);
+                        new ModuleImport(dep.namespace(), dependency, dep.importType() == ImportType.OPTIONAL, 
+                            dep.importType() == ImportType.EXPORT, Backend.Java);
                 module.addImport(moduleImport);
             }
         }
