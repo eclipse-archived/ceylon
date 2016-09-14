@@ -9,21 +9,21 @@ a flexible and very readable syntax, a unique and uncommonly elegant
 static type system, a powerful module architecture, and excellent 
 tooling, including an awesome Eclipse-based IDE.
 
-Ceylon enables the development of cross-platform modules which 
-execute portably in both virtual machine environments. Alternatively, 
-a Ceylon module may target one or the other platform, in which case 
-it may interoperate with native code written for that platform.
+Ceylon enables the development of cross-platform modules which execute 
+portably in both virtual machine environments. Alternatively, a Ceylon 
+module may target one or the other platform, in which case it may 
+interoperate with native code written for that platform.
 
 Read more about Ceylon at <http://ceylon-lang.org>.
 
 ## First steps
 
-If you installed Ceylon using your system's or a third-party's package manager
-like apt-get, dnf, sdkman or brew there's nothing more for you to do, everything
-should just work fine.
+If you installed Ceylon using your system's or a third-party's package 
+manager like apt-get, dnf, sdkman or brew there's nothing more for you 
+to do, everything should just work fine.
 
-If on the other hand you downloaded and extracted the ZIP file you should see
-the following files and folders:
+If on the other hand you downloaded and extracted the ZIP file you 
+will see the following files and folders:
 
 - `bin`            - Unix/Windows commands
 - `contrib`        - Sample Ceylon command-line plugins
@@ -39,25 +39,30 @@ the following files and folders:
 - `NOTICE`         - 3rd party licenses
 - `README.md`      - This file
 
-The all-important `ceylon` command that is used for everything from compiling and
-running code to creating projects and copying modules can be found in the `bin`
-folder.
+The all-important `ceylon` command that is used for everything from 
+compiling and running code to creating projects and copying modules 
+can be found in the `bin` folder.
 
-For ease of use you might want to consider adding the `ceylon` command to
-your `PATH`. On Linux and Mac you can do this either by adding the `bin` folder to
-your `PATH` environment variable or by creating a symbolic link to `bin/ceylon`
-in an appropriate place like `~/bin`. On Windows you can search for "advanced system
-settings", click the "Environment Variables" button and add the path to the `bin`
-folder to the `PATH` variable.
+For ease of use you might want to consider adding the `ceylon` command 
+to your `PATH`.
 
-NB: If you don't add Ceylon to your path you will have to always type the path to
-the `bin/ceylon` command. So in every example that follows you'll need to change
-`ceylon` to `/path/to/unzipped/distribution/bin/ceylon`.
+- On Linux and Mac you can do this either by adding the `bin` folder 
+to your `PATH` environment variable or by creating a symbolic link to 
+`bin/ceylon` in an appropriate place like `~/bin`.
+
+- On Windows you can search for "advanced system settings", click the 
+"Environment Variables" button and add the path to the `bin` folder to 
+the `PATH` variable.
+
+NB: If you don't add Ceylon to your path you will have to always type 
+the path to the `bin/ceylon` command. So in every example that follows 
+you'll need to change `ceylon` to `/path/to/ceylon-1.3.0/bin/ceylon`.
 
 ## Trying it out
 
-To see if Ceylon was installed correctly type (the `$` is an indication of your
-command line prompt and should *not* be typed when trying these examples):
+To see if Ceylon was installed correctly type (the `$` is an indication 
+of your command line prompt and should *not* be typed when trying these 
+examples):
 
     $ ceylon --version
 
@@ -67,12 +72,12 @@ You should see something like:
 
 ## Tool usage
 
-To see the list of subcommand that `ceylon` supports just type
+To see the list of subcommand that `ceylon` supports just type:
 
     $ ceylon
 
-You should see a short synopsis and then a list of subcommands like this (you
-might see more options):
+You should see a short synopsis and then a list of subcommands like this 
+(you might see more options):
 
     * `bootstrap`  - Generates a Ceylon bootstrap script in the current directory
     * `browse`     - Open module documentation in the browser
@@ -97,22 +102,23 @@ might see more options):
     * `version`    - Show and update version numbers in module descriptors
     * `war`        - Generate a WAR file from a compiled `.car` file
 
-Then to see a more detailed explanation of a particular subcommand, use the `help`
-subcommand. For example, to get help on the `compile` subcommand type:
+Then to see a more detailed explanation of a particular subcommand, 
+use the `help` subcommand. For example, to get help on the `compile` 
+subcommand type:
 
     $ ceylon help compile
 
 ## Running the sample programs
 
-There is a folder with a couple of small sample programs for you take a look at.
-To compile and run them, read the README.md contained in the `samples` sub folder
-for further instructions.
+The `samples` folder contains several small sample programs. To compile 
+and run them, refer to the file `README.md` contained in the `samples` 
+folder for further instructions.
 
 ## Write some code
 
-A very easy we to quickly set up a module to compile is to use the `ceylon new`
-command which creates the basic folder structure with the neccesary files.
-Create an empty folder, change into it and type:
+A very easy we to quickly set up a module to compile is to use the 
+`ceylon new` command which creates the basic folder structure with the 
+necessary files. Create an empty folder, change into it and type:
 
     $ ceylon new hello-world
 
@@ -125,11 +131,12 @@ It will then ask you a series of questions:
     Enter Eclipse project name [my.first.module]: 
     Would you like to generate an ant build.xml? (y/n) [y]: 
 
-In the above example we've accepted almost all the defaults except for the
-project folder name which we've changed to the current folder `.` and the
-name of the module where we've chosen "my.first.module". After it has
-finished the command will have created some source files, an Ant build file
-and will have prepared the project to be opened in Eclipse if you want.
+In the above example we've accepted almost all the defaults except for 
+the project folder name which we've changed to the current folder `.` 
+and the name of the module where we've chosen "my.first.module". After 
+it has finished the command will have created some source files, an Ant 
+build file and will have prepared the project to be opened in Eclipse 
+if you want.
 
 You can now type:
 
@@ -138,11 +145,12 @@ You can now type:
     $ ceylon run my.first.module/1.0.0
     Hello, World!
 
-to compile and run the newly created module. (You can also type `ant` if
-you let the tool create Ant build files).
+to compile and run the newly created module. (You can also type `ant` 
+if you let the tool create Ant build files).
 
 We'll be making a small change to the code so you can see what files
-are involved. For this run you favorite editor, here we'll just use `vi`:
+are involved. For this run you favorite editor, here we'll just use 
+`vi`:
 
     $ vi source/my/first/module/run.ceylon
 
@@ -155,41 +163,54 @@ the output should read:
 
     Hello, Ceylon
 
-This is the very simplisitc start of an interesting journey in learning
-to program in Ceylon. For much more information continue to the next section.
+This is the very simplistic start of an interesting journey in learning
+to program in Ceylon. For much more information continue to the next 
+section.
 
 ## Learn more
 
-If you want to learn more about Ceylon you can go to the [online documentation](http://www.ceylon-lang.org/documentation/current/)
-of the Ceylon webite, where you can find a [tour](http://www.ceylon-lang.org/documentation/current/tour/),
-a [walkthrough](http://www.ceylon-lang.org/documentation/current/walkthrough/)
-and much more.
+If you want to learn more about Ceylon you can go to the 
+[documentation][] section of the Ceylon web site, where you'll 
+find a [tour][], a [walkthrough][], and much more.
+
+[documentation]: http://www.ceylon-lang.org/documentation/current/
+[tour]: http://www.ceylon-lang.org/documentation/current/tour/
+[walkthrough]: http://www.ceylon-lang.org/documentation/current/walkthrough/
 
 ## Source code
 
-The source code for Ceylon is Open Source and freely available from GitHub:
-
-<http://github.com/ceylon>
+The source code for Ceylon is completely Open Source and freely 
+available from <http://github.com/ceylon>.
 
 ## Issues
 
-If you find any bugs or you have suggestions for features and improvements you may
-reported them in GitHub's issue tracker.
+If you find a bug or have a suggestion or request, you may report 
+it in the GitHub [issue tracker][].
 
-<http://github.com/ceylon/ceylon/issues>
+[issue tracker]: http://github.com/ceylon/ceylon/issues
 
 ## Contributing
 
-We're always looking for help, so if you would like to contribute in any way
-look [here](http://www.ceylon-lang.org/code/contribute/) for more information.
+We're always looking for help, so if you would like to contribute 
+in any way look [here](http://www.ceylon-lang.org/code/contribute/) 
+for more information.
 
 ## The Community
 
-If you have any questions or want to join the developers in their discussions about
-current and future developments of the Ceylon language or just chat with other users
-you can find a list of possible channels right [here](http://www.ceylon-lang.org/community/),
-good options are the [user mailing list](http://groups.google.com/group/ceylon-users)
-and the [user Gitter channel](https://gitter.im/ceylon/user).
+If you have any questions or want to join the developers in their 
+discussions about current and future developments of the Ceylon 
+language or just chat with other users you can find a full list 
+of [possible channels][community] at the Ceylon web site. Good 
+options include:
+
+- the [user mailing list][], and 
+- the [user Gitter channel][].
+
+You can follow @ceylonlang on twitter.
+
+[community]: http://www.ceylon-lang.org/community/
+[user mailing list]: http://groups.google.com/group/ceylon-users
+[user Gitter channel]: https://gitter.im/ceylon/user
 
 ## License
 
@@ -208,6 +229,5 @@ which are documented in the `NOTICE` file that accompanied this code.
 ## Acknowledgement
 
 We're deeply indebted to the community volunteers who contributed a 
-substantial part of the current Ceylon codebase, working often in 
+substantial part of the current Ceylon code base, working often in 
 their own spare time.
-
