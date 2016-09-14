@@ -259,7 +259,8 @@ public class AetherResolverImpl implements AetherResolver {
         List<RemoteRepository> repos = configureSession(repoSystem, session);
 
         if(extension == null){
-            DefaultArtifact artifact = new DefaultArtifact( groupId, artifactId, classifier, "pom", version);
+            // I don't think POMs with a classifier exist, so let's not set it
+            DefaultArtifact artifact = new DefaultArtifact( groupId, artifactId, null, "pom", version);
             ArtifactRequest artifactRequest = new ArtifactRequest();
             artifactRequest.setArtifact(artifact);
             artifactRequest.setRepositories(repos);

@@ -290,7 +290,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             index$53 = $ceylontmp$element$52;
             final long index = index$53;
             $ceylontmp$continue$46: do {
-                array[.com.redhat.ceylon.compiler.java.Util.toInt(index - 1)] = .com.redhat.ceylon.compiler.java.Util.toInt(index);
+                array[(int)(index - 1)] = (int)index;
             }             while (false);
         }         while ($ceylontmp$increasing$49 ? index$53 - $ceylontmp$last$48 != 0L : index$53 - $ceylontmp$last$48 != 0L);
         long sum = 0L;

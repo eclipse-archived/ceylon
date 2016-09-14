@@ -6,6 +6,10 @@
  instance of `Ranged` using the _span_ and _measure_ 
  operators.
  
+ Typically, the `Subrange` type is the same as the ranged
+ type itself. But this is not required. For example, the
+ subranges of a [[StringBuilder]] are [[String]]s.
+ 
  Often, in a [[List]] or sorted map for example, an index
  and its element are distinct values. Sometimes, in a sorted 
  set for example, the index and element are identical.
@@ -75,9 +79,9 @@
  - `ranged[x..y]==ranged[x:n]`."
 see (`interface List`, 
      `interface Sequence`, 
-     `class String`)
-shared interface Ranged<in Index, out Element, out Subrange> 
-        of Subrange
+     `class String`, 
+     `class StringBuilder`)
+shared interface Ranged<in Index, out Element, out Subrange>
         satisfies {Element*}
         given Subrange satisfies Ranged<Index,Element,Subrange> {
     

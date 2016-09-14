@@ -23,3 +23,24 @@ class ClassContainer() {
     }
     
 }
+
+class ClassWithUpperNameConstructors {
+    shared new \iValue {}
+    shared new \iFunction() {}
+}
+
+void testClassWithUpperNameConstructors() {
+    ClassWithUpperNameConstructors bar1;
+    ClassWithUpperNameConstructors baz1;
+    bar1 = ClassWithUpperNameConstructors.\iValue;
+    baz1 = ClassWithUpperNameConstructors.\iFunction();
+    
+    @error:"constructor is not a type" 
+    ClassWithUpperNameConstructors.Value bar2;
+    @error:"constructor is not a type" 
+    ClassWithUpperNameConstructors.Function baz2;
+    @error:"constructor is not a type" 
+    bar2 = ClassWithUpperNameConstructors.Value;
+    @error:"constructor is not a type" 
+    baz2 = ClassWithUpperNameConstructors.Function();
+}

@@ -22,7 +22,7 @@ by("The Ceylon Team")
 license("http://www.gnu.org/licenses/gpl.html")
 native("jvm")
 module com.redhat.ceylon.compiler.java.test.cmr.modules.namespaces "1.0.0" {
-    import ceylon:"ceylon.collection" "1.2.3";
+    import ceylon:"ceylon.collection" "1.2.0";
     import jdk:"java.base" "7";
     import maven:"org.apache.logging.log4j:log4j-core" "2.5";
     import "org.apache.logging.log4j:log4j-api" "2.5";

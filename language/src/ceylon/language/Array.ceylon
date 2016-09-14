@@ -11,7 +11,7 @@
  new value.
  
      value array = Array { \"hello\", \"world\" };
-     array.set(0, \"goodbye\");
+     array[0] = \"goodbye\";
  
  Arrays are lists and support all operations inherited from 
  [[List]], along with certain additional operations for 
@@ -260,10 +260,9 @@ class Array<Element>
          elements of this array."
         Comparison comparing(Element x, Element y));
     
-    shared actual Boolean equals(Object that) 
+    equals(Object that) 
             => (super of List<Element>).equals(that);
-    shared actual Integer hash 
-            => (super of List<Element>).hash;
-    shared actual String string
-            => (super of Collection<Element>).string;
+    hash => (super of List<Element>).hash;
+    string => (super of Collection<Element>).string;
+    
 }

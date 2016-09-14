@@ -475,7 +475,7 @@ public class MethodDefinitionBuilder
         FunctionOrValue mov = (FunctionOrValue) typedRef.getDeclaration();
         if (Decl.isValue(mov)) {
             TypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
-            nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
+            nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef).resolveAliases();
             nonWideningDecl = nonWideningTypedRef.getDeclaration();
         }else{
             // Stef: So here's the thing. I know this is wrong for Function where we should do getFullType(), BUT
@@ -484,7 +484,7 @@ public class MethodDefinitionBuilder
             // function which rely on its behaviour and frankly I've had enough of this refactoring, so a few callers of this function
             // have to add the Callable back. It sucks, yeah, but so far it works, which is amazing enough that I don't want to touch it
             // any more. More ambitious/courageous people are welcome to fix this properly.
-            nonWideningType = typedRef.getType();
+            nonWideningType = typedRef.getType().resolveAliases();
             nonWideningDecl = mov;
         }
         if(!CodegenUtil.isUnBoxed(nonWideningDecl))
@@ -679,6 +679,10 @@ public class MethodDefinitionBuilder
         if(method.isActual()
                 && CodegenUtil.hasTypeErased(method))
             flags |= AbstractTransformer.JT_RAW;
+        if (method.isShortcutRefinement()
+                && Decl.isSmall(method.getRefinedDeclaration())) {
+            flags |= AbstractTransformer.JT_SMALL;
+        }
         return resultType(makeResultType(nonWideningTypedRef.getDeclaration(), nonWideningType, flags), method);
     }
     

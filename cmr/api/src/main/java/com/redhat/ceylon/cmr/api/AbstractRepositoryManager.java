@@ -175,12 +175,20 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
         if (content == null)
             throw new IllegalArgumentException("Null file!");
 
-        if (content.isDirectory())
-            putFolder(context, content);
-        else
-            putArtifact(context, Helper.toInputStream(content));
+        if (!isSameFile(context, content)) {
+            // Not the same file so we can add it
+            if (content.isDirectory())
+                putFolder(context, content);
+            else
+                putArtifact(context, Helper.toInputStream(content));
+        } else {
+            // They are the same file so we skip it
+            log.debug("  -> [skipping] source and destination are the same");
+        }
     }
 
+    public abstract boolean isSameFile(ArtifactContext context, File srcFile) throws RepositoryException;
+    
     protected void putFolder(ArtifactContext context, File folder) throws RepositoryException {
         throw new RepositoryException("RepositoryManager doesn't support folder [" + folder + "] put: " + context);
     }

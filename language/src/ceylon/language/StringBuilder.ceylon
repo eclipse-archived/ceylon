@@ -17,17 +17,33 @@ import java.lang {
        String hello = builder.string; //hello world"""
 tagged("Strings")
 shared native final class StringBuilder() 
-        satisfies SearchableList<Character> { 
+        satisfies SearchableList<Character> &
+                  Ranged<Integer,Character,String> &
+                  IndexedCorrespondenceMutator<Character> { 
     
-    "The number characters in the current content, that is, 
-     the [[size|String.size]] of the produced [[string]]."
+    "The number of characters in the current content, that 
+     is, the [[size|String.size]] of the produced [[string]]."
     shared actual native Integer size;
+    
+    "Determines if the current content holds at least one
+     character."
+    shared actual native Boolean empty;
     
     shared actual native Integer? lastIndex;
     
     "The resulting string. If no characters have been
      appended, the empty string."
     shared actual native variable String string;
+    
+    "A copy of this `StringBuilder`, whose content is 
+     initially the same as the current content of this
+     instance."
+    since("1.3.0")
+    shared actual StringBuilder clone() {
+        value clone = StringBuilder();
+        clone.string = string;
+        return clone;
+    }
     
     shared actual native Iterator<Character> iterator();
     
@@ -91,6 +107,12 @@ shared native final class StringBuilder()
     since("1.1.0")
     shared native 
     StringBuilder clear();
+    
+    "Set the character at the given index to the given
+     [[character]]."
+    since("1.3.0")
+    shared actual void set(Integer index, Character character)
+            => replace(index, 1, character.string);
     
     "Insert a [[string]] at the specified [[index]]."
     shared native 
@@ -207,12 +229,17 @@ shared native final class StringBuilder()
 }
 
 shared native("jvm") final class StringBuilder() 
-        satisfies SearchableList<Character> {
+        satisfies SearchableList<Character> &
+                  Ranged<Integer,Character,String> &
+                  IndexedCorrespondenceMutator<Character> {
     
     value builder = JStringBuilder();
     
     shared actual native("jvm") Integer size 
             => builder.codePointCount(0, builder.length());
+    
+    shared actual native("jvm") Boolean empty
+            => builder.length() == 0;
     
     shared actual native("jvm") Integer? lastIndex 
             => if (builder.length() == 0)
@@ -291,7 +318,7 @@ shared native("jvm") final class StringBuilder()
         "index must not be negative"
         assert (index>=0);
         "index must not be greater than size"
-        assert(index<=size);
+        assert (index<=size);
         builder.insert(startIndex(index), string);
         return this;
     }
@@ -302,7 +329,7 @@ shared native("jvm") final class StringBuilder()
         "index must not be negative"
         assert (index>=0);
         "index must not be greater than size"
-        assert(index<=size);
+        assert (index<=size);
         builder.insert(startIndex(index),
             toChars(character.integer));
         return this;
@@ -314,7 +341,7 @@ shared native("jvm") final class StringBuilder()
         "index must not be negative"
         assert (index>=0);
         "index must not be greater than size"
-        assert(index<=size);
+        assert (index<=size);
         "index+length must not be greater than size"
         assert (index+length<=size);
         Integer len = length<0 then 0 else length;
@@ -329,7 +356,7 @@ shared native("jvm") final class StringBuilder()
         "index must not be negative"
         assert (index>=0);
         "index must not be greater than size"
-        assert(index<=size);
+        assert (index<=size);
         "index+length must not be greater than size"
         assert (index+length<=size);
         if (length>0) {
@@ -560,11 +587,15 @@ shared native("jvm") final class StringBuilder()
 }
 
 shared native("js") final class StringBuilder() 
-        satisfies SearchableList<Character> {
+        satisfies SearchableList<Character> &
+                  Ranged<Integer,Character,String> &
+                  IndexedCorrespondenceMutator<Character> {
     
     shared actual native("js") variable String string = "";
         
     shared actual native("js") Integer size => string.size;
+    
+    shared actual native("js") Boolean empty => string.empty;
     
     shared actual native("js") Integer? lastIndex 
             => if (string.size == 0)
@@ -627,7 +658,7 @@ shared native("js") final class StringBuilder()
         "index must not be negative"
         assert (index>=0);
         "index must not be greater than size"
-        assert(index<=size);
+        assert (index<=size);
         this.string 
                 = this.string[0:index] 
                 + string 
@@ -646,7 +677,7 @@ shared native("js") final class StringBuilder()
         "index must not be negative"
         assert (index>=0);
         "index must not be greater than size"
-        assert(index<=size);
+        assert (index<=size);
         "index+length must not be greater than size"
         assert (index+length<=size);
         value len = length<0 then 0 else length;
@@ -662,12 +693,12 @@ shared native("js") final class StringBuilder()
         "index must not be negative"
         assert (index>=0);
         "index must not be greater than size"
-        assert(index<=size);
+        assert (index<=size);
         "index+length must not be greater than size"
         assert (index+length<=size);
         if (length>0) {
             string = string[0:index] 
-                    + string[index+length...];
+                   + string[index+length...];
         }
         return this;
     }

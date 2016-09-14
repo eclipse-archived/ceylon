@@ -20,6 +20,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
@@ -28,6 +29,7 @@ import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -304,6 +306,8 @@ public class AnnotationVisitor extends Visitor {
                 unit.getClassDeclarationType(c),
                 unit.getClassMetatype(c.getType()),
                 that);
+        checkServiceAnnotations(c, 
+                that.getAnnotationList());
     }
 
     @Override 
@@ -828,6 +832,110 @@ public class AnnotationVisitor extends Visitor {
                         (Tree.InvocationExpression) that);
             }
         }
+    }
+
+    
+    private void checkServiceAnnotations(Class clazz, 
+            Tree.AnnotationList annotationList) {
+        for (Tree.Annotation ann: 
+                annotationList.getAnnotations()) {
+            Tree.BaseMemberExpression p = 
+                    (Tree.BaseMemberExpression) 
+                        ann.getPrimary();
+            Declaration pd = p.getDeclaration();
+            if (pd != null) {
+                Declaration sd = 
+                        ann.getUnit()
+                            .getLanguageModuleDeclaration("service");
+                if (pd.equals(sd)) {
+                    checkServiceImplementation(clazz, 
+                            getService(ann), ann);
+                }
+            }
+        }
+    }
+
+    private static Declaration getService(Tree.Annotation that) {
+        
+        Tree.PositionalArgumentList pal = 
+                that.getPositionalArgumentList();
+        if (pal!=null) {
+            List<Tree.PositionalArgument> args = 
+                    pal.getPositionalArguments();
+            if (!args.isEmpty()) {
+                Tree.PositionalArgument argument = 
+                        args.get(0);
+                if (argument instanceof Tree.ListedArgument) {
+                    Tree.ListedArgument la = 
+                            (Tree.ListedArgument)
+                            argument;
+                    return getDeclaration(la.getExpression());
+                }
+            }
+        }
+        
+        Tree.NamedArgumentList nal = 
+                that.getNamedArgumentList();
+        if (nal!=null) {
+            List<Tree.NamedArgument> args = 
+                    nal.getNamedArguments();
+            if (!args.isEmpty()) {
+                Tree.NamedArgument namedArgument = 
+                        args.get(0);
+                if (namedArgument instanceof Tree.SpecifiedArgument) {
+                    Tree.SpecifiedArgument sa = 
+                            (Tree.SpecifiedArgument)
+                            namedArgument;
+                    Tree.SpecifierExpression se = 
+                            sa.getSpecifierExpression();
+                    if (se!=null) {
+                        return getDeclaration(se.getExpression());
+                    }
+                }
+            }
+        }
+        
+        return null;
+    }
+
+    private void checkServiceImplementation(Class clazz, 
+            Declaration d, Node that) {
+        if (d instanceof ClassOrInterface) {
+            ClassOrInterface service = (ClassOrInterface) d;
+            ParameterList pl = clazz.getParameterList();
+            if (pl==null) {
+                that.addError("service class must have a parameter list or default constructor");
+            }
+            else {
+                List<Parameter> params = pl.getParameters();
+                if (!params.isEmpty() 
+                        && !params.get(0).isDefaulted()) {
+                    that.addError("service class must be instantiable with an empty argument list");
+                }
+            }
+            if (clazz.inherits(service)) {
+                ModelUtil.getModule(clazz)
+                    .addService(service, clazz);
+            }
+            else {
+                that.addError("service class does not implement service '" + service + "'");
+            }
+        }
+        else {
+            that.addError("service must be an interface or class");
+        }
+    }
+
+    private static Declaration getDeclaration(Tree.Expression ex) {
+        if (ex!=null) {
+            Tree.Term term = ex.getTerm();
+            if (term instanceof Tree.MetaLiteral) {
+                Tree.MetaLiteral lit = 
+                        (Tree.MetaLiteral) term;
+                return lit.getDeclaration();
+            }
+        }
+        return null;
     }
 
     private void checkAnnotations(

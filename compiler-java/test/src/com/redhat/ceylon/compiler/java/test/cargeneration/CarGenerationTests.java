@@ -434,7 +434,7 @@ public class CarGenerationTests extends CompilerTests {
         options.add(getPackagePath() + "services/greet2/source");
         CeyloncTaskImpl task = getCompilerTask(options, 
                 ec,
-                Arrays.asList(getPackagePath() + "services/greet2/source/services/Gday.ceylon"));
+                "services/greet2/source/services/Gday.ceylon");
         assertTrue(task.call());
         
         File carFile = getModuleArchive("services", "1.0");

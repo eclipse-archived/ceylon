@@ -37,7 +37,6 @@ import com.redhat.ceylon.cmr.api.ModuleSearchResult.ModuleDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.Overrides;
-import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
@@ -249,33 +248,29 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
     
     public void putArtifact(ArtifactContext context, InputStream content) throws RepositoryException {
         try {
-            putArtifactInternal(context, content);
+            final Node parent = getOrCreateParent(context);
+            log.debug("Adding artifact " + context + " to cache " + cache.getDisplayString());
+            log.debug(" -> " + NodeUtils.getFullPath(parent));
+            final String[] names = cache.getArtifactNames(context);
+            if (names.length != 1) {
+                throw new RepositoryException("ArtifactContext should have a single suffix");
+            }
+            final String label = names[0];
+            try {
+                if (parent instanceof OpenNode) {
+                    final OpenNode on = (OpenNode) parent;
+                    if (on.addContent(label, content, context) == null)
+                        addContent(context, parent, label, content);
+                } else {
+                    addContent(context, parent, label, content);
+                }
+            } catch (IOException e) {
+                throw new RepositoryException(e);
+            }
+            log.debug(" -> [done]");
         } finally {
             IOUtils.safeClose(content);
         }
-    }
-
-    private void putArtifactInternal(ArtifactContext context, InputStream content) throws RepositoryException {
-        final Node parent = getOrCreateParent(context);
-        log.debug("Adding artifact " + context + " to cache " + cache.getDisplayString());
-        log.debug(" -> " + NodeUtils.getFullPath(parent));
-        final String[] names = cache.getArtifactNames(context);
-        if (names.length != 1) {
-            throw new RepositoryException("ArtifactContext should have a single suffix");
-        }
-        final String label = names[0];
-        try {
-            if (parent instanceof OpenNode) {
-                final OpenNode on = (OpenNode) parent;
-                if (on.addContent(label, content, context) == null)
-                    addContent(context, parent, label, content);
-            } else {
-                addContent(context, parent, label, content);
-            }
-        } catch (IOException e) {
-            throw new RepositoryException(e);
-        }
-        log.debug(" -> [done]");
     }
 
     @Override
@@ -340,21 +335,41 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         }
     }
 
-    protected void putFiles(OpenNode current, File file, ContentOptions options) throws IOException {
+    protected void putFiles(OpenNode current, File file, ArtifactContext context) throws IOException {
         if (current == null)
             throw new IOException("Null current, could probably not create new node for file: " + file.getParent());
 
         if (file.isDirectory()) {
             current = current.createNode(file.getName());
             for (File f : file.listFiles())
-                putFiles(current, f, options);
+                putFiles(current, f, context);
         } else {
             log.debug(" Adding file " + file.getPath() + " at " + NodeUtils.getFullPath(current));
+            // Not the same file so we can add it
             try (InputStream in = new FileInputStream(file)) {
-                current.addContent(file.getName(), in, options);
+                current.addContent(file.getName(), in, context);
             }
             log.debug("  -> [done]");
         }
+    }
+
+    // Check if the source file and destination node point to the same file
+    @Override
+    public boolean isSameFile(ArtifactContext context, File srcFile) throws RepositoryException {
+        boolean same = false;
+        if (!cache.getRoot().isRemote()) {
+            Node dstParent = getOrCreateParent(context);
+            Node newChild = dstParent.getChild(srcFile.getName());
+            if (newChild != null) {
+                try {
+                    File existing = newChild.getContent(File.class);
+                    same = FileUtil.sameFile(srcFile, existing);
+                } catch (IOException e) {
+                    throw new RepositoryException(e);
+                }
+            }
+        }
+        return same;
     }
 
     protected void addContent(ArtifactContext context, Node parent, String label, InputStream content) throws IOException {
@@ -430,20 +445,16 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         log.debug("Looking for " + context);
 
         for (CmrRepository repository : repositories) {
-            if (context.getNamespace() != null
-                    && !context.getNamespace().equals(repository.getNamespace())) {
-                log.debug("  -> Skipping repo that does not handle namespace: " + context.getNamespace());
-                continue;
-            }
-            if (context.getNamespace() == null &&
-                    repository.getNamespace() != null &&
-                    !DefaultRepository.NAMESPACE.equals(repository.getNamespace())) {
-                log.debug("  -> Skipping non-Ceylon repo for Ceylon lookup");
+            log.debug(" Looking in " + repository);
+            if(!repository.supportsNamespace(context.getNamespace())){
+                log.debug(" -> does not support namespace "+context.getNamespace());
                 continue;
             }
             Node child = fromRepository(repository, context, addLeaf);
-            if (child != null)
+            if (child != null){
+                log.debug(" -> Found");
                 return child;
+            }
 
             log.debug("  -> Not Found");
         }

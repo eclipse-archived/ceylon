@@ -99,7 +99,8 @@ public class Destructurer extends Visitor {
                 jsw.write(".key");
             }
         } else {
-            added.addAll(new Destructurer(that.getKey(), gen, directAccess, expvar+".item", first).getVariables());
+            added.addAll(new Destructurer(that.getKey(), gen, directAccess, expvar+".key", first).getVariables());
+            first = false;
         }
         if (that.getValue() instanceof Tree.VariablePattern) {
             that.getValue().visit(this);

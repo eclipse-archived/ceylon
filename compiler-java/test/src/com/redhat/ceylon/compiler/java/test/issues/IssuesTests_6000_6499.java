@@ -374,4 +374,10 @@ public class IssuesTests_6000_6499 extends CompilerTests {
     public void testBug6459() {
         compareWithJavaSource("bug64xx/Bug6459");
     }
+
+    @Test
+    public void testBug6467() {
+        compile("bug64xx/Bug6467Java.java", "bug64xx/Bug6467PsiElement.java");
+        compareWithJavaSource("bug64xx/Bug6467");
+    }
 }

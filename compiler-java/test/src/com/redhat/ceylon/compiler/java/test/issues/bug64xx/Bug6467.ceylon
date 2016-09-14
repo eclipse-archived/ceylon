@@ -18,17 +18,17 @@
  * MA  02110-1301, USA.
  */
 @noanno
-interface Bug2370I satisfies Iterable<Bug2370I>{
-    shared default void foo(String s) {}
-    shared actual Iterator<Bug2370I> iterator() => nothing;
+shared interface Bug6467CeylonPsi satisfies Bug6467PsiElement {
+    shared interface TermPsi satisfies Bug6467CeylonPsi {}
+    shared interface LocalModifierPsi satisfies Bug6467CeylonPsi {}
+    shared interface ExpressionPsi satisfies Bug6467CeylonPsi {}
 }
+
 @noanno
-class Bug2370C() satisfies Bug2370I {
-    shared actual void foo(String s) {
-        super.foo { ""; };
-        super.foo { s=""; };
-        (super of Bug2370I).foo { ""; };
-        // Disabled by spec now
-        //super*.foo("");
-    }
+shared class Bug6467TypeProvider()
+        extends Bug6467Java<PsiTypedNodes>() {
+    
+    shared alias PsiTypedNodes => Bug6467CeylonPsi.TermPsi|Bug6467CeylonPsi.LocalModifierPsi;
+    
+    getInformationHint(PsiTypedNodes psi) => nothing;
 }

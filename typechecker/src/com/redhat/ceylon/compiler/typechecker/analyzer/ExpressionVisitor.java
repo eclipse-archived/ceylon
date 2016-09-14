@@ -71,7 +71,6 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -81,7 +80,6 @@ import java.util.Set;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
-import com.redhat.ceylon.compiler.typechecker.tree.ErrorCode;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
@@ -2297,47 +2295,6 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    @Override
-    public void visit(Tree.Annotation that) {
-        super.visit(that);
-        Tree.BaseMemberExpression p = 
-                (Tree.BaseMemberExpression) 
-                    that.getPrimary();
-        if (p.getDeclaration() != null 
-                && p.getDeclaration().equals(that.getUnit().getLanguageModuleDeclaration("service"))) {
-            Declaration d = null;
-            if (that.getPositionalArgumentList() != null) {
-                Tree.PositionalArgument argument = that.getPositionalArgumentList().getPositionalArguments().get(0);
-                if (argument instanceof Tree.ListedArgument) {
-                    d = ((Tree.MetaLiteral)((Tree.ListedArgument)argument).getExpression().getTerm()).getDeclaration();
-                }
-            } else if (that.getNamedArgumentList() != null) {
-                Tree.NamedArgument namedArgument = that.getNamedArgumentList().getNamedArguments().get(0);
-                if (namedArgument instanceof Tree.SpecifiedArgument) {
-                    d = ((Tree.MetaLiteral)((Tree.SpecifiedArgument)namedArgument).getSpecifierExpression().getExpression().getTerm()).getDeclaration(); 
-                }
-            }
-            if (d instanceof ClassOrInterface) {
-                ClassOrInterface service = (ClassOrInterface)d;
-                Class c = (Class)returnDeclaration;
-                if (!c.getType().getFullType().isSubtypeOf(that.getUnit().getCallableDeclaration().appliedType(null, Arrays.asList(
-                        that.getUnit().getAnythingType(), that.getUnit().getEmptyType())))) {
-                    that.addError("service class have a parameter list or default constructor and be instantiable with an empty argument list",
-                            ErrorCode.SERVICE_CLASS_ERROR);
-                }
-                if (c.inherits(service)) {
-                    ModelUtil.getModule(c).addService(service, c);
-                } else {
-                    that.addError("service class does not implement service '" + service + "'",
-                            ErrorCode.SERVICE_CLASS_ERROR);
-                }
-            } else {
-                that.addError("service must be an interface or class",
-                        ErrorCode.SERVICE_CLASS_ERROR);
-            }
-        }
-    }
-
     private void checkClassAliasParameters(Class alias, 
             Tree.ClassDeclaration that, 
             Tree.InvocationExpression ie) {
@@ -2920,6 +2877,11 @@ public class ExpressionVisitor extends Visitor {
             else {
                 checkIterable(pt, p);
             }
+        }
+        if (!qmte.getStaticMethodReference() 
+                && pt.isCallable()) {
+            qmte.addUsageWarning(Warning.expressionTypeCallable, 
+                    "operation is not meaningful for function references: receiver is of type 'Callable'");
         }
     }
 
@@ -6894,10 +6856,15 @@ public class ExpressionVisitor extends Visitor {
     private void checkSuperMember(
             Tree.QualifiedMemberOrTypeExpression that,
             List<Type> signature, boolean spread) {
+        Tree.Primary primary = that.getPrimary();
         Tree.Term term = 
-                eliminateParensAndWidening(
-                        that.getPrimary());
+                eliminateParensAndWidening(primary);
         if (term instanceof Tree.Super) {
+            Tree.MemberOperator op = 
+                    that.getMemberOperator();
+            if (op instanceof Tree.SpreadOp) {
+                primary.addError("spread member operator may not be applied to 'super' reference");
+            }
             checkSuperInvocation(that, signature, spread);
         }
     }
@@ -7695,9 +7662,11 @@ public class ExpressionVisitor extends Visitor {
             td = unwrap(pt, that).getDeclaration();
         }
         if (td != null && td.isNativeImplementation()) {
-            TypeDeclaration _td = (TypeDeclaration)ModelUtil.getNativeHeader(td);
-            if (_td != null) {
-                td = _td;
+            TypeDeclaration header = 
+                    (TypeDeclaration)
+                        getNativeHeader(td);
+            if (header!=null) {
+                td = header;
             }
         }
         return td;
@@ -7757,10 +7726,11 @@ public class ExpressionVisitor extends Visitor {
                         getTypeArguments(tal, 
                                 pt.getQualifyingType(), 
                                 params);
-                acceptsTypeArguments(type, null, typeArgs, 
-                        tal, that);
+                acceptsTypeArguments(type, null, 
+                        typeArgs, tal, that);
             }
-            if (pt.isTypeConstructor() && !that.getMetamodel()) {
+            if (pt.isTypeConstructor() 
+                    && !that.getMetamodel()) {
                 checkNotJvm(that, 
                         "type functions are not supported on the JVM");
             }
@@ -7782,6 +7752,10 @@ public class ExpressionVisitor extends Visitor {
             List<Type> typeArgs, 
             Tree.TypeArguments tal) {
         checkMemberOperator(receivingType, that);
+        if (memberType instanceof Constructor) {
+            that.addError("constructor is not a type: '" + 
+                    memberType.getName(unit) + "' is a constructor");
+        }
         Type receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
@@ -8034,6 +8008,10 @@ public class ExpressionVisitor extends Visitor {
                 checkAssignable(et, 
                         unit.getObjectType(), e, 
                         "interpolated expression must not be an optional type");
+                if (et.isCallable()) {
+                    e.addUsageWarning(Warning.expressionTypeCallable, 
+                            "interpolated function reference does not have a meaningful representation: expression is of type 'Callable'");
+                }
             }
         }
         that.setTypeModel(unit.getStringType());

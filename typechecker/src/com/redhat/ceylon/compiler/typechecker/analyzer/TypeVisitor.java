@@ -531,7 +531,7 @@ public class TypeVisitor extends Visitor {
                 !inExtendsOrClassAlias && 
                 !inDelegatedConstructor) {
             that.addError("constructor is not a type: '" + 
-                    dec.getName(unit) + "'");
+                    dec.getName(unit) + "' is a constructor");
         }
         
         Tree.TypeArgumentList tal = 
@@ -1481,16 +1481,22 @@ public class TypeVisitor extends Visitor {
         }
         else if (!isLegalParameter(a)) {
             that.addError("parameter is not a reference value or function: '" + 
-                    name + "'");
+                    name + "' is not a value or function");
         }
         else {
             if (a.isFormal()) {
                 that.addError("parameter is a formal attribute: '" + 
-                        name + "'", 320);
+                        name + "' is annotated 'formal'", 320);
             }
             FunctionOrValue mov = (FunctionOrValue) a;
-            mov.setInitializerParameter(p);
-            p.setModel(mov);
+            if (mov.getInitializerParameter()!=null) {
+                that.addError("duplicate parameter: '" + 
+                        name + "' already occurs in the parameter list");
+            }
+            else {
+                mov.setInitializerParameter(p);
+                p.setModel(mov);
+            }
         }
         /*if (isGeneric(a)) {
             that.addError("parameter declaration is generic: '" + 

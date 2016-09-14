@@ -102,7 +102,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     
     @Override
     protected boolean includeJDK() {
-        return true;
+        return !noDefRepos;
     }
     
     @Override

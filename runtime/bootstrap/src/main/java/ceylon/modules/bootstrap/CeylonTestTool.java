@@ -92,7 +92,7 @@ public class CeylonTestTool extends AbstractTestTool {
         ceylonRunTool.setModule(TEST_MODULE_NAME + "/" + version);
         ceylonRunTool.setRun(TEST_RUN_FUNCTION);
         ceylonRunTool.setArgs(args);
-        ceylonRunTool.setRepository(repo);
+        ceylonRunTool.setRepository(repos);
         ceylonRunTool.setFlatClasspath(flatClasspath);
         ceylonRunTool.setLinkWithCurrentDistribution(linkWithCurrentDistribution);
         ceylonRunTool.setAutoExportMavenDependencies(autoExportMavenDependencies);

@@ -86,7 +86,7 @@ shared Boolean corresponding<First,Second>(
  both evaluate to `smaller`."
 see (`function corresponding`)
 tagged("Comparisons", "Streams")
-since("1.2.3")
+since("1.3.0")
 shared Comparison compareCorresponding<First,Second>(
     {First*} firstIterable, {Second*} secondIterable,
     "The comparison function that compares an element of the

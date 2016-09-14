@@ -19,7 +19,6 @@ package ceylon.modules.bootstrap;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -164,7 +163,7 @@ public class CeylonRunTool extends RepoUsingTool {
             + "This might fail with a linker error at runtime. For example "
             + "if the module depended on an API present in the more "
             + "recent version, but absent from " + Versions.CEYLON_VERSION_NUMBER +". "
-                    + "Allowed arguments are upgrade, downgrade or abort. Default: upgrade")
+            + "Allowed arguments are upgrade, downgrade or abort. Default: upgrade")
     public void setLinkWithCurrentDistribution(boolean downgradeDist) {
         this.upgradeDist = !downgradeDist;
     }
@@ -173,6 +172,11 @@ public class CeylonRunTool extends RepoUsingTool {
         this.extraModules.put(module, version);
     }
 
+    @Override
+    protected boolean shouldUpgradeDist() {
+        return upgradeDist;
+    }
+    
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
         super.initialize(mainTool);
@@ -205,7 +209,7 @@ public class CeylonRunTool extends RepoUsingTool {
         
         String module = ModuleUtil.moduleName(moduleNameOptVersion);
         String version = checkModuleVersionsOrShowSuggestions(
-                getRepositoryManager(upgradeDist),
+                getRepositoryManager(),
                 module,
                 ModuleUtil.moduleVersion(moduleNameOptVersion),
                 ModuleQuery.Type.JVM,
@@ -284,8 +288,8 @@ public class CeylonRunTool extends RepoUsingTool {
             argList.add("-auto-export-maven-dependencies");
         }
 
-        if (repo != null) {
-            for (URI repo : this.repo) {
+        if (repos != null) {
+            for (URI repo : this.repos) {
                 argList.add("-rep");
                 argList.add(repo.toString());
             }
@@ -326,8 +330,8 @@ public class CeylonRunTool extends RepoUsingTool {
     
     private void startInFlatClasspath(String module, String version) {
         JavaRunnerOptions options = new JavaRunnerOptions();
-        if(repo != null) {
-            for (URI userRepository : repo) {
+        if(repos != null) {
+            for (URI userRepository : repos) {
                 options.addUserRepository(userRepository.toASCIIString());
             }
         }

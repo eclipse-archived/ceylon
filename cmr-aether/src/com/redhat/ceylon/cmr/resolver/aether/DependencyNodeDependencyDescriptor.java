@@ -67,6 +67,11 @@ public class DependencyNodeDependencyDescriptor implements DependencyDescriptor 
 		return node.getDependency().isOptional();
 	}
 
+	@Override
+	public String toString() {
+	    return node.getArtifact().toString();
+	}
+	
     public static void unzip(File archive, String entryPath, File destinationFolder) throws IOException {
         if (destinationFolder.exists()) {
             if (!destinationFolder.isDirectory()) {

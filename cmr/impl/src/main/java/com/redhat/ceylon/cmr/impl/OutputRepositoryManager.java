@@ -104,6 +104,14 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
     }
 
     @Override
+    public boolean isSameFile(ArtifactContext context, File srcFile) throws RepositoryException {
+        if (output instanceof AbstractRepositoryManager) {
+            return ((AbstractRepositoryManager)output).isSameFile(context, srcFile);
+        }
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "OutputRepositoryManager: " + output;
     }

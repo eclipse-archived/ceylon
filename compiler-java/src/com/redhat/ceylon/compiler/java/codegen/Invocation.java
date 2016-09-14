@@ -457,6 +457,7 @@ abstract class SimpleInvocation extends Invocation {
     protected abstract boolean isArgumentComprehension(int argIndex);
 
     protected abstract boolean getParameterUnboxed(int argIndex);
+    protected abstract boolean getParameterSmall(int argIndex);
 
     protected abstract BoxingStrategy getParameterBoxingStrategy(int argIndex);
 
@@ -660,6 +661,11 @@ class IndirectInvocation extends SimpleInvocation {
     protected BoxingStrategy getParameterBoxingStrategy(int argIndex) {
         return BoxingStrategy.BOXED;
     }
+    
+    @Override
+    protected boolean getParameterSmall(int argIndex) {
+        return false;
+    }
 
     @Override
     protected boolean hasParameter(int argIndex) {
@@ -797,6 +803,12 @@ abstract class DirectInvocation extends SimpleInvocation {
             return BoxingStrategy.UNBOXED;
         }
         return CodegenUtil.getBoxingStrategy(param.getModel());
+    }
+    
+    @Override
+    protected boolean getParameterSmall(int argIndex) {
+        Parameter param = getParameter(argIndex);
+        return Decl.isSmall(param.getModel());
     }
     
     @Override
@@ -1515,6 +1527,9 @@ class NamedArgumentInvocation extends Invocation {
         }
         if (erasedArgument(TreeUtil.unwrapExpressionUntilTerm(expr))) {
             exprFlags |= ExpressionTransformer.EXPR_DOWN_CAST;
+        }
+        if (CodegenUtil.downcastForSmall(expr, specifiedArg.getParameter().getModel())) {
+            exprFlags |= ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK;
         }
         JCExpression typeExpr = gen.makeJavaType(type, jtFlags);
         gen.at(specifiedArg);

@@ -1,5 +1,6 @@
 package com.redhat.ceylon.common.tool;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,7 @@ public class PluginToolModel<T extends Tool> extends AnnotatedToolModel<T> {
     private final ModuleSpec pluginModule;
     private final String pluginClassName;
     private final boolean pluginHidden;
+    private final String overrides;
     
     public PluginToolModel(String name, String pluginPath) {
         super(name);
@@ -36,6 +38,12 @@ public class PluginToolModel<T extends Tool> extends AnnotatedToolModel<T> {
         pluginModule = ModuleSpec.parse(module, VERSION_REQUIRED);
         pluginClassName = pluginProperties.getProperty("class", getDefaultToolClassName(pluginModule.getName(), name));
         pluginHidden = "true".equals(pluginProperties.getProperty("hidden", ""));
+        String overrides = pluginProperties.getProperty("overrides", null);
+        if(overrides != null){
+            // make it relative to the plugin path
+            overrides = new File(pluginPath).getParentFile().getAbsolutePath() + File.separator + overrides;
+        }
+        this.overrides = overrides;
     }
 
     private static String getDefaultToolClassName(String module, String name) {
@@ -87,7 +95,7 @@ public class PluginToolModel<T extends Tool> extends AnnotatedToolModel<T> {
     public Class<T> getToolClass() {
         Class<T> tc = super.getToolClass();
         if (tc == null) {
-            ClassLoader mcl = getToolLoader().loadModule(pluginModule.getName(), pluginModule.getVersion());
+            ClassLoader mcl = getToolLoader().loadModule(pluginModule.getName(), pluginModule.getVersion(), overrides);
             try {
                 tc = (Class<T>) mcl.loadClass(pluginClassName);
             } catch (ClassNotFoundException e) {

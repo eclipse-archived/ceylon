@@ -91,3 +91,7 @@ class ClassAlias(String key, String item="")
     variable Integer first;
     return first++;
 }
+
+@error class ClassWithDupeParamRef(param, param) {
+    String param;
+}

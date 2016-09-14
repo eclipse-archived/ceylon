@@ -2,10 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.tree;
 
 public enum ErrorCode {
     UNKNOWN_PARSER(-1),
-    UNKNOWN(0),
-    SERVICE_CLASS_CANNOT_BE_GENERIC(1603),
-    SERVICE_CLASS_ERROR(1604)
-    ;
+    UNKNOWN(0);
     
     public final int code;
     

@@ -9,7 +9,6 @@ import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
 import com.redhat.ceylon.cmr.ceylon.ModuleCopycat;
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.Messages;
@@ -264,11 +263,6 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
             }
         });
         copier.includeLanguage(includeLanguage).copyModules(acs);
-    }
-
-    @Override
-    protected CeylonRepoManagerBuilder createRepositoryManagerBuilder(boolean forInput) {
-        return createRepositoryManagerBuilderNoOut(forInput);
     }
 
 }

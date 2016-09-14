@@ -306,6 +306,7 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `compilerAnnotation`,
      `doclink`,
      `expressionTypeNothing`,
+     `expressionTypeCallable`,
      `unusedDeclaration`,
      `unusedImport`,
      `ceylonNamespace`,
@@ -344,37 +345,51 @@ shared annotation SerializableAnnotation serializable()
 
 
 "The annotation class for the [[small]] annotation."
-since("1.2.3")
+since("1.3.0")
 shared final annotation class SmallAnnotation()
         satisfies OptionalAnnotation<SmallAnnotation,ValueDeclaration|FunctionDeclaration> {
 }
 
-"Annotation to hint to the compiler that an `Integer` or `Float` 
- typed value or function can be represented using a 32-bit signed integer or 
- 32-bit IEEE float."
-since("1.2.3")
+"Annotation to hint to the compiler that an `Integer` or 
+ `Float` typed value or function should be represented using 
+ a 32-bit signed integer or 32-bit IEEE float if possible."
+since("1.3.0")
 shared annotation SmallAnnotation small() 
         => SmallAnnotation();
 
 
 "The annotation class for the [[service]] annotation."
-since("1.2.3")
+since("1.3.0")
 shared final annotation class ServiceAnnotation(contract)
         satisfies SequencedAnnotation<ServiceAnnotation,ClassDeclaration> {
-    "The service interface or class that the annotated class provides."
+    "The service interface or class that the annotated class 
+     provides."
     shared ClassOrInterfaceDeclaration contract;
 }
 
-"Annotation marking a class as implementing a service. 
+"Annotation marking a class as implementing a service. The
+ class must be a non-abstract, shared, toplevel class.
+ 
+ For example, if `Manager` is an interface, this code
+ declares an implementation of `Manager`:
+ 
+     service (`Manager`)
+     shared class DefautManager() satisfies Manager {}
  
  Service implementations can be found at runtime using 
- [[Module.findServices|ceylon.language.meta.declaration::Module.findServiceProviders]]."
-since("1.2.3")
-shared annotation ServiceAnnotation service(ClassOrInterfaceDeclaration contract) 
+ [[ceylon.language.meta.declaration::Module.findServiceProviders]].
+ 
+     {Manager*} managers = `module`.findServiceProviders(`Manager`);
+     assert (exists manager = managers.first);"
+since("1.3.0")
+shared annotation ServiceAnnotation service(
+    "The service interface or class that the annotated class 
+     provides."
+    ClassOrInterfaceDeclaration contract) 
         => ServiceAnnotation(contract);
 
 "The annotation class for the [[since]] annotation."
-since("1.2.3")
+since("1.3.0")
 shared final sealed annotation class SinceAnnotation(
     "The version of the module when this declaration was added."
     shared String version)
@@ -382,7 +397,7 @@ shared final sealed annotation class SinceAnnotation(
 
 "Annotation to indicate at which moment the annotated declaration
  was added to the module."
-since("1.2.3")
+since("1.3.0")
 shared annotation SinceAnnotation since(
     "The version of the module when this declaration was added."
     String version) 

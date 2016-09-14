@@ -93,7 +93,7 @@ public class CeylonTestJsTool extends AbstractTestTool {
         ceylonRunJsTool.setModuleVersion(TEST_MODULE_NAME + "/" + version);
         ceylonRunJsTool.setRun(TEST_RUN_FUNCTION);
         ceylonRunJsTool.setArgs(args);
-        ceylonRunJsTool.setRepository(repo);
+        ceylonRunJsTool.setRepository(repos);
         ceylonRunJsTool.setSystemRepository(systemRepo);
         ceylonRunJsTool.setCacheRepository(cacheRepo);
         ceylonRunJsTool.setOverrides(overrides);

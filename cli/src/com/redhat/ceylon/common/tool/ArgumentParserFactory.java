@@ -7,7 +7,7 @@ public abstract class ArgumentParserFactory {
     private static final ServiceLoader<ArgumentParserFactory> parserFactories;
     
     static {
-        parserFactories = ServiceLoader.load(ArgumentParserFactory.class);
+        parserFactories = ServiceLoader.load(ArgumentParserFactory.class, ArgumentParserFactory.class.getClassLoader());
     }
     
     public abstract ArgumentParser<?> forClass(Class<?> setterType, ToolLoader toolLoader, boolean isSimpleType);

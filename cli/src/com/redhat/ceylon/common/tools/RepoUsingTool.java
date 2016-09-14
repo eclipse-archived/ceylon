@@ -61,7 +61,7 @@ import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 public abstract class RepoUsingTool extends CeylonBaseTool {
-    protected List<URI> repo;
+    protected List<URI> repos;
     protected String systemRepo;
     protected String cacheRepo;
     protected String overrides;
@@ -101,9 +101,9 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     }
 
     public List<String> getRepositoryAsStrings() {
-        if (repo != null) {
-            List<String> result = new ArrayList<String>(repo.size());
-            for (URI uri : repo) {
+        if (repos != null) {
+            List<String> result = new ArrayList<String>(repos.size());
+            for (URI uri : repos) {
                 result.add(uri.toString());
             }
             return result;
@@ -127,8 +127,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     @OptionArgument(longName="rep", argumentName="url")
     @Description("Specifies a module repository containing dependencies. Can be specified multiple times. " +
             "(default: `modules`, `~/.ceylon/repo`, `"+Constants.REPO_URL_CEYLON+"`)")
-    public void setRepository(List<URI> repo) {
-        this.repo = repo;
+    public void setRepository(List<URI> repos) {
+        this.repos = repos;
     }
     
     @OptionArgument(longName="sysrep", argumentName="url")
@@ -191,6 +191,20 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return true;
     }
     
+    /**
+     * For subclasses that do not want to read from the output repo
+     */
+    protected boolean doNotReadFromOutputRepo() {
+        return true;
+    }
+    
+    /**
+     * For subclasses that want to override the behavior of distribution linking
+     */
+    protected boolean shouldUpgradeDist() {
+        return true;
+    }
+    
     public Logger getLogger() {
         if (log == null) {
             log = createLogger();
@@ -198,16 +212,13 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return log;
     }
     
-    protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilder(boolean forInput) {
-        return createRepositoryManagerBuilderNoOut(forInput);
-    }
-    
-    protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilderNoOut(boolean forInput) {
+    protected CeylonUtils.CeylonRepoManagerBuilder createRepositoryManagerBuilder() {
         CeylonUtils.CeylonRepoManagerBuilder rmb = CeylonUtils.repoManager()
                 .cwd(cwd)
                 .overrides(overrides)
                 .noSystemRepo(!needsSystemRepo() && noDefRepos)
                 .noCacheRepo(noDefRepos && offline)
+                .noOutRepo(noDefRepos || doNotReadFromOutputRepo())
                 .systemRepo(systemRepo)
                 .cacheRepo(cacheRepo)
                 .noDefaultRepos(noDefRepos)
@@ -215,6 +226,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 .offline(offline)
                 .timeout(timeout)
                 .isJDKIncluded(includeJDK())
+                .upgradeDist(shouldUpgradeDist())
                 .logger(getLogger());
         return rmb;
     }
@@ -224,12 +236,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     }
 
     protected synchronized RepositoryManager getRepositoryManager() {
-        return getRepositoryManager(true);
-    }
-    protected synchronized RepositoryManager getRepositoryManager(boolean upgradeDist) {
         if (rm == null) {
-            CeylonUtils.CeylonRepoManagerBuilder rmb = createRepositoryManagerBuilder(true);
-            rmb.upgradeDist(upgradeDist);
+            CeylonUtils.CeylonRepoManagerBuilder rmb = createRepositoryManagerBuilder();
             rm = rmb.buildManager();   
         }
         return rm;
@@ -290,7 +298,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
     		Integer jsBinaryMajor, Integer jsBinaryMinor, 
     		String compileFlags) throws IOException {
-        if (compileFlags == null || compileFlags.isEmpty()) {
+        if (compileFlags == null || compileFlags.isEmpty() || !compilationPossible()) {
             compileFlags = COMPILE_NEVER;
         }
         boolean forceCompilation = compileFlags.contains(COMPILE_FORCE);
@@ -715,8 +723,25 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         }
     }
 
-    private boolean runCompiler(RepositoryManager repoMgr, String name, ModuleQuery.Type type) {
+    // We only compile in "normal" circumstances, meaning that
+    // either no repositories are specified or that the default
+    // output repository (normally "modules") is one of them
+    private boolean compilationPossible() {
+        if (repos != null) {
+            List<File> files = FileUtil.pathsToFileList(getRepositoryAsStrings());
+            File out = new File(DefaultToolOptions.getCompilerOutputRepo(), "dummy");
+            File path = FileUtil.selectPath(files, out.getPath());
+            return path != null;
+        } else {
+            return true;
+        }
+    }
+    
+    protected List<String> getCompilerFlags() {
         List<String> args = new ArrayList<String>();
+        if (noDefRepos) {
+            args.add("--no-default-repositories");
+        }
         if (systemRepo != null) {
             args.add("--sysrep");
             args.add(systemRepo);
@@ -725,8 +750,8 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
             args.add("--cacherep");
             args.add(cacheRepo);
         }
-        if (repo != null) {
-            for (URI r : repo) {
+        if (repos != null) {
+            for (URI r : repos) {
                 args.add("--rep");
                 args.add(r.toString());
             }
@@ -737,6 +762,11 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         if (verbose != null) {
             args.add("--verbose=" + verbose);
         }
+        return args;
+    }
+
+    private boolean runCompiler(RepositoryManager repoMgr, String name, ModuleQuery.Type type) {
+        List<String> args = getCompilerFlags();
         args.add(name);
         
         ToolFactory pluginFactory = new ToolFactory();

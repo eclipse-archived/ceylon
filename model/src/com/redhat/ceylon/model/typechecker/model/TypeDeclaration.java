@@ -449,7 +449,7 @@ public abstract class TypeDeclaration extends Declaration
             Unit unit, 
             List<Type> signature, 
             boolean variadic) {
-        //TODO: does not handle aliased members of supertypes
+        
         Declaration dec = 
                 unit.getImportedDeclaration(this, name, 
                         signature, variadic);
@@ -479,7 +479,7 @@ public abstract class TypeDeclaration extends Declaration
             Unit unit, 
             List<Type> signature, 
             boolean variadic) {
-        //TODO: does not handle aliased members of supertypes
+        
         Declaration dec = 
                 unit.getImportedDeclaration(this, name, 
                         signature, variadic);
