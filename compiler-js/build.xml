@@ -122,6 +122,14 @@
     </target>
 
     <target name="build" depends="ceylon.js.jar,build-js-language-module">
+        <mkdir dir="${build.bin}" />
+        <copy todir="${build.bin}">
+            <fileset dir="${basedir}/bin">
+            </fileset>
+            <filterset>
+                <filter token="ceylon-version" value="${ceylon.version}"/>
+            </filterset>
+        </copy>
     </target>
 
     <target name="test-compile">
@@ -201,14 +209,6 @@
     <target name="publish"
             depends="clean.repo,init.repo,dist,publish-internal"
             description="Publish Ceylon JS compiler module to default repo">
-        <mkdir dir="${build.bin}" />
-        <copy todir="${build.bin}">
-            <fileset dir="${basedir}/bin">
-            </fileset>
-            <filterset>
-                <filter token="ceylon-version" value="${ceylon.version}"/>
-            </filterset>
-        </copy>
     </target>
 
     <target name="publish-internal" depends="init.repo">
