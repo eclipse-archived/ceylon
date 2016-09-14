@@ -95,7 +95,11 @@ public class Type extends Reference {
             newType.getUnionOfCases();
         }
         if (resolvedAliases != null) {
-            newType.resolveAliases();
+            if (resolvedAliases == this) {
+                newType.resolvedAliases = newType;
+            } else {
+                newType.resolvedAliases = resolvedAliases.clone();
+            }
         }
         return newType;
     }
@@ -3508,12 +3512,15 @@ public class Type extends Reference {
     
     public void setUnderlyingType(String underlyingType) {
         if (isCached) {
-            throw new IllegalArgumentException("Type.setRaw() called on a cached type.");
+            throw new IllegalArgumentException("Type.setUnderlyingType() called on a cached type.");
         }
         this.underlyingType = underlyingType;
         // if we have a resolvedAliases cache, update it too
         if (resolvedAliases != null && 
             resolvedAliases != this) {
+            if (resolvedAliases.isCached()) {
+                resolvedAliases = resolvedAliases.clone();
+            }
             resolvedAliases.setUnderlyingType(underlyingType);
         }
     }
@@ -3655,6 +3662,9 @@ public class Type extends Reference {
         // if we have a resolvedAliases cache, update it too
         if (resolvedAliases != null && 
             resolvedAliases != this) {
+            if (resolvedAliases.isCached()) {
+                resolvedAliases = resolvedAliases.clone();
+            }
             resolvedAliases.setRaw(isRaw);
         }
     }
