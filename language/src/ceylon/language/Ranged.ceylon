@@ -6,6 +6,10 @@
  instance of `Ranged` using the _span_ and _measure_ 
  operators.
  
+ Typically, the `Subrange` type is the same as the ranged
+ type itself. But this is not required. For example, the
+ subranges of a [[StringBuilder]] are [[String]]s.
+ 
  Often, in a [[List]] or sorted map for example, an index
  and its element are distinct values. Sometimes, in a sorted 
  set for example, the index and element are identical.
