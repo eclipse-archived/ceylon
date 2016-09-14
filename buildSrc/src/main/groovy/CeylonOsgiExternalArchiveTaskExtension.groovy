@@ -23,7 +23,7 @@ class CeylonOsgiExternalArchiveTaskExtension  extends AbstractCeylonOsgiArchiveT
      */
     boolean forceNewOsgiManifest = false
 
-    /** An postifx to identify external dependencies which make up parts of the Ceylon distribution.
+    /** An postfix to identify external dependencies which make up parts of the Ceylon distribution.
      *
      */
     String externalBundleQualifier = 'CEYLON-DEPENDENCIES-v0'
@@ -40,7 +40,7 @@ class CeylonOsgiExternalArchiveTaskExtension  extends AbstractCeylonOsgiArchiveT
                 return "${srcBundleVersion}.0.0.${externalBundleQualifier}"
                 break
             case ~/^[0-9]+\.[0-9]+\.[0-9]+\.[^.]+$/ :
-                return "${srcBundleVersion}.${externalBundleQualifier}"
+                return "${srcBundleVersion}-${externalBundleQualifier}"
                 break
             default:
                 throw new GradleException("External dependency (${bundleSymbolicName}) with a non-supported version")
@@ -83,10 +83,15 @@ class CeylonOsgiExternalArchiveTaskExtension  extends AbstractCeylonOsgiArchiveT
             )
             Map <String,String> merged = [:]
             merged.putAll(seedAttributes)
-            merged.putAll(instructions)
+            merged.putAll(instructions.findAll{!it.key.startsWith('-')})
             merged.remove('Import-Package')
 
             archiveTask.manifest.attributes merged
+            instructions.each { k,v ->
+                if(k.startsWith('-')) {
+                    archiveTask.manifest.instruction(k,v)
+                }
+            }
         } else {
             seedAttributes['Bundle-Version'] = newBundleVersion
             archiveTask.manifest.attributes seedAttributes

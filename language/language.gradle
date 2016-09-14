@@ -29,6 +29,12 @@ task invokeAntBuild( type : GradleBuild ) {
 
     // TODO: There are too many of these manual dependencies being listed... feels like duct-tape and string.
     dependsOn ':compiler-java:assemble', ':ant-plugin:publishInternal', ':ceylon-bootstrap:publishInternal',':runtime-externals:setupRepo'
+
+    // These are workarounds to not let this task be invoked everytime
+    inputs.file 'build.xml'
+    inputs.dir 'template'
+    outputs.dir "${buildDir}/dist"
+
 }
 
 assemble.dependsOn invokeAntBuild
@@ -43,8 +49,19 @@ task languageModuleXml( type : CeylonBuildModuleXml ) {
 }
 
 
+task publishOsgiJar( type : Copy ) {
+    dependsOn invokeAntBuild
+    from "${buildDir}/dist/repo/ceylon/language/${version}", {
+        include 'ceylon.language-*.car'
+    }
+
+    // TODO: Fix-up not be hard-coded once we migrate language build away from Ant.
+    into osgiDistPluginsDir
+    rename ~/.+/,"ceylon.language_${project.version}${versionQualifier}.jar"
+}
+
 task publishInternal( type : Copy ) {
-    dependsOn invokeAntBuild, languageModuleXml
+    dependsOn invokeAntBuild, languageModuleXml, publishOsgiJar
 
     from languageModuleXml
     into "${repoDir}/${cbp.'ceylon.language.dir'}"

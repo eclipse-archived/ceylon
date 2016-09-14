@@ -3,6 +3,7 @@ import org.apache.tools.ant.filters.EscapeUnicode
 plugins {
     id 'com.gradle.build-scan' version '1.0'
     id "com.admc.javaPropFile" version "1.0.0"
+    id 'de.qaware.seu.as.code.git' version '2.3.0.RC1'
 }
 
 buildScan {
@@ -15,6 +16,20 @@ allprojects {
 
     ext {
         buildPrefix = 'builtByGradle'
+        buildRelease = false
+        versionQualifier = ".${TimeStamp.BUILD}"
+
+        distDir =      file("${rootProject.projectDir}/${buildPrefix}/distribution")
+        repoDir =      file("${distDir}/repo")
+        samplesDir =   file("${distDir}/samples")
+        templatesDir = file("${distDir}/templates")
+        repoLibDir =   file("${distDir}/lib")
+        repoBinDir =   file("${distDir}/bin")
+        osgiDistDir =  file("${rootProject.projectDir}/${buildPrefix}/osgi-distribution")
+        osgiDistPluginsDir = file("${osgiDistDir}/plugins")
+        osgiDistFeaturesDir = file("${osgiDistDir}/features")
+        linkedProjectRootDir = file("${rootProject.projectDir}/${buildPrefix}/linked-projects")
+
     }
 }
 
@@ -24,18 +39,7 @@ subprojects {
 
     apply plugin : CeylonCommonBuildProperties
 
-    // put all the build artifacts in subfolders of the root "build" folder
-//    buildDir = new File(rootProject.buildDir, it.path.replace(":", "_").substring(1))
     buildDir = new File(file("${rootProject.projectDir}/${buildPrefix}"), it.path.replace(":", "_").substring(1))
-
-    ext {
-        distDir = file("${rootProject.projectDir}/${buildPrefix}/distribution")
-        repoDir = file("${distDir}/repo")
-        samplesDir = file("${distDir}/samples")
-        templatesDir = file("${distDir}/templates")
-        repoLibDir = file("${distDir}/lib")
-        repoBinDir = file("${distDir}/bin")
-    }
 
     version= cbp.'ceylon.version'
 
@@ -56,10 +60,13 @@ task dist {
     group "publish"
     description "Creates the Ceylon distribution"
     dependsOn ':dist:publishInternal'
+    dependsOn ':dist:osgi:publishInternal'
 }
 
 task clean ( type : Delete ) {
-    delete buildPrefix
+    delete buildDir
+    delete distDir
+//    delete embeddedRepoDir
 }
 
 task 'clean-all' {
@@ -67,19 +74,39 @@ task 'clean-all' {
     description "Cleans everything here and in linked projects"
     dependsOn clean
     dependsOn 'clean-sdk'
-//    dependsOn 'clean-ide'
+    dependsOn 'clean-ide'
 }
 
 task 'clean-sdk' {
     group "ceylon cross project"
     description "Cleans the SDK"
-    dependsOn ':ceylon-sdk:clean'
+    dependsOn ':linked:sdk:clean'
 }
 
 task sdk {
     group "ceylon cross project"
     description 'Builds the SDK'
-    dependsOn ':ceylon-sdk:publishInternal'
+    dependsOn ':linked:sdk:publishInternal'
+}
+
+task ide {
+    group "ceylon cross project"
+    description 'Builds the IDE plugins & related modules'
+    dependsOn ':linked:formatter:publishInternal'
+    dependsOn ':linked:toolConverterJava2ceylon:publishInternal'
+    dependsOn ':linked:ideCommon:publishInternal'
+    dependsOn ':linked:ideEclipse:publishInternal'
+//    dependsOn ':linked:ideIntellij:publishInternal'
+}
+
+task 'clean-ide' {
+    group "ceylon cross project"
+    description 'Cleans the IDE plugins & related modules'
+    dependsOn ':linked:formatter:clean'
+    dependsOn ':linked:toolConverterJava2ceylon:clean'
+    dependsOn ':linked:ideCommon:clean'
+//    dependsOn ':linked:ideEclipse:clean'
+//    dependsOn ':linked:ideIntellij:clean'
 }
 
 /*
@@ -91,5 +118,36 @@ task sdk {
 
 */
 
+// TODO: Remove this task after migration. It is only here to compare outputs of Ant vs Gradle
+task migrationReports {
+    description "TEMPORARY: Creates comparison listings in root"
 
+    ext {
+        makeListing = { rootDir ->
+            String baseDir = file(rootDir).absolutePath
+            fileTree(rootDir).files.collect {
+                it.absolutePath.replace("${baseDir}/",'')
+            }.sort().join("\n")
+        }
+
+        makeTimeStampSanitizedListing = { rootDir ->
+            String baseDir = file(rootDir).absolutePath
+            fileTree(rootDir).files.collect {
+                it.absolutePath.replace("${baseDir}/",'').replaceAll(~/v\d{8}-\d{4}/,'vXxxxYyZz-AaBb')
+            }.sort().unique().join("\n")
+
+        }
+    }
+    doLast {
+        mkdir buildDir
+        file("${buildDir}/dist-gradle.txt").text = makeListing(distDir)
+        file("${buildDir}/dist-ant.txt").text = makeListing('dist/dist')
+        file("${buildDir}/osgi-dist-gradle.txt").text = makeTimeStampSanitizedListing(osgiDistDir)
+        file("${buildDir}/osgi-dist-ant.txt").text = makeTimeStampSanitizedListing('dist/osgi/build/dist')
+        file("${buildDir}/osgi-embeddedrepo-gradle.txt").text = makeListing("${project(':dist:osgi').buildDir}/embeddedRepository/repo")
+        file("${buildDir}/osgi-embeddedrepo-ant.txt").text = makeListing('dist/osgi/embeddedRepository/repo')
+    }
+
+    mustRunAfter sdk, ide, dist, ':dist:osgi:embeddedRepository'
+}
 

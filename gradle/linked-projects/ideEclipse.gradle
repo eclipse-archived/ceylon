@@ -1,0 +1,28 @@
+if(!project.properties.RUNNING_ANT_BUILD) {
+    ext {
+        githubRepoName = 'ceylon-ide-eclipse'
+        forceRepoIndexAnt = '2.1.2'
+    }
+
+    apply from : 'linked-project.gradle'
+    invokeAntBuild.tasks = ['antBuild']
+    invokeAntBuild.dependsOn ':linked:formatter:publishInternal'
+    invokeAntBuild.dependsOn ':linked:toolConverterJava2ceylon:publishInternal'
+    invokeAntBuild.dependsOn ':linked:ideCommon:publishInternal'
+//    task addSdk( type : Copy ) {
+//        dependsOn 'linked::sdk:invokeAntBuild'
+//        into file("${buildDir}/ceylon-sdk")
+//
+//        from "${project(':sdk-build').buildDir}/ceylon-sdk", {
+//            include 'modules/**'
+//            include 'osgi/**'
+//        }
+//    }
+
+//    createAntBuildEnvironment {
+//        dependsOn addSdk
+//    }
+
+} else {
+    apply from : 'ant-wrapper.gradle'
+}

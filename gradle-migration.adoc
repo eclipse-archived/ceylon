@@ -114,6 +114,18 @@ If those files could simply be moved to the `src/main/resources` folder the whol
 .TODO
 * `ceylon-completion.bash` is copied twice - once in `copyContrib` and once in `copyCompilerBinaries`
 
+== Dist-osgi
+
+* Does not wrtie anything back to source.
+** Distribution files are written to `${buildPrefix}/osgi-distribution` folder
+** Embedded Repository is in ``${buildPrefix}/dist_osgi/embeddRepository`
+* Running `dist` task from root project will also cause the full OSGI distribution
+to be built.
+
+.TODO
+* `addModule 'com.redhat.ceylon.dist.repo', "${project.version}${versionQualifier}"` is current disabled.
+  Not sure if it is needed as the Ant build produces the same warning.
+
 
 === Java-main
 
@@ -178,6 +190,8 @@ Ant Build and executed it once the appropriate properties for Ant as been setup.
 .TODO
 * The current Git plugin that is being used does a `git pull` instead of `git pull --rebase`. Waiting on
 https://github.com/seu-as-code/seu-as-code.plugins/issues/26[seu-as-code.plugins #26] to be fixed.
+* Still uses `org.osgi.imple.bundle.bindex-2.2.0` from the `lib` folder. Need to know whether it is to be found in an
+internet repo.
 
 === Tool-provider
 
@@ -398,3 +412,36 @@ extension block called `ceylon` but the configuration options are slightly diffe
 |===
 
 
+////
+yeah, understand
+in fact the OSGI support in the build is two-fold
+first we have to generate the right OSGI metadata inside the various artifacts
+this is what you have already done
+then we have to create an OSGI distribution
+which means
+a distribution of the Ceylon artifacts that might be used by OSGI provisionning tools
+such as:
+p2
+OSGI Bundle repositry (old style and R5)
+Karaf features
+The first step of this is to build a small piece of code that will provide an Osgi BundleActivator
+class that can be used by all OSGI bundles. This code is built in the ./ceylon/dist/osgi/build.xml file
+
+and the generated code is inside an additional OSGI bundle archive : com.redhat.ceylon.dist-<version>.jar
+and the second step is to create the necessary metadata and structure for OSGI provisionning tools
+There is also another part done by this file, but not directly related to provisionning tools: the creation of a Ceylon
+repository that contains all the Ceylon distribution artifacts, plus the com.redhat.ceylon.dist-<version>.jar
+bundle + the OSGI core bundle archive (org.osgi.core-4.3.1.jar)
+
+David Festal @davidfestal 11:28
+This Ceylon repository will also be embedded inside an additional OSGI bundle
+(com.redhat.ceylon.dist.repo_<version>.jar), to provide an embedded Ceylon repository inside OSGI containers
+(eclipse for example)
+
+@ysb33r : to avoid bad surprises in P2 provisionning because of version ordering between - and C
+- is before C in lexical order
+
+Tako Schotanus @quintesse 09:39
+@ysb33r ah, and it seems that for OSGi the qualifier MUST be separated from the version number by a dash while all other separators must be dots. That seems to be the reason you can't just blindly add -XXX or .XXX on the end unfortunatly
+So if the version before it already contains a dash you have to use a dot, otherwise a dash
+////
