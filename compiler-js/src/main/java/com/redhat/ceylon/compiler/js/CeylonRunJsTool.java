@@ -36,8 +36,8 @@ import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 @Summary("Executes a Ceylon program on Node.js")
 @Description(
-        "Executes the ceylon program specified as the `<module>` argument. " +
-        "The `<module>` may optionally include a version."
+        "Executes the ceylon program specified as the `module` argument. " +
+        "The `module` may optionally include a version."
 )
 @RemainingSections(
         "## Configuration file" +
@@ -206,9 +206,9 @@ public class CeylonRunJsTool extends RepoUsingTool {
 
     @OptionArgument(longName = "run", argumentName = "toplevel")
     @Description("Specifies the fully qualified name of a toplevel method or class to run. " +
-            "The indicated declaration must be shared by the <module> and have no parameters. " +
+            "The indicated declaration must be shared by the `module` and have no parameters. " +
             "The format is: `qualified.package.name::classOrMethodName` with `::` acting as separator " +
-            "between the package name and the toplevel class or method name. (default: `<module>::run`)")
+            "between the package name and the toplevel class or method name. (default: `module.name::run`)")
     public void setRun(String func) {
         this.func = func;
     }

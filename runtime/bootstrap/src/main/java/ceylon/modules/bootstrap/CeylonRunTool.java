@@ -52,8 +52,8 @@ import ceylon.modules.bootstrap.loader.InitialModuleLoader;
 
 @Summary("Executes a Ceylon program on the JVM")
 @Description(
-        "Executes the Ceylon program specified as the `<module>` argument. " +
-                "The `<module>` may optionally include a version."
+        "Executes the Ceylon program specified as the `module` argument. " +
+                "The `module` may optionally include a version."
 )
 @RemainingSections(
         "## Compile flags" +
@@ -129,9 +129,9 @@ public class CeylonRunTool extends RepoUsingTool {
 
     @OptionArgument(longName = "run", argumentName = "toplevel")
     @Description("Specifies the fully qualified name of a toplevel method or class to run. " +
-            "The indicated declaration must be shared by the <module> and have no parameters. " +
+            "The indicated declaration must be shared by the `module` and have no parameters. " +
             "The format is: `qualified.package.name::classOrMethodName` with `::` acting as separator " +
-            "between the package name and the toplevel class or method name. (default: `<module>::run`)")
+            "between the package name and the toplevel class or method name. (default: `module.name::run`)")
     public void setRun(String run) {
         this.run = run;
     }
