@@ -22,6 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Literal;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PatternParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotedLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
@@ -751,6 +752,12 @@ public class LiteralVisitor extends Visitor {
             that.setExpression(createLetExpression(letClause));
         }
         super.visit(that);
+    }
+    
+    @Override
+    public void visit(PatternParameter that) {
+        super.visit(that);
+        that.addError("parameter may not be a pattern (parameter destructuring is allowed for anonymous functions)");
     }
 
     private Tree.Expression createLetExpression(Tree.LetClause letClause) {
