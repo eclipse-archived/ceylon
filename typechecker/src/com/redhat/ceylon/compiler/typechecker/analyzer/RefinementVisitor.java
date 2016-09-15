@@ -1762,34 +1762,36 @@ public class RefinementVisitor extends Visitor {
         for (Tree.Parameter p: that.getParameters()) {
             if (p!=null) {
                 Parameter pm = p.getParameterModel();
-                if (pm.isDefaulted()) {
-                    if (foundSequenced) {
-                        p.addError("defaulted parameter must occur before variadic parameter");
+                if (pm!=null) {
+                    if (pm.isDefaulted()) {
+                        if (foundSequenced) {
+                            p.addError("defaulted parameter must occur before variadic parameter");
+                        }
+                        foundDefault = true;
+                        if (!pl.isFirst()) {
+                            p.addError("only the first parameter list may have defaulted parameters");
+                        }
                     }
-                    foundDefault = true;
-                    if (!pl.isFirst()) {
-                        p.addError("only the first parameter list may have defaulted parameters");
+                    else if (pm.isSequenced()) {
+                        if (foundSequenced) {
+                            p.addError("parameter list may have at most one variadic parameter");
+                        }
+                        foundSequenced = true;
+                        if (!pl.isFirst()) {
+                            p.addError("only the first parameter list may have a variadic parameter");
+                        }
+                        if (foundDefault && 
+                                pm.isAtLeastOne()) {
+                            p.addError("parameter list with defaulted parameters may not have a nonempty variadic parameter");
+                        }
                     }
-                }
-                else if (pm.isSequenced()) {
-                    if (foundSequenced) {
-                        p.addError("parameter list may have at most one variadic parameter");
-                    }
-                    foundSequenced = true;
-                    if (!pl.isFirst()) {
-                        p.addError("only the first parameter list may have a variadic parameter");
-                    }
-                    if (foundDefault && 
-                            pm.isAtLeastOne()) {
-                        p.addError("parameter list with defaulted parameters may not have a nonempty variadic parameter");
-                    }
-                }
-                else {
-                    if (foundDefault) {
-                        p.addError("required parameter must occur before defaulted parameters");
-                    }
-                    if (foundSequenced) {
-                        p.addError("required parameter must occur before variadic parameter");
+                    else {
+                        if (foundDefault) {
+                            p.addError("required parameter must occur before defaulted parameters");
+                        }
+                        if (foundSequenced) {
+                            p.addError("required parameter must occur before variadic parameter");
+                        }
                     }
                 }
             }
