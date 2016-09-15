@@ -122,18 +122,23 @@ This is done via simple `curl` commands, but requires a key and token that will 
  - Make sure you're in the `master` branch
  - Make sure we have all the latest tags: `git fetch --tags`
  - Update the `README.md`, adding a new image/tag line and moving the `latest` tag
+ - Edit the `build.sh` and add the new version to the front of the `VERSIONS` list and change the `LATEST` value
  - Commit the change
- - Create a new branch for the new version using the latest version available as a template, for example: `git checkout -b 1.2.2-jre7 1.2.1-jre7`
- - Edit the `Dockerfile` and update the `CEYLON_VERSION`
- - Commit the change
- - Tag the branch with the version name only: `git tag 1.2.2`
- - Push to remote: `git push --tags --set-upstream origin 1.2.2-jre7`
- - Force tag the branch with "latest": `git tag -f latest`
- - Push to remote: `git push -f --tags`
- - Switch back to `master`
- - Push to remote: `git push`
+ - Run `./build.sh`
+ - If everything went ok run `./build.sh --push`
  - Follow automated build progress on [Docker Hub](https://hub.docker.com/r/ceylon/ceylon/builds/)
  - When all builds have finished edit the [Full Description](https://hub.docker.com/r/ceylon/ceylon/) to be the same as the `README.md` listed above
+
+## ceylon-docker/s2i-ceylon
+
+ - Check out [ceylon-docker/s2i-ceylon](https://github.com/ceylon-docker/s2i-ceylon)
+ - Make sure you're in the `master` branch
+ - Make sure we have all the latest tags: `git fetch --tags`
+ - Edit the `build.sh` and add the new version to the front of the `VERSIONS` list and change the `LATEST` value
+ - Commit the change
+ - Run `./build.sh`
+ - If everything went ok run `./build.sh --push`
+ - Follow automated build progress on [Docker Hub](https://hub.docker.com/r/ceylon/s2i-ceylon/builds/)
 
 ## ceylon-docker/source-runner
 
