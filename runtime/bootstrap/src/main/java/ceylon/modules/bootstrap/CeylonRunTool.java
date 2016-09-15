@@ -50,7 +50,7 @@ import com.redhat.ceylon.compiler.java.runtime.tools.Runner;
 import ceylon.modules.CeylonRuntimeException;
 import ceylon.modules.bootstrap.loader.InitialModuleLoader;
 
-@Summary("Executes a Ceylon program")
+@Summary("Executes a Ceylon program on the JVM")
 @Description(
         "Executes the Ceylon program specified as the `<module>` argument. " +
                 "The `<module>` may optionally include a version."

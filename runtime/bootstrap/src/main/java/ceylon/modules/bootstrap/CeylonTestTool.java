@@ -14,7 +14,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.AbstractTestTool;
 
-@Summary("Executes tests")
+@Summary("Executes tests on the JVM")
 @Description(
         "Executes tests in specified `<modules>`. " +
         "The `<modules>` arguments are the names of the modules to test with an optional version.")

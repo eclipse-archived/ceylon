@@ -34,7 +34,7 @@ import com.redhat.ceylon.compiler.js.loader.JsModuleSourceMapper;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
-@Summary("Executes a Ceylon program")
+@Summary("Executes a Ceylon program on node.js")
 @Description(
         "Executes the ceylon program specified as the `<module>` argument. " +
         "The `<module>` may optionally include a version."
