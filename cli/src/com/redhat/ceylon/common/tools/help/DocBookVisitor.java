@@ -112,10 +112,11 @@ public class DocBookVisitor implements Visitor {
          </refsect1>
          */
         if (optionsDepth <= 2) {
-            if (optionsDepth > 0) {
-                docbook.close("variablelist");
-                this.openVariablelist--;
-            }
+//            if (openVariablelist > 0) {
+//                docbook.close("variablelist");
+//                docbook.close("refsect" + (optionsDepth + 1)).text("\n");
+//                this.openVariablelist--;
+//            }
             docbook.open("refsect" + (optionsDepth + 1)).text("\n");
             docbook.markdown(optionsSection.getTitle()).text("\n");
             docbook.open("variablelist").text("\n");
@@ -165,11 +166,11 @@ public class DocBookVisitor implements Visitor {
     public void endOptions(OptionsSection optionsSection) {
         optionsDepth--;
         if (optionsDepth < 3) {
-            if (this.openVariablelist > 0) {
-                docbook.close("variablelist").text("\n");
-                this.openVariablelist--;
-            }
-            //docbook.close("variablelist").text("\n");
+//            if (this.openVariablelist > 0) {
+//                docbook.close("variablelist").text("\n");
+//                this.openVariablelist--;
+//            }
+            docbook.close("variablelist").text("\n");
             docbook.close("refsect" + (optionsDepth + 1)).text("\n");
         }
     }
