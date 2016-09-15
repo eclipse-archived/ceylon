@@ -44,7 +44,7 @@ How to do a release of Ceylon.
 
 1. Check out the [`ceylon-debian-repo`](https://github.com/ceylon/ceylon-debian-repo) repository
 2. Make sure you're on `master` and run
-  - $ ./new-version.sh **1.2.1**
+  - $ ./new-version.sh **1.2.1** **12010**
 3. Edit the `dist-pkg/debian/changelog` file by hand or use:
   - $ dch -i
 4. Commit and push the new branch
