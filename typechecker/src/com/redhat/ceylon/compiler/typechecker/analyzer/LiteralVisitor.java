@@ -82,6 +82,10 @@ public class LiteralVisitor extends Visitor {
                 int charInLine = 
                         linesUpTo.length==0 ? 0 : 
                             linesUpTo[linesUpTo.length-1].length();
+                if (linesUpTo.length==1) {
+                    charInLine +=
+                            that.getToken().getCharPositionInLine();
+                }
                 token.setLine(line);
                 token.setCharPositionInLine(charInLine);
                 that.addDocLink(new Tree.DocLink(token));
