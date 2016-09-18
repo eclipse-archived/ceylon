@@ -218,15 +218,14 @@ shared interface Collection<out Element=Anything>
                             done = true;
                             break;
                         }
-                        assert (exists s 
-                                = selection.getFromFirst(i));
+                        assert (exists s = selection[i]);
                         if (s == size-length+i) {
                             i--;
                         }
                         else {
                             variable value j = s;
                             while (i<length) {
-                                selection.set(i++, ++j);
+                                selection[i++] = ++j;
                             }
                             break;
                         }

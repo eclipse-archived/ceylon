@@ -1346,7 +1346,7 @@ shared interface Iterable<out Element=Anything,
                             while (++index<length) {
                                 if (!is Finished current 
                                         = iter.next()) {
-                                    array.set(index, current);
+                                    array[index] = current;
                                 }
                                 else {
                                     return ArraySequence(
@@ -1584,11 +1584,11 @@ shared interface Iterable<out Element=Anything,
                             element = e.element;
                             size = newStore.size;
                         };
-                        newStore.set(index, 
-                            ElementEntry {
-                                next = newStore[index];
-                                element = e.element;
-                            });
+                        newStore[index] 
+                                = ElementEntry {
+                                    next = newStore[index];
+                                    element = e.element;
+                                };
                         entry = e.next;
                     }
                 }
@@ -1611,11 +1611,11 @@ shared interface Iterable<out Element=Anything,
                             //keep iterating
                         }
                         else {
-                            store.set(index, 
-                                ElementEntry {
-                                    next = entry;
-                                    element = element;
-                                });
+                            store[index] 
+                                    = ElementEntry {
+                                        next = entry;
+                                        element = element;
+                                    };
                             count++;
                             if (count>store.size*2) {
                                 store = rebuild(store);
@@ -1820,7 +1820,7 @@ class ElementEntry<Element>(next, element) {
         variable value i = size;
         variable ElementEntry<Element>? entry = this;
         while (exists next = entry) {
-            array.set(--i, next.element);
+            array[--i] = next.element;
             entry = next.next;
         }
         return ArraySequence(array);

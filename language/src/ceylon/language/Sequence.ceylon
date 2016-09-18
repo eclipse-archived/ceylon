@@ -91,7 +91,7 @@ shared sealed interface Sequence<out Element=Anything>
         value array = arrayOfSize(resultSize, first);
         variable value i = 1;
         while (i < resultSize) {
-            array.set(i, getElement(i%size));
+            array[i] = getElement(i%size);
         }
         return ArraySequence(array); 
     }*/
