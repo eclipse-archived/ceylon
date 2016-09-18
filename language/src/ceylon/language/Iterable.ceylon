@@ -1701,8 +1701,10 @@ shared interface Iterable<out Element=Anything,
         "The grouping function that assigns a key to the
          given [[element]]. Multiple elements may be 
          assigned to the same key, indicating that they
-         belong to the same [[Group]] in the resulting map."
-        Group grouping(Element element))
+         belong to the same [[Group]] in the resulting map.
+         An element may be assigned no key by returning 
+         `null`, in which case it will be discarded."
+        Group? grouping(Element element))
             given Group satisfies Object
             => summarize<Group,ElementEntry<Element>>
                     (grouping, ElementEntry)
@@ -1740,8 +1742,10 @@ shared interface Iterable<out Element=Anything,
         "The grouping function that assigns a key to the
          given [[element]]. Multiple elements may be 
          assigned to the same key, indicating that they
-         should be aggregated by calling [[accumulating]]."
-        Group grouping(Element element),
+         should be aggregated by calling [[accumulating]].
+         An element may be assigned no key by returning 
+         `null`, in which case it will be discarded."
+        Group? grouping(Element element),
         "The accumulating function that accepts an
          [[intermediate result|partial]] for a key, and the 
          [[next element]] with that key."
@@ -1846,7 +1850,7 @@ class GroupEntry<Group,Result>(next, group, elements)
 see(`function Iterable.summarize`)
 class Summary<Element,Group,Result>(
     {Element*} elements,
-    Group grouping(Element element),
+    Group? grouping(Element element),
     Result accumulating(Result? partial, Element element))
             extends Object() satisfies Map<Group,Result>
             given Group satisfies Object {
@@ -1875,12 +1879,12 @@ class Summary<Element,Group,Result>(
                     group = g.group;
                     size = newStore.size;
                 };
-                newStore.set(index,
-                    GroupEntry { 
-                        next = newStore[index]; 
-                        group = g.group; 
-                        elements = g.elements; 
-                    });
+                newStore[index]
+                        = GroupEntry { 
+                            next = newStore[index]; 
+                            group = g.group; 
+                            elements = g.elements; 
+                        };
                 group = g.next;
             }
         }
@@ -1889,33 +1893,34 @@ class Summary<Element,Group,Result>(
     
     variable value count = 0;
     for (element in elements) {
-        value group = grouping(element);
-        value index = hash {
-            group = group;
-            size = store.size;
-        };
-        value entries = store[index];
-        if (exists entries, 
-            exists entry = entries.get(group)) {
-            entry.elements = accumulating {
-                partial = entry.elements;
-                element = element;
+        if (exists group = grouping(element)) {
+            value index = hash {
+                group = group;
+                size = store.size;
             };
-            //keep iterating
-        }
-        else {
-            store.set(index, 
-                GroupEntry {
-                    next = entries;
-                    group = group;
-                    elements = accumulating {
-                        partial = null;
-                        element = element;
-                    };
-                });
-            count++;
-            if (count>store.size*2) {
-                store = rebuild(store);
+            value entries = store[index];
+            if (exists entries, 
+                exists entry = entries.get(group)) {
+                entry.elements = accumulating {
+                    partial = entry.elements;
+                    element = element;
+                };
+                //keep iterating
+            }
+            else {
+                store[index] 
+                        = GroupEntry {
+                            next = entries;
+                            group = group;
+                            elements = accumulating {
+                                partial = null;
+                                element = element;
+                            };
+                        };
+                count++;
+                if (count>store.size*2) {
+                    store = rebuild(store);
+                }
             }
         }
     }
