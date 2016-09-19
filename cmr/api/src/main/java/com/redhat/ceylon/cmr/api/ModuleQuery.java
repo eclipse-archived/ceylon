@@ -61,6 +61,7 @@ public class ModuleQuery {
     }
     
     public ModuleQuery(String namespace, String name, Type type, Retrieval retrieval) {
+        this.namespace = namespace;
         this.name = name;
         this.type = type;
         this.retrieval = retrieval;
@@ -70,7 +71,7 @@ public class ModuleQuery {
         return namespace;
     }
 
-    public void getNamespace(String namespace) {
+    public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
