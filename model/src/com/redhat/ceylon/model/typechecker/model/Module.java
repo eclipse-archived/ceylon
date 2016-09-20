@@ -440,9 +440,13 @@ public class Module
             if (isDefaultModule()) {
                 signature = getNameAsString();
             }
-            else {
+            else if (getVersion() != null) {
                 signature = getNameAsString() + 
                         "/" + getVersion();
+            }
+            else {
+                return getNameAsString() +
+                        "/null";
             }
         }
         return signature;
