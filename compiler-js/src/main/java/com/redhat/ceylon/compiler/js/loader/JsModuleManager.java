@@ -66,7 +66,7 @@ public class JsModuleManager extends ModuleManager {
     @Override
     public com.redhat.ceylon.model.typechecker.model.Package createPackage(String pkgName, Module module) {
         if (module!=null && module == getModules().getDefaultModule()) {
-            com.redhat.ceylon.model.typechecker.model.Package pkg = module.getPackage(pkgName);
+            com.redhat.ceylon.model.typechecker.model.Package pkg = module.getDirectPackage(pkgName);
             if (pkg != null) {
                 return pkg;
             }
