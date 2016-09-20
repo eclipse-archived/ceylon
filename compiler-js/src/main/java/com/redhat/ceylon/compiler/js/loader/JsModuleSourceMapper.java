@@ -70,9 +70,11 @@ public class JsModuleSourceMapper extends ModuleSourceMapper {
                         if ("1.1.0".equals(depv)) {
                             depv = "1.2.0";
                         } else if ("1.2.1".equals(depv)) {
-                            depv = "1.2.3";
+                            depv = "1.3.1";
                         } else if ("1.2.2".equals(depv)) {
-                            depv = "1.2.3";
+                            depv = "1.3.1";
+                        } else if ("1.3.0".equals(depv)) {
+                            depv = "1.3.1";
                         }
                     }
                 } else {
