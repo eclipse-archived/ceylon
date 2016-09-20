@@ -1355,6 +1355,7 @@ public abstract class TypeDescriptor
 
     private static TypeDescriptor[] removeDuplicates(TypeDescriptor[] members) {
         int duplicates = 0;
+        int nothing = 0;
         for(int i=0;i<members.length;i++){
             TypeDescriptor ref = members[i];
             for(int j=i+1;j<members.length;j++){
@@ -1364,9 +1365,12 @@ public abstract class TypeDescriptor
                     break;
                 }
             }
+            if (ref == NothingType) {
+                nothing = 1;
+            }
         }
-        if(duplicates > 0){
-            TypeDescriptor[] unique = new TypeDescriptor[members.length-duplicates];
+        if(duplicates > 0 || nothing > 0){
+            TypeDescriptor[] unique = new TypeDescriptor[members.length-duplicates-nothing];
             REF:
             for(int i=0,u=0;i<members.length;i++){
                 TypeDescriptor ref = members[i];
@@ -1376,6 +1380,9 @@ public abstract class TypeDescriptor
                         // skip it
                         continue REF;
                     }
+                }
+                if (ref == NothingType) {
+                    continue REF;
                 }
                 // it's unique: keep it
                 unique[u++] = ref;
