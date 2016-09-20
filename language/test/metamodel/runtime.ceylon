@@ -2301,6 +2301,7 @@ void runTests() {
     
     // post-OBR
     sandbox(bug5771);
+    sandbox(bug6519);
     // those were filed for the ceylon-model
     sandbox(bugM12test);
     
