@@ -114,6 +114,11 @@ This is done via simple `curl` commands, but requires a key and token that will 
 2. Next, set the new version as default with `curl -X PUT -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","default":"<release version>"}' https://vendors.sdkman.io/default`. This should return something like `{"status":202,"id":"XXXXXXXX","message":"default ceylon version: <release version>"}`
 3. Finally, to broadcast an announcement of the new release: `curl -X POST -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate": "ceylon", "version": "<release version>", "hashtag": "ceylonlang"}' https://vendors.sdkman.io/announce/struct`
 
+# ArchLinux
+
+Update the [ArchLinux package](https://aur.archlinux.org/packages/ceylon/). This means asking
+Alex Szczuczko (aszczucz _AHT_ redhat _DOWT_ com).
+
 # Update Docker
 
 ## ceylon-docker/ceylon
@@ -159,6 +164,10 @@ This is done via simple `curl` commands, but requires a key and token that will 
 
  - [openshift-cartridge](https://github.com/ceylon/openshift-cartridge)
  - [ceylon.openshift](https://github.com/ceylon/ceylon.openshift)
+
+# Update Ceylon Swarm
+
+ - [ceylon.swarm](https://github.com/ceylon/ceylon.swarm)
 
 # Update the Web IDE
 
