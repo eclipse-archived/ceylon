@@ -152,9 +152,9 @@ public abstract class ModuleUtil {
      * Determines if the given major/minor binary versions support import namespaces
      */
     public static boolean supportsImportsWithNamespaces(int majorBinVer, int minorBinVer) {
-        return (majorBinVer > Versions.V1_2_3_JVM_BINARY_MAJOR_VERSION
-                || (majorBinVer == Versions.V1_2_3_JVM_BINARY_MAJOR_VERSION
-                && minorBinVer >= Versions.V1_2_3_JVM_BINARY_MINOR_VERSION));
+        return (majorBinVer > Versions.V1_3_0_JVM_BINARY_MAJOR_VERSION
+                || (majorBinVer == Versions.V1_3_0_JVM_BINARY_MAJOR_VERSION
+                && minorBinVer >= Versions.V1_3_0_JVM_BINARY_MINOR_VERSION));
     }
     
 }

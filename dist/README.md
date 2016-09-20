@@ -1,6 +1,6 @@
 # Ceylon
 
-This is the 1.3.0 _"Total Internal Reflection"_ release of the Ceylon 
+This is the 1.3.1 _"Now We Try It My Way"_ release of the Ceylon 
 command line tools. This is a production version of the platform.
 
 Ceylon is a modern, modular, statically typed programming language 
@@ -56,7 +56,7 @@ the `PATH` variable.
 
 NB: If you don't add Ceylon to your path you will have to always type 
 the path to the `bin/ceylon` command. So in every example that follows 
-you'll need to change `ceylon` to `/path/to/ceylon-1.3.0/bin/ceylon`.
+you'll need to change `ceylon` to `/path/to/ceylon-1.3.1/bin/ceylon`.
 
 ## Trying it out
 
@@ -68,7 +68,7 @@ examples):
 
 You should see something like:
 
-    ceylon version 1.3.0 1cac978 (Total Internal Reflection)
+    ceylon version 1.3.1 1cac978 (Now We Try It My Way)
 
 ## Tool usage
 
