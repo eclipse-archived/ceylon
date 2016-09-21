@@ -11,7 +11,7 @@ import ceylon.json {
 
 // general constants
 
-String languageVersion = "1.3.0";
+String languageVersion = "1.3.1";
 String binaryVersion = "9.1";
 
 // JSON keys and values
