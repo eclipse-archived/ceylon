@@ -2178,7 +2178,8 @@ public abstract class DeclarationVisitor extends Visitor {
             }
         }
         if (hasAnnotation(al, "static", unit)) {
-            if (model instanceof FunctionOrValue || model instanceof ClassOrInterface) {
+            if (model instanceof FunctionOrValue 
+             || model instanceof ClassOrInterface) {
                 model.setStaticallyImportable(true);
             }
             else {

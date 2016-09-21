@@ -750,6 +750,10 @@ public class RefinementVisitor extends Visitor {
                         message(member), 1100);
             }
         }
+        if (member.isStaticallyImportable() 
+                && !type.isToplevel()) {
+            that.addError("static member belongs to a nested class");
+        }
         if (type.isDynamic()) {
             if (member instanceof Class) {
                 that.addError("member class belongs to dynamic interface");
