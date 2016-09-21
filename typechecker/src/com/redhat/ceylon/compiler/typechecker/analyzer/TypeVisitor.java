@@ -730,7 +730,7 @@ public class TypeVisitor extends Visitor {
         o.getSatisfiedTypes().clear();
         super.visit(that);
     }
-
+    
     @Override 
     public void visit(Tree.ClassDefinition that) {
         Class cd = that.getDeclarationModel();
@@ -743,17 +743,24 @@ public class TypeVisitor extends Visitor {
         cd.getSatisfiedTypes().clear();
         super.visit(that);
         Tree.ParameterList pl = that.getParameterList();
-        if (pl!=null && cd.hasConstructors()) {
-            pl.addError("class with parameters may not declare constructors: class '" + 
-                    cd.getName() + 
-                    "' has a parameter list and a constructor", 1002);
+        if (pl!=null) {
+            if (cd.hasConstructors()) {
+                pl.addError("class with parameters may not declare constructors: class '" + 
+                        cd.getName() + 
+                        "' has a parameter list and a constructor", 1002);
+            }
+            else if (cd.hasEnumerated()) {
+                pl.addError("class with parameters may not declare constructors: class '" + 
+                        cd.getName() + 
+                        "' has a parameter list and a value constructor", 1003);
+            }
+            else if (cd.hasStaticMembers()) {
+                pl.addError("class with parameters may not declare static members: class '" + 
+                        cd.getName() + 
+                        "' has a parameter list and a static member", 1003);
+            }
         }
-        else if (pl!=null && cd.hasEnumerated()) {
-            pl.addError("class with parameters may not declare constructors: class '" + 
-                    cd.getName() + 
-                    "' has a parameter list and a value constructor", 1003);
-        }
-        if (pl==null) {
+        else {
             if (!cd.hasConstructors() && 
                 !cd.hasEnumerated()) {
                 // No parameter list and no constructors or enumerated

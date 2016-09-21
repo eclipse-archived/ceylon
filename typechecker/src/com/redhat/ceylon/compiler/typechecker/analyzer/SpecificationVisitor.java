@@ -61,6 +61,7 @@ public class SpecificationVisitor extends Visitor {
     private Parameter parameter = null;
     private boolean usedInDeclarationSection = false;
     private boolean definedInDeclarationSection = false;
+    private boolean hasNonStatic = false; 
     
     private boolean definitely = false;
     private boolean possibly = false;
@@ -1472,7 +1473,7 @@ public class SpecificationVisitor extends Visitor {
                     if (declarationSection &&
                             declaration instanceof FunctionOrValue &&
                             that.getDeclaration()==declaration) {
-                        usedInDeclarationSection = true;;
+                        usedInDeclarationSection = true;
                     }
                 }
             }.visit(that);
@@ -1502,7 +1503,25 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Statement that) {
+        if (that instanceof Tree.Declaration) {
+            Tree.Declaration dec = (Tree.Declaration) that;
+            Declaration model = dec.getDeclarationModel();
+            if (model.isStaticallyImportable()) {
+                if (hasNonStatic && model==declaration) {
+                    that.addError("static member must occur before all non-static members and initializer statements");
+                }
+            }
+            else {
+                hasNonStatic = true;
+            }
+        }
+        else if (that instanceof Tree.ExecutableStatement) {
+            hasNonStatic = true;
+        }
+        boolean ohs = hasNonStatic;
+        hasNonStatic = false;
         super.visit(that);
+        hasNonStatic = ohs;
         checkDeclarationSection(that);
     }
 

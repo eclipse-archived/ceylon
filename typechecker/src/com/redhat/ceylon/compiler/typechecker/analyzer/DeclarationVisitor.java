@@ -865,12 +865,12 @@ public abstract class DeclarationVisitor extends Visitor {
                     (c.isFormal() || 
                      c.isDefault() ||
                      c.isActual())) {
-                that.addError("member class declared formal, default, or actual must have a parameter list");
+                that.addError("member class declared 'formal', 'default', or 'actual' must have a parameter list");
             }
             Tree.AnnotationList al = 
                     that.getAnnotationList();
             if (hasAnnotation(al, "sealed", unit)) {
-                that.addError("class without parameter list may not be annotated sealed", 
+                that.addError("class without parameter list may not be annotated 'sealed'", 
                         1800);
             }
         }
@@ -992,11 +992,11 @@ public abstract class DeclarationVisitor extends Visitor {
         if (that.getIdentifier()==null) {
             //default constructor
             if (!c.isShared()) {
-                that.addError("default constructor must be annotated shared", 
+                that.addError("default constructor must be annotated 'shared'", 
                         705);
             }
             if (c.isAbstract()) {
-                that.addError("default constructor may not be annotated abstract", 
+                that.addError("default constructor may not be annotated 'abstract'", 
                         1601);
             }
 //        if (scope instanceof Class) {
@@ -1008,7 +1008,7 @@ public abstract class DeclarationVisitor extends Visitor {
 //        }
         }
         if (c.isAbstract() && c.isShared()) {
-            that.addError("abstract constructor may not be annotated shared", 
+            that.addError("abstract constructor may not be annotated 'shared'", 
                     1610);
         }
     }
@@ -1349,17 +1349,17 @@ public abstract class DeclarationVisitor extends Visitor {
         if (v.isInterfaceMember() && 
                 !v.isFormal() && !v.isNative()) {
             if (sie==null) {
-                that.addError("interface attribute must be annotated formal", 
+                that.addError("interface attribute must be annotated 'formal'", 
                         1400);
             }
         }
         if (v.isLate()) {
             if (v.isFormal()) {
-                that.addError("formal attribute may not be annotated late");
+                that.addError("formal attribute may not be annotated 'late'");
             }
             else if (!v.isClassOrInterfaceMember() && 
                     !v.isToplevel()) {
-                that.addError("block-local value may not be annotated late");
+                that.addError("block-local value may not be annotated 'late'");
             }
         }
         if (v.isFormal() && sie!=null) {
@@ -1606,11 +1606,11 @@ public abstract class DeclarationVisitor extends Visitor {
             }
         }
         if (v.isFormal()) {
-            that.addError("parameters may not be annotated formal", 
+            that.addError("parameter may not be annotated 'formal'", 
                     1312);
         }
 //        if (v.isVariable()) {
-//            that.addError("parameter may not be annotated variable");
+//            that.addError("parameter may not be annotated 'variable'");
 //        }
     }
 
@@ -1634,7 +1634,7 @@ public abstract class DeclarationVisitor extends Visitor {
             type.addError("functional parameter type may not be variadic");
         }
         if (m.isFormal()) {
-            that.addError("parameters may not be annotated formal", 
+            that.addError("parameter may not be annotated 'formal'", 
                     1312);
         }
     }
@@ -2069,17 +2069,17 @@ public abstract class DeclarationVisitor extends Visitor {
         
         if (pls.isEmpty()) {
             if (type instanceof Tree.FunctionModifier) {
-                type.addError("variables with no parameters may not be declared using the keyword function");
+                type.addError("variables with no parameters may not be declared using the keyword 'function'");
             }
             if (type instanceof Tree.VoidModifier) {
-                type.addError("variables with no parameters may not be declared using the keyword void");
+                type.addError("variables with no parameters may not be declared using the keyword 'void'");
             }
         }
         else {
             Tree.ParameterList pl = pls.get(0);
             pl.addUnsupportedError("variables with parameter lists are not yet supported");
             if (type instanceof Tree.ValueModifier) {
-                type.addError("variables with parameters may not be declared using the keyword value");
+                type.addError("variables with parameters may not be declared using the keyword 'value'");
             }
         }
                 
@@ -2141,7 +2141,7 @@ public abstract class DeclarationVisitor extends Visitor {
             ClassOrInterface container = 
                     (ClassOrInterface) model.getContainer();
             if (container.isFinal() && model.isDefault()) {
-                that.addError("member of final class may not be annotated default", 
+                that.addError("member of final class may not be annotated 'default'", 
                         1350);
             }
         }
@@ -2161,7 +2161,7 @@ public abstract class DeclarationVisitor extends Visitor {
         Tree.AnnotationList al = that.getAnnotationList();
         if (hasAnnotation(al, "shared", unit)) {
             if (that instanceof Tree.AttributeSetterDefinition) {
-                that.addError("setter may not be annotated shared", 
+                that.addError("setter may not be annotated 'shared'", 
                         1201);
             }
             /*else if (that instanceof Tree.TypedDeclaration && !(that instanceof Tree.ObjectDefinition)) {
@@ -2177,6 +2177,14 @@ public abstract class DeclarationVisitor extends Visitor {
                 model.setShared(true);
             }
         }
+        if (hasAnnotation(al, "static", unit)) {
+            if (model instanceof FunctionOrValue || model instanceof ClassOrInterface) {
+                model.setStaticallyImportable(true);
+            }
+            else {
+                that.addError("declaration may not be annotated 'static'");
+            }
+        }
         if (hasAnnotation(al, "small", unit)) {
             if (model instanceof FunctionOrValue) {
                 ((FunctionOrValue)model).setSmall(true);
@@ -2184,11 +2192,11 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         if (hasAnnotation(al, "default", unit)) {
             if (that instanceof Tree.ObjectDefinition) {
-                that.addError("object declaration may not be annotated default", 
+                that.addError("object declaration may not be annotated 'default'", 
                         1313);
             }
             /*else if (that instanceof Tree.Parameter) {
-                that.addError("parameters may not be annotated default", 1313);
+                that.addError("parameters may not be annotated 'default'", 1313);
             }*/
             else {
                 model.setDefault(true);
@@ -2196,7 +2204,7 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         if (hasAnnotation(al, "formal", unit)) {
             if (that instanceof Tree.ObjectDefinition) {
-                that.addError("object declaration may not be annotated formal", 
+                that.addError("object declaration may not be annotated 'formal'", 
                         1312);
             }
             else {
@@ -2204,7 +2212,7 @@ public abstract class DeclarationVisitor extends Visitor {
             }
         }
         if (model.isFormal() && model.isDefault()) {
-            that.addError("declaration may not be annotated both formal and default",
+            that.addError("declaration may not be annotated both 'formal' and 'default'",
                     1320);
         }
         Tree.Annotation na = 
@@ -2229,7 +2237,7 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         model.setNativeBackends(backends);
         if (model.isNative() && model.isFormal()) {
-            that.addError("declaration may not be annotated both formal and native");
+            that.addError("declaration may not be annotated both 'formal' and 'native'");
         }
         if (hasAnnotation(al, "actual", unit)) {
             model.setActual(true);
@@ -2246,25 +2254,25 @@ public abstract class DeclarationVisitor extends Visitor {
                     ((Constructor)((Function) model).getTypeDeclaration()).setAbstract(true);
                 }
                 else {
-                    that.addError("declaration is not a callable constructor, and may not be annotated abstract", 
+                    that.addError("declaration is not a callable constructor, and may not be annotated 'abstract'", 
                             1800);
                 }
             }
             else {
-                that.addError("declaration is not a class, and may not be annotated abstract", 
+                that.addError("declaration is not a class, and may not be annotated 'abstract'", 
                         1600);
             }
         }
         if (hasAnnotation(al, "final", unit)) {
             if (model instanceof ClassAlias) {
-                that.addError("declaration is a class alias, and may not be annotated final", 
+                that.addError("declaration is a class alias, and may not be annotated 'final'", 
                         1700);
             }
             else if (model instanceof Class) {
                 ((Class) model).setFinal(true);
             }
             else {
-                that.addError("declaration is not a class, and may not be annotated final", 
+                that.addError("declaration is not a class, and may not be annotated 'final'", 
                         1700);
             }
         }
@@ -2280,12 +2288,12 @@ public abstract class DeclarationVisitor extends Visitor {
                     ((Function) model).getTypeDeclaration().setSealed(true);
                 }
                 else {
-                    that.addError("declaration is not a callable constructor, and may not be annotated sealed", 
+                    that.addError("declaration is not a callable constructor, and may not be annotated 'sealed'", 
                             1800);
                 }
             }
             else {
-                that.addError("declaration is not a class or interface, and may not be annotated sealed", 
+                that.addError("declaration is not a class or interface, and may not be annotated 'sealed'", 
                         1800);
             }
         }
@@ -2294,7 +2302,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 ((Value) model).setVariable(true);
             }
             else {
-                that.addError("declaration is not a value, and may not be annotated variable", 
+                that.addError("declaration is not a value, and may not be annotated 'variable'", 
                         1500);
             }
         }
@@ -2307,24 +2315,24 @@ public abstract class DeclarationVisitor extends Visitor {
                         ((Value) model).setLate(true);
                     }
                     else {
-                        that.addError("value is not an uninitialized reference, and may not be annotated late", 
+                        that.addError("value is not an uninitialized reference, and may not be annotated 'late'", 
                                 1900);
                     }
                 }
                 else {
-                    that.addError("value is not an uninitialized reference, and may not be annotated late", 
+                    that.addError("value is not an uninitialized reference, and may not be annotated 'late'", 
                             1900);
                 }
             }
             else {
-                that.addError("declaration is not a value, and may not be annotated late", 
+                that.addError("declaration is not a value, and may not be annotated 'late'", 
                         1900);
             }
         }
         if (model instanceof Value) {
             Value value = (Value) model;
             if (value.isVariable() && value.isTransient()) {
-                that.addError("getter may not be annotated variable (define a setter with 'assign' instead)", 
+                that.addError("getter may not be annotated 'variable' (define a setter with 'assign' instead)", 
                         1501);
             }
         }
@@ -2334,11 +2342,11 @@ public abstract class DeclarationVisitor extends Visitor {
         if (hasAnnotation(al, "annotation", unit)) {
             if (!(model instanceof Function) && 
                 !(model instanceof Class)) {
-                that.addError("declaration is not a function or class, and may not be annotated annotation", 
+                that.addError("declaration is not a function or class, and may not be annotated 'annotation'", 
                         1950);
             }
             else if (!model.isToplevel()) {
-                that.addError("declaration is not toplevel, and may not be annotated annotation", 
+                that.addError("declaration is not toplevel, and may not be annotated 'annotation'", 
                         1951);
             }
             else {
@@ -2350,7 +2358,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 ((Class) model).setSerializable(true);
             }
             else {
-                that.addError("declaration is not a class, and may not be annotated serializable", 
+                that.addError("declaration is not a class, and may not be annotated 'serializable'", 
                         1600);
             }
         }
@@ -2363,14 +2371,14 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         if (hasAnnotation(al, "service", unit)) {
             if (!(model instanceof Class) || !model.isToplevel()) {
-                that.addError("declaration is not a toplevel class, and may not be annotated service");
+                that.addError("declaration is not a toplevel class, and may not be annotated 'service'");
             }
             else if (!model.isShared()) {
-                that.addError("class is not shared, and may not be annotated service",
+                that.addError("class is not shared, and may not be annotated 'service'",
                         705);
             }
             else if (((Class) model).isAbstract()) {
-                that.addError("class is abstract, and may not be annotated service",
+                that.addError("class is abstract, and may not be annotated 'service'",
                         1601);
             }
         }

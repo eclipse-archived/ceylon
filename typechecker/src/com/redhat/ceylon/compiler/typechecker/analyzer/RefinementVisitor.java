@@ -1423,6 +1423,10 @@ public class RefinementVisitor extends Visitor {
                         dec.getName() + "'", 
                         1303);
             }
+            if (dec.isStaticallyImportable()) {
+                that.addError("static declaration is not a member of a class or interface: '" + 
+                        dec.getName() + "'");
+            }
         }
         else if (!dec.isShared() && mayBeShared) {
             if (dec.isActual()) {
