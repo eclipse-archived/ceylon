@@ -9,6 +9,7 @@ import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_DS_VAR
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_DYNAMIC;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_FLAGS;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_INTERFACES;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_JS_TSENUM;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_METATYPE;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_METHODS;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_MODULE;
@@ -309,6 +310,9 @@ public class JsonPackage extends LazyPackage {
                     cf.setDeprecated(cnst.isDeprecated());
                     cf.setDynamic(cnst.isDynamic());
                     cls.addMember(cf);
+                }
+                if (cons.getValue().containsKey(KEY_JS_TSENUM)) {
+                    cnst.setTypescriptEnum((String)cons.getValue().get(KEY_JS_TSENUM));
                 }
             }
         } else {
