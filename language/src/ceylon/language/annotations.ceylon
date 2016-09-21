@@ -116,11 +116,11 @@ shared final sealed annotation class StaticAnnotation()
         satisfies OptionalAnnotation<StaticAnnotation,
 FunctionDeclaration|ValueDeclaration|ClassOrInterfaceDeclaration> {}
 
-"Annotation to mark a member of a class or interface as 
- static. A `static` member does not have access to any
- current instance of the type, and must be occur before
- any non-`static` member declarations in the body of the
- type declaration."
+"Annotation to mark a member of a toplevel class or 
+ interface as static. A `static` member does not have access 
+ to any current instance of the class or interface, and must 
+ occur before any non-`static` member declarations in the 
+ body of the class or interface declaration."
 shared annotation StaticAnnotation static()
         => StaticAnnotation();
 
