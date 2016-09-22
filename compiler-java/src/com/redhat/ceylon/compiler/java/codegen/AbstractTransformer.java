@@ -2846,7 +2846,7 @@ public abstract class AbstractTransformer implements Transformation {
 
     boolean isVariadicCallable(Type callableType) {
         if (typeFact().getNothingType().isExactly(callableType)) {
-            return true;
+            return false;
         }
         Type tuple = typeFact().getCallableTuple(callableType);
         return typeFact().isTupleOfVariadicCallable(tuple);
