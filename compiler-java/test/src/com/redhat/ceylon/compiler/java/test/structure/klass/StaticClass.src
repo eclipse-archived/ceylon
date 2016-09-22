@@ -2,22 +2,6 @@ package com.redhat.ceylon.compiler.java.test.structure.klass;
 
 class StaticClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
-    static class Static implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
-        
-        Static() {
-        }
-        
-        @.java.lang.Override
-        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.Static.class));
-        }
-    }
-    
-    public static .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic SharedStatic$new$() {
-        // do we need an instantiator
-        return new SharedStatic();
-    }
-    
     public static class SharedStatic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         public SharedStatic() {
@@ -29,9 +13,21 @@ class StaticClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         }
     }
     
+    static class Static extends .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic {
+        
+        Static() {
+            super();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.Static.class));
+        }
+    }
+    
     public StaticClass() {
         new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.Static();
-        .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic$new$();
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic();
     }
     
     @.java.lang.Override
@@ -40,17 +36,48 @@ class StaticClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
-        major = 8,
-        minor = 1)
-@.com.redhat.ceylon.compiler.java.metadata.Method
+interface StaticInterface {
+    
+    public .com.redhat.ceylon.compiler.java.test.structure.klass.StaticInterface$impl $com$redhat$ceylon$compiler$java$test$structure$klass$StaticInterface$impl();
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticInterface.class);
+}
+final class StaticInterface$impl implements .java.io.Serializable {
+    
+    StaticInterface$impl(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticInterface $this) {
+        this.$this = $this;
+    }
+    private final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticInterface $this;
+    
+    public static class SharedStatic implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        public SharedStatic() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticInterface.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticInterface$impl.SharedStatic.class));
+        }
+    }
+    
+    static class Static extends .com.redhat.ceylon.compiler.java.test.structure.klass.StaticInterface$impl.SharedStatic {
+        
+        Static() {
+            super();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticInterface.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticInterface$impl.Static.class));
+        }
+    }
+}
 final class staticClass_ {
     
     private staticClass_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void staticClass() {
         final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic sharedStat = new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic();
+        final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticInterface$impl.SharedStatic sharedStat2 = new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticInterface$impl.SharedStatic();
     }
 }
