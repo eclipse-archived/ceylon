@@ -876,6 +876,8 @@ public class AnalyzerUtil {
                 return true;
         }else if(type.getDeclaration().inherits(unit.getStringDeclaration())){
             return supertype.isExactly(unit.getJavaCharSequenceDeclaration().getType());
+        }else if(type.getDeclaration().inherits(unit.getJavaCharSequenceDeclaration())){
+            return supertype.isExactly(unit.getStringDeclaration().getType());
         }
         return false;
     }
