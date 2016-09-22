@@ -864,22 +864,52 @@ public class AnalyzerUtil {
             TypeDeclaration supertypeDeclaration = supertype.getDeclaration();
             if(!supertypeDeclaration.isSam())
                 return false;
-            // FIXME: overloads
-            Declaration member = supertypeDeclaration.getMember(supertypeDeclaration.getSamName(), null, false);
-            if(member instanceof TypedDeclaration == false)
+            Type nonNullReferenceType = getSamCallableType(supertype, supertypeDeclaration, unit);
+            if(nonNullReferenceType == null)
                 return false;
-            TypedReference typedMember = supertype.getTypedMember((TypedDeclaration) member, Collections.<Type>emptyList());
-            // FIXME: remove nulls from java params
-            // FIXME: proper type for values
-            Type referenceType = typedMember.getFullType();
-//            if(type.isSubtypeOf(referenceType))
-                return true;
+//            System.err.println("reference type "+referenceType);
+//            System.err.println("non-null reference type "+nonNullReferenceType);
+//            System.err.println("type "+type);
+//            System.err.println("supertype "+supertype);
+            return type.isSubtypeOf(nonNullReferenceType);
+        }else if(type.getDeclaration().isSam()
+                && supertype.getDeclaration().inherits(unit.getCallableDeclaration())){
+            System.err.println("Got SAM supertype "+supertype);
+            System.err.println("type "+type);
+            TypeDeclaration typeDeclaration = type.getDeclaration();
+            Type nonNullReferenceType = getSamCallableType(type, typeDeclaration, unit);
+            if(nonNullReferenceType == null)
+                return false;
+            return nonNullReferenceType.isSubtypeOf(supertype);
         }else if(type.getDeclaration().inherits(unit.getStringDeclaration())){
             return supertype.isExactly(unit.getJavaCharSequenceDeclaration().getType());
         }else if(type.getDeclaration().inherits(unit.getJavaCharSequenceDeclaration())){
             return supertype.isExactly(unit.getStringDeclaration().getType());
         }
         return false;
+    }
+
+    private static Type getSamCallableType(Type supertype, TypeDeclaration supertypeDeclaration, Unit unit) {
+        // FIXME: overloads
+        Declaration member = supertypeDeclaration.getMember(supertypeDeclaration.getSamName(), null, false);
+        if(member instanceof TypedDeclaration == false)
+            return null;
+        TypedReference typedMember = supertype.getTypedMember((TypedDeclaration) member, Collections.<Type>emptyList());
+        // FIXME: deal with defaulted/variadic
+        Type referenceType;
+        if(member instanceof Value)
+            referenceType = unit.getCallableDeclaration().appliedType(null, 
+                    Arrays.asList(typedMember.getType(), unit.getEmptyType()));
+        else
+            referenceType = typedMember.getFullType();
+        List<Type> referenceArgs = unit.getCallableArgumentTypes(referenceType);
+        for (int i = 0; i < referenceArgs.size(); i++) {
+            referenceArgs.set(i, referenceArgs.get(i).eliminateNull());
+        }
+        Type nonNullReferenceArgs = unit.getTupleType(referenceArgs, false, false, -1);
+        Type nonNullReferenceType = unit.getCallableDeclaration().appliedType(null, 
+                Arrays.asList(unit.getCallableReturnType(referenceType), nonNullReferenceArgs));
+        return nonNullReferenceType;
     }
 
     static Type canCoerce(Type type, TypeDeclaration supertypeDeclaration) {
