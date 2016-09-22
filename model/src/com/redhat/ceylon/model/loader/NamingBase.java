@@ -271,7 +271,7 @@ public class NamingBase {
                                          && ((Value)decl).getType() != null
                                          && ((Value)decl).getType().getDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Constructor);
         if (ModelUtil.withinClassOrInterface(decl) 
-                && (!ModelUtil.isLocalToInitializer(decl) || enumeratedConstructor) 
+                && (!ModelUtil.isLocalToInitializer(decl) || enumeratedConstructor || decl.isStaticallyImportable()) 
                 && !indirect) {
             if(enumeratedConstructor) {
                 Class constructedClass = ModelUtil.getConstructedClass(decl);

@@ -245,7 +245,7 @@ class Strategy {
     }
     
     public static boolean useField(Value attr) {
-        return !Decl.withinInterface(attr) && Decl.isCaptured(attr);
+        return !Decl.withinInterface(attr) && Decl.isCaptured(attr) || attr.isStaticallyImportable();
     }
     
     
