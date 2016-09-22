@@ -1872,28 +1872,37 @@ public class GenerateJsVisitor extends Visitor {
             FunctionHelper.generateCallable(that, null, this);
         } else if (that.getStaticMethodReference() && d!=null) {
             if (d instanceof Value && ((Value)d).getTypeDeclaration() instanceof Constructor) {
-                //TODO this won't work anymore I think
-                boolean wrap = false;
-                if (that.getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression) {
-                    Tree.QualifiedMemberOrTypeExpression prim = (Tree.QualifiedMemberOrTypeExpression)that.getPrimary();
-                    if (prim.getStaticMethodReference()) {
-                        wrap=true;
-                        out("function(_$){return _$");
-                    } else {
-                        prim.getPrimary().visit(this);
-                    }
-                    out(".");
+                Constructor cnst = (Constructor)((Value)d).getTypeDeclaration();
+                if (cnst.getTypescriptEnum() != null && cnst.getTypescriptEnum().matches("[0-9.-]+")) {
+                    out(cnst.getTypescriptEnum());
                 } else {
-                    if (d.getContainer() instanceof Declaration) {
-                        qualify(that.getPrimary(), (Declaration)d.getContainer());
-                    } else if (d.getContainer() instanceof Package) {
-                        out(names.moduleAlias(((Package)d.getContainer()).getModule()));
+                    //TODO this won't work anymore I think
+                    boolean wrap = false;
+                    if (that.getPrimary() instanceof Tree.QualifiedMemberOrTypeExpression) {
+                        Tree.QualifiedMemberOrTypeExpression prim = (Tree.QualifiedMemberOrTypeExpression)that.getPrimary();
+                        if (prim.getStaticMethodReference()) {
+                            wrap=true;
+                            out("function(_$){return _$");
+                        } else {
+                            prim.getPrimary().visit(this);
+                        }
+                        out(".");
+                    } else {
+                        if (d.getContainer() instanceof Declaration) {
+                            qualify(that.getPrimary(), (Declaration)d.getContainer());
+                        } else if (d.getContainer() instanceof Package) {
+                            out(names.moduleAlias(((Package)d.getContainer()).getModule()));
+                        }
                     }
-                }
-                out(names.name((TypeDeclaration)d.getContainer()), names.constructorSeparator(d),
-                        names.name(d), "()");
-                if (wrap) {
-                    out(";}");
+                    if (cnst.getTypescriptEnum() != null) {
+                        out(names.name((TypeDeclaration)d.getContainer()), ".", cnst.getTypescriptEnum());
+                    } else {
+                        out(names.name((TypeDeclaration)d.getContainer()), names.constructorSeparator(d),
+                            names.name(d), "()");
+                    }
+                    if (wrap) {
+                        out(";}");
+                    }
                 }
             } else if (d instanceof Function) {
                 Function fd = (Function)d;
