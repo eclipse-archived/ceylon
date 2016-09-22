@@ -308,7 +308,8 @@ public class NamingBase {
                 // one it will not. This is also used for late setters...
                 && ((JavaBeanValue)decl).getSetterName() != null) {
             return ((JavaBeanValue)decl).getSetterName();
-        } else if (ModelUtil.withinClassOrInterface(decl) && !ModelUtil.isLocalToInitializer(decl)) {
+        } else if (ModelUtil.withinClassOrInterface(decl) && !ModelUtil.isLocalToInitializer(decl)
+                || decl.isStaticallyImportable()) {
             String setterName = getSetterName(decl.getName());
             if (decl.isMember() && !decl.isShared()) {
                 setterName = suffixName(Suffix.$priv$, setterName);

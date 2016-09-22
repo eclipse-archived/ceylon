@@ -36,6 +36,7 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.model.loader.NamingBase;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
@@ -586,7 +587,12 @@ public class AttributeDefinitionBuilder {
     private JCExpression fld() {
         JCExpression fld;
         if (fieldName.equals(attrName)) {
-            fld = owner.makeSelect("this", Naming.quoteFieldName(fieldName));
+            if (attrTypedDecl.isStaticallyImportable()
+                    && attrTypedDecl.getContainer() instanceof ClassOrInterface) {
+                fld = owner.makeSelect(owner.makeJavaType(((ClassOrInterface)attrTypedDecl.getContainer()).getType(), AbstractTransformer.JT_RAW), Naming.quoteFieldName(fieldName));
+            } else {
+                fld = owner.makeSelect("this", Naming.quoteFieldName(fieldName));
+            }
         } else {
             fld = owner.makeQuotedIdent(fieldName);
         }
