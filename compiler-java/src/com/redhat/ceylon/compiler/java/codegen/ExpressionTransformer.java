@@ -612,6 +612,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression applyJavaCoercions(JCExpression ret, Type exprType, Type expectedType) {
+        if(expectedType == null)
+            return ret;
         exprType = simplifyType(exprType);
         expectedType = simplifyType(expectedType);
         System.err.println("coercions: "+exprType+" to "+expectedType);
@@ -6706,6 +6708,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     
     boolean isFunctionalResult(Type type) {
         return !isWithinInvocation()
+            && !type.isNothing()
             && isCeylonCallableSubtype(type);   
     }
 
