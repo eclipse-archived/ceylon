@@ -1,0 +1,217 @@
+import org.apache.tools.ant.filters.EscapeUnicode
+import org.apache.tools.ant.filters.ReplaceTokens
+
+// Shorten the recipes required in Gradle scripts byt moving
+// a lot of the common code here.
+// Requires ext.ceylonModuleName to be set before applying this.
+
+apply plugin : CeylonCommonBuildProperties
+
+// ----------------------------------------------------------------------------
+// Fail if prequisite properties are not set in project extension
+// ----------------------------------------------------------------------------
+if(ext.ceylonModuleName == null) {
+    throw new GradleException ('''ceylonModule name was not found. You need to define it in an extension block such as
+
+ext {
+    ceylonModuleName = 'foo'
+}
+
+''')
+}
+
+if(!ext.properties.containsKey('ceylonPublishModuleName')) {
+    ext.ceylonPublishModuleName = ceylonModuleName
+}
+
+if(!ext.properties.containsKey('ceylonNamespace')) {
+    ext.ceylonNamespace = 'com.redhat.ceylon'
+}
+
+// ----------------------------------------------------------------------------
+// Fail if prequisite properties are not in common-build.properties
+// ----------------------------------------------------------------------------
+requiresCBP "module.com.redhat.ceylon.${ceylonModuleName}.version"
+requiresCBP 'build.dist.repo'
+requiresCBP "ceylon.${ceylonPublishModuleName}.dir"
+requiresCBP 'compile.java.target'
+requiresCBP 'compile.java.source'
+
+ext {
+    bundleVariant = ext.properties.containsKey('ceylonModuleVariant') ? ".${ceylonModuleVariant}" : ''
+    bundleSymbolicName = ceylonNamespace + '.' + ceylonModuleName + bundleVariant
+    bundleVersionName = cbp."module.com.redhat.ceylon.${ceylonModuleName}.version"
+    archivePublishDir = "${repoDir}/" +  cbp."ceylon.${ceylonPublishModuleName}.dir"
+}
+
+if(!ext.properties.containsKey('ceylonSourceLayout')) {
+        ext.ceylonSourceLayout = true
+}
+
+apply plugin: 'java'
+apply plugin : CeylonBuildOsgiPlugin
+
+dependencies {
+    testCompile 'junit:junit:4.11'
+}
+
+sourceCompatibility = cbp.'compile.java.source'
+targetCompatibility = cbp.'compile.java.target'
+
+assemble {
+    dependsOn 'sha1'
+    dependsOn 'copyPluginFiles'
+}
+
+processResources {
+    filesMatching 'com/redhat/**/*.utf8properties', { fcd ->
+        fcd.filter EscapeUnicode
+        fcd.name = fcd.name.replace('.utf8properties','.properties')
+    }
+}
+
+// Override the default Maven-like source hierarchy for
+// any projects where `defaultSources == false`
+if (ext.ceylonSourceLayout) {
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src']
+            }
+            resources {
+                srcDirs = ['src']
+                exclude '**/*.java'
+            }
+        }
+        test {
+            java {
+                srcDirs = ['test/src']
+                include '**/*.java'
+            }
+            resources {
+                srcDirs = ['test/src']
+                exclude '**/*.java'
+            }
+        }
+    }
+}
+
+
+moduleXml {
+    sourceModule {
+        new File(project.file("${project(':runtime').projectDir}/dist/repo/" +
+            cbp."ceylon.${ceylonPublishModuleName}.dir").parentFile, '/_version_/module.xml')
+    }
+}
+
+jar {
+    dependsOn moduleXml
+
+    ceylon {
+        importJavaxModel  false
+        bundleSymbolicName project.ext.bundleSymbolicName
+        exportedBundleVersion project.ext.bundleVersionName+versionQualifier
+        moduleLocation {moduleXml.destinationFile}
+    }
+
+    from moduleXml, {
+        into "META-INF/jbossmodules/" + cbp."ceylon.${ceylonPublishModuleName}.dir"
+    }
+
+    archiveName = "${bundleSymbolicName}-${bundleVersionName}.jar"
+
+}
+
+task sourceZip( type : Zip ) {
+    group 'Build'
+    description 'Archives source files'
+
+    from sourceSets.main.allSource, {
+        include '**/*.java'
+    }
+
+    archiveName = "${bundleSymbolicName}-${bundleVersionName}.src"
+}
+
+task sha1 ( type : Checksum ) {
+    archive jar
+    archive sourceZip
+    dependsOn jar, sourceZip
+}
+
+task publishJar( type : Copy ) {
+    group 'Distribution'
+    description 'Copies binary artifacts to distribution area'
+
+    from sha1, {
+        include "**/${bundleSymbolicName}-${bundleVersionName}.jar.*"
+    }
+
+    from jar
+    from moduleXml
+    into archivePublishDir
+}
+
+task publishOsgiDistJar( type : Copy ) {
+    group 'OSGI Distribution'
+    description 'Copies a JAR suitable for the Ceylon OSGI Distribution'
+    from jar
+    into osgiDistPluginsDir
+    rename ~/.+/,"${bundleSymbolicName}_${jar.ceylon.bundleVersion}.jar"
+}
+
+task publishSource( type : Copy ) {
+    group 'Distribution'
+    description 'Copies sources artifacts to distribution area'
+
+    from sha1, {
+        include '**/*.src.*'
+    }
+    from sourceZip
+
+    into archivePublishDir
+}
+
+task copyPluginFiles( type : Copy ) {
+    group "build"
+    description 'Copies plugin files with correct version information'
+    from 'bin', {
+        include 'ceylon-*.plugin'
+    }
+    into "${buildDir}/bin"
+
+    filter ReplaceTokens, tokens : ['ceylon-version': version ]
+}
+
+task publishPluginFiles( type : Copy ) {
+    group "Distribution"
+    description "Copies bin directory to distribution area"
+    from "${buildDir}/bin", {
+        include 'ceylon-*.plugin'
+    }
+    into repoBinDir
+    dependsOn copyPluginFiles
+}
+
+task publishInternal {
+    dependsOn 'publishJar','publishSource'
+    dependsOn publishPluginFiles, publishOsgiDistJar
+}
+
+task cleanRepo ( type : Delete ) {
+    group 'Publish'
+    description 'Deletes published artifacts'
+    delete publishJar.outputs.files
+    delete publishSource.outputs.files
+}
+
+clean {
+    dependsOn cleanRepo
+}
+
+// TODO: Fix tests
+if(ext.properties.containsKey('ceylonTestDisabled') && ext.ceylonTestDisabled == true) {
+    test.enabled = false
+    testClasses.enabled = false
+    compileTestJava.enabled = false
+}

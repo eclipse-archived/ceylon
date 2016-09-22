@@ -1,0 +1,59 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+ext {
+    ceylonModuleName = 'runtime'
+    ceylonNamespace = 'ceylon'
+    ceylonSourceLayout = false
+    ceylonTestDisabled = true
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+
+dependencies {
+    compile project(':common')
+    compile project(':cli')
+    compile project(':model')
+    compile project(':cmr')
+    compile project(':tool-provider')
+    compile project( path : ':language', configuration : 'antOutput')
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = [
+                'api/src/main/java',
+                'impl/src/main/java',
+                'spi/src/main/java',
+                'bootstrap/src/main/java'
+            ]
+            include '**/*.java'
+        }
+        resources {
+            srcDirs = [ 'bootstrap/src/main/java' ]
+            exclude '**/*.java'
+        }
+    }
+}
+
+task pluginFiles( type : Copy ) {
+    group 'Application'
+    description 'Creates version specific plugins files'
+
+    from 'bin'
+    into "${buildDir}/bin"
+    filter ReplaceTokens, tokens : [ 'ceylon-version' : version ]
+}
+
+assemble {
+    dependsOn pluginFiles
+}
+
+['common','cmr','language','tool-provider','java-main'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
+}
+
+// TODO: Can be removed if language build is pure Gradle
+compileJava.dependsOn ':language:assemble'
+
+

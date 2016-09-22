@@ -30,12 +30,12 @@ void comprehensions() {
     [String*] eagerWithStatic = [ "hello", "world", for (w in words) if (w.size>2) w ];
     {String*} lazyWithStatic = { "hello", "world", for (w in words) if (w.size>2) w };
     @type:"Tuple<Integer|Float|String,Integer,Tuple<Float|String,Float,Sequential<String>>>" value eagerWithStaticMixed = [ 1, 1.0, for (w in words) if (w.size>2) w ];
-    @type:"Iterable<Integer|Float|String,Nothing>" value lazyWithStaticMixed = { 2, 2.0, for (w in words) if (w.size>2) w };
+    @type:"{Integer|Float|String+}" value lazyWithStaticMixed = { 2, 2.0, for (w in words) if (w.size>2) w };
     
     [String*] eagerWithStaticAndSpread = [ "hello", "world", *eager ];
     {String*} lazyWithStaticAndSpread = { "hello", "world", *lazy };
     @type:"Tuple<Integer|Float|String,Integer,Tuple<Float|String,Float,Sequential<String>>>" value eagerWithStaticAndSpreadMixed = [ 1, 1.0, *eager ];
-    @type:"Iterable<Integer|Float|String,Nothing>" value lazyWithStaticAndSpreadMixed = { 2, 2.0, *lazy };
+    @type:"{Integer|Float|String+}" value lazyWithStaticAndSpreadMixed = { 2, 2.0, *lazy };
     
     [String*] eagerBroken = [ @error "hello", for (w in words) if (w.size>2) w, "world" ];
     {String*} lazyBroken = { @error "hello", for (w in words) if (w.size>2) w, "world" };

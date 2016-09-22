@@ -11,6 +11,7 @@
  simply invoke it. Alternatively use [[bind]] if the qualifying instance's 
  type is unknown until runtime.
 "
+since("1.2.0")
 shared sealed interface Qualified<out Kind=Anything, in Container=Nothing> 
         satisfies Kind(Container) {
     

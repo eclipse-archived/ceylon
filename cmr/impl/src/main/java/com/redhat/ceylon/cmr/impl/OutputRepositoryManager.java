@@ -104,6 +104,14 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
     }
 
     @Override
+    public boolean isSameFile(ArtifactContext context, File srcFile) throws RepositoryException {
+        if (output instanceof AbstractRepositoryManager) {
+            return ((AbstractRepositoryManager)output).isSameFile(context, srcFile);
+        }
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "OutputRepositoryManager: " + output;
     }
@@ -132,5 +140,10 @@ public class OutputRepositoryManager extends AbstractRepositoryManager {
     @Override
     public ArtifactContext getArtifactOverride(ArtifactContext context) throws RepositoryException {
         return context;
+    }
+
+    @Override
+    public boolean isValidNamespace(String namespace) {
+        return namespace == null || DefaultRepository.NAMESPACE.equals(namespace);
     }
 }

@@ -17,8 +17,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 8)
 @Method
-public final class printStackTrace_
-{
+@SharedAnnotation$annotation$
+@NativeAnnotation$annotation$(backends={})
+public final class printStackTrace_ {
     public static void printStackTrace(
             @TypeInfo("ceylon.language::Throwable")
             @Name("exception") final java.lang.Throwable throwable,

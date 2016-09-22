@@ -30,8 +30,12 @@
     operating system file manager. Instead, the toolset helps automate the 
     management of modules within module repositories.</para>
     
-    <para>Circular dependencies between modules are not supported. The
-    Ceylon compiler detects such dependencies and produces an error.</para>
+    <para>Circular dependencies between modules are not supported. The Ceylon 
+    compiler detects such dependencies and produces an error.</para>
+    
+    <comment><para>Note: as an extension, the Ceylon toolset supports interoperation 
+    with external module repository systems including Maven and NPM. However, this 
+    functionality is outside the scope of this specification.</para></comment>
 
     <section id="moduleruntime">
         <title>The module runtime and module isolation</title>
@@ -99,9 +103,8 @@
         <section id="requirejs">
             <title>Module isolation for the JavaScript platform</title>
             
-            <para>In the JavaScript environment, modules are loaded using
-            the <literal>require()</literal> function defined by CommonJS 
-            Modules.</para>
+            <para>In the JavaScript environment, modules are loaded using the 
+            <literal>require()</literal> function defined by CommonJS Modules.</para>
             
             <comment><para>There are various implementations of the CommonJS-style 
             <literal>require()</literal> function, and Ceylon module scripts should
@@ -619,13 +622,20 @@ shared package org.hibernate.query;</programlisting>
             <para>A module may import other modules.</para>
             
             <synopsis>ModuleBody: "{" ModuleImport* "}"</synopsis>
-            <synopsis>ModuleImport: Annotations "import" (FullPackageName|StringLiteral) StringLiteral ";"</synopsis>
+            <synopsis>ModuleImport: Annotations "import" RepositoryType? (FullPackageName|StringLiteral) StringLiteral ";"</synopsis>
+            <synopsis>RepositoryType: LIdentifier ":"</synopsis>
+            
+            <para>The optional repository type identifier selects an external module 
+            repository system, for example, <literal>maven</literal>, or <literal>npm</literal>, 
+            in which the module resides. This specification does not define the semantics 
+            of this identifier.</para>
             
             <para>The name of the imported module may be specified using the usual syntax
-            for a module name, or as a literal string, to allow interoperation with
-            legacy module repositories existing outside the Ceylon ecosystem.</para>
+            for a module name, or as a literal string.</para>
             
-            <comment><para>Note: this enables interoperation with Maven.</para></comment>
+            <comment><para>Note: quoted module names enable interoperation with Maven
+            and other module repository systems whose module identifiers do not comply 
+            with the format specified for Ceylon module names.</para></comment>
             
             <comment><para>Note: in Ceylon 1.0 it is illegal to explicitly import the
             module <literal>ceylon.language</literal>. The language module is always

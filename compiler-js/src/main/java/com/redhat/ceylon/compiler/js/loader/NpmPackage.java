@@ -53,7 +53,6 @@ public class NpmPackage extends LazyPackage {
                 plist.getParameters().add(p0);
                 //Add a default constructor with jsNew set
                 Constructor defcon = new Constructor();
-                defcon.setJsNew(true);
                 defcon.addParameterList(plist);
                 defcon.setDynamic(true);
                 defcon.setShared(true);
@@ -68,12 +67,13 @@ public class NpmPackage extends LazyPackage {
                 cf.setUnit(d.getUnit());
                 cf.setVisibleScope(defcon.getVisibleScope());
                 cf.setShared(true);
-                cf.setJsNew(true);
+                cf.setDynamic(true);
                 ((Class)d).setConstructors(true);
                 ((Class)d).addMember(defcon);
                 ((Class)d).addMember(cf);
             } else {
                 d = new Function();
+                ((Function)d).setDynamic(true);
                 ((Function)d).setDynamicallyTyped(true);
             }
             d.setName(name);

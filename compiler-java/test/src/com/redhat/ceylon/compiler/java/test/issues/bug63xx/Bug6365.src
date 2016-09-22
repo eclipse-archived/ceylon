@@ -1,0 +1,11 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug63xx;
+
+public final class bug6365_ {
+    
+    private bug6365_() {
+    }
+    
+    public static void bug6365(final .ceylon.language.Sequence<? extends .ceylon.language.Integer> a) {
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> b = a.spanFrom(.ceylon.language.Integer.instance(1L));
+    }
+}

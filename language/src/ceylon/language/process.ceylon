@@ -26,6 +26,7 @@ shared native object process {
 
     "The value of the given environment variable defined 
      for the current virtual machine process."
+    since("1.2.0")
     shared native String? environmentVariableValue(String name);
     
     "Print a string to the standard output of the virtual

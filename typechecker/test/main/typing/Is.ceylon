@@ -172,7 +172,7 @@ class Is() {
     void m(String s) {
         @warn:"redundantNarrowing" if (is String s) { }
         @error if (is Integer s) { }
-        @error value b = s is String;
+        @warn:"redundantNarrowing" value b = s is String;
         @error value c = s is Integer;
     }
     

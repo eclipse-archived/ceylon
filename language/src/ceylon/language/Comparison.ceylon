@@ -6,6 +6,7 @@ tagged("Comparisons")
 shared abstract class Comparison(shared actual String string) 
         of larger | smaller | equal {
     "The reversed value of this comparison."
+    since("1.2.0")
     shared formal Comparison reversed;
 }
 

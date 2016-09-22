@@ -172,6 +172,7 @@ final class localSingletonCtors_ {
     }
     
     static .java.lang.Object localSingletonCtors() {
+        final VariableBox<LocalClass> $instance$LocalClass$one = new VariableBox<LocalClass>(null);
         
         class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             private final .java.lang.String string;
@@ -196,8 +197,8 @@ final class localSingletonCtors_ {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.localSingletonCtors_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class));
             }
         }
-        final LocalClass $instance$LocalClass$one = new LocalClass((LocalClass.one_)null);
-        return $instance$LocalClass$one;
+        $instance$LocalClass$one.ref = new LocalClass((LocalClass.one_)null);
+        return $instance$LocalClass$one.ref;
     }
 }
 final class singletonCtors_ {

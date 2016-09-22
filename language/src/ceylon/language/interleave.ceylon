@@ -13,6 +13,7 @@
  `{ 1, '-', 2, '+', 3, '-', 4, '+', 5, '-' }`."
 see (`function Iterable.interpose`)
 tagged("Streams")
+since("1.1.0")
 shared Iterable<Element,Absent>
         interleave<Element,Absent>
         (Iterable<Element,Absent>+ iterables) 

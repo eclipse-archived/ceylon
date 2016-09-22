@@ -909,7 +909,7 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
         }
         catch(RuntimeException e) {
             if (e.getCause() instanceof IOException) {
-                log.warning(e.toString());
+                getLogger().warning(e.toString());
             } else {
                 throw e;
             }

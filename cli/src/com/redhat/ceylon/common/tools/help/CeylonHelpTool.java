@@ -180,8 +180,7 @@ public class CeylonHelpTool implements Tool {
                 try {
                     pagerPipe.close();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    // Seems common on MacOS so let's just ignore this
                 }
                 // wait for pager to be done, there's no point doing anything else meanwhile
                 try {

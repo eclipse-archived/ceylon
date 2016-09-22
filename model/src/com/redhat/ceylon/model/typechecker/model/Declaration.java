@@ -24,7 +24,7 @@ import com.redhat.ceylon.common.Backends;
  */
 public abstract class Declaration 
         extends Element 
-        implements Referenceable, Annotated {
+        implements Referenceable, Annotated, Named {
     
     private static final int SHARED = 1;
     private static final int FORMAL = 1<<1;
@@ -32,6 +32,7 @@ public abstract class Declaration
     private static final int DEFAULT = 1<<3;
     private static final int ANNOTATION = 1<<4;
     private static final int DEPRECATED = 1<<5;
+    private static final int DYNAMIC = 1<<6;
     
     private static final int PROTECTED = 1<<8;
     private static final int PACKAGE = 1<<9;
@@ -58,6 +59,7 @@ public abstract class Declaration
         this.visibleScope = visibleScope;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -95,6 +97,27 @@ public abstract class Declaration
             flags&=(~DEPRECATED);
         }
 	}
+    
+    /**
+     * Whether this declaration is dynamic, that is, outside of Ceylon's control
+     * (such as a dynamic interface).
+     * Not to be confused with {@link TypedDeclaration#isDynamicallyTyped()}.
+     */
+    public boolean isDynamic() {
+        return (flags&DYNAMIC)!=0;
+    }
+    
+    /**
+     * @see #isDynamic()
+     */
+    public void setDynamic(boolean dynamic) {
+        if (dynamic) {
+            flags|=DYNAMIC;
+        }
+        else {
+            flags&=(~DYNAMIC);
+        }
+    }
 
     String toStringName() {
         String name = getName();
@@ -453,11 +476,27 @@ public abstract class Declaration
             return null;
         }
     }
-
+    
+    /**
+     * Does this model object "abstract" over several
+     * overloaded declarations with the same name?
+     * 
+     * Always returns false for Ceylon declarations.
+     */
     public boolean isAbstraction() { 
         return false; 
     }
 
+    /**
+     * Is this model object an overloaded declaration 
+     * which shared a name with other declarations in
+     * the same scope?
+     * 
+     * Always returns false for Ceylon declarations.
+     * 
+     * Always false for "abstractions" of overloaded
+     * declarations.
+     */
     public boolean isOverloaded() {
         return false;
     }
@@ -549,12 +588,31 @@ public abstract class Declaration
                                         thatParam.getType();
                                 if (thisParamType!=null && 
                                     thatParamType!=null) {
+                                    thisParamType = 
+                                            unit.getDefiniteType(thisParamType);
+                                    thatParamType = 
+                                            unit.getDefiniteType(thatParamType);
                                     TypeDeclaration thisErasedType = 
                                             erase(thisParamType, unit);
                                     TypeDeclaration thatErasedType = 
                                             erase(thatParamType, unit);
                                     if (!thisErasedType.equals(thatErasedType)) {
                                         return false;
+                                    }
+                                    TypeDeclaration oa = 
+                                            unit.getJavaObjectArrayDeclaration();
+                                    if (oa!=null 
+                                            && thisErasedType.equals(oa) 
+                                            && thatErasedType.equals(oa)) {
+                                        Type thisElementType = 
+                                                unit.getJavaArrayElementType(
+                                                        thisParamType);
+                                        Type thatElementType = 
+                                                unit.getJavaArrayElementType(
+                                                        thatParamType);
+                                        if (!thisElementType.equals(thatElementType)) {
+                                            return false;
+                                        }
                                     }
                                 }
                                 else if (thisParamType!=thatParamType) {
@@ -662,6 +720,7 @@ public abstract class Declaration
     	return getName();
     }
     
+    @Override
     public String getName(Unit unit) {
     	return unit==null ? 
     	        getName() : 
@@ -771,5 +830,13 @@ public abstract class Declaration
     
     public void setAliases(List<String> aliases){
         this.aliases = aliases;
+    }
+    
+    /**
+     * To be overridden in sub types
+     * @return true if this is a Java declaration
+     */
+    public boolean isJava(){
+        return false;
     }
 }

@@ -14,7 +14,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
 
-public class JsonModule extends Module {
+public class JsonModule extends Module implements NpmAware {
 
     private Map<String,Object> model;
     private boolean loaded = false;

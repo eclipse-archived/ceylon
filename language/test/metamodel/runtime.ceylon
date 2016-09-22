@@ -1,3 +1,9 @@
+import check {
+    initAssert,
+    results,
+    resultsAndAssert,
+    resultsAndExit
+}
 import ceylon.language.meta { ... }
 import ceylon.language.meta.model { ... }
 import ceylon.language.meta.declaration {
@@ -2012,8 +2018,8 @@ Boolean eq(Anything a, Anything b){
     return !b exists;
 }
 
-shared void run() {
-    print("Running Metamodel tests");
+void runTests() {
+    print("** Running Metamodel Tests **");
     variable value total=0;
     variable value pass =0;
     try {
@@ -2278,6 +2284,7 @@ shared void run() {
     // those are in the OBR
     sandbox(bug5893);
     sandbox(bug5966);
+    sandbox(bug6364);
     // those were filed for the JVM compiler initially
     sandbox(bugC1196test);
     sandbox(bugC1197);
@@ -2291,10 +2298,37 @@ shared void run() {
     sandbox(bugC2392);
     // those were filed for the JS compiler initially
     sandbox(bugJ505);
+    
+    // post-OBR
+    sandbox(bug5771);
+    sandbox(bug6519);
     // those were filed for the ceylon-model
     sandbox(bugM12test);
+    
+    sandbox(servicesTest);
     // ATTENTION!
     // When you add new test methods here make sure they are "shared" and marked "@test"!
     print(pass==total then "Metamodel tests OK (``total`` total)" else "Metamodel tests ``pass``/``total``");
 }
-shared void test() { run(); }
+
+shared void run() {
+    initAssert();
+    runTests();
+    results();
+}
+
+shared void runAndAssert() {
+    initAssert();
+    runTests();
+    resultsAndAssert();
+}
+
+shared void runAndExit() {
+    initAssert();
+    runTests();
+    resultsAndExit();
+}
+
+shared void test() {
+    run();
+}

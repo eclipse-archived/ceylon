@@ -186,6 +186,7 @@ public class PackageDoc extends ClassOrPackageDoc {
         writeAnnotations(pkg);
         writeBy(pkg);
         writeSee(pkg);
+        writeSince(pkg);
         close("div");
     }
     

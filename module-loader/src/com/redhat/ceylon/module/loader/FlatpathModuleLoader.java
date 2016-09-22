@@ -17,14 +17,14 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
     final Map<String, String> extraModules;
 
     public FlatpathModuleLoader() {
-        this(null);
+        this(null, null);
     }
 
     /*
      * Used by reflection in com.redhat.ceylon.common.tool.ToolLoader
      */
-    public FlatpathModuleLoader(ClassLoader delegateClassLoader) {
-        this(null, delegateClassLoader, null, false);
+    public FlatpathModuleLoader(RepositoryManager repoManager, ClassLoader delegateClassLoader) {
+        this(repoManager, delegateClassLoader, null, false);
     }
 
     public FlatpathModuleLoader(RepositoryManager repositoryManager,

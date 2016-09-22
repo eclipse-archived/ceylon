@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug58xx;
+
+public final class bug5892_ {
+    
+    private bug5892_() {
+    }
+    
+    public static void bug5892(final .java.lang.String input, final .java.lang.String expectedEncode, final .ceylon.io.charset.Charset charset) {
+        final .ceylon.io.buffer.ByteBuffer encoded = .ceylon.io.charset.utf8_.get_().encode(((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString());
+        .ceylon.io.charset.utf8_.get_().decode(encoded);
+        final .ceylon.language.Callable<? extends .ceylon.language.String> f = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.io.buffer.ByteBuffer.$TypeDescriptor$), "String(ByteBuffer)", (short)-1){
+            
+            @.java.lang.Override
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .ceylon.io.buffer.ByteBuffer $ceylontmp$buffer = (.ceylon.io.buffer.ByteBuffer)$param$0;
+                return .ceylon.language.String.instance(.ceylon.io.charset.utf8_.get_().decode($ceylontmp$buffer));
+            }
+        };
+        final long i = .ceylon.language.runtime_.get_().getMaxIntegerValue();
+    }
+}

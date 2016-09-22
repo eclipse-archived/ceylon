@@ -23,11 +23,46 @@ shared String formatInteger(
         Integer integer,
         "The base, between [[minRadix]] and [[maxRadix]] 
          inclusive."
-        Integer radix = 10) {
+        Integer radix = 10,
+        "If not `null`, `groupingSeparator` will be used to
+         separate each group of three digits if `radix` is 10,
+         or each group of four digits if `radix` is 2 or 16.
+
+         `groupingSeparator` may not be '-', a digit as
+         defined by the Unicode general category *Nd*, or a
+         letter as defined by the Unicode general categories
+         *Lu, Ll, Lt, Lm, and Lo*."
+        Character? groupingSeparator = null) {
+
     assert (minRadix <= radix <= maxRadix);
+
+    if (exists groupingSeparator) {
+        "groupingSeparator may not be '-', a digit, or a letter."
+        assert (!groupingSeparator.digit
+                && !groupingSeparator.letter
+                && !groupingSeparator == '-');
+    }
+
     if (integer == 0) {
         return "0";
     }
+
+    value groupingSize =
+            if (!groupingSeparator exists)
+                then 0
+            else if (radix == 10)
+                then 3
+            else if (radix == 2 || radix == 16)
+                then 4
+            else 0;
+
+    value groupingChar =
+            if (exists groupingSeparator,
+                groupingSize != 0)
+            then groupingSeparator
+            else 'X';
+
+    variable value digitNumber = 0;
     variable {Character*} digits = {};
     variable Integer i = integer < 0 
                          then integer 
@@ -43,6 +78,11 @@ shared String formatInteger(
         }
         else {
             assert (false);
+        }
+        if (groupingSize != 0
+                && groupingSize.divides(digitNumber++)
+                && digitNumber != 1) {
+            digits = digits.follow(groupingChar);
         }
         digits = digits.follow(c);
         i = (i + d) / radix;

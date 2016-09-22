@@ -6,6 +6,7 @@ import java.util.Map;
 import com.redhat.ceylon.model.loader.mirror.MethodMirror;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
+import com.redhat.ceylon.model.typechecker.model.Scope;
 
 /**
  * Instance method that allows us to remember the exact method name
@@ -76,5 +77,13 @@ public class JavaMethod extends Function implements LocalDeclarationContainer {
         if(localDeclarations == null)
             localDeclarations = new HashMap<String, Declaration>();
         localDeclarations.put(declaration.getPrefixedName(), declaration);
+    }
+
+    @Override
+    public boolean isJava() {
+        Scope container = getContainer();
+        while(container != null && container instanceof Declaration == false)
+            container = container.getContainer();
+        return container != null ? ((Declaration) container).isJava() : false;
     }
 }

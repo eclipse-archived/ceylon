@@ -1,0 +1,142 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug64xx;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+interface Bug6404I<T> {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Anything",
+            declaredVoid = true)
+    public abstract .java.lang.Object foo();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+interface Bug6404Gettable<T> {
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug64xx::Bug6404I<T>")
+    public abstract .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I<T> get();
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous_0_"})
+@.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug64xx::Bug6404Gettable<T>"})
+@.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
+        value = "T",
+        variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
+        satisfies = {},
+        caseTypes = {})})
+class Bug6404C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404Gettable<T>, .java.io.Serializable {
+    
+    Bug6404C(@.com.redhat.ceylon.compiler.java.metadata.Ignore
+    final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug64xx::Bug6404I<T>")
+    public final .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I<T> get() {
+        return (
+            let
+            {
+                
+                @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                        major = 8,
+                        minor = 1)
+                @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
+                @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
+                @.com.redhat.ceylon.compiler.java.metadata.Object
+                @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug64xx::Bug6404I<T>"})
+                class anonymous_0_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I<T> {
+                    
+                    private anonymous_0_() {
+                    }
+                    
+                    @.ceylon.language.SharedAnnotation$annotation$
+                    @.ceylon.language.ActualAnnotation$annotation$
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+                            value = "ceylon.language::Anything",
+                            declaredVoid = true)
+                    public final .java.lang.Object foo() {
+                        if ((
+                            let
+                            {
+                                .java.lang.Object $ceylontmp$1 = this;
+                            }
+                            returning $ceylontmp$1 instanceof .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I && .com.redhat.ceylon.compiler.java.Util.isReified($ceylontmp$1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I.class, $reified$T));
+                        )) {
+                        } else {
+                            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "this is Bug6404I<T>"));
+                        }
+                        return null;
+                    }
+                    
+                    @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404C.class, .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404C.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue("get")), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_0_.class));
+                    }
+                }
+            }
+            returning new anonymous_0_();
+        );
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404C.class, $reified$T);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+public final class bug6404_ {
+    
+    private bug6404_() {
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    public static void bug6404() {
+        if ((
+            let
+            {
+                .java.lang.Object $ceylontmp$3 = new .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$).get();
+            }
+            returning .com.redhat.ceylon.compiler.java.Util.isReified($ceylontmp$3, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I.class, .ceylon.language.String.$TypeDescriptor$));
+        )) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "Bug6404C<String>().get() is Bug6404I<String>"));
+        }
+        new .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$).get().foo();
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6404_.bug6404();
+    }
+}

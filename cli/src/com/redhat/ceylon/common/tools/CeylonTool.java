@@ -516,7 +516,16 @@ public class CeylonTool implements Tool {
                 runScript((ScriptToolModel<Tool>)model);
             }else{
                 // Run the tool
-                tool.run();
+                ClassLoader savedTCCL = Thread.currentThread().getContextClassLoader();
+                boolean setTCCL = savedTCCL == null || savedTCCL != tool.getClass().getClassLoader();
+                if(setTCCL)
+                    Thread.currentThread().setContextClassLoader(tool.getClass().getClassLoader());
+                try{
+                    tool.run();
+                }finally{
+                    if(setTCCL)
+                        Thread.currentThread().setContextClassLoader(savedTCCL);
+                }
             }
         }
     }

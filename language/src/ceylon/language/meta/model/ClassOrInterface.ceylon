@@ -26,6 +26,7 @@ shared sealed interface ClassOrInterface<out Type=Anything>
 
     "The list of case values for this type. This omits any case type to 
      only contain case values."
+    since("1.1.0")
     shared formal Type[] caseValues;
 
     // FIXME: move all these to Type
@@ -170,18 +171,21 @@ shared sealed interface ClassOrInterface<out Type=Anything>
 
     "Gets a list of attributes matching the given container and attribute type, annotated with all the
      specified annotations, which are directly declared on this type."
+    since("1.1.0")
     shared formal Attribute<Container, Get, Set>[] getDeclaredAttributes
             <Container=Nothing, Get=Anything, Set=Nothing>
             (ClosedType<Annotation>* annotationTypes);
 
     "Gets a list of attributes matching the given container and attribute type, annotated with all the
      specified annotations, which are declared on this type or inherited."
+    since("1.1.0")
     shared formal Attribute<Container, Get, Set>[] getAttributes
             <Container=Nothing, Get=Anything, Set=Nothing>
             (ClosedType<Annotation>* annotationTypes);
 
     "Gets a list of methods matching the given container, return and parameter types, annotated with all the
      specified annotations, which are directly declared on this type."
+    since("1.1.0")
     shared formal Method<Container, Type, Arguments>[] getDeclaredMethods
             <Container=Nothing, Type=Anything, Arguments=Nothing>
             (ClosedType<Annotation>* annotationTypes)
@@ -189,6 +193,7 @@ shared sealed interface ClassOrInterface<out Type=Anything>
 
     "Gets a list of methods matching the given container, return and parameter types, annotated with all the
      specified annotations, which are declared on this type or inherited."
+    since("1.1.0")
     shared formal Method<Container, Type, Arguments>[] getMethods
             <Container=Nothing, Type=Anything, Arguments=Nothing>
             (ClosedType<Annotation>* annotationTypes)
@@ -196,6 +201,7 @@ shared sealed interface ClassOrInterface<out Type=Anything>
 
     "Gets a list of member classes matching the given container, return and parameter types, annotated with all the
      specified annotations, which are directly declared on this type."
+    since("1.1.0")
     shared formal MemberClass<Container, Type, Arguments>[] getDeclaredClasses
             <Container=Nothing, Type=Anything, Arguments=Nothing>
             (ClosedType<Annotation>* annotationTypes)
@@ -204,6 +210,7 @@ shared sealed interface ClassOrInterface<out Type=Anything>
     "Returns the list of shared member classes on this class or interface
      and annotated with all the specified annotations. 
      This includes inherited member classes but not unshared member classes."
+    since("1.1.0")
     shared formal MemberClass<Container, Type, Arguments>[] getClasses
             <Container=Nothing, Type=Anything, Arguments=Nothing>
             (ClosedType<Annotation>* annotationTypes)
@@ -212,6 +219,7 @@ shared sealed interface ClassOrInterface<out Type=Anything>
     "Returns the list of member interfaces directly declared on this class or interface 
      and annotated with all the specified annotations.
      This includes unshared member interfaces but not inherited member interfaces."
+    since("1.1.0")
     shared formal MemberInterface<Container, Type>[] getDeclaredInterfaces
             <Container=Nothing, Type=Anything>
             (ClosedType<Annotation>* annotationTypes);
@@ -219,6 +227,7 @@ shared sealed interface ClassOrInterface<out Type=Anything>
     "Returns the list of shared member interfaces on this class or interface
      and annotated with all the specified annotations. 
      This includes inherited member interfaces but not unshared member interfaces."
+    since("1.1.0")
     shared formal MemberInterface<Container, Type>[] getInterfaces
             <Container=Nothing, Type=Anything>
             (ClosedType<Annotation>* annotationTypes);

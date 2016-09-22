@@ -583,6 +583,10 @@ shared void strings() {
     value charr=Array.ofSize(3,'x');
     "abc".copyTo(charr);
     check(charr==Array{'a','b','c'}, "String.copyTo");
+    value objectArray=Array<Object>.ofSize(3, 0);
+    "abc".copyTo(objectArray);
+    check(objectArray==Array{'a','b','c'}, "String.copyTo contravariant 1");
+    check(objectArray==Array<Object>{'a','b','c'}, "String.copyTo contravariant 2");
     /*check("abc".lookup(2).key, "String.lookup 1");
     check("abc".lookup(2).item exists, "String.lookup 2");
     check(!"abc".lookup(10).key, "String.lookup 3");

@@ -73,4 +73,6 @@ public interface CmrRepository extends Repository, ContentFinder {
      * Makes sure that content cached as "unavailable" is reasessed
      */
     void refresh(boolean recurse);
+
+    boolean supportsNamespace(String namespace);
 }

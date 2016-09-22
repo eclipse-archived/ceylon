@@ -154,6 +154,11 @@ public class Package
     @Override
     public Declaration getMember(String name, 
             List<Type> signature, boolean variadic) {
+        if (signature==null 
+                && name.equals("Nothing")
+                && isLanguagePackage()) {
+            return getUnit().getNothingDeclaration();
+        }
         return getDirectMember(name, signature, variadic);
     }
 
@@ -233,7 +238,7 @@ public class Package
         }
         Map<String,DeclarationWithProximity> importables = 
                 getModule()
-                    .getAvailableDeclarations(
+                    .getAvailableDeclarations(unit,
                             startingWith, proximity, canceller);
         List<Map.Entry<String,DeclarationWithProximity>> 
         entriesToAdd =

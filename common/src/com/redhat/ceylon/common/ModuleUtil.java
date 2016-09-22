@@ -5,8 +5,15 @@ import java.util.regex.Pattern;
 
 public abstract class ModuleUtil {
 
-    private static final Pattern validNS = Pattern.compile("[a-z]+");
-    
+    public static final Pattern moduleIdPattern =
+            AndroidUtil.isRunningAndroid()
+            // Android does not support Unicode block family tests, but claims its ASCII properties are Unicode
+            // https://developer.android.com/reference/java/util/regex/Pattern.html#ubpc
+            ? Pattern.compile("[\\p{Lower}_][\\p{Alpha}\\p{Digit}_]*")
+            // The JDK however claims that ASCII and Unicode block properties differ
+            // https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html#sum
+            : Pattern.compile("[\\p{IsLowercase}_][\\p{IsAlphabetic}\\p{IsDigit}_]*");
+
     private ModuleUtil() {
     }
 
@@ -134,10 +141,20 @@ public abstract class ModuleUtil {
         }
     }
     
-    // Only non-empty strings of lowercase letters are considered valid namespaces
-    // Additionally <code>null</code> is considered valid as well (being the same as "ceylon")
+    /**
+     * Only <code>null</code> or proper Ceylon identifiers are considered valid namespaces
+     */
     public static boolean validNamespace(String namespace) {
-        return namespace == null || validNS.matcher(namespace).matches();
+        return namespace == null || moduleIdPattern.matcher(namespace).matches();
     }
 
+    /**
+     * Determines if the given major/minor binary versions support import namespaces
+     */
+    public static boolean supportsImportsWithNamespaces(int majorBinVer, int minorBinVer) {
+        return (majorBinVer > Versions.V1_3_0_JVM_BINARY_MAJOR_VERSION
+                || (majorBinVer == Versions.V1_3_0_JVM_BINARY_MAJOR_VERSION
+                && minorBinVer >= Versions.V1_3_0_JVM_BINARY_MINOR_VERSION));
+    }
+    
 }

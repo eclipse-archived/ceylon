@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.FunctionalParameter;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.NeedsVoidBridge;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.Transient;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
@@ -49,10 +50,15 @@ import ceylon.language.serialization.ReachableReference;
 @TypeParameters(@TypeParameter(value = "Element"))
 @SatisfiedTypes({
     "ceylon.language::SearchableList<Element>",
-    "ceylon.language::Ranged<ceylon.language::Integer,Element,ceylon.language::Array<Element>>"
+    "ceylon.language::Ranged<ceylon.language::Integer,Element,ceylon.language::Array<Element>>",
+    "ceylon.language::IndexedCorrespondenceMutator<Element>",
 })
+@SharedAnnotation$annotation$
+@FinalAnnotation$annotation$
+@SerializableAnnotation$annotation$
+@NativeAnnotation$annotation$(backends={})
 public final class Array<Element>
-        implements Serializable, SearchableList<Element>,
+        implements Serializable, SearchableList<Element>, IndexedCorrespondenceMutator<Element>,
                     ReifiedType, java.io.Serializable {
     
     private static final long serialVersionUID = 8612707712992151156L;
@@ -293,14 +299,16 @@ public final class Array<Element>
             //      because it would break javaObjectArray()
             java.lang.String[] stringArray = new java.lang.String[size];
             for (int i=0; i<size; i++) {
-                String string = (String) elements.getFromFirst(i);
-                stringArray[i] = string==null ? null : string.value;
+                String e = (String) elements.getFromFirst(i);
+                checkElement(e);
+                stringArray[i] = e.value;
             }
             return stringArray;
         case CeylonInteger:
             long[] longPrecisionArray = new long[size];
             for (int i=0; i<size; i++) {
                 Integer e = (Integer) elements.getFromFirst(i);
+                checkElement(e);
                 longPrecisionArray[i] = e.value;
             }
             return longPrecisionArray;
@@ -308,6 +316,7 @@ public final class Array<Element>
             double[] doublePrecisionArray = new double[size];
             for (int i=0; i<size; i++) {
                 Float e = (Float) elements.getFromFirst(i);
+                checkElement(e);
                 doublePrecisionArray[i] = e.value;
             }
             return doublePrecisionArray;
@@ -315,6 +324,7 @@ public final class Array<Element>
             int[] codepointArray = new int[size];
             for (int i=0; i<size; i++) {
                 Character e = (Character) elements.getFromFirst(i);
+                checkElement(e);
                 codepointArray[i] = e.codePoint;
             }
             return codepointArray;
@@ -322,6 +332,7 @@ public final class Array<Element>
             boolean[] boolArray = new boolean[size];
             for (int i=0; i<size; i++) {
                 Boolean e = (Boolean) elements.getFromFirst(i);
+                checkElement(e);
                 boolArray[i] = e.booleanValue();
             }
             return boolArray;
@@ -329,63 +340,80 @@ public final class Array<Element>
             byte[] bitsArray = new byte[size];
             for (int i=0; i<size; i++) {
                 Byte e = (Byte) elements.getFromFirst(i);
+                checkElement(e);
                 bitsArray[i] = e.value;
             }
             return bitsArray;
         case JavaBoolean:
             boolean[] booleanArray = new boolean[size];
             for (int i=0; i<size; i++) {
-                booleanArray[i] = (java.lang.Boolean)
+                java.lang.Boolean e = (java.lang.Boolean)
                         elements.getFromFirst(i);
+                checkElement(e);
+                booleanArray[i] = e;
             }
             return booleanArray;
         case JavaCharacter:
             char[] charArray = new char[size];
             for (int i=0; i<size; i++) {
-                charArray[i] = (java.lang.Character)
+                java.lang.Character e = (java.lang.Character)
                         elements.getFromFirst(i);
+                checkElement(e);
+                charArray[i] = e;
             }
             return charArray;
         case JavaFloat:
             float[] floatArray = new float[size];
             for (int i=0; i<size; i++) {
-                floatArray[i] = (java.lang.Float)
+                java.lang.Float e = (java.lang.Float)
                         elements.getFromFirst(i);
+                checkElement(e);
+                floatArray[i] = e;
             }
             return floatArray;
         case JavaDouble:
             double[] doubleArray = new double[size];
             for (int i=0; i<size; i++) {
-                doubleArray[i] = (java.lang.Double)
+                java.lang.Double e = (java.lang.Double)
                         elements.getFromFirst(i);
+                checkElement(e);
+                doubleArray[i] = e;
             }
             return doubleArray;
         case JavaByte:
             byte[] byteArray = new byte[size];
             for (int i=0; i<size; i++) {
-                byteArray[i] = (java.lang.Byte)
+                java.lang.Byte e = (java.lang.Byte)
                         elements.getFromFirst(i);
+                checkElement(e);
+                byteArray[i] = e;
             }
             return byteArray;
         case JavaShort:
             short[] shortArray = new short[size];
             for (int i=0; i<size; i++) {
-                shortArray[i] = (java.lang.Short)
+                java.lang.Short e = (java.lang.Short)
                         elements.getFromFirst(i);
+                checkElement(e);
+                shortArray[i] = e;
             }
             return shortArray;
         case JavaInteger:
             int[] intArray = new int[size];
             for (int i=0; i<size; i++) {
-                intArray[i] = (java.lang.Integer)
+                java.lang.Integer e = (java.lang.Integer)
                         elements.getFromFirst(i);
+                checkElement(e);
+                intArray[i] = e;
             }
             return intArray;
         case JavaLong:
             long[] longArray = new long[size];
             for (int i=0; i<size; i++) {
-                longArray[i] = (java.lang.Long)
+                java.lang.Long e = (java.lang.Long)
                         elements.getFromFirst(i);
+                checkElement(e);
+                longArray[i] = e;
             }
             return longArray;
         default:
@@ -393,10 +421,21 @@ public final class Array<Element>
                     $reifiedElement.getArrayElementClass();
             java.lang.Object[] objectArray = (java.lang.Object[]) 
                     java.lang.reflect.Array.newInstance(clazz, size);
+            boolean containsNull = $reifiedElement.containsNull();
             for (int i=0; i<size; i++) {
-                objectArray[i] = elements.getFromFirst(i);
+                Element e = elements.getFromFirst(i);
+                if (!containsNull) {
+                    checkElement(e);
+                }
+                objectArray[i] = e;
             }
             return objectArray;
+        }
+    }
+
+    private static void checkElement(java.lang.Object e) {
+        if (e==null) {
+            throw new AssertionError("missing element");
         }
     }
 
@@ -1382,7 +1421,13 @@ public final class Array<Element>
         }
     }
 
-    public void set(
+    // IMPORT: this creates a void set() bridge method so that older users of Array.set()V keep working
+    // with the new Array.set()LObject; signature
+    // See https://github.com/ceylon/ceylon/issues/4148
+    @NeedsVoidBridge
+    @TypeInfo(declaredVoid = true, value = "ceylon.language::Anything")
+    @Override
+    public java.lang.Object set(
             @Name("index") @TypeInfo("ceylon.language::Integer") long index,
             @Name("element") @TypeInfo("Element") Element element) {
         if (index<0) {
@@ -1412,6 +1457,7 @@ public final class Array<Element>
             else
                 setJavaItem(element, idx);
         }
+        return null;
     }
     
     public void swap(
@@ -1937,51 +1983,74 @@ public final class Array<Element>
     }
     
     @Ignore
-    public long copyTo$sourcePosition(Array<Element> destination){
+    public long copyTo$sourcePosition(Array<? super Element> destination){
         return 0L;
     }
 
     @Ignore
-    public long copyTo$destinationPosition(Array<Element> destination, 
+    public long copyTo$destinationPosition(Array<? super Element> destination, 
             long sourcePosition){
         return 0L;
     }
 
     @Ignore
-    public long copyTo$length(Array<Element> destination, 
+    public long copyTo$length(Array<? super Element> destination, 
             long sourcePosition, long destinationPosition){
         return Math.min(size-sourcePosition,
                 destination.getSize()-destinationPosition);
     }
 
     @Ignore
-    public void copyTo(Array<Element> destination){
+    public void copyTo(Array<? super Element> destination){
         copyTo(destination, 0L, 0L);
     }
 
     @Ignore
-    public void copyTo(Array<Element> destination, long sourcePosition) {
+    public void copyTo(Array<? super Element> destination, long sourcePosition) {
         copyTo(destination, sourcePosition, 0L);
     }
 
     @Ignore
-    public void copyTo(Array<Element> destination, 
+    public void copyTo(Array<? super Element> destination, 
             long sourcePosition, long destinationPosition) {
         copyTo(destination, sourcePosition, destinationPosition, 
                 copyTo$length(destination, sourcePosition, destinationPosition));
     }
 
-    public void copyTo(@Name("destination") Array<Element> destination, 
+    public void copyTo(@Name("destination")
+                       @TypeInfo("ceylon.language::Array<in Element>") Array<? super Element> destination,
                        @Name("sourcePosition") @Defaulted long sourcePosition, 
                        @Name("destinationPosition") @Defaulted long destinationPosition, 
                        @Name("length") @Defaulted long length) {
         if (length>0) {
             try {
-                arraycopy(array, 
-                        Util.toInt(sourcePosition), 
-                        destination.array, 
-                        Util.toInt(destinationPosition), 
-                        Util.toInt(length));
+                if (elementType == destination.elementType) {
+                    arraycopy(array,
+                            Util.toInt(sourcePosition),
+                            destination.array,
+                            Util.toInt(destinationPosition),
+                            Util.toInt(length));
+                }
+                else {
+                    // Box. Given that the special types String, Integer, etc. are all
+                    // final, widening will always be to a type like Object or Number<>
+                    // for which the value will be stored in boxed form. Arrays that
+                    // hold subtypes of the special types will be empty. We can
+                    // therefore write the values obtained by src.getFromFirst() directly
+                    // to the destination array (i.e. without using destination.set())
+                    java.lang.Object[] dst = (java.lang.Object[]) destination.array;
+                    int srcIndex = Util.toInt(sourcePosition);
+                    int dstIndex = Util.toInt(destinationPosition);
+                    int len = Util.toInt(length);
+                    if (srcIndex < 0 || dstIndex < 0
+                            || srcIndex + len > getSize()
+                            || dstIndex + len > destination.getSize()) {
+                        throw new AssertionError("Index out of bounds");
+                    }
+                    while (len-- > 0) {
+                        dst[dstIndex++] = getFromFirst(srcIndex++);
+                    }
+                }
             }
             catch (IndexOutOfBoundsException iob) {
                 throw new AssertionError(iob.getMessage());
@@ -2749,6 +2818,11 @@ public final class Array<Element>
     @Override @Ignore
     public Iterable<? extends Sequence<? extends Element>, ? extends java.lang.Object> getPermutations() {
         return $ceylon$language$Collection$impl().getPermutations();
+    }
+
+    @Override @Ignore
+    public Iterable<? extends Sequence<? extends Element>, ? extends java.lang.Object> combinations(long length) {
+        return $ceylon$language$Collection$impl().combinations(length);
     }
 
     @Override @Ignore

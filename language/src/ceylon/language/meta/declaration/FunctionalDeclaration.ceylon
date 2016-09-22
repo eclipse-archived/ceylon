@@ -64,6 +64,7 @@ shared sealed interface FunctionalDeclaration
      See [this code sample](#toplevel-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Return` or `Arguments` type arguments are not compatible with the actual result.")
     throws(`class TypeApplicationException`, "If the specified closed type argument values are not compatible with the actual result's type parameters.")
+    since("1.2.0")
     shared formal FunctionModel<Return, Arguments>& Applicable<Return, Arguments> apply<Return=Anything, Arguments=Nothing>(Type<>* typeArguments)
             given Arguments satisfies Anything[];
     
@@ -71,6 +72,7 @@ shared sealed interface FunctionalDeclaration
      See [this code sample](#member-sample) for an example on how to use this."
     throws(`class IncompatibleTypeException`, "If the specified `Container`, `Return` or `Arguments` type arguments are not compatible with the actual result.")
     throws(`class TypeApplicationException`, "If the specified closed container type or type argument values are not compatible with the actual result's container type or type parameters.")
+    since("1.2.0")
     shared formal FunctionModel<Return, Arguments>&Qualified<FunctionModel<Return, Arguments>, Container> memberApply<Container=Nothing, Return=Anything, Arguments=Nothing>(Type<Object> containerType, Type<>* typeArguments)
             given Arguments satisfies Anything[];
     //shared formal FunctionModel<Return, Arguments>& Applicable<Return, Arguments>&Qualified<FunctionModel<Return, Arguments>&Applicable<Return, Arguments>, Container> memberApply<Container=Nothing, Return=Anything, Arguments=Nothing>(Type<Object> containerType, Type<>* typeArguments)
@@ -78,11 +80,13 @@ shared sealed interface FunctionalDeclaration
     
     "Invokes the underlying toplevel function, by applying the specified type arguments and value arguments."
     throws(`class IncompatibleTypeException`, "If the specified type or value arguments are not compatible with this toplevel function.")
+    since("1.2.0")
     shared default Anything invoke(Type<>[] typeArguments = [], Anything* arguments)
             => apply<Anything, Nothing>(*typeArguments).apply(*arguments);
     
     "Invokes the underlying method, by applying the specified type arguments and value arguments."
     throws(`class IncompatibleTypeException`, "If the specified container, type or value arguments are not compatible with this method.")
+    since("1.2.0")
     shared formal Anything memberInvoke(Object container, Type<>[] typeArguments = [], Anything* arguments)/*
             => memberApply<Nothing, Anything, Nothing>(`Nothing`, *typeArguments).bind(container).apply(*arguments)*/;
 }

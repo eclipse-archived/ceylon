@@ -144,7 +144,6 @@ public class IssuesTests_1000_1499 extends CompilerTests {
     @Test
     public void testBug1083() {
         assertErrors("bug10xx/Bug1083",
-                new CompilerError(24, "class cannot be instantiated: 'BigInteger' does not have a default constructor"),
                 new CompilerError(24, "illegal argument types in invocation of overloaded method or class: there must be exactly one overloaded declaration of 'BigInteger' which accepts the given argument types ''"));
     }
     

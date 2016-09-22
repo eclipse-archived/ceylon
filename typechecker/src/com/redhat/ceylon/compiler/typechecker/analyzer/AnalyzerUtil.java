@@ -42,7 +42,6 @@ import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -84,8 +83,9 @@ public class AnalyzerUtil {
             return (TypedDeclaration) member;
         }
         else {
-            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && !JvmBackendUtil.isInitialLowerCase(name)){
+            if (td.isJava()
+                    && isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && !JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.getJavaBeanName(name);
                 member = td.getMember(name, unit, signature, ellipsis);
                 if (member instanceof TypedDeclaration) {
@@ -109,8 +109,9 @@ public class AnalyzerUtil {
                     (TypedDeclaration) member);
         }
         else {
-            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && JvmBackendUtil.isInitialLowerCase(name)){
+            if (td.isJava()
+                    && isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.capitalize(name);
                 member = 
                         td.getMember(name, unit, signature, ellipsis);
@@ -136,8 +137,8 @@ public class AnalyzerUtil {
             return (TypedDeclaration) result;
         }
         else {
-            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && !JvmBackendUtil.isInitialLowerCase(name)){
+            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && !JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.getJavaBeanName(name);
                 // This method is used for base members, not qualified members
                 // so we don't look for members but we look on the scope, which
@@ -147,12 +148,16 @@ public class AnalyzerUtil {
                 // the one we wanted to import, so try imports first.
                 result = unit.getImportedDeclaration(name, 
                         signature, ellipsis);
-                if(result instanceof TypedDeclaration)
+                if(result != null && !result.isJava()){
+                    result = null;
+                }else if(result instanceof TypedDeclaration)
                     return (TypedDeclaration) result;
                 result = 
                         scope.getMemberOrParameter(unit, 
                                 name, signature, ellipsis);
-                if (result instanceof TypedDeclaration) {
+                if(result != null && !result.isJava()){
+                    result = null;
+                }else if (result instanceof TypedDeclaration) {
                     return (TypedDeclaration) result;
                 }
             }
@@ -174,8 +179,8 @@ public class AnalyzerUtil {
                     (TypedDeclaration) result);
         }
         else {
-            if(ModelUtil.isForBackend(scope.getScopedBackends(), Backend.Java) 
-                    && JvmBackendUtil.isInitialLowerCase(name)){
+            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.capitalize(name);
                 // This method is used for base members, not qualified members
                 // so we don't look for members but we look on the scope, which
@@ -185,7 +190,9 @@ public class AnalyzerUtil {
                 // the one we wanted to import, so try imports first.
                 result = unit.getImportedDeclaration(name, 
                         signature, ellipsis);
-                if (result instanceof TypeDeclaration) {
+                if(result != null && !result.isJava()){
+                    result = null;
+                }else if (result instanceof TypeDeclaration) {
                     return (TypeDeclaration) result;
                 }
                 else if (result instanceof TypedDeclaration) {
@@ -195,7 +202,9 @@ public class AnalyzerUtil {
                 result = 
                         scope.getMemberOrParameter(unit, 
                                 name, signature, ellipsis);
-                if (result instanceof TypeDeclaration) {
+                if(result != null && !result.isJava()){
+                    result = null;
+                }else if (result instanceof TypeDeclaration) {
                     return (TypeDeclaration) result;
                 }
                 else if (result instanceof TypedDeclaration) {
@@ -257,18 +266,22 @@ public class AnalyzerUtil {
     
     private static DeclarationWithProximity best(final String name, 
             Map<String,DeclarationWithProximity> suggestions) {
+        suggestions.remove(name); //don't ever suggest the name itself
         if (suggestions.isEmpty()) {
             return null;
         }
         final boolean ucase = isUpperCase(name.charAt(0));
-        Map.Entry<String,DeclarationWithProximity> best = 
-                Collections.max(suggestions.entrySet(), 
-                new Comparator<Map.Entry<String,DeclarationWithProximity>>() {
+        DeclarationWithProximity best = 
+                Collections.max(suggestions.values(), 
+                new Comparator<DeclarationWithProximity>() {
             @Override
-            public int compare(Map.Entry<String,DeclarationWithProximity> xe, 
-                               Map.Entry<String,DeclarationWithProximity> ye) {
-                String x = xe.getKey();
-                String y = ye.getKey();
+            public int compare(DeclarationWithProximity xe, 
+                               DeclarationWithProximity ye) {
+                //don't use the keys because for 
+                //unimported declarations they are
+                //qualified names!
+                String x = xe.getName();
+                String y = ye.getName();
                 boolean xucase = isUpperCase(x.charAt(0));
                 boolean yucase = isUpperCase(y.charAt(0));
                 if (ucase==xucase && ucase!=yucase) {
@@ -282,38 +295,93 @@ public class AnalyzerUtil {
                         distance.similarity(name, y));
                 if (comp==0) {
                     comp = - Integer.compare(
-                        xe.getValue().getProximity(), 
-                        ye.getValue().getProximity());
+                        xe.getProximity(), 
+                        ye.getProximity());
                 }
                 return comp;
             }
         });
-        return distance.similarity(name, best.getKey()) > 0.5 ? 
-                best.getValue() : null;
+        return distance.similarity(name, best.getName()) > 0.5 ? 
+                best : null;
     }
     
-    private static String realName(DeclarationWithProximity dwp, Unit unit) {
-        return dwp==null ? null : dwp.getDeclaration().getName(unit);
-    }
-    
-    public static String correct(Scope scope, Unit unit, String name, Cancellable canceller) {
+    private static DeclarationWithProximity correct(
+            Scope scope, Unit unit, String name, 
+            Cancellable canceller) {
         if (canceller != null 
                 && canceller.isCancelled()) {
             return null;
         }
-        return realName(best(name, 
-                scope.getMatchingDeclarations(unit, "", 0, canceller)),
-                unit);
+        return best(name, 
+                scope.getMatchingDeclarations(unit, 
+                        //pass a prefix here, or otherwise
+                        //it won't search all importable
+                        //packages
+                        name.substring(0, 1), 
+                        0, canceller));
     }
-    
-    public static String correct(TypeDeclaration type, Scope scope, Unit unit, String name, Cancellable canceller) {
+
+    private static DeclarationWithProximity correct(
+            Package scope, String name,
+            Cancellable canceller) {
         if (canceller != null 
                 && canceller.isCancelled()) {
             return null;
         }
-        return realName(best(name, 
-                type.getMatchingMemberDeclarations(unit, scope, "", 0, canceller)),
-                unit);
+        return best(name, 
+                scope.getMatchingDirectDeclarations(
+                        "", 0, canceller));
+    }
+
+    private static DeclarationWithProximity correct(
+            TypeDeclaration type, Scope scope, Unit unit, String name, 
+            Cancellable canceller) {
+        if (canceller != null 
+                && canceller.isCancelled()) {
+            return null;
+        }
+        return best(name,
+                type.getMatchingMemberDeclarations(unit, 
+                        scope, "", 0, canceller));
+    }
+    
+    static List<SiteVariance> getVariances(
+            Tree.TypeArguments tas,
+            List<TypeParameter> typeParameters) {
+        if (tas instanceof Tree.TypeArgumentList) {
+            Tree.TypeArgumentList tal = 
+                    (Tree.TypeArgumentList) tas;
+            int size = typeParameters.size();
+            List<SiteVariance> variances = 
+                    new ArrayList<SiteVariance>(size);
+            List<Tree.Type> types = tal.getTypes();
+            int count = types.size();
+            for (int i=0; i<count; i++) {
+                Tree.Type type = types.get(i);
+                if (type instanceof Tree.StaticType) {
+                    Tree.StaticType st = 
+                            (Tree.StaticType) type;
+                    TypeVariance tv = 
+                            st.getTypeVariance();
+                    if (tv!=null) {
+                        boolean contra = 
+                                tv.getText()
+                                  .equals("in");
+                        variances.add(contra?IN:OUT);
+                    }
+                    else {
+                        variances.add(null);
+                    }
+                }
+                else {
+                    variances.add(null);
+                }
+            }
+            return variances;
+        }
+        else {
+            return emptyList();
+        }
     }
     
     /**
@@ -691,10 +759,17 @@ public class AnalyzerUtil {
 
     static String notAssignableMessage(Type type,
             Type supertype, Node node) {
-        return typingMessage(type, 
-                " is not assignable to ", 
-                supertype, 
-                node.getUnit());
+        Unit unit = node.getUnit();
+        String result = 
+                typingMessage(type,
+                    " is not assignable to ",
+                    supertype, unit);
+        if (unit.isCallableType(type)
+                && unit.getCallableReturnType(type)
+                    .isSubtypeOf(supertype)) {
+            result += " (specify arguments to the function reference)";
+        }
+        return result;
     }
 
     static boolean checkAssignable(Type type, 
@@ -1373,12 +1448,14 @@ public class AnalyzerUtil {
                         .getModule();
             Package pkg = module.getPackage(nameToImport);
             if (pkg != null) {
-                if (pkg.getModule().equals(module)) {
+                Module pkgMod = pkg.getModule();
+                if (pkgMod.equals(module)) {
                     return pkg;
                 }
                 if (!pkg.isShared()) {
                     path.addError("imported package is not shared: '" + 
-                            nameToImport + "'", 402);
+                            nameToImport + "' is not annotated 'shared' in '" +
+                            pkgMod.getNameAsString() + "'", 402);
                 }
 //                if (module.isDefault() && 
 //                        !pkg.getModule().isDefault() &&
@@ -1395,7 +1472,7 @@ public class AnalyzerUtil {
                 for (ModuleImport mi: module.getImports()) {
                     if (findModuleInTransitiveImports(
                             mi.getModule(), 
-                            pkg.getModule(), 
+                            pkgMod, 
                             visited)) {
                         return pkg; 
                     }
@@ -1445,10 +1522,11 @@ public class AnalyzerUtil {
             Package pkg = module.getPackage(nameToImport);
             if (pkg != null) {
                 Module mod = pkg.getModule();
-                if (!pkg.getNameAsString()
-                        .equals(mod.getNameAsString())) {
+                String moduleName = mod.getNameAsString();
+                if (!pkg.getNameAsString().equals(moduleName)) {
                     path.addError("not a module: '" + 
-                            nameToImport + "'");
+                            nameToImport + "' is a package belonging to '" +
+                            moduleName + "'");
                     return null;
                 }
                 if (mod.equals(module)) {
@@ -1503,7 +1581,7 @@ public class AnalyzerUtil {
                 unit.getPackage()
                     .getQualifiedNameString();
         String name = name(that.getIdentifier());
-        return "ceylon.language".equals(pname) &&
+        return Module.LANGUAGE_MODULE_NAME.equals(pname) &&
                 ("Anything".equalsIgnoreCase(name) ||
                 "Object".equalsIgnoreCase(name) ||
                 "Basic".equalsIgnoreCase(name) ||
@@ -1515,6 +1593,65 @@ public class AnalyzerUtil {
         return dec instanceof TypedDeclaration && 
                 ((TypedDeclaration) dec)
                     .hasUncheckedNullType();
+    }
+
+    static String correctionMessage(String name, 
+            Scope scope, Unit unit, Cancellable cancellable) {
+        DeclarationWithProximity correction = 
+                correct(scope, unit, name, cancellable);
+        if (correction!=null) {
+            if (correction.getName().equals(name)) {
+                if (correction.isUnimported()) {
+                    return " might be misspelled or is not imported (did you mean to import it from '" 
+                        + correction.packageName() + "'?)";
+                }
+                else {
+                    return "";
+                }
+            }
+            else {
+                if (correction.isUnimported()) {
+                    return " might be misspelled or is not imported (did you mean '" 
+                        + correction.realName(unit) + "' from '" 
+                        + correction.packageName() + "'?)";
+                }
+                else {
+                    return " might be misspelled or is not imported (did you mean '" 
+                        + correction.realName(unit) + "'?)";
+                }
+            }
+        }
+        else {
+            return " might be misspelled or is not imported";
+        }
+    }
+
+    static String memberCorrectionMessage(String name, 
+            TypeDeclaration d, Scope scope, Unit unit, 
+            Cancellable cancellable) {
+        DeclarationWithProximity correction =
+                correct(d, scope, unit, name, cancellable);
+        if (correction==null) {
+            return " might be misspelled";
+        }
+        else {
+            return " might be misspelled (did you mean '" 
+                + correction.realName(unit) + "'?)";
+        }
+    }
+
+    static String importCorrectionMessage(String name, 
+            Package scope, Unit unit, 
+            Cancellable cancellable) {
+        DeclarationWithProximity correction =
+                correct(scope, name, cancellable);
+        if (correction==null) {
+            return " might be misspelled or does not belong to this package";
+        }
+        else {
+            return " might be misspelled or does not belong to this package (did you mean '" 
+                + correction.realName(unit) + "'?)";
+        }
     }
 
 }

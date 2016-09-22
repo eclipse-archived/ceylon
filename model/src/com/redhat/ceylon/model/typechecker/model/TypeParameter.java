@@ -20,6 +20,7 @@ public class TypeParameter extends TypeDeclaration {
     private List<Declaration> members = new ArrayList<Declaration>(0);
     private boolean captured;
     private List<TypeParameter> typeParameters = emptyList();
+    private boolean reified = true;
 
     @Override
     public List<Declaration> getMembers() {
@@ -57,6 +58,14 @@ public class TypeParameter extends TypeDeclaration {
     
     public void setTypeConstructor(boolean typeConstructor) {
         this.typeConstructor = typeConstructor;
+    }
+    
+    public boolean isReified() {
+        return reified && !getDeclaration().isJava();
+    }
+    
+    public void setReified(boolean reified) {
+        this.reified = reified;
     }
     
     @Override

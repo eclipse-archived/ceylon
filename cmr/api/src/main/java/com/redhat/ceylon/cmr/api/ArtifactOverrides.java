@@ -40,6 +40,7 @@ public class ArtifactOverrides {
     private Set<DependencyOverride> remove = new HashSet<>();
     private Map<String, Boolean> share = new HashMap<>();
     private Map<String, Boolean> optional = new HashMap<>();
+    private String classifier;
     private DependencyOverride replace;
     private String filter;
 
@@ -71,6 +72,18 @@ public class ArtifactOverrides {
     public boolean isOptional(ArtifactContext context){
         Boolean ret = optional.get(context.getName());
         return ret != null && ret.booleanValue();
+    }
+    
+    public boolean hasClassifier(){
+        return classifier != null;
+    }
+    
+    public String getClassifier(){
+        return classifier;
+    }
+    
+    void setClassifier(String classifier) {
+        this.classifier = classifier;
     }
 
     public void addOverride(DependencyOverride override) {

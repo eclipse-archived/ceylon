@@ -496,19 +496,29 @@ public class ImportJarToolTests extends AbstractToolTests {
         	Assert.fail();
         } catch (ToolUsageError e) {
         	Assert.assertEquals("Problems were found, aborting. Try adding a descriptor file, see help for more information.", e.getMessage());
-        	Assert.assertEquals("The following JDK modules are used and could be declared as shared imports:\n"+
-        			"    java.base\n"+
-        			"Modules containing the following packages need to be declared as shared imports:\n"+
-        			"(Tip: try running again with the '--show-suggestions' option)\n"+
-        			"    javax.servlet\n"+
-        			"    javax.servlet.http\n"+
-        			"    org.eclipse.jetty.http\n"+
-        			"    org.eclipse.jetty.io\n"+
-        			"    org.eclipse.jetty.jmx\n"+
-        			"    org.eclipse.jetty.util\n"+
-        			"    org.eclipse.jetty.util.component\n"+
-        			"    org.eclipse.jetty.util.resource\n"+
-        			"    org.eclipse.jetty.util.thread\n"
+        	Assert.assertEquals(
+        	        "The following JDK modules are used and could be declared as imports:\n"+
+        	        "    java.base ... [shared]\n"+
+        	        "    java.jdbc ... [shared]\n"+
+        	        "    java.tls ... [shared]\n"+
+        	        "    javax.naming\n"+
+        	        "Modules containing the following packages need to be declared as imports:\n"+
+        	        "(Tip: try running again with the '--show-suggestions' option)\n"+
+        	        "    javax.servlet ... [shared]\n"+
+        	        "    javax.servlet.descriptor ... [shared]\n"+
+        	        "    javax.servlet.http ... [shared]\n"+
+        	        "    org.eclipse.jetty.http ... [shared]\n"+
+        	        "    org.eclipse.jetty.io ... [shared]\n"+
+        	        "    org.eclipse.jetty.io.ssl ... [shared]\n"+
+        	        "    org.eclipse.jetty.jmx ... [shared]\n"+
+        	        "    org.eclipse.jetty.util ... [shared]\n"+
+        	        "    org.eclipse.jetty.util.annotation ... [shared]\n"+
+        	        "    org.eclipse.jetty.util.component ... [shared]\n"+
+        	        "    org.eclipse.jetty.util.log ... [shared]\n"+
+        	        "    org.eclipse.jetty.util.resource ... [shared]\n"+
+        	        "    org.eclipse.jetty.util.ssl ... [shared]\n"+
+        	        "    org.eclipse.jetty.util.statistic ... [shared]\n"+
+        	        "    org.eclipse.jetty.util.thread ... [shared]\n"
         			, b.toString());
         }
         	

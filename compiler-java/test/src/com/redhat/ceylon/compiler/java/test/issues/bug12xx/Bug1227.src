@@ -345,8 +345,10 @@ final class bug1227_ifReturn_specifiedElse_ {
                 return from$86;
             }
         }
-        from$81 = 0L;
-        final long from$92 = from$81;
+        {
+            from$81 = 0L;
+            final long from$92 = from$81;
+        }
         from = from$81;
         return from;
     }
@@ -391,8 +393,10 @@ final class bug1227_ifReturn_specifiedElse_opt_ {
                 }
             }             while (false);
         }         while ($ceylontmp$increasing$98 ? index$102 - $ceylontmp$last$97 != 0L : index$102 - $ceylontmp$last$97 != 0L);
-        from$93 = 0L;
-        final long from$105 = from$93;
+        {
+            from$93 = 0L;
+            final long from$105 = from$93;
+        }
         from = from$93;
         return from;
     }
@@ -427,8 +431,10 @@ final class bug1227_ifThrow_specifiedElse_ {
                 throw new .ceylon.language.Exception(null, null);
             }
         }
-        from$106 = 0L;
-        final long from$117 = from$106;
+        {
+            from$106 = 0L;
+            final long from$117 = from$106;
+        }
         from = from$106;
         return from;
     }
@@ -462,8 +468,10 @@ final class bug1227_ifThrow_specifiedElse_opt_ {
                 }
             }             while (false);
         }         while ($ceylontmp$increasing$123 ? index$127 - $ceylontmp$last$122 != 0L : index$127 - $ceylontmp$last$122 != 0L);
-        from$118 = 0L;
-        final long from$130 = from$118;
+        {
+            from$118 = 0L;
+            final long from$130 = from$118;
+        }
         from = from$118;
         return from;
     }
@@ -514,8 +522,10 @@ final class bug1227_for2_ifReturn_specifiedElse_ {
                 }
             }
         }
-        from$131 = 0L;
-        final long from$150 = from$131;
+        {
+            from$131 = 0L;
+            final long from$150 = from$131;
+        }
         from = from$131;
         return from;
     }
@@ -592,7 +602,9 @@ final class bug1227_onlySpecifiedElse_ {
             final long index = ((.ceylon.language.Integer)elem$162).longValue();
             throw new .ceylon.language.Exception(null, null);
         }
-        from = 0L;
+        {
+            from = 0L;
+        }
         return from;
     }
 }

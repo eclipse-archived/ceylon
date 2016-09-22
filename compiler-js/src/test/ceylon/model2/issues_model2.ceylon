@@ -58,6 +58,37 @@ void bar671(Alias671 x) {
 }
 interface Alias671 => List<Integer>;
 
+interface I5871 {}
+class C5871 {
+    shared new() {}
+    shared variable Integer x = 0;
+    shared new cc() {}
+    shared new vc {}
+
+    shared Object getAttributeModel() => `x`;
+    shared Object getClassModel() => `C5871`;
+    shared Object getIfaceModel() => `I5871`;
+    shared Object getCons1Model() => `cc`;
+    shared Object getCons2Model() => `vc`;
+    shared Object getMifaceModel() => `Bar`;
+    shared Object getMclassModel() => `Baz`;
+
+    shared interface Bar {}
+    shared class Baz {
+      shared new(){}
+      shared new icc() {}
+      shared new ivc {}
+      shared Object getCons1Model() => `icc`;
+      shared Object getCons2Model() => `ivc`;
+    }
+}
+
+void check5871(Object a, Object b) {
+  check(className(a)==className(b), "#5871.1 classnames don't match ``className(a)`` vs ``className(b)``");
+  check(a==b, "#5871.2 ``a`` vs ``b``");
+  check(a.hash == b.hash, "hashes not equal ``a.hash`` vs ``b.hash``");
+}
+
 void issues() {
     try {
         value g1 = `function Fuera.Dentro.Cebolla.g`;
@@ -156,4 +187,20 @@ void issues() {
     } else {
       fail("#5901.2 constructor not found");
     }
+    check5871(`C5871`, C5871().getClassModel());
+    check5871(`I5871`, C5871().getIfaceModel());
+    check5871(`C5871.x`, C5871().getAttributeModel());
+    check5871(`C5871.cc`, C5871().getCons1Model());
+    check5871(`C5871.vc`, C5871().getCons2Model());
+    check5871(`C5871.Bar`, C5871().getMifaceModel());
+    check5871(`C5871.Baz`, C5871().getMclassModel());
+    check5871(`C5871.Baz.icc`, C5871().Baz().getCons1Model());
+    check5871(`C5871.Baz.ivc`, C5871().Baz().getCons2Model());
+
+    class C6363 {
+        shared new c {}
+        shared new d() {}
+    }
+    check(`C6363`.getValueConstructors() nonempty, "#6363.1");
+    check(`C6363`.getCallableConstructors() nonempty, "#6363.2");
 }

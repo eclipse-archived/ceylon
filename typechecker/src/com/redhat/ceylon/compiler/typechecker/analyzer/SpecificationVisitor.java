@@ -1300,11 +1300,12 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Parameter that) {
+        Parameter p = that.getParameterModel();
         Parameter oip = parameter;
-        parameter = that.getParameterModel();
+        parameter = p;
         super.visit(that);
         parameter = oip;
-        if (that.getParameterModel().getModel()==declaration) {
+        if (p!=null && p.getModel()==declaration) {
             specify();
         }
     }
@@ -1312,14 +1313,16 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.InitializerParameter that) {
         super.visit(that);
-        Parameter d = that.getParameterModel();
-        Declaration a = 
-                that.getScope()
-                    .getDirectMember(d.getName(), 
-                            null, false);
-        if (a!=null && a==declaration) {
-            specify();
-            hasParameter = true;
+        Parameter p = that.getParameterModel();
+        if (p!=null) {
+            Declaration a = 
+                    that.getScope()
+                        .getDirectMember(p.getName(), 
+                                null, false);
+            if (a!=null && a==declaration) {
+                specify();
+                hasParameter = true;
+            }
         }
     }
     

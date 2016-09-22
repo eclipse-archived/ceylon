@@ -84,21 +84,25 @@ shared interface Comparable<in Other> of Other
     
     "Determines if this value is strictly larger than the 
      given value."
+    since("1.1.0")
     shared default Boolean largerThan(Other other)
             => compare(other)===larger; 
     
     "Determines if this value is strictly smaller than the 
      given value."
+    since("1.1.0")
     shared default Boolean smallerThan(Other other)
             => compare(other)===smaller; 
     
     "Determines if this value is larger than or equal to the 
      given value."
+    since("1.1.0")
     shared default Boolean notSmallerThan(Other other)
             => !compare(other)===smaller; 
     
     "Determines if this value is smaller than or equal to 
      the given value."
+    since("1.1.0")
     shared default Boolean notLargerThan(Other other)
             => !compare(other)===larger; 
     

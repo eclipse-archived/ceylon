@@ -5,4 +5,5 @@ import ceylon.language.meta.declaration { ClassDeclaration }
  
  Using `declaration` can be more efficient than using [[type]] and 
  obtaining the ClassDeclaration from the returned ClassModel."
+since("1.2.0")
 shared native ClassDeclaration classDeclaration(Anything instance);

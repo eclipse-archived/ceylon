@@ -362,3 +362,29 @@ class RefinesNonGenericBad() satisfies WithNonGeneric {
     @error nongeneric = <T>()(String x) => x;
 }
 
+abstract class WithFunctionAndValueAbstract() {
+    shared formal String fun(String str);
+    shared formal String(String) val;
+}
+
+class WithFunctionAndValue() 
+        extends WithFunctionAndValueAbstract() {
+    fun(String str) => str;
+    val = identity<String>;
+}
+
+class WithValueAndFunction() 
+        extends WithFunctionAndValueAbstract() {
+    fun = identity<String>;
+    val(String str) => str;
+}
+
+class WithValueAndFunctionShouldWork() 
+        extends WithFunctionAndValueAbstract() {
+    @error //fixme
+    shared actual String(String) fun = identity<String>;
+    @error //fixme
+    shared actual String val(String str) => str;
+}
+
+

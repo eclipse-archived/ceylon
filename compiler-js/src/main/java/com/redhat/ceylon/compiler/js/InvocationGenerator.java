@@ -93,7 +93,6 @@ public class InvocationGenerator {
         } else {
             gen.out("(");
             Map<String, String> argVarNames = defineNamedArguments(typeArgSource, argList);
-            writeNew(typeArgSource);
             if (typeArgSource instanceof Tree.BaseMemberExpression) {
                 BmeGenerator.generateBme((Tree.BaseMemberExpression)typeArgSource, gen);
             } else if (typeArgSource instanceof Tree.QualifiedTypeExpression) {
@@ -143,7 +142,13 @@ public class InvocationGenerator {
             //TODO we lose type args for now
             return;
         } else {
-            writeNew(typeArgSource);
+            boolean hasSpread = !argList.getPositionalArguments().isEmpty() &&
+                    argList.getPositionalArguments().get(argList.getPositionalArguments().size()-1) instanceof Tree.SpreadArgument &&
+                    !TypeUtils.isSequential(argList.getPositionalArguments().get(argList.getPositionalArguments().size()-1).getTypeModel())
+                    && !typeArgSource.getTypeModel().isUnknown();
+            if (hasSpread) {
+                gen.out(gen.getClAlias(), "spread$2(");
+            }
             if (typeArgSource instanceof Tree.BaseMemberExpression) {
                 final Tree.BaseMemberExpression _bme = (Tree.BaseMemberExpression)typeArgSource;
                 if (gen.isInDynamicBlock() && _bme.getDeclaration() != null &&
@@ -168,6 +173,8 @@ public class InvocationGenerator {
                 if (!argList.getPositionalArguments().isEmpty()) {
                     gen.out(",");
                 }
+            } else if (hasSpread) {
+                gen.out(",");
             } else {
                 gen.out("(");
             }
@@ -293,7 +300,7 @@ public class InvocationGenerator {
             gen.out(varName, "=");
             if (arg instanceof Tree.MethodArgument) {
                 Tree.MethodArgument marg = (Tree.MethodArgument)arg;
-                gen.out(gen.getClAlias(), "$JsCallable(");
+                gen.out(gen.getClAlias(), "jsc$2(");
                 FunctionHelper.methodArgument(marg, gen);
                 gen.out(",");
                 //Add parameters
@@ -410,8 +417,8 @@ public class InvocationGenerator {
                     gen.out(argvar, "=");
                 }
                 final int boxType = pd==null?0:gen.boxUnboxStart(expr.getTerm(), pd.getModel());
+                Map<TypeParameter,Type> targs = null;
                 if (dyncheck) {
-                    Map<TypeParameter,Type> targs = null;
                     if (primary instanceof Tree.MemberOrTypeExpression) {
                         targs = ((Tree.MemberOrTypeExpression)primary).getTarget().getTypeArguments();
                     }
@@ -424,12 +431,20 @@ public class InvocationGenerator {
                     //Add parameters
                     describeMethodParameters(expr.getTerm());
                     gen.out(",");
-                    TypeUtils.printTypeArguments(arg, arg.getTypeModel().getTypeArguments(), gen, false,
+                    targs = arg.getTypeModel().getTypeArguments();
+                    if (arg instanceof Tree.ListedArgument) {
+                        Tree.Term argTerm = ((Tree.ListedArgument)arg).getExpression().getTerm();
+                        if (argTerm instanceof Tree.MemberOrTypeExpression) {
+                            targs = ((Tree.MemberOrTypeExpression)argTerm).getTarget().getTypeArguments();
+                        }
+                    }
+                    TypeUtils.printTypeArguments(arg, targs, gen, false,
                             arg.getTypeModel().getVarianceOverrides());
                 }
                 gen.boxUnboxEnd(boxType);
             } else if (arg instanceof Tree.SpreadArgument || arg instanceof Tree.Comprehension) {
-                if (arg instanceof Tree.SpreadArgument) {
+                final boolean isSpreadArg = arg instanceof Tree.SpreadArgument;
+                if (isSpreadArg) {
                     expr = ((Tree.SpreadArgument) arg).getExpression();
                 } else {
                     expr = null;
@@ -444,7 +459,7 @@ public class InvocationGenerator {
                 } else if (!first) {
                     gen.out(",");
                 }
-                if (arg instanceof Tree.SpreadArgument) {
+                if (isSpreadArg) {
                     generateSpreadArgument(primary, that, args, (Tree.SpreadArgument)arg, expr, pd);
                 } else {
                     ((Tree.Comprehension)arg).visit(gen);
@@ -705,22 +720,6 @@ public class InvocationGenerator {
             gen.out("[]");
         } else {
             TypeUtils.encodeParameterListForRuntime(true, term, plist, gen);
-        }
-    }
-
-    /**
-     * Emit {@code new} if the invoked function should be invoked with {@code new}.
-     * @see Functional#isJsNew()
-     */
-    void writeNew(Tree.Primary invoked) {
-        if (invoked instanceof Tree.BaseTypeExpression) {
-            Tree.BaseTypeExpression bte = (Tree.BaseTypeExpression)invoked;
-            if (bte.getDeclaration() instanceof Functional) {
-                Functional f = (Functional)bte.getDeclaration();
-                if (f.isJsNew()) {
-                    gen.out("new ");
-                }
-            }
         }
     }
 

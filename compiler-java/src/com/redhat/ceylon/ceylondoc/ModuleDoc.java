@@ -91,6 +91,7 @@ public class ModuleDoc extends CeylonDoc {
         writePlatform(module);
         writeBy(module);
         writeSee(module);
+        writeSince(module);
         writeLicense(module);
 
         close("div");

@@ -929,7 +929,7 @@ Use this when NOT doing a release!">
                 <property name="exec" value="db2x_docbook2man" />
             </else>
         </if>
-        <exec executable="${exec}" dir="${toolfile.dir}">
+        <exec executable="${exec}" dir="${toolfile.dir}" failonerror="yes">
             <arg value="${toolfile.file}"/>
         </exec>
         <propertyregex property="toolfile.name"

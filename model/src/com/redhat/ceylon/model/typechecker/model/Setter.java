@@ -1,8 +1,5 @@
 package com.redhat.ceylon.model.typechecker.model;
 
-import com.redhat.ceylon.common.Backends;
-
-
 /**
  * An attribute setter.
  *
@@ -72,11 +69,6 @@ public class Setter extends FunctionOrValue implements Scope {
         String getterQualifier = getter.getQualifier();
         // use the same qualifier as the getter with a $setter$ prefix
         return getterQualifier == null ? null : "$setter$"+getterQualifier;
-    }
-    
-    @Override
-    public Backends getScopedBackends() {
-        return super.getScopedBackends();
     }
     
     @Override

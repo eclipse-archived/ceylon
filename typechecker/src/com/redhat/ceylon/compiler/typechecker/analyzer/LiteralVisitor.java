@@ -22,6 +22,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Literal;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.PatternParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotedLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
@@ -37,7 +38,10 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
  */
 public class LiteralVisitor extends Visitor {
 
+    private static final String GENERATED_PREFIX = "$pattern$param$";
+    
     private int indent;
+    
     static final Pattern DOC_LINK_PATTERN = 
             Pattern.compile("\\[\\[(([^\"`|\\[\\]]*\\|)?((module )|(package )|(class )|(interface )|(function )|(value )|(alias ))?(((\\w|\\.)+)::)?(\\w*)(\\.(\\w*))*(\\(\\))?)\\]\\]");
     private static Pattern CHARACTER_ESCAPE_PATTERN = 
@@ -78,6 +82,10 @@ public class LiteralVisitor extends Visitor {
                 int charInLine = 
                         linesUpTo.length==0 ? 0 : 
                             linesUpTo[linesUpTo.length-1].length();
+                if (linesUpTo.length==1) {
+                    charInLine +=
+                            that.getToken().getCharPositionInLine();
+                }
                 token.setLine(line);
                 token.setCharPositionInLine(charInLine);
                 that.addDocLink(new Tree.DocLink(token));
@@ -509,6 +517,9 @@ public class LiteralVisitor extends Visitor {
         super.visit(that);
         if (!that.isMissingToken()) {
             String text = that.getText();
+            if (text.startsWith(GENERATED_PREFIX)) {
+                return;
+            }
             int index = 0;
             while (index<text.length()) {
                 int cp = text.codePointAt(index);
@@ -703,8 +714,9 @@ public class LiteralVisitor extends Visitor {
         List<Tree.ParameterList> parameterLists = 
                 that.getParameterLists();
         final Tree.Block funBody = that.getBlock();
-        final Tree.Expression funExpression = 
-                that.getExpression();
+        final Tree.ParExpression funExpression =
+                new Tree.ParExpression(null);
+        funExpression.setTerm(that.getExpression());
         final Tree.LetClause letClause = 
                 new Tree.LetClause(null);
         int k = 0;
@@ -720,7 +732,7 @@ public class LiteralVisitor extends Visitor {
                     Tree.Pattern pattern = pp.getPattern();
                     Tree.Identifier id = 
                             new Tree.Identifier(null);
-                    id.setText("_" + k);
+                    id.setText(GENERATED_PREFIX + k);
                     Tree.Parameter param = 
                             createParameter(id, 
                                     asType(pattern));
@@ -744,6 +756,12 @@ public class LiteralVisitor extends Visitor {
             that.setExpression(createLetExpression(letClause));
         }
         super.visit(that);
+    }
+    
+    @Override
+    public void visit(PatternParameter that) {
+        super.visit(that);
+        that.addError("parameter may not be a pattern (parameter destructuring is allowed for anonymous functions)");
     }
 
     private Tree.Expression createLetExpression(Tree.LetClause letClause) {

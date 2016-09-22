@@ -7,6 +7,8 @@ import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 
 @Ceylon(major = 8)
 @Method
+@SharedAnnotation$annotation$
+@NativeAnnotation$annotation$(backends={})
 public final class className_ {
     
     private className_() {}

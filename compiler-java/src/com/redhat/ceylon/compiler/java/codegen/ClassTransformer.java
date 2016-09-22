@@ -1520,7 +1520,7 @@ public class ClassTransformer extends AbstractTransformer {
                     && (value.isShared() || value.isCaptured())) {
                 return true;
             }
-        } else if (member instanceof Function) {
+        } /*else if (member instanceof Function) {
             Function function = (Function)member;
             
             if (function.isShortcutRefinement()
@@ -1531,7 +1531,7 @@ public class ClassTransformer extends AbstractTransformer {
                            || function.isActual())) {
                 return true;
             }
-        }
+        }*/
         return false;
     }
     
@@ -3444,6 +3444,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (decl.getSpecifierOrInitializerExpression() != null) {
                 Tree.Expression expression = decl.getSpecifierOrInitializerExpression().getExpression();
                 HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getTerm());
+                int flags = CodegenUtil.downcastForSmall(expression, model) ? ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK : 0;
                 if (error != null) {
                     initialValue = null;
                     err = makeThrowUnresolvedCompilationError(error.getErrorMessage().getMessage());
@@ -3451,7 +3452,7 @@ public class ClassTransformer extends AbstractTransformer {
                     Value declarationModel = model;
                     initialValue = expressionGen().transformExpression(expression, 
                             CodegenUtil.getBoxingStrategy(declarationModel), 
-                            nonWideningType);
+                            nonWideningType, flags);
                 }
             }
 
@@ -3696,9 +3697,16 @@ public class ClassTransformer extends AbstractTransformer {
                     TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
                     Type nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
                     
+                    int flags = 0;
+                    if(declarationModel.hasUncheckedNullType())
+                        flags |= ExpressionTransformer.EXPR_TARGET_ACCEPTS_NULL;
+                    if (CodegenUtil.downcastForSmall(specOrInit.getExpression(), decl.getDeclarationModel()))
+                        flags |=  ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK;
+                    
                     JCExpression expr = expressionGen().transformExpression(specOrInit.getExpression(), 
                             CodegenUtil.getBoxingStrategy(declarationModel), 
-                            nonWideningType);
+                            nonWideningType,
+                            flags);
                     expr = convertToIntIfHashAttribute(declarationModel, expr);
                     builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(expr))));
                 }
@@ -4257,7 +4265,6 @@ public class ClassTransformer extends AbstractTransformer {
 
     List<JCStatement> transformSpecifiedMethodBody(Tree.MethodDeclaration  def, SpecifierExpression specifierExpression) {
         final Function model = def.getDeclarationModel();
-        List<JCStatement> body;
         Tree.MethodDeclaration methodDecl = def;
         boolean isLazy = specifierExpression instanceof Tree.LazySpecifierExpression;
         boolean returnNull = false;
@@ -4276,7 +4283,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Callable, just transform the expr to use as the method body.
             Tree.FunctionArgument fa = (Tree.FunctionArgument)term;
             Type resultType = model.getType();
-            returnNull = isAnything(resultType) && fa.getExpression().getUnboxed();
+            returnNull = Decl.isUnboxedVoid(model);
             final java.util.List<Tree.Parameter> lambdaParams = fa.getParameterLists().get(0).getParameters();
             final java.util.List<Tree.Parameter> defParams = def.getParameterLists().get(0).getParameters();
             List<Substitution> substitutions = List.nil();
@@ -4285,12 +4292,22 @@ public class ClassTransformer extends AbstractTransformer {
                         (TypedDeclaration)lambdaParams.get(ii).getParameterModel().getModel(), 
                         defParams.get(ii).getParameterModel().getName()));
             }
-            bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), 
+            List<JCStatement> body = null;
+            if(fa.getExpression() != null)
+                bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), 
                             returnNull ? BoxingStrategy.INDIFFERENT : CodegenUtil.getBoxingStrategy(model), 
                             resultType);
+            else{
+                body = gen().statementGen().transformBlock(fa.getBlock());
+                // useless but satisfies branch checking
+                bodyExpr = null;
+            }
             for (Substitution subs : substitutions) {
                 subs.close();
             }
+            // if we have a whole body we're done
+            if(body != null)
+                return body;
         } else if (!isLazy && typeFact().isCallableType(term.getTypeModel())) {
             returnNull = isAnything(term.getTypeModel()) && term.getUnboxed();
             Function method = methodDecl.getDeclarationModel();
@@ -4354,6 +4371,17 @@ public class ClassTransformer extends AbstractTransformer {
             // The innermost of an MPL method declared void needs to return null
             returnNull = Decl.isUnboxedVoid(model) && Decl.isMpl(model);
         }
+        
+        if (CodegenUtil.downcastForSmall(term, model)) {
+            bodyExpr = expressionGen().applyErasureAndBoxing(bodyExpr, term.getTypeModel(),
+                    false,
+                    !CodegenUtil.isUnBoxed(term), 
+                    CodegenUtil.getBoxingStrategy(model), 
+                    model.getType(),
+                    ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK);
+        }
+        
+        List<JCStatement> body;
         if (!Decl.isUnboxedVoid(model)
                 || Decl.isMpl(model)
                 || Strategy.useBoxedVoid(model)) {

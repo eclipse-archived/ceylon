@@ -14,6 +14,8 @@ final class bug509_ {
                 return true;
             }
         }
-        return false;
+        {
+            return false;
+        }
     }
 }

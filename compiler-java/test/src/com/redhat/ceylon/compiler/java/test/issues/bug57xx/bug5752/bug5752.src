@@ -1,0 +1,46 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug57xx.bug5752;
+
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("bug5752")
+final class bug5752_ {
+    
+    private bug5752_() {
+    }
+    
+    @.javax.persistence.Id
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public static .java.lang.String get_() {
+        return "";
+    }
+    
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("bug5752")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String bug5752) {
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("bug5752_2")
+final class bug5752_2_ {
+    
+    private bug5752_2_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public static .java.lang.String get_() {
+        return "";
+    }
+    
+    @.javax.persistence.Id
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("bug5752_2")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    final .java.lang.String bug5752_2) {
+    }
+}

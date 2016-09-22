@@ -1,21 +1,31 @@
 package com.redhat.ceylon.compiler.java.test.interop;
 
-class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface, .java.io.Serializable {
+class OptionalInterface<X> extends .com.redhat.ceylon.compiler.java.test.interop.JavaClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface {
     
-    protected OptionalInterface() {
+    protected OptionalInterface(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X) {
         super();
+        this.$reified$X = $reified$X;
         this.prop1 = null;
         this.prop2 = null;
+        this.stringProp1 = null;
+        this.stringProp2 = null;
+        this.bla = null;
         this.prop3 = null;
         this.prop4 = null;
     }
     
-    OptionalInterface(final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x) {
+    OptionalInterface(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X, final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x) {
+        super();
+        this.$reified$X = $reified$X;
         this.prop1 = x;
         this.prop2 = null;
+        this.stringProp1 = "asd";
+        this.stringProp2 = null;
+        this.bla = null;
         this.prop3 = x;
         this.prop4 = x;
     }
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$X;
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface method(final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x) {
@@ -248,6 +258,16 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
         final .java.lang.Object x$19 = x;
         return null;
     }
+    
+    @.java.lang.Override
+    public final .java.lang.String stringMethod(final .java.lang.String x) {
+        return x;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String stringMethod2(final .java.lang.String x) {
+        return x;
+    }
     private .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface prop1;
     
     @.java.lang.Override
@@ -270,6 +290,48 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
     public final void setProp2(final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface prop2) {
         this.prop2 = prop2;
     }
+    private .java.lang.String stringProp1;
+    
+    @.java.lang.Override
+    public final .java.lang.String getStringProp1() {
+        return stringProp1;
+    }
+    
+    @.java.lang.Override
+    public final void setStringProp1(final .java.lang.String stringProp1) {
+        this.stringProp1 = stringProp1;
+    }
+    private .java.lang.String stringProp2;
+    
+    @.java.lang.Override
+    public final .java.lang.String getStringProp2() {
+        return stringProp2;
+    }
+    
+    @.java.lang.Override
+    public final void setStringProp2(final .java.lang.String stringProp2) {
+        this.stringProp2 = stringProp2;
+    }
+    private .ceylon.language.String bla;
+    
+    private final .ceylon.language.String getBla$priv$() {
+        return bla;
+    }
+    
+    private final void setBla$priv$(final .ceylon.language.String bla) {
+        this.bla = bla;
+    }
+    
+    @.java.lang.Override
+    public final .java.lang.String getStringProp3() {
+        return (
+            let
+            {
+                .ceylon.language.String $ceylontmp$20 = getBla$priv$();
+            }
+            returning $ceylontmp$20 != null ? $ceylontmp$20.toString() : null;
+        );
+    }
     private final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface prop3;
     
     @.java.lang.Override
@@ -290,7 +352,109 @@ class OptionalInterface implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
-        return .com.redhat.ceylon.compiler.java.test.interop.OptionalInterface.$TypeDescriptor$;
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.OptionalInterface.class, $reified$X);
     }
-    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.OptionalInterface.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Name("classSubClass")
+@.com.redhat.ceylon.compiler.java.metadata.Object
+@.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.interop::OptionalityClass")
+final class classSubClass_ extends .com.redhat.ceylon.compiler.java.test.interop.OptionalityClass implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+    
+    private classSubClass_() {
+        super();
+        this.realClass = null;
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private .java.lang.Object readResolve() {
+        return .com.redhat.ceylon.compiler.java.test.interop.classSubClass_.get_();
+    }
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.interop.classSubClass_.class);
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private final .com.redhat.ceylon.compiler.java.test.interop.OptionalityClass realClass;
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::OptionalityClass?")
+    private final .com.redhat.ceylon.compiler.java.test.interop.OptionalityClass getRealClass$priv$() {
+        return realClass;
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::String",
+            uncheckedNull = true)
+    @.com.redhat.ceylon.compiler.java.metadata.Transient
+    public final .java.lang.String getType() {
+        return (
+            let
+            {
+                .ceylon.language.String $ceylontmp$22 = (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.interop.OptionalityClass safe$21 = getRealClass$priv$();
+                    }
+                    returning safe$21 != null ? .ceylon.language.String.instance(safe$21.getType()) : null;
+                );
+            }
+            returning $ceylontmp$22 != null ? $ceylontmp$22.toString() : null;
+        );
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.ActualAnnotation$annotation$
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::String",
+            uncheckedNull = true)
+    public final .java.lang.String typeMethod() {
+        return (
+            let
+            {
+                .ceylon.language.String $ceylontmp$24 = (
+                    let
+                    {
+                        .com.redhat.ceylon.compiler.java.test.interop.OptionalityClass safe$23 = getRealClass$priv$();
+                    }
+                    returning safe$23 != null ? .ceylon.language.String.instance(safe$23.getType()) : null;
+                );
+            }
+            returning $ceylontmp$24 != null ? $ceylontmp$24.toString() : null;
+        );
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.interop.classSubClass_ value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = new .com.redhat.ceylon.compiler.java.test.interop.classSubClass_();
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = null;
+            $init$value = false;
+        }
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::classSubClass")
+    static .com.redhat.ceylon.compiler.java.test.interop.classSubClass_ get_() {
+        if (classSubClass_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'classSubClass\' before it was set");
+        }
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.interop.classSubClass_.$TypeDescriptor$;
+    }
 }

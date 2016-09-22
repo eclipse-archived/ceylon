@@ -1,0 +1,42 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug64xx;
+
+public final class bug6421_ {
+    
+    private bug6421_() {
+    }
+    
+    public static void bug6421() {
+        final .java.util.ArrayList<.ceylon.language.String> arr = new .java.util.ArrayList<.ceylon.language.String>();
+        final .ceylon.language.String s1 = (
+            let
+            {
+                .java.util.List<.ceylon.language.String> $ceylontmp$list$0 = arr;
+                int $ceylontmp$index$1 = .com.redhat.ceylon.compiler.java.Util.toInt(0L);
+            }
+            returning $ceylontmp$index$1 >= 0 && $ceylontmp$index$1 < $ceylontmp$list$0.size() ? $ceylontmp$list$0.get($ceylontmp$index$1) : null;
+        );
+        final .ceylon.language.String[] arr2 = new .ceylon.language.String[0];
+        final .ceylon.language.String s2 = (
+            let
+            {
+                .ceylon.language.String[] $ceylontmp$array$2 = arr2;
+                int $ceylontmp$index$3 = .com.redhat.ceylon.compiler.java.Util.toInt(0L);
+            }
+            returning $ceylontmp$index$3 >= 0 && $ceylontmp$index$3 < $ceylontmp$array$2.length ? $ceylontmp$array$2[$ceylontmp$index$3] : null;
+        );
+        final .java.lang.String[] arr3 = new .java.lang.String[0];
+        final .java.lang.String s3 = (
+            let
+            {
+                .java.lang.String[] $ceylontmp$array$4 = arr3;
+                int $ceylontmp$index$5 = .com.redhat.ceylon.compiler.java.Util.toInt(0L);
+            }
+            returning $ceylontmp$index$5 >= 0 && $ceylontmp$index$5 < $ceylontmp$array$4.length ? $ceylontmp$array$4[$ceylontmp$index$5] : null;
+        );
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6421_.bug6421();
+    }
+}

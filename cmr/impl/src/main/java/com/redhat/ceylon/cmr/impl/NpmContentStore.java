@@ -20,8 +20,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -60,6 +63,17 @@ public class NpmContentStore extends AbstractContentStore {
         }
     }
 
+    public Iterable<File> getBaseDirectories() {
+        ArrayList<File> baseDirectories = new ArrayList<>(stores.length);
+        for (FileContentStore store : stores) {
+            for (File baseDir : store.getBaseDirectories()) {
+                baseDirectories.add(baseDir);
+            }
+        }
+        baseDirectories.add(out);
+        return baseDirectories;
+    }
+    
     public OpenNode createRoot() {
         return new RootNode(this, this);
     }

@@ -356,6 +356,11 @@ public class Overrides {
                 Node node = filterNode.item(0);
                 ao.setFilter(interpolate(PathFilterParser.convertNodeToString(node), interpolation));
             }
+            NodeList classifierNode = artifact.getElementsByTagName("classifier");
+            if (classifierNode != null && classifierNode.getLength() > 0) {
+                Node node = classifierNode.item(0);
+                ao.setClassifier(interpolate(node.getTextContent(), interpolation));
+            }
             List<Element> shareArtifacts = getChildren(artifact, "share");
             for (Element share : shareArtifacts) {
                 ArtifactContext context = getArtifactContext(share, true, interpolation);

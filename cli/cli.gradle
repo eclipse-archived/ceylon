@@ -1,0 +1,47 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+ext {
+    ceylonModuleName = 'cli'
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+
+dependencies {
+    compile project(':common')
+    compile project(':model')
+    compile project(':cmr')
+}
+
+task startScripts( type : Copy ) {
+    group 'Application'
+    description 'Creates OS specific scripts to run Ceylon from the command-line'
+
+    from 'bin'
+    into "${buildDir}/bin"
+    filter ReplaceTokens, tokens : [ 'ceylon-version' : version ]
+}
+
+task publishScripts( type : Copy ) {
+    group 'Distribution'
+    description 'Copies scripts to distribution area'
+    into repoBinDir
+    from startScripts, {
+        exclude 'ceylon'
+    }
+    from startScripts, {
+        include 'ceylon'
+        fileMode 0755
+    }
+}
+
+assemble {
+    dependsOn startScripts
+}
+
+publishInternal {
+    dependsOn publishScripts
+}
+
+['common','cmr','model'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
+}

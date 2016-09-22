@@ -280,8 +280,10 @@ final class bug1227_ifReturn_specifiedElse_ {
                 return from$53;
             }
         }
-        from$48 = 0L;
-        final long from$54 = from$48;
+        {
+            from$48 = 0L;
+            final long from$54 = from$48;
+        }
         from = from$48;
         return from;
     }
@@ -319,8 +321,10 @@ final class bug1227_ifReturn_specifiedElse_opt_ {
             }
         }
         if (!loopentered$56) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
-        from$55 = 0L;
-        final long from$61 = from$55;
+        {
+            from$55 = 0L;
+            final long from$61 = from$55;
+        }
         from = from$55;
         return from;
     }
@@ -344,8 +348,10 @@ final class bug1227_ifThrow_specifiedElse_ {
                 throw new .ceylon.language.Exception(null, null);
             }
         }
-        from$62 = 0L;
-        final long from$68 = from$62;
+        {
+            from$62 = 0L;
+            final long from$68 = from$62;
+        }
         from = from$62;
         return from;
     }
@@ -372,8 +378,10 @@ final class bug1227_ifThrow_specifiedElse_opt_ {
             }
         }
         if (!loopentered$70) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
-        from$69 = 0L;
-        final long from$75 = from$69;
+        {
+            from$69 = 0L;
+            final long from$75 = from$69;
+        }
         from = from$69;
         return from;
     }
@@ -402,8 +410,10 @@ final class bug1227_for2_ifReturn_specifiedElse_ {
                 }
             }
         }
-        from$76 = 0L;
-        final long from$85 = from$76;
+        {
+            from$76 = 0L;
+            final long from$85 = from$76;
+        }
         from = from$76;
         return from;
     }
@@ -458,7 +468,9 @@ final class bug1227_onlySpecifiedElse_ {
             final long index = ((.ceylon.language.Integer)elem$92).longValue();
             throw new .ceylon.language.Exception(null, null);
         }
-        from = 0L;
+        {
+            from = 0L;
+        }
         return from;
     }
 }

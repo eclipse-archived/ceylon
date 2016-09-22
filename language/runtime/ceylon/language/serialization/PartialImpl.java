@@ -154,7 +154,7 @@ class PartialImpl extends Partial {
         } else if (instance_ instanceof ceylon.language.Tuple) {
             initializeTuple($reified$Id, context, (ceylon.language.Tuple<?,?,?>)instance);
         } else {
-            initializeObject(context, instance);
+            initializeObject($reified$Id, context, instance);
         }
         setState(null);
         return null;
@@ -237,6 +237,7 @@ class PartialImpl extends Partial {
 
     
     protected <Id> void initializeObject(
+            TypeDescriptor $reified$Id, 
             DeserializationContextImpl<Id> context,
             Serializable instance) {
         NativeMap<ReachableReference, Id> state = (NativeMap<ReachableReference, Id>)getState();
@@ -294,6 +295,14 @@ class PartialImpl extends Partial {
                 
                 Object referredInstance = getReferredInstance(context, state, 
                         member);
+                if (referredInstance instanceof Tuple) {
+                    // Because tuples are special wrt reified types...
+                    Id referredId = state.get(member);
+                    Object r = context.leakInstance(referredId);
+                    if (r instanceof PartialImpl) {
+                        ((PartialImpl)r).initialize($reified$Id, context);
+                    }
+                }
                 Type instanceType = Metamodel.getModuleManager().getCachedType(
                         Metamodel.getTypeDescriptor(referredInstance));
                 if (!instanceType.isSubtypeOf(memberType)) {

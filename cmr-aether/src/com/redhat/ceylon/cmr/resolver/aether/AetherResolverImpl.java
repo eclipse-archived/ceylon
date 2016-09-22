@@ -242,6 +242,13 @@ public class AetherResolverImpl implements AetherResolver {
     	return getDependencies(groupId, artifactId, version, null, null, fetchSingleArtifact);
     }
     
+    public File getLocalRepositoryBaseDir() {
+        RepositorySystem repoSystem = newRepositorySystem();
+        DefaultRepositorySystemSession session = newSession( repoSystem );
+        configureSession(repoSystem, session);
+        return session.getLocalRepository().getBasedir();
+    }
+    
     @Override
     public DependencyDescriptor getDependencies(String groupId, String artifactId, String version, 
     		String classifier, String extension, boolean fetchSingleArtifact) 
@@ -252,7 +259,8 @@ public class AetherResolverImpl implements AetherResolver {
         List<RemoteRepository> repos = configureSession(repoSystem, session);
 
         if(extension == null){
-            DefaultArtifact artifact = new DefaultArtifact( groupId, artifactId, classifier, "pom", version);
+            // I don't think POMs with a classifier exist, so let's not set it
+            DefaultArtifact artifact = new DefaultArtifact( groupId, artifactId, null, "pom", version);
             ArtifactRequest artifactRequest = new ArtifactRequest();
             artifactRequest.setArtifact(artifact);
             artifactRequest.setRepositories(repos);

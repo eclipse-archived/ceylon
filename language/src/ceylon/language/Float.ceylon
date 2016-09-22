@@ -208,6 +208,7 @@ shared native final class Float(Float float)
     throws (`class OverflowException`,
         "if the the [[wholePart]] of this value is too large 
          or too small to be represented as an `Integer`")
+    since("1.1.0")
     shared native Integer integer;
     
     shared actual native Float timesInteger(Integer integer)

@@ -42,6 +42,7 @@ import ceylon.language { printTrace=printStackTrace }
  already open file could result in an `Exception`."
 by ("Gavin", "Tom")
 tagged("Basic types")
+since("1.1.0")
 shared abstract sealed native 
 class Throwable(description=null, cause=null) {
     

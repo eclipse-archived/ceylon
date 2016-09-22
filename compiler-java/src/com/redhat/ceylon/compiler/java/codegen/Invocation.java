@@ -42,6 +42,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgumentList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QualifiedTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SequencedArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.StaticMemberOrTypeExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
@@ -278,9 +279,22 @@ abstract class Invocation {
                 Tree.QualifiedMemberOrTypeExpression type = (Tree.QualifiedMemberOrTypeExpression)getPrimary();
                 Declaration declaration = type.getDeclaration();
                 if (Decl.isConstructor(declaration)) {
-                    if (Decl.withinInterface(Decl.getConstructedClass(declaration))) {
+                    Class constructedClass = Decl.getConstructedClass(declaration);
+                    if (Decl.withinInterface(constructedClass)) {
                         if (Strategy.generateInstantiator(declaration)) {
-                            actualPrimExpr = primaryExpr != null ? primaryExpr : gen.naming.makeQuotedThis();
+                            // Stef: this is disgusting and some of that logic has to be duplicated for base member/type
+                            // expressions. it reeks of special-cases that should not be
+                            Interface containerInterface = (Interface)constructedClass.getContainer();
+                            if(primaryExpr != null)
+                                actualPrimExpr = primaryExpr;
+                            else if(type.getPrimary() instanceof Tree.BaseTypeExpression
+                                    // if we are within an interface impl class, access it via our $this
+                                    && gen.expressionGen().needDollarThis((Tree.BaseTypeExpression)type.getPrimary()))
+                                actualPrimExpr = gen.naming.makeQuotedThis();
+                            else
+                                // otherwise we're within a class that implements that interface,
+                                // access it via our companion
+                                actualPrimExpr = gen.naming.makeCompanionFieldName(containerInterface);
                         } else {
                             actualPrimExpr = null;
                         }
@@ -443,6 +457,7 @@ abstract class SimpleInvocation extends Invocation {
     protected abstract boolean isArgumentComprehension(int argIndex);
 
     protected abstract boolean getParameterUnboxed(int argIndex);
+    protected abstract boolean getParameterSmall(int argIndex);
 
     protected abstract BoxingStrategy getParameterBoxingStrategy(int argIndex);
 
@@ -646,6 +661,11 @@ class IndirectInvocation extends SimpleInvocation {
     protected BoxingStrategy getParameterBoxingStrategy(int argIndex) {
         return BoxingStrategy.BOXED;
     }
+    
+    @Override
+    protected boolean getParameterSmall(int argIndex) {
+        return false;
+    }
 
     @Override
     protected boolean hasParameter(int argIndex) {
@@ -783,6 +803,12 @@ abstract class DirectInvocation extends SimpleInvocation {
             return BoxingStrategy.UNBOXED;
         }
         return CodegenUtil.getBoxingStrategy(param.getModel());
+    }
+    
+    @Override
+    protected boolean getParameterSmall(int argIndex) {
+        Parameter param = getParameter(argIndex);
+        return Decl.isSmall(param.getModel());
     }
     
     @Override
@@ -1218,6 +1244,11 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
     public void location(CallBuilder callBuilder) {
         callBuilder.location(null);
     }
+    @Override
+    protected Type getArgumentType(int argIndex) {
+        // those are the same in this case
+        return super.getParameterType(argIndex);
+    }
 }
 
 /**
@@ -1515,6 +1546,9 @@ class NamedArgumentInvocation extends Invocation {
         if (erasedArgument(TreeUtil.unwrapExpressionUntilTerm(expr))) {
             exprFlags |= ExpressionTransformer.EXPR_DOWN_CAST;
         }
+        if (CodegenUtil.downcastForSmall(expr, specifiedArg.getParameter().getModel())) {
+            exprFlags |= ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK;
+        }
         JCExpression typeExpr = gen.makeJavaType(type, jtFlags);
         gen.at(specifiedArg);
         JCExpression argExpr = gen.expressionGen().transformExpression(expr, boxType, type, exprFlags);
@@ -1532,6 +1566,7 @@ class NamedArgumentInvocation extends Invocation {
         boolean prevNoExpressionlessReturn = gen.statementGen().noExpressionlessReturn;
         boolean prevSyntheticClassBody = gen.expressionGen().withinSyntheticClassBody(Decl.isMpl(model) || gen.expressionGen().isWithinSyntheticClassBody()); 
         try {
+            gen.expressionGen().withinSyntheticClassBody(true);
             gen.statementGen().noExpressionlessReturn = gen.isAnything(model.getType());
             if (methodArg.getBlock() != null) {
                 body = gen.statementGen().transformBlock(methodArg.getBlock());
@@ -1726,12 +1761,15 @@ class NamedArgumentInvocation extends Invocation {
                 && !gen.expressionGen().isWithinSyntheticClassBody()) {
             if (Decl.withinClassOrInterface(getPrimaryDeclaration())) {
                 // a member method
-                thisType = gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() ? JT_COMPANION : 0));
-                if (Decl.withinInterface(getPrimaryDeclaration())
+                thisType = gen.makeJavaType(target.getQualifyingType(), 
+                        JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() 
+                                ? JT_COMPANION : 0));
+                TypeDeclaration outer = Decl.getOuterScopeOfMemberInvocation((StaticMemberOrTypeExpression) getPrimary(), getPrimaryDeclaration());
+                if (outer instanceof Interface
                         && getPrimaryDeclaration().isShared()) {
                     defaultedParameterInstance = gen.naming.makeQuotedThis();
                 } else {
-                    defaultedParameterInstance = gen.naming.makeQualifiedThis(gen.makeJavaType(target.getQualifyingType(), JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() ? JT_COMPANION : 0)));
+                    defaultedParameterInstance = gen.naming.makeQualifiedThis(gen.makeJavaType(((TypeDeclaration)outer).getType(), JT_NO_PRIMITIVES | (getPrimaryDeclaration().isInterfaceMember() && !getPrimaryDeclaration().isShared() ? JT_COMPANION : 0)));
                 }
             } else {
                 // a local or toplevel function

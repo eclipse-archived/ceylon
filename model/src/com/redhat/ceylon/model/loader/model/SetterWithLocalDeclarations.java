@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Setter;
 
 /**
@@ -35,4 +36,11 @@ public class SetterWithLocalDeclarations extends Setter implements LocalDeclarat
         localDeclarations.put(declaration.getPrefixedName(), declaration);
     }
 
+    @Override
+    public boolean isJava() {
+        Scope container = getContainer();
+        while(container != null && container instanceof Declaration == false)
+            container = container.getContainer();
+        return container != null ? ((Declaration) container).isJava() : false;
+    }
 }

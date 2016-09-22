@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.redhat.ceylon.compiler.typechecker.util;
 
 import java.util.HashSet;
@@ -46,21 +42,6 @@ public class ReferenceCounter extends Visitor {
 		    }
 		}
 		return false;
-	}
-	
-	@Override
-    public void visit(Tree.AssignmentOp that) {
-		super.visit(that);
-	}
-	
-	@Override
-    public void visit(Tree.PostfixOperatorExpression that) {
-		super.visit(that);
-	}
-	
-	@Override
-    public void visit(Tree.PrefixOperatorExpression that) {
-		super.visit(that);
 	}
 	
     @Override

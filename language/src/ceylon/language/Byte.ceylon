@@ -40,6 +40,7 @@
  `Byte`s are useful mainly because they can be efficiently 
  stored in an [[Array]]."
 tagged("Basic types")
+since("1.1.0")
 shared native final class Byte(congruent) 
         extends Object()
         satisfies Binary<Byte> & 

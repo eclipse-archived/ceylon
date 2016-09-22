@@ -1,0 +1,13 @@
+package com.redhat.ceylon.compiler.java.test.issues.bug63xx;
+
+final class bug6360_ {
+    
+    private bug6360_() {
+    }
+    
+    static void bug6360() {
+        final .ceylon.language.Sequence<? extends .ceylon.language.Integer> x = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)});
+        .ceylon.language.identity_.<.ceylon.language.Sequence<? extends .ceylon.language.Integer>>identity(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tupleWithRest(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor$)), .ceylon.language.Integer.$TypeDescriptor$, -1, .ceylon.language.Integer.$TypeDescriptor$), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>)x);
+        .ceylon.language.print_.print(.ceylon.language.meta.type_.<.ceylon.language.Sequence<? extends .ceylon.language.Integer>>type(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tupleWithRest(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Empty.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Range.class, .ceylon.language.Integer.$TypeDescriptor$)), .ceylon.language.Integer.$TypeDescriptor$, -1, .ceylon.language.Integer.$TypeDescriptor$), x));
+    }
+}

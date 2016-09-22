@@ -26,6 +26,7 @@
 "A module import."
 ^(IMPORT_MODULE:STATEMENT_OR_ARGUMENT
     ANNOTATION_LIST?
+    IDENTIFIER? namespace
     IMPORT_PATH?
     QUOTED_LITERAL?
     QUOTED_LITERAL version)
@@ -547,7 +548,8 @@
 ^(CONDITION_LIST
     CONDITION*)
 
-^(abstract CONDITION)
+^(abstract CONDITION
+    boolean assertion;)
 ^(BOOLEAN_CONDITION:CONDITION
     EXPRESSION)
 ^(abstract EXISTS_OR_NONEMPTY_CONDITION:CONDITION
@@ -682,6 +684,9 @@
 ^(EXPRESSION:ATOM 
     TERM)
 
+"An parenthesized expression."
+^(PAR_EXPRESSION:EXPRESSION)
+
 "The receiver of a member reference or invocation expression."
 ^(abstract PRIMARY:TERM)
 ^(abstract POSTFIX_EXPRESSION:PRIMARY
@@ -742,7 +747,8 @@
 
 "An index (element access by key) expression."
 ^(INDEX_EXPRESSION:POSTFIX_EXPRESSION
-    ELEMENT_OR_RANGE)
+    ELEMENT_OR_RANGE
+    boolean assigned;)
 
 "An element index or element range."
 ^(abstract ELEMENT_OR_RANGE)

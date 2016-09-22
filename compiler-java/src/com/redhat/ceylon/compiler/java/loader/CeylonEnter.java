@@ -34,6 +34,7 @@ import org.antlr.runtime.Token;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.InvalidArchiveException;
+import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.StatusPrinter;
@@ -74,7 +75,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilerAnnotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.UnexpectedError;
-
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.WarningSuppressionVisitor;
 import com.redhat.ceylon.javax.tools.JavaFileManager;
@@ -83,32 +83,31 @@ import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.langtools.source.util.TaskEvent;
 import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
-import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
-import com.redhat.ceylon.langtools.tools.javac.code.Types;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
+import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.ClassType;
+import com.redhat.ceylon.langtools.tools.javac.code.Types;
 import com.redhat.ceylon.langtools.tools.javac.comp.Annotate;
 import com.redhat.ceylon.langtools.tools.javac.comp.AttrContext;
 import com.redhat.ceylon.langtools.tools.javac.comp.Check;
 import com.redhat.ceylon.langtools.tools.javac.comp.Enter;
 import com.redhat.ceylon.langtools.tools.javac.comp.Env;
 import com.redhat.ceylon.langtools.tools.javac.comp.Todo;
-import com.redhat.ceylon.langtools.tools.javac.file.Locations;
 import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.tree.EndPosTable;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.redhat.ceylon.langtools.tools.javac.util.Abort;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
+import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticPosition;
+import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.SimpleDiagnosticPosition;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.langtools.tools.javac.util.Position;
 import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage;
-import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.DiagnosticPosition;
-import com.redhat.ceylon.langtools.tools.javac.util.JCDiagnostic.SimpleDiagnosticPosition;
 import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage.Language;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
@@ -386,7 +385,7 @@ public class CeylonEnter extends Enter {
             sp.log("Generating AST");
         }
         int i=1;
-        int size = trees.size();
+        int size = countCeylonFiles(trees);
         for (JCCompilationUnit tree : trees) {
             if (tree instanceof CeylonCompilationUnit) {
                 CeylonCompilationUnit ceylonTree = (CeylonCompilationUnit) tree;
@@ -420,6 +419,9 @@ public class CeylonEnter extends Enter {
                 }
             }
         }
+        if(sp != null){
+            sp.clearLine();
+        }
         timer.startTask("Ceylon error generation");
         printGeneratorErrors();
         timer.endTask();
@@ -428,6 +430,16 @@ public class CeylonEnter extends Enter {
             modelLoader.printStats();
     }
 
+    private int countCeylonFiles(List<JCCompilationUnit> trees) {
+        int cnt = 0;
+        for (JCCompilationUnit tree : trees) {
+            if (tree instanceof CeylonCompilationUnit) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+    
     private boolean isVerbose(String key) {
         return verbose || options.get(Option.VERBOSE.text + ":" + key) != null;
     }
@@ -439,10 +451,11 @@ public class CeylonEnter extends Enter {
             ArtifactContext ctx = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.CAR, ArtifactContext.JAR);
             artifact = repositoryManager.getArtifactResult(ctx);
         } catch (InvalidArchiveException e) {
-            log.error("ceylon", "Module car " + e.getPath()
+            log.warning("ceylon", "Module car " + e.getPath()
                     +" obtained from repository " + e.getRepository()
-                    +" has an invalid SHA1 signature: you need to remove it and rebuild the archive, since it"
-                    +" may be corrupted.");
+                    +" has an invalid SHA1 signature:"
+                    +" it will be overwritten but if the problem"
+                    +" persists you need to remove it and rebuild the module, since it may be corrupted.");
         } catch (Exception e) {
             String moduleName = module.getNameAsString();
             if(!module.isDefaultModule())
@@ -450,7 +463,15 @@ public class CeylonEnter extends Enter {
             log.error("ceylon", "Exception occured while trying to resolve module "+moduleName);
             e.printStackTrace();
         }
-        addModuleToClassPath(module, false, artifact);
+        if (artifact == null || JarUtils.isValidJar(artifact.artifact())) {
+            addModuleToClassPath(module, false, artifact);
+        } else {
+            log.warning("ceylon", "Module car " + artifact.artifact()
+            +" obtained from repository " + artifact.repository()
+            +" could not be read:"
+            +" it will be overwritten but if the problem"
+            +" persists you need to remove it and rebuild the module, since it may be corrupted.");
+        }
     }
     
     public boolean isModuleInClassPath(Module module){

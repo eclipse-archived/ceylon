@@ -24,11 +24,13 @@ import com.redhat.ceylon.common.log.Logger;
 
 public class CeylondLogger implements Logger {
     private boolean richFormatting;
+    private boolean verbose;
     
     private int errors;
     
-    public CeylondLogger(boolean richFormatting) {
+    public CeylondLogger(boolean richFormatting, boolean verbose) {
         this.richFormatting = richFormatting;
+        this.verbose = verbose;
     }
 
     public int getErrors(){
@@ -65,7 +67,9 @@ public class CeylondLogger implements Logger {
 
     @Override
     public void debug(String str) {
-        //System.err.println("Debug: "+str);
+        if (verbose) {
+            System.err.println("Debug: "+str);
+        }
     }
 
 }

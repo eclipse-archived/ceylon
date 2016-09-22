@@ -15,10 +15,10 @@ public class ModuleVersionResult {
         return name;
     }
 
-    public ModuleVersionDetails addVersion(String module, String version) {
+    public ModuleVersionDetails addVersion(String namespace, String module, String version) {
         if(versions.containsKey(version))
             return null;
-        ModuleVersionDetails newVersion = new ModuleVersionDetails(module, version);
+        ModuleVersionDetails newVersion = new ModuleVersionDetails(namespace, module, version);
         versions.put(version, newVersion);
         return newVersion;
     }

@@ -55,10 +55,10 @@ public class CeylonUtils {
         private boolean offline;
         private boolean noSystemRepo;
         private boolean noCacheRepo;
+        private boolean noOutRepo;
         private boolean noDefRepos;
         private boolean jdkIncluded;
         private Logger log;
-        private String avoidRepository;
         private boolean skipRemoteRepositories;
         private boolean upgradeDist = true;
 
@@ -121,19 +121,6 @@ public class CeylonUtils {
         }
 
         /**
-         * Make sure we never try to read from the given repository. This is mostly
-         * useful if you intend to write to it and want to make sure we never read
-         * from it at the same time.
-         *
-         * @param avoidRepo A path to a Ceylon repository
-         * @return This object for chaining method calls
-         */
-        public CeylonRepoManagerBuilder avoidRepo(String avoidRepo) {
-            this.avoidRepository = avoidRepo;
-            return this;
-        }
-
-        /**
          * Sets the path to use for the caching of downloaded modules. When not set the
          * value will be taken from the system configuration
          *
@@ -169,6 +156,14 @@ public class CeylonUtils {
          */
         public CeylonRepoManagerBuilder noCacheRepo(boolean noCacheRepo){
             this.noCacheRepo = noCacheRepo;
+            return this;
+        }
+
+        /**
+         * Indicates that we don't need the default output repository (defaults to false)
+         */
+        public CeylonRepoManagerBuilder noOutRepo(boolean noOutRepo){
+            this.noOutRepo = noOutRepo;
             return this;
         }
 
@@ -375,20 +370,22 @@ public class CeylonUtils {
             // Now we add all the rest of the repositories in the order that they will be searched
             
             if (systemRepo == null) {
-                if(!noSystemRepo){
+                if (!noSystemRepo) {
                     addRepo(builder, repositories.getSystemRepository());
                 }
             } else {
                 addRepo(builder, repositories, systemRepo);
             }
 
-            if (outRepo == null) {
-                // do not add the output repo if we do not specify it and do not want the default repos
-                if(!noDefRepos){
-                    addRepo(builder, repositories.getOutputRepository());
+            if (!noOutRepo) {
+                if (outRepo == null) {
+                    // do not add the output repo if we do not specify it and do not want the default repos
+                    if (!noDefRepos) {
+                        addRepo(builder, repositories.getOutputRepository());
+                    }
+                } else {
+                    addRepo(builder, repositories, outRepo);
                 }
-            } else {
-                addRepo(builder, repositories, outRepo);
             }
 
             if (jdkIncluded) {
@@ -553,28 +550,22 @@ public class CeylonUtils {
         }
 
         private boolean avoidRepository(String path) {
-            return (avoidRepository != null && avoidRepository.equals(path))
-                    || (skipRemoteRepositories && isRemote(path));
+            return skipRemoteRepositories && isRemote(path);
         }
 
         private void addRepo(RepositoryManagerBuilder builder, Repositories.Repository repoInfo) {
             if (repoInfo != null) {
-                try {
-                    String path = builder.repositoryBuilder().absolute(cwd, repoInfo.getUrl());
-                    if(!avoidRepository(path)){
-                        RepositoryBuilderConfig cfg = new RepositoryBuilderConfig(log, isOffline(config), getTimeout(config), getProxy(config), cwd.getAbsolutePath());
-                        CmrRepository repo = builder.repositoryBuilder().buildRepository(path, cfg);
-                        builder.addRepository(repo);
-                    }
-                } catch (Exception e) {
-                    log.debug("Failed to add repository as input repository: " + repoInfo.getUrl() + ": " + e.getMessage());
-                }
+                addRepo(builder, repoInfo.getUrl());
             }
         }
 
         private void addRepo(RepositoryManagerBuilder builder, Repositories repositories, String repoUrl) {
+            repoUrl = resolveRepoUrl(repositories, repoUrl);
+            addRepo(builder, repoUrl);
+        }
+
+        private void addRepo(RepositoryManagerBuilder builder, String repoUrl) {
             try {
-                repoUrl = resolveRepoUrl(repositories, repoUrl);
                 String path = builder.repositoryBuilder().absolute(cwd, repoUrl);
                 if(!avoidRepository(path)){
                     RepositoryBuilderConfig cfg = new RepositoryBuilderConfig(log, isOffline(config), getTimeout(config), getProxy(config), cwd.getAbsolutePath());

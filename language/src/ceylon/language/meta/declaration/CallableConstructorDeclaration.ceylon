@@ -20,6 +20,7 @@ import ceylon.language.meta.model{
    as a `CallableConstructorDeclaration`.
 """
 see (`interface ValueConstructorDeclaration`)
+since("1.2.0")
 shared sealed interface CallableConstructorDeclaration 
         satisfies FunctionalDeclaration & ConstructorDeclaration {
     

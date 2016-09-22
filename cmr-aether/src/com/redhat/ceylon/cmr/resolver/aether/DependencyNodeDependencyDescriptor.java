@@ -67,6 +67,11 @@ public class DependencyNodeDependencyDescriptor implements DependencyDescriptor 
 		return node.getDependency().isOptional();
 	}
 
+	@Override
+	public String toString() {
+	    return node.getArtifact().toString();
+	}
+	
     public static void unzip(File archive, String entryPath, File destinationFolder) throws IOException {
         if (destinationFolder.exists()) {
             if (!destinationFolder.isDirectory()) {
@@ -85,7 +90,7 @@ public class DependencyNodeDependencyDescriptor implements DependencyDescriptor 
             if(entryPath.indexOf('/') != -1)
                 name = name.substring(entryPath.lastIndexOf('/')+1, name.length());
             // make sure that tmp files are fresh
-            File tmpOut = File.createTempFile(name, ".part");
+            File tmpOut = File.createTempFile(name, ".part", destinationFolder);
             try (InputStream zipIn = zf.getInputStream(entry)) {
                 try (BufferedOutputStream fileOut = new BufferedOutputStream(new FileOutputStream(tmpOut))) {
                     final byte[] bytes = new byte[8192];

@@ -192,15 +192,15 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
     }
     
     public BaseModuleLoaderImpl() {
-        this(null);
+        this(null, null);
     }
     
     public void log(String string) {
         System.err.println("[CMR:DEBUG] "+string);
     }
 
-    public BaseModuleLoaderImpl(ClassLoader delegateClassLoader) {
-        this(CeylonUtils.repoManager().buildManager(), delegateClassLoader, false);
+    public BaseModuleLoaderImpl(RepositoryManager repoManager, ClassLoader delegateClassLoader) {
+        this(repoManager, delegateClassLoader, false);
     }
     
     public BaseModuleLoaderImpl(RepositoryManager repositoryManager, ClassLoader delegateClassLoader, boolean verbose) {

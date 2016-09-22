@@ -23,6 +23,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 })
 @Class(extendsType="ceylon.language::Object", basic = false, identifiable = false)
 @ValueType
+@SharedAnnotation$annotation$
+@FinalAnnotation$annotation$
+@NativeAnnotation$annotation$(backends={})
 public final class Integer
     implements Integral<Integer>,
                Binary<Integer>,

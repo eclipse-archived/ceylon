@@ -12,6 +12,7 @@ import ceylon.language.meta.model {
    * [[ValueDeclaration]] which abstracts over values and attributes 
    * [[ValueConstructorDeclaration]] which represents value constructors
 """
+since("1.2.0")
 shared sealed interface GettableDeclaration {
     
     /*"Applies this value declaration in order to obtain a value model. 

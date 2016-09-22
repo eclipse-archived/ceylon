@@ -229,6 +229,6 @@ class SmallInteger(shared small Integer intp) {
     // small bit of the model instead
     
     
-     
+    
 }
 

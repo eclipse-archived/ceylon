@@ -11,7 +11,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class StandardArgumentParsers {
+public class StandardArgumentParsers extends ArgumentParserFactory {
 
     public static final ArgumentParser<String> CHAR_SEQUENCE_PARSER = new ArgumentParser<String>() {
         @Override
@@ -31,6 +31,13 @@ public class StandardArgumentParsers {
         @Override
         public Integer parse(String argument, Tool tool) {
             return Integer.valueOf(argument);
+        }
+    };
+    
+    public static final ArgumentParser<Long> LONG_PARSER = new ArgumentParser<Long>() {
+        @Override
+        public Long parse(String argument, Tool tool) {
+            return Long.valueOf(argument);
         }
     };
     
@@ -176,12 +183,15 @@ public class StandardArgumentParsers {
         }
     }
     
-    public static ArgumentParser<?> forClass(Class<?> setterType, ToolLoader toolLoader, boolean isSimpleType) {
+    public ArgumentParser<?> forClass(Class<?> setterType, ToolLoader toolLoader, boolean isSimpleType) {
         if (CharSequence.class.isAssignableFrom(setterType)) {
             return CHAR_SEQUENCE_PARSER;
         } else if (Integer.class.isAssignableFrom(setterType)
                 || Integer.TYPE.isAssignableFrom(setterType)) {
             return INTEGER_PARSER;
+        } else if (Long.class.isAssignableFrom(setterType)
+                || Long.TYPE.isAssignableFrom(setterType)) {
+            return LONG_PARSER;
         } else if (Boolean.class.isAssignableFrom(setterType)
                 || Boolean.TYPE.isAssignableFrom(setterType)) {
             return BOOLEAN_PARSER;

@@ -40,6 +40,7 @@ import ceylon.language.Basic;
 import ceylon.language.Empty;
 import ceylon.language.Identifiable;
 import ceylon.language.Null;
+import ceylon.language.Range;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
@@ -379,7 +380,8 @@ public abstract class TypeDescriptor
         public TypeDescriptor getSequenceElement() {
             if(klass == ceylon.language.Tuple.class ||
                     klass == Sequence.class ||
-                    klass == Sequential.class)
+                    klass == Sequential.class || 
+                    klass == ceylon.language.Range.class)
                 return typeArguments[0];
             if(klass == Empty.class)
                 return NothingType;
@@ -1228,7 +1230,9 @@ public abstract class TypeDescriptor
             return combineTuples(elements, firstDefaulted, (Tuple)rest);
         }else if(rest instanceof Class){
             Class restClass = (Class)rest;
-            if(restClass.klass == Sequence.class || restClass.klass == Sequential.class){
+            if(restClass.klass == Sequence.class 
+                    || restClass.klass == Sequential.class
+                    || restClass.klass == Range.class){
                 // that's also rather easy
                 TypeDescriptor[] newElements = new TypeDescriptor[elements.length+1];
                 System.arraycopy(elements, 0, newElements, 0, elements.length);
@@ -1351,6 +1355,7 @@ public abstract class TypeDescriptor
 
     private static TypeDescriptor[] removeDuplicates(TypeDescriptor[] members) {
         int duplicates = 0;
+        int nothing = 0;
         for(int i=0;i<members.length;i++){
             TypeDescriptor ref = members[i];
             for(int j=i+1;j<members.length;j++){
@@ -1360,9 +1365,12 @@ public abstract class TypeDescriptor
                     break;
                 }
             }
+            if (ref == NothingType) {
+                nothing = 1;
+            }
         }
-        if(duplicates > 0){
-            TypeDescriptor[] unique = new TypeDescriptor[members.length-duplicates];
+        if(duplicates > 0 || nothing > 0){
+            TypeDescriptor[] unique = new TypeDescriptor[members.length-duplicates-nothing];
             REF:
             for(int i=0,u=0;i<members.length;i++){
                 TypeDescriptor ref = members[i];
@@ -1372,6 +1380,9 @@ public abstract class TypeDescriptor
                         // skip it
                         continue REF;
                     }
+                }
+                if (ref == NothingType) {
+                    continue REF;
                 }
                 // it's unique: keep it
                 unique[u++] = ref;

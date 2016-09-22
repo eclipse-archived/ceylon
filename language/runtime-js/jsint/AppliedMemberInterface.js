@@ -27,9 +27,9 @@ function AppliedMemberInterface$jsint(tipo,$$targs$$,that,myTargs){
       that=new AppliedMemberInterface$jsint.$$;
     }
   }
+  set_type_args(that,$$targs$$,AppliedMemberInterface$jsint);
   MemberInterface$meta$model(that.$$targs$$===undefined?$$targs$$:{Type$MemberInterface:that.$$targs$$.Type$AppliedMemberInterface,
     Container$MemberInterface:that.$$targs$$.Container$AppliedMemberInterface},that);
-  set_type_args(that,$$targs$$,AppliedMemberInterface$jsint);
   that.$targs=myTargs;
   var _proto=AppliedMemberInterface$jsint.$$.prototype;
   that.getMethod=_proto.getMethod;

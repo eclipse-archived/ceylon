@@ -1,0 +1,105 @@
+ext {
+    ceylonModuleName = 'compiler.js'
+    ceylonPublishModuleName = 'js'
+    ceylonTestDisabled = true
+
+    // This project uses the default Maven-like source layout
+    ceylonSourceLayout = false
+
+
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+
+dependencies {
+    compile project(':common')
+    compile project(':cli')
+    compile project(':model')
+    compile project(':cmr')
+    compile project(':cmr-js')
+    compile project(':typechecker')
+    compile 'net.minidev:json-smart:1.1.1'
+    compile 'org.antlr:antlr:3.4'
+
+}
+
+ext {
+    jsLangPath = "ceylon/language/${cbp.'module.com.redhat.ceylon.compiler.js.version'}"
+    jsLangModule = "${jsLangPath}/ceylon.language-${cbp.'module.com.redhat.ceylon.compiler.js.version'}.js"
+    jsLangModel = "${jsLangPath}/ceylon.language-${cbp.'module.com.redhat.ceylon.compiler.js.version'}-model.js"
+    runtimeDir = "${buildDir}/runtime"
+}
+
+sourceSets {
+    main {
+        java {
+            exclude "**/*Main5.java"
+        }
+        // TODO: If these files could be moved to all be under src/main/resources then this block can be eliminated
+        resources {
+            srcDirs = ['src/main/java']
+            include "com/redhat/**/resources/**"
+            include "com/redhat/**/*.properties"
+            include "META-INF/**"
+        }
+    }
+
+    // TODO: jdk5Stubs seems to refer to empty set. If confirmed, we can throw this away
+    jdk5Stubs {
+        java {
+            srcDirs = ['src/main/java']
+            include "**/*Main5.java"
+        }
+        resources {
+            srcDirs = []
+        }
+        compileClasspath = configurations.compile
+        runtimeClasspath = output + compileClasspath
+        output.classesDir = sourceSets.main.output.classesDir
+    }
+}
+
+// TODO: jdk5Stubs seems to refer to empty set. If confirmed, we can throw this away
+compileJdk5StubsJava {
+    sourceCompatibility = '1.5'
+    targetCompatibility = '1.5'
+    dependsOn compileJava
+}
+
+// TODO: jdk5Stubs seems to refer to empty set. If confirmed, we can throw this away
+classes {
+    dependsOn compileJdk5StubsJava
+}
+
+task buildLanguageModule( type : JavaExec ) {
+
+    group 'Build'
+    description 'Generates the ceylon.language.js file'
+    main 'com.redhat.ceylon.compiler.js.Stitcher'
+    args file("${project(':language').projectDir}/runtime-js/MASTER.txt")
+    args file("${runtimeDir}/${jsLangModule}")
+    outputs.file "${runtimeDir}/${jsLangModule}"
+    outputs.file "${runtimeDir}/${jsLangModel}"
+
+    doFirst {
+        mkdir file("${runtimeDir}/${jsLangPath}")
+    }
+
+    // TODO: If test classes needs to be included, the use 'testClasses' rather than 'classes'
+    dependsOn classes
+    // TODO: If test classes needs to be included, the use 'test' rather than 'main'
+    classpath sourceSets.main.runtimeClasspath
+}
+
+sha1 {
+    files buildLanguageModule
+}
+
+assemble {
+    dependsOn buildLanguageModule
+}
+
+['common','cli','cmr','typechecker','model'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
+}
+

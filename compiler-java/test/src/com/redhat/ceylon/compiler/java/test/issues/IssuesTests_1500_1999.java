@@ -646,7 +646,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
     @Test
     public void testBug1761A() {
         assertErrors("bug17xx/Bug1761A",
-                new CompilerError(2, "shared declaration is not a member of a class, interface, or package: 'Bar' in 'bug1761A'"));
+                new CompilerError(2, "shared declaration is not a member of a class, interface, or package: 'Bar' in 'bug1761A' may not be annotated 'shared'"));
     }
     @Test
     public void testBug1761B() {
@@ -735,8 +735,7 @@ public class IssuesTests_1500_1999 extends CompilerTests {
                 null,
                 new CompilerError(22, "could not determine type of function or value reference: 'd'"),
                 new CompilerError(24, "does not definitely return: 'd' has branches which do not end in a 'return' statement"),
-                new CompilerError(24, "type declaration does not exist: 'Id'"));
-
+                new CompilerError(24, "type is not defined: 'Id' might be misspelled or is not imported"));
     }
     
     @Test
@@ -844,13 +843,13 @@ public class IssuesTests_1500_1999 extends CompilerTests {
         assertErrors(new String[]{"bug18xx/Bug1852.ceylon"},
                 Arrays.asList("-suppress-warnings", "importsOtherJdk"),
                 null,
-                new CompilerError(Kind.WARNING, "", 21, "declaration is never used: 's'"));
+                new CompilerError(Kind.WARNING, "", 21, "declaration is never used: value 's' has no local references"));
     }
     
     @Test
     public void testBug1857() {
         assertErrors("bug18xx/Bug1857",
-                new CompilerError(Kind.ERROR, "", 22, "function or value does not exist: 'ß'"));
+                new CompilerError(Kind.ERROR, "", 22, "function or value is not defined: 'ß' might be misspelled or is not imported"));
     }
 
     @Test

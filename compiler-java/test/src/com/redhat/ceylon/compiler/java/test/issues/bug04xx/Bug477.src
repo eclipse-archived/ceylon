@@ -249,6 +249,11 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     
     @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends T>, ? extends .java.lang.Object> combinations(final long length) {
+        return $ceylon$language$Collection$this$.combinations(length);
+    }
+    
+    @.java.lang.Override
     public boolean getEmpty() {
         return $ceylon$language$Collection$this$.getEmpty();
     }
@@ -805,6 +810,11 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     @.java.lang.Override
     public .ceylon.language.Collection$impl<? extends T> $ceylon$language$Collection$impl() {
         return $ceylon$language$Collection$this$;
+    }
+    
+    @.java.lang.Override
+    public final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends T>, ? extends .java.lang.Object> combinations(final long length) {
+        return $ceylon$language$Collection$this$.combinations(length);
     }
     
     @.java.lang.Override

@@ -169,8 +169,10 @@ void testAliasing() {
     check(!("" of Anything) is IAlias5904, "#5904.15"); // error
     check(!("" of Anything) is IAliasAlias5904, "#5904.16"); // error
     check(CAlias5903(10).i == 10, "#5903.1");
-    check(CAlias5903.create(10, 20).i == 30, "#5903.2");
+    //This should have never been valid
+    //check(CAlias5903.create(10, 20).i == 30, "#5903.2");
     check(CCreateAlias5903(10, 20).i == 30, "#5903.3");
-    check(CCreateAlias5903.create(10, 20).i == 30, "#5903.4");
+    //Should have never been valid
+    //check(CCreateAlias5903.create(10, 20).i == 30, "#5903.4");
     check(`C5962`.getMethods<C5962>().size>=1, "#5962");
 }

@@ -840,6 +840,22 @@ void checkFormatInteger() {
     } else {
         fail("UNKNOWN INTEGER SIZE `` runtime.integerSize `` - please add number formatInteger() tests for this platform");
     }
+    check(formatInteger(1, 10, ',') == "1", "formatInteger() grouping #1");
+    check(formatInteger(100, 10, ',') == "100", "formatInteger() grouping #2");
+    check(formatInteger(1_000, 10, ',') == "1,000", "formatInteger() grouping #3");
+    check(formatInteger(100_000, 10, ',') == "100,000", "formatInteger() grouping #4");
+    check(formatInteger(1_000_000, 10, ',') == "1,000,000", "formatInteger() grouping #5");
+    check(formatInteger(#f, 16, ' ') == "f", "formatInteger() grouping #6");
+    check(formatInteger(#ffff, 16, ' ') == "ffff", "formatInteger() grouping #7");
+    check(formatInteger(#f_ffff, 16, ' ') == "f ffff", "formatInteger() grouping #8");
+    check(formatInteger(#ffff_ffff, 16, ' ') == "ffff ffff", "formatInteger() grouping #9");
+    check(formatInteger(#f_ffff_ffff, 16, ' ') == "f ffff ffff", "formatInteger() grouping #10");
+    check(formatInteger($1, 2, ' ') == "1", "formatInteger() grouping #11");
+    check(formatInteger($1111, 2, ' ') == "1111", "formatInteger() grouping #12");
+    check(formatInteger($1_1111, 2, ' ') == "1 1111", "formatInteger() grouping #13");
+    check(formatInteger($1111_1111, 2, ' ') == "1111 1111", "formatInteger() grouping #14");
+    check(formatInteger($1_1111_1111, 2, ' ') == "1 1111 1111", "formatInteger() grouping #15");
+    check(formatInteger(1_000_000, 11, ',') == "623351", "formatInteger() grouping #16");
 }
 
 void checkParseFloat() {
@@ -898,7 +914,49 @@ void checkParseFloat() {
     check(parseFloat0("-0").string=="-0.0", "parseFloat(-0)");
     check(parseFloat0("0.0").string=="0.0", "parseFloat(0.0)");
     check(parseFloat0("-0.0").string=="-0.0", "parseFloat(-0.0)");
-    
+
+    check(parseFloat0("1e55555555555555555555555555555555555555555").string=="Infinity", "parseFloat(bigExponent)");
+    check(parseFloat0("1")==1.0, "parseFloat(1)");
+    check(parseFloat0("+1")==1.0, "parseFloat(+1)");
+    check(parseFloat0("-1")==-1.0, "parseFloat(-1)");
+    check(parseFloat0("1e1")==10.0, "parseFloat(1e1)");
+    check(parseFloat0("1e-1")==0.1, "parseFloat(1e-1)");
+    check(parseFloat0("1e+1")==10.0, "parseFloat(1e+1)");
+    check(parseFloat0(".123")==0.123, "parseFloat(.123)");
+    check(parseFloat(".") is Null, "parseFloat(.)");
+    check(parseFloat("e10") is Null, "parseFloat(e10)");
+    check(parseFloat0("1.")==1.0, "parseFloat(1.)");
+    check(parseFloat0("+.1")==0.1, "parseFloat(+.1)");
+    check(parseFloat0("-.1")==-0.1, "parseFloat(-.1)");
+    check(parseFloat0("+1.")==1.0, "parseFloat(+1.)");
+    check(parseFloat0("-1.")==-1.0, "parseFloat(-1.)");
+    check(parseFloat0("1.e1")==10.0, "parseFloat(1.e1)");
+    check(parseFloat0("1.e-1")==0.1, "parseFloat(1.e-1)");
+    check(parseFloat0("1.e+1")==10.0, "parseFloat(1.e+1)");
+    check(parseFloat0("1.1")==1.1, "parseFloat(1.1)");
+    check(parseFloat0("+1.1")==1.1, "parseFloat(+1.1)");
+    check(parseFloat0("-1.1")==-1.1, "parseFloat(-1.1)");
+    check(parseFloat0("1.1e1")==11.0, "parseFloat(1.1e1)");
+    check(parseFloat0("1.1e-1")==0.11, "parseFloat(1.1e-1)");
+    check(parseFloat0("1.1e+1")==11.0, "parseFloat(1.1e+1)");
+    check(parseFloat0("123456.789e20")==123456.789e20, "parseFloat(123456.789e20)");
+    check(parseFloat0("123456.789f")==123456.789f, "parseFloat(123456.789f)");
+    check(parseFloat0("123456.")==123456.0, "parseFloat(123456.)");
+    check(parseFloat0("123456")==123456.0, "parseFloat(123456)");
+    check(parseFloat("1ee10") is Null, "parseFloat(1ee10)");
+    check(parseFloat0("0.000000000000000000000123456789")==0.000000000000000000000123456789,
+                "parseFloat(0.000000000000000000000123456789)");
+
+    // https://github.com/ceylon/ceylon/issues/6175
+    check(parseFloat0("9999999999999999")==9999999999999999.0, "parseFloat(9999999999999999)");
+
+    // https://github.com/ceylon/ceylon/issues/6152
+    check(parseFloat0("00000000000000.12345678901234567")==0.12345678901234567, "parseFloat()");
+    check(parseFloat0("00.12345678901234567")==0.12345678901234567, "parseFloat(00.12345678901234567)");
+    check(parseFloat0("0.12345678901234567")==0.12345678901234567, "parseFloat(0.12345678901234567)");
+    check(parseFloat0(".12345678901234567")==0.12345678901234567, "parseFloat(.12345678901234567)");
+    check(parseFloat0(".123456789012345678")==0.123456789012345678, "parseFloat(.123456789012345678)");
+
     check(1.leftLogicalShift(31).get(31), "logicalShift.get 1");
     check(1.leftLogicalShift(31).clear(31).zero, "logicalShift.get 2");
     check(0.set(31).get(31), "logicalShift.get 3");
@@ -1000,7 +1058,7 @@ void checkFormatFloat() {
     check(formatFloat(1234.5678,4,4)=="1234.5678", "formatFloat(1234.5678,4,4)");
     check(formatFloat(5678.1234)=="5678.1234", "formatFloat(5678.1234)");
     check(formatFloat(5678.1234,4,4)=="5678.1234", "formatFloat(5678.1234,4,4)");
-    check(formatFloat(1234.5678,2,2)=="1234.56", "formatFloat(1234.5678,2,2)");
+    check(formatFloat(1234.5678,2,2)=="1234.57", "formatFloat(1234.5678,2,2)");
     check(formatFloat(5678.1234,3,3)=="5678.123", "formatFloat(5678.1234,3,3)");
     check(formatFloat(1234.1234)=="1234.1234", "formatFloat(1234.1234)");
     check(formatFloat(1234.1234,4,4)=="1234.1234", "formatFloat(1234.1234,4,4)");
@@ -1032,7 +1090,31 @@ void checkFormatFloat() {
     check(formatFloat(-1.234e+20)=="-123400000000000000000.0", "formatFloat(-1.234e+20)");
     check(formatFloat(-1.234e+25)=="-12340000000000000000000000.0", "formatFloat(-1.234e+25)");
     check(formatFloat(-1.234e+30)=="-1234000000000000000000000000000.0", "formatFloat(-1.234e+30)");
-    
+
+    value minFloatExpected = "0." + "0".repeat(323) + "494065645841247";
+    value minFloatActual = formatFloat(runtime.minFloatValue, 1, 400);
+    check(minFloatActual == minFloatExpected, "formatFloat(min)");
+    value maxFloatExpectedJS  = "179769313486231" + "0".repeat(294) + ".0";
+    value maxFloatExpectedJVM = "179769313486232" + "0".repeat(294) + ".0";
+    value maxFloatActual = formatFloat(runtime.maxFloatValue, 1, 400);
+    check(maxFloatActual in [maxFloatExpectedJS, maxFloatExpectedJVM], "formatFloat(max)");
+
+    check(formatFloat(0.99, 0, 0) == "1", "formatFloat halfeven rounding #1");
+    check(formatFloat(0.99, 1, 1) == "1.0", "formatFloat halfeven rounding #2");
+    check(formatFloat(1.1525, 1, 1) == "1.2", "formatFloat halfeven rounding #3");
+    check(formatFloat(1.1525, 3, 3) == "1.152", "formatFloat halfeven rounding #4");
+    check(formatFloat(-1.1525, 1, 1) == "-1.2", "formatFloat halfeven rounding #5");
+    check(formatFloat(-1.1525, 3, 3) == "-1.152", "formatFloat halfeven rounding #6");
+    check(formatFloat(1.111111111111115, 0, 100) == "1.11111111111112", "formatFloat halfeven rounding #7");
+    check(formatFloat(1.111111111111145, 0, 100) == "1.11111111111114", "formatFloat halfeven rounding #8");
+
+    check(formatFloat(0.1, 1, 1, ',') == "0,1", "formatFloat separators #1");
+    check(formatFloat(0.1, 1, 1, '.', ',') == "0.1", "formatFloat separators #2");
+    check(formatFloat(111.1, 1, 1, '.', ',') == "111.1", "formatFloat separators #3");
+    check(formatFloat(1111.1, 1, 1, '.', ',') == "1,111.1", "formatFloat separators #4");
+    check(formatFloat(111111.1, 1, 1, '.', ',') == "111,111.1", "formatFloat separators #5");
+    check(formatFloat(1.0e20, 1, 1, '.', ',') == "100,000,000,000,000,000,000.0", "formatFloat separators #6");
+
     void checkNanComparisons<T>(T nan, T zero) 
             given T satisfies Comparable<T> {
         check(!nan == zero, "generic nan comparison");

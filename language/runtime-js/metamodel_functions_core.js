@@ -127,6 +127,13 @@ function qname$(mm) {
       qn+=qname$(mm.l[i]);
     }
     return qn;
+  } else if (mm.t==='T') {
+    var qn='[';
+    for (var i=0;i<mm.l.length;i++) {
+      if (qn.length>1)qn+=',';
+      qn+=qname$(mm.l[i]);
+    }
+    return qn+=']';
   }
   if (mm.t) {
     mm=mm.t;

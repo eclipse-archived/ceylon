@@ -467,8 +467,9 @@ public abstract class AbstractRepository implements CmrRepository {
             // try every known suffix
             boolean found = false;
             boolean foundInfo = false;
+            boolean binaryShouldMatch = false;
             boolean binaryMatch = false;
-            ModuleVersionDetails mvd = new ModuleVersionDetails(name, version);
+            ModuleVersionDetails mvd = new ModuleVersionDetails(getNamespace(), name, version);
             String[] suffixes = lookup.getType().getSuffixes();
             // When we need to find ALL requested suffixes we maintain a set of those not found yet
             HashSet<String> suffixesToFind = null;
@@ -487,6 +488,7 @@ public abstract class AbstractRepository implements CmrRepository {
                     }
                 }
                 if (shouldCheckBinaryVersion(suffix)) {
+                    binaryShouldMatch = true;
                     if (!checkBinaryVersion(name, version, artifact, lookup, suffix)) {
                         if (lookup.getRetrieval() == Retrieval.ALL) {
                             break;
@@ -518,9 +520,7 @@ public abstract class AbstractRepository implements CmrRepository {
             // read the artifact's information
             if (((found && memberName == null) || foundInfo)
                     && (lookup.getRetrieval() == Retrieval.ANY || suffixesToFind.isEmpty())
-                    && ((lookup.getJvmBinaryMajor() == null && lookup.getJvmBinaryMinor() == null
-                         && lookup.getJsBinaryMajor() == null && lookup.getJsBinaryMinor() == null) 
-                    		|| binaryMatch)) {
+                    && (!binaryShouldMatch || binaryMatch)) {
                 mvd.setRemote(root.isRemote());
                 mvd.setOrigin(getDisplayString());
                 result.addVersion(mvd);
@@ -664,7 +664,7 @@ public abstract class AbstractRepository implements CmrRepository {
             throw new RuntimeException("Assertion failed: we didn't find the version child for " + moduleName + "/" + latestVersion);
 
         String memberName = query.getMemberName();
-        ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, latestVersion);
+        ModuleVersionDetails mvd = new ModuleVersionDetails(getNamespace(), moduleName, latestVersion);
         boolean found = false;
         // Now try to retrieve information for each of the suffixes
         for (String suffix : suffixes) {
@@ -826,5 +826,19 @@ public abstract class AbstractRepository implements CmrRepository {
     
     protected Overrides getOverrides(){
         return getRoot().getService(Overrides.class);
+    }
+    
+    @Override
+    public boolean supportsNamespace(String searchedNamespace) {
+        if (searchedNamespace != null
+                && !searchedNamespace.equals(getNamespace())) {
+            return false;
+        }
+        if (searchedNamespace == null &&
+                getNamespace() != null &&
+                !DefaultRepository.NAMESPACE.equals(getNamespace())) {
+            return false;
+        }
+        return true;
     }
 }

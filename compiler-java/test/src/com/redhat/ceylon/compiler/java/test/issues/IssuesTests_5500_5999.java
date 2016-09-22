@@ -39,9 +39,6 @@ import org.junit.Test;
 
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
-import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
-import com.redhat.ceylon.javax.tools.DiagnosticListener;
-import com.redhat.ceylon.javax.tools.FileObject;
 
 
 public class IssuesTests_5500_5999 extends CompilerTests {
@@ -57,9 +54,44 @@ public class IssuesTests_5500_5999 extends CompilerTests {
     }
 
     @Test
+    public void testBug5741() {
+        compareWithJavaSource("bug57xx/bug5741");
+    }
+
+    @Test
+    public void testBug5752() {
+        compareWithJavaSource("bug57xx/bug5752/bug5752");
+    }
+
+    @Test
+    public void testBug5751() {
+        compilesWithoutWarnings("bug57xx/bug5751/bug5751.ceylon");
+    }
+
+    @Test
+    public void testBug5774() {
+        compile("bug57xx/bug5774/bug5774.ceylon");
+    }
+
+    @Test
+    public void testBug5785() {
+        compareWithJavaSource("bug57xx/bug5785");
+    }
+
+    @Test
+    public void testBug5787() {
+        compareWithJavaSource("bug57xx/bug5787");
+    }
+
+    @Test
     public void testBug5855() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug58xx.bug5855",
                 "bug58xx/bug5855.ceylon");
+    }
+
+    @Test
+    public void testBug5856() {
+        compareWithJavaSource("bug58xx/bug5856");
     }
 
     @Test
@@ -123,7 +155,11 @@ public class IssuesTests_5500_5999 extends CompilerTests {
                 b64.delete();
             }
         }
+    }
         
+    @Test
+    public void testBug5892() {
+        compile("bug58xx/bug5892.ceylon");
     }
 
     @Test
@@ -135,7 +171,13 @@ public class IssuesTests_5500_5999 extends CompilerTests {
     public void testBug5947() {
         compile("bug59xx/bug5947.ceylon");
     }
-    
+
+    @Test
+    public void testBug5958() {
+        compareWithJavaSource("bug59xx/bug5958");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug59xx.bug5958");
+    }
+
     @Test
     public void testBug5953() {
         compile("bug59xx/bug5953.ceylon");

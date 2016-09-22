@@ -24,7 +24,7 @@ final class booleanArray_ {
     static boolean[] booleanArray(@.com.redhat.ceylon.compiler.java.metadata.Name("values")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::Boolean*}")
     final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> values) {
-        final boolean[] ret = new boolean[.com.redhat.ceylon.compiler.java.Util.toInt(values.getSize())];
+        final boolean[] ret = new boolean[(int)values.getSize()];
         long idx = 0L;
         final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> iterable$3 = values;
         final boolean isArray$4 = iterable$3 instanceof .ceylon.language.Array;
@@ -41,7 +41,7 @@ final class booleanArray_ {
         loop_0: while (isTuple$5 || isArray$4 ? i$6 < length$7 : !((elem$1 = val$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
             if (isArray$4 || isTuple$5) elem$1 = iterable$3.getFromFirst(i$6++);
             final boolean val = ((.ceylon.language.Boolean)elem$1).booleanValue();
-            ret[.com.redhat.ceylon.compiler.java.Util.toInt(idx++)] = val;
+            ret[(int)idx++] = val;
         }
         return ret;
     }
@@ -132,7 +132,7 @@ final class test_booleans_ {
         final long length$17 = matrix.length;
         loop_1: for (long i$18 = 0; i$18 < length$17; i$18++) {
             final long x = i$18 + start$16;
-            matrix[.com.redhat.ceylon.compiler.java.Util.toInt(x)] = new boolean[2];
+            matrix[(int)x] = new boolean[2];
         }
         final .ceylon.language.Array<boolean[]> boolArray = .com.redhat.ceylon.compiler.java.language.ObjectArray<? extends boolean[]>.getArray(matrix);
         final .java.lang.Object o = items;
@@ -282,7 +282,7 @@ final class test_ints_ {
         .ceylon.language.Integer n$44;
         if ((n$44 = n) != null) {
             final long n$45 = n$44.longValue();
-            items[1] = .com.redhat.ceylon.compiler.java.Util.toInt(n$45);
+            items[1] = (int)n$45;
         }
         java.take_ints(items);
         new int[2];

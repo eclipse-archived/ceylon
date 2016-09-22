@@ -1943,4 +1943,25 @@ public class Util {
         MethodHandle handle = lookup.unreflectSetter(field);
         return handle;
     }
+
+    /**
+     * Return a {@link Tuple} wrapping the given elements
+     * @param $reifiedT The reified type parameter
+     * @param elements The elements
+     * @return A Sequential
+     */
+    @SuppressWarnings({"unchecked","rawtypes"})
+    public static <T> Sequential<T> sequentialToTuple(TypeDescriptor $reifiedT, Sequential<T> elements) {
+        if (elements.getSize() == 0) {
+            return (Sequential) empty_.get_();
+        }
+        Object[] array= new Object[(int)elements.getSize()];
+        Iterator<? extends T> iterator = elements.iterator();
+        Object val;
+        int i=0;
+        while((val = iterator.next()) != finished_.get_()){
+            array[i++] = val;
+        }
+        return new Tuple<T,T,Sequential<? extends T>>($reifiedT, array);
+    }
 }

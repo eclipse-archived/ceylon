@@ -271,7 +271,7 @@ public class ToolFactory {
         private void syncCwd() {
             if (tool instanceof CeylonBaseTool) {
                 CeylonBaseTool cbt = (CeylonBaseTool)tool;
-                if (mainTool.getCwd() != null) {
+                if (mainTool != null && mainTool.getCwd() != null) {
                     // If the main tool's `cwd` options is set it
                     // always overrides the one in the given tool
                     cbt.setCwd(mainTool.getCwd());

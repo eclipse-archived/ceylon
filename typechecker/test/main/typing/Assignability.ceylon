@@ -207,7 +207,7 @@ class Assignability() {
     }
     
     @error if (X() is Y) {}
-    @error if (X() is Object ) {}
+    @warn:"redundantNarrowing" if (X() is Object ) {}
     @error if (is Y x = X()) {}
     @warn:"redundantNarrowing" if (is Object x = X()) {}
     
@@ -478,3 +478,38 @@ class Assignability() {
     //}
     
 }
+
+void test6397_1() {
+    class C<out T>() given T satisfies Object {
+        C<Anything> ca = nothing;
+        C<Object> co  = ca;
+        @error C<String> cs1 = ca;
+        @error C<String> cs2 = co;
+    }
+    C<Anything> ca = nothing;
+    C<Object> co  = ca;
+    @error C<String> cs1 = ca;
+    @error C<String> cs2 = co;
+}
+
+void test6397_2() {
+    interface I<out T> of A<T> | B<T> {}
+    class B<out T>() satisfies I<T> {}
+    class A<out T>() satisfies I<T> {
+        void foo() {
+            I<T> x0 = this;
+            switch (x1 = x0 of A<T> | B<T>)
+            case (is A<Anything>) {
+                A<T> i = x1;
+                I<T> j = x1 of A<T>;
+                I<T> k = x1; // error
+            }
+            else {}
+        }
+    }
+}
+
+class Test_6397_3<out T>(Test_6397_3<Anything> ca) {
+    @error Test_6397_3<T> ct = ca of Test_6397_3<T>;
+}
+

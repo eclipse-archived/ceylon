@@ -101,12 +101,6 @@ class JavaEntry<K, V> extends .java.lang.Object implements .com.redhat.ceylon.co
         if ((that$6 = that) instanceof .java.util.Map) {
             final .java.util.Map<? extends .java.lang.Object, ? extends .java.lang.Object> that$7 = (.java.util.Map<? extends .java.lang.Object, ? extends .java.lang.Object>)(.java.util.Map)that$6;
         }
-        .java.lang.Object that$9;
-        if ((that$9 = that) instanceof .java.util.Map && .com.redhat.ceylon.compiler.java.Util.isReified(that$9, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.util.Map.class, new .com.redhat.ceylon.compiler.java.metadata.Variance[]{
-                .com.redhat.ceylon.compiler.java.metadata.Variance.OUT,
-                .com.redhat.ceylon.compiler.java.metadata.Variance.OUT}, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$))) {
-            final .java.util.Map<? extends .java.lang.Object, ? extends .ceylon.language.Integer> that$10 = (.java.util.Map<? extends .java.lang.Object, ? extends .ceylon.language.Integer>)(.java.util.Map)that$9;
-        }
         return false;
     }
     
@@ -115,9 +109,9 @@ class JavaEntry<K, V> extends .java.lang.Object implements .com.redhat.ceylon.co
         return (int)(
             let
             {
-                long $ceylontmp$hash$12 = 31L;
+                long $ceylontmp$hash$9 = 31L;
             }
-            returning $ceylontmp$hash$12 ^ $ceylontmp$hash$12 >>> 32;
+            returning $ceylontmp$hash$9 ^ $ceylontmp$hash$9 >>> 32;
         );
     }
     

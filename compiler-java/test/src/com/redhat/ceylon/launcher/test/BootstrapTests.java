@@ -24,7 +24,9 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.launcher.Bootstrap;
+import com.redhat.ceylon.launcher.LauncherUtil;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -168,6 +170,14 @@ public class BootstrapTests {
                 throw new RuntimeException(e);
             }
         }
+        
+        @Override
+        protected void setupDistHome(Config cfg) throws Exception {
+            super.setupDistHome(cfg);
+            // Launcher does that, so it effectively caches previous tests' repos unless we reset it to the
+            // current test repo
+            System.setProperty(Constants.PROP_CEYLON_SYSTEM_REPO, new File(cfg.distributionDir, "repo").getAbsolutePath());
+        }
 
         @Override
         protected boolean isDistBootstrap() throws URISyntaxException {
@@ -190,8 +200,8 @@ public class BootstrapTests {
         }
         
         public void deleteTmpFiles() {
-            //delete(config.distributionDir);
-            //delete(config.resolvedInstallation);
+            delete(config.distributionDir);
+            delete(config.resolvedInstallation);
         }
     }
     

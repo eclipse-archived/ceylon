@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeDeclaration;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.hasMatchingSignature;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
@@ -26,6 +27,8 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
@@ -392,9 +395,11 @@ public class TypeHierarchyVisitor extends Visitor {
         for (Type.Members members: aggregation.membersByName.values()) {
             if (!members.formals.isEmpty()) {
                 if (members.actualsNonFormals.isEmpty()) {
-                    Declaration example = members.formals.iterator().next();
-                    Declaration declaringType = 
-                            (Declaration) example.getContainer();
+                    Declaration example =
+                            members.formals.iterator().next();
+                    Declaration declaringType =
+                            (Declaration)
+                                example.getContainer();
                     if (!clazz.equals(declaringType)) {
                         addUnimplementedFormal(clazz, example);
                         that.addError("formal member '" + example.getName() + 
@@ -406,9 +411,12 @@ public class TypeHierarchyVisitor extends Visitor {
                 for (Declaration f: members.formals) {
                     if (isOverloadedVersion(f)) {
                         boolean found = false;
+                        List<com.redhat.ceylon.model.typechecker.model.Type>
+                                signature = ModelUtil.getSignature(f);
+                        boolean variadic = f.isVariadic();
                         for (Declaration a: members.actualsNonFormals) {
-                            if (a.getRefinedDeclaration()
-                                    .equals(f.getRefinedDeclaration())) {
+                            if (f.getRefinedDeclaration()
+                                    .equals(a.getRefinedDeclaration())) {
                                 found = true;
                                 break;
                             }
@@ -416,7 +424,7 @@ public class TypeHierarchyVisitor extends Visitor {
                         if (!found) {
                             StringBuilder paramTypes = new StringBuilder();
                             List<ParameterList> parameterLists = 
-                                    ((Functional)f).getParameterLists();
+                                    ((Functional) f).getParameterLists();
                             if (!parameterLists.isEmpty()) {
                                 for (Parameter p: parameterLists.get(0).getParameters()) {
                                     if (paramTypes.length()>0) {
@@ -444,6 +452,11 @@ public class TypeHierarchyVisitor extends Visitor {
                         " not implemented in class hierarchy (concrete interface members not yet supported)");
             }*/
         }
+    }
+
+    private static boolean isJavaInterfaceMember(Declaration formal) {
+        return formal.isInterfaceMember() 
+                && formal.isJava();
     }
 
     private void addUnimplementedFormal(Class clazz, Declaration member) {
@@ -477,12 +490,10 @@ public class TypeHierarchyVisitor extends Visitor {
                 pourCurrentTypeInfoIntoAggregatedType(currentMembers, aggregateMembers);
                 //if an actual implementation high in the hierarchy is overridden as formal => do not add
                 //remember we go from most specific to most generic type
-                for (Declaration actualNonFormal: 
-                        currentMembers.actualsNonFormals) {
+                for (Declaration actualNonFormal: currentMembers.actualsNonFormals) {
                     for (Declaration formal: aggregateMembers.formals) {
                         if (formal.getName().equals(actualNonFormal.getName())) {
-                            if (!formal.getUnit().getPackage().getModule().isJava() ||
-                                    !formal.isInterfaceMember()) {
+                            if (!isJavaInterfaceMember(formal)) {
                                 aggregateMembers.actualsNonFormals.remove(actualNonFormal);
                                 break;
                             }
@@ -491,7 +502,41 @@ public class TypeHierarchyVisitor extends Visitor {
                 }
             }
         }
+        //a Java interface method can be implemented by stuff that doesn't
+        //explicitly/directly refine it
+        for (Type.Members aggregateMembers: aggregation.membersByName.values()) {
+            for (Declaration formal: 
+                    new ArrayList<Declaration>
+                        (aggregateMembers.formals)) {
+                if (isJavaInterfaceMember(formal)) {
+                    boolean overloaded = isOverloadedVersion(formal);
+                    List<com.redhat.ceylon.model.typechecker.model.Type> 
+                        signature = overloaded ? ModelUtil.getSignature(formal) : null;
+                    boolean variadic = formal.isVariadic();
+                    for (Declaration concrete: aggregateMembers.defaults) {
+                        if (isJavaRefinement(formal, overloaded, signature, variadic, concrete)) {
+                            aggregateMembers.formals.remove(formal);
+                            break;
+                        }
+                    }
+                    for (Declaration concrete: aggregateMembers.nonFormalsNonDefaults) {
+                        if (isJavaRefinement(formal, overloaded, signature, variadic, concrete)) {
+                            aggregateMembers.formals.remove(formal);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         return aggregation;
+    }
+
+    private static boolean isJavaRefinement(Declaration formal, boolean overloaded,
+            List<com.redhat.ceylon.model.typechecker.model.Type> signature, 
+            boolean variadic, Declaration concrete) {
+        return formal.getName().equals(concrete.getName())
+                && isDefinedInJava(concrete)
+                && (!overloaded || hasMatchingSignature(concrete, signature, variadic));
     }
 
     //sort type hierarchy from most abstract to most concrete
@@ -642,6 +687,8 @@ public class TypeHierarchyVisitor extends Visitor {
                         !td.isAbstract() && !td.isAlias()) {
                     for (Declaration d: std.getMembers()) {
                         if (d.isShared() && 
+                                !d.isStaticallyImportable() &&
+                                !isConstructor(d) &&
                                 !isOverloadedVersion(d) && 
                                 isResolvable(d) && 
                                 !errors.contains(d.getName())) {
@@ -660,23 +707,17 @@ public class TypeHierarchyVisitor extends Visitor {
                                             "' from '" + std.getName() +  
                                             "' and another unrelated supertype");
                                 }
-                                else {
-                                    //TODO: I'm not really certain that the following
-                                    //      condition is correct, we really should 
-                                    //      check that the other declaration is a Java
-                                    //      interface member (see the TODO above)
-                                    if (!(d.getUnit().getPackage().getModule().isJava() &&
-                                            r.getUnit().getPackage().getModule().isJava() &&
-                                            r.isInterfaceMember() &&
-                                            d.isClassMember())) {
-                                        that.addError("member '" + d.getName() + 
-                                                "' is inherited ambiguously by '" + td.getName() +
-                                                "' from '" + std.getName() +  
-                                                "' and another subtype of '" + 
-                                                ((TypeDeclaration) r.getContainer()).getName() + 
-                                                "' and so must be refined by '" + td.getName() + "'", 
-                                                350);
-                                    }
+                                else if (!((std instanceof Interface 
+                                            || r.isInterfaceMember()) && 
+                                          isDefinedInJava(std) &&
+                                          isDefinedInJava(r))) {
+                                    that.addError("member '" + d.getName() + 
+                                            "' is inherited ambiguously by '" + td.getName() +
+                                            "' from '" + std.getName() +  
+                                            "' and another subtype of '" + 
+                                            ((TypeDeclaration) r.getContainer()).getName() + 
+                                            "' and so must be refined by '" + td.getName() + "'", 
+                                            350);
                                 }
                                 errors.add(d.getName());
                             }
@@ -699,6 +740,16 @@ public class TypeHierarchyVisitor extends Visitor {
                     }
                 }
             }
+        }
+    }
+
+    private static boolean isDefinedInJava(Declaration d) {
+        if (d.isJava()) {
+            return true;
+        }
+        else {
+            Declaration rd = d.getRefinedDeclaration();
+            return rd!=null && !rd.equals(d) && isDefinedInJava(rd);
         }
     }
 

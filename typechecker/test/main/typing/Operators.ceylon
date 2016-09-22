@@ -111,7 +111,7 @@ class Operators() {
     Object one = 1;
     @type:"Boolean" value x31 = one is Integer;
     //@type:"Boolean" value x31n = is Integer one;
-    @error value x31e = 1 is Integer;
+    @warn:"redundantNarrowing" value x31e = 1 is Integer;
     
     @type:"Boolean" value x32 = none is X;
     //@type:"Boolean" value x32n = is X none;    
@@ -459,4 +459,10 @@ void testOperatorsOnUnions() {
     iof = -iof;
     iof = +iof;
 
+}
+
+class SpreadsSuper() satisfies {Integer*} {
+    @error super*.plus(0);
+    this*.plus(0);
+    iterator() => {0}.iterator();
 }

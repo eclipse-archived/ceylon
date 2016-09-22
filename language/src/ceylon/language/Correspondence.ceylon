@@ -109,10 +109,87 @@ shared interface Correspondence<in Key, out Item=Anything>
      does not have an item defined, the resulting stream 
      contains the value `null`."
     see (`function Correspondence.get`)
+    since("1.1.0")
     shared default 
     Iterable<Item?,Absent> getAll<Absent>
             (Iterable<Key,Absent> keys) 
             given Absent satisfies Null
             => { for (key in keys) get(key) };
     
+}
+
+"A [[Correspondence]] that supports mutation of its 
+ constituent key/item associations. Items may be mutated
+ via the assignment and item operators:
+ 
+     array[i] = i^2;
+ 
+ Every `CorrespondenceMutator` is either:
+  
+ - a [[KeyedCorrespondenceMutator]], which allows the 
+   creation of new key/item associations, or 
+ - an [[IndexedCorrespondenceMutator]], which only allows
+   mutation of items associated with a given range of 
+   integer indexes.
+ 
+ Most `CorrespondenceMutator`s are also instances of
+ [[Correspondence]]."
+since("1.3.0")
+tagged("Collections")
+see (`interface Correspondence`, 
+     `interface KeyedCorrespondenceMutator`,
+     `interface IndexedCorrespondenceMutator`)
+shared interface CorrespondenceMutator<in Item>
+        of IndexedCorrespondenceMutator<Item>
+         | KeyedCorrespondenceMutator<Nothing,Item> {}
+
+"A [[CorrespondenceMutator]] which allows mutation of the
+ item associated with a given integer index from a range
+ of adjacent indices.
+ 
+ Many `IndexedCorrespondenceMutator`s are [[List]]s."
+since("1.3.0")
+tagged("Collections")
+see (`interface KeyedCorrespondenceMutator`)
+shared interface IndexedCorrespondenceMutator<in Element> 
+        satisfies CorrespondenceMutator<Element> {
+
+    "Set the item associated with the given [[index]] to the
+     given [[item]], replacing the item previously 
+     associated with this index.
+     
+     For any instance `c` of `IndexedCorrespondenceMutator`, 
+     `c.set(index, item)` may be written using the item and 
+     assignment operators:
+     
+         c[index] = item"
+    throws (`class AssertionError`,
+            "if the given [[index]] is outside the range of
+             indexes belonging to this objects")
+    shared formal void set(Integer index, Element item);
+}
+
+"A [[CorrespondenceMutator]] which allows mutation of the
+ item associated with an existing key, and creation of a
+ new key/item association.
+ 
+ Many `KeyedCorrespondenceMutator`s are [[Map]]s."
+since("1.3.0")
+tagged("Collections")
+see (`interface IndexedCorrespondenceMutator`)
+shared interface KeyedCorrespondenceMutator<in Key, in Item>
+        satisfies CorrespondenceMutator<Item>
+        given Key satisfies Object {
+
+    "Set the item associated with the given [[key]] to the
+     given [[item]]. If there is already an item associated
+     with this key, replace the association. Otherwise, 
+     create a new association.
+     
+     For any instance `c` of `KeyedCorrespondenceMutator`, 
+     `c.put(key, item)` may be written using the item and
+     assignment operators:
+     
+         c[key] = item"
+    shared formal void put(Key key, Item item);
 }

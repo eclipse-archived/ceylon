@@ -1,0 +1,5 @@
+<overrides>
+    <module module="io.vertx.ceylon.web">
+        <add module="io.vertx.ceylon.auth.common" version="3.2.2"/>
+    </module>
+</overrides>

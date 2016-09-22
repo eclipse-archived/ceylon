@@ -84,6 +84,10 @@ class AetherUtils {
         return (result != null) ? result.artifact() : null;
     }
 
+    public File getLocalRepositoryBaseDir() {
+        return impl.getLocalRepositoryBaseDir();
+    }
+
     ArtifactResult findDependencies(RepositoryManager manager, Node node) {
         return findDependencies(manager, node, null);
     }
@@ -126,6 +130,7 @@ class AetherUtils {
     		String groupId, String artifactId, String version, 
     		boolean fetchSingleArtifact, String repositoryDisplayString) {
     	
+        String classifier = null;
         Overrides overrides = repository.getRoot().getService(Overrides.class);
         ArtifactOverrides ao = null;
         log.debug("Overrides: "+overrides);
@@ -159,11 +164,16 @@ class AetherUtils {
             version = overrides.getVersionOverride(context);
             context.setVersion(version);
         }
+        // classifier replacement
+        if(ao != null && ao.hasClassifier()){
+            classifier = ao.getClassifier();
+            log.debug("Using classifier "+classifier);
+        }
 
         final String name = toCanonicalForm(groupId, artifactId);
         final String coordinates = toCanonicalForm(name, version);
         try {
-        	DependencyDescriptor info = impl.getDependencies(groupId, artifactId, version, fetchSingleArtifact);
+        	DependencyDescriptor info = impl.getDependencies(groupId, artifactId, version, classifier, null, fetchSingleArtifact);
             if (info == null) {
                 log.debug("No artifact found: " + coordinates);
                 return null;
@@ -352,7 +362,9 @@ class AetherUtils {
                     dependencies.add(moduleDependencyInfo);
                 }
             }
-            ModuleVersionDetails moduleVersionDetails = new ModuleVersionDetails(groupId+":"+artifactId, version, 
+            ModuleVersionDetails moduleVersionDetails = new ModuleVersionDetails(
+                    MavenRepository.NAMESPACE,
+                    groupId+":"+artifactId, version, 
                     description.length() > 0 ? description.toString() : null,
                     licenseBuilder.length() > 0 ? licenseBuilder.toString() : null,
                     authors, dependencies, artifactTypes , true, repositoryDisplayString);

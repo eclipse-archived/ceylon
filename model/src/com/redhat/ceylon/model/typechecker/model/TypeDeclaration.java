@@ -4,6 +4,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getNativeHeade
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.hasMatchingSignature;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNameMatching;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
@@ -19,11 +20,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 
 public abstract class TypeDeclaration extends Declaration 
-        implements ImportableScope, Cloneable, Generic {
+        implements ImportableScope, Cloneable, Generic, Typed {
 
     private Type extendedType;
     private List<Type> satisfiedTypes = 
@@ -34,7 +34,6 @@ public abstract class TypeDeclaration extends Declaration
     private Type selfType;
     private List<Type> brokenSupertypes = null; // delayed allocation
     private boolean inconsistentType;
-    private boolean dynamic;
 	private boolean sealed;
     private List<TypedDeclaration> caseValues;
     private String samName;
@@ -53,14 +52,6 @@ public abstract class TypeDeclaration extends Declaration
 	
 	public void setSealed(boolean sealed) {
 	    this.sealed = sealed;
-    }
-    
-    public boolean isDynamic() {
-        return dynamic;
-    }
-    
-    public void setDynamic(boolean dynamic) {
-        this.dynamic = dynamic;
     }
     
     public boolean isInconsistentType() {
@@ -211,6 +202,7 @@ public abstract class TypeDeclaration extends Declaration
      * use outside the body of the declaration, but this is 
      * not really correct!
      */
+    @Override
     public Type getType() {
         Type type = new Type();
         type.setQualifyingType(getMemberContainerType());
@@ -416,8 +408,12 @@ public abstract class TypeDeclaration extends Declaration
             return false;
         }
         if (result==null) {
-            return signature!=null == 
-                    candidate instanceof Functional;
+//            return signature!=null == 
+//                    candidate instanceof Functional;
+            //helps to produce a better error message
+            //when a value refines a function and
+            //vice-versa
+            return true;
         }
         if (!(result instanceof Functional)) {
             return signature!=null;
@@ -454,7 +450,7 @@ public abstract class TypeDeclaration extends Declaration
             Unit unit, 
             List<Type> signature, 
             boolean variadic) {
-        //TODO: does not handle aliased members of supertypes
+        
         Declaration dec = 
                 unit.getImportedDeclaration(this, name, 
                         signature, variadic);
@@ -484,7 +480,7 @@ public abstract class TypeDeclaration extends Declaration
             Unit unit, 
             List<Type> signature, 
             boolean variadic) {
-        //TODO: does not handle aliased members of supertypes
+        
         Declaration dec = 
                 unit.getImportedDeclaration(this, name, 
                         signature, variadic);
@@ -548,7 +544,7 @@ public abstract class TypeDeclaration extends Declaration
             SupertypeDeclaration sd = 
                     getSupertypeDeclaration(name, 
                             signature, variadic, 
-                            onlyExactMatches);
+                            onlyExactMatches, false);
             if (sd.getMember()!=null || sd.isAmbiguous()) {
                 return sd;
             }
@@ -585,7 +581,7 @@ public abstract class TypeDeclaration extends Declaration
                 Declaration supertype = 
                         getSupertypeDeclaration(name, 
                                 signature, variadic, 
-                                onlyExactMatches)
+                                onlyExactMatches, true)
                                 .getMember();
                 if (supertype!=null && 
                         !supertype.isAbstraction()) {
@@ -610,7 +606,7 @@ public abstract class TypeDeclaration extends Declaration
                 //now look for inherited shared declarations
                 dec = getSupertypeDeclaration(name,
                         signature, variadic, 
-                        onlyExactMatches)
+                        onlyExactMatches, true)
                         .getMember();
             }
         }
@@ -712,11 +708,12 @@ public abstract class TypeDeclaration extends Declaration
      * Get the supertype which defines the most-refined
      * member with the given name.
      */
-    SupertypeDeclaration getSupertypeDeclaration(
+    private SupertypeDeclaration getSupertypeDeclaration(
             final String name, 
             final List<Type> signature, 
             final boolean variadic,
-            final boolean onlyExactMatches) {
+            final boolean onlyExactMatches,
+            final boolean includeInheritedConstructors) {
         class ExactCriteria implements Type.Criteria {
             @Override
             public boolean satisfies(TypeDeclaration type) {
@@ -729,8 +726,11 @@ public abstract class TypeDeclaration extends Declaration
                                 signature, variadic, 
                                 onlyExactMatches);
                 if (dm!=null && 
-                        dm.isShared() && 
-                        isResolvable(dm)) {
+                        dm.isShared() &&
+                        isResolvable(dm) &&
+                        (includeInheritedConstructors ||
+//                       !dm.isStaticallyImportable() &&
+                         !isConstructor(dm))) {
                     // only accept abstractions if we 
                     // don't have a signature
                     return !dm.isAbstraction() || 
@@ -1210,9 +1210,8 @@ public abstract class TypeDeclaration extends Declaration
         return false;
     }
 
-    @Override
-    public Backends getScopedBackends() {
-        return super.getScopedBackends();
+    public boolean isCallable() {
+        return false;
     }
     
     public EnumSet<AnnotationTarget> getAnnotationTarget() {

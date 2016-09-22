@@ -648,7 +648,7 @@ public class LegacyImporter {
 
     private Set<ModuleDetails> findSuggestions(String pkg) {
         Set<ModuleDetails> suggestions = new TreeSet<>();
-        ModuleVersionQuery query = new ModuleVersionQuery("", null, ModuleQuery.Type.JVM);
+        ModuleVersionQuery query = new ModuleVersionQuery(null, "", null, ModuleQuery.Type.JVM);
         query.setJvmBinaryMajor(Versions.JVM_BINARY_MAJOR_VERSION);
         query.setJvmBinaryMinor(Versions.JVM_BINARY_MINOR_VERSION);
         query.setMemberName(pkg);

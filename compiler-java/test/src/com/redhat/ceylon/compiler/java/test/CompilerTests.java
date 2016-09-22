@@ -651,7 +651,12 @@ public abstract class CompilerTests {
         compile(options, ceylon);
         return run(main);
     }
-    
+
+    protected Object compileAndRun(List<String> options, String main, ModuleWithArtifact module, String... ceylon) {
+        compile(options, ceylon);
+        return run(main, module);
+    }
+
     protected Object compileAndRun(String main, String... ceylon) {
         return compileAndRun(defaultOptions, main, ceylon);
     }
@@ -1177,6 +1182,8 @@ public abstract class CompilerTests {
         a.add("--sysrep");
         a.add(getSysRepPath());
         a.add("--rep");
+        a.add("modules");
+        a.add("--rep");
         a.add(rep);
         if (distDowngrade) {
             a.add("--link-with-current-distribution");
@@ -1227,7 +1234,7 @@ public abstract class CompilerTests {
                 line = reader.readLine();
             }
             if (!found) {
-                Assert.fail("missing expected line");
+                Assert.fail("missing expected line: \"" + expectedLine + "\"");
             }
         }
     }

@@ -336,7 +336,7 @@ public class HerdTestCase extends AbstractTest {
     }
 
     public static final ModuleVersionDetails frEpardaudTest2_03 =                 
-            new ModuleVersionDetails("fr.epardaud.test2", "0.3", 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test2", "0.3", 
             		SUPER_DOC, 
             		ASL, 
             		set(STEF, TOM), 
@@ -346,7 +346,7 @@ public class HerdTestCase extends AbstractTest {
                     true, HERD_ORIGIN);
 
     public static final ModuleVersionDetails frEpardaudTest2_04 =                 
-            new ModuleVersionDetails("fr.epardaud.test2", "0.4", 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test2", "0.4", 
             		SUPER_DOC, 
             		ASL, 
             		set(STEF, TOM), 
@@ -356,7 +356,7 @@ public class HerdTestCase extends AbstractTest {
                     true, HERD_ORIGIN);
 
     public static final ModuleVersionDetails frEpardaudTest2_10 =                 
-            new ModuleVersionDetails("fr.epardaud.test2", "1.0", 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test2", "1.0", 
             		SUPER_DOC, 
             		ASL, 
             		set(STEF, TOM), 
@@ -367,7 +367,7 @@ public class HerdTestCase extends AbstractTest {
                     true, HERD_ORIGIN);
 
     public static final ModuleVersionDetails frEpardaudTest2_12 =                 
-            new ModuleVersionDetails("fr.epardaud.test2", "1.2", 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test2", "1.2", 
             		SUPER_DOC, 
             		ASL, 
             		set(STEF, TOM), 
@@ -378,7 +378,7 @@ public class HerdTestCase extends AbstractTest {
                     true, HERD_ORIGIN);
 
     public static final ModuleVersionDetails frEpardaudTest2_12Api1 =                 
-            new ModuleVersionDetails("fr.epardaud.test2", "1.2", 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test2", "1.2", 
             		SUPER_DOC, 
             		ASL, 
             		set(STEF, TOM), 
@@ -387,7 +387,7 @@ public class HerdTestCase extends AbstractTest {
                     true, HERD_ORIGIN);
 
     public static final ModuleVersionDetails frEpardaudTest_12 =                 
-            new ModuleVersionDetails("fr.epardaud.test", "1.2", 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.2", 
             		SUPER_DOC, 
             		ASL, 
             		set(STEF, TOM), 
@@ -398,7 +398,7 @@ public class HerdTestCase extends AbstractTest {
                     true, HERD_ORIGIN);
 
     public static final ModuleVersionDetails frEpardaudTest_13 =                 
-            new ModuleVersionDetails("fr.epardaud.test", "1.3", 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.3", 
             		SUPER_DOC, 
             		ASL, 
             		set(STEF, TOM), 
@@ -408,7 +408,7 @@ public class HerdTestCase extends AbstractTest {
                             ART_SRC),
                     true, HERD_ORIGIN);
     public static final ModuleVersionDetails frEpardaudTest_14 =                 
-            new ModuleVersionDetails("fr.epardaud.test", "1.4", 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.4", 
             		SUPER_DOC, 
             		ASL, 
             		set(STEF, TOM), 
@@ -418,7 +418,7 @@ public class HerdTestCase extends AbstractTest {
                             ART_SRC),
                     true, HERD_ORIGIN);
     public static final ModuleVersionDetails frEpardaudTest_15 =                 
-            new ModuleVersionDetails("fr.epardaud.test", "1.5", 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.5", 
             		SUPER_DOC, 
             		ASL, 
             		set(STEF, TOM), 
@@ -428,7 +428,7 @@ public class HerdTestCase extends AbstractTest {
                             ART_SRC),
                     true, HERD_ORIGIN);
     public static final ModuleVersionDetails frEpardaudTest_16 =                 
-            new ModuleVersionDetails("fr.epardaud.test", "1.6", 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.6", 
             		SUPER_DOC, 
             		ASL, 
             		set(STEF, TOM), 
@@ -438,7 +438,7 @@ public class HerdTestCase extends AbstractTest {
                             ART_SRC),
                     true, HERD_ORIGIN);
     public static final ModuleVersionDetails frEpardaudTest_17 =                 
-            new ModuleVersionDetails("fr.epardaud.test", "1.7", 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "1.7", 
             		SUPER_DOC, 
             		ASL, 
             		set(STEF, TOM), 
@@ -449,7 +449,7 @@ public class HerdTestCase extends AbstractTest {
                     true, HERD_ORIGIN);
 
     public static final ModuleVersionDetails frEpardaudTest_23 =                 
-            new ModuleVersionDetails("fr.epardaud.test", "2.3", 
+            new ModuleVersionDetails("ceylon", "fr.epardaud.test", "2.3", 
             		SUPER_DOC, 
             		ASL, 
             		set(STEF, TOM), 

@@ -14,7 +14,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.AbstractTestTool;
 
-@Summary("Executes tests")
+@Summary("Executes tests on the JVM")
 @Description(
         "Executes tests in specified `<modules>`. " +
         "The `<modules>` arguments are the names of the modules to test with an optional version.")
@@ -92,7 +92,7 @@ public class CeylonTestTool extends AbstractTestTool {
         ceylonRunTool.setModule(TEST_MODULE_NAME + "/" + version);
         ceylonRunTool.setRun(TEST_RUN_FUNCTION);
         ceylonRunTool.setArgs(args);
-        ceylonRunTool.setRepository(repo);
+        ceylonRunTool.setRepository(repos);
         ceylonRunTool.setFlatClasspath(flatClasspath);
         ceylonRunTool.setLinkWithCurrentDistribution(linkWithCurrentDistribution);
         ceylonRunTool.setAutoExportMavenDependencies(autoExportMavenDependencies);

@@ -173,6 +173,7 @@ shared native final class String(characters)
      `\\n` or `\\r\\n`, except for the very last line. The 
      empty string is considered a single line of text."
     see (`value lines`)
+    since("1.1.0")
     shared native {String+} linesWithBreaks
             => split('\n'.equals, false, false)
             .partition(2)
@@ -273,6 +274,13 @@ shared native final class String(characters)
                 .append(this)
                 .reverseInPlace()
                 .string;
+    
+    "Determine if this string contains only 
+     [[whitespace characters|Character.whitespace]]. Returns
+     `false` if the string contains at least one character
+     which is not a whitespace character."
+    shared native Boolean whitespace
+            => every(Character.whitespace);
     
     "Determines if this string contains a character at the
      given [[index]], that is, if `0<=index<size`."
@@ -495,6 +503,7 @@ shared native final class String(characters)
      string."
     throws (`class AssertionError`,
             "if the given [[substring]] is empty")
+    since("1.1.0")
     shared native String replaceFirst(String substring, 
                                       String replacement) {
         "string to replace must be nonempty"
@@ -513,6 +522,7 @@ shared native final class String(characters)
      string."
     throws (`class AssertionError`,
             "if the given [[substring]] is empty")
+    since("1.1.0")
     shared native String replaceLast(String substring, 
                                      String replacement) {
         "string to replace must be nonempty"
@@ -529,6 +539,7 @@ shared native final class String(characters)
      [[prefix]] from the start of this string, if this 
      string [[starts with|startsWith]] the given `prefix`, 
      or this string otherwise."
+    since("1.3.0")
     shared native String removeInitial(String prefix) 
             => startsWith(prefix) 
             then spanFrom(prefix.size)
@@ -538,6 +549,7 @@ shared native final class String(characters)
      [[postfix]] from the end of this string, if this 
      string [[ends with|endsWith]] the given `postfix`, or 
      this string otherwise."
+    since("1.3.0")
     shared native String removeTerminal(String postfix) 
             => endsWith(postfix) 
             then spanTo(size-postfix.size)
@@ -581,6 +593,7 @@ shared native final class String(characters)
     see (`value Character.lowercased`, 
          `value Character.uppercased`,
          `function compareCorresponding`)
+    since("1.2.0")
     shared native Comparison compareIgnoringCase(String other)
             => compareCorresponding(this, other, 
                 (Character x, Character y) 
@@ -629,6 +642,7 @@ shared native final class String(characters)
     see (`value Character.lowercased`, 
          `value Character.uppercased`,
          `function corresponding`)
+    since("1.2.0")
     shared native Boolean equalsIgnoringCase(String that)
             => corresponding(this, that, 
                 charsEqualIgnoringCase);
@@ -656,6 +670,7 @@ shared native final class String(characters)
      a string of the given minimum [[size]], centering the
      string. If this string is not smaller than the given 
      `size`, return this string."
+    since("1.1.0")
     shared native String pad(Integer size, 
         "The padding character"
         Character character=' ') {
@@ -680,6 +695,7 @@ shared native final class String(characters)
      producing a string of the given minimum [[size]]. If 
      this string is not smaller than the given `size`, 
      return this string."
+    since("1.1.0")
     shared native String padLeading(Integer size, 
         "The padding character"
         Character character=' ') {
@@ -699,6 +715,7 @@ shared native final class String(characters)
      producing a string of the given minimum [[size]].  If 
      this string is not smaller than the given `size`, 
      return this string."
+    since("1.1.0")
     shared native String padTrailing(Integer size, 
         "The padding character"
         Character character=' ') {
@@ -737,10 +754,11 @@ shared native final class String(characters)
            [[destinationPosition]] is negative, 
          - if `size < sourcePosition+length`, or 
          - if `destination.size < destinationPosition+length`.")
+    since("1.2.0")
     shared native 
     void copyTo(
         "The array into which to copy the elements."
-        Array<Character> destination,
+        Array<in Character> destination,
         "The index of the first element in this array to 
          copy."
         Integer sourcePosition = 0,
@@ -771,6 +789,7 @@ shared native final class String(characters)
      code written in other languages. It is more idiomatic 
      to use [[measure]] or [[span]] where reasonable._"
     see (`function measure`, `function span`)
+    since("1.3.0")
     shared native String substring(
         "The inclusive start index"
         Integer from = 0,
@@ -793,6 +812,7 @@ shared native final class String(characters)
      code written in other languages. It is more idiomatic 
      to use [[firstInclusion]] where reasonable._"
     see (`function firstInclusion`)
+    since("1.3.0")
     shared native Integer indexOf(
         "The substring to find within this string"
         String string,
@@ -815,6 +835,7 @@ shared native final class String(characters)
      code written in other languages. It is more idiomatic 
      to use [[lastInclusion]] where reasonable._"
     see (`function lastInclusion`)
+    since("1.3.0")
     shared native Integer lastIndexOf(
         "The substring to find within this string"
         String string,

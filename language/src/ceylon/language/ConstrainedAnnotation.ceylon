@@ -28,7 +28,7 @@ see (`interface Annotation`,
 shared interface ConstrainedAnnotation<out Value=Annotation, 
             out Values=Anything, in ProgramElement=Nothing,
             out Type=Anything> 
-        of Value
+        //of Value
         //Note: adding the following constraint would
         //      make ConstrainedAnnotation a GADT, which
         //      the language does not currently support 

@@ -35,12 +35,15 @@ public class MavenRepositoryBuilder implements RepositoryBuilder {
     @Override
     public String absolute(File cwd, String token) {
         if (token.equals("aether") || token.equals("aether:") || token.equals("aether:/#")
-                || token.equals("mvn") || token.equals("mvn:") || token.equals("mvn:/#")) {
+                || token.equals("mvn") || token.equals("mvn:") || token.equals("mvn:/#")
+                || token.equals("maven") || token.equals("maven:") || token.equals("maven:/#")) {
             return token;
         } else if (token.startsWith("aether:")) {
             return absolute(cwd, token, "aether:");
         } else if (token.startsWith("mvn:")) {
             return absolute(cwd, token, "mvn:");
+        } else if (token.startsWith("maven:")) {
+            return absolute(cwd, token, "maven:");
         } else {
             return null;
         }
@@ -61,12 +64,15 @@ public class MavenRepositoryBuilder implements RepositoryBuilder {
     @Override
     public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         if (token.equals("aether") || token.equals("aether:") || token.equals("aether:/#")
-                || token.equals("mvn") || token.equals("mvn:") || token.equals("mvn:/#")) {
+                || token.equals("mvn") || token.equals("mvn:") || token.equals("mvn:/#")
+                || token.equals("maven") || token.equals("maven:") || token.equals("maven:/#")) {
             return createMavenRepository(token, null, config);
         } else if (token.startsWith("aether:")) {
             return createMavenRepository(token, "aether:", config);
         } else if (token.startsWith("mvn:")) {
             return createMavenRepository(token, "mvn:", config);
+        } else if (token.startsWith("maven:")) {
+            return createMavenRepository(token, "maven:", config);
         } else {
             return null;
         }

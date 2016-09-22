@@ -1,12 +1,13 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correct;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correctionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isVeryAbstractClass;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memberCorrectionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.setTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
@@ -393,11 +394,10 @@ public class TypeVisitor extends Visitor {
             if (type==null) {
                 if (!isNativeForWrongBackend(
                         scope.getScopedBackends())) {
-                    String correction = correct(scope, unit, name, cancellable);
-                    String message = correction==null ? "" :
-                        " (did you mean '" + correction + "'?)";
-                    that.addError("type declaration does not exist: '" + 
-                            name + "'" + message, 
+                    that.addError("type is not defined: '" 
+                            + name + "'" 
+                            + correctionMessage(name, scope, 
+                                    unit, cancellable), 
                             102);
                     unit.setUnresolvedReferences();
                 }
@@ -495,14 +495,12 @@ public class TypeVisitor extends Visitor {
                                     d.getName() + "'");
                         }
                         else {
-                            String correction = 
-                                    correct(d, null, unit, name, cancellable);
-                            String message = correction==null ? "" :
-                                " (did you mean '" + correction + "'?)";
-                            that.addError("member type declaration does not exist: '" + 
-                                    name + "' in type '" + 
-                                    d.getName() + "'" + 
-                                    message, 100);
+                            that.addError("member type is not defined: '" 
+                                    + name + "' in type '" 
+                                    + d.getName() + "'" 
+                                    + memberCorrectionMessage(name, d, 
+                                            null, unit, cancellable), 
+                                    100);
                             unit.setUnresolvedReferences();
                         }
                     }
@@ -533,7 +531,7 @@ public class TypeVisitor extends Visitor {
                 !inExtendsOrClassAlias && 
                 !inDelegatedConstructor) {
             that.addError("constructor is not a type: '" + 
-                    dec.getName(unit) + "'");
+                    dec.getName(unit) + "' is a constructor");
         }
         
         Tree.TypeArgumentList tal = 
@@ -1479,20 +1477,26 @@ public class TypeVisitor extends Visitor {
                     .getDirectMember(name, null, false);
         if (a==null) {
             //Now done in ExpressionVisitor!
-//            that.addError("parameter declaration does not exist: '" + p.getName() + "'");
+//            that.addError("parameter is not defined: '" + p.getName() + "'");
         }
         else if (!isLegalParameter(a)) {
             that.addError("parameter is not a reference value or function: '" + 
-                    name + "'");
+                    name + "' is not a value or function");
         }
         else {
             if (a.isFormal()) {
                 that.addError("parameter is a formal attribute: '" + 
-                        name + "'", 320);
+                        name + "' is annotated 'formal'", 320);
             }
             FunctionOrValue mov = (FunctionOrValue) a;
-            mov.setInitializerParameter(p);
-            p.setModel(mov);
+            if (mov.getInitializerParameter()!=null) {
+                that.addError("duplicate parameter: '" + 
+                        name + "' already occurs in the parameter list");
+            }
+            else {
+                mov.setInitializerParameter(p);
+                p.setModel(mov);
+            }
         }
         /*if (isGeneric(a)) {
             that.addError("parameter declaration is generic: '" + 

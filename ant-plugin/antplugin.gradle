@@ -1,0 +1,41 @@
+apply plugin : CeylonCommonBuildProperties
+apply plugin: 'java'
+
+sourceCompatibility = cbp.'compile.java.source'
+targetCompatibility = cbp.'compile.java.target'
+
+dependencies {
+    compile project(':cli')
+    compile antDep
+    testCompile junitDep
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = [ "${project(':compiler-java').projectDir}/src","${project(':common').projectDir}/src"]
+            include 'com/redhat/ceylon/ant/**'
+            include 'com/redhat/ceylon/common/**'
+            include 'com/redhat/ceylon/launcher/**'
+            exclude 'com/redhat/ceylon/common/log/**'
+        }
+        resources {
+            srcDirs = [ "${project(':compiler-java').projectDir}/src","${project(':common').projectDir}/src"]
+            include "com/redhat/ceylon/ant/antlib.xml"
+            include "com/redhat/ceylon/common/config/messages.properties"
+        }
+    }
+}
+
+jar {
+    description 'Create Ant tasks jar'
+    archiveName = 'ceylon-ant.jar'
+}
+
+task publishInternal( type : Copy ) {
+    group 'Distribution'
+    description 'Copies binary artifacts to distribution area'
+    from jar
+    into repoLibDir
+}
+

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
@@ -325,6 +326,44 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public final Object getLock(){
         return this;
     }
+    
+    public class EmbeddedException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+        public EmbeddedException(Exception cause) {
+            super(cause);
+        }
+    }
+    
+    public <T> T embeddingSync(Callable<T> action) throws Exception {
+        return action.call();
+    }
+    
+    final public <T> T synchronizedCall(final Callable<T> action) {
+        try {
+            return embeddingSync(new Callable<T>() {
+                @Override
+                public T call() throws Exception {
+                    synchronized(getLock()) {
+                        return action.call();
+                    }                    
+                };
+            });
+        } catch(RuntimeException e) {
+            throw e;
+        } catch(Exception e) {
+            throw new EmbeddedException(e);
+        }
+    }
+
+    final public void synchronizedRun(final Runnable action) {
+        synchronizedCall(new Callable<Object>() {
+            @Override
+            public Object call() throws Exception {
+                action.run();
+                return null;
+            }
+        });
+    }
 
     /**
      * To be redefined by subclasses if they compile a mix of Java + Ceylon files at the same go
@@ -363,40 +402,45 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * @param name the name of the Class to load
      * @return a ClassMirror for the specified class, or null if not found.
      */
-    public final ClassMirror lookupClassMirror(Module module, String name) {
-        synchronized(getLock()){
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            try{
-                // Java array classes are not where we expect them
-                if (JAVA_LANG_OBJECT_ARRAY.equals(name)
-                        || JAVA_LANG_BOOLEAN_ARRAY.equals(name)
-                        || JAVA_LANG_BYTE_ARRAY.equals(name)
-                        || JAVA_LANG_SHORT_ARRAY.equals(name)
-                        || JAVA_LANG_INT_ARRAY.equals(name)
-                        || JAVA_LANG_LONG_ARRAY.equals(name)
-                        || JAVA_LANG_FLOAT_ARRAY.equals(name)
-                        || JAVA_LANG_DOUBLE_ARRAY.equals(name)
-                        || JAVA_LANG_CHAR_ARRAY.equals(name)) {
-                    // turn them into their real class location (get rid of the "java.lang" prefix)
-                    name = "com.redhat.ceylon.compiler.java.language" + name.substring(9);
-                    module = getLanguageModule();
-                }
-                String cacheKey = cacheKeyByModule(module, name);
-                // we use containsKey to be able to cache null results
-                if(classMirrorCache.containsKey(cacheKey)) {
-                    ClassMirror cachedMirror = classMirrorCache.get(cacheKey);
-                    if (! searchAgain(cachedMirror, module, name)) {
-                        return cachedMirror;
+    public final ClassMirror lookupClassMirror(final Module theModule, final String theName) {
+        return synchronizedCall(new Callable<ClassMirror>(){
+            @Override
+            public ClassMirror call() throws Exception {
+                Module module = theModule;
+                String name = theName;
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+                try{
+                    // Java array classes are not where we expect them
+                    if (JAVA_LANG_OBJECT_ARRAY.equals(name)
+                            || JAVA_LANG_BOOLEAN_ARRAY.equals(name)
+                            || JAVA_LANG_BYTE_ARRAY.equals(name)
+                            || JAVA_LANG_SHORT_ARRAY.equals(name)
+                            || JAVA_LANG_INT_ARRAY.equals(name)
+                            || JAVA_LANG_LONG_ARRAY.equals(name)
+                            || JAVA_LANG_FLOAT_ARRAY.equals(name)
+                            || JAVA_LANG_DOUBLE_ARRAY.equals(name)
+                            || JAVA_LANG_CHAR_ARRAY.equals(name)) {
+                        // turn them into their real class location (get rid of the "java.lang" prefix)
+                        name = "com.redhat.ceylon.compiler.java.language" + name.substring(9);
+                        module = getLanguageModule();
                     }
+                    String cacheKey = cacheKeyByModule(module, name);
+                    // we use containsKey to be able to cache null results
+                    if(classMirrorCache.containsKey(cacheKey)) {
+                        ClassMirror cachedMirror = classMirrorCache.get(cacheKey);
+                        if (! searchAgain(cachedMirror, module, name)) {
+                            return cachedMirror;
+                        }
+                    }
+                    ClassMirror mirror = lookupNewClassMirror(module, name);
+                    // we even cache null results
+                    classMirrorCache.put(cacheKey, mirror);
+                    return mirror;
+                }finally{
+                    timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
                 }
-                ClassMirror mirror = lookupNewClassMirror(module, name);
-                // we even cache null results
-                classMirrorCache.put(cacheKey, mirror);
-                return mirror;
-            }finally{
-                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
             }
-        }
+        });
     }
 
     protected String cacheKeyByModule(Module module, String name) {
@@ -1644,103 +1688,111 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return convertToDeclaration(module, null, typeName, declarationType);
     }
 
-    private Declaration convertToDeclaration(Module module, Declaration container, String typeName, DeclarationType declarationType)  {
-        synchronized(getLock()){
-            // FIXME: this needs to move to the type parser and report warnings
-            //This should be done where the TypeInfo annotation is parsed
-            //to avoid retarded errors because of a space after a comma
-            typeName = typeName.trim();
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            try{
-                if ("ceylon.language.Nothing".equals(typeName)) {
-                    return typeFactory.getNothingDeclaration();
-                } else if ("java.lang.Throwable".equals(typeName)) {
-                    // FIXME: this being here is highly dubious
-                    return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Throwable", declarationType);
-                } else if ("java.lang.Exception".equals(typeName)) {
-                    // FIXME: this being here is highly dubious
-                    return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Exception", declarationType);
-                } else if ("java.lang.annotation.Annotation".equals(typeName)) {
-                    // FIXME: this being here is highly dubious
-                    // here we prefer Annotation over ConstrainedAnnotation but that's fine
-                    return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Annotation", declarationType);
-                }
-                ClassMirror classMirror;
+    private Declaration convertToDeclaration(final Module theModule, final Declaration theContainer, final String theTypeName, final DeclarationType theDeclarationType)  {
+        return synchronizedCall(new Callable<Declaration>() {
+            @Override
+            public Declaration call() throws Exception {
+                Module module = theModule;
+                Declaration container = theContainer;
+                String typeName = theTypeName;
+                DeclarationType declarationType = theDeclarationType;
+                
+                // FIXME: this needs to move to the type parser and report warnings
+                //This should be done where the TypeInfo annotation is parsed
+                //to avoid retarded errors because of a space after a comma
+                typeName = typeName.trim();
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
                 try{
-                    classMirror = lookupClassMirror(module, typeName);
-                }catch(NoClassDefFoundError x){
-                    // FIXME: this may not be the best thing to do. If the class is not there we don't know what type of declaration
-                    // to return, but perhaps if we use annotation scanner rather than reflection we can figure it out, at least
-                    // in cases where the supertype is missing, which throws in reflection at class load.
-                    return logModelResolutionException(x.getMessage(), module, "Unable to load type "+typeName).getDeclaration();
-                }
-                if (classMirror == null) {
-                    // special case when bootstrapping because we may need to pull the decl from the typechecked model
-                    if(isBootstrap && typeName.startsWith(CEYLON_LANGUAGE+".")){
-                        Declaration languageDeclaration = findLanguageModuleDeclarationForBootstrap(typeName);
-                        if(languageDeclaration != null)
-                            return languageDeclaration;
+                    if ("ceylon.language.Nothing".equals(typeName)) {
+                        return typeFactory.getNothingDeclaration();
+                    } else if ("java.lang.Throwable".equals(typeName)) {
+                        // FIXME: this being here is highly dubious
+                        return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Throwable", declarationType);
+                    } else if ("java.lang.Exception".equals(typeName)) {
+                        // FIXME: this being here is highly dubious
+                        return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Exception", declarationType);
+                    } else if ("java.lang.annotation.Annotation".equals(typeName)) {
+                        // FIXME: this being here is highly dubious
+                        // here we prefer Annotation over ConstrainedAnnotation but that's fine
+                        return convertToDeclaration(modules.getLanguageModule(), "ceylon.language.Annotation", declarationType);
                     }
+                    ClassMirror classMirror;
+                    try{
+                        classMirror = lookupClassMirror(module, typeName);
+                    }catch(NoClassDefFoundError x){
+                        // FIXME: this may not be the best thing to do. If the class is not there we don't know what type of declaration
+                        // to return, but perhaps if we use annotation scanner rather than reflection we can figure it out, at least
+                        // in cases where the supertype is missing, which throws in reflection at class load.
+                        return logModelResolutionException(x.getMessage(), module, "Unable to load type "+typeName).getDeclaration();
+                    }
+                    if (classMirror == null) {
+                        // special case when bootstrapping because we may need to pull the decl from the typechecked model
+                        if(isBootstrap && typeName.startsWith(CEYLON_LANGUAGE+".")){
+                            Declaration languageDeclaration = findLanguageModuleDeclarationForBootstrap(typeName);
+                            if(languageDeclaration != null)
+                                return languageDeclaration;
+                        }
 
-                    String modulePackagePrefix = module.getNameAsString()+".";
-                    if(hasJavaAndCeylonSources()
-                            && container == null 
-                            && typeName.startsWith(modulePackagePrefix)){
-                        // perhaps it's a java source file depending on a ceylon source file, in which
-                        // case try to resolve it from source
-                        int lastDot = typeName.length();
-                        // FIXME: deal with escapes too
-                        List<String> qualified = null;
-                        while((lastDot = lastIndexOf(typeName, "$.", lastDot-1)) != -1){
-                            String packagePart = typeName.substring(0, lastDot);
-                            String namePart = typeName.substring(lastDot+1);
-                            int namePartDot = indexOf(namePart, "$.");
-                            if(namePartDot != -1)
-                                namePart = namePart.substring(0, namePartDot);
-                            if(packagePart.startsWith(modulePackagePrefix) || packagePart.equals(module.getNameAsString())){
-                                Package pkg = module.getPackage(packagePart);
-                                if(pkg instanceof LazyPackage){
-                                    Declaration memberFromSource = ((LazyPackage) pkg).getDirectMemberFromSource(namePart, Backends.JAVA);
-                                    if(memberFromSource != null){
-                                        if(qualified != null){
-                                            for(String path : qualified){
-                                                memberFromSource = memberFromSource.getDirectMember(path, null, false);
-                                                if(memberFromSource == null){
-                                                    // give up
-                                                    break;
+                        String modulePackagePrefix = module.getNameAsString()+".";
+                        if(hasJavaAndCeylonSources()
+                                && container == null 
+                                && typeName.startsWith(modulePackagePrefix)){
+                            // perhaps it's a java source file depending on a ceylon source file, in which
+                            // case try to resolve it from source
+                            int lastDot = typeName.length();
+                            // FIXME: deal with escapes too
+                            List<String> qualified = null;
+                            while((lastDot = lastIndexOf(typeName, "$.", lastDot-1)) != -1){
+                                String packagePart = typeName.substring(0, lastDot);
+                                String namePart = typeName.substring(lastDot+1);
+                                int namePartDot = indexOf(namePart, "$.");
+                                if(namePartDot != -1)
+                                    namePart = namePart.substring(0, namePartDot);
+                                if(packagePart.startsWith(modulePackagePrefix) || packagePart.equals(module.getNameAsString())){
+                                    Package pkg = module.getPackage(packagePart);
+                                    if(pkg instanceof LazyPackage){
+                                        Declaration memberFromSource = ((LazyPackage) pkg).getDirectMemberFromSource(namePart, Backends.JAVA);
+                                        if(memberFromSource != null){
+                                            if(qualified != null){
+                                                for(String path : qualified){
+                                                    memberFromSource = memberFromSource.getDirectMember(path, null, false);
+                                                    if(memberFromSource == null){
+                                                        // give up
+                                                        break;
+                                                    }
                                                 }
                                             }
+                                            return memberFromSource;
+                                        }else{
+                                            // we did find a package, let's not look further up
+                                            break;
                                         }
-                                        return memberFromSource;
-                                    }else{
-                                        // we did find a package, let's not look further up
-                                        break;
                                     }
+                                    // no package, try further up
+                                    if(qualified == null)
+                                        qualified = new LinkedList<String>();
+                                    qualified.add(0, namePart);
+                                }else{
+                                    // we've gone too far up
+                                    break;
                                 }
-                                // no package, try further up
-                                if(qualified == null)
-                                    qualified = new LinkedList<String>();
-                                qualified.add(0, namePart);
-                            }else{
-                                // we've gone too far up
-                                break;
                             }
+                            // at this point we're left with either the default package, or we looked up past
+                            // the module package
+                            // FIXME: support the default package
                         }
-                        // at this point we're left with either the default package, or we looked up past
-                        // the module package
-                        // FIXME: support the default package
+                        throw new ModelResolutionException("Failed to resolve "+typeName);
                     }
-                    throw new ModelResolutionException("Failed to resolve "+typeName);
+                    // we only allow source loading when it's java code we're compiling in the same go
+                    // (well, technically before the ceylon code)
+                    if(classMirror.isLoadedFromSource() && !classMirror.isJavaSource())
+                        return null;
+                    return convertToDeclaration(module, container, classMirror, declarationType);
+                }finally{
+                    timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
                 }
-                // we only allow source loading when it's java code we're compiling in the same go
-                // (well, technically before the ceylon code)
-                if(classMirror.isLoadedFromSource() && !classMirror.isJavaSource())
-                    return null;
-                return convertToDeclaration(module, container, classMirror, declarationType);
-            }finally{
-                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
             }
-        }
+        });
     }
 
     private int indexOf(String string, String elements) {
@@ -1831,26 +1883,32 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     //
     // Packages
     
-    public LazyPackage findExistingPackage(Module module, String pkgName) {
-        synchronized(getLock()){
-            String quotedPkgName = JVMModuleUtil.quoteJavaKeywords(pkgName);
-            LazyPackage pkg = findCachedPackage(module, quotedPkgName);
-            if(pkg != null)
-                return pkg;
-            // special case for the jdk module
-            String moduleName = module.getNameAsString();
-            if(jdkProvider.isJDKModule(moduleName)){
-                if(jdkProvider.isJDKPackage(moduleName, pkgName)){
+    public LazyPackage findExistingPackage(final Module theModule, final String thePkgName) {
+        return synchronizedCall(new Callable<LazyPackage>() {
+            @Override
+            public LazyPackage call() throws Exception {
+                Module module = theModule;
+                String pkgName = thePkgName;
+                
+                String quotedPkgName = JVMModuleUtil.quoteJavaKeywords(pkgName);
+                LazyPackage pkg = findCachedPackage(module, quotedPkgName);
+                if(pkg != null)
+                    return pkg;
+                // special case for the jdk module
+                String moduleName = module.getNameAsString();
+                if(jdkProvider.isJDKModule(moduleName)){
+                    if(jdkProvider.isJDKPackage(moduleName, pkgName)){
+                        return findOrCreatePackage(module, pkgName);
+                    }
+                    return null;
+                }
+                // only create it if it exists
+                if(((LazyModule)module).containsPackage(pkgName) && loadPackage(module, pkgName, false)){
                     return findOrCreatePackage(module, pkgName);
                 }
                 return null;
             }
-            // only create it if it exists
-            if(((LazyModule)module).containsPackage(pkgName) && loadPackage(module, pkgName, false)){
-                return findOrCreatePackage(module, pkgName);
-            }
-            return null;
-        }
+        });
     }
     
     private LazyPackage findCachedPackage(Module module, String quotedPkgName) {
@@ -1865,50 +1923,56 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return null;
     }
 
-    public LazyPackage findOrCreatePackage(Module module, final String pkgName)  {
-        synchronized(getLock()){
-            String quotedPkgName = JVMModuleUtil.quoteJavaKeywords(pkgName);
-            LazyPackage pkg = findCachedPackage(module, quotedPkgName);
-            if(pkg != null)
+    public LazyPackage findOrCreatePackage(final Module module, final String pkgName)  {
+        return synchronizedCall(new Callable<LazyPackage>() {
+            @Override
+            public LazyPackage call() throws Exception {
+                String quotedPkgName = JVMModuleUtil.quoteJavaKeywords(pkgName);
+                LazyPackage pkg = findCachedPackage(module, quotedPkgName);
+                if(pkg != null)
+                    return pkg;
+                // try to find it from the module, perhaps it already got created and we didn't catch it
+                if(module instanceof LazyModule){
+                    pkg = (LazyPackage) ((LazyModule) module).findPackageNoLazyLoading(pkgName);
+                }else if(module != null){
+                    pkg = (LazyPackage) module.getDirectPackage(pkgName);
+                }
+                boolean isNew = pkg == null;
+                if(pkg == null){
+                    pkg = new LazyPackage(AbstractModelLoader.this);
+                    // FIXME: some refactoring needed
+                    pkg.setName(Arrays.asList(pkgName.split("\\.")));
+                }
+                packagesByName.put(cacheKeyByModule(module, quotedPkgName), pkg);
+
+                // only bind it if we already have a module
+                if(isNew && module != null){
+                    pkg.setModule(module);
+                    if(module instanceof LazyModule)
+                        ((LazyModule) module).addPackage(pkg);
+                    else
+                        module.getPackages().add(pkg);
+                }
+
+                // only load package descriptors for new packages after a certain phase
+                if(packageDescriptorsNeedLoading)
+                    loadPackageDescriptor(pkg);
+
                 return pkg;
-            // try to find it from the module, perhaps it already got created and we didn't catch it
-            if(module instanceof LazyModule){
-                pkg = (LazyPackage) ((LazyModule) module).findPackageNoLazyLoading(pkgName);
-            }else if(module != null){
-                pkg = (LazyPackage) module.getDirectPackage(pkgName);
             }
-            boolean isNew = pkg == null;
-            if(pkg == null){
-                pkg = new LazyPackage(this);
-                // FIXME: some refactoring needed
-                pkg.setName(Arrays.asList(pkgName.split("\\.")));
-            }
-            packagesByName.put(cacheKeyByModule(module, quotedPkgName), pkg);
-
-            // only bind it if we already have a module
-            if(isNew && module != null){
-                pkg.setModule(module);
-                if(module instanceof LazyModule)
-                    ((LazyModule) module).addPackage(pkg);
-                else
-                    module.getPackages().add(pkg);
-            }
-
-            // only load package descriptors for new packages after a certain phase
-            if(packageDescriptorsNeedLoading)
-                loadPackageDescriptor(pkg);
-
-            return pkg;
-        }
+        });
     }
 
     public void loadPackageDescriptors()  {
-        synchronized(getLock()){
-            for(Package pkg : packagesByName.values()){
-                loadPackageDescriptor(pkg);
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                for(Package pkg : packagesByName.values()){
+                    loadPackageDescriptor(pkg);
+                }
+                packageDescriptorsNeedLoading  = true;
             }
-            packageDescriptorsNeedLoading  = true;
-        }
+        });
     }
 
     private void loadPackageDescriptor(Package pkg) {
@@ -2005,74 +2069,86 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * Finds or creates a new module. This is mostly useful to force creation of modules such as jdk
      * or ceylon.language modules.
      */
-    protected Module findOrCreateModule(String moduleName, String version)  {
-        synchronized(getLock()){
-            boolean isJdk = false;
+    protected Module findOrCreateModule(final String theModuleName, final String theVersion)  {
+        return synchronizedCall(new Callable<Module>() {
+            @Override
+            public Module call() throws Exception {
+                String moduleName = theModuleName;
+                String version = theVersion;
+                
+                boolean isJdk = false;
 
-            // make sure it isn't loaded
-            Module module = getLoadedModule(moduleName, version);
-            if(module != null)
+                // make sure it isn't loaded
+                Module module = getLoadedModule(moduleName, version);
+                if(module != null)
+                    return module;
+
+                // this method gets called before we set the jdk provider, but for the default and language module
+                if(jdkProvider != null && jdkProvider.isJDKModule(moduleName)){
+                    isJdk = true;
+                }
+
+                java.util.List<String> moduleNameList = Arrays.asList(moduleName.split("\\."));
+                module = moduleManager.getOrCreateModule(moduleNameList, version);
+                // make sure that when we load the ceylon language module we set it to where
+                // the typechecker will look for it
+                if(moduleName.equals(CEYLON_LANGUAGE)
+                        && modules.getLanguageModule() == null){
+                    modules.setLanguageModule(module);
+                }
+
+                // TRICKY We do this only when isJava is true to prevent resetting
+                // the value to false by mistake. LazyModule get's created with
+                // this attribute to false by default, so it should work
+                if (isJdk && module instanceof LazyModule) {
+                    ((LazyModule)module).setJava(true);
+                    module.setNativeBackends(Backend.Java.asSet());
+                }
+
+                // FIXME: this can't be that easy.
+                if(isJdk)
+                    module.setAvailable(true);
                 return module;
-
-            // this method gets called before we set the jdk provider, but for the default and language module
-            if(jdkProvider != null && jdkProvider.isJDKModule(moduleName)){
-                isJdk = true;
             }
-
-            java.util.List<String> moduleNameList = Arrays.asList(moduleName.split("\\."));
-            module = moduleManager.getOrCreateModule(moduleNameList, version);
-            // make sure that when we load the ceylon language module we set it to where
-            // the typechecker will look for it
-            if(moduleName.equals(CEYLON_LANGUAGE)
-                    && modules.getLanguageModule() == null){
-                modules.setLanguageModule(module);
-            }
-
-            // TRICKY We do this only when isJava is true to prevent resetting
-            // the value to false by mistake. LazyModule get's created with
-            // this attribute to false by default, so it should work
-            if (isJdk && module instanceof LazyModule) {
-                ((LazyModule)module).setJava(true);
-                module.setNativeBackends(Backend.Java.asSet());
-            }
-
-            // FIXME: this can't be that easy.
-            if(isJdk)
-                module.setAvailable(true);
-            return module;
-        }
+        });
     }
 
     public boolean loadCompiledModule(Module module)  {
         return loadCompiledModule(module, true);
     }
     
-    public boolean loadCompiledModule(Module module, boolean loadModuleImports)  {
-        synchronized(getLock()){
-            if(module.isDefaultModule())
+    public boolean loadCompiledModule(final Module theModule, final boolean theLoadModuleImports)  {
+        return synchronizedCall(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                Module module = theModule;
+                boolean loadModuleImports = theLoadModuleImports;
+                    
+                if(module.isDefaultModule())
+                    return false;
+                String pkgName = module.getNameAsString();
+                if(pkgName.isEmpty())
+                    return false;
+                String moduleClassName = pkgName + "." + NamingBase.MODULE_DESCRIPTOR_CLASS_NAME;
+                logVerbose("[Trying to look up module from "+moduleClassName+"]");
+                ClassMirror moduleClass = loadClass(module, pkgName, moduleClassName);
+                if(moduleClass == null){
+                    // perhaps we have an old module?
+                    String oldModuleClassName = pkgName + "." + NamingBase.OLD_MODULE_DESCRIPTOR_CLASS_NAME;
+                    logVerbose("[Trying to look up older module descriptor from "+oldModuleClassName+"]");
+                    ClassMirror oldModuleClass = loadClass(module, pkgName, oldModuleClassName);
+                    // keep it only if it has a module annotation, otherwise it could be a normal value
+                    if(oldModuleClass != null && oldModuleClass.getAnnotation(CEYLON_MODULE_ANNOTATION) != null)
+                        moduleClass = oldModuleClass;
+                }
+                if(moduleClass != null){
+                    // load its module annotation
+                    return loadCompiledModule(module, moduleClass, moduleClassName, loadModuleImports);
+                }
+                // give up
                 return false;
-            String pkgName = module.getNameAsString();
-            if(pkgName.isEmpty())
-                return false;
-            String moduleClassName = pkgName + "." + NamingBase.MODULE_DESCRIPTOR_CLASS_NAME;
-            logVerbose("[Trying to look up module from "+moduleClassName+"]");
-            ClassMirror moduleClass = loadClass(module, pkgName, moduleClassName);
-            if(moduleClass == null){
-                // perhaps we have an old module?
-                String oldModuleClassName = pkgName + "." + NamingBase.OLD_MODULE_DESCRIPTOR_CLASS_NAME;
-                logVerbose("[Trying to look up older module descriptor from "+oldModuleClassName+"]");
-                ClassMirror oldModuleClass = loadClass(module, pkgName, oldModuleClassName);
-                // keep it only if it has a module annotation, otherwise it could be a normal value
-                if(oldModuleClass != null && oldModuleClass.getAnnotation(CEYLON_MODULE_ANNOTATION) != null)
-                    moduleClass = oldModuleClass;
             }
-            if(moduleClass != null){
-                // load its module annotation
-                return loadCompiledModule(module, moduleClass, moduleClassName, loadModuleImports);
-            }
-            // give up
-            return false;
-        }
+        });
     }
 
     private boolean loadCompiledModule(Module module, ClassMirror moduleClass, String moduleClassName, boolean loadModuleImports) {
@@ -2105,14 +2181,27 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(loadModuleImports){
             List<AnnotationMirror> imports = getAnnotationArrayValue(moduleClass, CEYLON_MODULE_ANNOTATION, "dependencies");
             if(imports != null){
+                boolean supportsNamespaces = ModuleUtil.supportsImportsWithNamespaces(major, minor);
                 for (AnnotationMirror importAttribute : imports) {
-                    String dependencyUri = (String) importAttribute.getValue("name");
-                    if (dependencyUri != null) {
+                    String dependencyName = (String) importAttribute.getValue("name");
+                    if (dependencyName != null) {
+                        String namespace;
+                        if (supportsNamespaces) {
+                            namespace = (String) importAttribute.getValue("namespace");
+                            if (namespace != null && namespace.isEmpty()) {
+                                namespace = null;
+                            }
+                        } else {
+                            if (ModuleUtil.isMavenModule(dependencyName)) {
+                                namespace = "maven";
+                            } else {
+                                namespace = null;
+                            }
+                        }
+
                         String dependencyVersion = (String) importAttribute.getValue("version");
 
-                        String namespace = ModuleUtil.getNamespaceFromUri(dependencyUri);
-                        String depModuleName = ModuleUtil.getModuleNameFromUri(dependencyUri);
-                        Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(depModuleName), dependencyVersion);
+                        Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dependencyName), dependencyVersion);
 
                         Boolean optionalVal = (Boolean) importAttribute.getValue("optional");
 
@@ -2223,151 +2312,187 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     // ModelCompleter
     
     @Override
-    public void complete(AnnotationProxyClass klass) {
-        synchronized(getLock()){
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            complete(klass, klass.iface);
-            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
-        }
+    public void complete(final AnnotationProxyClass klass) {
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+                complete(klass, klass.iface);
+                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            }
+        });
     }
     
     @Override
-    public void complete(AnnotationProxyMethod ctor) {
-        synchronized(getLock()){
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            AnnotationProxyClass klass = ctor.proxyClass;
-            LazyInterface iface = klass.iface;
-            
-            complete(ctor, klass, iface);
-            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
-        }
+    public void complete(final AnnotationProxyMethod ctor) {
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+                AnnotationProxyClass klass = ctor.proxyClass;
+                LazyInterface iface = klass.iface;
+                
+                complete(ctor, klass, iface);
+                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            }
+        });
     }
     
     @Override
-    public void complete(LazyInterface iface)  {
-        synchronized(getLock()){
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            complete(iface, iface.classMirror);
-            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
-        }
+    public void complete(final LazyInterface iface)  {
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+                complete(iface, iface.classMirror);
+                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            }
+        });
     }
 
     @Override
-    public void completeTypeParameters(LazyInterface iface)  {
-        synchronized(getLock()){
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            completeTypeParameters(iface, iface.classMirror);
-            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
-        }
+    public void completeTypeParameters(final LazyInterface iface)  {
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+                completeTypeParameters(iface, iface.classMirror);
+                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            }
+        });
     }
 
     @Override
-    public void complete(LazyClass klass)  {
-        synchronized(getLock()){
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            complete(klass, klass.classMirror);
-            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
-        }
+    public void complete(final LazyClass klass)  {
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+                complete(klass, klass.classMirror);
+                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            }
+        });
     }
 
     @Override
-    public void completeTypeParameters(LazyClass klass)  {
-        synchronized(getLock()){
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            completeTypeParameters(klass, klass.classMirror);
-            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
-        }
+    public void completeTypeParameters(final LazyClass klass)  {
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+                completeTypeParameters(klass, klass.classMirror);
+                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            }
+        });
     }
 
     @Override
-    public void completeTypeParameters(LazyClassAlias lazyClassAlias)  {
-        synchronized(getLock()){
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            completeLazyAliasTypeParameters(lazyClassAlias, lazyClassAlias.classMirror);
-            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
-        }
+    public void completeTypeParameters(final LazyClassAlias lazyClassAlias)  {
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+                completeLazyAliasTypeParameters(lazyClassAlias, lazyClassAlias.classMirror);
+                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            }
+        });
     }
     
     @Override
-    public void completeTypeParameters(LazyInterfaceAlias lazyInterfaceAlias)  {
-        synchronized(getLock()){
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            completeLazyAliasTypeParameters(lazyInterfaceAlias, lazyInterfaceAlias.classMirror);
-            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
-        }
+    public void completeTypeParameters(final LazyInterfaceAlias lazyInterfaceAlias)  {
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+                completeLazyAliasTypeParameters(lazyInterfaceAlias, lazyInterfaceAlias.classMirror);
+                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            }
+        });
     }
 
     @Override
-    public void completeTypeParameters(LazyTypeAlias lazyTypeAlias)  {
-        synchronized(getLock()){
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            completeLazyAliasTypeParameters(lazyTypeAlias, lazyTypeAlias.classMirror);
-            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
-        }
+    public void completeTypeParameters(final LazyTypeAlias lazyTypeAlias)  {
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+                completeLazyAliasTypeParameters(lazyTypeAlias, lazyTypeAlias.classMirror);
+                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            }
+        });
     }
 
     @Override
-    public void complete(LazyInterfaceAlias alias)  {
-        synchronized(getLock()){
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            completeLazyAlias(alias, alias.classMirror, CEYLON_ALIAS_ANNOTATION);
-            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
-        }
+    public void complete(final LazyInterfaceAlias alias)  {
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+                completeLazyAlias(alias, alias.classMirror, CEYLON_ALIAS_ANNOTATION);
+                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            }
+        });
     }
     
     @Override
-    public void complete(LazyClassAlias alias)  {
-        synchronized(getLock()){
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            completeLazyAlias(alias, alias.classMirror, CEYLON_ALIAS_ANNOTATION);
+    public void complete(final LazyClassAlias alias)  {
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+                completeLazyAlias(alias, alias.classMirror, CEYLON_ALIAS_ANNOTATION);
 
-            String constructorName = (String)alias.classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION).getValue("constructor");
-            Declaration extendedTypeDeclaration = alias.getExtendedType().getDeclaration();
-            if (constructorName != null 
-                    && !constructorName.isEmpty()) {
-                Declaration constructor = alias.getExtendedType().getDeclaration().getMember(constructorName, null, false);
-                if (constructor instanceof FunctionOrValue
-                        && ((FunctionOrValue)constructor).getTypeDeclaration() instanceof Constructor) {
-                    alias.setConstructor(((FunctionOrValue)constructor).getTypeDeclaration());
+                String constructorName = (String)alias.classMirror.getAnnotation(CEYLON_ALIAS_ANNOTATION).getValue("constructor");
+                Declaration extendedTypeDeclaration = alias.getExtendedType().getDeclaration();
+                if (constructorName != null 
+                        && !constructorName.isEmpty()) {
+                    Declaration constructor = alias.getExtendedType().getDeclaration().getMember(constructorName, null, false);
+                    if (constructor instanceof FunctionOrValue
+                            && ((FunctionOrValue)constructor).getTypeDeclaration() instanceof Constructor) {
+                        alias.setConstructor(((FunctionOrValue)constructor).getTypeDeclaration());
+                    } else {
+                        logError("class aliased constructor " + constructorName + " which is no longer a constructor of " + alias.getExtendedType().getDeclaration().getQualifiedNameString());
+                    }
                 } else {
-                    logError("class aliased constructor " + constructorName + " which is no longer a constructor of " + alias.getExtendedType().getDeclaration().getQualifiedNameString());
-                }
-            } else {
-                if (extendedTypeDeclaration instanceof Class) {
-                    Class theClass = (Class) extendedTypeDeclaration;
-                    if (theClass.hasConstructors()) {
-                        alias.setConstructor(theClass.getDefaultConstructor());
-                    } else if(theClass.getParameterList() != null) {
-                        alias.setConstructor(theClass);
+                    if (extendedTypeDeclaration instanceof Class) {
+                        Class theClass = (Class) extendedTypeDeclaration;
+                        if (theClass.hasConstructors()) {
+                            alias.setConstructor(theClass.getDefaultConstructor());
+                        } else if(theClass.getParameterList() != null) {
+                            alias.setConstructor(theClass);
+                        }
                     }
                 }
-            }
-            
-            // Find the instantiator method
-            MethodMirror instantiator = null;
-            ClassMirror instantiatorClass = alias.isToplevel() ? alias.classMirror : alias.classMirror.getEnclosingClass();
-            String aliasName = NamingBase.getAliasInstantiatorMethodName(alias);
-            for (MethodMirror method : instantiatorClass.getDirectMethods()) {
-                if (method.getName().equals(aliasName)) {
-                    instantiator = method;
-                    break;
+                
+                // Find the instantiator method
+                MethodMirror instantiator = null;
+                ClassMirror instantiatorClass = alias.isToplevel() ? alias.classMirror : alias.classMirror.getEnclosingClass();
+                String aliasName = NamingBase.getAliasInstantiatorMethodName(alias);
+                for (MethodMirror method : instantiatorClass.getDirectMethods()) {
+                    if (method.getName().equals(aliasName)) {
+                        instantiator = method;
+                        break;
+                    }
                 }
+                // Read the parameters from the instantiator, rather than the aliased class
+                if (instantiator != null) {
+                    setParameters(alias, alias.classMirror, instantiator, true, alias);
+                }
+                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
             }
-            // Read the parameters from the instantiator, rather than the aliased class
-            if (instantiator != null) {
-                setParameters(alias, alias.classMirror, instantiator, true, alias);
-            }
-            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
-        }
+        });
     }
 
     @Override
-    public void complete(LazyTypeAlias alias)  {
-        synchronized(getLock()){
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            completeLazyAlias(alias, alias.classMirror, CEYLON_TYPE_ALIAS_ANNOTATION);
-            timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
-        }
+    public void complete(final LazyTypeAlias alias)  {
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+                completeLazyAlias(alias, alias.classMirror, CEYLON_TYPE_ALIAS_ANNOTATION);
+                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
+            }
+        });
     }
 
     private void complete(AnnotationProxyMethod ctor, AnnotationProxyClass klass, LazyInterface iface) {
@@ -2756,7 +2881,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(!keepField(fieldMirror, isCeylon, isFromJDK))
                 continue;
             String name = fieldMirror.getName();
-            if(!JvmBackendUtil.isInitialLowerCase(name)){
+            if(!isCeylon && !JvmBackendUtil.isInitialLowerCase(name)){
                 String newName = NamingBase.getJavaBeanName(name);
                 if(!fieldNames.contains(newName)
                         && !addingFieldWouldConflictWithMember(klass, newName)
@@ -3409,7 +3534,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             method.setName(methodName+"_method");
         else{
             String ceylonName = JvmBackendUtil.strip(methodName, isCeylon, method.isShared());
-            if(!JvmBackendUtil.isInitialLowerCase(ceylonName))
+            if(!isCeylon && !JvmBackendUtil.isInitialLowerCase(ceylonName))
                 ceylonName = NamingBase.getJavaBeanName(ceylonName);
             method.setName(ceylonName);
         }
@@ -3441,6 +3566,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             method.setUncheckedNullType(true);
             break;
         }
+        if (type.isCached()) {
+            type = type.clone();
+        }
+        
         method.setType(type);
 
         // now its parameters
@@ -3649,6 +3778,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Module module = ModelUtil.getModuleContainer(klass);
         Type type = obtainType(fieldMirror.getType(), fieldMirror, klass, module, VarianceLocation.INVARIANT,
                 "field '"+value.getName()+"'", klass);
+        if (type.isCached()) {
+            type = type.clone();
+        }
+        
         if (value.isEnumValue()) {
             Class enumValueType = new Class();
             enumValueType.setValueConstructor(true);
@@ -3788,6 +3921,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(type == null)
             type = obtainType(methodMirror.getReturnType(), methodMirror, klass, module, VarianceLocation.INVARIANT,
                               "getter '"+methodName+"'", klass);
+        if (type.isCached()) {
+            type = type.clone();
+        }
         // special case for hash attributes which we want to pretend are of type long internally
         if(value.isShared() && methodName.equals("hash"))
             type.setUnderlyingType("long");
@@ -3894,7 +4030,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     return;
                 // we already set the actual bit for member classes, we just need the refined decl
                 if(decl.isActual()){
-                    Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), false);
+                    Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), klass.isVariadic());
                     decl.setRefinedDeclaration(refined);
                 }
             }else{ // Function or Value
@@ -3913,12 +4049,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     boolean actual = methodMirror.getAnnotation(CEYLON_LANGUAGE_ACTUAL_ANNOTATION) != null;
                     decl.setActual(actual);
                     if(actual){
-                        Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), false);
+                        Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), decl.isVariadic());
                         decl.setRefinedDeclaration(refined);
                     }
                 }else{
                     if(isOverridingMethod(methodMirror)){
-                        Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), false);
+                        Declaration refined = klass.getRefinedMember(decl.getName(), getSignature(decl), decl.isVariadic());
                         if(refined instanceof FieldValue == false){
                             decl.setActual(true);
                             decl.setRefinedDeclaration(refined);
@@ -4123,6 +4259,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     }
                 }
             }
+            if (type.isCached()) {
+                type = type.clone();
+            }
+            
             type.setRaw(isRaw(ModelUtil.getModuleContainer(container), typeMirror));
             
             FunctionOrValue value = null;
@@ -4204,6 +4344,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private Type makeOptionalTypePreserveUnderlyingType(Type type, Module module) {
         Type optionalType = getOptionalType(type, module);
+        if (optionalType.isCached()) {
+            optionalType = optionalType.clone();
+        }
         optionalType.setUnderlyingType(type.getUnderlyingType());
         return optionalType;
     }
@@ -4317,7 +4460,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private Type logModelResolutionException(ModelResolutionException x, Scope container, String message) {
-        return logModelResolutionException(x.getMessage(), container, message);
+        String exceptionMessage = x.getMessage();
+        Throwable causer = x;
+        while(causer.getCause() != null){
+            exceptionMessage = exceptionMessage + " caused by: " + causer.getCause();
+            causer = causer.getCause();
+        }
+        return logModelResolutionException(exceptionMessage, container, message);
     }
     
     private Type logModelResolutionException(final String exceptionMessage, Scope container, final String message) {
@@ -4451,48 +4600,51 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     @Override
-    public void complete(LazyValue value)  {
-        synchronized(getLock()){
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            try{
-                MethodMirror meth = getGetterMethodMirror(value, value.classMirror, value.isToplevel());
-                if(meth == null || meth.getReturnType() == null){
-                    value.setType(logModelResolutionError(value.getContainer(), "Error while resolving toplevel attribute "+value.getQualifiedNameString()+": getter method missing"));
-                    return;
-                }
-                value.setDeprecated(value.isDeprecated() | isDeprecated(meth));
-                value.setType(obtainType(meth.getReturnType(), meth, null, ModelUtil.getModuleContainer(value.getContainer()), VarianceLocation.INVARIANT,
-                        "toplevel attribute", value));
+    public void complete(final LazyValue value)  {
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+                try{
+                    MethodMirror meth = getGetterMethodMirror(value, value.classMirror, value.isToplevel());
+                    if(meth == null || meth.getReturnType() == null){
+                        value.setType(logModelResolutionError(value.getContainer(), "Error while resolving toplevel attribute "+value.getQualifiedNameString()+": getter method missing"));
+                        return;
+                    }
+                    value.setDeprecated(value.isDeprecated() | isDeprecated(meth));
+                    value.setType(obtainType(meth.getReturnType(), meth, null, ModelUtil.getModuleContainer(value.getContainer()), VarianceLocation.INVARIANT,
+                            "toplevel attribute", value));
 
-                markVariable(value);
-                setValueTransientLateFlags(value, meth, true);
-                setAnnotations(value, meth, value.isNativeHeader());
-                markUnboxed(value, meth, meth.getReturnType());
-                markSmall(value, meth.getReturnType());
-                markTypeErased(value, meth, meth.getReturnType());
+                    markVariable(value);
+                    setValueTransientLateFlags(value, meth, true);
+                    setAnnotations(value, meth, value.isNativeHeader());
+                    markUnboxed(value, meth, meth.getReturnType());
+                    markSmall(value, meth.getReturnType());
+                    markTypeErased(value, meth, meth.getReturnType());
 
-                TypeMirror setterClass = (TypeMirror) getAnnotationValue(value.classMirror, CEYLON_ATTRIBUTE_ANNOTATION, "setterClass");
-                // void.class is the default value, I guess it's a primitive?
-                if(setterClass != null && !setterClass.isPrimitive()){
-                    ClassMirror setterClassMirror = setterClass.getDeclaredClass();
-                    value.setVariable(true);
-                    SetterWithLocalDeclarations setter = makeSetter(value, setterClassMirror);
-                    // adding local scopes should be done last, when we have the setter, because it may be needed by container chain
-                    addLocalDeclarations(value, value.classMirror, value.classMirror);
-                    addLocalDeclarations(setter, setterClassMirror, setterClassMirror);
-                }else if(value.isToplevel() && value.isTransient() && value.isVariable()){
-                    makeSetter(value, value.classMirror);
-                    // all local scopes for getter/setter are declared in the same class
-                    // adding local scopes should be done last, when we have the setter, because it may be needed by container chain
-                    addLocalDeclarations(value, value.classMirror, value.classMirror);
-                }else{
-                    // adding local scopes should be done last, when we have the setter, because it may be needed by container chain
-                    addLocalDeclarations(value, value.classMirror, value.classMirror);
+                    TypeMirror setterClass = (TypeMirror) getAnnotationValue(value.classMirror, CEYLON_ATTRIBUTE_ANNOTATION, "setterClass");
+                    // void.class is the default value, I guess it's a primitive?
+                    if(setterClass != null && !setterClass.isPrimitive()){
+                        ClassMirror setterClassMirror = setterClass.getDeclaredClass();
+                        value.setVariable(true);
+                        SetterWithLocalDeclarations setter = makeSetter(value, setterClassMirror);
+                        // adding local scopes should be done last, when we have the setter, because it may be needed by container chain
+                        addLocalDeclarations(value, value.classMirror, value.classMirror);
+                        addLocalDeclarations(setter, setterClassMirror, setterClassMirror);
+                    }else if(value.isToplevel() && value.isTransient() && value.isVariable()){
+                        makeSetter(value, value.classMirror);
+                        // all local scopes for getter/setter are declared in the same class
+                        // adding local scopes should be done last, when we have the setter, because it may be needed by container chain
+                        addLocalDeclarations(value, value.classMirror, value.classMirror);
+                    }else{
+                        // adding local scopes should be done last, when we have the setter, because it may be needed by container chain
+                        addLocalDeclarations(value, value.classMirror, value.classMirror);
+                    }
+                }finally{
+                    timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
                 }
-            }finally{
-                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
             }
-        }
+        });
     }
     
     private MethodMirror getGetterMethodMirror(Declaration value, ClassMirror classMirror, boolean toplevel) {
@@ -4553,53 +4705,56 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     @Override
-    public void complete(LazyFunction method)  {
-        synchronized(getLock()){
-            timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
-            try{
-                MethodMirror meth = getFunctionMethodMirror(method);
-                if(meth == null || meth.getReturnType() == null){
-                    method.setType(logModelResolutionError(method.getContainer(), "Error while resolving toplevel method "+method.getQualifiedNameString()+": static method missing"));
-                    return;
+    public void complete(final LazyFunction method)  {
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                timer.startIgnore(TIMER_MODEL_LOADER_CATEGORY);
+                try{
+                    MethodMirror meth = getFunctionMethodMirror(method);
+                    if(meth == null || meth.getReturnType() == null){
+                        method.setType(logModelResolutionError(method.getContainer(), "Error while resolving toplevel method "+method.getQualifiedNameString()+": static method missing"));
+                        return;
+                    }
+                    // only check the static mod for toplevel classes
+                    if(!method.classMirror.isLocalClass() && !meth.isStatic()){
+                        method.setType(logModelResolutionError(method.getContainer(), "Error while resolving toplevel method "+method.getQualifiedNameString()+": method is not static"));
+                        return;
+                    }
+
+                    method.setDeprecated(method.isDeprecated() | isDeprecated(meth));
+                    // save the method name
+                    method.setRealMethodName(meth.getName());
+
+                    // save the method
+                    method.setMethodMirror(meth);
+
+                    // type params first
+                    setTypeParameters(method, meth, true);
+
+                    method.setType(obtainType(meth.getReturnType(), meth, method, ModelUtil.getModuleContainer(method), VarianceLocation.COVARIANT,
+                            "toplevel method", method));
+                    method.setDeclaredVoid(meth.isDeclaredVoid());
+                    markDeclaredVoid(method, meth);
+                    markUnboxed(method, meth, meth.getReturnType());
+                    markSmall(method, meth.getReturnType());
+                    markTypeErased(method, meth, meth.getReturnType());
+                    markUntrustedType(method, meth, meth.getReturnType());
+
+                 // now its parameters
+                    setParameters(method, method.classMirror, meth, true /* toplevel methods are always Ceylon */, method);
+                    
+                    method.setAnnotation(meth.getAnnotation(CEYLON_LANGUAGE_ANNOTATION_ANNOTATION) != null);
+                    setAnnotations(method, meth, method.isNativeHeader());
+
+                    setAnnotationConstructor(method, meth);
+
+                    addLocalDeclarations(method, method.classMirror, method.classMirror);
+                }finally{
+                    timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
                 }
-                // only check the static mod for toplevel classes
-                if(!method.classMirror.isLocalClass() && !meth.isStatic()){
-                    method.setType(logModelResolutionError(method.getContainer(), "Error while resolving toplevel method "+method.getQualifiedNameString()+": method is not static"));
-                    return;
-                }
-
-                method.setDeprecated(method.isDeprecated() | isDeprecated(meth));
-                // save the method name
-                method.setRealMethodName(meth.getName());
-
-                // save the method
-                method.setMethodMirror(meth);
-
-                // type params first
-                setTypeParameters(method, meth, true);
-
-                method.setType(obtainType(meth.getReturnType(), meth, method, ModelUtil.getModuleContainer(method), VarianceLocation.COVARIANT,
-                        "toplevel method", method));
-                method.setDeclaredVoid(meth.isDeclaredVoid());
-                markDeclaredVoid(method, meth);
-                markUnboxed(method, meth, meth.getReturnType());
-                markSmall(method, meth.getReturnType());
-                markTypeErased(method, meth, meth.getReturnType());
-                markUntrustedType(method, meth, meth.getReturnType());
-
-             // now its parameters
-                setParameters(method, method.classMirror, meth, true /* toplevel methods are always Ceylon */, method);
-                
-                method.setAnnotation(meth.getAnnotation(CEYLON_LANGUAGE_ANNOTATION_ANNOTATION) != null);
-                setAnnotations(method, meth, method.isNativeHeader());
-
-                setAnnotationConstructor(method, meth);
-
-                addLocalDeclarations(method, method.classMirror, method.classMirror);
-            }finally{
-                timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
             }
-        }
+        });
      }
 
     private MethodMirror getFunctionMethodMirror(LazyFunction method) {
@@ -4675,7 +4830,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Type type = m.getType();
         if (JvmBackendUtil.isJavaArray(type.getDeclaration())) {
             String name = type.getDeclaration().getQualifiedNameString();
-            final Type elementType;
+            Type elementType;
             String underlyingType = null;
             if(name.equals("java.lang::ObjectArray")){
                 Type eType = type.getTypeArgumentList().get(0);
@@ -4694,6 +4849,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     underlyingType = "java.lang.Class";
                 } else {
                     elementType = eType;   
+                    if (elementType.isCached()) {
+                        elementType = type.clone();
+                        type.getTypeArgumentList().set(0, elementType);
+                    }
                 }
                 // TODO Enum elements
             } else if(name.equals("java.lang::LongArray")) {
@@ -4719,6 +4878,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             } else {
                 throw new RuntimeException();
             }
+            
+            if (elementType.isCached()) {
+                elementType = elementType.clone();
+            }
+            
             elementType.setUnderlyingType(underlyingType);
             Type iterableType = unit.getIterableType(elementType);
             return iterableType;
@@ -5055,6 +5219,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if (typeName != null) {
             Type ret = decodeType(typeName, scope, moduleScope, targetType, target);
             // even decoded types need to fit with the reality of the underlying type
+            if (ret.isCached()) {
+                ret = ret.clone();
+            }
             ret.setUnderlyingType(getUnderlyingType(type, TypeLocation.TOPLEVEL));
             return ret;
         } else {
@@ -5105,6 +5272,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         type = applyTypeMapping(type, location);
         
         Type ret = getNonPrimitiveType(moduleScope, type, scope, variance);
+        if (ret.isCached()) {
+            ret = ret.clone();
+        }
+
         if (ret.getUnderlyingType() == null) {
             ret.setUnderlyingType(getUnderlyingType(originalType, location));
         }
@@ -5357,6 +5528,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 if(siteVarianceMap != null){
                     ret.setVarianceOverrides(siteVarianceMap);
                 }
+                if (ret.isCached()) {
+                    ret = ret.clone();
+                }
                 ret.setUnderlyingType(type.getQualifiedName());
                 ret.setRaw(isRaw);
 
@@ -5371,6 +5545,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             // that one may have type arguments
             Type qualifyingType = getNonPrimitiveType(moduleScope, type.getQualifyingType(), scope, variance);
             Type ret = declaration.appliedType(qualifyingType, Collections.<Type>emptyList());
+            if (ret.isCached()) {
+                ret = ret.clone();
+            }
             ret.setUnderlyingType(type.getQualifiedName());
             ret.setRaw(isRaw);
             return ret;
@@ -5404,6 +5581,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 return declaration.getType();
 
             Type ret = applyTypeArguments(moduleScope, declaration, type, scope, VarianceLocation.CONTRAVARIANT, TypeMappingMode.GENERATOR, rawDeclarationsSeen);
+            if (ret.isCached()) {
+                ret = ret.clone();
+            }
             
             if (ret.getUnderlyingType() == null) {
                 ret.setUnderlyingType(getUnderlyingType(type, TypeLocation.TYPE_PARAM));
@@ -5432,40 +5612,43 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     @Override
-    public Declaration getDeclaration(Module module, String pkgName, String name, Scope scope)  {
-        synchronized(getLock()){
-            if(scope != null){
-                TypeParameter typeParameter = lookupTypeParameter(scope, name);
-                if(typeParameter != null)
-                    return typeParameter;
-            }
-            if(!isBootstrap || !name.startsWith(CEYLON_LANGUAGE)) {
-                if(scope != null && pkgName != null){
-                    Package containingPackage = ModelUtil.getPackageContainer(scope);
-                    Package pkg = containingPackage.getModule().getPackage(pkgName);
-                    String relativeName = null;
-                    String unquotedName = name.replace("$", "");
-                    if(!pkgName.isEmpty()){
-                        if(unquotedName.startsWith(pkgName+"."))
-                            relativeName = unquotedName.substring(pkgName.length()+1);
-                        // else we don't try it's not in this package
-                    }else
-                        relativeName = unquotedName;
-                    if(relativeName != null && pkg != null){
-                        Declaration declaration = pkg.getDirectMember(relativeName, null, false);
-                        // if we get a value, we want its type
-                        if(JvmBackendUtil.isValue(declaration)
-                                && ((Value)declaration).getTypeDeclaration().getName().equals(relativeName))
-                            declaration = ((Value)declaration).getTypeDeclaration();
-                        if(declaration != null)
-                            return declaration;
-                    }
+    public Declaration getDeclaration(final Module module, final String pkgName, final String name, final Scope scope)  {
+        return synchronizedCall(new Callable<Declaration>() {
+            @Override
+            public Declaration call() throws Exception {
+                if(scope != null){
+                    TypeParameter typeParameter = lookupTypeParameter(scope, name);
+                    if(typeParameter != null)
+                        return typeParameter;
                 }
-                return convertToDeclaration(module, name, DeclarationType.TYPE);
-            }
+                if(!isBootstrap || !name.startsWith(CEYLON_LANGUAGE)) {
+                    if(scope != null && pkgName != null){
+                        Package containingPackage = ModelUtil.getPackageContainer(scope);
+                        Package pkg = containingPackage.getModule().getPackage(pkgName);
+                        String relativeName = null;
+                        String unquotedName = name.replace("$", "");
+                        if(!pkgName.isEmpty()){
+                            if(unquotedName.startsWith(pkgName+"."))
+                                relativeName = unquotedName.substring(pkgName.length()+1);
+                            // else we don't try it's not in this package
+                        }else
+                            relativeName = unquotedName;
+                        if(relativeName != null && pkg != null){
+                            Declaration declaration = pkg.getDirectMember(relativeName, null, false);
+                            // if we get a value, we want its type
+                            if(JvmBackendUtil.isValue(declaration)
+                                    && ((Value)declaration).getTypeDeclaration().getName().equals(relativeName))
+                                declaration = ((Value)declaration).getTypeDeclaration();
+                            if(declaration != null)
+                                return declaration;
+                        }
+                    }
+                    return convertToDeclaration(module, name, DeclarationType.TYPE);
+                }
 
-            return findLanguageModuleDeclarationForBootstrap(name);
-        }
+                return findLanguageModuleDeclarationForBootstrap(name);
+            }
+        });
     }
 
     private Declaration findLanguageModuleDeclarationForBootstrap(String name) {
@@ -5530,83 +5713,86 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return new ClassMirror[0];
     }
     
-    public void removeDeclarations(List<Declaration> declarations) {
-        synchronized(getLock()){
-            Set<String> qualifiedNames = new HashSet<>(declarations.size() * 2);
-            
-            // keep in sync with getOrCreateDeclaration
-            for (Declaration decl : declarations) {
-                try {
-                    ClassMirror[] classMirrors = getClassMirrorsToRemove(decl);
-                    if (classMirrors == null || classMirrors.length == 0) {
-                        continue;
-                    }
-                    
-                    Scope container = decl.getContainer();
-                    boolean isNativeHeaderMember = container instanceof Declaration 
-                            && ((Declaration) container).isNativeHeader();
-                    
-                    Map<String, Declaration> firstCache = null;
-                    Map<String, Declaration> secondCache = null;
-                    if(decl.isToplevel()){
-                        if(JvmBackendUtil.isValue(decl)){
-                            firstCache = valueDeclarationsByName;
-                            TypeDeclaration typeDeclaration = ((Value)decl).getTypeDeclaration();
-                            if (typeDeclaration != null) {
-                                if(typeDeclaration.isAnonymous()) {
+    public void removeDeclarations(final List<Declaration> declarations) {
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                Set<String> qualifiedNames = new HashSet<>(declarations.size() * 2);
+                
+                // keep in sync with getOrCreateDeclaration
+                for (Declaration decl : declarations) {
+                    try {
+                        ClassMirror[] classMirrors = getClassMirrorsToRemove(decl);
+                        if (classMirrors == null || classMirrors.length == 0) {
+                            continue;
+                        }
+                        
+                        Scope container = decl.getContainer();
+                        boolean isNativeHeaderMember = container instanceof Declaration 
+                                && ((Declaration) container).isNativeHeader();
+                        
+                        Map<String, Declaration> firstCache = null;
+                        Map<String, Declaration> secondCache = null;
+                        if(decl.isToplevel()){
+                            if(JvmBackendUtil.isValue(decl)){
+                                firstCache = valueDeclarationsByName;
+                                TypeDeclaration typeDeclaration = ((Value)decl).getTypeDeclaration();
+                                if (typeDeclaration != null) {
+                                    if(typeDeclaration.isAnonymous()) {
+                                        secondCache = typeDeclarationsByName;
+                                    }
+                                } else {
+                                    // The value declaration has probably not been fully loaded yet.
+                                    // => still try to clean the second cache also, just in case it is an anonymous object
                                     secondCache = typeDeclarationsByName;
                                 }
-                            } else {
-                                // The value declaration has probably not been fully loaded yet.
-                                // => still try to clean the second cache also, just in case it is an anonymous object
-                                secondCache = typeDeclarationsByName;
+                            }else if(JvmBackendUtil.isMethod(decl)) {
+                                firstCache = valueDeclarationsByName;
                             }
-                        }else if(JvmBackendUtil.isMethod(decl)) {
-                            firstCache = valueDeclarationsByName;
                         }
-                    }
-                    if(decl instanceof TypeDeclaration) {
-                        firstCache = typeDeclarationsByName;
-                    }
+                        if(decl instanceof TypeDeclaration) {
+                            firstCache = typeDeclarationsByName;
+                        }
 
-                    Module module = ModelUtil.getModuleContainer(decl.getContainer());
-                    // ignore declarations which we do not cache, like member method/attributes
+                        Module module = ModelUtil.getModuleContainer(decl.getContainer());
+                        // ignore declarations which we do not cache, like member method/attributes
 
-                    for (ClassMirror classMirror : classMirrors) {
-                        qualifiedNames.add(classMirror.getQualifiedName());
-                        String key = classMirror.getCacheKey(module);
-                        key = isNativeHeaderMember ? key + "$header" : key;
+                        for (ClassMirror classMirror : classMirrors) {
+                            qualifiedNames.add(classMirror.getQualifiedName());
+                            String key = classMirror.getCacheKey(module);
+                            key = isNativeHeaderMember ? key + "$header" : key;
 
-                        if(firstCache != null) {
-                            if (firstCache.remove(key) == null) {
-//                              System.out.println("No non-null declaration removed from the first cache for key : " + key);
-                            }
+                            if(firstCache != null) {
+                                if (firstCache.remove(key) == null) {
+//                                  System.out.println("No non-null declaration removed from the first cache for key : " + key);
+                                }
 
-                            if(secondCache != null) {
-                                if (secondCache.remove(key) == null) {
-//                                  System.out.println("No non-null declaration removed from the second cache for key : " + key);
+                                if(secondCache != null) {
+                                    if (secondCache.remove(key) == null) {
+//                                      System.out.println("No non-null declaration removed from the second cache for key : " + key);
+                                    }
                                 }
                             }
                         }
+                    } catch(Exception e) {
+                        e.printStackTrace();
                     }
-                } catch(Exception e) {
-                    e.printStackTrace();
                 }
-            }
-            
-            List<String> keysToRemove = new ArrayList<>(qualifiedNames.size());
-            for (Map.Entry<String, ClassMirror> entry : classMirrorCache.entrySet()) {
-                ClassMirror mirror = entry.getValue();
-                if (mirror == null 
-                        || qualifiedNames.contains(mirror.getQualifiedName())) {
-                    keysToRemove.add(entry.getKey());
+                
+                List<String> keysToRemove = new ArrayList<>(qualifiedNames.size());
+                for (Map.Entry<String, ClassMirror> entry : classMirrorCache.entrySet()) {
+                    ClassMirror mirror = entry.getValue();
+                    if (mirror == null 
+                            || qualifiedNames.contains(mirror.getQualifiedName())) {
+                        keysToRemove.add(entry.getKey());
+                    }
                 }
-            }
 
-            for (String keyToRemove : keysToRemove) {
-                classMirrorCache.remove(keyToRemove);
+                for (String keyToRemove : keysToRemove) {
+                    classMirrorCache.remove(keyToRemove);
+                }
             }
-        }
+        });
     }
 
     private static class Stats{
@@ -5638,16 +5824,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     public void printStats() {
-        synchronized(getLock()){
-            Map<Package, Stats> loadedByPackage = new HashMap<Package, Stats>();
-            int loaded = inspectForStats(typeDeclarationsByName, loadedByPackage)
-                    + inspectForStats(valueDeclarationsByName, loadedByPackage);
-            logVerbose("[Model loader: "+loaded+"(loaded)/"+(typeDeclarationsByName.size()+valueDeclarationsByName.size())+"(total) declarations]");
-            for(Entry<Package, Stats> packageEntry : loadedByPackage.entrySet()){
-                logVerbose("[ Package "+packageEntry.getKey().getNameAsString()+": "
-                        +packageEntry.getValue().loaded+"(loaded)/"+packageEntry.getValue().total+"(total) declarations]");
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                Map<Package, Stats> loadedByPackage = new HashMap<Package, Stats>();
+                int loaded = inspectForStats(typeDeclarationsByName, loadedByPackage)
+                        + inspectForStats(valueDeclarationsByName, loadedByPackage);
+                logVerbose("[Model loader: "+loaded+"(loaded)/"+(typeDeclarationsByName.size()+valueDeclarationsByName.size())+"(total) declarations]");
+                for(Entry<Package, Stats> packageEntry : loadedByPackage.entrySet()){
+                    logVerbose("[ Package "+packageEntry.getKey().getNameAsString()+": "
+                            +packageEntry.getValue().loaded+"(loaded)/"+packageEntry.getValue().total+"(total) declarations]");
+                }
             }
-        }
+        });
     }
 
     private static Package getPackage(Object decl) {
@@ -5680,12 +5869,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return moduleManager.findLoadedModule(name, version);
     }
     
-    public Module getJDKBaseModule() {
+    public Module getJdkProviderModule() {
         String jdkModuleSpec = getAlternateJdkModuleSpec();
         if(jdkModuleSpec != null){
             ModuleSpec spec = ModuleSpec.parse(jdkModuleSpec);
             return findModule(spec.getName(), spec.getVersion());
         }
+        return null;
+    }
+
+    public Module getJDKBaseModule() {
         return findModule(JAVA_BASE_MODULE_NAME, jdkProvider.getJDKVersion());
     }
 
@@ -5710,32 +5903,38 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 && qualifiedName.equals("java.lang.Object");
     }
     
-    public Package findPackage(String quotedPkgName)  {
-        synchronized(getLock()){
-            String pkgName = quotedPkgName.replace("$", "");
-            // in theory we only have one package with the same name per module in javac
-            for(Package pkg : packagesByName.values()){
-                if(pkg.getNameAsString().equals(pkgName))
-                    return pkg;
+    public Package findPackage(final String quotedPkgName)  {
+        return synchronizedCall(new Callable<Package>() {
+            @Override
+            public Package call() throws Exception {
+                String pkgName = quotedPkgName.replace("$", "");
+                // in theory we only have one package with the same name per module in javac
+                for(Package pkg : packagesByName.values()){
+                    if(pkg.getNameAsString().equals(pkgName))
+                        return pkg;
+                }
+                return null;
             }
-            return null;
-        }
+        });
     }
 
     /**
      * See explanation in cacheModulelessPackages() below. This is called by LanguageCompiler during loadCompiledModules().
      */
-    public LazyPackage findOrCreateModulelessPackage(String pkgName)  {
-        synchronized(getLock()){
-            LazyPackage pkg = modulelessPackages.get(pkgName);
-            if(pkg != null)
+    public LazyPackage findOrCreateModulelessPackage(final String pkgName)  {
+        return synchronizedCall(new Callable<LazyPackage>(){
+            @Override
+            public LazyPackage call() throws Exception {
+                LazyPackage pkg = modulelessPackages.get(pkgName);
+                if(pkg != null)
+                    return pkg;
+                pkg = new LazyPackage(AbstractModelLoader.this);
+                // FIXME: some refactoring needed
+                pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
+                modulelessPackages.put(pkgName, pkg);
                 return pkg;
-            pkg = new LazyPackage(this);
-            // FIXME: some refactoring needed
-            pkg.setName(pkgName == null ? Collections.<String>emptyList() : Arrays.asList(pkgName.split("\\.")));
-            modulelessPackages.put(pkgName, pkg);
-            return pkg;
-        }
+            }
+        });
     }
     
     /**
@@ -5746,15 +5945,18 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * created from their cache to the right per-module cache.
      */
     public void cacheModulelessPackages() {
-        synchronized(getLock()){
-            for(LazyPackage pkg : modulelessPackages.values()){
-                String quotedPkgName = JVMModuleUtil.quoteJavaKeywords(pkg.getQualifiedNameString());
-                if (pkg.getModule() != null) {
-                    packagesByName.put(cacheKeyByModule(pkg.getModule(), quotedPkgName), pkg);
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                for(LazyPackage pkg : modulelessPackages.values()){
+                    String quotedPkgName = JVMModuleUtil.quoteJavaKeywords(pkg.getQualifiedNameString());
+                    if (pkg.getModule() != null) {
+                        packagesByName.put(cacheKeyByModule(pkg.getModule(), quotedPkgName), pkg);
+                    }
                 }
+                modulelessPackages.clear();
             }
-            modulelessPackages.clear();
-        }
+        });
     }
 
     /**
@@ -5765,20 +5967,23 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * the wrong default package and fix it before we start parsing anything.
      */
     public void fixDefaultPackage()  {
-        synchronized(getLock()){
-            Module defaultModule = modules.getDefaultModule();
-            Package defaultPackage = defaultModule.getDirectPackage("");
-            if(defaultPackage instanceof LazyPackage == false){
-                LazyPackage newPkg = findOrCreateModulelessPackage("");
-                List<Package> defaultModulePackages = defaultModule.getPackages();
-                if(defaultModulePackages.size() != 1)
-                    throw new RuntimeException("Assertion failed: default module has more than the default package: "+defaultModulePackages.size());
-                defaultModulePackages.clear();
-                defaultModulePackages.add(newPkg);
-                newPkg.setModule(defaultModule);
-                defaultPackage.setModule(null);
+        synchronizedRun(new Runnable() {
+            @Override
+            public void run() {
+                Module defaultModule = modules.getDefaultModule();
+                Package defaultPackage = defaultModule.getDirectPackage("");
+                if(defaultPackage instanceof LazyPackage == false){
+                    LazyPackage newPkg = findOrCreateModulelessPackage("");
+                    List<Package> defaultModulePackages = defaultModule.getPackages();
+                    if(defaultModulePackages.size() != 1)
+                        throw new RuntimeException("Assertion failed: default module has more than the default package: "+defaultModulePackages.size());
+                    defaultModulePackages.clear();
+                    defaultModulePackages.add(newPkg);
+                    newPkg.setModule(defaultModule);
+                    defaultPackage.setModule(null);
+                }
             }
-        }
+        });
     }
 
     public boolean isImported(Module moduleScope, Module importedModule) {

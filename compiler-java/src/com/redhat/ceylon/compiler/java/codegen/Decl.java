@@ -44,6 +44,7 @@ import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.IntersectionType;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.NamedArgumentList;
@@ -55,6 +56,7 @@ import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -805,11 +807,33 @@ public class Decl {
                     && !decl.isShared()
                     && !(decl instanceof Constructor) 
                     && decl.getContainer() instanceof Class
-                    && !Decl.equalScopeDecl(decl.getContainer(), primary.getTypeModel().getDeclaration());
+                    && !Decl.hasScopeInType(decl.getContainer(), primary.getTypeModel());
         }
         return false;
     }
     
+    private static boolean hasScopeInType(Scope scope, Type type) {
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration instanceof UnionType){
+            for(Type st : type.getCaseTypes()){
+                if(hasScopeInType(scope, st))
+                    return true;
+            }
+            return false;
+        }
+        if(declaration instanceof IntersectionType){
+            for(Type st : type.getSatisfiedTypes()){
+                if(hasScopeInType(scope, st))
+                    return true;
+            }
+            return false;
+        }
+        if(declaration instanceof ClassOrInterface){
+            return equalScopeDecl(scope, declaration);
+        }
+        return false;
+    }
+
     public static boolean isPrivateAccessRequiringCompanion(Tree.StaticMemberOrTypeExpression qual) {
         if (qual instanceof Tree.QualifiedMemberOrTypeExpression) {
             Tree.Primary primary = ((Tree.QualifiedMemberOrTypeExpression)qual).getPrimary();
@@ -817,7 +841,7 @@ public class Decl {
             return decl.isMember()
                     && !decl.isShared()
                     && decl.getContainer() instanceof Interface
-                    && !Decl.equalScopeDecl(decl.getContainer(), primary.getTypeModel().getDeclaration());
+                    && !Decl.hasScopeInType(decl.getContainer(), primary.getTypeModel());
         }
         return false;
     }
@@ -1047,5 +1071,28 @@ public class Decl {
             }
         }
         return null;
+    }
+    
+    public static TypeDeclaration getOuterScopeOfMemberInvocation(Tree.StaticMemberOrTypeExpression expr, 
+            Declaration decl){
+        // First check whether the expression is captured from an enclosing scope
+        TypeDeclaration outer = null;
+        // get the ClassOrInterface container of the declaration
+        Scope stop = Decl.getClassOrInterfaceContainer(decl, false);
+        if (stop instanceof TypeDeclaration) {// reified scope
+            Scope scope = expr.getScope();
+            while (!(scope instanceof Package)) {
+                if (scope.equals(stop)) {
+                    outer = (TypeDeclaration)stop;
+                    break;
+                }
+                scope = scope.getContainer();
+            }
+        }
+        // If not it might be inherited...
+        if (outer == null) {
+            outer = expr.getScope().getInheritingDeclaration(decl);
+        }
+        return outer;
     }
 }

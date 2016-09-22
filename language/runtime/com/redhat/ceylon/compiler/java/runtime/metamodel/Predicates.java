@@ -89,7 +89,7 @@ public class Predicates {
         
         @Override
         public boolean accept(Declaration candidate) {
-            return candidate.getName().equals(name);
+            return name.equals(candidate.getName());
         }
         
     }

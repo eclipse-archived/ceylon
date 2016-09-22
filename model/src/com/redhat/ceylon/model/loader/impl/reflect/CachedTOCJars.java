@@ -37,7 +37,7 @@ public class CachedTOCJars {
         // stores folder names with slashes
         Set<String> folders = new HashSet<String>();
         // stores package paths with slashes but not last one
-        Set<String> packages = new HashSet<String>();
+        Set<String> packagePaths = new HashSet<String>();
         // not not attempt to load contents from this jar, just its TOC
         boolean skipContents;
         
@@ -50,7 +50,10 @@ public class CachedTOCJars {
             if(loaded)
                 return;
             if (artifact instanceof ContentAwareArtifactResult) {
-                packages.addAll(((ContentAwareArtifactResult) artifact).getPackages());
+                // make sure we turn package names into paths
+                for(String pkg : ((ContentAwareArtifactResult) artifact).getPackages()){
+                    packagePaths.add(pkg.replace('.', '/'));
+                }
                 contents.addAll(((ContentAwareArtifactResult) artifact).getEntries());
             } else {
                 if (artifact.artifact() != null) {
@@ -67,7 +70,7 @@ public class CachedTOCJars {
                                         folders.add(name);
                                     }else{
                                         if(JvmBackendUtil.definesPackage(name))
-                                            packages.add(getPackageName(name));
+                                            packagePaths.add(getPackageName(name));
                                         contents.add(name);
                                     }
                                 }
@@ -104,7 +107,7 @@ public class CachedTOCJars {
 
         boolean containsPackage(String path) {
             load();
-            return packages.contains(path);
+            return packagePaths.contains(path);
         }
 
         byte[] getContents(String path){
@@ -198,7 +201,7 @@ public class CachedTOCJars {
 
         public Set<String> getPackagePaths() {
             load();
-            return packages;
+            return packagePaths;
         }
 
         @Override

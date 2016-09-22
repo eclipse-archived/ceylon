@@ -40,6 +40,7 @@ import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.EnumUtil;
 import com.redhat.ceylon.common.tool.Hidden;
+import com.redhat.ceylon.common.tool.NonFatalToolMessage;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ParsedBy;
@@ -184,7 +185,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
 
     private List<File> sources = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
-    private List<String> modulesOrFiles = Arrays.asList("*");
+    private List<String> modulesOrFiles = DefaultToolOptions.getCompilerModules(Backend.Java);
     private boolean continueOnErrors;
     private boolean progress = DefaultToolOptions.getCompilerProgress();
     private List<String> javac = Collections.emptyList();
@@ -198,6 +199,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
+    
     private ModuleSpec jdkProvider;
     {
         String jdkProvider = DefaultToolOptions.getCompilerJdkProvider();
@@ -555,8 +557,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add("-nodefreps");
         }
         
-        if (repo != null) {
-            for (URI uri : this.repo) {
+        if (repos != null) {
+            for (URI uri : this.repos) {
                 arguments.add("-rep");
                 arguments.add(uri.toString());
             }
@@ -567,12 +569,17 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add(EnumUtil.enumsToString(suppressWarnings));
         }
         
-        addJavacArguments(arguments);
+        addJavacArguments(arguments, javac);
         
         List<File> srcs = applyCwd(this.sources);
         List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles, Backend.Java);
         if (expandedModulesOrFiles.isEmpty()) {
-            throw new ToolUsageError("No modules or source files to compile");
+            String msg = CeylonCompileMessages.msg("error.no.sources");
+            if (ModuleWildcardsHelper.onlyGlobArgs(this.modulesOrFiles)) {
+                throw new NonFatalToolMessage(msg);
+            } else {
+                throw new ToolUsageError(msg);
+            }
         }
         
         for (String moduleOrFile : expandedModulesOrFiles) {
@@ -640,7 +647,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         }
     }
 
-    private void addJavacArguments(List<String> arguments) {
+    public static void addJavacArguments(List<String> arguments, List<String> javac) {
         Helper helper = new Helper();
         for (String argument : javac) {
             helper.lastError = null;

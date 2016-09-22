@@ -16,6 +16,9 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
 import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 
@@ -69,7 +72,7 @@ public abstract class ToolLoader {
         return className;
     }
 
-    public ClassLoader loadModule(String name, String version) {
+    public ClassLoader loadModule(String name, String version, String overrides) {
         try {
             // Ok, now for something really crappy to force loading of the required module
             String loaderClassName;
@@ -82,8 +85,12 @@ public abstract class ToolLoader {
                 loaderClassName = "com.redhat.ceylon.module.loader.FlatpathModuleLoader";
             }
             Class<?> loaderClass = loader.loadClass(loaderClassName);
-            Constructor<?> loaderConstr = loaderClass.getConstructor(ClassLoader.class);
-            Object modLoader = loaderConstr.newInstance(loader);
+            CeylonRepoManagerBuilder repositoryManagerBuilder = CeylonUtils.repoManager();
+            if(overrides != null)
+                repositoryManagerBuilder.overrides(overrides);
+            RepositoryManager repositoryManager = repositoryManagerBuilder.buildManager();
+            Constructor<?> loaderConstr = loaderClass.getConstructor(RepositoryManager.class, ClassLoader.class);
+            Object modLoader = loaderConstr.newInstance(repositoryManager, loader);
             Method loadMth = loaderClass.getMethod("loadModule", String.class, String.class);
             ClassLoader mcl = (ClassLoader) loadMth.invoke(modLoader, name, version);
             return mcl;
@@ -194,7 +201,7 @@ public abstract class ToolLoader {
                 throw new ModelException("Error instantiating the given @ParserFactory", e);
             }
         }
-        return StandardArgumentParsers.forClass(setterType, this, isSimpleType);
+        return ArgumentParserFactory.instance(setterType, this, isSimpleType);
     }
     
     private <T extends Tool, A> void addMethod(Class<T> cls, ToolModel<T> model,

@@ -91,3 +91,12 @@ class ClassAlias(String key, String item="")
     variable Integer first;
     return first++;
 }
+
+@error class ClassWithDupeParamRef(param, param) {
+    String param;
+}
+
+@error void withPattern1([String* bar]) {}
+@error void withPattern2(String bar -> Integer baz) {}
+@error void withPattern3([String bar,Integer baz]) {}
+

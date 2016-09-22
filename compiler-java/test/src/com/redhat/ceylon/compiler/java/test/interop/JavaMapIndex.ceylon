@@ -24,4 +24,5 @@ import java.util{
 void javaMapIndex() {
     JMap<Integer,String> m = nothing;
     String? m0 = m[0];
+    String r = (m[0] = "a");
 }

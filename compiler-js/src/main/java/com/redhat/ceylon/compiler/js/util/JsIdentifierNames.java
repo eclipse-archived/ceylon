@@ -297,7 +297,7 @@ public class JsIdentifierNames {
         if (name.startsWith("anonymous#")) {
             name="anon$" + name.substring(10);
         }
-        if (decl.isClassOrInterfaceMember() && ((ClassOrInterface)decl.getContainer()).isDynamic()) {
+        if (decl.isDynamic()) {
             return JsUtils.escapeStringLiteral(decl.getName());
         }
         boolean nonLocal = !priv;
@@ -346,15 +346,6 @@ public class JsIdentifierNames {
                 rootName = '$' + rootName;
             }
             name += rootName;
-        }
-        if (decl.isAnonymous() && decl.isNativeHeader()) {
-            //Couldn't use ModelUtils.getNativeDeclaration with the backend
-            //because for some reason the anonymous class has null overloads.
-            if (decl.getContainer() != null &&
-                    decl.getContainer().getDirectMemberForBackend(
-                            decl.getName(), Backend.JavaScript.asSet()) != null) {
-                name+="$$N";
-            }
         }
         if (decl instanceof TypeAlias) {
             name+="()";

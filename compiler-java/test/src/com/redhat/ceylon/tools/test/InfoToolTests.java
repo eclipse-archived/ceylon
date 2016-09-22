@@ -28,6 +28,7 @@ import org.junit.Test;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolModel;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.tools.info.CeylonInfoTool;
 
@@ -86,7 +87,7 @@ public class InfoToolTests extends AbstractToolTests {
     public void testJdkModule() throws Exception {
         ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
         Assert.assertNotNull(model);
-        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("java.base/"+JDK.JDK7.version));
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("java.base/"+JDKUtils.jdk.version));
 
         StringBuilder b = new StringBuilder();
         tool.setOut(b);
@@ -94,7 +95,7 @@ public class InfoToolTests extends AbstractToolTests {
         
         Assert.assertTrue(b.toString().contains(
         "Name:        java.base\n"+
-        "Version:     7\n"+
+        "Version:     " + JDKUtils.jdk.version + "\n"+
         "Artifacts:   JVM (legacy)\n"+
         "Available:   On local system\n"+
         "Origin:      Java Runtime\n"+

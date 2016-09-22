@@ -12,6 +12,10 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 8)
 @Class(extendsType = "ceylon.language::Basic")
+@SharedAnnotation$annotation$
+@AbstractAnnotation$annotation$
+@SealedAnnotation$annotation$
+@NativeAnnotation$annotation$(backends={})
 public abstract class Throwable extends java.lang.Object 
         implements ReifiedType {
 

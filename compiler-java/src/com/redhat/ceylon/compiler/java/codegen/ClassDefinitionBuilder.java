@@ -219,12 +219,16 @@ public class ClassDefinitionBuilder {
             klasses.append(klass);
             klasses.appendList(after.toList());
         }
-        
-        gen.replace(getContainingClassBuilder());
+
+        restoreClassBuilder();
         
         return klasses.toList();
     }
 
+
+    public void restoreClassBuilder() {
+        gen.replace(getContainingClassBuilder());
+    }
 
     private boolean isInterface() {
         return (modifiers & INTERFACE) != 0;
@@ -243,7 +247,7 @@ public class ClassDefinitionBuilder {
                     && concreteInterfaceMemberDefs.constructors.isEmpty()));
     }
 
-    private void before(JCTree also) {
+    void before(JCTree also) {
         this.before.append(also);
     }
     

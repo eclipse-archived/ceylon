@@ -43,13 +43,27 @@ public class NpmRepository extends AbstractRepository {
     }
 
     public String[] getArtifactNames(ArtifactContext context) {
-        return getArtifactNames(context.getName(), context.getVersion(), new String[] { ArtifactContext.JS, ArtifactContext.NPM_DESCRIPTOR });
+        List<String> suffixes = Arrays.asList(context.getSuffixes());
+        if (suffixes.contains(ArtifactContext.JS)
+                || suffixes.contains(ArtifactContext.JS_MODEL)) {
+            return getArtifactNames(context.getName(), context.getVersion(), new String[] { ArtifactContext.JS, ArtifactContext.NPM_DESCRIPTOR });
+        } else {
+            return new String[0];
+        }
     }
 
     @Override
     protected ArtifactResult getArtifactResultInternal(
             RepositoryManager manager, Node node) {
         ArtifactContext context = ArtifactContext.fromNode(node);
+        if (context == null) {
+            return null;
+        }
+        List<String> suffixes = Arrays.asList(context.getSuffixes());
+        if (!suffixes.contains(ArtifactContext.JS)
+                && !suffixes.contains(ArtifactContext.NPM_DESCRIPTOR)) {
+            return null;
+        }
         return new NpmArtifactResult(this, manager, context.getName(), context.getVersion(), node);
     }
 
