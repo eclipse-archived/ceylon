@@ -256,7 +256,9 @@ public class ClassTransformer extends AbstractTransformer {
             if(generateInstantiator
                     && !cls.hasConstructors()
                     && !cls.hasEnumerated()){
-                classBuilder.getInitBuilder().modifiers(PROTECTED);
+                if (!cls.isStaticallyImportable()) {
+                    classBuilder.getInitBuilder().modifiers(PROTECTED);
+                }
                 generateInstantiators(classBuilder, cls, null, instantiatorDeclCb, instantiatorImplCb, classDef, classDef.getParameterList());
             }
             
@@ -3591,6 +3593,7 @@ public class ClassTransformer extends AbstractTransformer {
         result |= (cdecl instanceof Interface) ? INTERFACE : 0;
         // aliases are always final placeholders, final classes are also final
         result |= (cdecl instanceof Class) && (cdecl.isAlias() || cdecl.isFinal())  ? FINAL : 0;
+        result |= cdecl.isStaticallyImportable() ? STATIC : 0;
 
         return result;
     }
@@ -3626,6 +3629,7 @@ public class ClassTransformer extends AbstractTransformer {
             result |= def.isShared() ? PUBLIC : PRIVATE;
             result |= def.isFormal() && !def.isDefault() ? ABSTRACT : 0;
             result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface) ? FINAL : 0;
+            result |= def.isStaticallyImportable() ? STATIC : 0;
         }
 
         return result;
@@ -3635,6 +3639,7 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= Decl.isVariable(cdecl) || Decl.isLate(cdecl) ? 0 : FINAL;
+        result |= cdecl.getDeclarationModel().isStaticallyImportable() ? STATIC : 0;
         if(!CodegenUtil.hasCompilerAnnotation(cdecl, "packageProtected"))
             result |= PRIVATE;
         
@@ -3645,6 +3650,7 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= Decl.isVariable(cdecl) ? 0 : FINAL;
+        result |= cdecl.getDeclarationModel().isStaticallyImportable() ? STATIC : 0;
 
         return result;
     }
@@ -3669,6 +3675,7 @@ public class ClassTransformer extends AbstractTransformer {
         result |= tdecl.isShared() ? PUBLIC : PRIVATE;
         result |= ((tdecl.isFormal() && !tdecl.isDefault()) && !forCompanion) ? ABSTRACT : 0;
         result |= !(tdecl.isFormal() || tdecl.isDefault() || Decl.withinInterface(tdecl)) || forCompanion ? FINAL : 0;
+        result |= tdecl.isStaticallyImportable() ? STATIC : 0;
 
         return result;
     }
@@ -5097,7 +5104,7 @@ public class ClassTransformer extends AbstractTransformer {
             // not for a method if in an interface
             long modifiers = transformClassDeclFlags(klass) & ~FINAL;
             // when refining a member class of an interface because the 
-            // instantiator method is declared inb the companion interface it is
+            // instantiator method is declared in the companion interface it is
             // effectively public.
             if (klass instanceof Class && klass.isActual()) {
                 modifiers &= ~(PRIVATE | PROTECTED);
