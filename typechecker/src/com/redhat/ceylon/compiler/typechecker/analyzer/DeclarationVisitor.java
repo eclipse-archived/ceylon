@@ -920,11 +920,11 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         Tree.Identifier identifier = that.getIdentifier();
         if (c.isAbstract() && c.isFinal()) {
-            that.addError("class may not be both abstract and final: '" + 
+            that.addError("class may not be both 'abstract' and 'final': '" + 
                     name(identifier) + "'");
         }
         if (c.isFormal() && c.isFinal()) {
-            that.addError("class may not be both formal and final: '" + 
+            that.addError("class may not be both 'formal' and 'final': '" + 
                     name(identifier) + "'");
         }
         if (hasAnnotation(that.getAnnotationList(), "service", that.getUnit())) {
@@ -943,7 +943,8 @@ public abstract class DeclarationVisitor extends Visitor {
             if (that.getIdentifier()==null && 
                     clazz.getDefaultConstructor()!=null) {
                 that.addError("duplicate default constructor: '" +
-                        clazz.getName() + "' may have at most one default constructor");
+                        clazz.getName() + 
+                        "' may have at most one default constructor");
                 unit.getDuplicateDeclarations().add(c);
             }
         }
@@ -2216,6 +2217,18 @@ public abstract class DeclarationVisitor extends Visitor {
         if (model.isFormal() && model.isDefault()) {
             that.addError("declaration may not be annotated both 'formal' and 'default'",
                     1320);
+        }
+        if (model.isStaticallyImportable() && model.isActual()) {
+            that.addError("static member may not be annotated 'actual'", 
+                    1311);            
+        }
+        if (model.isStaticallyImportable() && model.isFormal()) {
+            that.addError("static member may not be annotated 'formal'", 
+                    1312);
+        }
+        if (model.isStaticallyImportable() && model.isDefault()) {
+            that.addError("static member may not be annotated 'default'", 
+                    1313);            
         }
         Tree.Annotation na = 
                 getAnnotation(al, "native", unit);
