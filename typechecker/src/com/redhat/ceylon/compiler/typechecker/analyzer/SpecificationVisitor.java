@@ -1249,6 +1249,12 @@ public class SpecificationVisitor extends Visitor {
                             declaration.getName() + 
                             "' may not be forward declared");
                 }
+                else if (declaration.isStaticallyImportable() && 
+                        !isNativeHeader(declaration)) {
+                    that.addError("static function must be specified: '" +
+                            declaration.getName() + 
+                            "' may not be forward declared");
+                }
                 else if (declaration.isClassMember() && 
                         !isNativeHeader(declaration) &&
                         !declaration.isFormal() && 
@@ -1346,15 +1352,27 @@ public class SpecificationVisitor extends Visitor {
             }
             else {
                 super.visit(that);
-                if (declaration.isToplevel() && 
-                        !isNativeHeader(declaration) &&
-                        !isLate()) {
+                if (declaration.isToplevel() 
+                        && !isNativeHeader(declaration) 
+                        && !isLate()) {
                     if (isVariable()) {
                         that.addError("toplevel variable value must be initialized: '" +
                                 declaration.getName() + "'");
                     }
                     else {
                         that.addError("toplevel value must be specified: '" +
+                                declaration.getName() + "'");
+                    }
+                }
+                else if ((declaration.isStaticallyImportable()) 
+                        && !isNativeHeader(declaration)
+                        && !isLate()) {
+                    if (isVariable()) {
+                        that.addError("static variable value must be initialized: '" +
+                                declaration.getName() + "'");
+                    }
+                    else {
+                        that.addError("static value must be specified: '" +
                                 declaration.getName() + "'");
                     }
                 }
