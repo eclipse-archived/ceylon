@@ -619,6 +619,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             // FIXME: only do this if boxed, or rather, do not box in the first place
             return make().Apply(null, makeQualIdent(ret, "toString"), List.<JCTree.JCExpression>nil());
         }
+        if(isJavaCharSequence(exprType) && expectedType.isExactly(typeFact().getStringDeclaration().getType())){
+            return make().Apply(null, makeQualIdent(ret, "toString"), List.<JCTree.JCExpression>nil());
+        }
         return ret;
     }
 

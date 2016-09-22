@@ -2249,6 +2249,10 @@ public abstract class AbstractTransformer implements Transformation {
         return new MultidimensionalArray(dimension, type);
     }
 
+    boolean isJavaCharSequence(Type type) {
+        return type != null && type.isExactly(typeFact.getJavaCharSequenceDeclaration().getType());
+    }
+
     public boolean isJavaArray(Type type) {
         if(type == null)
             return false;
