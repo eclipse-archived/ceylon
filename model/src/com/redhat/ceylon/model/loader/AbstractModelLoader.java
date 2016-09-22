@@ -1660,7 +1660,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.setActual(actual);
         klass.setActualCompleter(this);
         klass.setFinal(classMirror.isFinal());
-        klass.setStaticallyImportable(!klass.isCeylon() && classMirror.isStatic());
+        klass.setStaticallyImportable(classMirror.isStatic());
         
         if(objectAnnotation == null) {
             manageNativeBackend(klass, classMirror, isNativeHeader);
