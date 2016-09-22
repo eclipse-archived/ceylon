@@ -1,0 +1,21 @@
+package com.redhat.ceylon.compiler.java.test.structure.method;
+
+class StaticMethod implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    private static final .java.lang.String nonSharedStat$priv$() {
+        return "I\'m static";
+    }
+    
+    public static final .java.lang.String sharedStat() {
+        return "I\'m static";
+    }
+    
+    public StaticMethod() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.class);
+}

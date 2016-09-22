@@ -1,0 +1,64 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+class StaticAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    private static final .java.lang.String nonSharedStat = "I\'m static";
+    
+    private static final .java.lang.String getNonSharedStat$priv$() {
+        return nonSharedStat;
+    }
+    private static final .java.lang.String sharedStat = "I\'m static";
+    
+    public static final .java.lang.String getSharedStat() {
+        return sharedStat;
+    }
+    
+    private static final .java.lang.String getNonSharedStatGetter$priv$() {
+        return "I\'m static";
+    }
+    
+    public static final .java.lang.String getSharedStatGetter() {
+        return "I\'m static";
+    }
+    
+    private static final .java.lang.String getNonSharedStatGetter2$priv$() {
+        return "I\'m static";
+    }
+    
+    public static final .java.lang.String getSharedStatGetter2() {
+        return "I\'m static";
+    }
+    private static .java.lang.String nonSharedVariableStat = "I\'m static";
+    
+    private static final .java.lang.String getNonSharedVariableStat$priv$() {
+        return nonSharedVariableStat;
+    }
+    
+    private static final void setNonSharedVariableStat$priv$(final .java.lang.String nonSharedVariableStat) {
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.nonSharedVariableStat = nonSharedVariableStat;
+    }
+    private static .java.lang.String sharedVariableStat = "I\'m static";
+    
+    public static final .java.lang.String getSharedVariableStat() {
+        return sharedVariableStat;
+    }
+    
+    public static final void setSharedVariableStat(final .java.lang.String sharedVariableStat) {
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.sharedVariableStat = sharedVariableStat;
+    }
+    
+    private static final .java.lang.String getNonSharedVariableStatGetter$priv$() {
+        return "I\'m static";
+    }
+    
+    private static final void setNonSharedVariableStatGetter$priv$(final .java.lang.String nonSharedVariableStatGetter) {
+    }
+    
+    public StaticAttribute() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.class);
+}

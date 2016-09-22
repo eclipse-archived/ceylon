@@ -63,6 +63,7 @@ import com.redhat.ceylon.compiler.java.test.statement.StatementTests;
 import com.redhat.ceylon.compiler.java.test.statement.TryCatchTests;
 import com.redhat.ceylon.compiler.java.test.structure.ConstructorTests;
 import com.redhat.ceylon.compiler.java.test.structure.SerializableTests;
+import com.redhat.ceylon.compiler.java.test.structure.StaticTests;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests2;
 import com.redhat.ceylon.compiler.java.test.structure.StructureTests3;
@@ -92,6 +93,7 @@ import com.redhat.ceylon.tools.test.CompilerToolsTests;
 
     // those can run in any order
     NamingTests.class,
+    StaticTests.class,
     ConstructorTests.class,
     AnnotationsTests.class,
     InteropTests.class,
