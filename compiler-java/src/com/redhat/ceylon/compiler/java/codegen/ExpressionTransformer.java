@@ -5754,6 +5754,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (Decl.isPrivateAccessRequiringUpcast(qualified)) {
                     expr = makePrivateAccessUpcast(qualified, expr);
                 }
+            } else {
+                expr = makeJavaType(((ClassOrInterface)qualified.getDeclaration().getContainer()).getType(), JT_RAW);
             }
         } else if(leftTerm instanceof Tree.ParameterizedExpression) {
             expr = null;
