@@ -628,6 +628,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 getter.setSetter(setter);
             }
             setter.setNativeBackends(getter.getNativeBackends());
+            setter.setStaticallyImportable(getter.isStaticallyImportable());
         }
     }
 
