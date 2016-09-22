@@ -184,10 +184,10 @@ public class CallableBuilder {
      */
     public static JCExpression methodReference(CeylonTransformer gen, 
             final Tree.StaticMemberOrTypeExpression forwardCallTo, ParameterList parameterList, 
-            Type expectedType) {
+            Type expectedType, Type callableType) {
         ListBuffer<JCStatement> letStmts = new ListBuffer<JCStatement>();
-        CallableBuilder cb = new CallableBuilder(gen, forwardCallTo, forwardCallTo.getTypeModel(), parameterList);
-        cb.parameterTypes = cb.getParameterTypesFromCallableModel();
+        CallableBuilder cb = new CallableBuilder(gen, forwardCallTo, callableType, parameterList);
+        cb.parameterTypes = cb.getParameterTypesFromParameterModels();
         Naming.SyntheticName instanceFieldName;
         boolean instanceFieldIsBoxed = false;
         if (forwardCallTo instanceof Tree.QualifiedMemberOrTypeExpression
@@ -258,9 +258,9 @@ public class CallableBuilder {
         };
         if (cb.isVariadic) {
             tx = cb.new VariadicCallableTransformation(
-                    cb.new CallMethodWithForwardedBody(instanceFieldName, instanceFieldIsBoxed, forwardCallTo, false));
+                    cb.new CallMethodWithForwardedBody(instanceFieldName, instanceFieldIsBoxed, forwardCallTo, false, callableType));
         } else {
-            tx = cb.new FixedArityCallableTransformation(cb.new CallMethodWithForwardedBody(instanceFieldName, instanceFieldIsBoxed, forwardCallTo, true), null);
+            tx = cb.new FixedArityCallableTransformation(cb.new CallMethodWithForwardedBody(instanceFieldName, instanceFieldIsBoxed, forwardCallTo, true, callableType), null);
         }
         cb.useTransformation(tx);
         
@@ -867,12 +867,18 @@ public class CallableBuilder {
         private final Tree.Term forwardCallTo;
         private final Naming.SyntheticName instanceFieldName;
         private final boolean instanceFieldIsBoxed;
+        private final Type callableType;
 
-        CallMethodWithForwardedBody(Naming.SyntheticName instanceFieldName, boolean instanceFieldIsBoxed, Tree.Term forwardCallTo, boolean isCallMethod) {
+        CallMethodWithForwardedBody(Naming.SyntheticName instanceFieldName, 
+                boolean instanceFieldIsBoxed, 
+                Tree.Term forwardCallTo, 
+                boolean isCallMethod,
+                Type callableType) {
             this.instanceFieldName = instanceFieldName;
             this.instanceFieldIsBoxed = instanceFieldIsBoxed;
             this.forwardCallTo = forwardCallTo;
             this.isCallMethod = isCallMethod;
+            this.callableType = callableType;
         }
 
         @Override
@@ -957,7 +963,7 @@ public class CallableBuilder {
         }
 
         private Type getTypeModel() {
-            return forwardCallTo.getTypeModel();
+            return callableType;
         }
 
         private Reference appliedReference() {

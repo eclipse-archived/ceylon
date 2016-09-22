@@ -329,6 +329,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         }else if(term instanceof Tree.LetExpression){
             // special case to be able to pass expected type to let op
             result = transform((Tree.LetExpression)term, expectedType);
+        }else if(term instanceof Tree.FunctionArgument){
+            // special case to be able to pass expected type to lambdas
+            result = transform((Tree.FunctionArgument)term, expectedType);
         }else if(term instanceof Tree.IfExpression){
             // special case to be able to pass expected type to if op
             result = transform((Tree.IfExpression)term, expectedType);
@@ -4101,7 +4104,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transformFunctional(Tree.StaticMemberOrTypeExpression expr,
             Functional functional, Type expectedType) {
         return CallableBuilder.methodReference(gen(), expr, 
-                    functional.getFirstParameterList(), expectedType);
+                    functional.getFirstParameterList(), expectedType, expr.getTypeModel());
     }
 
     public JCExpression transformFunctionalInterfaceBridge(Tree.StaticMemberOrTypeExpression expr,
@@ -4120,7 +4123,46 @@ public class ExpressionTransformer extends AbstractTransformer {
             i++;
         }
         return CallableBuilder.methodReference(gen(), expr, 
-                    paramList, expectedType);
+                    paramList, expectedType, expr.getTypeModel());
+    }
+
+    public JCExpression transformCallableBridge(Tree.StaticMemberOrTypeExpression expr,
+            Value functional, Type expectedType) {
+        ParameterList paramList = new ParameterList();
+        // expr is a SAM
+        // expectedType is a Callable
+        TypedReference samRef = checkForFunctionalInterface(expr.getTypeModel());
+        TypedDeclaration samDecl = samRef.getDeclaration();
+        if(samDecl instanceof Value){
+            Parameter param = new Parameter();
+            Value paramModel = new Value();
+            param.setModel(paramModel);
+            param.setName("arg0");
+            paramModel.setName("arg0");
+            paramModel.setType(samRef.getType());
+            paramModel.setUnboxed(samDecl.getUnboxed());
+            // FIXME: other stuff like erasure?
+            paramList.getParameters().add(param);
+        }else{
+            int i=0;
+            for(Parameter samParam : ((Function)samDecl).getFirstParameterList().getParameters()){
+                TypedReference typedSamParam = samRef.getTypedParameter(samParam);
+                Parameter param = new Parameter();
+                Value paramModel = new Value();
+                param.setModel(paramModel);
+                param.setName("arg"+i);
+                paramModel.setName("arg"+i);
+                paramModel.setType(typedSamParam.getFullType());
+                // FIXME: other stuff like erasure?
+                paramModel.setUnboxed(typedSamParam.getDeclaration().getUnboxed());
+                paramList.getParameters().add(param);
+                i++;
+            }
+        }
+        // FIXME: this is cheating we should be assembling it from the SAM type
+        Type callableType = expectedType.getSupertype(typeFact().getCallableDeclaration());
+        return CallableBuilder.methodReference(gen(), expr, 
+                    paramList, expectedType, callableType);
     }
 
     //
@@ -4866,6 +4908,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && isFunctionalResult(expr.getTypeModel())
                 && checkForFunctionalInterface(expectedType) != null) {
             result = transformFunctionalInterfaceBridge(expr, (Value)decl, expectedType);
+        } else if (decl instanceof Value
+                && isJavaFunctionalInterfaceResult(expr.getTypeModel())
+                && isCeylonCallable(expectedType)) {
+            result = transformCallableBridge(expr, (Value)decl, expectedType);
         } else if (Decl.isGetter(decl)) {
             // invoke the getter
             if (decl.isToplevel()) {
@@ -6735,6 +6781,12 @@ public class ExpressionTransformer extends AbstractTransformer {
         return !isWithinInvocation()
             && !type.isNothing()
             && isCeylonCallableSubtype(type);   
+    }
+
+    boolean isJavaFunctionalInterfaceResult(Type type) {
+        return !isWithinInvocation()
+            && !type.isNothing()
+            && checkForFunctionalInterface(type) != null;   
     }
 
     boolean withinInvocation(boolean withinInvocation) {

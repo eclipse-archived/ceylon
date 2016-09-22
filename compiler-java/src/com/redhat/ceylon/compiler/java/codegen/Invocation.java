@@ -1090,7 +1090,14 @@ class CallableInvocation extends DirectInvocation {
             callableParameters = Collections.emptyList();
         functionalParameters = parameterList.getParameters();
         this.parameterCount = parameterCount;
-        setUnboxed(expr.getUnboxed());
+        // FIXME: only do this if not Callable subtype?
+        TypedReference samRef = gen.checkForFunctionalInterface(producedReference.getType());
+        if(samRef != null){
+            TypedDeclaration samDeclaration = samRef.getDeclaration();
+            setUnboxed(samDeclaration.getUnboxed());
+        }else{
+            setUnboxed(expr.getUnboxed());
+        }
         setBoxingStrategy(BoxingStrategy.BOXED);// Must be boxed because non-primitive return type
         handleBoxing(true);
         if (producedReference.getDeclaration() instanceof TypedDeclaration) {
@@ -1170,7 +1177,12 @@ class CallableInvocation extends DirectInvocation {
                 transformedPrimary = gen.makeUnquotedIdent(selector);
             else
                 transformedPrimary = gen.makeQualIdent(primaryExpr, selector);
-            transformedSelector = Naming.getCallableMethodName();
+            Type primaryType = ((Value)getPrimaryDeclaration()).getType();
+            TypedReference samRef = gen.checkForFunctionalInterface(primaryType);
+            if(samRef != null)
+                transformedSelector = samRef.getDeclaration().getName();
+            else
+                transformedSelector = Naming.getCallableMethodName();
         }
         return new TransformedInvocationPrimary(transformedPrimary, transformedSelector);
     }
