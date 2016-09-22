@@ -30,12 +30,16 @@ class StaticAttribute {
     shared new() {
     }
 }
-/*@noanno
-class StaticAttributeSub extends StaticAttribute {
+void staticAttribute() {
+    variable value s = StaticAttribute.sharedStat;
+    s = StaticAttribute.sharedStatGetter;
+    s = StaticAttribute.sharedStatGetter2;
     
-    shared static Integer sharedStat=1;
+    s = StaticAttribute.sharedVariableStat;
+    s = StaticAttribute.sharedVariableStatGetter;
+    s = StaticAttribute.sharedVariableStatGetter2;
     
-    shared new () {}
-    
-}*/
-// TODO use site
+    StaticAttribute.sharedVariableStat = s;
+    StaticAttribute.sharedVariableStatGetter = s;
+    StaticAttribute.sharedVariableStatGetter2 = s;
+}

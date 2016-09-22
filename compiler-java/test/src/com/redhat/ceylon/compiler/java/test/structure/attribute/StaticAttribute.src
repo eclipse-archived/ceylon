@@ -53,6 +53,27 @@ class StaticAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.
     private static final void setNonSharedVariableStatGetter$priv$(final .java.lang.String nonSharedVariableStatGetter) {
     }
     
+    public static final .java.lang.String getSharedVariableStatGetter() {
+        return "I\'m static";
+    }
+    
+    public static final void setSharedVariableStatGetter(final .java.lang.String sharedVariableStatGetter) {
+    }
+    
+    private static final .java.lang.String getNonSharedVariableStatGetter2$priv$() {
+        return "I\'m static";
+    }
+    
+    private static final void setNonSharedVariableStatGetter2$priv$(final .java.lang.String nonSharedVariableStatGetter2) {
+    }
+    
+    public static final .java.lang.String getSharedVariableStatGetter2() {
+        return "I\'m static";
+    }
+    
+    public static final void setSharedVariableStatGetter2(final .java.lang.String sharedVariableStatGetter2) {
+    }
+    
     public StaticAttribute() {
     }
     
@@ -61,4 +82,26 @@ class StaticAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.
         return .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class staticAttribute_ {
+    
+    private staticAttribute_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void staticAttribute() {
+        .java.lang.String s = .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.getSharedStat();
+        s = .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.getSharedStatGetter();
+        s = .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.getSharedStatGetter2();
+        s = .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.getSharedVariableStat();
+        s = .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.getSharedVariableStatGetter();
+        s = .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.getSharedVariableStatGetter2();
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.setSharedVariableStat(s);
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.setSharedVariableStatGetter(s);
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.setSharedVariableStatGetter2(s);
+    }
 }
