@@ -4,8 +4,9 @@ import java.util.\ifunction {
 import java.util {
     ArrayList
 }
+import java.lang { CharSequence }
 
-void toplevel(Integer i) => print(i);
+void toplevel(small Integer i) => print(i);
 
 void lambdas() {
     value j = LambdasJava();
@@ -16,6 +17,21 @@ void lambdas() {
     value fval = (Integer i) => print(i);
     j.intConsumer(fval);
     fval(1);
+    value refToIntMethod = LambdasJava.takeInt;
+    // make sure we don't wrap this
+    IntConsumer fvalNothing = nothing;
+    IntConsumer fval2 = (Integer i) => print(i);
+    j.intConsumer(fval2);
+    Callable<Anything,[Integer]> consumer = fval2;
+    
+    String s1 = j.str;
+    CharSequence cs1 = j.str;
+    String s2 = j.charSequence;
+    CharSequence cs2 = j.charSequence;
+    j.str = s1;
+    j.str = cs1;
+    j.charSequence = s2;
+    j.charSequence = cs2;
 
     j.intConsumer(toplevel);
     

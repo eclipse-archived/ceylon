@@ -22,4 +22,12 @@ public class LambdasJava {
     public int intSupplier(IntSupplier supplier){
         return supplier.getAsInt();
     }
+    
+    public CharSequence getCharSequence(){ return null; }
+    public void setCharSequence(CharSequence s){}
+
+    public String getStr(){ return null; }
+    public void setStr(String s){}
+    
+    public static void takeInt(int i){}
 }
