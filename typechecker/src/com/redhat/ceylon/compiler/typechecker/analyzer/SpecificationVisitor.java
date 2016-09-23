@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getLastConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getLastExecutableStatement;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getLastStatic;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isAlwaysSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isAtLeastOne;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isNeverSatisfied;
@@ -312,9 +313,8 @@ public class SpecificationVisitor extends Visitor {
     }
 
     private boolean isForwardReferenceable() {
-        return declarationSection ||
-                declaration.isToplevel() ||
-                declaration.isInterfaceMember();
+        return declarationSection 
+            || declaration.isToplevel();
     }
     
     @Override
@@ -1455,7 +1455,22 @@ public class SpecificationVisitor extends Visitor {
         }
         return null;
     }
-        
+    
+    @Override
+    public void visit(Tree.InterfaceBody that) {
+        if (that.getScope()==declaration.getContainer()) {
+            Tree.Statement les = getLastStatic(that);
+            declarationSection = les==null;
+            lastExecutableStatement = les;
+            super.visit(that);
+            declarationSection = false;
+            lastExecutableStatement = null;
+        }
+        else {
+            super.visit(that);
+        }
+    }
+    
     @Override
     public void visit(Tree.ClassBody that) {
         if (that.getScope()==declaration.getContainer()) {
@@ -1496,7 +1511,7 @@ public class SpecificationVisitor extends Visitor {
                 }
             }.visit(that);
             
-            super.visit(that);        
+            super.visit(that);
             declarationSection = false;
             lastExecutableStatement = null;
             lastConstructor = null;

@@ -486,8 +486,27 @@ public class AnalyzerUtil {
         return null;
     }
 
-    static Tree.Declaration getLastConstructor(Tree.ClassBody that) {
-        List<Tree.Statement> statements = that.getStatements();
+    static Tree.Statement getLastStatic(
+            Tree.InterfaceBody that) {
+        List<Tree.Statement> statements = 
+                that.getStatements();
+        for (int i=statements.size()-1; i>=0; i--) {
+            Tree.Statement s = statements.get(i);
+            if (s instanceof Tree.Declaration) {
+                Tree.Declaration d = (Tree.Declaration) s;
+                if (d.getDeclarationModel()
+                        .isStaticallyImportable()) {
+                    return s;
+                }
+            }
+        }
+        return null;
+    }
+
+    static Tree.Declaration getLastConstructor(
+            Tree.ClassBody that) {
+        List<Tree.Statement> statements = 
+                that.getStatements();
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
             if (s instanceof Tree.Constructor ||
