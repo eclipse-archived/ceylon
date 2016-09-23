@@ -91,7 +91,7 @@ shared annotation SealedAnnotation sealed()
 shared final sealed annotation class ActualAnnotation()
         satisfies OptionalAnnotation<ActualAnnotation,
                     FunctionOrValueDeclaration
-                  | ClassOrInterfaceDeclaration> {}
+                  | ClassDeclaration> {}
 
 "Annotation to mark a member of a type as refining a member 
  of a supertype."
@@ -102,7 +102,7 @@ shared annotation ActualAnnotation actual()
 shared final sealed annotation class FormalAnnotation()
         satisfies OptionalAnnotation<FormalAnnotation,
                     FunctionOrValueDeclaration
-                  | ClassOrInterfaceDeclaration> {}
+                  | ClassDeclaration> {}
 
 "Annotation to mark a member whose implementation must be 
  provided by subtypes."
@@ -113,7 +113,7 @@ shared annotation FormalAnnotation formal()
 shared final sealed annotation class DefaultAnnotation()
         satisfies OptionalAnnotation<DefaultAnnotation,
                     FunctionOrValueDeclaration
-                  | ClassOrInterfaceDeclaration> {}
+                  | ClassDeclaration> {}
 
 "Annotation to mark a member whose implementation may be 
  refined by subtypes. Non-`default` declarations may not be 
@@ -182,7 +182,8 @@ shared final sealed annotation class DocAnnotation(
  element."
 shared annotation DocAnnotation doc(
     "Documentation, in Markdown syntax, about the annotated element"
-    String description) => DocAnnotation(description);
+    String description) 
+        => DocAnnotation(description);
 
 "The annotation class for the [[see]] annotation."
 shared final sealed annotation class SeeAnnotation(
