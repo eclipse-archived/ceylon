@@ -2184,7 +2184,7 @@ public abstract class DeclarationVisitor extends Visitor {
             if (model instanceof FunctionOrValue 
              || model instanceof ClassOrInterface) {
                 model.setStaticallyImportable(true);
-                if (model instanceof Interface) {
+                if (model.isInterfaceMember()) {
                     that.addUnsupportedError("static members of interfaces are not yet supported");
                 }
             }
