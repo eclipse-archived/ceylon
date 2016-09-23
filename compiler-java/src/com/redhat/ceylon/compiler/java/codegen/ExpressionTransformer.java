@@ -4910,6 +4910,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = transformFunctionalInterfaceBridge(expr, (Value)decl, expectedType);
         } else if (decl instanceof Value
                 && isJavaFunctionalInterfaceResult(expr.getTypeModel())
+                && expectedType != null
                 && isCeylonCallable(expectedType)) {
             result = transformCallableBridge(expr, (Value)decl, expectedType);
         } else if (Decl.isGetter(decl)) {
