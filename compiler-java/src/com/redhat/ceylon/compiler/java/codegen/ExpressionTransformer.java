@@ -4904,11 +4904,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                         || functionalParameterRequiresCallable((Function)decl, expr)) 
                 && isFunctionalResult(expr.getTypeModel())) {
             result = transformFunctional(expr, (Functional)decl, expectedType);
-        } else if (decl instanceof Value
+        } else if (expr.getCoerced()
+                && decl instanceof Value
                 && isFunctionalResult(expr.getTypeModel())
                 && checkForFunctionalInterface(expectedType) != null) {
             result = transformFunctionalInterfaceBridge(expr, (Value)decl, expectedType);
-        } else if (decl instanceof Value
+        } else if (expr.getCoerced()
+                && decl instanceof Value
                 && isJavaFunctionalInterfaceResult(expr.getTypeModel())
                 && expectedType != null
                 && isCeylonCallable(expectedType)) {
