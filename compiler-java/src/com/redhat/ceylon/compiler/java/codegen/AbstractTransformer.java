@@ -2250,7 +2250,13 @@ public abstract class AbstractTransformer implements Transformation {
     }
 
     boolean isJavaCharSequence(Type type) {
-        return type != null && type.isExactly(typeFact.getJavaCharSequenceDeclaration().getType());
+        if(type == null)
+            return false;
+        Interface javaCharSequenceDeclaration = typeFact.getJavaCharSequenceDeclaration();
+        // Frankly this is weird, but it happens
+        if(javaCharSequenceDeclaration == null)
+            return false;
+        return type.isExactly(javaCharSequenceDeclaration.getType());
     }
 
     public boolean isJavaArray(Type type) {

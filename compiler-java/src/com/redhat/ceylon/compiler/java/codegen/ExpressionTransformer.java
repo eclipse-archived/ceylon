@@ -622,7 +622,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         exprType = simplifyType(exprType);
         expectedType = simplifyType(expectedType);
         System.err.println("coercions: "+exprType+" to "+expectedType);
-        if(isCeylonString(exprType) && expectedType.isExactly(typeFact().getJavaCharSequenceDeclaration().getType())){
+        if(isCeylonString(exprType) && isJavaCharSequence(expectedType)){
             // FIXME: only do this if boxed, or rather, do not box in the first place
             return make().Apply(null, makeQualIdent(ret, "toString"), List.<JCTree.JCExpression>nil());
         }
