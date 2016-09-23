@@ -806,6 +806,8 @@ public class InteropTests extends CompilerTests {
 
     @Test
     public void testIopLambdas(){
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
         compile("LambdasJava.java", "Lambdas.ceylon");
     }
 
