@@ -4104,7 +4104,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transformFunctional(Tree.StaticMemberOrTypeExpression expr,
             Functional functional, Type expectedType) {
         return CallableBuilder.methodReference(gen(), expr, 
-                    functional.getFirstParameterList(), expectedType, expr.getTypeModel());
+                    functional.getFirstParameterList(), expectedType, expr.getTypeModel(), true);
     }
 
     public JCExpression transformFunctionalInterfaceBridge(Tree.StaticMemberOrTypeExpression expr,
@@ -4123,7 +4123,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             i++;
         }
         return CallableBuilder.methodReference(gen(), expr, 
-                    paramList, expectedType, expr.getTypeModel());
+                    paramList, expectedType, expr.getTypeModel(), false);
     }
 
     public JCExpression transformCallableBridge(Tree.StaticMemberOrTypeExpression expr,
@@ -4162,7 +4162,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         // FIXME: this is cheating we should be assembling it from the SAM type
         Type callableType = expectedType.getSupertype(typeFact().getCallableDeclaration());
         return CallableBuilder.methodReference(gen(), expr, 
-                    paramList, expectedType, callableType);
+                    paramList, expectedType, callableType, false);
     }
 
     //

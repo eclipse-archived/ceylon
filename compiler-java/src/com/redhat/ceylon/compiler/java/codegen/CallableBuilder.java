@@ -184,10 +184,12 @@ public class CallableBuilder {
      */
     public static JCExpression methodReference(CeylonTransformer gen, 
             final Tree.StaticMemberOrTypeExpression forwardCallTo, ParameterList parameterList, 
-            Type expectedType, Type callableType) {
+            Type expectedType, Type callableType, boolean useParameterTypesFromCallableModel) {
         ListBuffer<JCStatement> letStmts = new ListBuffer<JCStatement>();
         CallableBuilder cb = new CallableBuilder(gen, forwardCallTo, callableType, parameterList);
-        cb.parameterTypes = cb.getParameterTypesFromParameterModels();
+        cb.parameterTypes = useParameterTypesFromCallableModel
+                ? cb.getParameterTypesFromCallableModel()
+                : cb.getParameterTypesFromParameterModels();
         Naming.SyntheticName instanceFieldName;
         boolean instanceFieldIsBoxed = false;
         if (forwardCallTo instanceof Tree.QualifiedMemberOrTypeExpression
