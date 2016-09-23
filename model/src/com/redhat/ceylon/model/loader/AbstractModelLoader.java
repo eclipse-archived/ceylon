@@ -3197,9 +3197,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
             if(methodMirror.isStaticInit())
                 continue;
-            if(isCeylon && methodMirror.isStatic()
-                    && methodMirror.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) == null)
-                continue;
             // these are not relevant for our caller
             if(methodMirror.isConstructor() || isInstantiator(methodMirror)) {
                 continue;
