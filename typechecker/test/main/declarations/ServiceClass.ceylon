@@ -1,19 +1,19 @@
 shared interface ServiceInterface {}
 shared abstract class ServiceClass() {}
 
-@error:"class is abstract, and may not be annotated service"
+@error:"class is abstract, and may not be annotated 'service'"
 service(`interface ServiceInterface`)
 shared abstract class AbstractImplementation() satisfies ServiceInterface {
 }
 
-@error:"class is not shared, and may not be annotated service"
+@error:"class is not shared, and may not be annotated 'service'"
 service(`interface ServiceInterface`)
 class NonSharedImplementation() satisfies ServiceInterface {
 }
 
 service(`interface ServiceInterface`)
 shared class ValidImplementation() satisfies ServiceInterface {
-    @error:"declaration is not a toplevel class, and may not be annotated service"
+    @error:"declaration is not a toplevel class, and may not be annotated 'service'"
     service(`interface ServiceInterface`)
     class Inner() satisfies ServiceInterface {
         
