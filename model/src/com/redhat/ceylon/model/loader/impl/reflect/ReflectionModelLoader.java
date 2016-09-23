@@ -187,10 +187,4 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
     protected void logVerbose(String message) {
         log.debug(message);
     }
-
-    @Override
-    protected FunctionalInterface getFunctionalInterface(TypeMirror type) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }
