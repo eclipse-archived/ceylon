@@ -432,7 +432,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         // return new SerializationProxy(outer, Foo.clazz, name);
         List<JCExpression> args = List.<JCExpression>of(name.makeIdent());
-        if (model.isMember()) {
+        if (model.isMember() && !model.isStaticallyImportable()) {
             ClassOrInterface outer = (ClassOrInterface)model.getContainer();
             args = args.prepend(makeClassLiteral(outer.getType()));
             args = args.prepend(naming.makeQualifiedThis(naming.makeTypeDeclarationExpression(null, outer, DeclNameFlag.QUALIFIED)));
@@ -3685,6 +3685,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         result |= FINAL;
         result |= !Decl.isAncestorLocal(cdecl) && Decl.isShared(cdecl) ? PUBLIC : 0;
+        result |= cdecl.isStaticallyImportable() ? STATIC : 0;
 
         return result;
     }
@@ -5447,7 +5448,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(def);
         List<JCTree> result = objectClassBuilder.build();
         
-        if (makeLocalInstance) {
+        if (makeLocalInstance && !model.isStaticallyImportable()) {
             if(model.isSelfCaptured()){
                 // if it's captured we need to box it and define the var before the class, so it can access it
                 JCNewClass newInstance = makeNewClass(objectClassBuilder.getClassName(), false, null);
@@ -5467,7 +5468,7 @@ public class ClassTransformer extends AbstractTransformer {
             boolean generateGetter = Decl.isCaptured(model);
             JCExpression type = makeJavaType(klass.getType());
             if (generateGetter) {
-                int modifiers = TRANSIENT | PRIVATE;
+                int modifiers = TRANSIENT | PRIVATE | (model.isStaticallyImportable() ? STATIC : 0);
                 JCExpression initialValue = makeNull();
                 containingClassBuilder.field(modifiers, name, type, initialValue, false);
                 AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
@@ -5487,7 +5488,7 @@ public class ClassTransformer extends AbstractTransformer {
                 getter.getterBlock(make().Block(0, stmts.toList()));
                 result = result.appendList(getter.build());
             } else {
-                int modifiers = FINAL;
+                int modifiers = FINAL | (model.isStaticallyImportable() ? STATIC : 0);
                 JCExpression initialValue = makeNewClass(makeJavaType(klass.getType()), null);
                 containingClassBuilder.field(modifiers, name, type, initialValue, true);
             }

@@ -1284,6 +1284,7 @@ public abstract class DeclarationVisitor extends Visitor {
         Type t = c.getType();
         that.getType().setTypeModel(t);
         v.setType(t);
+        v.setStaticallyImportable(c.isStaticallyImportable());
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
