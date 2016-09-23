@@ -851,34 +851,4 @@ public class CeylonModelLoader extends AbstractModelLoader {
         boolean hasBooleanReturn = (methodSymbol.getReturnType().getKind() == com.redhat.ceylon.javax.lang.model.type.TypeKind.BOOLEAN);
         return (matchesGet && hasNonVoidReturn || matchesIs && hasBooleanReturn) && hasNoParams;
     }
-
-    @Override
-    protected FunctionalInterface getFunctionalInterface(TypeMirror typeMirror) {
-        if(typeMirror.getKind() != TypeKind.DECLARED)
-            return null;
-        // FIXME: possibly apply other optimisations to lighten the lookup cost? see what javac does
-        Type type = ((JavacType)typeMirror).type;
-        try{
-            MethodSymbol descriptorSymbol = (MethodSymbol) types.findDescriptorSymbol(type.tsym);
-            Type descriptorType = types.findDescriptorType(type);
-            // Let's be honest I've no idea what this means, but it happens and Javac seems to refuse it too
-            if(descriptorType.hasTag(TypeTag.FORALL))
-                return null;
-            MethodType methodDescriptorType = (MethodType)descriptorType; 
-            // FIXME: does this really skip classes?
-            ClassSymbol outermostClass = descriptorSymbol.outermostClass();
-            
-            JavacClass classMirror = new JavacClass(outermostClass);
-            ListBuffer<TypeMirror> substitutedParameterTypes = new ListBuffer<TypeMirror>();
-            for(Type parameterType : methodDescriptorType.getParameterTypes()){
-                substitutedParameterTypes.add(new JavacType(parameterType));
-            }
-            return new com.redhat.ceylon.model.loader.mirror.FunctionalInterface(classMirror, 
-                    new JavacMethod(classMirror, descriptorSymbol), 
-                    new JavacType(methodDescriptorType.getReturnType()),
-                    substitutedParameterTypes.toList());
-        }catch(FunctionDescriptorLookupError err){
-            return null;
-        }
-    }
 }
