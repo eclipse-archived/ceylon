@@ -829,11 +829,13 @@ public final class String
         }
     }
     
+    @Ignore
     public static Integer lastInclusion(java.lang.String value, 
     		List<? extends Character> sublist) {
         return lastInclusion(value, sublist, 0);
     }
     
+    @Ignore
     public static Integer lastInclusion(java.lang.String value, 
             List<? extends Character> sublist, long from) {
         if (from>value.length()) {
@@ -2736,11 +2738,13 @@ public final class String
         return $TypeDescriptor$;
     }
 
+    @Ignore
     public static boolean largerThan(java.lang.String value, 
             String other) {
         return value.compareTo(other.value)>0;
     }
 
+    @Ignore
     public static boolean largerThan(java.lang.String value,
                 java.lang.String other) {
         return value.compareTo(other)>0;
@@ -2751,11 +2755,13 @@ public final class String
         return value.compareTo(other.value)>0;
     }
 
+    @Ignore
     public static boolean notSmallerThan(java.lang.String value, 
             String other) {
         return value.compareTo(other.value)>=0;
     }
 
+    @Ignore
     public static boolean notSmallerThan(java.lang.String value,
                 java.lang.String other) {
         return value.compareTo(other)>=0;
@@ -2766,11 +2772,13 @@ public final class String
         return value.compareTo(other.value)>=0;
     }
 
+    @Ignore
     public static boolean smallerThan(java.lang.String value, 
             String other) {
         return value.compareTo(other.value)<0;
     }
 
+    @Ignore
     public static boolean smallerThan(java.lang.String value,
                 java.lang.String other) {
         return value.compareTo(other)<0;
@@ -2781,11 +2789,13 @@ public final class String
         return value.compareTo(other.value)<0;
     }
 
+    @Ignore
     public static boolean notLargerThan(java.lang.String value, 
             String other) {
         return value.compareTo(other.value)<=0;
     }
 
+    @Ignore
     public static boolean notLargerThan(java.lang.String value,
                 java.lang.String other) {
         return value.compareTo(other)<=0;
@@ -3537,10 +3547,12 @@ public final class String
         return indexOf(value, string, from);
     }
     
+    @Ignore
     public static long indexOf(java.lang.String value, java.lang.String string) {
         return value.indexOf(string);
     }
     
+    @Ignore
     public static long indexOf(java.lang.String value, java.lang.String string, long from) {
         if (from>value.length()) {
             return -1;
@@ -3578,10 +3590,12 @@ public final class String
         return lastIndexOf(value, string, to);
     }
     
+    @Ignore
     public static long lastIndexOf(java.lang.String value, java.lang.String string) {
         return value.lastIndexOf(string);
     }
     
+    @Ignore
     public static long lastIndexOf(java.lang.String value, java.lang.String string, long to) {
         if (to>value.length()) {
             return lastIndexOf(value, string);

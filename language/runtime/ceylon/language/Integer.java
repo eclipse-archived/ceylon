@@ -788,10 +788,12 @@ public final class Integer
         return $TypeDescriptor$;
     }
     
+    @Ignore
     public static boolean largerThan(long value, Integer other) {
     	return value>other.value;
     }
 
+    @Ignore
     public static boolean largerThan(long value, long other) {
         return value>other;
     }
@@ -801,10 +803,12 @@ public final class Integer
     	return value>other.value;
     }
 
+    @Ignore
     public static boolean notSmallerThan(long value, Integer other) {
     	return value>=other.value;
     }
 
+    @Ignore
     public static boolean notSmallerThan(long value, long other) {
         return value>=other;
     }
@@ -814,10 +818,12 @@ public final class Integer
     	return value>=other.value;
     }
 
+    @Ignore
     public static boolean smallerThan(long value, Integer other) {
     	return value<other.value;
     }
 
+    @Ignore
     public static boolean smallerThan(long value, long other) {
         return value<other;
     }
@@ -827,10 +833,12 @@ public final class Integer
     	return value<other.value;
     }
 
+    @Ignore
     public static boolean notLargerThan(long value, Integer other) {
     	return value<=other.value;
     }
 
+    @Ignore
     public static boolean notLargerThan(long value, long other) {
         return value<=other;
     }
@@ -845,6 +853,7 @@ public final class Integer
     	return instance(value*integer);
     }
     
+    @Ignore
     public static long timesInteger(long value, long integer) {
     	return value*integer;
     }
@@ -854,6 +863,7 @@ public final class Integer
     	return instance(value+integer);
     }
     
+    @Ignore
     public static long plusInteger(long value, long integer) {
     	return value+integer;
     }
@@ -863,6 +873,7 @@ public final class Integer
         return instance(power(value,integer));
     }
     
+    @Ignore
     public static long powerOfInteger(long value, long integer) {
         return power(value,integer);
     }

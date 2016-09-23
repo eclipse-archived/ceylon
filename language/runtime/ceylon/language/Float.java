@@ -601,10 +601,12 @@ public final class Float
         return $TypeDescriptor$;
     }
 
+    @Ignore
     public static boolean largerThan(double value, Float other) {
     	return value>other.value;
     }
 
+    @Ignore
     public static boolean largerThan(double value, double other) {
         return value>other;
     }
@@ -614,10 +616,12 @@ public final class Float
     	return value>other.value;
     }
 
+    @Ignore
     public static boolean notSmallerThan(double value, Float other) {
     	return value>=other.value;
     }
 
+    @Ignore
     public static boolean notSmallerThan(double value, double other) {
         return value>=other;
     }
@@ -627,10 +631,12 @@ public final class Float
     	return value>=other.value;
     }
 
+    @Ignore
     public static boolean smallerThan(double value, Float other) {
     	return value<other.value;
     }
 
+    @Ignore
     public static boolean smallerThan(double value, double other) {
         return value<other;
     }
@@ -640,10 +646,12 @@ public final class Float
     	return value<other.value;
     }
 
+    @Ignore
     public static boolean notLargerThan(double value, Float other) {
     	return value<=other.value;
     }
 
+    @Ignore
     public static boolean notLargerThan(double value, double other) {
         return value<=other;
     }
@@ -658,6 +666,7 @@ public final class Float
     	return instance(value*integer);
     }
     
+    @Ignore
     public static double timesInteger(double value, long integer) {
     	return value*integer;
     }
@@ -667,6 +676,7 @@ public final class Float
     	return instance(value+integer);
     }
     
+    @Ignore
     public static double plusInteger(double value, long integer) {
     	return value+integer;
     }
@@ -676,6 +686,7 @@ public final class Float
         return instance(powerOfInteger(value,integer));
     }
     
+    @Ignore
     public static double powerOfInteger(double value, long integer) {
         if (integer == 0 && 
                 !Double.isNaN(value)) {
