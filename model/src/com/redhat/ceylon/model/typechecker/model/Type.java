@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import com.redhat.ceylon.model.loader.model.FunctionOrValueInterface;
@@ -3700,9 +3701,19 @@ public class Type extends Reference {
             // mark it as resolved so it doesn't get resolved again
             resolvedAliases.resolvedAliases = resolvedAliases;
             if (resolvedAliases != this) {
-                // inherit whatever underlying type we had
-                resolvedAliases.underlyingType = underlyingType;
-                resolvedAliases.isRaw = isRaw;
+                if(!Objects.equals(resolvedAliases.underlyingType, underlyingType)
+                        || resolvedAliases.isRaw != isRaw){
+                    // never modify a type because it could be used by something else
+                    // for example, we may take a function(int x, int y), build a tuple [int, int]
+                    // from its parameter types, resolver aliases which simplifies it to the first int
+                    // type and we can't erase its underlying type otherwise we modify the function
+                    // parameter list types
+                    resolvedAliases = resolvedAliases.clone();
+                    resolvedAliases.resolvedAliases = resolvedAliases;
+                    // inherit whatever underlying type we had
+                    resolvedAliases.underlyingType = underlyingType;
+                    resolvedAliases.isRaw = isRaw;
+                }
             }
         }
         return resolvedAliases;
