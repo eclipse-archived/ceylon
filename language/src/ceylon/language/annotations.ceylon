@@ -7,13 +7,15 @@ import ceylon.language.meta.declaration {
     ConstructorDeclaration,
     FunctionDeclaration,
     Declaration,
-    ValueDeclaration
+    ValueDeclaration,
+    FunctionOrValueDeclaration
 }
 
 "The annotation class for the [[annotation]] meta-annotation."
 shared final sealed annotation class AnnotationAnnotation()
         satisfies OptionalAnnotation<AnnotationAnnotation,
-                ClassDeclaration|FunctionDeclaration> {}
+                    ClassDeclaration
+                  | FunctionDeclaration> {}
 
 "Annotation to mark a class as an *annotation class*, or a 
  top-level function as an *annotation constructor*."
@@ -24,7 +26,10 @@ shared annotation AnnotationAnnotation annotation()
 "The annotation class for the [[shared]] annotation."
 shared final sealed annotation class SharedAnnotation()
         satisfies OptionalAnnotation<SharedAnnotation,
-                FunctionDeclaration|ValueDeclaration|ClassOrInterfaceDeclaration|ConstructorDeclaration|Package|Import> {}
+                    FunctionOrValueDeclaration
+                  | ClassOrInterfaceDeclaration
+                  | ConstructorDeclaration
+                  | Package | Import> {}
 
 "Annotation to mark a declaration as shared. A `shared` 
  declaration is visible outside the block of code in which 
@@ -35,7 +40,7 @@ shared annotation SharedAnnotation shared()
 "The annotation class for the [[variable]] annotation."
 shared final sealed annotation class VariableAnnotation()
         satisfies OptionalAnnotation<VariableAnnotation,
-                ValueDeclaration> {}
+                    ValueDeclaration> {}
 
 "Annotation to mark a value as variable. A `variable` value 
  may be assigned multiple times."
@@ -45,7 +50,8 @@ shared annotation VariableAnnotation variable()
 "The annotation class for the [[abstract]] annotation."
 shared final sealed annotation class AbstractAnnotation()
         satisfies OptionalAnnotation<AbstractAnnotation,
-                ClassDeclaration|ConstructorDeclaration> {}
+                    ClassDeclaration
+                  | ConstructorDeclaration> {}
 
 "Annotation to mark a class as abstract. An `abstract` class
  may have `formal` members, but may not be directly 
@@ -56,7 +62,7 @@ shared annotation AbstractAnnotation abstract()
 "The annotation class for the [[final]] annotation."
 shared final sealed annotation class FinalAnnotation()
         satisfies OptionalAnnotation<FinalAnnotation,
-                ClassDeclaration> {}
+                    ClassDeclaration> {}
 
 "Annotation to mark a class as final. A `final` class may 
  not be extended. Marking a class as `final` affects disjoint
@@ -68,7 +74,8 @@ shared annotation FinalAnnotation final()
 since("1.1.0")
 shared final sealed annotation class SealedAnnotation()
         satisfies OptionalAnnotation<SealedAnnotation,
-                ClassOrInterfaceDeclaration|ConstructorDeclaration> {}
+                    ClassOrInterfaceDeclaration
+                  | ConstructorDeclaration> {}
                 
 "Annotation to mark an interface, class, or constructor as 
  sealed. A `sealed` interface may not be satisfied outside 
@@ -83,7 +90,8 @@ shared annotation SealedAnnotation sealed()
 "The annotation class for the [[actual]] annotation."
 shared final sealed annotation class ActualAnnotation()
         satisfies OptionalAnnotation<ActualAnnotation,
-                FunctionDeclaration|ValueDeclaration|ClassOrInterfaceDeclaration> {}
+                    FunctionOrValueDeclaration
+                  | ClassOrInterfaceDeclaration> {}
 
 "Annotation to mark a member of a type as refining a member 
  of a supertype."
@@ -93,7 +101,8 @@ shared annotation ActualAnnotation actual()
 "The annotation class for the [[formal]] annotation."
 shared final sealed annotation class FormalAnnotation()
         satisfies OptionalAnnotation<FormalAnnotation,
-                FunctionDeclaration|ValueDeclaration|ClassOrInterfaceDeclaration> {}
+                    FunctionOrValueDeclaration
+                  | ClassOrInterfaceDeclaration> {}
 
 "Annotation to mark a member whose implementation must be 
  provided by subtypes."
@@ -103,7 +112,8 @@ shared annotation FormalAnnotation formal()
 "The annotation class for the [[default]] annotation."
 shared final sealed annotation class DefaultAnnotation()
         satisfies OptionalAnnotation<DefaultAnnotation,
-                FunctionDeclaration|ValueDeclaration|ClassOrInterfaceDeclaration> {}
+                    FunctionOrValueDeclaration
+                  | ClassOrInterfaceDeclaration> {}
 
 "Annotation to mark a member whose implementation may be 
  refined by subtypes. Non-`default` declarations may not be 
@@ -114,7 +124,8 @@ shared annotation DefaultAnnotation default()
 "The annotation class for the [[static]] annotation."
 shared final sealed annotation class StaticAnnotation()
         satisfies OptionalAnnotation<StaticAnnotation,
-FunctionDeclaration|ValueDeclaration|ClassOrInterfaceDeclaration> {}
+                    FunctionOrValueDeclaration
+                  | ClassOrInterfaceDeclaration> {}
 
 "Annotation to mark a member of a toplevel class or 
  interface as static. A `static` member does not have access 
@@ -127,7 +138,7 @@ shared annotation StaticAnnotation static()
 "The annotation class for the [[late]] annotation."
 shared final sealed annotation class LateAnnotation()
         satisfies OptionalAnnotation<LateAnnotation,
-                ValueDeclaration> {}
+                    ValueDeclaration> {}
 
 "Annotation to disable definite initialization analysis for 
  a reference."
@@ -136,7 +147,7 @@ shared annotation LateAnnotation late()
 
 "The annotation class for the [[native]] annotation."
 shared final sealed annotation class NativeAnnotation(backends)
-        satisfies OptionalAnnotation<NativeAnnotation,Annotated> {
+        satisfies OptionalAnnotation<NativeAnnotation> {
     "The compiler backend that this native annotation applies to,
      or the empty string to declare the annotated element is a
      native header."
@@ -165,7 +176,7 @@ shared final sealed annotation class DocAnnotation(
     "Documentation, in Markdown syntax, about the annotated 
      program element"
     shared String description)
-        satisfies OptionalAnnotation<DocAnnotation,Annotated> {}
+        satisfies OptionalAnnotation<DocAnnotation> {}
 
 "Annotation to specify API documentation of a program
  element."
@@ -177,7 +188,7 @@ shared annotation DocAnnotation doc(
 shared final sealed annotation class SeeAnnotation(
     "The program elements being referred to."
     shared Declaration* programElements)
-        satisfies SequencedAnnotation<SeeAnnotation,Annotated> {}
+        satisfies SequencedAnnotation<SeeAnnotation> {}
 
 "Annotation to specify references to other program elements
  related to the annotated API."
@@ -191,7 +202,7 @@ shared final sealed annotation class AuthorsAnnotation(
     "The authors, in Markdown syntax, of the annotated 
      program element"
     shared String* authors)
-        satisfies OptionalAnnotation<AuthorsAnnotation,Annotated> {}
+        satisfies OptionalAnnotation<AuthorsAnnotation> {}
 
 "Annotation to document the authors of an API."
 shared annotation AuthorsAnnotation by(
@@ -208,7 +219,9 @@ shared final sealed annotation class ThrownExceptionAnnotation(
      that cause this exception to be thrown."
     shared String when)
         satisfies SequencedAnnotation<ThrownExceptionAnnotation,
-                FunctionDeclaration|ValueDeclaration|ClassDeclaration|ConstructorDeclaration> {}
+                    FunctionOrValueDeclaration
+                  | ClassDeclaration
+                  | ConstructorDeclaration> {}
 
 "Annotation to document the exception types thrown by a 
  function, value, class, or constructor."
@@ -226,8 +239,7 @@ shared final sealed annotation class DeprecationAnnotation(
      element is deprecated, and of what alternatives are 
      available."
     shared String description)
-        satisfies OptionalAnnotation<DeprecationAnnotation,
-                Annotated> {
+        satisfies OptionalAnnotation<DeprecationAnnotation> {
     "A description, in Markdown syntax, of why the program 
      element is deprecated, and what alternatives are 
      available, or `null`."
@@ -248,7 +260,7 @@ shared annotation DeprecationAnnotation deprecated(
 shared final sealed annotation class TagsAnnotation(
     "The tags, in plain text."
     shared String* tags)
-        satisfies OptionalAnnotation<TagsAnnotation,Annotated> {}
+        satisfies OptionalAnnotation<TagsAnnotation> {}
 
 "Annotation to categorize an API by tag."
 shared annotation TagsAnnotation tagged(
@@ -261,7 +273,7 @@ since("1.2.0")
 shared final sealed annotation class AliasesAnnotation(
     "The aliases, in plain text."
     shared String* aliases)
-        satisfies OptionalAnnotation<AliasesAnnotation,Annotated> {}
+        satisfies OptionalAnnotation<AliasesAnnotation> {}
 
 "Annotation to specify a list of aliases that tools such as auto-completion and
  quick-fixes should consider, to help users find a declaration using its aliases."
@@ -275,7 +287,8 @@ shared annotation AliasesAnnotation aliased(
 shared final sealed annotation class LicenseAnnotation(
     "The name, text, or URL of the license."
     shared String description)
-        satisfies OptionalAnnotation<LicenseAnnotation,Module> {}
+        satisfies OptionalAnnotation<LicenseAnnotation,
+                    Module> {}
 
 "Annotation to specify the URL of the license of a module or 
  package."
@@ -287,7 +300,7 @@ shared annotation LicenseAnnotation license(
 "The annotation class for the [[optional]] annotation."
 shared final sealed annotation class OptionalImportAnnotation()
         satisfies OptionalAnnotation<OptionalImportAnnotation,
-                Import> {}
+                    Import> {}
 
 "Annotation to specify that a module can be executed even if 
  the annotated dependency is not available."
@@ -301,7 +314,10 @@ shared final sealed annotation class SuppressWarningsAnnotation(
     "The warning types to suppress."
     shared String* warnings)
         satisfies OptionalAnnotation<SuppressWarningsAnnotation, 
-            FunctionDeclaration|ValueDeclaration|ClassOrInterfaceDeclaration|ConstructorDeclaration|Module|Package|Import> {}
+                    FunctionOrValueDeclaration
+                  | ClassOrInterfaceDeclaration
+                  | ConstructorDeclaration
+                  | Module | Package | Import> {}
 
 "Annotation to suppress compilation warnings of the 
  [[specified types|warnings]] when typechecking the 
@@ -344,7 +360,8 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
 "The annotation class for the [[serializable]] annotation."
 since("1.2.0")
 shared final annotation class SerializableAnnotation()
-        satisfies OptionalAnnotation<SerializableAnnotation,ClassDeclaration> {
+        satisfies OptionalAnnotation<SerializableAnnotation,
+                    ClassDeclaration> {
 }
 
 "Annotation to specify that a class is serializable.
@@ -360,7 +377,8 @@ shared annotation SerializableAnnotation serializable()
 "The annotation class for the [[small]] annotation."
 since("1.3.0")
 shared final annotation class SmallAnnotation()
-        satisfies OptionalAnnotation<SmallAnnotation,ValueDeclaration|FunctionDeclaration> {
+        satisfies OptionalAnnotation<SmallAnnotation,
+                    FunctionOrValueDeclaration> {
 }
 
 "Annotation to hint to the compiler that an `Integer` or 
@@ -374,7 +392,8 @@ shared annotation SmallAnnotation small()
 "The annotation class for the [[service]] annotation."
 since("1.3.0")
 shared final annotation class ServiceAnnotation(contract)
-        satisfies SequencedAnnotation<ServiceAnnotation,ClassDeclaration> {
+        satisfies SequencedAnnotation<ServiceAnnotation,
+                    ClassDeclaration> {
     "The service interface or class that the annotated class 
      provides."
     shared ClassOrInterfaceDeclaration contract;
@@ -406,7 +425,7 @@ since("1.3.0")
 shared final sealed annotation class SinceAnnotation(
     "The version of the module when this declaration was added."
     shared String version)
-        satisfies OptionalAnnotation<SinceAnnotation,Annotated> {}
+        satisfies OptionalAnnotation<SinceAnnotation> {}
 
 "Annotation to indicate at which moment the annotated declaration
  was added to the module."
