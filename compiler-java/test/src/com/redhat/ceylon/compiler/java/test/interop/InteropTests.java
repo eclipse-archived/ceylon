@@ -810,12 +810,14 @@ public class InteropTests extends CompilerTests {
     }
 
     @Test
-    public void testIopStaticEnumSet(){
-        compile("StaticEnumSet.ceylon");
+    public void testIopLambdas(){
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compile("LambdasJava.java", "Lambdas.ceylon");
     }
 
     @Test
-    public void testIopLambdas(){
-        compile("LambdasJava.java", "Lambdas.ceylon");
+    public void testIopStaticEnumSet(){
+        compile("StaticEnumSet.ceylon");
     }
 }
