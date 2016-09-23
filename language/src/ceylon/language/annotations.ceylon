@@ -125,7 +125,7 @@ shared annotation DefaultAnnotation default()
 shared final sealed annotation class StaticAnnotation()
         satisfies OptionalAnnotation<StaticAnnotation,
                     FunctionOrValueDeclaration
-                  | ClassOrInterfaceDeclaration> {}
+                  | ClassDeclaration> {}
 
 "Annotation to mark a member of a toplevel class or 
  interface as static. A `static` member does not have access 

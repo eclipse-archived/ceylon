@@ -2142,15 +2142,16 @@ public abstract class DeclarationVisitor extends Visitor {
         endDeclaration(d);
         if (model.isClassOrInterfaceMember()) {
             ClassOrInterface container = 
-                    (ClassOrInterface) model.getContainer();
+                    (ClassOrInterface) 
+                        model.getContainer();
             if (container.isFinal() && model.isDefault()) {
                 that.addError("member of final class may not be annotated 'default'", 
                         1350);
             }
         }
         if (model.isToplevel()) {
-            if (model.getName()!=null && 
-                model.getName().endsWith("_")) {
+            String name = model.getName();
+            if (name!=null && name.endsWith("_")) {
                 that.addUnsupportedError("toplevel declaration name ending in _ not currently supported");
             }
             if (pkg.getNameAsString().endsWith("_")) {
@@ -2182,7 +2183,7 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         if (hasAnnotation(al, "static", unit)) {
             if (model instanceof FunctionOrValue 
-             || model instanceof ClassOrInterface) {
+                    || model instanceof Class) {
                 model.setStaticallyImportable(true);
                 if (model.isInterfaceMember()) {
                     that.addUnsupportedError("static members of interfaces are not yet supported");
@@ -2194,7 +2195,7 @@ public abstract class DeclarationVisitor extends Visitor {
         }
         if (hasAnnotation(al, "small", unit)) {
             if (model instanceof FunctionOrValue) {
-                ((FunctionOrValue)model).setSmall(true);
+                ((FunctionOrValue) model).setSmall(true);
             }
         }
         if (hasAnnotation(al, "default", unit)) {
