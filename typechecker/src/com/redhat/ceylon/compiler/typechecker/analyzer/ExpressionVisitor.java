@@ -1865,9 +1865,10 @@ public class ExpressionVisitor extends Visitor {
                                sie, message, code);
                     }
                     else {
-                        checkAssignable(t, 
+                        boolean coerced = checkAssignable(t, 
                                 declaredType, 
                                 sie, message, code);
+                        e.setCoerced(coerced);
                     }
                 }
             }
@@ -4933,7 +4934,7 @@ public class ExpressionVisitor extends Visitor {
                 boolean coerced = checkAssignable(at, paramType, a, 
                         "argument must be assignable to parameter " + 
                                 argdesc(p, pr), 2100);
-                a.getExpression().setCoerced(true);
+                a.getExpression().setCoerced(coerced);
             }
         }
     }
@@ -5587,10 +5588,11 @@ public class ExpressionVisitor extends Visitor {
                         leftHandType = 
                                 unit.getOptionalType(leftHandType);
                     }
-                    checkAssignable(rhst, leftHandType, 
+                    boolean coerced = checkAssignable(rhst, leftHandType, 
                             that.getRightTerm(), 
                             "assigned expression must be assignable to declared type", 
                             2100);
+                    that.getRightTerm().setCoerced(coerced);
                 }
             }
         }
