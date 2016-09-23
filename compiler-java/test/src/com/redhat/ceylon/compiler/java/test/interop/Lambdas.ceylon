@@ -4,9 +4,10 @@ import java.util.\ifunction {
 import java.util {
     ArrayList
 }
-import java.lang { CharSequence }
+import java.lang { CharSequence, ShortArray }
 
-void toplevel(small Integer i) => print(i);
+void toplevel(Integer i) => print(i);
+void toplevelSmall(small Integer i) => print(i);
 
 void lambdas() {
     value j = LambdasJava();
@@ -21,7 +22,7 @@ void lambdas() {
     // make sure we don't wrap this
     IntConsumer fvalNothing = nothing;
     IntConsumer fval2 = (Integer i) => print(i);
-    j.intConsumer(fval2);
+    //j.intConsumer(fval2);
     Callable<Anything,[Integer]> consumer = fval2;
     
     String s1 = j.str;
@@ -34,6 +35,8 @@ void lambdas() {
     j.charSequence = cs2;
 
     j.intConsumer(toplevel);
+    // FIXME:
+    //j.intConsumer(toplevelSmall);
     
     j.intConsumer((Integer i) => print(i));
     j.intSupplier(() => 1);
@@ -45,3 +48,9 @@ void lambdas() {
 }
 
 //class Sub(IntConsumer c) extends LambdasJava(c){}
+
+void underlyingTypeTest() {
+    value x = `ShortArray`;
+    value s = 2;
+    value r = ShortArray(s);
+}
