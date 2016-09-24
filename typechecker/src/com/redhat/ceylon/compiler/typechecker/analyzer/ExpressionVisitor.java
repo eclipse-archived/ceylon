@@ -8101,13 +8101,14 @@ public class ExpressionVisitor extends Visitor {
         else if (term instanceof Tree.MemberOrTypeExpression) {
             TypeDeclaration dec = type.getDeclaration();
             boolean isToplevelInstance = 
-                    dec.isObjectClass() && dec.isToplevel();
+                    dec.isObjectClass() && 
+                    (dec.isToplevel() || dec.isStatic());
             boolean isToplevelClassInstance = 
                     dec.isValueConstructor() &&
                     (dec.getContainer().isToplevel() || dec.isStatic());
             if (!isToplevelInstance && 
                 !isToplevelClassInstance) {
-                e.addError("case must refer to a toplevel object declaration, value constructor for a toplevel class, or literal value");
+                e.addError("case must refer to a toplevel or static object declaration, a value constructor for a toplevel class, or a literal value");
             }
             else {
                 Type ut = unionType(
@@ -8119,7 +8120,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else if (term!=null) {
-            e.addError("case must be a literal value or refer to a toplevel object declaration or value constructor for a toplevel class");
+            e.addError("case must be a literal value or refer to a toplevel or static object declaration or a value constructor for a toplevel class");
         }
     }
 

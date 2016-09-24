@@ -555,14 +555,14 @@ public class InheritanceVisitor extends Visitor {
                     else {
                         //enumerated anonymous subclasses
                         if (!caseDec.isObjectClass()) {
-                            bme.addError("case must be a toplevel anonymous class: '" + 
+                            bme.addError("case must be a toplevel or static anonymous class: '" + 
                                     value.getName(unit) + 
                                     "' is not an anonymous class");
                         }
-                        else if (!value.isToplevel()) {
-                            bme.addError("case must be a toplevel anonymous class: '" + 
+                        else if (!value.isToplevel() && !value.isStatic()) {
+                            bme.addError("case must be a toplevel or static anonymous class: '" + 
                                     value.getName(unit) + 
-                                    "' is not toplevel");
+                                    "' is neither static nor toplevel");
                         }
                     }
                     if (checkDirectSubtype(td, bme, type)) {
