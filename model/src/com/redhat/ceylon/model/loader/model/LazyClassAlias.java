@@ -97,7 +97,7 @@ public class LazyClassAlias extends ClassAlias implements LazyContainer {
 
     @Override
     public boolean isStatic() {
-        load();
+        // no lazy loading since it is set before completion
         return super.isStatic();
     }
 
