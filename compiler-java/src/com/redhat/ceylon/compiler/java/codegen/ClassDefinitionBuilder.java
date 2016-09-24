@@ -329,9 +329,14 @@ public class ClassDefinitionBuilder {
      */
     
     public ClassDefinitionBuilder modifiers(long modifiers) {
-        this.modifiers = modifiers;
+        if (forDefinition instanceof Interface) {
+            this.modifiers = modifiers & ~STATIC;
+        }
+        else {
+            this.modifiers = modifiers;            
+        }
         if (this.concreteInterfaceMemberDefs != null) {
-            this.concreteInterfaceMemberDefs.modifiers((modifiers & PUBLIC) | FINAL);
+            this.concreteInterfaceMemberDefs.modifiers((modifiers & (PUBLIC | STATIC)) | FINAL);
         }
         return this;
     }
