@@ -2414,7 +2414,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // we do not check for types inside initialiser section which are private and not captured because we treat them as members
                 && !(model instanceof Interface && Decl.hasLocalNotInitializerAncestor(model))){
             ClassOrInterface container = (ClassOrInterface) scope;
-            List<JCAnnotation> atContainer = makeAtContainer(container.getType());
+            List<JCAnnotation> atContainer = makeAtContainer(container.getType(), model.isStaticallyImportable());
             classBuilder.annotations(atContainer);
         }else{
             if(model instanceof Interface)

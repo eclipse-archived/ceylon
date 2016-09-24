@@ -62,14 +62,14 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Comprehension;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.langtools.tools.javac.code.BoundKind;
+import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
 import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.jvm.Target;
-import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
 import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
-import com.redhat.ceylon.langtools.tools.javac.tree.TreeMaker;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.Factory;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBinary;
@@ -88,6 +88,7 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCThrow;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCTypeParameter;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.LetExpr;
+import com.redhat.ceylon.langtools.tools.javac.tree.TreeMaker;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
@@ -97,7 +98,6 @@ import com.redhat.ceylon.langtools.tools.javac.util.Names;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.langtools.tools.javac.util.Position;
 import com.redhat.ceylon.langtools.tools.javac.util.Position.LineMap;
-import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.LanguageAnnotation;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
@@ -3435,10 +3435,14 @@ public abstract class AbstractTransformer implements Transformation {
         return make().Annotation(makeIdent(syms().ceylonAtAnnotationType), attributes);
     }
 
-    List<JCAnnotation> makeAtContainer(Type type) {
+    List<JCAnnotation> makeAtContainer(Type type, boolean isStatic) {
         JCExpression classAttribute = make().Assign(naming.makeUnquotedIdent("klass"), 
                                                     makeClassLiteral(type));
-        List<JCExpression> attributes = List.of(classAttribute);
+        
+        JCExpression staticAttribute = make().Assign(naming.makeUnquotedIdent("isStatic"), 
+                                                    make().Literal(isStatic));
+        
+        List<JCExpression> attributes = List.of(classAttribute, staticAttribute);
 
         return makeModelAnnotation(syms().ceylonAtContainerType, attributes);
     }

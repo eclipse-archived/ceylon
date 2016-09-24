@@ -13,4 +13,9 @@ public @interface Container {
      * The container class.
      */
     java.lang.Class<?> klass();
+    
+    /**
+     * Is it a static member type?
+     */
+    boolean isStatic() default false;
 }

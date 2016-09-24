@@ -1675,7 +1675,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         LazyInterface iface = new LazyInterface(classMirror, this);
         iface.setSealed(classMirror.getAnnotation(CEYLON_LANGUAGE_SEALED_ANNOTATION) != null);
         iface.setDynamic(classMirror.getAnnotation(CEYLON_DYNAMIC_ANNOTATION) != null);
-        iface.setStaticallyImportable(!iface.isCeylon());
+        
+        if (iface.isCeylon()) {
+            AnnotationMirror container = classMirror.getAnnotation(CEYLON_CONTAINER_ANNOTATION);
+            if (container!=null) {
+                Object value = container.getValue("isStatic");
+                if (value!=null) {
+                    iface.setStaticallyImportable(Boolean.TRUE.equals(value));
+                }
+            }
+        }
+        else {
+            iface.setStaticallyImportable(true);
+        }
         
         manageNativeBackend(iface, classMirror, isNativeHeader);
         
