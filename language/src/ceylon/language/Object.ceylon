@@ -94,6 +94,6 @@ shared abstract class Object()
      a more meaningful representation."
     shared default String string
             => className(this) + "@" + 
-               formatInteger(hash, #10);
+               Integer.format(hash, #10);
     
 }

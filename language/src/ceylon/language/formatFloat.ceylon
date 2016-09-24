@@ -41,9 +41,9 @@ import java.lang {
  This function never produces a representation involving 
  scientific notation."
 tagged("Numbers")
-see (`function formatInteger`,
-     `function parseFloat`)
+see (`function Float.format`)
 since("1.2.0")
+deprecated("Use [[Float.format]]")
 shared String formatFloat(
         "The floating point value to format."
         Float float,

@@ -40,9 +40,9 @@ Integer maxRadix = 36;
 throws (`class AssertionError`, 
         "if [[radix]] is not between [[minRadix]] and 
          [[maxRadix]]")
-see (`function formatInteger`,
-     `function parseFloat`)
+see (`function Integer.parse`)
 tagged("Numbers", "Basic types")
+deprecated("Use [[Integer.parse]]")
 shared Integer? parseInteger(
             "The string representation to parse."
             String string,

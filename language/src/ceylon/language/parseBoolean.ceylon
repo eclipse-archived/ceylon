@@ -4,6 +4,8 @@
  
  Recognized values are `\"true\"`, `\"false\"`."
 tagged("Basic types")
+deprecated("Use [[Boolean.parse]]")
+see (`function Boolean.parse`)
 shared Boolean? parseBoolean(String string) {
     switch (string)
     case ("true") { return true; }

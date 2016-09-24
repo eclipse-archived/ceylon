@@ -40,12 +40,117 @@
  
  [floating point number]: http://www.validlab.com/goldberg/paper.pdf
  [NaN]: http://en.wikipedia.org/wiki/NaN"
-see (`function parseFloat`)
 tagged("Basic types", "Numbers")
-shared native final class Float(Float float)
-        extends Object()
+shared native final class Float
+        extends Object
         satisfies Number<Float> & 
                   Exponentiable<Float,Float> {
+    
+    "The [[Float]] value of the given 
+     [[string representation|string]] of a decimal floating 
+     point number, or `null` if the string does not 
+     represent a decimal floating point number.
+     
+     If the given string representation contains more digits
+     than can be represented by a `Float`, then the least 
+     significant digits are ignored.
+     
+     The syntax accepted by this method is the same as the 
+     syntax for a `Float` literal in the Ceylon language 
+     except that it may optionally begin with a sign 
+     character (`+` or `-`) and may not contain grouping 
+     underscore characters. That is, an optional sign 
+     character, followed by a string of decimal digits, 
+     followed by an optional decimal point and string of 
+     decimal digits, followed by an optional decimal 
+     exponent, for example, `e+10` or `E-5`, or SI magnitude, 
+     `k`, `M`, `G`, `T`, `P`, `m`, `u`, `n`, `p`, or `f`.
+     
+     Float: Sign? Digits ('.' Digits)? (Magnitude|Exponent)
+     Sign: '+' | '-'
+     Magnitude: 'k' | 'M' | 'G' | 'T' | 'P' | 'm' | 'u' | 'n' | 'p' | 'f'
+     Exponent: ('e'|'E') Sign? Digits
+     Digits: ('0'..'9')+"
+    see (`function format`, `function Integer.parse`)
+    tagged("Numbers", "Basic types")
+    since("1.3.1")
+    shared static Float|ParseException parse(String string)
+            => package.parseFloat(string)
+            else ParseException("illegal format for Float");
+    
+    "The string decimal representation of the given 
+     [[floating point number|float]]. If the given number is 
+     [[negative|Float.negative]], the string representation 
+     will begin with `-`. The [[whole part|Float.wholePart]] 
+     and [[fractional parts|Float.fractionalPart]] of the 
+     number are separated by a `.` decimal point. Digits 
+     consist of decimal digits `0` to `9`. 
+     
+     The number of decimal places following the decimal 
+     point is controlled by the parameters 
+     [[minDecimalPlaces]] and [[maxDecimalPlaces]], which 
+     default to `1` and `9` respectively, so that by default 
+     the string representation always contains a decimal 
+     point, and never contains more than nine decimal places. 
+     The decimal representation is rounded so that the 
+     number of decimal places never exceeds the specified 
+     maximum.
+     
+     For example:
+     
+     - `formatFloat(1234.1234)` is `\"1234.1234\"`
+     - `formatFloat(0.1234)` is `\"0.1234\"`
+     - `formatFloat(1234.0)` is `\"1234.0\"`
+     - `formatFloat(1234.0,0)` is `\"1234\"`
+     - `formatFloat(1234.1234,6)` is `\"1234.123400\"`
+     - `formatFloat(1234.1234,0,2)` is `\"1234.12\"`
+     - `formatFloat(1234.123456,0,5)` is `\"1234.12346\"`
+     - `formatFloat(0.0001,2,2)` is `\"0.00\"`
+     - `formatFloat(0.0001,0,2)` is `\"0\"`
+     
+     Finally:
+     
+     - `formatFloat(-0.0)` is `\"0.0\"`,
+     - `formatFloat(0.0/0)` is `\"NaN\"`,
+     - `formatFloat(1.0/0)` is `\"Infinity\"`, and
+     - `formatFloat(-1.0/0)` is `\"-Infinity\".`
+     
+     This function never produces a representation involving 
+     scientific notation."
+    tagged("Numbers")
+    see (`function parse`, `function Integer.format`)
+    since("1.3.1")
+    shared static String format(
+        "The floating point value to format."
+        Float float,
+        "The minimum number of allowed decimal places.
+         
+         If `minDecimalPlaces<=0`, the result may have no
+         decimal point."
+        variable Integer minDecimalPlaces=1,
+        "The maximum number of allowed decimal places.
+         
+         If `maxDecimalPlaces<=0`, the result always has no
+         decimal point."
+        variable Integer maxDecimalPlaces=9,
+        "The character to use as the decimal separator.
+         
+         `decimalSeparator` may not be '-' or a digit as
+         defined by the Unicode general category *Nd*."
+        Character decimalSeparator = '.',
+        "If not `null`, `thousandsSeparator` will be used to
+         separate each group of three digits, starting
+         immediately to the left of the decimal separator.
+         
+         `thousandsSeparator` may not be equal to the
+         decimalSeparator and may not be '-' or a digit as
+         defined by the Unicode general category *Nd*."
+        Character? thousandsSeparator = null)
+            => package.formatFloat(float, 
+                minDecimalPlaces, maxDecimalPlaces, 
+                decimalSeparator, thousandsSeparator);
+    
+    shared new(Float float) extends Object() {}
     
     "Determines whether this value is undefined. The IEEE
      standard denotes undefined values [NaN][] (an 
