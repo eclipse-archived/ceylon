@@ -3700,7 +3700,7 @@ public class ExpressionVisitor extends Visitor {
             Declaration dec) {
         Scope scope = that.getScope();
         if (dec.isClassOrInterfaceMember() &&
-                !dec.isStaticallyImportable() &&
+                !dec.isStatic() &&
                 !dec.isDefinedInScope(scope)) {
             ClassOrInterface ci = 
                     (ClassOrInterface) 
@@ -3953,7 +3953,7 @@ public class ExpressionVisitor extends Visitor {
                 return false;
             }
             else {
-                return !declaration.isStaticallyImportable();
+                return !declaration.isStatic();
             }
         }
         else {
@@ -6512,7 +6512,7 @@ public class ExpressionVisitor extends Visitor {
                 member!=null &&
                 member.getContainer()
                     .equals(constructorClass) &&
-                !member.isStaticallyImportable() &&
+                !member.isStatic() &&
                 !isConstructor(member)) {
             that.addError("reference to class member from constructor extends clause");
         }
@@ -7017,7 +7017,7 @@ public class ExpressionVisitor extends Visitor {
                             (Tree.QualifiedMemberOrTypeExpression) 
                                 primary;
                     if (qmte.getDeclaration()
-                            .isStaticallyImportable()) {
+                            .isStatic()) {
                         return type;
                     }
                     Tree.MemberOrTypeExpression pp = 
@@ -7043,14 +7043,14 @@ public class ExpressionVisitor extends Visitor {
                         pp.addError("non-static type expression qualifies static member reference");   
                     }
                 }
-                if (member.isStaticallyImportable()) {
+                if (member.isStatic()) {
                     //static member of Java type
                     if (primary.getStaticMethodReference()) {
                         Tree.QualifiedMemberOrTypeExpression qmte = 
                                 (Tree.QualifiedMemberOrTypeExpression) 
                                     primary;
                         if (qmte.getDeclaration()
-                                .isStaticallyImportable()) {
+                                .isStatic()) {
                             return type;
                         }
                         else {
@@ -8104,7 +8104,7 @@ public class ExpressionVisitor extends Visitor {
                     dec.isObjectClass() && dec.isToplevel();
             boolean isToplevelClassInstance = 
                     dec.isValueConstructor() &&
-                    (dec.getContainer().isToplevel() || dec.isStaticallyImportable());
+                    (dec.getContainer().isToplevel() || dec.isStatic());
             if (!isToplevelInstance && 
                 !isToplevelClassInstance) {
                 e.addError("case must refer to a toplevel object declaration, value constructor for a toplevel class, or literal value");

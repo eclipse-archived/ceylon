@@ -256,7 +256,7 @@ public class ClassTransformer extends AbstractTransformer {
             if(generateInstantiator
                     && !cls.hasConstructors()
                     && !cls.hasEnumerated()){
-                if (!cls.isStaticallyImportable()) {
+                if (!cls.isStatic()) {
                     classBuilder.getInitBuilder().modifiers(PROTECTED);
                 }
                 generateInstantiators(classBuilder, cls, null, instantiatorDeclCb, instantiatorImplCb, classDef, classDef.getParameterList());
@@ -432,7 +432,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         // return new SerializationProxy(outer, Foo.clazz, name);
         List<JCExpression> args = List.<JCExpression>of(name.makeIdent());
-        if (model.isMember() && !model.isStaticallyImportable()) {
+        if (model.isMember() && !model.isStatic()) {
             ClassOrInterface outer = (ClassOrInterface)model.getContainer();
             args = args.prepend(makeClassLiteral(outer.getType()));
             args = args.prepend(naming.makeQualifiedThis(naming.makeTypeDeclarationExpression(null, outer, DeclNameFlag.QUALIFIED)));
@@ -2414,7 +2414,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // we do not check for types inside initialiser section which are private and not captured because we treat them as members
                 && !(model instanceof Interface && Decl.hasLocalNotInitializerAncestor(model))){
             ClassOrInterface container = (ClassOrInterface) scope;
-            List<JCAnnotation> atContainer = makeAtContainer(container.getType(), model.isStaticallyImportable());
+            List<JCAnnotation> atContainer = makeAtContainer(container.getType(), model.isStatic());
             classBuilder.annotations(atContainer);
         }else{
             if(model instanceof Interface)
@@ -3593,7 +3593,7 @@ public class ClassTransformer extends AbstractTransformer {
         result |= (cdecl instanceof Interface) ? INTERFACE : 0;
         // aliases are always final placeholders, final classes are also final
         result |= (cdecl instanceof Class) && (cdecl.isAlias() || cdecl.isFinal())  ? FINAL : 0;
-        result |= cdecl.isStaticallyImportable() ? STATIC : 0;
+        result |= cdecl.isStatic() ? STATIC : 0;
 
         return result;
     }
@@ -3613,7 +3613,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         result |= transformDeclarationSharedFlags(decl);
         result |= FINAL;
-        result |= decl.isStaticallyImportable() ? STATIC : 0;
+        result |= decl.isStatic() ? STATIC : 0;
 
         return result;
     }
@@ -3630,7 +3630,7 @@ public class ClassTransformer extends AbstractTransformer {
             result |= def.isShared() ? PUBLIC : PRIVATE;
             result |= def.isFormal() && !def.isDefault() ? ABSTRACT : 0;
             result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface) ? FINAL : 0;
-            result |= def.isStaticallyImportable() ? STATIC : 0;
+            result |= def.isStatic() ? STATIC : 0;
         }
 
         return result;
@@ -3640,7 +3640,7 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= Decl.isVariable(cdecl) || Decl.isLate(cdecl) ? 0 : FINAL;
-        result |= cdecl.getDeclarationModel().isStaticallyImportable() ? STATIC : 0;
+        result |= cdecl.getDeclarationModel().isStatic() ? STATIC : 0;
         if(!CodegenUtil.hasCompilerAnnotation(cdecl, "packageProtected"))
             result |= PRIVATE;
         
@@ -3651,7 +3651,7 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= Decl.isVariable(cdecl) ? 0 : FINAL;
-        result |= cdecl.getDeclarationModel().isStaticallyImportable() ? STATIC : 0;
+        result |= cdecl.getDeclarationModel().isStatic() ? STATIC : 0;
 
         return result;
     }
@@ -3676,7 +3676,7 @@ public class ClassTransformer extends AbstractTransformer {
         result |= tdecl.isShared() ? PUBLIC : PRIVATE;
         result |= ((tdecl.isFormal() && !tdecl.isDefault()) && !forCompanion) ? ABSTRACT : 0;
         result |= !(tdecl.isFormal() || tdecl.isDefault() || Decl.withinInterface(tdecl)) || forCompanion ? FINAL : 0;
-        result |= tdecl.isStaticallyImportable() ? STATIC : 0;
+        result |= tdecl.isStatic() ? STATIC : 0;
 
         return result;
     }
@@ -3686,7 +3686,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         result |= FINAL;
         result |= !Decl.isAncestorLocal(cdecl) && Decl.isShared(cdecl) ? PUBLIC : 0;
-        result |= cdecl.isStaticallyImportable() ? STATIC : 0;
+        result |= cdecl.isStatic() ? STATIC : 0;
 
         return result;
     }
@@ -5449,7 +5449,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(def);
         List<JCTree> result = objectClassBuilder.build();
         
-        if (makeLocalInstance && !model.isStaticallyImportable()) {
+        if (makeLocalInstance && !model.isStatic()) {
             if(model.isSelfCaptured()){
                 // if it's captured we need to box it and define the var before the class, so it can access it
                 JCNewClass newInstance = makeNewClass(objectClassBuilder.getClassName(), false, null);
@@ -5469,7 +5469,7 @@ public class ClassTransformer extends AbstractTransformer {
             boolean generateGetter = Decl.isCaptured(model);
             JCExpression type = makeJavaType(klass.getType());
             if (generateGetter) {
-                int modifiers = TRANSIENT | PRIVATE | (model.isStaticallyImportable() ? STATIC : 0);
+                int modifiers = TRANSIENT | PRIVATE | (model.isStatic() ? STATIC : 0);
                 JCExpression initialValue = makeNull();
                 containingClassBuilder.field(modifiers, name, type, initialValue, false);
                 AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
@@ -5489,7 +5489,7 @@ public class ClassTransformer extends AbstractTransformer {
                 getter.getterBlock(make().Block(0, stmts.toList()));
                 result = result.appendList(getter.build());
             } else {
-                int modifiers = FINAL | (model.isStaticallyImportable() ? STATIC : 0);
+                int modifiers = FINAL | (model.isStatic() ? STATIC : 0);
                 JCExpression initialValue = makeNewClass(makeJavaType(klass.getType()), null);
                 containingClassBuilder.field(modifiers, name, type, initialValue, true);
             }

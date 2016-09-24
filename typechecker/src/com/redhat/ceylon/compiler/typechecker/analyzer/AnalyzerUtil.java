@@ -495,7 +495,7 @@ public class AnalyzerUtil {
             if (s instanceof Tree.Declaration) {
                 Tree.Declaration d = (Tree.Declaration) s;
                 if (d.getDeclarationModel()
-                        .isStaticallyImportable()) {
+                        .isStatic()) {
                     return s;
                 }
             }
@@ -1033,7 +1033,7 @@ public class AnalyzerUtil {
                 return true;
             }
             if (that.getStaticMethodReference()) {
-                if (d.isStaticallyImportable() || 
+                if (d.isStatic() || 
                         isConstructor(d)) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
                             (Tree.QualifiedMemberOrTypeExpression) 

@@ -41,6 +41,7 @@ public class LazyClassAlias extends ClassAlias implements LazyContainer {
         this.classMirror = classMirror;
         this.completer = completer;
         setName(JvmBackendUtil.getMirrorName(classMirror));
+        setStatic(classMirror.isStatic());
     }
 
     private void load() {
@@ -95,9 +96,9 @@ public class LazyClassAlias extends ClassAlias implements LazyContainer {
     }
 
     @Override
-    public boolean isStaticallyImportable() {
+    public boolean isStatic() {
         load();
-        return super.isStaticallyImportable();
+        return super.isStatic();
     }
 
     @Override

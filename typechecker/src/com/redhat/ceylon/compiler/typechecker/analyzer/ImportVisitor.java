@@ -117,7 +117,7 @@ public class ImportVisitor extends Visitor {
             Set<String> ignoredMembers, ImportList til) {
         for (Declaration dec: importedType.getMembers()) {
             if (dec.isShared() && 
-                    (dec.isStaticallyImportable() || 
+                    (dec.isStatic() || 
                             isConstructor(dec)) && 
                     isResolvable(dec) &&
                     !ignoredMembers.contains(dec.getName())) {
@@ -421,7 +421,7 @@ public class ImportVisitor extends Visitor {
                 }
             }
             i.setTypeDeclaration(td);
-            if (!m.isStaticallyImportable() && 
+            if (!m.isStatic() && 
                     !isToplevelClassConstructor(td, m) &&
                     !isToplevelAnonymousClass(m.getContainer())) {
                 if (alias==null) {
@@ -435,7 +435,7 @@ public class ImportVisitor extends Visitor {
                         name + "' of '" + td.getName() + "'");
             }
             else {
-                if (m.isStaticallyImportable() ||
+                if (m.isStatic() ||
                         isToplevelClassConstructor(td, m) ||
                         isToplevelAnonymousClass(m.getContainer())) {
                     if (!checkForHiddenToplevel(id, i, alias)) {

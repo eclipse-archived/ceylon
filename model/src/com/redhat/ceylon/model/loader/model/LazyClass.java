@@ -34,7 +34,6 @@ public class LazyClass extends Class implements LazyContainer {
     private Class superClass;
     private MethodMirror constructor;
     private String realName;
-    private boolean isStatic;
     private boolean isCeylon;
     private boolean isValueType;
     private Map<String,Declaration> localDeclarations;
@@ -57,13 +56,13 @@ public class LazyClass extends Class implements LazyContainer {
         this.superClass = superClass;
         this.constructor = constructor;
         this.realName = classMirror.getName();
-        this.isStatic = classMirror.isStatic();
         this.isCeylon = classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null;
         this.isValueType = classMirror.getAnnotation(AbstractModelLoader.CEYLON_VALUETYPE_ANNOTATION) != null;
         String ceylonName = JvmBackendUtil.getMirrorName(classMirror);
         if(!isCeylon && JvmBackendUtil.isInitialLowerCase(ceylonName))
             ceylonName = NamingBase.capitalize(ceylonName);
         setName(ceylonName);
+        setStatic(classMirror.isStatic());
     }
 
     @Override
@@ -78,10 +77,6 @@ public class LazyClass extends Class implements LazyContainer {
 
     public boolean isValueType() {
         return isValueType;
-    }
-
-    public boolean isStatic() {
-        return isStatic;
     }
 
     public MethodMirror getConstructor() {
@@ -138,9 +133,9 @@ public class LazyClass extends Class implements LazyContainer {
     }
 
     @Override
-    public boolean isStaticallyImportable() {
+    public boolean isStatic() {
         // no lazy loading since it is set before completion
-        return super.isStaticallyImportable();
+        return super.isStatic();
     }
 
     @Override

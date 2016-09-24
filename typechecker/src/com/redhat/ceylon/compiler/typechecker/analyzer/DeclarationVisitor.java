@@ -628,7 +628,7 @@ public abstract class DeclarationVisitor extends Visitor {
                 getter.setSetter(setter);
             }
             setter.setNativeBackends(getter.getNativeBackends());
-            setter.setStaticallyImportable(getter.isStaticallyImportable());
+            setter.setStatic(getter.isStatic());
         }
     }
 
@@ -1284,7 +1284,7 @@ public abstract class DeclarationVisitor extends Visitor {
         Type t = c.getType();
         that.getType().setTypeModel(t);
         v.setType(t);
-        v.setStaticallyImportable(c.isStaticallyImportable());
+        v.setStatic(c.isStatic());
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
@@ -2186,7 +2186,7 @@ public abstract class DeclarationVisitor extends Visitor {
              || model instanceof Value
              || model instanceof ClassOrInterface
              || model instanceof TypeAlias) {
-                model.setStaticallyImportable(true);
+                model.setStatic(true);
                 if (model.isInterfaceMember()) {
                     that.addUnsupportedError("static members of interfaces are not yet supported");
                 }
@@ -2225,15 +2225,15 @@ public abstract class DeclarationVisitor extends Visitor {
             that.addError("declaration may not be annotated both 'formal' and 'default'",
                     1320);
         }
-        if (model.isStaticallyImportable() && model.isActual()) {
+        if (model.isStatic() && model.isActual()) {
             that.addError("static member may not be annotated 'actual'", 
                     1311);            
         }
-        if (model.isStaticallyImportable() && model.isFormal()) {
+        if (model.isStatic() && model.isFormal()) {
             that.addError("static member may not be annotated 'formal'", 
                     1312);
         }
-        if (model.isStaticallyImportable() && model.isDefault()) {
+        if (model.isStatic() && model.isDefault()) {
             that.addError("static member may not be annotated 'default'", 
                     1313);            
         }

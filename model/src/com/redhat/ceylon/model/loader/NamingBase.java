@@ -271,7 +271,7 @@ public class NamingBase {
                                          && ((Value)decl).getType() != null
                                          && ((Value)decl).getType().getDeclaration() instanceof com.redhat.ceylon.model.typechecker.model.Constructor);
         if (ModelUtil.withinClassOrInterface(decl) 
-                && (!ModelUtil.isLocalToInitializer(decl) || enumeratedConstructor || decl.isStaticallyImportable()) 
+                && (!ModelUtil.isLocalToInitializer(decl) || enumeratedConstructor || decl.isStatic()) 
                 && !indirect) {
             if(enumeratedConstructor) {
                 Class constructedClass = ModelUtil.getConstructedClass(decl);
@@ -309,7 +309,7 @@ public class NamingBase {
                 && ((JavaBeanValue)decl).getSetterName() != null) {
             return ((JavaBeanValue)decl).getSetterName();
         } else if (ModelUtil.withinClassOrInterface(decl) && !ModelUtil.isLocalToInitializer(decl)
-                || decl.isStaticallyImportable()) {
+                || decl.isStatic()) {
             String setterName = getSetterName(decl.getName());
             if (decl.isMember() && !decl.isShared()) {
                 setterName = suffixName(Suffix.$priv$, setterName);

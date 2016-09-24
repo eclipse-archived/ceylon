@@ -750,7 +750,7 @@ public class RefinementVisitor extends Visitor {
                         message(member), 1100);
             }
         }
-        if (member.isStaticallyImportable() 
+        if (member.isStatic() 
                 && !type.isToplevel()) {
             that.addError("static member belongs to a nested class");
         }
@@ -1427,7 +1427,7 @@ public class RefinementVisitor extends Visitor {
                         dec.getName() + "'", 
                         1303);
             }
-            if (dec.isStaticallyImportable()) {
+            if (dec.isStatic()) {
                 that.addError("static declaration is not a member of a class or interface: '" + 
                         dec.getName() + "'");
             }

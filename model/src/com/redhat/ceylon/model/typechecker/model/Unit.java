@@ -190,7 +190,7 @@ public class Unit implements LanguageModuleProvider {
      */
     static boolean isToplevelImport(Import i, Declaration d) {
         return d.isToplevel() || 
-            d.isStaticallyImportable() ||
+            d.isStatic() ||
             isToplevelClassConstructor(i.getTypeDeclaration(), d) ||
             isToplevelAnonymousClass(i.getTypeDeclaration());
     }

@@ -1249,7 +1249,7 @@ public class SpecificationVisitor extends Visitor {
                             declaration.getName() + 
                             "' may not be forward declared");
                 }
-                else if (declaration.isStaticallyImportable() && 
+                else if (declaration.isStatic() && 
                         !isNativeHeader(declaration)) {
                     that.addError("static function must be specified: '" +
                             declaration.getName() + 
@@ -1364,7 +1364,7 @@ public class SpecificationVisitor extends Visitor {
                                 declaration.getName() + "'");
                     }
                 }
-                else if ((declaration.isStaticallyImportable()) 
+                else if ((declaration.isStatic()) 
                         && !isNativeHeader(declaration)
                         && !isLate()) {
                     if (isVariable()) {
@@ -1539,7 +1539,7 @@ public class SpecificationVisitor extends Visitor {
         if (that instanceof Tree.Declaration) {
             Tree.Declaration dec = (Tree.Declaration) that;
             Declaration model = dec.getDeclarationModel();
-            if (model.isStaticallyImportable()) {
+            if (model.isStatic()) {
                 if (hasNonStatic && model==declaration) {
                     that.addError("static member must occur before all non-static members and initializer statements");
                 }

@@ -76,7 +76,7 @@ public class SelfReferenceVisitor extends Visitor {
         Declaration member = 
                 resolveTypeAliases(that.getDeclaration());
         if (member!=null 
-                && !member.isStaticallyImportable()
+                && !member.isStatic()
                 && isInherited(scope, member)) {
             Declaration container = 
                     (Declaration) 
@@ -146,7 +146,7 @@ public class SelfReferenceVisitor extends Visitor {
         Declaration member = 
                 resolveTypeAliases(that.getDeclaration());
         if (member!=null
-                && !member.isStaticallyImportable()
+                && !member.isStatic()
                 && isInherited(that.getScope(), member)) {
             Declaration container = 
                     (Declaration) 

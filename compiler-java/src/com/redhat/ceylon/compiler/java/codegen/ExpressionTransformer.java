@@ -4112,7 +4112,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         Tree.TypeArguments typeArguments = expr.getTypeArguments();
         boolean prevSyntheticClassBody = withinSyntheticClassBody(true);
         try {
-            if (member.isStaticallyImportable()) {
+            if (member.isStatic()) {
                 if (member instanceof Function) {
                     Function method = (Function)member;
                     Reference producedReference = method.appliedReference(qualifyingType, typeArguments.getTypeModels());
@@ -4525,7 +4525,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     method, producedReference, parameterList));
         } else if (decl instanceof Class) {
             Class class_ = (Class)decl;
-            if (class_.isStaticallyImportable()) {
+            if (class_.isStatic()) {
                 return naming.makeTypeDeclarationExpression(null, class_, Naming.DeclNameFlag.QUALIFIED);
             } else {
                 final ParameterList parameterList = class_.getFirstParameterList();
@@ -4947,7 +4947,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
             if (qualExpr == null 
-                    && (decl.isStaticallyImportable() || isEnumeratedConstructorGetter)
+                    && (decl.isStatic() || isEnumeratedConstructorGetter)
                     // make sure we only do this for things contained in a type, as otherwise
                     // it breaks for qualified calls to static methods in interfaces in Java 8
                     // it only breaks for interfaces because they are statically importable
@@ -5049,7 +5049,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             typeDecl = decl;
         if (qualExpr == null 
                 // statics are not members that can be inherited
-                && !decl.isStaticallyImportable()
+                && !decl.isStatic()
                 && (!Decl.isConstructor(decl) || !Decl.isConstructor(typeDecl))
                 && typeDecl.isMember()
                 // dodge variable refinements with assert/is (these will be turned to locals
@@ -5749,7 +5749,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     && !qualified.getDeclaration().isCaptured() 
                     && !qualified.getDeclaration().isShared() ) {
                 expr = null;
-            } else if (!qualified.getDeclaration().isStaticallyImportable()) {
+            } else if (!qualified.getDeclaration().isStatic()) {
                 expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
                 if (Decl.isPrivateAccessRequiringUpcast(qualified)) {
                     expr = makePrivateAccessUpcast(qualified, expr);
@@ -5799,7 +5799,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // must use the setter
                 if (Decl.isLocal(decl)) {
                     lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_SETTER);
-                } else if (decl.isStaticallyImportable()) {
+                } else if (decl.isStatic()) {
                     lhs = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)decl.getContainer(), DeclNameFlag.QUALIFIED);
                 }
             }
@@ -5815,7 +5815,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if ((variable || decl.isLate()) && (Decl.isClassAttribute(decl))) {
             // must use the setter, nothing to do, unless it's a java field
             if(Decl.isJavaField(decl)){
-                if (decl.isStaticallyImportable()) {
+                if (decl.isStatic()) {
                     // static field
                     result = at(op).Assign(naming.makeName(decl, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED), rhs);
                 }else{

@@ -728,7 +728,7 @@ public abstract class TypeDeclaration extends Declaration
                         dm.isShared() &&
                         isResolvable(dm) &&
                         (includeInheritedConstructors ||
-//                       !dm.isStaticallyImportable() &&
+//                       !dm.isStatic() &&
                          !isConstructor(dm))) {
                     // only accept abstractions if we 
                     // don't have a signature

@@ -1446,7 +1446,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             decl.setProtectedVisibility(mirror.isProtected());
         }
         decl.setDeprecated(isDeprecated(annotatedMirror));
-        decl.setStaticallyImportable(classMirror.isStatic());
+        decl.setStatic(classMirror.isStatic());
     }
 
     private enum JavaVisibility {
@@ -1661,7 +1661,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.setActual(actual);
         klass.setActualCompleter(this);
         klass.setFinal(classMirror.isFinal());
-        klass.setStaticallyImportable(classMirror.isStatic());
+        klass.setStatic(classMirror.isStatic());
         
         if(objectAnnotation == null) {
             manageNativeBackend(klass, classMirror, isNativeHeader);
@@ -1682,12 +1682,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if (container!=null) {
                 Object value = container.getValue("isStatic");
                 if (value!=null) {
-                    iface.setStaticallyImportable(Boolean.TRUE.equals(value));
+                    iface.setStatic(Boolean.TRUE.equals(value));
                 }
             }
         }
         else {
-            iface.setStaticallyImportable(true);
+            iface.setStatic(true);
         }
         
         manageNativeBackend(iface, classMirror, isNativeHeader);
@@ -3766,7 +3766,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setShared(fieldMirror.isPublic() || fieldMirror.isProtected() || fieldMirror.isDefaultAccess());
         value.setProtectedVisibility(fieldMirror.isProtected());
         value.setPackageVisibility(fieldMirror.isDefaultAccess());
-        value.setStaticallyImportable(fieldMirror.isStatic());
+        value.setStatic(fieldMirror.isStatic());
         setDeclarationAliases(value, fieldMirror);
         // field can't be abstract or interface, so not formal
         // can we override fields? good question. Not really, but from an external point of view?
@@ -3800,7 +3800,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             enumValueType.setName(value.getName());
             enumValueType.setFinal(true);
             enumValueType.setUnit(value.getUnit());
-            enumValueType.setStaticallyImportable(value.isStaticallyImportable());
+            enumValueType.setStatic(value.isStatic());
             value.setType(enumValueType.getType());
             value.setUncheckedNullType(false);
         } else {
@@ -4016,7 +4016,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 decl.setDefault(true);
             }
         }
-        decl.setStaticallyImportable(methodMirror.isStatic() && methodMirror.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) == null);
+        decl.setStatic(methodMirror.isStatic() && methodMirror.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) == null);
 
         decl.setActualCompleter(this);
     }

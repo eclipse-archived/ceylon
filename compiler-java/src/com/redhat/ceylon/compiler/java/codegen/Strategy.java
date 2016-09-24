@@ -245,7 +245,7 @@ class Strategy {
     }
     
     public static boolean useField(Value attr) {
-        return !Decl.withinInterface(attr) && Decl.isCaptured(attr) || attr.isStaticallyImportable();
+        return !Decl.withinInterface(attr) && Decl.isCaptured(attr) || attr.isStatic();
     }
     
     
@@ -287,7 +287,7 @@ class Strategy {
         if (model instanceof Class) {
             Class cls = (Class)model;
             return !cls.isAbstract()
-                    && !cls.isStaticallyImportable()
+                    && !cls.isStatic()
                     && (Decl.isRefinableMemberClass(cls) 
                         || 
                         // If shared, generate an instantiator so that BC is 

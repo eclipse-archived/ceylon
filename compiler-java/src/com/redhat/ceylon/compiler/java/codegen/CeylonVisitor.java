@@ -547,7 +547,7 @@ public class CeylonVisitor extends Visitor {
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl)
-                || decl.getDeclarationModel().isStaticallyImportable()) {
+                || decl.getDeclarationModel().isStatic()) {
             // Class attributes
             gen.classGen().transform(decl, classBuilder);
         } else if (Decl.isToplevel(decl)) {
@@ -574,7 +574,7 @@ public class CeylonVisitor extends Visitor {
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)
-                || decl.getDeclarationModel().isStaticallyImportable()) {
+                || decl.getDeclarationModel().isStatic()) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
         } else if (Decl.withinInterface(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
@@ -606,7 +606,7 @@ public class CeylonVisitor extends Visitor {
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
         if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)
-                || decl.getDeclarationModel().getGetter().isStaticallyImportable()) {
+                || decl.getDeclarationModel().getGetter().isStatic()) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
         } else if (Decl.withinInterface(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));

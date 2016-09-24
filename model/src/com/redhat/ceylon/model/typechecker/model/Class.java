@@ -71,7 +71,7 @@ public class Class extends ClassOrInterface implements Functional {
     
     public boolean hasStaticMembers() {
         for (Declaration dec: getMembers()) {
-            if (dec.isStaticallyImportable()) {
+            if (dec.isStatic()) {
                 return true;
             }
         }

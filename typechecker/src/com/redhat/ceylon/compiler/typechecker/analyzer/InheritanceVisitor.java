@@ -809,7 +809,7 @@ public class InheritanceVisitor extends Visitor {
         if (qt!=null && td instanceof ClassOrInterface) {
             Unit unit = that.getUnit();
             TypeDeclaration d = type.getDeclaration();
-            if (d.isStaticallyImportable() ||
+            if (d.isStatic() ||
                     d instanceof Constructor) {
                 checkExtensionOfMemberType(that, td, qt);
             }

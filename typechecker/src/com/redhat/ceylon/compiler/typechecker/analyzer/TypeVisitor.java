@@ -1130,7 +1130,7 @@ public class TypeVisitor extends Visitor {
                 TypeDeclaration otd = 
                         qualifiedType.getDeclarationModel();
                 if (otd!=null) {
-                    if (otd.isStaticallyImportable() || 
+                    if (otd.isStatic() || 
                             otd instanceof Constructor) {
                         checkExtendedTypeExpression(outerType);
                     }

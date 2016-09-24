@@ -162,7 +162,7 @@ public abstract class AbstractTransformer implements Transformation {
                         || type == null
                         || type.getDeclaration() == null 
                         || type.getDeclaration().isToplevel() 
-                        || !type.getDeclaration().isStaticallyImportable());
+                        || !type.getDeclaration().isStatic());
         }
     };
     private final TypeSerializer typeSerialiser = new TypeSerializer(); 
@@ -1119,7 +1119,7 @@ public abstract class AbstractTransformer implements Transformation {
             return null;
         if(!skipType){
             TypedDeclaration member = (TypedDeclaration) typeDecl.getDirectMember(decl.getName(), signature, false, isOverloaded);
-            if(member != null && !member.isStaticallyImportable())
+            if(member != null && !member.isStatic())
                 return member;
         }
         // look up
@@ -2885,7 +2885,7 @@ public abstract class AbstractTransformer implements Transformation {
             Type targetType = target.getQualifyingType();
             // static methods have a container but do not capture type parameters
             if(targetType != null
-                    && !declaration.isStaticallyImportable()){
+                    && !declaration.isStatic()){
                 ClassOrInterface methodContainer = (ClassOrInterface) declaration.getContainer();
                 Type supertype = targetType.getSupertype(methodContainer);
                 // we need type arguments that may come from the method container
@@ -4618,7 +4618,7 @@ public abstract class AbstractTransformer implements Transformation {
         if(qualifyingType == null
             // ignore qualifying types of static java declarations
             && (Decl.isCeylon(type.getDeclaration())
-                    || !type.getDeclaration().isStaticallyImportable())){
+                    || !type.getDeclaration().isStatic())){
             Declaration declaration = type.getDeclaration();
             do{
                 // it may be contained in a function or value, and we want its type
@@ -4663,7 +4663,7 @@ public abstract class AbstractTransformer implements Transformation {
         if(qualifyingType == null
             // ignore qualifying types of static java declarations
             && (Decl.isCeylon(type.getDeclaration())
-                    || !type.getDeclaration().isStaticallyImportable())){
+                    || !type.getDeclaration().isStatic())){
             Declaration declaration = type.getDeclaration();
             boolean local = false;
             do{
@@ -5283,7 +5283,7 @@ public abstract class AbstractTransformer implements Transformation {
             if(qualifyingType == null
                     // ignore qualifying types of static java declarations
                     && (Decl.isCeylon(declaration)
-                            || !declaration.isStaticallyImportable())){
+                            || !declaration.isStatic())){
                 // it may be contained in a function or value, and we want its type
                 Declaration enclosingDeclaration = getDeclarationContainer(declaration);
                 if(enclosingDeclaration instanceof TypedDeclaration)

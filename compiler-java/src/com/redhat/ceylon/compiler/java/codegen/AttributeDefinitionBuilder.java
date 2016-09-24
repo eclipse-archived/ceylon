@@ -587,7 +587,7 @@ public class AttributeDefinitionBuilder {
     private JCExpression fld() {
         JCExpression fld;
         if (fieldName.equals(attrName)) {
-            if (attrTypedDecl.isStaticallyImportable()
+            if (attrTypedDecl.isStatic()
                     && attrTypedDecl.getContainer() instanceof ClassOrInterface) {
                 fld = owner.makeSelect(owner.makeJavaType(((ClassOrInterface)attrTypedDecl.getContainer()).getType(), AbstractTransformer.JT_RAW), Naming.quoteFieldName(fieldName));
             } else {
