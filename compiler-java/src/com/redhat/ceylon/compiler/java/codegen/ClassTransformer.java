@@ -3613,6 +3613,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         result |= transformDeclarationSharedFlags(decl);
         result |= FINAL;
+        result |= decl.isStaticallyImportable() ? STATIC : 0;
 
         return result;
     }

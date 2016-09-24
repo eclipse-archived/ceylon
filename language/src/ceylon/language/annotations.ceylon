@@ -8,7 +8,8 @@ import ceylon.language.meta.declaration {
     FunctionDeclaration,
     Declaration,
     ValueDeclaration,
-    FunctionOrValueDeclaration
+    FunctionOrValueDeclaration,
+    AliasDeclaration
 }
 
 "The annotation class for the [[annotation]] meta-annotation."
@@ -125,7 +126,8 @@ shared annotation DefaultAnnotation default()
 shared final sealed annotation class StaticAnnotation()
         satisfies OptionalAnnotation<StaticAnnotation,
                     FunctionOrValueDeclaration
-                  | ClassOrInterfaceDeclaration> {}
+                  | ClassOrInterfaceDeclaration
+                  | AliasDeclaration> {}
 
 "Annotation to mark a member of a toplevel class as static. 
  A `static` member does not have access to any current 

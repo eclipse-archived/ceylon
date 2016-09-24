@@ -1446,6 +1446,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             decl.setProtectedVisibility(mirror.isProtected());
         }
         decl.setDeprecated(isDeprecated(annotatedMirror));
+        decl.setStaticallyImportable(classMirror.isStatic());
     }
 
     private enum JavaVisibility {
