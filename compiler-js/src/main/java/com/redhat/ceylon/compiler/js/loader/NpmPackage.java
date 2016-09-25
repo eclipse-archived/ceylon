@@ -80,6 +80,7 @@ public class NpmPackage extends LazyPackage {
             d.setUnit(getUnit());
             d.setShared(true);
             d.setContainer(this);
+            d.setScope(this);
             decs.put(name, d);
         }
         return d;

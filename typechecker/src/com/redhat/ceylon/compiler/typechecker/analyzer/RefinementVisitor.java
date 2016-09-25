@@ -2174,6 +2174,7 @@ public class RefinementVisitor extends Visitor {
         m.setRefinedDeclaration(root);
         m.setUnit(unit);
         m.setContainer(c);
+        m.setScope(c);
         m.setShortcutRefinement(true);
         m.setDeclaredVoid(sm.isDeclaredVoid());
         Declaration rmd = rm.getDeclaration();

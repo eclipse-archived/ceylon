@@ -11,20 +11,8 @@ import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.RetainedVars;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.model.typechecker.model.*;
 import com.redhat.ceylon.model.typechecker.model.Class;
-import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Generic;
-import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
-import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.SiteVariance;
-import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** Generates js code for invocation expression (named and positional). */
 public class InvocationGenerator {
@@ -217,7 +205,9 @@ public class InvocationGenerator {
                             p.setName("arg"+c);
                             p.setDeclaration(typeArgSource.getTypeModel().getDeclaration());
                             Value v = new Value();
-                            v.setContainer(that.getPositionalArgumentList().getScope());
+                            Scope scope = that.getPositionalArgumentList().getScope();
+                            v.setContainer(scope);
+                            v.setScope(scope);
                             v.setType(argtype);
                             p.setModel(v);
                             if (callableArgs == null || isSequenced) {

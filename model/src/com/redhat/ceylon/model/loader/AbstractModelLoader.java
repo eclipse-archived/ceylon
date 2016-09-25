@@ -4700,6 +4700,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         v.setUnboxed(value.getUnboxed());
         v.setInitializerParameter(p);
         v.setContainer(setter);
+        v.setScope(setter);
         p.setModel(v);
         v.setName(setter.getName());
         p.setName(setter.getName());
@@ -4788,6 +4789,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         AnnotationProxyMethod ctor = new AnnotationProxyMethod(this, klass);
         ctor.setAnnotationTarget(oe);
         ctor.setContainer(pkg);
+        ctor.setScope(pkg);
         ctor.setAnnotation(true);
         ctor.setName(ctorName);
         ctor.setShared(iface.isShared());
