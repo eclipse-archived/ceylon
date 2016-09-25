@@ -27,7 +27,6 @@ import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -188,7 +187,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private List<String> modulesOrFiles = DefaultToolOptions.getCompilerModules(Backend.Java);
     private boolean continueOnErrors;
     private boolean progress = DefaultToolOptions.getCompilerProgress();
-    private List<String> javac = Collections.emptyList();
+    private List<String> javac = DefaultToolOptions.getCompilerJavac();
     private String encoding;
     private String resourceRoot = DefaultToolOptions.getCompilerResourceRootName();
     private boolean noOsgi = DefaultToolOptions.getCompilerNoOsgi();
