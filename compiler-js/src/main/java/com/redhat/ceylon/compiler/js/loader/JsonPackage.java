@@ -9,7 +9,6 @@ import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_DS_VAR
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_DYNAMIC;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_FLAGS;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_INTERFACES;
-import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_JS_NEW;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_METATYPE;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_METHODS;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_MODULE;
@@ -49,7 +48,6 @@ import java.util.Map;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
-import com.redhat.ceylon.compiler.js.GenerateJsVisitor;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
@@ -225,6 +223,7 @@ public class JsonPackage extends LazyPackage {
             cls.setAnonymous(m.remove("$anon") != null);
             cls.setDynamic(m.remove(KEY_DYNAMIC) != null);
             cls.setContainer(parent);
+            cls.setScope(parent);
             cls.setName(name);
             cls.setUnit(u2);
             if (parent == this) {
@@ -443,7 +442,9 @@ public class JsonPackage extends LazyPackage {
                     tparm.setContravariant(true);
                 }
                 if (container instanceof Scope) {
-                    tparm.setContainer((Scope)container);
+                    Scope scope = (Scope)container;
+                    tparm.setContainer(scope);
+                    tparm.setScope(scope);
                 }
                 tparm.setDefaulted(tp.containsKey(KEY_DEFAULT));
                 tparms.add(tparm);
@@ -534,28 +535,31 @@ public class JsonPackage extends LazyPackage {
                 } else {
                     throw new IllegalArgumentException("Unknown parameter type " + paramtype);
                 }
-                if (param.getModel() != null) {
-                    param.getModel().setInitializerParameter(param);
-                    param.getModel().setName(param.getName());
-                    param.getModel().setUnit(u2);
+                FunctionOrValue paramModel = param.getModel();
+                if (paramModel != null) {
+                    paramModel.setInitializerParameter(param);
+                    paramModel.setName(param.getName());
+                    paramModel.setUnit(u2);
                     if (owner instanceof Scope) {
-                        param.getModel().setContainer((Scope)owner);
+                        Scope scope = (Scope)owner;
+                        paramModel.setContainer(scope);
+                        paramModel.setScope(scope);
                     }
                     if (p.get(KEY_TYPE) instanceof Map) {
                         @SuppressWarnings("unchecked")
                         final Map<String,Object> ktype = (Map<String,Object>)p.get(KEY_TYPE);
-                        param.getModel().setType(getTypeFromJson(ktype, owner, typeParameters));
+                        paramModel.setType(getTypeFromJson(ktype, owner, typeParameters));
                     } else {
                         //parameter type
                         for (TypeParameter tp : typeParameters) {
                             if (tp.getName().equals(p.get(KEY_TYPE))) {
-                                param.getModel().setType(tp.getType());
+                                paramModel.setType(tp.getType());
                             }
                         }
                     }
                     @SuppressWarnings("unchecked")
                     final Map<String,Object> _anns = (Map<String,Object>)p.remove(KEY_ANNOTATIONS);
-                    setAnnotations(param.getModel(), (Integer)p.remove(KEY_PACKED_ANNS), _anns);
+                    setAnnotations(paramModel, (Integer)p.remove(KEY_PACKED_ANNS), _anns);
                 }
                 //owner.getMembers().add(param);
                 plist.getParameters().add(param);
@@ -570,6 +574,7 @@ public class JsonPackage extends LazyPackage {
         md.setName(name);
         m.remove(KEY_NAME);
         md.setContainer(parent);
+        md.setScope(parent);
         setAnnotations(md, (Integer)m.remove(KEY_PACKED_ANNS),
                 (Map<String,Object>)m.remove(KEY_ANNOTATIONS));
         md.setUnit(u2);
@@ -614,6 +619,7 @@ public class JsonPackage extends LazyPackage {
         d.setTransient(METATYPE_GETTER.equals(metatype));
         d.setName(name);
         d.setContainer(parent);
+        d.setScope(parent);
         d.setUnit(u2);
         if (parent == this) {
             u2.addDeclaration(d);
@@ -635,6 +641,7 @@ public class JsonPackage extends LazyPackage {
             Setter s = new Setter();
             s.setName(name);
             s.setContainer(parent);
+            s.setScope(parent);
             s.setUnit(u2);
             s.setGetter(d);
             d.setSetter(s);
@@ -684,6 +691,7 @@ public class JsonPackage extends LazyPackage {
                 t = new Interface();
             }
             t.setContainer(parent);
+            t.setScope(parent);
             t.setName(name);
             t.setUnit(u2);
             if (parent == this) {
@@ -764,12 +772,14 @@ public class JsonPackage extends LazyPackage {
             m.put(KEY_METATYPE, obj);
             obj.setName(name);
             obj.setContainer(parent);
+            obj.setScope(parent);
             obj.setUnit(u2);
             com.redhat.ceylon.model.typechecker.model.Class type = new com.redhat.ceylon.model.typechecker.model.Class();
             type.setName(name);
             type.setAnonymous(true);
             type.setUnit(u2);
             type.setContainer(parent);
+            type.setScope(parent);
             if (parent == this) {
                 u2.addDeclaration(obj);
                 u2.addDeclaration(type);
@@ -828,6 +838,7 @@ public class JsonPackage extends LazyPackage {
             if (maybe == null) {
                 alias = new TypeAlias();
                 alias.setContainer(parent);
+                alias.setScope(parent);
                 alias.setName(name);
                 alias.setUnit(u2);
                 setAnnotations(alias, (Integer)m.remove(KEY_PACKED_ANNS),
