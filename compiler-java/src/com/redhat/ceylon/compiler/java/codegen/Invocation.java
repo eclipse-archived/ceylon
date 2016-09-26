@@ -1395,7 +1395,17 @@ class NamedArgumentInvocation extends Invocation {
         JCExpression thisExpr = null;
         switch (Strategy.defaultParameterMethodOwner(param.getModel())) {
         case SELF:
+            break;
         case STATIC:
+            if (param.getDeclaration().isStaticallyImportable()) {
+                if (param.getDeclaration().getContainer() instanceof ClassOrInterface) {
+                    if (param.getDeclaration()instanceof ClassOrInterface) {
+                        thisExpr = gen.makeJavaType(((ClassOrInterface)param.getDeclaration()).getType(), JT_RAW);
+                    } else {
+                        thisExpr = gen.makeJavaType(((ClassOrInterface)param.getDeclaration().getContainer()).getType(), JT_RAW);
+                    }
+                } 
+            }
             break;
         case OUTER:
             if(getQmePrimary() != null && !Decl.isConstructor(getPrimaryDeclaration()))
@@ -1794,7 +1804,8 @@ class NamedArgumentInvocation extends Invocation {
         if (vars != null 
                 && !vars.isEmpty() 
                 && primaryExpr != null
-                && selector != null) {
+                && selector != null
+                && !getPrimaryDeclaration().isStatic()) {
             // Prepare the first argument holding the primary for the call
             Type type = ((Tree.MemberOrTypeExpression)getPrimary()).getTarget().getQualifyingType();
             JCExpression varType;

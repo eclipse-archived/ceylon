@@ -932,9 +932,6 @@ public class Naming extends NamingBase implements LocalId {
             return makeQuotedQualIdent(qualifier, methodName);
         } else if (Strategy.defaultParameterMethodStatic(param.getModel())) {
             // top level method or class
-            if (qualifier != null) {
-                throw new BugException();
-            }
             Declaration container = param.getDeclaration().getRefinedDeclaration();
             if (!container.isToplevel()) {
                 container = (Declaration)container.getContainer();

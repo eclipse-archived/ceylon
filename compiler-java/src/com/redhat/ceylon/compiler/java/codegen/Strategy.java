@@ -98,7 +98,7 @@ class Strategy {
         }
         
         if ((decl instanceof Function || decl instanceof Class) 
-                && decl.isToplevel()) {
+                && (decl.isToplevel() || decl.isStatic())) {
             // Only top-level methods have static default value methods
             return DefaultParameterMethodOwner.STATIC;
         } else if ((decl instanceof Class) 
@@ -128,7 +128,7 @@ class Strategy {
         // Only top-level methods have static default value methods
         return ((decl instanceof Function && !((Function)decl).isParameter())
                 || decl instanceof Class) 
-                && ((Declaration)decl).isToplevel();
+                && (((Declaration)decl).isToplevel() || ((Declaration)decl).isStatic());
     }
     
     public static boolean defaultParameterMethodOnOuter(Tree.Declaration decl) {
