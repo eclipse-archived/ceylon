@@ -24,27 +24,4 @@ public class StaticTests extends CompilerTests {
     public void testStaticClass() {
         compareWithJavaSource("klass/StaticClass");
     }
-    
-    @Test
-    public void testStaticHello() {
-        compile("klass/StaticHello.ceylon");
-        compile("klass/StaticHello2.ceylon");
-    }
 }
-/*
-class Foo {
-    private static String s() {
-        return "";
-    }
-    public static String t() {
-        return "";
-    }
-}
-class Bar extends Foo {
-    private static int s() {
-        return 1;
-    }
-    public static int t() {
-        return 1;
-    }
-}*/
