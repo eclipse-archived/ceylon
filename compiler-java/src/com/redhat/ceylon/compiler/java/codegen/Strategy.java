@@ -85,7 +85,7 @@ class Strategy {
         if (defaultParameterMethodOnSelf(decl)) {
             return DefaultParameterMethodOwner.SELF;
         }
-        if (decl.isParameter()) {
+        if (decl.isParameter() && decl.getContainer() instanceof Declaration) {
             decl = (Declaration) decl.getContainer();
         } 
         if (Decl.isConstructor(decl)) {
@@ -113,7 +113,7 @@ class Strategy {
     }
     
     public static boolean defaultParameterMethodStatic(Declaration decl) {
-        if (decl.isParameter()) {
+        if (decl.isParameter() && decl.getContainer() instanceof Declaration) {
             decl = (Declaration) decl.getContainer();
         }
         if (Decl.isConstructor(decl)) {
@@ -132,16 +132,16 @@ class Strategy {
         return defaultParameterMethodOnOuter(decl.getDeclarationModel());
     }
     
-    public static boolean defaultParameterMethodOnOuter(Declaration elem) {
-        if (Decl.isConstructor(elem)) {
-            elem = Decl.getConstructedClass(elem);
+    public static boolean defaultParameterMethodOnOuter(Declaration decl) {
+        if (Decl.isConstructor(decl)) {
+            decl = Decl.getConstructedClass(decl);
         }
-        if (elem.isParameter()) {
-            elem = (Declaration) elem.getContainer();
+        if (decl.isParameter() && decl.getContainer() instanceof Declaration) {
+            decl = (Declaration) decl.getContainer();
         }
         
         // Only inner classes have their default value methods on their outer
-        return isInnerClass(elem);
+        return isInnerClass(decl);
     }
 
     private static boolean isInnerClass(Declaration elem) {
