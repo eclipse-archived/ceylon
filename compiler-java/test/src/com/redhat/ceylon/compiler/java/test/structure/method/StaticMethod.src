@@ -7,7 +7,25 @@ class StaticMethod implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     public static final .java.lang.String sharedStat() {
+        return (
+            let
+            {
+                .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat$s();
+            }
+            returning sharedStat$canonical$($ceylontmp$s$0);
+        );
+    }
+    
+    public static final .java.lang.String sharedStat$s() {
+        return "";
+    }
+    
+    private static .java.lang.String sharedStat$canonical$(final .java.lang.String s) {
         return "I\'m static";
+    }
+    
+    public static final .java.lang.String sharedStat(final .java.lang.String s) {
+        return sharedStat$canonical$(s);
     }
     
     public StaticMethod() {
@@ -18,4 +36,32 @@ class StaticMethod implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         return .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.class);
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class staticMethod_ {
+    
+    private staticMethod_() {
+    }
+    
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
+    static void staticMethod() {
+        .java.lang.String s = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat();
+        s = (
+            let
+            {
+                .java.lang.String arg$1$0 = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat$s();
+            }
+            returning .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat(arg$1$0);
+        );
+        s = (
+            let
+            {
+                .java.lang.String arg$2$0 = "";
+            }
+            returning .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat(arg$2$0);
+        );
+    }
 }

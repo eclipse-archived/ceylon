@@ -24,6 +24,12 @@ public class StaticTests extends CompilerTests {
     public void testStaticClass() {
         compareWithJavaSource("klass/StaticClass");
     }
+    
+    @Test
+    public void testStaticHello() {
+        compile("klass/StaticHello.ceylon");
+        compile("klass/StaticHello2.ceylon");
+    }
 }
 /*
 class Foo {
