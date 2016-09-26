@@ -24,10 +24,14 @@ void staticClass() {
         s="";
         t=1;
     };
+    value ref = StaticClass.SharedStatic<Integer>;
+    ref("", 1);
+    
     //TODO variable value sharedStat2 = StaticInterface.SharedStatic();
     //sharedStat2 = StaticInterface.SharedStatic{};
     //sharedStat2 = StaticInterface.SharedStatic{
     //    s="";
     //};
+    
 }
 

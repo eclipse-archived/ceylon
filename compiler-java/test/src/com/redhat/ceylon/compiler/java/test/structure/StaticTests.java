@@ -26,6 +26,11 @@ public class StaticTests extends CompilerTests {
     }
     
     @Test
+    public void testStaticObject() {
+        compareWithJavaSource("klass/StaticObject");
+    }
+    
+    @Test
     public void testStaticAlias() {
         compareWithJavaSource("alias/StaticAlias");
     }

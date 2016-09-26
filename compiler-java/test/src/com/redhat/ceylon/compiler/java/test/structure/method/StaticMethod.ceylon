@@ -17,4 +17,7 @@ void staticMethod() {
         s="";
         t=1;
     };
+    
+    value ref = StaticMethod.sharedStat<Integer>;
+    ref("", 1);
 }

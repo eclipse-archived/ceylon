@@ -1,0 +1,45 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class StaticObject implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    private static transient .com.redhat.ceylon.compiler.java.test.structure.klass.StaticObject.o_ o = null;
+    
+    public static final class o_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
+        
+        private o_() {
+        }
+        
+        private final .java.lang.Object writeReplace() {
+            final .java.lang.String $name$;
+            $name$ = "getO";
+            return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticObject.o_.class, $name$);
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticObject.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticObject.o_.class));
+        }
+    }
+    
+    public static final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticObject.o_ getO() {
+        if (o == null) o = new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticObject.o_();
+        return o;
+    }
+    
+    public StaticObject() {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.StaticObject.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticObject.class);
+}
+final class staticObject_ {
+    
+    private staticObject_() {
+    }
+    
+    static void staticObject() {
+        final .java.lang.Object ob = .com.redhat.ceylon.compiler.java.test.structure.klass.StaticObject.getO();
+    }
+}
