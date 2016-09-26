@@ -3,7 +3,6 @@ package com.redhat.ceylon.model.loader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -92,32 +91,7 @@ public class OsgiUtil {
         }
 
         private String toOSGIBundleVersion(String ceylonVersion) {
-            String[] versionParts = ceylonVersion.split("\\.");
-            String major = "";
-            String minor = "";
-            String micro = "";
-            String qualifier = "";
-            
-            for (String part : versionParts) {
-                if (major.isEmpty()) {
-                    major = part;
-                } else if (minor.isEmpty()) {
-                    minor = part;
-                }
-                else if (micro.isEmpty()) {
-                    micro = part;
-                } else {
-                    qualifier = part + "_";
-                }
-            }
-            
-            qualifier += formatter.format(new Date());
-            return new StringBuilder(major)
-                        .append('.').append(minor)
-                        .append('.').append(micro)
-                        .append('.').append(qualifier)
-                        .toString();
-            
+            return OsgiUtil.toOSGIBundleVersion(ceylonVersion);
         }
 
         public Manifest build() {
@@ -316,7 +290,7 @@ public class OsgiUtil {
     }
     private static int QUALIFIER_OTHER = 6; // Same as largest index in above list
     
-    public static String toOSGIBundleVersionNew(String ceylonVersion) {
+    public static String toOSGIBundleVersion(String ceylonVersion) {
         // Insert a "." between digits and letters
         StringBuffer buf = new StringBuffer();
         Pattern p = Pattern.compile("\\d\\pL|\\pL\\d");
