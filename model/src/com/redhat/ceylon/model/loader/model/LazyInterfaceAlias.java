@@ -38,7 +38,6 @@ public class LazyInterfaceAlias extends InterfaceAlias implements LazyContainer 
         this.classMirror = classMirror;
         this.completer = completer;
         setName(JvmBackendUtil.getMirrorName(classMirror));
-        setStatic(classMirror.isStatic());
     }
 
     private void load() {

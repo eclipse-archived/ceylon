@@ -54,7 +54,6 @@ public class LazyFunction extends Function implements LazyElement, LocalDeclarat
         this.completer = completer;
         this.realName = classMirror.getName();
         setName(JvmBackendUtil.getMirrorName(classMirror));
-        setStatic(classMirror.isStatic());
     }
 
     public void setMethodMirror(MethodMirror methorMirror) {

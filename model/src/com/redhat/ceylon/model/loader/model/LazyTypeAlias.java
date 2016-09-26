@@ -46,7 +46,6 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
         this.classMirror = classMirror;
         this.completer = completer;
         setName(JvmBackendUtil.getMirrorName(classMirror));
-        setStatic(classMirror.isStatic());
     }
 
     private void load() {

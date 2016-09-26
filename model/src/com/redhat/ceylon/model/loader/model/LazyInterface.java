@@ -54,7 +54,6 @@ public class LazyInterface extends Interface implements LazyContainer {
         if(!isCeylon && JvmBackendUtil.isInitialLowerCase(ceylonName))
             ceylonName = NamingBase.capitalize(ceylonName);
         setName(ceylonName);
-        setStatic(classMirror.isStatic());
     }
 
     @Override

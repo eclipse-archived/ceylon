@@ -66,7 +66,6 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationCompleter;
-import com.redhat.ceylon.model.typechecker.model.Element;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -1446,7 +1445,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             decl.setProtectedVisibility(mirror.isProtected());
         }
         decl.setDeprecated(isDeprecated(annotatedMirror));
-        decl.setStatic(classMirror.isStatic());
     }
 
     private enum JavaVisibility {
@@ -1464,15 +1462,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     protected Declaration makeClassAlias(ClassMirror classMirror) {
-        return new LazyClassAlias(classMirror, this);
+        LazyClassAlias decl = new LazyClassAlias(classMirror, this);
+        decl.setStatic(classMirror.isStatic());
+        return decl;
     }
 
     protected Declaration makeTypeAlias(ClassMirror classMirror) {
-        return new LazyTypeAlias(classMirror, this);
+        LazyTypeAlias decl = new LazyTypeAlias(classMirror, this);
+        decl.setStatic(classMirror.isStatic());
+        return decl;
     }
 
     protected Declaration makeInterfaceAlias(ClassMirror classMirror) {
-        return new LazyInterfaceAlias(classMirror, this);
+        LazyInterfaceAlias decl = new LazyInterfaceAlias(classMirror, this);
+        decl.setStatic(classMirror.isStatic());
+        return decl;
     }
 
     private void checkBinaryCompatibility(ClassMirror classMirror) {
@@ -3528,6 +3532,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         method.setUnit(klass.getUnit());
         method.setOverloaded(isOverloaded || isOverloadingMethod(methodMirror));
         method.setVariadic(methodMirror.isVariadic());
+        
         Type type = null;
         try{
             setMethodOrValueFlags(klass, methodMirror, method, isCeylon);
@@ -3915,6 +3920,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setContainer(klass);
         value.setScope(klass);
         value.setUnit(klass.getUnit());
+        
         Type type = null;
         try{
             setMethodOrValueFlags(klass, methodMirror, value, isCeylon);

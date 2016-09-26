@@ -49,7 +49,6 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
         this.completer = completer;
         this.realName = classMirror.getName();
         setName(JvmBackendUtil.getMirrorName(classMirror));
-        setStatic(classMirror.isStatic());
     }
 
     public String getRealName() {
