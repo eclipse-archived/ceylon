@@ -31,7 +31,6 @@ import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Element;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -55,8 +54,7 @@ class Strategy {
     }
     
     public static boolean defaultParameterMethodTakesThis(Declaration decl) {
-        return decl instanceof Function 
-                && decl.isToplevel();
+        return decl instanceof Function && decl.isToplevel();
     }
     
     enum DefaultParameterMethodOwner {
@@ -84,13 +82,10 @@ class Strategy {
     }
     
     public static DefaultParameterMethodOwner defaultParameterMethodOwner(Declaration decl) {
-        if (decl instanceof Function 
-                && !Decl.withinInterface(decl)
-                && !((Function)decl).isParameter()) {
+        if (defaultParameterMethodOnSelf(decl)) {
             return DefaultParameterMethodOwner.SELF;
         }
-        if (decl instanceof FunctionOrValue
-                && ((FunctionOrValue)decl).isParameter()) {
+        if (decl.isParameter()) {
             decl = (Declaration) decl.getContainer();
         } 
         if (Decl.isConstructor(decl)) {
@@ -101,11 +96,11 @@ class Strategy {
                 && (decl.isToplevel() || decl.isStatic())) {
             // Only top-level methods have static default value methods
             return DefaultParameterMethodOwner.STATIC;
-        } else if ((decl instanceof Class) 
-                && !decl.isToplevel()
-                && !Decl.isLocalNotInitializer(decl)) {
+        } else if (isInnerClass(decl)) {
             // Only inner classes have their default value methods on their outer
-            return Decl.getClassOrInterfaceContainer(decl, false) instanceof Class ? DefaultParameterMethodOwner.OUTER : DefaultParameterMethodOwner.OUTER_COMPANION;
+            return Decl.getClassOrInterfaceContainer(decl, false) instanceof Class ? 
+                    DefaultParameterMethodOwner.OUTER : 
+                    DefaultParameterMethodOwner.OUTER_COMPANION;
         }
         
         return DefaultParameterMethodOwner.INIT_COMPANION;
@@ -117,18 +112,18 @@ class Strategy {
         return defaultParameterMethodStatic(decl.getDeclarationModel());
     }
     
-    public static boolean defaultParameterMethodStatic(Element decl) {
-        if (decl instanceof FunctionOrValue
-                && ((FunctionOrValue)decl).isParameter()) {
-            decl = (Element) decl.getContainer();
+    public static boolean defaultParameterMethodStatic(Declaration decl) {
+        if (decl.isParameter()) {
+            decl = (Declaration) decl.getContainer();
         }
-        if (decl instanceof Declaration && Decl.isConstructor((Declaration)decl)) {
-            decl = (Class)Decl.getConstructedClass((Declaration)decl);
+        if (Decl.isConstructor(decl)) {
+            decl = Decl.getConstructedClass(decl);
         }
         // Only top-level methods have static default value methods
-        return ((decl instanceof Function && !((Function)decl).isParameter())
-                || decl instanceof Class) 
-                && (((Declaration)decl).isToplevel() || ((Declaration)decl).isStatic());
+        return (decl instanceof Function 
+                    && !decl.isParameter() //TODO: this looks like an unnecessary condition to me (no toplevel or static parameters?)
+                    || decl instanceof Class) 
+                && (decl.isToplevel() || decl.isStatic());
     }
     
     public static boolean defaultParameterMethodOnOuter(Tree.Declaration decl) {
@@ -137,20 +132,22 @@ class Strategy {
         return defaultParameterMethodOnOuter(decl.getDeclarationModel());
     }
     
-    public static boolean defaultParameterMethodOnOuter(Element elem) {
-        if (elem instanceof Declaration 
-                && Decl.isConstructor((Declaration)elem)) {
-            elem = Decl.getConstructedClass((Declaration)elem);
+    public static boolean defaultParameterMethodOnOuter(Declaration elem) {
+        if (Decl.isConstructor(elem)) {
+            elem = Decl.getConstructedClass(elem);
         }
-        if (elem instanceof FunctionOrValue
-                && ((FunctionOrValue)elem).isParameter()) {
-            elem = (Element) ((FunctionOrValue)elem).getContainer();
+        if (elem.isParameter()) {
+            elem = (Declaration) elem.getContainer();
         }
         
         // Only inner classes have their default value methods on their outer
-        return (elem instanceof Class) 
-                && !((Class)elem).isToplevel()
-                && !Decl.isLocalNotInitializer((Class)elem);
+        return isInnerClass(elem);
+    }
+
+    private static boolean isInnerClass(Declaration elem) {
+        return elem instanceof Class
+                && !elem.isToplevel()
+                && !Decl.isLocalNotInitializer(elem);
     }
     
     public static boolean defaultParameterMethodOnSelf(Tree.Declaration decl) {
@@ -159,7 +156,7 @@ class Strategy {
     
     public static boolean defaultParameterMethodOnSelf(Declaration decl) {
         return decl instanceof Function
-                && !((Function)decl).isParameter()
+                && !decl.isParameter()
                 && !Decl.withinInterface(decl);
     }
     
@@ -168,8 +165,7 @@ class Strategy {
     }
     
     public static boolean hasDefaultParameterOverload(Parameter param) {
-        return param.isDefaulted() 
-                || isCeylonVariadicNeedingEmpty(param);
+        return param.isDefaulted() || isCeylonVariadicNeedingEmpty(param);
     }
     
     private static boolean isCeylonVariadicNeedingEmpty(Parameter param){
@@ -182,7 +178,7 @@ class Strategy {
     }
     
     public static boolean hasEmptyDefaultArgument(Parameter param) {
-        return (param.isSequenced() && !param.isAtLeastOne());
+        return param.isSequenced() && !param.isAtLeastOne();
     }
     
     /**
@@ -250,9 +246,7 @@ class Strategy {
     
     
     public static boolean createField(Parameter p, Value v) {
-        return !Decl.withinInterface(v)
-                && (p == null 
-                        || (useField(v)));
+        return !Decl.withinInterface(v) && (p == null || useField(v));
     }
     
     /**
@@ -401,8 +395,7 @@ class Strategy {
                     && !((LazyClass)superClass).isCeylon()) {
                 if (superClass.isAbstraction()) {
                     for (Declaration s : superClass.getOverloads()) {
-                        if (s instanceof Class
-                                && isNullary((Class)s)) {
+                        if (s instanceof Class && isNullary((Class)s)) {
                             hasDelegatableSuper = true;
                             break;
                         }
@@ -413,26 +406,26 @@ class Strategy {
                     hasDelegatableSuper = isNullary(superClass);
                 }
             } else {
-                hasDelegatableSuper = hasNullaryNonJpaConstructor(superClass)
+                hasDelegatableSuper = 
+                        hasNullaryNonJpaConstructor(superClass)
                         || hasJpaConstructor(superClass);
             }
             
             boolean constrained = 
-                    (cls.getCaseValues() != null 
-                    && !cls.getCaseValues().isEmpty())
+                    cls.getCaseValues() != null && !cls.getCaseValues().isEmpty()
                     || cls.hasEnumerated() && Decl.hasOnlyValueConstructors(cls);
             
-            return hasDelegatableSuper
-                    && !constrained;
+            return hasDelegatableSuper && !constrained;
         } else {
             return false;
         }
     }
     
     private static boolean isNullary(Class superClass) {
-        return superClass.getParameterList() != null 
-                && superClass.getParameterList().getParameters() != null 
-                && superClass.getParameterList().getParameters().isEmpty();
+        ParameterList parameterList = superClass.getParameterList();
+        return parameterList != null 
+                && parameterList.getParameters() != null 
+                && parameterList.getParameters().isEmpty();
     }
     
     /**
@@ -477,34 +470,26 @@ class Strategy {
             return parameters != null 
                     && (parameters.isEmpty()
                     || parameters.get(0).isDefaulted()
-                    || (parameters.get(0).isSequenced() && !parameters.get(0).isAtLeastOne()));
+                    || parameters.get(0).isSequenced() && !parameters.get(0).isAtLeastOne());
         }
         return false;
     }
 
     public static boolean introduceJavaIoSerializable(
             Class cls, Interface ser) {
-        if (!(cls instanceof ClassAlias)) {
-            if ((Decl.hasOnlyValueConstructors(cls) 
+        return !(cls instanceof ClassAlias)
+                && (Decl.hasOnlyValueConstructors(cls) 
                     || cls.isAnonymous()
                     || (cls.getExtendedType() != null
-                    && (cls.getExtendedType().isBasic()
-                    || cls.getExtendedType().isObject())))
-                    && !cls.getSatisfiedTypes().contains(ser.getType())) {
-                return true;
-            }
-        }
-        return false;
+                        && (cls.getExtendedType().isBasic()
+                         || cls.getExtendedType().isObject())))
+                && !cls.getSatisfiedTypes().contains(ser.getType());
     }
     
     /** Should the given class have a readResolve() method added ?
      * @param ser */
     public static boolean addReadResolve(Class cls) {
-        if (cls.isAnonymous()
-                && cls.isToplevel()) {
-            return true;
-        }
-        return false;
+        return cls.isAnonymous() && cls.isToplevel();
     }
 
     public static boolean useSerializationProxy(Class model) {
