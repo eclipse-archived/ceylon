@@ -84,7 +84,6 @@ class DefaultSetter implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         
         @.java.lang.Override
         public void setAFormal(final long aFormal) {
-            setADefault(aFormal);
         }
         
         @.java.lang.Override
@@ -142,7 +141,6 @@ class DefaultSetter implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         }
         
         public final void setAFormal(final long aFormal) {
-            $this.setADefault(aFormal);
         }
         
         public long inc() {

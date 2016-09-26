@@ -34,7 +34,7 @@ class DefaultSetter() {
             return aDefault;
         }
         assign aFormal {
-            aDefault = aFormal;
+            //aDefault = aFormal;
         }
     }
     class Concrete() satisfies I {
@@ -49,7 +49,7 @@ class DefaultSetter() {
             return aDefault;
         }
         assign aFormal {
-            aDefault = aFormal;
+            //aDefault = aFormal;
         }
         shared Integer inc() {
             return aFormal++;
