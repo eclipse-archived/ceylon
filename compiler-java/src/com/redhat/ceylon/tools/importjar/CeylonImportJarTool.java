@@ -33,8 +33,9 @@ import com.redhat.ceylon.cmr.ceylon.LegacyImporter;
 import com.redhat.ceylon.cmr.ceylon.LegacyImporter.DependencyErrors;
 import com.redhat.ceylon.cmr.ceylon.LegacyImporter.DependencyResults;
 import com.redhat.ceylon.cmr.ceylon.LegacyImporter.ImporterFeedback;
-import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Messages;
+import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Hidden;
@@ -44,7 +45,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 
 @Summary("Imports a jar file into a Ceylon module repository")
@@ -259,7 +260,7 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
     }
     
     private LegacyImporter createImporter() {
-        LegacyImporter importer = new LegacyImporter(module.getName(), module.getVersion(), applyCwd(jarFile), applyCwd(sourceJarFile), getOutputRepositoryManager(), getRepositoryManager(), log, new ImporterFeedback() {
+        LegacyImporter importer = new LegacyImporter(module.getName(), module.getVersion(), applyCwd(jarFile), applyCwd(sourceJarFile), getOutputRepositoryManager(), getRepositoryManager(), getLogger(), new ImporterFeedback() {
             @Override
             public void beforeDependencies() throws IOException {
                 msg("info.checkingDependencies").newline();
@@ -272,24 +273,28 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
             
             @Override
             public void dependency(DependencyResults result, ModuleDependencyInfo dep) throws IOException {
+                String txt = "";
                 switch (result) {
                 case DEP_OK:
-                    msg("info.ok");
+                    txt = OSUtil.color(Messages.msg(bundle, "info.ok"), OSUtil.Color.green);
                     break;
                 case DEP_OK_UNUSED:
-                    msg("info.okButUnused");
+                    txt = OSUtil.color(Messages.msg(bundle, "info.okButUnused"), OSUtil.Color.green);
                     break;
                 case DEP_MARK_SHARED:
-                    msg("error.markShared");
+                    txt = OSUtil.color(Messages.msg(bundle, "error.markShared"), OSUtil.Color.yellow);
+                    break;
+                case DEP_MARK_UNSHARED:
+                    txt = OSUtil.color(Messages.msg(bundle, "info.markUnshared"), OSUtil.Color.yellow);
                     break;
                 case DEP_NOT_FOUND:
-                    msg("info.notFound");
+                    txt = OSUtil.color(Messages.msg(bundle, "info.notFound"), OSUtil.Color.red);
                     break;
                 case DEP_CHECK_FAILED:
-                    msg("error.checkFailed");
+                    txt = OSUtil.color(Messages.msg(bundle, "error.checkFailed"), OSUtil.Color.red);
                     break;
                 case DEP_TRANSITIVE_ERROR:
-                    msg("error.transitiveError");
+                    txt = OSUtil.color(Messages.msg(bundle, "error.transitiveError"), OSUtil.Color.red);
                     break;
                 case DEP_JDK:
                     append("    ").append(dep.getName());
@@ -297,7 +302,10 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                     	append(" ... [shared]");
                     newline();
                     break;
+                default:
+                    break;
                 }
+                append(txt);
             }
             
             @Override
@@ -378,13 +386,13 @@ public class CeylonImportJarTool extends OutputRepoUsingTool {
                             newline();
                             String modver = md.getName() + "/" + md.getLastVersion().getVersion();
                             append("        ").append(modver);
-                            dep = new ModuleDependencyInfo(md.getName(), md.getLastVersion().getVersion(), false, true);
+                            dep = new ModuleDependencyInfo(null, md.getName(), md.getLastVersion().getVersion(), false, true);
                         }
                     } else {
                         ModuleDetails md = suggestions.iterator().next();
                         String modver = md.getName() + "/" + md.getLastVersion().getVersion();
                         msg("info.try.importing", modver);
-                        dep = new ModuleDependencyInfo(md.getName(), md.getLastVersion().getVersion(), false, true);
+                        dep = new ModuleDependencyInfo(null, md.getName(), md.getLastVersion().getVersion(), false, true);
                     }
                 }
                 return dep;

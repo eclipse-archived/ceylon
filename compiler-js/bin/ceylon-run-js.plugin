@@ -1,5 +1,5 @@
 ; Plugin definition for the "ceylon run-js" tool
-summary=Executes a Ceylon program
+summary=Executes a Ceylon program on Node.js
 module=com.redhat.ceylon.compiler.js/@ceylon-version@
 class=com.redhat.ceylon.compiler.js.CeylonRunJsTool
 

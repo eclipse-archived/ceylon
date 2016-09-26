@@ -94,7 +94,7 @@ public class VisibilityVisitor extends Visitor {
             for (Tree.Parameter tp: list.getParameters()) {
                 if (tp!=null) {
                     Parameter p = tp.getParameterModel();
-                    if (p.getModel()!=null) {
+                    if (p!=null) {
                         checkParameterVisibility(tp, m, p);
                     }
                 }
@@ -154,12 +154,12 @@ public class VisibilityVisitor extends Visitor {
                     if (that instanceof Tree.Declaration) {
                         if (!isCompletelyVisible(td, st)) {
                             // temporarily disable error for https://github.com/ceylon/ceylon/issues/5882
-//                            that.addError("supertype is not visible everywhere type '" + 
-//                                    td.getName() + 
-//                                    "' is visible: '" + 
-//                                    st.asString(that.getUnit()) +
-//                                    "' involves an unshared type declaration", 
-//                                    713);
+                            that.addError("supertype is not visible everywhere type '" + 
+                                    td.getName() + 
+                                    "' is visible: '" + 
+                                    st.asString(that.getUnit()) +
+                                    "' involves an unshared type declaration", 
+                                    713);
                         }
                         if (!checkModuleVisibility(td, st)) {
                             that.addError("supertype of type '" + 
@@ -273,25 +273,27 @@ public class VisibilityVisitor extends Visitor {
 
     private static void checkParameterVisibility(
             Tree.Parameter tp, Declaration td, Parameter p) {
-        Type pt = p.getType();
-        if (pt!=null) {
-            if (!isCompletelyVisible(td, pt)) {
-                getParameterTypeErrorNode(tp)
-                    .addError("type of parameter '" + 
-                            p.getName() + "' of " + getName(td) +
-                        " is not visible everywhere declaration is visible: '" + 
-                        pt.asString(tp.getUnit()) +
-                        "' involves an unshared type declaration", 
-                        710);
-            }
-            if (!checkModuleVisibility(td, pt)) {
-                getParameterTypeErrorNode(tp)
-                    .addError("type of parameter '" + 
-                            p.getName() + "' of " + getName(td) + 
-                        " that is visible outside this module comes from an imported module that is not re-exported: '" +
-                        pt.asString(tp.getUnit()) +
-                        "' involves an unexported type declaration", 
-                        714);
+        if (p.getModel()!=null) {
+            Type pt = p.getType();
+            if (pt!=null) {
+                if (!isCompletelyVisible(td, pt)) {
+                    getParameterTypeErrorNode(tp)
+                        .addError("type of parameter '" + 
+                                p.getName() + "' of " + getName(td) +
+                            " is not visible everywhere declaration is visible: '" + 
+                            pt.asString(tp.getUnit()) +
+                            "' involves an unshared type declaration", 
+                            710);
+                }
+                if (!checkModuleVisibility(td, pt)) {
+                    getParameterTypeErrorNode(tp)
+                        .addError("type of parameter '" + 
+                                p.getName() + "' of " + getName(td) + 
+                            " that is visible outside this module comes from an imported module that is not re-exported: '" +
+                            pt.asString(tp.getUnit()) +
+                            "' involves an unexported type declaration", 
+                            714);
+                }
             }
         }
     }

@@ -106,6 +106,12 @@ void destructureTupleInEntry(String->[Float,Float] entry) {
     check(y==entry.item[1], "tuple in entry 3");
     value z = let (s_->[x_, y_] = entry) x_*y_;
     check(z == entry.item[0]*entry.item[1], "tuple in entry 4");
+    value map6472 = MapTest<[Integer,Integer],String>([1,2]->"x1",[3,4]->"x2");
+    for ([k1,k2]->v3 in map6472) {
+        check(!k1.even, "#6472.1");
+        check(k2.even, "#6472.2");
+        check(v3.startsWith("x"), "#6472.3");
+    }
 }
 
 void destructureNestedTuple([String,[Integer,Float],String->String] tuple) {

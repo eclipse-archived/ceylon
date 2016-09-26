@@ -36,7 +36,7 @@ class Test3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     
     public static final class a_ {
         
-        private a_() {
+        a_() {
         }
     }
     
@@ -49,7 +49,7 @@ class Test3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     
     public static final class b_ {
         
-        private b_() {
+        b_() {
         }
     }
     
@@ -74,7 +74,7 @@ class Test4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     
     public static final class a_ {
         
-        private a_() {
+        a_() {
         }
     }
     
@@ -90,7 +90,7 @@ class Test4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     
     public static final class b_ {
         
-        private b_() {
+        b_() {
         }
     }
     
@@ -118,7 +118,7 @@ class TestA implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     
     public static final class a_ {
         
-        private a_() {
+        a_() {
         }
     }
     
@@ -152,7 +152,7 @@ class TestB1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     private static final class a$delegation$_ {
         
-        private a$delegation$_() {
+        a$delegation$_() {
         }
     }
     
@@ -164,7 +164,7 @@ class TestB1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class a_ {
         
-        private a_() {
+        a_() {
         }
     }
     
@@ -176,7 +176,7 @@ class TestB1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class b_ {
         
-        private b_() {
+        b_() {
         }
     }
     
@@ -207,7 +207,7 @@ class TestB2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     private static final class a$delegation$_ {
         
-        private a$delegation$_() {
+        a$delegation$_() {
         }
     }
     
@@ -219,7 +219,7 @@ class TestB2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class a_ {
         
-        private a_() {
+        a_() {
         }
     }
     
@@ -230,7 +230,7 @@ class TestB2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class b_ {
         
-        private b_() {
+        b_() {
         }
     }
     
@@ -261,7 +261,7 @@ class TestB3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     private static final class a$delegation$_ {
         
-        private a$delegation$_() {
+        a$delegation$_() {
         }
     }
     
@@ -273,7 +273,7 @@ class TestB3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class a_ {
         
-        private a_() {
+        a_() {
         }
     }
     
@@ -285,7 +285,7 @@ class TestB3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class b_ {
         
-        private b_() {
+        b_() {
         }
     }
     
@@ -318,7 +318,7 @@ class TestB4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     private static final class a$delegation$_ {
         
-        private a$delegation$_() {
+        a$delegation$_() {
         }
     }
     
@@ -330,7 +330,7 @@ class TestB4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class a_ {
         
-        private a_() {
+        a_() {
         }
     }
     
@@ -342,7 +342,7 @@ class TestB4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     private static final class b$delegation$_ {
         
-        private b$delegation$_() {
+        b$delegation$_() {
         }
     }
     
@@ -353,7 +353,7 @@ class TestB4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class b_ {
         
-        private b_() {
+        b_() {
         }
     }
     
@@ -367,7 +367,7 @@ class TestB4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class c_ {
         
-        private c_() {
+        c_() {
         }
     }
     
@@ -400,7 +400,7 @@ class TestC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     
     private static final class a$delegation$_ {
         
-        private a$delegation$_() {
+        a$delegation$_() {
         }
     }
     
@@ -410,7 +410,7 @@ class TestC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     
     public static final class a_ {
         
-        private a_() {
+        a_() {
         }
     }
     
@@ -421,7 +421,7 @@ class TestC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     
     public static final class b_ {
         
-        private b_() {
+        b_() {
         }
     }
     
@@ -446,7 +446,7 @@ class TestC2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     private static final class a$delegation$_ {
         
-        private a$delegation$_() {
+        a$delegation$_() {
         }
     }
     
@@ -456,7 +456,7 @@ class TestC2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class a_ {
         
-        private a_() {
+        a_() {
         }
     }
     
@@ -468,7 +468,7 @@ class TestC2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class b_ {
         
-        private b_() {
+        b_() {
         }
     }
     
@@ -505,7 +505,7 @@ class Super implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     
     private static final class constr$delegation$_ {
         
-        private constr$delegation$_() {
+        constr$delegation$_() {
         }
     }
     
@@ -516,7 +516,7 @@ class Super implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     
     public static final class constr_ {
         
-        private constr_() {
+        constr_() {
         }
     }
     
@@ -527,7 +527,7 @@ class Super implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     
     public static final class default_ {
         
-        private default_() {
+        default_() {
         }
     }
     
@@ -564,7 +564,7 @@ class Super2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     private static final class constr$delegation$_ {
         
-        private constr$delegation$_() {
+        constr$delegation$_() {
         }
     }
     
@@ -575,7 +575,7 @@ class Super2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class constr_ {
         
-        private constr_() {
+        constr_() {
         }
     }
     
@@ -586,7 +586,7 @@ class Super2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class default_ {
         
-        private default_() {
+        default_() {
         }
     }
     
@@ -612,7 +612,7 @@ class Super3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     private static final class constr$delegation$_ {
         
-        private constr$delegation$_() {
+        constr$delegation$_() {
         }
     }
     
@@ -625,7 +625,7 @@ class Super3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class constr_ {
         
-        private constr_() {
+        constr_() {
         }
     }
     
@@ -636,7 +636,7 @@ class Super3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class default_ {
         
-        private default_() {
+        default_() {
         }
     }
     
@@ -660,7 +660,7 @@ class Super4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     private static final class constr$delegation$_ {
         
-        private constr$delegation$_() {
+        constr$delegation$_() {
         }
     }
     
@@ -672,7 +672,7 @@ class Super4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class constr_ {
         
-        private constr_() {
+        constr_() {
         }
     }
     
@@ -683,7 +683,7 @@ class Super4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     public static final class default_ {
         
-        private default_() {
+        default_() {
         }
     }
     

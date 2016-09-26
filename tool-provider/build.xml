@@ -27,6 +27,7 @@
     <path id="tool.provider.classpath">
         <pathelement path="${jboss-modules.lib}"/>
         <pathelement path="${ceylon.model.lib}"/>
+        <pathelement path="${ceylon.module-loader.lib}"/>
         <pathelement path="${ceylon.cli.lib}" />
         <pathelement path="${ceylon.compiler.lib}"/>
         <pathelement path="${ceylon.js.lib}"/>

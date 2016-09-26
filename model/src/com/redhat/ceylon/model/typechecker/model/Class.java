@@ -5,10 +5,27 @@ import static java.util.Collections.singletonList;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 
 public class Class extends ClassOrInterface implements Functional {
+    
+    private static final int EMPTY_VALUE = 1<<23;
+    private static final int FALSE_VALUE = 1<<22;
+    private static final int TRUE_VALUE = 1<<21;
+    private static final int NULL_VALUE = 1<<20;
+    private static final int RANGE = 1<<12;
+    private static final int ENTRY = 1<<11;
+    private static final int TUPLE = 1<<10;
+    private static final int BYTE = 1<<9;
+    private static final int INTEGER = 1<<8;
+    private static final int FLOAT = 1<<7;
+    private static final int CHARACTER = 1<<6;
+    private static final int STRING = 1<<5;
+    private static final int BOOLEAN = 1<<4;
+    private static final int BASIC = 1<<3;
+    private static final int NULL = 1<<2;
+    private static final int OBJECT = 1<<1;
+    private static final int ANYTHING = 1<<0;
     
     private static final int CONSTRUCTORS = 1<<11;
     private static final int ENUMERATED = 1<<12;
@@ -295,94 +312,160 @@ public class Class extends ClassOrInterface implements Functional {
         return true;
     }
     
+    private int code;
+    
+    private void setCode() {
+        if (code==0) {
+            Scope scope = getContainer();
+            if (scope instanceof Package) {
+                Package p = (Package) scope;
+                if (p.isLanguagePackage()) {
+                    String name = getName();
+                    if (name!=null) {
+                        switch (name) {
+                        case "Anything":
+                            code = ANYTHING; break;
+                        case "Object":
+                            code = OBJECT; break;
+                        case "Null":
+                            code = NULL; break;
+                        case "Basic":
+                            code = BASIC; break;
+                        case "Boolean":
+                            code = BOOLEAN; break;
+                        case "String":
+                            code = STRING; break;
+                        case "Character":
+                            code = CHARACTER; break;
+                        case "Float":
+                            code = FLOAT; break;
+                        case "Integer":
+                            code = INTEGER; break;
+                        case "Byte":
+                            code = BYTE; break;
+                        case "Tuple":
+                            code = TUPLE; break;
+                        case "Entry":
+                            code = ENTRY; break;
+                        case "Range":
+                            code = RANGE; break;
+                        case "null":
+                            code = NULL_VALUE; break;
+                        case "true":
+                            code = TRUE_VALUE; break;
+                        case "false":
+                            code = FALSE_VALUE; break;
+                        case "empty":
+                            code = EMPTY_VALUE; break;
+                        default:
+                            code = -1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     @Override
     public boolean isAnything() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::Anything");
+        setCode();
+        return code == ANYTHING;
     }
     
     @Override
     public boolean isObject() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::Object");
+        setCode();
+        return code == OBJECT;
     }
     
     @Override
     public boolean isNull() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::Null");
+        setCode();
+        return code == NULL;
     }
 
     @Override
     public boolean isNullValue() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::null");
+        setCode();
+        return code == NULL_VALUE;
+    }
+
+    @Override
+    public boolean isTrueValue() {
+        setCode();
+        return code == TRUE_VALUE;
+    }
+
+    @Override
+    public boolean isFalseValue() {
+        setCode();
+        return code == FALSE_VALUE;
     }
 
     @Override
     boolean isEmptyValue() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::empty");
+        setCode();
+        return code == EMPTY_VALUE;
     }
 
     @Override
     public boolean isBasic() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::Basic");
+        setCode();
+        return code == BASIC;
     }
 
     @Override
     public boolean isBoolean() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::Boolean");
+        setCode();
+        return code == BOOLEAN;
     }
 
     @Override
     public boolean isString() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::String");
+        setCode();
+        return code == STRING;
     }
 
     @Override
     public boolean isCharacter() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::Character");
+        setCode();
+        return code == CHARACTER;
     }
 
     @Override
     public boolean isFloat() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::Float");
+        setCode();
+        return code == FLOAT;
     }
 
     @Override
     public boolean isInteger() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::Integer");
+        setCode();
+        return code == INTEGER;
     }
 
     @Override
     public boolean isByte() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::Byte");
+        setCode();
+        return code == BYTE;
     }
 
     @Override
     public boolean isTuple() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::Tuple");
+        setCode();
+        return code == TUPLE;
     }
     
     @Override
     public boolean isEntry() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::Entry");
+        setCode();
+        return code == ENTRY;
     }
     
     @Override
     public boolean isRange() {
-        return Objects.equals(getQualifiedNameString(),
-                "ceylon.language::Range");
+        setCode();
+        return code == RANGE;
     }
     
     @Override
@@ -421,7 +504,7 @@ public class Class extends ClassOrInterface implements Functional {
             }
             if (dec instanceof Interface) {
                 List<Type> sts = getSatisfiedTypes();
-                for (int i = 0, s=sts.size(); i<s; i++) {
+                for (int i=0, s=sts.size(); i<s; i++) {
                     Type st = sts.get(i);
                     if (st.getDeclaration().inherits(dec)) {
                         return true;
@@ -500,9 +583,7 @@ public class Class extends ClassOrInterface implements Functional {
     }
 
     private boolean isSequentialTypeInternal() {
-        Package pack = getUnit().getPackage();
-        if (!pack.getNameAsString()
-                .equals(Module.LANGUAGE_MODULE_NAME)) {
+        if (!getUnit().getPackage().isLanguagePackage()) {
             return false;
         }
         else if (isAnything() || isObject() || 
@@ -530,9 +611,7 @@ public class Class extends ClassOrInterface implements Functional {
     }
     
     private boolean isSequenceTypeInternal() {
-        Package pack = getUnit().getPackage();
-        if (!pack.getNameAsString()
-                .equals(Module.LANGUAGE_MODULE_NAME)) {
+        if (!getUnit().getPackage().isLanguagePackage()) {
             return false;
         }
         else if (isAnything() || isObject() || 

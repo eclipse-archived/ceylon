@@ -55,6 +55,9 @@ function AppliedMemberClassCallableConstructor$jsint(tipo,$$targs$$,that,myTargs
     atr$(that,'string',function(){
         return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getString.get.call(that);
     },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getString.$crtmm$);
+    atr$(that,'hash',function(){
+        return AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getHash.get.call(that);
+    },undefined,AppliedMemberClassCallableConstructor$jsint.$$.prototype.$prop$getHash.$crtmm$);
   }
   MemberClassCallableConstructor$meta$model({Type$MemberClassCallableConstructor:$$targs$$.Type$AppliedMemberClassCallableConstructor,
     Arguments$MemberClassCallableConstructor:$$targs$$.Arguments$AppliedMemberClassCallableConstructor,

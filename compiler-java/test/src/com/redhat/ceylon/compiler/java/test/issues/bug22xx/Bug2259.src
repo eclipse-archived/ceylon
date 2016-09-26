@@ -16,7 +16,7 @@ final class create_ {
     }
     
     static <T>T[] create(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Sequential<? extends T> vals) {
-        return (T[]).ceylon.language.nothing_.get_();
+        return (T[])(.java.lang.Object).ceylon.language.nothing_.get_();
     }
 }
 final class create2_ {
@@ -35,7 +35,7 @@ final class create2_ {
     }
     
     static <T>long create2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .ceylon.language.Sequential<? extends T> vals) {
-        return ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+        return ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
     }
 }
 final class bug2259_ {

@@ -181,9 +181,9 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         setN1((byte)(getN1() & getN2()));
         setI1((byte)(getN1() | getN2()));
         setN1((byte)(getN1() ^ getN2()));
-        setN1((byte)(getN1() << (byte)1L));
-        setN1((byte)((getN1() & 255) >>> (byte)1L));
-        setN1((byte)(getN1() >> (byte)1L));
+        setN1((byte)(getN1() << ((byte)1L & 7)));
+        setN1((byte)((getN1() & 255) >>> ((byte)1L & 7)));
+        setN1((byte)(getN1() >> ((byte)1L & 7)));
     }
     
     private final void unboxedGetterAttributes$priv$() {
@@ -191,9 +191,9 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         setGetterByte1((byte)(getGetterByte1() & getGetterByte2()));
         setGetterByte3((byte)(getGetterByte1() | getGetterByte2()));
         setGetterByte1((byte)(getGetterByte1() ^ getGetterByte2()));
-        setGetterByte1((byte)(getGetterByte1() << (byte)1L));
-        setGetterByte1((byte)((getGetterByte1() & 255) >>> (byte)1L));
-        setGetterByte1((byte)(getGetterByte1() >> (byte)1L));
+        setGetterByte1((byte)(getGetterByte1() << ((byte)1L & 7)));
+        setGetterByte1((byte)((getGetterByte1() & 255) >>> ((byte)1L & 7)));
+        setGetterByte1((byte)(getGetterByte1() >> ((byte)1L & 7)));
     }
     
     public .java.lang.Object unboxedQualifiedAttributes() {
@@ -201,9 +201,9 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         this.setN1((byte)(this.getN1() & this.getN2()));
         this.setI1((byte)(this.getN1() | this.getN2()));
         this.setN1((byte)(this.getN1() ^ this.getN2()));
-        this.setN1((byte)(this.getN1() << (byte)1L));
-        this.setN1((byte)((this.getN1() & 255) >>> (byte)1L));
-        this.setN1((byte)(this.getN1() >> (byte)1L));
+        this.setN1((byte)(this.getN1() << ((byte)1L & 7)));
+        this.setN1((byte)((this.getN1() & 255) >>> ((byte)1L & 7)));
+        this.setN1((byte)(this.getN1() >> ((byte)1L & 7)));
         return null;
     }
     
@@ -212,9 +212,9 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         this.setGetterByte1((byte)(this.getGetterByte1() & this.getGetterByte2()));
         this.setGetterByte3((byte)(this.getGetterByte1() | this.getGetterByte2()));
         this.setGetterByte1((byte)(this.getGetterByte1() ^ this.getGetterByte2()));
-        this.setGetterByte1((byte)(this.getGetterByte1() << (byte)1L));
-        this.setGetterByte1((byte)((this.getGetterByte1() & 255) >>> (byte)1L));
-        this.setGetterByte1((byte)(this.getGetterByte1() >> (byte)1L));
+        this.setGetterByte1((byte)(this.getGetterByte1() << ((byte)1L & 7)));
+        this.setGetterByte1((byte)((this.getGetterByte1() & 255) >>> ((byte)1L & 7)));
+        this.setGetterByte1((byte)(this.getGetterByte1() >> ((byte)1L & 7)));
         return null;
     }
     
@@ -237,9 +237,9 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         n1 = (byte)(n1 & n2);
         i1 = (byte)(n1 | n2);
         n1 = (byte)(n1 ^ n2);
-        n1 = (byte)(n1 << (byte)1L);
-        n1 = (byte)((n1 & 255) >>> (byte)1L);
-        n1 = (byte)(n1 >> (byte)1L);
+        n1 = (byte)(n1 << ((byte)1L & 7));
+        n1 = (byte)((n1 & 255) >>> ((byte)1L & 7));
+        n1 = (byte)(n1 >> ((byte)1L & 7));
     }
     
     private final void unboxedLocalGetters$priv$() {
@@ -319,9 +319,9 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         getterByte1$setter$_.set_((byte)(getterByte1$getter$_.get_() & getterByte2$getter$_.get_()));
         getterByte3$setter$_.set_((byte)(getterByte1$getter$_.get_() | getterByte2$getter$_.get_()));
         getterByte1$setter$_.set_((byte)(getterByte1$getter$_.get_() ^ getterByte2$getter$_.get_()));
-        getterByte1$setter$_.set_((byte)(getterByte1$getter$_.get_() << (byte)1L));
-        getterByte1$setter$_.set_((byte)((getterByte1$getter$_.get_() & 255) >>> (byte)1L));
-        getterByte1$setter$_.set_((byte)(getterByte1$getter$_.get_() >> (byte)1L));
+        getterByte1$setter$_.set_((byte)(getterByte1$getter$_.get_() << ((byte)1L & 7)));
+        getterByte1$setter$_.set_((byte)((getterByte1$getter$_.get_() & 255) >>> ((byte)1L & 7)));
+        getterByte1$setter$_.set_((byte)(getterByte1$getter$_.get_() >> ((byte)1L & 7)));
     }
     
     private final void boxedLocals$priv$() {
@@ -342,9 +342,9 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.get_()));
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.get_()));
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.get_()));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() << (byte)1L));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)((.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() & 255) >>> (byte)1L));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() >> (byte)1L));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() << ((byte)1L & 7)));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)((.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() & 255) >>> ((byte)1L & 7)));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.get_() >> ((byte)1L & 7)));
     }
     
     private final void unboxedToplevelGetter$priv$() {
@@ -352,9 +352,9 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() & .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte2_.get_()));
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte3_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() | .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte2_.get_()));
         .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() ^ .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte2_.get_()));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() << (byte)1L));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)((.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() & 255) >>> (byte)1L));
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() >> (byte)1L));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() << ((byte)1L & 7)));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)((.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() & 255) >>> ((byte)1L & 7)));
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.set_((byte)(.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelGetterByte1_.get_() >> ((byte)1L & 7)));
     }
     
     @.java.lang.Override
@@ -379,9 +379,9 @@ class BitwiseOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expressi
         super.setN1((byte)(super.getN1() & super.getN2()));
         super.setI1((byte)(super.getN1() | super.getN2()));
         super.setN1((byte)(super.getN1() ^ super.getN2()));
-        super.setN1((byte)(super.getN1() << (byte)1L));
-        super.setN1((byte)((super.getN1() & 255) >>> (byte)1L));
-        super.setN1((byte)(super.getN1() >> (byte)1L));
+        super.setN1((byte)(super.getN1() << ((byte)1L & 7)));
+        super.setN1((byte)((super.getN1() & 255) >>> ((byte)1L & 7)));
+        super.setN1((byte)(super.getN1() >> ((byte)1L & 7)));
         return null;
     }
     
@@ -391,9 +391,9 @@ class BitwiseOperatorsSub extends .com.redhat.ceylon.compiler.java.test.expressi
         super.setGetterByte1((byte)(super.getGetterByte1() & super.getGetterByte2()));
         super.setGetterByte3((byte)(super.getGetterByte1() | super.getGetterByte2()));
         super.setGetterByte1((byte)(super.getGetterByte1() ^ super.getGetterByte2()));
-        super.setGetterByte1((byte)(super.getGetterByte1() << (byte)1L));
-        super.setGetterByte1((byte)((super.getGetterByte1() & 255) >>> (byte)1L));
-        super.setGetterByte1((byte)(super.getGetterByte1() >> (byte)1L));
+        super.setGetterByte1((byte)(super.getGetterByte1() << ((byte)1L & 7)));
+        super.setGetterByte1((byte)((super.getGetterByte1() & 255) >>> ((byte)1L & 7)));
+        super.setGetterByte1((byte)(super.getGetterByte1() >> ((byte)1L & 7)));
         return null;
     }
     

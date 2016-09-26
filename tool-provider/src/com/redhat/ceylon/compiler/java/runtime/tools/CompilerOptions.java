@@ -1,15 +1,18 @@
 package com.redhat.ceylon.compiler.java.runtime.tools;
 
 import java.io.File;
+import java.io.Writer;
 import java.util.LinkedList;
 import java.util.List;
 
 public class CompilerOptions extends Options {
-    private List<String> modules = new LinkedList<String>();
-    private List<File> files = new LinkedList<File>();
-    private List<File> sourcePath = new LinkedList<File>();
+    private List<String> modules = new LinkedList<>();
+    private List<File> files = new LinkedList<>();
+    private List<File> sourcePath = new LinkedList<>();
+    private List<File> resourcePath = new LinkedList<>();
     private String outputRepository;
-    
+    private Writer outWriter;
+
     public List<String> getModules() {
         return modules;
     }
@@ -39,10 +42,33 @@ public class CompilerOptions extends Options {
     public void addSourcePath(File sourcePath){
         this.sourcePath.add(sourcePath);
     }
+
+    public List<File> getResourcePath() {
+        return resourcePath;
+    }
+    public void setResourcePath(List<File> resourcePath) {
+        this.resourcePath = resourcePath;
+    }
+    public void addResourcePath(File resourcePath){
+        this.resourcePath.add(resourcePath);
+    }
+
     public String getOutputRepository() {
         return outputRepository;
     }
     public void setOutputRepository(String outputRepository) {
         this.outputRepository = outputRepository;
+    }
+
+    public Writer getOutWriter() {
+        return outWriter;
+    }
+    /**
+     * Specifies a {@link Writer} where messages will be written when {@link #setVerbose(boolean)} is set
+     * to <code>true</code>.
+     * @param outWriter the output writer
+     */
+    public void setOutWriter(Writer outWriter) {
+        this.outWriter = outWriter;
     }
 }

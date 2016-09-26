@@ -1,0 +1,202 @@
+<project name="Ceylon Java main classes" default="all" basedir=".">
+
+    <property file="../user-build.properties" />
+    <property file="../common-build.properties" />
+    <property file="../lib/build.properties"/>
+    <property file="build.properties" />
+
+    <property name="name" value="Ceylon Java main classes" />
+
+    <!-- The Java source files for the Java main classes -->
+    <property name="java.main.src" location="src" />
+
+    <!-- Jarfiles everything ends up in -->
+    <property name="ceylon.java.main.src" value="${ceylon.java.main.dir}/com.redhat.ceylon.java.main-${module.com.redhat.ceylon.java.main.version}.src" />
+    <property name="ceylon.java.main.repo" value="${ceylon.repo.dir}/${ceylon.java.main.dir}" />
+    <property name="ceylon.java.main.dist" value="${build.dist.repo}/${ceylon.java.main.dir}" />
+
+    <tstamp>
+        <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+    </tstamp>
+
+    <path id="java.main.classpath">
+        <pathelement path="${ceylon.model.lib}"/>
+        <pathelement path="${ceylon.module-resolver.lib}"/>
+        <pathelement path="${ceylon.common.lib}"/>
+        <pathelement path="${ceylon.language.lib}"/>
+        <pathelement path="${ceylon.classfile.lib}"/>
+    </path>
+
+    <!-- ################################################################## -->
+
+    <!-- constant to declare a file binary for checksumsum -->
+    <property name="checksum.binary-prefix" value=" *" />
+    <!-- Helper target, used to create a sha1 checksum file  -->
+    <!-- Requires 'file' as a parameter. -->
+    <target name="sha1sum">
+        <fail unless="file" />
+        <fail if="filename" />
+        <fail if="value" />
+        <basename file="${file}" property="filename" />
+        <checksum file="${file}" property="value" algorithm="sha1" />
+        <echo file="${file}.sha1" message="${value}" />
+    </target>
+
+    <!-- Rule to clean everything up -->
+    <target name="clean">
+        <delete dir="${build.dir}" />
+    </target>
+
+    <!-- Repository targets -->
+    <target name="init.repo" description="Initialize the default local Ceylon module repository">
+        <mkdir dir="${ceylon.java.main.repo}" />
+    </target>
+    <target name="clean.repo" description="Clean default local Ceylon module repository">
+        <delete file="${ceylon.java.main.lib}" />
+        <delete file="${ceylon.java.main.lib}.sha1" />
+        <delete file="${ceylon.repo.dir}/${ceylon.java.main.src}" />
+        <delete file="${ceylon.repo.dir}/${ceylon.java.main.src}.sha1" />
+    </target>
+
+    <target name="dist" depends="build" description="Create Ceylon Java main classes distribution">
+        <zip destfile="${build.dist.repo}/${ceylon.java.main.src}">
+            <fileset dir="${java.main.src}">
+                <include name="**/*.java"/>
+            </fileset>
+        </zip>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.java.main.src}"/>
+        </antcall>
+    </target>
+
+    <target name="publish" depends="clean.repo,init.repo,dist,publish-internal" description="Publish Ceylon Java main classes module to default repo">
+    </target>
+
+    <target name="publish-internal" depends="init.repo">
+        <copy todir="${ceylon.repo.dir}" overwrite="true">
+            <fileset dir="${build.dist.repo}" />
+        </copy>
+    </target>
+
+    <!-- Rule to compile and test -->
+    <target name="all" depends="publish" />
+
+    <!-- Rule to build Java main classes from their Java sources -->
+    <target name="java.main.classes">
+        <mkdir dir="${build.classes}" />
+        <javac srcdir="${java.main.src}" destdir="${build.classes}" debug="true" encoding="UTF-8" classpathref="java.main.classpath" target="${compile.java.target}" source="${compile.java.source}" bootclasspath="${compile.java.bootclasspath}" includeantruntime="true">
+            <compilerarg value="-XDignore.symbol.file" />
+            <include name="com/redhat/**" />
+        </javac>
+        <copy todir="${build.classes}">
+            <fileset dir="${java.main.src}">
+                <exclude name="com/redhat/**/*.utf8properties" />
+                <include name="com/redhat/**/resources/**" />
+                <include name="com/redhat/**/*.properties" />
+                <include name="META-INF/**" />
+            </fileset>
+        </copy>
+        <native2ascii dest="${build.classes}" src="${java.main.src}" encoding="UTF-8" ext=".properties">
+            <include name="com/redhat/**/*.utf8properties" />
+        </native2ascii>
+    </target>
+
+    <!-- Rule to build Java main classes jar -->
+    <target name="java.main.jar" depends="java.main.classes">
+        <mkdir dir="${build.dist.repo}/${ceylon.java.main.dir}" />
+        <mkdir dir="${build.bin}" />
+        <jar destfile="${build.dist.repo}/${ceylon.java.main.jar}">
+            <fileset dir="${build.classes}">
+            </fileset>
+            <manifest>
+                <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.java.main"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.java.main.version}.${qualifier}"/>
+            </manifest>
+        </jar>
+        <antcall target="sha1sum">
+            <param name="file" value="${build.dist.repo}/${ceylon.java.main.jar}" />
+        </antcall>
+    </target>
+
+    <!-- Rule to build Java main classes jar -->
+    <target name="build" depends="java.main.jar">
+        <mkdir dir="${build.dist}" />
+        <mkdir dir="${build.bin}" />
+    </target>
+
+    <target name="bundle-proxy">
+        <basename file="${archivePath}" property="archiveFileName"/>
+        <property name="proxy-project" value="${eclipse.project.path}/required-bundle-proxies/${archiveFileName}"/>
+        <mkdir dir="${proxy-project}"/>
+        <delete failonerror="false" dir="${proxy-project}/META-INF"/>
+        <copy toDir="${proxy-project}" overwrite="true">
+            <zipfileset src="${archivePath}" includes="META-INF/**"/>
+            <fileset file="${archivePath}"/>
+        </copy>
+        <manifest file="${proxy-project}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Bundle-Classpath" value="${archiveFileName}"/>
+        </manifest>
+        <echo file="${proxy-project}/.project"><![CDATA[<projectDescription>
+    <name>${archiveFileName}</name>
+    <comment></comment>
+    <projects>
+    </projects>
+    <buildSpec>
+        <buildCommand>
+            <name>org.eclipse.jdt.core.javabuilder</name>
+            <arguments>
+            </arguments>
+        </buildCommand>
+        <buildCommand>
+            <name>org.eclipse.pde.ManifestBuilder</name>
+            <arguments>
+            </arguments>
+        </buildCommand>
+        <buildCommand>
+            <name>org.eclipse.pde.SchemaBuilder</name>
+            <arguments>
+            </arguments>
+        </buildCommand>
+    </buildSpec>
+    <natures>
+        <nature>org.eclipse.pde.PluginNature</nature>
+        <nature>org.eclipse.jdt.core.javanature</nature>
+    </natures>
+    <linkedResources>
+        <link>
+            <name>project</name>
+            <type>2</type>
+            <locationURI>PARENT-3-PROJECT_LOC/ceylon/java-main</locationURI>
+        </link>
+    </linkedResources>
+</projectDescription>]]></echo>     
+        <echo file="${proxy-project}/.classpath"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+    <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+    <classpathentry exported="true" kind="lib" path="${archiveFileName}" sourcepath="project"/>
+    <classpathentry kind="output" path="bin"/>
+</classpath>]]></echo>     
+        <echo file="${proxy-project}/.gitignore"><![CDATA[/META-INF
+/${archiveFileName}
+/.classpath
+/.project
+/.gitignore
+/bin/]]></echo>     
+    </target>
+    
+	<target name="ide-quick-internal" depends="java.main.classes">
+        <antcall target="bundle-proxy">
+            <param name="archivePath" value="${ceylon.java.main.lib}"/>
+        </antcall>
+    </target>
+	
+    <target name="test">
+        <echo>No tests available (yet)</echo>
+    </target>
+	
+    <target name="test-quick">
+        <echo>No tests available (yet)</echo>
+    </target>
+</project>
+

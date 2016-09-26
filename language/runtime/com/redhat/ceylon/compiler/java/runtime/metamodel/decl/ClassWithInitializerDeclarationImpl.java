@@ -61,8 +61,7 @@ public class ClassWithInitializerDeclarationImpl
                         DeprecationAnnotation.$TypeDescriptor$,
                         ThrownExceptionAnnotation.$TypeDescriptor$)))) {
             Predicate<Declaration> p = Predicates.isDeclarationAnnotatedWith(reified$Annotation, at);
-            p.accept(declaration);
-            return constructorDeclarations();
+            return !declaration.isNativeHeader() && p.accept(declaration) ? constructorDeclarations() : (Sequential)empty_.get_();
         } else {
             return (Sequential)empty_.get_();
         }

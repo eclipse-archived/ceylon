@@ -8,7 +8,7 @@ public class Bug2223 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     static final class Foo$foo {
         
-        private Foo$foo() {
+        Foo$foo() {
         }
     }
     private transient Foo $instance$Foo$foo = null;
@@ -39,7 +39,7 @@ public class Bug2223 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     static final class Bar$foo {
         
-        private Bar$foo() {
+        Bar$foo() {
         }
     }
     private transient Bar $instance$Bar$foo = null;
@@ -85,12 +85,13 @@ public final class bug2223_ {
     }
     
     public static void bug2223() {
+        final VariableBox<Foo> $instance$Foo$foo = new VariableBox<Foo>(null);
         
         class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             final class foo_ {
                 
-                private foo_() {
+                foo_() {
                 }
             }
             
@@ -102,13 +103,14 @@ public final class bug2223_ {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.bug2223_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Foo.class));
             }
         }
-        final Foo $instance$Foo$foo = new Foo((Foo.foo_)null);
+        $instance$Foo$foo.ref = new Foo((Foo.foo_)null);
+        final VariableBox<Bar> $instance$Bar$foo = new VariableBox<Bar>(null);
         
         class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             final class foo_ {
                 
-                private foo_() {
+                foo_() {
                 }
             }
             
@@ -120,7 +122,7 @@ public final class bug2223_ {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.bug2223_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(Bar.class));
             }
         }
-        final Bar $instance$Bar$foo = new Bar((Bar.foo_)null);
+        $instance$Bar$foo.ref = new Bar((Bar.foo_)null);
         final long foo = 1L;
     }
     

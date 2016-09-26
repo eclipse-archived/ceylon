@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug07xx;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class bug708_ {
     
@@ -48,7 +50,9 @@ final class bug708_test_ {
         }
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "T",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -76,6 +80,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
+    @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.Object param2) {
         this.$reified$T = $reified$T;
         this.param = param;
@@ -145,7 +150,9 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708_Class.class, $reified$T);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::Map<ceylon.language::Integer,ceylon.language::String|T>"})
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -252,6 +259,12 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Collection$impl<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> $ceylon$language$Collection$impl() {
         return $ceylon$language$Collection$this$;
+    }
+    
+    @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    public final .ceylon.language.Iterable<? extends .ceylon.language.Sequence<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>, ? extends .java.lang.Object> combinations(final long length) {
+        return $ceylon$language$Collection$this$.combinations(length);
     }
     
     @.java.lang.Override
@@ -702,7 +715,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
             value = "ceylon.language::Iterator<ceylon.language::Integer->ceylon.language::String|T>",
             erased = true)
     public final .ceylon.language.Iterator iterator() {
-        return (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -711,7 +724,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Set<ceylon.language::Integer>")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .ceylon.language.Set<? extends .ceylon.language.Integer> getKeys() {
-        return (.ceylon.language.Set<? extends .ceylon.language.Integer>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Set<? extends .ceylon.language.Integer>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -722,7 +735,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
             erased = true)
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .ceylon.language.Collection getItems() {
-        return (.ceylon.language.Collection).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Collection)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -737,7 +750,9 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
         return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map.class, $reified$T);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class bug708_test2_ {
     
@@ -952,7 +967,9 @@ final class bug708extra4_ {
         }
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Attribute
 @.com.redhat.ceylon.compiler.java.metadata.Name("bug708_cache")
 final class bug708_cache_ {

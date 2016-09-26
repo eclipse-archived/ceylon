@@ -17,7 +17,7 @@ final class bug2289_ {
     }
     
     static void bug2289() {
-        final .ceylon.collection.MutableMap<.java.lang.Object, .ceylon.language.Usable> mm = (.ceylon.collection.MutableMap<.java.lang.Object, .ceylon.language.Usable>).ceylon.language.nothing_.get_();
+        final .ceylon.collection.MutableMap<.java.lang.Object, .ceylon.language.Usable> mm = (.ceylon.collection.MutableMap<.java.lang.Object, .ceylon.language.Usable>)(.java.lang.Object).ceylon.language.nothing_.get_();
         final .ceylon.language.Callable<? extends .ceylon.language.Boolean> defines1 = (
             let
             {

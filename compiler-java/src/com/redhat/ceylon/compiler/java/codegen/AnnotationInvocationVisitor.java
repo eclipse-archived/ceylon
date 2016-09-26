@@ -201,6 +201,9 @@ class AnnotationInvocationVisitor extends Visitor {
     
     public static JCAnnotation transformConstructor(ExpressionTransformer exprGen, Tree.InvocationExpression invocation) {
         AnnotationInvocation ai = annoCtorModel(invocation);
+        if (ai == null) {
+            return null;
+        }
         return transformConstructor(exprGen, invocation, ai, com.redhat.ceylon.langtools.tools.javac.util.List.<AnnotationFieldName>nil());
     }
 
@@ -508,6 +511,8 @@ class AnnotationInvocationVisitor extends Visitor {
             if (exprGen.isJavaEnumType(term.getTypeModel())) {
                 // A Java enum
                 append(exprGen.transformExpression(term, BoxingStrategy.UNBOXED, null));
+            } else {
+                super.visit(term);
             }
         } else {
             super.visit(term);

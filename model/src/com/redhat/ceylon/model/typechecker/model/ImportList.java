@@ -14,6 +14,7 @@ public class ImportList implements Scope {
     private Scope container;
     private ImportableScope importedScope;
     private List<Import> imports = new ArrayList<Import>();
+    private Unit unit;
     
     @Override
     public boolean isToplevel() {
@@ -92,7 +93,7 @@ public class ImportList implements Scope {
                 return unit.getPackage().getMatchingDeclarations(unit, startingWith, proximity, canceller);
             }
             else {
-                return importedScope.getImportableDeclarations(unit, startingWith, imports, proximity);
+                return importedScope.getImportableDeclarations(unit, startingWith, imports, proximity, canceller);
             }
         }
         else {
@@ -135,5 +136,14 @@ public class ImportList implements Scope {
     @Override
     public Backends getScopedBackends() {
         return getScope().getScopedBackends();
+    }
+
+    @Override
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 }

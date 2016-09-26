@@ -38,7 +38,7 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     private static final class one_ {
         
-        private one_() {
+        one_() {
         }
     }
     
@@ -56,7 +56,7 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     private static final class two_ {
         
-        private two_() {
+        two_() {
         }
     }
     
@@ -95,7 +95,7 @@ class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runt
     
     static final class MemberClass$one {
         
-        private MemberClass$one() {
+        MemberClass$one() {
         }
     }
     private transient MemberClass $instance$MemberClass$one = null;
@@ -107,7 +107,7 @@ class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runt
     
     private static final class MemberClass$nonShared {
         
-        private MemberClass$nonShared() {
+        MemberClass$nonShared() {
         }
     }
     private transient MemberClass $instance$MemberClass$nonShared = null;
@@ -172,6 +172,7 @@ final class localSingletonCtors_ {
     }
     
     static .java.lang.Object localSingletonCtors() {
+        final VariableBox<LocalClass> $instance$LocalClass$one = new VariableBox<LocalClass>(null);
         
         class LocalClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             private final .java.lang.String string;
@@ -183,7 +184,7 @@ final class localSingletonCtors_ {
             
             final class one_ {
                 
-                private one_() {
+                one_() {
                 }
             }
             
@@ -196,8 +197,8 @@ final class localSingletonCtors_ {
                 return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.structure.constructor.localSingletonCtors_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(LocalClass.class));
             }
         }
-        final LocalClass $instance$LocalClass$one = new LocalClass((LocalClass.one_)null);
-        return $instance$LocalClass$one;
+        $instance$LocalClass$one.ref = new LocalClass((LocalClass.one_)null);
+        return $instance$LocalClass$one.ref;
     }
 }
 final class singletonCtors_ {

@@ -20,6 +20,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
     "ceylon.language::Exponentiable<ceylon.language::Float,ceylon.language::Float>"
 })
 @ValueType
+@SharedAnnotation$annotation$
+@FinalAnnotation$annotation$
+@NativeAnnotation$annotation$(backends={})
 public final class Float
     implements Number<Float>, Exponentiable<Float,Float>, 
                ReifiedType, java.io.Serializable {
@@ -111,6 +114,87 @@ public final class Float
     @Override
     public Float power(@Name("other") Float other) {
         return instance(power(value, other.value));
+    }
+    
+    @Ignore
+    public static double $power$(double value, double otherValue) {
+        return power(value, otherValue);
+    }
+    
+    @Ignore
+    public static float $power$(float value, float otherValue) {
+        if (otherValue==0.0F && 
+                !java.lang.Float.isNaN(value)) {
+            return 1.0F;
+        }
+        else if (otherValue==1.0F) {
+            return value;
+        }
+        else if (otherValue==2.0F) {
+            return value*value;
+        }
+        else if (otherValue==3.0F) {
+            return value*value*value;
+        }
+        else if (otherValue==4.0F) {
+            float sqr = value*value;
+            return sqr*sqr;
+        }
+        else if (otherValue==5.0F) {
+            float sqr = value*value;
+            return sqr*sqr*value;
+        }
+        else if (otherValue==6.0F) {
+            float sqr = value*value;
+            return sqr*sqr*sqr;
+        }
+        //TODO: other positive integer powers for which
+        //      multiplying is faster than pow()
+        else if (otherValue==0.5F) {
+            return (float)Math.sqrt(value);
+        }
+        else if (otherValue==0.25F) {
+            return (float)Math.sqrt(Math.sqrt(value));
+        }
+        else if (otherValue==-1.0F) {
+            return 1.0F/value;
+        }
+        else if (otherValue==-2.0F) {
+            return 1.0F/value/value;
+        }
+        else if (otherValue==-3.0F) {
+            return 1.0F/value/value/value;
+        }
+        else if (otherValue==-4.0F) {
+            float sqr = value*value;
+            return 1/sqr/sqr;
+        }
+        else if (otherValue==-5.0F) {
+            float sqr = value*value;
+            return 1/sqr/sqr/value;
+        }
+        else if (otherValue==-6.0F) {
+            float sqr = value*value;
+            return 1/sqr/sqr/sqr;
+        }
+        else if (otherValue==-0.5F) {
+            return (float)(1.0/Math.sqrt(value));
+        }
+        else if (otherValue==-0.25F) {
+            return (float)(1.0/Math.sqrt(Math.sqrt(value)));
+        }
+        else if (value==1.0F) {
+            return 1.0F;
+        }
+        else if (value==-1.0F && 
+                (otherValue == java.lang.Float.POSITIVE_INFINITY || 
+                 otherValue == java.lang.Float.NEGATIVE_INFINITY)) {
+            return 1.0F;
+        }
+        else {
+            //NOTE: this function is _really_ slow!
+            return (float)Math.pow(value, otherValue);
+        }
     }
     
     @Ignore
@@ -238,8 +322,14 @@ public final class Float
     public static double power(double value, long otherValue) {
         return powerOfInteger(value, otherValue);
     }
+    
+    @Ignore
+    public static double $power$(double value, long otherValue) {
+        return powerOfInteger(value, otherValue);
+    }
 
     @AliasesAnnotation$annotation$(aliases = "absolute")
+    @Transient
     @Override
     public Float getMagnitude() {
         return instance(Math.abs(value));
@@ -311,6 +401,7 @@ public final class Float
     }
 
     @Override
+    @Transient
     public boolean getPositive() {
         return value > 0;
     }
@@ -321,6 +412,7 @@ public final class Float
     }
     
     @Override
+    @Transient
     public boolean getNegative() {
         return value < 0;
     }
@@ -330,6 +422,7 @@ public final class Float
         return value < 0;
     }
     
+    @Transient
     public boolean getStrictlyPositive() {
         return (Double.doubleToRawLongBits(value) >> 63)==0
                 && !Double.isNaN(value);
@@ -341,6 +434,7 @@ public final class Float
                 && !Double.isNaN(value);
     }
     
+    @Transient
     public boolean getStrictlyNegative() {
         return (Double.doubleToRawLongBits(value) >> 63)!=0
         		&& !Double.isNaN(value);
@@ -353,6 +447,7 @@ public final class Float
     }
     
     @Override
+    @Transient
     public long getSign() {
         if (value > 0)
             return 1;
@@ -384,6 +479,9 @@ public final class Float
     public Comparison compare(@Name("other") Float other) {
         double x = value;
         double y = other.value;
+        if (Double.isNaN(x) || Double.isNaN(y)) {
+            throw new Exception(new String("NaN is not comparable"));
+        }
         return (x < y) ? smaller_.get_() :
             ((x == y) ? equal_.get_() : larger_.get_());
     }
@@ -392,6 +490,9 @@ public final class Float
     public static Comparison compare(double value, double otherValue) {
         double x = value;
         double y = otherValue;
+        if (Double.isNaN(x) || Double.isNaN(y)) {
+            throw new Exception(new String("NaN is not comparable"));
+        }
         return (x < y) ? smaller_.get_() :
             ((x == y) ? equal_.get_() : larger_.get_());
     }

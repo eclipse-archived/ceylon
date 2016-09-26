@@ -3,8 +3,10 @@
 //t is the tuple with parameters to pass
 function validate$params(ps,t,msg,nothrow) {
   if (t.t===Nothing)return true;
-  if (!ps || ps.length==0) {
-    if (t.t===Empty)return true;
+  if (!ps) {
+    if (t.t===Empty||(t.t===Sequential&&t.a&&t.a.Element$Sequential&&t.a.Element$Sequential.t===Anything))return true;
+  } else if (ps.length==0) {
+    if (t.t===Empty || t.t===Sequential)return true;
   } else if (t.t==='T') {
     if (ps.length==t.l.length) {
       //TODO check each parameter
@@ -32,8 +34,9 @@ function validate$params(ps,t,msg,nothrow) {
 }
 function validate$typeparams(t,tparms,types) {
   if (tparms) {
-    if (types===undefined||types.size<1)
-      throw TypeApplicationException$meta$model("Missing type arguments");
+    var tparmsSize=Object.keys(tparms).length;
+    if (types===undefined||types.size!=tparmsSize)
+      throw TypeApplicationException$meta$model("Not enough type arguments provided: "+(types?types.size:0)+", but requires exactly "+tparmsSize);
     if (!types.$_get)types=types.sequence();
     var i=0;
     t.a={};
@@ -44,6 +47,9 @@ function validate$typeparams(t,tparms,types) {
       var _tp = tparms[tp];
       var _ta = _type===nothingType$meta$model()?{t:Nothing}:_type.tipo;
       t.a[tp]= _ta.t ? _ta : {t:_type.tipo};
+      if (_type.$targs && !t.a[tp].a) {
+        t.a[tp].a=_type.$targs;
+      }
       if ((_tp.sts && _tp.sts.length>0) || (_tp.of && _tp.of.length > 0)) {
         var restraints=(_tp.sts && _tp.sts.length>0)?_tp.sts:_tp.of;
         for (var j=0; j<restraints.length;j++) {
@@ -154,7 +160,7 @@ function convert$params(mm,a,$$targs$$) {
           if (!is$(a[j],val_t))throw IncompatibleTypeException$meta$model("Wrong type for argument " + j + ", expected " + typeLiteral$meta({Type$typeLiteral:val_t},$$targs$$).string + " got " + className(a[j]));
           sarg.push(a[j]);
         }
-        fa.push(sarg.$sa$(val_t));
+        fa.push($arr$sa$(sarg,val_t));
         i=j;
       }
     } else {

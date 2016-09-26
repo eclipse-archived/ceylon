@@ -11,7 +11,7 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
     
     public static final class Member$other {
         
-        private Member$other() {
+        Member$other() {
         }
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.Member$other Member$other = null;
@@ -80,7 +80,7 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
     
     public static final class SharedMember$other {
         
-        private SharedMember$other() {
+        SharedMember$other() {
         }
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.SharedMember$other SharedMember$other = null;
@@ -315,7 +315,9 @@ class ClassMemberClassCtor implements .com.redhat.ceylon.compiler.java.runtime.m
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class useClassMemberClassCtor_ {
     

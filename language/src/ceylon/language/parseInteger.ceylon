@@ -8,11 +8,19 @@ Integer maxRadix = 36;
  integer it represents is too large in magnitude to be 
  represented by an instance of the class `Integer`.
  
- The syntax accepted by this function is the same as the 
- syntax for an `Integer` literal in the Ceylon language 
- except that it may optionally begin with a sign character 
- (`+` or `-`) and may not contain grouping underscore 
- characters.
+ The syntax accepted by this function depends upon the 
+ given [[base|radix]]:
+ 
+ - For base 10, the accepted syntax is the same as the 
+   syntax for an `Integer` literal in the Ceylon language 
+   except that it may optionally begin with a sign character 
+   (`+` or `-`) and may not contain grouping underscore 
+   characters. That is, an optional sign character, followed
+   be a string of decimal digits, followed by an optional SI
+   magnitude: `k`, `M`, `G`, `T`, or `P`.
+ - For other bases, the accepted syntax is an optional sign
+   character, followed by a string of digits of the given
+   base. 
  
  The given `radix` specifies the base of the string 
  representation. The list of available digits starts from 
@@ -20,7 +28,15 @@ Integer maxRadix = 36;
  specific base, the first `radix` digits from the available 
  digits list is used. This function is not case sensitive; 
  `a` and `A` both correspond to the digit `a` whose decimal 
- value is `10`."
+ value is `10`.
+ 
+     Integer: Base10 | BaseN
+     Base10: Sign? Base10Digits Magnitude
+     BaseN: Sign? BaseNDigits
+     Sign: '+' | '-'
+     Magnitude: 'k' | 'M' | 'G' | 'T' | 'P'
+     Base10Digits: ('0'..'9')+
+     BaseNDigits: ('0'..'9'|'a'..'z'|'A'..'Z')+"
 throws (`class AssertionError`, 
         "if [[radix]] is not between [[minRadix]] and 
          [[maxRadix]]")

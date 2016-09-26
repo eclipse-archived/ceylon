@@ -241,7 +241,17 @@
         </if>
     </target>
 
-    <target name="osgi" depends="clean,build" description="Create Ceylon Dist OSGI Bundle distribution" >
+    <property name="osgiRuntimeBundles">
+        com.redhat.ceylon.dist
+        ceylon.bootstrap
+        ceylon.language
+        com.redhat.ceylon.common
+        com.redhat.ceylon.model
+        com.redhat.ceylon.langtools.classfile
+        com.redhat.ceylon.module-resolver
+    </property>
+
+	<target name="osgi" depends="clean,build" description="Create Ceylon Dist OSGI Bundle distribution" >
         <mkdir dir="${build.dist.plugins}" />
         <foreach target="copyModuleArchiveForOSGI" param="currentFile">
             <path>
@@ -273,6 +283,7 @@
         <ant target="generateFeatures" inheritall="true">
             <property name="feature.id" value="ceylon.distribution.runtime"/>
             <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}"/>
+            <property name="includedBundles" value="${osgiRuntimeBundles}"/>
             <property name="xslFile" value="${karaf}/generateKarafRuntimeDistributionFeature.xsl"/>
             <property name="feature.dir" value="${build.dist}"/>
             <property name="featureFile" value="${build.dist}/karaf-features.xml"/>
@@ -286,6 +297,7 @@
         <xslt style="${xslFile}" in="${build.dist}/index.xml" out="${featureFile}">
             <param name="featureId" expression="${feature.id}"/>
             <param name="featureVersion" expression="${feature.version}"/>
+            <param name="includedBundles" expression="${includedBundles}"/>
         </xslt>            
     </target>
     
@@ -295,16 +307,19 @@
         <ant target="generateFeatures" inheritall="true">
             <property name="feature.id" value="com.redhat.ceylon.dist.runtime.feature"/>
             <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
+            <property name="includedBundles" value="${osgiRuntimeBundles}"/>
             <property name="xslFile" value="${p2}/generateRuntimeDistributionFeature.xsl"/>
         </ant>
         <ant target="generateFeatures" inheritall="true">
             <property name="feature.id" value="com.redhat.ceylon.dist.feature"/>
             <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
+            <property name="includedBundles" value=""/>
             <property name="xslFile" value="${p2}/generateDistributionFeature.xsl"/>
         </ant>
         <ant target="generateFeatures" inheritall="true">
             <property name="feature.id" value="com.redhat.ceylon.dist.dependencies.feature"/>
             <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
+            <property name="includedBundles" value=""/>
             <property name="xslFile" value="${p2}/generateFixedDependenciesFeature.xsl"/>
         </ant>
         <makeurl property="destinationRepository" file="${build.dist}"/>
@@ -327,6 +342,7 @@
             <module name="com.redhat.ceylon.compiler.java" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
             <module name="com.redhat.ceylon.compiler.js" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
             <module name="com.redhat.ceylon.typechecker" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
+            <module name="com.redhat.ceylon.java.main" version="${module.com.redhat.ceylon.dist.osgi.version}"/>
         </ceylon-p2>
     	<!--
         <exec dir="${basedir}" executable="eclipse" failonerror="true">

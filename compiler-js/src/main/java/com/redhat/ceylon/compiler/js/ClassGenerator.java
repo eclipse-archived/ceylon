@@ -177,7 +177,8 @@ public class ClassGenerator {
                 }
             }
             gen.out(GenerateJsVisitor.function, typeName, "(){return ",
-                    typeName, "_", gen.getNames().name(defconstr.getDeclarationModel()), ".apply(",
+                    typeName, gen.getNames().constructorSeparator(defconstr.getDeclarationModel()),
+                    gen.getNames().name(defconstr.getDeclarationModel()), ".apply(",
                     _this, ",arguments);}");
             gen.endLine();
         }
@@ -197,6 +198,8 @@ public class ClassGenerator {
             for (Tree.Parameter p : defparams) {
                 final SpecifierOrInitializerExpression expr = gen.getDefaultExpression(p);
                 if (expr != null) {
+                    //Optimizing for certain expressions such as null and literals is tempting
+                    //but we need to put them in functions if we want them to work in subtypes
                     gen.out(typeName, ".$defs$", p.getParameterModel().getName(),
                             "=function(", me);
                     for (Parameter otherP : d.getParameterList().getParameters()) {
@@ -212,7 +215,7 @@ public class ClassGenerator {
         }
         //Add reference to metamodel
         gen.out(typeName, ".$crtmm$=");
-        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+        TypeUtils.encodeForRuntime(that, d, that.getAnnotationList(), gen);
         gen.endLine(true);
         if (!isAbstractNative) {
             gen.share(d);

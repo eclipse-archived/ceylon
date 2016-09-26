@@ -110,7 +110,9 @@ final class valueConstructorAnnotation_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.ValueConstructorAnnotation();
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
 class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
@@ -131,12 +133,14 @@ class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.test.annotations.Constructor.other_ other_ = null;
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("other")
     public static final class other_ {
         
-        private other_() {
+        other_() {
         }
     }
     
@@ -152,12 +156,14 @@ class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     final .java.lang.String s$param$) {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+    @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+            major = 8,
+            minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("val")
     private static final class val_ {
         
-        private val_() {
+        val_() {
         }
     }
     

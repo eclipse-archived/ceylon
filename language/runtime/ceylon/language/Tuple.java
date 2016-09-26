@@ -70,6 +70,10 @@ import ceylon.language.serialization.ReachableReference;
                 satisfies = {"ceylon.language::Sequential<Element>"},
                 caseTypes = {},
                 defaultValue = "ceylon.language::Empty")})
+@SharedAnnotation$annotation$
+@FinalAnnotation$annotation$
+@SerializableAnnotation$annotation$
+@NativeAnnotation$annotation$(backends={})
 public final class Tuple<Element, First extends Element, 
                 Rest extends Sequential<? extends Element>>
 //        extends BaseSequence<Element>
@@ -1444,6 +1448,12 @@ public final class Tuple<Element, First extends Element,
     public Iterable<? extends Sequence<? extends Element>, ? extends java.lang.Object>
     getPermutations() {
         return $ceylon$language$Collection$impl().getPermutations();
+    }
+    
+    @Override @Ignore
+    public Iterable<? extends Sequence<? extends Element>, ? extends java.lang.Object>
+    combinations(long length) {
+        return $ceylon$language$Collection$impl().combinations(length);
     }
     
     @Override @Ignore

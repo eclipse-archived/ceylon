@@ -27,21 +27,24 @@ How to do a release of Ceylon.
 
 # The release
 
-1. Tag every project
+1. Create a release branch
+  - $ git checkout -b version-**1.2.1**
+  - $ git push --set-upstream origin version-**1.2.1**
+2. Tag every project
   -  $ git tag **1.2.1**
   -  $ git push --tags
-2. Do the release zip
+3. Do the release zip
   -  $ mkdir /tmp/ceylon
   -  $ docker pull ceylon/ceylon-build
   -  $ docker run -t --rm -v /tmp/ceylon:/output ceylon/ceylon-build **1.2.1**
-3. Copy the zip to downloads.ceylon-lang.org:
+4. Copy the zip to downloads.ceylon-lang.org:
   -  $ scp /tmp/ceylon/ceylon-**1.2.1**.zip **user**@ceylon-lang.org:/var/www/downloads.ceylonlang/cli/
 
 # Build the Debian file
 
 1. Check out the [`ceylon-debian-repo`](https://github.com/ceylon/ceylon-debian-repo) repository
 2. Make sure you're on `master` and run
-  - $ ./new-version.sh **1.2.1**
+  - $ ./new-version.sh **1.2.1** **12010**
 3. Edit the `dist-pkg/debian/changelog` file by hand or use:
   - $ dch -i
 4. Commit and push the new branch
@@ -93,6 +96,10 @@ NB: To be able to sign packages the user running the docker command for generati
 
  - See [this README](https://github.com/ceylon/ceylon-lang.org/blob/master/RELEASE.md)
 
+# Update GitHub Release Notes
+
+ - Copy the blog entry created for the web site (see previous bullet point) to the release notes and add the release zip as well: https://github.com/ceylon/ceylon/tags
+
 # Update the brew formula for ceylon
 
 1. Fork it on https://github.com/mxcl/homebrew
@@ -103,9 +110,14 @@ NB: To be able to sign packages the user running the docker command for generati
 
 This is done via simple `curl` commands, but requires a key and token that will not be posted here for security reasons.
 
-1. First, release the candidate with `curl -X POST -H "consumer_key: KKKKKKK" -H "consumer_token: TTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","version":"<release version>","url":"https://downloads.ceylon-lang.org/cli/ceylon-<release version>.zip"}' https://sdkman-vendor.herokuapp.com/release`. This should return something like `{"status":201,"id":"XXXXX","message":"released ceylon version: <release version>"}`
-2. Next, set the new version as default with `curl -X PUT -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","default":"<release version>"}' https://sdkman-vendor.herokuapp.com/default`. This should return something like `{"status":202,"id":"XXXXXXXX","message":"default ceylon version: <release version>"}`
-3. Finally, to broadcast an announcement of the new release: `curl -X POST -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate": "ceylon", "version": "<release version>", "hashtag": "ceylonlang"}' https://sdkman-vendor.herokuapp.com/announce/struct`
+1. First, release the candidate with `curl -X POST -H "consumer_key: KKKKKKK" -H "consumer_token: TTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","version":"<release version>","url":"https://downloads.ceylon-lang.org/cli/ceylon-<release version>.zip"}' https://vendors.sdkman.io/release`. This should return something like `{"status":201,"id":"XXXXX","message":"released ceylon version: <release version>"}`
+2. Next, set the new version as default with `curl -X PUT -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate":"ceylon","default":"<release version>"}' https://vendors.sdkman.io/default`. This should return something like `{"status":202,"id":"XXXXXXXX","message":"default ceylon version: <release version>"}`
+3. Finally, to broadcast an announcement of the new release: `curl -X POST -H "consumer_key: KKKKKKKK" -H "consumer_token: TTTTTTTT" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"candidate": "ceylon", "version": "<release version>", "hashtag": "ceylonlang"}' https://vendors.sdkman.io/announce/struct`
+
+# ArchLinux
+
+Update the [ArchLinux package](https://aur.archlinux.org/packages/ceylon/). This means asking
+Alex Szczuczko (aszczucz _AHT_ redhat _DOWT_ com).
 
 # Update Docker
 
@@ -115,18 +127,25 @@ This is done via simple `curl` commands, but requires a key and token that will 
  - Make sure you're in the `master` branch
  - Make sure we have all the latest tags: `git fetch --tags`
  - Update the `README.md`, adding a new image/tag line and moving the `latest` tag
+ - Edit the `build.sh` and add the new version to the front of the `VERSIONS` list and change the `LATEST` value
  - Commit the change
- - Create a new branch for the new version using the latest version available as a template, for example: `git checkout -b 1.2.2-jre7 1.2.1-jre7`
- - Edit the `Dockerfile` and update the `CEYLON_VERSION`
- - Commit the change
- - Tag the branch with the version name only: `git tag 1.2.2`
- - Push to remote: `git push --tags --set-upstream origin 1.2.2-jre7`
- - Force tag the branch with "latest": `git tag -f latest`
- - Push to remote: `git push -f --tags`
- - Switch back to `master`
- - Push to remote: `git push`
+ - Run `./build.sh`
+ - If everything went ok run `./build.sh --push`
  - Follow automated build progress on [Docker Hub](https://hub.docker.com/r/ceylon/ceylon/builds/)
  - When all builds have finished edit the [Full Description](https://hub.docker.com/r/ceylon/ceylon/) to be the same as the `README.md` listed above
+
+## ceylon-docker/s2i-ceylon
+
+ - Check out [ceylon-docker/s2i-ceylon](https://github.com/ceylon-docker/s2i-ceylon)
+ - Make sure you're in the `master` branch
+ - Make sure we have all the latest tags: `git fetch --tags`
+ - Update the `README.md`, adding a new image/tag line and moving the `latest` tag
+ - Edit the `build.sh` and add the new version to the front of the `VERSIONS` list and change the `LATEST` value
+ - Commit the change
+ - Run `./build.sh`
+ - If everything went ok run `./build.sh --push`
+ - Follow automated build progress on [Docker Hub](https://hub.docker.com/r/ceylon/s2i-ceylon/builds/)
+ - When all builds have finished edit the [Full Description](https://hub.docker.com/r/ceylon/s2i-ceylon/) to be the same as the `README.md` listed above
 
 ## ceylon-docker/source-runner
 
@@ -134,15 +153,10 @@ This is done via simple `curl` commands, but requires a key and token that will 
  - Make sure you're in the `master` branch
  - Make sure we have all the latest tags: `git fetch --tags`
  - Update the `README.md`, adding a new image/tag line and moving the `latest` tag
+ - Edit the `build.sh` and add the new version to the front of the `VERSIONS` list and change the `LATEST` value
  - Commit the change
- - Create a new branch for the new version using the latest version available as a template, for example: `git checkout -b 1.2.2 1.2.1`
- - Edit the `Dockerfile` and update the `CEYLON_VERSION`
- - Commit the change
- - Push to remote: `git push --set-upstream origin 1.2.2`
- - Force tag the branch with "latest": `git tag -f latest`
- - Push to remote: `git push -f --tags`
- - Switch back to `master`
- - Push to remote: `git push`
+ - Run `./build.sh`
+ - If everything went ok run `./build.sh --push`
  - Follow automated build progress on [Docker Hub](https://hub.docker.com/r/ceylon/source-runner/builds/)
  - When all builds have finished edit the [Full Description](https://hub.docker.com/r/ceylon/source-runner/) to be the same as the `README.md` listed above
 
@@ -150,6 +164,10 @@ This is done via simple `curl` commands, but requires a key and token that will 
 
  - [openshift-cartridge](https://github.com/ceylon/openshift-cartridge)
  - [ceylon.openshift](https://github.com/ceylon/ceylon.openshift)
+
+# Update Ceylon Swarm
+
+ - [ceylon.swarm](https://github.com/ceylon/ceylon.swarm)
 
 # Update the Web IDE
 

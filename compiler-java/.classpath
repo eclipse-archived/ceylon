@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry excluding="**/*.ceylon" including="**/*Suite.java|**/*Tests.java|**/*Tests?.java|**/IssuesTests_*.java|com/redhat/ceylon/ant/*.java|com/redhat/ceylon/compiler/java/test/*.java|com/redhat/ceylon/compiler/java/test/cmr/*.java|com/redhat/ceylon/compiler/java/test/fordebug/*.java|com/redhat/ceylon/compiler/java/test/model/RunnableTest.java|com/redhat/ceylon/launcher/test/**/*.java|com/redhat/ceylon/tools/*|com/redhat/ceylon/tools/help/*" kind="src" path="test/src"/>
+	<classpathentry excluding="**/*.ceylon" including="**/*Suite.java|**/*Tests.java|**/*Tests?.java|**/IssuesTests_*.java|com/redhat/ceylon/ant/*.java|com/redhat/ceylon/compiler/java/test/*.java|com/redhat/ceylon/compiler/java/test/cmr/*.java|com/redhat/ceylon/compiler/java/test/fordebug/*.java|com/redhat/ceylon/compiler/java/test/model/RunnableTest.java|com/redhat/ceylon/launcher/test/**/*.java|com/redhat/ceylon/tools/*|com/redhat/ceylon/tools/help/*|com/redhat/ceylon/tools/test/CleanupClassLoader.java" kind="src" path="test/src"/>
 	<classpathentry kind="src" path="test/satisfaction"/>
 	<classpathentry excluding="**/*.ceylon" kind="src" path="test/runtime"/>
 	<classpathentry kind="src" path="langtools/src/share/classes"/>
@@ -10,7 +10,6 @@
 	<classpathentry kind="src" path="/ceylon-module-resolver"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-common"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-model"/>
-	<classpathentry kind="lib" path="/ceylon.language/ide-dist/ceylon.language-1.2.3.SNAPSHOT.car"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-typechecker"/>
 	<classpathentry kind="lib" path="/ceylon/lib/ant-1.8.2.jar"/>
 	<classpathentry kind="lib" path="/ceylon/lib/hamcrest-core-1.3.0.v201303031735.jar"/>
@@ -21,5 +20,6 @@
 	<classpathentry kind="lib" path="/ceylon-runtime/dist/repo/org/jboss/modules/1.4.4.Final/org.jboss.modules-1.4.4.Final.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-langtools-classfile"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ceylon-cli"/>
+	<classpathentry kind="lib" path="/ceylon.language/ide-dist/ceylon.language-1.3.1-SNAPSHOT.car"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

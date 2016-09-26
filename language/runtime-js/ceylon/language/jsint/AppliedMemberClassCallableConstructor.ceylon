@@ -16,7 +16,7 @@ shared native class AppliedMemberClassCallableConstructor<in Container=Nothing, 
   shared native actual ClassModel<Type> container;
   shared native actual CallableConstructor<Type, Arguments> bind(Object container);
   //Generic
-  shared native actual Map<TypeParameter, ClosedType> typeArguments;
+  shared native actual Map<TypeParameter, ClosedType<>> typeArguments;
   shared native actual ClosedType<Anything>[] typeArgumentList;
   shared actual native Map<TypeParameter, TypeArgument> typeArgumentWithVariances;
   shared actual native TypeArgument[] typeArgumentWithVarianceList;
@@ -25,4 +25,5 @@ shared native class AppliedMemberClassCallableConstructor<in Container=Nothing, 
 
   shared native actual String string;
   shared native actual Boolean equals(Object other);
+  shared native actual Integer hash;
 }

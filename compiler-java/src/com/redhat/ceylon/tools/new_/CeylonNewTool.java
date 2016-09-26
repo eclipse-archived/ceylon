@@ -298,7 +298,7 @@ public class CeylonNewTool extends CeylonBaseTool {
     
     @Description("Generates a 'Hello World' style project." +
             "\n\n" +
-            "Takes a `<dir>` argument to indicate in which directory the new project should be created.")
+            "Takes a `dir` argument to indicate in which directory the new project should be created.")
     public class HelloWorld extends BaseProject {
 
         public HelloWorld() {
@@ -308,7 +308,7 @@ public class CeylonNewTool extends CeylonBaseTool {
     
     @Description("Generates a very simple empty project" +
             "\n\n" +
-            "Takes a `<dir>` argument to indicate in which directory the new project should be created.")
+            "Takes a `dir` argument to indicate in which directory the new project should be created.")
     public class Simple extends BaseProject {
 
         public Simple() {
@@ -318,7 +318,7 @@ public class CeylonNewTool extends CeylonBaseTool {
     
     @Description("Generates a project that is able to use Java legacy code" +
             "\n\n" +
-            "Takes a `<dir>` argument to indicate in which directory the new project should be created.")
+            "Takes a `dir` argument to indicate in which directory the new project should be created.")
     public class JavaInterop extends BaseProject {
 
         public JavaInterop() {

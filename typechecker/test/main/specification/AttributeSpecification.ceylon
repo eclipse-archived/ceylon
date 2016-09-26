@@ -517,3 +517,18 @@ shared void run2() {
     @error value d = s;
 }
 
+class Xx() {
+    string = "hello";
+    shared String hello = "hi";
+    void m() {
+        if (1==1) {
+            @error string = "foo";
+            @error hello = "bye";
+        }
+    }
+}
+
+class Yy() extends Xx() {
+    @error string = "xxx";
+    @error hello = "bye";
+}

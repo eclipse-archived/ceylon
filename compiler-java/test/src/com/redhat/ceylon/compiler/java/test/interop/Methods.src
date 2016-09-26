@@ -283,13 +283,13 @@ final class variadicMethods_ {
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object>toArray($ceylontmp$8$0, new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$8$0.getSize())]);
         ));
-        java.variadicObject(new .java.lang.String("a"), new .java.lang.Integer(.com.redhat.ceylon.compiler.java.Util.toInt(1L)));
+        java.variadicObject(new .java.lang.String("a"), new .java.lang.Integer(1));
         java.variadicObject((
             let
             {
                 .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$9$0 = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.String.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.java.lang.Integer.class)), new .java.lang.Object[]{
                         new .java.lang.String("a"),
-                        new .java.lang.Integer(.com.redhat.ceylon.compiler.java.Util.toInt(1L))});
+                        new .java.lang.Integer(1)});
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object>toArray($ceylontmp$9$0, new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$9$0.getSize())]);
         ));
@@ -433,7 +433,7 @@ final class tupleSpreading_ {
                 .ceylon.language.Character.instance(97),
                 .ceylon.language.String.instance("foo"),
                 java});
-        java.takeAll(true, (byte)1L, .com.redhat.ceylon.compiler.java.Util.toShort(2L), .com.redhat.ceylon.compiler.java.Util.toInt(3L), 4L, (float)5.0, 6.0, (char)97, "foo", java);
+        java.takeAll(true, (byte)1L, .com.redhat.ceylon.compiler.java.Util.toShort(2L), 3, 4L, (float)5.0, 6.0, (char)97, "foo", java);
         (
             let
             {
@@ -611,7 +611,7 @@ final class moreOverloads_ {
     static void moreOverloads() {
         .java.nio.file.FileSystems.newFileSystem(.java.net.URI.create(""), new .java.util.HashMap<.java.lang.String, .java.lang.Object>());
         new .java.io.BufferedReader(new .java.io.InputStreamReader(null));
-        .com.redhat.ceylon.compiler.java.Util.checkNull(.java.nio.channels.ServerSocketChannel.open()).bind(new .java.net.InetSocketAddress("", .com.redhat.ceylon.compiler.java.Util.toInt(1L)));
+        .com.redhat.ceylon.compiler.java.Util.checkNull(.java.nio.channels.ServerSocketChannel.open()).bind(new .java.net.InetSocketAddress("", 1));
         .java.nio.file.Files.copy(.java.nio.file.Paths.get(new .java.net.URI("", "", "")), .java.nio.file.Paths.get(new .java.net.URI("")), (
             let
             {
@@ -664,7 +664,7 @@ final class overloadsWithPrimitives_ {
                 java.return_long(),
                 2L});
         overload.overloadedPrimitiveVariadic(new long[]{java.return_long()});
-        final long a = overload.overloadedPrimitive2(.com.redhat.ceylon.compiler.java.Util.toInt(1L));
+        final long a = overload.overloadedPrimitive2(1);
         final boolean b = overload.overloadedPrimitive2(.ceylon.language.Boolean.instance(true));
     }
 }

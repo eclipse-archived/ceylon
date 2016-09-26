@@ -143,7 +143,7 @@ public class Singletons {
                 gen.out(objvar);
             }
             gen.out(";},undefined,");
-            TypeUtils.encodeForRuntime(d, annots, gen);
+            TypeUtils.encodeForRuntime(that, d, annots, gen);
             gen.out(")");
             gen.endLine(true);
         } else if (d != null) {
@@ -180,7 +180,7 @@ public class Singletons {
                 if(gen.outerSelf(d))gen.out(".");
             }
             gen.out(objectGetterName, ".$crtmm$=");
-            TypeUtils.encodeForRuntime(d, annots, gen);
+            TypeUtils.encodeForRuntime(that, d, annots, gen);
             gen.endLine(true);
             gen.out(gen.getNames().getter(c, true), "=", objectGetterName);
             gen.endLine(true);
@@ -218,7 +218,8 @@ public class Singletons {
         final String typevar = gen.getNames().name(td);
         final String singvar = gen.getNames().name(d);
         final boolean nested = cdef.getDeclarationModel().isClassOrInterfaceMember();
-        gen.out(nested?"this.":"var ", objvar, "=undefined;function ", typevar, "_", singvar,
+        final String constructorName = typevar + gen.getNames().constructorSeparator(c) + singvar;
+        gen.out(nested?"this.":"var ", objvar, "=undefined;function ", constructorName,
                 "(){if(", nested?"this.":"", objvar, "===undefined){");
         if (dc==null) {
             gen.out("$init$", typevar, "();");
@@ -266,16 +267,16 @@ public class Singletons {
         if (nested) {
             gen.out("this.", objvar, "=", selfvar, ";");
         }
-        gen.out("}return ", nested?"this.":"", objvar, ";};", typevar, "_", singvar, ".$crtmm$=");
-        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+        gen.out("}return ", nested?"this.":"", objvar, ";};", constructorName, ".$crtmm$=");
+        TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), gen);
         gen.out(";");
         if (td.isClassOrInterfaceMember()) {
             gen.outerSelf(td);
-            gen.out(".", typevar, "_", singvar, "=", typevar, "_", singvar, ";");
+            gen.out(".", constructorName, "=", constructorName, ";");
         } else if (td.isShared()) {
-            gen.out("ex$.", typevar, "_", singvar, "=", typevar, "_", singvar, ";");
+            gen.out("ex$.", constructorName, "=", constructorName, ";");
         }
-        gen.out(gen.getNames().name(td), ".", typevar, "_", singvar, "=", typevar, "_", singvar);
+        gen.out(gen.getNames().name(td), ".", constructorName, "=", constructorName);
         gen.endLine(true);
     }
 

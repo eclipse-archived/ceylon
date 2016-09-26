@@ -27,7 +27,7 @@ class Bug1972 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     private static final class other_ {
         
-        private other_() {
+        other_() {
         }
     }
     

@@ -99,7 +99,7 @@ public final class bug2280_ {
             }
             returning null;
         );
-        final long i = ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+        final long i = ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
         bar.bar((.ceylon.language.String)(
             let
             {

@@ -9,7 +9,7 @@ class CtorDelegationExtendDefault implements .com.redhat.ceylon.compiler.java.ru
     
     private static final class $delegation$ {
         
-        private $delegation$() {
+        $delegation$() {
         }
     }
     
@@ -24,7 +24,7 @@ class CtorDelegationExtendDefault implements .com.redhat.ceylon.compiler.java.ru
     
     public static final class alt_ {
         
-        private alt_() {
+        alt_() {
         }
     }
     

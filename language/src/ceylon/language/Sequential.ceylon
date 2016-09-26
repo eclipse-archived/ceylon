@@ -100,7 +100,7 @@ shared interface Sequential<out Element=Anything>
      given `index` is outside the range of indices of this
      list, one of the returned sequences will be empty."
     shared actual default 
-    [Element[],Element[]] slice(Integer index)
+    Element[][2] slice(Integer index)
             => [this[...index-1], this[index...]];
     
     "Returns a new sequence that starts with the specified
@@ -109,6 +109,7 @@ shared interface Sequential<out Element=Anything>
     see (`function prepend`,
          `function withTrailing`,
          `function follow`)
+    since("1.1.0")
     shared formal 
     [Other,Element*] withLeading<Other>(
         "The first element of the resulting sequence."
@@ -119,6 +120,7 @@ shared interface Sequential<out Element=Anything>
      and ends with the specified [[element]]."
     see (`function append`,
          `function withLeading`)
+    since("1.1.0")
     shared formal 
     [Element|Other+] withTrailing<Other>(
         "The last element of the resulting sequence."
@@ -132,6 +134,7 @@ shared interface Sequential<out Element=Anything>
          `function withTrailing`,
          `function concatenate`,
          `function chain`)
+    since("1.1.0")
     shared formal 
     [Element|Other*] append<Other>(Other[] elements);
     
@@ -142,6 +145,7 @@ shared interface Sequential<out Element=Anything>
     see (`function append`,
          `function withLeading`,
          `function concatenate`)
+    since("1.1.0")
     shared formal 
     [Element|Other*] prepend<Other>(Other[] elements);
     

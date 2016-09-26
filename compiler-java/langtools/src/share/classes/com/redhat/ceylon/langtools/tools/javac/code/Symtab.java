@@ -216,6 +216,7 @@ public class Symtab {
     public  Type ceylonGetterLongType;
     public  Type ceylonGetterIntType;
     public  Type ceylonGetterDoubleType;
+    public  Type ceylonGetterFloatType;
     public  Type ceylonGetterByteType;
     public  Type ceylonGetterBooleanType;
     
@@ -262,6 +263,7 @@ public class Symtab {
     public final Type ceylonAtTransientType;
     public final Type ceylonAtCompileTimeErrorType;
     public final Type ceylonAtNoInitCheckType;
+    public final Type ceylonAtNeedsVoidBridgeType;
     
     public final Type ceylonAtBooleanValueType;
     public final Type ceylonAtBooleanExprsType;
@@ -740,6 +742,7 @@ public class Symtab {
         
         
         ceylonAtNoInitCheckType = enterClass("com.redhat.ceylon.compiler.java.metadata.NoInitCheck");
+        ceylonAtNeedsVoidBridgeType = enterClass("com.redhat.ceylon.compiler.java.metadata.NeedsVoidBridge");
         
         synthesizeEmptyInterfaceIfMissing(autoCloseableType);
         synthesizeEmptyInterfaceIfMissing(cloneableType);
@@ -979,6 +982,7 @@ public class Symtab {
         ceylonGetterLongType = enterClass("com.redhat.ceylon.compiler.java.language.GetterLong");
         ceylonGetterIntType = enterClass("com.redhat.ceylon.compiler.java.language.GetterInt");
         ceylonGetterDoubleType = enterClass("com.redhat.ceylon.compiler.java.language.GetterDouble");
+        ceylonGetterFloatType = enterClass("com.redhat.ceylon.compiler.java.language.GetterFloat");
         ceylonGetterByteType = enterClass("com.redhat.ceylon.compiler.java.language.GetterByte");
         ceylonGetterBooleanType = enterClass("com.redhat.ceylon.compiler.java.language.GetterBoolean");
         

@@ -2,11 +2,12 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.NO_TYPE_ARGS;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignable;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkAssignableToOneOf;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCallable;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCasesDisjoint;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactlyForInterop;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkSupertype;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correct;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correctionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.declaredInPackage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getMatchingParameter;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypeDeclaration;
@@ -25,6 +26,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSam
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.involvesTypeParams;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isGeneric;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isIndirectInvocation;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memberCorrectionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.notAssignableMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.spreadType;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
@@ -37,6 +39,7 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.checkNotJvm;
 import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.declarationScope;
+import static com.redhat.ceylon.compiler.typechecker.util.NativeUtil.getBackends;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToIntersection;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.addToUnion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
@@ -74,17 +77,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TuplePattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeParameterList;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.VoidModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
@@ -128,6 +133,8 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  */
 public class ExpressionVisitor extends Visitor {
     
+    Cancellable cancellable;
+    
     private Tree.Type returnType;
     private Declaration returnDeclaration;
 //    private boolean isCondition;
@@ -138,7 +145,7 @@ public class ExpressionVisitor extends Visitor {
     private Node ifStatementOrExpression;
     private Node switchStatementOrExpression;
     
-    private TypecheckerUnit unit;
+    private Unit unit;
     
     private Tree.IfClause ifClause() {
         if (ifStatementOrExpression 
@@ -194,11 +201,13 @@ public class ExpressionVisitor extends Visitor {
         return null;
     }
     
-    public ExpressionVisitor() {
+    public ExpressionVisitor(Cancellable cancellable) {
+        this.cancellable = cancellable;
     }
     
-    public ExpressionVisitor(TypecheckerUnit unit) {
+    public ExpressionVisitor(Unit unit, Cancellable cancellable) {
         this.unit = unit;
+        this.cancellable = cancellable;
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
@@ -424,9 +433,12 @@ public class ExpressionVisitor extends Visitor {
                             that.setPossiblyEmpty(
                                     cc.getPossiblyEmpty() || 
                                     !unit.isNonemptyIterableType(it));
+                            Type absentType = unit.getAbsentType(it);
+                            if (absentType==null) {
+                                absentType = unit.getNullType();
+                            }
                             Type firstType = 
-                                    unionType(
-                                        unit.getAbsentType(it), 
+                                    unionType(absentType, 
                                         cc.getFirstTypeModel(), 
                                         unit);
                             that.setFirstTypeModel(firstType);
@@ -456,26 +468,32 @@ public class ExpressionVisitor extends Visitor {
         if (se != null) {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
-                destructure(pattern, se, e.getTypeModel());
+                if (that.getPatternCase()) {
+                    patternCaseHint = " (try specifying explicit pattern variable types)";
+                }
+                destructure(pattern, e.getTypeModel());
+                patternCaseHint = "";
             }
         }
     }
-
-    private void destructure(Tree.Pattern pattern,
-            Tree.SpecifierExpression se, Type type) {
+    
+    private void destructure(Tree.Pattern pattern, Type type) {
         if (type!=null) {
             type = type.resolveAliases();
             if (pattern instanceof Tree.TuplePattern) {
-                destructure(se, type, 
-                        (Tree.TuplePattern) pattern);
+                destructure(type, 
+                        (Tree.TuplePattern) 
+                            pattern);
             }
             else if (pattern instanceof Tree.KeyValuePattern) {
-                destructure(se, type, 
-                        (Tree.KeyValuePattern) pattern);
+                destructure(type, 
+                        (Tree.KeyValuePattern) 
+                            pattern);
             }
             else {
                 Tree.VariablePattern vp = 
-                        (Tree.VariablePattern) pattern;
+                        (Tree.VariablePattern) 
+                            pattern;
                 Tree.Variable var = vp.getVariable();
                 Tree.Type varType = var.getType();
                 if (varType!=null) {
@@ -485,8 +503,7 @@ public class ExpressionVisitor extends Visitor {
                     else {
                         inferValueType(var, type);
                     }
-                    Type declaredType = 
-                            varType.getTypeModel();
+                    Type declaredType = varType.getTypeModel();
                     checkAssignable(type, declaredType, var, 
                             "type of element of assigned value must be a subtype of declared type of pattern variable");
                 }
@@ -506,93 +523,104 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
-    private void destructure(Tree.SpecifierExpression se, 
-            Type entryType,
+    
+    private String patternCaseHint = "";
+    
+    private void destructure(Type entryType,
             Tree.KeyValuePattern keyValuePattern) {
         Tree.Pattern key = keyValuePattern.getKey();
         Tree.Pattern value = keyValuePattern.getValue();
         if (entryType.isExactlyNothing()) {
-            se.addError("assigned expression has bottom type 'Nothing', so may not be destructured");
+            keyValuePattern
+                .addError("assigned expression has bottom type 'Nothing', so may not be destructured");
         }
         else if (!unit.isEntryType(entryType)) {
-            se.addError("assigned expression is not an entry type, so may not be destructured: '"
-                    + entryType.asString(unit) + 
-                    "' is not an entry type");
+            keyValuePattern
+                .addError(
+                    "assigned expression is not an entry type, so may not be destructured: '" + 
+                    entryType.asString(unit) + 
+                    "' is not an entry type" + 
+                    patternCaseHint);
         }
         else {
-            destructure(key, se, unit.getKeyType(entryType));
-            destructure(value, se, unit.getValueType(entryType));
+            destructure(key, unit.getKeyType(entryType));
+            destructure(value, unit.getValueType(entryType));
         }
     }
 
-    private void destructure(Tree.SpecifierExpression se, 
-            Type sequenceType,
+    private void destructure(Type sequenceType, 
             Tree.TuplePattern tuplePattern) {
         List<Tree.Pattern> patterns = 
                 tuplePattern.getPatterns();
         int length = patterns.size();
         if (length==0) {
-            tuplePattern.addError("tuple pattern must have at least one variable");
+            tuplePattern
+                .addError("tuple pattern must have at least one variable");
         }
         else if (sequenceType.isExactlyNothing()) {
-            se.addError("assigned expression has bottom type 'Nothing', so may not be destructured");
+            tuplePattern
+                .addError("assigned expression has bottom type 'Nothing', so may not be destructured");
         }
         else {
             for (int i=0; i<length-1; i++) {
-                Tree.Pattern p = patterns.get(i);
-                if (p instanceof Tree.VariablePattern) {
+                Tree.Pattern pattern = patterns.get(i);
+                if (pattern instanceof Tree.VariablePattern) {
                     Tree.VariablePattern vp = 
-                            (Tree.VariablePattern) p;
+                            (Tree.VariablePattern) 
+                                pattern;
                     Tree.Type t = 
-                            vp.getVariable().getType();
+                            vp.getVariable()
+                                .getType();
                     if (t instanceof Tree.SequencedType) {
                         t.addError("variadic pattern element must occur as last element of tuple pattern");
                     }
                 }
             }
-            Tree.Pattern lastPattern = 
-                    patterns.get(length-1);
             if (!unit.isSequentialType(sequenceType)) {
-                se.addError("assigned expression is not a sequence type, so may not be destructured: '" + 
+                tuplePattern
+                    .addError(
+                        "assigned expression is not a sequence type, so may not be destructured: '" + 
                         sequenceType.asString(unit) + 
-                        "' is not a subtype of 'Sequential'");
+                        "' is not a subtype of 'Sequential'" + 
+                        patternCaseHint);
             }
             else if (unit.isEmptyType(sequenceType)) {
-                se.addError("assigned expression is an empty sequence type, so may not be destructured: '" + 
+                tuplePattern
+                    .addError(
+                        "assigned expression is an empty sequence type, so may not be destructured: '" + 
                         sequenceType.asString(unit) + 
                         "' is a subtype of 'Empty'");
             }
             else if (unit.isTupleType(sequenceType)) {
-                destructureTuple(se, sequenceType, patterns, 
-                        length, lastPattern);
+                destructureTuple(sequenceType, tuplePattern);
             }
             else {
-                destructureSequence(se, sequenceType, patterns, 
-                        length, lastPattern);
+                destructureSequence(sequenceType, tuplePattern);
             }
         }
     }
 
     private boolean isVariadicPattern(Tree.Pattern lastPattern) {
-        boolean variadic = false;
-//      boolean nonempty = false;
         if (lastPattern instanceof Tree.VariablePattern) {
             Tree.VariablePattern variablePattern = 
-                    (Tree.VariablePattern) lastPattern;
+                    (Tree.VariablePattern) 
+                        lastPattern;
             Tree.Type type = 
-                    variablePattern.getVariable().getType();
+                    variablePattern.getVariable()
+                        .getType();
             if (type instanceof Tree.SequencedType) {
-                variadic = true;
-//              nonempty = ((Tree.SequencedType) type).getAtLeastOne();
+                return true;
             }
         }
-        return variadic;
+        return false;
     }
 
-    private void destructureTuple(Tree.SpecifierExpression se,
-            Type sequenceType, List<Tree.Pattern> patterns, 
-            int length, Tree.Pattern lastPattern) {
+    private void destructureTuple(Type sequenceType, 
+            Tree.TuplePattern tuplePattern) {
+        List<Tree.Pattern> patterns = 
+                tuplePattern.getPatterns();
+        int length = patterns.size();
+        Tree.Pattern lastPattern = patterns.get(length-1);
         boolean variadic = isVariadicPattern(lastPattern);
         List<Type> types = 
                 unit.getTupleElementTypes(sequenceType);
@@ -603,25 +631,28 @@ public class ExpressionVisitor extends Visitor {
         int minimumLength = 
                 unit.getTupleMinimumLength(sequenceType);
         if (!variadic && types.size()>length) {
-            se.addError("assigned tuple has too many elements");
+            tuplePattern
+                .addError("assigned tuple has too many elements");
         }
         if (!variadic && tupleLengthUnbounded) {
-            se.addError("assigned tuple has unbounded length");
+            tuplePattern
+                .addError("assigned tuple has unbounded length");
         }
         if (!variadic && minimumLength<types.size()) {
-            se.addError("assigned tuple has variadic length");
+            tuplePattern
+                .addError("assigned tuple has variadic length");
         }
         int fixedLength = variadic ? length-1 : length;
         for (int i=0; i<types.size() && i<fixedLength; i++) {
             Type type = types.get(i);
             Tree.Pattern pattern = patterns.get(i);
-            destructure(pattern, se, type);
+            destructure(pattern, type);
         }
         if (variadic) {
             Type tail = 
                     unit.getTailType(sequenceType, 
                             fixedLength);
-            destructure(lastPattern, se, tail);
+            destructure(lastPattern, tail);
         }
         for (int i=types.size(); i<length; i++) {
             Tree.Pattern pattern = patterns.get(i);
@@ -638,24 +669,31 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void destructureSequence(Tree.SpecifierExpression se,
-            Type sequenceType, List<Tree.Pattern> patterns, 
-            int length, Tree.Pattern lastPattern) {
-        boolean variadic = isVariadicPattern(lastPattern);
-        
-        if (!variadic) {
-            se.addError("assigned expression is not a tuple type, so pattern must end in a variadic element: '" + 
+    private void destructureSequence(Type sequenceType, 
+            TuplePattern tuplePattern) {
+        List<Tree.Pattern> patterns = 
+                tuplePattern.getPatterns();
+        int length = patterns.size();
+        Tree.Pattern lastPattern = patterns.get(length-1);
+        if (!isVariadicPattern(lastPattern)) {
+            Pattern pattern = lastPattern;
+            if (pattern==null) pattern = tuplePattern;
+            pattern.addError("assigned expression is not a tuple type, so pattern must end in a variadic element: '" + 
                     sequenceType.asString(unit) + 
                     "' is not a tuple type");
         }
         else if (/*nonempty && length>1 ||*/ length>2) {
-            se.addError("assigned expression is not a tuple type, so pattern must not have more than two elements: '" + 
+            Pattern pattern = patterns.get(2);
+            if (pattern==null) pattern = tuplePattern;
+            pattern.addError("assigned expression is not a tuple type, so pattern must not have more than two elements: '" + 
                     sequenceType.asString(unit) + 
                     "' is not a tuple type");
         }
         else if ((/*nonempty ||*/ length>1) && 
                 !unit.isSequenceType(sequenceType)) {
-            se.addError("assigned expression is not a nonempty sequence type, so pattern must have exactly one element: '" + 
+            Pattern pattern = patterns.get(1);
+            if (pattern==null) pattern = tuplePattern;
+            pattern.addError("assigned expression is not a nonempty sequence type, so pattern must have exactly one element: '" + 
                     sequenceType.asString(unit) + 
                     "' is not a subtype of 'Sequence'");
         }
@@ -663,12 +701,12 @@ public class ExpressionVisitor extends Visitor {
         if (length>1) {
             Type elementType = 
                     unit.getSequentialElementType(sequenceType);
-            destructure(patterns.get(0), se, elementType);
-            destructure(lastPattern, se, 
+            destructure(patterns.get(0), elementType);
+            destructure(lastPattern, 
                     unit.getSequentialType(elementType));
         }
         else {
-            destructure(lastPattern, se, sequenceType);
+            destructure(lastPattern, sequenceType);
         }
     }
     
@@ -677,8 +715,9 @@ public class ExpressionVisitor extends Visitor {
         if (that instanceof CustomTree.GuardedVariable) {
             CustomTree.GuardedVariable gv = 
                     (CustomTree.GuardedVariable) that;
-            setTypeForElseVariable(that, 
-                    gv.getConditionList());
+            setTypeForGuardedVariable(that, 
+                    gv.getConditionList(), 
+                    gv.isReversed());
             Tree.BaseMemberExpression bme =
                     (Tree.BaseMemberExpression)
                         that.getSpecifierExpression()
@@ -775,23 +814,30 @@ public class ExpressionVisitor extends Visitor {
                 //this is a bit ugly (the parser sends us a SyntheticVariable
                 //instead of the real StaticType which it very well knows!)
                 Tree.Expression e = se.getExpression();
-                knownType = e==null ? null : e.getTypeModel();
+                knownType = 
+                        e==null ? null : 
+                            e.getTypeModel();
                 //TODO: what to do here in case of !is
-                if (knownType!=null) {
+                if (knownType!=null 
+                        && !isTypeUnknown(knownType)) { //TODO: remove this if we make unknown a subtype of Anything) {
+                    if (!isTypeUnknown(type)) {
+                        checkReified(t, type, knownType, that.getAssertion());
+                    }
                     if (hasUncheckedNulls(e)) {
                         knownType = unit.getOptionalType(knownType);
                     }
                     String help = " (expression is already of the specified type)";
                     if (that.getNot()) {
                         if (intersectionType(type, knownType, unit).isNothing()) {
-                            that.addError("does not narrow type: intersection of '" + 
+                            that.addUsageWarning(Warning.redundantNarrowing,
+                                    "condition does not narrow type: intersection of '" + 
                                     type.asString(unit) + 
                                     "' and '" + 
                                     knownType.asString(unit) + "' is empty" + 
                                     help);
                         }
                         else if (knownType.isSubtypeOf(type)) {
-                            that.addError("tests assignability to bottom type 'Nothing': '" + 
+                            that.addError("condition tests assignability to bottom type 'Nothing': '" + 
                                     knownType.asString(unit) + 
                                     "' is a subtype of '" + 
                                     type.asString(unit) + "'");
@@ -799,7 +845,8 @@ public class ExpressionVisitor extends Visitor {
                     } 
                     else {
                         if (knownType.isSubtypeOf(type)) {
-                            that.addError("does not narrow type: '" + 
+                            that.addUsageWarning(Warning.redundantNarrowing,
+                                    "condition does not narrow type: '" + 
                                     knownType.asString(unit) + 
                                     "' is a subtype of '" + 
                                     type.asString(unit) + "'" + 
@@ -822,7 +869,7 @@ public class ExpressionVisitor extends Visitor {
                             type.asString(unit));*/
                 }
                 else {
-                    that.addError("tests assignability to bottom type 'Nothing': intersection of '" +
+                    that.addError("condition tests assignability to bottom type 'Nothing': intersection of '" +
                             knownType.asString(unit) + "' and '" + 
                             type.asString(unit) + "' is empty");
                 }
@@ -836,8 +883,32 @@ public class ExpressionVisitor extends Visitor {
             v.getDeclarationModel().setType(it);
         }
     }
-    
-	private Type narrow(Type type,
+
+    private void checkReified(Tree.Type t, Type type, Type knownType, boolean assertion) {
+        if (!type.isReified()) {
+            t.addError("type is not reified: '" + 
+                    type.asString(unit) + 
+                    "' involves a type parameter declared in Java");
+        }
+        else if (getBackends(t).supports(Backend.Java) && 
+                type.hasUnreifiedInstances(knownType)) {
+            if (assertion) {
+                t.addUsageWarning(Warning.uncheckedTypeArguments,
+                        "type condition might not be fully checked at runtime: '" + 
+                        type.asString(unit) + 
+                        "' involves a type argument that is unchecked for Java class instances",
+                        Backend.Java);
+            }
+            else {
+                t.addUnsupportedError("type condition cannot be fully checked at runtime: '" + 
+                        type.asString(unit) + 
+                        "' involves a type argument that is unchecked for Java class instances",
+                        Backend.Java);
+            }
+        }
+    }
+
+    private Type narrow(Type type,
             Type knownType, boolean not) {
 	    Type it;
 	    if (not) {
@@ -916,8 +987,7 @@ public class ExpressionVisitor extends Visitor {
                         }
                         if (!isTypeUnknown(type) && 
                                 !type.isNothing()) {
-                            Pattern pattern = d.getPattern();
-                            destructure(pattern, se, type);
+                            destructure(d.getPattern(), type);
                         }
                         /*else {
                             d.getPattern().addError("cannot be destructured: '" + 
@@ -929,10 +999,10 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         if (that instanceof Tree.ExistsCondition) {
-            checkOptional(t, term);
+            checkOptional(t, term, that);
         }
         else if (that instanceof Tree.NonemptyCondition) {
-            checkEmpty(t, term);
+            checkEmpty(t, term, that);
         }
     }
 
@@ -992,28 +1062,30 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private void checkEmpty(Type t, Tree.Term term) {
+    private void checkEmpty(Type t, Tree.Term term, Node that) {
         if (!isTypeUnknown(t)) {
             if (!unit.isSequentialType(unit.getDefiniteType(t))) {
-                term.addError("expression must be a possibly-empty sequential type: '" + 
+                that.addError("expression must be a possibly-empty sequential type: '" + 
                         t.asString(unit) + 
                         "' is not a subtype of 'Anything[]?'");
             }
             else if (!unit.isPossiblyEmptyType(t)) {
-                term.addError("expression must be a possibly-empty sequential type: '" + 
+                that.addUsageWarning(Warning.redundantNarrowing,
+                        "expression type is not a possibly-empty sequential type: '" + 
                         t.asString(unit) + 
-                        "' is not possibly-empty");
+                        "' cannot be empty");
             }
         }
     }
     
-    private void checkOptional(Type type, Tree.Term term) {
+    private void checkOptional(Type type, Tree.Term term, Node that) {
         if (!isTypeUnknown(type) && 
                 !unit.isOptionalType(type) && 
                 !hasUncheckedNulls(term)) {
-            term.addError("expression must be of optional type: '" +
+            that.addUsageWarning(Warning.redundantNarrowing,
+                    "expression type is not optional: '" +
                     type.asString(unit) + 
-                    "' is not optional");
+                    "' cannot be null");
         }
     }
 
@@ -1108,7 +1180,8 @@ public class ExpressionVisitor extends Visitor {
                                 "' is not a subtype of 'Iterable'");
                     }
                     else if (et!=null && unit.isEmptyType(et)) {
-                        se.addError("iterated expression is definitely empty: '" +
+                        se.addUsageWarning(Warning.redundantIteration,
+                                "iterated expression is definitely empty: '" +
                                 et.asString(unit) + 
                                 "' is a subtype of 'Empty'");
                     }
@@ -1139,7 +1212,7 @@ public class ExpressionVisitor extends Visitor {
                 if (!isTypeUnknown(et)) {
                     Type it = unit.getIteratedType(et);
                     if (it!=null && !isTypeUnknown(it)) {
-                        destructure(that.getPattern(), se, it);
+                        destructure(that.getPattern(), it);
                     }
                 }
             }
@@ -1151,7 +1224,9 @@ public class ExpressionVisitor extends Visitor {
         Value dec = that.getDeclarationModel();
         Tree.SpecifierOrInitializerExpression sie = 
                 that.getSpecifierOrInitializerExpression();
-        inferType(that, sie);
+        if (!dec.isActual() || isTypeUnknown(dec.getType())) {
+            inferType(that, sie);
+        }
         Tree.Type type = that.getType();
         if (type!=null) {
             Type t = type.getTypeModel();
@@ -1344,11 +1419,13 @@ public class ExpressionVisitor extends Visitor {
             d = mte.getDeclaration();
         }
         if (d instanceof TypedDeclaration) {
+            TypedDeclaration td = (TypedDeclaration) d;
+            
             if (that.getRefinement()) {
                 // interpret this specification as a 
                 // refinement of an inherited member
                 if (d instanceof Value) {
-                    refineValue(that);
+                    refineAttribute(that);
                 }
                 else if (d instanceof Function) {
                     refineMethod(that);
@@ -1368,8 +1445,8 @@ public class ExpressionVisitor extends Visitor {
                         desc = "function";
                     }
                     me.addError(desc + 
-                            " already specified: '" + 
-                                d.getName(unit) + "'");
+                            " already specified by shortcut refinement: '" + 
+                            d.getName(unit) + "'");
                 }
                 else if (d instanceof Value && 
                         ((Value) d).isInferred()) {
@@ -1399,33 +1476,43 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             
-            if (hasParams && d instanceof Function && 
-                    ((Function) d).isDeclaredVoid() && 
-                    !isSatementExpression(rhs.getExpression())) {
-                rhs.addError("function is declared void so specified expression must be a statement: '" + 
-                        d.getName(unit) + 
-                        "' is declared 'void'");
+            if (hasParams 
+                    && d instanceof Function) {
+                Function f = (Function) d;
+                Tree.Expression se = rhs.getExpression();
+                if (f.isDeclaredVoid() && !isSatementExpression(se)) {
+                    rhs.addError(
+                            "function is declared void so specified expression must be a statement: '" + 
+                            d.getName(unit) + 
+                            "' is declared 'void'");
+                }
             }
-            if (d instanceof Value && 
-                    rhs instanceof Tree.LazySpecifierExpression) {
-                ((Value) d).setTransient(true);
+            if (rhs instanceof Tree.LazySpecifierExpression 
+                    && d instanceof Value) {
+                Value v = (Value) d;
+                v.setTransient(true);
             }
             
-            Type t = lhs.getTypeModel();
-            if (lhs==me && d instanceof Function &&
-                    !t.isTypeConstructor()) {
-                //if the declaration of the method has
-                //defaulted parameters, we should ignore
-                //that when determining if the RHS is
-                //an acceptable implementation of the
-                //method
-                //TODO: this is a pretty nasty way to
-                //      handle the problem
-                t = eraseDefaultedParameters(t);
-            }
-            if (!isTypeUnknown(t)) {
-                checkType(t, d, rhs, 2100);
-            }
+//            if (!that.getRefinement()) {
+                Type lhst = lhs.getTypeModel();
+                if (lhs==me && d instanceof Function &&
+                        !lhst.isTypeConstructor()) {
+                    //if the declaration of the method has
+                    //defaulted parameters, we should ignore
+                    //that when determining if the RHS is
+                    //an acceptable implementation of the
+                    //method
+                    //TODO: this is a pretty nasty way to
+                    //      handle the problem
+                    lhst = eraseDefaultedParameters(lhst);
+                }
+                if (!isTypeUnknown(lhst)) {
+                    TypedDeclaration member = 
+                            that.getRefinement() ? 
+                                    that.getRefined() : td;
+                    checkType(lhst, member, rhs, 2100);
+                }
+//            }
         }
         
         if (lhs instanceof Tree.ParameterizedExpression) {
@@ -1469,6 +1556,7 @@ public class ExpressionVisitor extends Visitor {
                 boolean atLeastOne = 
                         unit.isTupleVariantAtLeastOne(pts);
                 if (variadic) {
+                    argTypes = new ArrayList<Type>(argTypes);
                     Type spt = 
                             argTypes.get(argTypes.size()-1);
                     argTypes.set(argTypes.size()-1, 
@@ -1494,7 +1582,7 @@ public class ExpressionVisitor extends Visitor {
         return d.appliedReference(supertype, NO_TYPE_ARGS);
     }
     
-    private void refineValue(Tree.SpecifierStatement that) {
+    private void refineAttribute(Tree.SpecifierStatement that) {
         Value refinedValue = (Value) that.getRefined();
         Value value = (Value) that.getDeclaration();
         ClassOrInterface ci = 
@@ -1637,10 +1725,16 @@ public class ExpressionVisitor extends Visitor {
                 refinedProducedReference.getType(), 
                 unit);
         for (Declaration refinement: interveningRefinements) {
-            if (refinement instanceof FunctionOrValue && 
-                    !refinement.equals(refinedMethodOrValue)) {
+            if (refinement instanceof FunctionOrValue
+                    //this one is directly checked from visit(SpecifierStatement)
+                    //which correctly handles defaulted parameters 
+                    //and assignments of generic function references
+                    //TODO: do we need to handle those complicating
+                    //      factors here as well?
+                    && !refinedMethodOrValue.equals(refinement)) {
                 FunctionOrValue rmv = 
-                        (FunctionOrValue) refinement;
+                        (FunctionOrValue) 
+                            refinement;
                 Reference refinedMember = 
                         getRefinedMember(rmv, ci);
                 addToIntersection(refinedTypes, 
@@ -1651,8 +1745,7 @@ public class ExpressionVisitor extends Visitor {
                                 refinedMember);
                 if (rhs!=null && 
                         !isTypeUnknown(requiredType)) {
-                    checkType(requiredType, refinement, 
-                            rhs, 2100);
+                    checkType(requiredType, rmv, rhs, 2100);
                 }
                 if (!refinement.isDefault() && 
                         !refinement.isFormal()) {
@@ -1751,7 +1844,7 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkType(Type declaredType, 
-            Declaration dec, 
+            TypedDeclaration dec, 
             Tree.SpecifierOrInitializerExpression sie, 
             int code) {
         if (sie!=null) {
@@ -1759,19 +1852,38 @@ public class ExpressionVisitor extends Visitor {
             if (e!=null) {
                 Type t = e.getTypeModel();
                 if (!isTypeUnknown(t)) {
-                    String name = "'" + dec.getName(unit) + "'";
-                    if (dec.isClassOrInterfaceMember()) {
-                        Declaration c = 
-                                (Declaration) 
-                                    dec.getContainer();
-                        name += " of '" + c.getName(unit) + "'";
-                    }
-                    checkAssignable(t, declaredType, sie, 
+                    String message = 
                             "specified expression must be assignable to declared type of " + 
-                                    name,
-                            code);
+                            decdesc(dec);
+                    if (dec.hasUncheckedNullType()) {
+                        Type optionalDeclaredType = 
+                                unit.getOptionalType(
+                                        declaredType);
+                       checkAssignableToOneOf(t, 
+                               declaredType, 
+                               optionalDeclaredType, 
+                               sie, message, code);
+                    }
+                    else {
+                        checkAssignable(t, 
+                                declaredType, 
+                                sie, message, code);
+                    }
                 }
             }
+        }
+    }
+
+    private String decdesc(Declaration dec) {
+        String name = "'" + dec.getName(unit) + "'";
+        if (dec.isClassOrInterfaceMember()) {
+            Declaration c = 
+                    (Declaration) 
+                        dec.getContainer();
+            return name + " of '" + c.getName(unit) + "'";
+        }
+        else {
+            return name;
         }
     }
 
@@ -1970,7 +2082,9 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 Type returnType = e.getTypeModel();
-                inferFunctionType(that, returnType);
+                if (!m.isActual() || isTypeUnknown(m.getType())) {
+                    inferFunctionType(that, returnType);
+                }
                 if (type!=null && 
                         !(type instanceof Tree.DynamicModifier)) {
                     checkFunctionType(returnType, type, se);
@@ -1978,7 +2092,9 @@ public class ExpressionVisitor extends Visitor {
                 if (type instanceof Tree.VoidModifier && 
                         !isSatementExpression(e)) {
                     se.addError("function is declared void so specified expression must be a statement: '" +
-                            m.getName() + "' is declared 'void'");
+                            m.getName() + 
+                            "' is declared 'void'",
+                            210);
                 }
             }
         }
@@ -2055,8 +2171,43 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.Declaration that) {
+    @Override public void visit(Tree.CaseTypes that) {
         super.visit(that);
+        if (that.getTypes().size()==1) {
+            Tree.Type type = that.getTypes().get(0);
+            Type ct = type.getTypeModel();
+            if (!isTypeUnknown(ct)) {
+                TypeDeclaration ctd = ct.getDeclaration();
+                if (ctd.isSelfType()) {
+                    TypeDeclaration td = 
+                            (TypeDeclaration) 
+                            that.getScope();
+                    Type t = td.getType();
+                    for (Type bound: ct.getSatisfiedTypes()) {
+                        if (!t.isSubtypeOf(bound)) {
+                            type.addError("type does not satisfy upper bound of self type: '" + 
+                                    td.getName() + 
+                                    "' is not a subtype of upper bound '" + 
+                                    bound.asString(unit) + 
+                                    "' of its self type '" + 
+                                    ctd.getName() + "'");
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @Override public void visit(Tree.TypedDeclaration that) {
+        super.visit(that);
+        TypedDeclaration d = that.getDeclarationModel();
+        Type t = d.getType();
+        if (((FunctionOrValue)d).isSmall()
+                && t != null
+                && !t.isInteger()
+                && !t.isFloat()) {
+            that.addError("type cannot be annotated small: " + t.asString(that.getUnit()));
+        }
     }
     
     private static VoidModifier fakeVoid(Node that) {
@@ -2143,7 +2294,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
     }
-
+    
     private void checkClassAliasParameters(Class alias, 
             Tree.ClassDeclaration that, 
             Tree.InvocationExpression ie) {
@@ -2637,23 +2788,15 @@ public class ExpressionVisitor extends Visitor {
         else {
             that.setDeclaration(returnDeclaration);
             Tree.Expression e = that.getExpression();
-            String name = returnDeclaration.getName();
-            if (name==null || 
-                    returnDeclaration.isAnonymous()) {
-                name = "anonymous function";
-            }
-            else {
-                name = "'" + name + "'";
-            }
             if (e==null) {
                 if (!(returnType instanceof Tree.VoidModifier)) {
                 	if (returnDeclaration instanceof Function) {
 	                    that.addError("function must return a value: " +
-	                    		name + " is not a 'void' function", 12000);
+	                    		returndesc() + " is not a 'void' function", 12000);
                 	}
                 	else {
 	                    that.addError("getter must return a value: " +
-	                            name + " is a getter");
+	                            returndesc() + " is a getter");
                 	}
                 }
             }
@@ -2663,11 +2806,11 @@ public class ExpressionVisitor extends Visitor {
                 if (returnType instanceof Tree.VoidModifier) {
                 	if (returnDeclaration instanceof Function) {
                         that.addError("function may not return a value: " +
-                                name + " is a 'void' function", 13000);
+                                returndesc() + " is a 'void' function", 13000);
                 	}
                 	else if (returnDeclaration instanceof TypedDeclaration) {
 	                    that.addError("setter may not return a value: " +
-	                            name + " is a setter");
+	                            returndesc() + " is a setter");
                 	}
                 	else {
 	                    that.addError("class initializer may not return a value");
@@ -2681,11 +2824,23 @@ public class ExpressionVisitor extends Visitor {
                             !isTypeUnknown(at)) {
                         checkAssignable(at, et, e, 
                                 "returned expression must be assignable to return type of " +
-                                        name, 2100);
+                                        returndesc(), 2100);
                     }
                 }
             }
         }
+    }
+
+    private String returndesc() {
+        String name = returnDeclaration.getName();
+        if (name==null || 
+                returnDeclaration.isAnonymous()) {
+            name = "anonymous function";
+        }
+        else {
+            name = "'" + name + "'";
+        }
+        return name;
     }
 
     private void inferReturnType(Type et, Type at) {
@@ -2712,7 +2867,7 @@ public class ExpressionVisitor extends Visitor {
                 op.addError("static reference may not involve safe member operator");
             }
             else {
-                checkOptional(pt, p);
+                checkOptional(pt, p, p);
             }
         }
         else if (op instanceof Tree.SpreadOp) {
@@ -2722,6 +2877,11 @@ public class ExpressionVisitor extends Visitor {
             else {
                 checkIterable(pt, p);
             }
+        }
+        if (!qmte.getStaticMethodReference() 
+                && pt.isCallable()) {
+            qmte.addUsageWarning(Warning.expressionTypeCallable, 
+                    "operation is not meaningful for function references: receiver is of type 'Callable'");
         }
     }
 
@@ -2877,6 +3037,7 @@ public class ExpressionVisitor extends Visitor {
             int paramsSize = paramTypes.size();
             for (int i=0; i<paramsSize && i<argCount; i++) {
                 Type paramType = paramTypes.get(i);
+                paramType = callableFromUnion(paramType);
                 Tree.PositionalArgument arg = args.get(i);
                 if (arg instanceof Tree.ListedArgument &&
                         unit.isCallableType(paramType)) {
@@ -3031,8 +3192,10 @@ public class ExpressionVisitor extends Visitor {
                         mte;
             Type invokedType = 
                     qmte.getPrimary()
-                        .getTypeModel()
-                        .resolveAliases();
+                        .getTypeModel();
+            if (invokedType!=null) {
+            	invokedType = invokedType.resolveAliases();
+            }
             Type receiverType = unwrap(invokedType, qmte);
             return receiverType.getTypedReference(dec,
                     getTypeArguments(tas, receiverType, tps));
@@ -3085,12 +3248,12 @@ public class ExpressionVisitor extends Visitor {
                             pr, param, anon);
                 }
                 else { 
-                    Type paramType = 
-                            tpr.getFullType();
+                    Type paramType = tpr.getFullType();
                     if (variadic) {
                         paramType = 
                                 unit.getIteratedType(paramType);
                     }
+                    paramType = callableFromUnion(paramType);
                     if (unit.isCallableType(paramType)) {
                         inferParameterTypesFromCallableType(
                                 paramType, param, anon);
@@ -3120,6 +3283,24 @@ public class ExpressionVisitor extends Visitor {
                     stme.setParameterType(tpr.getFullType());
                 }
             }
+        }
+    }
+
+    private Type callableFromUnion(Type paramType) {
+        if (paramType!=null && paramType.isUnion()) {
+            List<Type> cts = paramType.getCaseTypes();
+            List<Type> list = 
+                    new ArrayList<Type>
+                        (cts.size());
+            for (Type ct: cts) {
+                if (unit.isCallableType(ct)) {
+                    list.add(ct);
+                }
+            }
+            return union(list, unit);
+        }
+        else {
+            return paramType;
         }
     }
     
@@ -3219,6 +3400,7 @@ public class ExpressionVisitor extends Visitor {
         model.setInitializerParameter(parameter);
         Function m = anon.getDeclarationModel();
         model.setContainer(m);
+        model.setScope(m);
         m.addMember(model);
     }
     
@@ -3286,6 +3468,8 @@ public class ExpressionVisitor extends Visitor {
                 ClassOrInterface ci = 
                         getContainingClassOrInterface(scope);
                 if (ci!=null) {
+                    List<TypeDeclaration> refiners = 
+                            new ArrayList<TypeDeclaration>(1);
                     Type et = ci.getExtendedType();
                     if (et!=null) {
                         Declaration etm = 
@@ -3300,11 +3484,7 @@ public class ExpressionVisitor extends Visitor {
                             TypeDeclaration container = 
                                     (TypeDeclaration) 
                                         etm.getContainer();
-                            qmte.addError("inherited member is refined by intervening superclass: '" + 
-                                    container.getName() + 
-                                    "' refines '" + name + 
-                                    "' declared by '" + 
-                                    type.getName() + "'");
+                            refiners.add(container);
                         }
                     }
                     for (Type st: ci.getSatisfiedTypes()) {
@@ -3320,12 +3500,38 @@ public class ExpressionVisitor extends Visitor {
                             TypeDeclaration container = 
                                     (TypeDeclaration) 
                                         stm.getContainer();
-                            qmte.addError("inherited member is refined by intervening superinterface: '" + 
-                                    container.getName() + 
-                                    "' refines '" + name + 
-                                    "' declared by '" + 
+                            refiners.add(container);
+                        }
+                    }
+                    if (refiners.size()==1) {
+                        TypeDeclaration r = refiners.get(0);
+                        if (r instanceof Class) {
+                            qmte.addError("inherited member is refined by intervening superclass: '" + 
+                                    r.getName() + "' refines '" +
+                                    name + "' declared by '" + 
                                     type.getName() + "'");
                         }
+                        else {
+                            qmte.addError("inherited member is refined by intervening superinterface: '" + 
+                                    r.getName() + "' refines '" +
+                                    name + "' declared by '" + 
+                                    type.getName() + "'");
+                        }
+                    }
+                    else if (!refiners.isEmpty()) {
+                        StringBuilder sb = new StringBuilder();
+                        for (TypeDeclaration r: refiners) {
+                            if (sb.length()>0) {
+                                sb.append(", ");
+                            }
+                            sb.append('\'')
+                              .append(r.getName())
+                              .append('\'');
+                        }
+                        qmte.addError("inherited member is refined by intervening supertypes: '" + 
+                                name + "' declared by '" + 
+                                type.getName() + 
+                                "' is refined by intervening types " + sb);
                     }
                 }
             }
@@ -4812,77 +5018,13 @@ public class ExpressionVisitor extends Visitor {
             if (eor==null) {
                 that.addError("malformed index expression");
             }
-            else if (!isTypeUnknown(pt) && 
+            else if (!that.getAssigned() &&
+                     !isTypeUnknown(pt) && 
                      !involvesUnknownTypes(eor)) {
                 if (eor instanceof Tree.Element) {
-                    Type kt = null;
-                    Type vt = null;
                     Interface cd = 
                             unit.getCorrespondenceDeclaration();
-                    Type cst = pt.getSupertype(cd);
-                    if (cst != null) {
-                        List<Type> args = 
-                                cst.getTypeArgumentList();
-						kt = args.get(0);
-						vt = unit.getOptionalType(args.get(1));
-                    }
-                    if (cst==null) {
-                        Interface ld = 
-                                unit.getJavaListDeclaration();
-                        cst = pt.getSupertype(ld);
-                        if (cst != null) {
-                            List<Type> args = 
-                                    cst.getTypeArgumentList();
-    						kt = unit.getIntegerType();
-    						vt = unit.getOptionalType(args.get(0));
-                        }
-                    }
-                    if (cst==null) {
-                        Interface md = 
-                                unit.getJavaMapDeclaration();
-                        cst = pt.getSupertype(md);
-                        if (cst != null) {
-                            List<Type> args =
-                                    cst.getTypeArgumentList();
-    						kt = args.get(0);
-    						vt = unit.getOptionalType(args.get(1));
-                        }
-                    }
-                    if (cst==null) {
-                        boolean objectArray = 
-                                unit.isJavaObjectArrayType(pt);
-                        boolean primitiveArray = 
-                                unit.isJavaPrimitiveArrayType(pt);
-                        if (objectArray || primitiveArray) {
-                            cst = pt;
-                            kt = unit.getIntegerType();
-                            Type et = unit.getJavaArrayElementType(pt);
-                            vt = primitiveArray ? et : unit.getOptionalType(et);
-                        }
-                    }
-                    
-                    if (cst==null) {
-                        that.getPrimary()
-                            .addError("illegal receiving type for index expression: '" +
-                                    pt.getDeclaration()
-                                        .getName(unit) + 
-                                    "' is not a subtype of 'Correspondence'");
-                    }
-                    else {
-                        Tree.Element e = (Tree.Element) eor;
-                        Tree.Expression ee = 
-                                e.getExpression();
-                        checkAssignable(ee.getTypeModel(), 
-                                kt, ee, 
-                                "index must be assignable to key type");
-                        that.setTypeModel(vt);
-                        Tree.Term t = ee.getTerm();
-                        //TODO: in theory we could do a whole lot
-                        //      more static-execution of the 
-                        //      expression, but this seems
-                        //      perfectly sufficient
-                        refineTypeForTupleElement(that, pt, t);
-                    }
+                    checkIndexElement(that, pt, cd, true, "Correspondence", false);
                 }
                 else {
                     Interface rd = unit.getRangedDeclaration();
@@ -4938,8 +5080,131 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
+    private Type checkIndexElement(Tree.IndexExpression that,
+            Type pt, Interface cd, boolean nullable,
+            String superTypeName, boolean allowIndexedCorrespondenceMutator) {
+        if (dynamic && 
+                isTypeUnknown(pt)) {
+            // In dynamic blocks we allow index assignments
+            // on any dynamic types
+            return null;
+        }
+        Type kt = null;
+        Type vt = null;
+        Tree.ElementOrRange eor = 
+                that.getElementOrRange();
+        Type cst = pt.getSupertype(cd);
+        if (cst != null) {
+            List<Type> args = 
+                    cst.getTypeArgumentList();
+        	kt = args.get(0);
+        	vt = args.get(1);
+        	if (nullable) {
+                vt = unit.getOptionalType(vt);
+        	}
+        }
+        if (cst==null && allowIndexedCorrespondenceMutator) {
+            Interface ld = 
+                    unit.getIndexedCorrespondenceMutatorDeclaration();
+            cst = pt.getSupertype(ld);
+            if (cst != null) {
+                List<Type> args = 
+                        cst.getTypeArgumentList();
+                kt = unit.getIntegerType();
+                vt = args.get(0);
+                if (nullable) {
+                    vt = unit.getOptionalType(vt);
+                }
+            }
+        }
+        if (cst==null) {
+            Interface ld = 
+                    unit.getJavaListDeclaration();
+            cst = pt.getSupertype(ld);
+            if (cst != null) {
+                List<Type> args = 
+                        cst.getTypeArgumentList();
+        		kt = unit.getIntegerType();
+        		vt = unit.getOptionalType(args.get(0));
+            }
+        }
+        if (cst==null) {
+            Interface md = 
+                    unit.getJavaMapDeclaration();
+            cst = pt.getSupertype(md);
+            if (cst != null) {
+                List<Type> args =
+                        cst.getTypeArgumentList();
+        		kt = args.get(0);
+        		vt = unit.getOptionalType(args.get(1));
+            }
+        }
+        if (cst==null) {
+            boolean objectArray = 
+                    unit.isJavaObjectArrayType(pt);
+            boolean primitiveArray = 
+                    unit.isJavaPrimitiveArrayType(pt);
+            if (objectArray || primitiveArray) {
+                cst = pt;
+                kt = unit.getIntegerType();
+                Type et = unit.getJavaArrayElementType(pt);
+                vt = primitiveArray ? et : unit.getOptionalType(et);
+            }
+        }
+        
+        if (cst==null) {
+            that.getPrimary()
+                .addError("illegal receiving type for index expression: '" +
+                        pt.getDeclaration()
+                            .getName(unit) + 
+                        "' is not a subtype of '" + superTypeName + "'" +
+                        (allowIndexedCorrespondenceMutator ? " or 'IndexedCorrespondenceMutator'" : ""));
+        }
+        else {
+            Tree.Element e = (Tree.Element) eor;
+            Tree.Expression ee = 
+                    e.getExpression();
+            checkAssignable(ee.getTypeModel(), 
+                    kt, ee, 
+                    "index must be assignable to key type");
+            that.setTypeModel(vt);
+            Tree.Term t = ee.getTerm();
+            refineTypeForTupleElement(that, pt, t);
+        }
+        
+        return vt;
+    }
+
+    public boolean isJavaNullableMutator(Type pt, Interface cd) {
+        boolean nullable = false;
+        Type cst = pt.getSupertype(cd);
+        if (cst==null) {
+            Interface ld = unit.getJavaListDeclaration();
+            cst = pt.getSupertype(ld);
+            if (cst != null) {
+                nullable = true;
+            }
+        }
+        if (cst==null) {
+            Interface md = unit.getJavaMapDeclaration();
+            cst = pt.getSupertype(md);
+            if (cst != null) {
+                nullable = true;
+            }
+        }
+        if (cst==null) {
+            boolean objectArray = unit.isJavaObjectArrayType(pt);
+            nullable = objectArray;
+        }
+        return nullable;
+    }
+
     private void refineTypeForTupleElement(
             Tree.IndexExpression that, Type pt, Tree.Term t) {
+        //TODO: in theory we could do a whole lot
+        //      more static-execution of the 
+        //      expression, but this seems
+        //      perfectly sufficient
         boolean negated = false;
         if (t instanceof Tree.NegativeOp) {
             t = ((Tree.NegativeOp) t).getTerm();
@@ -5065,6 +5330,11 @@ public class ExpressionVisitor extends Visitor {
         if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression m = 
                     (Tree.MemberOrTypeExpression) term;
+            m.setAssigned(true);
+        }
+        else if (term instanceof Tree.IndexExpression) {
+            Tree.IndexExpression m = 
+                    (Tree.IndexExpression) term;
             m.setAssigned(true);
         }
     }
@@ -5259,24 +5529,70 @@ public class ExpressionVisitor extends Visitor {
             checkAssignable(rhst, obt, 
                     that.getRightTerm(), 
                     "operand expression must be of type Object");
+            if (intersectionType(lhst, rhst, unit).isNothing()) {
+                Interface ld = unit.getListDeclaration();
+                Interface sd = unit.getSetDeclaration();
+                Interface md = unit.getMapDeclaration();
+                Class id = unit.getIntegerDeclaration();
+                Class fd = unit.getFloatDeclaration();
+                if (!(lhst.getSupertype(ld)!=null &&
+                      rhst.getSupertype(ld)!=null) &&
+                    !(lhst.getSupertype(sd)!=null &&
+                      rhst.getSupertype(sd)!=null) &&
+                    !(lhst.getSupertype(md)!=null &&
+                      rhst.getSupertype(md)!=null) &&
+                    !(lhst.getDeclaration().equals(id) &&
+                      rhst.getDeclaration().equals(fd)) &&
+                    !(lhst.getDeclaration().equals(fd) &&
+                      rhst.getDeclaration().equals(id))) {
+                    that.addUsageWarning(Warning.disjointEquals, 
+                            "tests equality for operands with disjoint types: '" +
+                            lhst.asString(unit) + "' and '" +
+                            rhst.asString(unit) + "' are disjoint");
+                }
+            }
         }
         that.setTypeModel(unit.getBooleanType());
     }
     
     private void visitAssignOperator(Tree.AssignOp that) {
         Type rhst = rightType(that);
-        Type lhst = leftType(that);
-        if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            Type leftHandType = lhst;
-            // allow assigning null to java properties that could after all be null
-            if (hasUncheckedNulls(that.getLeftTerm())) {
-                leftHandType = 
-                        unit.getOptionalType(leftHandType);
+        if (!isTypeUnknown(rhst)) {
+            if (that.getLeftTerm() instanceof Tree.IndexExpression) {
+                Tree.IndexExpression idx = (Tree.IndexExpression)that.getLeftTerm();
+                if (idx.getElementOrRange() instanceof Tree.Element) {
+                    Type pt = type(idx);
+                    if (that.getTypeModel() != null && pt != null) {
+                        Interface cmd = 
+                                unit.getKeyedCorrespondenceMutatorDeclaration();
+                        Type vt = checkIndexElement(idx, pt, cmd, false, "KeyedCorrespondenceMutator", true);
+                        if (vt != null) {
+                            checkAssignable(rhst, vt,
+                                    that.getRightTerm(), 
+                                    "assigned expression must be assignable to '" +
+                                    vt.asString() +
+                                    "' of 'CorrespondenceMutator'");
+                        }
+                    }
+                } else {
+                    idx.getPrimary()
+                        .addError("ranged index assignment is not supported");
+                }
+            } else {
+                Type lhst = leftType(that);
+                if (!isTypeUnknown(lhst)) {
+                    Type leftHandType = lhst;
+                    // allow assigning null to java properties that could after all be null
+                    if (hasUncheckedNulls(that.getLeftTerm())) {
+                        leftHandType = 
+                                unit.getOptionalType(leftHandType);
+                    }
+                    checkAssignable(rhst, leftHandType, 
+                            that.getRightTerm(), 
+                            "assigned expression must be assignable to declared type", 
+                            2100);
+                }
             }
-            checkAssignable(rhst, leftHandType, 
-                    that.getRightTerm(), 
-                    "assigned expression must be assignable to declared type", 
-                    2100);
         }
         that.setTypeModel(rhst);
 //      that.setTypeModel(lhst); //this version is easier on backend
@@ -5477,7 +5793,8 @@ public class ExpressionVisitor extends Visitor {
         Type lhst = leftType(that);
         Type rhst = rightType(that);
         if (!isTypeUnknown(rhst) && !isTypeUnknown(lhst)) {
-            checkOptional(lhst, that.getLeftTerm());
+            Tree.Term lt = that.getLeftTerm();
+            checkOptional(lhst, lt, lt);
             Type dt = unit.getDefiniteType(lhst);
             Type rt = unionType(dt, rhst, unit);
             that.setTypeModel(rt);
@@ -5523,6 +5840,19 @@ public class ExpressionVisitor extends Visitor {
 	            		unit.getCategoryDeclaration(),
 	            		that.getRightTerm(), 
 	            		"operand expression must be a category");
+                Type et = unit.getIteratedType(rhst);
+	            if (et!=null) {
+                    if (intersectionType(lhst, et, unit).isNothing()) {
+                        Class sd = unit.getStringDeclaration();
+                        if (!lhst.getDeclaration().equals(sd) ||
+                            !rhst.getDeclaration().equals(sd)) {
+                            that.addUsageWarning(Warning.disjointContainment, 
+                                    "tests containment with disjoint element types: '" +
+                                    lhst.asString(unit) + "' and '" +
+                                    et.asString(unit) + "' are disjoint");
+                        }
+                    }
+	            }
             }
             if (ct!=null) {
                 Type at = 
@@ -5557,12 +5887,12 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void visitExistsOperator(Tree.Exists that) {
-        checkOptional(type(that), that.getTerm());
+        checkOptional(type(that), that.getTerm(), that);
         that.setTypeModel(unit.getBooleanType());
     }
     
     private void visitNonemptyOperator(Tree.Nonempty that) {
-        checkEmpty(type(that), that.getTerm());
+        checkEmpty(type(that), that.getTerm(), that);
         that.setTypeModel(unit.getBooleanType());
     }
     
@@ -5604,8 +5934,10 @@ public class ExpressionVisitor extends Visitor {
                 if (term!=null) {
                     Type knownType = term.getTypeModel();
                     if (!isTypeUnknown(knownType)) {
+                        checkReified(rt, type, knownType, false);
                         if (knownType.isSubtypeOf(type)) {
-                            that.addError("expression type is a subtype of the type: '" +
+                            that.addUsageWarning(Warning.redundantNarrowing,
+                                    "expression type is a subtype of the type: '" +
                                     knownType.asString(unit) + 
                                     "' is assignable to '" +
                                     type.asString(unit) + "'");
@@ -5661,6 +5993,7 @@ public class ExpressionVisitor extends Visitor {
                     that.addUnsupportedError("assignment to expression involving ?. or *. not supported");
                 }
             }
+        } else if (that instanceof Tree.IndexExpression) {
         }
         else {
             that.addError("expression cannot be assigned");
@@ -6223,15 +6556,13 @@ public class ExpressionVisitor extends Visitor {
                     !isNativeForWrongBackend(
                             scope.getScopedBackends()) &&
                     error) {
-                String correction = correct(scope, unit, name);
-                String message = correction==null ? "" :
-                    " (did you mean '" + correction + "'?)";
                 that.addError(
-                        "function or value does not exist: '" +
-                        name + "'" + message, 
+                        "function or value is not defined: '" 
+                            + name + "'" 
+                            + correctionMessage(name, scope, 
+                                    unit, cancellable), 
                         100);
-                unit.getUnresolvedReferences()
-                    .add(id);
+                unit.setUnresolvedReferences();
             }
         }
         else {
@@ -6434,6 +6765,9 @@ public class ExpressionVisitor extends Visitor {
                         primary.getTypeModel()
                             .resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
+                if (d instanceof Constructor) {
+                    d = d.getExtendedType().getDeclaration();
+                }
                 container = "type '" + d.getName(unit) + "'";
                 Scope scope = that.getScope();
                 ClassOrInterface ci = 
@@ -6456,21 +6790,19 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         member = getTypedMember(d, name, 
-                                signature, spread, unit);
+                                signature, spread, unit, scope);
                     }
                 }
                 else {
                     member = getTypedMember(d, name, 
-                            signature, spread, unit);
+                            signature, spread, unit, scope);
                 }
                 ambiguous = member==null && 
                         d.isMemberAmbiguous(name, unit, 
                                 signature, spread);
                 if (member==null) {
-                    String correction =
-                            correct(d, scope, unit, name);
-                    container += correction==null ? "" :
-                        " (did you mean '" + correction + "'?)";
+                    container += memberCorrectionMessage(name, 
+                            d, scope, unit, cancellable);
                 }
             }
             if (member==null) {
@@ -6480,11 +6812,10 @@ public class ExpressionVisitor extends Visitor {
                                 name + "' for " + container);
                     }
                     else {
-                        that.addError("method or attribute does not exist: '" +
+                        that.addError("method or attribute is not defined: '" +
                                 name + "' in " + container, 
                                 100);
-                        unit.getUnresolvedReferences()
-                            .add(id);
+                        unit.setUnresolvedReferences();
                     }
                 }
             }
@@ -6526,10 +6857,15 @@ public class ExpressionVisitor extends Visitor {
     private void checkSuperMember(
             Tree.QualifiedMemberOrTypeExpression that,
             List<Type> signature, boolean spread) {
+        Tree.Primary primary = that.getPrimary();
         Tree.Term term = 
-                eliminateParensAndWidening(
-                        that.getPrimary());
+                eliminateParensAndWidening(primary);
         if (term instanceof Tree.Super) {
+            Tree.MemberOperator op = 
+                    that.getMemberOperator();
+            if (op instanceof Tree.SpreadOp) {
+                primary.addError("spread member operator may not be applied to 'super' reference");
+            }
             checkSuperInvocation(that, signature, spread);
         }
     }
@@ -6556,7 +6892,7 @@ public class ExpressionVisitor extends Visitor {
                     receiverType.getTypedMember(member, 
                             typeArgs, that.getAssigned());
             /*if (ptr==null) {
-                that.addError("member method or attribute does not exist: " + 
+                that.addError("method or attribute is not defined: " + 
                         member.getName(unit) + " of type " + 
                         receiverType.getDeclaration().getName(unit));
             }
@@ -6784,8 +7120,8 @@ public class ExpressionVisitor extends Visitor {
                     isTypeUnknown(fullType)) {
                 that.addError(
                         "could not determine type of function or value reference: '" +
-                        member.getName(unit) + "'" + 
-                        getTypeUnknownError(fullType));
+                                member.getName(unit) + "'" + 
+                                getTypeUnknownError(fullType));
             }
             if (dynamic && 
                     isTypeUnknown(fullType)) {
@@ -6869,16 +7205,12 @@ public class ExpressionVisitor extends Visitor {
                     !dynamic &&
                     !isNativeForWrongBackend(
                             scope.getScopedBackends())) {
-                String correction = 
-                        correct(scope, unit, name);
-                String message = correction==null ? "" :
-                    " (did you mean '" + correction + "'?)";
                 that.addError(
-                        "type does not exist: '" + name + "'"
-                                + message, 
+                        "type is not defined: '" + name + "'"
+                            + correctionMessage(name, scope, 
+                                    unit, cancellable), 
                         102);
-                unit.getUnresolvedReferences()
-                    .add(id);
+                unit.setUnresolvedReferences();
             }
         }
         else {
@@ -6898,7 +7230,7 @@ public class ExpressionVisitor extends Visitor {
         }
         return type;
     }
-    
+
     private boolean checkConcreteConstructor(TypedDeclaration member,
             Tree.StaticMemberOrTypeExpression that) {
         if (isConstructor(member)) {
@@ -6947,9 +7279,13 @@ public class ExpressionVisitor extends Visitor {
                     return false;
                 }
                 else if (c.getParameterList()==null) {
-                    that.addError("class cannot be instantiated: '" +
-                            type.getName(unit) + 
-                            "' does not have a default constructor");
+                	if (!c.isAbstraction()) {
+	                    that.addError("class cannot be instantiated: '" +
+	                            type.getName(unit) + 
+	                            "' does not have a default constructor");
+                	}
+                    //else the parameter list is null because an
+                    //overloaded declaration could not be resolved
                     return false;
                 }
                 else {
@@ -7206,6 +7542,9 @@ public class ExpressionVisitor extends Visitor {
                         primary.getTypeModel()
                             .resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
+                if (d instanceof Constructor) {
+                    d = d.getExtendedType().getDeclaration();
+                }
                 container = "type '" + d.getName(unit) + "'";
                 Scope scope = that.getScope();
                 ClassOrInterface ci = 
@@ -7221,21 +7560,19 @@ public class ExpressionVisitor extends Visitor {
                     }
                     else {
                         type = getTypeMember(d, name, 
-                                signature, spread, unit);
+                                signature, spread, unit, scope);
                     }
                 }
                 else {
                     type = getTypeMember(d, name, 
-                            signature, spread, unit);
+                            signature, spread, unit, scope);
                 }
                 ambiguous = type==null && 
                         d.isMemberAmbiguous(name, unit, 
                                 signature, spread);
                 if (type==null) {
-                    String correction =
-                            correct(d, scope, unit, name);
-                    container += correction==null ? "" :
-                        " (did you mean '" + correction + "'?)";
+                    container += AnalyzerUtil.memberCorrectionMessage(name, 
+                            d, scope, unit, cancellable);
                 }
             }
             if (type==null) {
@@ -7245,11 +7582,10 @@ public class ExpressionVisitor extends Visitor {
                                 name + "' for " + container);
                     }
                     else {
-                        that.addError("member type does not exist: '" +
+                        that.addError("member type is not defined: '" +
                                 name + "' in " + container, 
                                 100);
-                        unit.getUnresolvedReferences()
-                            .add(id);
+                        unit.setUnresolvedReferences();
                     }
                 }
             }
@@ -7327,9 +7663,11 @@ public class ExpressionVisitor extends Visitor {
             td = unwrap(pt, that).getDeclaration();
         }
         if (td != null && td.isNativeImplementation()) {
-            TypeDeclaration _td = (TypeDeclaration)ModelUtil.getNativeHeader(td);
-            if (_td != null) {
-                td = _td;
+            TypeDeclaration header = 
+                    (TypeDeclaration)
+                        getNativeHeader(td);
+            if (header!=null) {
+                td = header;
             }
         }
         return td;
@@ -7389,10 +7727,11 @@ public class ExpressionVisitor extends Visitor {
                         getTypeArguments(tal, 
                                 pt.getQualifyingType(), 
                                 params);
-                acceptsTypeArguments(type, null, typeArgs, 
-                        tal, that);
+                acceptsTypeArguments(type, null, 
+                        typeArgs, tal, that);
             }
-            if (pt.isTypeConstructor() && !that.getMetamodel()) {
+            if (pt.isTypeConstructor() 
+                    && !that.getMetamodel()) {
                 checkNotJvm(that, 
                         "type functions are not supported on the JVM");
             }
@@ -7414,6 +7753,10 @@ public class ExpressionVisitor extends Visitor {
             List<Type> typeArgs, 
             Tree.TypeArguments tal) {
         checkMemberOperator(receivingType, that);
+        if (memberType instanceof Constructor) {
+            that.addError("constructor is not a type: '" + 
+                    memberType.getName(unit) + "' is a constructor");
+        }
         Type receiverType =
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
@@ -7648,9 +7991,12 @@ public class ExpressionVisitor extends Visitor {
                 var.getDeclarationModel().setType(et);
             }
             else {
-                checkAssignable(vt.getTypeModel(), 
-                        unit.getThrowableType(), vt, 
-                        "catch type must be a throwable type");
+                Type et = vt.getTypeModel();
+                if (!isTypeUnknown(et)) {
+                    Type tt = unit.getThrowableType();
+                    checkAssignable(et, tt, vt, 
+                            "catch type must be a throwable type");
+                }
             }
         }
     }
@@ -7663,6 +8009,10 @@ public class ExpressionVisitor extends Visitor {
                 checkAssignable(et, 
                         unit.getObjectType(), e, 
                         "interpolated expression must not be an optional type");
+                if (et.isCallable()) {
+                    e.addUsageWarning(Warning.expressionTypeCallable, 
+                            "interpolated function reference does not have a meaningful representation: expression is of type 'Callable'");
+                }
             }
         }
         that.setTypeModel(unit.getStringType());
@@ -7802,6 +8152,7 @@ public class ExpressionVisitor extends Visitor {
                     }
                     if (t!=null) {
                         Type pt = t.getTypeModel();
+                        checkReified(t, pt, st, false);
 //                        if (!isTypeUnknown(pt)) {
                         Type it = 
                                 intersectionType(pt, st, unit);
@@ -7946,7 +8297,8 @@ public class ExpressionVisitor extends Visitor {
                 Tree.ConditionList conditionList = 
                         ifClause().getConditionList();
                 if (conditionList!=null) {
-                    setTypeForElseVariable(var, conditionList);
+                    setTypeForGuardedVariable(var, 
+                            conditionList, true);
                 }
             }
         }
@@ -7985,8 +8337,9 @@ public class ExpressionVisitor extends Visitor {
         }
     }
 
-    private void setTypeForElseVariable(Tree.Variable var, 
-            Tree.ConditionList conditionList) {
+    private void setTypeForGuardedVariable(Tree.Variable var, 
+            Tree.ConditionList conditionList,
+            boolean reversed) {
         Tree.Condition c = 
                 conditionList.getConditions()
                     .get(0);
@@ -7995,28 +8348,30 @@ public class ExpressionVisitor extends Visitor {
         if (c instanceof Tree.ExistsCondition) {
             Tree.ExistsCondition ec = 
                     (Tree.ExistsCondition) c;
-            inferDefiniteType(var, se, !ec.getNot());
+            inferDefiniteType(var, se, 
+                    ec.getNot() ^ reversed);
         }
         else if (c instanceof Tree.NonemptyCondition) {
-            Tree.NonemptyCondition ec = 
+            Tree.NonemptyCondition nec = 
                     (Tree.NonemptyCondition) c;
-            inferNonemptyType(var, se, !ec.getNot());
+            inferNonemptyType(var, se, 
+                    nec.getNot() ^ reversed);
         }
         else if (c instanceof Tree.IsCondition) {
             Tree.IsCondition ic = 
                     (Tree.IsCondition) c;
             Tree.Expression e = se.getExpression();
             Type expressionType = e.getTypeModel();
-            Type complementType = 
+            Type narrowedType = 
                     narrow(ic.getType().getTypeModel(), 
                             expressionType,
-                            !ic.getNot());
+                            ic.getNot() ^ reversed);
             Value dec = var.getDeclarationModel();
-            if (!isCompletelyVisible(dec, complementType)) {
-                complementType = expressionType;
+            if (!isCompletelyVisible(dec, narrowedType)) {
+                narrowedType = expressionType;
             }
-            var.getType().setTypeModel(complementType);
-            dec.setType(complementType);
+            var.getType().setTypeModel(narrowedType);
+            dec.setType(narrowedType);
         }
     }
     
@@ -8162,8 +8517,8 @@ public class ExpressionVisitor extends Visitor {
         Tree.Type t = ic.getType();
         if (t!=null) {
             Type type = t.getTypeModel();
-            return type==null ? null :
-                type.getUnionOfCases();
+            return type/*==null ? null :
+                type.getUnionOfCases()*/;
         }
         else {
             return null;
@@ -8205,10 +8560,12 @@ public class ExpressionVisitor extends Visitor {
             List<Type> list = 
                     new ArrayList<Type>(es.size());
             for (Tree.Expression e: es) {
-                if (e.getTypeModel()!=null && 
-                        !(e.getTerm() instanceof Tree.Literal) && 
-                        !(e.getTerm() instanceof Tree.NegativeOp)) {
-                    addToUnion(list, e.getTypeModel());
+                if (e.getTypeModel()!=null) {
+                    Tree.Term term = e.getTerm();
+                    if (!(term instanceof Tree.Literal ||
+                          term instanceof Tree.NegativeOp)) {
+                        addToUnion(list, e.getTypeModel());
+                    }
                 }
             }
             return union(list, unit);
@@ -8378,8 +8735,9 @@ public class ExpressionVisitor extends Visitor {
         }
         if (receiver==null && 
                 dec.isClassOrInterfaceMember()) {
-            receiver = parent.getScope()
-                    .getDeclaringType(dec);
+            receiver = 
+                    parent.getScope()
+                        .getDeclaringType(dec);
         }
         int max = params.size();
         int args = typeArguments.size();
@@ -8964,7 +9322,7 @@ public class ExpressionVisitor extends Visitor {
             pack = unit.getPackage();
         }
         else {
-            pack = importedPackage(path, unit.getModuleSourceMapper());
+            pack = importedPackage(path, unit);
         }
         path.setModel(pack);
         that.setTypeModel(unit.getPackageDeclarationType());
@@ -9180,9 +9538,9 @@ public class ExpressionVisitor extends Visitor {
                     setMemberMetatype(that, result);
                 }
                 else {
-                    that.addError("function or value does not exist: '" +
+                    that.addError("function or value is not defined: '" +
                             name(id) + "'", 100);
-                    unit.getUnresolvedReferences().add(id);
+                    unit.setUnresolvedReferences();
                 }
             } else {
                 TypeDeclaration qtd = 
@@ -9192,14 +9550,15 @@ public class ExpressionVisitor extends Visitor {
             	String container = "type '" + qtd.getName(unit) + "'";
             	TypedDeclaration member = 
             	        getTypedMember(qtd, name, 
-            	                null, false, unit);
+            	                null, false, unit, 
+            	                that.getScope());
             	if (member==null) {
             		if (qtd.isMemberAmbiguous(name, unit, null, false)) {
             			that.addError("method or attribute is ambiguous: '" +
             					name + "' for " + container);
             		}
             		else {
-            			that.addError("method or attribute does not exist: '" +
+            			that.addError("method or attribute is not defined: '" +
             					name + "' in " + container);
             		}
             	}
@@ -9376,9 +9735,9 @@ public class ExpressionVisitor extends Visitor {
             Declaration dec, 
             Tree.MemberOrTypeExpression that, 
             boolean error) {
-        dec = handleNativeHeader(dec, that, error);
-        dec = handleAbstraction(dec, that);
-        return dec;
+        return handleAbstraction(
+                handleNativeHeader(dec, that, error), 
+                that);
     }
     
     private Declaration handleNativeHeader(
@@ -9449,7 +9808,8 @@ public class ExpressionVisitor extends Visitor {
             } else {
                 that.addError("illegal reference to native declaration '" +
                         dec.getName(unit) + "': declaration '" +
-                        d.getName(unit) + "' is not native (mark it or the module native)");
+                        d.getName(unit) + "' is not native (mark it or the module native)",
+                        20010);
             }
         }
         if (dec.isNative()) {
@@ -9509,6 +9869,7 @@ public class ExpressionVisitor extends Visitor {
     private boolean isNativeForWrongBackend(Backends backends) {
         return !backends.none() &&
                 !backends.header() &&
-                !isForBackend(backends, unit);
-    }    
+                !isForBackend(backends, unit.getSupportedBackends());
+    }
+    
 }

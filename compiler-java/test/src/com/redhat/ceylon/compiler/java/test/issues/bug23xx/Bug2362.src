@@ -31,7 +31,7 @@ class Bug2362_Y extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
     public final .ceylon.language.Sequence m(final .java.lang.Object file) {
-        return (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

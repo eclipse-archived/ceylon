@@ -34,7 +34,6 @@ import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -456,13 +455,20 @@ public enum Option {
     CEYLONNOPOM("-nopom", "opt.ceylonnopom", OptionKind.STANDARD, OptionGroup.CEYLON),
     CEYLONPACK200("-pack200", "opt.ceylonpack200", OptionKind.STANDARD, OptionGroup.CEYLON),
     CEYLONJDKPROVIDER("-jdk-provider", "opt.arg.value", "opt.ceylonjdkprovider", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONAPT("-apt", "opt.arg.value", "opt.ceylonapt", OptionKind.STANDARD, OptionGroup.CEYLON){
+        @Override
+        public boolean process(OptionHelper helper, String option, String arg) {
+            helper.addMulti(option, arg);
+            return false;
+        }
+    },
     CEYLONSOURCEPATH("-src", "opt.arg.directory", "opt.ceylonsourcepath", OptionKind.STANDARD, OptionGroup.CEYLON) {
         @Override
         public boolean process(OptionHelper options, String option, String arg) {
             if (options.get(SOURCEPATH) == null) {
                 options.put(SOURCEPATH.getText(), arg);
             } else {
-                options.put(SOURCEPATH.getText(), options.get(SOURCEPATH) + ":" + arg);
+                options.put(SOURCEPATH.getText(), options.get(SOURCEPATH) + File.pathSeparatorChar + arg);
             }
             return false;
         }
@@ -473,7 +479,7 @@ public enum Option {
             if (options.get(this) == null) {
                 options.put(getText(), arg);
             } else {
-                options.put(getText(), options.get(this) + ":" + arg);
+                options.put(getText(), options.get(this) + File.pathSeparatorChar + arg);
             }
             return false;
         }
@@ -532,8 +538,9 @@ public enum Option {
         }
         @Override
         public boolean process(OptionHelper helper, String option) {
-            String s= option;
-            File f = new File(s);
+            String s = option;
+            String cwd = helper.get(CEYLONCWD);
+            File f = cwd != null ? FileUtil.applyCwd(new File(cwd), new File(s)) : new File(s);
             if (s.endsWith(".java")
                     || s.endsWith(".ceylon") // FIXME: Should be a FileManager query
             ) {
@@ -541,7 +548,7 @@ public enum Option {
                 if (!f.isFile()) {
                     // -sourcepath not -src because the COption for 
                     // CEYLONSOURCEPATH puts it in the options map as -sourcepath
-                    String[] sourcePaths = helper.get(SOURCEPATH) == null ? null : helper.get(SOURCEPATH).split(":");
+                    String[] sourcePaths = helper.get(SOURCEPATH) == null ? null : helper.get(SOURCEPATH).split(File.pathSeparator);
                     if(sourcePaths == null || sourcePaths.length == 0)
                         sourcePaths = FileUtil.filesToPathArray(DefaultToolOptions.getCompilerSourceDirs().toArray(new File[0]));
                     if (checkIfModule(sourcePaths, s)) {
@@ -572,7 +579,7 @@ public enum Option {
                     return false;
                 }
                 // find a corresponding physical module in the source path
-                String[] sourcePaths = helper.get(SOURCEPATH) == null ? null : helper.get(SOURCEPATH).split(":");
+                String[] sourcePaths = helper.get(SOURCEPATH) == null ? null : helper.get(SOURCEPATH).split(File.pathSeparator);
                 if(sourcePaths == null || sourcePaths.length == 0)
                     sourcePaths = FileUtil.filesToPathArray(DefaultToolOptions.getCompilerSourceDirs().toArray(new File[0]));
                 if (checkIfModule(sourcePaths, s)) {

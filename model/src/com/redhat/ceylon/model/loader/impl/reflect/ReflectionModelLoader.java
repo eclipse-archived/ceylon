@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.loader.impl.reflect;
 
+import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
+
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -38,7 +40,7 @@ public abstract class ReflectionModelLoader extends AbstractModelLoader {
 	            // make sure we're running as a module, not from the classpath
 	            if(Java9ModuleUtil.isNamedModule(mod)){
 	                // add a read to the language module since that's where the metadata annotations are
-	                Object otherModule = Java9ModuleUtil.findModule(mod, Module.LANGUAGE_MODULE_NAME);
+	                Object otherModule = Java9ModuleUtil.findModule(mod, LANGUAGE_MODULE_NAME);
 	                if(otherModule != null){
 	                    Class<?> moduleClass = ClassLoader.getSystemClassLoader().loadClass("java.lang.reflect.Module");
 	                    // also add a read to it

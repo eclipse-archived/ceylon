@@ -57,14 +57,19 @@ if [ "$PRESERVE_JAVA_OPTS" != "true" ]; then
         CEYL_COLS="$(tput 2>/dev/null cols)"
     fi
     PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.width=$CEYL_COLS"
-    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.green=$(tput 2>/dev/null setaf 2)"
-    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.red=$(tput 2>/dev/null setaf 1)"
-    PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.terminal.color.reset=$(tput 2>/dev/null sgr0)"
     PREPEND_JAVA_OPTS="$PREPEND_JAVA_OPTS -Dcom.redhat.ceylon.common.tool.progname=$(basename "$PRG")"
 fi
 JAVA_OPTS="$PREPEND_JAVA_OPTS $JAVA_OPTS"
 
+BOOTSTRAP="$LIB/ceylon-bootstrap.jar"
+
+# Check for cygwin, convert bootstrap path to Windows format
+case "`uname`" in
+  CYGWIN*) [ -n "$LIB" ] && BOOTSTRAP=`cygpath -w "$BOOTSTRAP"`
+esac
+
 exec "$JAVA" \
     $JAVA_OPTS \
-    -jar "$LIB/ceylon-bootstrap.jar" \
+    -jar "$BOOTSTRAP" \
     "$@"
+

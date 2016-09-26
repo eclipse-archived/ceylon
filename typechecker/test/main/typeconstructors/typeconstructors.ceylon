@@ -178,3 +178,11 @@ void useListOfFuns() {
         Float? result = first(1.0);
     }
 }
+
+interface A {}
+interface B {}
+
+void f<T>(T<A,A> & T<B,B> x) 
+        given T<out U, in V> {
+    T<A&B, A|B> y = x;
+}

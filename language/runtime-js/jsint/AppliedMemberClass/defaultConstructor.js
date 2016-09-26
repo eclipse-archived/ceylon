@@ -10,7 +10,7 @@ if (this.$defcons$===undefined) {
     startingType=startingType.container;
   }
   var fn=mtn+'_$c$';
-  var cn=this.tipo[fn];
+  var cn=this.tipo[mtn+'$c_$c$'] || this.tipo[mtn+'_$c$'];
   var fc=false;
   if (!cn) {
     var m2=get_model(mm);

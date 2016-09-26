@@ -47,3 +47,20 @@ void coverage() {
 T&<Object?> covFun0<T>(T maybe) => maybe of T&<Object?>;
 
 <T&Object>? covFun1<T>(T? maybe) => maybe of <T&Object>?;
+
+void coverageAndConstraints1<U,V>() 
+        given U of String|Character 
+        given V of Integer|Float {
+    U&V whatever = nothing;
+    Nothing n = whatever of Nothing;
+}
+
+void coverageAndConstraints2<T>() 
+        given T of Integer|Float {
+    Nothing s = nothing of T & String;
+    Nothing t = nothing of String & T;
+    void bar<U>() given U satisfies T {
+        Nothing s = nothing of U & String;
+        Nothing t = nothing of String & U;
+    }
+}

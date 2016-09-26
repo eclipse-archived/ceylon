@@ -374,10 +374,13 @@ public abstract class ClassDeclarationImpl
         checkInit();
         ArrayList<ceylon.language.meta.declaration.Declaration> ctors = new ArrayList<ceylon.language.meta.declaration.Declaration>(constructors.size());
         for(ceylon.language.meta.declaration.Declaration decl : constructors){
-            if ((decl instanceof CallableConstructorDeclarationImpl
-                    && predicate.accept(((CallableConstructorDeclarationImpl)decl).constructor))
-                || (decl instanceof ValueConstructorDeclarationImpl
-                    && predicate.accept(((ValueConstructorDeclarationImpl)decl).constructor))) {
+            if (decl instanceof CallableConstructorDeclarationImpl
+                    && !((CallableConstructorDeclarationImpl)decl).constructor.isNativeHeader()
+                    && predicate.accept(((CallableConstructorDeclarationImpl)decl).constructor)) {
+                ctors.add(decl);
+            } else if (decl instanceof ValueConstructorDeclarationImpl
+                    && !((ValueConstructorDeclarationImpl)decl).constructor.isNativeHeader()
+                    && predicate.accept(((ValueConstructorDeclarationImpl)decl).constructor)) {
                 ctors.add(decl);
             }
         }

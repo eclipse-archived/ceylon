@@ -1,0 +1,127 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+task generateJavaSources {
+    group 'Code generation'
+    description 'Generates source code'
+}
+
+task cleanJavaSources( type : Delete ) {
+    group 'Code generation'
+    description 'Removes generated source code'
+    delete generatedSrcDir
+}
+
+// Create tasks for source code generation
+[ 'short' : [
+    boxedType     : 'Integer',
+    javaBoxedType : 'Short',
+    unboxMethod   : 'longValue',
+    optionalStart : '/*',
+    optionalEnd   : '*/',
+    optional      : '//'
+],
+  'int' : [
+      boxedType            : 'Integer',
+      javaBoxedType        : 'Integer',
+      unboxMethod          : 'longValue',
+      arrayInstanceWrapper : 'instanceForCodePoints',
+      arrayGetter          : 'getCodePointArray',
+      arrayGetterType      : 'Character'
+  ],
+  'long' : [
+      boxedType            : 'Integer',
+      javaBoxedType        : 'Long',
+      unboxMethod          : 'longValue',
+      arrayInstanceWrapper : 'instanceForIntegers',
+      arrayGetter          : 'getIntegerArray',
+      arrayGetterType      : 'Integer'
+  ],
+  'byte' : [
+      boxedType            : 'Byte',
+      javaBoxedType        : 'Byte',
+      unboxMethod          : 'byteValue',
+      arrayInstanceWrapper : 'instanceForBytes',
+      arrayGetter          : 'getByteArray',
+      arrayGetterType      : 'Byte'
+  ],
+  'boolean' : [
+      boxedType            : 'Boolean',
+      javaBoxedType        : 'Boolean',
+      unboxMethod          : 'booleanValue',
+      arrayInstanceWrapper : 'instanceForBooleans',
+      arrayGetter          : 'getBooleanArray',
+      arrayGetterType      : 'Boolean'
+  ],
+  'char' : [
+      boxedType     : 'Character',
+      javaBoxedType : 'Character',
+      unboxMethod   : 'intValue',
+      optionalStart : '/*',
+      optionalEnd   : '*/',
+      optional      : '//'
+  ],
+  'float' : [
+      boxedType     : 'Float',
+      javaBoxedType : 'Float',
+      unboxMethod   : 'doubleValue',
+      optionalStart : '/*',
+      optionalEnd   : '*/',
+      optional      : '//'
+  ],
+  'double' : [
+      boxedType            : 'Float',
+      javaBoxedType        : 'Double',
+      unboxMethod          : 'doubleValue',
+      arrayInstanceWrapper : 'instanceForFloats',
+      arrayGetter          : 'getFloatArray',
+      arrayGetterType      : 'Float'
+  ],
+  'object' : [
+      primitiveType : 'T',
+      boxedType     : 'T',
+      boxedTypeName : 'T|ceylon.language::Null',
+      javaBoxedType : 'Object',
+      unboxMethod   : 'longValue',
+      optionalStart : '/*',
+      optionalEnd   : '*/',
+      optional      : '//'
+  ]
+].each { typeName,metadata ->
+    String capTypeName = typeName.capitalize()
+    String arrayName = capTypeName + 'Array'
+    Map replacementTokens = [
+        Name                 : capTypeName,
+        Classname            : arrayName,
+        PrimitiveType        : metadata.primitiveType ?: typeName,
+        BoxedType            : metadata.primitiveType ?: "ceylon.language.${metadata.boxedType}".toString(),
+        BoxedTypeName        : metadata.boxedTypeName ?: "ceylon.language::${metadata.boxedType}".toString(),
+        UnboxMethod          : metadata.unboxMethod,
+        JavaBoxedType        : "java.lang,${metadata.javaBoxedType}".toString(),
+        JavaBoxedTypeName    : "java.lang::${metadata.javaBoxedType}".toString(),
+        OptionalStart        : metadata.optionalStart ?: '',
+        OptionalEnd          : metadata.optionalEnd ?: '',
+        Optional             : metadata.optional ?: '',
+        ArrayInstanceWrapper : metadata.arrayInstanceWrapper ?: 'NOTUSED',
+        CeylonArrayGetter    : metadata.arrayGetter ?: 'NOTUSED',
+        GeneratedWarning     : 'THIS IS A GENERATED FILE - DO NOT EDIT'
+    ]
+
+    if( metadata.arrayGetterType) {
+        replacementTokens+= [
+            CeylonArrayGetterType     : "ceylon.language.${metadata.arrayGetterType}".toString(),
+            CeylonArrayGetterTypeName : "ceylon.language::${metadata.arrayGetterType}".toString()
+        ]
+    }
+
+    tasks.create name : "generateJava${capTypeName}Array", type : Copy, {
+        group 'Code generation'
+        description "Generates ${arrayName}"
+        from "${templateSrcDir}/PrimitiveArray.java"
+        into generatedSrcDir
+        rename ~/.+/,"${arrayName}.java"
+
+        filter ReplaceTokens, tokens : replacementTokens
+    }
+
+    generateJavaSources.dependsOn "generateJava${capTypeName}Array"
+}

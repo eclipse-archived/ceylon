@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.loader.model;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,13 +57,16 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
 
     private void load() {
         if(!isLoaded2){
-            synchronized(completer.getLock()){
-                if(!isLoaded){
-                    isLoaded = true;
-                    completer.complete(this);
-                    isLoaded2 = true;
+            completer.synchronizedRun(new Runnable() {
+                @Override
+                public void run() {
+                    if(!isLoaded){
+                        isLoaded = true;
+                        completer.complete(LazyValue.this);
+                        isLoaded2 = true;
+                    }
                 }
-            }
+            });
         }
     }
     
@@ -153,9 +157,13 @@ public class LazyValue extends Value implements LazyElement, LocalDeclarationCon
     }
 
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity, Cancellable  cancellable) {
+    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity, Cancellable  canceller) {
+        if (canceller != null
+                && canceller.isCancelled()) {
+            return Collections.emptyMap();
+        }
         load();
-        return super.getMatchingDeclarations(unit, startingWith, proximity, cancellable);
+        return super.getMatchingDeclarations(unit, startingWith, proximity, canceller);
     }
 
     @Override

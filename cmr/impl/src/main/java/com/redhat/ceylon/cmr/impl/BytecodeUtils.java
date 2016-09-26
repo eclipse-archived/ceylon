@@ -23,13 +23,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
+import com.redhat.ceylon.cmr.api.AbstractDependencyResolverAndModuleInfoReader;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
@@ -52,7 +51,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
  *
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-public final class BytecodeUtils extends AbstractDependencyResolver implements ModuleInfoReader {
+public final class BytecodeUtils extends AbstractDependencyResolverAndModuleInfoReader {
     public static BytecodeUtils INSTANCE = new BytecodeUtils();
 
     private BytecodeUtils() {
@@ -108,22 +107,8 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
             return null;
         
         final Object[] dependencies = (Object[]) ClassFileUtil.getAnnotationValue(moduleInfo, ai, "dependencies");
-        if (dependencies == null)
-            return new ModuleInfo(null, Collections.<ModuleDependencyInfo>emptySet());
-
-        final Set<ModuleDependencyInfo> infos = new LinkedHashSet<ModuleDependencyInfo>();
-
-        for (Object im : dependencies) {
-        	Annotation dep = (Annotation) im;
-        	final String name = (String) ClassFileUtil.getAnnotationValue(moduleInfo, dep, "name");
-        	final ModuleDependencyInfo mi = new ModuleDependencyInfo(
-        			name,
-        			(String) ClassFileUtil.getAnnotationValue(moduleInfo, dep, "version"),
-        			asBoolean(moduleInfo, dep, "optional"),
-        			asBoolean(moduleInfo, dep, "export"));
-        	infos.add(mi);
-        }
-        ModuleInfo ret = new ModuleInfo(null, infos);
+        final Set<ModuleDependencyInfo> infos = getDependencies(moduleInfo, dependencies, moduleName, version, overrides);
+        ModuleInfo ret = new ModuleInfo(moduleName, version, null, infos);
         if(overrides != null)
             ret = overrides.applyOverrides(moduleName, version, ret);
         return ret;
@@ -189,9 +174,13 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
     @Override
     public int[] getBinaryVersions(String moduleName, String moduleVersion, File moduleArchive) {
     	ClassFile moduleInfo = readModuleInfo(moduleName, moduleArchive);
-    	if(moduleInfo == null)
-    		return null;
-    	Annotation ceylonAnnotation = ClassFileUtil.findAnnotation(moduleInfo, CEYLON_ANNOTATION);
+    	return getBinaryVersions(moduleInfo);
+    }
+
+    public static int[] getBinaryVersions(ClassFile moduleInfo) {
+        if(moduleInfo == null)
+            return null;
+        Annotation ceylonAnnotation = ClassFileUtil.findAnnotation(moduleInfo, CEYLON_ANNOTATION);
         if (ceylonAnnotation == null)
             return null;
         
@@ -215,14 +204,9 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         Object[] dependencies = (Object[])ClassFileUtil.getAnnotationValue(moduleInfo, moduleAnnotation, "dependencies");
         String type = ArtifactContext.getSuffixFromFilename(moduleArchive.getName());
         
-    	Annotation ceylonAnnotation = ClassFileUtil.findAnnotation(moduleInfo, CEYLON_ANNOTATION);
-        if (ceylonAnnotation == null)
-            return null;
+        int[] binver = getBinaryVersions(moduleInfo);
 
-        int major = asInt(moduleInfo, ceylonAnnotation, "major");
-        int minor = asInt(moduleInfo, ceylonAnnotation, "minor");
-
-        ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, getVersionFromFilename(moduleName, moduleArchive.getName()));
+        ModuleVersionDetails mvd = new ModuleVersionDetails(null, moduleName, getVersionFromFilename(moduleName, moduleArchive.getName()));
         mvd.setDoc(doc);
         mvd.setLicense(license);
         if (by != null) {
@@ -231,7 +215,7 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         	}
         }
         mvd.getDependencies().addAll(getDependencies(moduleInfo, dependencies, moduleName, mvd.getVersion(), overrides));
-        ModuleVersionArtifact mva = new ModuleVersionArtifact(type, major, minor);
+        ModuleVersionArtifact mva = new ModuleVersionArtifact(type, binver[0], binver[1]);
         mvd.getArtifactTypes().add(mva);
         
         if (includeMembers) {
@@ -320,21 +304,44 @@ public final class BytecodeUtils extends AbstractDependencyResolver implements M
         }
     }
 
-    private static Set<ModuleDependencyInfo> getDependencies(ClassFile classFile, Object[] dependencies, 
+    private static Set<ModuleDependencyInfo> getDependencies(ClassFile moduleInfo, Object[] dependencies, 
     		String module, String version, Overrides overrides) {
     	
+        if (dependencies == null) {
+            return Collections.<ModuleDependencyInfo>emptySet();
+        }
+
+        int[] binver = getBinaryVersions(moduleInfo);
+        boolean supportsNamespaces = binver != null && ModuleUtil.supportsImportsWithNamespaces(binver[0], binver[1]);
+        
         Set<ModuleDependencyInfo> result = new HashSet<ModuleDependencyInfo>(dependencies.length);
         for (Object depObject : dependencies) {
         	Annotation dep = (Annotation) depObject;
-            String depName = (String)ClassFileUtil.getAnnotationValue(classFile, dep, "name");
-            String depVersion = (String)ClassFileUtil.getAnnotationValue(classFile, dep, "version");
-            boolean export = asBoolean(classFile, dep, "export");
-            boolean optional = asBoolean(classFile, dep, "optional");
+            String namespace;
+            String modName = (String)ClassFileUtil.getAnnotationValue(moduleInfo, dep, "name");
+            if (supportsNamespaces) {
+                namespace = (String)ClassFileUtil.getAnnotationValue(moduleInfo, dep, "namespace");
+                if (namespace != null && namespace.isEmpty()) {
+                    namespace = null;
+                }
+            } else {
+                if (ModuleUtil.isMavenModule(modName)) {
+                    namespace = MavenRepository.NAMESPACE;
+                } else {
+                    namespace = null;
+                }
+            }
+            String depVersion = (String)ClassFileUtil.getAnnotationValue(moduleInfo, dep, "version");
+            boolean export = asBoolean(moduleInfo, dep, "export");
+            boolean optional = asBoolean(moduleInfo, dep, "optional");
             
-            result.add(new ModuleDependencyInfo(depName, depVersion, optional, export));
+            result.add(new ModuleDependencyInfo(namespace, modName, depVersion, optional, export));
         }
-        if(overrides != null)
-            return overrides.applyOverrides(module, version, new ModuleInfo(null, result)).getDependencies();
+        
+        if (overrides != null) {
+            result = overrides.applyOverrides(module, version, new ModuleInfo(module, version, null, result)).getDependencies();
+        }
+        
         return result;
     }
     

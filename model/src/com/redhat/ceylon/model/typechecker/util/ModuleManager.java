@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
@@ -20,7 +19,7 @@ import com.redhat.ceylon.model.typechecker.model.Package;
  *
  * @author Emmanuel Bernard <emmanuel@hibernate.org>
  */
-public class ModuleManager implements BackendSupport {
+public class ModuleManager {
 
     public static final String MODULE_FILE = "module.ceylon";
     public static final String PACKAGE_FILE = "package.ceylon";
@@ -49,7 +48,7 @@ public class ModuleManager implements BackendSupport {
             //build default module (module in which packages belong to when not explicitly under a module
             final List<String> defaultModuleName = Collections.singletonList(Module.DEFAULT_MODULE_NAME);
             final Module defaultModule = createModule(defaultModuleName, "unversioned");
-            defaultModule.setDefault(true);
+//            defaultModule.setDefault(true);
             defaultModule.setAvailable(true);
             bindPackageToModule(emptyPackage, defaultModule);
             modules.getListOfModules().add(defaultModule);
@@ -63,7 +62,7 @@ public class ModuleManager implements BackendSupport {
             languageModule.setAvailable(false); //not available yet
             modules.setLanguageModule(languageModule);
             modules.getListOfModules().add(languageModule);
-            defaultModule.addImport(new ModuleImport(languageModule, false, false));
+            defaultModule.addImport(new ModuleImport(null, languageModule, false, false));
             defaultModule.setLanguageModule(languageModule);
         }
     }
@@ -205,13 +204,14 @@ public class ModuleManager implements BackendSupport {
 
     public Module overridesModule(ArtifactResult artifact,
             Module module, ModuleImport moduleImport) {
+        String namespace = artifact.namespace();
         String realName = artifact.name();
         String realVersion = artifact.version();
         if (! realName.equals(module.getNameAsString()) ||
             ! realVersion.equals(module.getVersion())) {
             if (module != module.getLanguageModule()) {
                 Module realModule = getOrCreateModule(splitModuleName(realName), realVersion);
-                moduleImport.override(new ModuleImport(realModule, moduleImport.isOptional(), moduleImport.isExport()));
+                moduleImport.override(new ModuleImport(namespace, realModule, moduleImport.isOptional(), moduleImport.isExport()));
                 return realModule;
             }
         }
@@ -230,7 +230,6 @@ public class ModuleManager implements BackendSupport {
      * this ModuleManager. Returning an empty set signifies
      * that any backend is acceptable.
      */
-    @Override
     public Backends getSupportedBackends() {
         return Backends.ANY;
     }

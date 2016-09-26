@@ -8,7 +8,7 @@ Global Eclipse configuration:
      this you can skip Step 1 in "Post-import steps" below.
      (N.B. these should already be the default settings on Linux.)
 
- ii. Go to the preferences of the installed JREs (Window -> Preferebces -> Java -> Installed JREs) and
+ ii. Go to the preferences of the installed JREs (Window -> Preferences -> Java -> Installed JREs) and
      select the active JRE and click "Edit". In the popup type "-ea" in the "Default VM arguments" field.
      Then click "Finish" and "Ok". (Repeat this for any JREs you intend to use with Ceylon)
 

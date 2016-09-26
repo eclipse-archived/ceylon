@@ -86,7 +86,7 @@ final class bug2282M_ {
     }
     
     static <F>F bug2282M(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$F, final .java.lang.Object o) {
-        return (F).ceylon.language.nothing_.get_();
+        return (F)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
 }
 class Bug2282M extends .java.lang.Object implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {

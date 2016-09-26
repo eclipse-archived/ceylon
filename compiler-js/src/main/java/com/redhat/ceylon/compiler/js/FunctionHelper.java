@@ -57,9 +57,9 @@ public class FunctionHelper {
                         null, scope instanceof Function ? (Function)scope : null);
                 gen.out("return ");
                 if (!gen.isNaturalLiteral(expr.getTerm())) {
-                    expr.visit(gen);
+                    gen.visitSingleExpression(expr);
                 }
-                gen.out(";}");
+                gen.out("}");
             }
         }, emitFunctionKeyword, gen);
     }
@@ -121,9 +121,8 @@ public class FunctionHelper {
         if (specExpr != null) {
             gen.out("return ");
             if (!gen.isNaturalLiteral(specExpr.getExpression().getTerm())) {
-                specExpr.getExpression().visit(gen);
+                gen.visitSingleExpression(specExpr.getExpression());
             }
-            gen.out(";");
         }
         else if (block != null) {
             gen.visitStatements(block.getStatements());
@@ -163,7 +162,7 @@ public class FunctionHelper {
         gen.endBlock(false, true);
         //Add reference to metamodel
         gen.out(gen.getNames().name(c), ".$crtmm$=");
-        TypeUtils.encodeForRuntime(c, null, gen);
+        TypeUtils.encodeForRuntime(that, c, gen);
         gen.endLine(true);
 
         TypeGenerator.typeInitialization(xt, sts, c, new GenerateJsVisitor.PrototypeInitCallback() {
@@ -229,6 +228,17 @@ public class FunctionHelper {
             }
             gen.out(gen.getNames().name(m));
             if (!m.isToplevel())gen.out("=");
+            if (TypeUtils.isNativeExternal(m)) {
+                if (gen.stitchNative(m, that)) {
+                    if (verboseStitcher) {
+                        gen.spitOut("Stitching in native method " + m.getQualifiedNameString() + ", ignoring Ceylon declaration");
+                    }
+                    if (m.isShared()) {
+                        gen.share(m);
+                    }
+                    return;
+                }
+            }
             singleExprFunction(that.getParameterLists(),
                     that.getSpecifierExpression().getExpression(), m, true, !m.isToplevel(), gen);
             gen.endLine(true);
@@ -373,8 +383,8 @@ public class FunctionHelper {
             first=false;
         }
         gen.out(";return ");
-        that.getLetClause().getExpression().visit(gen);
-        gen.out(";}()");
+        gen.visitSingleExpression(that.getLetClause().getExpression());
+        gen.out("}()");
         directs.removeAll(decs2);
     }
 
@@ -401,7 +411,7 @@ public class FunctionHelper {
                 gen.out(",", MetamodelGenerator.KEY_TYPE, ":");
                 TypeUtils.typeNameOrList(n, t, gen, false);
             }
-            gen.out("};};return ", gen.getClAlias(), "JsCallable(0,", name, ");");
+            gen.out("};};return ", gen.getClAlias(), "jsc$3(0,", name, ");");
         }
         Type tupleFromParameterList() {
             if (params.getParameters().isEmpty()) {
@@ -496,22 +506,27 @@ public class FunctionHelper {
                         (Tree.BaseTypeExpression)that.getPrimary());
                 if (hasTargs) {
                     if (that.getDirectlyInvoked()) {
-                        gen.out(gen.qualifiedPath(that, cd), "_", gen.getNames().name(cd));
+                        gen.out(gen.qualifiedPath(that, cd), gen.getNames().constructorSeparator(cd),
+                                gen.getNames().name(cd));
                     } else {
                         BmeGenerator.printGenericMethodReference(gen,
                                 (Tree.BaseTypeExpression)that.getPrimary(), "0",
-                                gen.qualifiedPath(that, cd) + "_" + gen.getNames().name(cd));
+                                gen.qualifiedPath(that, cd) + gen.getNames().constructorSeparator(cd) +
+                                gen.getNames().name(cd));
                     }
                 } else {
                     gen.qualify(that, cd);
                     gen.out(gen.getNames().name(cd));
+                    if (cd.isValueConstructor()) {
+                        gen.out("()");
+                    }
                 }
             } else {
                 gen.out("function(x){return ");
                 if (BmeGenerator.hasTypeParameters(that)) {
                     BmeGenerator.printGenericMethodReference(gen, that, "x", "x."+name);
                 } else {
-                    gen.out(gen.getClAlias(), "JsCallable(x,x.", name, ")");
+                    gen.out(gen.getClAlias(), "jsc$3(x,x.", name, ")");
                 }
                 gen.out(";}");
             }
@@ -534,10 +549,10 @@ public class FunctionHelper {
                 BmeGenerator.printGenericMethodReference(gen, that, primaryVar, member);
             } else {
                 if (that.getUnit().isOptionalType(that.getPrimary().getTypeModel())) {
-                    gen.out(gen.getClAlias(), "JsCallable(", primaryVar, ",", gen.getClAlias(),
+                    gen.out(gen.getClAlias(), "jsc$3(", primaryVar, ",", gen.getClAlias(),
                             "nn$(", primaryVar, ")?", member, ":null)");
                 } else {
-                    gen.out(gen.getClAlias(), "JsCallable(", primaryVar, ",", member, ")");
+                    gen.out(gen.getClAlias(), "jsc$3(", primaryVar, ",", member, ")");
                 }
             }
         }

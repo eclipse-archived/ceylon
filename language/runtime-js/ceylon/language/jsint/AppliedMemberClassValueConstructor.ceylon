@@ -18,4 +18,5 @@ shared native class AppliedMemberClassValueConstructor<in Container=Nothing, out
 
   shared native actual String string;
   shared native actual Boolean equals(Object other);
+  shared native actual Integer hash;
 }

@@ -74,8 +74,8 @@ import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.VFS;
 import com.redhat.ceylon.langtools.source.util.TaskEvent;
-import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.langtools.source.util.TaskEvent.Kind;
+import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.langtools.tools.javac.api.JavacTaskImpl;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.model.cmr.JDKUtils;
@@ -103,6 +103,8 @@ import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
+import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 @RunWith(Parameterized.class)
@@ -307,7 +309,7 @@ public class ModelLoaderTests extends CompilerTests {
         RuntimeModuleManager moduleManager = new RuntimeModuleManager(null);
         context.setModules(new Modules());
         moduleManager.initCoreModules(new Modules());
-        moduleManager.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, Versions.CEYLON_VERSION_NUMBER, repoManager.getArtifactResult("ceylon.language", Versions.CEYLON_VERSION_NUMBER), 
+        moduleManager.loadModule(AbstractModelLoader.CEYLON_LANGUAGE, Versions.CEYLON_VERSION_NUMBER, repoManager.getArtifactResult(null, "ceylon.language", Versions.CEYLON_VERSION_NUMBER), 
                 getClass().getClassLoader());
         RuntimeModelLoader modelLoader = moduleManager.getModelLoader();
         modelLoader.setupWithNoStandardModules();
@@ -1419,24 +1421,24 @@ public class ModelLoaderTests extends CompilerTests {
         System.out.println(System.getProperty("java.version"));
         compile("CeylonDeprecated.ceylon");
         ArrayList<CompilerError> expected = new ArrayList<CompilerError>(Arrays.asList(
-                CompilerError.warning(3, "type is deprecated: 'CeylonDeprecated'"),
-                CompilerError.warning(4, "declaration is deprecated: 'CeylonDeprecated'"),
-                CompilerError.warning(6, "type is deprecated: 'CeylonDeprecated2'"),
-                CompilerError.warning(7, "declaration is deprecated: 'CeylonDeprecated2'"),
-                CompilerError.warning(10, "declaration is deprecated: default constructor of 'CeylonDeprecated3'"),
-                CompilerError.warning(11, "declaration is deprecated: 'other'"),
-                CompilerError.warning(11, "declaration is deprecated: default constructor of 'CeylonDeprecated3'"),
-                CompilerError.warning(12, "declaration is deprecated: 'val'"),
-                CompilerError.warning(14, "declaration is deprecated: 'a'"),
-                CompilerError.warning(15, "declaration is deprecated: 'm'"),
-                CompilerError.warning(17, "declaration is deprecated: 'a'"),
-                CompilerError.warning(18, "declaration is deprecated: 'm'"),
-                CompilerError.warning(20, "type is deprecated: 'CeylonDeprecated6'"),
-                CompilerError.warning(22, "declaration is deprecated: 'ceylonDeprecated7'"),
-                CompilerError.warning(23, "declaration is deprecated: 'ceylonDeprecated8'"),
-                CompilerError.warning(25, "declaration is deprecated: 'ceylonDeprecated9'"),
-                CompilerError.warning(26, "declaration is deprecated: 'ceylonDeprecated10'"),
-                CompilerError.warning(28, "declaration is deprecated: 'ceylonDeprecated11'")
+                CompilerError.warning(3, "type is deprecated: 'CeylonDeprecated' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(4, "declaration is deprecated: 'CeylonDeprecated' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(6, "type is deprecated: 'CeylonDeprecated2' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(7, "declaration is deprecated: 'CeylonDeprecated2' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(10, "declaration is deprecated: default constructor of 'CeylonDeprecated3' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(11, "declaration is deprecated: 'other' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(11, "declaration is deprecated: default constructor of 'CeylonDeprecated3' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(12, "declaration is deprecated: 'val' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(14, "declaration is deprecated: 'a' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(15, "declaration is deprecated: 'm' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(17, "declaration is deprecated: 'a' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(18, "declaration is deprecated: 'm' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(20, "type is deprecated: 'CeylonDeprecated6' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(22, "declaration is deprecated: 'ceylonDeprecated7' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(23, "declaration is deprecated: 'ceylonDeprecated8' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(25, "declaration is deprecated: 'ceylonDeprecated9' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(26, "declaration is deprecated: 'ceylonDeprecated10' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'"),
+                CompilerError.warning(28, "declaration is deprecated: 'ceylonDeprecated11' is annotated 'deprecated' in 'com.redhat.ceylon.compiler.java.test.model' '\"1\"'")
         ));
         if (System.getProperty("java.version").startsWith("1.8.")) {
             expected.add(CompilerError.warning(3, "You import JDK7, which is provided by the JDK8 you are running on, but we cannot check that you are not using any JDK8-specific classes or methods. Upgrade your import to JDK8 if you depend on JDK8 classes or methods."));
@@ -1730,5 +1732,41 @@ public class ModelLoaderTests extends CompilerTests {
         };
         verifyCompilerClassLoading("Any.ceylon", tester, defaultOptions);
         verifyRuntimeClassLoading(tester);
+    }
+
+    @Test
+    public void bug6437(){
+        compile("Bug6437JavaClass.java", "Bug6437JavaInterface.java");
+        verifyCompilerClassLoading("Bug6437.ceylon", new RunnableTest(){
+            @Override
+            public void test(ModelLoader loader) {
+                Module mod = loader.getLoadedModule(moduleForJavaModelLoading(), moduleVersionForJavaModelLoading());
+                Assert.assertNotNull(mod);
+                Package p = mod.getDirectPackage(packageForJavaModelLoading());
+                Assert.assertNotNull(p);
+                Declaration javaType = p.getDirectMember("Bug6437", null, false);
+                Assert.assertNotNull(javaType);
+                
+                Unit unit = mod.getUnit();
+                Type optionalString = unit.getOptionalType(unit.getStringType());
+                Type seqOfOptionalString = unit.getSequentialDeclaration().appliedType(null, Arrays.asList(optionalString));
+                List<Type> types = Arrays.asList(seqOfOptionalString);
+                // check the method which returns a java list
+                Function javaMethod = (Function) javaType.getMember("getJavaIdentifiers", types, true);
+                Assert.assertNotNull(javaMethod);
+                Assert.assertTrue(javaMethod.getContainer() instanceof Class);
+                Class klass = (Class) javaMethod.getContainer();
+                Assert.assertEquals("Bug6437JavaClass", klass.getName());
+                Assert.assertEquals("List<String>", javaMethod.getType().asString());
+                
+                TypedDeclaration refinedDeclaration = (TypedDeclaration) javaMethod.getRefinedDeclaration();
+                System.err.println(refinedDeclaration);
+                Assert.assertNotNull(refinedDeclaration);
+                Assert.assertTrue(refinedDeclaration.getContainer() instanceof Interface);
+                Interface interf = (Interface) refinedDeclaration.getContainer();
+                Assert.assertEquals("Bug6437JavaInterface", interf.getName());
+                Assert.assertEquals("List<String>", refinedDeclaration.getType().asString());
+            }
+        });
     }
 }

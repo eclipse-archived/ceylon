@@ -3393,7 +3393,9 @@ public class Attr extends JCTree.Visitor {
             }
             if (!allowStaticInterfaceMethods && sitesym.isInterface() &&
                     sym.isStatic() && sym.kind == MTH) {
-                log.error(tree.pos(), "static.intf.method.invoke.not.supported.in.source", sourceName);
+                log.error(tree.pos(), sourceLanguage.isCeylon() ? 
+                        "ceylon.static.interface.method.call" :
+                        "static.intf.method.invoke.not.supported.in.source", sourceName);
             }
         } else if (sym.kind != ERR && (sym.flags() & STATIC) != 0 && sym.name != names._class) {
             // If the qualified item is not a type and the selected item is static, report

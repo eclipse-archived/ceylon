@@ -1,5 +1,7 @@
 package com.redhat.ceylon.model.loader;
 
+import com.redhat.ceylon.common.JVMModuleUtil;
+import com.redhat.ceylon.model.loader.NamingBase.Prefix;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaBeanValue;
 import com.redhat.ceylon.model.loader.model.OutputElement;
@@ -118,6 +120,24 @@ public class NamingBase {
         $instance$, $array$
     }
 
+    public static String prefixName(Prefix prefix, String s) {
+        return prefix.toString() + s;
+    }
+
+    public static String prefixName(Prefix prefix, String... rest) {
+        if (rest.length == 0) {
+            throw new RuntimeException();
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(prefix);
+        for (String s : rest) {
+            sb.append(s).append('$');
+        }
+        
+        sb.setLength(sb.length()-1);// remove last $
+        return sb.toString();
+    }
+
     public static String suffixName(Suffix suffix, String s) {
         return s + suffix.toString();
     }
@@ -163,7 +183,10 @@ public class NamingBase {
             newName[codePointIndex++] = c;
             charIndex += Character.charCount(c);
         }
-        
+
+        if(is_CONSTANT_CASE(newName))
+            return constant_case_toCamelCase(newName);
+
         for(int i=0;i<newName.length;i++){
             int codepoint = newName[i];
             if(Character.isLowerCase(codepoint) || codepoint == '_'){
@@ -176,6 +199,39 @@ public class NamingBase {
             newName[i] = Character.toLowerCase(codepoint);
         }
         return new String(newName, 0, newName.length);
+    }
+
+    private static String constant_case_toCamelCase(int[] newName) {
+        int j = 0;
+        boolean capitaliseNext = false;
+        for(int i=0;i<newName.length;i++){
+            int codepoint = newName[i];
+            if(codepoint == '_'){
+                // skip underscore
+                capitaliseNext = true;
+            }else if(capitaliseNext){
+                newName[j++] = codepoint;
+                capitaliseNext = false;
+            }else{
+                newName[j++] = Character.toLowerCase(codepoint);
+            }
+        }
+        return new String(newName, 0, j);
+    }
+
+    private static boolean is_CONSTANT_CASE(int[] newName) {
+        // reject empty, "U" and "_"
+        if(newName.length <= 1)
+            return false;
+        boolean hasOneUnderscore = false;
+        for(int i=0;i<newName.length;i++){
+            int codepoint = newName[i];
+            if(Character.isLowerCase(codepoint) && codepoint != '_')
+                return false;
+            if(codepoint == '_')
+                hasOneUnderscore = true;
+        }
+        return hasOneUnderscore;
     }
 
     /**
@@ -207,7 +263,7 @@ public class NamingBase {
         if (decl instanceof FieldValue){
             return ((FieldValue)decl).getRealName();
         }
-        if (decl instanceof JavaBeanValue) {
+        if (decl instanceof JavaBeanValue && !indirect) {
             return ((JavaBeanValue)decl).getGetterName();
         }
         
@@ -218,7 +274,11 @@ public class NamingBase {
                 && (!ModelUtil.isLocalToInitializer(decl) || enumeratedConstructor) 
                 && !indirect) {
             if(enumeratedConstructor) {
-                return getGetterName(((Class)decl.getContainer()).getName() + "$" + decl.getName());
+                Class constructedClass = ModelUtil.getConstructedClass(decl);
+                // See CeylonVisitor.transformSingletonConstructor for that logic
+                if(constructedClass.isToplevel() || constructedClass.isClassMember())
+                    return getGetterName(((Class)decl.getContainer()).getName() + "$" + decl.getName());
+                return name(Unfix.ref);
             }
             return getErasedGetterName(decl);
         } else if (decl instanceof TypedDeclaration && JvmBackendUtil.isBoxedVariable((TypedDeclaration)decl)) {
@@ -285,7 +345,11 @@ public class NamingBase {
      * Its public modifier will be removed at a future date.
      */
     public static String getGetterName(String property) {
-        return "get"+capitalize(stripLeadingDollar(property));
+        String result = "get"+capitalize(stripLeadingDollar(property));
+        if ("getClass".equals(result)) {
+            result = "getClass$";
+        }
+        return result;
     }
 
     /** 
@@ -299,5 +363,40 @@ public class NamingBase {
 
     public static String name(Unfix unfix) {
         return unfix.toString();
+    }
+    
+    /** 
+     * Return the name of the Ceylon attribute according to conventions 
+     * applied to the given getter/setter method name.
+     * Note: The value of a {@code @Name} annotation take precedence over
+     * the convention-derived name returned by this method. 
+     */
+    public static String getJavaAttributeName(String getterName) {
+        if (getterName.startsWith("get") || getterName.startsWith("set")) {
+            return NamingBase.getJavaBeanName(getterName.substring(3));
+        } else if (getterName.startsWith("is")) {
+            // Starts with "is"
+            return NamingBase.getJavaBeanName(getterName.substring(2));
+        } else if (getterName.equals("hashCode")) {
+            // Starts with "is"
+            return "hash";
+        } else if (getterName.equals("toString")) {
+            // Starts with "is"
+            return "string";
+        } else {
+            throw new RuntimeException("Illegal java getter/setter name " + getterName);
+        }
+    }
+
+    public static String getValueConstructorFieldNameAsString(Value singletonModel) {
+        Class clz = (Class)singletonModel.getContainer();
+        if (clz.isToplevel()) {
+            return JVMModuleUtil.quoteIfJavaKeyword(singletonModel.getName());
+        }
+        else if (clz.isClassMember()){
+            return prefixName(Prefix.$instance$, clz.getName(), singletonModel.getName());
+        } else {
+            return prefixName(Prefix.$instance$, clz.getName(), singletonModel.getName());
+        }
     }
 }

@@ -24,7 +24,7 @@ import com.redhat.ceylon.common.Backends;
  */
 public abstract class Declaration 
         extends Element 
-        implements Referenceable, Annotated {
+        implements Referenceable, Annotated, Named {
     
     private static final int SHARED = 1;
     private static final int FORMAL = 1<<1;
@@ -32,10 +32,12 @@ public abstract class Declaration
     private static final int DEFAULT = 1<<3;
     private static final int ANNOTATION = 1<<4;
     private static final int DEPRECATED = 1<<5;
+    private static final int DYNAMIC = 1<<6;
     
     private static final int PROTECTED = 1<<8;
     private static final int PACKAGE = 1<<9;
     private static final int STATIC = 1<<10;
+    private static final int DROPPED = 1<<30;
     
 	private String name;
 	protected int flags;
@@ -47,6 +49,7 @@ public abstract class Declaration
 	private boolean otherInstanceAccess;
     private DeclarationCompleter actualCompleter;
     private List<String> aliases;
+    private int memoizedHash;
 
     public Scope getVisibleScope() {
         return visibleScope;
@@ -56,6 +59,7 @@ public abstract class Declaration
         this.visibleScope = visibleScope;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -93,6 +97,27 @@ public abstract class Declaration
             flags&=(~DEPRECATED);
         }
 	}
+    
+    /**
+     * Whether this declaration is dynamic, that is, outside of Ceylon's control
+     * (such as a dynamic interface).
+     * Not to be confused with {@link TypedDeclaration#isDynamicallyTyped()}.
+     */
+    public boolean isDynamic() {
+        return (flags&DYNAMIC)!=0;
+    }
+    
+    /**
+     * @see #isDynamic()
+     */
+    public void setDynamic(boolean dynamic) {
+        if (dynamic) {
+            flags|=DYNAMIC;
+        }
+        else {
+            flags&=(~DYNAMIC);
+        }
+    }
 
     String toStringName() {
         String name = getName();
@@ -212,6 +237,23 @@ public abstract class Declaration
     public void setNativeBackends(Backends backends) {
     	this.nativeBackends=backends;
     }
+    
+    /** 
+     * true if the JVM backend has not emitted code for this declaration
+     * due to an error in this declaration
+     */
+    public boolean isDropped() {
+        return (flags&DROPPED)!=0;
+    }
+    
+    public void setDropped(boolean dropped) {
+        if (dropped) {
+            flags|=DROPPED;
+        }
+        else {
+            flags&=(~DROPPED);
+        }
+    }
 
     public Backends getScopedBackends() {
         Backends backends = getNativeBackends();
@@ -283,17 +325,19 @@ public abstract class Declaration
 
     /**
      * Determine if this declaration is directly defined in 
-     * a containing scope of the given scope.
+     * the given scope or in a containing scope of the given 
+     * scope (and is not visible only due to inheritance). 
      */
     public boolean isDefinedInScope(Scope scope) {
-        Scope container = getRealScope(getContainer());
-        while (scope!=null) {
-            if (container==scope) {
-                return true;
-            }
-            scope = scope.getContainer();
-        }
-        return false;
+        return contains(
+                // call getRealScope() to
+                // account for weird visibility 
+                // rules for ConditionScopes, 
+                // i.e. this declaration might
+                // be visible from outside its
+                // own ConditionScope
+                getRealScope(getContainer()),
+                scope);
     }
     
     public boolean isCaptured() {
@@ -379,6 +423,10 @@ public abstract class Declaration
         }
     }
 
+    public boolean isVariadic() {
+        return false;
+    }
+    
     /**
      * Get a produced reference for this declaration
      * by binding explicit or inferred type arguments
@@ -398,7 +446,7 @@ public abstract class Declaration
     /**
      * Obtain a reference to this declaration, as seen 
      * within the body of the declaration itself. That is,
-     * within its type parameters as their own arguments.
+     * with its type parameters as their own arguments.
      */
     public abstract Reference getReference();
     
@@ -418,11 +466,7 @@ public abstract class Declaration
     }
     
     Type getMemberContainerType() {
-        if (isMember() 
-                // static inner classes in Java have no container type,
-                // but Java enums are fake inner classes that require their
-                // container type
-                && (!isStaticallyImportable() || isJavaEnum())) {
+        if (isMember()) {
             ClassOrInterface container = 
                     (ClassOrInterface) 
                         getContainer();
@@ -432,11 +476,27 @@ public abstract class Declaration
             return null;
         }
     }
-
+    
+    /**
+     * Does this model object "abstract" over several
+     * overloaded declarations with the same name?
+     * 
+     * Always returns false for Ceylon declarations.
+     */
     public boolean isAbstraction() { 
         return false; 
     }
 
+    /**
+     * Is this model object an overloaded declaration 
+     * which shared a name with other declarations in
+     * the same scope?
+     * 
+     * Always returns false for Ceylon declarations.
+     * 
+     * Always false for "abstractions" of overloaded
+     * declarations.
+     */
     public boolean isOverloaded() {
         return false;
     }
@@ -528,12 +588,31 @@ public abstract class Declaration
                                         thatParam.getType();
                                 if (thisParamType!=null && 
                                     thatParamType!=null) {
+                                    thisParamType = 
+                                            unit.getDefiniteType(thisParamType);
+                                    thatParamType = 
+                                            unit.getDefiniteType(thatParamType);
                                     TypeDeclaration thisErasedType = 
                                             erase(thisParamType, unit);
                                     TypeDeclaration thatErasedType = 
                                             erase(thatParamType, unit);
                                     if (!thisErasedType.equals(thatErasedType)) {
                                         return false;
+                                    }
+                                    TypeDeclaration oa = 
+                                            unit.getJavaObjectArrayDeclaration();
+                                    if (oa!=null 
+                                            && thisErasedType.equals(oa) 
+                                            && thatErasedType.equals(oa)) {
+                                        Type thisElementType = 
+                                                unit.getJavaArrayElementType(
+                                                        thisParamType);
+                                        Type thatElementType = 
+                                                unit.getJavaArrayElementType(
+                                                        thatParamType);
+                                        if (!thisElementType.equals(thatElementType)) {
+                                            return false;
+                                        }
                                     }
                                 }
                                 else if (thisParamType!=thatParamType) {
@@ -559,19 +638,21 @@ public abstract class Declaration
 
     @Override
     public int hashCode() {
-        int ret = 17;
-        Scope container = getContainer();
-        ret = (37 * ret) + 
-                (container == null ? 0 : container.hashCode());
-        String qualifier = getQualifier();
-        ret = (37 * ret) + 
-                (qualifier == null ? 0 : qualifier.hashCode());
-        String name = getName();
-        ret = (37 * ret) + (name == null ? 0 : name.hashCode());
-        // make sure we don't consider getter/setter or value/anonymous-type equal
-        ret = (37 * ret) + (isSetter() ? 0 : 1);
-        ret = (37 * ret) + (isAnonymous() ? 0 : 1);
-        return ret;
+        if (memoizedHash == 0) {
+            memoizedHash = 17;
+            Scope container = getContainer();
+            memoizedHash = (37 * memoizedHash) + 
+                    (container == null ? 0 : container.hashCode());
+            String qualifier = getQualifier();
+            memoizedHash = (37 * memoizedHash) + 
+                    (qualifier == null ? 0 : qualifier.hashCode());
+            String name = getName();
+            memoizedHash = (37 * memoizedHash) + (name == null ? 0 : name.hashCode());
+            // make sure we don't consider getter/setter or value/anonymous-type equal
+            memoizedHash = (37 * memoizedHash) + (isSetter() ? 0 : 1);
+            memoizedHash = (37 * memoizedHash) + (isAnonymous() ? 0 : 1);
+        }
+        return memoizedHash;
     }
     
     /**
@@ -639,6 +720,7 @@ public abstract class Declaration
     	return getName();
     }
     
+    @Override
     public String getName(Unit unit) {
     	return unit==null ? 
     	        getName() : 
@@ -748,5 +830,13 @@ public abstract class Declaration
     
     public void setAliases(List<String> aliases){
         this.aliases = aliases;
+    }
+    
+    /**
+     * To be overridden in sub types
+     * @return true if this is a Java declaration
+     */
+    public boolean isJava(){
+        return false;
     }
 }

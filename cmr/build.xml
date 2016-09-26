@@ -15,10 +15,6 @@
     <property name="cmr-maven.src" location="${basedir}/maven/src/main/java"/>
     <property name="cmr-maven.resources" location="${basedir}/maven/src/main/resources"/>
 
-    <!-- jar generated -->
-    <property name="module-resolver.jar" location="${build.lib}/module-resolver.jar"/>
-    <property name="module-resolver-api.jar" location="${build.lib}/module-resolver-api.jar"/>
-    
     <property name="cmr-testsuite-test.src" location="${basedir}/testsuite/src/test/java"/>
     <property name="cmr-testsuite-test.resources" location="${basedir}/testsuite/src/test/resources"/>
 
@@ -38,15 +34,11 @@
 
     <path id="compiler.classpath">
         <pathelement path="${ceylon.common.lib}"/>
-        <pathelement path="${ceylon.cli.lib}" />
         <pathelement path="${ceylon.model.lib}"/>
-        <pathelement path="${jboss-modules.lib}"/>
-        <pathelement path="${sardine.lib}"/>
-        <pathelement path="${httpclient.lib}"/>
-        <pathelement path="${httpcore.lib}"/>
-        <pathelement path="${ceylon.maven-support.lib}"/>
+        <pathelement path="${ceylon.module-resolver-aether.lib}"/>
+        <pathelement path="${ceylon.module-resolver-webdav.lib}"/>
+        <pathelement path="${ceylon.module-resolver-javascript.lib}"/>
         <pathelement path="${ceylon.classfile.lib}"/>
-        <pathelement path="${json.lib}" />
     </path>
 
     <path id="test.build.classpath">
@@ -59,8 +51,13 @@
         <path refid="test.build.classpath"/>
         <pathelement path="${cmr-testsuite-test.resources}"/>
         <pathelement path="${build.test}"/>
+        <pathelement path="${sardine.lib}"/>
         <pathelement path="${httpclient.lib}"/>
         <pathelement path="${httpcore.lib}"/>
+        <pathelement path="${maven-support.lib}"/>
+        <pathelement path="${httpclient.lib}"/>
+        <pathelement path="${httpcore.lib}"/>
+        <pathelement path="${json.lib}" />
         <pathelement path="${commons-logging.lib}"/>
         <pathelement path="${slf4j-api.lib}"/>
         <pathelement path="${slf4j-simple.lib}"/>
@@ -149,10 +146,7 @@
     	
     <target name="ide-quick-internal">
         <antcall target="bundle-proxy">
-            <param name="archivePath" value="${ceylon.repo.dir}/${ceylon.module-resolver.jar}"/>
-        </antcall>
-        <antcall target="bundle-proxy">
-            <param name="archivePath" value="${ceylon.repo.dir}/${ceylon.maven-support.jar}"/>
+            <param name="archivePath" value="${ceylon.module-resolver.lib}"/>
         </antcall>
     </target>
 
@@ -183,9 +177,8 @@
         <antcall target="sha1sum">
             <param name="file" value="${build.dist.repo}/${ceylon.module-resolver.src}"/>
         </antcall>
-        <copy file="${module-resolver.jar}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
         <antcall target="sha1sum">
-            <param name="file" value="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
+            <param name="file" value="${ceylon.module-resolver.lib}"/>
         </antcall>
     </target>
 
@@ -292,11 +285,10 @@
 
     <!-- Rule to build module-resolver jar -->
     <target name="module-resolver.jar" depends="module-resolver.classes">
-        <mkdir dir="${build.lib}"/>
         <tstamp>
             <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
         </tstamp>        
-        <jar destfile="${module-resolver.jar}">
+        <jar destfile="${ceylon.module-resolver.lib}">
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
@@ -306,17 +298,6 @@
         </jar>
     </target>
 
-    <!-- Rule to build module-resolver-api jar -->
-    <target name="module-resolver-api.jar" depends="module-resolver.classes.api">
-        <mkdir dir="${build.lib}"/>
-        <jar destfile="${module-resolver-api.jar}">
-            <fileset dir="${build.classes}">
-                <include name="**/spi/*"/>
-                <include name="**/api/*"/>
-            </fileset>
-        </jar>
-    </target>
-            
     <!-- Rule to compile and test -->
     <target name="build" depends="module-resolver.jar"/>
 

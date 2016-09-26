@@ -15,12 +15,12 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.Messages;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -33,7 +33,7 @@ import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolError;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
@@ -278,7 +278,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
             }
         }else{
             // obtain it from the repo
-            ArtifactContext context = new ArtifactContext(module.getName(), version, ArtifactContext.SCRIPTS_ZIPPED);
+            ArtifactContext context = new ArtifactContext(null, module.getName(), version, ArtifactContext.SCRIPTS_ZIPPED);
             ArtifactResult result = repositoryManager.getArtifactResult(context);
             if(result == null){
                 String err = getModuleNotFoundErrorMessage(repositoryManager, module.getName(), version);
@@ -396,7 +396,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
         } else {
             version = null;
         }
-        ArtifactContext artifactScriptsZip = new ArtifactContext(module.getName(), version, ArtifactContext.SCRIPTS_ZIPPED);
+        ArtifactContext artifactScriptsZip = new ArtifactContext(null, module.getName(), version, ArtifactContext.SCRIPTS_ZIPPED);
         
         // make the doc zip roots
         IOUtils.ZipRoot[] roots = new IOUtils.ZipRoot[existingScriptFolders.size()];
@@ -405,7 +405,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
             roots[d] = new IOUtils.ZipRoot(scriptFolder, "");
         }
         File scriptZipFile = IOUtils.zipFolders(roots);
-        File scriptZipSha1File = ShaSigner.sign(scriptZipFile, log, verbose != null);
+        File scriptZipSha1File = ShaSigner.sign(scriptZipFile, getLogger(), verbose != null);
         
         if(!repositoryRemoveArtifact(outputRepositoryManager, artifactScriptsZip)) return true;
         if(!repositoryRemoveArtifact(outputRepositoryManager, artifactScriptsZip.getSha1Context())) return true;
@@ -458,6 +458,7 @@ public class CeylonPluginTool extends OutputRepoUsingTool {
 
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
         if (system && local) {
             throw new IllegalArgumentException(Messages.msg(bundle, "conflicting.destinations"));
         }

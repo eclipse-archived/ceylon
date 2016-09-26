@@ -39,6 +39,11 @@ void parameterInference() {
     void iterable({Anything(String)*} args) {}
     iterable { (string)=>print(string),
         (string)=>print(string) };
+
+    String hello(String(String)? fun) 
+            => if (exists fun) then fun("hello") else "";
+    print(hello((str) => str + "world")); 
+    print(hello(null));
 }
 
 void testNotVariable() {

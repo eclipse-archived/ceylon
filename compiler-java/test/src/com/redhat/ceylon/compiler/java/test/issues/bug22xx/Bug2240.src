@@ -6,7 +6,7 @@ final class bug2240GetSome_ {
     }
     
     static <T>T bug2240GetSome(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-        return (T).ceylon.language.nothing_.get_();
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
 }
 final class bug2240_ {

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
@@ -145,15 +146,15 @@ public class ErrorCollectingVisitor extends Visitor {
                 position = ((RecognitionError) err).getCharacterInLine();
             }
             String fileName = (node.getUnit() != null) ? node.getUnit().getFullPath() : "unknown";
-            out.write(fileName);
+            out.write(OSUtil.color(fileName, OSUtil.Color.blue));
             out.write(":");
             out.write(String.format("%d", line));
             out.write(": ");
             if (err instanceof UsageWarning) {
-                out.write("warning");
+                out.write(OSUtil.color("warning", OSUtil.Color.yellow));
                 warnings++;
             } else {
-                out.write("error");
+                out.write(OSUtil.color("error", OSUtil.Color.red));
                 count++;
             }
             out.write(": ");

@@ -12,7 +12,7 @@ function() {
           }
         }
       }
-      this.declcn$=c.$sa$({t:ConstructorDeclaration$meta$declaration});
+      this.declcn$=$arr$sa$(c,{t:ConstructorDeclaration$meta$declaration});
     } else {
       this.declcn$=empty();
     }

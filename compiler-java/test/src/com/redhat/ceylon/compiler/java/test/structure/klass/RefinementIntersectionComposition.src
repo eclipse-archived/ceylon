@@ -40,12 +40,12 @@ class RIC_Nothing_From_Class extends .com.redhat.ceylon.compiler.java.test.struc
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A getVal() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A get() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_A)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
@@ -61,12 +61,12 @@ class RIC_Nothing_From_Interface implements .com.redhat.ceylon.compiler.java.run
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B getVal() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B get() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RIC_B)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

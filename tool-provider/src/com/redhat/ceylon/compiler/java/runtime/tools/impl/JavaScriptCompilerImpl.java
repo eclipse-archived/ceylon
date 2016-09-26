@@ -17,6 +17,9 @@ public class JavaScriptCompilerImpl implements Compiler {
     public boolean compile(CompilerOptions options, 
                            CompilationListener listener) {
         CeylonCompileJsTool tool = new CeylonCompileJsTool();
+        if (options.getWorkingDirectory() != null) {
+            tool.setCwd(new File(options.getWorkingDirectory()));
+        }
         if(options.isVerbose())
             tool.setVerbose("");
         tool.setOffline(options.isOffline());
@@ -28,6 +31,7 @@ public class JavaScriptCompilerImpl implements Compiler {
         tool.setSystemRepository(options.getSystemRepository());
         tool.setOut(options.getOutputRepository());
         tool.setSource(options.getSourcePath());
+        tool.setResource(options.getResourcePath());
         // just mix them all
         List<String> moduleOrFile = new ArrayList<String>();
         moduleOrFile.addAll(options.getModules());

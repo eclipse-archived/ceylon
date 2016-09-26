@@ -90,12 +90,12 @@ class JavaInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     @.java.lang.Override
     public final int intMethod(final int i) {
-        return .com.redhat.ceylon.compiler.java.Util.toInt(1L);
+        return 1;
     }
     
     @.java.lang.Override
     public final .java.lang.Integer boxedIntegerMethod(final .java.lang.Integer i) {
-        return new .java.lang.Integer(.com.redhat.ceylon.compiler.java.Util.toInt(1L));
+        return new .java.lang.Integer(1);
     }
     
     @.java.lang.Override
@@ -110,7 +110,7 @@ class JavaInterfaceImpl implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     @.java.lang.Override
     public final <M>M methodTypeParamMethod(final M b) {
-        return (M).ceylon.language.nothing_.get_();
+        return (M)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

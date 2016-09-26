@@ -50,8 +50,19 @@ public class FlatRepository extends DefaultRepository {
     }
     
     @Override
+    public String[] getArtifactNames(ArtifactContext context) {
+        String replacedName = context.getName().replace(':', '.');
+        return getArtifactNames(replacedName, context.getVersion(), context.getSuffixes());
+    }
+    
+    @Override
     protected ArtifactResult getArtifactResultInternal(RepositoryManager manager, Node node) {
         return new FlatArtifactResult(this, manager, node);
+    }
+    
+    @Override
+    public boolean supportsNamespace(String searchedNamespace) {
+        return true;
     }
     
     protected static class FlatArtifactResult extends DefaultArtifactResult {
@@ -78,7 +89,7 @@ public class FlatRepository extends DefaultRepository {
                 if (dependencies == null) {
                     Overrides overrides = ((CmrRepository)repository()).getRoot().getService(Overrides.class);
                     if(overrides != null) {
-                        dependencies = new ModuleInfo(null, new HashSet<ModuleDependencyInfo>());
+                        dependencies = new ModuleInfo(name(), version(), null, new HashSet<ModuleDependencyInfo>());
                         dependencies = overrides.applyOverrides(name(), version(), dependencies);
                     }
                     

@@ -12,6 +12,11 @@ assign lastName {
     flag = 1;
 }
 
+shared late variable Test6163 testObj;
+
+shared class Test6163() {
+	shared String someStringProperty = "";
+}
 
 shared void test() {
     checkEqual(lastName, "King", "toplevel getter");
@@ -26,6 +31,8 @@ shared void test() {
 
     testNewSyntax();
     check(forwardAttributeTest.first == 1, "forwardAttributeTest");
+	testObj = Test6163();
+	check(testObj.someStringProperty == "", "#6163");
     results();
 }
 {Integer+} forwardAttributeTest = { fat1, fat2, fat3 };

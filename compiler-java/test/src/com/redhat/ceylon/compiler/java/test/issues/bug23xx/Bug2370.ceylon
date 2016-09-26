@@ -28,6 +28,7 @@ class Bug2370C() satisfies Bug2370I {
         super.foo { ""; };
         super.foo { s=""; };
         (super of Bug2370I).foo { ""; };
-        super*.foo("");
+        // Disabled by spec now
+        //super*.foo("");
     }
 }

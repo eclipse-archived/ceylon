@@ -80,7 +80,7 @@ shared final serializable class Singleton<out Element>
      is `0` and the given `length` is greater than `0`.
      Otherwise, returns an instance of `Empty`."
     shared actual 
-    Empty|Singleton<Element> measure
+    []|Singleton<Element> measure
             (Integer from, Integer length)
             => from <= 0 && from + length > 0 
             then this else [];
@@ -88,19 +88,32 @@ shared final serializable class Singleton<out Element>
     "Returns a `Singleton` if the given starting index 
      is `0`. Otherwise, returns an instance of `Empty`."
     shared actual 
-    Empty|Singleton<Element> span
+    []|Singleton<Element> span
             (Integer from, Integer to)
             => from <= 0 && to >= 0 ||
                from >= 0 && to <= 0
             then this else [];
     
     shared actual 
-    Empty|Singleton<Element> spanTo(Integer to) 
+    []|Singleton<Element> spanTo(Integer to) 
             => to < 0 then [] else this;
     
     shared actual 
-    Empty|Singleton<Element> spanFrom(Integer from) 
+    []|Singleton<Element> spanFrom(Integer from) 
             => from > 0 then [] else this;
+    
+    shared actual
+    []|Singleton<Element> terminal(Integer length) 
+            => length>0 then this else [];
+    
+    shared actual
+    []|Singleton<Element> initial(Integer length) 
+            => length>0 then this else [];
+    
+    shared actual 
+    [[],Singleton<Element>] | [Singleton<Element>,[]]
+    slice(Integer index) 
+            => index>0 then [this,[]] else [[],this];
     
     "Returns `1` if this `Singleton`\'s element
      satisfies the predicate, or `0` otherwise."

@@ -30,7 +30,9 @@ final class CollidingLiteralDefaults implements .com.redhat.ceylon.compiler.java
         this(anno.i1(), anno.i2());
     }
     
-    CollidingLiteralDefaults(final long i1, final long i2) {
+    CollidingLiteralDefaults(@.ceylon.language.SharedAnnotation$annotation$
+    final long i1, @.ceylon.language.SharedAnnotation$annotation$
+    final long i2) {
         this.i1 = i1;
         this.i2 = i2;
     }

@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.klass;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SerializableAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "Value",
@@ -25,6 +27,7 @@ class GenericWrapper<Value> implements .com.redhat.ceylon.compiler.java.runtime.
     GenericWrapper(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, @.com.redhat.ceylon.compiler.java.metadata.Name("val")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Value?")
+    @.ceylon.language.SharedAnnotation$annotation$
     final Value val) {
         this.$reified$Value = $reified$Value;
         this.val = val;
@@ -103,7 +106,9 @@ class GenericWrapper<Value> implements .com.redhat.ceylon.compiler.java.runtime.
         } else throw new .ceylon.language.AssertionError("unexpected reachable reference " + reference);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.SerializableAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.klass::GenericWrapper<ceylon.language::String>")
 class GenericWrapperSub extends .com.redhat.ceylon.compiler.java.test.structure.klass.GenericWrapper<.ceylon.language.String> implements .com.redhat.ceylon.compiler.java.runtime.serialization.Serializable {

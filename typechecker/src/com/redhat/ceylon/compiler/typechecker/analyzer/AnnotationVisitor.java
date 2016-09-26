@@ -10,25 +10,26 @@ import static com.redhat.ceylon.model.loader.model.AnnotationTarget.PACKAGE;
 import static com.redhat.ceylon.model.loader.model.AnnotationTarget.PARAMETER;
 import static com.redhat.ceylon.model.loader.model.AnnotationTarget.TYPE;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
-import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
+import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -229,6 +230,9 @@ public class AnnotationVisitor extends Visitor {
                              .isObjectClass())) {
                     //ok
                 }
+                else if (d != null && d.isStaticallyImportable()) {
+                    // ok
+                }
                 else {
                     e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
                 }
@@ -302,6 +306,8 @@ public class AnnotationVisitor extends Visitor {
                 unit.getClassDeclarationType(c),
                 unit.getClassMetatype(c.getType()),
                 that);
+        checkServiceAnnotations(c, 
+                that.getAnnotationList());
     }
 
     @Override 
@@ -416,7 +422,7 @@ public class AnnotationVisitor extends Visitor {
                 TypeDeclaration td = t.getDeclaration();
                 if (td!=null) {
                     if (td.isAnnotation()) {
-                        TypecheckerUnit unit = that.getUnit();
+                        Unit unit = that.getUnit();
                         TypeDeclaration annotationDec = 
                                 unit.getAnnotationDeclaration();
                         if (t.isNothing()) {
@@ -425,15 +431,13 @@ public class AnnotationVisitor extends Visitor {
                         if (!td.inherits(annotationDec)) {
                             that.addError("annotation constructor must return a subtype of 'Annotation'");
                         }
-                        if (!unit.getPackage()
-                                .getQualifiedNameString()
-                                .equals(LANGUAGE_MODULE_NAME)) {
-                            String packageName = 
+                        if (!unit.getPackage().isLanguagePackage()) {
+                            boolean langPackage = 
                                     td.getUnit()
                                       .getPackage()
-                                      .getQualifiedNameString();
+                                      .isLanguagePackage();
                             String typeName = td.getName();
-                            if (packageName.equals(LANGUAGE_MODULE_NAME) && 
+                            if (langPackage && 
                                     (typeName.equals("Shared") ||
                                     typeName.equals("Abstract") || 
                                     typeName.equals("Default") ||
@@ -687,11 +691,11 @@ public class AnnotationVisitor extends Visitor {
             if (pack == null) {
                 if (DOC_LINK_MODULE.equals(kind)) {
                     that.addUsageWarning(Warning.doclink, 
-                                "module does not exist: '" + 
+                                "module is missing: '" + 
                                         packageName + "'");
                 } else {
                     that.addUsageWarning(Warning.doclink, 
-                                "package does not exist: '" + 
+                                "package is missing: '" + 
                                         packageName + "'");
                 }
             }
@@ -705,7 +709,7 @@ public class AnnotationVisitor extends Visitor {
                         that.setModule(pack.getModule());
                     } else {
                         that.addUsageWarning(Warning.doclink,
-                                    "module does not exist: '" + 
+                                    "module is missing: '" + 
                                             packageName + "'");
                     }
                 }
@@ -722,7 +726,7 @@ public class AnnotationVisitor extends Visitor {
         }
         if (base==null) {
             that.addUsageWarning(Warning.doclink,
-                    "declaration does not exist: '" + 
+                    "declaration is missing: '" + 
                     (names.length > 0 ? names[0] : text) + "'");
         }
         else {
@@ -747,7 +751,7 @@ public class AnnotationVisitor extends Visitor {
                             base.getMember(names[i], null, false);
                     if (qualified==null) {
                         that.addUsageWarning(Warning.doclink,
-                                    "member declaration or parameter does not exist: '" + 
+                                    "member declaration or parameter is missing: '" + 
                                             names[i] + "'");
                         break;
                     }
@@ -820,13 +824,118 @@ public class AnnotationVisitor extends Visitor {
         }*/
         if (dec!=null) {
             if (!dec.isAnnotation()) {
-                primary.addError("not an annotation constructor");
+                primary.addError("not an annotation constructor: '" 
+                        + dec.getName(that.getUnit()) + "'");
             }
             else {
                 checkAnnotationArguments(null, 
                         (Tree.InvocationExpression) that);
             }
         }
+    }
+
+    
+    private void checkServiceAnnotations(Class clazz, 
+            Tree.AnnotationList annotationList) {
+        for (Tree.Annotation ann: 
+                annotationList.getAnnotations()) {
+            Tree.BaseMemberExpression p = 
+                    (Tree.BaseMemberExpression) 
+                        ann.getPrimary();
+            Declaration pd = p.getDeclaration();
+            if (pd != null) {
+                Declaration sd = 
+                        ann.getUnit()
+                            .getLanguageModuleDeclaration("service");
+                if (pd.equals(sd)) {
+                    checkServiceImplementation(clazz, 
+                            getService(ann), ann);
+                }
+            }
+        }
+    }
+
+    private static Declaration getService(Tree.Annotation that) {
+        
+        Tree.PositionalArgumentList pal = 
+                that.getPositionalArgumentList();
+        if (pal!=null) {
+            List<Tree.PositionalArgument> args = 
+                    pal.getPositionalArguments();
+            if (!args.isEmpty()) {
+                Tree.PositionalArgument argument = 
+                        args.get(0);
+                if (argument instanceof Tree.ListedArgument) {
+                    Tree.ListedArgument la = 
+                            (Tree.ListedArgument)
+                            argument;
+                    return getDeclaration(la.getExpression());
+                }
+            }
+        }
+        
+        Tree.NamedArgumentList nal = 
+                that.getNamedArgumentList();
+        if (nal!=null) {
+            List<Tree.NamedArgument> args = 
+                    nal.getNamedArguments();
+            if (!args.isEmpty()) {
+                Tree.NamedArgument namedArgument = 
+                        args.get(0);
+                if (namedArgument instanceof Tree.SpecifiedArgument) {
+                    Tree.SpecifiedArgument sa = 
+                            (Tree.SpecifiedArgument)
+                            namedArgument;
+                    Tree.SpecifierExpression se = 
+                            sa.getSpecifierExpression();
+                    if (se!=null) {
+                        return getDeclaration(se.getExpression());
+                    }
+                }
+            }
+        }
+        
+        return null;
+    }
+
+    private void checkServiceImplementation(Class clazz, 
+            Declaration d, Node that) {
+        if (d instanceof ClassOrInterface) {
+            ClassOrInterface service = (ClassOrInterface) d;
+            ParameterList pl = clazz.getParameterList();
+            if (pl==null) {
+                that.addError("service class must have a parameter list or default constructor");
+            }
+            else {
+                List<Parameter> params = pl.getParameters();
+                if (!params.isEmpty() 
+                        && !params.get(0).isDefaulted()) {
+                    that.addError("service class must be instantiable with an empty argument list");
+                }
+            }
+            if (clazz.inherits(service)) {
+                ModelUtil.getModule(clazz)
+                    .addService(service, clazz);
+            }
+            else {
+                that.addError("service class does not implement service '" + service + "'");
+            }
+        }
+        else {
+            that.addError("service must be an interface or class");
+        }
+    }
+
+    private static Declaration getDeclaration(Tree.Expression ex) {
+        if (ex!=null) {
+            Tree.Term term = ex.getTerm();
+            if (term instanceof Tree.MetaLiteral) {
+                Tree.MetaLiteral lit = 
+                        (Tree.MetaLiteral) term;
+                return lit.getDeclaration();
+            }
+        }
+        return null;
     }
 
     private void checkAnnotations(
@@ -996,7 +1105,7 @@ public class AnnotationVisitor extends Visitor {
         Declaration dec = that.getDeclaration();
         if (!that.getStaticMethodReferencePrimary() &&
                 isAbstraction(dec)) {
-            TypecheckerUnit unit = that.getUnit();
+            Unit unit = that.getUnit();
             if (that.getStaticMethodReference() && 
                     !dec.isStaticallyImportable()) {
                 that.addError("ambiguous static reference to overloaded method or class: '" +
@@ -1021,13 +1130,52 @@ public class AnnotationVisitor extends Visitor {
                         sb.setLength(sb.length()-2);
                     }
                     sb.append("'");
-                    that.addError("ambiguous invocation of overloaded method or class: " +
+                    that.addError("illegal argument types in invocation of overloaded method or class: " +
                             "there must be exactly one overloaded declaration of '" + 
                             dec.getName(unit) + 
-                            "' that accepts the given argument types" + sb);
+                            "' which accepts the given argument types" + sb);
                 }
             }
         }
+    }
+    
+    @Override
+    public void visit(Tree.TypeConstraint that) {
+        Tree.SatisfiedTypes sts = that.getSatisfiedTypes();
+        if (sts != null) {
+            Unit unit = that.getUnit();
+            for (Tree.StaticType t: sts.getTypes()) {
+                Type type = t.getTypeModel();
+                if (type!=null && unit.isJavaArrayType(type)) {
+                    t.addError("type parameter upper bound is a Java array type");
+                }
+            }
+        }
+        super.visit(that);
+    }
+    
+    @Override
+    public void visit(Tree.BaseTypeExpression that) {
+        super.visit(that);
+        Unit unit = that.getUnit();
+        Type type = (Type) that.getTarget();
+        if (type!=null && unit.isJavaObjectArrayType(type)) {
+            Type ta = unit.getJavaArrayElementType(type);
+            if (!ModelUtil.isTypeUnknown(ta) && 
+                    (ta.isNothing() || 
+                     ta.isIntersection() || 
+                     unit.getDefiniteType(ta).isUnion() ||
+                     ta.isTypeParameter())) {
+                Tree.TypeArguments tas = that.getTypeArguments();
+                Node errNode = 
+                        tas instanceof Tree.TypeArgumentList ?
+                                tas : that;
+                errNode.addError(
+                        "illegal Java array element type: arrays with element type '" 
+                                + ta.asString(unit) + "' may not be instantiated");
+            }
+        }
+        
     }
     
 }

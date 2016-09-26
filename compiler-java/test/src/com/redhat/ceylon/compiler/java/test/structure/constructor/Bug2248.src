@@ -6,7 +6,7 @@ public class Bug2248C<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     public static final class c_ {
         
-        private c_() {
+        c_() {
         }
     }
     

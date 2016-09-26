@@ -41,7 +41,7 @@ public final class bug2053_ {
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Long>toArray($ceylontmp$8$0, new .java.lang.Long[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$8$0.getSize())]);
         ));
-        final .ceylon.language.Iterable items3 = (.ceylon.language.Iterable).ceylon.language.nothing_.get_();
+        final .ceylon.language.Iterable items3 = (.ceylon.language.Iterable)(.java.lang.Object).ceylon.language.nothing_.get_();
         ((.com.redhat.ceylon.compiler.java.test.interop.Right)(.java.lang.Object).com.redhat.ceylon.compiler.java.Util.checkNull(x.<.com.redhat.ceylon.compiler.java.test.interop.Top>bound2((
             let
             {

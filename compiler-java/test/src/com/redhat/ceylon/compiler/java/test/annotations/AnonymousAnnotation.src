@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.DocAnnotation$annotation$(description = "class doc")
 class AnnonymousAnnotation implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
@@ -13,6 +15,8 @@ class AnnonymousAnnotation implements .com.redhat.ceylon.compiler.java.runtime.m
     
     AnnonymousAnnotation(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.ceylon.language.DocAnnotation$annotation$(description = "attribute doc")
+    @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.String s, @.com.redhat.ceylon.compiler.java.metadata.Name("s2")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.ceylon.language.DocAnnotation$annotation$(description = "class param doc")

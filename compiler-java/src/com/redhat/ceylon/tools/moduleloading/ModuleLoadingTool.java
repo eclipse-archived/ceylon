@@ -10,28 +10,28 @@ import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.VersionComparator;
-import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
 import com.redhat.ceylon.common.Messages;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.tools.RepoUsingTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.loader.JdkProvider;
-import com.redhat.ceylon.model.typechecker.model.Module;
 
 public abstract class ModuleLoadingTool extends RepoUsingTool {
 
     protected Map<String, ArtifactResult> loadedModules = new HashMap<>();
     protected Map<String, SortedSet<String>> loadedModuleVersions = new HashMap<>();
-    protected boolean upgradeDist = true;
+    protected boolean upgradeDist = DefaultToolOptions.getLinkWithCurrentDistribution();
     // start out with the JDK one and change in initialise()
     protected JdkProvider jdkProvider = new JdkProvider();
     protected String jdkProviderModule;
@@ -58,6 +58,11 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         this.jdkProviderModule = jdkProviderModule;
     }
 
+    @Override
+    protected boolean shouldUpgradeDist(){
+        return upgradeDist;
+    }
+    
 	protected String moduleVersion(String moduleNameOptVersion) throws IOException {
 		return checkModuleVersionsOrShowSuggestions(
 				getRepositoryManager(),
@@ -71,22 +76,12 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 
 	}
 	
-	protected boolean loadModule(String moduleName, String moduleVersion) throws IOException {
-		return loadModule(moduleName, moduleVersion, false);
-	}
-	
-	protected boolean loadModule(String moduleName, String moduleVersion, boolean optional) throws IOException {
-		boolean success = false;
+	protected boolean loadModule(String namespace, String moduleName, String moduleVersion) throws IOException {
 		if (moduleVersion != null) {
-			success = true;
-			success &= internalLoadModule(Module.LANGUAGE_MODULE_NAME, Versions.CEYLON_VERSION_NUMBER, false);
-			success &= internalLoadModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER, false);
-            success &= internalLoadModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, false);
-			success &= internalLoadModule("com.redhat.ceylon.module-resolver", Versions.CEYLON_VERSION_NUMBER, false);
-			success &= internalLoadModule(moduleName, moduleVersion, false);
+			return internalLoadModule(namespace, moduleName, moduleVersion);
 		}
 		
-		return success;
+		return false;
 	}
 
 	protected boolean shouldExclude(String moduleName, String version) {
@@ -97,7 +92,11 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
 		return jdkProvider.isJDKModule(moduleName);
 	}
 
-	private boolean internalLoadModule(String name, String version, boolean optional) throws IOException {
+	protected boolean isProvided(String moduleName, String version) {
+	    return false;
+	}
+
+	private boolean internalLoadModule(String namespace, String name, String version) throws IOException {
         String key = name + "/" + version;
         if(loadedModules.containsKey(key))
             return true;
@@ -107,6 +106,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
             loadedModules.put(key, null);
             return true;
         }
+        boolean provided = isProvided(name, version);
         // remember which version we loaded
         SortedSet<String> loadedVersions = loadedModuleVersions.get(name);
         if(loadedVersions == null){
@@ -115,11 +115,12 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         }
         loadedVersions.add(version);
         
-        RepositoryManager repositoryManager = getRepositoryManager(upgradeDist);
-        ArtifactContext artifactContext = new ArtifactContext(name, version, ArtifactContext.CAR, ArtifactContext.JAR);
+        // Resolve even provided modules but not their dependencies since they're meaningless
+        // because they can change on the container
+        RepositoryManager repositoryManager = getRepositoryManager();
+        ArtifactContext artifactContext = new ArtifactContext(namespace, name, version, ArtifactContext.CAR, ArtifactContext.JAR);
         ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
-        if(!optional
-                && (result == null || result.artifact() == null || !result.artifact().exists())){
+        if(result == null || result.artifact() == null || !result.artifact().exists()){
             String err = getModuleNotFoundErrorMessage(repositoryManager, name, version);
             errorAppend(err);
             errorNewline();
@@ -127,9 +128,11 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         }
         // save even missing optional modules as nulls to not re-resolve them
         loadedModules.put(key, result);
-        if(result != null){
+        if(result != null && !provided){
             for(ArtifactResult dep : result.dependencies()){
-                internalLoadModule(dep.name(), dep.version(), dep.importType() == ImportType.OPTIONAL);
+                if(dep.importType() != ImportType.OPTIONAL){
+                    internalLoadModule(dep.namespace(), dep.name(), dep.version());
+                }
             }
         }
         
@@ -166,7 +169,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
     	super.initialize(mainTool);
     	if(jdkProviderModule != null){
     		ModuleSpec moduleSpec = ModuleSpec.parse(jdkProviderModule);
-			if(!internalLoadModule(moduleSpec.getName(), moduleSpec.getVersion(), false)){
+			if(!internalLoadModule(null, moduleSpec.getName(), moduleSpec.getVersion())){
 		        throw new ToolUsageError(Messages.msg(bundle, "jdk.provider.not.found", jdkProviderModule));
 			}
 			ArtifactResult result = loadedModules.get(moduleSpec.getName()+"/"+moduleSpec.getVersion());

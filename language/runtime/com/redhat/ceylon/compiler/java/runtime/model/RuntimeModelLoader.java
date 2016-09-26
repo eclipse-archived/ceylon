@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.jboss.modules.ModuleClassLoader;
-
-import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.loader.JdkProvider;
@@ -24,6 +21,7 @@ import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.model.loader.model.LazyFunction;
 import com.redhat.ceylon.model.loader.model.LazyModule;
+import com.redhat.ceylon.model.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -142,21 +140,18 @@ public class RuntimeModelLoader extends ReflectionModelLoader {
 
     public Module findModuleForClass(Class<?> klass){
         ClassLoader cl = klass.getClassLoader();
-        if(cl instanceof ModuleClassLoader){
-            ModuleClassLoader classLoader = (ModuleClassLoader)cl;
-            org.jboss.modules.Module jbossModule = classLoader.getModule();
-            String name = jbossModule.getIdentifier().getName();
-            String version = jbossModule.getIdentifier().getSlot();
+        if(cl instanceof CeylonModuleClassLoader){
+            CeylonModuleClassLoader classLoader = (CeylonModuleClassLoader)cl;
+            String name = classLoader.getModuleName();
+            String version = classLoader.getModuleVersion();
             String cacheKey = cacheKeyByModule(name, version);
             Module ret = moduleCache.get(cacheKey);
             if(ret == null){
                 // there's a good chance we didn't get the module loaded in time, wait until that classloader is
                 // registered then, but give it a nudge:
 
-                if(cl instanceof CeylonModuleClassLoader){
-                    // this can complete in another thread or this thread
-                    ((CeylonModuleClassLoader) cl).registerInMetaModel();
-                }
+                // this can complete in another thread or this thread
+                classLoader.registerInMetaModel();
 
                 Object lock = getLock();
                 synchronized(lock){

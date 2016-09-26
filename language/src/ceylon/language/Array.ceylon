@@ -11,7 +11,7 @@
  new value.
  
      value array = Array { \"hello\", \"world\" };
-     array.set(0, \"goodbye\");
+     array[0] = \"goodbye\";
  
  Arrays are lists and support all operations inherited from 
  [[List]], along with certain additional operations for 
@@ -22,9 +22,11 @@
  with Java, and for some performance-critical low-level 
  programming tasks."
 tagged("Collections")
-shared final serializable native class Array<Element>
+shared final serializable native 
+class Array<Element>
         satisfies SearchableList<Element> &
-                  Ranged<Integer,Element,Array<Element>> {
+                  Ranged<Integer,Element,Array<Element>> &
+                  IndexedCorrespondenceMutator<Element> {
     
     "Create an array with the given [[elements]]."
     shared native new ({Element*} elements) {}
@@ -36,6 +38,7 @@ shared final serializable native class Array<Element>
     throws (`class AssertionError`, 
         "if `size>runtime.maxArraySize`")
     see (`value runtime.maxArraySize`)
+    since("1.2.0")
     shared native new ofSize(
             "The size of the resulting array. If the size is 
              non-positive, an empty array will be created."
@@ -67,8 +70,11 @@ shared final serializable native class Array<Element>
     shared actual native Element? first;
     shared actual native Element? last;
     
-    shared actual native Boolean empty;
+    "The immutable number of elements of this array."
+    aliased ("length")
     shared actual native Integer size;
+    
+    shared actual native Boolean empty;
     shared actual native Boolean defines(Integer index);
     shared actual native Iterator<Element> iterator();
     shared actual native Boolean contains(Object element);
@@ -83,22 +89,41 @@ shared final serializable native class Array<Element>
     throws (`class AssertionError`,
         "if the given index is out of bounds, that is, if 
          `index<0` or if `index>lastIndex`")
-    shared native 
+    shared actual native 
     void set(
         "The index of the element to replace."
         Integer index,
         "The new element."
         Element element);
     
-    "Efficiently copy the elements in the segment
-     `sourcePosition:length` of this array to the segment 
+    "Efficiently copy the elements in the measure
+     `sourcePosition:length` of this array to the measure 
      `destinationPosition:length` of the given 
-     [[array|destination]], which may be this array."
+     [[array|destination]], which may be this array.
+     
+     The given [[sourcePosition]] and [[destinationPosition]] 
+     must be non-negative and, together with the given 
+     [[length]], must identify meaningful ranges within the 
+     two arrays, satisfying:
+     
+     - `size >= sourcePosition+length`, and 
+     - `destination.size >= destinationPosition+length`.
+     
+     If the given `length` is not strictly positive, no
+     elements are copied."
+    throws (`class AssertionError`, 
+        "if the arguments do not identify meaningful ranges 
+         within the two arrays:
+         
+         - if the given [[sourcePosition]] or 
+           [[destinationPosition]] is negative, 
+         - if `size < sourcePosition+length`, or 
+         - if `destination.size < destinationPosition+length`.")
     shared native 
     void copyTo(
         "The array into which to copy the elements, which 
          may be this array."
-        Array<Element> destination,
+        Array<in Element> destination,
         "The index of the first element in this array to 
          copy."
         Integer sourcePosition = 0,
@@ -172,6 +197,7 @@ shared final serializable native class Array<Element>
      before and after this operation."
     throws (`class AssertionError`,
         "if either of the given indices is out of bounds") 
+    since("1.2.0")
     shared native
     void swap(
             "The index of the first element."
@@ -193,6 +219,7 @@ shared final serializable native class Array<Element>
      after this operation."
     throws (`class AssertionError`,
         "if either of the given indices is out of bounds") 
+    since("1.2.0")
     shared native
     void move(
             "The source index of the element to move."
@@ -205,6 +232,7 @@ shared final serializable native class Array<Element>
      array. This operation works by side-effect, modifying 
      the array. The array always contains the same elements 
      before and after this operation."
+    since("1.1.0")
     shared native 
     void reverseInPlace();
     
@@ -214,6 +242,7 @@ shared final serializable native class Array<Element>
      by side-effect, modifying the array.  The array always 
      contains the same elements before and after this 
      operation."
+    since("1.1.0")
     shared native 
     void sortInPlace(
         "A comparison function that compares pairs of
@@ -231,10 +260,9 @@ shared final serializable native class Array<Element>
          elements of this array."
         Comparison comparing(Element x, Element y));
     
-    shared actual Boolean equals(Object that) 
+    equals(Object that) 
             => (super of List<Element>).equals(that);
-    shared actual Integer hash 
-            => (super of List<Element>).hash;
-    shared actual String string
-            => (super of Collection<Element>).string;
+    hash => (super of List<Element>).hash;
+    string => (super of Collection<Element>).string;
+    
 }

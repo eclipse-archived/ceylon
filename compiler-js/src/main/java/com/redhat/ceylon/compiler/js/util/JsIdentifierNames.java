@@ -39,6 +39,7 @@ public class JsIdentifierNames {
     }
 
     private static Set<String> reservedWords = new HashSet<String>();
+    private static Set<String> globals = new HashSet<String>();
 
     static {
         // Identifiers that have to be escaped because they are keywords in
@@ -54,6 +55,8 @@ public class JsIdentifierNames {
                 "with", "abstract", "process", "require", "class", "extends", "import",
                 //These are only in strict mode and supposedly break something in the SDK or something
                 //"interface", "let", "package", "yield",
+                "await", "break", "case", "catch", "continue", "else", "finally", "for",
+                "function", "if", "in", "return", "switch", "this", "throw", "try", "while", "with",
                 "super"));
         //Types
         reservedWords.addAll(Arrays.asList("Date", "Object", "Boolean", "Error", "Number", "RegExp"));
@@ -79,6 +82,13 @@ public class JsIdentifierNames {
         //String, Array, etc
         reservedWords.addAll(Arrays.asList("length", "toString", "constructor", "prototype",
                 "concat", "indexOf", "lastIndexOf", "slice", "get"));
+        //Global identifiers. Like reserved words but only affects toplevel declarations, inside the same
+        //module
+        globals.addAll(Arrays.asList("parseFloat", "uneval", "isFinite", "isNaN", "parseInt",
+                "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent",
+                "escape", "unescape", "Symbol", "EvalError", "InternalError", "RangeError",
+                "ReferenceError", "SyntaxError", "TypeError", "URIError", "Math", "DataView",
+                "JSON", "ArrayBuffer"));
     }
 
     public static boolean isReservedWord(String token) {
@@ -122,14 +132,14 @@ public class JsIdentifierNames {
             // so we can simply disambiguate it with a numeric ID.
             name = uniquePrivateName(decl, false);
         }
-        return sanitize(name);
+        return JsUtils.escapeStringLiteral(name);
     }
 
     public String privateName(Parameter param) {
         if (param == null) { return null; }
         FunctionOrValue decl = param.getModel();
         String name = uniquePrivateName(decl, false);
-        return sanitize(name);
+        return JsUtils.escapeStringLiteral(name);
     }
 
     public String valueName(FunctionOrValue d) {
@@ -186,8 +196,12 @@ public class JsIdentifierNames {
      */
     public String setter(Declaration decl) {
         String name = getName(decl, true, false);
-        return String.format("set%c%s", Character.toUpperCase(name.charAt(0)),
-                name.substring(1));
+        final Module mod = decl.getUnit().getPackage().getModule();
+        if (mod.getJsMajor() > 0 && (mod.getJsMajor() < 9 || (mod.getJsMajor() == 9 && mod.getJsMinor() < 1))) {
+            return String.format("set%c%s", Character.toUpperCase(name.charAt(0)),
+                    name.substring(1));
+        }
+        return String.format("set$%s", name);
     }
 
     /**
@@ -216,7 +230,7 @@ public class JsIdentifierNames {
         if (decl instanceof Constructor) {
             decl = (TypeDeclaration)decl.getContainer();
         }
-        String name = sanitize(decl.getName());
+        String name = JsUtils.escapeStringLiteral(decl.getName());
         if (decl.isShared() || decl.isToplevel()) {
             name += nestingSuffix(decl, true);
         } else {
@@ -283,8 +297,8 @@ public class JsIdentifierNames {
         if (name.startsWith("anonymous#")) {
             name="anon$" + name.substring(10);
         }
-        if (decl.isClassOrInterfaceMember() && ((ClassOrInterface)decl.getContainer()).isDynamic()) {
-            return sanitize(decl.getName());
+        if (decl.isDynamic()) {
+            return JsUtils.escapeStringLiteral(decl.getName());
         }
         boolean nonLocal = !priv;
         if (nonLocal) {
@@ -307,8 +321,9 @@ public class JsIdentifierNames {
             if (suffix.length() > 0) {
                 // nested type
                 name += suffix;
-            } else if (!forGetterSetter && reservedWords.contains(name)) {
-                // JavaScript keyword
+            } else if ((!forGetterSetter && !TypeUtils.isConstructor(decl) && reservedWords.contains(name))
+                || isJsGlobal(decl)) {
+                // JavaScript keyword or global declaration
                 name = "$_" + name;
             }
         }
@@ -323,7 +338,7 @@ public class JsIdentifierNames {
             final com.redhat.ceylon.model.typechecker.model.Package raiz = declPkg.getModule().getRootPackage();
             //rootPackage can be null when compiling from IDE
             String rootName = raiz == null ?
-                    (declPkg.getModule().isDefault() ? "" : declPkg.getModule().getNameAsString()) :
+                    (declPkg.getModule().isDefaultModule() ? "" : declPkg.getModule().getNameAsString()) :
                         raiz.getNameAsString();
             String pkgName = declPkg.getNameAsString();
             rootName = pkgName.substring(rootName.length()).replaceAll("\\.", "\\$");
@@ -332,19 +347,10 @@ public class JsIdentifierNames {
             }
             name += rootName;
         }
-        if (decl.isAnonymous() && decl.isNativeHeader()) {
-            //Couldn't use ModelUtils.getNativeDeclaration with the backend
-            //because for some reason the anonymous class has null overloads.
-            if (decl.getContainer() != null &&
-                    decl.getContainer().getDirectMemberForBackend(
-                            decl.getName(), Backend.JavaScript.asSet()) != null) {
-                name+="$$N";
-            }
-        }
         if (decl instanceof TypeAlias) {
             name+="()";
         }
-        return sanitize(name);
+        return JsUtils.escapeStringLiteral(name);
     }
 
     private String uniquePrivateName(Declaration d, boolean priv) {
@@ -404,28 +410,21 @@ public class JsIdentifierNames {
         return tp.getName() + "$" + cname;
     }
 
-    /** Replace any characters considered invalid in JS with some regular
-     * mark specifying the Unicode codepoint. */
-    public static String sanitize(String name) {
-        for (int i=0; i < name.length(); i++) {
-            if (Character.isLowSurrogate(name.charAt(i)) || Character.isHighSurrogate(name.charAt(i))) {
-                StringBuilder sb = new StringBuilder(name.substring(0,i));
-                for (int j = i; j < name.length(); j++) {
-                    char c = name.charAt(j);
-                    if (Character.isLowSurrogate(c) || Character.isHighSurrogate(c)) {
-                        sb.append("$u").append((long)c);
-                    } else {
-                        sb.append(c);
-                    }
-                }
-                return sb.toString();
-            }
-        }
-        return name;
+    public String valueConstructorName(TypeDeclaration d) {
+        final TypeDeclaration c = (TypeDeclaration)d.getContainer();
+        return name(c) + constructorSeparator(d) + name(c.getDirectMember(d.getName(), null, false));
     }
 
-    public String valueConstructorName(TypeDeclaration d) {
-        TypeDeclaration c = (TypeDeclaration)d.getContainer();
-        return name(c) + "_" + name(c.getDirectMember(d.getName(), null, false));
+    public String constructorSeparator(Declaration c) {
+        final Module mod = c.getUnit().getPackage().getModule();
+        if (mod.getJsMajor() > 0 && (mod.getJsMajor() < 9 || (mod.getJsMajor() == 9 && mod.getJsMinor() < 1))) {
+            return "_";
+        }
+        return "$c_";
+    }
+
+    public boolean isJsGlobal(Declaration d) {
+        return d.isToplevel() && globals.contains(d.getName()) &&
+                d.getUnit().getPackage().getModule().getJsMajor()==0;
     }
 }

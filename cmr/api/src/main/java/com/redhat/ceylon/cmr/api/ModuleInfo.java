@@ -26,11 +26,23 @@ import java.util.Set;
  */
 public final class ModuleInfo {
     private String filter;
+    private String name;
+    private String version;
     private Set<ModuleDependencyInfo> dependencies;
 
-    public ModuleInfo(String filter, Set<ModuleDependencyInfo> dependencies) {
+    public ModuleInfo(String name, String version, String filter, Set<ModuleDependencyInfo> dependencies) {
+        this.name = name;
+        this.version = version;
         this.filter = filter;
         this.dependencies = dependencies;
+    }
+    
+    public String getName(){
+        return name;
+    }
+    
+    public String getVersion(){
+        return version;
     }
     
     public Set<ModuleDependencyInfo> getDependencies() {
@@ -48,6 +60,8 @@ public final class ModuleInfo {
 
         ModuleInfo that = (ModuleInfo) o;
         return Objects.equals(filter, that.filter)
+                && Objects.equals(name, that.name)
+                && Objects.equals(version, that.version)
                 && dependencies.equals(that.dependencies);
     }
 
@@ -55,6 +69,8 @@ public final class ModuleInfo {
     public int hashCode() {
         int ret = 17;
         ret = 37 * ret + (filter == null ? 0 : filter.hashCode());
+        ret = 37 * ret + (name == null ? 0 : name.hashCode());
+        ret = 37 * ret + (version == null ? 0 : version.hashCode());
         ret = 37 * ret + dependencies.hashCode();
         return ret;
     }

@@ -1,6 +1,40 @@
 package com.redhat.ceylon.compiler.js.loader;
 
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_ANNOTATIONS;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_ATTRIBUTES;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_CLASSES;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_CONSTRUCTORS;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_DEFAULT;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_DS_VARIANCE;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_DYNAMIC;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_FLAGS;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_INTERFACES;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_METATYPE;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_METHODS;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_MODULE;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_NAME;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_OBJECTS;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_PACKAGE;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_PACKED_ANNS;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_PARAMS;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_SATISFIES;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_SELF_TYPE;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_TYPE;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_TYPES;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_TYPE_ARGS;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_TYPE_PARAMS;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_US_VARIANCE;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.METATYPE_ALIAS;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.METATYPE_ATTRIBUTE;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.METATYPE_CLASS;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.METATYPE_GETTER;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.METATYPE_INTERFACE;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.METATYPE_METHOD;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.METATYPE_OBJECT;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.annotationBits;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.partiallyQualifiedName;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getSignature;
+import static com.redhat.ceylon.model.typechecker.model.Module.LANGUAGE_MODULE_NAME;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +58,7 @@ import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.InterfaceAlias;
 import com.redhat.ceylon.model.typechecker.model.IntersectionType;
-import com.redhat.ceylon.model.typechecker.model.Module;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.NothingType;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -57,15 +91,15 @@ public class JsonPackage extends LazyPackage {
     private UnknownType unknown = new UnknownType(u2);
 
     static {
-        idobj.put(MetamodelGenerator.KEY_NAME, "Basic");
-        idobj.put(MetamodelGenerator.KEY_PACKAGE, Module.LANGUAGE_MODULE_NAME);
-        idobj.put(MetamodelGenerator.KEY_MODULE, Module.LANGUAGE_MODULE_NAME);
-        objclass.put(MetamodelGenerator.KEY_NAME, "Object");
-        objclass.put(MetamodelGenerator.KEY_PACKAGE, Module.LANGUAGE_MODULE_NAME);
-        objclass.put(MetamodelGenerator.KEY_MODULE, Module.LANGUAGE_MODULE_NAME);
-        voidclass.put(MetamodelGenerator.KEY_NAME, "Anything");
-        voidclass.put(MetamodelGenerator.KEY_PACKAGE, Module.LANGUAGE_MODULE_NAME);
-        voidclass.put(MetamodelGenerator.KEY_MODULE, Module.LANGUAGE_MODULE_NAME);
+        idobj.put(KEY_NAME, "Basic");
+        idobj.put(KEY_PACKAGE, LANGUAGE_MODULE_NAME);
+        idobj.put(KEY_MODULE, LANGUAGE_MODULE_NAME);
+        objclass.put(KEY_NAME, "Object");
+        objclass.put(KEY_PACKAGE, LANGUAGE_MODULE_NAME);
+        objclass.put(KEY_MODULE, LANGUAGE_MODULE_NAME);
+        voidclass.put(KEY_NAME, "Anything");
+        voidclass.put(KEY_PACKAGE, LANGUAGE_MODULE_NAME);
+        voidclass.put(KEY_MODULE, LANGUAGE_MODULE_NAME);
     }
     public JsonPackage(String pkgname) {
         this.pkgname = pkgname;
@@ -104,7 +138,7 @@ public class JsonPackage extends LazyPackage {
                         Annotation ann = new Annotation();
                         ann.setName(name);
                         for (String arg : (List<String>)e.getValue()) {
-                            ann.addPositionalArgment(arg);
+                            ann.addPositionalArgument(arg);
                         }
                         getAnnotations().add(ann);
                     }
@@ -114,7 +148,7 @@ public class JsonPackage extends LazyPackage {
             // This was part of loadDeclarations() which is now being called lazily, but
             // needs to run eagerly, for whatever reason.
 
-            if (module.getLanguageModule() == module && Module.LANGUAGE_MODULE_NAME.equals(pkgname)) {
+            if (module.getLanguageModule() == module && LANGUAGE_MODULE_NAME.equals(pkgname)) {
                 //Mark the language module as immediately available to bypass certain validations
                 module.setAvailable(true);
             }
@@ -127,9 +161,6 @@ public class JsonPackage extends LazyPackage {
     private void loadDeclarations() {
         if (loaded) return;
         loaded = true;
-        //Ugly ass hack - add Nothing to the model
-        nothing.setContainer(this);
-        nothing.setUnit(u2);
         if (!isShared()) {
             setShared(model.remove("$pkg-shared") != null);
         }
@@ -138,26 +169,31 @@ public class JsonPackage extends LazyPackage {
             if (!k.startsWith("$pkg-")) {
                 @SuppressWarnings("unchecked")
                 Map<String,Object> m = (Map<String,Object>)e.getValue();
-                if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof String) {
-                    String metatype = (String)m.get(MetamodelGenerator.KEY_METATYPE);
-                    if (MetamodelGenerator.METATYPE_CLASS.equals(metatype)) {
+                if (m.get(KEY_METATYPE) instanceof String) {
+                    String metatype = (String)m.get(KEY_METATYPE);
+                    if (METATYPE_CLASS.equals(metatype)) {
                         refineMembers(loadClass(e.getKey(), m, this, null));
-                    } else if (MetamodelGenerator.METATYPE_INTERFACE.equals(metatype)) {
+                    } else if (METATYPE_INTERFACE.equals(metatype)) {
                         refineMembers(loadInterface(e.getKey(), m, this, null));
-                    } else if (metatype.equals(MetamodelGenerator.METATYPE_ATTRIBUTE)
-                            || metatype.equals(MetamodelGenerator.METATYPE_GETTER)) {
+                    } else if (metatype.equals(METATYPE_ATTRIBUTE)
+                            || metatype.equals(METATYPE_GETTER)) {
                         loadAttribute(k, m, this, null);
-                    } else if (metatype.equals(MetamodelGenerator.METATYPE_METHOD)) {
+                    } else if (metatype.equals(METATYPE_METHOD)) {
                         loadMethod(k, m, this, null);
-                    } else if (metatype.equals(MetamodelGenerator.METATYPE_OBJECT)) {
+                    } else if (metatype.equals(METATYPE_OBJECT)) {
                         refineMembers((com.redhat.ceylon.model.typechecker.model.Class)loadObject(k, m, this, null));
-                    } else if (metatype.equals(MetamodelGenerator.METATYPE_ALIAS)) {
+                    } else if (metatype.equals(METATYPE_ALIAS)) {
                         loadTypeAlias(k, m, this, null);
                     }
-                } else if (m.get(MetamodelGenerator.KEY_METATYPE) == null) {
+                } else if (m.get(KEY_METATYPE) == null) {
                     throw new IllegalArgumentException("Missing metatype from entry " + m + " under " + e.getKey());
-                } else if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof ClassOrInterface) {
-                    refineMembers((ClassOrInterface)m.get(MetamodelGenerator.KEY_METATYPE));
+                } else if (m.get(KEY_METATYPE) instanceof ClassOrInterface) {
+                    refineMembers((ClassOrInterface)m.get(KEY_METATYPE));
+                } else if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof Value) {
+                    TypeDeclaration td = ((Value)m.get(MetamodelGenerator.KEY_METATYPE)).getTypeDeclaration();
+                    if (td != null) {
+                        refineMembers((ClassOrInterface)td);
+                    }
                 }
             }
         }
@@ -169,9 +205,9 @@ public class JsonPackage extends LazyPackage {
     com.redhat.ceylon.model.typechecker.model.Class loadClass(String name, Map<String, Object> m,
             Scope parent, final List<TypeParameter> existing) {
         com.redhat.ceylon.model.typechecker.model.Class cls;
-        m.remove(MetamodelGenerator.KEY_NAME);
-        if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof com.redhat.ceylon.model.typechecker.model.Class) {
-            cls = (com.redhat.ceylon.model.typechecker.model.Class)m.get(MetamodelGenerator.KEY_METATYPE);
+        m.remove(KEY_NAME);
+        if (m.get(KEY_METATYPE) instanceof com.redhat.ceylon.model.typechecker.model.Class) {
+            cls = (com.redhat.ceylon.model.typechecker.model.Class)m.get(KEY_METATYPE);
             if (m.size() <= 3) {
                 //It's been fully loaded
                 return cls;
@@ -185,30 +221,32 @@ public class JsonPackage extends LazyPackage {
             }
             cls.setAbstract(m.remove("abstract") != null);
             cls.setAnonymous(m.remove("$anon") != null);
+            cls.setDynamic(m.remove(KEY_DYNAMIC) != null);
             cls.setContainer(parent);
+            cls.setScope(parent);
             cls.setName(name);
             cls.setUnit(u2);
             if (parent == this) {
                 u2.addDeclaration(cls);
             }
             parent.addMember(cls);
-            m.put(MetamodelGenerator.KEY_METATYPE, cls);
-            setAnnotations(cls, (Integer)m.remove(MetamodelGenerator.KEY_PACKED_ANNS),
-                    (Map<String,Object>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
+            m.put(KEY_METATYPE, cls);
+            setAnnotations(cls, (Integer)m.remove(KEY_PACKED_ANNS),
+                    (Map<String,Object>)m.remove(KEY_ANNOTATIONS));
         }
         //Type parameters are about the first thing we need to load
         final List<TypeParameter> tparms = parseTypeParameters(
-                (List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_TYPE_PARAMS), cls, existing);
+                (List<Map<String,Object>>)m.remove(KEY_TYPE_PARAMS), cls, existing);
         final List<TypeParameter> allparms = JsonPackage.merge(tparms, existing);
-        if (m.containsKey(MetamodelGenerator.KEY_SELF_TYPE)) {
+        if (m.containsKey(KEY_SELF_TYPE)) {
             for (TypeParameter t : tparms) {
-                if (t.getName().equals(m.get(MetamodelGenerator.KEY_SELF_TYPE))) {
+                if (t.getName().equals(m.get(KEY_SELF_TYPE))) {
                     cls.setSelfType(t.getType());
                 }
             }
         }
         //This is to avoid circularity
-        if (!(getModule().getLanguageModule()==getModule() && ("Nothing".equals(name) || "Anything".equals(name)))) {
+        if (!(isLanguagePackage() && ("Nothing".equals(name) || "Anything".equals(name)))) {
             if (cls.getExtendedType() == null) {
                 if (m.containsKey("super")) {
                     Type father = getTypeFromJson((Map<String,Object>)m.get("super"),
@@ -224,9 +262,9 @@ public class JsonPackage extends LazyPackage {
             }
         }
 
-        if (m.containsKey(MetamodelGenerator.KEY_CONSTRUCTORS)) {
+        if (m.containsKey(KEY_CONSTRUCTORS)) {
             final Map<String,Map<String,Object>> constructors = (Map<String,Map<String,Object>>)m.remove(
-                    MetamodelGenerator.KEY_CONSTRUCTORS);
+                    KEY_CONSTRUCTORS);
             for (Map.Entry<String, Map<String,Object>> cons : constructors.entrySet()) {
                 Constructor cnst = new Constructor();
                 cnst.setName("$def".equals(cons.getKey())?null:cons.getKey());
@@ -234,10 +272,11 @@ public class JsonPackage extends LazyPackage {
                 cnst.setScope(cls);
                 cnst.setUnit(cls.getUnit());
                 cnst.setExtendedType(cls.getType());
-                setAnnotations(cnst, (Integer)cons.getValue().remove(MetamodelGenerator.KEY_PACKED_ANNS),
-                        (Map<String,Object>)cons.getValue().remove(MetamodelGenerator.KEY_ANNOTATIONS));
+                cnst.setDynamic(cons.getValue().remove(KEY_DYNAMIC) != null);
+                setAnnotations(cnst, (Integer)cons.getValue().remove(KEY_PACKED_ANNS),
+                        (Map<String,Object>)cons.getValue().remove(KEY_ANNOTATIONS));
                 final List<Map<String,Object>> modelPlist = (List<Map<String,Object>>)cons.getValue().remove(
-                        MetamodelGenerator.KEY_PARAMS);
+                        KEY_PARAMS);
                 cls.addMember(cnst);
                 if (modelPlist == null) {
                     //It's a value constructor
@@ -268,11 +307,12 @@ public class JsonPackage extends LazyPackage {
                     cf.setVisibleScope(cnst.getVisibleScope());
                     cf.setShared(cnst.isShared());
                     cf.setDeprecated(cnst.isDeprecated());
+                    cf.setDynamic(cnst.isDynamic());
                     cls.addMember(cf);
                 }
             }
         } else {
-            ParameterList plist = parseParameters((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_PARAMS),
+            ParameterList plist = parseParameters((List<Map<String,Object>>)m.remove(KEY_PARAMS),
                     cls, allparms);
             plist.setNamedParametersSupported(true);
             cls.setParameterList(plist);
@@ -281,27 +321,33 @@ public class JsonPackage extends LazyPackage {
             cls.setCaseTypes(parseTypeList((List<Map<String,Object>>)m.get("of"), allparms));
             m.remove("of");
         }
-        if (m.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
-            List<Map<String,Object>> stypes = (List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES);
+        if (m.containsKey(KEY_SATISFIES)) {
+            List<Map<String,Object>> stypes = (List<Map<String,Object>>)m.remove(KEY_SATISFIES);
             cls.setSatisfiedTypes(parseTypeList(stypes, allparms));
         }
-        if (m.containsKey(MetamodelGenerator.KEY_OBJECTS)) {
-            for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_OBJECTS)).entrySet()) {
+        if (m.containsKey(KEY_OBJECTS)) {
+            for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(KEY_OBJECTS)).entrySet()) {
                 loadObject(inner.getKey(), inner.getValue(), cls, allparms);
             }
         }
         addAttributesAndMethods(m, cls, allparms);
-        if (m.containsKey(MetamodelGenerator.KEY_INTERFACES)) {
-            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_INTERFACES);
+        if (m.containsKey(KEY_INTERFACES)) {
+            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.remove(KEY_INTERFACES);
             for (Map.Entry<String,Map<String,Object>> cdef : cdefs.entrySet()) {
                 loadInterface(cdef.getKey(), cdef.getValue(), cls, allparms);
             }
         }
-        if (m.containsKey(MetamodelGenerator.KEY_CLASSES)) {
-            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_CLASSES);
+        if (m.containsKey(KEY_CLASSES)) {
+            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.remove(KEY_CLASSES);
             for (Map.Entry<String,Map<String,Object>> cdef : cdefs.entrySet()) {
                 loadClass(cdef.getKey(), cdef.getValue(), cls, allparms);
             }
+        }
+        if (cls.isDynamic() &&
+                (getModule().getJsMajor()<9 ||
+                    (getModule().getJsMajor()==9 && getModule().getJsMinor()<1))) {
+            // previous versions did not set dynamic flag on members
+            cls.makeMembersDynamic();
         }
         return cls;
     }
@@ -310,20 +356,27 @@ public class JsonPackage extends LazyPackage {
     @SuppressWarnings("unchecked")
     private void addAttributesAndMethods(Map<String,Object> m, Declaration d, List<TypeParameter> tparms) {
         //Attributes
-        Map<String, Map<String,Object>> sub = (Map<String,Map<String,Object>>)m.get(MetamodelGenerator.KEY_ATTRIBUTES);
+        Map<String, Map<String,Object>> sub = (Map<String,Map<String,Object>>)m.get(KEY_ATTRIBUTES);
         if (sub != null) {
+            //Only add aliases in the first pass
             for(Map.Entry<String, Map<String,Object>> e : sub.entrySet()) {
                 if (d.getDirectMember(e.getKey(), null, false) == null) {
-                    if (MetamodelGenerator.METATYPE_ALIAS.equals(e.getValue().get(MetamodelGenerator.KEY_METATYPE))) {
+                    if (METATYPE_ALIAS.equals(e.getValue().get(KEY_METATYPE))) {
                         d.getMembers().add(loadTypeAlias(e.getKey(), e.getValue(), (Scope)d, tparms));
-                    } else {
+                    }
+                }
+            }
+            //Then the attributes
+            for(Map.Entry<String, Map<String,Object>> e : sub.entrySet()) {
+                if (d.getDirectMember(e.getKey(), null, false) == null) {
+                    if (!METATYPE_ALIAS.equals(e.getValue().get(KEY_METATYPE))) {
                         d.getMembers().add(loadAttribute(e.getKey(), e.getValue(), (Scope)d, tparms));
                     }
                 }
             }
         }
         //Methods
-        sub = (Map<String,Map<String,Object>>)m.get(MetamodelGenerator.KEY_METHODS);
+        sub = (Map<String,Map<String,Object>>)m.get(KEY_METHODS);
         if (sub != null) {
             for(Map.Entry<String, Map<String,Object>> e : sub.entrySet()) {
                 if (d.getDirectMember(e.getKey(), null, false) == null) {
@@ -362,39 +415,41 @@ public class JsonPackage extends LazyPackage {
         //First create the type parameters
         for (Map<String,Object> tp : typeParams) {
             final Declaration maybe;
-            if (tp.get(MetamodelGenerator.KEY_METATYPE) instanceof TypeParameter) {
-                maybe = (TypeParameter)tp.get(MetamodelGenerator.KEY_METATYPE);
+            if (tp.get(KEY_METATYPE) instanceof TypeParameter) {
+                maybe = (TypeParameter)tp.get(KEY_METATYPE);
             } else {
-                maybe = container.getDirectMember((String)tp.get(MetamodelGenerator.KEY_NAME), null, false);
+                maybe = container.getDirectMember((String)tp.get(KEY_NAME), null, false);
             }
             if (maybe instanceof TypeParameter) {
                 //we already had it (from partial loading elsewhere)
                 allparms.add((TypeParameter)maybe);
                 tparms.add((TypeParameter)maybe);
-                tp.put(MetamodelGenerator.KEY_METATYPE, maybe);
+                tp.put(KEY_METATYPE, maybe);
             } else {
                 TypeParameter tparm = new TypeParameter();
                 tparm.setUnit(container.getUnit());
                 tparm.setDeclaration(container);
                 container.getMembers().add(tparm);
-                if (tp.containsKey(MetamodelGenerator.KEY_NAME)) {
-                    tparm.setName((String)tp.get(MetamodelGenerator.KEY_NAME));
-                } else if (!tp.containsKey(MetamodelGenerator.KEY_TYPES)) {
+                if (tp.containsKey(KEY_NAME)) {
+                    tparm.setName((String)tp.get(KEY_NAME));
+                } else if (!tp.containsKey(KEY_TYPES)) {
                     throw new IllegalArgumentException("Invalid type parameter map " + tp);
                 }
-                String variance = (String)tp.get(MetamodelGenerator.KEY_DS_VARIANCE);
+                String variance = (String)tp.get(KEY_DS_VARIANCE);
                 if ("out".equals(variance)) {
                     tparm.setCovariant(true);
                 } else if ("in".equals(variance)) {
                     tparm.setContravariant(true);
                 }
                 if (container instanceof Scope) {
-                    tparm.setContainer((Scope)container);
+                    Scope scope = (Scope)container;
+                    tparm.setContainer(scope);
+                    tparm.setScope(scope);
                 }
-                tparm.setDefaulted(tp.containsKey(MetamodelGenerator.KEY_DEFAULT));
+                tparm.setDefaulted(tp.containsKey(KEY_DEFAULT));
                 tparms.add(tparm);
                 allparms.add(tparm);
-                tp.put(MetamodelGenerator.KEY_METATYPE, tparm);
+                tp.put(KEY_METATYPE, tparm);
             }
         }
         if (container instanceof Generic) {
@@ -402,13 +457,13 @@ public class JsonPackage extends LazyPackage {
         }
         //Second, add defaults and heritage
         for (Map<String,Object> tp : typeParams) {
-            TypeParameter tparm = (TypeParameter)tp.get(MetamodelGenerator.KEY_METATYPE);
+            TypeParameter tparm = (TypeParameter)tp.get(KEY_METATYPE);
             if (tparm.getExtendedType() == null) {
-                if (tp.containsKey(MetamodelGenerator.KEY_PACKAGE)) {
+                if (tp.containsKey(KEY_PACKAGE)) {
                     //Looks like this never happens but...
                     Type subtype = getTypeFromJson(tp, container, allparms);
                     tparm.setExtendedType(subtype);
-                } else if (tp.containsKey(MetamodelGenerator.KEY_TYPES)) {
+                } else if (tp.containsKey(KEY_TYPES)) {
                     if (!("u".equals(tp.get("comp")) || "i".equals(tp.get("comp")))) {
                         throw new IllegalArgumentException("Only union or intersection types are allowed as 'comp'");
                     }
@@ -421,12 +476,12 @@ public class JsonPackage extends LazyPackage {
             }
             if (tparm.isDefaulted()) {
                 @SuppressWarnings("unchecked")
-                final Map<String,Object> deftype = (Map<String,Object>)tp.get(MetamodelGenerator.KEY_DEFAULT);
+                final Map<String,Object> deftype = (Map<String,Object>)tp.get(KEY_DEFAULT);
                 tparm.setDefaultTypeArgument(getTypeFromJson(deftype, container, existing));
             }
-            if (tp.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
+            if (tp.containsKey(KEY_SATISFIES)) {
                 @SuppressWarnings("unchecked")
-                final List<Map<String,Object>> stypes = (List<Map<String,Object>>)tp.get(MetamodelGenerator.KEY_SATISFIES);
+                final List<Map<String,Object>> stypes = (List<Map<String,Object>>)tp.get(KEY_SATISFIES);
                 tparm.setSatisfiedTypes(parseTypeList(stypes, allparms));
                 tparm.setConstrained(true);
             } else if (tp.containsKey("of")) {
@@ -450,9 +505,9 @@ public class JsonPackage extends LazyPackage {
                 Parameter param = new Parameter();
                 final String paramtype = (String)p.get("$pt");
                 param.setHidden(p.containsKey("$hdn"));
-                param.setName((String)p.get(MetamodelGenerator.KEY_NAME));
+                param.setName((String)p.get(KEY_NAME));
                 param.setDeclaration(owner);
-                param.setDefaulted(p.containsKey(MetamodelGenerator.KEY_DEFAULT));
+                param.setDefaulted(p.containsKey(KEY_DEFAULT));
                 param.setSequenced(p.containsKey("seq"));
                 param.setAtLeastOne(p.containsKey("$min1"));
                 if (paramtype == null || "v".equals(paramtype)) {
@@ -460,7 +515,7 @@ public class JsonPackage extends LazyPackage {
                     param.setModel(_v);
                 } else if ("f".equals(paramtype)) {
                     @SuppressWarnings("unchecked")
-                    List<List<Map<String,Object>>> paramLists = (List<List<Map<String,Object>>>)p.get(MetamodelGenerator.KEY_PARAMS);
+                    List<List<Map<String,Object>>> paramLists = (List<List<Map<String,Object>>>)p.get(KEY_PARAMS);
                     Function _m = new Function();
                     param.setModel(_m);
                     if (paramLists == null) {
@@ -480,28 +535,31 @@ public class JsonPackage extends LazyPackage {
                 } else {
                     throw new IllegalArgumentException("Unknown parameter type " + paramtype);
                 }
-                if (param.getModel() != null) {
-                    param.getModel().setInitializerParameter(param);
-                    param.getModel().setName(param.getName());
-                    param.getModel().setUnit(u2);
+                FunctionOrValue paramModel = param.getModel();
+                if (paramModel != null) {
+                    paramModel.setInitializerParameter(param);
+                    paramModel.setName(param.getName());
+                    paramModel.setUnit(u2);
                     if (owner instanceof Scope) {
-                        param.getModel().setContainer((Scope)owner);
+                        Scope scope = (Scope)owner;
+                        paramModel.setContainer(scope);
+                        paramModel.setScope(scope);
                     }
-                    if (p.get(MetamodelGenerator.KEY_TYPE) instanceof Map) {
+                    if (p.get(KEY_TYPE) instanceof Map) {
                         @SuppressWarnings("unchecked")
-                        final Map<String,Object> ktype = (Map<String,Object>)p.get(MetamodelGenerator.KEY_TYPE);
-                        param.getModel().setType(getTypeFromJson(ktype, owner, typeParameters));
+                        final Map<String,Object> ktype = (Map<String,Object>)p.get(KEY_TYPE);
+                        paramModel.setType(getTypeFromJson(ktype, owner, typeParameters));
                     } else {
                         //parameter type
                         for (TypeParameter tp : typeParameters) {
-                            if (tp.getName().equals(p.get(MetamodelGenerator.KEY_TYPE))) {
-                                param.getModel().setType(tp.getType());
+                            if (tp.getName().equals(p.get(KEY_TYPE))) {
+                                paramModel.setType(tp.getType());
                             }
                         }
                     }
                     @SuppressWarnings("unchecked")
-                    final Map<String,Object> _anns = (Map<String,Object>)p.remove(MetamodelGenerator.KEY_ANNOTATIONS);
-                    setAnnotations(param.getModel(), (Integer)p.remove(MetamodelGenerator.KEY_PACKED_ANNS), _anns);
+                    final Map<String,Object> _anns = (Map<String,Object>)p.remove(KEY_ANNOTATIONS);
+                    setAnnotations(paramModel, (Integer)p.remove(KEY_PACKED_ANNS), _anns);
                 }
                 //owner.getMembers().add(param);
                 plist.getParameters().add(param);
@@ -514,27 +572,29 @@ public class JsonPackage extends LazyPackage {
     Function loadMethod(String name, Map<String, Object> m, Scope parent, final List<TypeParameter> existing) {
         Function md = new Function();
         md.setName(name);
-        m.remove(MetamodelGenerator.KEY_NAME);
+        m.remove(KEY_NAME);
         md.setContainer(parent);
-        setAnnotations(md, (Integer)m.remove(MetamodelGenerator.KEY_PACKED_ANNS),
-                (Map<String,Object>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
+        md.setScope(parent);
+        setAnnotations(md, (Integer)m.remove(KEY_PACKED_ANNS),
+                (Map<String,Object>)m.remove(KEY_ANNOTATIONS));
         md.setUnit(u2);
         if (parent == this) {
             //Top-level declarations are directly added to the unit
             u2.addDeclaration(md);
             addMember(null);
         }
-        if (m.containsKey(MetamodelGenerator.KEY_FLAGS)) {
-            int flags = (int)m.remove(MetamodelGenerator.KEY_FLAGS);
+        if (m.containsKey(KEY_FLAGS)) {
+            int flags = (int)m.remove(KEY_FLAGS);
             md.setDeclaredVoid((flags & 1) > 0);
             md.setDeferred((flags & 2) > 0);
         }
+        md.setDynamic(m.remove(KEY_DYNAMIC) != null);
         final List<TypeParameter> tparms = parseTypeParameters(
-                (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS), md, existing);
+                (List<Map<String,Object>>)m.get(KEY_TYPE_PARAMS), md, existing);
         final List<TypeParameter> allparms = JsonPackage.merge(tparms, existing);
-        md.setType(getTypeFromJson((Map<String,Object>)m.remove(MetamodelGenerator.KEY_TYPE),
+        md.setType(getTypeFromJson((Map<String,Object>)m.remove(KEY_TYPE),
                 parent instanceof Declaration ? (Declaration)parent : null, allparms));
-        List<List<Map<String,Object>>> paramLists = (List<List<Map<String,Object>>>)m.remove(MetamodelGenerator.KEY_PARAMS);
+        List<List<Map<String,Object>>> paramLists = (List<List<Map<String,Object>>>)m.remove(KEY_PARAMS);
         if (paramLists == null) {
             md.addParameterList(new ParameterList());
         } else {
@@ -554,24 +614,26 @@ public class JsonPackage extends LazyPackage {
 
     FunctionOrValue loadAttribute(String name, Map<String, Object> m, Scope parent,
             List<TypeParameter> typeParameters) {
-        String metatype = (String)m.get(MetamodelGenerator.KEY_METATYPE);
+        String metatype = (String)m.get(KEY_METATYPE);
         Value d = new Value();
-        d.setTransient(MetamodelGenerator.METATYPE_GETTER.equals(metatype));
+        d.setTransient(METATYPE_GETTER.equals(metatype));
         d.setName(name);
         d.setContainer(parent);
+        d.setScope(parent);
         d.setUnit(u2);
         if (parent == this) {
             u2.addDeclaration(d);
             addMember(null);
         }
         @SuppressWarnings("unchecked")
-        final Map<String,Object> _anns = (Map<String,Object>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS);
-        setAnnotations(d, (Integer)m.remove(MetamodelGenerator.KEY_PACKED_ANNS), _anns);
+        final Map<String,Object> _anns = (Map<String,Object>)m.remove(KEY_ANNOTATIONS);
+        setAnnotations(d, (Integer)m.remove(KEY_PACKED_ANNS), _anns);
+        d.setDynamic(m.remove(KEY_DYNAMIC) != null);
         if (m.containsKey("var")) {
             ((Value)d).setVariable(true);
         }
         @SuppressWarnings("unchecked")
-        final Map<String,Object> ktype = (Map<String,Object>)m.get(MetamodelGenerator.KEY_TYPE);
+        final Map<String,Object> ktype = (Map<String,Object>)m.get(KEY_TYPE);
         d.setType(getTypeFromJson(ktype, parent instanceof Declaration ? (Declaration)parent : null, typeParameters));
         @SuppressWarnings("unchecked")
         final Map<String, Object> smap = (Map<String, Object>)m.remove("$set");
@@ -579,6 +641,7 @@ public class JsonPackage extends LazyPackage {
             Setter s = new Setter();
             s.setName(name);
             s.setContainer(parent);
+            s.setScope(parent);
             s.setUnit(u2);
             s.setGetter(d);
             d.setSetter(s);
@@ -587,8 +650,8 @@ public class JsonPackage extends LazyPackage {
                 addMember(null);
             }
             @SuppressWarnings("unchecked")
-            final Map<String,Object> sanns = (Map<String,Object>)smap.remove(MetamodelGenerator.KEY_ANNOTATIONS);
-            setAnnotations(s, (Integer)smap.remove(MetamodelGenerator.KEY_PACKED_ANNS), sanns);
+            final Map<String,Object> sanns = (Map<String,Object>)smap.remove(KEY_ANNOTATIONS);
+            setAnnotations(s, (Integer)smap.remove(KEY_PACKED_ANNS), sanns);
             s.setType(d.getType());
         }
         return d;
@@ -614,9 +677,9 @@ public class JsonPackage extends LazyPackage {
         //Check if it's been loaded first
         //It hasn't been loaded, so create it
         Interface t;
-        m.remove(MetamodelGenerator.KEY_NAME);
-        if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof Interface) {
-            t = (Interface)m.get(MetamodelGenerator.KEY_METATYPE);
+        m.remove(KEY_NAME);
+        if (m.get(KEY_METATYPE) instanceof Interface) {
+            t = (Interface)m.get(KEY_METATYPE);
             if (m.size() <= 3) {
                 //it's been loaded
                 return t;
@@ -628,24 +691,25 @@ public class JsonPackage extends LazyPackage {
                 t = new Interface();
             }
             t.setContainer(parent);
+            t.setScope(parent);
             t.setName(name);
             t.setUnit(u2);
             if (parent == this) {
                 u2.addDeclaration(t);
             }
             parent.addMember(t);
-            m.put(MetamodelGenerator.KEY_METATYPE, t);
-            setAnnotations(t, (Integer)m.remove(MetamodelGenerator.KEY_PACKED_ANNS),
-                    (Map<String,Object>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
+            m.put(KEY_METATYPE, t);
+            setAnnotations(t, (Integer)m.remove(KEY_PACKED_ANNS),
+                    (Map<String,Object>)m.remove(KEY_ANNOTATIONS));
         }
-        if (m.remove(MetamodelGenerator.KEY_DYNAMIC) != null) {
+        if (m.remove(KEY_DYNAMIC) != null) {
             t.setDynamic(true);
         }
         List<TypeParameter> tparms = t.getTypeParameters();
-        List<Map<String,Object>> listOfMaps = (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS);
+        List<Map<String,Object>> listOfMaps = (List<Map<String,Object>>)m.get(KEY_TYPE_PARAMS);
         if (listOfMaps != null && (tparms == null || tparms.size() < listOfMaps.size())) {
             tparms = parseTypeParameters(listOfMaps, t, existing);
-            m.remove(MetamodelGenerator.KEY_TYPE_PARAMS);
+            m.remove(KEY_TYPE_PARAMS);
         }
         final List<TypeParameter> allparms = JsonPackage.merge(tparms, existing);
         //All interfaces extend Object, except aliases
@@ -658,35 +722,41 @@ public class JsonPackage extends LazyPackage {
                         parent instanceof Declaration ? (Declaration)parent : null, null));
             }
         }
-        if (m.containsKey(MetamodelGenerator.KEY_SELF_TYPE)) {
+        if (m.containsKey(KEY_SELF_TYPE)) {
             for (TypeParameter _tp : tparms) {
-                if (_tp.getName().equals(m.get(MetamodelGenerator.KEY_SELF_TYPE))) {
+                if (_tp.getName().equals(m.get(KEY_SELF_TYPE))) {
                     t.setSelfType(_tp.getType());
                     _tp.setSelfTypedDeclaration(t);
                 }
             }
-            m.remove(MetamodelGenerator.KEY_SELF_TYPE);
+            m.remove(KEY_SELF_TYPE);
         }
         if (m.containsKey("of") && t.getCaseTypes() == null) {
             t.setCaseTypes(parseTypeList((List<Map<String,Object>>)m.remove("of"), allparms));
         }
-        if (m.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
-            for (Type s : parseTypeList((List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES), allparms)) {
+        if (m.containsKey(KEY_SATISFIES)) {
+            for (Type s : parseTypeList((List<Map<String,Object>>)m.remove(KEY_SATISFIES), allparms)) {
                 t.getSatisfiedTypes().add(s);
             }
         }
         addAttributesAndMethods(m, t, allparms);
-        if (m.containsKey(MetamodelGenerator.KEY_INTERFACES)) {
-            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_INTERFACES);
+        if (m.containsKey(KEY_INTERFACES)) {
+            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.remove(KEY_INTERFACES);
             for (Map.Entry<String,Map<String,Object>> cdef : cdefs.entrySet()) {
                 loadInterface(cdef.getKey(), cdef.getValue(), t, allparms);
             }
         }
-        if (m.containsKey(MetamodelGenerator.KEY_CLASSES)) {
-            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_CLASSES);
+        if (m.containsKey(KEY_CLASSES)) {
+            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.remove(KEY_CLASSES);
             for (Map.Entry<String,Map<String,Object>> cdef : cdefs.entrySet()) {
                 loadClass(cdef.getKey(), cdef.getValue(), t, allparms);
             }
+        }
+        if (t.isDynamic() &&
+                (getModule().getJsMajor()<9 ||
+                    (getModule().getJsMajor()==9 && getModule().getJsMinor()<1))) {
+            // previous versions did not set dynamic flag on members
+            t.makeMembersDynamic();
         }
         return t;
     }
@@ -695,29 +765,31 @@ public class JsonPackage extends LazyPackage {
     @SuppressWarnings("unchecked")
     TypeDeclaration loadObject(String name, Map<String, Object> m, Scope parent, List<TypeParameter> existing) {
         Value obj;
-        if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof Value) {
-            obj = (Value)m.get(MetamodelGenerator.KEY_METATYPE);
+        if (m.get(KEY_METATYPE) instanceof Value) {
+            obj = (Value)m.get(KEY_METATYPE);
         } else {
             obj = new Value();
-            m.put(MetamodelGenerator.KEY_METATYPE, obj);
+            m.put(KEY_METATYPE, obj);
             obj.setName(name);
             obj.setContainer(parent);
+            obj.setScope(parent);
             obj.setUnit(u2);
             com.redhat.ceylon.model.typechecker.model.Class type = new com.redhat.ceylon.model.typechecker.model.Class();
             type.setName(name);
             type.setAnonymous(true);
             type.setUnit(u2);
             type.setContainer(parent);
+            type.setScope(parent);
             if (parent == this) {
                 u2.addDeclaration(obj);
                 u2.addDeclaration(type);
             }
             parent.addMember(obj);
             obj.setType(type.getType());
-            setAnnotations(obj, (Integer)m.get(MetamodelGenerator.KEY_PACKED_ANNS),
-                    (Map<String,Object>)m.get(MetamodelGenerator.KEY_ANNOTATIONS));
-            setAnnotations(obj.getTypeDeclaration(), (Integer)m.remove(MetamodelGenerator.KEY_PACKED_ANNS),
-                    (Map<String,Object>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
+            setAnnotations(obj, (Integer)m.get(KEY_PACKED_ANNS),
+                    (Map<String,Object>)m.get(KEY_ANNOTATIONS));
+            setAnnotations(obj.getTypeDeclaration(), (Integer)m.remove(KEY_PACKED_ANNS),
+                    (Map<String,Object>)m.remove(KEY_ANNOTATIONS));
             if (type.getExtendedType() == null) {
                 if (m.containsKey("super")) {
                     type.setExtendedType(getTypeFromJson((Map<String,Object>)m.remove("super"),
@@ -726,22 +798,22 @@ public class JsonPackage extends LazyPackage {
                     type.setExtendedType(getTypeFromJson(idobj, parent instanceof Declaration ? (Declaration)parent : null, existing));
                 }
             }
-            if (m.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
-                List<Map<String,Object>> stypes = (List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES);
+            if (m.containsKey(KEY_SATISFIES)) {
+                List<Map<String,Object>> stypes = (List<Map<String,Object>>)m.remove(KEY_SATISFIES);
                 type.setSatisfiedTypes(parseTypeList(stypes, existing));
             }
-            if (m.containsKey(MetamodelGenerator.KEY_INTERFACES)) {
-                for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_INTERFACES)).entrySet()) {
+            if (m.containsKey(KEY_INTERFACES)) {
+                for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(KEY_INTERFACES)).entrySet()) {
                     loadInterface(inner.getKey(), inner.getValue(), type, existing);
                 }
             }
-            if (m.containsKey(MetamodelGenerator.KEY_CLASSES)) {
-                for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_CLASSES)).entrySet()) {
+            if (m.containsKey(KEY_CLASSES)) {
+                for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(KEY_CLASSES)).entrySet()) {
                     loadClass(inner.getKey(), inner.getValue(), type, existing);
                 }
             }
-            if (m.containsKey(MetamodelGenerator.KEY_OBJECTS)) {
-                for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(MetamodelGenerator.KEY_OBJECTS)).entrySet()) {
+            if (m.containsKey(KEY_OBJECTS)) {
+                for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(KEY_OBJECTS)).entrySet()) {
                     loadObject(inner.getKey(), inner.getValue(), type, existing);
                 }
             }
@@ -755,9 +827,9 @@ public class JsonPackage extends LazyPackage {
     @SuppressWarnings("unchecked")
     private TypeAlias loadTypeAlias(String name, Map<String, Object> m, Scope parent, List<TypeParameter> existing) {
         TypeAlias alias;
-        if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof TypeAlias) {
+        if (m.get(KEY_METATYPE) instanceof TypeAlias) {
             //It's been loaded already
-            alias = (TypeAlias)m.get(MetamodelGenerator.KEY_METATYPE);
+            alias = (TypeAlias)m.get(KEY_METATYPE);
             if (m.size() == 1) {
                 return alias;
             }
@@ -766,15 +838,16 @@ public class JsonPackage extends LazyPackage {
             if (maybe == null) {
                 alias = new TypeAlias();
                 alias.setContainer(parent);
+                alias.setScope(parent);
                 alias.setName(name);
                 alias.setUnit(u2);
-                setAnnotations(alias, (Integer)m.remove(MetamodelGenerator.KEY_PACKED_ANNS),
-                        (Map<String,Object>)m.remove(MetamodelGenerator.KEY_ANNOTATIONS));
+                setAnnotations(alias, (Integer)m.remove(KEY_PACKED_ANNS),
+                        (Map<String,Object>)m.remove(KEY_ANNOTATIONS));
                 if (parent == this) {
                     u2.addDeclaration(alias);
                 }
                 parent.addMember(alias);
-                m.put(MetamodelGenerator.KEY_METATYPE, alias);
+                m.put(KEY_METATYPE, alias);
             } else if (maybe instanceof TypeAlias) {
                 alias = (TypeAlias)maybe;
             } else {
@@ -782,7 +855,7 @@ public class JsonPackage extends LazyPackage {
             }
         }
         //Gather available type parameters
-        List<Map<String,Object>> listOfMaps = (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS);
+        List<Map<String,Object>> listOfMaps = (List<Map<String,Object>>)m.get(KEY_TYPE_PARAMS);
         final List<TypeParameter> tparms;
         if (listOfMaps != null && alias.getTypeParameters().size()<listOfMaps.size()) {
             tparms = parseTypeParameters(listOfMaps, alias, existing);
@@ -796,9 +869,9 @@ public class JsonPackage extends LazyPackage {
             alias.setExtendedType(getTypeFromJson((Map<String,Object>)m.get("$alias"),
                     parent instanceof Declaration ? (Declaration)parent : null, allparms));
         }
-        if (m.containsKey(MetamodelGenerator.KEY_SELF_TYPE)) {
+        if (m.containsKey(KEY_SELF_TYPE)) {
             for (TypeParameter _tp : tparms) {
-                if (_tp.getName().equals(m.get(MetamodelGenerator.KEY_SELF_TYPE))) {
+                if (_tp.getName().equals(m.get(KEY_SELF_TYPE))) {
                     alias.setSelfType(_tp.getType());
                 }
             }
@@ -806,12 +879,12 @@ public class JsonPackage extends LazyPackage {
         if (m.containsKey("of")) {
             alias.setCaseTypes(parseTypeList((List<Map<String,Object>>)m.remove("of"), allparms));
         }
-        if (m.containsKey(MetamodelGenerator.KEY_SATISFIES)) {
-            List<Map<String,Object>> stypes = (List<Map<String,Object>>)m.remove(MetamodelGenerator.KEY_SATISFIES);
+        if (m.containsKey(KEY_SATISFIES)) {
+            List<Map<String,Object>> stypes = (List<Map<String,Object>>)m.remove(KEY_SATISFIES);
             alias.setSatisfiedTypes(parseTypeList(stypes, allparms));
         }
         m.clear();
-        m.put(MetamodelGenerator.KEY_METATYPE, alias);
+        m.put(KEY_METATYPE, alias);
         return alias;
     }
 
@@ -819,20 +892,20 @@ public class JsonPackage extends LazyPackage {
      * type parameters substituted if needed. */
     private Type getTypeFromJson(Map<String, Object> m, Declaration container, List<TypeParameter> typeParams) {
         TypeDeclaration td = null;
-        if (m.get(MetamodelGenerator.KEY_METATYPE) instanceof TypeDeclaration) {
-            td = (TypeDeclaration)m.get(MetamodelGenerator.KEY_METATYPE);
+        if (m.get(KEY_METATYPE) instanceof TypeDeclaration) {
+            td = (TypeDeclaration)m.get(KEY_METATYPE);
             if (td instanceof ClassOrInterface && td.getUnit().getPackage() instanceof JsonPackage) {
                 ((JsonPackage)td.getUnit().getPackage()).load(td.getName(), typeParams);
             }
         }
-        final String tname = (String)m.get(MetamodelGenerator.KEY_NAME);
+        final String tname = (String)m.get(KEY_NAME);
         if ("$U".equals(tname)) {
-            m.put(MetamodelGenerator.KEY_METATYPE, unknown);
+            m.put(KEY_METATYPE, unknown);
             return unknown.getType();
         }
         if (td == null && m.containsKey("comp")) {
             @SuppressWarnings("unchecked")
-            final List<Map<String,Object>> tmaps = (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPES);
+            final List<Map<String,Object>> tmaps = (List<Map<String,Object>>)m.get(KEY_TYPES);
             final ArrayList<Type> types = new ArrayList<Type>(tmaps.size());
             if ("u".equals(m.get("comp"))) {
                 UnionType ut = new UnionType(u2);
@@ -852,7 +925,7 @@ public class JsonPackage extends LazyPackage {
                 throw new IllegalArgumentException("Invalid composite type '" + m.get("comp") + "'");
             }
         } else if (td == null) {
-            final String pname = (String)m.get(MetamodelGenerator.KEY_PACKAGE);
+            final String pname = (String)m.get(KEY_PACKAGE);
             if (pname == null) {
                 //It's a ref to a type parameter
                 final List<TypeParameter> containerTypeParameters;
@@ -878,15 +951,17 @@ public class JsonPackage extends LazyPackage {
                     }
                 }
             } else {
-                String mname = (String)m.get(MetamodelGenerator.KEY_MODULE);
+                String mname = (String)m.get(KEY_MODULE);
                 if ("$".equals(mname)) {
-                    mname = Module.LANGUAGE_MODULE_NAME;
+                    mname = LANGUAGE_MODULE_NAME;
                 }
                 com.redhat.ceylon.model.typechecker.model.Package rp;
-                if ("$".equals(pname) || "ceylon.language".equals(pname)) {
+                if ("$".equals(pname) || LANGUAGE_MODULE_NAME.equals(pname)) {
                     //Language module package
-                    rp = Module.LANGUAGE_MODULE_NAME.equals(getNameAsString())? this :
-                        getModule().getLanguageModule().getDirectPackage(Module.LANGUAGE_MODULE_NAME);
+                    rp = isLanguagePackage()? this :
+                        getModule()
+                            .getLanguageModule()
+                            .getDirectPackage(LANGUAGE_MODULE_NAME);
                 } else if (mname == null) {
                     //local type
                     if (".".equals(pname)) {
@@ -913,9 +988,9 @@ public class JsonPackage extends LazyPackage {
                     if (d instanceof TypeDeclaration) {
                         td = (TypeDeclaration)d;
                         if (td.isTuple()) {
-                            if (m.containsKey(MetamodelGenerator.KEY_TYPES)) {
+                            if (m.containsKey(KEY_TYPES)) {
                                 @SuppressWarnings("unchecked")
-                                List<Map<String,Object>> elemaps = (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPES);
+                                List<Map<String,Object>> elemaps = (List<Map<String,Object>>)m.get(KEY_TYPES);
                                 ArrayList<Type> elems = new ArrayList<>(elemaps.size());
                                 for (Map<String,Object> elem : elemaps) {
                                     elems.add(getTypeFromJson(elem, container, typeParams));
@@ -930,7 +1005,7 @@ public class JsonPackage extends LazyPackage {
                                 return u2.getTupleType(elems, tail, -1);
                             } else if (m.containsKey("count")) {
                                 @SuppressWarnings("unchecked")
-                                Map<String,Object> elem = (Map<String,Object>)m.get(MetamodelGenerator.KEY_TYPE);
+                                Map<String,Object> elem = (Map<String,Object>)m.get(KEY_TYPE);
                                 Type[] elems = new Type[(int)m.remove("count")];
                                 Arrays.fill(elems, getTypeFromJson(elem, container, typeParams));
                                 return u2.getTupleType(Arrays.asList(elems), null, -1);
@@ -961,8 +1036,14 @@ public class JsonPackage extends LazyPackage {
                 }
             }
         }
+        //From 1.2.3 we stored type arguments in maps
+        final Type newType = loadTypeArguments(m, td, container, typeParams);
+        if (newType != null) {
+            return newType;
+        }
+        //This is the old pre 1.2.3 stuff
         @SuppressWarnings("unchecked")
-        final List<Map<String,Object>> modelParms = (List<Map<String,Object>>)m.get(MetamodelGenerator.KEY_TYPE_PARAMS);
+        final List<Map<String,Object>> modelParms = (List<Map<String,Object>>)m.get(KEY_TYPE_PARAMS);
         if (td != null && modelParms != null) {
             //Substitute type parameters
             final HashMap<TypeParameter, Type> concretes = new HashMap<TypeParameter, Type>();
@@ -975,19 +1056,19 @@ public class JsonPackage extends LazyPackage {
             final Iterator<TypeParameter> viter = td.getTypeParameters().iterator();
             for (Map<String,Object> ptparm : modelParms) {
                 TypeParameter _cparm = viter.next();
-                if (ptparm.containsKey(MetamodelGenerator.KEY_PACKAGE) || ptparm.containsKey(MetamodelGenerator.KEY_TYPES)) {
+                if (ptparm.containsKey(KEY_PACKAGE) || ptparm.containsKey(KEY_TYPES)) {
                     //Substitute for proper type
                     final Type _pt = getTypeFromJson(ptparm, container, typeParams);
                     concretes.put(_cparm, _pt);
-                } else if (ptparm.containsKey(MetamodelGenerator.KEY_NAME) && typeParams != null) {
+                } else if (ptparm.containsKey(KEY_NAME) && typeParams != null) {
                     //Look for type parameter with same name
                     for (TypeParameter typeParam : typeParams) {
-                        if (typeParam.getName().equals(ptparm.get(MetamodelGenerator.KEY_NAME))) {
+                        if (typeParam.getName().equals(ptparm.get(KEY_NAME))) {
                             concretes.put(_cparm, typeParam.getType());
                         }
                     }
                 }
-                Integer usv = (Integer)ptparm.get(MetamodelGenerator.KEY_US_VARIANCE);
+                Integer usv = (Integer)ptparm.get(KEY_US_VARIANCE);
                 if (usv != null) {
                     if (variances == null) {
                         variances = new HashMap<>();
@@ -996,21 +1077,73 @@ public class JsonPackage extends LazyPackage {
                 }
             }
             if (!concretes.isEmpty()) {
-                Type rval = td.getType()
-                        .substitute(concretes, variances);
-                return rval;
+                return td.getType().substitute(concretes, variances);
             }
         }
         if (td == null) {
             try {
                 throw new IllegalArgumentException(String.format("Couldn't find type %s::%s for %s in %s<%s> (FROM pkg %s)",
-                        m.get(MetamodelGenerator.KEY_PACKAGE), m.get(MetamodelGenerator.KEY_NAME),
-                        m.get(MetamodelGenerator.KEY_MODULE), m, typeParams, getNameAsString()));
+                        m.get(KEY_PACKAGE), m.get(KEY_NAME),
+                        m.get(KEY_MODULE), m, typeParams, getNameAsString()));
             } catch (IllegalArgumentException ex) {
                 ex.printStackTrace();
             }
         }
         return td.getType();
+    }
+
+    /** Load the type arguments from a map where keys are the type argument names (including their types,
+     * e.g. List.Element) and the keys are maps suitable for decoding with getTypeFromJson) */
+    Type loadTypeArguments(Map<String, Object> m, final TypeDeclaration td,
+            final Declaration container, final List<TypeParameter> typeParams) {
+        if (td == null) {
+            return null;
+        }
+        @SuppressWarnings("unchecked")
+        final Map<String,Map<String,Object>> targs = (Map<String,Map<String,Object>>)m.get(
+                KEY_TYPE_ARGS);
+        if (targs == null) {
+            return null;
+        }
+        //Substitute type parameters
+        final HashMap<TypeParameter, Type> concretes = new HashMap<TypeParameter, Type>(targs.size());
+        HashMap<TypeParameter,SiteVariance> variances = null;
+        Declaration d = td;
+        while (d != null) {
+            if (d instanceof Generic) {
+                for (TypeParameter tparm : ((Generic)d).getTypeParameters()) {
+                    Map<String,Object> targMap = targs.get(partiallyQualifiedName(d) + "." + tparm.getName());
+                    if (targMap == null) {
+                        //TODO error I guess
+                        continue;
+                    }
+                    if (targMap.containsKey(KEY_PACKAGE) || targMap.containsKey(KEY_TYPES)) {
+                        //Substitute for proper type
+                        final Type _pt = getTypeFromJson(targMap, container, typeParams);
+                        concretes.put(tparm, _pt);
+                    } else if (targMap.containsKey(KEY_NAME) && typeParams != null) {
+                        //Look for type parameter with same name
+                        for (TypeParameter typeParam : typeParams) {
+                            if (typeParam.getName().equals(targMap.get(KEY_NAME))) {
+                                concretes.put(tparm, typeParam.getType());
+                            }
+                        }
+                    }
+                    Integer usv = (Integer)targMap.get(KEY_US_VARIANCE);
+                    if (usv != null) {
+                        if (variances == null) {
+                            variances = new HashMap<>();
+                        }
+                        variances.put(tparm, SiteVariance.values()[usv]);
+                    }
+                }
+            }
+            d = ModelUtil.getContainingDeclaration(d);
+        }
+        if (!concretes.isEmpty()) {
+            return td.getType().substitute(concretes, variances);
+        }
+        return null;
     }
 
     /** Load a top-level declaration with the specified name, by parsing its model data. */
@@ -1022,29 +1155,34 @@ public class JsonPackage extends LazyPackage {
         final Map<String,Object> map = model == null ? null : (Map<String,Object>)model.get(name);
         if (map == null) {
             if ("Nothing".equals(name)) {
-                //Load Nothing from language module, regardless of what this package is
-                return nothing;
+                if (isLanguagePackage()) {
+                    return nothing;
+                } else if (getModule().getJsMajor()<9 ||
+                        (getModule().getJsMajor()==9 && getModule().getJsMinor()<1)) {
+                    //Older versions wrongly referenced a local Nothing, maintain backwards compat
+                    return nothing;
+                }
             } else if ("$U".equals(name)) {
                 return unknown;
             }
             throw new IllegalStateException("Cannot find " + pkgname + "::" + name + " in " + model.keySet());
         }
-        Object metatype = map.get(MetamodelGenerator.KEY_METATYPE);
+        Object metatype = map.get(KEY_METATYPE);
         if (metatype == null) {
             throw new IllegalArgumentException("Missing metatype from entry " + map);
         }
-        if (metatype.equals(MetamodelGenerator.METATYPE_ATTRIBUTE)
-                || metatype.equals(MetamodelGenerator.METATYPE_GETTER)) {
+        if (metatype.equals(METATYPE_ATTRIBUTE)
+                || metatype.equals(METATYPE_GETTER)) {
             return loadAttribute(name, map, this, null);
-        } else if (metatype.equals(MetamodelGenerator.METATYPE_CLASS) || metatype instanceof com.redhat.ceylon.model.typechecker.model.Class) {
+        } else if (metatype.equals(METATYPE_CLASS) || metatype instanceof com.redhat.ceylon.model.typechecker.model.Class) {
             return loadClass(name, map, this, existing);
-        } else if (metatype.equals(MetamodelGenerator.METATYPE_INTERFACE) || metatype instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
+        } else if (metatype.equals(METATYPE_INTERFACE) || metatype instanceof com.redhat.ceylon.model.typechecker.model.Interface) {
             return loadInterface(name, map, this, existing);
-        } else if (metatype.equals(MetamodelGenerator.METATYPE_METHOD)) {
+        } else if (metatype.equals(METATYPE_METHOD)) {
             return loadMethod(name, map, this, existing);
-        } else if (metatype.equals(MetamodelGenerator.METATYPE_OBJECT) || metatype instanceof Value) {
+        } else if (metatype.equals(METATYPE_OBJECT) || metatype instanceof Value) {
             return loadObject(name, map, this, existing);
-        } else if (metatype.equals(MetamodelGenerator.METATYPE_ALIAS)) {
+        } else if (metatype.equals(METATYPE_ALIAS)) {
             return loadTypeAlias(name, map, this, existing);
         }
         System.out.println("WTF is this shit " + map);
@@ -1052,7 +1190,7 @@ public class JsonPackage extends LazyPackage {
     }
 
     public static boolean hasAnnotationBit(int bits, String annotationName) {
-        final int idx = MetamodelGenerator.annotationBits.indexOf(annotationName);
+        final int idx = annotationBits.indexOf(annotationName);
         if (idx < 0) return false;
         return (bits & (1 << idx)) > 0;
     }
@@ -1087,7 +1225,7 @@ public class JsonPackage extends LazyPackage {
             Annotation ann = new Annotation();
             ann.setName(name);
             for (String arg : (List<String>)e.getValue()) {
-                ann.addPositionalArgment(arg);
+                ann.addPositionalArgument(arg);
             }
             d.getAnnotations().add(ann);
         }
@@ -1099,13 +1237,13 @@ public class JsonPackage extends LazyPackage {
         String[] path = fqn.split("\\.");
         @SuppressWarnings("unchecked")
         Map<String,Object> typeMap = (Map<String,Object>)model.get(path[0]);
-        if (typeMap.get(MetamodelGenerator.KEY_METATYPE) instanceof TypeDeclaration == false) {
+        if (typeMap.get(KEY_METATYPE) instanceof TypeDeclaration == false) {
             load(path[0], typeParams);
         }
-        TypeDeclaration td = (TypeDeclaration)typeMap.get(MetamodelGenerator.KEY_METATYPE);
+        TypeDeclaration td = (TypeDeclaration)typeMap.get(KEY_METATYPE);
         for (int i = 1; i < path.length; i++) {
             @SuppressWarnings("unchecked")
-            Map<String,Object> subtypes = (Map<String,Object>)typeMap.get(MetamodelGenerator.KEY_INTERFACES);
+            Map<String,Object> subtypes = (Map<String,Object>)typeMap.get(KEY_INTERFACES);
             Map<String,Object> childMap = null;
             int type = 0;
             if (subtypes != null) {
@@ -1113,7 +1251,7 @@ public class JsonPackage extends LazyPackage {
                 type = 1;
             }
             if (childMap == null) {
-                subtypes = (Map<String,Object>)typeMap.get(MetamodelGenerator.KEY_CLASSES);
+                subtypes = (Map<String,Object>)typeMap.get(KEY_CLASSES);
                 if (subtypes != null) {
                     childMap = (Map<String,Object>)subtypes.get(path[i]);
                     type = 2;

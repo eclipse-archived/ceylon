@@ -19,12 +19,20 @@
  */
 package com.redhat.ceylon.ceylondoc;
 
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.log.Logger;
 
 public class CeylondLogger implements Logger {
-
+    private boolean richFormatting;
+    private boolean verbose;
+    
     private int errors;
     
+    public CeylondLogger(boolean richFormatting, boolean verbose) {
+        this.richFormatting = richFormatting;
+        this.verbose = verbose;
+    }
+
     public int getErrors(){
         return errors;
     }
@@ -32,22 +40,36 @@ public class CeylondLogger implements Logger {
     @Override
     public void error(String str) {
         errors++;
-        System.err.println("Error: "+str);
+        if (richFormatting) {
+            System.err.println(OSUtil.color("Error", OSUtil.Color.red) + ": " + str);
+        } else {
+            System.err.println("Error: " + str);
+        }
     }
 
     @Override
     public void warning(String str) {
-        System.err.println("Warning: "+str);
+        if (richFormatting) {
+            System.err.println(OSUtil.color("Warning", OSUtil.Color.yellow) + ": " + str);
+        } else {
+            System.err.println("Warning: " + str);
+        }
     }
 
     @Override
     public void info(String str) {
-        System.err.println("Note: "+str);
+        if (richFormatting) {
+            System.err.println(OSUtil.color("Note", OSUtil.Color.green) + ": " + str);
+        } else {
+            System.err.println("Note: " + str);
+        }
     }
 
     @Override
     public void debug(String str) {
-        //System.err.println("Debug: "+str);
+        if (verbose) {
+            System.err.println("Debug: "+str);
+        }
     }
 
 }

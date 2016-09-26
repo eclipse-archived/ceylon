@@ -1,8 +1,29 @@
-# Ceylon distribution
+# Ceylon
 
-Here you can find out how to build a Ceylon distribution from code.
+This is the 1.3.1 _"Now We Try It My Way"_ release of the Ceylon 
+command line tools. This is a production version of the platform.
 
-## Distribution layout
+Ceylon is a modern, modular, statically typed programming language 
+for the Java and JavaScript virtual machines. The language features 
+a flexible and very readable syntax, a unique and uncommonly elegant 
+static type system, a powerful module architecture, and excellent 
+tooling, including an awesome Eclipse-based IDE.
+
+Ceylon enables the development of cross-platform modules which execute 
+portably in both virtual machine environments. Alternatively, a Ceylon 
+module may target one or the other platform, in which case it may 
+interoperate with native code written for that platform.
+
+Read more about Ceylon at <http://ceylon-lang.org>.
+
+## First steps
+
+If you installed Ceylon using your system's or a third-party's package 
+manager like apt-get, dnf, sdkman or brew there's nothing more for you 
+to do, everything should just work fine.
+
+If on the other hand you downloaded and extracted the ZIP file you 
+will see the following files and folders:
 
 - `bin`            - Unix/Windows commands
 - `contrib`        - Sample Ceylon command-line plugins
@@ -11,74 +32,54 @@ Here you can find out how to build a Ceylon distribution from code.
 - `repo`           - Required bootstrap Ceylon modules (language, tools)
 - `samples`        - Sample Ceylon modules
 - `templates`      - Templates for new Ceylon projects
+- `BUILDID`        - The Git commit id used to build this distribution
 - `LICENSE-ASL`    - The Ceylon ASL license
 - `LICENSE-GPL-CP` - The Ceylon GPL/CP license
+- `LICENSE-LGPL`   - The Ceylon LGPL license
+- `NOTICE`         - 3rd party licenses
 - `README.md`      - This file
 
-## Building the distribution
+The all-important `ceylon` command that is used for everything from 
+compiling and running code to creating projects and copying modules 
+can be found in the `bin` folder.
 
-To begin, make sure you have:
+For ease of use you might want to consider adding the `ceylon` command 
+to your `PATH`.
 
-- the [Java 7 JDK][] or [Java 8 JDK][] and [Ant 1.8+][] installed and that both are working
-correctly (if you installed Ant using your platform's package manager make
-sure it installed the `ant-junit.jar` as well, which can be found in a package
-named `ant-junit` or `ant-optional` depending on your distribution)
-- [Git set up][] correctly
-- created a new directory for the Ceylon project
-- opened a terminal and changed to the newly created directory
+- On Linux and Mac you can do this either by adding the `bin` folder 
+to your `PATH` environment variable or by creating a symbolic link to 
+`bin/ceylon` in an appropriate place like `~/bin`.
 
-[Java 7 JDK]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
-[Java 8 JDK]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
-[Ant 1.8+]: http://ant.apache.org/
-[Git set up]: https://help.github.com/articles/set-up-git
+- On Windows you can search for "advanced system settings", click the 
+"Environment Variables" button and add the path to the `bin` folder to 
+the `PATH` variable.
 
-And now you either set things up for HTTPS access (recommended for most people):
+NB: If you don't add Ceylon to your path you will have to always type 
+the path to the `bin/ceylon` command. So in every example that follows 
+you'll need to change `ceylon` to `/path/to/ceylon-1.3.1/bin/ceylon`.
 
-- Clone ceylon:
+## Trying it out
 
-<!-- lang: bash -->
-    $ git clone https://github.com/ceylon/ceylon.git
-        
-(If you encounter an issue like "fatal: unable to access 'https://github.com/ceylon/ceylon.git/': 
-Failed connect to github.com:443; No error", make sure you've set up your proxy as git config, ie: 
-<!-- lang: bash -->
-        $ git config --global http.proxy http://userName:password@proxyServer:port 
+To see if Ceylon was installed correctly type (the `$` is an indication 
+of your command line prompt and should *not* be typed when trying these 
+examples):
 
-that should fix it.)
-        
-- Go into the newly created `ceylon` directory and build the complete distribution by running:
+    $ ceylon --version
 
-<!-- lang: bash -->
-    $ ant clean dist
+You should see something like:
 
-After this you'll have a newly built distribution in the `dist` 
-folder of your current directory. You can run the `ceylon` command 
-without any further setup or installation by simply running
+    ceylon version 1.3.1-SNAPSHOT 1cac978 (Now We Try It My Way)
 
-<!-- lang: bash -->
-    $ dist/bin/ceylon
+## Tool usage
 
-But it's advisable to add the `ceylon` command to your `PATH` 
-environment variable (either by adding the `bin` folder to your 
-`PATH` or by creating a symbolic link to it in an appropriate place 
-like `~/bin/`).
+To see the list of subcommand that `ceylon` supports just type:
 
-If at any time you want to update the distribution to the latest 
-code from GitHub just run
+    $ ceylon
 
-<!-- lang: bash -->
-    $ git pull --rebase
-    $ ant clean dist
+You should see a short synopsis and then a list of subcommands like this 
+(you might see more options):
 
-NB: The `git pull --rebase` command assumes that your projects are "clean", 
-that is you don't have uncommitted changes. If that's not the case 
-you'll have to manually update those projects or first stash your 
-changes (using `git stash`).
-
-After the build finishes the command line tools will be located in 
-the `bin` directory.
-
-- `bin/ceylon`     - The ceylon tool which provides at least the following subcommands:
+    * `bootstrap`  - Generates a Ceylon bootstrap script in the current directory
     * `browse`     - Open module documentation in the browser
     * `classpath`  - Print a classpath suitable for passing to Java tools to run a given Ceylon module
     * `compile`    - Compile a Ceylon program for the Java backend
@@ -86,8 +87,10 @@ the `bin` directory.
     * `config`     - Manage Ceylon configuration files
     * `copy`       - Copy modules from one module repository to another
     * `doc`        - Document a Ceylon program
+    * `fat-jar`    - Generate a Ceylon executable jar for a given module
     * `help`       - Display help about another tool
     * `info`       - Print information about modules in repositories
+    * `jigsaw`     - Tools to interop with Java 9 (Jigsaw) modules
     * `import-jar` - Import a Java `.jar` file into a Ceylon module repository
     * `new`        - Generate a new Ceylon project
     * `plugin`     - Package or install command-line plugins
@@ -99,47 +102,132 @@ the `bin` directory.
     * `version`    - Show and update version numbers in module descriptors
     * `war`        - Generate a WAR file from a compiled `.car` file
 
-The API documentation for the language module `ceylon.language` may 
-be found here:
+Then to see a more detailed explanation of a particular subcommand, 
+use the `help` subcommand. For example, to get help on the `compile` 
+subcommand type:
 
-- `repo/ceylon/language/1.2.3.SNAPSHOT/module-doc/api`
+    $ ceylon help compile
 
 ## Running the sample programs
 
-To compile and run the samples, read the README.md contained in
-the `samples` sub folder for instructions.
+The `samples` folder contains several small sample programs. To compile 
+and run them, refer to the file `README.md` contained in the `samples` 
+folder for further instructions.
 
-## Tool usage
+## Write some code
 
-To see a list of command line options for a particular subcommand,
-use the `help` subcommand. For example, to get help on the `compile` 
-tool:
+A very easy we to quickly set up a module to compile is to use the 
+`ceylon new` command which creates the basic folder structure with the 
+necessary files. Create an empty folder, change into it and type:
 
-    ceylon help compile
+    $ ceylon new hello-world
 
-## Setting up Eclipse
+It will then ask you a series of questions:
 
-See [README.eclipse](../README.eclipse) for the instructions in setting up your Eclipse
-environment for Ceylon development.
+    Enter project folder name [helloworld]: .   
+    Enter module name [com.example.helloworld]: my.first.module
+    Enter module version [1.0.0]: 
+    Would you like to generate Eclipse project files? (y/n) [y]: 
+    Enter Eclipse project name [my.first.module]: 
+    Would you like to generate an ant build.xml? (y/n) [y]: 
 
-## Ant tasks for Ceylon
+In the above example we've accepted almost all the defaults except for 
+the project folder name which we've changed to the current folder `.` 
+and the name of the module where we've chosen "my.first.module". After 
+it has finished the command will have created some source files, an Ant 
+build file and will have prepared the project to be opened in Eclipse 
+if you want.
 
-We include support for Ceylon ant tasks which are documented at 
-<http://ceylon-lang.org/documentation/1.2/reference/tool/ant/>.
+You can now type:
 
-To run the "hello world" program using ant, type:
+    $ ceylon compile my.first.module
+    Note: Created module my.first.module/1.0.0
+    $ ceylon run my.first.module/1.0.0
+    Hello, World!
 
-    cd samples/helloworld
-    ant
+to compile and run the newly created module. (You can also type `ant` 
+if you let the tool create Ant build files).
 
-### Repository
+We'll be making a small change to the code so you can see what files
+are involved. For this run you favorite editor, here we'll just use 
+`vi`:
 
-The content of this code repository, [available here on GitHub][ceylon], 
-is released under the ASL v2.0 as provided in the `LICENSE-ASL` file 
-that accompanied this code.
+    $ vi source/my/first/module/run.ceylon
 
-[ceylon]: https://github.com/ceylon/ceylon
+Now change the second line to read:
 
-By submitting a "pull request" or otherwise contributing to this 
-repository, you agree to license your contribution under the license 
-mentioned above.
+    shared void hello(String name = "Ceylon") {
+
+and save and exit. When you now repeat the compile and run commands
+the output should read:
+
+    Hello, Ceylon
+
+This is the very simplistic start of an interesting journey in learning
+to program in Ceylon. For much more information continue to the next 
+section.
+
+## Learn more
+
+If you want to learn more about Ceylon you can go to the 
+[documentation][] section of the Ceylon web site, where you'll 
+find a [tour][], a [walkthrough][], and much more.
+
+[documentation]: http://www.ceylon-lang.org/documentation/current/
+[tour]: http://www.ceylon-lang.org/documentation/current/tour/
+[walkthrough]: http://www.ceylon-lang.org/documentation/current/walkthrough/
+
+## Source code
+
+The source code for Ceylon is completely Open Source and freely 
+available from <http://github.com/ceylon>.
+
+## Issues
+
+If you find a bug or have a suggestion or request, you may report 
+it in the GitHub [issue tracker][].
+
+[issue tracker]: http://github.com/ceylon/ceylon/issues
+
+## Contributing
+
+We're always looking for help, so if you would like to contribute 
+in any way look [here](http://www.ceylon-lang.org/code/contribute/) 
+for more information.
+
+## The Community
+
+If you have any questions or want to join the developers in their 
+discussions about current and future developments of the Ceylon 
+language or just chat with other users you can find a full list 
+of [possible channels][community] at the Ceylon web site. Good 
+options include:
+
+- the [user mailing list][], and 
+- the [user Gitter channel][].
+
+You can follow @ceylonlang on twitter.
+
+[community]: http://www.ceylon-lang.org/community/
+[user mailing list]: http://groups.google.com/group/ceylon-users
+[user Gitter channel]: https://gitter.im/ceylon/user
+
+## License
+
+The Ceylon distribution is and contains work released
+
+- partly under the ASL v2.0 as provided in the `LICENSE-ASL` file 
+  that accompanied this code, and
+- partly under the GPL v2 + Classpath Exception as provided in the 
+  `LICENSE-GPL-CP` file that accompanied this code.
+
+### License terms for 3rd Party Works
+
+This software uses a number of other works, the license terms of 
+which are documented in the `NOTICE` file that accompanied this code.
+
+## Acknowledgement
+
+We're deeply indebted to the community volunteers who contributed a 
+substantial part of the current Ceylon code base, working often in 
+their own spare time.

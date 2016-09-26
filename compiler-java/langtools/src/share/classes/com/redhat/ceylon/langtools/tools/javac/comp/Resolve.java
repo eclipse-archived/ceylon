@@ -4076,12 +4076,12 @@ public class Resolve {
                         pos, location, site, name, argtypes, typeargtypes);
             }
             else {
-                if (scopeModule.isDefault()) {
+                if (scopeModule.isDefaultModule()) {
                     return diags.create(dkind, log.currentSource(),
-                            pos, "package.not.found.in.imports.default", pkgSymbol(sym));
+                            pos, "ceylon.package.not.found.in.imports.default", pkgSymbol(sym));
                 } else {
                     return diags.create(dkind, log.currentSource(),
-                            pos, "package.not.found.in.imports.nondefault", pkgSymbol(sym), scopeModule.getNameAsString());
+                            pos, "ceylon.package.not.found.in.imports.nondefault", pkgSymbol(sym), scopeModule.getNameAsString());
                 }
             }
             

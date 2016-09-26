@@ -30,7 +30,7 @@ final class InterfaceMemberClassCtor$impl implements .java.io.Serializable {
     
     public static final class Member$other {
         
-        private Member$other() {
+        Member$other() {
         }
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.Member$other Member$other = null;
@@ -99,7 +99,7 @@ final class InterfaceMemberClassCtor$impl implements .java.io.Serializable {
     
     public static final class SharedMember$other {
         
-        private SharedMember$other() {
+        SharedMember$other() {
         }
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other SharedMember$other = null;
@@ -153,7 +153,9 @@ final class InterfaceMemberClassCtor$impl implements .java.io.Serializable {
         other.SharedMember$new$(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor$impl.SharedMember$other, 17L);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.structure.constructor::InterfaceMemberClassCtor"})
 class InterfaceMemberClassCtorImpl implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor, .java.io.Serializable {
     
@@ -215,7 +217,9 @@ class InterfaceMemberClassCtorImpl implements .com.redhat.ceylon.compiler.java.r
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtorImpl.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class useInterfaceMemberClassCtor_ {
     

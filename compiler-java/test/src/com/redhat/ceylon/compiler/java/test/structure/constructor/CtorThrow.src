@@ -14,7 +14,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class throws_ {
         
-        private throws_() {
+        throws_() {
         }
     }
     
@@ -30,7 +30,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class throwIfTrue_ {
         
-        private throwIfTrue_() {
+        throwIfTrue_() {
         }
     }
     
@@ -49,7 +49,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class throwIfFalse_ {
         
-        private throwIfFalse_() {
+        throwIfFalse_() {
         }
     }
     
@@ -68,7 +68,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class throwWhileTrue_ {
         
-        private throwWhileTrue_() {
+        throwWhileTrue_() {
         }
     }
     
@@ -91,7 +91,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class throwWhileFalse_ {
         
-        private throwWhileFalse_() {
+        throwWhileFalse_() {
         }
     }
     
@@ -114,7 +114,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class assertFalse_ {
         
-        private assertFalse_() {
+        assertFalse_() {
         }
     }
     
@@ -130,7 +130,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class assertFalseIfTrue_ {
         
-        private assertFalseIfTrue_() {
+        assertFalseIfTrue_() {
         }
     }
     
@@ -149,7 +149,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class assertFalseIfFalse_ {
         
-        private assertFalseIfFalse_() {
+        assertFalseIfFalse_() {
         }
     }
     
@@ -168,7 +168,7 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     public static final class assertFalseFor_ {
         
-        private assertFalseFor_() {
+        assertFalseFor_() {
         }
     }
     
@@ -176,13 +176,16 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     public CtorThrow(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.assertFalseFor_ $name$) {
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
         $return$$16: do {
-            .java.lang.Object elem$17;
-            .ceylon.language.Iterator<? extends .ceylon.language.Integer> x$iterator$$18 = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})).iterator();
-            loop_2: while (!((elem$17 = x$iterator$$18.next()) instanceof .ceylon.language.Finished)) {
-                final long x = ((.ceylon.language.Integer)elem$17).longValue();
+            boolean loopentered$17 = false;
+            .java.lang.Object elem$18;
+            .ceylon.language.Iterator<? extends .ceylon.language.Integer> x$iterator$$19 = ((.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)})).iterator();
+            loop_2: while (!((elem$18 = x$iterator$$19.next()) instanceof .ceylon.language.Finished)) {
+                loopentered$17 = true;
+                final long x = ((.ceylon.language.Integer)elem$18).longValue();
                 .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("2");
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "false"));
             }
+            if (!loopentered$17) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
         }         while (false);
     }
     
@@ -192,7 +195,9 @@ class CtorThrow implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorThrow.class);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 final class ctorThrow_ {
     

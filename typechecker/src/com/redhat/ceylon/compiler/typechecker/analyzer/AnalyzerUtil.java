@@ -6,8 +6,6 @@ import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.unwrapExpressionUntilTerm;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.intersectionType;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isBooleanFalse;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isBooleanTrue;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isForBackend;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNamed;
@@ -19,7 +17,6 @@ import static java.lang.Character.isUpperCase;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -34,9 +31,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassBody;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeVariance;
 import com.redhat.ceylon.compiler.typechecker.util.NormalizedLevenshtein;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.loader.NamingBase;
+import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -65,26 +66,36 @@ import com.redhat.ceylon.model.typechecker.model.Value;
 public class AnalyzerUtil {
     
 //    static final JaroWinkler distance = new JaroWinkler();
-    static final NormalizedLevenshtein distance = new NormalizedLevenshtein();
+    static final NormalizedLevenshtein distance = 
+            new NormalizedLevenshtein();
     
     static final List<Type> NO_TYPE_ARGS = emptyList();
     
     static TypedDeclaration getTypedMember(TypeDeclaration td, 
             String name, List<Type> signature, boolean ellipsis, 
-            Unit unit) {
+            Unit unit, Scope scope) {
         Declaration member = 
                 td.getMember(name, unit, signature, ellipsis);
         if (member instanceof TypedDeclaration) {
             return (TypedDeclaration) member;
         }
         else {
+            if (td.isJava()
+                    && isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && !JvmBackendUtil.isInitialLowerCase(name)) {
+                name = NamingBase.getJavaBeanName(name);
+                member = td.getMember(name, unit, signature, ellipsis);
+                if (member instanceof TypedDeclaration) {
+                    return (TypedDeclaration) member;
+                }
+            }
             return null;
         }
     }
 
     static TypeDeclaration getTypeMember(TypeDeclaration td, 
             String name, List<Type> signature, boolean ellipsis, 
-            Unit unit) {
+            Unit unit, Scope scope) {
         Declaration member = 
                 td.getMember(name, unit, signature, ellipsis);
         if (member instanceof TypeDeclaration) {
@@ -95,6 +106,20 @@ public class AnalyzerUtil {
                     (TypedDeclaration) member);
         }
         else {
+            if (td.isJava()
+                    && isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && JvmBackendUtil.isInitialLowerCase(name)) {
+                name = NamingBase.capitalize(name);
+                member = 
+                        td.getMember(name, unit, signature, ellipsis);
+                if (member instanceof TypeDeclaration) {
+                    return (TypeDeclaration) member;
+                }
+                else if (member instanceof TypedDeclaration) {
+                    return anonymousType(name, 
+                            (TypedDeclaration) member);
+                }
+            }
             return null;
         }
     }
@@ -109,6 +134,30 @@ public class AnalyzerUtil {
             return (TypedDeclaration) result;
         }
         else {
+            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && !JvmBackendUtil.isInitialLowerCase(name)) {
+                name = NamingBase.getJavaBeanName(name);
+                // This method is used for base members, not qualified members
+                // so we don't look for members but we look on the scope, which
+                // may contain values with the modified case. For example, given
+                // import Foo { ... } which contains a \iBAR we map to "bar",
+                // if we look on the scope for "bar" we may find one that is not
+                // the one we wanted to import, so try imports first.
+                result = unit.getImportedDeclaration(name, 
+                        signature, ellipsis);
+                if(result != null && !result.isJava()){
+                    result = null;
+                }else if(result instanceof TypedDeclaration)
+                    return (TypedDeclaration) result;
+                result = 
+                        scope.getMemberOrParameter(unit, 
+                                name, signature, ellipsis);
+                if(result != null && !result.isJava()){
+                    result = null;
+                }else if (result instanceof TypedDeclaration) {
+                    return (TypedDeclaration) result;
+                }
+            }
             return null;
         }
     }
@@ -127,6 +176,39 @@ public class AnalyzerUtil {
                     (TypedDeclaration) result);
         }
         else {
+            if (isForBackend(scope.getScopedBackends(), Backend.Java) 
+                    && JvmBackendUtil.isInitialLowerCase(name)) {
+                name = NamingBase.capitalize(name);
+                // This method is used for base members, not qualified members
+                // so we don't look for members but we look on the scope, which
+                // may contain values with the modified case. For example, given
+                // import Foo { ... } which contains a \iBAR we map to "bar",
+                // if we look on the scope for "bar" we may find one that is not
+                // the one we wanted to import, so try imports first.
+                result = unit.getImportedDeclaration(name, 
+                        signature, ellipsis);
+                if(result != null && !result.isJava()){
+                    result = null;
+                }else if (result instanceof TypeDeclaration) {
+                    return (TypeDeclaration) result;
+                }
+                else if (result instanceof TypedDeclaration) {
+                    return anonymousType(name, 
+                            (TypedDeclaration) result);
+                }
+                result = 
+                        scope.getMemberOrParameter(unit, 
+                                name, signature, ellipsis);
+                if(result != null && !result.isJava()){
+                    result = null;
+                }else if (result instanceof TypeDeclaration) {
+                    return (TypeDeclaration) result;
+                }
+                else if (result instanceof TypedDeclaration) {
+                    return anonymousType(name, 
+                            (TypedDeclaration) result);
+                }
+            }
         	return null;
         }
     }
@@ -179,17 +261,24 @@ public class AnalyzerUtil {
         return null;
     }
     
-    private static String best(final String name, 
-            Collection<String> names) {
-        if (names.isEmpty()) {
+    private static DeclarationWithProximity best(final String name, 
+            Map<String,DeclarationWithProximity> suggestions) {
+        suggestions.remove(name); //don't ever suggest the name itself
+        if (suggestions.isEmpty()) {
             return null;
         }
         final boolean ucase = isUpperCase(name.charAt(0));
-        String best = Collections.max(
-                names, 
-                new Comparator<String>() {
+        DeclarationWithProximity best = 
+                Collections.max(suggestions.values(), 
+                new Comparator<DeclarationWithProximity>() {
             @Override
-            public int compare(String x, String y) {
+            public int compare(DeclarationWithProximity xe, 
+                               DeclarationWithProximity ye) {
+                //don't use the keys because for 
+                //unimported declarations they are
+                //qualified names!
+                String x = xe.getName();
+                String y = ye.getName();
                 boolean xucase = isUpperCase(x.charAt(0));
                 boolean yucase = isUpperCase(y.charAt(0));
                 if (ucase==xucase && ucase!=yucase) {
@@ -198,24 +287,98 @@ public class AnalyzerUtil {
                 if (ucase==yucase && ucase!=xucase) {
                     return -1;
                 }
-                return Double.compare(
+                int comp = Double.compare(
                         distance.similarity(name, x),
                         distance.similarity(name, y));
+                if (comp==0) {
+                    comp = - Integer.compare(
+                        xe.getProximity(), 
+                        ye.getProximity());
+                }
+                return comp;
             }
         });
-        return distance.similarity(name, best)>0.6 ? best : null;
+        return distance.similarity(name, best.getName()) > 0.5 ? 
+                best : null;
     }
     
-    public static String correct(Scope scope, Unit unit, String name) {
+    private static DeclarationWithProximity correct(
+            Scope scope, Unit unit, String name, 
+            Cancellable canceller) {
+        if (canceller != null 
+                && canceller.isCancelled()) {
+            return null;
+        }
         return best(name, 
-                scope.getMatchingDeclarations(unit, "", 0, null)
-                    .keySet());
+                scope.getMatchingDeclarations(unit, 
+                        //pass a prefix here, or otherwise
+                        //it won't search all importable
+                        //packages
+                        name.substring(0, 1), 
+                        0, canceller));
+    }
+
+    private static DeclarationWithProximity correct(
+            Package scope, String name,
+            Cancellable canceller) {
+        if (canceller != null 
+                && canceller.isCancelled()) {
+            return null;
+        }
+        return best(name, 
+                scope.getMatchingDirectDeclarations(
+                        "", 0, canceller));
+    }
+
+    private static DeclarationWithProximity correct(
+            TypeDeclaration type, Scope scope, Unit unit, String name, 
+            Cancellable canceller) {
+        if (canceller != null 
+                && canceller.isCancelled()) {
+            return null;
+        }
+        return best(name,
+                type.getMatchingMemberDeclarations(unit, 
+                        scope, "", 0, canceller));
     }
     
-    public static String correct(TypeDeclaration type, Scope scope, Unit unit, String name) {
-        return best(name, 
-                type.getMatchingMemberDeclarations(unit, scope, "", 0)
-                    .keySet());
+    static List<SiteVariance> getVariances(
+            Tree.TypeArguments tas,
+            List<TypeParameter> typeParameters) {
+        if (tas instanceof Tree.TypeArgumentList) {
+            Tree.TypeArgumentList tal = 
+                    (Tree.TypeArgumentList) tas;
+            int size = typeParameters.size();
+            List<SiteVariance> variances = 
+                    new ArrayList<SiteVariance>(size);
+            List<Tree.Type> types = tal.getTypes();
+            int count = types.size();
+            for (int i=0; i<count; i++) {
+                Tree.Type type = types.get(i);
+                if (type instanceof Tree.StaticType) {
+                    Tree.StaticType st = 
+                            (Tree.StaticType) type;
+                    TypeVariance tv = 
+                            st.getTypeVariance();
+                    if (tv!=null) {
+                        boolean contra = 
+                                tv.getText()
+                                  .equals("in");
+                        variances.add(contra?IN:OUT);
+                    }
+                    else {
+                        variances.add(null);
+                    }
+                }
+                else {
+                    variances.add(null);
+                }
+            }
+            return variances;
+        }
+        else {
+            return emptyList();
+        }
     }
     
     /**
@@ -468,6 +631,9 @@ public class AnalyzerUtil {
     
     static boolean checkCallable(Type type, Node node, String message) {
         Unit unit = node.getUnit();
+        if (type!=null) {
+            type = type.resolveAliases();
+        }
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
             return false;
@@ -514,7 +680,6 @@ public class AnalyzerUtil {
     
     static Type checkSupertype(Type type, boolean unary, 
             TypeDeclaration td, Node node, String message) {
-
         if (isTypeUnknown(type)) {
             addTypeUnknownError(node, type, message);
             return null;
@@ -591,10 +756,17 @@ public class AnalyzerUtil {
 
     static String notAssignableMessage(Type type,
             Type supertype, Node node) {
-        return typingMessage(type, 
-                " is not assignable to ", 
-                supertype, 
-                node.getUnit());
+        Unit unit = node.getUnit();
+        String result = 
+                typingMessage(type,
+                    " is not assignable to ",
+                    supertype, unit);
+        if (unit.isCallableType(type)
+                && unit.getCallableReturnType(type)
+                    .isSubtypeOf(supertype)) {
+            result += " (specify arguments to the function reference)";
+        }
+        return result;
     }
 
     static void checkAssignable(Type type, 
@@ -704,12 +876,6 @@ public class AnalyzerUtil {
         }
     }
 
-    static boolean inLanguageModule(Unit unit) {
-        return unit.getPackage()
-                .getQualifiedNameString()
-                .startsWith(Module.LANGUAGE_MODULE_NAME);
-    }
-
     static String typeDescription(TypeDeclaration td, Unit unit) {
         String name = td.getName();
         if (td instanceof TypeParameter) {
@@ -746,17 +912,11 @@ public class AnalyzerUtil {
                         (Tree.BooleanCondition) c;
                 Tree.Expression ex = bc.getExpression();
                 if (ex!=null) {
-                    Tree.Term term = 
-                            unwrapExpressionUntilTerm(ex);
-                    //TODO: take into account conjunctions/disjunctions
-                    if (term instanceof Tree.BaseMemberExpression) {
-                        Tree.BaseMemberExpression bme = 
-                                (Tree.BaseMemberExpression) 
-                                    term;
-                        Declaration d = bme.getDeclaration();
-                        if (isBooleanTrue(d)) {
-                            continue;
-                        }
+                    Type type = ex.getTypeModel();
+                    if (type!=null && 
+                            type.getDeclaration()
+                                .isTrueValue()) {
+                        continue;
                     }
                 }
             }
@@ -773,17 +933,11 @@ public class AnalyzerUtil {
                         (Tree.BooleanCondition) c;
                 Tree.Expression ex = bc.getExpression();
                 if (ex!=null) {
-                    Tree.Term term = 
-                            unwrapExpressionUntilTerm(ex);
-                    //TODO: take into account conjunctions/disjunctions
-                    if (term instanceof Tree.BaseMemberExpression) {
-                        Tree.BaseMemberExpression bme = 
-                                (Tree.BaseMemberExpression) 
-                                    term;
-                        Declaration d = bme.getDeclaration();
-                        if (isBooleanFalse(d)) {
-                            return true;
-                        }
+                    Type type = ex.getTypeModel();
+                    if (type!=null && 
+                            type.getDeclaration()
+                                .isFalseValue()) {
+                        return true;
                     }
                 }
             }
@@ -811,25 +965,30 @@ public class AnalyzerUtil {
     }
 
     static boolean declaredInPackage(Declaration dec, Unit unit) {
-        return dec.getUnit().getPackage().equals(unit.getPackage());
+        return dec.getUnit().getPackage()
+                .equals(unit.getPackage());
     }
 
     /**
      * Does not unwrap primary expressions
      */
-    public static boolean isIndirectInvocation(Tree.InvocationExpression that) {
+    public static boolean isIndirectInvocation(
+            Tree.InvocationExpression that) {
         return isIndirectInvocation(that, false);
     }
 
     /**
      * Unwraps primary expressions if you tell it to
      */
-    public static boolean isIndirectInvocation(Tree.InvocationExpression that, boolean unwrap) {
+    public static boolean isIndirectInvocation(
+            Tree.InvocationExpression that, boolean unwrap) {
         return isIndirectInvocation(that.getPrimary(), unwrap);
     }
 
-    private static boolean isIndirectInvocation(Tree.Primary primary, boolean unwrap) {
-    	Tree.Term term = unwrap ? unwrapExpressionUntilTerm(primary) : primary;
+    private static boolean isIndirectInvocation(
+            Tree.Primary primary, boolean unwrap) {
+    	Tree.Term term = unwrap ? 
+    	        unwrapExpressionUntilTerm(primary) : primary;
         if (term instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
                     (Tree.MemberOrTypeExpression) term;
@@ -963,11 +1122,13 @@ public class AnalyzerUtil {
                         checkSpreadArgumentSequential((Tree.SpreadArgument) a, et);
                     }*/
                     ut = unit.getIteratedType(et);
-                    result = spreadType(et, unit, requireSequential);
+                    result = spreadType(et, unit, 
+                                requireSequential);
                 }
                 else if (a instanceof Tree.Comprehension) {
                     ut = et;
-                    Tree.Comprehension c = (Tree.Comprehension) a;
+                    Tree.Comprehension c = 
+                            (Tree.Comprehension) a;
                     Tree.InitialComprehensionClause icc = 
                             c.getInitialComprehensionClause();
                     result = icc.getPossiblyEmpty() ? 
@@ -1193,77 +1354,79 @@ public class AnalyzerUtil {
         return type;
     }
 
-    static Package importedPackage(Tree.ImportPath path, ModuleSourceMapper moduleSourceMapper) {
-            if (path!=null && 
-                    !path.getIdentifiers().isEmpty()) {
-                String nameToImport = 
-                        formatPath(path.getIdentifiers());
-                Module module = 
-                        path.getUnit()
-                            .getPackage()
-                            .getModule();
-                Package pkg = module.getPackage(nameToImport);
-                if (pkg != null) {
-                    if (pkg.getModule().equals(module)) {
-                        return pkg;
-                    }
-                    if (!pkg.isShared()) {
-                        path.addError("imported package is not shared: '" + 
-                                nameToImport + "'", 402);
-                    }
-    //                if (module.isDefault() && 
-    //                        !pkg.getModule().isDefault() &&
-    //                        !pkg.getModule().getNameAsString()
-    //                            .equals(Module.LANGUAGE_MODULE_NAME)) {
-    //                    path.addError("package belongs to a module and may not be imported by default module: " +
-    //                            nameToImport);
-    //                }
-                    //check that the package really does belong to
-                    //an imported module, to work around bug where
-                    //default package thinks it can see stuff in
-                    //all modules in the same source dir
-                    Set<Module> visited = new HashSet<Module>();
-                    for (ModuleImport mi: module.getImports()) {
-                        if (findModuleInTransitiveImports(
-                                mi.getModule(), 
-                                pkg.getModule(), 
-                                visited)) {
-                            return pkg; 
-                        }
-                    }
+    static Package importedPackage(Tree.ImportPath path, Unit unit) {
+        if (path!=null && 
+                !path.getIdentifiers().isEmpty()) {
+            String nameToImport = 
+                    formatPath(path.getIdentifiers());
+            Module module = 
+                    path.getUnit()
+                        .getPackage()
+                        .getModule();
+            Package pkg = module.getPackage(nameToImport);
+            if (pkg != null) {
+                Module pkgMod = pkg.getModule();
+                if (pkgMod.equals(module)) {
+                    return pkg;
                 }
-                else {
-                    for (ModuleImport mi: module.getImports()) {
-                        if (mi.isNative()) {
-                            String name = 
-                                    mi.getModule()
-                                        .getNameAsString();
-                            if (!isForBackend(mi.getNativeBackends(), path.getUnit()) &&
-                                    (nameToImport.equals(name) ||
-                                     nameToImport.startsWith(name + "."))) {
-                                return null;
-                            }
-                            if (!isForBackend(Backend.Java.asSet(), path.getUnit()) &&
-                                    moduleSourceMapper.getJdkProvider().isJDKPackage(nameToImport)) {
-                                return null;
-                            }
-                        }
+                if (!pkg.isShared()) {
+                    path.addError("imported package is not shared: '" + 
+                            nameToImport + "' is not annotated 'shared' in '" +
+                            pkgMod.getNameAsString() + "'", 402);
+                }
+//                if (module.isDefault() && 
+//                        !pkg.getModule().isDefault() &&
+//                        !pkg.getModule().getNameAsString()
+//                            .equals(Module.LANGUAGE_MODULE_NAME)) {
+//                    path.addError("package belongs to a module and may not be imported by default module: " +
+//                            nameToImport);
+//                }
+                //check that the package really does belong to
+                //an imported module, to work around bug where
+                //default package thinks it can see stuff in
+                //all modules in the same source dir
+                Set<Module> visited = new HashSet<Module>();
+                for (ModuleImport mi: module.getImports()) {
+                    if (findModuleInTransitiveImports(
+                            mi.getModule(), 
+                            pkgMod, 
+                            visited)) {
+                        return pkg; 
                     }
                 }
-                String help;
-                if (module.isDefault()) {
-                    help = " (define a module and add module import to its module descriptor)";
-                }
-                else {
-                    help = " (add module import to module descriptor of '" +
-                            module.getNameAsString() + "')";
-                }
-                path.addError("package not found in imported modules: '" + 
-                        nameToImport + "'" + help, 7000);
             }
-            return null;
+            else {
+                for (ModuleImport mi: module.getImports()) {
+                    if (mi.isNative()) {
+                        String name = 
+                                mi.getModule()
+                                    .getNameAsString();
+                        if (!isForBackend(mi.getNativeBackends(), 
+                                          path.getUnit()
+                                              .getSupportedBackends()) &&
+                                (nameToImport.equals(name) ||
+                                 nameToImport.startsWith(name + "."))) {
+                            return null;
+                        }
+                        if (!isForBackend(Backend.Java.asSet(), 
+                                          path.getUnit()
+                                              .getSupportedBackends()) &&
+                                unit.isJdkPackage(nameToImport)) {
+                            return null;
+                        }
+                    }
+                }
+            }
+            String help = module.isDefaultModule() ? 
+                    " (define a module and add module import to its module descriptor)" : 
+                    " (add module import to module descriptor of '" +
+                        module.getNameAsString() + "')";
+            path.addError("package not found in imported modules: '" + 
+                    nameToImport + "'" + help, 7000);
         }
-
+        return null;
+    }
+    
     static Module importedModule(Tree.ImportPath path) {
         if (path!=null && 
                 !path.getIdentifiers().isEmpty()) {
@@ -1276,10 +1439,11 @@ public class AnalyzerUtil {
             Package pkg = module.getPackage(nameToImport);
             if (pkg != null) {
                 Module mod = pkg.getModule();
-                if (!pkg.getNameAsString()
-                        .equals(mod.getNameAsString())) {
+                String moduleName = mod.getNameAsString();
+                if (!pkg.getNameAsString().equals(moduleName)) {
                     path.addError("not a module: '" + 
-                            nameToImport + "'");
+                            nameToImport + "' is a package belonging to '" +
+                            moduleName + "'");
                     return null;
                 }
                 if (mod.equals(module)) {
@@ -1334,11 +1498,77 @@ public class AnalyzerUtil {
                 unit.getPackage()
                     .getQualifiedNameString();
         String name = name(that.getIdentifier());
-        return "ceylon.language".equals(pname) &&
+        return Module.LANGUAGE_MODULE_NAME.equals(pname) &&
                 ("Anything".equalsIgnoreCase(name) ||
                 "Object".equalsIgnoreCase(name) ||
                 "Basic".equalsIgnoreCase(name) ||
                 "Null".equalsIgnoreCase(name));
+    }
+
+    static boolean hasUncheckedNullType(Reference member) {
+        Declaration dec = member.getDeclaration();
+        return dec instanceof TypedDeclaration && 
+                ((TypedDeclaration) dec)
+                    .hasUncheckedNullType();
+    }
+
+    static String correctionMessage(String name, 
+            Scope scope, Unit unit, Cancellable cancellable) {
+        DeclarationWithProximity correction = 
+                correct(scope, unit, name, cancellable);
+        if (correction!=null) {
+            if (correction.getName().equals(name)) {
+                if (correction.isUnimported()) {
+                    return " might be misspelled or is not imported (did you mean to import it from '" 
+                        + correction.packageName() + "'?)";
+                }
+                else {
+                    return "";
+                }
+            }
+            else {
+                if (correction.isUnimported()) {
+                    return " might be misspelled or is not imported (did you mean '" 
+                        + correction.realName(unit) + "' from '" 
+                        + correction.packageName() + "'?)";
+                }
+                else {
+                    return " might be misspelled or is not imported (did you mean '" 
+                        + correction.realName(unit) + "'?)";
+                }
+            }
+        }
+        else {
+            return " might be misspelled or is not imported";
+        }
+    }
+
+    static String memberCorrectionMessage(String name, 
+            TypeDeclaration d, Scope scope, Unit unit, 
+            Cancellable cancellable) {
+        DeclarationWithProximity correction =
+                correct(d, scope, unit, name, cancellable);
+        if (correction==null) {
+            return " might be misspelled";
+        }
+        else {
+            return " might be misspelled (did you mean '" 
+                + correction.realName(unit) + "'?)";
+        }
+    }
+
+    static String importCorrectionMessage(String name, 
+            Package scope, Unit unit, 
+            Cancellable cancellable) {
+        DeclarationWithProximity correction =
+                correct(scope, name, cancellable);
+        if (correction==null) {
+            return " might be misspelled or does not belong to this package";
+        }
+        else {
+            return " might be misspelled or does not belong to this package (did you mean '" 
+                + correction.realName(unit) + "'?)";
+        }
     }
 
 }

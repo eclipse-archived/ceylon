@@ -18,7 +18,7 @@ public final class objectDeclContainingClassWithCtor_ {
             
             class Bar$baz {
                 
-                private Bar$baz() {
+                Bar$baz() {
                 }
             }
             

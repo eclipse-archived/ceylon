@@ -1,20 +1,21 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel.decl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.AnnotatedElement;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ServiceLoader;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import ceylon.language.Resource;
-import ceylon.language.Sequential;
-import ceylon.language.meta.declaration.Import;
-import ceylon.language.meta.declaration.Package;
-
+import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.compiler.java.Util;
+import com.redhat.ceylon.compiler.java.language.AbstractCallable;
 import com.redhat.ceylon.compiler.java.language.ByteArrayResource;
 import com.redhat.ceylon.compiler.java.language.FileResource;
 import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
@@ -30,6 +31,21 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+
+import ceylon.language.Callable;
+import ceylon.language.Empty;
+import ceylon.language.Iterable;
+import ceylon.language.Null;
+import ceylon.language.Resource;
+import ceylon.language.Sequential;
+import ceylon.language.Tuple;
+import ceylon.language.finished_;
+import ceylon.language.impl.BaseIterable;
+import ceylon.language.impl.BaseIterator;
+import ceylon.language.meta.type_;
+import ceylon.language.meta.declaration.Import;
+import ceylon.language.meta.declaration.Package;
+import ceylon.language.meta.model.ClassOrInterface;
 
 public class ModuleImpl implements ceylon.language.meta.declaration.Module,
         AnnotationBearing,
@@ -49,7 +65,7 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
     @Override
     @Ignore
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
-        if(declaration.isDefault() || declaration.isJava())
+        if(declaration.isDefaultModule() || declaration.isJava())
             return NO_ANNOTATION;
         return Metamodel.getJavaClass(declaration).getAnnotations();
     }
@@ -57,7 +73,7 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
     @Override
     @Ignore
     public boolean $isAnnotated$(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) {
-        if(declaration.isDefault() || declaration.isJava())
+        if(declaration.isDefaultModule() || declaration.isJava())
             return false;
         final AnnotatedElement element = Metamodel.getJavaClass(declaration);;
         return element != null ? element.isAnnotationPresent(annotationType) : false;
@@ -131,6 +147,7 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
         } else {
             fullPath = fullPath.substring(1);
         }
+        fullPath = JVMModuleUtil.quoteJavaKeywordsInFilename(fullPath);
         
         // First lets ask the module manager for the contents of the resource
         RuntimeModuleManager moduleManager = Metamodel.getModuleManager();
@@ -166,6 +183,22 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
                 return new FileResource(target);
             }
         }
+        //One last shot: we might be in a fat jar
+        try (InputStream stream = getClass().getClassLoader().getResourceAsStream(fullPath)) {
+            if (stream != null) {
+                byte[] buf = new byte[16384];
+                ByteArrayOutputStream bout = new ByteArrayOutputStream();
+                int bytesRead = stream.read(buf);
+                while (bytesRead > 0) {
+                    bout.write(buf,0,bytesRead);
+                    bytesRead = stream.read(buf);
+                }
+                return new ByteArrayResource(bout.toByteArray(), new URI("classpath:" + fullPath));
+            }
+        } catch (IOException | URISyntaxException ex) {
+            throw new ceylon.language.Exception(new ceylon.language.String(
+                    "Searching for resource " + path), ex);
+        }
         
         return null;
     }
@@ -185,6 +218,52 @@ public class ModuleImpl implements ceylon.language.meta.declaration.Module,
     @TypeInfo("ceylon.language::String")
     public String getVersion() {
         return declaration.getVersion();
+    }
+    
+    @Override 
+    @TypeInfo("{Service*}")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public <Service> ceylon.language.Iterable<? extends Service, ? extends Object> 
+            findServiceProviders(
+                    final TypeDescriptor $reified$Service, 
+                    ClassOrInterface<? extends Service> service) {
+        // TODO Don't we have something to wrap java iterables in the language module?
+        class It extends BaseIterable<Service,Object> {
+            private final ServiceLoader<Service> sl;
+            public It(ServiceLoader<Service> sl) {
+                super($reified$Service, Null.$TypeDescriptor$);
+                this.sl = sl;
+            }
+            public ceylon.language.Iterator<? extends Service> iterator() {
+                return new BaseIterator<Service>($reified$Service) {
+                    java.util.Iterator<Service> it = sl.iterator();
+                    @Override
+                    public Object next() {
+                        if (it.hasNext()) {
+                            return it.next();
+                        }
+                        return finished_.get_();
+                    }
+                };
+            }
+        }
+        
+        java.lang.Class<Service> klass = (java.lang.Class)Metamodel.getJavaClass(((ClassOrInterfaceDeclarationImpl)service.getDeclaration()).declaration);
+        ServiceLoader<Service> moduleServices = ServiceLoader.<Service>load(klass, Metamodel.getJavaClass(this.declaration).getClassLoader());
+        ServiceLoader<Service> extensionServices = ServiceLoader.loadInstalled(klass);
+        ceylon.language.Iterable<? extends Service,? extends Object> services = new It(moduleServices).<Service,Object>chain($reified$Service, Null.$TypeDescriptor$, new It(extensionServices));
+        // now have to filter the services to return only those which satisfy 
+        // the service type (reified) not merely the java.lang.Class
+        return services.filter(new AbstractCallable<ceylon.language.Boolean>(ceylon.language.Boolean.$TypeDescriptor$, 
+                TypeDescriptor.klass(Tuple.class, $reified$Service, $reified$Service, Empty.$TypeDescriptor$), 
+                "Boolean(Service)", (short)-1) {
+            public ceylon.language.Boolean $call$(java.lang.Object arg0) {
+                Service service = (Service)arg0;
+                return ceylon.language.Boolean.instance(
+                        type_.type(null, service).subtypeOf(
+                                Metamodel.getAppliedMetamodel($reified$Service)));
+            }
+        });
     }
 
     @Override

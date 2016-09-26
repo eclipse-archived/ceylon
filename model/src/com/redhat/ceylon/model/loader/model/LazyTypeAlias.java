@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.loader.model;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -49,26 +50,32 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
 
     private void load() {
         if(!isLoaded2){
-            synchronized(completer.getLock()){
-                loadTypeParams();
-                if(!isLoaded){
-                    isLoaded = true;
-                    completer.complete(this);
-                    isLoaded2 = true;
+            completer.synchronizedRun(new Runnable() {
+                @Override
+                public void run() {
+                    loadTypeParams();
+                    if(!isLoaded){
+                        isLoaded = true;
+                        completer.complete(LazyTypeAlias.this);
+                        isLoaded2 = true;
+                    }
                 }
-            }
+            });
         }
     }
 
     private void loadTypeParams() {
         if(!isTypeParamsLoaded2){
-            synchronized(completer.getLock()){
-                if(!isTypeParamsLoaded){
-                    isTypeParamsLoaded = true;
-                    completer.completeTypeParameters(this);
-                    isTypeParamsLoaded2 = true;
+            completer.synchronizedRun(new Runnable() {
+                @Override
+                public void run() {
+                    if(!isTypeParamsLoaded){
+                        isTypeParamsLoaded = true;
+                        completer.completeTypeParameters(LazyTypeAlias.this);
+                        isTypeParamsLoaded2 = true;
+                    }
                 }
-            }
+            });
         }
     }
 
@@ -226,21 +233,33 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     }
 
     @Override
-    public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity) {
+    public Map<String, DeclarationWithProximity> getImportableDeclarations(Unit unit, String startingWith, List<Import> imports, int proximity, Cancellable canceller) {
+        if (canceller != null
+                && canceller.isCancelled()) {
+            return Collections.emptyMap();
+        }
         load();
-        return super.getImportableDeclarations(unit, startingWith, imports, proximity);
+        return super.getImportableDeclarations(unit, startingWith, imports, proximity, canceller);
     }
 
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity, Cancellable cancellable) {
+    public Map<String, DeclarationWithProximity> getMatchingDeclarations(Unit unit, String startingWith, int proximity, Cancellable canceller) {
+        if (canceller != null
+                && canceller.isCancelled()) {
+            return Collections.emptyMap();
+        }
         load();
-        return super.getMatchingDeclarations(unit, startingWith, proximity, cancellable);
+        return super.getMatchingDeclarations(unit, startingWith, proximity, canceller);
     }
 
     @Override
-    public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(Unit unit, Scope scope, String startingWith, int proximity) {
+    public Map<String, DeclarationWithProximity> getMatchingMemberDeclarations(Unit unit, Scope scope, String startingWith, int proximity, Cancellable canceller) {
+        if (canceller != null
+                && canceller.isCancelled()) {
+            return Collections.emptyMap();
+        }
         load();
-        return super.getMatchingMemberDeclarations(unit, scope, startingWith, proximity);
+        return super.getMatchingMemberDeclarations(unit, scope, startingWith, proximity, canceller);
     }
 
     @Override

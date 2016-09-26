@@ -16,6 +16,8 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 8)
 @Method
+@SharedAnnotation$annotation$
+@NativeAnnotation$annotation$(backends={})
 public final class flatten_ {
     
     private flatten_() {}

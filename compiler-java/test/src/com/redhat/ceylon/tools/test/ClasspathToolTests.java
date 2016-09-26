@@ -51,11 +51,11 @@ public class ClasspathToolTests extends AbstractToolTests {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
         Assert.assertNotNull(model);
         CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
-                Arrays.asList("io.cayla.web/0.3.0"));
+                Arrays.asList("--sysrep", "../dist/dist/repo", "io.cayla.web/0.3.0"));
         try{
             tool.run();
         }catch(ToolError err){
-            Assert.assertEquals("Module conflict error prevented classpath generation: try running \"ceylon info --suggest-override io.cayla.web/0.3.0\" to display an override file you can use with \"ceylon classpath --overrides override.xml io.cayla.web/0.3.0\" or try with \"ceylon classpath --force io.cayla.web/0.3.0\" to select the latest versions", err.getMessage());
+            Assert.assertEquals("Module conflict error prevented classpath generation: try running \"ceylon info --print-overrides io.cayla.web/0.3.0\" to display an override file you can use with \"ceylon classpath --overrides override.xml io.cayla.web/0.3.0\" or try with \"ceylon classpath --force io.cayla.web/0.3.0\" to select the latest versions", err.getMessage());
         }
     }
 
@@ -64,7 +64,7 @@ public class ClasspathToolTests extends AbstractToolTests {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
         Assert.assertNotNull(model);
         CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
-                Arrays.asList("--overrides", getPackagePath()+"/overrides.xml", "io.cayla.web/0.3.0"));
+                Arrays.asList("--sysrep", "../dist/dist/repo", "--overrides", getPackagePath()+"/overrides.xml", "io.cayla.web/0.3.0"));
         StringBuilder b = new StringBuilder();
         tool.setOut(b);
         tool.run();
@@ -78,7 +78,7 @@ public class ClasspathToolTests extends AbstractToolTests {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
         Assert.assertNotNull(model);
         CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
-                Arrays.asList("--force", "io.cayla.web/0.3.0"));
+                Arrays.asList("--sysrep", "../dist/dist/repo", "--force", "io.cayla.web/0.3.0"));
         StringBuilder b = new StringBuilder();
         tool.setOut(b);
         tool.run();
@@ -91,7 +91,8 @@ public class ClasspathToolTests extends AbstractToolTests {
     public void testMissingModule() throws Exception {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
         Assert.assertNotNull(model);
-        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("naskduhqwedmansd"));
+        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.<String>asList("--sysrep", "../dist/dist/repo", "naskduhqwedmansd"));
         try{
             tool.run();
             Assert.fail();
@@ -104,7 +105,8 @@ public class ClasspathToolTests extends AbstractToolTests {
     public void testModuleNameAlone() throws Exception {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
         Assert.assertNotNull(model);
-        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("ceylon.language"));
+        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.<String>asList("--sysrep", "../dist/dist/repo", "net.minidev.json-smart"));
         StringBuilder b = new StringBuilder();
         tool.setOut(b);
         tool.run();
@@ -116,11 +118,48 @@ public class ClasspathToolTests extends AbstractToolTests {
     public void testModuleNameWithBadVersion() throws Exception {
         ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
         Assert.assertNotNull(model);
-        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), Collections.<String>singletonList("ceylon.language/666"));
+        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.<String>asList("--sysrep", "../dist/dist/repo", "ceylon.language/666"));
         try{
             tool.run();
         }catch(ToolUsageError x){
             Assert.assertTrue(x.getMessage().contains("Version 666 not found for module ceylon.language"));
         }
+    }
+
+    @Test
+    public void testNoOptionalModules() throws Exception {
+        ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
+        Assert.assertNotNull(model);
+        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.<String>asList("--sysrep", "../dist/dist/repo", "ceylon.language/"+Versions.CEYLON_VERSION_NUMBER));
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
+        String cp = b.toString();
+        Assert.assertTrue(cp.contains("ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".car"));
+        Assert.assertFalse(cp.contains("minidev"));
+        Assert.assertFalse(cp.contains("maven"));
+        Assert.assertFalse(cp.contains("aether"));
+        Assert.assertFalse(cp.contains("plexus"));
+    }
+
+    @Test
+    public void testWithOptionalModules() throws Exception {
+        ToolModel<CeylonClasspathTool> model = pluginLoader.loadToolModel("classpath");
+        Assert.assertNotNull(model);
+        CeylonClasspathTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.<String>asList("--sysrep", "../dist/dist/repo", 
+                        "ceylon.language/"+Versions.CEYLON_VERSION_NUMBER,
+                        "com.redhat.ceylon.module-resolver-aether/"+Versions.CEYLON_VERSION_NUMBER));
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
+        String cp = b.toString();
+        Assert.assertTrue(cp.contains("ceylon.language-"+Versions.CEYLON_VERSION_NUMBER+".car"));
+        Assert.assertFalse(cp.contains("minidev"));
+        Assert.assertTrue(cp.contains("maven"));
+        Assert.assertTrue(cp.contains("aether"));
+        Assert.assertTrue(cp.contains("plexus"));
     }
 }

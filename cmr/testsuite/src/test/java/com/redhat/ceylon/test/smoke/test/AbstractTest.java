@@ -71,7 +71,7 @@ public class AbstractTest {
 
     private Path temp;
 
-    protected static final ModuleDependencyInfo IGNORE_DEPS = new ModuleDependencyInfo("$", "$", false, false);
+    protected static final ModuleDependencyInfo IGNORE_DEPS = new ModuleDependencyInfo(null, "$", "$", false, false);
     
     @Before
     public void setUp() throws Exception {
@@ -247,6 +247,7 @@ public class AbstractTest {
             Assert.assertEquals(expectedVersion.getArtifactTypes(), version.getArtifactTypes());
             Assert.assertEquals(expectedVersion.isRemote(), version.isRemote());
             Assert.assertEquals(expectedVersion.getOrigin(), version.getOrigin());
+            Assert.assertEquals(expectedVersion.getNamespace(), version.getNamespace());
         }
     }
 

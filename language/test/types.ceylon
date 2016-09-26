@@ -207,8 +207,8 @@ shared void types() {
     if (is Boolean|Character|T nothing) { fail("union type 4"); } else {check(true);}
     //if (is Object&Castable<Nothing> one) {check(true);} else { fail("intersection type 1"); }
     //if (is Object&Castable<Nothing> bool) { fail("intersection type 2"); } else {check(true);}
-    if (is Category&Iterable<Anything> str) {check(true);} else { fail("intersection type 3"); }
-    if (is Category&Iterable<Anything> t) { fail("intersection type 4"); } else {check(true);}
+    if (is Category<>&Iterable<Anything> str) {check(true);} else { fail("intersection type 3"); }
+    if (is Category<>&Iterable<Anything> t) { fail("intersection type 4"); } else {check(true);}
     //if (is String[] empty) {check(true);} else { fail("sequence type 1"); }
     //if (is String[] seq) {check(true);} else { fail("sequence type 2"); }
     //if (is String[]? seq) {check(true);} else { fail("sequence type 3"); }

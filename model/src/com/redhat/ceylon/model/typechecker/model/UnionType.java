@@ -14,6 +14,9 @@ import java.util.Map;
 public class UnionType extends TypeDeclaration {
 
     public UnionType(Unit unit) {
+        if (unit==null) {
+            throw new IllegalArgumentException("null unit");
+        }
         this.unit = unit;
     }
     
@@ -69,15 +72,15 @@ public class UnionType extends TypeDeclaration {
     @Override
     public Map<String, DeclarationWithProximity> 
     getMatchingMemberDeclarations(Unit unit, Scope scope, 
-            String startingWith, int proximity) {
+            String startingWith, int proximity, Cancellable canceller) {
     	Map<String, DeclarationWithProximity> result = 
     	        super.getMatchingMemberDeclarations(unit, 
-    	                scope, startingWith, proximity);
+    	                scope, startingWith, proximity, canceller);
 		TypeDeclaration d = 
 		        getCaseTypes().get(0).getDeclaration();
 		Iterator<Map.Entry<String, DeclarationWithProximity>> iter = 
 		        d.getMatchingMemberDeclarations(unit, scope, 
-		                startingWith, proximity)
+		                startingWith, proximity, canceller)
 		                    .entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry<String, DeclarationWithProximity> e = 
@@ -152,21 +155,19 @@ public class UnionType extends TypeDeclaration {
             return true;
         }
         else {
-            //this loop is intended as a performance
-            //optimization, but it doesn't actually
-            //seem to help at all really
-            /*for (Type ct: getCaseTypes()) {
+            for (Type ct: getCaseTypes()) {
                 if (!ct.getDeclaration().inherits(dec)) {
                     return false;
                 }
-            }*/
+            }
+            return true;
             //have to resolve aliases here or the build of
             //ceylon.ast is really slow / nonterminating
-            Type st = 
-                    getType()
-                        .resolveAliases()
-                        .getSupertype(dec);
-            return st!=null && !st.isNothing();
+//            Type st = 
+//                    getType()
+//                        .resolveAliases()
+//                        .getSupertype(dec);
+//            return st!=null && !st.isNothing();
         }
     }
     

@@ -7,11 +7,11 @@ class StringIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.
     
     public final long simple(final .java.lang.String s) {
         long i = 0L;
-        .java.lang.String s$0 = s;
-        int length$1 = s$0.length();
-        loop_0: for (int index$2 = 0; index$2 < length$1; ) {
-            final int $char = s$0.codePointAt(index$2);
-            index$2 += .java.lang.Character.charCount($char);
+        .java.lang.String s$1 = s;
+        int length$2 = s$1.length();
+        loop_0: for (int index$3 = 0; index$3 < length$2; ) {
+            final int $char = s$1.codePointAt(index$3);
+            index$3 += .java.lang.Character.charCount($char);
             i += .ceylon.language.Character.getInteger($char);
         }
         return i;
@@ -19,11 +19,11 @@ class StringIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.
     
     public final long withBreak(final .java.lang.String s) {
         long i = 0L;
-        .java.lang.String s$3 = s;
-        int length$4 = s$3.length();
-        loop_1: for (int index$5 = 0; index$5 < length$4; ) {
-            final int $char = s$3.codePointAt(index$5);
-            index$5 += .java.lang.Character.charCount($char);
+        .java.lang.String s$5 = s;
+        int length$6 = s$5.length();
+        loop_1: for (int index$7 = 0; index$7 < length$6; ) {
+            final int $char = s$5.codePointAt(index$7);
+            index$7 += .java.lang.Character.charCount($char);
             i += .ceylon.language.Character.getInteger($char);
             if ($char == 122) {
                 break loop_1;

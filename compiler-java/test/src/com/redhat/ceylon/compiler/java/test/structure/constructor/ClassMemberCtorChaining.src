@@ -15,7 +15,7 @@ class ClassMemberCtorChaining implements .com.redhat.ceylon.compiler.java.runtim
     
     public static final class Member$other {
         
-        private Member$other() {
+        Member$other() {
         }
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChaining.Member$other Member$other = null;
@@ -56,7 +56,7 @@ class ClassMemberCtorChainingSub extends .com.redhat.ceylon.compiler.java.test.s
     
     public static final class Sub$sub3 {
         
-        private Sub$sub3() {
+        Sub$sub3() {
         }
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$sub3 Sub$sub3 = null;
@@ -67,7 +67,7 @@ class ClassMemberCtorChainingSub extends .com.redhat.ceylon.compiler.java.test.s
     
     public static final class Sub$sub4 {
         
-        private Sub$sub4() {
+        Sub$sub4() {
         }
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$sub4 Sub$sub4 = null;
@@ -78,7 +78,7 @@ class ClassMemberCtorChainingSub extends .com.redhat.ceylon.compiler.java.test.s
     
     public static final class Sub$other {
         
-        private Sub$other() {
+        Sub$other() {
         }
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberCtorChainingSub.Sub$other Sub$other = null;

@@ -32,6 +32,7 @@
         <pathelement path="${ceylon.cli.lib}" />
         <pathelement path="${ceylon.model.lib}" />
         <pathelement path="${ceylon.module-resolver.lib}" />
+        <pathelement path="${ceylon.module-resolver-javascript.lib}" />
         <pathelement path="${ceylon.compiler.lib}" />
         <pathelement path="${ceylon.typechecker.lib}" />
         <pathelement path="${build.classes}" />
@@ -56,6 +57,7 @@
                 <pathelement path="${ceylon.model.lib}" />
                 <pathelement path="${ceylon.typechecker.lib}" />
                 <pathelement path="${ceylon.module-resolver.lib}" />
+                <pathelement path="${ceylon.module-resolver-javascript.lib}" />
                 <pathelement path="${ceylon.compiler.lib}" />
                 <pathelement path="${json.lib}" />
             </classpath>
@@ -120,6 +122,14 @@
     </target>
 
     <target name="build" depends="ceylon.js.jar,build-js-language-module">
+        <mkdir dir="${build.bin}" />
+        <copy todir="${build.bin}">
+            <fileset dir="${basedir}/bin">
+            </fileset>
+            <filterset>
+                <filter token="ceylon-version" value="${ceylon.version}"/>
+            </filterset>
+        </copy>
     </target>
 
     <target name="test-compile">
@@ -128,8 +138,10 @@
             <classpath>
                 <pathelement location="${ceylon.common.lib}" />
                 <pathelement location="${ceylon.model.lib}" />
+                <pathelement location="${ceylon.cli.lib}" />
                 <pathelement location="${ceylon.typechecker.lib}" />
                 <pathelement location="${ceylon.module-resolver.lib}" />
+                <pathelement location="${ceylon.module-resolver-javascript.lib}" />
                 <pathelement location="${ceylon.compiler.lib}" />
                 <pathelement location="${build.classes}" />
                 <fileset dir="../lib">
@@ -197,14 +209,6 @@
     <target name="publish"
             depends="clean.repo,init.repo,dist,publish-internal"
             description="Publish Ceylon JS compiler module to default repo">
-        <mkdir dir="${build.bin}" />
-        <copy todir="${build.bin}">
-            <fileset dir="${basedir}/bin">
-            </fileset>
-            <filterset>
-                <filter token="ceylon-version" value="${ceylon.version}"/>
-            </filterset>
-        </copy>
     </target>
 
     <target name="publish-internal" depends="init.repo">

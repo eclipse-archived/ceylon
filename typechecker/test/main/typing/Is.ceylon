@@ -170,9 +170,9 @@ class Is() {
     else {}
     
     void m(String s) {
-        @error if (is String s) { }
+        @warn:"redundantNarrowing" if (is String s) { }
         @error if (is Integer s) { }
-        @error value b = s is String;
+        @warn:"redundantNarrowing" value b = s is String;
         @error value c = s is Integer;
     }
     
@@ -184,7 +184,7 @@ class Is() {
         Character char = ch;
     }
     @error if (!is Object next) {}
-    @error if (!is Null next) {}
+    @warn:"redundantNarrowing" if (!is Null next) {}
     
     Identifiable? i = null;
     if (is Category cat = i) {

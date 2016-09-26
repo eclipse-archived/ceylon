@@ -63,11 +63,14 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.DependencyResolver;
+import com.redhat.ceylon.cmr.api.MavenArtifactContext;
+import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
 import com.redhat.ceylon.cmr.maven.MavenDependencyResolver;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
@@ -711,6 +714,18 @@ public class CMRTests extends CompilerTests {
     }
 
     @Test
+    public void testMdlAetherDependencyCustomRelative() throws IOException{
+        // Try to compile the ceylon module
+        File settingsFile = new File(getPackagePath(), "modules/aethercustom/settings.xml");
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "aether:" + settingsFile, "-verbose:cmr"), 
+                (DiagnosticListener<? super FileObject>)null, 
+                "modules/aethercustom/module.ceylon", "modules/aethercustom/foo.ceylon");
+        assertEquals(Boolean.TRUE, ceylonTask.call());
+        File restletJar = new File("build/test-cars/cmr-repository", "org/restlet/org.restlet/1.1.10/org.restlet-1.1.10.jar");
+        assertTrue(restletJar.exists());
+    }
+
+    @Test
     public void testMdlAetherMissingDependencies() throws IOException{
         CompilerError[] expectedErrors = new CompilerError[]{
         new CompilerError(6, "Error while loading the org.apache.camel:camel-jetty/2.9.4 module:\n"
@@ -794,7 +809,8 @@ public class CMRTests extends CompilerTests {
         assertEquals(Boolean.TRUE, ceylonTask.call());
         compareErrors(collector.get(Diagnostic.Kind.WARNING), 
                 new CompilerError(Diagnostic.Kind.WARNING, null, 21, "source code imports two different versions of similar modules 'org.apache.httpcomponents.httpclient/4.3.2' and 'org.apache.httpcomponents:httpclient/4.3.3'"),
-                new CompilerError(Diagnostic.Kind.WARNING, null, 21, "module (transitively) imports conflicting versions of similar dependencies 'org.apache.httpcomponents.httpclient/4.3.2' (via import path 'com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict -> com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict2 -> ceylon.language -> com.redhat.ceylon.module-resolver') and 'org.apache.httpcomponents:httpclient/4.3.3' (via import path 'com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict -> com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict2')")
+                new CompilerError(Diagnostic.Kind.WARNING, null, 21, "module (transitively) imports conflicting versions of similar dependencies 'org.apache.httpcomponents.httpclient/4.3.2' (via import path 'com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict -> org.apache.httpcomponents.httpclient') and 'org.apache.httpcomponents:httpclient/4.3.3' (via import path 'com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict -> com.redhat.ceylon.compiler.java.test.cmr.modules.ceylonAetherConflict2')")
+
         );
     }
 
@@ -839,9 +855,17 @@ public class CMRTests extends CompilerTests {
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir/*, "-verbose:cmr"*/), 
                 "modules/sparkframework/module.ceylon", "modules/sparkframework/test.ceylon");
         assertEquals("Compilation failed", Boolean.TRUE, ceylonTask.call());
-        
+
+        // flat classpath via API
         runInJBossModules("run", "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework/1", 
                 Arrays.asList("--flat-classpath", "--overrides", getPackagePath()+"/modules/sparkframework/overrides-log.xml"));
+        // and via main without aether
+        runInMainApi(destDir, new ModuleSpec("com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework","1"), 
+                "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework.run_", Arrays.<String>asList(), false);
+        // and via main with aether
+        runInMainApi(destDir, new ModuleSpec("com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework","1"),
+                Arrays.asList(new ModuleSpec("com.redhat.ceylon.module-resolver-aether", Versions.CEYLON_VERSION_NUMBER)),
+                "com.redhat.ceylon.compiler.java.test.cmr.modules.sparkframework.run_", Arrays.<String>asList(), false);
     }
 
     @Test
@@ -1056,7 +1080,7 @@ public class CMRTests extends CompilerTests {
     public void testMdlUsesJavaWithoutImportingIt() throws IOException{
         assertErrors("modules/jdk/usesJavaWithoutImportingIt/Foo",
                 new CompilerError(20, "package not found in imported modules: 'java.lang' (add module import to module descriptor of 'com.redhat.ceylon.compiler.java.test.cmr.modules.jdk.usesJavaWithoutImportingIt')"),
-                new CompilerError(23, "function or value does not exist: 'nanoTime'"));
+                new CompilerError(23, "function or value is not defined: 'nanoTime' might be misspelled or is not imported"));
     }
 
     @Test
@@ -1068,7 +1092,7 @@ public class CMRTests extends CompilerTests {
         
         assertErrors("modules/jdk/defaultUsesJavaWithoutImportingIt/Foo",
                 new CompilerError(20, "package not found in imported modules: 'java.lang' (define a module and add module import to its module descriptor)"),
-                new CompilerError(23, "function or value does not exist: 'nanoTime'"));
+                new CompilerError(23, "function or value is not defined: 'nanoTime' might be misspelled or is not imported"));
     }
 
     @Test
@@ -1634,7 +1658,7 @@ public class CMRTests extends CompilerTests {
         Assert.assertEquals(Boolean.FALSE, result);
         
         compareErrors(collector.get(Diagnostic.Kind.ERROR),
-                new CompilerError(2, "imported package is not shared: 'b.hidden'"));
+                new CompilerError(2, "imported package is not shared: 'b.hidden' is not annotated 'shared' in 'b'"));
     }
 
     private ModuleImport getModuleImport(Module m, String name) {
@@ -1724,7 +1748,7 @@ public class CMRTests extends CompilerTests {
         String artifactId = "javax.el-api";
         String version = "3.0.0";
         String coord = groupId + ":" + artifactId;
-        File artifact = repository.getArtifact(coord, version);
+        File artifact = repository.getArtifact(MavenArtifactContext.NAMESPACE, coord, version);
         Assert.assertNotNull(artifact);
         try(ZipFile zf = new ZipFile(artifact)){
             String descriptorPath = String.format("META-INF/maven/%s/%s/pom.xml", groupId, artifactId);
@@ -1732,8 +1756,21 @@ public class CMRTests extends CompilerTests {
             Assert.assertNotNull(entry);
             try(InputStream is = zf.getInputStream(entry)){
                 DependencyResolver resolver = new MavenDependencyResolver();
-                resolver.resolveFromInputStream(is, coord, version, null);
+                ModuleInfo info = resolver.resolveFromInputStream(is, coord, version, null);
+                Assert.assertNotNull(info);
+                // FIXME: find one with dependencies
+                System.err.println(info.getDependencies());
             }
         }
     }
+    
+    @Test
+    public void testNamespaceImports() throws IOException{
+        // Try to compile the ceylon module
+        CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir, "-rep", "aether", "-verbose:cmr"), 
+                (DiagnosticListener<? super FileObject>)null, 
+                "modules/aetherdefault/module.ceylon", "modules/namespaces/foo.ceylon");
+        assertEquals(Boolean.TRUE, ceylonTask.call());
+    }
+
 }

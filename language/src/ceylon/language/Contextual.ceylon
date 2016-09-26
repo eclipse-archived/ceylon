@@ -42,6 +42,7 @@ import java.lang { ThreadLocal }
    does not show anything thread-related.
    """
 by("Tako Schotanus")
+since("1.2.0")
 native
 shared class Contextual<Element>() {
     

@@ -1,5 +1,5 @@
 shared class Bug2274{
-    @error
-    shared foo new init() {}
+    
+    shared new init(@error Foo? foo=null) {}
     shared new () extends init(){} 
 }

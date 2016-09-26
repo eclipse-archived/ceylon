@@ -40,6 +40,7 @@ import ceylon.language.Basic;
 import ceylon.language.Empty;
 import ceylon.language.Identifiable;
 import ceylon.language.Null;
+import ceylon.language.Range;
 import ceylon.language.Sequence;
 import ceylon.language.Sequential;
 import ceylon.language.empty_;
@@ -186,6 +187,7 @@ public abstract class TypeDescriptor
         
         private static final long serialVersionUID = -490491495105002855L;
         
+        private int memoizedHash;
         protected final java.lang.Class<?> klass;
 
         public Class(java.lang.Class<?> klass, Variance[] useSiteVariance, TypeDescriptor[] typeArguments){
@@ -278,12 +280,14 @@ public abstract class TypeDescriptor
         
         @Override
         public int hashCode() {
-            int ret = 17;
-            ret = 37 * ret + "class".hashCode();
-            ret = 37 * ret + Arrays.hashCode(typeArguments);
-            ret = 37 * ret + Arrays.hashCode(useSiteVariance);
-            ret = 37 * ret + klass.hashCode();
-            return  ret;
+            if (memoizedHash == 0) {
+            	memoizedHash = 17;
+            	memoizedHash = 37 * memoizedHash + "class".hashCode();
+            	memoizedHash = 37 * memoizedHash + Arrays.hashCode(typeArguments);
+            	memoizedHash = 37 * memoizedHash + Arrays.hashCode(useSiteVariance);
+            	memoizedHash = 37 * memoizedHash + klass.hashCode();
+            }
+            return  memoizedHash;
         }
         
         @Override
@@ -376,7 +380,8 @@ public abstract class TypeDescriptor
         public TypeDescriptor getSequenceElement() {
             if(klass == ceylon.language.Tuple.class ||
                     klass == Sequence.class ||
-                    klass == Sequential.class)
+                    klass == Sequential.class || 
+                    klass == ceylon.language.Range.class)
                 return typeArguments[0];
             if(klass == Empty.class)
                 return NothingType;
@@ -404,6 +409,7 @@ public abstract class TypeDescriptor
         // only set when requested
         private TypeDescriptor elementUnion;
         private TypeDescriptor rest;
+        private int memoizedHash;
 
         public Tuple(boolean variadic, boolean atLeastOne, int firstDefaulted, TypeDescriptor[] elements) {
             super(ceylon.language.Tuple.class, NO_VARIANCE, null);
@@ -458,13 +464,15 @@ public abstract class TypeDescriptor
         
         @Override
         public int hashCode() {
-            int ret = 17;
-            ret = 37 * ret + "tuple".hashCode();
-            ret = 37 * ret + Arrays.hashCode(elements);
-            ret = 37 * ret + (variadic ? 1 : 0);
-            ret = 37 * ret + (atLeastOne ? 1 : 0);
-            ret = 37 * ret + firstDefaulted;
-            return  ret;
+            if (memoizedHash == 0) {
+            	memoizedHash = 17;
+            	memoizedHash = 37 * memoizedHash + "tuple".hashCode();
+            	memoizedHash = 37 * memoizedHash + Arrays.hashCode(elements);
+            	memoizedHash = 37 * memoizedHash + (variadic ? 1 : 0);
+            	memoizedHash = 37 * memoizedHash + (atLeastOne ? 1 : 0);
+            	memoizedHash = 37 * memoizedHash + firstDefaulted;
+            }
+            return  memoizedHash;
         }
 
         @Override
@@ -575,6 +583,7 @@ public abstract class TypeDescriptor
         private final String name;
         private final java.lang.Class<?> klass;
         private final boolean local;
+        private int memoizedHash;
         
         /**
          * For members
@@ -671,12 +680,14 @@ public abstract class TypeDescriptor
         
         @Override
         public int hashCode() {
-            int ret = 17;
-            ret = 37 * ret + "functionorvalue".hashCode();
-            ret = 37 * ret + Arrays.hashCode(typeArguments);
-            ret = 37 * ret + (klass != null ? klass.hashCode() : 0);
-            ret = 37 * ret + (name != null ? name.hashCode() : 0);
-            return  ret;
+            if (memoizedHash == 0) {
+            	memoizedHash = 17;
+            	memoizedHash = 37 * memoizedHash + "functionorvalue".hashCode();
+            	memoizedHash = 37 * memoizedHash + Arrays.hashCode(typeArguments);
+            	memoizedHash = 37 * memoizedHash + (klass != null ? klass.hashCode() : 0);
+            	memoizedHash = 37 * memoizedHash + (name != null ? name.hashCode() : 0);
+            }
+            return  memoizedHash;
         }
         
         @Override
@@ -905,12 +916,25 @@ public abstract class TypeDescriptor
 
         @Override
         public Type toType(RuntimeModuleManager moduleManager) {
+            Unit unit = moduleManager.getModelLoader().getUnit();
+            ArrayList<Type> caseTypes = new ArrayList<Type>(members.length);
+            for(TypeDescriptor member : members)
+                caseTypes.add(Metamodel.getProducedType(member));
+            return ModelUtil.union(caseTypes, unit);
+        }
+
+        /** 
+         * The same as {@link #toType(RuntimeModuleManager)}, but will 
+         * simplify things like {@code Object|String} to {@code Object} 
+         */
+        public Type toSimpleType(RuntimeModuleManager moduleManager) {
             ArrayList<Type> caseTypes = new ArrayList<Type>(members.length);
             for(TypeDescriptor member : members)
                 ModelUtil.addToUnion(caseTypes,Metamodel.getProducedType(member));
             return ModelUtil.union(caseTypes, moduleManager.getModelLoader().getUnit());
         }
 
+        
         @Override
         public java.lang.Class<?> getArrayElementClass() {
             java.lang.Class<?> result = null;
@@ -986,9 +1010,22 @@ public abstract class TypeDescriptor
             Unit unit = moduleManager.getModelLoader().getUnit();
             ArrayList<Type> satisfiedTypes = new ArrayList<Type>(members.length);
             for(TypeDescriptor member : members)
+                satisfiedTypes.add(Metamodel.getProducedType(member));
+            return ModelUtil.canonicalIntersection(satisfiedTypes, unit);
+        }
+        
+        /** 
+         * The same as {@link #toType(RuntimeModuleManager)}, but will 
+         * simplify things like {@code Object&String} to {@code String} 
+         */
+        public Type toSimpleType(RuntimeModuleManager moduleManager) {
+            Unit unit = moduleManager.getModelLoader().getUnit();
+            ArrayList<Type> satisfiedTypes = new ArrayList<Type>(members.length);
+            for(TypeDescriptor member : members)
                 ModelUtil.addToIntersection(satisfiedTypes, Metamodel.getProducedType(member), unit);
             return ModelUtil.canonicalIntersection(satisfiedTypes, unit);
         }
+        
         
         @Override
         public java.lang.Class<?> getArrayElementClass() {
@@ -1193,7 +1230,9 @@ public abstract class TypeDescriptor
             return combineTuples(elements, firstDefaulted, (Tuple)rest);
         }else if(rest instanceof Class){
             Class restClass = (Class)rest;
-            if(restClass.klass == Sequence.class || restClass.klass == Sequential.class){
+            if(restClass.klass == Sequence.class 
+                    || restClass.klass == Sequential.class
+                    || restClass.klass == Range.class){
                 // that's also rather easy
                 TypeDescriptor[] newElements = new TypeDescriptor[elements.length+1];
                 System.arraycopy(elements, 0, newElements, 0, elements.length);
@@ -1316,6 +1355,7 @@ public abstract class TypeDescriptor
 
     private static TypeDescriptor[] removeDuplicates(TypeDescriptor[] members) {
         int duplicates = 0;
+        int nothing = 0;
         for(int i=0;i<members.length;i++){
             TypeDescriptor ref = members[i];
             for(int j=i+1;j<members.length;j++){
@@ -1325,9 +1365,12 @@ public abstract class TypeDescriptor
                     break;
                 }
             }
+            if (ref == NothingType) {
+                nothing = 1;
+            }
         }
-        if(duplicates > 0){
-            TypeDescriptor[] unique = new TypeDescriptor[members.length-duplicates];
+        if(duplicates > 0 || nothing > 0){
+            TypeDescriptor[] unique = new TypeDescriptor[members.length-duplicates-nothing];
             REF:
             for(int i=0,u=0;i<members.length;i++){
                 TypeDescriptor ref = members[i];
@@ -1337,6 +1380,9 @@ public abstract class TypeDescriptor
                         // skip it
                         continue REF;
                     }
+                }
+                if (ref == NothingType) {
+                    continue REF;
                 }
                 // it's unique: keep it
                 unique[u++] = ref;

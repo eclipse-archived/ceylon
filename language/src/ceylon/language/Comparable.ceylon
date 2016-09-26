@@ -58,7 +58,21 @@ tagged("Comparisons")
 shared interface Comparable<in Other> of Other 
         given Other satisfies Comparable<Other> {
     
-    "Compares this value with the given value. 
+    "Compares this value with the given value, returning:
+     
+     - [[larger]], if this value is strictly larger than the 
+       given value,
+     - [[smaller]], if this value is strictly smaller than 
+       the given value, or
+     - [[equal]], if this value is [[equal|equals]] to the 
+       given value.
+     
+     For any two values `x` and `y` such that the expression
+     `x.compare(y)` is well-typed, the expression may be
+     written:
+     
+         x <=> y 
+     
      Implementations must respect the constraints that: 
      
      - `x==y` if and only if `x<=>y == equal` 
@@ -70,21 +84,25 @@ shared interface Comparable<in Other> of Other
     
     "Determines if this value is strictly larger than the 
      given value."
+    since("1.1.0")
     shared default Boolean largerThan(Other other)
             => compare(other)===larger; 
     
     "Determines if this value is strictly smaller than the 
      given value."
+    since("1.1.0")
     shared default Boolean smallerThan(Other other)
             => compare(other)===smaller; 
     
     "Determines if this value is larger than or equal to the 
      given value."
+    since("1.1.0")
     shared default Boolean notSmallerThan(Other other)
             => !compare(other)===smaller; 
     
     "Determines if this value is smaller than or equal to 
      the given value."
+    since("1.1.0")
     shared default Boolean notLargerThan(Other other)
             => !compare(other)===larger; 
     

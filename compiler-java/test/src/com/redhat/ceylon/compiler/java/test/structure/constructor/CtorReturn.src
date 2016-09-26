@@ -15,7 +15,7 @@ class CtorReturn implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     
     public static final class baz_ {
         
-        private baz_() {
+        baz_() {
         }
     }
     
@@ -35,7 +35,7 @@ class CtorReturn implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     
     public static final class gee_ {
         
-        private gee_() {
+        gee_() {
         }
     }
     

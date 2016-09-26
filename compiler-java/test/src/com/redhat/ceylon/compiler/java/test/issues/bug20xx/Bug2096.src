@@ -14,7 +14,7 @@ final class bug2096_ {
             {
                 long middle$1 = ((.ceylon.language.Integer)(.java.lang.Object)timer.getFirst()).longValue();
             }
-            returning 0L < middle$1 && middle$1 < 10L;
+            returning 0 < middle$1 && middle$1 < 10;
         )) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "0 < timer.first < 10"));

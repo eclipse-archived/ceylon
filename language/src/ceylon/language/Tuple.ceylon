@@ -4,7 +4,7 @@
    value from the list without losing its static type 
    information.
    
-       value point = Tuple(0.0, Tuple(0.0, Tuple("origin")));
+       value point = Tuple(0.0, Tuple(0.0, Tuple("origin", [])));
        Float x = point.first;
        Float y = point.rest.first;
        String label = point.rest.rest.first;
@@ -44,8 +44,8 @@
        String[] allLabels = point[2...];"""
 by ("Gavin")
 tagged("Sequences", "Basic types", "Collections")
-shared final serializable
-native class Tuple<out Element, out First, out Rest = []>
+shared final serializable native 
+class Tuple<out Element, out First, out Rest = []>
         (first, rest)
         extends Object()
         satisfies [Element+]

@@ -39,9 +39,9 @@ shared void callables() {
   check("hello"==noopRef("hello",2), "Callable contravariance");
 
   //From #56
-  void resolve(Integer g()) {
+  void resolve(Integer whichOne, Integer g()) {
     value which=g();
-    check(which==2, "closures: callable returns ``which`` instead of 2");
+    check(which==2, "closures ``whichOne``: callable returns ``which`` instead of 2");
   }
   variable Callable<Integer,[]>? f = null;
   for (i in 1..2) {
@@ -54,7 +54,7 @@ shared void callables() {
     }
   }
   if (exists g=f) {
-    resolve(g);
+    resolve(1, g);
   } else {
     fail("WTF this should never happen!");
   }
@@ -69,7 +69,7 @@ shared void callables() {
       j = i*2;
     }
   }
-  if (exists g=f) { resolve(g); }
+  if (exists g=f) { resolve(2, g); }
   else { fail("WTF g doesn\'t exist"); }
   
   // https://github.com/ceylon/ceylon.language/issues/716

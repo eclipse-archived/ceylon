@@ -27,19 +27,19 @@ import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
-import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.EnumUtil;
 import com.redhat.ceylon.common.tool.Hidden;
+import com.redhat.ceylon.common.tool.NonFatalToolMessage;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.ParsedBy;
@@ -48,8 +48,8 @@ import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
+import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.java.launcher.Main;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
@@ -184,10 +184,10 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
 
     private List<File> sources = DefaultToolOptions.getCompilerSourceDirs();
     private List<File> resources = DefaultToolOptions.getCompilerResourceDirs();
-    private List<String> modulesOrFiles = Arrays.asList("*");
+    private List<String> modulesOrFiles = DefaultToolOptions.getCompilerModules(Backend.Java);
     private boolean continueOnErrors;
-    private boolean progress;
-    private List<String> javac = Collections.emptyList();
+    private boolean progress = DefaultToolOptions.getCompilerProgress();
+    private List<String> javac = DefaultToolOptions.getCompilerJavac();
     private String encoding;
     private String resourceRoot = DefaultToolOptions.getCompilerResourceRootName();
     private boolean noOsgi = DefaultToolOptions.getCompilerNoOsgi();
@@ -195,10 +195,21 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean noPom = DefaultToolOptions.getCompilerNoPom();
     private boolean pack200 = DefaultToolOptions.getCompilerPack200();
     private EnumSet<Warning> suppressWarnings = EnumUtil.enumsFromStrings(Warning.class, DefaultToolOptions.getCompilerSuppressWarnings());
-    private boolean flatClasspath;
-    private boolean autoExportMavenDependencies;
+    private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
+    private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
+    
     private ModuleSpec jdkProvider;
+    {
+        String jdkProvider = DefaultToolOptions.getCompilerJdkProvider();
+        this.jdkProvider = jdkProvider != null ? ModuleSpec.parse(jdkProvider) : null;
+    }
+    private List<ModuleSpec> aptModules;
+    {
+        String[] aptModules = DefaultToolOptions.getCompilerAptModules();
+        if(aptModules != null)
+            setAptModule(Arrays.asList(aptModules));
+    }
 
     public CeylonCompileTool() {
         super(CeylonCompileMessages.RESOURCE_BUNDLE);
@@ -213,7 +224,19 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     public void setJdkProviderSpec(ModuleSpec jdkProvider) {
         this.jdkProvider = jdkProvider;
     }
-    
+
+    @OptionArgument(longName="apt", argumentName="module")
+    @Description("Specifies the name of the module providing the JDK (default: the underlying JDK).")
+    public void setAptModule(List<String> aptModules) {
+        if(aptModules != null){
+            this.aptModules = new ArrayList<ModuleSpec>(aptModules.size());
+            for(String mod : aptModules)
+                this.aptModules.add(ModuleSpec.parse(mod));
+        }else{
+            this.aptModules = null;
+        }
+    }
+
     @Option(longName="flat-classpath")
     @Description("Launches the Ceylon module using a flat classpath.")
     public void setFlatClasspath(boolean flatClasspath) {
@@ -376,7 +399,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     }
     
     @Override
-    public void initialize(CeylonTool mainTool) throws IOException {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
         compiler = new Main("ceylon compile");
         helper.options.clear();
         Options options = Options.instance(new Context());
@@ -393,24 +417,30 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         if (cwd != null) {
             arguments.add("-cwd");
             arguments.add(cwd.getPath());
+            validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.CEYLONCWD, "-cwd", cwd.getPath());
         }
         
         if(jdkProvider != null){
             arguments.add("-jdk-provider");
             arguments.add(jdkProvider.toString());
         }
-        
+
+        if(aptModules != null){
+            for(ModuleSpec mod : aptModules){
+                arguments.add("-apt");
+                arguments.add(mod.toString());
+            }
+        }
+
         for (File source : applyCwd(this.sources)) {
             arguments.add("-src");
             arguments.add(source.getPath());
-            validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCEPATH, "-sourcepath", source.getPath());
-            //options.addMulti(com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCEPATH, source.getPath());
+            validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.CEYLONSOURCEPATH, "-sourcepath", source.getPath());
         }
         
         for (File resource : applyCwd(this.resources)) {
             arguments.add("-res");
             arguments.add(resource.getPath());
-            //options.addMulti(OptionName.RESOURCEPATH, resource.getPath());
         }
         
         if (resourceRoot != null) {
@@ -526,8 +556,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add("-nodefreps");
         }
         
-        if (repo != null) {
-            for (URI uri : this.repo) {
+        if (repos != null) {
+            for (URI uri : this.repos) {
                 arguments.add("-rep");
                 arguments.add(uri.toString());
             }
@@ -538,12 +568,17 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add(EnumUtil.enumsToString(suppressWarnings));
         }
         
-        addJavacArguments(arguments);
+        addJavacArguments(arguments, javac);
         
         List<File> srcs = applyCwd(this.sources);
         List<String> expandedModulesOrFiles = ModuleWildcardsHelper.expandWildcards(srcs , this.modulesOrFiles, Backend.Java);
         if (expandedModulesOrFiles.isEmpty()) {
-            throw new ToolUsageError("No modules or source files to compile");
+            String msg = CeylonCompileMessages.msg("error.no.sources");
+            if (ModuleWildcardsHelper.onlyGlobArgs(this.modulesOrFiles)) {
+                throw new NonFatalToolMessage(msg);
+            } else {
+                throw new ToolUsageError(msg);
+            }
         }
         
         for (String moduleOrFile : expandedModulesOrFiles) {
@@ -611,7 +646,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         }
     }
 
-    private void addJavacArguments(List<String> arguments) {
+    public static void addJavacArguments(List<String> arguments, List<String> javac) {
         Helper helper = new Helper();
         for (String argument : javac) {
             helper.lastError = null;

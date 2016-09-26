@@ -19,9 +19,10 @@ shared native class AppliedCallableConstructor<out Type=Anything, in Arguments=N
   shared native actual Type namedApply({<String->Anything>*} arguments);
   shared native actual String string;
   //Generic
-  shared native actual Map<TypeParameter, ClosedType> typeArguments;
+  shared native actual Map<TypeParameter, ClosedType<>> typeArguments;
   shared native actual ClosedType<Anything>[] typeArgumentList;
   shared actual native Map<TypeParameter, TypeArgument> typeArgumentWithVariances;
   shared actual native TypeArgument[] typeArgumentWithVarianceList;
   shared native actual Boolean equals(Object other);
+  shared native actual Integer hash;
 }

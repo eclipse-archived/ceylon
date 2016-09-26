@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.metamodel;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("bug629")
 @.com.redhat.ceylon.compiler.java.metadata.Object
 final class bug629_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -55,7 +57,9 @@ final class bug629_ implements .java.io.Serializable, .com.redhat.ceylon.compile
         return .com.redhat.ceylon.compiler.java.test.metamodel.bug629_.$TypeDescriptor$;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 public final class run629_ {
     

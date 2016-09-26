@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
@@ -51,7 +52,7 @@ public abstract class LazyModule extends Module {
         
         // unless we're the default module, in which case we have to check this at the end,
         // since every package can be part of the default module
-        boolean defaultModule = isDefault();
+        boolean defaultModule = isDefaultModule();
         if(!defaultModule){
             pkg = findPackageInModule(this, name);
             if(pkg != null)
@@ -113,18 +114,21 @@ public abstract class LazyModule extends Module {
             return module.getPackage(name);
     }
 
-    private Package findPackageInModule(LazyModule module, String name) {
+    private Package findPackageInModule(final LazyModule module, final String name) {
         if(module.containsPackage(name)){
             // first try the already loaded packages from that module
             AbstractModelLoader modelLoader = getModelLoader();
-            synchronized(modelLoader.getLock()){
-                for(Package pkg : module.getPackages()){
-                    if(pkg.getNameAsString().equals(name))
-                        return pkg;
+            return modelLoader.synchronizedCall(new Callable<Package>() {
+                @Override
+                public Package call() throws Exception {
+                    for(Package pkg : module.getPackages()){
+                        if(pkg.getNameAsString().equals(name))
+                            return pkg;
+                    }
+                    // create/load a new one
+                    return getModelLoader().findExistingPackage(module, name);
                 }
-                // create/load a new one
-                return getModelLoader().findExistingPackage(module, name);
-            }
+            });
         }
         return null;
     }
@@ -140,6 +144,7 @@ public abstract class LazyModule extends Module {
 
     protected abstract AbstractModelLoader getModelLoader();
 
+    @Override
     public boolean isJava() {
         return isJava;
     }
@@ -175,7 +180,6 @@ public abstract class LazyModule extends Module {
     }
 
     public boolean containsPackage(String pkgName){
-        String moduleName = getNameAsString();
         if(!isJava){
             List<Package> superPackages = super.getPackages();
             for(int i=0,l=superPackages.size();i<l;i++){
@@ -183,8 +187,8 @@ public abstract class LazyModule extends Module {
                     return true;
             }
             // The language module is in the classpath and does not have its jarPackages loaded
-            if(moduleName.equals(Module.LANGUAGE_MODULE_NAME)){
-                return JvmBackendUtil.isSubPackage(moduleName, pkgName)
+            if(isLanguageModule()){
+                return JvmBackendUtil.isSubPackage(getNameAsString(), pkgName)
                         || pkgName.startsWith("com.redhat.ceylon.compiler.java.runtime")
                         || pkgName.startsWith("com.redhat.ceylon.compiler.java.language")
                         || pkgName.startsWith("com.redhat.ceylon.compiler.java.metadata");
@@ -192,7 +196,7 @@ public abstract class LazyModule extends Module {
             return getJarPackages().contains(pkgName);
         }else{
             // special rules for the JDK which we don't load from the repo
-            if(isJdkPackage(moduleName, pkgName))
+            if(isJdkPackage(getNameAsString(), pkgName))
                 return true;
             JdkProvider jdkProvider = getModelLoader().getJdkProvider();
             if(jdkProvider.getJdkContainerModule() == this

@@ -8,6 +8,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberForBackend;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -118,10 +119,23 @@ public class Package
     }
 
     public String getNameAsString() {
-        if (nameAsString == null){
+        if (nameAsString == null) {
             nameAsString = formatPath(name);
         }
         return nameAsString;
+    }
+    
+    public boolean isLanguagePackage() {
+        List<String> name = getName();
+        return name.size()==2
+                && name.get(0)
+                    .equals("ceylon")
+                && name.get(1)
+                    .equals("language");
+    }
+    
+    public boolean isDefaultPackage() {
+        return getName().isEmpty();
     }
 
     @Override
@@ -140,6 +154,11 @@ public class Package
     @Override
     public Declaration getMember(String name, 
             List<Type> signature, boolean variadic) {
+        if (signature==null 
+                && name.equals("Nothing")
+                && isLanguagePackage()) {
+            return getUnit().getNothingDeclaration();
+        }
         return getDirectMember(name, signature, variadic);
     }
 
@@ -212,14 +231,14 @@ public class Package
                 getMatchingDirectDeclarations(startingWith, 
                         //package toplevels - just less than 
                         //explicitly imported declarations
-                        proximity+1);
+                        proximity+1, canceller);
         if (unit!=null) {
             result.putAll(unit.getMatchingImportedDeclarations(
-                    startingWith, proximity));
+                    startingWith, proximity, canceller));
         }
         Map<String,DeclarationWithProximity> importables = 
                 getModule()
-                    .getAvailableDeclarations(
+                    .getAvailableDeclarations(unit,
                             startingWith, proximity, canceller);
         List<Map.Entry<String,DeclarationWithProximity>> 
         entriesToAdd =
@@ -252,10 +271,14 @@ public class Package
 
     public Map<String,DeclarationWithProximity> 
     getMatchingDirectDeclarations(String startingWith, 
-            int proximity) {
+            int proximity, Cancellable canceller) {
         Map<String,DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                return Collections.emptyMap();
+            }
             if (isResolvable(d) && 
                     !isOverloadedVersion(d) && 
                     isNameMatching(startingWith, d)) {
@@ -269,10 +292,14 @@ public class Package
 
     public Map<String,DeclarationWithProximity> 
     getImportableDeclarations(Unit unit, String startingWith, 
-            List<Import> imports, int proximity) {
+            List<Import> imports, int proximity, Cancellable canceller) {
         Map<String,DeclarationWithProximity> result = 
                 new TreeMap<String,DeclarationWithProximity>();
         for (Declaration d: getMembers()) {
+            if (canceller != null
+                    && canceller.isCancelled()) {
+                return Collections.emptyMap();
+            }
             if (isResolvable(d) && d.isShared() && 
                     !isOverloadedVersion(d) &&
                     isNameMatching(startingWith, d)) {

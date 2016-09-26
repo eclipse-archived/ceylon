@@ -113,6 +113,41 @@
         <replace module="com.redhat.ceylon.langtools.classfile" version="1.2.2">
             <with module="com.redhat.ceylon.langtools.classfile" version="${uv}" />
         </replace>
+        
+        <!-- used for auto-upgrading at runtime for 1.3.0 -->
+        <replace module="ceylon.language" version="1.3.0">
+            <with module="ceylon.language" version="${uv}" />
+        </replace>
+        <replace module="ceylon.runtime" version="1.3.0">
+            <with module="ceylon.runtime" version="${uv}" />
+        </replace>
+        <replace module="ceylon.bootstrap" version="1.3.0">
+            <with module="ceylon.bootstrap" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.common" version="1.3.0">
+            <with module="com.redhat.ceylon.common" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.typechecker" version="1.3.0">
+            <with module="com.redhat.ceylon.typechecker" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.module-resolver" version="1.3.0">
+            <with module="com.redhat.ceylon.module-resolver" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.model" version="1.3.0">
+            <with module="com.redhat.ceylon.model" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.compiler.java" version="1.3.0">
+            <with module="com.redhat.ceylon.compiler.java" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.compiler.js" version="1.3.0">
+            <with module="com.redhat.ceylon.compiler.js" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.tool.provider" version="1.3.0">
+            <with module="com.redhat.ceylon.tool.provider" version="${uv}" />
+        </replace>
+        <replace module="com.redhat.ceylon.langtools.classfile" version="1.3.0">
+            <with module="com.redhat.ceylon.langtools.classfile" version="${uv}" />
+        </replace>
     </dist-upgrade>
 </dist-overrides>
 

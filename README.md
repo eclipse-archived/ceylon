@@ -2,7 +2,7 @@
 
 # Ceylon
 
-This is the 1.2.3.SNAPSHOT _"Total Internal Reflection"_ release of the Ceylon 
+This is the 1.3.1-SNAPSHOT _"Now We Try It My Way"_ release of the Ceylon 
 command line tools. This is a production version of the platform.
 
 Ceylon is a modern, modular, statically typed programming language 
@@ -38,7 +38,7 @@ Read more about Ceylon at <http://ceylon-lang.org>.
 
 ## Building the distribution
 
-Go to the `dist` folder and follow the instructions in the [`README`](/dist/README.md).
+Go to the `dist` folder and follow the instructions in the [`BUILD.md`](/dist/BUILD.md) file.
 
 ## Source code
 
@@ -60,18 +60,21 @@ following platforms to make sure it works:
 
 ### Linux
 
-- Ubuntu "quantal" 12.10 (64 bit) JDK 1.7.0_09 (IcedTea) Node 0.10.15
-- Fedora 17 (64 bit) JDK 1.7.0_09 (IcedTea)
-- Fedora 16 (64 bit), JDK 1.7.0_b147 (IcedTea)
+- Ubuntu "wily" 15.10 (64 bit) JDK 1.7.0_95 (IcedTea) Node 0.10.25
+- Fedora 23 (64 bit), JDK 1.8.0_77 (OpenJDK)
+- Fedora 22 (64 bit), JDK 1.8.0_72 (OpenJDK)
+- Fedora 22 (64 bit), JDK 1.7.0_71 (Oracle)
 
 ### Windows
 
+- Windows 10 Home (64 bit) 1.8.0_77
 - Windows 7 (64 bit) 1.7.0_05 (Oracle)
 - Windows Server 2008 R2 SP1 JDK 1.7.0_04
 
 ### OSX
 
 - OSX 10 Lion (10.8.5) JDK 1.7.0_40 (Oracle) Node 0.10.17
+- OSX 11 El Capitan (10.11.6) JDK 1.7.0_80 (Oracle) Node 0.10.35
 
 ## License
 

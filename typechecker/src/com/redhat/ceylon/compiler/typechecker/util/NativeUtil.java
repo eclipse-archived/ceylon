@@ -28,37 +28,44 @@ public class NativeUtil {
         // declaration in our (original) list of statements
         List<Tree.Statement> hdrstmts;
         if (header instanceof Tree.ClassDefinition) {
-            hdrstmts = ((Tree.ClassDefinition)header).getClassBody().getStatements();
+            Tree.ClassDefinition cd = 
+                    (Tree.ClassDefinition) header;
+            hdrstmts = cd.getClassBody().getStatements();
         } else if (header instanceof Tree.InterfaceDefinition) {
-            hdrstmts = ((Tree.InterfaceDefinition)header).getInterfaceBody().getStatements();
+            Tree.InterfaceDefinition id = 
+                    (Tree.InterfaceDefinition) header;
+            hdrstmts = id.getInterfaceBody().getStatements();
         } else if (header instanceof Tree.ObjectDefinition) {
-            hdrstmts = ((Tree.ObjectDefinition)header).getClassBody().getStatements();
+            Tree.ObjectDefinition od = 
+                    (Tree.ObjectDefinition) header;
+            hdrstmts = od.getClassBody().getStatements();
         } else {
             hdrstmts = null;
         }
         List<Tree.Statement> stmts = body.getStatements();
         if (hdrstmts != null && !hdrstmts.isEmpty()) {
-            LinkedHashMap<String,Tree.Statement> stmtsmap = new LinkedHashMap<String,Tree.Statement>();
+            LinkedHashMap<String,Tree.Statement> stmtsmap = 
+                    new LinkedHashMap<String,Tree.Statement>();
             int idx = 0;
             for (Tree.Statement stmt : stmts) {
                 if (stmt instanceof Tree.Declaration) {
                     Tree.Declaration decl = (Tree.Declaration)stmt;
                     Declaration m = decl.getDeclarationModel();
-                    if (m.isNativeImplementation() && !NativeUtil.isForBackend(m, backend)) {
+                    if (m.isNativeImplementation() 
+                            && !NativeUtil.isForBackend(m, backend)) {
                         continue;
                     }
-                    String key = m.getClass().getSimpleName() + "#" + m.getName();
-                    stmtsmap.put(key, decl);
+                    stmtsmap.put(key(m), decl);
                 } else {
                     stmtsmap.put("#" + (idx++), stmt);
                 }
             }
             for (Tree.Statement stmt : hdrstmts) {
                 if (stmt instanceof Tree.Declaration) {
-                    Tree.Declaration decl = (Tree.Declaration)stmt;
+                    Tree.Declaration decl = (Tree.Declaration) stmt;
                     Declaration m = decl.getDeclarationModel();
                     if (ModelUtil.isImplemented(m)) {
-                        String key = m.getClass().getSimpleName() + "#" + m.getName();
+                        String key = key(m);
                         if (!stmtsmap.containsKey(key)) {
                             stmtsmap.put(key, decl);
                         }
@@ -70,6 +77,10 @@ public class NativeUtil {
             stmts = new ArrayList<Tree.Statement>(stmtsmap.values());
         }
         return stmts;
+    }
+
+    private static String key(Declaration m) {
+        return m.getClass().getSimpleName() + "#" + m.getName();
     }
 
     public static boolean isImplemented(Tree.Declaration decl) {
@@ -119,7 +130,7 @@ public class NativeUtil {
     
     public static boolean isHeaderWithoutBackend(Declaration decl, Backend backend) {
         return decl.isNativeHeader()
-                && (ModelUtil.getNativeDeclaration(decl, backend) == null);
+                && ModelUtil.getNativeDeclaration(decl, backend) == null;
     }
 
     public static boolean hasNativeMembers(ClassOrInterface coi) {
@@ -132,14 +143,7 @@ public class NativeUtil {
     }
 
     public static void checkNotJvm(Node that, String message) {
-        Backends scopedBackends = 
-                that.getScope()
-                    .getScopedBackends();
-        Backends backends =
-                scopedBackends.none() ?
-                        that.getUnit().getSupportedBackends() :
-                        scopedBackends;
-        if (backends.supports(Backend.Java)) {
+        if (getBackends(that).supports(Backend.Java)) {
             that.addUnsupportedError(
                     message, 
                     Backend.Java);
@@ -154,5 +158,14 @@ public class NativeUtil {
             return (Declaration)that;
         }
         return declarationScope(that.getScope());
+    }
+
+    public static Backends getBackends(Node node) {
+        Backends scopedBackends =
+                node.getScope()
+                    .getScopedBackends();
+        return scopedBackends.none() ?
+                node.getUnit().getSupportedBackends() :
+                scopedBackends;
     }
 }

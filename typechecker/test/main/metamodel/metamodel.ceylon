@@ -80,7 +80,7 @@ void test<T>() {
     value toplevelMethod = `method`;
     @error:"does not accept type arguments: 'method'"
     value toplevelMethodErr = `method<String>`;
-    @error:"function or value does not exist: 'missingMethod'"
+    @error:"function or value is not defined: 'missingMethod'"
     value toplevelMethodErr2 = `missingMethod`;
     @type:"Function<Integer,Tuple<String,String,Empty>>"
     value toplevelParameterisedMethod = `parameterisedMethod<Integer,String>`;
@@ -94,7 +94,7 @@ void test<T>() {
     value containerMethodFunction = `function Container.method`;
     @type:"Method<Container,Anything,Empty>"
     value containerMethod = `Container.method`;
-    @error:"method or attribute does not exist: 'missing' in type 'Container'"
+    @error:"method or attribute is not defined: 'missing' in type 'Container'"
     value containerMethodErr = `Container.missing`;
     @type:"Method<ParameterisedContainer<String>,Anything,Tuple<Integer,Integer,Empty>>"
     value parameterisedContainerMethod = `ParameterisedContainer<String>.method<Integer>`;

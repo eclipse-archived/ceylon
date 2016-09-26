@@ -49,6 +49,18 @@ public class FileSystemVirtualFile implements VirtualFile {
     }
 
     @Override
+    public String getRelativePath(VirtualFile ancestor) {
+        if (ancestor instanceof FileSystemVirtualFile) {
+            if (getPath().equals(ancestor.getPath())) {
+                return "";
+            } else if (getPath().startsWith(ancestor.getPath() + "/")) {
+                return getPath().substring(ancestor.getPath().length() + 1);
+            }
+        }
+        return null;
+    }
+
+    @Override
     public InputStream getInputStream() {
         try {
             return new FileInputStream( file );

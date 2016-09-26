@@ -26,7 +26,6 @@ import java.util.Map;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyAttribute;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AnyMethod;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeSetterDefinition;
@@ -37,20 +36,24 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.FunctionalParameterDecla
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LazySpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodArgument;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PatternIterator;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StatementOrArgument;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueIterator;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
+import com.redhat.ceylon.model.typechecker.context.TypeCache;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
-import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Setter;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -91,7 +94,30 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
     }
     
     @Override
-    public void visit(AnyMethod that) {
+    public void visit(Tree.MethodDeclaration that) {
+        super.visit(that);
+        Function model = that.getDeclarationModel();
+        visitMethod(that.getDeclarationModel(), that);
+        SpecifierExpression specifierExpression = that.getSpecifierExpression();
+        // See ClassTransformer.transformSpecifiedMethodBody for this logic
+        if(model != null
+                && model.isMember()
+                && specifierExpression != null
+                && specifierExpression.getExpression() != null){
+            boolean isLazy = specifierExpression instanceof Tree.LazySpecifierExpression;
+            Term term = Decl.unwrapExpressionsUntilTerm(specifierExpression.getExpression());
+            if (!isLazy && term instanceof Tree.FunctionArgument) {
+                // this is inlined for member methods, so the term should inherit our boxing specs
+                Function specifierModel = ((Tree.FunctionArgument)term).getDeclarationModel();
+                if(specifierModel != null){
+                    specifierModel.setUnboxed(model.getUnboxed());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void visit(Tree.MethodDefinition that) {
         super.visit(that);
         visitMethod(that.getDeclarationModel(), that);
     }
@@ -143,8 +169,15 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
 
         Type type = decl.getType();
         if(type != null){
-            if(isRaw(type))
-                type.setRaw(true);
+            if(isRaw(type)) {
+                if (type.isCached()) {
+                    Type clone = type.clone();
+                    clone.setRaw(true);
+                    decl.setType(clone);
+                } else {
+                    type.setRaw(true);
+                }
+            }
         }
     }
 
@@ -187,9 +220,41 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         }
         
         // inherit underlying type constraints
-        if(!Decl.equal(refinedDeclaration, declaration) && type.getUnderlyingType() == null
-                && refinedDeclaration.getType() != null)
-            type.setUnderlyingType(refinedDeclaration.getType().getUnderlyingType());
+        if(!Decl.equal(refinedDeclaration, declaration)){
+            // simple case
+            if(type.getUnderlyingType() == null
+                && refinedDeclaration.getType() != null) {
+                if (type.isCached()) {
+                    type = type.clone();
+                }
+                type.setUnderlyingType(refinedDeclaration.getType().getUnderlyingType());
+                declaration.setType(type);
+            }
+            // special case for variadics
+            if(Decl.isValueParameter(refinedDeclaration)){
+                Parameter parameter = ((FunctionOrValue) refinedDeclaration).getInitializerParameter();
+                if(parameter.isSequenced()){
+                    // inherit the underlying type of the iterated type
+                    Type refinedIteratedType = refinedDeclaration.getType().getTypeArgumentList().get(0);
+                    if(refinedIteratedType.getUnderlyingType() != null){
+                        Type ourIteratedType = type.getTypeArgumentList().get(0);
+                        if(ourIteratedType.getUnderlyingType() == null){
+                            if (ourIteratedType.isCached()) {
+                                ourIteratedType = ourIteratedType.clone();
+                            }
+                            ourIteratedType.setUnderlyingType(refinedIteratedType.getUnderlyingType());
+                            type.getTypeArgumentList().set(0, ourIteratedType);
+                            // make sure we remove those types from the cache otherwise UGLY things happen
+                            TypeCache cache = type.getDeclaration().getUnit().getCache();
+                            if(cache != null){
+                                cache.remove(ourIteratedType);
+                                cache.remove(type);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         
         // abort if our boxing state has already been set
         if(declaration.getUnboxed() != null)
@@ -386,7 +451,8 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         if (iter instanceof ValueIterator) {
             // The exception to the "always boxed for now" rule is Java arrays
             Type typeModel = iter.getSpecifierExpression().getExpression().getTypeModel();
-            ((ValueIterator) iter).getVariable().getDeclarationModel().setUnboxed(iter.getUnit().isJavaArrayType(typeModel));
+            ((ValueIterator) iter).getVariable().getDeclarationModel().setUnboxed(
+                    (iter.getUnit().isJavaArrayType(typeModel) && ((ValueIterator) iter).getVariable().getDeclarationModel().getType().isSubtypeOf(iter.getUnit().getObjectType())));
         } else if (iter instanceof PatternIterator) {
             boxPattern(((PatternIterator) iter).getPattern());
         }

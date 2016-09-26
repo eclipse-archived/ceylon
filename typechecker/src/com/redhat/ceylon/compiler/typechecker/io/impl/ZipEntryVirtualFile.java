@@ -51,6 +51,24 @@ class ZipEntryVirtualFile implements VirtualFile {
     }
 
     @Override
+    public String getRelativePath(VirtualFile ancestor) {
+        if (ancestor instanceof ZipEntryVirtualFile || ancestor instanceof ZipFolderVirtualFile) {
+            if (getPath().equals(ancestor.getPath())) {
+                return "";
+            } else if (getPath().startsWith(ancestor.getPath() + "/")) {
+                return getPath().substring(ancestor.getPath().length() + 1);
+            }
+        } else if (ancestor instanceof ZipFileVirtualFile) {
+            if (getPath().equals(ancestor.getPath())) {
+                return "";
+            } else if (getPath().startsWith(ancestor.getPath() + "!/")) {
+                return getPath().substring(ancestor.getPath().length() + 2);
+            }
+        }
+        return null;
+    }
+
+    @Override
     public InputStream getInputStream() {
         try {
             return new FilterInputStream(zipFile.getInputStream( entry )) {

@@ -45,7 +45,7 @@ class CtorIntermixedStatementsAndConstructors implements .com.redhat.ceylon.comp
     
     public static final class foo_ {
         
-        private foo_() {
+        foo_() {
         }
     }
     
@@ -63,7 +63,7 @@ class CtorIntermixedStatementsAndConstructors implements .com.redhat.ceylon.comp
     
     public static final class far_ {
         
-        private far_() {
+        far_() {
         }
     }
     

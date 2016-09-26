@@ -52,7 +52,8 @@ function tpl$(elems,spread){
   } else {
     that.$$targs$$.Rest$Tuple={t:'T',l:_t.l.slice(1)};
   }
-  that.$bn_=elems[0];
+  //This is awful as well. When you start getting weird undefined refs calling tuple.first, update this (check Tuple.first)
+  that.$z_=elems[0];
   that.elem$=elems;
   if (spread!==undefined) {
     that.sp$=spread;
@@ -85,7 +86,7 @@ function $init$tpl$(){
       }
       tuple.iterator.$crtmm$=Tuple.$$.prototype.iterator.$crtmm$;
       //That stupid last "||false" is needed otherwise this returns undefined
-      tuple.contains=function(i) { return this.elem$.contains(i) || (this.sp$&&this.sp$.contains(i)) || false; }
+      tuple.contains=function(i) { return $arr$cnt(this.elem$,i) || (this.sp$&&this.sp$.contains(i)) || false; }
       tuple.contains.$crtmm$=Tuple.$$.prototype.contains.$crtmm$;
       tuple.count=function(f){
         var c=0;
@@ -108,7 +109,7 @@ function $init$tpl$(){
         if (this.sp$)for (i=0;i<this.sp$.size;i++) {
           if (f(this.sp$.getFromFirst(i)))a.push(this.sp$.getFromFirst(i));
         }
-        return a.$sa$(this.t$);
+        return $arr$sa$(a,this.t$);
       };
       tuple.select.$crtmm$=Tuple.$$.prototype.select.$crtmm$;
       tuple.$_filter=function(f){
@@ -143,7 +144,7 @@ function $init$tpl$(){
         if (this.sp$)for (i=0;i<this.sp$.size;i++) {
           a[j++]=f(this.sp$.getFromFirst(i));
         }
-        return a.$sa$($m.Result$collect);
+        return $arr$sa$(a,$m.Result$collect);
       };
       tuple.collect.$crtmm$=Tuple.$$.prototype.collect.$crtmm$;
       tuple.$_map=function(f,$m){
@@ -242,7 +243,7 @@ function $init$tpl$(){
           var ni=oi.next();
           var nt=ot.next();
           while (ni!==finished()) {
-            if (!ni.equals(nt))return false;
+            if (!$eq$(ni,nt))return false;
             ni=oi.next();
             nt=ot.next();
           }
@@ -260,9 +261,9 @@ function $init$tpl$(){
         return tpl$(e2);
       }
       tuple.withTrailing.$crtmm$=Sequential.$$.prototype.withTrailing.$crtmm$;
-      tuple.longerThan=function(i){return this.elem$.length>i;}
+      tuple.longerThan=function(i){return (this.sp$?this.size:this.elem$.length)>i;}
       tuple.longerThan.$crtmm$=Iterable.$$.prototype.longerThan.$crtmm$;
-      tuple.shorterThan=function(i){return this.elem$.length<i;}
+      tuple.shorterThan=function(i){return (this.sp$?this.size:this.elem$.length)<i;}
       tuple.shorterThan.$crtmm$=Iterable.$$.prototype.shorterThan.$crtmm$;
       atr$(tuple,'hash',function(){
         return $arr$(this.elem$,this.t$).hash+(this.sp$?this.sp$.hash:0);
@@ -361,7 +362,7 @@ function detpl$(t) {
       for(var i=0;i<count;i++)ret[i]=null;
       return ret;
     }
-    if (args.t===Sequential || args.t===Sequence || args.t===Range) {
+    if (args.t===Sequential || args.t===Sequence || args.t===Range || args.t===Iterable) {
       var ret=Array(count+1);
       for (var i=0;i<count;i++)ret[i]=null;
       ret[count]=args;

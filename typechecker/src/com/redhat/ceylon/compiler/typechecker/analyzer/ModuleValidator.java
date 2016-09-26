@@ -101,10 +101,11 @@ public class ModuleValidator {
                 LinkedList<Module> dependencyTree = new LinkedList<Module>();
                 // only verify modules we compile (and default/language), as that makes us traverse their dependencies anyways
                 Set<Module> compiledModules = moduleManagerUtil.getCompiledModules();
-                Module jdkModule = moduleManagerUtil.getJdkModule();
+                Module jdkProviderModule = moduleManagerUtil.getJdkProviderModule();
                 List<Module> modules = new ArrayList<Module>(compiledModules.size()+2);
-                if(jdkModule != null){
-                	resolveModuleIfRequired(jdkModule, true, null, ImportDepth.First, dependencyTree, searchedArtifacts);
+                if(jdkProviderModule != null){
+                    ModuleImport synthimp = new ModuleImport(null, jdkProviderModule, false, false);
+                    resolveModuleIfRequired(jdkProviderModule, true, synthimp, ImportDepth.First, dependencyTree, searchedArtifacts);
                 }
                 // we must resolve the language module first because it contains definitions that must be in the classpath
                 // before any other JVM class is loaded, including the module descriptor annotations themselves
@@ -210,7 +211,7 @@ public class ModuleValidator {
         visibleDependencies.add(dependencyTree.getLast()); //first addition => no possible conflict
         for (ModuleImport moduleImport : moduleImports) {
             if (moduleImport.isNative() &&
-                    !isForBackend(moduleImport.getNativeBackends(), moduleManager)) {
+                    !isForBackend(moduleImport.getNativeBackends(), moduleManager.getSupportedBackends())) {
                 //import is not for this backend
                 continue;
             }
@@ -253,21 +254,30 @@ public class ModuleValidator {
             } else {
                 //try and load the module from the repository
                 RepositoryManager repositoryManager = context.getRepositoryManager();
-                Exception exceptionOnGetArtifact = null;
-                Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
-                ArtifactContext artifactContext = new ArtifactContext(module.getNameAsString(), module.getVersion(), getArtifactSuffixes(searchedArtifactExtensions));
-                listener.retrievingModuleArtifact(module, artifactContext);
-                try {
-                    artifact = repositoryManager.getArtifactResult(artifactContext);
-                } catch (Exception e) {
-                    exceptionOnGetArtifact = catchIfPossible(e);
-                }
-                if (artifact == null) {
-                    //not there => error
-                    ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, dependencyTree, exceptionOnGetArtifact, moduleManagerUtil);
-                    listener.retrievingModuleArtifactFailed(module, artifactContext);
-                }else{
-                    listener.retrievingModuleArtifactSuccess(module, artifact);
+                if (repositoryManager.isValidNamespace(moduleImport.getNamespace())) {
+                    Exception exceptionOnGetArtifact = null;
+                    Iterable<String> searchedArtifactExtensions = moduleManager.getSearchedArtifactExtensions();
+                    ArtifactContext artifactContext = new ArtifactContext(moduleImport.getNamespace(), module.getNameAsString(), module.getVersion(), getArtifactSuffixes(searchedArtifactExtensions));
+                    listener.retrievingModuleArtifact(module, artifactContext);
+                    try {
+                        artifact = repositoryManager.getArtifactResult(artifactContext);
+                    } catch (Exception e) {
+                        exceptionOnGetArtifact = catchIfPossible(e);
+                    }
+                    if (artifact == null) {
+                        //not there => error
+                        ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, dependencyTree, exceptionOnGetArtifact, moduleManagerUtil);
+                        listener.retrievingModuleArtifactFailed(module, artifactContext);
+                    }else{
+                        listener.retrievingModuleArtifactSuccess(module, artifact);
+                    }
+                } else {
+                    String msg = "unknown import namespace: '" + moduleImport.getNamespace() +
+                            "', make sure the proper repository has been enabled";
+                    if (!"maven".equals(moduleImport.getNamespace())) {
+                        msg += " (if this is a Maven import make sure to add a 'maven:' prefix)";
+                    }
+                    moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, msg);
                 }
                 alreadySearchedArtifacts.put(module, artifact);
                 firstTime = true;

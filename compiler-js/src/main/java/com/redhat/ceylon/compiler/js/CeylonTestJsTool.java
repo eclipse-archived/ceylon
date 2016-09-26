@@ -4,18 +4,20 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.ceylon.AbstractTestTool;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.OptionArgument;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tools.AbstractTestTool;
 
-@Summary("Executes tests")
+@Summary("Executes tests on Node.js")
 @Description(
         "Executes tests in specified `<modules>`. " +
         "The `<modules>` arguments are the names of the modules to test with an optional version.")
@@ -78,20 +80,20 @@ public class CeylonTestJsTool extends AbstractTestTool {
 
         CeylonRunJsTool ceylonRunJsTool = new CeylonRunJsTool() {
             @Override
-            protected void customizeDependencies(List<File> localRepos, RepositoryManager repoman) throws IOException {
+            protected void customizeDependencies(List<File> localRepos, RepositoryManager repoman, Set<String> loadedDependencies) throws IOException {
                 for (String moduleAndVersion : moduleAndVersionList) {
                     String modName = ModuleUtil.moduleName(moduleAndVersion);
                     String modVersion = ModuleUtil.moduleVersion(moduleAndVersion);
                     File artifact = getArtifact(repoman, modName, modVersion, true);
                     localRepos.add(getRepoDir(modName, artifact));
-                    loadDependencies(localRepos, repoman, artifact);
+                    loadDependencies(localRepos, repoman, artifact, loadedDependencies);
                 }
             };
         };
         ceylonRunJsTool.setModuleVersion(TEST_MODULE_NAME + "/" + version);
         ceylonRunJsTool.setRun(TEST_RUN_FUNCTION);
         ceylonRunJsTool.setArgs(args);
-        ceylonRunJsTool.setRepository(repo);
+        ceylonRunJsTool.setRepository(repos);
         ceylonRunJsTool.setSystemRepository(systemRepo);
         ceylonRunJsTool.setCacheRepository(cacheRepo);
         ceylonRunJsTool.setOverrides(overrides);
@@ -106,15 +108,16 @@ public class CeylonTestJsTool extends AbstractTestTool {
     }
 
     private void processColors(final List<String> args) {
-        if (System.getProperties().containsKey(COLOR_RESET)
-                && System.getProperties().containsKey(COLOR_GREEN)
-                && System.getProperties().containsKey(COLOR_RED)) {
+        String reset = OSUtil.Color.reset.escape();
+        String green = OSUtil.Color.green.escape();
+        String red = OSUtil.Color.red.escape();
+        if (reset != null && green != null && red != null) {
             args.add("--" + COLOR_RESET);
-            args.add(System.getProperty(COLOR_RESET));
+            args.add(reset);
             args.add("--" + COLOR_GREEN);
-            args.add(System.getProperty(COLOR_GREEN));
+            args.add(green);
             args.add("--" + COLOR_RED);
-            args.add(System.getProperty(COLOR_RED));
+            args.add(red);
         }
     }
 

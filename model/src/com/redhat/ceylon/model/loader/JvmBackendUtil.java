@@ -8,10 +8,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +29,13 @@ import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import com.redhat.ceylon.common.BooleanUtil;
+import com.redhat.ceylon.common.IOUtil;
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.ImportType;
@@ -329,11 +341,12 @@ public class JvmBackendUtil {
      * via a {@code VariableBox}
      */
     public static boolean isBoxedVariable(TypedDeclaration attr) {
-        return ModelUtil.isNonTransientValue(attr)
+        return (ModelUtil.isNonTransientValue(attr)
                 && ModelUtil.isLocalNotInitializer(attr)
                 && ((attr.isVariable() && attr.isCaptured())
                         // self-captured objects must also be boxed like variables
-                        || attr.isSelfCaptured());
+                        || attr.isSelfCaptured()))
+                || (attr instanceof Value && ModelUtil.isEnumeratedConstructorInLocalVariable((Value) attr));
     }
 
     private static String getArrayName(TypeDeclaration decl) {
@@ -437,40 +450,63 @@ public class JvmBackendUtil {
         meta.mkdirs();
         File metamodel = new File(meta, "metamodel");
         try(FileWriter ret = new FileWriter(metamodel)){
-        
-            if(jdkProvider.isAlternateJdk()){
-                for (String jdkModule : jdkProvider.getJDKModuleNames()) {
-                    ret.write("="+jdkModule+"/"+jdkProvider.getJDKVersion()+"\n");
-                    for (String pkg : jdkProvider.getJDKPackages(jdkModule)) {
-                        ret.write("@"+pkg+"\n");
-                    }
-                }
-            }
-            
-            for(ArtifactResult entry : entries){
-                writeStaticMetamodel(ret, entry, jdkProvider);
-            }
-            ret.flush();
+            writeStaticMetamodel(ret, entries, jdkProvider, Collections.<String>emptySet());
         }
     }
 
-    private static void writeStaticMetamodel(FileWriter metamodelOs, ArtifactResult entry, JdkProvider jdkProvider) throws IOException {
-        metamodelOs.write("="+entry.name()+"/"+entry.version()+"\n");
-        for (ArtifactResult dep : entry.dependencies()) {
-            switch(dep.importType()){
-            case EXPORT:
-                metamodelOs.write("+");
-                break;
-            case OPTIONAL:
-                metamodelOs.write("?");
-                break;
+    public static void writeStaticMetamodel(ZipOutputStream outputZip, Set<String> added, 
+            List<ArtifactResult> entries, JdkProvider jdkProvider,
+            Set<String> providedModules) throws IOException {
+        if(added.add("META-INF/")){
+            ZipEntry entry = new ZipEntry("META-INF/");
+            outputZip.putNextEntry(entry);
+        }
+        if(added.add("META-INF/ceylon/")){
+            ZipEntry entry = new ZipEntry("META-INF/ceylon/");
+            outputZip.putNextEntry(entry);
+        }
+        outputZip.putNextEntry(new ZipEntry("META-INF/ceylon/metamodel"));
+        Writer ret = new OutputStreamWriter(outputZip);
+
+        writeStaticMetamodel(ret, entries, jdkProvider, providedModules);
+    }
+
+    private static void writeStaticMetamodel(Writer ret, List<ArtifactResult> entries, JdkProvider jdkProvider, Set<String> providedModules) throws IOException {
+        if(jdkProvider.isAlternateJdk()){
+            for (String jdkModule : jdkProvider.getJDKModuleNames()) {
+                ret.write("="+jdkModule+"/"+jdkProvider.getJDKVersion()+"\n");
+                for (String pkg : jdkProvider.getJDKPackages(jdkModule)) {
+                    ret.write("@"+pkg+"\n");
+                }
             }
-            metamodelOs.write(dep.name()+"/"+dep.version()+"\n");
+        }
+
+        for(ArtifactResult entry : entries){
+            writeStaticMetamodel(ret, entry, jdkProvider, providedModules);
+        }
+        ret.flush();
+    }
+
+    private static void writeStaticMetamodel(Writer metamodelOs, ArtifactResult entry, JdkProvider jdkProvider, Set<String> providedModules) throws IOException {
+        metamodelOs.write("="+entry.name()+"/"+entry.version()+"\n");
+        // skip dependencies of provided modules as they're not trusted
+        if(!providedModules.contains(entry.name())){
+            for (ArtifactResult dep : entry.dependencies()) {
+                switch(dep.importType()){
+                case EXPORT:
+                    metamodelOs.write("+");
+                    break;
+                case OPTIONAL:
+                    metamodelOs.write("?");
+                    break;
+                }
+                metamodelOs.write(dep.name()+"/"+dep.version()+"\n");
+            }
         }
         listPackages(metamodelOs, entry.name(), entry.artifact(), jdkProvider);
     }
 
-    private static void listPackages(FileWriter metamodelOs, String name, File artifact, JdkProvider jdkProvider) throws ZipException, IOException {
+    private static void listPackages(Writer metamodelOs, String name, File artifact, JdkProvider jdkProvider) throws ZipException, IOException {
         List<String> jdkPackageList = null;
         if(name.equals(jdkProvider.getJdkContainerModuleName())){
             jdkPackageList = jdkProvider.getJDKPackageList();
@@ -516,16 +552,24 @@ public class JvmBackendUtil {
                     continue;
                 }
                 // it's an import
-                final ModuleSpec importSpec = ModuleSpec.parse(line);
+                ModuleSpec importSpec = ModuleSpec.parse(line);
+                final String namespace = ModuleUtil.getNamespaceFromUri(importSpec.getName());
+                final String name = ModuleUtil.getModuleNameFromUri(importSpec.getName());
+                final String version = importSpec.getVersion();
                 imports.add(new ArtifactResult(){
                     @Override
+                    public String namespace() {
+                        return namespace;
+                    }
+
+                    @Override
                     public String name() {
-                        return importSpec.getName();
+                        return name;
                     }
 
                     @Override
                     public String version() {
-                        return importSpec.getVersion();
+                        return version;
                     }
 
                     @Override
@@ -578,12 +622,17 @@ public class JvmBackendUtil {
         }
     }
 
-    private static void finishLoadingModule(final ModuleSpec module, 
-            final SortedSet<String> packages, 
-            final List<ArtifactResult> dependencies, 
+    private static void finishLoadingModule(ModuleSpec module, 
+            SortedSet<String> packages, 
+            List<ArtifactResult> dependencies, 
             final List<String> dexEntries, 
             StaticMetamodelLoader staticMetamodelLoader) {
+        final SortedSet<String> packagesCopy = new TreeSet<>(packages);
+        final List<ArtifactResult> dependenciesCopy = new ArrayList<>(dependencies);
         
+        final String namespace = ModuleUtil.getNamespaceFromUri(module.getName());
+        final String name = ModuleUtil.getModuleNameFromUri(module.getName());
+        final String version = module.getVersion();
         ArtifactResult artifact = new ContentAwareArtifactResult() {
             
             @Override
@@ -593,7 +642,7 @@ public class JvmBackendUtil {
             
             @Override
             public String version() {
-                return module.getVersion();
+                return version;
             }
             
             @Override
@@ -612,8 +661,13 @@ public class JvmBackendUtil {
             }
             
             @Override
+            public String namespace() {
+                return namespace;
+            }
+
+            @Override
             public String name() {
-                return module.getName();
+                return name;
             }
             
             @Override
@@ -628,7 +682,7 @@ public class JvmBackendUtil {
             
             @Override
             public List<ArtifactResult> dependencies() throws RepositoryException {
-                return dependencies;
+                return dependenciesCopy;
             }
             
             @Override
@@ -638,7 +692,7 @@ public class JvmBackendUtil {
             
             @Override
             public Collection<String> getPackages() {
-                return packages;
+                return packagesCopy;
             }
             
             @Override
@@ -668,7 +722,7 @@ public class JvmBackendUtil {
             private Collection<String> getAndroidEntries() {
                 List<String> ret = new LinkedList<>();
                 for(String entry : dexEntries){
-                    for (String pkg : packages) {
+                    for (String pkg : packagesCopy) {
                         String path = pkg.replace('.', '/')+"/";
                         if(entry.startsWith(path)){
                             ret.add(entry);
@@ -681,8 +735,12 @@ public class JvmBackendUtil {
 
             @Override
             public byte[] getContents(String path) {
-                // TODO Auto-generated method stub
-                return null;
+                // this is used by the metamodel module resource system
+                try{
+                    return IOUtil.readStream(getClass().getClassLoader().getResourceAsStream(path));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
             
             @Override
@@ -693,11 +751,71 @@ public class JvmBackendUtil {
                     throw new RuntimeException(e);
                 }
             }
+            
+            @Override
+            public String toString() {
+                return "StaticMetamodelArtifact for module "+name+"/"+version;
+            }
         };
         staticMetamodelLoader.loadModule(module.getName(), module.getVersion(), artifact);
     }
 
     public static InputStream getStaticMetamodelInputStream(java.lang.Class<?> fromClass) {
         return fromClass.getResourceAsStream("/META-INF/ceylon/metamodel");
+    }
+
+    public static List<String> getCurrentJarEntries() {
+        URL url = JvmBackendUtil.class.getProtectionDomain().getCodeSource().getLocation();
+        Set<String> entries = new HashSet<>();
+        if(url.getProtocol().equals("vfs")){
+            // It looks very much like we're on WildFly, so use JBoss VFS to get all our war's lib files
+            // This will miss provided modules, but the static metamodel should be able to handle that
+            try {
+                java.lang.Class<?> virtualFileClass = java.lang.Class.forName("org.jboss.vfs.VirtualFile");
+                java.lang.Class<?> vfsClass = java.lang.Class.forName("org.jboss.vfs.VFS");
+                Method getChild = vfsClass.getMethod("getChild", URL.class);
+                Object thisJar = getChild.invoke(null, url);
+                Method getParent = virtualFileClass.getMethod("getParent");
+                Object libDir = getParent.invoke(thisJar);
+                if(libDir != null){
+                    // Should be the lib/ folder
+                    Method getChildren = virtualFileClass.getMethod("getChildren");
+                    Method openStream = virtualFileClass.getMethod("openStream");
+                    Method getName = virtualFileClass.getMethod("getName");
+                    @SuppressWarnings("unchecked")
+                    List<Object> children = (List<Object>) getChildren.invoke(libDir);
+                    for(Object child : children){
+                        String name = (String) getName.invoke(child);
+                        if(name.toLowerCase().endsWith(".jar")){
+                            InputStream stream = (InputStream) openStream.invoke(child);
+                            scanZipFile(stream, entries);
+                        }
+                    }
+                }
+            } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                throw new RuntimeException("Failed to read current fat jar list of entries", e);
+            }
+        }else{
+            try {
+                scanZipFile(url.openStream(), entries);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to read current fat jar list of entries", e);
+            }
+        }
+        return new ArrayList<>(entries);
+    }
+    
+    private static void scanZipFile(InputStream is, Set<String> entries){
+        // on JBoss VFS, the stream is already a ZipInputStream in the case of jars
+        ZipInputStream zipFile1 = is instanceof ZipInputStream ? (ZipInputStream)is : new ZipInputStream(is);
+        try(ZipInputStream zipFile = zipFile1){
+            ZipEntry entry;
+            while((entry = zipFile.getNextEntry()) != null){
+                if(!entry.isDirectory())
+                    entries.add(entry.getName());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read current fat jar list of entries", e);
+        }
     }
 }

@@ -9,31 +9,31 @@ public final class bug675_ {
         return (
             let
             {
-                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$6 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
+                .ceylon.language.Sequential<? extends Element> $ceylontmp$elements$7 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning bug675($reified$Element, $ceylontmp$elements$6);
+            returning bug675($reified$Element, $ceylontmp$elements$7);
         );
     }
     
     public static <Element>.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>, ? extends .java.lang.Object> bug675(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Sequential<? extends Element> elements) {
-        final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>, ? extends .java.lang.Object> iterable$1 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug675_.<.ceylon.language.Integer>bug675(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
+        final .ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>, ? extends .java.lang.Object> iterable$2 = .com.redhat.ceylon.compiler.java.test.issues.bug06xx.bug675_.<.ceylon.language.Integer>bug675(.ceylon.language.Integer.$TypeDescriptor$, (.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.sequentialCopy(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Integer.instance(2L)}, .ceylon.language.empty_.get_()));
-        final boolean isArray$2 = iterable$1 instanceof .ceylon.language.Array;
-        final boolean isTuple$3 = iterable$1 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$1).$getArray$() != null;
-        .java.lang.Object elem$0 = null;
-        int i$4 = 0;
-        final int length$5;
-        if (isArray$2 || isTuple$3) {
-            length$5 = (int)iterable$1.getSize();
+        final boolean isArray$3 = iterable$2 instanceof .ceylon.language.Array;
+        final boolean isTuple$4 = iterable$2 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$2).$getArray$() != null;
+        .java.lang.Object elem$1 = null;
+        int i$5 = 0;
+        final int length$6;
+        if (isArray$3 || isTuple$4) {
+            length$6 = (int)iterable$2.getSize();
         } else {
-            length$5 = 0;
+            length$6 = 0;
         }
-        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>> elem$0$iterator$ = isTuple$3 || isArray$2 ? null : iterable$1.iterator();
-        loop_0: while (isTuple$3 || isArray$2 ? i$4 < length$5 : !((elem$0 = elem$0$iterator$.next()) instanceof .ceylon.language.Finished)) {
-            if (isArray$2 || isTuple$3) elem$0 = iterable$1.getFromFirst(i$4++);
-            final long k = ((.ceylon.language.Integer)((.ceylon.language.Entry)elem$0).getKey()).longValue();
-            final long v = ((.ceylon.language.Integer)((.ceylon.language.Entry)elem$0).getItem()).longValue();
+        .ceylon.language.Iterator<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>> elem$1$iterator$ = isTuple$4 || isArray$3 ? null : iterable$2.iterator();
+        loop_0: while (isTuple$4 || isArray$3 ? i$5 < length$6 : !((elem$1 = elem$1$iterator$.next()) instanceof .ceylon.language.Finished)) {
+            if (isArray$3 || isTuple$4) elem$1 = iterable$2.getFromFirst(i$5++);
+            final long k = ((.ceylon.language.Integer)((.ceylon.language.Entry)elem$1).getKey()).longValue();
+            final long v = ((.ceylon.language.Integer)((.ceylon.language.Entry)elem$1).getItem()).longValue();
         }
         return elements.getIndexed();
     }

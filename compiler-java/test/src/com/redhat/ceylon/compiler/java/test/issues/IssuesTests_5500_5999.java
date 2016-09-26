@@ -19,8 +19,25 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.jar.JarFile;
+
+import javax.xml.bind.DatatypeConverter;
+
+import org.junit.Assert;
 import org.junit.Test;
 
+import com.redhat.ceylon.cmr.impl.IOUtils;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 
@@ -37,11 +54,52 @@ public class IssuesTests_5500_5999 extends CompilerTests {
     }
 
     @Test
+    public void testBug5741() {
+        compareWithJavaSource("bug57xx/bug5741");
+    }
+
+    @Test
+    public void testBug5752() {
+        compareWithJavaSource("bug57xx/bug5752/bug5752");
+    }
+
+    @Test
+    public void testBug5751() {
+        compilesWithoutWarnings("bug57xx/bug5751/bug5751.ceylon");
+    }
+
+    @Test
+    public void testBug5774() {
+        compile("bug57xx/bug5774/bug5774.ceylon");
+    }
+
+    @Test
+    public void testBug5785() {
+        compareWithJavaSource("bug57xx/bug5785");
+    }
+
+    @Test
+    public void testBug5787() {
+        compareWithJavaSource("bug57xx/bug5787");
+    }
+
+    @Test
     public void testBug5855() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug58xx.bug5855",
                 "bug58xx/bug5855.ceylon");
     }
 
+    @Test
+    public void testBug5856() {
+        compareWithJavaSource("bug58xx/bug5856");
+    }
+
+    @Test
+    public void testBug5866() {
+        compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug58xx.bug5866",
+                "bug58xx/bug5866.ceylon");
+    }
+    
     @Test
     public void testBug5868() {
         compileAndRun("com.redhat.ceylon.compiler.java.test.issues.bug58xx.bug5868",
@@ -49,8 +107,75 @@ public class IssuesTests_5500_5999 extends CompilerTests {
     }
 
     @Test
+    public void testBug5919() throws IOException {
+        File mrepo = new File(System.getProperty("user.home"), ".m2/repository");
+        File annot = new File(mrepo, "com/android/support/support-annotations/23.0.1");
+        File jar = new File(annot, "support-annotations-23.0.1.jar");
+        File pom = new File(annot, "support-annotations-23.0.1.pom");
+        downloadAndroidAnnotations(pom);
+        downloadAndroidAnnotations(jar);
+        File overridesFile = new File(getPackagePath(), "bug59xx/bug5919/overrides.xml");
+        compile(Arrays.asList(
+                "-overrides", overridesFile.getAbsolutePath(),
+                "-apt", "com.jakewharton:butterknife-compiler/8.1.0"), 
+                "bug59xx/bug5919/test.ceylon");
+        
+        File carFile = getModuleArchive("com.redhat.ceylon.compiler.java.test.issues.bug59xx.bug5919", "1");
+        assertTrue(carFile.exists());
+
+        try(JarFile car = new JarFile(carFile)){
+            Assert.assertNotNull(car.getEntry("com/redhat/ceylon/compiler/java/test/issues/bug59xx/bug5919/Foo$$ViewBinder.class"));
+        }
+    }
+
+    private void downloadAndroidAnnotations(File file) throws IOException {
+        String repoUrl = "https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/android-6.0.1_r46/com/android/support/support-annotations/23.0.1/";
+        // support-annotations-23.0.1.pom?format=TEXT
+        if(!file.exists()){
+            File folder = file.getParentFile();
+            folder.mkdirs();
+            URL url = new URL(repoUrl+file.getName()+"?format=TEXT");
+            File b64 = new File(folder, file.getName()+".base64");
+            try{
+                try(InputStream is = url.openStream();
+                        OutputStream out = new FileOutputStream(b64)){
+                    IOUtils.copyStream(is, out, false, false);
+                    out.flush();
+                }
+                char[] buffer = new char[(int) b64.length()];
+                try(Reader r = new FileReader(b64)){
+                    r.read(buffer);
+                }
+                byte[] bytes = DatatypeConverter.parseBase64Binary(new String(buffer));
+                try(OutputStream os = new FileOutputStream(file)){
+                    os.write(bytes);
+                    os.flush();
+                }
+            }finally{
+                b64.delete();
+            }
+        }
+    }
+        
+    @Test
+    public void testBug5892() {
+        compile("bug58xx/bug5892.ceylon");
+    }
+
+    @Test
     public void testBug5924() {
         compile("bug59xx/bug5924.ceylon");
+    }
+
+    @Test
+    public void testBug5947() {
+        compile("bug59xx/bug5947.ceylon");
+    }
+
+    @Test
+    public void testBug5958() {
+        compareWithJavaSource("bug59xx/bug5958");
+        run("com.redhat.ceylon.compiler.java.test.issues.bug59xx.bug5958");
     }
 
     @Test

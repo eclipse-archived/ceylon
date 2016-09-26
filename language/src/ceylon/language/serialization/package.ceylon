@@ -91,4 +91,5 @@
 "
 by ("Gavin", "Tom")
 tagged("Serialization")
+since("1.2.0")
 shared package ceylon.language.serialization;

@@ -116,16 +116,6 @@ public class TypeGenerator {
         final String initname;
         if (d.isAnonymous()) {
             String _initname = gen.getNames().objectName(d);
-            if (objectDeclaration != null
-                    && objectDeclaration.isNativeHeader()
-                    && TypeUtils.makeAbstractNative(objectDeclaration)
-                    && !(_initname.endsWith("$$N") || _initname.endsWith("$$N()"))) {
-                if (_initname.endsWith("()")) {
-                    _initname = _initname.substring(0, _initname.length()-2) + "$$N()";
-                } else {
-                    _initname += "$$N";
-                }
-            }
             if (d.isToplevel()) {
                 initname = "$init$" + _initname.substring(0, _initname.length()-2);
             } else {
@@ -144,8 +134,7 @@ public class TypeGenerator {
             genIniter = !gen.stitchInitializer(d);
         }
         if (genIniter) {
-            final String qns = TypeUtils.qualifiedNameSkippingMethods(d);
-            gen.out(gen.getClAlias(), initFuncName, "(", typename, ",'", qns, "'");
+            gen.out(gen.getClAlias(), initFuncName, "(", typename, ",'", d.getQualifiedNameString(), "'");
             final List<Tree.StaticType> supers = satisfiedTypes == null ? Collections.<Tree.StaticType>emptyList()
                     : new ArrayList<Tree.StaticType>(satisfiedTypes.getTypes().size()+1);
 
@@ -362,7 +351,7 @@ public class TypeGenerator {
         }
         //Add reference to metamodel
         gen.out(gen.getNames().name(d), ".$crtmm$=");
-        TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+        TypeUtils.encodeForRuntime(that, d, that.getAnnotationList(), gen);
         gen.endLine(true);
         gen.share(d);
         initializeType(that, gen, initDeferrer);
@@ -409,7 +398,8 @@ public class TypeGenerator {
                 if (typeDecl instanceof Constructor) {
                     gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath), "$$a(");
                 } else {
-                    gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath), "_$c$$$a(");
+                    gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath),
+                            gen.getNames().constructorSeparator(typeDecl), "$c$$$a(");
                 }
             } else {
                 gen.out(gen.memberAccessBase(extendedType, typeDecl, false, qpath),

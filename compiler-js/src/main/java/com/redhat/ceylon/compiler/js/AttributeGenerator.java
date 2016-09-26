@@ -136,7 +136,7 @@ public class AttributeGenerator {
                     if (isLate) {
                         gen.generateUnitializedAttributeReadCheck(varName, gen.getNames().name(decl));
                     }
-                    if (initVal) {
+                    if (initVal && !isLate) {
                         gen.out("return $valinit$", varName, "();}");
                     } else {
                         gen.out("return ", varName, ";}");
@@ -153,16 +153,22 @@ public class AttributeGenerator {
                     if (attributeNode == null) {
                         TypeUtils.encodeForRuntime(expr, decl, gen);
                     } else {
-                        TypeUtils.encodeForRuntime(decl, attributeNode.getAnnotationList(), gen);
+                        TypeUtils.encodeForRuntime(attributeNode, decl, attributeNode.getAnnotationList(), gen);
                     }
                     gen.out(")");
                     gen.endLine(true);
                 }
                 else {
-                    gen.out(GenerateJsVisitor.function, gen.getNames().getter(decl, false),"(){return ");
+                    gen.out(GenerateJsVisitor.function, gen.getNames().getter(decl, false),"(){");
                     if (initVal) {
-                        gen.out("$valinit$", varName, "();}");
+                        if (isLate) {
+                            gen.generateUnitializedAttributeReadCheck(varName, decl.getName());
+                            gen.out("return ", varName, ";}");
+                        } else {
+                            gen.out("return $valinit$", varName, "();}");
+                        }
                     } else if (stitch) {
+                        gen.out("return ");
                         gen.stitchNative(decl, attributeNode);
                         gen.out(";}");
                         if (verboseStitcher) {
@@ -170,7 +176,7 @@ public class AttributeGenerator {
                                 + ", ignoring Ceylon declaration");
                         }
                     } else {
-                        gen.out(varName, ";}");
+                        gen.out("return ", varName, ";}");
                     }
                     gen.endLine();
                     gen.shareGetter(decl);
@@ -194,7 +200,11 @@ public class AttributeGenerator {
         String paramVarName = gen.getNames().createTempVariable();
         gen.out(GenerateJsVisitor.function, gen.getNames().setter(d), "(", paramVarName, "){");
         gen.generateImmutableAttributeReassignmentCheck(d, varName, gen.getNames().name(d));
-        gen.out("if(", varName, "===undefined||",varName,"===",gen.getClAlias(), "INIT$)$valinit$", varName, "();");
+        if (d.isLate()) {
+            gen.generateImmutableAttributeReassignmentCheck(d, varName, d.getName());
+        } else {
+            gen.out("if(", varName, "===undefined||",varName,"===",gen.getClAlias(), "INIT$)$valinit$", varName, "();");
+        }
         gen.out("return ", varName, "=", paramVarName, ";}");
         gen.endLine(true);
         gen.shareSetter(d);
@@ -244,10 +254,10 @@ public class AttributeGenerator {
                 gen.out("undefined");
             }
             gen.out(",");
-            TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+            TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), gen);
             if (setterDef != null) {
                 gen.out(",");
-                TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(), that.getAnnotationList(), gen);
+                TypeUtils.encodeForRuntime(setterDef, setterDef.getDeclarationModel(), that.getAnnotationList(), gen);
             }
             gen.out(")");
             gen.endLine(true);
@@ -264,7 +274,6 @@ public class AttributeGenerator {
                     gen.defineAttribute(gen.getNames().self(outer), gen.getNames().name(d));
                     gen.beginBlock();
                     gen.initSelf(that);
-                    Expression expr = that.getSpecifierOrInitializerExpression().getExpression();
                     boolean stitch = TypeUtils.isNativeExternal(d);
                     if (stitch) {
                         stitch=gen.stitchNative(d, that);
@@ -274,12 +283,10 @@ public class AttributeGenerator {
                         }
                     }
                     if (!stitch) {
+                        final Expression expr = that.getSpecifierOrInitializerExpression().getExpression();
                         gen.out("return ");
                         if (!gen.isNaturalLiteral(expr.getTerm())) {
-                            final int boxType = gen.boxStart(expr.getTerm());
-                            expr.visit(gen);
-                            if (boxType == 4) gen.out("/*TODO: callable targs 3*/");
-                            gen.boxUnboxEnd(boxType);
+                            gen.visitSingleExpression(expr);
                         }
                     }
                     gen.endBlock();
@@ -295,10 +302,10 @@ public class AttributeGenerator {
                         gen.out(",undefined");
                     }
                     gen.out(",");
-                    TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+                    TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), gen);
                     if (setterDef != null) {
                         gen.out(",");
-                        TypeUtils.encodeForRuntime(setterDef.getDeclarationModel(), that.getAnnotationList(), gen);
+                        TypeUtils.encodeForRuntime(setterDef, setterDef.getDeclarationModel(), that.getAnnotationList(), gen);
                     }
                     gen.out(")");
                     gen.endLine(true);
@@ -318,8 +325,7 @@ public class AttributeGenerator {
                             }
                         } else {
                             gen.out("return ");
-                            that.getSpecifierOrInitializerExpression().getExpression().visit(gen);
-                            gen.out(";");
+                            gen.visitSingleExpression(that.getSpecifierOrInitializerExpression().getExpression());
                         }
                         gen.out("}");
                     } else {
@@ -335,7 +341,7 @@ public class AttributeGenerator {
                         gen.out(",undefined");
                     }
                     gen.out(",");
-                    TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+                    TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), gen);
                     gen.out(")");
                     gen.endLine(true);
                 }
@@ -373,7 +379,7 @@ public class AttributeGenerator {
             }
             //issue 297 this is only needed in some cases
             gen.out(pnameMeta, "={$crtmm$:");
-            TypeUtils.encodeForRuntime(d, that.getAnnotationList(), gen);
+            TypeUtils.encodeForRuntime(that, that.getDeclarationModel(), that.getAnnotationList(), gen);
             gen.out("}"); gen.endLine(true);
             if (d.isToplevel()) {
                 gen.out("ex$.", pnameMeta, "=", pnameMeta);

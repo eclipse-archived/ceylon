@@ -11,6 +11,9 @@ import java.util.List;
 public class NothingType extends TypeDeclaration {
     
     public NothingType(Unit unit) {
+        if (unit==null) {
+            throw new IllegalArgumentException("null unit");
+        }
         this.unit = unit;
     }
     
@@ -53,6 +56,26 @@ public class NothingType extends TypeDeclaration {
     @Override
     public Scope getContainer() {
     	return unit.getAnythingDeclaration().getContainer();
+    }
+    
+    @Override
+    public boolean isClassMember() {
+        return false;
+    }
+    
+    @Override
+    public boolean isInterfaceMember() {
+        return false;
+    }
+    
+    @Override
+    public boolean isClassOrInterfaceMember() {
+        return false;
+    }
+    
+    @Override
+    public boolean isToplevel() {
+        return true;
     }
     
     @Override

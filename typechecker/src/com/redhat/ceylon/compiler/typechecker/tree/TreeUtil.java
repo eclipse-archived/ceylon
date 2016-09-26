@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseClause;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -126,10 +125,11 @@ public class TreeUtil {
     }
     
     public static boolean isForUnsupportedBackend(Tree.AnnotationList al,
-            TypecheckerUnit unit) {
+            Unit unit) {
         Backends bs = getNativeBackend(al, unit);
         if (!bs.none()) {
-            return !ModelUtil.isForBackend(bs, unit);
+            return !ModelUtil.isForBackend(bs, 
+                    unit.getSupportedBackends());
         } else {
             return false;
         }
@@ -206,16 +206,18 @@ public class TreeUtil {
         else if (term instanceof Tree.IfExpression) {
             Tree.IfExpression e = (Tree.IfExpression) term;
             return hasUncheckedNulls(e.getIfClause().getExpression(), invoking)
-                    || hasUncheckedNulls(e.getElseClause().getExpression(), invoking);
+                || hasUncheckedNulls(e.getElseClause().getExpression(), invoking);
         }
         else if (term instanceof Tree.SwitchExpression) {
             Tree.SwitchExpression e = (Tree.SwitchExpression) term;
-            for(CaseClause clause : e.getSwitchCaseList().getCaseClauses()){
-                if(hasUncheckedNulls(clause.getExpression(), invoking))
+            for (CaseClause clause : e.getSwitchCaseList().getCaseClauses()) {
+                if (hasUncheckedNulls(clause.getExpression(), invoking)) {
                     return true;
+                }
             }
-            if(e.getSwitchCaseList().getElseClause() != null)
+            if (e.getSwitchCaseList().getElseClause() != null) {
                 return hasUncheckedNulls(e.getSwitchCaseList().getElseClause().getExpression(), invoking);
+            }
             return false;
         }
         else {
@@ -377,7 +379,7 @@ public class TreeUtil {
                 Annotation ann = new Annotation();
                 ann.setName("doc");
                 String text = aa.getStringLiteral().getText();
-                ann.addPositionalArgment(text);
+                ann.addPositionalArgument(text);
                 annotations.add(ann);
             }
             for (Tree.Annotation a: al.getAnnotations()) {
@@ -421,7 +423,7 @@ public class TreeUtil {
                             Tree.Term t = la.getExpression().getTerm();
                             String text = toString(t);
                             if (text!=null) {
-                                ann.addPositionalArgment(text);
+                                ann.addPositionalArgument(text);
                             }
                         }
                     }

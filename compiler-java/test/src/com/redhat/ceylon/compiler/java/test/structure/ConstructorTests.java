@@ -352,5 +352,28 @@ public class ConstructorTests extends CompilerTests {
     public void testCtorUnusedPartial() {
         compareWithJavaSource("constructor/UnusedPartial");
     }
+    
+    @Test
+    public void testCtorBug5897() {
+        compareWithJavaSource("constructor/Bug5897");
+        run("com.redhat.ceylon.compiler.java.test.structure.constructor.bug5897");
+    }
+    
+    @Test
+    public void testCtorBug6134() {
+        compile("constructor/Bug6134.ceylon");
+        compile("constructor/Bug6134Use.ceylon");
+    }
+    
+    @Test
+    public void testCtorBug6192() {
+        compareWithJavaSource("constructor/Bug6192");
+        run("com.redhat.ceylon.compiler.java.test.structure.constructor.bug6192");
+    }
+    
+    @Test
+    public void testCtorBug6196() {
+        compareWithJavaSource("constructor/Bug6196");
+    }
 
 }

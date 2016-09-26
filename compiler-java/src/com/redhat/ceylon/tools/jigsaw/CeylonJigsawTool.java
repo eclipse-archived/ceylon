@@ -12,7 +12,7 @@ import java.util.SortedSet;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
 import com.redhat.ceylon.common.Messages;
-import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.Description;
@@ -35,11 +35,11 @@ import com.redhat.ceylon.tools.moduleloading.ModuleLoadingTool;
 )
 public class CeylonJigsawTool extends ModuleLoadingTool {
 
-    private String moduleNameOptVersion;
+    private List<ModuleSpec> modules;
     private boolean force;
     private boolean staticMetamodel;
     private Mode mode;
-	private File out = new File("mlib");
+    private File out = new File("mlib");
     private final List<String> excludedModules = new ArrayList<>();
 
     public static enum Mode {
@@ -51,9 +51,13 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
         this.mode = mode;
     }
     
-    @Argument(order = 1, argumentName="module", multiplicity = "1")
-    public void setModule(String module) {
-        this.moduleNameOptVersion = module;
+    @Argument(order = 1, argumentName="module", multiplicity="+")
+    public void setModules(List<String> modules) {
+        setModuleSpecs(ModuleSpec.parseEachList(modules));
+    }
+    
+    public void setModuleSpecs(List<ModuleSpec> modules) {
+        this.modules = modules;
     }
 
     @Description("Folder in which to place the resulting jars (defaults to `mlib`).")
@@ -101,27 +105,29 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
 
     @Override
     public void run() throws Exception {
-        String module = ModuleUtil.moduleName(moduleNameOptVersion);
-        String version = checkModuleVersionsOrShowSuggestions(
-                getRepositoryManager(),
-                module,
-                ModuleUtil.moduleVersion(moduleNameOptVersion),
-                ModuleQuery.Type.JVM,
-                Versions.JVM_BINARY_MAJOR_VERSION,
-                Versions.JVM_BINARY_MINOR_VERSION,
-                null, null, // JS binary but don't care since JVM
-                null);
-        if(version == null)
-            return;
-        loadModule(module, version);
+        for (ModuleSpec module : modules) {
+            String moduleName = module.getName();
+            String version = checkModuleVersionsOrShowSuggestions(
+                    getRepositoryManager(),
+                    moduleName,
+                    module.isVersioned() ? module.getVersion() : null,
+                    ModuleQuery.Type.JVM,
+                    Versions.JVM_BINARY_MAJOR_VERSION,
+                    Versions.JVM_BINARY_MINOR_VERSION,
+                    null, null, // JS binary but don't care since JVM
+                    null);
+            if(version == null)
+                return;
+            loadModule(null, moduleName, version);
+            if(!force)
+                errorOnConflictingModule(moduleName, version);
+        }
 
-        if(!force)
-            errorOnConflictingModule(module, version);
         
         if(!out.exists()){
-        	if(!out.mkdirs()){
-    	        throw new ToolUsageError(Messages.msg(bundle, "jigsaw.folder.error", out));
-        	}
+            if(!out.mkdirs()){
+                throw new ToolUsageError(Messages.msg(bundle, "jigsaw.folder.error", out));
+            }
         }
         List<ArtifactResult> staticMetamodelEntries = new ArrayList<>(this.loadedModules.size());
         for(ArtifactResult entry : this.loadedModules.values()){
@@ -133,7 +139,7 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
                 continue;
             // on duplicate, let's only keep the last version
             SortedSet<String> versions = loadedModuleVersions.get(entry.name());
-            if(version != null && !versions.isEmpty() && entry.version() != null && !entry.version().equals(versions.last()))
+            if(!versions.isEmpty() && entry.version() != null && !entry.version().equals(versions.last()))
                 continue;
             append(file.getAbsolutePath());
             newline();
@@ -141,11 +147,11 @@ public class CeylonJigsawTool extends ModuleLoadingTool {
             
             String name = file.getName();
             if(name.endsWith(".car"))
-            	name = name.substring(0, name.length()-4) + ".jar";
-			Files.copy(file.toPath(), new File(out, name).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                name = name.substring(0, name.length()-4) + ".jar";
+            Files.copy(file.toPath(), new File(out, name).toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
         if(staticMetamodel){
-        	JvmBackendUtil.writeStaticMetamodel(out, staticMetamodelEntries, jdkProvider);
+            JvmBackendUtil.writeStaticMetamodel(out, staticMetamodelEntries, jdkProvider);
         }
         flush();
     }

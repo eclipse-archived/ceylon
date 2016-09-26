@@ -1,6 +1,7 @@
 import ceylon.language.meta.declaration{ValueConstructorDeclaration}
 
 "A model for a value constructor of a member class."
+since("1.2.0")
 shared sealed interface MemberClassValueConstructor<in Container=Nothing, out Type=Object>
         satisfies ValueModel<Type> & Qualified<ValueConstructor<Type>, Container> {
     

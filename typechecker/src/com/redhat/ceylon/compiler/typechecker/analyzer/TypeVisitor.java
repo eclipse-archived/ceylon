@@ -1,12 +1,13 @@
 package com.redhat.ceylon.compiler.typechecker.analyzer;
 
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correct;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.correctionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getPackageTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeArguments;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypeMember;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isVeryAbstractClass;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memberCorrectionMessage;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.setTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.unwrapAliasedTypeConstructor;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
@@ -29,11 +30,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.common.Backends;
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeSpecifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
+import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -71,17 +72,20 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  */
 public class TypeVisitor extends Visitor {
     
-    private TypecheckerUnit unit;
+    private Unit unit;
 
+    private Cancellable cancellable;
     private boolean inDelegatedConstructor;
     private boolean inTypeLiteral;
     private boolean inExtendsOrClassAlias;
     
-    public TypeVisitor() {
+    public TypeVisitor(Cancellable cancellable) {
+        this.cancellable = cancellable;
     }
     
-    public TypeVisitor(TypecheckerUnit unit) {
+    public TypeVisitor(Unit unit, Cancellable cancellable) {
         this.unit = unit;
+        this.cancellable = cancellable;
     }
     
     @Override public void visit(Tree.CompilationUnit that) {
@@ -390,13 +394,12 @@ public class TypeVisitor extends Visitor {
             if (type==null) {
                 if (!isNativeForWrongBackend(
                         scope.getScopedBackends())) {
-                    String correction = correct(scope, unit, name);
-                    String message = correction==null ? "" :
-                        " (did you mean '" + correction + "'?)";
-                    that.addError("type declaration does not exist: '" + 
-                            name + "'" + message, 
+                    that.addError("type is not defined: '" 
+                            + name + "'" 
+                            + correctionMessage(name, scope, 
+                                    unit, cancellable), 
                             102);
-                    unit.getUnresolvedReferences().add(id);
+                    unit.setUnresolvedReferences();
                 }
             }
             else {
@@ -481,7 +484,7 @@ public class TypeVisitor extends Visitor {
                 String name = name(id);
                 TypeDeclaration type = 
                         getTypeMember(d, name, 
-                                null, false, unit);
+                                null, false, unit, that.getScope());
                 if (type==null) {
                     Scope scope = that.getScope();
                     if (!isNativeForWrongBackend(
@@ -492,16 +495,13 @@ public class TypeVisitor extends Visitor {
                                     d.getName() + "'");
                         }
                         else {
-                            String correction = 
-                                    correct(d, null, unit, name);
-                            String message = correction==null ? "" :
-                                " (did you mean '" + correction + "'?)";
-                            that.addError("member type declaration does not exist: '" + 
-                                    name + "' in type '" + 
-                                    d.getName() + "'" + 
-                                    message, 100);
-                            unit.getUnresolvedReferences()
-                                .add(id);
+                            that.addError("member type is not defined: '" 
+                                    + name + "' in type '" 
+                                    + d.getName() + "'" 
+                                    + memberCorrectionMessage(name, d, 
+                                            null, unit, cancellable), 
+                                    100);
+                            unit.setUnresolvedReferences();
                         }
                     }
                 }
@@ -531,7 +531,7 @@ public class TypeVisitor extends Visitor {
                 !inExtendsOrClassAlias && 
                 !inDelegatedConstructor) {
             that.addError("constructor is not a type: '" + 
-                    dec.getName(unit) + "'");
+                    dec.getName(unit) + "' is a constructor");
         }
         
         Tree.TypeArgumentList tal = 
@@ -1138,6 +1138,9 @@ public class TypeVisitor extends Visitor {
     private static void inheritedType(Tree.StaticType st) {
         if (st instanceof Tree.SimpleType) {
             ((Tree.SimpleType) st).setInherited(true);
+            if (st instanceof Tree.QualifiedType) {
+                inheritedType(((Tree.QualifiedType) st).getOuterType());
+            }
         }
     }
 
@@ -1368,12 +1371,48 @@ public class TypeVisitor extends Visitor {
         for (Tree.StaticType ct: cts) {
             inheritedType(ct);
             Type type = ct.getTypeModel();
-            if (type!=null) {
-                if (!isTypeUnknown(type)) {
-                    if (type.isUnion() || 
-                        type.isIntersection() ||
-                        type.isNothing()) {
-                        //union/intersection types don't have equals()
+            if (!isTypeUnknown(type)) {
+                if (type.isUnion() || 
+                    type.isIntersection() ||
+                    type.isNothing()) {
+                    //union/intersection types don't have equals()
+                    if (td instanceof TypeParameter) {
+                        ct.addError("enumerated bound must be a class or interface type");
+                    }
+                    else {
+                        ct.addError("case type must be a class, interface, or self type");
+                    }
+                }
+                else {
+                    TypeDeclaration ctd = type.getDeclaration();
+                    if (ctd.equals(td)) {
+                        ct.addError("directly enumerates itself: '" + 
+                                td.getName() + "'");
+                    }
+                    else if (type.isClassOrInterface()) {
+                        caseTypes.add(type);
+                    }
+                    else if (type.isTypeParameter()) {
+                        if (td instanceof TypeParameter) {
+                            caseTypes.add(type);
+                        }
+                        else {
+                            TypeParameter tp = 
+                                    (TypeParameter) ctd;
+                            td.setSelfType(type);
+                            if (tp.isSelfType()) {
+                                ct.addError("type parameter may not act as self type for two different types");
+                            }
+                            else {
+                                tp.setSelfTypedDeclaration(td);
+                                caseTypes.add(type);
+                            }
+                            if (cts.size()>1) {
+                                ct.addError("a type may not have more than one self type");
+                            }
+                        }
+                    }
+                    else {
                         if (td instanceof TypeParameter) {
                             ct.addError("enumerated bound must be a class or interface type");
                         }
@@ -1381,73 +1420,44 @@ public class TypeVisitor extends Visitor {
                             ct.addError("case type must be a class, interface, or self type");
                         }
                     }
-                    else {
-                        TypeDeclaration ctd = type.getDeclaration();
-                        if (ctd.equals(td)) {
-                            ct.addError("directly enumerates itself: '" + 
-                                    td.getName() + "'");
-                        }
-                        else if (type.isClassOrInterface()) {
-                            caseTypes.add(type);
-                        }
-                        else if (type.isTypeParameter()) {
-                            if (td instanceof TypeParameter) {
-                                caseTypes.add(type);
-                            }
-                            else {
-                                TypeParameter tp = 
-                                        (TypeParameter) ctd;
-                                td.setSelfType(type);
-                                if (tp.isSelfType()) {
-                                    ct.addError("type parameter may not act as self type for two different types");
-                                }
-                                else {
-                                    tp.setSelfTypedDeclaration(td);
-                                    caseTypes.add(type);
-                                }
-                                if (cts.size()>1) {
-                                    ct.addError("a type may not have more than one self type");
-                                }
-                            }
-                        }
-                        else {
-                            if (td instanceof TypeParameter) {
-                                ct.addError("enumerated bound must be a class or interface type");
-                            }
-                            else {
-                                ct.addError("case type must be a class, interface, or self type");
-                            }
-                        }
-                    }
                 }
             }
         }
         if (!caseTypes.isEmpty()) {
-            if (caseTypes.size() == 1 && 
-                    caseTypes.get(0).getDeclaration()
-                        .isSelfType()) {
-                Scope scope = 
-                        caseTypes.get(0)
-                            .getDeclaration()
-                            .getContainer();
+            TypeDeclaration first = 
+                    caseTypes.get(0)
+                        .getDeclaration();
+            if (caseTypes.size() == 1 
+                    && first.isSelfType()) {
+                //for a type family, the type that declares 
+                //the type parameter may not be the same 
+                //type for which it acts as a self type
+                Scope scope = first.getContainer();
                 if (scope instanceof ClassOrInterface) {
                     ClassOrInterface ci = 
                             (ClassOrInterface) scope;
                     if (!ci.isAbstract()) {
-                        that.addError("non-abstract class parameterized by self type: '" + 
-                                td.getName() + "'", 905);
+                        cts.get(0)
+                           .addError("non-abstract class parameterized by self type: " + 
+                                "self type '" + first.getName() + 
+                                "' of '" + td.getName() + 
+                                "' is declared by non-abstract class '" + ci.getName() + 
+                                "' (make '" + ci.getName() + "' abstract)", 
+                                905);
                     }
                 }
             }
             else {
                 if (td instanceof ClassOrInterface) {
-                    ClassOrInterface ci = 
+                    ClassOrInterface ci =
                             (ClassOrInterface) td;
                     if (!ci.isAbstract()) {
                         Class c = (Class) ci;
                         if (!c.hasEnumerated()) {
-                            that.addError("non-abstract class has enumerated subtypes: '" +
-                                    td.getName() + "'", 905);
+                            that.addError("non-abstract class has enumerated subtypes: " + 
+                                    "enumerated class '" + ci.getName() + "' is not abstract" +
+                                    " (make '" + ci.getName() + "' abstract)",
+                                    905);
                         }
                     }
                 }
@@ -1467,20 +1477,26 @@ public class TypeVisitor extends Visitor {
                     .getDirectMember(name, null, false);
         if (a==null) {
             //Now done in ExpressionVisitor!
-//            that.addError("parameter declaration does not exist: '" + p.getName() + "'");
+//            that.addError("parameter is not defined: '" + p.getName() + "'");
         }
         else if (!isLegalParameter(a)) {
             that.addError("parameter is not a reference value or function: '" + 
-                    name + "'");
+                    name + "' is not a value or function");
         }
         else {
             if (a.isFormal()) {
                 that.addError("parameter is a formal attribute: '" + 
-                        name + "'", 320);
+                        name + "' is annotated 'formal'", 320);
             }
             FunctionOrValue mov = (FunctionOrValue) a;
-            mov.setInitializerParameter(p);
-            p.setModel(mov);
+            if (mov.getInitializerParameter()!=null) {
+                that.addError("duplicate parameter: '" + 
+                        name + "' already occurs in the parameter list");
+            }
+            else {
+                mov.setInitializerParameter(p);
+                p.setModel(mov);
+            }
         }
         /*if (isGeneric(a)) {
             that.addError("parameter declaration is generic: '" + 
@@ -1651,6 +1667,6 @@ public class TypeVisitor extends Visitor {
     private boolean isNativeForWrongBackend(Backends backends) {
         return !backends.none() &&
                 !backends.header() &&
-                !isForBackend(backends, unit);
+                !isForBackend(backends, unit.getSupportedBackends());
     }    
 }

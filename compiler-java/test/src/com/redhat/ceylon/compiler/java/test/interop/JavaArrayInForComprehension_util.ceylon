@@ -21,11 +21,16 @@ import ceylon.language.meta{
 import ceylon.language.meta.model{
     Class
 }
+import ceylon.interop.java {
+    javaObjectArray
+}
 
 T toArray<T, X>(X[] elements) given X satisfies Object {
     assert(is Class<Anything,Nothing> t= typeLiteral<T>());
     if (`class ObjectArray` == t.declaration) {
-        value r = ObjectArray<X>(elements.size);
+        // GRRRR
+        //value r = ObjectArray<X>(elements.size);
+        value r = javaObjectArray(Array<X?>.ofSize(elements.size, null));
         variable value index = 0;
         for (element in elements) {
             r.set(index++, element);

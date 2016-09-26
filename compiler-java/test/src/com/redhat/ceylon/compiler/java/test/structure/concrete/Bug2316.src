@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.concrete;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("B")
 @.ceylon.language.SharedAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.LocalContainer(
@@ -53,7 +55,9 @@ interface bug2316$A$B_ extends .com.redhat.ceylon.compiler.java.test.structure.c
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public .java.lang.String identBS();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("A")
 @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(javaClassName = "B")})
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1anonymous_0_"})
@@ -76,7 +80,9 @@ interface bug2316$A_ {
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A$B_ getB();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({
         "1a_",
@@ -177,7 +183,9 @@ public final class bug2316_ {
                     let
                     {
                         
-                        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+                        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                                major = 8,
+                                minor = 1)
                         @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
                         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
                         @.com.redhat.ceylon.compiler.java.metadata.Object
@@ -277,7 +285,9 @@ public final class bug2316_ {
             }
         }
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
         @.com.redhat.ceylon.compiler.java.metadata.Name("a")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.Object

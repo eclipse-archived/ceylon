@@ -281,13 +281,15 @@ public class MiscTests extends CompilerTests {
                 "decimal",
                 "file",
                 "html",
+                "http.client",
+                "http.common",
+                "http.server",
                 "interop.java",
                 "io",
                 "json",
                 "locale",
                 "logging",
                 "math",
-                "net",
                 "numeric",
                 "process",
                 "promise",
@@ -296,6 +298,7 @@ public class MiscTests extends CompilerTests {
                 "time",
                 "transaction",
                 "unicode",
+                "uri",
         };
         String[] extraModules = {
                 "ceylon.test",
@@ -364,7 +367,10 @@ public class MiscTests extends CompilerTests {
         
         java.util.List<String> moduleNames = new ArrayList<String>(modules.length);
         for(String module : modules){
-            moduleNames.add("test.ceylon." + module);
+            String name = "test.ceylon." + module;
+            // only add it if it exists
+            if(new File(sourceDir, name.replace('.', File.separatorChar)).isDirectory())
+                moduleNames.add(name);
         }
         for(String module : extraModules){
             moduleNames.add(module);

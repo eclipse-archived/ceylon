@@ -19,7 +19,7 @@ class CtorDelegationWithGenericSuperFoo<T, U> extends .com.redhat.ceylon.compile
     
     private static final class init$delegation$_ {
         
-        private init$delegation$_() {
+        init$delegation$_() {
         }
     }
     
@@ -32,7 +32,7 @@ class CtorDelegationWithGenericSuperFoo<T, U> extends .com.redhat.ceylon.compile
     
     public static final class init_ {
         
-        private init_() {
+        init_() {
         }
     }
     

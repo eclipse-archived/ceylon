@@ -25,7 +25,9 @@ import static com.redhat.ceylon.langtools.tools.javac.code.Flags.FINAL;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.PUBLIC;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.STATIC;
 import static com.redhat.ceylon.langtools.tools.javac.code.TypeTag.VOID;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getInterveningRefinements;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
@@ -40,19 +42,23 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.langtools.tools.javac.util.Name;
+import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
+import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypedReference;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -357,6 +363,11 @@ public class MethodDefinitionBuilder
                 nonWideningType)) {
             pdb.type(gen.make().Type(gen.syms().objectType), gen.makeJavaTypeAnnotations(decl.getModel()));
         } else {
+            if((modifiers & Flags.VARARGS) != 0){
+                // turn this into a Java variadic
+                Type elementType = gen.typeFact().getIteratedType(nonWideningType);
+                nonWideningType = gen.typeFact().getJavaObjectArrayDeclaration().appliedType(null, Arrays.asList(elementType));
+            }
             pdb.type(paramType(gen, nonWideningDecl, nonWideningType, flags), gen.makeJavaTypeAnnotations(decl.getModel()));
         }
         return parameter(pdb);
@@ -370,6 +381,8 @@ public class MethodDefinitionBuilder
         if (parameter.getModel().getTypeErased()) {
             return false;
         }
+        // make sure we resolve aliases
+        nonWideningType = nonWideningType.resolveAliases();
         Declaration method = parameter.getDeclaration();
         TypeDeclaration paramTypeDecl = nonWideningType.getDeclaration();
         if (paramTypeDecl instanceof TypeParameter
@@ -399,11 +412,19 @@ public class MethodDefinitionBuilder
     }
     
     static class NonWideningParam {
+        /**
+         * Flags for makeJavaType
+         */
         public final int flags;
+        /**
+         * Modifiers for JCModifiers
+         */
+        public final long modifiers;
         public final Type nonWideningType;
         public final TypedDeclaration nonWideningDecl;
-        NonWideningParam(int mods, Type nonWideningType, TypedDeclaration nonWideningDecl){
-            this.flags = mods;
+        NonWideningParam(int flags, long modifiers, Type nonWideningType, TypedDeclaration nonWideningDecl){
+            this.flags = flags;
+            this.modifiers = modifiers;
             this.nonWideningType = nonWideningType;
             this.nonWideningDecl = nonWideningDecl;
         }
@@ -428,12 +449,14 @@ public class MethodDefinitionBuilder
         FunctionOrValue mov = CodegenUtil.findMethodOrValueForParam(param);
         if(typedRef == null)
             typedRef = gen.getTypedReference(mov);
-        int mods = 0;
+        long mods = 0;
         if (!Decl.isNonTransientValue(mov) || !mov.isVariable() || mov.isCaptured()) {
             mods |= FINAL;
         }
         NonWideningParam nonWideningParam = getNonWideningParam(typedRef, wideningRules);
         flags |= nonWideningParam.flags;
+        mods |= nonWideningParam.modifiers;
+        
         return parameter(node, mods, param.getModel().getAnnotations(), userAnnotations, paramName, aliasedName, param, 
                 nonWideningParam.nonWideningDecl, nonWideningParam.nonWideningType, flags);
     }
@@ -447,11 +470,12 @@ public class MethodDefinitionBuilder
             WideningRules wideningRules) {
         TypedDeclaration nonWideningDecl = null;
         int flags = 0;
+        long modifiers = 0;
         Type nonWideningType;
         FunctionOrValue mov = (FunctionOrValue) typedRef.getDeclaration();
         if (Decl.isValue(mov)) {
             TypedReference nonWideningTypedRef = gen.nonWideningTypeDecl(typedRef);
-            nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef);
+            nonWideningType = gen.nonWideningType(typedRef, nonWideningTypedRef).resolveAliases();
             nonWideningDecl = nonWideningTypedRef.getDeclaration();
         }else{
             // Stef: So here's the thing. I know this is wrong for Function where we should do getFullType(), BUT
@@ -460,7 +484,7 @@ public class MethodDefinitionBuilder
             // function which rely on its behaviour and frankly I've had enough of this refactoring, so a few callers of this function
             // have to add the Callable back. It sucks, yeah, but so far it works, which is amazing enough that I don't want to touch it
             // any more. More ambitious/courageous people are welcome to fix this properly.
-            nonWideningType = typedRef.getType();
+            nonWideningType = typedRef.getType().resolveAliases();
             nonWideningDecl = mov;
         }
         if(!CodegenUtil.isUnBoxed(nonWideningDecl))
@@ -470,6 +494,12 @@ public class MethodDefinitionBuilder
         if(wideningRules != WideningRules.NONE
                 && mov instanceof Value){
             TypedDeclaration refinedParameter = (TypedDeclaration)CodegenUtil.getTopmostRefinedDeclaration(mov);
+            if(refinedParameter != null
+                    && refinedParameter instanceof Value
+                    && ((Value)refinedParameter).getInitializerParameter() != null
+                    && gen.isJavaVariadic(((Value)refinedParameter).getInitializerParameter())){
+                modifiers |= Flags.VARARGS;
+            }
             // mixin bridge methods have the same rules as when refining stuff except they are their own refined decl
             if(wideningRules == WideningRules.FOR_MIXIN || !Decl.equal(refinedParameter, mov)){
                 Type refinedParameterType;
@@ -487,6 +517,11 @@ public class MethodDefinitionBuilder
                     flags |= AbstractTransformer.JT_RAW;
                 } else {
                     flags |= AbstractTransformer.JT_NARROWED;
+                }
+                if((flags & AbstractTransformer.JT_RAW) == 0 
+                        && !Decl.equal(refinedParameter, mov)
+                        && implementsRawParameter(mov)){
+                    flags |= AbstractTransformer.JT_RAW;
                 }
             }
         }
@@ -508,7 +543,78 @@ public class MethodDefinitionBuilder
                 && gen.rawParameters((Declaration) mov.getContainer())) {
             flags |= AbstractTransformer.JT_RAW;
         }
-        return new NonWideningParam(flags, nonWideningType, nonWideningDecl);
+        return new NonWideningParam(flags, modifiers, nonWideningType, nonWideningDecl);
+    }
+
+    private boolean implementsRawParameter(FunctionOrValue decl) {
+        if(ModelUtil.containsRawType(decl.getType()))
+            return true;
+        // Taken pretty much straight from JvmBackendUtil.getTopmostRefinement
+        Functional func = (Functional)JvmBackendUtil.getParameterized((FunctionOrValue)decl);
+        if(func == null || func instanceof TypedDeclaration == false)
+            return false;
+        Declaration kk = getFirstRefinedDeclaration((TypedDeclaration)func);
+        // error recovery
+        if(kk instanceof Functional == false)
+            return false;
+        Functional refinedFunc = (Functional) kk;
+        // shortcut if the functional doesn't override anything
+        if (ModelUtil.equal((Declaration)refinedFunc, (Declaration)func)) {
+            return false;
+        }
+        if (func.getParameterLists().size() != refinedFunc.getParameterLists().size()) {
+            // invalid input
+            return false;
+        }
+        for (int ii = 0; ii < func.getParameterLists().size(); ii++) {
+            if (func.getParameterLists().get(ii).getParameters().size() != refinedFunc.getParameterLists().get(ii).getParameters().size()) {
+                // invalid input
+                return false;
+            }
+            // find the index of the parameter in the declaration
+            int index = 0;
+            for (Parameter px : func.getParameterLists().get(ii).getParameters()) {
+                if (px.getModel() == null || px.getModel().equals(decl)) {
+                    // And return the corresponding parameter from the refined declaration
+                    FunctionOrValue refinedDecl = refinedFunc.getParameterLists().get(ii).getParameters().get(index).getModel();
+                    return implementsRawParameter(refinedDecl);
+                }
+                index++;
+            }
+            continue;
+        }
+        // invalid input
+        return false;
+    }
+
+    private Declaration getFirstRefinedDeclaration(TypedDeclaration member) {
+        if(!member.isActual() || Decl.equal(member, member.getRefinedDeclaration()))
+            return null;
+        // Taken pretty much straight from RefinementVisitor
+        ClassOrInterface type = (ClassOrInterface) member.getContainer();
+        java.util.List<Type> signature = ModelUtil.getSignature(member);
+        
+        Declaration root = type.getRefinedMember(name, signature, false);
+        if(root == null)
+            return null;
+        TypeDeclaration rootType =  (TypeDeclaration) root.getContainer();
+        
+        java.util.List<Declaration> interveningRefinements = 
+                ModelUtil.getInterveningRefinements(name, 
+                        signature, root, 
+                        type, rootType);
+        for (Declaration refined: interveningRefinements) {
+            TypeDeclaration interveningType = (TypeDeclaration) refined.getContainer();
+            if (getInterveningRefinements(name, 
+                        signature, root, 
+                        type, interveningType)
+                    .size()>1) {
+                continue;
+            }
+            // first?
+            return refined;
+        }
+        return null;
     }
 
     public MethodDefinitionBuilder isOverride(boolean isOverride) {
@@ -573,6 +679,10 @@ public class MethodDefinitionBuilder
         if(method.isActual()
                 && CodegenUtil.hasTypeErased(method))
             flags |= AbstractTransformer.JT_RAW;
+        if (method.isShortcutRefinement()
+                && Decl.isSmall(method.getRefinedDeclaration())) {
+            flags |= AbstractTransformer.JT_SMALL;
+        }
         return resultType(makeResultType(nonWideningTypedRef.getDeclaration(), nonWideningType, flags), method);
     }
     

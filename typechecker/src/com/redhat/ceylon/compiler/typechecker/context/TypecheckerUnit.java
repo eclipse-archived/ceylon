@@ -1,53 +1,31 @@
 package com.redhat.ceylon.compiler.typechecker.context;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import com.redhat.ceylon.common.BackendSupport;
-import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
-import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
-public class TypecheckerUnit extends Unit implements BackendSupport {
-    private Set<Identifier> unresolvedReferences = new HashSet<Identifier>();
+public class TypecheckerUnit extends Unit {
+
     private Package javaLangPackage;
-    private Set<Declaration> missingNativeImplementations = new HashSet<Declaration>();
-    private Backends supportedBackends = Backends.ANY;
 	private ModuleSourceMapper moduleSourceMapper;
 
-    public TypecheckerUnit() {
+    public TypecheckerUnit(ModuleSourceMapper moduleSourceMapper) {
+        this.moduleSourceMapper = moduleSourceMapper;
     }
     
-    public TypecheckerUnit(Iterable<Module> modules, ModuleSourceMapper moduleSourceMapper){
-    	this.moduleSourceMapper = moduleSourceMapper;
-        for (Module m : modules) {
-            if ("java.base".equals(m.getNameAsString())) {
-                javaLangPackage = m.getPackage("java.lang");
-                break;
-            }
-        }
-    	
-    }
-    
-    public Set<Identifier> getUnresolvedReferences() {
-        return unresolvedReferences;
+    public TypecheckerUnit(
+            String theFilename,
+            String theRelativePath,
+            String theFullPath,
+            Package thePackage) {
+        setFilename(theFilename);
+        setRelativePath(theRelativePath);
+        setFullPath(theFullPath);
+        setPackage(thePackage);
     }
 
-    public Set<Declaration> getMissingNativeImplementations() {
-        return missingNativeImplementations;
-    }
-
-    @Override
-    public Backends getSupportedBackends() {
-        return supportedBackends;
-    }
-    
-    public void setSupportedBackends(Backends backends) {
-        supportedBackends = backends;
+    public void setJavaLangPackage(Package javaLangPackage) {
+    	this.javaLangPackage = javaLangPackage;
     }
     
     /** 
@@ -57,10 +35,15 @@ public class TypecheckerUnit extends Unit implements BackendSupport {
      */
     @Override
     protected Package getJavaLangPackage() {
-        return javaLangPackage != null ? javaLangPackage : super.getJavaLangPackage();
+        return javaLangPackage != null ? javaLangPackage : 
+            super.getJavaLangPackage();
     }
-
-	public ModuleSourceMapper getModuleSourceMapper() {
-		return moduleSourceMapper;
+    
+	@Override
+	public boolean isJdkPackage(String name) {
+	    return moduleSourceMapper!=null ? 
+	            moduleSourceMapper.getJdkProvider()
+                    .isJDKPackage(name) : 
+                super.isJdkPackage(name);
 	}
 }

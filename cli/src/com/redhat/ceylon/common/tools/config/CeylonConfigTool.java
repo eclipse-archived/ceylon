@@ -16,10 +16,13 @@
 
 package com.redhat.ceylon.common.tools.config;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Writer;
 
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.CeylonConfigFinder;
 import com.redhat.ceylon.common.config.ConfigFinder;
@@ -140,7 +143,7 @@ public class CeylonConfigTool extends CeylonBaseTool {
                 throw new IllegalStateException("A configuration must be specified");
             }
         }
-        ConfigWriter.write(config, cfgFile);
+        ConfigWriter.instance().write(config, cfgFile);
     }
     
     private void initSubtool() {
@@ -173,7 +176,9 @@ public class CeylonConfigTool extends CeylonBaseTool {
         @Override
         public void run() throws IOException {
             CeylonConfig config = readConfig();
-            System.out.print(config.toString());
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            (new RichConfigWriter()).write(config, out);
+            System.out.print(out.toString("UTF-8"));
         }
     }
 
@@ -432,6 +437,29 @@ public class CeylonConfigTool extends CeylonBaseTool {
         CeylonConfigTool x = new CeylonConfigTool();
         x.action = x.new Get();
         x.run();
+    }
+    
+}
+
+class RichConfigWriter extends ConfigWriter {
+
+    @Override
+    protected void writeSimpleSection(Writer writer, String section)
+            throws IOException {
+        super.writeSimpleSection(writer, OSUtil.color(section, OSUtil.Color.yellow));
+    }
+
+    @Override
+    protected void writeCompoundSection(Writer writer, String pre, String post)
+            throws IOException {
+        super.writeCompoundSection(writer, OSUtil.color(pre, OSUtil.Color.yellow),
+                OSUtil.color(post, OSUtil.Color.red));
+    }
+
+    @Override
+    protected void writeOptionValue(Writer writer, String name, String value)
+            throws IOException {
+        super.writeOptionValue(writer, OSUtil.color(name, OSUtil.Color.blue), value);
     }
     
 }

@@ -17,7 +17,13 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-shared class LocalDeclarationsClassContainer() {
+shared class SuperClass(Object o){}
+
+// objects in default params
+shared class LocalDeclarationsClassContainer(shared Object sharedParam = object {}, Object nonSharedParam = object {})
+    // object in supertype param 
+    extends SuperClass(object {}){
+    
     class Inner(){}
     shared void m(){
         class LocalClass(){
@@ -58,6 +64,13 @@ shared class LocalDeclarationsClassContainer() {
         value capture3 = LocalDeclarationsClassContainer.Inner;
         value capture4 = LocalDeclarationsClassContainer.m;
         value noCapture = f;
+        
+        // passing iterables in arguments
+        ",".join{1,2};
+        // object in comprehension
+        value inLazyComprehension = {for (aa in {1}) object {}};
+        value inLazyIterable = {object {}};
+        value inLazyMixComprehension = {object {}, for (aa in {1}) object {}};
     }
     // MPL: two param lists
     shared void m2()(){
@@ -77,6 +90,43 @@ shared class LocalDeclarationsClassContainer() {
             class LocalClassInLambda(){}
         };
     }
+    
+    void methodReferences(){
+        value f1 = methodReferences;
+    }
+    
+    void nameInvoked(void do()){}
+    Integer withCeylonModelCaching(void do()){ return 1; }
+    
+    // this is in the initialiser
+    Integer foo = withCeylonModelCaching(() => 2);
+    // this one too
+    Anything eagerNonSharedAttribute = () => 2;
+    // this one is super weird: creates a getter in the initialiser
+    Anything lazyNonSharedAttribute => () => 2;
+    // initialiser
+    shared Anything eagerSharedAttribute = () => 2;
+    // normal getter
+    shared Anything lazySharedAttribute => () => 2;
+    
+    // initialiser statements
+    Anything deferred;
+    if(1 == 2){
+        deferred = () => 2;
+    }else{
+        deferred = () => 2;
+    }
+    
+    // shortcut refinement eager
+    hash = {1, 2}.size;
+    // shortcut refinement lazy
+    string => {1, 2}.string;
+    
+    shared default void parseCeylonModel() => nameInvoked {
+        do() => withCeylonModelCaching(() {
+            object localObject{}
+        });
+    };
 }
 shared void localDeclarationsMethodContainer(){
     class LocalClass(){

@@ -2,6 +2,8 @@ package com.redhat.ceylon.cmr.ceylon;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URL;
@@ -9,10 +11,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactCreator;
-import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.CmrRepository;
+import com.redhat.ceylon.cmr.api.Overrides;
+import com.redhat.ceylon.cmr.api.RepositoryBuilder.RepositoryBuilderConfig;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
+import com.redhat.ceylon.cmr.api.SourceArtifactCreator;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
 import com.redhat.ceylon.cmr.impl.FileContentStore;
@@ -20,7 +24,6 @@ import com.redhat.ceylon.cmr.impl.ResourceArtifactCreatorImpl;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.impl.SourceArtifactCreatorImpl;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
-import com.redhat.ceylon.cmr.webdav.WebDAVContentStore;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -34,6 +37,7 @@ public class CeylonUtils {
     }
 
     public static class CeylonRepoManagerBuilder {
+        private static final String WEBDAV_CONTENT_STORE_CLASS = "com.redhat.ceylon.cmr.webdav.WebDAVContentStore";
         private CeylonConfig config;
         private File actualCwd;
         private File cwd;
@@ -51,10 +55,10 @@ public class CeylonUtils {
         private boolean offline;
         private boolean noSystemRepo;
         private boolean noCacheRepo;
+        private boolean noOutRepo;
         private boolean noDefRepos;
         private boolean jdkIncluded;
         private Logger log;
-        private String avoidRepository;
         private boolean skipRemoteRepositories;
         private boolean upgradeDist = true;
 
@@ -117,19 +121,6 @@ public class CeylonUtils {
         }
 
         /**
-         * Make sure we never try to read from the given repository. This is mostly
-         * useful if you intend to write to it and want to make sure we never read
-         * from it at the same time.
-         *
-         * @param avoidRepo A path to a Ceylon repository
-         * @return This object for chaining method calls
-         */
-        public CeylonRepoManagerBuilder avoidRepo(String avoidRepo) {
-            this.avoidRepository = avoidRepo;
-            return this;
-        }
-
-        /**
          * Sets the path to use for the caching of downloaded modules. When not set the
          * value will be taken from the system configuration
          *
@@ -165,6 +156,14 @@ public class CeylonUtils {
          */
         public CeylonRepoManagerBuilder noCacheRepo(boolean noCacheRepo){
             this.noCacheRepo = noCacheRepo;
+            return this;
+        }
+
+        /**
+         * Indicates that we don't need the default output repository (defaults to false)
+         */
+        public CeylonRepoManagerBuilder noOutRepo(boolean noOutRepo){
+            this.noOutRepo = noOutRepo;
             return this;
         }
 
@@ -371,20 +370,22 @@ public class CeylonUtils {
             // Now we add all the rest of the repositories in the order that they will be searched
             
             if (systemRepo == null) {
-                if(!noSystemRepo){
+                if (!noSystemRepo) {
                     addRepo(builder, repositories.getSystemRepository());
                 }
             } else {
                 addRepo(builder, repositories, systemRepo);
             }
 
-            if (outRepo == null) {
-                // do not add the output repo if we do not specify it and do not want the default repos
-                if(!noDefRepos){
-                    addRepo(builder, repositories.getOutputRepository());
+            if (!noOutRepo) {
+                if (outRepo == null) {
+                    // do not add the output repo if we do not specify it and do not want the default repos
+                    if (!noDefRepos) {
+                        addRepo(builder, repositories.getOutputRepository());
+                    }
+                } else {
+                    addRepo(builder, repositories, outRepo);
                 }
-            } else {
-                addRepo(builder, repositories, outRepo);
             }
 
             if (jdkIncluded) {
@@ -527,58 +528,48 @@ public class CeylonUtils {
                 File cachingDir = FileUtil.makeTempDir("ceylon-webdav-cache-");
 
                 // HTTP
-                WebDAVContentStore davContentStore = new WebDAVContentStore(outRepo, log, false, getTimeout(config), getProxy(config));
-                davContentStore.setUsername(user);
-                davContentStore.setPassword(password);
-
-                return new CachingRepositoryManager(davContentStore, cachingDir, log);
-            }
-        }
-
-        private void addRepo(RepositoryManagerBuilder builder, Repositories.Repository repoInfo) {
-            if (repoInfo != null) {
                 try {
-                    String path = absolute(repoInfo.getUrl());
-                    if(!avoidRepository(path)){
-                        CmrRepository repo = builder.repositoryBuilder().buildRepository(path);
-                        builder.addRepository(repo);
-                    }
-                } catch (Exception e) {
-                    log.debug("Failed to add repository as input repository: " + repoInfo.getUrl() + ": " + e.getMessage());
+                    Class<?> klass = Class.forName(WEBDAV_CONTENT_STORE_CLASS);
+                    Constructor<?> constructor = klass.getConstructor(String.class, Logger.class, boolean.class, int.class, Proxy.class, 
+                        String.class, String.class);
+                    StructureBuilder contentStore = 
+                        (StructureBuilder) constructor.newInstance(outRepo, log, false, getTimeout(config), getProxy(config), user, password);
+
+                    return new CachingRepositoryManager(contentStore, cachingDir, log);
+                } catch (LinkageError e) {
+                    // missing dependency
+                    throw new RuntimeException("Failed to initialise WebDAV content store: missing Sardine module?", e);
+                } catch (ClassNotFoundException|InstantiationException|IllegalAccessException|
+                        IllegalArgumentException|InvocationTargetException|NoSuchMethodException|
+                        SecurityException e) {
+                    // bug
+                    throw new RuntimeException("Failed to initialise WebDAV content store", e);
                 }
+
             }
         }
 
         private boolean avoidRepository(String path) {
-            return (avoidRepository != null && avoidRepository.equals(path))
-                    || (skipRemoteRepositories && isRemote(path));
+            return skipRemoteRepositories && isRemote(path);
         }
 
-        private String resolveRepoUrl(Repositories repositories, String repoUrl) {
-            if (repoUrl.startsWith("+")) {
-                // The token is the name of a repository defined in the Ceylon configuration file
-                String path = absolute(repoUrl.substring(1));
-                Repositories.Repository repo = repositories.getRepository(path);
-                if (repo != null) {
-                    repoUrl = repo.getUrl();
-                }
+        private void addRepo(RepositoryManagerBuilder builder, Repositories.Repository repoInfo) {
+            if (repoInfo != null) {
+                addRepo(builder, repoInfo.getUrl());
             }
-            return repoUrl;
         }
-        
+
         private void addRepo(RepositoryManagerBuilder builder, Repositories repositories, String repoUrl) {
+            repoUrl = resolveRepoUrl(repositories, repoUrl);
+            addRepo(builder, repoUrl);
+        }
+
+        private void addRepo(RepositoryManagerBuilder builder, String repoUrl) {
             try {
-                if (repoUrl.startsWith("+")) {
-                    // The token is the name of a repository defined in the Ceylon configuration file
-                    String path = repoUrl.substring(1);
-                    Repositories.Repository repo = repositories.getRepository(path);
-                    if (repo != null) {
-                        repoUrl = repo.getUrl();
-                    }
-                }
-                String path = absolute(repoUrl);
+                String path = builder.repositoryBuilder().absolute(cwd, repoUrl);
                 if(!avoidRepository(path)){
-                    CmrRepository repo = builder.repositoryBuilder().buildRepository(path);
+                    RepositoryBuilderConfig cfg = new RepositoryBuilderConfig(log, isOffline(config), getTimeout(config), getProxy(config), cwd.getAbsolutePath());
+                    CmrRepository repo = builder.repositoryBuilder().buildRepository(path, cfg);
                     builder.addRepository(repo);
                 }
             } catch (Exception e) {
@@ -648,7 +639,7 @@ public class CeylonUtils {
      * @param log           The CMR logger to use for printing progress info.
      * @throws IOException
      */
-    public static ArtifactCreator makeSourceArtifactCreator(RepositoryManager repoManager,
+    public static SourceArtifactCreator makeSourceArtifactCreator(RepositoryManager repoManager,
                                                                 Iterable<? extends File> sourcePaths, String moduleName, String moduleVersion,
                                                                 boolean verbose, Logger log) throws IOException {
         return new SourceArtifactCreatorImpl(repoManager, sourcePaths, moduleName, moduleVersion, verbose, log);
@@ -694,6 +685,40 @@ public class CeylonUtils {
         } catch (MalformedURLException e) {
             return false;
         }
+    }
+
+    /**
+     * Resolves a repository URL that can possibly contain a +-reference
+     * to a system repository or a user repository definition in the
+     * configuration file to one that is either a plain file system path
+     * or a remote URL
+     * @param repoUrl The repository URL to resolve
+     * @return The resolved repository URL
+     */
+    public static String resolveRepoUrl(String repoUrl) {
+        Repositories repositories = Repositories.get();
+        return resolveRepoUrl(repositories, repoUrl);
+    }
+
+    /**
+     * Resolves a repository URL that can possibly contain a +-reference
+     * to a system repository or a user repository definition in the
+     * configuration file to one that is either a plain file system path
+     * or a remote URL
+     * @param repositories The Repositories object to resolve from
+     * @param repoUrl The repository URL to resolve
+     * @return The resolved repository URL
+     */
+    public static String resolveRepoUrl(Repositories repositories, String repoUrl) {
+        if (repoUrl.startsWith("+")) {
+            // The token is the name of a repository defined in the Ceylon configuration file
+            String path = repoUrl.substring(1);
+            Repositories.Repository repo = repositories.getRepository(path);
+            if (repo != null) {
+                repoUrl = repo.getUrl();
+            }
+        }
+        return repoUrl;
     }
 }
 

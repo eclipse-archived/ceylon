@@ -6,7 +6,7 @@ public class Bug1725Transformer implements .com.redhat.ceylon.compiler.java.runt
     }
     
     public final .java.lang.String transformBaseExpression() {
-        return ((.ceylon.language.String).ceylon.language.nothing_.get_()).toString();
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
     }
     
     public final .ceylon.language.Callable<? extends .ceylon.language.String> twoPl(final .java.lang.String s) {
@@ -15,7 +15,7 @@ public class Bug1725Transformer implements .com.redhat.ceylon.compiler.java.runt
             @.java.lang.Override
             public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                 final long i = ((.ceylon.language.Integer)$param$0).longValue();
-                return (.ceylon.language.String).ceylon.language.nothing_.get_();
+                return (.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_();
             }
         };
     }

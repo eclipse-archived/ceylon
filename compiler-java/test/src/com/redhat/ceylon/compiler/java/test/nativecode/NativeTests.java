@@ -134,8 +134,8 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeMethodSharedInvalid() {
         testNativeErrors("NativeMethodSharedInvalid",
-                new CompilerError(20, "shared native implementation must have a header: 'nativeMethodSharedInvalid'"),
-                new CompilerError(23, "shared native implementation must have a header: 'nativeMethodSharedInvalid'"));
+                new CompilerError(20, "shared native implementation must have a header: 'nativeMethodSharedInvalid' has no native header"),
+                new CompilerError(23, "shared native implementation must have a header: 'nativeMethodSharedInvalid' has no native header"));
     }
     
     @Test
@@ -202,18 +202,18 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeSetterInvalid() {
         testNativeErrors("NativeSetterInvalid",
-                new CompilerError(21, "setter must be marked native: 'nativeSetterInvalid'"),
-                new CompilerError(24, "setter must be marked native: 'nativeSetterInvalid'"),
-                new CompilerError(27, "setter must be marked native: 'nativeSetterInvalid'"),
-                new CompilerError(30, "native setter for non-native getter: 'nativeSetterInvalid2'")
+                new CompilerError(21, "setter must be marked native: the getter 'nativeSetterInvalid' is annotated 'native'"),
+                new CompilerError(24, "setter must be marked native: the getter 'nativeSetterInvalid' is annotated 'native'"),
+                new CompilerError(27, "setter must be marked native: the getter 'nativeSetterInvalid' is annotated 'native'"),
+                new CompilerError(30, "setter may not be marked native: the getter 'nativeSetterInvalid2' is not annotated 'native'")
         );
     }
     
     @Test
     public void testNativeAttributeSharedInvalid() {
         testNativeErrors("NativeAttributeSharedInvalid",
-                new CompilerError(20, "shared native implementation must have a header: 'nativeAttributeSharedInvalid'"),
-                new CompilerError(22, "shared native implementation must have a header: 'nativeAttributeSharedInvalid'"));
+                new CompilerError(20, "shared native implementation must have a header: 'nativeAttributeSharedInvalid' has no native header"),
+                new CompilerError(22, "shared native implementation must have a header: 'nativeAttributeSharedInvalid' has no native header"));
     }
     
     @Test
@@ -283,8 +283,8 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeClassSharedInvalid() {
         testNativeErrors("NativeClassSharedInvalid",
-                new CompilerError(20, "shared native implementation must have a header: 'NativeClassSharedInvalid'"),
-                new CompilerError(22, "shared native implementation must have a header: 'NativeClassSharedInvalid'"));
+                new CompilerError(20, "shared native implementation must have a header: 'NativeClassSharedInvalid' has no native header"),
+                new CompilerError(22, "shared native implementation must have a header: 'NativeClassSharedInvalid' has no native header"));
     }
     
     @Test
@@ -296,10 +296,10 @@ public class NativeTests extends CompilerTests {
                 new CompilerError(42, "type of parameter 's' of 'NativeClassMismatch2' is different to type of corresponding parameter 'i' of native header 'NativeClassMismatch2': 'String' is not exactly 'Integer'"),
                 new CompilerError(57, "native classes do not satisfy the same interfaces: 'NativeClassMismatch4'"),
                 new CompilerError(75, "native classes do not satisfy the same interfaces: 'NativeClassMismatch5'"),
-                new CompilerError(82, "native header for non-native declaration: 'NativeClassMismatch6'"),
-                new CompilerError(84, "native implementation for non-native header: 'NativeClassMismatch6'"),
+                new CompilerError(82, "native header for non-native declaration: 'NativeClassMismatch6' is not declared native"),
+                new CompilerError(84, "native implementation for non-native header: 'NativeClassMismatch6' is not declared native"),
                 new CompilerError(91, "formal member 'test1' of 'NativeClassMismatchSuper1' not implemented in class hierarchy"),
-                new CompilerError(92, "native backend name on declaration conflicts with its scope: 'test1'"),
+                new CompilerError(92, "native backend for declaration conflicts with its scope: native implementation 'test1' for '\"js\"' occurs in a scope which only supports '\"jvm\"'"),
                 new CompilerError(102, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for the 'jvm' backend"),
                 new CompilerError(106, "no native implementation for backend: native 'NativeClassMismatch8js' is not implemented for the 'jvm' backend"),
                 new CompilerError(134, "native header 'test5' of 'NativeClassMismatch9' has no native implementation"),
@@ -351,8 +351,8 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeInterfaceSharedInvalid() {
         testNativeErrors("NativeInterfaceSharedInvalid",
-                new CompilerError(20, "shared native implementation must have a header: 'NativeInterfaceSharedInvalid'"),
-                new CompilerError(22, "shared native implementation must have a header: 'NativeInterfaceSharedInvalid'"));
+                new CompilerError(20, "shared native implementation must have a header: 'NativeInterfaceSharedInvalid' has no native header"),
+                new CompilerError(22, "shared native implementation must have a header: 'NativeInterfaceSharedInvalid' has no native header"));
     }
     
     // Objects
@@ -465,13 +465,13 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeNonNativeMixed() {
         testNativeErrors("NativeNonNativeMixed",
-                new CompilerError(21, "native implementation for non-native header: 'NativeNonNativeMixed1'"),
-                new CompilerError(22, "native implementation for non-native header: 'NativeNonNativeMixed1'"),
-                new CompilerError(25, "native header for non-native declaration: 'nativeNonNativeMixed2'"),
+                new CompilerError(21, "native implementation for non-native header: 'NativeNonNativeMixed1' is not declared native"),
+                new CompilerError(22, "native implementation for non-native header: 'NativeNonNativeMixed1' is not declared native"),
+                new CompilerError(25, "native header for non-native declaration: 'nativeNonNativeMixed2' is not declared native"),
                 new CompilerError(25, "no native implementation for backend: native 'nativeNonNativeMixed2' is not implemented for the 'jvm' backend"),
-                new CompilerError(26, "native implementation for non-native header: 'nativeNonNativeMixed2'"),
-                new CompilerError(27, "native implementation for non-native header: 'nativeNonNativeMixed2'"),
-                new CompilerError(30, "duplicate declaration name: 'nativeNonNativeMixed3'")
+                new CompilerError(26, "native implementation for non-native header: 'nativeNonNativeMixed2' is not declared native"),
+                new CompilerError(27, "native implementation for non-native header: 'nativeNonNativeMixed2' is not declared native"),
+                new CompilerError(30, "duplicate declaration: the name 'nativeNonNativeMixed3' is not unique in this scope")
         );
     }
     
@@ -479,20 +479,20 @@ public class NativeTests extends CompilerTests {
     public void testNativeDuplicates() {
         testNativeErrors("NativeDuplicates",
                 new CompilerError(20, "no native implementation for backend: native 'nativeDuplicates1' is not implemented for the 'jvm' backend"),
-                new CompilerError(22, "duplicate native header: 'nativeDuplicates1'"),
+                new CompilerError(22, "duplicate native header: the header for 'nativeDuplicates1' is not unique"),
                 new CompilerError(22, "no native implementation for backend: native 'nativeDuplicates1' is not implemented for the 'jvm' backend"),
-                new CompilerError(28, "duplicate native implementation: 'nativeDuplicates2'"),
+                new CompilerError(28, "duplicate native implementation: the implementation 'nativeDuplicates2' for '\"jvm\"' is not unique"),
                 new CompilerError(30, "no native implementation for backend: native 'nativeDuplicates3' is not implemented for the 'jvm' backend"),
-                new CompilerError(34, "duplicate native implementation: 'nativeDuplicates3'"),
-                new CompilerError(40, "duplicate native implementation: 'nativeDuplicates4'"),
+                new CompilerError(34, "duplicate native implementation: the implementation 'nativeDuplicates3' for '\"js\"' is not unique"),
+                new CompilerError(40, "duplicate native implementation: the implementation 'nativeDuplicates4' for '\"jvm\"' is not unique"),
                 new CompilerError(42, "no native implementation for backend: native 'nativeDuplicates5' is not implemented for the 'jvm' backend"),
-                new CompilerError(46, "duplicate native implementation: 'nativeDuplicates5'"),
-                new CompilerError(50, "duplicate native implementation: 'foo'"),
-                new CompilerError(52, "duplicate native implementation: 'foo'"),
-                new CompilerError(57, "duplicate native implementation: 'foo'"),
-                new CompilerError(58, "duplicate native implementation: 'foo'"),
-                new CompilerError(60, "duplicate native implementation: 'foo'"),
-                new CompilerError(61, "duplicate native implementation: 'foo'")
+                new CompilerError(46, "duplicate native implementation: the implementation 'nativeDuplicates5' for '\"js\"' is not unique"),
+                new CompilerError(50, "duplicate native implementation: the implementation 'foo' for '\"jvm\"' is not unique"),
+                new CompilerError(52, "duplicate native implementation: the implementation 'foo' for '\"js\"' is not unique"),
+                new CompilerError(57, "duplicate native implementation: the implementation 'foo' for '\"jvm\"' is not unique"),
+                new CompilerError(58, "duplicate native implementation: the implementation 'foo' for '\"jvm\"' is not unique"),
+                new CompilerError(60, "duplicate native implementation: the implementation 'foo' for '\"js\"' is not unique"),
+                new CompilerError(61, "duplicate native implementation: the implementation 'foo' for '\"js\"' is not unique")
         );
     }
     
@@ -556,17 +556,17 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeScopesWrong() {
         testNativeErrors("NativeScopesWrong",
-                new CompilerError(27, "native backend name on declaration conflicts with its scope: 'test3'"),
-                new CompilerError(32, "native backend name on declaration conflicts with its scope: 'test'"),
-                new CompilerError(42, "native backend name on declaration conflicts with its scope: 'test3'"),
-                new CompilerError(47, "native backend name on declaration conflicts with its scope: 'test'")
+                new CompilerError(27, "native backend for declaration conflicts with its scope: native implementation 'test3' for '\"js\"' occurs in a scope which only supports '\"jvm\"'"),
+                new CompilerError(32, "native backend for declaration conflicts with its scope: native implementation 'test' for '\"js\"' occurs in a scope which only supports '\"jvm\"'"),
+                new CompilerError(42, "native backend for declaration conflicts with its scope: native implementation 'test3' for '\"jvm\"' occurs in a scope which only supports '\"js\"'"),
+                new CompilerError(47, "native backend for declaration conflicts with its scope: native implementation 'test' for '\"jvm\"' occurs in a scope which only supports '\"js\"'")
         );
     }
     
     @Test
     public void testNativeErrorHandling() {
         testNativeErrors("NativeErrorHandling",
-                new CompilerError(22, "function or value does not exist: 'foo'")
+                new CompilerError(22, "function or value is not defined: 'foo' might be misspelled or is not imported")
         );
     }
     
@@ -578,8 +578,8 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeWrongOrder() {
         testNativeErrors("NativeWrongOrder",
-                new CompilerError(26, "native header must be defined before its implementations: 'NativeWrongOrder'"),
-                new CompilerError(32, "native header must be defined before its implementations: 'test'")
+                new CompilerError(26, "native header must be declared before its implementations: the native header 'NativeWrongOrder' is declared after an implementation"),
+                new CompilerError(32, "native header must be declared before its implementations: the native header 'test' is declared after an implementation")
         );
     }
     
@@ -599,8 +599,8 @@ public class NativeTests extends CompilerTests {
     @Test
     public void testNativeAliasError() {
         testNativeErrors("NativeAliasError",
-                new CompilerError(20, "interface alias can not be native: 'NativeAliasError1' (add a body if a native interface was intended)"),
-                new CompilerError(25, "interface alias can not be native: 'NativeAliasError2' (add a body if a native interface was intended)")
+                new CompilerError(20, "interface alias may not be marked native: 'NativeAliasError1' (add a body if a native interface was intended)"),
+                new CompilerError(25, "interface alias may not be marked native: 'NativeAliasError2' (add a body if a native interface was intended)")
         );
     }
     

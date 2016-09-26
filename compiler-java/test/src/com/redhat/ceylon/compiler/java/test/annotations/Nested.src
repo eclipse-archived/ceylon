@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.annotations;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({})
@@ -8,7 +10,9 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     
     public abstract long i1() default 1L;
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({
         .java.lang.annotation.ElementType.PARAMETER,
@@ -18,7 +22,9 @@ package com.redhat.ceylon.compiler.java.test.annotations;
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
@@ -44,6 +50,7 @@ final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model
     NestedLeaf(@.com.redhat.ceylon.compiler.java.metadata.Name("i1")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
+    @.ceylon.language.SharedAnnotation$annotation$
     final long i1) {
         this.i1 = i1;
     }
@@ -75,7 +82,9 @@ final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model
         return .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$.class;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {0},
@@ -111,7 +120,9 @@ final class nestedLeafDefaultedParameter_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf(i2);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {-32768},
@@ -130,7 +141,9 @@ final class nestedLeafLiteralArgument_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf(3L);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @.java.lang.annotation.Target({})
@@ -140,7 +153,9 @@ final class nestedLeafLiteralArgument_ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$ b();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.java.lang.annotation.Retention(.java.lang.annotation.RetentionPolicy.RUNTIME)
 @.java.lang.annotation.Target({
         .java.lang.annotation.ElementType.PARAMETER,
@@ -150,7 +165,9 @@ final class nestedLeafLiteralArgument_ {
     
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$[] value();
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.ceylon.language.FinalAnnotation$annotation$
 @.ceylon.language.AnnotationAnnotation$annotation$
 @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"ceylon.language::SequencedAnnotation<com.redhat.ceylon.compiler.java.test.annotations::NestedBranch,ceylon.language.meta.declaration::FunctionDeclaration,ceylon.language::Anything>"})
@@ -171,8 +188,10 @@ final class NestedBranch implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     NestedBranch(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
+    @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.String s, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf")
+    @.ceylon.language.SharedAnnotation$annotation$
     final .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf b) {
         this.s = s;
         this.b = b;
@@ -208,7 +227,9 @@ final class NestedBranch implements .com.redhat.ceylon.compiler.java.runtime.mod
         return .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$.class;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {
@@ -254,7 +275,9 @@ final class nestedBranchDPClassWithLiteralArgument_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchDPClassWithLiteralArgument", b);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {
@@ -297,7 +320,9 @@ final class nestedBranchDPClassDefaultedArgument_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchDPClassDefaultedArgument", b);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {
@@ -343,7 +368,9 @@ final class nestedBranchDPCtorWithLiteralArgument_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchDPCtorWithLiteralArgument", b);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {
@@ -386,7 +413,9 @@ final class nestedBranchDPCtorNullary_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchDPCtorNullary", b);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
         arguments = {
@@ -429,7 +458,9 @@ final class nestedBranchDPCtorWithDefaultedArgument_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchDPCtorWithDefaultedArgument", b);
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiationTree({
         @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
@@ -454,7 +485,9 @@ final class nestedBranchClassNullary_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchClassNullary", new .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf());
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiationTree({
         @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
@@ -482,7 +515,9 @@ final class nestedBranchClassLiteral_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchClassLiteral", new .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf(110L));
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiationTree({
         @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
@@ -507,7 +542,9 @@ final class nestedBranchCtorNullary_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchCtorNullary", .com.redhat.ceylon.compiler.java.test.annotations.nestedLeafLiteralArgument_.nestedLeafLiteralArgument());
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiationTree({
         @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(
@@ -532,7 +569,9 @@ final class nestedBranchCtorDefaultedArgument_ {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchCtorDefaultedArgument", .com.redhat.ceylon.compiler.java.test.annotations.nestedLeafDefaultedParameter_.nestedLeafDefaultedParameter());
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiationTree({
         @.com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation(

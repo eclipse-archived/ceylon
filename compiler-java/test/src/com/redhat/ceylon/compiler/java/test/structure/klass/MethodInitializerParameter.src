@@ -57,7 +57,7 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
     public final void capture() {
         m$priv$(1L);
         m2$priv$(1L);
-        m3$priv$((T).ceylon.language.nothing_.get_());
+        m3$priv$((T)(.java.lang.Object).ceylon.language.nothing_.get_());
     }
     
     @.java.lang.Override

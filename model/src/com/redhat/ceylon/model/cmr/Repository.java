@@ -12,8 +12,8 @@ public interface Repository {
     String getDisplayString();
 
     /**
-     * Return true if this is a Maven repo
+     * Returns the name of the repository namespace.
+     * <code>null</code> means the default Ceylon namespace.
      */
-    boolean isMaven();
-
+    String getNamespace();
 }

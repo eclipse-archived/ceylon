@@ -312,7 +312,7 @@ public class AnnotationModelVisitor extends Visitor {
         if (annotationConstructor != null) {
             if (checkingArguments || checkingDefaults){
                 try {
-                    LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(ExpressionTransformer.literalValue(literal));
+                    LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(ExpressionTransformer.literalValue(literal).longValue());
                     appendLiteralArgument(literal, argument);
                 } catch (ErroneousException e) {
                     // Ignore it: The ExpressionTransformer will produce an error later in codegen
@@ -326,7 +326,7 @@ public class AnnotationModelVisitor extends Visitor {
             if (checkingArguments || checkingDefaults){
                 try {
                     if (op.getTerm() instanceof Tree.NaturalLiteral) {
-                        LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(ExpressionTransformer.literalValue(op));
+                        LiteralAnnotationTerm argument = new IntegerLiteralAnnotationTerm(ExpressionTransformer.literalValue(op).longValue());
                         appendLiteralArgument(op, argument);
                     } else if (op.getTerm() instanceof Tree.FloatLiteral) {
                         LiteralAnnotationTerm argument = new FloatLiteralAnnotationTerm(-ExpressionTransformer.literalValue((Tree.FloatLiteral)op.getTerm()));

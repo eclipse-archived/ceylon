@@ -92,6 +92,18 @@ public class CodegenUtil {
     static BoxingStrategy getBoxingStrategy(TypedDeclaration decl) {
         return isUnBoxed(decl) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
     }
+    
+    static boolean isSmall(TypedDeclaration decl){
+        return Decl.isSmall(decl);
+    }
+    
+    static void markSmall(Term term){
+        term.setSmall(true);
+    }
+    
+    static boolean isSmall(Term term){
+        return term.getSmall();
+    }
 
     static boolean isRaw(TypedDeclaration decl){
         Type type = decl.getType();
@@ -105,8 +117,15 @@ public class CodegenUtil {
 
     static void markRaw(Term node) {
         Type type = node.getTypeModel();
-        if(type != null)
-            type.setRaw(true);
+        if(type != null) {
+            if (type.isCached()) {
+                Type clone = type.clone();
+                clone.setRaw(true);
+                node.setTypeModel(clone);
+            } else {
+                type.setRaw(true);                
+            }
+        }
     }
     
     static boolean hasTypeErased(Term node){
@@ -309,7 +328,8 @@ public class CodegenUtil {
         } else if (containerScope instanceof Declaration) {
             containerDeclaration = (Declaration)containerScope;
         } else {
-            throw BugException.unhandledCase(containerScope);
+            // probably invalid user code
+            return false;
         }
         return containerDeclaration instanceof Function
                 && ((Function)containerDeclaration).isParameter();
@@ -440,5 +460,10 @@ public class CodegenUtil {
             }
         }
         return false;
+    }
+    
+    public static boolean downcastForSmall(Tree.Term expr, Declaration decl) {
+        return !expr.getSmall() && (Decl.isSmall(decl)
+                || Decl.isSmall(decl.getRefinedDeclaration()));
     }
 }

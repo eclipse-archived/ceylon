@@ -35,28 +35,26 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CachingRepositoryManager;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.config.Repositories;
+import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.compiler.java.codegen.CeylonFileObject;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.javax.tools.FileObject;
 import com.redhat.ceylon.javax.tools.JavaFileManager;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
 import com.redhat.ceylon.javax.tools.StandardJavaFileManager;
 import com.redhat.ceylon.javax.tools.StandardLocation;
-import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
-import com.redhat.ceylon.langtools.source.util.TaskListener;
+import com.redhat.ceylon.langtools.tools.javac.api.MultiTaskListener;
 import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
 import com.redhat.ceylon.langtools.tools.javac.file.RegularFileObject;
 import com.redhat.ceylon.langtools.tools.javac.file.RelativePath.RelativeFile;
@@ -89,7 +87,7 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     
     private JarOutputRepositoryManager getJarRepository(){
         if(jarRepository == null)
-            jarRepository = new JarOutputRepositoryManager(CeylonLog.instance(context), options, this, context.get(TaskListener.class));
+            jarRepository = new JarOutputRepositoryManager(CeylonLog.instance(context), options, this, MultiTaskListener.instance(context));
         return jarRepository;
     }
     
@@ -165,27 +163,14 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
         if (sibling instanceof CeylonFileObject) {
             sibling = ((CeylonFileObject) sibling).getFile();
         }
-        String quotedFileName = quoteKeywordsInFilename(fileName);
-        
         if(location == StandardLocation.CLASS_OUTPUT){
             File siblingFile = null;
             if (sibling != null && sibling instanceof RegularFileObject) {
                 siblingFile = ((RegularFileObject)sibling).getUnderlyingFile();
             }
-            return getJarRepository().getFileObject(getOutputRepositoryManager(), currentModule, quotedFileName, siblingFile);
+            return getJarRepository().getFileObject(getOutputRepositoryManager(), currentModule, fileName.getPath(), siblingFile);
         }else
             return super.getFileForOutput(location, fileName, sibling);
-    }
-
-    private String quoteKeywordsInFilename(RelativeFile fileName) {
-        // internally, RelativeFile.path always uses '/' and not the platform separator
-        String path = fileName.getPath();
-        StringBuilder sb = new StringBuilder();
-        String[] parts = path.split("/");
-        for (String part : parts) {
-            sb.append(Util.quoteIfJavaKeyword(part)).append(File.separatorChar);
-        }
-        return sb.subSequence(0, sb.length() - 1).toString();
     }
 
     @Override

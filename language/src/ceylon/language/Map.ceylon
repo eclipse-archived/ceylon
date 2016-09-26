@@ -71,6 +71,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      Note that high-quality implementations of `Map` should 
      refine this default implementation."
     see (`function get`)
+    since("1.2.0")
     shared default Item|Default getOrDefault<Default>
             (Object key, Default default) {
         if (defines(key)) {
@@ -94,17 +95,17 @@ shared interface Map<out Key=Object, out Item=Anything>
      belonging to this map."
     see (`function defines`)
     shared actual default Boolean contains(Object entry) {
-        if (is Object->Anything entry, defines(entry.key)) {
-            value item = get(entry.key);
-            value entryItem = entry.item;
-            return
-                if (exists item, exists entryItem)
-                then item == entryItem 
-                else entryItem exists == item exists;
+        if (is Object->Anything entry) {
+            value key -> it = entry;
+            if (defines(key)) {
+                value item = get(key);
+                return 
+                    if (exists it, exists item)
+                    then item == it
+                    else it exists == item exists;
+            }
         }
-        else {
-            return false;
-        }
+        return false;
     }
     
     distinct => this;
@@ -135,15 +136,15 @@ shared interface Map<out Key=Object, out Item=Anything>
      map. An element can be stored under more than one key 
      in the map, and so it can occur more than once in the 
      resulting collection."
+    since("1.1.0")
     shared default Collection<Item> items => Items();
     
     "A bag of items."
     class Items() extends Object() 
                   satisfies Collection<Item> {
         contains(Object item) 
-                => outer.any((entry) 
-                    => if (exists it = entry.item) 
-                            then it==item 
+                => outer.any((_->it) 
+                    => if (exists it) then it==item 
                             else false);
         iterator() => outer.map(Entry.item).iterator();
         size => outer.size;
@@ -176,15 +177,17 @@ shared interface Map<out Key=Object, out Item=Anything>
      
      This is an eager operation, and the resulting map does
      not reflect changes to this map."
+    since("1.2.0")
     shared default Map<Item&Object, [Key+]> inverse() 
             => coalescedMap
                 .summarize<Item&Object,ElementEntry<Key>>
-                    (Entry.item, (keys, Key->Item entry) 
-                        => ElementEntry(keys, entry.key));
+                    (Entry.item, (keys, key->_) 
+                        => ElementEntry(keys, key))
                 //not very useful, since the entries of a
                 //map don't usually have a very meaningful
                 //order (except for TreeMaps!)
-                //.mapItems((_, item) => item.reversed);
+                //but we do need to convert it to a Sequence
+                .mapItems((_, item) => item.reversedSequence());
     
     "Two maps are considered equal iff they have the same 
      _entry sets_. The entry set of a `Map` is the set of 
@@ -194,19 +197,14 @@ shared interface Map<out Key=Object, out Item=Anything>
     shared actual default Boolean equals(Object that) {
         if (is Map<Object,Anything> that,
             that.size==size) {
-            for (entry in this) {
-                value thatItem = that[entry.key];
-                if (exists thisItem = entry.item) {
-                    if (exists thatItem) {
-                        if (thatItem!=thisItem) {
-                            return false;
-                        }
-                    }
-                    else {
+            for (key -> thisItem in this) {
+                value thatItem = that[key];
+                if (exists thisItem, exists thatItem) {
+                    if (thatItem!=thisItem) {
                         return false;
                     }
                 }
-                else if (thatItem exists) {
+                else if (thisItem exists!=thatItem exists) {
                     return false;
                 }
             }
@@ -220,7 +218,7 @@ shared interface Map<out Key=Object, out Item=Anything>
     }
     
     shared actual default Integer hash {
-        variable Integer hashCode = 0;
+        variable value hashCode = 0;
         for (elem in this) {
             hashCode += elem.hash;
         }
@@ -289,6 +287,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      [[given default value|defaultValue]]. The item `null` 
      does not ocur in the resulting map."
     see (`value coalescedMap`)
+    since("1.2.0")
     shared default
     Map<Key,Item&Object|Default>
     defaultNullItems<Default>(
@@ -301,6 +300,7 @@ shared interface Map<out Key=Object, out Item=Anything>
     "Produces a map by applying a [[filtering]] function 
      to the [[keys]] of this map. This is a lazy operation, 
      returning a view of this map."
+    since("1.1.0")
     shared default 
     Map<Key,Item> filterKeys(
         "The predicate function that filters the keys of 
@@ -349,6 +349,7 @@ shared interface Map<out Key=Object, out Item=Anything>
      
      This is a lazy operation producing a view of this map
      and the given map."
+    since("1.1.0")
     shared default
     Map<Key|OtherKey,Item|OtherItem> 
     patch<OtherKey,OtherItem>
@@ -398,6 +399,7 @@ shared interface Map<out Key=Object, out Item=Anything>
     "A map with every entry of this map whose item is
      non-null."
     see (`function defaultNullItems`)
+    since("1.2.0")
     shared default
     Map<Key,Item&Object> coalescedMap 
             => object
@@ -416,8 +418,8 @@ shared interface Map<out Key=Object, out Item=Anything>
         
         iterator()
                 => { for (entry in outer) 
-                     if (exists it=entry.item) 
-                            entry.key->it }
+                     if (exists it = entry.item) 
+                            entry.key -> it }
                         .iterator();
         
         clone() => outer.clone().coalescedMap;
@@ -438,6 +440,7 @@ shared interface Map<out Key=Object, out Item=Anything>
  
  This is an eager operation and the resulting map does not 
  reflect changes to the given [[stream]]."
+since("1.2.0")
 shared Map<Key,Item> map<Key,Item>(
     "The stream of entries."
     {<Key->Item>*} stream,

@@ -1,4 +1,5 @@
 import ceylon.language { AnnotationType = Annotation }
+import ceylon.language.meta.model{ ClassOrInterface }
 
 "A `module` declaration
  from a `module.ceylon` compilation unit"
@@ -17,12 +18,38 @@ shared sealed interface Module
     "Finds a package by name. Returns `null` if not found."
     shared formal Package? findPackage(String name);
     
-    "Finds a package by name in this module or in its dependencies. Note that all transitive `shared`
+    "Finds a package by name in this module or in its 
+     dependencies. Note that all transitive `shared`
      dependencies are searched. Returns `null` if not found."
     shared formal Package? findImportedPackage(String name);
 
     "Searches for a resource by its path inside the module."
+    since("1.1.0")
     shared formal Resource? resourceByPath(String path);
+    
+    "Find providers of the given [[service type|service]].
+     
+     Returns all the service providers accessible to this 
+     module that:
+     
+     * are annotated with the [[service]] annotation, and
+     * have the given class or interface as argument to the 
+       [[service]] annotation.
+     
+     The returned service providers will be returned in an 
+     unspecified and platform-dependent order.
+     
+     A provider usually does not provide the underlying 
+     functionality itself, but:
+     
+     * provides sufficient information to allow clients to 
+       decide which provider is best able to satisfy its 
+       needs, and
+     * provides a means to access the underlying functionality 
+       (for example, by serving as a factory)."
+    shared formal {Service*} findServiceProviders<Service>(
+        "The service type."
+        ClassOrInterface<Service> service);
 }
 
 "Model of an `import` declaration 
@@ -57,31 +84,38 @@ shared sealed interface Package
     "True if this package is shared."
     shared formal Boolean shared;
     
-    "Returns the list of member declarations that satisfy the given `Kind` type argument."
+    "Returns the list of member declarations that satisfy 
+     the given `Kind` type argument."
     shared formal Kind[] members<Kind>() 
             given Kind satisfies NestableDeclaration;
     
-    "Returns the list of member declarations that satisfy the given `Kind` type argument and
-     that are annotated with the given `Annotation` type argument"
+    "Returns the list of member declarations that satisfy 
+     the given `Kind` type argument and that are annotated 
+     with the given `Annotation` type argument"
     shared formal Kind[] annotatedMembers<Kind, Annotation>() 
             given Kind satisfies NestableDeclaration
             given Annotation satisfies AnnotationType;
 
-    "Looks up a member declaration by name, provided it satisfies the given `Kind` type
-     argument. Returns `null` if no such member matches."
+    "Looks up a member declaration by name, provided it 
+     satisfies the given `Kind` type argument. Returns `null` 
+     if no such member matches."
     shared formal Kind? getMember<Kind>(String name) 
             given Kind satisfies NestableDeclaration;
 
-    "The value with the given name. Returns `null` if not found."
+    "The value with the given name. Returns `null` if not 
+     found."
     shared formal ValueDeclaration? getValue(String name);
 
-    "The class or interface with the given name. Returns `null` if not found."
+    "The class or interface with the given name. Returns 
+     `null` if not found."
     shared formal ClassOrInterfaceDeclaration? getClassOrInterface(String name);
 
-    "The function with the given name. Returns `null` if not found."
+    "The function with the given name. Returns `null` if not 
+     found."
     shared formal FunctionDeclaration? getFunction(String name);
 
-    "The type alias with the given name. Returns `null` if not found."
+    "The type alias with the given name. Returns `null` if 
+     not found."
     shared formal AliasDeclaration? getAlias(String name);
 }
 

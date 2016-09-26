@@ -55,7 +55,12 @@ shared interface Category<in Element=Object>
      `Category`, that is, if it is an element of this
      `Category`, or `false` otherwise.
      
-     For most `Category`s the following relationship is 
+     For any instance `c` of `Category`, `c.contains(element)` 
+     may be written using the `in` operator:
+     
+         element in c
+     
+     For most `Category`s, the following relationship is 
      satisfied by every pair of elements `x` and `y`:
      
      - if `x==y`, then `x in category == y in category`

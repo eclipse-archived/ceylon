@@ -115,7 +115,7 @@ class CtorGenericClass<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     private static final class foo_ {
         
-        private foo_() {
+        foo_() {
         }
     }
     

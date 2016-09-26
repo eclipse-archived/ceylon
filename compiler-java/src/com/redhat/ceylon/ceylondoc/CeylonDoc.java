@@ -365,7 +365,30 @@ public abstract class CeylonDoc extends Markup {
         
         close("div");
     }
-    
+
+    protected final <T extends Annotated&Referenceable> void writeSince(T decl) throws IOException {
+        Annotation see = Util.getAnnotation(decl.getUnit(), decl.getAnnotations(), "since");
+        if(see == null)
+            return;
+
+        open("div class='since section'");
+        around("span class='title'", "Since ");
+        
+        open("span class='value'");
+        boolean first = true;
+        for (String version : see.getPositionalArguments()) {
+            if (!first) {
+                write(", ");
+            } else {
+                first = false;
+            }
+            write(version);
+        }
+        close("span");
+        
+        close("div");
+    }
+
     protected final void writeIcon(Object obj) throws IOException {
         List<String> icons = getIcons(obj);
     
@@ -487,7 +510,7 @@ public abstract class CeylonDoc extends Markup {
     
     protected final void writePackageNavigation(Package pkg) throws IOException {
         open("span class='package-identifier'");
-        if (!module.isDefault()) {
+        if (!module.isDefaultModule()) {
             List<String> moduleNames = module.getName();
             List<String> pkgNames = pkg.getName();
             List<String> subpkgNames = pkgNames.subList(moduleNames.size(), pkgNames.size());

@@ -23,6 +23,7 @@ import com.redhat.ceylon.langtools.classfile.Attributes;
 import com.redhat.ceylon.langtools.classfile.BootstrapMethods_attribute;
 import com.redhat.ceylon.langtools.classfile.ClassFile;
 import com.redhat.ceylon.langtools.classfile.Code_attribute;
+import com.redhat.ceylon.langtools.classfile.Code_attribute.Exception_data;
 import com.redhat.ceylon.langtools.classfile.ConstantPool;
 import com.redhat.ceylon.langtools.classfile.ConstantPoolException;
 import com.redhat.ceylon.langtools.classfile.Instruction;
@@ -442,8 +443,6 @@ public class ClassFileScanner {
 
     private void recordTypeNameUsage(String name) {
 		if(name != null && !jarClassNames.contains(name)){
-			if(name.startsWith("javax.inject"))
-				"".toString();
 			externalClasses.add(name);
 			if(isPublicApi)
 				publicApiExternalClasses.add(name);
@@ -531,6 +530,15 @@ public class ClassFileScanner {
     	if(code != null){
     		for(Instruction instr : code.getInstructions()){
     			instr.accept(codeVisitor, constant_pool);
+    		}
+    		for(Exception_data exc : code.exception_table){
+    			if(exc.catch_type != 0){
+    				try {
+						constant_pool.getClassInfo(exc.catch_type).accept(constantPoolVisitor, constant_pool);
+					} catch (ConstantPoolException e) {
+						throw new RuntimeException(e);
+					}
+    			}
     		}
     	}
 	}

@@ -63,7 +63,7 @@ final class forForIf_ {
                                 if (!this.x()) break ifcomp_2;
                                 final .ceylon.language.Integer x = this.x;
                                 final .ceylon.language.Integer y = this.y;
-                                if (.ceylon.language.Integer.compare(x.longValue(), y.longValue()) == .ceylon.language.larger_.get_()) {
+                                if (.ceylon.language.Integer.largerThan(x.longValue(), y.longValue())) {
                                     break ifcomp_2;
                                 }
                             }

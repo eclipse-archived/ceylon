@@ -91,7 +91,7 @@ shared sealed interface Sequence<out Element=Anything>
         value array = arrayOfSize(resultSize, first);
         variable value i = 1;
         while (i < resultSize) {
-            array.set(i, getElement(i%size));
+            array[i] = getElement(i%size);
         }
         return ArraySequence(array); 
     }*/
@@ -178,7 +178,7 @@ shared sealed interface Sequence<out Element=Anything>
             => (super of List<Element>).findLast(selecting);
     
     shared actual default 
-    [Element[],Element[]] slice(Integer index)
+    Element[][2] slice(Integer index)
             => [this[...index-1], this[index...]];
     
     shared actual default 
@@ -322,6 +322,7 @@ shared sealed interface Sequence<out Element=Anything>
 by ("Gavin")
 see (`function Iterable.sequence`)
 tagged("Sequences")
+since("1.1.0")
 shared [Element+]|Absent sequence<Element,Absent=Null>
         (Iterable<Element, Absent> elements)
         given Absent satisfies Null {

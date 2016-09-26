@@ -35,12 +35,12 @@ class Bug1686 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 neighbour(final long off) {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
     public final long offset(final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1686 other) {
-        return ((.ceylon.language.Integer).ceylon.language.nothing_.get_()).longValue();
+        return ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
     }
     
     @.java.lang.Override

@@ -1,0 +1,50 @@
+
+ext {
+    ceylonModuleName = 'module-resolver'
+    ceylonSourceLayout = false
+    ceylonTestDisabled = true
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+
+dependencies {
+    compile project(':common')
+    compile project(':langtools-classfile')
+    compile project(':model')
+    compile project(':cmr-aether')
+    compile project(':cmr-webdav')
+    compile project(':cmr-js')
+    compile 'org.jboss:jandex:2.0.0.Final'
+    compile 'org.jboss.modules:jboss-modules:1.4.4.Final'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'api/src/main/java', 'spi/src/main/java', 'impl/src/main/java', 'ceylon/src/main/java',
+                'webdav/src/main/java', 'maven/src/main/java'
+        }
+        resources {
+            srcDirs 'api/src/main/resources', 'spi/src/main/resources', 'impl/src/main/resources',
+                'ceylon/src/main/resources', 'webdav/src/main/resources', 'maven/src/main/resources'
+        }
+    }
+    test {
+        java {
+            srcDirs 'testsuite/src/test/java', 'maven/src/test/java'
+        }
+        resources {
+            srcDirs 'testsuite/src/test/resources', 'maven/src/test/resources'
+        }
+    }
+}
+
+
+test {
+    // there are '@Suite.SuiteClasses` in this test set - only run them.
+    include '**/AllCmrTests.class'
+}
+
+['common','model','cmr-aether','cmr-webdav','cmr-js'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
+}

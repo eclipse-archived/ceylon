@@ -23,8 +23,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -53,6 +56,10 @@ public class FileContentStore implements ContentStore, StructureBuilder {
         this.root = root;
     }
 
+    public Iterable<File> getBaseDirectories() {
+        return Arrays.asList(root);
+    }
+    
     @Override
     public String toString() {
         return "FileContentStore: " + root;

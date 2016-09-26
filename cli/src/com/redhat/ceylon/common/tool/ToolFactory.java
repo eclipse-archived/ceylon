@@ -258,10 +258,24 @@ public class ToolFactory {
                 applyBindings();
                 handleRest();
                 assertAllRecognised();
+                syncCwd();
                 invokeInitialize();
             } catch (IllegalAccessException e) {
                 // Programming error 
                 throw new ToolException(e);
+            }
+        }
+        
+        // For CeylonBaseTools make sure the cwd option is the
+        // same as for the main CeylonTool
+        private void syncCwd() {
+            if (tool instanceof CeylonBaseTool) {
+                CeylonBaseTool cbt = (CeylonBaseTool)tool;
+                if (mainTool != null && mainTool.getCwd() != null) {
+                    // If the main tool's `cwd` options is set it
+                    // always overrides the one in the given tool
+                    cbt.setCwd(mainTool.getCwd());
+                }
             }
         }
         

@@ -303,7 +303,8 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
                     // We also assume our own errors are not abnormal
                     && !ex.getClass().getName().startsWith("com.redhat.ceylon.")
                     // And neither are CCEs from the javac code abnormal
-                    && !(ex instanceof ClassCastException && ex.getMessage() != null && ex.getMessage().contains("com.redhat.ceylon.langtools."))) {
+                    && !(ex instanceof ClassCastException && ex.getMessage() != null && ex.getMessage().contains("com.redhat.ceylon.langtools."))
+                    && !(ex instanceof NullPointerException) ) {
                 return true;
             }
             return false;
@@ -684,7 +685,9 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
         } catch (PropagatedException ex) {
             throw ex.getCause();
         } catch (RepositoryException ex) {
-            throw new EnvironmentException(ex);
+            // this should have logged an error, if so fine. if not we will have a problematic error code
+            this.exitState = ExitState.abnormal(comp, ex, options);
+            return ABNORMAL;
         } catch (Throwable ex) {
             // Nasty. If we've already reported an error, compensate
             // for buggy compiler error recovery by swallowing thrown

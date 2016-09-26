@@ -47,9 +47,9 @@ import java.util.Map;
 import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
-import com.redhat.ceylon.cmr.ceylon.OutputRepoUsingTool;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.log.Logger;
@@ -63,8 +63,8 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
+import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
 import com.redhat.ceylon.compiler.java.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
@@ -185,6 +185,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private final Map<Parameter, Node> parameterNodeMap = new IdentityHashMap<Parameter, Node>();
     private final Map<String, Boolean> moduleUrlAvailabilityCache = new HashMap<String, Boolean>();
     private RepositoryManager outputRepositoryManager;
+    protected Logger richLog;
 
     public CeylonDocTool() {
         super(CeylondMessages.RESOURCE_BUNDLE);
@@ -205,9 +206,13 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             setLinks(Arrays.asList(linkValues));
         }
         
-        log = new CeylondLogger();
+        this.richLog = new CeylondLogger(true, isVerbose());
     }
 
+    protected Logger createLogger() {
+        return new CeylondLogger(false, isVerbose("cmr"));
+    }
+    
     @OptionArgument(argumentName="encoding")
     @Description("Sets the encoding used for reading source files (default: platform-specific)")
     public void setEncoding(String encoding) {
@@ -392,7 +397,8 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     }
 
     @Override
-    public void initialize(CeylonTool mainTool) {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
         TypeCheckerBuilder builder = new TypeCheckerBuilder();
         for(File src : sourceFolders){
             builder.addSrcDirectory(src);
@@ -415,7 +421,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         builder.moduleManagerFactory(new ModuleManagerFactory(){
             @Override
             public ModuleManager createModuleManager(Context context) {
-                return new CeylonDocModuleManager(CeylonDocTool.this, context, modules, outputRepositoryManager, bootstrapCeylon, log);
+                return new CeylonDocModuleManager(CeylonDocTool.this, context, modules, outputRepositoryManager, bootstrapCeylon, getLogger());
             }
 
             @Override
@@ -551,7 +557,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private File getFolder(Package pkg) {
         Module module = pkg.getModule();
         List<String> unprefixedName;
-        if(module.isDefault())
+        if(module.isDefaultModule())
             unprefixedName = pkg.getName();
         else{
             // remove the leading module name part
@@ -629,14 +635,14 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         boolean documentedOne = false;
         for(Module module : modules){
             if (isEmpty(module)) {
-                log.warning(CeylondMessages.msg("warn.moduleHasNoDeclaration", module.getNameAsString()));
+                getLogger().warning(CeylondMessages.msg("warn.moduleHasNoDeclaration", module.getNameAsString()));
             } else {
                 documentedOne = true;
             }
                 
             documentModule(module);
             
-            ArtifactContext artifactDocs = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
+            ArtifactContext artifactDocs = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
             
             // find all doc folders to copy
             File outputDocFolder = getDocOutputFolder(module);
@@ -652,7 +658,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             repositoryPutArtifact(outputRepositoryManager, artifactDocs, getOutputFolder(module, null));
         }
         if (!documentedOne) {
-            log.warning(CeylondMessages.msg("warn.couldNotFindAnyDeclaration"));
+            getLogger().warning(CeylondMessages.msg("warn.couldNotFindAnyDeclaration"));
         }
 
         if (browse) {
@@ -660,14 +666,14 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 if (isEmpty(module)) {
                     continue;
                 }
-                ArtifactContext docArtifact = new ArtifactContext(module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
+                ArtifactContext docArtifact = new ArtifactContext(null, module.getNameAsString(), module.getVersion(), ArtifactContext.DOCS);
                 File docFolder = outputRepositoryManager.getArtifact(docArtifact);
                 File docIndex = new File(docFolder, "api/index.html");
                 if (docIndex.isFile()) {
                     try {
                         Desktop.getDesktop().browse(docIndex.toURI());
                     } catch (Exception e) {
-                        log.error(CeylondMessages.msg("error.unableBrowseModuleDoc", docIndex.toURI()));
+                        getLogger().error(CeylondMessages.msg("error.unableBrowseModuleDoc", docIndex.toURI()));
                     }
                 }
             }
@@ -946,7 +952,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private void docNothingType(Package pkg) throws IOException {
         final Annotation nothingDoc = new Annotation();
         nothingDoc.setName("doc");
-        nothingDoc.addPositionalArgment(
+        nothingDoc.addPositionalArgument(
                 "The special type _Nothing_ represents: \n" +
                 " - the intersection of all types, or, equivalently \n" +
                 " - the empty set \n" +
@@ -1005,7 +1011,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
      * @return
      */
     protected boolean isRootPackage(Module module, Package pkg) {
-        if(module.isDefault())
+        if(module.isDefaultModule())
             return pkg.getNameAsString().isEmpty();
         return pkg.getNameAsString().equals(module.getNameAsString());
     }
@@ -1278,24 +1284,20 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         return typeChecker;
     }
     
-    protected Logger getLogger() {
-        return log;
-    }
-
     protected void warningMissingDoc(String name, Referenceable scope) {
         if (!ignoreMissingDoc) {
-            log.warning(CeylondMessages.msg("warn.missingDoc", name, getPosition(getNode(scope))));
+            richLog.warning(CeylondMessages.msg("warn.missingDoc", name, getPosition(getNode(scope))));
         }
     }
 
     protected void warningBrokenLink(String docLinkText, Tree.DocLink docLink, Referenceable scope) {
         if (!ignoreBrokenLink) {
-            log.warning(CeylondMessages.msg("warn.brokenLink", docLinkText, getWhere(scope), getPosition(docLink)));
+            richLog.warning(CeylondMessages.msg("warn.brokenLink", docLinkText, getWhere(scope), getPosition(docLink)));
         }
     }
     
     protected void warningSetterDoc(String name, Declaration scope) {
-        log.warning(CeylondMessages.msg("warn.setterDoc", name, getPosition(getNode(scope))));
+        richLog.warning(CeylondMessages.msg("warn.setterDoc", name, getPosition(getNode(scope))));
     }
 
     protected void warningMissingThrows(Declaration d) {
@@ -1347,7 +1349,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
                 }
             }
             if (!isDocumented) {
-                log.warning(CeylondMessages.msg("warn.missingThrows", thrownException.asString(), getWhere(d), getPosition(getNode(d))));
+                richLog.warning(CeylondMessages.msg("warn.missingThrows", thrownException.asString(), getWhere(d), getPosition(getNode(d))));
             }
         }
     }

@@ -17,7 +17,7 @@ public final class bug2001_ {
                     } else if (sel$1 == 1L) {
                         $ceylontmp$ifResult$0 = .ceylon.language.equal_.get_();
                     } else {
-                        $ceylontmp$ifResult$0 = (.ceylon.language.Comparison).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$0 = (.ceylon.language.Comparison)(.java.lang.Object).ceylon.language.nothing_.get_();
                     }
                 }
             }
@@ -32,7 +32,7 @@ public final class bug2001_ {
                     if (sel$3 == 0L) {
                         $ceylontmp$ifResult$2 = .ceylon.language.smaller_.get_();
                     } else if (sel$3 == 1L) {
-                        $ceylontmp$ifResult$2 = (.ceylon.language.Comparison).ceylon.language.nothing_.get_();
+                        $ceylontmp$ifResult$2 = (.ceylon.language.Comparison)(.java.lang.Object).ceylon.language.nothing_.get_();
                     } else {
                         $ceylontmp$ifResult$2 = .ceylon.language.equal_.get_();
                     }

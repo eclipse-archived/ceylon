@@ -115,6 +115,20 @@ void test627() {
     singleton627.join(Singleton(Singleton(1)));
 }
 
+void spreadIssues1(Integer* x) => check(x=={1,2,3},"spreadIssues1");
+void spreadIssues2(Integer x, Integer* y) {
+  check(x==1,"spreadIssues2.1");
+  check(y=={2,3},"spreadIssues2.2");
+}
+void spreadIssues3([Integer, Integer, Integer] t) =>
+  check(t==[1,2,3],"spreadIssues3");
+void spreadIssues4({Integer*} x) => check(x=={1,2,3},"spreadIssues4");
+void spreadIssues5<Args>(Anything(*Args) g, Args a)
+    given Args satisfies Anything[]
+  => g(*a);
+void issue6066_1({Anything*} t) => check(t.sequence()==[1,2,3],"#6066.1 ``t``");
+void issue6066_2({Anything*} t) => check(t.sequence()==[[1,2,3]],"#6066.2 ``t``");
+
 void testIssues() {
   objectIssue306.foo().call();
   ClassBug314<Object>();
@@ -131,4 +145,21 @@ void testIssues() {
   value t631=[[1,1]];
   check((t631.map<Integer[2]>((x)=>x).first of Object) is Integer[2], "#631.1");
   check((t631.map<Integer->Integer>((x)=>x[0]->x[1]).first of Object) is Integer->Integer, "#631.2");
+
+  value triplet = [1,2,3];
+  spreadIssues1(*triplet);
+  spreadIssues2(*triplet);
+  spreadIssues3(triplet);
+  spreadIssues4(triplet);
+  spreadIssues5(spreadIssues1,triplet);
+  spreadIssues5(spreadIssues2,triplet);
+  spreadIssues5(flatten(spreadIssues3),triplet);
+  spreadIssues5(flatten(spreadIssues4),triplet);
+  issue6066_1(triplet);
+  issue6066_1({*triplet});
+  issue6066_1([*triplet]);
+  issue6066_1{*triplet};
+  issue6066_2({triplet});
+  issue6066_2([triplet]);
+  issue6066_2{triplet};
 }

@@ -22,7 +22,7 @@ final class Bug2370I$impl implements .java.io.Serializable {
     }
     
     public .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I> iterator() {
-        return (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
 }
 class Bug2370C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I, .java.io.Serializable {
@@ -389,30 +389,6 @@ class Bug2370C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
                 arg$3$callable$.foo(arg$3$0);
             }
             returning null;
-        );
-        (
-            let
-            {
-                final .java.lang.String spread$4$arg$0 = "";
-            }
-            returning new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
-                
-                @.java.lang.Override
-                public final .ceylon.language.Iterator<? extends .java.lang.Object> iterator() {
-                    return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$){
-                        final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I> spread$4$iterator$ = $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2370I$this$.iterator();
-                        
-                        @.java.lang.Override
-                        public final .java.lang.Object next() {
-                            .java.lang.Object spread$4$element$;
-                            if (!((spread$4$element$ = spread$4$iterator$.next()) instanceof .ceylon.language.Finished)) {
-                                spread$4$element$ = ((.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I)spread$4$element$).foo(spread$4$arg$0);
-                            }
-                            return spread$4$element$;
-                        }
-                    };
-                }
-            }.sequence();
         );
         return null;
     }

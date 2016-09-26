@@ -6,6 +6,10 @@
  instance of `Ranged` using the _span_ and _measure_ 
  operators.
  
+ Typically, the `Subrange` type is the same as the ranged
+ type itself. But this is not required. For example, the
+ subranges of a [[StringBuilder]] are [[String]]s.
+ 
  Often, in a [[List]] or sorted map for example, an index
  and its element are distinct values. Sometimes, in a sorted 
  set for example, the index and element are identical.
@@ -75,14 +79,19 @@
  - `ranged[x..y]==ranged[x:n]`."
 see (`interface List`, 
      `interface Sequence`, 
-     `class String`)
-shared interface Ranged<in Index, out Element, out Subrange> 
-        of Subrange
+     `class String`, 
+     `class StringBuilder`)
+shared interface Ranged<in Index, out Element, out Subrange>
         satisfies {Element*}
         given Subrange satisfies Ranged<Index,Element,Subrange> {
     
     "Obtain a span containing the elements between the two 
-     given indices. 
+     given indices.
+     
+     For any ranged stream `r`, `r.span(from, to)` may be
+     written using the span operator:
+     
+         r[from..to]
      
      The span should contain elements of this stream, 
      starting from the element at the given [[starting 
@@ -101,6 +110,11 @@ shared interface Ranged<in Index, out Element, out Subrange>
      [[starting index|from]] and the last index of this 
      ranged object.
      
+     For any ranged stream `r`, `r.spanFrom(from)` may be
+     written using the span operator:
+     
+         r[from...]
+     
      The span should contain elements of this stream, 
      starting from the element at the given [[starting 
      index|from]], in the same order as they are produced by 
@@ -112,6 +126,11 @@ shared interface Ranged<in Index, out Element, out Subrange>
     
     "Obtain a span containing the elements between the first 
      index of this ranged stream and given [[end index|to]].
+     
+     For any ranged stream `r`, `r.spanTo(to)` may be
+     written using the span operator:
+     
+         r[...to]
      
      The span should contain elements of this stream, up to 
      the element at the given [[ending index|to]], in the 
@@ -127,6 +146,11 @@ shared interface Ranged<in Index, out Element, out Subrange>
      [[length]]. If `length<=0`, the resulting measure is 
      empty.
      
+     For any ranged stream `r`, `r.measure(from, length)` 
+     may be written using the measure operator:
+     
+         r[from:length]
+     
      The measure should contain the given [[number|length]] 
      of elements of this stream, starting from the element 
      at the given [[starting index|from]], in the same order 
@@ -139,6 +163,7 @@ shared interface Ranged<in Index, out Element, out Subrange>
      
      When the given index does not belong to this ranged 
      object, the behavior is implementation dependent."
+    since("1.1.0")
     shared formal Subrange measure(Index from, Integer length);
     
 }

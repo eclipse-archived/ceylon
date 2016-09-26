@@ -108,13 +108,36 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.common", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.cli", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.model", version));
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-loader", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver", version));
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-aether", version)); // optional
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-webdav", version)); // optional
+        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.module-resolver-javascript", version)); // optional
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.langtools.classfile", version));
         archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.tool.provider", version));
         archives.add(getRepoJar(ceylonRepo, "org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION));
         archives.add(getRepoJar(ceylonRepo, "org.jboss.logmanager", Versions.DEPENDENCY_LOGMANAGER_VERSION));
         // Maven support for CMR
-        archives.add(getRepoJar(ceylonRepo, "com.redhat.ceylon.maven-support", "2.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.api", "1.1.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.spi", "1.1.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.util", "1.1.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.impl", "1.1.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.connector.basic", "1.1.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.transport.file", "1.1.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.eclipse.aether.transport.http", "1.1.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "com.google.guava", "18.0")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.lang3", "3.4")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-artifact", "3.3.9")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-model", "3.3.9")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-model-builder", "3.3.9")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-repository-metadata", "3.3.9")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-builder-support", "3.3.9")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-settings", "3.3.9")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-settings-builder", "3.3.9")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.maven.maven-aether-provider", "3.3.9")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.codehaus.plexus.plexus-interpolation", "1.22")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.codehaus.plexus.plexus-utils", "3.0.22")); // optional
+
         // For the typechecker
         archives.add(getRepoJar(ceylonRepo, "org.antlr.runtime", "3.4"));
         // For the JS backend
@@ -123,12 +146,12 @@ public class CeylonClassLoader extends URLClassLoader {
         archives.add(getRepoJar(ceylonRepo, "org.tautua.markdownpapers.core", "1.2.7"));
         archives.add(getRepoJar(ceylonRepo, "com.github.rjeschke.txtmark", "0.13"));
         // For the --out http:// functionality of the compiler
-        archives.add(getRepoJar(ceylonRepo, "com.github.lookfirst.sardine", "5.1"));
-        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpclient", "4.3.2"));
-        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpcore", "4.3.2"));
-        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.logging", "1.1.1"));
-        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.codec", "1.8"));
-        archives.add(getRepoJar(ceylonRepo, "org.slf4j.api", "1.6.1"));
+        archives.add(getRepoJar(ceylonRepo, "com.github.lookfirst.sardine", "5.1")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpclient", "4.3.2")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.httpcomponents.httpcore", "4.3.2")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.logging", "1.1.1")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.apache.commons.codec", "1.8")); // optional
+        archives.add(getRepoJar(ceylonRepo, "org.slf4j.api", "1.6.1")); // optional
         archives.add(getRepoJar(ceylonRepo, "org.slf4j.simple", "1.6.1")); // optional
 
         return archives;

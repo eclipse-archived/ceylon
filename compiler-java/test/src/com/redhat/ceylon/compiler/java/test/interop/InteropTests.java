@@ -35,6 +35,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.Repositories;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
@@ -79,8 +81,8 @@ public class InteropTests extends CompilerTests {
     public void testIopAmbiguousOverloading(){
         compile("TypesJava.java", "JavaWithOverloadedMembers.java");
         assertErrors("AmbiguousOverloading",
-                new CompilerError(25, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'ambiguousOverload' that accepts the given argument types 'String, String'"),
-                new CompilerError(26, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'ambiguousOverload2' that accepts the given argument types 'Integer, Integer'")
+                new CompilerError(25, "illegal argument types in invocation of overloaded method or class: there must be exactly one overloaded declaration of 'ambiguousOverload' which accepts the given argument types 'String, String'"),
+                new CompilerError(26, "illegal argument types in invocation of overloaded method or class: there must be exactly one overloaded declaration of 'ambiguousOverload2' which accepts the given argument types 'Integer, Integer'")
                 );
     }
 
@@ -96,6 +98,12 @@ public class InteropTests extends CompilerTests {
         compareWithJavaSource("VariadicArraysMethods");
     }
 
+    @Test
+    public void testIopVariadicImplementations(){
+        compile("TypesJava.java");
+        compareWithJavaSource("VariadicImplementations");
+    }
+    
     @Test
     public void testIopImplementOverloadedConstructors(){
         compile("JavaWithOverloadedMembers.java");
@@ -343,7 +351,7 @@ public class InteropTests extends CompilerTests {
     public void testIopExtendsDefaultAccessClassWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("access/ExtendsDefaultAccessClassWithOverloading",
-                new CompilerError(21, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' that accepts the given argument types ''")
+                new CompilerError(21, "illegal argument types in invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' which accepts the given argument types ''")
         );
     }
 
@@ -354,10 +362,7 @@ public class InteropTests extends CompilerTests {
         assertErrors("ExtendsDefaultAccessClassInAnotherPkg",
                 new CompilerError(21, "imported declaration is not shared: 'JavaDefaultAccessClass'"),
                 new CompilerError(22, "imported declaration is not shared: 'JavaDefaultAccessClass2'"),
-                // temporarily disabled due to https://github.com/ceylon/ceylon/issues/5882
-//                new CompilerError(27, "supertype is not visible everywhere type 'ExtendsDefaultAccessClassInAnotherPkg' is visible: 'JavaDefaultAccessClass' involves an unshared type declaration"),
                 new CompilerError(27, "type is not visible: 'JavaDefaultAccessClass'"),
-//                new CompilerError(29, "supertype is not visible everywhere type 'ExtendsDefaultAccessClassInAnotherPkg2' is visible: 'JavaDefaultAccessClass2' involves an unshared type declaration"),
                 new CompilerError(29, "type is not visible: 'JavaDefaultAccessClass2'"),
                 new CompilerError(31, "package private constructor is not visible: 'JavaDefaultAccessClass3'")
         );
@@ -374,8 +379,7 @@ public class InteropTests extends CompilerTests {
     public void testIopCallsDefaultAccessClassWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("access/CallsDefaultAccessClassWithOverloading",
-                new CompilerError(22, "class cannot be instantiated: 'JavaDefaultAccessClass4' does not have a default constructor"),
-                new CompilerError(22, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' that accepts the given argument types ''")
+                new CompilerError(22, "illegal argument types in invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' which accepts the given argument types ''")
         );
     }
 
@@ -396,8 +400,7 @@ public class InteropTests extends CompilerTests {
     public void testIopCallsDefaultAccessClassInAnotherPkgWithOverloading(){
         compile("access/JavaDefaultAccessClass4.java");
         assertErrors("CallsDefaultAccessClassInAnotherPkgWithOverloading",
-                new CompilerError(26, "ambiguous invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' that accepts the given argument types ''"),
-                new CompilerError(26, "class cannot be instantiated: 'JavaDefaultAccessClass4' does not have a default constructor"),
+                new CompilerError(26, "illegal argument types in invocation of overloaded method or class: there must be exactly one overloaded declaration of 'JavaDefaultAccessClass4' which accepts the given argument types ''"),
                 new CompilerError(27, "type constructor is not visible: 'JavaDefaultAccessClass4'"),
                 new CompilerError(28, "protected constructor is not visible: 'JavaDefaultAccessClass4'")
         );
@@ -457,16 +460,16 @@ public class InteropTests extends CompilerTests {
         compile("JavaAnnotation.java");
         compareWithJavaSource("AnnotationInterop");
         assertErrors("AnnotationInteropErrors",
-                new CompilerError(2, "function or value does not exist: 'javaAnnotationNoTarget__TYPE' (did you mean 'javaAnnotationTypeTarget__TYPE'?)"),
-                new CompilerError(3, "function or value does not exist: 'javaAnnotationNoTarget__CONSTRUCTOR' (did you mean 'javaAnnotationCtorTarget__CONSTRUCTOR'?)"),
-                new CompilerError(6, "function or value does not exist: 'javaAnnotationNoTarget__FIELD' (did you mean 'javaAnnotationFieldTarget__FIELD'?)"),
-                new CompilerError(7, "function or value does not exist: 'javaAnnotationNoTarget__GETTER' (did you mean 'javaAnnotationMethodTarget__GETTER'?)"),
-                new CompilerError(8, "function or value does not exist: 'javaAnnotationNoTarget__SETTER' (did you mean 'javaAnnotationMethodTarget__SETTER'?)"),
+                new CompilerError(2, "function or value is not defined: 'javaAnnotationNoTarget__TYPE' might be misspelled or is not imported (did you mean 'javaAnnotationTypeTarget__TYPE'?)"),
+                new CompilerError(3, "function or value is not defined: 'javaAnnotationNoTarget__CONSTRUCTOR' might be misspelled or is not imported (did you mean 'javaAnnotationCtorTarget__CONSTRUCTOR'?)"),
+                new CompilerError(6, "function or value is not defined: 'javaAnnotationNoTarget__FIELD' might be misspelled or is not imported (did you mean 'javaAnnotationFieldTarget__FIELD'?)"),
+                new CompilerError(7, "function or value is not defined: 'javaAnnotationNoTarget__GETTER' might be misspelled or is not imported (did you mean 'javaAnnotationMethodTarget__GETTER'?)"),
+                new CompilerError(8, "function or value is not defined: 'javaAnnotationNoTarget__SETTER' might be misspelled or is not imported (did you mean 'javaAnnotationMethodTarget__SETTER'?)"),
                 new CompilerError(11, "annotated program element does not satisfy annotation constraint: 'FunctionDeclaration' is not assignable to 'Nothing'"),
                 new CompilerError(11, "no target for javaAnnotationNoTarget annotation: @Target of @interface JavaAnnotationNoTarget lists [] but annotated element tranforms to [METHOD]"),
-                new CompilerError(12, "function or value does not exist: 'javaAnnotationNoTarget__PARAMETER' (did you mean 'javaAnnotationDefaultTarget__PARAMETER'?)"),
-                new CompilerError(14, "function or value does not exist: 'javaAnnotationNoTarget__LOCAL_VARIABLE' (did you mean 'javaAnnotationDefaultTarget__LOCAL_VARIABLE'?)"),
-                new CompilerError(19, "function or value does not exist: 'javaAnnotationNoTarget__ANNOTATION_TYPE' (did you mean 'javaAnnotationDefaultTarget__ANNOTATION_TYPE'?)"),
+                new CompilerError(12, "function or value is not defined: 'javaAnnotationNoTarget__PARAMETER' might be misspelled or is not imported (did you mean 'javaAnnotationDefaultTarget__PARAMETER'?)"),
+                new CompilerError(14, "function or value is not defined: 'javaAnnotationNoTarget__LOCAL_VARIABLE' might be misspelled or is not imported (did you mean 'javaAnnotationDefaultTarget__LOCAL_VARIABLE'?)"),
+                new CompilerError(19, "function or value is not defined: 'javaAnnotationNoTarget__ANNOTATION_TYPE' might be misspelled or is not imported (did you mean 'javaAnnotationDefaultTarget__ANNOTATION_TYPE'?)"),
                 new CompilerError(21, "illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference"),
                 new CompilerError(21, "named argument must be assignable to parameter 'clas' of 'javaAnnotationClass2': 'Class<String>' is not assignable to 'ClassOrInterfaceDeclaration'")
                 );
@@ -490,6 +493,19 @@ public class InteropTests extends CompilerTests {
     @Test
     public void testAnnotationInteropQualifiedEnum(){
         compareWithJavaSource("AnnotationInteropQualifiedEnum");
+    }
+    
+    @Test
+    public void testAnnotationBug6145() {
+        compareWithJavaSource("AnnotationBug6145");
+    }
+    
+    @Test
+    public void testRepeatableAnnotation() {
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compile("JavaRepeatable.java");
+        compareWithJavaSource("RepeatableAnnotation");
     }
     
     @Test
@@ -543,12 +559,6 @@ public class InteropTests extends CompilerTests {
     public void testIopBug2053(){
         compile("Bug2053Varargs.java");
         compareWithJavaSource("Bug2053");
-    }
-    
-    @Test
-    public void testIopBug2054(){
-        compile("Bug2054Java.java");
-        compileAndRun("com.redhat.ceylon.compiler.java.test.interop.bug2054", "Bug2054.ceylon");
     }
     
     @Test
@@ -669,7 +679,11 @@ public class InteropTests extends CompilerTests {
     public void testIopJavaArrayInForComprehension(){
         compile("JavaArrayInForComprehension_util.ceylon");
         compareWithJavaSource("JavaArrayInForComprehension");
-        run("com.redhat.ceylon.compiler.java.test.interop.javaArrayInForComprehension");
+        run("com.redhat.ceylon.compiler.java.test.interop.javaArrayInForComprehension", 
+                getDestModuleWithArtifact(""),
+                new ModuleWithArtifact("ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER,
+                        Repositories.get().getUserRepoDir().getAbsolutePath(),
+                        "car"));
     }
     
     @Test
@@ -709,5 +723,89 @@ public class InteropTests extends CompilerTests {
     @Test
     public void testIopJavaArrayTypeConstraint(){
         compile("JavaArrayTypeConstraint.ceylon");
+    }
+    
+    @Test
+    public void testIopBug6143(){
+        compareWithJavaSource("Bug6143");
+    }
+    
+    @Test
+    public void testIopBug6156(){
+        compile("Bug6156Document.java");
+        compile("Bug6156.ceylon");
+        compile("Bug6156b.ceylon");
+    }
+    
+    @Test
+    public void testIopBug6160(){
+        compile("Bug6160.ceylon");
+    }
+    
+    @Test
+    public void testIopCallDefaultInterfaceMethod(){
+        Assume.assumeTrue("Runs on JDK >= 8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compareWithJavaSource("CallDefaultInterfaceMethod");
+    }
+    
+    @Test
+    public void testIopSatisfyInterfaceWithDefaultMethod(){
+        Assume.assumeTrue("Runs on JDK >= 8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compareWithJavaSource("SatisfyInterfaceWithDefaultMethod");
+    }
+    
+    @Test
+    public void testIopRefineDefaultInterfaceMethod(){
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compareWithJavaSource("RefineDefaultInterfaceMethod");
+    }
+    
+    @Test
+    public void testBug6244(){
+        compile("Bug6244Java.java");
+        compile("Bug6244.ceylon");
+    }
+    
+    @Test
+    public void testSdkBug571() throws Throwable{
+        compile("SdkBug571.ceylon");
+        runInJBossModules("run", 
+                "com.redhat.ceylon.compiler.java.test.interop",
+                Arrays.asList("--run=com.redhat.ceylon.compiler.java.test.interop::sdkBug571_run"));
+    }
+
+    @Test
+    public void testIopBug6099(){
+        compile("Bug6099Java.java");
+        compile("Bug6099.ceylon");
+    }
+    
+    @Test
+    public void testIopBug6123(){
+        compile("Bug6123Java.java");
+        compile("Bug6123.ceylon");
+    }
+    
+    @Test
+    public void testIopBug6289(){
+        compareWithJavaSource("Bug6289");
+    }
+
+    @Test
+    public void testIopInterdep(){
+        compile("InterdepJava.java", "Interdep.ceylon");
+    }
+    
+    @Test
+    public void testIopNullAnnotations(){
+        compile("nullable/NullAnnotationsJava.java", "nullable/NullAnnotations.ceylon");
+    }
+
+    @Test
+    public void testIopRawImplementations(){
+        compile("RawJava.java", "Raw.ceylon");
     }
 }

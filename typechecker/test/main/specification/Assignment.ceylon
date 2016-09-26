@@ -82,7 +82,7 @@ void testAssignmentInIf5() {
 void testAssignmentInWhile() {
     variable Boolean b;
     while (b=true) {}
-    print(b);
+    @error print(b);
 }
 void testAssignmentInWhile1() {
     variable Boolean b;

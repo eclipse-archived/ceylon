@@ -50,6 +50,11 @@ public class TryCatchTests extends CompilerTests {
     }
     
     @Test
+    public void testTryThrowNothing(){
+    	compareWithJavaSource("trycatch/ThrowNothing");
+    }
+
+    @Test
     public void testTryThrowException(){
         compareWithJavaSource("trycatch/ThrowException");
     }
@@ -132,6 +137,12 @@ public class TryCatchTests extends CompilerTests {
     public void testTryReplaceExceptionAtJavaCallSite(){
         compile("trycatch/JavaThrower.java");
         compareWithJavaSource("trycatch/WrapExceptionAtJavaCallSite");
+    }
+    
+    @Test
+    public void testTryTrySelfSuppression(){
+        compileAndRun("com.redhat.ceylon.compiler.java.test.statement.trycatch.trySelfSuppression", 
+                "trycatch/TrySelfSuppression.ceylon");
     }
 
 }

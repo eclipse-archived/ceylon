@@ -86,6 +86,7 @@ shared interface List<out Element=Anything>
      to an element of this list, or `null` otherwise. The
      last element of the list has index `0`, and the first
      element has index [[lastIndex]]."
+    since("1.1.0")
     shared default Element? getFromLast(Integer index)
             => getFromFirst(size-1-index);
     
@@ -280,6 +281,7 @@ shared interface List<out Element=Anything>
      
      This is a lazy operation, returning a view of this list."
     see (`function skip`)
+    since("1.1.0")
     shared default 
     List<Element> sublistFrom(Integer from) 
             => from<=0 then this else Rest(from); 
@@ -290,6 +292,7 @@ shared interface List<out Element=Anything>
      This is a lazy operation, returning a view of this list."
     see (`function take`,
         `function initial`)
+    since("1.1.0")
     shared default 
     List<Element> sublistTo(Integer to) 
             => to<0 then [] else Sublist(to);
@@ -299,6 +302,7 @@ shared interface List<out Element=Anything>
      [[to]].
      
      This is a lazy operation, returning a view of this list."
+    since("1.1.0")
     shared default 
     List<Element> sublist(Integer from, Integer to) 
             => sublistTo(to).sublistFrom(from);
@@ -338,6 +342,7 @@ shared interface List<out Element=Anything>
      
      If `length<0`, or if `from` is outside the range 
      `0..size`, return this list."
+    since("1.1.0")
     shared default 
     List<Element|Other> patch<Other>(
         "The list of new elements."
@@ -355,38 +360,35 @@ shared interface List<out Element=Anything>
      start of this list."
     see (`function endsWith`)
     shared default 
-    Boolean startsWith(List<> sublist) {
-        if (sublist.size>size) {
-            return false;
-        }
-        return everyPair<Element,Anything>(
+    Boolean startsWith(List<> sublist) 
+            => !shorterThan(sublist.size) 
+            && everyPair<Element,Anything>(
                 (first, second)
-                => if (exists first, exists second)
-                    then first==second
-                    else first exists == second exists, 
-                this, sublist);
-    }
+                    => if (exists first, exists second)
+                        then first==second
+                        else first exists == second exists, 
+                this, 
+                sublist);
     
     "Determine if the given [[list|sublist]] occurs at the 
      end of this list."
     see (`function startsWith`)
     shared default 
-    Boolean endsWith(List<> sublist) {
-        if (sublist.size>size) {
-            return false;
-        }
-        return everyPair<Element,Anything>(
+    Boolean endsWith(List<> sublist)
+            => !shorterThan(sublist.size) 
+            && everyPair<Element,Anything>(
                 (first, second)
-                => if (exists first, exists second)
-                    then first==second
-                    else first exists == second exists, 
-                skip(size-sublist.size), sublist);
-    }
+                    => if (exists first, exists second)
+                        then first==second
+                        else first exists == second exists, 
+                skip(size-sublist.size), 
+                sublist);
     
     "The indexes in this list for which the element is not
      null and satisfies the given 
      [[predicate function|selecting]]."
     see (`function locations`)
+    since("1.1.0")
     shared default 
     {Integer*} indexesWhere(
         "The predicate function the indexed elements must 
@@ -401,6 +403,7 @@ shared interface List<out Element=Anything>
      not null and satisfies the given 
      [[predicate function|selecting]]."
     see (`function locate`)
+    since("1.1.0")
     shared default 
     Integer? firstIndexWhere(
         "The predicate function the indexed elements must 
@@ -421,6 +424,7 @@ shared interface List<out Element=Anything>
      not null and satisfies the given 
      [[predicate function|selecting]]."
     see (`function locateLast`)
+    since("1.1.0")
     shared default 
     Integer? lastIndexWhere(
         "The predicate function the indexed elements must 
@@ -536,8 +540,9 @@ shared interface List<out Element=Anything>
          list.slice(index) == [list[...index-1], list[index...]]
      
      This is an eager operation."
+    since("1.1.0")
     shared default 
-    [List<Element>,List<Element>] slice(Integer index)
+    List<Element>[2] slice(Integer index)
             => [this[...index-1], this[index...]];
     
     "Select the first elements of this list, returning a 
@@ -817,8 +822,10 @@ shared interface List<out Element=Anything>
         
         assert (length>=0);
         assert (0<=from<=outer.size);
+
+        value exactLength => smallest(length, outer.size-from);
         
-        size => outer.size+list.size-length;
+        size => outer.size+list.size-exactLength;
         
         lastIndex 
                 => let (size = this.size) 
@@ -830,9 +837,9 @@ shared interface List<out Element=Anything>
                 else if (index-from<list.size) then
                     list.getFromFirst(index-from)
                 else
-                    outer.getFromFirst(index-list.size+length);
+                    outer.getFromFirst(index-list.size+exactLength);
         
-        clone() => outer.clone().Patch(list.clone(),from,length);
+        clone() => outer.clone().Patch(list.clone(),from,exactLength);
         
         iterator() 
                 => let (iter = outer.iterator(), 
@@ -841,7 +848,7 @@ shared interface List<out Element=Anything>
                 variable value index = -1;
                 shared actual Element|Other|Finished next() {
                     if (++index==from) {
-                        for (skip in 0:length) {
+                        for (skip in 0:exactLength) {
                             iter.next();
                         }
                     }
@@ -910,6 +917,7 @@ shared interface List<out Element=Anything>
      given [[transformation|List.mapElements.mapping]] 
      function to its associated element in this list. This 
      is a lazy operation, returning a view of this list."
+    since("1.3.0")
     shared default 
     List<Result> mapElements<Result>(
         "The function that transforms an index/item pair of

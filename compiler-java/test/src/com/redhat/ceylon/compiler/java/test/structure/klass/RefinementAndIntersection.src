@@ -45,7 +45,7 @@ class RefinementAndIntersection_SuperCoGood implements .com.redhat.ceylon.compil
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G get() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override
@@ -62,7 +62,7 @@ class RefinementAndIntersection_SubCoGood extends .com.redhat.ceylon.compiler.ja
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G get() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G).ceylon.language.nothing_.get_();
+        return (.com.redhat.ceylon.compiler.java.test.structure.klass.RefinementAndIntersection_G)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

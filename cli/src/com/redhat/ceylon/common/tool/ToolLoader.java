@@ -16,6 +16,9 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.cmr.ceylon.CeylonUtils.CeylonRepoManagerBuilder;
 import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.tool.OptionModel.ArgumentType;
 
@@ -69,26 +72,31 @@ public abstract class ToolLoader {
         return className;
     }
 
-    public ClassLoader loadModule(String name, String version) {
+    public ClassLoader loadModule(String name, String version, String overrides) {
         try {
             // Ok, now for something really crappy to force loading of the required module
             String loaderClassName;
             if (loader.getClass().getName().equals("org.jboss.modules.ModuleClassLoader")
                     || loader.getClass().getName().equals("ceylon.modules.jboss.runtime.CeylonModuleClassLoader")) {
                 // If we run using the Ceylon runtime
-                loaderClassName = "com.redhat.ceylon.compiler.java.runtime.tools.impl.JBossModuleLoader";
+                loaderClassName = "com.redhat.ceylon.module.loader.JBossModuleLoader";
             } else {
                 // If we run in a normal Java environment
-                loaderClassName = "com.redhat.ceylon.compiler.java.runtime.tools.impl.FlatpathModuleLoader";
+                loaderClassName = "com.redhat.ceylon.module.loader.FlatpathModuleLoader";
             }
             Class<?> loaderClass = loader.loadClass(loaderClassName);
-            Constructor<?> loaderConstr = loaderClass.getConstructor(ClassLoader.class);
-            Object modLoader = loaderConstr.newInstance(loader);
+            CeylonRepoManagerBuilder repositoryManagerBuilder = CeylonUtils.repoManager();
+            if(overrides != null)
+                repositoryManagerBuilder.overrides(overrides);
+            RepositoryManager repositoryManager = repositoryManagerBuilder.buildManager();
+            Constructor<?> loaderConstr = loaderClass.getConstructor(RepositoryManager.class, ClassLoader.class);
+            Object modLoader = loaderConstr.newInstance(repositoryManager, loader);
             Method loadMth = loaderClass.getMethod("loadModule", String.class, String.class);
             ClassLoader mcl = (ClassLoader) loadMth.invoke(modLoader, name, version);
             return mcl;
         } catch (ReflectiveOperationException e) {
-            throw new ToolError("Could not load module '" + name + "/" + version + "' because: " + e.getCause().getMessage(), e) {};
+            Throwable cause = (e.getCause() != null) ? e.getCause() : e;
+            throw new ToolError("Could not load module '" + name + "/" + version + "' because: " + cause.toString(), e) {};
         }
     }
     
@@ -193,7 +201,7 @@ public abstract class ToolLoader {
                 throw new ModelException("Error instantiating the given @ParserFactory", e);
             }
         }
-        return StandardArgumentParsers.forClass(setterType, this, isSimpleType);
+        return ArgumentParserFactory.instance(setterType, this, isSimpleType);
     }
     
     private <T extends Tool, A> void addMethod(Class<T> cls, ToolModel<T> model,

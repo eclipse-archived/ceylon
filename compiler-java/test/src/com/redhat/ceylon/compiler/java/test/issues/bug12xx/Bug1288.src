@@ -4,7 +4,9 @@ interface Bug1288_Foo<T> {
     
     public abstract T foo(final .java.lang.Object t);
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "Element",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -51,7 +53,7 @@ class Bug1288<Element> implements .com.redhat.ceylon.compiler.java.runtime.model
             return (Element)result$11;
         }
         final Element x$12 = (Element)x$5;
-        return (Element).ceylon.language.nothing_.get_();
+        return (Element)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

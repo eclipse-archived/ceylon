@@ -76,6 +76,11 @@ void typeTests() {
   check(type(1..2).string=="ceylon.language::Span<ceylon.language::Integer>","type(1..2):``type(1..2)`` expected Span<Integer>");
   check(type(test).string=="model2::test","type(test):``type(test)``");
   check(type("hello".initial).string=="ceylon.language::String.initial","type('hello'.initial):``type("hello".initial)``");
+  value keyType = `String`;
+  value itemType = `{Integer*}`;
+  value entryType = `class Entry`.classApply<Anything,Nothing>(keyType, itemType);
+  check(entryType.string=="ceylon.language::Entry<ceylon.language::String,ceylon.language::Iterable<ceylon.language::Integer,ceylon.language::Null>>",
+        "Entry type with Iterable item is wrong: ``entryType``");
 }
 
 shared void test() {

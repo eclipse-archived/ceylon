@@ -6,9 +6,9 @@ public final class bug1736_ {
     }
     
     public static void bug1736() {
-        final .java.lang.String[] array$0 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.strings());
-        loop_0: for (int i$2 = 0; i$2 < array$0.length; i$2++) {
-            final .java.lang.String s = array$0[i$2];
+        final .java.lang.String[] array$1 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.test.interop.JavaWithStaticMembers.strings());
+        loop_0: for (int i$3 = 0; i$3 < array$1.length; i$3++) {
+            final .java.lang.String s = array$1[i$3];
             .ceylon.language.print_.print(s);
         }
     }

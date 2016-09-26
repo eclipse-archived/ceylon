@@ -45,6 +45,8 @@ public class JDKRepository extends AbstractRepository {
 
     public static final String JDK_REPOSITORY_DISPLAY_STRING = "JDK modules repository";
     
+    public static final String NAMESPACE = "jdk";
+
     private static final String JAVA_ORIGIN = "Java Runtime";
 
 	private JdkProvider jdkProvider;
@@ -122,7 +124,7 @@ public class JDKRepository extends AbstractRepository {
             String jdkVersion = jdkProvider.getJDKVersion();
             if (query.getVersion() != null && !query.getVersion().equals(jdkVersion))
                 return;
-            final ModuleVersionDetails newVersion = result.addVersion(query.getName(), jdkVersion);
+            final ModuleVersionDetails newVersion = result.addVersion(NAMESPACE, query.getName(), jdkVersion);
             newVersion.setDoc(doc(query.getName()));
             newVersion.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
             newVersion.setVersion(jdkVersion);
@@ -175,7 +177,7 @@ public class JDKRepository extends AbstractRepository {
         }
         
         private ModuleVersionDetails getResult(String module, ModuleQuery query) {
-            ModuleVersionDetails mvd = new ModuleVersionDetails(module, jdkProvider.getJDKVersion());
+            ModuleVersionDetails mvd = new ModuleVersionDetails(NAMESPACE, module, jdkProvider.getJDKVersion());
             mvd.setDoc(doc(module));
             mvd.getArtifactTypes().add(new ModuleVersionArtifact(ArtifactContext.JAR, null, null));
             mvd.setRemote(false);
@@ -208,8 +210,8 @@ public class JDKRepository extends AbstractRepository {
     }
 
     @Override
-    public boolean isMaven() {
-        return false;
+    public String getNamespace() {
+        return NAMESPACE;
     }
 
 }

@@ -19,14 +19,22 @@
  */
 package com.redhat.ceylon.compiler.java.test.annotations;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 
 public class AnnotationsTests extends CompilerTests {
+    @Override
+    protected ModuleWithArtifact getDestModuleWithArtifact(String main){
+        return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.annotations", "1.2.3");
+    }
+    
     @Test
     public void testTypeGrouping(){
         compareWithJavaSource("typeGrouping");
@@ -327,5 +335,37 @@ public class AnnotationsTests extends CompilerTests {
     @Ignore
     public void testBug6085(){
         compareWithJavaSource("bug6085/Bug6085");
+    }
+    
+    @Test
+    public void testBug5779(){
+        compareWithJavaSource("Bug5779");
+    }
+    
+    @Test
+    public void testRepeatable8(){
+        Assume.assumeTrue(JDKUtils.jdk == JDKUtils.JDK.JDK8 || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        ArrayList<String> options = new ArrayList<String>(defaultOptions);
+        options.add("-target");
+        options.add("8");
+        compareWithJavaSource(options, "Repeatable8.src", "Repeatable.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.annotations.RepeatableUse");
+    }
+    @Test
+    public void testRepeatable7(){
+        ArrayList<String> options = new ArrayList<String>(defaultOptions);
+        options.add("-target");
+        options.add("7");
+        options.add("-source");
+        options.add("7");
+        compareWithJavaSource(options, "Repeatable7.src", "Repeatable.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.annotations.RepeatableUse");
+    }
+    
+    @Test
+    public void testAnnotationCharacterSequence(){
+        //compareWithJavaSource("AnnotationCharacterSequence");
+        compile("AnnotationCharacterSequence.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.annotations.AnnotationCharacterSequenceUse");
     }
  }

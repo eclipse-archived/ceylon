@@ -149,6 +149,7 @@ public class CeylonBootstrapTool extends CeylonBaseTool {
         File srcScript = new File(srcScripts, FILE_CEYLON_SCRIPT);
         File destScript = new File(targetDir, FILE_CEYLONB_SCRIPT);
         Files.copy(srcScript.toPath(), destScript.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
+        destScript.setExecutable(true, false);
         
         // Copy the "ceylon.bat" startup script to "./ceylonb.bat"
         File srcBat = new File(srcScripts, FILE_CEYLON_SCRIPT + ".bat");
@@ -164,7 +165,7 @@ public class CeylonBootstrapTool extends CeylonBaseTool {
             } else {
                 version = Versions.CEYLON_VERSION_NUMBER;
             }
-            return new URI(Bootstrap.CEYLON_DOWNLOAD_BASE_URL + "ceylon-" + version + ".zip");
+            return new URI(Bootstrap.CEYLON_DOWNLOAD_BASE_URL + version.replace('.', '_'));
         } else {
             return distribution;
         }

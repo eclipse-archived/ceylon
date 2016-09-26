@@ -61,7 +61,14 @@ shared native final class Float(Float float)
      consequence the undefined value cannot sensibly be used 
      in most collections.
      
+     If `x` is an undefined `Float`, then:
+     
+     - `x==x` evaluates to `false`
+     - `x!=x` evaluates to `true`, and
+     - `x>x`, `x<x`, `x>=x`, `x<=x` all evaluate to `false`.
+     
      [NaN]: http://en.wikipedia.org/wiki/NaN"
+    see (`function compare`)
     aliased("notANumber")
     shared Boolean undefined => this!=this;
     
@@ -84,27 +91,32 @@ shared native final class Float(Float float)
      number or `infinity`. Produces `-1` for a negative
      number or `-infinity`. Produces `0.0` for `+0.0`, 
      `-0.0`, or undefined."
-    shared actual native Integer sign;
+    shared actual native Integer sign
+            =>   if (this < 0.0) then -1
+            else if (this > 0.0) then 1
+            else 0;
     
     "Determines if this value is a positive number or
      `infinity`. Produces `false` for a negative number, 
      `+0.0`, `-0.0`, or undefined."
-    shared actual native Boolean positive;
+    shared actual native Boolean positive => this > 0.0;
     
     "Determines if this value is a negative number or
      `-infinity`. Produces `false` for a positive number, 
      `+0.0`, `-0.0`, or undefined."
-    shared actual native Boolean negative;
+    shared actual native Boolean negative => this < 0.0;
     
     "Determines if this value is a positive number, `+0.0`, 
      or `infinity`. Produces `false` for a negative number, 
      `-0.0`, or undefined."
-    shared native Boolean strictlyPositive;
+    shared native Boolean strictlyPositive 
+            => this > 0.0 || 1.0/this > 0.0;
     
     "Determines if this value is a negative number, `-0.0`, 
      or `-infinity`. Produces `false` for a positive number, 
      `+0.0`, or undefined."
-    shared native Boolean strictlyNegative;
+    shared native Boolean strictlyNegative 
+            => this < 0.0 || 1.0/this < 0.0;
     
     "Determines if the given object is equal to this `Float`,
      that is, if:
@@ -130,7 +142,28 @@ shared native final class Float(Float float)
     "A platform-dependent hash code for this `Float`."
     shared actual native Integer hash;
     
-    shared actual native Comparison compare(Float other);
+    "Compare this value to the given value, where 
+     [[infinity]] is considered greater than every defined, 
+     finite value, and `-infinity` is considered smaller 
+     than every defined, finite value, and [[undefined]] 
+     values are considered incomparable.
+     
+     Note that if `x` is an undefined `Float` and `y` is any 
+     `Float` that is not undefined, then:
+     
+     - `x<=>y` produces an exception when evaluated, but
+     - `x>y`, `x<y`, `x>=y`, `x<=y`, and `x==y` all evaluate 
+       to `false`."
+    throws (`class Exception`, 
+            "if either this value, the given value, or both 
+             are [[undefined]]")
+    shared actual native Comparison compare(Float other)
+            =>   if (this < other) then smaller
+            else if (this > other) then larger
+            else equal;
+    
+    shared actual native Float negated;
+    
     shared actual native Float plus(Float other);
     shared actual native Float minus(Float other);
     shared actual native Float times(Float other);
@@ -166,9 +199,8 @@ shared native final class Float(Float float)
     shared actual native Float fractionalPart;
     
     aliased("absolute")
-    shared actual native Float magnitude;
-    
-    shared actual native Float negated;
+    shared actual native Float magnitude 
+            => this <= 0.0 then 0.0-this else this;
     
     "This value, represented as an [[Integer]], after 
      truncation of its fractional part, if such a 
@@ -176,10 +208,14 @@ shared native final class Float(Float float)
     throws (`class OverflowException`,
         "if the the [[wholePart]] of this value is too large 
          or too small to be represented as an `Integer`")
+    since("1.1.0")
     shared native Integer integer;
     
-    shared actual native Float timesInteger(Integer integer);    
-    shared actual native Float plusInteger(Integer integer);
+    shared actual native Float timesInteger(Integer integer)
+            => times(integer.nearestFloat);
+    
+    shared actual native Float plusInteger(Integer integer)
+            => plus(integer.nearestFloat);
     
     "The result of raising this number to the given integer
      power, where the following indeterminate forms evaluate 
@@ -207,8 +243,35 @@ shared native final class Float(Float float)
     see (`function formatFloat`)
     shared actual native String string;
     
-    shared actual native Boolean largerThan(Float other); 
+    "Determines if this value is strictly larger than the 
+     given value, where [[infinity]] is considered greater 
+     than every defined, finite value, and `-infinity` is 
+     considered smaller than every defined, finite value. 
+     Evaluates to `false` if this value, the given value, or 
+     both are [[undefined]]."
+    shared actual native Boolean largerThan(Float other);
+    
+    "Determines if this value is strictly smaller than the 
+     given value, where [[infinity]] is considered greater 
+     than every defined, finite value, and `-infinity` is 
+     considered smaller than every defined, finite value. 
+     Evaluates to `false` if this value, the given value, or 
+     both are [[undefined]]." 
     shared actual native Boolean smallerThan(Float other); 
-    shared actual native Boolean notSmallerThan(Float other); 
+    
+    "Determines if this value is larger than or equal to the 
+     given value, where [[infinity]] is considered greater 
+     than every defined, finite value, and `-infinity` is 
+     considered smaller than every defined, finite value. 
+     Evaluates to `false` if this value, the given value, or 
+     both are [[undefined]]."
+    shared actual native Boolean notSmallerThan(Float other);
+    
+    "Determines if this value is smaller than or equal to the 
+     given value, where [[infinity]] is considered greater 
+     than every defined, finite value, and `-infinity` is 
+     considered smaller than every defined, finite value. 
+     Evaluates to `false` if this value, the given value, or 
+     both are [[undefined]]." 
     shared actual native Boolean notLargerThan(Float other); 
 }

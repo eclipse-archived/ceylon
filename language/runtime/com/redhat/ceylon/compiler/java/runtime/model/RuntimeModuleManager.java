@@ -7,16 +7,19 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.common.AndroidUtil;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ImportType;
+import com.redhat.ceylon.model.cmr.RuntimeResolver;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
-import com.redhat.ceylon.model.loader.AndroidUtil;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.StaticMetamodelLoader;
 import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModule;
 import com.redhat.ceylon.model.loader.impl.reflect.model.ReflectionModuleManager;
 import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.redhat.ceylon.model.loader.model.LazyPackage;
+import com.redhat.ceylon.model.runtime.CeylonModuleClassLoader;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
@@ -70,13 +73,18 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
     }
 
     public boolean loadModule(String name, String version, 
-    		ArtifactResult artifact, ClassLoader classLoader) {
+            ArtifactResult artifact, ClassLoader classLoader) {
+        return loadModule(name, version, artifact, classLoader, false);
+    }
+    
+    public boolean loadModule(String name, String version, 
+    		ArtifactResult artifact, ClassLoader classLoader, boolean staticMetamodel) {
         RuntimeModelLoader modelLoader = getModelLoader();
         synchronized(modelLoader.getLock()){
             Module module = getOrCreateModule(splitModuleName(name), version);
             // The default module is created as available, so we use a different test for it, because we are the only
             // ones setting the module's Unit
-            if(module.isDefault() 
+            if(module.isDefaultModule() 
                     ? module.getUnit() != null
                     : module.isAvailable())
                 return false;
@@ -90,33 +98,41 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
             }
             module.setUnit(u);
 
-            if(!module.isDefault()){
+            if(!module.isDefaultModule()){
                 // FIXME: dependencies of Ceylon modules?
-                if(!modelLoader.loadCompiledModule(module)){
+                if(!modelLoader.loadCompiledModule(module, !staticMetamodel)){
                     // we didn't find module.class so it must be a java module if it's not the default module
                     ((LazyModule)module).setJava(true);
                     module.setNativeBackends(Backend.Java.asSet());
 
                     // Java modules must have their dependencies set by the artifact result, as there is no module info in the jar
-                    for (ArtifactResult dep : artifact.dependencies()) {
-                        Module dependency = 
-                        		getOrCreateModule(splitModuleName(dep.name()), 
-                        				dep.version());
-
-                        ModuleImport depImport = 
-                        		findImport(module, dependency);
-                        if (depImport == null) {
-                            ModuleImport moduleImport = 
-                            		new ModuleImport(dependency, false, false, Backend.Java);
-                            module.addImport(moduleImport);
-                        }
-                    }
+                    loadModuleImportsFromArtifact(module, artifact);
+                }else if(staticMetamodel){
+                    // for a static metamodel we get the dependencies from the artifact too
+                    loadModuleImportsFromArtifact(module, artifact);
                 }
             }
             return true;
         }
     }
     
+    private void loadModuleImportsFromArtifact(Module module, ArtifactResult artifact) {
+        for (ArtifactResult dep : artifact.dependencies()) {
+            Module dependency = 
+                    getOrCreateModule(splitModuleName(dep.name()), 
+                            dep.version());
+
+            ModuleImport depImport = 
+                    findImport(module, dependency);
+            if (depImport == null) {
+                ModuleImport moduleImport = 
+                        new ModuleImport(dep.namespace(), dependency, dep.importType() == ImportType.OPTIONAL, 
+                            dep.importType() == ImportType.EXPORT, Backend.Java);
+                module.addImport(moduleImport);
+            }
+        }
+    }
+
     @Override
     public Module getOrCreateModule(List<String> moduleName, String version) {
         // Override to support getting the runtime version of the Module
@@ -126,17 +142,10 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
 
     protected String runtimeVersion(String moduleName, String version) {
         RuntimeResolver runtimeResolver = this.runtimeResolver;
-        if(runtimeResolver == null)
-        	runtimeResolver = OverridesRuntimeResolver.getFromThreadLocal();
-        if (runtimeResolver == null && Thread.currentThread().getContextClassLoader() instanceof org.jboss.modules.ConcurrentClassLoader) {
-            Object contextModuleLoader;
-            try {
-                contextModuleLoader= org.jboss.modules.Module.getContextModuleLoader();
-            } catch (NullPointerException e) {
-                contextModuleLoader = null;
-            }
-            if (contextModuleLoader instanceof RuntimeResolver) {
-                runtimeResolver = (RuntimeResolver)contextModuleLoader;
+        if (runtimeResolver == null){
+            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+            if(contextClassLoader instanceof CeylonModuleClassLoader) {
+                runtimeResolver = ((CeylonModuleClassLoader) contextClassLoader).getRuntimeResolver();
             }
         }
         if (runtimeResolver != null) {
@@ -208,13 +217,13 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
     protected void loadStaticMetamodel() {
         InputStream is = JvmBackendUtil.getStaticMetamodelInputStream(getClass());
         if(is != null){
-        	List<String> dexEntries = AndroidUtil.getDexEntries();
+        	List<String> dexEntries = AndroidUtil.isRunningAndroid() ? AndroidUtil.getDexEntries() : JvmBackendUtil.getCurrentJarEntries();
         	JvmBackendUtil.loadStaticMetamodel(is, dexEntries, this);
         }
     }
 
 	@Override
 	public void loadModule(String name, String version, ArtifactResult artifact) {
-		loadModule(name, version, artifact, getClass().getClassLoader());
+		loadModule(name, version, artifact, getClass().getClassLoader(), true);
 	}
 }

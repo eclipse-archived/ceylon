@@ -28,9 +28,10 @@ void bug1563(){
 void bug1563_helper<T,U>() 
         given T satisfies Object 
         given U satisfies Object {
-    
-    value array1 = ObjectArray<T>(0);
-    assert(array1 is ObjectArray<Integer>);
+
+    // disallowed by typechecker now
+    //value array1 = ObjectArray<T>(0);
+    //assert(array1 is ObjectArray<Integer>);
     
     value array2 = ObjectArray<ObjectArray<T>>(0);
     assert(array2 is ObjectArray<ObjectArray<Integer>>);
@@ -38,9 +39,10 @@ void bug1563_helper<T,U>()
     value array3 = ObjectArray<List<T>>(0);
     // doesn't work due to Java erasure
     //assert(array3 is ObjectArray<List<Integer>>);
-    
-    value array4 = ObjectArray<T&U>(0);
-    assert(array4 is ObjectArray<Integer>);
+
+    // disallowed by typechecker now
+    //value array4 = ObjectArray<T&U>(0);
+    //assert(array4 is ObjectArray<Integer>);
 
     Object array5 = ObjectArray<IntArray>(0);
     assert(array5 is ObjectArray<IntArray>);
@@ -48,5 +50,6 @@ void bug1563_helper<T,U>()
     Object array6 = ObjectArray<ObjectArray<IntArray>>(0);
     assert(array6 is ObjectArray<ObjectArray<IntArray>>);
     
-    value array7 = ObjectArray<Nothing>(0);
+    // disallowed by typechecker now
+    //value array7 = ObjectArray<Nothing>(0);
 }

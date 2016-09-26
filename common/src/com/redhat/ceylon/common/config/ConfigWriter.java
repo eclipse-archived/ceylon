@@ -24,11 +24,15 @@ import com.redhat.ceylon.common.FileUtil;
  */
 public class ConfigWriter {
 
+    public static ConfigWriter instance() {
+        return new ConfigWriter();
+    }
+    
     /**
      * Write the given configuration to the given file. Updating the existing file if
      * it exists or otherwise creating a new file.
      */
-    public static void write(CeylonConfig config, File destination) throws IOException {
+    public void write(CeylonConfig config, File destination) throws IOException {
         OutputStream out = null;
         if (destination.isFile()) {
             write(config, destination, destination);
@@ -56,7 +60,7 @@ public class ConfigWriter {
      * Reads config from the given source file, updating it using the given 
      * configuration and writing in to the destination file. 
      */
-    public static void write(CeylonConfig config, File source, File destination) throws IOException {
+    public void write(CeylonConfig config, File source, File destination) throws IOException {
         boolean overwriteSource = destination.getCanonicalFile().equals(source.getCanonicalFile());
         if (source.isFile()) {
             InputStream in = null;
@@ -113,7 +117,7 @@ public class ConfigWriter {
      * Reads config from the given source file, updating it using the given 
      * configuration and writing in to the given output.
      */
-    public static void write(CeylonConfig config, File source, OutputStream out) throws IOException {
+    public void write(CeylonConfig config, File source, OutputStream out) throws IOException {
         if (source.isFile()) {
             InputStream in = null;
             try {
@@ -131,7 +135,7 @@ public class ConfigWriter {
         }
     }
 
-    public static void write(CeylonConfig config, InputStream in, File destination) throws IOException {
+    public void write(CeylonConfig config, InputStream in, File destination) throws IOException {
         OutputStream out = null;
         try {
             // First create any parent directories if necessary
@@ -155,7 +159,7 @@ public class ConfigWriter {
      * Reads config from the given input, updating it using the given 
      * configuration and writing in to the given output.
      */
-    public static void write(CeylonConfig orgconfig, InputStream in, OutputStream out) throws IOException {
+    public void write(CeylonConfig orgconfig, InputStream in, OutputStream out) throws IOException {
         final CeylonConfig config = orgconfig.copy();
         final Writer writer = new BufferedWriter(new OutputStreamWriter(out, Charset.forName("UTF-8")));
         ConfigReader reader = new ConfigReader(in, new ImprovedConfigReaderListenerAdapter(new ImprovedConfigReaderListener() {
@@ -244,42 +248,60 @@ public class ConfigWriter {
     /**
      * Write the given configuration to the given output stream.
      */
-    public static void write(CeylonConfig orgconfig, OutputStream out) throws IOException {
+    public void write(CeylonConfig orgconfig, OutputStream out) throws IOException {
         final CeylonConfig config = orgconfig.copy();
         final Writer writer = new BufferedWriter(new OutputStreamWriter(out, Charset.forName("UTF-8")));
         writeSections(writer, config, out);
         writer.flush();
     }
 
-    private static void writeSections(Writer writer, CeylonConfig config, OutputStream out) throws IOException {
+    protected void writeSections(Writer writer, CeylonConfig config, OutputStream out) throws IOException {
         String[] sections = config.getSectionNames(null);
         Arrays.sort(sections);
         for (String section : sections) {
             if (config.getOptionNames(section).length > 0) {
                 writer.write(System.lineSeparator());
-                writer.write("[");
-                String[] names = section.split("\\.");
-                if (names.length > 1) {
-                    for (int i = 0; i < names.length - 1; i++) {
-                        if (i > 0) {
-                            writer.write(".");
-                        }
-                        writer.write(names[i]);                            
-                    }
-                    writer.write(" \"");
-                    writer.write(names[names.length - 1]);
-                    writer.write("\"");
-                } else {
-                    writer.write(section);
-                }
-                writer.write("]");
-                writer.write(System.lineSeparator());
+                writeSection(writer, section);
                 writeOptions(writer, config, section);
             }
         }
     }
 
-    protected static void writeOptions(Writer writer, CeylonConfig config, String section) throws IOException {
+    protected void writeSection(Writer writer, String section) throws IOException {
+        String[] names = section.split("\\.");
+        if (names.length > 1) {
+            StringBuffer pre = new StringBuffer();
+            for (int i = 0; i < names.length - 1; i++) {
+                if (i > 0) {
+                    pre.append(".");
+                }
+                pre.append(names[i]);
+            }
+            String post = names[names.length - 1];
+            writeCompoundSection(writer, pre.toString(), post);
+        } else {
+            writeSimpleSection(writer, section);
+        }
+    }
+
+    protected void writeSimpleSection(Writer writer, String section) throws IOException {
+        writer.write("[");
+        writer.write(section);
+        writer.write("]");
+        writer.write(System.lineSeparator());
+    }
+
+    protected void writeCompoundSection(Writer writer, String pre, String post) throws IOException {
+        writer.write("[");
+        writer.write(pre);
+        writer.write(" \"");
+        writer.write(post);
+        writer.write("\"");
+        writer.write("]");
+        writer.write(System.lineSeparator());
+    }
+
+    protected void writeOptions(Writer writer, CeylonConfig config, String section) throws IOException {
         String[] names = config.getOptionNames(section);
         if (names != null) {
             for (int i=0; i < names.length; i++) {
@@ -291,7 +313,7 @@ public class ConfigWriter {
         }
     }
     
-    protected static void writeOption(Writer writer, CeylonConfig config, String section, String name) throws IOException {
+    protected void writeOption(Writer writer, CeylonConfig config, String section, String name) throws IOException {
         String[] values = config.getOptionValues(section + "." + name);
         if (values != null) {
             for (int i=0; i < values.length; i++) {
@@ -304,7 +326,7 @@ public class ConfigWriter {
         }
     }
 
-    protected static void writeOptionValue(Writer writer, String name, String value) throws IOException {
+    protected void writeOptionValue(Writer writer, String name, String value) throws IOException {
         writer.write(name);
         writer.write("=");
         writer.write(quote(value));

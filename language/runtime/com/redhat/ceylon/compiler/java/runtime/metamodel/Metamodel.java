@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.java.runtime.metamodel;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,11 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import org.jboss.modules.ModuleIdentifier;
-import org.jboss.modules.ModuleLoadException;
-import org.jboss.modules.ModuleLoader;
-
-import com.redhat.ceylon.common.runtime.CeylonModuleClassLoader;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.language.BooleanArray;
 import com.redhat.ceylon.compiler.java.language.ByteArray;
@@ -30,7 +27,6 @@ import com.redhat.ceylon.compiler.java.language.InternalMap;
 import com.redhat.ceylon.compiler.java.language.LongArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArray;
 import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
-import com.redhat.ceylon.compiler.java.language.ReifiedTypeError;
 import com.redhat.ceylon.compiler.java.language.ShortArray;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
@@ -62,10 +58,10 @@ import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ValueConstructorIm
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModelLoader;
 import com.redhat.ceylon.compiler.java.runtime.model.RuntimeModuleManager;
-import com.redhat.ceylon.compiler.java.runtime.model.RuntimeResolver;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.RuntimeResolver;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.model.loader.NamingBase;
@@ -82,6 +78,8 @@ import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.loader.model.LazyPackage;
 import com.redhat.ceylon.model.loader.model.LazyTypeAlias;
 import com.redhat.ceylon.model.loader.model.LazyValue;
+import com.redhat.ceylon.model.runtime.CeylonModuleClassLoader;
+import com.redhat.ceylon.model.runtime.CeylonModuleClassLoader.ModuleLoadException;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -101,55 +99,31 @@ import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.UnknownType;
 
 import ceylon.language.Annotated;
-import ceylon.language.Annotated;
-import ceylon.language.Anything;
 import ceylon.language.Anything;
 import ceylon.language.Array;
-import ceylon.language.Array;
-import ceylon.language.Callable;
 import ceylon.language.Callable;
 import ceylon.language.Iterator;
-import ceylon.language.Iterator;
-import ceylon.language.Null;
 import ceylon.language.Null;
 import ceylon.language.Sequential;
-import ceylon.language.Sequential;
-import ceylon.language.empty_;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
-import ceylon.language.finished_;
-import ceylon.language.null_;
 import ceylon.language.null_;
 import ceylon.language.sequence_;
-import ceylon.language.sequence_;
-import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.AnnotatedDeclaration;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.declaration.Module;
-import ceylon.language.meta.declaration.Module;
-import ceylon.language.meta.declaration.NestableDeclaration;
 import ceylon.language.meta.declaration.NestableDeclaration;
 import ceylon.language.meta.declaration.OpenClassOrInterfaceType;
-import ceylon.language.meta.declaration.OpenClassOrInterfaceType;
 import ceylon.language.meta.declaration.OpenType;
-import ceylon.language.meta.declaration.OpenType;
-import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.declaration.ValueConstructorDeclaration;
 import ceylon.language.meta.model.ClassModel;
 import ceylon.language.meta.model.ClassOrInterface;
-import ceylon.language.meta.model.ClassOrInterface;
-import ceylon.language.meta.model.FunctionModel;
 import ceylon.language.meta.model.FunctionModel;
 import ceylon.language.meta.model.Generic;
-import ceylon.language.meta.model.Generic;
-import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.IncompatibleTypeException;
 import ceylon.language.meta.model.InvocationException;
-import ceylon.language.meta.model.InvocationException;
 import ceylon.language.meta.model.TypeApplicationException;
-import ceylon.language.meta.model.TypeApplicationException;
-import ceylon.language.meta.model.ValueModel;
 import ceylon.language.meta.model.ValueModel;
 
 public class Metamodel {
@@ -361,7 +335,8 @@ public class Metamodel {
             // that's so that we don't have to worry about type applications 
             // such as like <out Anything> which is true even in the absence 
             // of reified type arguments
-            throw new ReifiedTypeError("Cannot determine whether " + instance.getClass() + " is a " + type);
+//            throw new ReifiedTypeError("Cannot determine whether " + instance.getClass() + " is a " + type);
+            result = true; //I can do it in Java, so what the hell ;-)
         }
         
         return result;
@@ -484,17 +459,20 @@ public class Metamodel {
         }
     }
 
-    public static com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ModuleImpl getOrCreateMetamodel(com.redhat.ceylon.model.typechecker.model.Module declaration){
-        return getOrCreateMetamodel(declaration, null, false /* not optional */);
+    public static com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ModuleImpl getOrCreateMetamodel(
+            com.redhat.ceylon.model.typechecker.model.Module declaration){
+        return getOrCreateMetamodel(null, declaration, null, false /* not optional */);
     }
 
-    private static com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ModuleImpl getOrCreateMetamodel(com.redhat.ceylon.model.typechecker.model.Module declaration,
+    private static com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ModuleImpl getOrCreateMetamodel(
+            String namespace,
+            com.redhat.ceylon.model.typechecker.model.Module declaration,
             Set<com.redhat.ceylon.model.typechecker.model.Module> visitedModules, boolean optional){
         synchronized(getLock()){
             com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ModuleImpl ret = typeCheckModulesToRuntimeModel.get(declaration);
             if(ret == null){
                 // make sure it is loaded
-                loadModule(declaration, visitedModules, optional);
+                loadModule(namespace, declaration, visitedModules, optional);
                 if(!declaration.isAvailable())
                     return null;
                 ret = new com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ModuleImpl(declaration); 
@@ -504,7 +482,9 @@ public class Metamodel {
         }
     }
 
-    private static void loadModule(com.redhat.ceylon.model.typechecker.model.Module declaration, 
+    private static void loadModule(
+            String namespace,
+            com.redhat.ceylon.model.typechecker.model.Module declaration, 
             Set<com.redhat.ceylon.model.typechecker.model.Module> visitedModules, boolean optional) {
         // don't do if not running JBoss modules
         if(!isJBossModules()){
@@ -513,19 +493,24 @@ public class Metamodel {
         // we must use the context module loader, which is the one CeylonModuleLoader for every user module
         // if we use the language module loader it will be a LocalModuleLoader which doesn't know about the
         // module repos specified on the command-line.
-        ModuleLoader moduleLoader = org.jboss.modules.Module.getContextModuleLoader();
         // no loading required for these
         if(JDKUtils.isJDKModule(declaration.getNameAsString())
                 || JDKUtils.isOracleJDKModule(declaration.getNameAsString()))
             return;
         try {
-            org.jboss.modules.Module jbossModule = moduleLoader.loadModule(ModuleIdentifier.create(declaration.getNameAsString(), declaration.getVersion()));
-            org.jboss.modules.ModuleClassLoader cl = jbossModule.getClassLoader();
+            // Stef: this can fail, in particular is the TCCCL is that of a bootstrap module CL since we can't override those
+            // if it does we have to resort to reflection to get around this
+            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
+            if(contextClassLoader instanceof CeylonModuleClassLoader) {
+                // this will return null for bootstrap modules
+                String modname = ModuleUtil.makeModuleName(namespace, declaration.getNameAsString(), null);
+                CeylonModuleClassLoader newModuleClassLoader = ((CeylonModuleClassLoader) contextClassLoader).loadModule(modname, declaration.getVersion());
             
-            // if we can force it loaded, let's do
-            if(cl instanceof CeylonModuleClassLoader){
-                // this can complete in another thread or this thread
-                ((CeylonModuleClassLoader) cl).registerInMetaModel();
+                // if we can force it loaded, let's do
+                if(newModuleClassLoader != null){
+                    // this can complete in another thread or this thread
+                    newModuleClassLoader.registerInMetaModel();
+                }
                 if(!declaration.isAvailable()){
                     // perhaps it is being loaded in another thread, wait for it
                     Object lock = getLock();
@@ -552,13 +537,15 @@ public class Metamodel {
             for(ModuleImport mi : declaration.getImports()){
                 com.redhat.ceylon.model.typechecker.model.Module importedModule = mi.getModule();
                 // make sure we don't run in circles
-                if(importedModule != null && !visitedModules.contains(importedModule))
-                    getOrCreateMetamodel(importedModule, visitedModules, mi.isOptional());
+                if(importedModule != null && !visitedModules.contains(importedModule)) {
+                    String ns = mi.getNamespace() != null ? mi.getNamespace() : namespace;
+                    getOrCreateMetamodel(ns, importedModule, visitedModules, mi.isOptional());
+                }
             }
         } catch (ModuleLoadException e) {
             // it's not an issue if we don't find the default module, it's always created but not always
             // present. Also not an issue for optional modules.
-            if(!declaration.isDefault() && !optional)
+            if(!declaration.isDefaultModule() && !optional)
                 throw Metamodel.newModelError(e.toString());
         } catch (SecurityException e) {
             throw Metamodel.newModelError(e.toString());
@@ -568,7 +555,9 @@ public class Metamodel {
     }
 
     private static boolean isJBossModules() {
-        return Metamodel.class.getClassLoader() instanceof org.jboss.modules.ModuleClassLoader;
+        // Metamodel is from ceylon.language which is loaded by the InitialModuleLoader, which can't change its
+        // ClassLoader implementation from that, so it should be safe
+        return Metamodel.class.getClassLoader().getClass().getName().equals("org.jboss.modules.ModuleClassLoader");
     }
 
     public static ceylon.language.meta.declaration.OpenType getMetamodel(Type pt) {
@@ -685,6 +674,9 @@ public class Metamodel {
         }
         if(declaration instanceof com.redhat.ceylon.model.typechecker.model.NothingType){
             return (ceylon.language.meta.model.Type<T>)ceylon.language.meta.model.nothingType_.get_();
+        }
+        if(declaration instanceof UnknownType){
+            ((UnknownType) declaration).reportErrors();
         }
         throw Metamodel.newModelError("Declaration type not supported yet: "+declaration);
     }
@@ -1074,7 +1066,9 @@ public class Metamodel {
         if (jAnnotationType.getName().endsWith("$annotations$")) {
             java.lang.annotation.Annotation[] jAnnotations;
             try {
-                jAnnotations = (java.lang.annotation.Annotation[])jAnnotationType.getMethod("value").invoke(jAnnotation);
+                Method method = jAnnotationType.getMethod("value");
+                method.setAccessible(true);
+                jAnnotations = (java.lang.annotation.Annotation[])method.invoke(jAnnotation);
             } catch (RuntimeException e) {
                 throw e;
             } catch (Exception e) {/* aka ReflectiveOperationException */
@@ -1223,7 +1217,7 @@ public class Metamodel {
         ceylon.language.meta.declaration.Module[] array = new ceylon.language.meta.declaration.Module[view.length];
         int i=0;
         for(com.redhat.ceylon.model.typechecker.model.Module module : view){
-            ModuleImpl mod = getOrCreateMetamodel(module, null, true); // optional means don't throw if it's not available
+            ModuleImpl mod = getOrCreateMetamodel(null, module, null, true); // optional means don't throw if it's not available
             // skip unavailable modules
             if(mod != null)
                 array[i++] = mod;
@@ -1240,7 +1234,7 @@ public class Metamodel {
         // FIXME: this probably needs synchronisation to avoid new modules loaded during traversal
         com.redhat.ceylon.model.typechecker.model.Module module = moduleManager.findLoadedModule(name, version);
         // consider it optional to get null rather than exception
-        return module != null ? getOrCreateMetamodel(module, null, true) : null;
+        return module != null ? getOrCreateMetamodel(null, module, null, true) : null;
     }
 
     /**
@@ -1249,7 +1243,7 @@ public class Metamodel {
     public static Module getDefaultModule() {
         com.redhat.ceylon.model.typechecker.model.Module module = moduleManager.getModules().getDefaultModule();
         // consider it optional to get null rather than exception
-        return module != null ? getOrCreateMetamodel(module, null, true) : null;
+        return module != null ? getOrCreateMetamodel(null, module, null, true) : null;
     }
 
     public static List<Type> getParameterProducedTypes(List<Parameter> parameters, Reference producedReference) {
@@ -2033,5 +2027,43 @@ public class Metamodel {
                                 TypeDescriptor.klass(ValueModel.class, cls.$reifiedType, TypeDescriptor.NothingType)),
                         (Object[]) array);
         return (ceylon.language.Sequential) iterable.sequence();
+    }
+    
+    /**
+     * Return the java.lang.Class for the given reified type, or null if 
+     * the given type cannot be represented as a java.lang.Class. Only 
+     * types which simplify to class or interface types can be converted. 
+     */
+    public static java.lang.Class<?> getJavaClass(TypeDescriptor $reifiedT) {
+        if ($reifiedT instanceof TypeDescriptor.Intersection) {
+            return (java.lang.Class<?>)getJavaClass(((TypeDescriptor.Intersection)$reifiedT).toSimpleType(getModuleManager()));
+        }
+        else if ($reifiedT instanceof TypeDescriptor.Union) {
+            return (java.lang.Class<?>)getJavaClass(((TypeDescriptor.Intersection)$reifiedT).toSimpleType(getModuleManager()));
+        }
+        if ($reifiedT instanceof TypeDescriptor.Class) {
+            TypeDescriptor.Class klass = 
+                    (TypeDescriptor.Class) $reifiedT;
+            // this is already erased
+            return (java.lang.Class<?>) klass.getArrayElementClass();
+        } 
+        else if ($reifiedT instanceof TypeDescriptor.Member) {
+            TypeDescriptor.Member member = 
+                    (TypeDescriptor.Member) $reifiedT;
+            TypeDescriptor m = member.getMember();
+            if (m instanceof TypeDescriptor.Class) {
+                TypeDescriptor.Member.Class klass = 
+                        (TypeDescriptor.Class) m;
+                return (java.lang.Class<?>) klass.getKlass();
+            }
+        }
+        return null;
+    }
+    private static java.lang.Class<?> getJavaClass(Type pt) {
+        TypeDeclaration declaration = pt.getDeclaration();
+        if(declaration instanceof com.redhat.ceylon.model.typechecker.model.ClassOrInterface){
+            return getJavaClass(TypeDescriptor.klass(getJavaClass(declaration)));
+        }
+        return null;
     }
 }

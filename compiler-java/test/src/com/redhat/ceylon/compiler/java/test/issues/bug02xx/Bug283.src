@@ -19,7 +19,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                .ceylon.language.Integer $ceylontmp$op$0 = (.ceylon.language.Integer)getOi$priv$();
+                .ceylon.language.Ordinal<? extends .ceylon.language.Integer> $ceylontmp$op$0 = getOi$priv$();
                 setOi$priv$($ceylontmp$op$0.getSuccessor());
             }
             returning $ceylontmp$op$0;
@@ -27,7 +27,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                .ceylon.language.Integer $ceylontmp$op$1 = (.ceylon.language.Integer)getOi$priv$();
+                .ceylon.language.Ordinal<? extends .ceylon.language.Integer> $ceylontmp$op$1 = getOi$priv$();
                 setOi$priv$($ceylontmp$op$1.getPredecessor());
             }
             returning $ceylontmp$op$1;
@@ -35,7 +35,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                .ceylon.language.Integer $ceylontmp$op$2 = getOi$priv$().getSuccessor();
+                .ceylon.language.Ordinal<? extends .ceylon.language.Integer> $ceylontmp$op$2 = getOi$priv$().getSuccessor();
                 setOi$priv$($ceylontmp$op$2);
             }
             returning $ceylontmp$op$2;
@@ -43,7 +43,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                .ceylon.language.Integer $ceylontmp$op$3 = getOi$priv$().getPredecessor();
+                .ceylon.language.Ordinal<? extends .ceylon.language.Integer> $ceylontmp$op$3 = getOi$priv$().getPredecessor();
                 setOi$priv$($ceylontmp$op$3);
             }
             returning $ceylontmp$op$3;
@@ -52,7 +52,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmp$opE$4 = x;
-                .ceylon.language.Integer $ceylontmp$opV$5 = (.ceylon.language.Integer)$ceylontmp$opE$4.getOi$priv$();
+                .ceylon.language.Ordinal<? extends .ceylon.language.Integer> $ceylontmp$opV$5 = $ceylontmp$opE$4.getOi$priv$();
                 $ceylontmp$opE$4.setOi$priv$($ceylontmp$opV$5.getSuccessor());
             }
             returning $ceylontmp$opV$5;
@@ -61,7 +61,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmp$opE$6 = x;
-                .ceylon.language.Integer $ceylontmp$opV$7 = (.ceylon.language.Integer)$ceylontmp$opE$6.getOi$priv$();
+                .ceylon.language.Ordinal<? extends .ceylon.language.Integer> $ceylontmp$opV$7 = $ceylontmp$opE$6.getOi$priv$();
                 $ceylontmp$opE$6.setOi$priv$($ceylontmp$opV$7.getPredecessor());
             }
             returning $ceylontmp$opV$7;
@@ -70,7 +70,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmp$opE$8 = x;
-                .ceylon.language.Integer $ceylontmp$opV$9 = $ceylontmp$opE$8.getOi$priv$().getSuccessor();
+                .ceylon.language.Ordinal<? extends .ceylon.language.Integer> $ceylontmp$opV$9 = $ceylontmp$opE$8.getOi$priv$().getSuccessor();
                 $ceylontmp$opE$8.setOi$priv$($ceylontmp$opV$9);
             }
             returning $ceylontmp$opV$9;
@@ -79,7 +79,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             let
             {
                 .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug283 $ceylontmp$opE$10 = x;
-                .ceylon.language.Integer $ceylontmp$opV$11 = $ceylontmp$opE$10.getOi$priv$().getPredecessor();
+                .ceylon.language.Ordinal<? extends .ceylon.language.Integer> $ceylontmp$opV$11 = $ceylontmp$opE$10.getOi$priv$().getPredecessor();
                 $ceylontmp$opE$10.setOi$priv$($ceylontmp$opV$11);
             }
             returning $ceylontmp$opV$11;
@@ -91,7 +91,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                .ceylon.language.Integer $ceylontmp$op$12 = (.ceylon.language.Integer)oi2;
+                .ceylon.language.Ordinal<? extends .ceylon.language.Integer> $ceylontmp$op$12 = oi2;
                 oi2 = $ceylontmp$op$12.getSuccessor();
             }
             returning $ceylontmp$op$12;
@@ -99,7 +99,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                .ceylon.language.Integer $ceylontmp$op$13 = (.ceylon.language.Integer)oi2;
+                .ceylon.language.Ordinal<? extends .ceylon.language.Integer> $ceylontmp$op$13 = oi2;
                 oi2 = $ceylontmp$op$13.getPredecessor();
             }
             returning $ceylontmp$op$13;
@@ -107,7 +107,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                .ceylon.language.Integer $ceylontmp$op$14 = oi2.getSuccessor();
+                .ceylon.language.Ordinal<? extends .ceylon.language.Integer> $ceylontmp$op$14 = oi2.getSuccessor();
                 oi2 = $ceylontmp$op$14;
             }
             returning $ceylontmp$op$14;
@@ -115,7 +115,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                .ceylon.language.Integer $ceylontmp$op$15 = oi2.getPredecessor();
+                .ceylon.language.Ordinal<? extends .ceylon.language.Integer> $ceylontmp$op$15 = oi2.getPredecessor();
                 oi2 = $ceylontmp$op$15;
             }
             returning $ceylontmp$op$15;
@@ -127,7 +127,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                T $ceylontmp$op$16 = (T)t;
+                .ceylon.language.Ordinal<? extends T> $ceylontmp$op$16 = (.ceylon.language.Ordinal<? extends T>)(.ceylon.language.Ordinal)t;
                 t = $ceylontmp$op$16.getSuccessor();
             }
             returning $ceylontmp$op$16;
@@ -135,7 +135,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                T $ceylontmp$op$17 = ((.ceylon.language.Ordinal<? extends T>)(.ceylon.language.Ordinal)t).getSuccessor();
+                .ceylon.language.Ordinal<? extends T> $ceylontmp$op$17 = ((.ceylon.language.Ordinal<? extends T>)(.ceylon.language.Ordinal)t).getSuccessor();
                 t = $ceylontmp$op$17;
             }
             returning $ceylontmp$op$17;
@@ -143,7 +143,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                T $ceylontmp$op$18 = (T)t;
+                .ceylon.language.Ordinal<? extends T> $ceylontmp$op$18 = (.ceylon.language.Ordinal<? extends T>)(.ceylon.language.Ordinal)t;
                 t = $ceylontmp$op$18.getPredecessor();
             }
             returning $ceylontmp$op$18;
@@ -151,7 +151,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         (
             let
             {
-                T $ceylontmp$op$19 = ((.ceylon.language.Ordinal<? extends T>)(.ceylon.language.Ordinal)t).getPredecessor();
+                .ceylon.language.Ordinal<? extends T> $ceylontmp$op$19 = ((.ceylon.language.Ordinal<? extends T>)(.ceylon.language.Ordinal)t).getPredecessor();
                 t = $ceylontmp$op$19;
             }
             returning $ceylontmp$op$19;

@@ -58,11 +58,17 @@ final class bug1887_ {
                 $ceylontmp$ex$0 = $ceylontmp$ex$1;
                 throw $ceylontmp$ex$1;
             } finally {
-                if ($ceylontmp$ex$0 != null) try {
-                    ((.ceylon.language.Destroyable)y).destroy($ceylontmp$ex$0);
-                } catch (final .java.lang.Throwable $ceylontmp$closex$2) {
-                    $ceylontmp$ex$0.addSuppressed($ceylontmp$closex$2);
-                } else ((.ceylon.language.Destroyable)y).destroy($ceylontmp$ex$0);
+                if ($ceylontmp$ex$0 != null) {
+                    try {
+                        ((.ceylon.language.Destroyable)(.java.lang.Object)y).destroy($ceylontmp$ex$0);
+                    } catch (final .java.lang.Throwable $ceylontmp$closex$2) {
+                        if ($ceylontmp$ex$0 != $ceylontmp$closex$2) {
+                            $ceylontmp$ex$0.addSuppressed($ceylontmp$closex$2);
+                        }
+                    }
+                } else {
+                    ((.ceylon.language.Destroyable)(.java.lang.Object)y).destroy($ceylontmp$ex$0);
+                }
             }
         }
         {
@@ -73,11 +79,17 @@ final class bug1887_ {
                 $ceylontmp$ex$3 = $ceylontmp$ex$4;
                 throw $ceylontmp$ex$4;
             } finally {
-                if ($ceylontmp$ex$3 != null) try {
+                if ($ceylontmp$ex$3 != null) {
+                    try {
+                        y.destroy($ceylontmp$ex$3);
+                    } catch (final .java.lang.Throwable $ceylontmp$closex$5) {
+                        if ($ceylontmp$ex$3 != $ceylontmp$closex$5) {
+                            $ceylontmp$ex$3.addSuppressed($ceylontmp$closex$5);
+                        }
+                    }
+                } else {
                     y.destroy($ceylontmp$ex$3);
-                } catch (final .java.lang.Throwable $ceylontmp$closex$5) {
-                    $ceylontmp$ex$3.addSuppressed($ceylontmp$closex$5);
-                } else y.destroy($ceylontmp$ex$3);
+                }
             }
         }
         final .java.lang.Object obtainableCategory = .ceylon.language.nothing_.get_();
@@ -90,11 +102,17 @@ final class bug1887_ {
                 $ceylontmp$ex$6 = $ceylontmp$ex$7;
                 throw $ceylontmp$ex$7;
             } finally {
-                if ($ceylontmp$ex$6 != null) try {
+                if ($ceylontmp$ex$6 != null) {
+                    try {
+                        ((.ceylon.language.Obtainable)y).release($ceylontmp$ex$6);
+                    } catch (final .java.lang.Throwable $ceylontmp$closex$8) {
+                        if ($ceylontmp$ex$6 != $ceylontmp$closex$8) {
+                            $ceylontmp$ex$6.addSuppressed($ceylontmp$closex$8);
+                        }
+                    }
+                } else {
                     ((.ceylon.language.Obtainable)y).release($ceylontmp$ex$6);
-                } catch (final .java.lang.Throwable $ceylontmp$closex$8) {
-                    $ceylontmp$ex$6.addSuppressed($ceylontmp$closex$8);
-                } else ((.ceylon.language.Obtainable)y).release($ceylontmp$ex$6);
+                }
             }
         }
         {
@@ -105,11 +123,17 @@ final class bug1887_ {
                 $ceylontmp$ex$10 = $ceylontmp$ex$11;
                 throw $ceylontmp$ex$11;
             } finally {
-                if ($ceylontmp$ex$10 != null) try {
-                    ((.ceylon.language.Destroyable)$ceylontmp$try$9).destroy($ceylontmp$ex$10);
-                } catch (final .java.lang.Throwable $ceylontmp$closex$12) {
-                    $ceylontmp$ex$10.addSuppressed($ceylontmp$closex$12);
-                } else ((.ceylon.language.Destroyable)$ceylontmp$try$9).destroy($ceylontmp$ex$10);
+                if ($ceylontmp$ex$10 != null) {
+                    try {
+                        ((.ceylon.language.Destroyable)(.java.lang.Object)$ceylontmp$try$9).destroy($ceylontmp$ex$10);
+                    } catch (final .java.lang.Throwable $ceylontmp$closex$12) {
+                        if ($ceylontmp$ex$10 != $ceylontmp$closex$12) {
+                            $ceylontmp$ex$10.addSuppressed($ceylontmp$closex$12);
+                        }
+                    }
+                } else {
+                    ((.ceylon.language.Destroyable)(.java.lang.Object)$ceylontmp$try$9).destroy($ceylontmp$ex$10);
+                }
             }
         }
     }

@@ -66,7 +66,7 @@ class Bug1330<N> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             
             @.java.lang.Override
             public .ceylon.language.Boolean $call$(final .java.lang.Object $param$0) {
-                final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330<N>.Node elem = (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330<N>.Node)$param$0;
+                final .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330<N>.Node elem = (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330<N>.Node)(.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1330.Node)$param$0;
                 return .ceylon.language.Boolean.instance(false);
             }
         });

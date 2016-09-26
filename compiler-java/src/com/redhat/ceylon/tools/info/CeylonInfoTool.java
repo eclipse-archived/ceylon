@@ -23,7 +23,8 @@ import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.VersionComparator;
-import com.redhat.ceylon.cmr.ceylon.RepoUsingTool;
+import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Argument;
@@ -35,7 +36,7 @@ import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
-import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.tools.RepoUsingTool;
 
 @Summary("Prints information about modules in repositories")
 @Description("When passed a search query like `*foo*` it will look at all the modules in all " +
@@ -101,7 +102,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     
     @Override
     protected boolean includeJDK() {
-        return true;
+        return !noDefRepos;
     }
     
     @Override
@@ -223,7 +224,8 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
 
     @Override
-    public void initialize(CeylonTool mainTool) {
+    public void initialize(CeylonTool mainTool) throws Exception {
+        super.initialize(mainTool);
         if (showType != null) {
             if ("car".equalsIgnoreCase(showType)) {
                 queryType = ModuleQuery.Type.CAR;
@@ -555,7 +557,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                     if(printOverrides){
                         overridesFile.append(" <set");
                         String name = entry.getKey();
-                        if(name.contains(":")){
+                        if(ModuleUtil.isMavenModule(name)){
                             int p = name.indexOf(':');
                             String groupId = name.substring(0, p);
                             String artifactId = name.substring(p+1);

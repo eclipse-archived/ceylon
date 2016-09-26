@@ -88,6 +88,10 @@ function value2type$(t){
   while (t.t.$$===undefined){
     //it's an alias
     t=getrtmm$$(t.t);
+    if (t.$t) {
+      //or it can be an object (singleton)
+      t=getrtmm$$(t.$t.t);
+    }
     t=t.sts?t.sts[0]:t['super'];
   }
   var mm=getrtmm$$(t.t);

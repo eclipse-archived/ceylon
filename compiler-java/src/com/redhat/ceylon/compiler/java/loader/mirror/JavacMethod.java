@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.redhat.ceylon.javax.lang.model.element.ElementKind;
 import com.redhat.ceylon.javax.lang.model.type.TypeKind;
@@ -61,6 +62,14 @@ public class JavacMethod implements MethodMirror {
         return annotations.get(type);
     }
     
+    @Override
+    public Set<String> getAnnotationNames() {
+        if (annotations == null) {
+            annotations = JavacUtil.getAnnotations(methodSymbol);
+        }
+        return annotations.keySet();
+    }
+
     public String toString() {
         return getClass().getSimpleName() + " of " + methodSymbol;
     }

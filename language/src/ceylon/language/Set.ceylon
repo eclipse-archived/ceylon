@@ -186,6 +186,7 @@ shared interface Set<out Element=Object>
  This is an eager operation and the resulting set does not 
  reflect changes to the given [[stream]]."
 see(`value Iterable.distinct`)
+since("1.2.0")
 shared Set<Element> set<Element>(
     "The stream of elements."
     {Element*} stream,
@@ -195,8 +196,14 @@ shared Set<Element> set<Element>(
     Element choosing(Element earlier, Element later) 
             => earlier)
         given Element satisfies Object
-        => object extends Object() 
-        satisfies Set<Element&Object> {
+        => IterableSet(stream, choosing);
+
+class IterableSet<Element>(
+    {Element*} stream,
+    Element choosing(Element earlier, Element later))
+        extends Object()
+        satisfies Set<Element>
+        given Element satisfies Object {
     
     value elements =
             stream.summarize(identity,
@@ -215,9 +222,7 @@ shared Set<Element> set<Element>(
     
     clone() => this;
     
-};
-
-
+}
 
 "An immutable [[Set]] with no elements."
 tagged("Collections")

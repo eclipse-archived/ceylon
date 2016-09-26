@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.structure.constructor;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
 @.com.redhat.ceylon.compiler.java.metadata.LocalDeclarations({"1Foo"})
 public final class bug2169_ {
@@ -12,20 +14,24 @@ public final class bug2169_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void bug2169() {
         
-        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+        @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                major = 8,
+                minor = 1)
         @.com.redhat.ceylon.compiler.java.metadata.Name("Foo")
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
         @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
         class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
-            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             @.com.redhat.ceylon.compiler.java.metadata.ConstructorName(
                     delegation = true,
                     value = "")
             class $delegation$ {
                 
-                private $delegation$() {
+                $delegation$() {
                 }
             }
             
@@ -44,12 +50,14 @@ public final class bug2169_ {
                 .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("e");
             }
             
-            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+            @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+                    major = 8,
+                    minor = 1)
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             @.com.redhat.ceylon.compiler.java.metadata.ConstructorName("baz")
             class baz_ {
                 
-                private baz_() {
+                baz_() {
                 }
             }
             

@@ -251,6 +251,7 @@ public class CeylonDocToolTests {
         assertParametersLinks(destDir);
         assertThrows(destDir);
         assertSee(destDir);
+        assertSince(destDir);
         assertIcons(destDir);
         assertInnerTypesDoc(destDir);
         assertDeprecated(destDir);
@@ -546,6 +547,9 @@ public class CeylonDocToolTests {
                 "ceylon.decimal",
                 "ceylon.file",
                 "ceylon.html",
+                "ceylon.http.client",
+                "ceylon.http.common",
+                "ceylon.http.server",
                 "ceylon.interop.browser", 
                 "ceylon.interop.java", 
                 "ceylon.io",
@@ -553,7 +557,6 @@ public class CeylonDocToolTests {
                 "ceylon.locale", 
                 "ceylon.logging", 
                 "ceylon.math",
-                "ceylon.net",
                 "ceylon.numeric",
                 "ceylon.process",
                 "ceylon.promise",
@@ -563,6 +566,7 @@ public class CeylonDocToolTests {
                 "ceylon.time",
                 "ceylon.transaction",
                 "ceylon.unicode",
+                "ceylon.uri",
                 "ceylon.whole",
                 "com.redhat.ceylon.war"
         };
@@ -617,11 +621,12 @@ public class CeylonDocToolTests {
         
         // download a required jar
         RepositoryManager repoManager = CeylonUtils.repoManager().systemRepo("../dist/dist/repo").buildManager();
-        File jbossModulesModule = repoManager.getArtifact(new ArtifactContext("org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION, ".jar"));
-        File runtimeModule = repoManager.getArtifact(new ArtifactContext("ceylon.runtime", Versions.CEYLON_VERSION_NUMBER, ".jar"));
-        File undertowCoreModule = repoManager.getArtifact(new ArtifactContext("io.undertow.core", "1.3.5.Final", ".jar"));
-        File narnyaModule = repoManager.getArtifact(new ArtifactContext("org.jboss.narayana.jta", "5.2.7.Final", ".jar"));
-        File languageModule = repoManager.getArtifact(new ArtifactContext(AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, ".car"));
+        File jbossModulesModule = repoManager.getArtifact(new ArtifactContext(null, "org.jboss.modules", Versions.DEPENDENCY_JBOSS_MODULES_VERSION, ".jar"));
+        File runtimeModule = repoManager.getArtifact(new ArtifactContext(null, "ceylon.runtime", Versions.CEYLON_VERSION_NUMBER, ".jar"));
+        File modelModule = repoManager.getArtifact(new ArtifactContext(null, "com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER, ".jar"));
+        File undertowCoreModule = repoManager.getArtifact(new ArtifactContext(null, "io.undertow.core", "1.3.5.Final", ".jar"));
+        File narnyaModule = repoManager.getArtifact(new ArtifactContext(null, "org.jboss.narayana.jta", "5.2.7.Final", ".jar"));
+        File languageModule = repoManager.getArtifact(new ArtifactContext(null, AbstractModelLoader.CEYLON_LANGUAGE, TypeChecker.LANGUAGE_MODULE_VERSION, ".car"));
 
         // fire up the java compiler
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
@@ -631,10 +636,11 @@ public class CeylonDocToolTests {
                 +narnyaModule.getAbsolutePath()+File.pathSeparator
                 +jbossModulesModule.getAbsolutePath()+File.pathSeparator
                 +runtimeModule.getAbsolutePath()+File.pathSeparator
+                +modelModule.getAbsolutePath()+File.pathSeparator
                 +languageModule.getAbsolutePath());
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(null, null, null);
         String[] fileNames = new String[]{
-                "ceylon/net/http/server/internal/JavaHelper.java",
+                "ceylon/http/server/internal/JavaHelper.java",
                 "ceylon/interop/java/internal/javaBooleanArray_.java",
                 "ceylon/interop/java/internal/javaByteArray_.java",
                 "ceylon/interop/java/internal/javaCharArray_.java",
@@ -662,7 +668,7 @@ public class CeylonDocToolTests {
         
         // now we need to zip it up
         makeCarFromClassFiles(dir, fileNames, "ceylon.test", Versions.CEYLON_VERSION_NUMBER);
-        makeCarFromClassFiles(dir, fileNames, "ceylon.net", Versions.CEYLON_VERSION_NUMBER);
+        makeCarFromClassFiles(dir, fileNames, "ceylon.http.server", Versions.CEYLON_VERSION_NUMBER);
         makeCarFromClassFiles(dir, fileNames, "ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER);
         makeCarFromClassFiles(dir, fileNames, "ceylon.transaction", Versions.CEYLON_VERSION_NUMBER);
     }
@@ -704,7 +710,7 @@ public class CeylonDocToolTests {
     private Module makeDefaultModule() {
         Module module = new Module();
         module.setName(Arrays.asList(Module.DEFAULT_MODULE_NAME));
-        module.setDefault(true);
+//        module.setDefault(true);
         return module;
     }
 
@@ -1008,7 +1014,13 @@ public class CeylonDocToolTests {
         assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<div class='see section'><span class='title'>See also </span><span class='value'><a class='link' href='StubClass.type.html#methodWithSee' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.methodWithSee'><code><span class='identifier'>methodWithSee\\(\\)</span></code></a>"/*, <a class='link' href='stubObject.object.html#foo' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::stubObject.foo'>stubObject.foo</a>"*/));
         assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<div class='see section'><span class='title'>See also </span><span class='value'><a class='link' href='StubClass.type.html#attributeWithSee' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubClass.attributeWithSee'><code><span class='identifier'>attributeWithSee</span></code></a>, <code><a class='link' href='StubException.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single::StubException'><span class='type-identifier'>StubException</span></a></code>, <code><a class='link' href='a/A1.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A1'><span class='type-identifier'>A1</span></a></code>, <code><a class='link' href='a/A2.type.html' title='Go to com.redhat.ceylon.ceylondoc.test.modules.single.a::A2'><span class='type-identifier'>AliasA2</span></a>"));
     }
-    
+
+    private void assertSince(File destDir) throws Exception {
+        assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<div class='since section'><span class='title'>Since </span><span class='value'>6.6.6-class</span>"));
+        assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<div class='since section'><span class='title'>Since </span><span class='value'>6.6.6-attribute</span>"));
+        assertMatchInFile(destDir, "StubClass.type.html", Pattern.compile("<div class='since section'><span class='title'>Since </span><span class='value'>6.6.6-method</span>"));
+    }
+
     private void assertIcons(File destDir) throws Exception {
         assertMatchInFile(destDir, "StubInterface.type.html", Pattern.compile("<i class='icon-interface'><i class='icon-decoration-enumerated'></i></i><span class='sub-navbar-name'><span class='type-identifier'>StubInterface</span></span>"));
         assertMatchInFile(destDir, "StubInterface.type.html", Pattern.compile("<td id='formalMethodFromStubInterface' nowrap><i class='icon-shared-member'><i class='icon-decoration-formal'></i></i>"));

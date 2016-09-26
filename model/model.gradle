@@ -1,0 +1,24 @@
+ext {
+    ceylonModuleName = 'model'
+}
+
+apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
+
+dependencies {
+    compile project(':common')
+    compile project(':langtools-classfile')
+}
+
+jar {
+    ceylon {
+        excludedModuleNames 'ceylon.language'
+        importJavaxModel true
+        dynamicImports 'ceylon.language.*' : version,
+            'com.redhat.ceylon.compiler.java.*' : version
+    }
+}
+
+['common','langtools-classfile'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
+}
+

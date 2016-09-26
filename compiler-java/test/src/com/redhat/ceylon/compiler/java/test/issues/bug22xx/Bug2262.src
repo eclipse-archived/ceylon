@@ -4,7 +4,7 @@ class Bug2262 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     private static final class bar_ {
         
-        private bar_() {
+        bar_() {
         }
     }
     

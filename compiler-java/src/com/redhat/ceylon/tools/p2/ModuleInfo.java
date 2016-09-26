@@ -22,6 +22,8 @@ package com.redhat.ceylon.tools.p2;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedMap;
@@ -29,6 +31,8 @@ import java.util.TreeMap;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.redhat.ceylon.common.ModuleSpec;
 
@@ -44,6 +48,24 @@ class ModuleInfo {
         Attributes osgiAttributes;
         String osgiVersion;
 		private CeylonP2Tool tool;
+		
+		public static class Dependency extends ModuleSpec {
+		    
+            private boolean optional;
+
+            public Dependency(String name, String version) {
+                this(name, version, false);
+            }
+
+            public Dependency(String name, String version, boolean optional) {
+                super(name, version);
+                this.optional = optional;
+            }
+            
+            public boolean isOptional() {
+                return optional;
+            }
+		}
 
         public ModuleInfo(CeylonP2Tool tool, String name, String version, File jar) throws IOException {
         	this.tool = tool;
@@ -73,8 +95,8 @@ class ModuleInfo {
             String value = osgiAttributes.getValue("Export-Package");
             List<ModuleSpec> ret = new LinkedList<>();
             if(value != null){
-                for(String pkg : value.split(",")){
-                    String[] details = pkg.split(";");
+                for(String pkg : split(value, ",")){
+                    String[] details = split(pkg, ";");
                     String name = details[0];
                     String version = "";// GRRR: API of ModuleInfo
                     for(int i=1;i<details.length;i++){
@@ -101,33 +123,73 @@ class ModuleInfo {
             return quotedVersion;
         }
 
-        public List<ModuleSpec> getImportedPackages() {
+        static Pattern quotingPattern = Pattern.compile("(([^\"\']+)|(\"[^\"]*\")|(\'[^\']*\'))");
+        public static String[] split(String string, String separator) {
+            String quoteTag = "$$$$quote$$$$";
+            Matcher matcher = quotingPattern.matcher(string);
+            List<String> matchList = new ArrayList<String>();
+            int start = 0;
+            String stringWithReplacedQuotes = "";
+            while (matcher.find(start)) {
+                String match= matcher.group(0);
+                char matchFirstChar = match.charAt(0);
+                char matchLastChar = match.charAt(match.length()-1);
+                if (matchFirstChar == '\'' && matchLastChar == '\'' || 
+                        matchFirstChar == '\"' && matchLastChar == '\"') {
+                    matchList.add(match);
+                    stringWithReplacedQuotes += quoteTag;
+                } else {
+                    stringWithReplacedQuotes += match;
+                }
+                start = matcher.end();
+            }
+            
+            String[] splittedStringWithReplacedQuotes = stringWithReplacedQuotes.split(separator);
+            int quoteIndex = 0;
+            for (int i=0; i<splittedStringWithReplacedQuotes.length; i++) {
+                String part = splittedStringWithReplacedQuotes[i];
+                while(part.contains(quoteTag)) {
+                    part=part.replaceFirst(Pattern.quote(quoteTag), matchList.get(quoteIndex++));
+                }
+                splittedStringWithReplacedQuotes[i] = part;
+            }
+            return splittedStringWithReplacedQuotes;
+        }
+
+        public List<Dependency> getImportedPackages() {
             String value = osgiAttributes.getValue("Import-Package");
-            List<ModuleSpec> ret = new LinkedList<>();
+            List<Dependency> ret = new LinkedList<>();
             if(value != null){
-                for(String pkg : value.split(",")){
-                    String[] details = pkg.split(";");
+                for(String pkg : split(value, ",")){
+                    String[] details = split(pkg, ";");
                     String name = details[0];
                     String version = "";// GRRR: API of ModuleInfo
+                    boolean optional = false;
                     for(int i=1;i<details.length;i++){
                         if(details[i].startsWith("version=")){
                             version = unquote(details[i].substring(8));
-                            break;
+                        }
+                        if(details[i].startsWith("resolution:=")){
+                            String resolution = unquote(details[i].substring(12));
+                            if ("optional".equals(resolution)) {
+                                optional = true;
+                            }
                         }
                     }
-                    ret.add(new ModuleSpec(name, version));
+                    ret.add(new Dependency(name, version, optional));
                 }
             }
             return ret;
         }
 
-        public List<ModuleSpec> getImportedModules() {
+        public List<Dependency> getImportedModules() {
             String value = osgiAttributes.getValue("Require-Bundle");
-            List<ModuleSpec> ret = new LinkedList<>();
+            List<Dependency> ret = new LinkedList<>();
             if(value != null){
-                for(String pkg : value.split(",")){
-                    String[] details = pkg.split(";");
+                for(String pkg : split(value, ",")){
+                    String[] details = split(pkg, ";");
                     String name = details[0];
+                    boolean optional = false;
                     // skip some modules
                     if(tool.skipModule(name))
                         continue;
@@ -135,10 +197,15 @@ class ModuleInfo {
                     for(int i=1;i<details.length;i++){
                         if(details[i].startsWith("bundle-version=")){
                             version = unquote(details[i].substring(15));
-                            break;
+                        }
+                        if(details[i].startsWith("resolution:=")){
+                            String resolution = unquote(details[i].substring(12));
+                            if ("optional".equals(resolution)) {
+                                optional = true;
+                            }
                         }
                     }
-                    ret.add(new ModuleSpec(name, version));
+                    ret.add(new Dependency(name, version, optional));
                 }
             }
             return ret;

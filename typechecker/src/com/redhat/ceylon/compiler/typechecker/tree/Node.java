@@ -12,11 +12,11 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalysisError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UnsupportedError;
 import com.redhat.ceylon.compiler.typechecker.analyzer.UsageWarning;
-import com.redhat.ceylon.compiler.typechecker.context.TypecheckerUnit;
 import com.redhat.ceylon.compiler.typechecker.parser.LexError;
 import com.redhat.ceylon.compiler.typechecker.parser.ParseError;
 import com.redhat.ceylon.compiler.typechecker.util.PrintVisitor;
 import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Unit;
 
 public abstract class Node {
     
@@ -26,7 +26,7 @@ public abstract class Node {
     private Token firstChildToken;
     private Token lastChildToken;
     private Scope scope;
-    private TypecheckerUnit unit;
+    private Unit unit;
     private List<Message> errors = null;
     
     protected Node(Token token) {
@@ -48,11 +48,11 @@ public abstract class Node {
      * The compilation unit in which the node
      * occurs.
      */
-    public TypecheckerUnit getUnit() {
+    public Unit getUnit() {
         return unit;
     }
     
-    public void setUnit(TypecheckerUnit unit) {
+    public void setUnit(Unit unit) {
         this.unit = unit;
     }
     
@@ -126,10 +126,10 @@ public abstract class Node {
     
     /**
      * The index of the last character belonging to this node.
+     * 
+     * @returns an index one less than the end index of the node!
      * @see #getEndIndex()
-     * @deprecated
      */
-    @Deprecated
     public Integer getStopIndex() {
     	Token token = getEndToken();
     	if (token==null) {
@@ -269,7 +269,15 @@ public abstract class Node {
     public void addError(String message, int code, Backend backend) {
         addError( new AnalysisError(this, message, code, backend) );
     }
+
+    public void addError(String message, ErrorCode errorCode) {
+        addError( new AnalysisError(this, message, errorCode) );
+    }
     
+    public void addError(String message, ErrorCode errorCode, Backend backend) {
+        addError( new AnalysisError(this, message, errorCode, backend) );
+    }
+
     public void addUnexpectedError(String message) {
         addError( new UnexpectedError(this, message) );
     }

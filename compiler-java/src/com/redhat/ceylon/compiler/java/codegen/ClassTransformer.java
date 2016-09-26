@@ -53,7 +53,9 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.DeferredSpecification;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
+import com.redhat.ceylon.compiler.java.codegen.recovery.Generate;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
+import com.redhat.ceylon.compiler.java.codegen.recovery.PrivateConstructorOnly;
 import com.redhat.ceylon.compiler.java.codegen.recovery.ThrowerCatchallConstructor;
 import com.redhat.ceylon.compiler.java.codegen.recovery.ThrowerMethod;
 import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
@@ -72,7 +74,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
-import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
+import com.redhat.ceylon.langtools.tools.javac.jvm.Target;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBinary;
@@ -88,6 +90,7 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCPrimitiveTypeTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCReturn;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCSwitch;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCThrow;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
@@ -290,7 +293,8 @@ public class ClassTransformer extends AbstractTransformer {
         at(null);
         TransformationPlan plan = errors().hasDeclarationError(def);
         if (plan instanceof ThrowerCatchallConstructor) {
-            MethodDefinitionBuilder initBuilder = classBuilder.addConstructor();
+            classBuilder.broken();
+            MethodDefinitionBuilder initBuilder = classBuilder.noInitConstructor().addConstructor();
             initBuilder.body(statementGen().makeThrowUnresolvedCompilationError(plan.getErrorMessage().getMessage()));
             // Although we have the class pl which we could use we don't know 
             // that it won't collide with the default named constructor's pl
@@ -301,8 +305,12 @@ public class ClassTransformer extends AbstractTransformer {
             pdb.modifiers(VARARGS);
             pdb.type(make().TypeArray(make().Type(syms().objectType)), null);
             initBuilder.parameter(pdb);
-        } 
-        
+        } else if (plan instanceof PrivateConstructorOnly) {
+            classBuilder.broken();
+            MethodDefinitionBuilder initBuilder = classBuilder.noInitConstructor().addConstructor();
+            initBuilder.body(statementGen().makeThrowUnresolvedCompilationError(plan.getErrorMessage().getMessage()));
+            initBuilder.modifiers(PRIVATE);
+        }
         // If it's a Class without initializer parameters...
         if (Strategy.generateMain(def)) {
             // ... then add a main() method
@@ -326,17 +334,19 @@ public class ClassTransformer extends AbstractTransformer {
         
         // Now, once all the fields have been added,
         // we can add things which depend on knowing all the fields
-        if (Strategy.generateJpaCtor(def)) {
+        if (Strategy.generateJpaCtor(def) && plan instanceof Generate) {
             buildJpaConstructor((Class)def.getDeclarationModel(), classBuilder);
         }
         
         if (model instanceof Class
-                && !(model instanceof ClassAlias)) {
+                && !(model instanceof ClassAlias)
+                && plan instanceof Generate) {
             Class c = (Class)model;
             if (Strategy.introduceJavaIoSerializable(c, typeFact().getJavaIoSerializable())) {
                 classBuilder.introduce(make().QualIdent(syms().serializableType.tsym));
                 if (Strategy.useSerializationProxy(c)
                         && noValueConstructorErrors((Tree.ClassDefinition)def)) {
+                    at(def);
                     addWriteReplace(c, classBuilder);
                 }
             }
@@ -345,6 +355,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         // reset position before initializer constructor is generated. 
         at(def);
+        classBuilder.at(def);
         List<JCTree> result;
         if (Decl.isAnnotationClass(def)) {
             ListBuffer<JCTree> trees = new ListBuffer<JCTree>();
@@ -931,6 +942,16 @@ public class ClassTransformer extends AbstractTransformer {
         annoBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
         annoBuilder.annotations(makeAtIgnore());
         annoBuilder.annotations(expressionGen().transformAnnotations(OutputElement.ANNOTATION_TYPE, def));
+        if (isSequencedAnnotation(klass)) { 
+            if (getTarget().compareTo(Target.JDK1_8) >= 0) {
+                annoBuilder.annotations(makeAtRepeatable(klass.getType()));
+                annoBuilder.annotations(transformAnnotationConstraints(klass));
+            } else {
+                annoBuilder.annotations(makeAtAnnotationTarget(EnumSet.noneOf(AnnotationTarget.class)));
+            }
+        } else {
+            annoBuilder.annotations(transformAnnotationConstraints(klass));
+        }
         
         for (Tree.Parameter p : def.getParameterList().getParameters()) {
             Parameter parameterModel = p.getParameterModel();
@@ -938,7 +959,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         List<JCTree> result;
         if (isSequencedAnnotation(klass)) {
-            result = annoBuilder.annotations(makeAtAnnotationTarget(EnumSet.noneOf(AnnotationTarget.class))).build();
+            result = annoBuilder.build();
             String wrapperName = Naming.suffixName(Suffix.$annotations$, klass.getName());
             ClassDefinitionBuilder sequencedBuilder = ClassDefinitionBuilder.klass(this, wrapperName, null, false);
             // annotations are never explicitely final in Java
@@ -955,7 +976,7 @@ public class ClassTransformer extends AbstractTransformer {
             result = result.appendList(sequencedAnnotation.build());
             
         } else {
-            result = annoBuilder.annotations(transformAnnotationConstraints(klass)).build();
+            result = annoBuilder.build();
         }
         
         return result;
@@ -966,6 +987,13 @@ public class ClassTransformer extends AbstractTransformer {
                 make().Annotation(
                         make().Type(syms().retentionType), 
                         List.of(naming.makeQuotedQualIdent(make().Type(syms().retentionPolicyType), retentionPolicy.name()))));
+    }
+    
+    private List<JCAnnotation> makeAtRepeatable(Type containerClassLiteral) {
+        return List.of(
+                make().Annotation(
+                        make().Type(syms().repeatableType), 
+                        List.of(makeClassLiteral(containerClassLiteral, JT_ANNOTATIONS))));
     }
     
     /** 
@@ -1396,7 +1424,7 @@ public class ClassTransformer extends AbstractTransformer {
                             java.util.List<Parameter> parameters = paramList.getModel().getParameters();
                             MethodDefinitionBuilder mdb = 
                             makeDelegateToCompanion((Interface)cls.getRefinedDeclaration().getContainer(),
-                                    paramModel.getModel().appliedTypedReference(cls.getType(), null),
+                                    constructor != null ? constructor.getReference() : cls.getReference(),
                                     ((TypeDeclaration)cls.getContainer()).getType(),
                                     FINAL | (transformClassDeclFlags(cls) & ~ABSTRACT), 
                                     List.<TypeParameter>nil(), Collections.<java.util.List<Type>>emptyList(),
@@ -1405,7 +1433,7 @@ public class ClassTransformer extends AbstractTransformer {
                                     parameters.subList(0, parameters.indexOf(paramModel)), 
                                     false, 
                                     Naming.getDefaultedParamMethodName(cls, paramModel),
-                                    DelegateType.FOR_DEFAULT_VALUE);
+                                    param.getParameterModel());
                             cbForDevaultValues.method(mdb);
                         }
                     }
@@ -1492,7 +1520,7 @@ public class ClassTransformer extends AbstractTransformer {
                     && (value.isShared() || value.isCaptured())) {
                 return true;
             }
-        } else if (member instanceof Function) {
+        } /*else if (member instanceof Function) {
             Function function = (Function)member;
             
             if (function.isShortcutRefinement()
@@ -1503,7 +1531,7 @@ public class ClassTransformer extends AbstractTransformer {
                            || function.isActual())) {
                 return true;
             }
-        }
+        }*/
         return false;
     }
     
@@ -2277,7 +2305,7 @@ public class ClassTransformer extends AbstractTransformer {
                     method.getFirstParameterList().getParameters(),
                     ((Function) member).getTypeErased(),
                     null,
-                    DelegateType.OTHER,
+                    null,
                     false);
             classBuilder.method(concreteMemberDelegate);
         } else if (member instanceof Value
@@ -2296,7 +2324,7 @@ public class ClassTransformer extends AbstractTransformer {
                         Collections.<Parameter>emptyList(),
                         attr.getTypeErased(),
                         null,
-                        DelegateType.OTHER,
+                        null,
                         false);
                 classBuilder.method(getterDelegate);
             }
@@ -2312,7 +2340,7 @@ public class ClassTransformer extends AbstractTransformer {
                         Collections.<Parameter>singletonList(((Setter)member).getParameter()),
                         ((Setter) member).getTypeErased(),
                         null,
-                        DelegateType.OTHER,
+                        null,
                         false);
                 classBuilder.method(setterDelegate);
             }
@@ -2462,10 +2490,6 @@ public class ClassTransformer extends AbstractTransformer {
             }
         }
     }
-
-    enum DelegateType {
-        FOR_DEFAULT_VALUE, OTHER;
-    }
     
     /**
      * Generates companion fields ($Foo$impl) and methods
@@ -2535,7 +2559,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             if (member instanceof Function) {
                 Function method = (Function)member;
-                final TypedReference typedMember = satisfiedType.getTypedMember(method, Collections.<Type>emptyList());
+                final TypedReference typedMember = satisfiedType.getTypedMember(method, typesOfTypeParameters(method.getTypeParameters()));
                 Declaration sub = (Declaration)model.getMember(method.getName(), getSignatureIfRequired(typedMember), false, true);
                 if (sub instanceof Function/* && !sub.isAbstraction()*/) {
                     Function subMethod = (Function)sub;
@@ -2558,7 +2582,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 // we need to generate a default value method
                                 // which also delegates to the $impl
                                 final MethodDefinitionBuilder defaultValueDelegate = makeDelegateToCompanion(iface,
-                                        typedParameter,
+                                        typedMember,
                                         model.getType(),
                                         PUBLIC | FINAL, 
                                         typeParameters, producedTypeParameterBounds,
@@ -2567,7 +2591,7 @@ public class ClassTransformer extends AbstractTransformer {
                                         parameters.subList(0, parameters.indexOf(param)),
                                         param.getModel().getTypeErased(),
                                         null,
-                                        DelegateType.FOR_DEFAULT_VALUE);
+                                        param);
                                 classBuilder.method(defaultValueDelegate);
                             }
 
@@ -2602,7 +2626,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 method.getFirstParameterList().getParameters(),
                                 ((Function) member).getTypeErased(),
                                 null,
-                                DelegateType.OTHER);
+                                null);
                         classBuilder.method(concreteMemberDelegate);
                     }
 
@@ -2620,7 +2644,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 method.getFirstParameterList().getParameters(),
                                 ((Function) member).getTypeErased(),
                                 naming.selector(method),
-                                DelegateType.OTHER);
+                                null);
                         classBuilder.method(canonicalMethod);
                     }
                 }
@@ -2645,7 +2669,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 Collections.<Parameter>emptyList(),
                                 attr.getTypeErased(),
                                 null,
-                                DelegateType.OTHER);
+                                null);
                         classBuilder.method(getterDelegate);
                     }
                     if (setter != null) {
@@ -2660,7 +2684,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 Collections.<Parameter>singletonList(setter.getParameter()),
                                 setter.getTypeErased(),
                                 null,
-                                DelegateType.OTHER);
+                                null);
                         classBuilder.method(setterDelegate);
                     }
                     if (Decl.isValue(member) 
@@ -2691,6 +2715,14 @@ public class ClassTransformer extends AbstractTransformer {
             concreteMembersFromSuperinterfaces(model, classBuilder, sat, satisfiedInterfaces);
         }
         
+    }
+    
+    private java.util.List<Type> typesOfTypeParameters(java.util.List<TypeParameter> list) {
+        ArrayList<Type> result = new ArrayList<Type>(list.size());
+        for (TypeParameter tp : list) {
+            result.add(tp.getType());
+        }
+        return result;
     }
     
     private Iterable<Declaration> sortedMembers(java.util.List<Declaration> members) {
@@ -2742,7 +2774,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // we need to generate a default value method
                 // which also delegates to the $impl
                 final MethodDefinitionBuilder defaultValueDelegate = makeDelegateToCompanion(iface,
-                        typedParameter,
+                        typeMember,
                         currentType,
                         flags, 
                         typeParameters, 
@@ -2752,7 +2784,7 @@ public class ClassTransformer extends AbstractTransformer {
                         parameters.subList(0, parameters.indexOf(param)),
                         param.getModel().getTypeErased(),
                         null,
-                        DelegateType.FOR_DEFAULT_VALUE,
+                        param,
                         includeBody);
                 classBuilder.method(defaultValueDelegate);
             }
@@ -2768,7 +2800,7 @@ public class ClassTransformer extends AbstractTransformer {
                         parameters.subList(0, parameters.indexOf(param)),
                         false,
                         null,
-                        DelegateType.OTHER,
+                        null,
                         includeBody);
                 classBuilder.method(overload);
             }
@@ -2784,7 +2816,7 @@ public class ClassTransformer extends AbstractTransformer {
                 parameters,
                 false,
                 null,
-                DelegateType.OTHER,
+                null,
                 includeBody);
         classBuilder.method(overload);
     }
@@ -2838,9 +2870,9 @@ public class ClassTransformer extends AbstractTransformer {
             final java.util.List<Parameter> parameters, 
             boolean typeErased,
             final String targetMethodName, 
-            DelegateType delegateType) {
+            Parameter param) {
         return makeDelegateToCompanion(iface, typedMember, currentType, mods, typeParameters,
-                producedTypeParameterBounds, methodType, methodName, parameters, typeErased, targetMethodName, delegateType, true);
+                producedTypeParameterBounds, methodType, methodName, parameters, typeErased, targetMethodName, param, true);
     }
     
     /**
@@ -2857,7 +2889,7 @@ public class ClassTransformer extends AbstractTransformer {
             final java.util.List<Parameter> parameters, 
             boolean typeErased,
             final String targetMethodName,
-            DelegateType delegateType, 
+            Parameter defaultedParam, 
             boolean includeBody) {
         final MethodDefinitionBuilder concreteWrapper = MethodDefinitionBuilder.systemMethod(gen(), methodName);
         concreteWrapper.modifiers(mods);
@@ -2876,7 +2908,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         boolean explicitReturn = false;
-        Declaration member = typedMember.getDeclaration();
+        Declaration member = (defaultedParam != null ? typedMember.getTypedParameter(defaultedParam) : typedMember).getDeclaration();
         Type returnType = null;
         if (!isAnything(methodType) 
                 || ((member instanceof Function || member instanceof Value) && !Decl.isUnboxedVoid(member)) 
@@ -2886,31 +2918,31 @@ public class ClassTransformer extends AbstractTransformer {
                 // delegates for hash attributes are int
                 concreteWrapper.resultType(null, make().Type(syms().intType));
                 returnType = typedMember.getType();
-            }else if (typedMember instanceof TypedReference) {
+            }else if (typedMember instanceof TypedReference
+                    && defaultedParam == null) {
                 TypedReference typedRef = (TypedReference) typedMember;
-                if(delegateType == DelegateType.OTHER){
-                    // This is very much like for method refinement: if the supertype is erased -> go raw.
-                    // Except for some reason we only need to do it with multiple inheritance with different type
-                    // arguments, so let's not go overboard
-                    int flags = 0;
-                    if(CodegenUtil.hasTypeErased((TypedDeclaration)member.getRefinedDeclaration()) ||
-                            CodegenUtil.hasTypeErased((TypedDeclaration)member)
-                            && isInheritedTwiceWithDifferentTypeArguments(currentType, iface)){
-                        flags |= AbstractTransformer.JT_RAW;
-                    }
-                    concreteWrapper.resultTypeNonWidening(currentType, typedRef, typedMember.getType(), flags);
-                    // FIXME: this is redundant with what we computed in the previous line in concreteWrapper.resultTypeNonWidening
-                    TypedReference nonWideningTypedRef = gen().nonWideningTypeDecl(typedRef, currentType);
-                    returnType = gen().nonWideningType(typedRef, nonWideningTypedRef);
-                }else{
-                    // for default value
-                    NonWideningParam nonWideningParam = concreteWrapper.getNonWideningParam(typedRef, 
-                            currentType.getDeclaration() instanceof Class ? WideningRules.FOR_MIXIN : WideningRules.NONE);
-                    returnType = nonWideningParam.nonWideningType;
-                    if(member instanceof Function)
-                        returnType = typeFact().getCallableType(returnType);
-                    concreteWrapper.resultType(null, makeJavaType(returnType, nonWideningParam.flags));
+                
+                // This is very much like for method refinement: if the supertype is erased -> go raw.
+                // Except for some reason we only need to do it with multiple inheritance with different type
+                // arguments, so let's not go overboard
+                int flags = 0;
+                if(CodegenUtil.hasTypeErased((TypedDeclaration)member.getRefinedDeclaration()) ||
+                        CodegenUtil.hasTypeErased((TypedDeclaration)member)
+                        && isInheritedTwiceWithDifferentTypeArguments(currentType, iface)){
+                    flags |= AbstractTransformer.JT_RAW;
                 }
+                concreteWrapper.resultTypeNonWidening(currentType, typedRef, typedMember.getType(), flags);
+                // FIXME: this is redundant with what we computed in the previous line in concreteWrapper.resultTypeNonWidening
+                TypedReference nonWideningTypedRef = gen().nonWideningTypeDecl(typedRef, currentType);
+                returnType = gen().nonWideningType(typedRef, nonWideningTypedRef);
+            } else if (defaultedParam != null) {
+                TypedReference typedParameter = typedMember.getTypedParameter(defaultedParam);
+                NonWideningParam nonWideningParam = concreteWrapper.getNonWideningParam(typedParameter, 
+                        currentType.getDeclaration() instanceof Class ? WideningRules.FOR_MIXIN : WideningRules.NONE);
+                returnType = nonWideningParam.nonWideningType;
+                if(member instanceof Function)
+                    returnType = typeFact().getCallableType(returnType);
+                concreteWrapper.resultType(null, makeJavaType(returnType, nonWideningParam.flags));
             } else {
                 concreteWrapper.resultType(null, makeJavaType((Type)typedMember));
                 returnType = (Type) typedMember;
@@ -2923,13 +2955,25 @@ public class ClassTransformer extends AbstractTransformer {
                 arguments.add(naming.makeUnquotedIdent(naming.getTypeArgumentDescriptorName(tp)));
             }
         }
-        if (typedMember.getDeclaration() instanceof Constructor
-                && !Decl.isDefaultConstructor((Constructor)typedMember.getDeclaration())) {
-            concreteWrapper.parameter(makeConstructorNameParameter((Constructor)typedMember.getDeclaration()));
+        Declaration declaration = typedMember.getDeclaration();
+        if (declaration instanceof Constructor
+                && !Decl.isDefaultConstructor((Constructor)declaration)
+                && defaultedParam == null) {
+            concreteWrapper.parameter(makeConstructorNameParameter((Constructor)declaration));
             arguments.add(naming.makeUnquotedIdent(Unfix.$name$));
         }
+        int ii = 0;
         for (Parameter param : parameters) {
-            final TypedReference typedParameter = typedMember.getTypedParameter(param);
+            Parameter parameter;
+            if (declaration instanceof Functional) {
+                parameter = ((Functional)declaration).getFirstParameterList().getParameters().get(ii++);
+            } else if (declaration instanceof Setter){
+                parameter = ((Setter)declaration).getParameter();
+            } else {
+                throw BugException.unhandledCase(declaration);
+            }
+            
+            final TypedReference typedParameter = typedMember.getTypedParameter(parameter);
             concreteWrapper.parameter(null, param, typedParameter, null, FINAL, WideningRules.FOR_MIXIN);
             arguments.add(naming.makeName(param.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED));
         }
@@ -2956,7 +3000,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (isUnimplementedMemberClass(currentType, typedMember)) {
                 concreteWrapper.body(makeThrowUnresolvedCompilationError(
                         // TODO encapsulate the error message
-                        "formal member '"+typedMember.getDeclaration().getName()+"' of '"+iface.getName()+"' not implemented in class hierarchy"));
+                        "formal member '"+declaration.getName()+"' of '"+iface.getName()+"' not implemented in class hierarchy"));
                 current().broken();
             } else if (!explicitReturn) {
                 concreteWrapper.body(gen().make().Exec(expr));
@@ -3382,6 +3426,7 @@ public class ClassTransformer extends AbstractTransformer {
         boolean createField = Strategy.createField(parameter, model) && !lazy;
         boolean concrete = Decl.withinInterface(decl)
                 && decl.getSpecifierOrInitializerExpression() != null;
+        JCThrow err = null;
         if (!lazy && 
                 (concrete || 
                         (!Decl.isFormal(decl) 
@@ -3397,10 +3442,18 @@ public class ClassTransformer extends AbstractTransformer {
             
             JCExpression initialValue = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
-                Value declarationModel = model;
-                initialValue = expressionGen().transformExpression(decl.getSpecifierOrInitializerExpression().getExpression(), 
-                        CodegenUtil.getBoxingStrategy(declarationModel), 
-                        nonWideningType);
+                Tree.Expression expression = decl.getSpecifierOrInitializerExpression().getExpression();
+                HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getTerm());
+                int flags = CodegenUtil.downcastForSmall(expression, model) ? ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK : 0;
+                if (error != null) {
+                    initialValue = null;
+                    err = makeThrowUnresolvedCompilationError(error.getErrorMessage().getMessage());
+                } else {
+                    Value declarationModel = model;
+                    initialValue = expressionGen().transformExpression(expression, 
+                            CodegenUtil.getBoxingStrategy(declarationModel), 
+                            nonWideningType, flags);
+                }
             }
 
             int flags = 0;
@@ -3426,13 +3479,15 @@ public class ClassTransformer extends AbstractTransformer {
                         annos = annos.prependList(makeAtNoInitCheck());
                     }
                     // fields should be ignored, they are accessed by the getters
-                    classBuilder.field(modifiers, attrName, type, initialValue, !useField, annos);
-                    if (model.isLate() && CodegenUtil.needsLateInitField(model, typeFact())) {
-                        classBuilder.field(PRIVATE | Flags.VOLATILE | Flags.TRANSIENT, Naming.getInitializationFieldName(attrName), 
-                                make().Type(syms().booleanType), 
-                                make().Literal(false), false, makeAtIgnore());
+                    if (err == null) {
+                        classBuilder.field(modifiers, attrName, type, initialValue, !useField, annos);
+                        if (model.isLate() && CodegenUtil.needsLateInitField(model, typeFact())) {
+                            classBuilder.field(PRIVATE | Flags.VOLATILE | Flags.TRANSIENT, Naming.getInitializationFieldName(attrName), 
+                                    make().Type(syms().booleanType), 
+                                    make().Literal(false), false, makeAtIgnore());
+                        }
                     }
-                }        
+                }
             }
             
             // A shared attribute might be initialized in a for statement, so
@@ -3449,7 +3504,11 @@ public class ClassTransformer extends AbstractTransformer {
             if (!withinInterface || model.isShared()) {
                 // Generate getter in main class or interface (when shared)
                 at(decl.getType());
-                classBuilder.attribute(makeGetter(decl, false, lazy));
+                AttributeDefinitionBuilder getter = makeGetter(decl, false, lazy);
+                if (err != null) {
+                    getter.getterBlock(make().Block(0, List.<JCStatement>of(err)));
+                }
+                classBuilder.attribute(getter);
             }
             if (withinInterface && lazy) {
                 // Generate getter in companion class
@@ -3576,7 +3635,8 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= Decl.isVariable(cdecl) || Decl.isLate(cdecl) ? 0 : FINAL;
-        result |= PRIVATE;
+        if(!CodegenUtil.hasCompilerAnnotation(cdecl, "packageProtected"))
+            result |= PRIVATE;
         
         return result;
     }
@@ -3637,9 +3697,16 @@ public class ClassTransformer extends AbstractTransformer {
                     TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
                     Type nonWideningType = nonWideningType(typedRef, nonWideningTypedRef);
                     
+                    int flags = 0;
+                    if(declarationModel.hasUncheckedNullType())
+                        flags |= ExpressionTransformer.EXPR_TARGET_ACCEPTS_NULL;
+                    if (CodegenUtil.downcastForSmall(specOrInit.getExpression(), decl.getDeclarationModel()))
+                        flags |=  ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK;
+                    
                     JCExpression expr = expressionGen().transformExpression(specOrInit.getExpression(), 
                             CodegenUtil.getBoxingStrategy(declarationModel), 
-                            nonWideningType);
+                            nonWideningType,
+                            flags);
                     expr = convertToIntIfHashAttribute(declarationModel, expr);
                     builder.getterBlock(make().Block(0, List.<JCStatement>of(make().Return(expr))));
                 }
@@ -3961,6 +4028,8 @@ public class ClassTransformer extends AbstractTransformer {
                 if(typedDeclaration != null)
                     annotations = expressionGen().transformAnnotations(OutputElement.PARAMETER, typedDeclaration);
             }
+            //methodModel.getTypedReference().getTypedParameter(parameterModel).getType()
+            //parameterModel.getModel().getTypedReference().getType()
             methodBuilder.parameter(parameter, parameterModel, annotations, flags, WideningRules.CAN_WIDEN);
 
             if (Strategy.hasDefaultParameterValueMethod(parameterModel)
@@ -4141,11 +4210,22 @@ public class ClassTransformer extends AbstractTransformer {
         final Tree.Block block = def.getBlock();
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
+        Substitution substitution = null;
+        JCStatement varDef = null;
+        Parameter lastParameter = Decl.getLastParameterFromFirstParameterList(model);
+        if(lastParameter != null
+                && Decl.isJavaVariadicIncludingInheritance(lastParameter)){
+            SyntheticName alias = naming.alias(lastParameter.getName());
+            substitution = naming.addVariableSubst(lastParameter.getModel(), alias.getName());
+            varDef = substituteSequentialForJavaVariadic(alias, lastParameter);
+        }
         try {
             statementGen().noExpressionlessReturn = Decl.isMpl(model) || Strategy.useBoxedVoid(model);
             body = statementGen().transformBlock(block);
         } finally {
             statementGen().noExpressionlessReturn = prevNoExpressionlessReturn;
+            if(substitution != null)
+                substitution.close();
         }
         // We void methods need to have their Callables return null
         // so adjust here.
@@ -4158,12 +4238,33 @@ public class ClassTransformer extends AbstractTransformer {
                 body = body.append(make().Return(makeErroneous(block, "compiler bug: non-void method doesn't definitely return")));
             }
         }
+        if(varDef != null)
+            body = body.prepend(varDef);
         return body;
+    }
+
+    private JCStatement substituteSequentialForJavaVariadic(SyntheticName alias, Parameter lastParameter) {
+        JCExpression seqType = makeJavaType(lastParameter.getType());
+        Type seqElemType = typeFact().getIteratedType(lastParameter.getType());
+        JCExpression init;
+        if(CodegenUtil.isUnBoxed(lastParameter.getModel())){
+            JCIdent name = makeQuotedIdent(lastParameter.getName());
+            // due to backwards-compat, we had a method named sequentialWrapperBoxed int[] -> Sequential<Character>
+            // so the new one has a special name
+            init = seqElemType.getUnderlyingType() != null && seqElemType.getUnderlyingType().equals("int")
+                    ? utilInvocation().sequentialWrapperBoxedForInteger(name)
+                    : utilInvocation().sequentialWrapperBoxed(name);
+        }else{
+            JCExpression typeArg = makeJavaType(seqElemType, JT_TYPE_ARGUMENT);
+            // make a defensive copy
+            init = utilInvocation().sequentialWrapperCopy(typeArg, makeReifiedTypeArgument(seqElemType), 
+                    makeQuotedIdent(lastParameter.getName()));
+        }
+        return make().VarDef(make().Modifiers(FINAL), alias.asName(), seqType , init);
     }
 
     List<JCStatement> transformSpecifiedMethodBody(Tree.MethodDeclaration  def, SpecifierExpression specifierExpression) {
         final Function model = def.getDeclarationModel();
-        List<JCStatement> body;
         Tree.MethodDeclaration methodDecl = def;
         boolean isLazy = specifierExpression instanceof Tree.LazySpecifierExpression;
         boolean returnNull = false;
@@ -4182,7 +4283,7 @@ public class ClassTransformer extends AbstractTransformer {
             // Callable, just transform the expr to use as the method body.
             Tree.FunctionArgument fa = (Tree.FunctionArgument)term;
             Type resultType = model.getType();
-            returnNull = isAnything(resultType) && fa.getExpression().getUnboxed();
+            returnNull = Decl.isUnboxedVoid(model);
             final java.util.List<Tree.Parameter> lambdaParams = fa.getParameterLists().get(0).getParameters();
             final java.util.List<Tree.Parameter> defParams = def.getParameterLists().get(0).getParameters();
             List<Substitution> substitutions = List.nil();
@@ -4191,12 +4292,22 @@ public class ClassTransformer extends AbstractTransformer {
                         (TypedDeclaration)lambdaParams.get(ii).getParameterModel().getModel(), 
                         defParams.get(ii).getParameterModel().getName()));
             }
-            bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), 
+            List<JCStatement> body = null;
+            if(fa.getExpression() != null)
+                bodyExpr = gen().expressionGen().transformExpression(fa.getExpression(), 
                             returnNull ? BoxingStrategy.INDIFFERENT : CodegenUtil.getBoxingStrategy(model), 
                             resultType);
+            else{
+                body = gen().statementGen().transformBlock(fa.getBlock());
+                // useless but satisfies branch checking
+                bodyExpr = null;
+            }
             for (Substitution subs : substitutions) {
                 subs.close();
             }
+            // if we have a whole body we're done
+            if(body != null)
+                return body;
         } else if (!isLazy && typeFact().isCallableType(term.getTypeModel())) {
             returnNull = isAnything(term.getTypeModel()) && term.getUnboxed();
             Function method = methodDecl.getDeclarationModel();
@@ -4239,10 +4350,38 @@ public class ClassTransformer extends AbstractTransformer {
                     || getReturnTypeOfCallable(term.getTypeModel()).isNothing());
             bodyExpr = expressionGen().transformInvocation(invocation);
         } else {
+            Substitution substitution = null;
+            JCStatement varDef = null;
+            // Handle implementations of Java variadic methods
+            Parameter lastParameter = Decl.getLastParameterFromFirstParameterList(model);
+            if(lastParameter != null
+                    && Decl.isJavaVariadicIncludingInheritance(lastParameter)){
+                SyntheticName alias = naming.alias(lastParameter.getName());
+                substitution = naming.addVariableSubst(lastParameter.getModel(), alias.getName());
+                varDef = substituteSequentialForJavaVariadic(alias, lastParameter);
+            }
+
             bodyExpr = expressionGen().transformExpression(model, term);
+            
+            if(varDef != null){
+                // Turn into Let for java variadic methods
+                bodyExpr = make().LetExpr(List.of(varDef), bodyExpr);
+                substitution.close();
+            }
             // The innermost of an MPL method declared void needs to return null
             returnNull = Decl.isUnboxedVoid(model) && Decl.isMpl(model);
         }
+        
+        if (CodegenUtil.downcastForSmall(term, model)) {
+            bodyExpr = expressionGen().applyErasureAndBoxing(bodyExpr, term.getTypeModel(),
+                    false,
+                    !CodegenUtil.isUnBoxed(term), 
+                    CodegenUtil.getBoxingStrategy(model), 
+                    model.getType(),
+                    ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK);
+        }
+        
+        List<JCStatement> body;
         if (!Decl.isUnboxedVoid(model)
                 || Decl.isMpl(model)
                 || Strategy.useBoxedVoid(model)) {
@@ -5253,6 +5392,7 @@ public class ClassTransformer extends AbstractTransformer {
             visitor.classBuilder = prevClassBuilder;
             visitor.inInitializer = prevInInitializer;
             visitor.defs = prevDefs;
+            naming.closeScopedSubstitutions(def.getScope());
         }
  
         addMissingUnrefinedMembers(def, klass, objectClassBuilder);
@@ -5558,6 +5698,9 @@ public class ClassTransformer extends AbstractTransformer {
         return false;
     }
     
+    /**
+     * Make the constructor name class, and a constant
+     */
     protected void transformConstructorName(
             ClassDefinitionBuilder classBuilder, ListBuffer<JCTree> result,
             Constructor ctor, Class clz, int classMods, String ctorName, DeclNameFlag...declFlags) {
@@ -5600,7 +5743,6 @@ public class ClassTransformer extends AbstractTransformer {
         constructorNameClass.modifiers(classMods);
         constructorNameClass.annotations(makeAtIgnore());
         constructorNameClass.annotations(makeAtConstructorName(ctor.getName(), contains(declFlags, DeclNameFlag.DELEGATION)));
-        constructorNameClass.getInitBuilder().modifiers(PRIVATE);
         
         List<JCTree> ctorNameClassDecl = constructorNameClass.build();
         if (clz.isToplevel()) {

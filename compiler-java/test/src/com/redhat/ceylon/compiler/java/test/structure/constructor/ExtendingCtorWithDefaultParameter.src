@@ -27,7 +27,7 @@ class ExtendingCtorWithDefaultParameter implements .com.redhat.ceylon.compiler.j
     
     private static final class bar$delegation$_ {
         
-        private bar$delegation$_() {
+        bar$delegation$_() {
         }
     }
     
@@ -41,7 +41,7 @@ class ExtendingCtorWithDefaultParameter implements .com.redhat.ceylon.compiler.j
     
     public static final class bar_ {
         
-        private bar_() {
+        bar_() {
         }
     }
     

@@ -17,32 +17,24 @@
 
 package ceylon.modules.jboss.runtime;
 
-import java.util.NavigableMap;
-import java.util.Set;
+import org.jboss.modules.Module;
+import org.jboss.modules.ModuleIdentifier;
+import org.jboss.modules.ModuleLoader;
+import org.jboss.modules.ModuleNotFoundException;
 
-import ceylon.modules.CeylonRuntimeException;
-import ceylon.modules.Configuration;
-import ceylon.modules.Main;
-import ceylon.modules.api.runtime.AbstractRuntime;
-import ceylon.modules.spi.runtime.ClassLoaderHolder;
-
-import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
-import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
-import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.CMRJULLogger;
 import com.redhat.ceylon.cmr.spi.ContentTransformer;
 import com.redhat.ceylon.cmr.spi.MergeStrategy;
-import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.log.Logger;
 
-import org.jboss.modules.Module;
-import org.jboss.modules.ModuleIdentifier;
-import org.jboss.modules.ModuleLoader;
-import org.jboss.modules.ModuleNotFoundException;
+import ceylon.modules.CeylonRuntimeException;
+import ceylon.modules.Configuration;
+import ceylon.modules.Main;
+import ceylon.modules.api.runtime.AbstractRuntime;
+import ceylon.modules.spi.runtime.ClassLoaderHolder;
 
 /**
  * Abstract Ceylon JBoss Modules runtime.
@@ -84,7 +76,12 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             if (p >= 0) {
                 spec = spec.substring(0, p) + "/" + spec.substring(p + 1);
             }
-            final CeylonRuntimeException cre = new CeylonRuntimeException("Could not find module: " + spec + " (invalid version?)");
+            String msg = "Could not find module: " + spec + " (invalid version?";
+            if (name.equals("ceylon.language")) {
+                msg += " try running with '--link-with-current-distribution'";
+            }
+            msg += ")";
+            final CeylonRuntimeException cre = new CeylonRuntimeException(msg);
             cre.initCause(e);
             throw cre;
         }
@@ -99,6 +96,7 @@ public abstract class AbstractJBossRuntime extends AbstractRuntime {
             .overrides(conf.overrides)
             .upgradeDist(conf.upgradeDist)
             .noDefaultRepos(conf.noDefaultRepositories)
+            .noOutRepo(true)
             .userRepos(conf.repositories)
             .offline(offline || conf.offline)
             .logger(log)

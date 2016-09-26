@@ -48,7 +48,7 @@ function dre$$(object, type, loc) {
           proptype=getrtmm$$(proptype);
         }
         if (actual.indexOf(expected[i])<0 && object[expected[i]]===undefined) {
-          if (extendsType({t:Null},proptype.$t)) {
+          if (proptype && extendsType({t:Null},proptype.$t)) {
             object[expected[i]]=null;
           } else {
             throw new Error("Native object is missing property '" + expected[i] + "' " + loc);
@@ -161,3 +161,21 @@ function natc$(a,t,loc) {
   throw new TypeError('Expected ' + qname$(t) + ' (' + loc + ')');
 }
 ex$.natc$=natc$;
+
+//A special kind of "require" for non-standard npm modules
+//that return a single function instead of a proper exports object
+function npm$req(name,mod,req) {
+  var x=req(mod);
+  if (typeof(x)==='function') {
+    var k=Object.keys(x);
+    if (k.length===0) {
+      var o={};
+      o[name]=x;
+      x=o;
+    } else if (k.indexOf(name)<0) {
+      x[name]=x;
+    }
+  }
+  return x;
+}
+ex$.npm$req=npm$req;

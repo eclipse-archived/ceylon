@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class Backends implements Iterable<Backend>, BackendSupport {
+public class Backends implements Iterable<Backend> {
     private final Set<Backend> backends;
     
     private static final Map<String, Backends> collections;
@@ -26,11 +26,6 @@ public class Backends implements Iterable<Backend>, BackendSupport {
         // We don't allow Backend.None in a set with others
         assert (backends.size() <= 1 || !backends.contains(Backend.Header));
         this.backends = backends;
-    }
-
-    @Override
-    public Backends getSupportedBackends() {
-        return this;
     }
 
     public boolean none() {

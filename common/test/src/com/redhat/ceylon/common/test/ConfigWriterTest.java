@@ -40,7 +40,7 @@ public class ConfigWriterTest {
     public void testSimpleDuplicate() throws IOException {
         String contents = readFile(testFile);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ConfigWriter.write(testConfig, testFile, out);
+        ConfigWriter.instance().write(testConfig, testFile, out);
         Assert.assertEquals(contents, out.toString("UTF-8"));
     }
     
@@ -48,7 +48,7 @@ public class ConfigWriterTest {
     public void testSimpleWipe() throws IOException {
         String contents = readFile(new File("test/src/com/redhat/ceylon/common/test/writer-wiped.config"));
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ConfigWriter.write(new CeylonConfig(), testFile, out);
+        ConfigWriter.instance().write(new CeylonConfig(), testFile, out);
         Assert.assertEquals(contents, out.toString("UTF-8"));
     }
     
@@ -74,7 +74,7 @@ public class ConfigWriterTest {
         
         String contents = readFile(new File("test/src/com/redhat/ceylon/common/test/writer-crud.config"));
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ConfigWriter.write(testConfigCopy, testFile, out);
+        ConfigWriter.instance().write(testConfigCopy, testFile, out);
         Assert.assertEquals(contents, out.toString("UTF-8"));
     }
 
@@ -85,14 +85,14 @@ public class ConfigWriterTest {
             
             CeylonConfig testConfigCopy = testConfig.copy();
             testConfigCopy.setOption("test.quasar", "PKS 1127-145");
-            ConfigWriter.write(testConfigCopy, configFile);
+            ConfigWriter.instance().write(testConfigCopy, configFile);
             
             CeylonConfig localDirConfig = CeylonConfigFinder.loadLocalConfig(testDir);
             localDirConfig.setOption("test.pulsar", "CP 1919");
             localDirConfig.setOption("test.string-escapes2", "\n\t\"\\# ");
             localDirConfig.removeOption("test.one");
             localDirConfig.removeSection("test.multiple");
-            ConfigWriter.write(localDirConfig, configFile);
+            ConfigWriter.instance().write(localDirConfig, configFile);
             
             String contents1 = readFile(new File("test/src/com/redhat/ceylon/common/test/writer-overwriting.config"));
             String contents2 = readFile(configFile);

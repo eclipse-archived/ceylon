@@ -4,8 +4,8 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.check
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkCasesDisjoint;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.checkIsExactly;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getTypedDeclaration;
-import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inLanguageModule;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.inSameModule;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.message;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.typeDescription;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.typeNamesAsIntersection;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
@@ -423,7 +423,9 @@ public class InheritanceVisitor extends Visitor {
                 type = type.resolveAliases();
                 TypeDeclaration dec = type.getDeclaration();
                 if (td instanceof ClassOrInterface &&
-                        !inLanguageModule(unit)) {
+                        !unit.getPackage()
+                           .getModule()
+                           .isLanguageModule()) {
                     if (unit.isCallableType(type)) {
                         t.addError("satisfies 'Callable'");
                     }
@@ -862,32 +864,34 @@ public class InheritanceVisitor extends Visitor {
                                         null, false);
                         at = mtd==null ? null : mtd.getType();
                     }
-                    if (at!=null && !at.isSubtypeOf(arg) && 
-                            !(mtd.getSelfType()!=null && 
-                              mtd.getSelfType().isExactly(arg))) {
-                        String help = "";
-                        TypeDeclaration ad = arg.getDeclaration();
-                        if (ad instanceof TypeParameter) {
-                            TypeParameter tp = (TypeParameter) ad;
-                            if (tp.getDeclaration().equals(td)) {
-                                help = " (try making '" + ad.getName() + 
-                                        "' a self type of '" + td.getName() + "')";
+                    if (at!=null && !at.isSubtypeOf(arg)) {
+                        Type st = mtd.getSelfType();
+                        if (st==null || !st.isExactly(arg)) {
+                            String help = "";
+                            TypeDeclaration atd = at.getDeclaration();
+                            TypeDeclaration ad = arg.getDeclaration();
+                            if (ad instanceof TypeParameter) {
+                                TypeParameter tp = (TypeParameter) ad;
+                                if (tp.getDeclaration().equals(td)) {
+                                    help = " (try making '" + ad.getName() + 
+                                            "' a self type of '" + td.getName() + "')";
+                                }
                             }
+                            else if (ad instanceof Interface) {
+                                help = " (try making " + message(atd) + 
+                                        " satisfy '" + ad.getName() + "')";
+                            }
+                            else if (ad instanceof Class && td instanceof Class) {
+                                help = " (try making " + message(atd) + 
+                                        " extend '" + ad.getName() + "')";
+                            }
+                            that.addError("type argument does not satisfy self type constraint on type parameter '" +
+                                    param.getName() + "' of '" + 
+                                    type.getDeclaration().getName(unit) + "': '" +
+                                    arg.asString(unit) + 
+                                    "' is not a supertype or self type of " + 
+                                    message(atd) + help);
                         }
-                        else if (ad instanceof Interface) {
-                            help = " (try making '" + td.getName() + 
-                                    "' satisfy '" + ad.getName() + "')";
-                        }
-                        else if (ad instanceof Class && td instanceof Class) {
-                            help = " (try making '" + td.getName() + 
-                                    "' extend '" + ad.getName() + "')";
-                        }
-                        that.addError("type argument does not satisfy self type constraint on type parameter '" +
-                                param.getName() + "' of '" + 
-                                type.getDeclaration().getName(unit) + "': '" +
-                                arg.asString(unit) + 
-                                "' is not a supertype or self type of '" + 
-                                td.getName(unit) + "'" + help);
                     }
                 }
             }

@@ -25,5 +25,5 @@ void javaListIndex() {
     
     JList<String> l = nothing;
     String? l0 = l[0];
-    
+    String r = (l[0] = "a");
 }

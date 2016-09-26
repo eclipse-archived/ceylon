@@ -113,7 +113,11 @@ public class Operators {
         BINARY_DIFFERENCE(Tree.DifferenceOp.class, 2, "minus", JCTree.Tag.MINUS, IntegerFloatByte),
         BINARY_PRODUCT(Tree.ProductOp.class, 2, "times", JCTree.Tag.MUL, IntegerFloat),
         BINARY_QUOTIENT(Tree.QuotientOp.class, 2, "divided", JCTree.Tag.DIV, IntegerFloat),
-        BINARY_POWER(Tree.PowerOp.class, 2, "power", null),
+        BINARY_POWER(Tree.PowerOp.class, 2, "power", null) {
+            public String getCeylonValueTypeMethodName() {
+                return "$power$";
+            }
+        },
         BINARY_REMAINDER(Tree.RemainderOp.class, 2, "remainder", JCTree.Tag.MOD, PrimitiveType.INTEGER),
         
         BINARY_SCALE(Tree.ScaleOp.class, 2, "scale"),
@@ -121,10 +125,12 @@ public class Operators {
         BINARY_BITWISE_AND(2, "and", JCTree.Tag.BITAND, IntegerByte),
         BINARY_BITWISE_OR(2, "or", JCTree.Tag.BITOR, IntegerByte),
         BINARY_BITWISE_XOR(2, "xor", JCTree.Tag.BITXOR, IntegerByte),
-        BINARY_BITWISE_LOG_LEFT_SHIFT(2, "leftLogicalShift", JCTree.Tag.SL, IntegerByte),
-        BINARY_BITWISE_LOG_RIGHT_SHIFT_INT(2, "rightLogicalShift", 0, JCTree.Tag.USR, PrimitiveType.INTEGER),
-        BINARY_BITWISE_LOG_RIGHT_SHIFT_BYTE(2, "rightLogicalShift", 0xff, JCTree.Tag.USR, PrimitiveType.BYTE),
-        BINARY_BITWISE_ARI_RIGHT_SHIFT(2, "rightArithmeticShift", JCTree.Tag.SR, IntegerByte),
+        BINARY_BITWISE_LOG_LEFT_SHIFT_INT(2, "leftLogicalShift", JCTree.Tag.SL, PrimitiveType.INTEGER),
+        BINARY_BITWISE_LOG_LEFT_SHIFT_BYTE(2, "leftLogicalShift", 0, 0b111, JCTree.Tag.SL, PrimitiveType.BYTE),
+        BINARY_BITWISE_LOG_RIGHT_SHIFT_INT(2, "rightLogicalShift", JCTree.Tag.USR, PrimitiveType.INTEGER),
+        BINARY_BITWISE_LOG_RIGHT_SHIFT_BYTE(2, "rightLogicalShift", 0xff, 0b111, JCTree.Tag.USR, PrimitiveType.BYTE),
+        BINARY_BITWISE_ARI_RIGHT_SHIFT_INT(2, "rightArithmeticShift", JCTree.Tag.SR, PrimitiveType.INTEGER),
+        BINARY_BITWISE_ARI_RIGHT_SHIFT_BYTE(2, "rightArithmeticShift", 0, 0b111, JCTree.Tag.SR, PrimitiveType.BYTE),
 
         BINARY_AND(Tree.AndOp.class, 2, "<not-used>", JCTree.Tag.AND, PrimitiveType.BOOLEAN),
         BINARY_OR(Tree.OrOp.class, 2, "<not-used>", JCTree.Tag.OR, PrimitiveType.BOOLEAN),
@@ -161,17 +167,17 @@ public class Operators {
         BINARY_COMPARE(Tree.CompareOp.class, 2, "compare"),
 
         // Binary operators that act on intermediary Comparison objects
-        BINARY_LARGER(Tree.LargerOp.class, 2, JCTree.Tag.EQ, "larger", JCTree.Tag.GT, IntegerFloatCharacter),
-        BINARY_SMALLER(Tree.SmallerOp.class, 2, JCTree.Tag.EQ, "smaller", JCTree.Tag.LT, IntegerFloatCharacter),
-        BINARY_LARGE_AS(Tree.LargeAsOp.class, 2, JCTree.Tag.NE, "smaller",  JCTree.Tag.GE, IntegerFloatCharacter),
-        BINARY_SMALL_AS(Tree.SmallAsOp.class, 2, JCTree.Tag.NE, "larger", JCTree.Tag.LE, IntegerFloatCharacter);
+        BINARY_LARGER(Tree.LargerOp.class, 2, "largerThan", JCTree.Tag.GT, IntegerFloatCharacter),
+        BINARY_SMALLER(Tree.SmallerOp.class, 2, "smallerThan", JCTree.Tag.LT, IntegerFloatCharacter),
+        BINARY_LARGE_AS(Tree.LargeAsOp.class, 2, "notSmallerThan",  JCTree.Tag.GE, IntegerFloatCharacter),
+        BINARY_SMALL_AS(Tree.SmallAsOp.class, 2, "notLargerThan", JCTree.Tag.LE, IntegerFloatCharacter);
 
         // we can have either a mapping from Tree operator class
         Class<? extends Tree.OperatorExpression> operatorClass;
         
         int arity;
         /** The name of the method which the boxed transformation invokes */
-        String ceylonMethod;
+        private String ceylonMethod;
         JCTree.Tag javacOperator;
         PrimitiveType[] optimisableTypes;
         /** The name of a top level value from the language module */
@@ -179,7 +185,9 @@ public class Operators {
         /** The operator with which to compare against {@link #ceylonValue} */
         JCTree.Tag javacValueOperator;
         /** A mask to apply to the LHS before applying the operator */
-        int valueMask;
+        int leftValueMask;
+        /** A mask to apply to the RHS before applying the operator */
+        int rightValueMask;
         
         OperatorTranslation(int arity, String ceylonMethod, 
                 JCTree.Tag javacOperator, PrimitiveType... optimisableTypes) {
@@ -188,25 +196,16 @@ public class Operators {
             this.optimisableTypes = optimisableTypes;
             this.arity = arity;
         }
-        OperatorTranslation(int arity, String ceylonMethod, int valueMask,
+        OperatorTranslation(int arity, String ceylonMethod, int leftValueMask, int rightValueMask,
                 JCTree.Tag javacOperator, PrimitiveType... optimisableTypes) {
             this(arity, ceylonMethod, javacOperator, optimisableTypes);
-            this.valueMask = valueMask;
+            this.leftValueMask = leftValueMask;
+            this.rightValueMask = rightValueMask;
         }
         OperatorTranslation(Class<? extends Tree.OperatorExpression> operatorClass, 
                 int arity, String ceylonMethod, 
                 JCTree.Tag javacOperator, PrimitiveType... optimisableTypes) {
             this(arity, ceylonMethod, javacOperator, optimisableTypes);
-            this.operatorClass = operatorClass;
-        }
-        OperatorTranslation(Class<? extends Tree.OperatorExpression> operatorClass, 
-                int arity, JCTree.Tag javacOperator1, String ceylonValue, 
-                JCTree.Tag javacOperator, PrimitiveType... optimisableTypes) {
-            this.ceylonValue = ceylonValue;
-            this.javacValueOperator = javacOperator1;
-            this.javacOperator = javacOperator;
-            this.optimisableTypes = optimisableTypes;
-            this.arity = arity;
             this.operatorClass = operatorClass;
         }
         OperatorTranslation(Class<? extends Tree.BinaryOperatorExpression> operatorClass, 
@@ -311,6 +310,14 @@ public class Operators {
         
         public int getArity(){
             return arity;
+        }
+        
+        public String getCeylonMethodName() {
+            return ceylonMethod;
+        }
+        
+        public String getCeylonValueTypeMethodName() {
+            return ceylonMethod;
         }
     }
     

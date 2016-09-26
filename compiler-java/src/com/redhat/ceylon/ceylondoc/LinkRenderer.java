@@ -509,7 +509,7 @@ public class LinkRenderer {
             decl = scope.getMember(declName, null, false);
 
             if (decl == null && !isNested && scope instanceof Element) {
-                decl = ((Element) scope).getUnit().getImportedDeclaration(declName, null, false);
+                decl = scope.getUnit().getImportedDeclaration(declName, null, false);
             }
 
             if (decl == null && !isNested && !scope.getQualifiedNameString().equals(AbstractModelLoader.CEYLON_LANGUAGE) ) {
@@ -517,7 +517,7 @@ public class LinkRenderer {
             }
             
             if (decl == null && declName.equals("Nothing") && scope.getQualifiedNameString().equals(AbstractModelLoader.CEYLON_LANGUAGE)) {
-                decl = new NothingType(((Package) scope).getUnit());
+                decl = new NothingType(scope.getUnit());
             }
         } else {
             Package pkg = ceylonDocTool.getCurrentModule().getPackage(AbstractModelLoader.CEYLON_LANGUAGE);
@@ -937,7 +937,7 @@ public class LinkRenderer {
 
     private boolean canLinkToCeylonLanguageModule() {
         Module currentModule = ceylonDocTool.getCurrentModule();
-        if (currentModule.getNameAsString().equals(Module.LANGUAGE_MODULE_NAME)) {
+        if (currentModule.isLanguageModule()) {
             return true;
         } else {
             Module languageModule = currentModule.getLanguageModule();

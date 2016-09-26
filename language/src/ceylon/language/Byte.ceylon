@@ -40,6 +40,7 @@
  `Byte`s are useful mainly because they can be efficiently 
  stored in an [[Array]]."
 tagged("Basic types")
+since("1.1.0")
 shared native final class Byte(congruent) 
         extends Object()
         satisfies Binary<Byte> & 
@@ -65,56 +66,123 @@ shared native final class Byte(congruent)
          x.byte == y.byte"
     Integer congruent;
     
-    //shared [Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean] bits;
-    
-    "Whether this byte is even."
-    shared native Boolean even;
-    
-    "Whether this byte is zero."
-    shared native Boolean zero;
-    
-    "Whether this byte is one."
-    shared native Boolean unit;
-    
     "This byte interpreted as an unsigned integer in the
-     range `0..255`."
-    shared native Integer unsigned;
+     range `0..255` (that is, `0..#FF`)."
+    shared native Integer unsigned 
+            = (congruent % #100).and(#FF);
     
     "This byte interpreted as a signed integer in the range 
-     `-128..127`."
-    shared native Integer signed;
+     `-128..127` (that is, `-#80..#7F`)."
+    shared native Integer signed 
+            => unsigned > #7F 
+            then unsigned - #100 
+            else unsigned;
+    
+    //shared Boolean[8] bits;
+    
+    "Whether this byte is even."
+    shared native Boolean even => and(1.byte).zero;
+    
+    "Whether this byte is zero."
+    shared native Boolean zero => unsigned == 0;
+    
+    "Whether this byte is one."
+    shared native Boolean unit => unsigned == 1;
     
     "The additive inverse of this byte. For any integer `x`:
      
          (-x.byte).signed = -x.byte.signed"
-    shared actual native Byte negated;
+    shared actual native Byte negated => (-signed).byte;
     
     "The modulo 256 sum of this byte and the given byte."
-    shared actual native Byte plus(Byte other);
+    shared actual native Byte plus(Byte other)
+            => (this.unsigned + other.unsigned).byte;
     
-    shared actual native Byte and(Byte other);
-    shared actual native Byte flip(Integer index);
-    shared actual native Boolean get(Integer index);
-    shared actual native Byte leftLogicalShift(Integer shift);
-    shared actual native Byte not;
-    shared actual native Byte or(Byte other);
-    shared actual native Byte rightArithmeticShift(Integer shift);
-    shared actual native Byte rightLogicalShift(Integer shift);
-    shared actual native Byte set(Integer index, Boolean bit);
-    shared actual native Byte xor(Byte other);
+    function indexInRange(Integer index)
+            => 0 <= index < 8;
     
-    shared actual native Byte predecessor;
-    shared actual native Byte successor;
+    function mask(Integer index) 
+            => 1.byte.leftLogicalShift(index);
     
-    shared actual native Byte neighbour(Integer offset);
-    shared actual native Integer offset(Byte other);
-    shared actual native Integer offsetSign(Byte other);
+    shared actual native Boolean get(Integer index) 
+            => indexInRange(index)
+            then !and(mask(index)).zero 
+            else false;
     
-    shared actual native Boolean equals(Object that);
-    shared actual native Integer hash;
+    shared actual native Byte flip(Integer index)
+            => indexInRange(index)
+            then xor(mask(index)) 
+            else this;
+    
+    shared actual native Byte set(Integer index, Boolean bit)
+            => indexInRange(index)
+            then (bit then or(mask(index)) 
+                      else and(mask(index).not))
+            else this;
+    
+    shared actual native Byte clear(Integer index) 
+            => indexInRange(index)
+            then and(mask(index).not) 
+            else this;
+    
+    shared actual native Byte not => unsigned.not.byte;
+    
+    shared actual native Byte and(Byte other) 
+            => unsigned.and(other.unsigned).byte;
+    
+    shared actual native Byte or(Byte other)
+            => unsigned.or(other.unsigned).byte;
+    
+    shared actual native Byte xor(Byte other)
+            => unsigned.xor(other.unsigned).byte;
+    
+    "If [[shift]] is in the range `0..$111`, shift the bits 
+     to the left by `shift` positions, using zero extension 
+     to fill in the least significant bits. Otherwise shift 
+     the addressable bits to the left by `shift.and($111)`
+     positions, using zero extension."
+    aliased ("leftShift")
+    shared actual native Byte leftLogicalShift(Integer shift)
+            => unsigned.leftLogicalShift(shift.and($111)).byte;
+    
+    "If [[shift]] is in the range `0..$111`, shift the bits 
+     to the right by `shift` positions, using zero extension 
+     to fill in the most significant bits. Otherwise shift 
+     the addressable bits to the right by `shift.and($111)`
+     positions, using zero extension."
+    aliased ("rightShift")
+    shared actual native Byte rightLogicalShift(Integer shift)
+            => unsigned.rightLogicalShift(shift.and($111)).byte;
+    
+    "If [[shift]] is in the range `0..$111`, shift the bits 
+     to the right by `shift` positions, using sign extension 
+     to fill in the most significant bits. Otherwise shift 
+     the addressable bits to the right by `shift.and($111)`
+     positions, using sign extension."
+    shared actual native Byte rightArithmeticShift(Integer shift)
+            => signed.rightArithmeticShift(shift.and($111)).byte;
+    
+    shared actual native Byte predecessor => (unsigned-1).byte;
+    shared actual native Byte successor => (unsigned+1).byte;
+    
+    shared actual native Byte neighbour(Integer offset) 
+            => (unsigned + offset).byte;
+    
+    shared actual native Integer offset(Byte other)
+            => minus(other).unsigned;
+    
+    shared actual native Integer offsetSign(Byte other)
+            => this==other then 0 else 1;
+    
+    shared actual native Boolean equals(Object that) 
+            => if (is Byte that) 
+            then this.unsigned == that.unsigned
+            else false;
+    
+    shared actual native Integer hash => signed;
     
     "The [[unsigned]] interpretation of this byte as a 
      string."
-    shared actual native String string;
+    shared actual native String string => unsigned.string;
     
 }

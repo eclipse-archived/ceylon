@@ -66,32 +66,33 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
             recurse(files, ar);
     }
 
-    public File[] resolve(String name, String version) throws RepositoryException {
-        final ArtifactContext context = new ArtifactContext(name, version);
+    @Override
+    public File[] resolve(String namespace, String name, String version) throws RepositoryException {
+        final ArtifactContext context = new ArtifactContext(namespace, name, version);
         return resolve(context);
     }
 
+    @Override
     public File[] resolve(ArtifactContext context) throws RepositoryException {
         final ArtifactResult result = getArtifactResult(context);
         return flatten(result);
     }
 
-    public File getArtifact(String name, String version) throws RepositoryException {
-        ArtifactContext context = new ArtifactContext();
-        context.setName(name);
-        context.setVersion(version);
+    @Override
+    public File getArtifact(String namespace, String name, String version) throws RepositoryException {
+        final ArtifactContext context = new ArtifactContext(namespace, name, version);
         return getArtifact(context);
     }
 
+    @Override
     public File getArtifact(ArtifactContext context) throws RepositoryException {
         final ArtifactResult result = getArtifactResult(context);
         return (result != null) ? result.artifact() : null;
     }
 
-    public ArtifactResult getArtifactResult(String name, String version) throws RepositoryException {
-        ArtifactContext context = new ArtifactContext();
-        context.setName(name);
-        context.setVersion(version);
+    @Override
+    public ArtifactResult getArtifactResult(String namespace, String name, String version) throws RepositoryException {
+        final ArtifactContext context = new ArtifactContext(namespace, name, version);
         return getArtifactResult(context);
     }
 
@@ -103,6 +104,7 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
         return null;
     }
     
+    @Override
     public List<ArtifactResult> getArtifactResults(ArtifactContext context) throws RepositoryException {
         final List<ArtifactResult> results = new ArrayList<>();
         ArtifactResult result = null;
@@ -156,38 +158,44 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
         return results;
     }
 
-    public void putArtifact(String name, String version, InputStream content) throws RepositoryException {
-        ArtifactContext context = new ArtifactContext();
-        context.setName(name);
-        context.setVersion(version);
+    @Override
+    public void putArtifact(String namespace, String name, String version, InputStream content) throws RepositoryException {
+        final ArtifactContext context = new ArtifactContext(namespace, name, version);
         putArtifact(context, content);
     }
 
-    public void putArtifact(String name, String version, File content) throws RepositoryException {
-        ArtifactContext context = new ArtifactContext();
-        context.setName(name);
-        context.setVersion(version);
+    @Override
+    public void putArtifact(String namespace, String name, String version, File content) throws RepositoryException {
+        final ArtifactContext context = new ArtifactContext(namespace, name, version);
         putArtifact(context, content);
     }
 
+    @Override
     public void putArtifact(ArtifactContext context, File content) throws RepositoryException {
         if (content == null)
             throw new IllegalArgumentException("Null file!");
 
-        if (content.isDirectory())
-            putFolder(context, content);
-        else
-            putArtifact(context, Helper.toInputStream(content));
+        if (!isSameFile(context, content)) {
+            // Not the same file so we can add it
+            if (content.isDirectory())
+                putFolder(context, content);
+            else
+                putArtifact(context, Helper.toInputStream(content));
+        } else {
+            // They are the same file so we skip it
+            log.debug("  -> [skipping] source and destination are the same");
+        }
     }
 
+    public abstract boolean isSameFile(ArtifactContext context, File srcFile) throws RepositoryException;
+    
     protected void putFolder(ArtifactContext context, File folder) throws RepositoryException {
         throw new RepositoryException("RepositoryManager doesn't support folder [" + folder + "] put: " + context);
     }
 
-    public void removeArtifact(String name, String version) throws RepositoryException {
-        ArtifactContext context = new ArtifactContext();
-        context.setName(name);
-        context.setVersion(version);
+    @Override
+    public void removeArtifact(String namespace, String name, String version) throws RepositoryException {
+        final ArtifactContext context = new ArtifactContext(namespace, name, version);
         removeArtifact(context);
     }
     

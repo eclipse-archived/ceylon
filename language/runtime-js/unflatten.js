@@ -5,7 +5,7 @@ function unflatten(ff, $$$mptypes) {
   if (mm && mm.ps) {
     if (mm.ps.length===0)return ff;
     var last=mm.ps[mm.ps.length-1];
-    var iadic=variadicness(last.$t);
+    var iadic=last.seq;
     if (is$(last,{t:Tuple}))iadic=0;
     var ru;
     if (iadic && mm.ps.length===1) {
@@ -30,7 +30,7 @@ function unflatten(ff, $$$mptypes) {
         } else {
           var s=[];
           for (var i=cut;i<seq.size;i++)s.push(seq.$_get(i));
-          a.push(s.$sa$(last.$t));
+          a.push($arr$sa$(s,last.$t));
         }
         if ($mptypes)a.push($mptypes);
         return ff.apply(0,a);

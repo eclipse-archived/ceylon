@@ -59,10 +59,12 @@ class Range<Element>()
           [[decrements|Ordinal.predecessor]], and 
         - a positive `shift` measures 
           [[increments|Ordinal.successor]]."
+    since("1.1.0")
     shared formal Range<Element> shifted(Integer shift);
     
     "Determines if the range is increasing, that is, if
      successors occur after predecessors."
+    since("1.1.0")
     shared formal Boolean increasing;
     
     "Determines if the range is decreasing, that is, if
@@ -72,4 +74,8 @@ class Range<Element>()
     "Returns the range itself, since a range cannot contain 
      null elements."
     shared actual Range<Element> coalesced => this;
+    
+    "Returns the range itself, since a range cannot contain 
+     duplicate elements."
+    shared actual Range<Element> distinct => this;
 }

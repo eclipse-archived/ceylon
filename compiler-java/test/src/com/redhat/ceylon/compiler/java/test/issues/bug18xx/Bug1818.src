@@ -5,29 +5,29 @@ class Bug1818 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     Bug1818() {
         .java.lang.String s$0 = null;
         boolean doforelse$1 = true;
-        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$5 = .ceylon.language.empty_.get_();
-        final boolean isArray$6 = iterable$5 instanceof .ceylon.language.Array;
-        final boolean isTuple$7 = iterable$5 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$5).$getArray$() != null;
-        .java.lang.Object elem$2 = null;
-        int i$8 = 0;
-        final int length$9;
-        if (isArray$6 || isTuple$7) {
-            length$9 = (int)iterable$5.getSize();
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$6 = .ceylon.language.empty_.get_();
+        final boolean isArray$7 = iterable$6 instanceof .ceylon.language.Array;
+        final boolean isTuple$8 = iterable$6 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$6).$getArray$() != null;
+        .java.lang.Object elem$3 = null;
+        int i$9 = 0;
+        final int length$10;
+        if (isArray$7 || isTuple$8) {
+            length$10 = (int)iterable$6.getSize();
         } else {
-            length$9 = 0;
+            length$10 = 0;
         }
-        .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$3 = isTuple$7 || isArray$6 ? null : iterable$5.iterator();
-        loop_0: while (isTuple$7 || isArray$6 ? i$8 < length$9 : !((elem$2 = arg$iterator$$3.next()) instanceof .ceylon.language.Finished)) {
-            if (isArray$6 || isTuple$7) elem$2 = iterable$5.getFromFirst(i$8++);
-            final .java.lang.Object arg = elem$2;
-            s$0 = ((.ceylon.language.String)arg).toString();
-            .java.lang.String s$4 = s$0;
+        .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$4 = isTuple$8 || isArray$7 ? null : iterable$6.iterator();
+        loop_0: while (isTuple$8 || isArray$7 ? i$9 < length$10 : !((elem$3 = arg$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
+            if (isArray$7 || isTuple$8) elem$3 = iterable$6.getFromFirst(i$9++);
+            final .java.lang.Object arg = elem$3;
+            s$0 = ((.ceylon.language.String)(.java.lang.Object)arg).toString();
+            .java.lang.String s$5 = s$0;
             doforelse$1 = false;
             break loop_0;
         }
         if (doforelse$1) {
             s$0 = "";
-            .java.lang.String s$10 = s$0;
+            .java.lang.String s$11 = s$0;
         }
         s = s$0;
     }

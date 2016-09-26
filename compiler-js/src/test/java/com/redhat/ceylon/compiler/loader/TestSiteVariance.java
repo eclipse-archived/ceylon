@@ -9,11 +9,9 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
-import util.ModelUtils;
-
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
-import com.redhat.ceylon.cmr.impl.JSUtils;
+import com.redhat.ceylon.cmr.resolver.javascript.JavaScriptResolver;
 import com.redhat.ceylon.compiler.js.JsCompiler;
 import com.redhat.ceylon.compiler.js.loader.JsModuleManagerFactory;
 import com.redhat.ceylon.compiler.js.loader.MetamodelGenerator;
@@ -22,6 +20,8 @@ import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
+
+import util.ModelUtils;
 
 public class TestSiteVariance {
 
@@ -56,7 +56,7 @@ public class TestSiteVariance {
         //Compile
         JsCompiler jsc = new JsCompiler(tc, opts);
         jsc.generate();
-        Map<String, Object> model = JSUtils.readJsonModel(new File("modules/phase1/0.1/phase1-0.1-model.js"));
+        Map<String, Object> model = JavaScriptResolver.readJsonModel(new File("modules/phase1/0.1/phase1-0.1-model.js"));
         Assert.assertNotNull("Model not found", model);
         model = (Map<String,Object>)model.get("phase1");
         Assert.assertNotNull("Default package not found", model);

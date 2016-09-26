@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.formatPath;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isNameMatching;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVersion;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
@@ -7,6 +8,7 @@ import static java.util.Collections.unmodifiableList;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +19,8 @@ import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.typechecker.context.TypeCache;
 
 public class Module 
-        implements Referenceable, Annotated, Comparable<Module> {
+        implements Referenceable, Annotated, 
+                   Comparable<Module> {
 
     public static final String LANGUAGE_MODULE_NAME = "ceylon.language";
     public static final String DEFAULT_MODULE_NAME = "default";
@@ -34,17 +37,27 @@ public class Module
             new ArrayList<ModuleImport>();
     private Module languageModule;
     private boolean available;
-    private boolean isDefault;
     private List<Annotation> annotations = 
             new ArrayList<Annotation>();
     private Unit unit;
-    private String memoisedName;
+    private String nameAsString;
     private TypeCache cache = new TypeCache();
     private String signature;
     private List<ModuleImport> overridenImports = null;
     private Backends nativeBackends = Backends.ANY;
+    private Map<ClassOrInterface, Set<Class>> services = null;
+
+    private LanguageModuleCache languageModuleCache = null;
 
     public Module() {}
+    
+    public LanguageModuleCache getLanguageModuleCache() {
+        if (languageModuleCache == null) {
+            assert(isLanguageModule());
+            languageModuleCache = new LanguageModuleCache(this);
+        }
+        return languageModuleCache;
+    }
     
     /**
      * Whether or not the module is available in the
@@ -76,6 +89,26 @@ public class Module
     
     public void addImport(ModuleImport modImport) {
         imports.add(modImport);
+    }
+    
+    public boolean isLanguageModule() {
+        List<String> name = getName();
+        return name.size()==2
+                && name.get(0)
+                    .equals("ceylon")
+                && name.get(1)
+                    .equals("language");
+    }
+    
+    /**
+     * Is this the default module hosting all units outside 
+     * of an explicit module
+     */
+    public boolean isDefaultModule() {
+        List<String> name = getName();
+        return name.size()==1
+                && name.get(0)
+                    .equals(DEFAULT_MODULE_NAME);
     }
     
     public Module getLanguageModule() {
@@ -152,79 +185,77 @@ public class Module
                 for (Package p: importedModule.getPackages()) {
                     list.add(p);
                 }
-                importedModule.addVisiblePackagesOfTransitiveDependencies(
-                        list, alreadyScannedModules, false);
+                importedModule.addAllPackagesOfTransitiveDependencies(
+                        list, alreadyScannedModules);
             }
         }
     }
-/*    
-    public Map<String, DeclarationWithProximity> 
-    getAvailableDeclarations(String startingWith, 
-            int proximity) {
-        return getAvailableDeclarations(startingWith, proximity, null);
+    
+    /**
+     * Avoid scanning the whole universe of transitive dependencies
+     * when we don't even have an initial prefix.
+     */
+    private List<Package> getPackagesToScan(String startingWith) {
+        if (startingWith.isEmpty()) {
+            List<Package> packs = getPackages();
+            List<Package> langPacks = getLanguageModule().getPackages();
+            List<Package> list =
+                    new ArrayList<Package>(
+                        packs.size() + langPacks.size());
+            list.addAll(packs);
+            list.addAll(langPacks);
+            return list;
+        }
+        else {
+            return getAllVisiblePackages();
+        }
     }
-*/    
-    public Map<String, DeclarationWithProximity> 
-    getAvailableDeclarations(String startingWith, 
-            int proximity, Cancellable canceller) {
-        Map<String, DeclarationWithProximity> result = 
+
+    public Map<String, DeclarationWithProximity>
+    getAvailableDeclarationsInCurrentModule(Unit unit, 
+            String startingWith, int proximity, 
+            Cancellable canceller) {
+        return getAvailableDeclarationsInternal(unit, 
+                startingWith, proximity, canceller, 
+                getPackages());
+    }
+
+    private Map<String, DeclarationWithProximity>
+    getAvailableDeclarationsInternal(Unit unit, 
+            String startingWith, int proximity, 
+            Cancellable canceller, List<Package> packages) {
+        Map<String, DeclarationWithProximity> result =
                 new TreeMap<String,DeclarationWithProximity>();
-        for (Package p: getAllVisiblePackages()) {
+        for (Package p: packages) {
             if (canceller != null
                     && canceller.isCancelled()) {
-                break;
+                return Collections.emptyMap();
             }
-            String packageName = 
-                    p.getNameAsString();
-            boolean isLanguageModule = 
-                    packageName.equals(LANGUAGE_MODULE_NAME);
-            boolean isDefaultPackage = 
-                    packageName.isEmpty();
+            boolean isLanguagePackage =
+                    p.isLanguagePackage();
+            boolean isDefaultPackage =
+                    p.isDefaultPackage();
             if (!isDefaultPackage) {
                 for (Declaration d: p.getMembers()) {
+                    if (canceller != null
+                            && canceller.isCancelled()) {
+                        return Collections.emptyMap();
+                    }
                     try {
-                        if (isResolvable(d) && 
-                                d.isShared() && 
+                        if (isResolvable(d) &&
+                                d.isShared() &&
                                 !isOverloadedVersion(d) &&
                                 isNameMatching(startingWith, d)) {
-                            String name = d.getName();
-                            boolean isSpecialValue = 
-                                    isLanguageModule &&
-                                        name.equals("true") || 
-                                        name.equals("false") || 
-                                        name.equals("null");
-                            boolean isSpecialType = 
-                                    isLanguageModule &&
-                                        name.equals("String") ||
-                                        name.equals("Integer") ||
-                                        name.equals("Float") ||
-                                        name.equals("Character") ||
-                                        name.equals("Boolean") ||
-                                        name.equals("Byte") ||
-                                        name.equals("Object") ||
-                                        name.equals("Anything");
-                            int prox;
-                            if (isSpecialValue) {
-                                prox = -1;
-                            }
-                            else if (isSpecialType) {
-                                //just less than toplevel
-                                //declarations of the package
-                                prox = proximity+2;
-                            }
-                            else if (isLanguageModule) {
-                                //just less than toplevel
-                                //declarations of the package
-                                prox = proximity+3;
-                            }
-                            else {
-                                //unimported declarations
-                                //that may be imported
-                                prox = proximity+4;
-                            }
-                            result.put(d.getQualifiedNameString(), 
-                                    new DeclarationWithProximity(d, 
-                                            prox, !isLanguageModule));
+                            result.put(
+                                    //use qualified name here, in order
+                                    //to distinguish unimported declarations
+                                    //with same name in different packages
+                                    d.getQualifiedNameString(),
+                                    new DeclarationWithProximity(d,
+                                            getUnimportedProximity(proximity, 
+                                                isLanguagePackage, 
+                                                d.getName()),
+                                            !isLanguagePackage));
                         }
                     }
                     catch (Exception e) {}
@@ -232,14 +263,62 @@ public class Module
             }
         }
         if ("Nothing".startsWith(startingWith)) {
-            result.put("Nothing", 
+            result.put("Nothing",
                     new DeclarationWithProximity(
-                            new NothingType(unit),
-                            //same as other "special" 
+                            unit.getNothingDeclaration(),
+                            //same as other "special"
                             //language module declarations
                             proximity+2));
         }
         return result;
+    }
+
+    public Map<String, DeclarationWithProximity>
+    getAvailableDeclarations(Unit unit, 
+            String startingWith, int proximity, 
+            Cancellable canceller) {
+        return getAvailableDeclarationsInternal(unit, 
+                startingWith, proximity, canceller, 
+                getPackagesToScan(startingWith));
+    }
+
+    public static int getUnimportedProximity(int initialProximity, 
+            boolean isLanguagePackage, String name) {
+        boolean isSpecialValue =
+                isLanguagePackage &&
+                    name.equals("true") ||
+                    name.equals("false") ||
+                    name.equals("null");
+        boolean isSpecialType =
+                isLanguagePackage &&
+                    name.equals("String") ||
+                    name.equals("Integer") ||
+                    name.equals("Float") ||
+                    name.equals("Character") ||
+                    name.equals("Boolean") ||
+                    name.equals("Byte") ||
+                    name.equals("Object") ||
+                    name.equals("Anything");
+        int prox;
+        if (isSpecialValue) {
+            prox = -1;
+        }
+        else if (isSpecialType) {
+            //just less than toplevel
+            //declarations of the package
+            prox = initialProximity+2;
+        }
+        else if (isLanguagePackage) {
+            //just less than toplevel
+            //declarations of the package
+            prox = initialProximity+3;
+        }
+        else {
+            //unimported declarations
+            //that may be imported
+            prox = initialProximity+4;
+        }
+        return prox;
     }
 
     protected boolean isJdkModule(String moduleName) {
@@ -279,17 +358,10 @@ public class Module
     }
     
     public String getNameAsString() {
-        if (memoisedName == null){
-            StringBuilder sb = new StringBuilder();
-            for (int i=0, s=name.size(); i<s; i++) {
-                sb.append(name.get(i));
-                if (i < name.size()-1) {
-                    sb.append('.');
-                }
-            }
-            memoisedName = sb.toString();
+        if (nameAsString == null) {
+            nameAsString = formatPath(name);
         }
-        return memoisedName;
+        return nameAsString;
     }
 
     @Override
@@ -298,18 +370,6 @@ public class Module
                 " \"" + getVersion() + "\"";
     }
     
-    /**
-     * Is this the default module hosting all units outside 
-     * of an explicit module
-     */
-    public boolean isDefault() {
-        return isDefault;
-    }
-
-    public void setDefault(boolean isDefault) {
-        this.isDefault = isDefault;
-    }
-
     @Override
     public List<Annotation> getAnnotations() {
         return annotations;
@@ -346,7 +406,7 @@ public class Module
             return 0;
         }
         // default first
-        if (isDefault()) {
+        if (isDefaultModule()) {
             return -1;
         }
         String name = this.getNameAsString();
@@ -377,12 +437,16 @@ public class Module
     
     public String getSignature() {
         if (signature == null) {
-            if (isDefault()) {
+            if (isDefaultModule()) {
                 signature = getNameAsString();
             }
-            else {
+            else if (getVersion() != null) {
                 signature = getNameAsString() + 
                         "/" + getVersion();
+            }
+            else {
+                return getNameAsString() +
+                        "/null";
             }
         }
         return signature;
@@ -413,7 +477,8 @@ public class Module
     public boolean equals(Object obj) {
         if (obj instanceof Module) {
             Module b = (Module) obj;
-            return getSignature().equals(b.getSignature());
+            return getSignature()
+                    .equals(b.getSignature());
         }
         else {
             return false;
@@ -450,5 +515,21 @@ public class Module
 
     public void setJsMinor(int jsMinor) {
         this.jsMinor = jsMinor;
+    }
+    
+    public void addService(ClassOrInterface serviceIface, Class serviceImpl) {
+        if (services == null) {
+            services = new HashMap<ClassOrInterface, Set<Class>>();
+        }
+        Set<Class> impls = services.get(serviceIface);
+        if (impls == null) {
+            impls = new HashSet<Class>(1);
+            services.put(serviceIface, impls);
+        }
+        impls.add(serviceImpl);
+    }
+    
+    public Map<ClassOrInterface, Set<Class>> getServices() {
+        return services != null ? services : Collections.<ClassOrInterface, Set<Class>>emptyMap();
     }
 }

@@ -6,6 +6,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 
 public class DeprecationVisitor extends Visitor {
@@ -17,7 +18,9 @@ public class DeprecationVisitor extends Visitor {
 		if (d!=null && d.isDeprecated()) {
 		    that.addUsageWarning(Warning.deprecation,
                     "declaration is deprecated: '" + 
-                        d.getName() + "'");
+                    d.getName() + 
+                    "' is annotated 'deprecated' in " +
+                    module(d));
         }
 		if (d instanceof Class && 
 		        that.getDirectlyInvoked()) {
@@ -26,7 +29,9 @@ public class DeprecationVisitor extends Visitor {
             if (dc!=null && dc.isDeprecated()) {
                 that.addUsageWarning(Warning.deprecation,
                         "declaration is deprecated: default constructor of '" + 
-                            d.getName() + "'");
+                        d.getName() + 
+                        "' is annotated 'deprecated' in " +
+                        module(d));
             }
 		}
     }
@@ -37,7 +42,9 @@ public class DeprecationVisitor extends Visitor {
 		if (d!=null && d.isDeprecated()) {
 		    that.addUsageWarning(Warning.deprecation, 
                     "type is deprecated: '" + 
-                        d.getName() + "'");
+                    d.getName() + 
+                    "' is annotated 'deprecated' in " +
+                    module(d));
         }
     }
     @Override
@@ -47,10 +54,18 @@ public class DeprecationVisitor extends Visitor {
 		if (d!=null && d.isDeprecated()) {
 		    that.addUsageWarning(Warning.deprecation,
                     "imported declaration is deprecated: '" + 
-                            d.getName() + "'");
+                    d.getName() + 
+                    "' is annotated 'deprecated' in " +
+                    module(d));
         }
     }
 
+    private static String module(Declaration d) {
+        Module mod = d.getUnit().getPackage().getModule();
+        return "'" + mod.getNameAsString() + 
+                "' '\"" + mod.getVersion() + "\"'";
+    }
+    
     @Override
     public void visit(Tree.CompilerAnnotation that) {
         super.visit(that);

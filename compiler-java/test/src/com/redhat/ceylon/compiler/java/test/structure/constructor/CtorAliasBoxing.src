@@ -16,7 +16,7 @@ class CtorAliasBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     public static final class bar_ {
         
-        private bar_() {
+        bar_() {
         }
     }
     

@@ -17,6 +17,9 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 @SatisfiedTypes({"ceylon.language::Comparable<ceylon.language::Character>",
 		        "ceylon.language::Enumerable<ceylon.language::Character>"})
 @ValueType
+@SharedAnnotation$annotation$
+@FinalAnnotation$annotation$
+@NativeAnnotation$annotation$(backends={})
 public final class Character
         implements Comparable<Character>, 
                    Enumerable<Character>, 
@@ -58,6 +61,7 @@ public final class Character
         return codePoint;
     }
 
+    @Transient
     public java.lang.String toString() {
         return java.lang.String.valueOf(java.lang.Character.toChars(codePoint));
     }
@@ -208,6 +212,7 @@ public final class Character
     }
 
     @Override
+    @Transient
     public Character getPredecessor() {
     	return new Character(getPredecessor(codePoint));
     }
@@ -218,6 +223,7 @@ public final class Character
     }
 
     @Override
+    @Transient
     public Character getSuccessor() {
     	return new Character(getSuccessor(codePoint));
     }
@@ -246,6 +252,11 @@ public final class Character
         return codepoint(codePoint+offset);
     }
 
+    @Ignore
+    public static long offset(int codePoint, int other) {
+        return codePoint-other;
+    }
+
     @Override
     public long offset(@Name("other") Character other) {
         return codePoint-other.codePoint;
@@ -253,17 +264,12 @@ public final class Character
 
     @Ignore
     public static long offsetSign(int codePoint, int other) {
-        return codePoint-other;
+        return Integer.offsetSign(codePoint, other);
     }
 
     @Override
     public long offsetSign(@Name("other") Character other) {
-        return codePoint-other.codePoint;
-    }
-
-    @Ignore
-    public static long offset(int codePoint, int other) {
-        return codePoint-other;
+        return Integer.offsetSign(codePoint, other.codePoint);
     }
 
     @Override

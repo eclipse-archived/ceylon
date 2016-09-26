@@ -48,6 +48,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.redhat.ceylon.cmr.api.DependencyOverride.Type;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 
 /**
@@ -196,14 +197,15 @@ public class Overrides {
     }
 
     public ModuleInfo applyOverrides(String module, String version, ModuleInfo source) {
-        ArtifactOverrides artifactOverrides = getArtifactOverrides(new ArtifactContext(module, version));
+        ArtifactOverrides artifactOverrides = getArtifactOverrides(new ArtifactContext(null, module, version));
         Set<ModuleDependencyInfo> result = new HashSet<ModuleDependencyInfo>();
         for (ModuleDependencyInfo dep : source.getDependencies()) {
+            String depNamespace = dep.getNamespace();
             String depName = dep.getName();
             String depVersion = dep.getVersion();
             boolean optional = dep.isOptional();
             boolean export = dep.isExport();
-            ArtifactContext ctx = new ArtifactContext(depName, depVersion);
+            ArtifactContext ctx = new ArtifactContext(depNamespace, depName, depVersion);
             if((artifactOverrides != null && artifactOverrides.isRemoved(ctx))
                     || isRemoved(ctx))
                 continue;
@@ -211,6 +213,7 @@ public class Overrides {
                 continue;
             ArtifactContext replacement = replace(ctx);
             if(replacement != null){
+                depNamespace = replacement.getNamespace();
                 depName = replacement.getName();
                 depVersion = replacement.getVersion();
                 ctx = replacement;
@@ -224,19 +227,19 @@ public class Overrides {
                     optional = artifactOverrides.isOptional(ctx);
             }
 
-            result.add(new ModuleDependencyInfo(depName, depVersion, optional, export));
+            result.add(new ModuleDependencyInfo(depNamespace, depName, depVersion, optional, export));
         }
         String filter = source.getFilter();
         if(artifactOverrides != null){
             if(artifactOverrides.getFilter() != null)
                 filter = artifactOverrides.getFilter();
             for(DependencyOverride add : artifactOverrides.getAdd()){
-                result.add(new ModuleDependencyInfo(add.getArtifactContext().getName(), add.getArtifactContext().getVersion(),
+                result.add(new ModuleDependencyInfo(add.getArtifactContext().getNamespace(), add.getArtifactContext().getName(), add.getArtifactContext().getVersion(),
                         add.isOptional(),
                         add.isShared()));
             }
         }
-        return new ModuleInfo(filter, result);
+        return new ModuleInfo(module, version, filter, result);
     }
 
     private static Overrides parse(String overridesFileName, Overrides overrides) throws FileNotFoundException, Exception{
@@ -353,6 +356,11 @@ public class Overrides {
                 Node node = filterNode.item(0);
                 ao.setFilter(interpolate(PathFilterParser.convertNodeToString(node), interpolation));
             }
+            NodeList classifierNode = artifact.getElementsByTagName("classifier");
+            if (classifierNode != null && classifierNode.getLength() > 0) {
+                Node node = classifierNode.item(0);
+                ao.setClassifier(interpolate(node.getTextContent(), interpolation));
+            }
             List<Element> shareArtifacts = getChildren(artifact, "share");
             for (Element share : shareArtifacts) {
                 ArtifactContext context = getArtifactContext(share, true, interpolation);
@@ -458,9 +466,11 @@ public class Overrides {
             String classifier = getAttribute(element, "classifier", interpolation);
             return createMavenArtifactContext(groupId, artifactId, version, packaging, classifier);
         }else{
-            String module = getRequiredAttribute(element, "module", interpolation);
+            String moduleUri = getRequiredAttribute(element, "module", interpolation);
+            String namespace = ModuleUtil.getNamespaceFromUri(moduleUri);
+            String module = ModuleUtil.getModuleNameFromUri(moduleUri);
             String version = optionalVersion ? getAttribute(element, "version", interpolation) : getRequiredAttribute(element, "version", interpolation);
-            return new ArtifactContext(module, version);
+            return new ArtifactContext(namespace, module, version);
         }
     }
 

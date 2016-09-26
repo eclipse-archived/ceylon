@@ -18,6 +18,7 @@ package com.redhat.ceylon.cmr.impl;
 
 import java.util.logging.Logger;
 
+import com.redhat.ceylon.cmr.api.AbstractDependencyResolverAndModuleInfoReader;
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.DependencyResolver;
 import com.redhat.ceylon.cmr.api.DependencyResolvers;
@@ -30,20 +31,37 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
  */
 public class Configuration {
     private static DependencyResolver mavenResolver;
+    private static AbstractDependencyResolverAndModuleInfoReader jsResolver;
 
     public static final String MAVEN_RESOLVER_CLASS = "com.redhat.ceylon.cmr.maven.MavenDependencyResolver";
+    public static final String JS_RESOLVER_CLASS = "com.redhat.ceylon.cmr.impl.JSUtils";
     
+    public static DependencyResolver getMavenResolver(){
+        if (mavenResolver == null) {
+            mavenResolver = getResolver(MAVEN_RESOLVER_CLASS);
+        }
+        return mavenResolver;
+    }
+
+    public static AbstractDependencyResolverAndModuleInfoReader getJavaScriptResolver(){
+        if (jsResolver == null) {
+            jsResolver = (AbstractDependencyResolverAndModuleInfoReader) getResolver(JS_RESOLVER_CLASS);
+        }
+        return jsResolver;
+    }
+
     public static DependencyResolvers getResolvers(RepositoryManager manager) {
         DependencyResolvers resolvers = new DependencyResolvers();
         resolvers.addResolver(BytecodeUtils.INSTANCE);
-        resolvers.addResolver(JSUtils.INSTANCE);
+        DependencyResolver jsResolver = getJavaScriptResolver();
+        if (jsResolver != null) {
+            resolvers.addResolver(jsResolver);
+        }
         resolvers.addResolver(PropertiesDependencyResolver.INSTANCE);
         resolvers.addResolver(XmlDependencyResolver.INSTANCE);
         resolvers.addResolver(OSGiDependencyResolver.INSTANCE);
         if (usesMaven(manager)) {
-            if (mavenResolver == null) {
-                mavenResolver = getResolver(MAVEN_RESOLVER_CLASS);
-            }
+            DependencyResolver mavenResolver = getMavenResolver();
             if (mavenResolver != null) {
                 resolvers.addResolver(mavenResolver);
             }

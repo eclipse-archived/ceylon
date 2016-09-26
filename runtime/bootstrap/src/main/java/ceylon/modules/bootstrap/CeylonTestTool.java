@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ModuleQuery;
-import com.redhat.ceylon.cmr.ceylon.AbstractTestTool;
+import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Option;
 import com.redhat.ceylon.common.tool.RemainingSections;
 import com.redhat.ceylon.common.tool.Summary;
+import com.redhat.ceylon.common.tools.AbstractTestTool;
 
-@Summary("Executes tests")
+@Summary("Executes tests on the JVM")
 @Description(
         "Executes tests in specified `<modules>`. " +
         "The `<modules>` arguments are the names of the modules to test with an optional version.")
@@ -29,8 +32,12 @@ import com.redhat.ceylon.common.tool.Summary;
         "    ceylon test com.example.foobar/1.0.0")
 public class CeylonTestTool extends AbstractTestTool {
 
-    private boolean flatClasspath;
-    private boolean autoExportMavenDependencies;
+    private static final String COLOR_RESET = "com.redhat.ceylon.common.tool.terminal.color.reset";
+    private static final String COLOR_GREEN = "com.redhat.ceylon.common.tool.terminal.color.green";
+    private static final String COLOR_RED = "com.redhat.ceylon.common.tool.terminal.color.red";
+
+    private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
+    private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean linkWithCurrentDistribution;
 
     public CeylonTestTool() {
@@ -77,6 +84,7 @@ public class CeylonTestTool extends AbstractTestTool {
         processCompileFlags();
         processTapOption(args);
         processReportOption(args);
+        processColors(args);
         
         resolveVersion(moduleAndVersionList);
 
@@ -84,7 +92,7 @@ public class CeylonTestTool extends AbstractTestTool {
         ceylonRunTool.setModule(TEST_MODULE_NAME + "/" + version);
         ceylonRunTool.setRun(TEST_RUN_FUNCTION);
         ceylonRunTool.setArgs(args);
-        ceylonRunTool.setRepository(repo);
+        ceylonRunTool.setRepository(repos);
         ceylonRunTool.setFlatClasspath(flatClasspath);
         ceylonRunTool.setLinkWithCurrentDistribution(linkWithCurrentDistribution);
         ceylonRunTool.setAutoExportMavenDependencies(autoExportMavenDependencies);
@@ -96,6 +104,15 @@ public class CeylonTestTool extends AbstractTestTool {
         ceylonRunTool.setVerbose(verbose);
         ceylonRunTool.setCompile(compileFlags);
         ceylonRunTool.setCwd(cwd);
+        
+        if (flatClasspath) {
+            for (String moduleAndVersion : moduleAndVersionList) {
+                String moduleName = ModuleUtil.moduleName(moduleAndVersion);
+                String moduleVersion = ModuleUtil.moduleVersion(moduleAndVersion);
+                ceylonRunTool.addExtraModule(moduleName, moduleVersion);
+            }
+        }
+        
         try{
             ceylonRunTool.run();
         }catch(Throwable x){
@@ -104,6 +121,17 @@ public class CeylonTestTool extends AbstractTestTool {
                 throw new CeylonTestFailureError();
             }
             throw x;
+        }
+    }
+
+    private void processColors(final List<String> args) {
+        String reset = OSUtil.Color.reset.escape();
+        String green = OSUtil.Color.green.escape();
+        String red = OSUtil.Color.red.escape();
+        if (reset != null && green != null && red != null) {
+            System.setProperty(COLOR_RESET, reset);
+            System.setProperty(COLOR_GREEN, green);
+            System.setProperty(COLOR_RED, red);
         }
     }
 

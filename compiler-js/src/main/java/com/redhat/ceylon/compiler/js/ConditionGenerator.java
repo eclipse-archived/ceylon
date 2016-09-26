@@ -19,6 +19,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCondition;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MatchCase;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.NonemptyCondition;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.ConditionScope;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Value;
@@ -62,11 +63,18 @@ public class ConditionGenerator {
                 return null;
             }
             if (variable != null) {
-                Tree.Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
-                Value vdecl = variable.getDeclarationModel();
+                final Tree.Term variableRHS = variable.getSpecifierExpression().getExpression().getTerm();
+                final Value vdecl = variable.getDeclarationModel();
                 String varName = names.name(vdecl);
-                final boolean member = vdecl.getContainer().getContainer() instanceof ClassOrInterface;
-                if (output && !member) {
+                final boolean member = ModelUtil.getRealScope(vdecl.getContainer()) instanceof ClassOrInterface;
+                if (member) {
+                    //Assertions and special conditions in an initializer block can declare variables
+                    //that should become attributes. For some reason the typechecker doesn't do this.
+                    if (vdecl.getScope() instanceof ConditionScope) {
+                        vdecl.setContainer(ModelUtil.getRealScope(vdecl.getContainer()));
+                        varName = names.name(vdecl);
+                    }
+                } else if (output) {
                     if (first) {
                         first = false;
                         gen.out("var ");
@@ -75,7 +83,7 @@ public class ConditionGenerator {
                     }
                     gen.out(varName);
                 }
-                vars.add(new VarHolder(variable, variableRHS, varName));
+                vars.add(new VarHolder(variable, variableRHS, varName, member));
             } else if (destruct != null) {
                 final Destructurer d=new Destructurer(destruct.getPattern(), null, directAccess, "", first);
                 for (Tree.Variable v : d.getVariables()) {
@@ -89,7 +97,7 @@ public class ConditionGenerator {
                         }
                     }
                 }
-                VarHolder vh = new VarHolder(destruct, null, null);
+                VarHolder vh = new VarHolder(destruct, null, null, false);
                 vh.vars = d.getVariables();
                 vars.add(vh);
             }
@@ -162,8 +170,14 @@ public class ConditionGenerator {
             } else {
                 VarHolder vh = ivars.next();
                 if (vh.destr == null) {
-                    specialConditionCheck(cond, vh.term, vh.name);
-                    directAccess.add(vh.var.getDeclarationModel());
+                    if (vh.member) {
+                        String cname = gen.getNames().self(((ClassOrInterface)ModelUtil.getRealScope(
+                                vh.var.getDeclarationModel().getContainer())));
+                        specialConditionCheck(cond, vh.term, cname + "." + vh.name);
+                    } else {
+                        specialConditionCheck(cond, vh.term, vh.name);
+                        directAccess.add(vh.var.getDeclarationModel());
+                    }
                 } else {
                     destructureCondition(cond, vh);
                 }
@@ -352,6 +366,8 @@ public class ConditionGenerator {
         if (anoserque == null) {
             if (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(expr.getTypeModel())) {
                 gen.out("else throw ", gen.getClAlias(), "Exception('Ceylon switch over unknown type does not cover all cases')");
+            } else {
+                gen.out("else throw ", gen.getClAlias(), "Exception('Supposedly exhaustive switch was not exhaustive')");
             }
         } else {
             final Tree.Variable elsevar = anoserque.getVariable();
@@ -521,7 +537,8 @@ public class ConditionGenerator {
         final Tree.Destructure destr;
         Set<Tree.Variable> vars;
         Set<Value> captured;
-        private VarHolder(Tree.Statement st, Tree.Term rhs, String varName) {
+        final boolean member;
+        private VarHolder(Tree.Statement st, Tree.Term rhs, String varName, boolean member) {
             if (st instanceof Tree.Variable) {
                 var = (Tree.Variable)st;
                 destr = null;
@@ -542,6 +559,7 @@ public class ConditionGenerator {
             } else {
                 name = varName;
             }
+            this.member = member;
         }
         void forget() {
             if (var != null) {

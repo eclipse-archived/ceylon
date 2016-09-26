@@ -64,7 +64,7 @@
     </path>
 
     <!-- ANTLR -->
-    <property name="antlr.src" location="Ceylon.g"/>
+    <property name="antlr.src" location="antlr/com/redhat/ceylon/compiler/typechecker/parser/Ceylon.g"/>
     <property name="antlr.dst" location="gensrc"/>
 
     <!-- ################################################################## -->
@@ -116,7 +116,7 @@
 
     <!-- ################################################################## -->
 
-    <target name="clean"
+    <target name="clean" depends="clean.doc,clean.antlr"
             description="Clean up everything.">
         <delete dir="${build.dir}"/>
     </target>
@@ -381,12 +381,12 @@
         <java classname="org.antlr.Tool" dir="${basedir}" fork="yes">
             <arg value="-fo"/>
             <arg value="${antlr.dst}/com/redhat/ceylon/compiler/typechecker/treegen"/>
-            <arg value="treegen/Treegen.g"/>
-            <!--arg value="treegen/Buildergen.g"-->
-            <arg value="treegen/Walkergen.g"/>
-            <arg value="treegen/Visitorgen.g"/>
-            <arg value="treegen/VisitorAdaptorgen.g"/>
-            <arg value="treegen/Validatorgen.g"/>
+            <arg value="antlr/com/redhat/ceylon/compiler/typechecker/treegen/Treegen.g"/>
+            <!--arg value="com/redhat/ceylon/compiler/typechecker/treegen/Buildergen.g"-->
+            <arg value="antlr/com/redhat/ceylon/compiler/typechecker/treegen/Walkergen.g"/>
+            <arg value="antlr/com/redhat/ceylon/compiler/typechecker/treegen/Visitorgen.g"/>
+            <arg value="antlr/com/redhat/ceylon/compiler/typechecker/treegen/VisitorAdaptorgen.g"/>
+            <arg value="antlr/com/redhat/ceylon/compiler/typechecker/treegen/Validatorgen.g"/>
             <classpath>
                 <pathelement location="${antlr.lib}"/>
             </classpath>
@@ -416,7 +416,7 @@
             description="Generate the tree builder code">
         <mkdir dir="${gensrc}/com/redhat/ceylon/compiler/typechecker/tree"/>
         <java classname="com.redhat.ceylon.compiler.typechecker.treegen.Generate" dir="${basedir}" fork="yes">
-            <arg value="Ceylon.nodes"/>
+            <arg value="antlr/Ceylon.nodes"/>
             <classpath>
                 <pathelement location="${antlr.lib}"/>
                 <pathelement location="${build.classes}"/>

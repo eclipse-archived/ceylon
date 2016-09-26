@@ -16,9 +16,7 @@
 
 package com.redhat.ceylon.cmr.impl;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -27,12 +25,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-
-import net.minidev.json.JSONValue;
-
-import com.redhat.ceylon.cmr.api.AbstractDependencyResolver;
+import com.redhat.ceylon.cmr.api.AbstractDependencyResolverAndModuleInfoReader;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.DependencyContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
@@ -40,6 +33,7 @@ import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.ModuleVersionArtifact;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.Overrides;
+import com.redhat.ceylon.cmr.resolver.javascript.JavaScriptResolver;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
@@ -49,10 +43,15 @@ import com.redhat.ceylon.model.cmr.ArtifactResult;
  *
  * @author <a href="mailto:tako@ceylon-lang.org">Tako Schotanus</a>
  */
-public final class JSUtils extends AbstractDependencyResolver implements ModuleInfoReader {
-    public static JSUtils INSTANCE = new JSUtils();
+public final class JSUtils extends AbstractDependencyResolverAndModuleInfoReader {
 
-    private JSUtils() {
+    private JavaScriptResolver resolver;
+
+    /**
+     * Warning: used by reflection in Configuration
+     */
+    public JSUtils() {
+        resolver = new JavaScriptResolver();
     }
 
     @Override
@@ -81,6 +80,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         throw new UnsupportedOperationException("Operation not supported for .js files");
     }
 
+    @Override
     public Node descriptor(Node artifact) {
         return null; // artifact is a descriptor
     }
@@ -92,7 +92,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
      * @param jarFile    the module JS file
      * @return module info list
      */
-    public static ModuleInfo readModuleInformation(final String moduleName, final File jarFile, Overrides overrides) {
+    private ModuleInfo readModuleInformation(final String moduleName, final File jarFile, Overrides overrides) {
         Map<String, Object> model = loadJsonModel(jarFile);
         String version = asString(metaModelProperty(model, "$mod-version"));
         return getModuleInfo(model, moduleName, version, overrides);
@@ -114,21 +114,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         return new int[]{major, minor};
     }
 
-    private static ScriptEngine getEngine(File moduleArchive) {
-        ScriptEngine engine;
-        try {
-            engine = new ScriptEngineManager().getEngineByName("JavaScript");
-            engine.eval("var exports={}");
-            engine.eval("var module={}");
-            engine.eval("function require() { return { '$addmod$' : function() {} } }");
-            engine.eval(new FileReader(moduleArchive));
-            return engine;
-        } catch (Exception ex) {
-            throw new RuntimeException("Failed to parse module JS file", ex);
-        }
-    }
-
-    private static ModuleInfo getModuleInfo(Map<String,Object> model, String module, String version, Overrides overrides) {
+    private ModuleInfo getModuleInfo(Map<String,Object> model, String module, String version, Overrides overrides) {
         try {
             return getModuleInfo(metaModelProperty(model, "$mod-deps"), module, version, overrides);
         } catch (Exception ex) {
@@ -160,7 +146,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
                 major = Integer.parseInt(bin);
             }
         }
-        ModuleVersionDetails mvd = new ModuleVersionDetails(moduleName, version);
+        ModuleVersionDetails mvd = new ModuleVersionDetails(null, moduleName, version);
         mvd.getArtifactTypes().add(new ModuleVersionArtifact(type, major, minor));
         mvd.getDependencies().addAll(dependencies);
 
@@ -189,11 +175,11 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         throw new RuntimeException("Not implemented yet");
     }
     
-    private static Object metaModelProperty(Map<String,Object> model, String propName) {
+    private Object metaModelProperty(Map<String,Object> model, String propName) {
         return model.get(propName);
     }
     
-    private static String asString(Object obj) {
+    private String asString(Object obj) {
         if (obj == null) {
             return null;
         } else if(obj instanceof Iterable){
@@ -204,9 +190,9 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         }
     }
 
-    private static ModuleInfo getModuleInfo(Object obj, String moduleName, String version, Overrides overrides) {
+    private ModuleInfo getModuleInfo(Object obj, String moduleName, String version, Overrides overrides) {
         if (obj == null) {
-            return new ModuleInfo(null, Collections.<ModuleDependencyInfo>emptySet());
+            return new ModuleInfo(moduleName, version, null, Collections.<ModuleDependencyInfo>emptySet());
         }
         if (!(obj instanceof Iterable)) {
             throw new RuntimeException("Expected something Iterable");
@@ -227,10 +213,12 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
                 optional = m.containsKey("opt");
                 exported = m.containsKey("exp");
             }
-            String name = ModuleUtil.moduleName(module);
-            deps.add(new ModuleDependencyInfo(name, ModuleUtil.moduleVersion(module), optional, exported));
+            String depUri = ModuleUtil.moduleName(module);
+            String namespace = ModuleUtil.getNamespaceFromUri(depUri);
+            String modName = ModuleUtil.getModuleNameFromUri(depUri);
+            deps.add(new ModuleDependencyInfo(namespace, modName, ModuleUtil.moduleVersion(module), optional, exported));
         }
-        ModuleInfo result = new ModuleInfo(null, deps);
+        ModuleInfo result = new ModuleInfo(moduleName, version, null, deps);
         if(overrides != null)
             result = overrides.applyOverrides(moduleName, version, result);
         return result;
@@ -254,11 +242,11 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
         return false;
     }
 
-    private static boolean matches(String string, String query) {
+    private boolean matches(String string, String query) {
         return string.toLowerCase().contains(query);
     }
 
-    private static Map<String,Object> loadJsonModel(File jsFile) {
+    private Map<String,Object> loadJsonModel(File jsFile) {
         try {
             // If what we have is a plain .js file (not a -model.js file)
             // we first check if a model file exists and if so we use that
@@ -272,7 +260,7 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
                     jsFile = modelFile;
                 }
             }
-            Map<String, Object> model = readJsonModel(jsFile);
+            Map<String, Object> model = resolver.readJsonModel(jsFile);
             if (model == null) {
                 throw new RuntimeException("Unable to read meta model from file " + jsFile);
             }
@@ -281,28 +269,4 @@ public final class JSUtils extends AbstractDependencyResolver implements ModuleI
             throw new RuntimeException(e);
         }
     }
-    
-    /** Find the metamodel declaration in a js file, parse it as a Map and return it. 
-     * @throws IOException */
-    public static Map<String,Object> readJsonModel(File jsFile) throws IOException {
-        // IMPORTANT
-        // This method NEEDS to be able to return the meta model of any previous file formats!!!
-        // It MUST stay backward compatible
-        try (BufferedReader reader = new BufferedReader(new FileReader(jsFile))) {
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                if ((line.startsWith("ex$.$CCMM$=")
-                        || line.startsWith("var $CCMM$=")
-                        || line.startsWith("var $$METAMODEL$$=")
-                        || line.startsWith("var $$metamodel$$=")) && line.endsWith("};")) {
-                    line = line.substring(line.indexOf("{"), line.length()-1);
-                    @SuppressWarnings("unchecked")
-                    Map<String, Object> rv = (Map<String,Object>) JSONValue.parse(line);
-                    return rv;
-                }
-            }
-            return null;
-        }
-    }
-
 }

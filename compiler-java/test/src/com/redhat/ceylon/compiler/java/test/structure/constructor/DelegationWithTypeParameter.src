@@ -6,7 +6,7 @@ class DelegationWithTypeParameter<F> implements .com.redhat.ceylon.compiler.java
     
     private static final class $delegation$ {
         
-        private $delegation$() {
+        $delegation$() {
         }
     }
     
@@ -21,7 +21,7 @@ class DelegationWithTypeParameter<F> implements .com.redhat.ceylon.compiler.java
     
     public static final class bar_ {
         
-        private bar_() {
+        bar_() {
         }
     }
     

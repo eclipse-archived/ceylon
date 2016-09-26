@@ -103,11 +103,11 @@ public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues
     }
     
     public final S toT$s() {
-        return (S).ceylon.language.nothing_.get_();
+        return (S)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     public final S toT$s2(final S s) {
-        return (S).ceylon.language.nothing_.get_();
+        return (S)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     public .java.lang.Object toT2() {
@@ -122,7 +122,7 @@ public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues
     }
     
     public final S toT2$s() {
-        return (S).ceylon.language.nothing_.get_();
+        return (S)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     public .java.lang.Object toT2(final S s) {
@@ -136,7 +136,7 @@ public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues
     }
     
     public final S toT2$s2(final S s) {
-        return (S).ceylon.language.nothing_.get_();
+        return (S)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     private .java.lang.Object toT2$canonical$(final S s, final S s2) {
@@ -148,11 +148,11 @@ public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues
     }
     
     public final S $default$Inner$s() {
-        return (S).ceylon.language.nothing_.get_();
+        return (S)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     public final S $default$Inner$s2(final S s) {
-        return (S).ceylon.language.nothing_.get_();
+        return (S)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     public abstract class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
@@ -194,7 +194,7 @@ public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues
     }
     
     public final S $default$Inner2$s() {
-        return (S).ceylon.language.nothing_.get_();
+        return (S)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner2 Inner2$new$() {
@@ -209,7 +209,7 @@ public final class I$impl<S extends .com.redhat.ceylon.compiler.java.test.issues
     }
     
     public final S $default$Inner2$s2(final S s) {
-        return (S).ceylon.language.nothing_.get_();
+        return (S)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     public .com.redhat.ceylon.compiler.java.test.issues.bug22xx.I$impl<S>.Inner2 Inner2$new$(final S s) {
@@ -436,7 +436,7 @@ public abstract class DateRange implements .com.redhat.ceylon.compiler.java.runt
     }
     
     public static .ceylon.language.String $default$step() {
-        return (.ceylon.language.String).ceylon.language.nothing_.get_();
+        return (.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     private final .ceylon.language.String step;
     
@@ -488,7 +488,7 @@ public final class Completion$impl<Element, T extends .ceylon.language.Sequentia
     }
     
     public final .ceylon.language.Callable<? extends .java.lang.Object> completed$onRejected() {
-        return (.ceylon.language.Callable<? extends .java.lang.Object>).ceylon.language.nothing_.get_();
+        return (.ceylon.language.Callable<? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     private .java.lang.Object completed$canonical$(final .ceylon.language.Callable<? extends .java.lang.Object> onRejected) {
@@ -579,7 +579,7 @@ final class FormalMethods$impl<A, B> implements .java.io.Serializable {
     }
     
     public final B tpMethodBUnary$arg() {
-        return (B).ceylon.language.nothing_.get_();
+        return (B)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     private .java.lang.Object tpMethodBUnary$canonical$(final B arg) {

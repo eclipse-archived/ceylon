@@ -1,6 +1,8 @@
 package com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2011;
 
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(major = 8)
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "javax.swing.tree::DefaultMutableTreeNode")
 class MWETreeNode extends .javax.swing.tree.DefaultMutableTreeNode implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     

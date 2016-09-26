@@ -23,14 +23,17 @@ import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.cmr.impl.ShaSigner;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
+import com.redhat.ceylon.common.tool.EnumUtil;
 import com.redhat.ceylon.compiler.js.loader.MetamodelVisitor;
 import com.redhat.ceylon.compiler.js.loader.ModelEncoder;
 import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.JsJULLogger;
 import com.redhat.ceylon.compiler.js.util.JsOutput;
+import com.redhat.ceylon.compiler.js.util.NpmDescriptorGenerator;
 import com.redhat.ceylon.compiler.js.util.Options;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
+import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.model.typechecker.model.Module;
 
@@ -59,6 +62,8 @@ public class Stitcher {
         FileUtil.mkdirs(tmpout);
         final Options opts = new Options().addRepo("build/runtime").comment(false).optimize(true)
                 .outRepo(tmpout.getAbsolutePath()).modulify(false).minify(true)
+                .suppressWarnings(EnumUtil.enumsFromStrings(Warning.class,
+                        Arrays.asList("unusedDeclaration", "ceylonNamespace", "unusedImport")))
                 .addSrcDir(clSrcDir).addSrcDir(LANGMOD_JS_SRC);
 
         //Typecheck the whole language module
@@ -69,20 +74,7 @@ public class Stitcher {
                     .encoding("UTF-8");
             langmodtc.setRepositoryManager(CeylonUtils.repoManager().systemRepo(opts.getSystemRepo())
                     .userRepos(opts.getRepos()).outRepo(opts.getOutRepo()).buildManager());
-        }
-        final File mod2 = new File(clJsFileDir, "module.ceylon");
-        if (!mod2.exists()) {
-            try (FileWriter w2 = new FileWriter(mod2);
-                    FileReader r2 = new FileReader(new File(clSrcFileDir, "module.ceylon"))) {
-                char[] c = new char[512];
-                int r = r2.read(c);
-                while (r != -1) {
-                    w2.write(c, 0, r);
-                    r = r2.read(c);
-                }
-                mod2.deleteOnExit();
-            } finally {
-            }
+            langmodtc.usageWarnings(false);
         }
         final TypeChecker tc = langmodtc.getTypeChecker();
         tc.process(true);
@@ -207,6 +199,11 @@ public class Stitcher {
         } finally {
             ShaSigner.sign(file, new JsJULLogger(), true);
         }
+        final File npmFile = new File(moduleFile.getParentFile(), ArtifactContext.NPM_DESCRIPTOR);
+        try (FileWriter writer = new FileWriter(npmFile)) {
+            String npmdesc = new NpmDescriptorGenerator(mod, true, false).generateDescriptor();
+            writer.write(npmdesc);
+        }
         return 0;
     }
 
@@ -241,6 +238,9 @@ public class Stitcher {
             System.exit(1);
             return;
         }
+        // Force coloring of output if not already set
+        String useColors = System.getProperty(Constants.PROP_CEYLON_TERM_COLORS, "yes");
+        System.setProperty(Constants.PROP_CEYLON_TERM_COLORS, useColors);
         int exitCode = 0;
         tmpDir = Files.createTempDirectory("ceylon-jsstitcher-");
         try {

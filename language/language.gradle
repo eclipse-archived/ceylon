@@ -1,0 +1,73 @@
+ext {
+    ceylonModuleName = 'language'
+}
+
+apply plugin : LifecycleBasePlugin
+apply plugin : CeylonCommonBuildProperties
+
+configurations {
+    antOutput
+}
+
+dependencies {
+    antOutput fileTree("${buildDir}/dist") {
+        include "**/*.jar"
+        include "**/*.car"
+    }
+}
+
+task invokeAntBuild( type : GradleBuild ) {
+    dir = projectDir
+    buildFile = file('ant-language.gradle')
+    tasks = ['antPublish']
+    startParameter.projectProperties+= [
+        ceylonDistDir  : distDir,
+        ceylonRepoDir  : repoDir,
+        ceylonLibDir   : repoLibDir,
+        ceylonBuildDir : buildDir
+    ]
+
+    // TODO: There are too many of these manual dependencies being listed... feels like duct-tape and string.
+    dependsOn ':compiler-java:assemble', ':ant-plugin:publishInternal', ':ceylon-bootstrap:publishInternal',':runtime-externals:setupRepo'
+
+    // These are workarounds to not let this task be invoked everytime
+    inputs.file 'build.xml'
+    inputs.dir 'template'
+    outputs.dir "${buildDir}/dist"
+
+}
+
+assemble.dependsOn invokeAntBuild
+
+task languageModuleXml( type : CeylonBuildModuleXml ) {
+    description "Create module.xml for the language JAR"
+    sourceModule {
+        new File(project.file("${project(':runtime').projectDir}/dist/repo/" +
+            cbp."ceylon.language.dir").parentFile, '/_version_/module.xml')
+    }
+    destinationDir = {"${buildDir}/ceylon-module"}
+}
+
+
+task publishOsgiJar( type : Copy ) {
+    dependsOn invokeAntBuild
+    from "${buildDir}/dist/repo/ceylon/language/${version}", {
+        include 'ceylon.language-*.car'
+    }
+
+    // TODO: Fix-up not be hard-coded once we migrate language build away from Ant.
+    into osgiDistPluginsDir
+    rename ~/.+/,"ceylon.language_${project.version}${versionQualifier}.jar"
+}
+
+task publishInternal( type : Copy ) {
+    dependsOn invokeAntBuild, languageModuleXml, publishOsgiJar
+
+    from languageModuleXml
+    into "${repoDir}/${cbp.'ceylon.language.dir'}"
+}
+
+['common','cli','model','cmr','compiler-java','langtools-classfile','typechecker','compiler-js'].each {
+    publishInternal.dependsOn ":${it}:publishInternal"
+    invokeAntBuild.dependsOn ":${it}:publishInternal"
+}

@@ -14,10 +14,9 @@ String magnify1(Integer|String x) {
     case (larger)  { factor=1000; }
     else { factor=1; }
     return (x*factor).string;
-  } else if (is String x) {
+  } else {
     return x.uppercased;
   }
-  return className(x);
 }
 String magnify2(Integer|String x) {
   switch(x)

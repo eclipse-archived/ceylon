@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
-import com.redhat.ceylon.common.BackendSupport;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.loader.model.LazyElement;
 
@@ -41,6 +40,7 @@ public class ModelUtil {
     
     static final Map<TypeParameter, SiteVariance> EMPTY_VARIANCE_MAP = 
             emptyMap();
+    
     /**
      * Is the second scope contained by the first scope?
      */
@@ -58,7 +58,9 @@ public class ModelUtil {
     
     /**
      * Get the nearest containing scope that is not a
-     * ConditionScope. 
+     * ConditionScope. Often needed because things
+     * defined in ConditionScopes are actually visible
+     * outside the ConditionScope.
      */
     public static Scope getRealScope(Scope scope) {
         while (!(scope instanceof Package)) {
@@ -67,7 +69,7 @@ public class ModelUtil {
             }
             scope = scope.getContainer();
         }
-        return null;
+        return scope;
     }
     
     /**
@@ -182,7 +184,7 @@ public class ModelUtil {
                 !decl.isAbstraction());
     }
 
-    static boolean hasMatchingSignature(
+    public static boolean hasMatchingSignature(
             Declaration dec, 
             List<Type> signature, boolean variadic) {
         return hasMatchingSignature(dec, 
@@ -214,16 +216,17 @@ public class ModelUtil {
                 int sigSize = signature.size();
                 if (hasSeqParam) {
                     size--;
-                    if (sigSize<size) {
-                        return false;
-                    }
                 }
-                else if (sigSize!=size) {
+                else if (sigSize>size) {
                     return false;
                 }
                 for (int i=0; i<size; i++) {
+                    Parameter p = params.get(i);
+                    if (i>=sigSize) {
+                        return p.isDefaulted();
+                    }
                     FunctionOrValue pm = 
-                            params.get(i).getModel();
+                            p.getModel();
                     if (pm==null) {
                         return false;
                     }
@@ -240,8 +243,9 @@ public class ModelUtil {
                     }
                 }
                 if (hasSeqParam) {
+                    Parameter p = params.get(size);
                     FunctionOrValue model = 
-                            params.get(size).getModel();
+                            p.getModel();
                     Type pdt = 
                             model.appliedReference(null, 
                                     NO_TYPE_ARGS)
@@ -317,11 +321,27 @@ public class ModelUtil {
                 isTypeUnknown(defParamType)) {
             return false;
         }
-        if (!erase(defArgType, unit)
-                .inherits(erase(defParamType, unit)) &&
-                notUnderlyingTypesEqual(defParamType, 
+        TypeDeclaration erasedArgType = 
+                erase(defArgType, unit);
+        TypeDeclaration erasedParamType = 
+                erase(defParamType, unit);
+        if (!erasedArgType
+                .inherits(erasedParamType) 
+                && notUnderlyingTypesEqual(
+                        defParamType, 
                         defArgType)) {
             return false;
+        }
+        TypeDeclaration oa = 
+                unit.getJavaObjectArrayDeclaration();
+        if (oa!=null 
+                && erasedArgType.equals(oa) 
+                && erasedParamType.equals(oa)) {
+            Type argElementType = 
+                    unit.getJavaArrayElementType(defArgType);
+            Type paramElementType = 
+                    unit.getJavaArrayElementType(defParamType);
+            return matches(argElementType, paramElementType, unit);
         }
         return true;
     }
@@ -385,7 +405,7 @@ public class ModelUtil {
                                 unit.getDefiniteType(rplt);
                         Type argumentType = 
                                 signature != null && 
-                                signature.size() >= i ? 
+                                i < signature.size() ? 
                                         signature.get(i) : 
                                         null;
                         if (isTypeUnknown(otherType) || 
@@ -396,7 +416,7 @@ public class ModelUtil {
                                 erase(paramType, unit);
                         TypeDeclaration otd = 
                                 erase(otherType, unit);
-                        if(paramType.isExactly(otherType) && 
+                        if (paramType.isExactly(otherType) && 
                                 supportsCoercion(ptd) &&
                                 // do we have different scores?
                                 hasWorseScore(
@@ -416,7 +436,7 @@ public class ModelUtil {
                         }
                     }
                     // check sequenced parameters last
-                    if (dhsp && rhsp){
+                    if (dhsp && rhsp) {
                         Type dplt = 
                                 dpl.get(dplSize).getModel()
                                 .appliedReference(null, 
@@ -742,7 +762,27 @@ public class ModelUtil {
                                         paramType, otherType)) {
                             atLeastOneBetter = true;
                         }
-                        
+                        TypeDeclaration oa = 
+                                unit.getJavaObjectArrayDeclaration();
+                        if (oa!=null 
+                                && ptd.equals(oa) 
+                                && otd.equals(oa)) {
+                            Type paramElementType = 
+                                    unit.getJavaArrayElementType(paramType);
+                            Type otherElementType = 
+                                    unit.getJavaArrayElementType(otherType);
+                            TypeDeclaration petd = 
+                                    erase(paramElementType, unit);
+                            TypeDeclaration oetd = 
+                                    erase(otherElementType, unit);
+                            if (!petd.inherits(oetd)) {
+                                return false;
+                            }
+                            if (petd.inherits(oetd) &&
+                                    !oetd.inherits(petd)) {
+                                atLeastOneBetter = true;
+                            }
+                        }
                     }
                     // check sequenced parameters last
                     if (dhsp && rhsp) {
@@ -936,7 +976,8 @@ public class ModelUtil {
     private static int countTypeParameters(
             Declaration declaration, Type receivingType) {
         int count = 0;
-        boolean containsFunctionOrValueInterface = containsFunctionOrValueInterface(receivingType);
+        boolean containsFunctionOrValueInterface
+                = containsFunctionOrValueInterface(receivingType);
         while (true) {
             if (declaration instanceof Generic) {
                 Generic g = (Generic) declaration;
@@ -1295,10 +1336,10 @@ public class ModelUtil {
                         list.clear();
                         list.add(unit.getNothingType());
                         return;
-                    } 
+                    }
                     else {
-                        if (type.isClassOrInterface() && 
-                            t.isClassOrInterface() && 
+                        if (type.isDeclaredType() &&
+                            t.isDeclaredType() &&
                             t.getDeclaration().equals(dec) &&
                                 !type.containsUnknowns() &&
                                 !t.containsUnknowns()) {
@@ -1309,7 +1350,8 @@ public class ModelUtil {
                                     principalInstantiation(
                                             dec, type, t, 
                                             unit);
-                            if (!pi.containsUnknowns()) {
+                            if (pi!=null &&
+                                    !pi.containsUnknowns()) {
                                 list.remove(i);
                                 list.add(pi);
                                 return;
@@ -1444,36 +1486,9 @@ public class ModelUtil {
             q.isExactlyNothing()) {
             return true;
         }
+        
         TypeDeclaration pd = p.getDeclaration();
         TypeDeclaration qd = q.getDeclaration();
-        if (p.isTypeParameter()) {
-            p = canonicalIntersection(
-                    p.getSatisfiedTypes(), 
-                    unit);
-            pd = p.getDeclaration();
-        }
-        if (q.isTypeParameter()) {
-            q = canonicalIntersection(
-                    q.getSatisfiedTypes(), 
-                    unit);
-            qd = q.getDeclaration();
-        }
-        if (q.isIntersection()) {
-            for (Type t: q.getSatisfiedTypes()) {
-                if (emptyMeet(p,t,unit)) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        if (p.isIntersection()) {
-            for (Type t: p.getSatisfiedTypes()) {
-                if (emptyMeet(q,t,unit)) {
-                    return true;
-                }
-            }
-            return false;
-        }
         if (q.isUnion()) {
             for (Type t: q.getCaseTypes()) {
                 if (!emptyMeet(p,t,unit)) {
@@ -1501,7 +1516,7 @@ public class ModelUtil {
             }
             return true;
         }
-        else if (p.getCaseTypes()!=null) {
+        else if (pd.getCaseTypes()!=null) {
             boolean all = true;
             for (Type t: pd.getCaseTypes()) {
                 if (t.getDeclaration().isSelfType() || 
@@ -1512,6 +1527,24 @@ public class ModelUtil {
             }
             if (all) return true;
         }
+
+        if (q.isIntersection() || q.isTypeParameter()) {
+            for (Type t: q.getSatisfiedTypes()) {
+                if (emptyMeet(p,t,unit)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if (p.isIntersection() || p.isTypeParameter()) {
+            for (Type t: p.getSatisfiedTypes()) {
+                if (emptyMeet(q,t,unit)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
         if (p.isClass() && q.isClass() ||
             p.isInterface() && q.isNull() ||
             q.isInterface() && p.isNull()) {
@@ -1558,8 +1591,7 @@ public class ModelUtil {
                 !st.inherits(qd) ||
             p.isClassOrInterface() &&
                 qd.inherits(st) && !pd.inherits(st) && 
-                !st.inherits(pd) && 
-                !p.involvesTypeParameters()) {
+                !st.inherits(pd)) {
             return true;
         }
         
@@ -1664,7 +1696,7 @@ public class ModelUtil {
                     (pstds.size()+qstds.size());
         set.addAll(pstds); 
         set.retainAll(qstds);
-        for (TypeDeclaration std: pstds) {
+        for (TypeDeclaration std: set) {
             Type pst = null;
             Type qst = null;
             for (TypeParameter tp: std.getTypeParameters()) {
@@ -1726,7 +1758,7 @@ public class ModelUtil {
         StringBuilder sb = new StringBuilder();
         for (int i=0; i<path.size(); i++) {
             String pathPart = path.get(i);
-            if (! pathPart.isEmpty()) {
+            if (!pathPart.isEmpty()) {
                 sb.append(pathPart);
                 if (i<path.size()-1) sb.append(separator);
             }
@@ -2272,7 +2304,10 @@ public class ModelUtil {
 
     static boolean isVisible(Declaration member, 
             TypeDeclaration type) {
-        return type instanceof TypeParameter || 
+        // do not check for visibility of Java supertypes, 
+        // see https://github.com/ceylon/ceylon/issues/5882
+        return  (type instanceof LazyElement && !((LazyElement) type).isCeylon()) ||
+                type instanceof TypeParameter || 
                 type.isVisible(member.getVisibleScope()) &&
                 (member.getVisibleScope()!=null || 
                 !member.getUnit().getPackage().isShared() || 
@@ -2347,7 +2382,8 @@ public class ModelUtil {
                        arg = unit.getUnknownType();
                     }
                     else {
-                        return unit.getNothingType();
+                        //may not be Nothing for TPs
+                        return null;
                     }
                 }
                 else if (firstCo && secondInv) {
@@ -2359,7 +2395,8 @@ public class ModelUtil {
                        arg = unit.getUnknownType();
                     }
                     else {
-                        return unit.getNothingType();
+                        //may not be Nothing for TPs
+                        return null;
                     }
                 }
                 else if (secondCo && firstInv) {
@@ -2371,7 +2408,8 @@ public class ModelUtil {
                       arg = unit.getUnknownType();
                    }
                    else {
-                       return unit.getNothingType();
+                       //may not be Nothing for TPs
+                       return null;
                    }
                 }
                 else if (secondContra && firstInv) {
@@ -2383,7 +2421,8 @@ public class ModelUtil {
                         arg = unit.getUnknownType();
                     }
                     else {
-                        return unit.getNothingType();
+                        //may not be Nothing for TPs
+                        return null;
                     }
                 }
                 else if (firstInv && secondInv) {
@@ -2404,7 +2443,12 @@ public class ModelUtil {
                         //the type arguments are distinct, and the
                         //intersection is Nothing, so there is
                         //no reasonable principal instantiation
-                        return unit.getNothingType();
+
+                        //note: if dec is a TypeParameter, it may
+                        //not actually be invariant, and the
+                        //principal instantiation may not be
+                        //Nothing
+                        return null;
                     }
                 }
                 else {
@@ -2459,6 +2503,11 @@ public class ModelUtil {
             TypeDeclaration td) {
         Type extendedType = td.getExtendedType();
         List<Type> satisfiedTypes = td.getSatisfiedTypes();
+        if (satisfiedTypes.isEmpty()) {
+            return extendedType==null ? 
+                    td.getUnit().getAnythingType() : 
+                    extendedType;
+        }
         List<Type> list = 
                 new ArrayList<Type>
                     (satisfiedTypes.size()+1);
@@ -2617,11 +2666,6 @@ public class ModelUtil {
     }
     
     public static boolean isForBackend(Backends backends,
-            BackendSupport support) {
-        return isForBackend(backends, support.getSupportedBackends());
-    }
-    
-    public static boolean isForBackend(Backends backends,
             Backends supported) {
         return backends.none() || supported.supports(backends);
     }
@@ -2740,13 +2784,16 @@ public class ModelUtil {
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 // In the rest of the cases we go look in the declaration's container
                 nat = getNativeDeclaration(dec.getContainer(), dec.getName(), backends);
                 
                 if (dec instanceof Setter && nat instanceof Value) {
-                    nat = ((Value)nat).getSetter();
-                } else if (dec instanceof ClassOrInterface && 
+                    Value value = (Value) nat;
+                    nat = value.getSetter();
+                }
+                else if (dec instanceof ClassOrInterface && 
                         nat instanceof Value) {
                     // In case of objects make sure we return the same type of
                     // declaration we were called with
@@ -2754,7 +2801,8 @@ public class ModelUtil {
                     if (isObject(value)) {
                         nat = value.getType().getDeclaration();
                     }
-                } else if (dec instanceof Constructor
+                }
+                else if (dec instanceof Constructor
                         && nat instanceof FunctionOrValue
                         && isConstructor(nat)) {
                     // In case of constructors we make sure we return the same
@@ -2764,7 +2812,8 @@ public class ModelUtil {
             }
             
             return nat;
-        } else {
+        }
+        else {
             return dec;
         }
     }
@@ -2927,11 +2976,12 @@ public class ModelUtil {
     }
 
     public static void setVisibleScope(Declaration model) {
-        Scope s=model.getContainer();
+        Scope s = model.getContainer();
         while (s!=null) {
             if (s instanceof Declaration) {
+                Declaration d = (Declaration) s;
                 if (model.isShared()) {
-                    if (!((Declaration) s).isShared()) {
+                    if (!d.isShared()) {
                         model.setVisibleScope(s.getContainer());
                         break;
                     }
@@ -2983,8 +3033,13 @@ public class ModelUtil {
     }
 
     public static boolean isNonTransientValue(Declaration decl) {
-        return (decl instanceof Value)
-                && !((Value)decl).isTransient();
+        if (decl instanceof Value) {
+            Value value = (Value)decl;
+            return !value.isTransient();
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -3159,6 +3214,55 @@ public class ModelUtil {
     
     /** Is the given value the result of an enumerated ("singleton") constructor */
     public static boolean isEnumeratedConstructor(Value value) {
-        return value.getType().getDeclaration() instanceof Constructor;
+        return value != null
+                && value.getType() != null
+                && value.getType().getDeclaration() instanceof Constructor;
+    }
+
+    /** 
+     * Is the given value the result of an enumerated ("singleton") constructor
+     * that we store in a local variable
+     */
+    public static boolean isEnumeratedConstructorInLocalVariable(Value value) {
+        if(isEnumeratedConstructor(value)){
+            Class constructedClass = getConstructedClass(value);
+            return !(constructedClass.isToplevel() || constructedClass.isClassMember());
+        }
+        return false;
+    }
+
+    public static boolean containsRawType(Type type) {
+        if(type == null || type.isNothing())
+            return false;
+        if(type.isRaw())
+            return true;
+        TypeDeclaration declaration = type.getDeclaration();
+        if(declaration == null)
+            return false;
+        if(declaration instanceof UnionType){
+            for(Type t : declaration.getCaseTypes()){
+                if(containsRawType(t)){
+                    return true;
+                }
+            }
+            return false;
+        }
+        if(declaration instanceof IntersectionType){
+            for(Type t : declaration.getSatisfiedTypes()){
+                if(containsRawType(t)){
+                    return true;
+                }
+            }
+            return false;
+        }
+        Type qualifyingType = type.getQualifyingType();
+        if(qualifyingType != null && containsRawType(qualifyingType))
+            return true;
+        for(Type t : type.getTypeArgumentList()){
+            if(containsRawType(t)){
+                return true;
+            }
+        }
+        return false;
     }
 }

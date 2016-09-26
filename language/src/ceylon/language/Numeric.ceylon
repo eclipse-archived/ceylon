@@ -57,12 +57,13 @@ shared interface Numeric<Other> of Other
     shared formal Other times(Other other);
     
     "The quotient obtained by dividing this number by the 
-     given number. For integral numeric types, this 
-     operation results in a 
-     [[remainder|Integral.remainder]].
+     given number. For [[integral|Integral]] numeric types, 
+     this operation rounds toward `0`, the additive identity,
+     and results in a [[remainder|Integral.remainder]].
      
-     When the given number is `0`, the additive identity,
-     the behavior depends on the numeric type:
+     When the given [[divisor|other]] is exactly `0`, the 
+     additive identity, the behavior depends on the numeric 
+     type:
      
      - For some numeric types, including [[Integer]], 
        division by `0` results in an exception.

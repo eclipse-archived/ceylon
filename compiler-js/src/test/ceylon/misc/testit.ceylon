@@ -50,5 +50,6 @@ shared void test() {
     testBugCl733();
     test656();
     testNatives();
+    testAssertions();
     results();
 }

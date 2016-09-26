@@ -1,8 +1,18 @@
 package com.redhat.ceylon.common;
 
 import java.io.File;
+import java.util.regex.Pattern;
 
 public abstract class ModuleUtil {
+
+    public static final Pattern moduleIdPattern =
+            AndroidUtil.isRunningAndroid()
+            // Android does not support Unicode block family tests, but claims its ASCII properties are Unicode
+            // https://developer.android.com/reference/java/util/regex/Pattern.html#ubpc
+            ? Pattern.compile("[\\p{Lower}_][\\p{Alpha}\\p{Digit}_]*")
+            // The JDK however claims that ASCII and Unicode block properties differ
+            // https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html#sum
+            : Pattern.compile("[\\p{IsLowercase}_][\\p{IsAlphabetic}\\p{IsDigit}_]*");
 
     private ModuleUtil() {
     }
@@ -30,10 +40,15 @@ public abstract class ModuleUtil {
     }
 
     public static String makeModuleName(String moduleName, String version) {
+        return makeModuleName(null, moduleName, version);
+    }
+
+    public static String makeModuleName(String namespace, String moduleName, String version) {
+        String ns = namespace != null ? namespace + ":" : "";
         if (isDefaultModule(moduleName) || version == null) {
-            return moduleName;
+            return ns + moduleName;
         } else {
-            return moduleName + "/" + version;
+            return ns + moduleName + "/" + version;
         }
     }
 
@@ -76,16 +91,7 @@ public abstract class ModuleUtil {
      * Turns maven:foo:bar into foo.bar
      */
     public static String toCeylonModuleName(String name){
-        int firstColon = name.indexOf(':');
-        if(firstColon == -1)
-            return name;
-        // if we have more than one colon, we can start with "maven:"
-        if(name.indexOf(':', firstColon+1) != -1){
-            // remove the prefix
-            if(name.startsWith("maven:"))
-                name = name.substring("maven:".length());
-        }
-        return name.replace(':', '.');
+        return getModuleNameFromUri(name).replace(':', '.');
     }
     
     /**
@@ -94,4 +100,61 @@ public abstract class ModuleUtil {
     public static boolean isMavenModule(String name){
         return name != null && name.indexOf(':') != -1;
     }
+    
+    /**
+     * For imports of the type
+     * <code>import "maven:some.artifact:name" "1.2.3"</code>
+     * this will return "maven" and <code>null otherwise</code>
+     */
+    public static String getNamespaceFromUri(String uri) {
+        int p = uri.indexOf(':');
+        if (p > 0) {
+            String prefix = uri.substring(0, p);
+            if (validNamespace(prefix)) {
+                return prefix;
+            } else {
+                // Prefix is invalid so it's considered a maven import
+                return "maven";
+            }
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * For imports of the type
+     * <code>import "maven:some.artifact:name" "1.2.3"</code>
+     * this will return "some.artifact:name"
+     */
+    public static String getModuleNameFromUri(String uri) {
+        int p = uri.indexOf(':');
+        if (p > 0) {
+            String prefix = uri.substring(0, p);
+            if (validNamespace(prefix)) {
+                return uri.substring(p + 1);
+            } else {
+                // Prefix is invalid so it's considered a maven import
+                return uri;
+            }
+        } else {
+            return uri;
+        }
+    }
+    
+    /**
+     * Only <code>null</code> or proper Ceylon identifiers are considered valid namespaces
+     */
+    public static boolean validNamespace(String namespace) {
+        return namespace == null || moduleIdPattern.matcher(namespace).matches();
+    }
+
+    /**
+     * Determines if the given major/minor binary versions support import namespaces
+     */
+    public static boolean supportsImportsWithNamespaces(int majorBinVer, int minorBinVer) {
+        return (majorBinVer > Versions.V1_3_0_JVM_BINARY_MAJOR_VERSION
+                || (majorBinVer == Versions.V1_3_0_JVM_BINARY_MAJOR_VERSION
+                && minorBinVer >= Versions.V1_3_0_JVM_BINARY_MINOR_VERSION));
+    }
+    
 }

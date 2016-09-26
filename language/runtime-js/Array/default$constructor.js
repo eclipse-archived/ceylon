@@ -1,4 +1,4 @@
-function $_Array_$c$(elems,$$targs$$) {
+function $_Array$c_$c$(elems,$$targs$$) {
     $init$$_Array();
     var e=[];
     if (!(elems === null || elems === undefined)) {

@@ -401,4 +401,20 @@ shared void testIterables() {
     check(!permuts.any((c) => c.count((e)=>e==1) != 1), "Permutations 5");
     check(!permuts.any((c) => c.count((e)=>e==2) != 1), "Permutations 6");
     check(!permuts.any((c) => c.count((e)=>e==3) != 1), "Permutations 7");
+    
+    try {
+        Anything string;
+        for(value ignore in {finished}) {
+            string = "";
+            break;
+        }
+        if (is String string) {
+            check(string.size == 0, "iterate {finished} no-throw case");
+        }
+        else {
+            fail("nonempty Iterable with initial 'finished' should have thrown");
+        }
+    } catch (AssertionError e) {
+        check(e.message == "nonempty Iterable with initial 'finished' element", "iterate {finished}");
+    }
 }

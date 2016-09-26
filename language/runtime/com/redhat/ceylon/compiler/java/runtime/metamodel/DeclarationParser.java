@@ -159,7 +159,12 @@ class DeclarationParser {
            packageName = packageName();
            expectColon = true;
         } else {
-            packageName = module.getName() + '.' + packageName();
+            String p = packageName();
+            if (p.isEmpty()) {
+                packageName = module.getName();
+            } else {
+                packageName = module.getName() + '.' + p;
+            }
             expectColon = true;
         }
         Package package_ = makePackage(module, packageName);
