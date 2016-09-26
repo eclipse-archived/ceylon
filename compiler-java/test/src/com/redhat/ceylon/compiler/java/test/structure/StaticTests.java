@@ -24,4 +24,9 @@ public class StaticTests extends CompilerTests {
     public void testStaticClass() {
         compareWithJavaSource("klass/StaticClass");
     }
+    
+    @Test
+    public void testStaticAlias() {
+        compareWithJavaSource("alias/StaticAlias");
+    }
 }
