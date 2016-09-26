@@ -6,26 +6,41 @@ class StaticMethod implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
         return "I\'m static";
     }
     
-    public static final .java.lang.String sharedStat() {
+    public static final <T>.java.lang.String sharedStat(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         return (
             let
             {
-                .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat$s();
+                .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat$s($reified$T);
+                T $ceylontmp$t$1 = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat$t($reified$T, $ceylontmp$s$0);
             }
-            returning sharedStat$canonical$($ceylontmp$s$0);
+            returning sharedStat$canonical$($reified$T, $ceylontmp$s$0, $ceylontmp$t$1);
         );
     }
     
-    public static final .java.lang.String sharedStat$s() {
+    public static final <T>.java.lang.String sharedStat$s(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         return "";
     }
     
-    private static .java.lang.String sharedStat$canonical$(final .java.lang.String s) {
+    public static final <T>.java.lang.String sharedStat(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String s) {
+        return (
+            let
+            {
+                T $ceylontmp$t$2 = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat$t($reified$T, s);
+            }
+            returning sharedStat$canonical$($reified$T, s, $ceylontmp$t$2);
+        );
+    }
+    
+    public static final <T>T sharedStat$t(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String s) {
+        return null;
+    }
+    
+    private static <T>.java.lang.String sharedStat$canonical$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String s, final T t) {
         return "I\'m static";
     }
     
-    public static final .java.lang.String sharedStat(final .java.lang.String s) {
-        return sharedStat$canonical$(s);
+    public static final <T>.java.lang.String sharedStat(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String s, final T t) {
+        return sharedStat$canonical$($reified$T, s, t);
     }
     
     public StaticMethod() {
@@ -48,20 +63,33 @@ final class staticMethod_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void staticMethod() {
-        .java.lang.String s = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat();
+        .java.lang.String s = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.<.ceylon.language.Integer>sharedStat(.ceylon.language.Integer.$TypeDescriptor$);
         s = (
             let
             {
-                .java.lang.String arg$1$0 = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat$s();
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$3$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                .java.lang.String arg$3$0 = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat$s(arg$3$reified$0);
+                .ceylon.language.Integer arg$3$1 = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat$t(arg$3$reified$0, arg$3$0);
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat(arg$1$0);
+            returning .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.<.ceylon.language.Integer>sharedStat(arg$3$reified$0, arg$3$0, arg$3$1);
         );
         s = (
             let
             {
-                .java.lang.String arg$2$0 = "";
+                .java.lang.String arg$4$0 = "";
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                .ceylon.language.Integer arg$4$1 = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat$t(arg$4$reified$0, arg$4$0);
             }
-            returning .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat(arg$2$0);
+            returning .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.<.ceylon.language.Integer>sharedStat(arg$4$reified$0, arg$4$0, arg$4$1);
+        );
+        s = (
+            let
+            {
+                .java.lang.String arg$5$0 = "";
+                .ceylon.language.Integer arg$5$1 = .ceylon.language.Integer.instance(1L);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$5$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+            }
+            returning .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.<.ceylon.language.Integer>sharedStat(arg$5$reified$0, arg$5$0, arg$5$1);
         );
     }
 }

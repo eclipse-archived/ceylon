@@ -1,7 +1,7 @@
 @noanno
 class StaticClass {
-    shared static class SharedStatic(String s = "") {}
-    static class Static() extends SharedStatic() {}
+    shared static class SharedStatic<T>(String s = "", T? t = null) {}
+    static class Static() extends SharedStatic<Integer>() {}
     
     shared new () {
         Static();
@@ -15,10 +15,14 @@ class StaticClass {
 //}
 @noanno
 void staticClass() {
-    variable value sharedStat = StaticClass.SharedStatic();
-    sharedStat = StaticClass.SharedStatic{};
-    sharedStat = StaticClass.SharedStatic{
+    variable value sharedStat = StaticClass.SharedStatic<Integer>();
+    sharedStat = StaticClass.SharedStatic<Integer>{};
+    sharedStat = StaticClass.SharedStatic<Integer>{
         s="";
+    };
+    sharedStat = StaticClass.SharedStatic<Integer>{
+        s="";
+        t=1;
     };
     //TODO variable value sharedStat2 = StaticInterface.SharedStatic();
     //sharedStat2 = StaticInterface.SharedStatic{};
