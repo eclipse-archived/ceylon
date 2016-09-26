@@ -31,6 +31,7 @@ import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Element;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -82,70 +83,83 @@ class Strategy {
         SELF
     }
     
-    private static Declaration getParameterizedDeclaration(Declaration decl) {
-        FunctionOrValue fov = (FunctionOrValue) decl;
-        Parameter param = fov.getInitializerParameter();
-        return param==null ? decl : param.getDeclaration();
-    }
-    
-    private static Declaration eliminateParametersAndConstructors(Declaration decl) {
-        if (decl.isParameter()) {
-            decl = getParameterizedDeclaration(decl);
+    public static DefaultParameterMethodOwner defaultParameterMethodOwner(Declaration decl) {
+        if (decl instanceof Function 
+                && !Decl.withinInterface(decl)
+                && !((Function)decl).isParameter()) {
+            return DefaultParameterMethodOwner.SELF;
+        }
+        if (decl instanceof FunctionOrValue
+                && ((FunctionOrValue)decl).isParameter()) {
+            decl = (Declaration) decl.getContainer();
         } 
         if (Decl.isConstructor(decl)) {
             decl = Decl.getConstructedClass(decl);
         }
-        return decl;
+        
+        if ((decl instanceof Function || decl instanceof Class) 
+                && decl.isToplevel()) {
+            // Only top-level methods have static default value methods
+            return DefaultParameterMethodOwner.STATIC;
+        } else if ((decl instanceof Class) 
+                && !decl.isToplevel()
+                && !Decl.isLocalNotInitializer(decl)) {
+            // Only inner classes have their default value methods on their outer
+            return Decl.getClassOrInterfaceContainer(decl, false) instanceof Class ? DefaultParameterMethodOwner.OUTER : DefaultParameterMethodOwner.OUTER_COMPANION;
+        }
+        
+        return DefaultParameterMethodOwner.INIT_COMPANION;
     }
     
-    public static DefaultParameterMethodOwner defaultParameterMethodOwner(Declaration decl) {
-        if (defaultParameterMethodOnSelf(decl)) {
-            return DefaultParameterMethodOwner.SELF;
-        } else if (defaultParameterMethodStatic(decl)) {
-            return DefaultParameterMethodOwner.STATIC;
-        } else if (defaultParameterMethodOnOuter(decl)) {
-            return Decl.getClassOrInterfaceContainer(decl, false) instanceof Class ? 
-                    DefaultParameterMethodOwner.OUTER : 
-                    DefaultParameterMethodOwner.OUTER_COMPANION;
-        } else {
-            return DefaultParameterMethodOwner.INIT_COMPANION;
-        }
-    }
-
     public static boolean defaultParameterMethodStatic(Tree.Declaration decl) {
-        // Only top-level/static methods and top-level class initializers 
+        // Only top-level methods and top-level class initializers 
         // have static default value methods
         return defaultParameterMethodStatic(decl.getDeclarationModel());
     }
     
-    public static boolean defaultParameterMethodStatic(Declaration decl) {
-        // Only top-level/static methods have static default value methods
-        Declaration dec = eliminateParametersAndConstructors(decl);
-        return (dec instanceof Class || dec instanceof Function)
-                && (dec.isToplevel() || dec.isStatic());
+    public static boolean defaultParameterMethodStatic(Element decl) {
+        if (decl instanceof FunctionOrValue
+                && ((FunctionOrValue)decl).isParameter()) {
+            decl = (Element) decl.getContainer();
+        }
+        if (decl instanceof Declaration && Decl.isConstructor((Declaration)decl)) {
+            decl = (Class)Decl.getConstructedClass((Declaration)decl);
+        }
+        // Only top-level methods have static default value methods
+        return ((decl instanceof Function && !((Function)decl).isParameter())
+                || decl instanceof Class) 
+                && ((Declaration)decl).isToplevel();
     }
-
+    
     public static boolean defaultParameterMethodOnOuter(Tree.Declaration decl) {
-        // Only top-level/static methods and top-level class initializers 
+        // Only top-level methods and top-level class initializers 
         // have static default value methods
         return defaultParameterMethodOnOuter(decl.getDeclarationModel());
     }
     
-    public static boolean defaultParameterMethodOnOuter(Declaration decl) {
+    public static boolean defaultParameterMethodOnOuter(Element elem) {
+        if (elem instanceof Declaration 
+                && Decl.isConstructor((Declaration)elem)) {
+            elem = Decl.getConstructedClass((Declaration)elem);
+        }
+        if (elem instanceof FunctionOrValue
+                && ((FunctionOrValue)elem).isParameter()) {
+            elem = (Element) ((FunctionOrValue)elem).getContainer();
+        }
+        
         // Only inner classes have their default value methods on their outer
-        Declaration dec = eliminateParametersAndConstructors(decl);
-        return dec instanceof Class
-                && !dec.isToplevel()
-                && !Decl.isLocalNotInitializer(dec);
+        return (elem instanceof Class) 
+                && !((Class)elem).isToplevel()
+                && !Decl.isLocalNotInitializer((Class)elem);
     }
-
+    
     public static boolean defaultParameterMethodOnSelf(Tree.Declaration decl) {
         return defaultParameterMethodOnSelf(decl.getDeclarationModel());
     }
     
     public static boolean defaultParameterMethodOnSelf(Declaration decl) {
         return decl instanceof Function
-                && !decl.isParameter()
+                && !((Function)decl).isParameter()
                 && !Decl.withinInterface(decl);
     }
     
