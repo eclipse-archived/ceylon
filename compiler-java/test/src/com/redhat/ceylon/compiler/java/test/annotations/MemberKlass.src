@@ -20,7 +20,9 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.MemberMember.class)})
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.class,
+            isStatic = false)
     public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member() {
@@ -35,7 +37,9 @@ public class MemberKlass implements .com.redhat.ceylon.compiler.java.runtime.mod
                 major = 8,
                 minor = 1)
         @.ceylon.language.SharedAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.class)
+        @.com.redhat.ceylon.compiler.java.metadata.Container(
+                klass = .com.redhat.ceylon.compiler.java.test.annotations.MemberKlass.Member.class,
+                isStatic = false)
         public class MemberMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
             
             protected MemberMember() {
@@ -94,7 +98,9 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
             major = 8,
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.Object
     public final class foo_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
         
@@ -117,7 +123,9 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
                 major = 8,
                 minor = 1)
         @.ceylon.language.SharedAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.class)
+        @.com.redhat.ceylon.compiler.java.metadata.Container(
+                klass = .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass.foo_.class,
+                isStatic = false)
         @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
                 value = "TTT",
                 variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,

@@ -71,7 +71,9 @@ public final class Bug1481Heap$impl<Key, Item> implements .java.io.Serializable 
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("Key->Item")
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class,
+            isStatic = false)
     public final class HEntry {
         
         private HEntry() {
@@ -82,7 +84,9 @@ public final class Bug1481Heap$impl<Key, Item> implements .java.io.Serializable 
             major = 8,
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("Key->Item")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class,
+            isStatic = false)
     final class HEntry2 {
         
         private HEntry2() {
@@ -115,7 +119,9 @@ public final class Bug1481Heap$impl<Key, Item> implements .java.io.Serializable 
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.issues.bug14xx::Bug1481Foo")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class,
+            isStatic = false)
     public final class H2 {
         
         private H2() {
@@ -142,7 +148,9 @@ public final class Bug1481Heap$impl<Key, Item> implements .java.io.Serializable 
             major = 8,
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.issues.bug14xx::Bug1481Foo")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1481Heap.class,
+            isStatic = false)
     final class H3 {
         
         private H3() {

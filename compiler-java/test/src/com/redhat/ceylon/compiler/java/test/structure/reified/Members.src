@@ -48,7 +48,9 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "Inner",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -128,7 +130,9 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
         minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("InnerInterface")
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface.class)
+@.com.redhat.ceylon.compiler.java.metadata.Container(
+        klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterInterface.class,
+        isStatic = false)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "Inner",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -274,7 +278,9 @@ public class OuterClass2 implements .com.redhat.ceylon.compiler.java.runtime.mod
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.reified.OuterClass2.class,
+            isStatic = false)
     public class InnerClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected InnerClass() {

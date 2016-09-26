@@ -37,7 +37,9 @@ public class MemberClassAliasWithParameters_Foo implements .com.redhat.ceylon.co
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.class,
+            isStatic = false)
     public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
@@ -74,7 +76,9 @@ public class MemberClassAliasWithParameters_Foo implements .com.redhat.ceylon.co
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasWithParameters_Foo.Member")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.class,
+            isStatic = false)
     public final class MemberClassAlias {
         
         private MemberClassAlias() {

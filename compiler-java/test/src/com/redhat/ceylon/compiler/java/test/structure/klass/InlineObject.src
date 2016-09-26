@@ -568,7 +568,9 @@ class InlineObjectInSuperClassParam extends .com.redhat.ceylon.compiler.java.tes
                         major = 8,
                         minor = 1)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#6")
-                @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.class)
+                @.com.redhat.ceylon.compiler.java.metadata.Container(
+                        klass = .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInSuperClassParam.class,
+                        isStatic = false)
                 @.com.redhat.ceylon.compiler.java.metadata.Object
                 class anonymous_6_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
                     

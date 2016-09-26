@@ -75,7 +75,9 @@ class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitClass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitClass.class,
+            isStatic = false)
     public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
@@ -335,7 +337,9 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedClass.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "X",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -406,7 +410,9 @@ class LitClassWithConstructors implements .com.redhat.ceylon.compiler.java.runti
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitClassWithConstructors.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
     public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
@@ -533,7 +539,9 @@ class LitParameterisedClassWithConstructors<T> extends .com.redhat.ceylon.compil
         minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Member")
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface.class)
+@.com.redhat.ceylon.compiler.java.metadata.Container(
+        klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitInterface.class,
+        isStatic = false)
 public interface LitInterface$Member {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -562,7 +570,9 @@ final class LitInterface$impl implements .java.io.Serializable {
         minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Member")
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface.class)
+@.com.redhat.ceylon.compiler.java.metadata.Container(
+        klass = .com.redhat.ceylon.compiler.java.test.metamodel.LitParameterisedInterface.class,
+        isStatic = false)
 @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
         value = "X",
         variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -885,7 +895,9 @@ class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.metamodel.RelativeLiterals.class,
+            isStatic = false)
     public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Inner() {
@@ -968,7 +980,9 @@ public class Constructors implements .com.redhat.ceylon.compiler.java.runtime.mo
             major = 8,
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Name("NonSharedMember")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.metamodel.Constructors.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.metamodel.Constructors.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
     class NonSharedMember implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         

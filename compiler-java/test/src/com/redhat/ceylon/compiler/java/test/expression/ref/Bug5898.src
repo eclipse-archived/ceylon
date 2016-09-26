@@ -56,7 +56,9 @@ class Bug5898 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
     public class D implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         @.com.redhat.ceylon.compiler.java.metadata.Ignore

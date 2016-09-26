@@ -442,7 +442,9 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             major = 8,
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Name("javaIoSerializableObject")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.Object
     @.com.redhat.ceylon.compiler.java.metadata.Class
     public final class javaIoSerializableObject_ extends .java.lang.Object implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -520,7 +522,9 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
     public class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         

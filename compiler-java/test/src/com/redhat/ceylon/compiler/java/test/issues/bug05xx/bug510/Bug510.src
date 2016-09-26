@@ -4,7 +4,9 @@ package com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510;
         major = 8,
         minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("Bug510inner")
-@.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510.class)
+@.com.redhat.ceylon.compiler.java.metadata.Container(
+        klass = .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.Bug510.class,
+        isStatic = false)
 interface Bug510$Bug510inner {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(

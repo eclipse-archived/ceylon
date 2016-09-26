@@ -35,7 +35,9 @@ class Bug2176C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176C.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.Class(constructors = true)
     public class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         

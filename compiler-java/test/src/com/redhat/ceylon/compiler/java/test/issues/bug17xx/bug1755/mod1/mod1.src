@@ -30,7 +30,9 @@ public final class Charset$impl implements .java.io.Serializable {
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset.class,
+            isStatic = false)
     public abstract class Decoder implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Decoder() {
@@ -80,7 +82,9 @@ public final class utf8_ implements .java.io.Serializable, .com.redhat.ceylon.co
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "<ceylon.language::Basic&com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1::Charset>.Decoder")
     public class Decoder extends .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.Charset$impl.Decoder {
         
