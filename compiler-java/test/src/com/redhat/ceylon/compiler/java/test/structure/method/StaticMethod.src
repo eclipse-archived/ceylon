@@ -91,5 +91,44 @@ final class staticMethod_ {
             }
             returning .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.<.ceylon.language.Integer>sharedStat(arg$5$reified$0, arg$5$0, arg$5$1);
         );
+        final .ceylon.language.Callable<? extends .ceylon.language.String> ref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$)), "String(String=, Integer?=)", (short)-1){
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$() {
+                final .java.lang.String s = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat$s(.ceylon.language.Integer.$TypeDescriptor$);
+                final .ceylon.language.Integer t = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat$t(.ceylon.language.Integer.$TypeDescriptor$, s);
+                return $calltyped$(s, t);
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                final .ceylon.language.Integer t = .com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat$t(.ceylon.language.Integer.$TypeDescriptor$, s);
+                return $calltyped$(s, t);
+            }
+            
+            @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                final .ceylon.language.Integer t = (.ceylon.language.Integer)$param$1;
+                return $calltyped$(s, t);
+            }
+            
+            private .ceylon.language.String $calltyped$(final .java.lang.String s, final .ceylon.language.Integer t) {
+                return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.structure.method.StaticMethod.sharedStat(.ceylon.language.Integer.$TypeDescriptor$, s, t));
+            }
+        };
+        ref.$call$((.java.lang.Object).ceylon.language.String.instance(""), .ceylon.language.Integer.instance(1L));
+        final .java.lang.Object i = (
+            let
+            {
+                .java.lang.String arg$6$0 = "123";
+                long arg$6$1 = .ceylon.language.Integer.parse$radix(arg$6$0);
+            }
+            returning .ceylon.language.Integer.parse(arg$6$0, arg$6$1);
+        );
     }
 }

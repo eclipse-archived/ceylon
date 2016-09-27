@@ -103,5 +103,33 @@ final class staticClass_ {
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic(arg$5$reified$0, arg$5$0, arg$5$1);
         );
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer>> ref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.class, .ceylon.language.Integer.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$)), "StaticClass.SharedStatic<Integer>(String=, Integer?=)", (short)-1){
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer> $call$() {
+                final .java.lang.String s = .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.$default$SharedStatic$s(.ceylon.language.Integer.$TypeDescriptor$);
+                final .ceylon.language.Integer t = .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.$default$SharedStatic$t(.ceylon.language.Integer.$TypeDescriptor$, s);
+                return $calltyped$(s, t);
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer> $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                final .ceylon.language.Integer t = .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.$default$SharedStatic$t(.ceylon.language.Integer.$TypeDescriptor$, s);
+                return $calltyped$(s, t);
+            }
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer> $call$(final .java.lang.Object $param$0, final .java.lang.Object $param$1) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                final .ceylon.language.Integer t = (.ceylon.language.Integer)$param$1;
+                return $calltyped$(s, t);
+            }
+            
+            private .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer> $calltyped$(final .java.lang.String s, final .ceylon.language.Integer t) {
+                return new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic(.ceylon.language.Integer.$TypeDescriptor$, s, t);
+            }
+        };
+        ref.$call$((.java.lang.Object).ceylon.language.String.instance(""), .ceylon.language.Integer.instance(1L));
     }
 }
