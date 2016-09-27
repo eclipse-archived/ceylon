@@ -82,11 +82,12 @@ import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
 import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.langtools.source.util.TaskEvent;
 import com.redhat.ceylon.langtools.source.util.TaskListener;
+import com.redhat.ceylon.langtools.tools.javac.code.Kinds;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
-import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.ClassType;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.code.Types;
 import com.redhat.ceylon.langtools.tools.javac.comp.Annotate;
 import com.redhat.ceylon.langtools.tools.javac.comp.AttrContext;
@@ -258,10 +259,7 @@ public class CeylonEnter extends Enter {
         for(ClassSymbol classSymbol : symtab.classes.values()){
             if(Util.isLoadedFromSource(classSymbol) 
                     || (classSymbol.sourcefile != null && classSymbol.sourcefile.getKind() == Kind.SOURCE)){
-                PackageSymbol pkg = classSymbol.packge();
-                String name = pkg.getQualifiedName().toString();
-                if(name.startsWith(AbstractModelLoader.CEYLON_LANGUAGE) || name.startsWith("com.redhat.ceylon.compiler.java"))
-                    resetClassSymbol(classSymbol);
+                resetClassSymbol(classSymbol);
             }
         }
         
@@ -306,10 +304,19 @@ public class CeylonEnter extends Enter {
         classType.interfaces_field = null;
         classType.supertype_field = null;
         classType.typarams_field = null;
+        // make sure we give erroneous types a second chance
+        if(classType.getTag() == TypeTag.ERROR){
+            // This is how ClassSymbol's constructor builds them, so make'em brand new
+            classSymbol.type = new ClassType(com.redhat.ceylon.langtools.tools.javac.code.Type.noType, null, null);
+            classSymbol.type.tsym = classSymbol;
+        }
         
         // reset its members and completer
         classSymbol.members_field = null;
         classSymbol.completer = null;
+        // make sure we revert the class symbol kind to a new state by removing ERR kinds
+        classSymbol.kind = Kinds.TYP;
+        classSymbol.flags_field = 0;
     }
 
     @Override
