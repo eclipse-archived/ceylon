@@ -939,7 +939,7 @@ public class Naming extends NamingBase implements LocalId {
             if (container instanceof TypedDeclaration) {
                 return makeSelect(makeName((TypedDeclaration)container, NA_FQ | NA_WRAPPER), methodName);
             } else {
-                return makeSelect(gen().makeJavaType(((TypeDeclaration)container).getType(), AbstractTransformer.JT_RAW), methodName);
+                return makeSelect(gen().makeJavaType(((TypeDeclaration)container).getType(), AbstractTransformer.JT_RAW|AbstractTransformer.JT_NO_PRIMITIVES), methodName);
             }
         } else {
             // inner or local class or method, or method in an interface
