@@ -50,6 +50,7 @@ import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
@@ -421,7 +422,20 @@ public class CallableBuilder {
         }
         @Override
         public JCExpression makeDefaultValueMethod(AbstractTransformer gen, Parameter defaultedParam, List<JCExpression> defaultMethodArgs) {
-            JCExpression fn = gen.naming.makeDefaultedParamMethod(gen.naming.makeUnquotedIdent(Unfix.$instance$), 
+            JCExpression qualifier;
+            Declaration decl = defaultedParam.getDeclaration();
+            if (decl.isStatic()) {
+                if (decl instanceof ClassOrInterface) {
+                    qualifier = gen.makeJavaType(((ClassOrInterface)decl).getType(), gen.JT_RAW|gen.JT_NO_PRIMITIVES);
+                } else if (decl instanceof TypedDeclaration) {
+                    qualifier = gen.naming.makeName((TypedDeclaration)decl, Naming.NA_FQ|Naming.NA_WRAPPER);
+                } else {
+                    qualifier = null;
+                }
+            } else {
+                qualifier = gen.naming.makeUnquotedIdent(Unfix.$instance$);
+            }
+            JCExpression fn = gen.naming.makeDefaultedParamMethod(qualifier, 
                                                                   defaultedParam);
             return gen.make().Apply(null, 
                     fn,
