@@ -438,7 +438,7 @@ public class CallableBuilder {
         
         ArrayList<Type> pt = new ArrayList<>();
         for (Parameter p : methodOrClass.getFirstParameterList().getParameters()) {
-            pt.add(p.getType());
+            pt.add(((Tree.MemberOrTypeExpression)node).getTarget().getTypedParameter(p).getType());
         }
         inner.parameterTypes = pt; 
 
