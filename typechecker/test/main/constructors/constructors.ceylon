@@ -408,7 +408,7 @@ class WithMemberRefInDelegation {
     @error shared new broken2(Integer i) extends create(str(i)) {} 
 }
 
-@error class WithNoSharedConstructor {
+class WithNoSharedConstructor {
     new instance {}
     new create() {}
 }

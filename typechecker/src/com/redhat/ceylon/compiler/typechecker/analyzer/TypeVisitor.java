@@ -788,7 +788,7 @@ public class TypeVisitor extends Visitor {
                             1001);
                 }
             }
-            else {
+            /*else {
                 // Check if the class has at least one shared constructor
                 boolean found = hasSharedConstructors(cd);
                 // If not found check if the declaration is a native implementation
@@ -808,11 +808,11 @@ public class TypeVisitor extends Visitor {
                             cd.getName() + 
                             "' has no shared constructor");
                 }
-            }
+            }*/
         }
     }
 
-    private boolean hasSharedConstructors(Class cd) {
+   /* private boolean hasSharedConstructors(Class cd) {
         for (Declaration m: cd.getMembers()) {
             if (m instanceof Constructor &&
                     m.isShared()) {
@@ -820,7 +820,7 @@ public class TypeVisitor extends Visitor {
             }
         }
         return false;
-    }
+    }*/
     
     @Override 
     public void visit(Tree.InterfaceDefinition that) {
