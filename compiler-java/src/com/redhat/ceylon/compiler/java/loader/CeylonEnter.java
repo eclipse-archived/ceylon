@@ -156,6 +156,7 @@ public class CeylonEnter extends Enter {
     private SourceLanguage sourceLanguage;
     private StatusPrinter sp;
     private boolean hasJavaAndCeylonSources;
+    private LanguageCompiler compiler;
 
     
     protected CeylonEnter(Context context) {
@@ -185,6 +186,7 @@ public class CeylonEnter extends Enter {
         annotate = Annotate.instance(context);
         taskListener = context.get(TaskListener.class);
         sourceLanguage = SourceLanguage.instance(context);
+        compiler = (LanguageCompiler) LanguageCompiler.instance(context);
 
         // now superclass init
         init(context);
@@ -213,17 +215,22 @@ public class CeylonEnter extends Enter {
                 javaTrees = javaTrees.prepend(tree);
         }
         timer.startTask("Enter on Java trees");
+        boolean needsModelReset = isBootstrap;
         // enter java trees first to set up their ClassSymbol objects for ceylon trees to use during type-checking
         if(!javaTrees.isEmpty()){
             setupImportedPackagesForJavaTrees(javaTrees);
             hasJavaAndCeylonSources = true;
+            needsModelReset = true;
         }
         if(isBootstrap || hasJavaAndCeylonSources){
             super.main(trees);
         }
         // now we can type-check the Ceylon code
         completeCeylonTrees(trees);
-        if(isBootstrap || hasJavaAndCeylonSources){
+        if(compiler.isHadRunTwiceException()){
+            needsModelReset = true;
+        }
+        if(needsModelReset){
             // bootstrapping the language module is a bit more complex
             resetAndRunEnterAgain(trees);
         }else{
