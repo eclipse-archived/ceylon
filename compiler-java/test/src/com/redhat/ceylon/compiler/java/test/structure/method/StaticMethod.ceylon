@@ -20,4 +20,8 @@ void staticMethod() {
     
     value ref = StaticMethod.sharedStat<Integer>;
     ref("", 1);
+    
+    value i = Integer.parse{
+        string="123";
+    };
 }
