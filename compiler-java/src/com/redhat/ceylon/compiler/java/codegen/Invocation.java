@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.java.codegen.Strategy.DefaultParameterMethodOwner;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -1348,9 +1349,11 @@ class NamedArgumentInvocation extends Invocation {
             appendVarsForSequencedArguments(sequencedArgument, declaredParams);
         boolean hasDefaulted = appendVarsForDefaulted(declaredParams);
         
+        DefaultParameterMethodOwner owner = Strategy.defaultParameterMethodOwner(getPrimaryDeclaration());
         if (hasDefaulted 
-                && !Strategy.defaultParameterMethodStatic(getPrimaryDeclaration())
-                && !Strategy.defaultParameterMethodOnOuter(getPrimaryDeclaration())) {
+                && owner != DefaultParameterMethodOwner.STATIC
+                && owner != DefaultParameterMethodOwner.OUTER 
+                && owner != DefaultParameterMethodOwner.OUTER_COMPANION) {
             vars.prepend(makeThis());
         }
         gen.expressionGen().withinInvocation(prev);

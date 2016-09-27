@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.DeferredSpecification;
+import com.redhat.ceylon.compiler.java.codegen.Strategy.DefaultParameterMethodOwner;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Generate;
@@ -3911,7 +3912,8 @@ public class ClassTransformer extends AbstractTransformer {
                     transformMplBodyUnlessSpecifier(def, model, body),
                     refinedResultType 
                     && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
-                    !Strategy.defaultParameterMethodOnSelf(model));
+                    !Strategy.defaultParameterMethodOnSelf(model)
+                    && !Strategy.defaultParameterMethodStatic(model));
         } else {// Is within interface
             // Transform the definition to the companion class, how depends
             // on what kind of method it is
@@ -4445,13 +4447,15 @@ public class ClassTransformer extends AbstractTransformer {
     abstract class DaoBody {
         
         protected List<JCExpression> makeTypeArguments(DefaultedArgumentOverload ol) {
-            if (ol.defaultParameterMethodOnSelf() 
-                    || ol.defaultParameterMethodOnOuter()) {
+            switch(Strategy.defaultParameterMethodOwner(ol.getModel())) {
+            case OUTER:
+            case OUTER_COMPANION:
+            case SELF:
                 return List.<JCExpression>nil();
-            } else if (ol.defaultParameterMethodStatic()){
+            case STATIC:
                 Functional f = (Functional)ol.getModel();
                 return typeArguments(f instanceof Constructor ? (Class)((Constructor)f).getContainer() : f);
-            } else {
+            default:
                 return List.<JCExpression>nil();
             }
         }
@@ -4696,22 +4700,10 @@ public class ClassTransformer extends AbstractTransformer {
         private WideningRules getWideningRules(Parameter parameterModel) {
             // static methods don't have to refine anything from the supertype so they're not bound to
             // widening issues
-            return defaultParameterMethodStatic() ? WideningRules.NONE : WideningRules.CAN_WIDEN;
+            return Strategy.defaultParameterMethodOwner(getModel()) == DefaultParameterMethodOwner.STATIC ? WideningRules.NONE : WideningRules.CAN_WIDEN;
         }
 
         protected abstract void initVars(Parameter currentParameter, ListBuffer<JCStatement> vars);
-
-        protected final boolean defaultParameterMethodOnSelf() {
-            return Strategy.defaultParameterMethodOnSelf(getModel());
-        }
-
-        protected final boolean defaultParameterMethodOnOuter() {
-            return Strategy.defaultParameterMethodOnOuter(getModel());
-        }
-
-        protected final boolean defaultParameterMethodStatic() {
-            return Strategy.defaultParameterMethodStatic(getModel());
-        }
 
         protected abstract Declaration getModel();
 
@@ -5019,8 +5011,10 @@ public class ClassTransformer extends AbstractTransformer {
         
         @Override
         protected void initVars(Parameter currentParameter, ListBuffer<JCStatement> vars) {
-            if (!Strategy.defaultParameterMethodStatic(klass)
-                    && !Strategy.defaultParameterMethodOnOuter(klass)
+            DefaultParameterMethodOwner owner = Strategy.defaultParameterMethodOwner(klass);
+            if (owner != DefaultParameterMethodOwner.STATIC
+                    && owner != DefaultParameterMethodOwner.OUTER
+                    && owner != DefaultParameterMethodOwner.OUTER_COMPANION
                     && currentParameter != null) {
                 companionInstanceName = naming.temp("impl");
                 vars.append(makeVar(companionInstanceName, 
@@ -5034,18 +5028,23 @@ public class ClassTransformer extends AbstractTransformer {
         
         @Override
         protected JCIdent makeDefaultArgumentValueMethodQualifier() {
-            if (defaultParameterMethodOnOuter()){
+            switch(Strategy.defaultParameterMethodOwner(getModel())) {
+            case OUTER:
+            case OUTER_COMPANION: {
                 // if we're refining a class we can't declare new default values, so we should get
                 // them from the instance rather than the outer interface impl
                 if(getModel().isActual() && getModel().getContainer() instanceof Interface)
                     return naming.makeUnquotedIdent("$this");
                 return null;
-            }else if (defaultParameterMethodOnSelf() 
-                    || daoBody instanceof DaoCompanion) {
+            }
+            case SELF:
                 return null;
-            } else if (defaultParameterMethodStatic()){
+            case STATIC:
                 return null;
-            } else {
+            default:
+                if (daoBody instanceof DaoCompanion) {
+                    return null;
+                }
                 return companionInstanceName.makeIdent();
             }
         }

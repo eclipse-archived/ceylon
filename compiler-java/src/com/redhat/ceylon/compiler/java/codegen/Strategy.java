@@ -21,6 +21,7 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.List;
 
+import com.redhat.ceylon.compiler.java.codegen.Strategy.DefaultParameterMethodOwner;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.MethodDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
@@ -81,7 +82,8 @@ class Strategy {
         SELF
     }
     
-    public static DefaultParameterMethodOwner defaultParameterMethodOwner(Declaration decl) {
+    public static DefaultParameterMethodOwner defaultParameterMethodOwner(final Declaration odecl) {
+        Declaration decl = odecl;
         if (defaultParameterMethodOnSelf(decl)) {
             return DefaultParameterMethodOwner.SELF;
         }
@@ -106,45 +108,20 @@ class Strategy {
         return DefaultParameterMethodOwner.INIT_COMPANION;
     }
     
-    public static boolean defaultParameterMethodStatic(Tree.Declaration decl) {
-        // Only top-level methods and top-level class initializers 
-        // have static default value methods
-        return defaultParameterMethodStatic(decl.getDeclarationModel());
+    
+    public static boolean defaultParameterMethodStatic(final Declaration odecl) {
+        return defaultParameterMethodOwner(odecl) == DefaultParameterMethodOwner.STATIC;
     }
     
-    public static boolean defaultParameterMethodStatic(Declaration decl) {
-        if (decl.isParameter() && decl.getContainer() instanceof Declaration) {
-            decl = (Declaration) decl.getContainer();
-        }
-        if (Decl.isConstructor(decl)) {
-            decl = Decl.getConstructedClass(decl);
-        }
-        // Only top-level methods have static default value methods
-        return (decl instanceof Function 
-                    && !decl.isParameter() //TODO: this looks like an unnecessary condition to me (no toplevel or static parameters?)
-                    || decl instanceof Class) 
-                && (decl.isToplevel() || decl.isStatic());
+    public static boolean defaultParameterMethodOnOuter(final Declaration odecl) {
+        return defaultParameterMethodOwner(odecl) == DefaultParameterMethodOwner.OUTER;
     }
     
-    public static boolean defaultParameterMethodOnOuter(Tree.Declaration decl) {
-        // Only top-level methods and top-level class initializers 
-        // have static default value methods
-        return defaultParameterMethodOnOuter(decl.getDeclarationModel());
-    }
-    
-    public static boolean defaultParameterMethodOnOuter(Declaration decl) {
-        if (Decl.isConstructor(decl)) {
-            decl = Decl.getConstructedClass(decl);
-        }
-        if (decl.isParameter() && decl.getContainer() instanceof Declaration) {
-            decl = (Declaration) decl.getContainer();
-        }
-        
-        // Only inner classes have their default value methods on their outer
-        return isInnerClass(decl);
-    }
 
     private static boolean isInnerClass(Declaration elem) {
+        if (elem instanceof Constructor) {
+            elem = (Declaration)elem.getContainer();
+        }
         return elem instanceof Class
                 && !elem.isToplevel()
                 && !Decl.isLocalNotInitializer(elem);
@@ -156,8 +133,11 @@ class Strategy {
     
     public static boolean defaultParameterMethodOnSelf(Declaration decl) {
         return decl instanceof Function
+                && !Decl.isConstructor(decl)
                 && !decl.isParameter()
-                && !Decl.withinInterface(decl);
+                && !Decl.withinInterface(decl)
+                && !decl.isToplevel()
+                && !decl.isStatic();
     }
     
     public static boolean hasDefaultParameterValueMethod(Parameter param) {

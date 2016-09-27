@@ -5747,7 +5747,7 @@ public abstract class AbstractTransformer implements Transformation {
     
     JCExpression makeStaticQualifier(Declaration d) {
         if (!d.isStatic()) {
-            throw new BugException("Non-static declaration can't have a static qualifier");
+            //throw new BugException("Non-static declaration can't have a static qualifier");
         }
         if (d instanceof TypedDeclaration) {
             return naming.makeName((TypedDeclaration)d, Naming.NA_FQ|Naming.NA_WRAPPER);
