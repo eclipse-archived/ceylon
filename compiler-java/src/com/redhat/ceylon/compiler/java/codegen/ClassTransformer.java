@@ -5280,7 +5280,7 @@ public class ClassTransformer extends AbstractTransformer {
                 && !noBody)){
             modifiers |= PRIVATE;
         }
-        boolean staticMethod = Strategy.defaultParameterMethodStatic(container);
+        boolean staticMethod = container != null && Strategy.defaultParameterMethodStatic(container);
         if (staticMethod) {
             // static default parameter methods should be consistently public so that if non-shared class Top and
             // shared class Bottom which extends Top both have the same default param name, we don't get an error
