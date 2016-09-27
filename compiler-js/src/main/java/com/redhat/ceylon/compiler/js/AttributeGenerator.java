@@ -217,10 +217,11 @@ public class AttributeGenerator {
         if (!gen.opts.isOptimize()||d.isToplevel()||d.getTypeDeclaration()==null) return;
         gen.comment(that);
         final String atname = gen.getNames().valueName(d);
+        final String outerName = d.isStatic() ? gen.getNames().name(outer) + ".$st$" : gen.getNames().self(outer);
         if (d.isFormal()) {
             generateAttributeMetamodel(that, false, false, gen);
         } else if (that.getSpecifierOrInitializerExpression() == null) {
-            gen.defineAttribute(gen.getNames().self(outer), gen.getNames().name(d));
+            gen.defineAttribute(outerName, gen.getNames().name(d));
             gen.out("{");
             if (TypeUtils.isNativeExternal(d)) {
                 //this is for native member attribute declaration with no value
@@ -228,9 +229,16 @@ public class AttributeGenerator {
             } else {
                 //Just return the private value #451
                 if (d.isLate()) {
+                    //TODO what about statics?
                     gen.generateUnitializedAttributeReadCheck("this."+atname, gen.getNames().name(d));
                 }
-                gen.out("return this.", atname , ";");
+                if (d.isStatic()) {
+                    gen.out("return ");
+                    that.getSpecifierOrInitializerExpression().visit(gen);
+                    gen.out(";");
+                } else {
+                    gen.out("return this.", atname , ";");
+                }
             }
             gen.out("},");
             Tree.AttributeSetterDefinition setterDef = null;
@@ -271,7 +279,7 @@ public class AttributeGenerator {
                 if (that.getSpecifierOrInitializerExpression()
                                 instanceof LazySpecifierExpression) {
                     // attribute is defined by a lazy expression ("=>" syntax)
-                    gen.defineAttribute(gen.getNames().self(outer), gen.getNames().name(d));
+                    gen.defineAttribute(outerName, gen.getNames().name(d));
                     gen.beginBlock();
                     gen.initSelf(that);
                     boolean stitch = TypeUtils.isNativeExternal(d);
@@ -312,7 +320,7 @@ public class AttributeGenerator {
                 }
                 else {
                     final String privname = param == null ? gen.getNames().privateName(d) : gen.getNames().name(param)+"_";
-                    gen.defineAttribute(gen.getNames().self(outer), gen.getNames().name(d));
+                    gen.defineAttribute(outerName, gen.getNames().name(d));
                     gen.out("{");
                     if (d.isLate()) {
                         gen.generateUnitializedAttributeReadCheck("this."+privname, gen.getNames().name(d));
@@ -329,7 +337,13 @@ public class AttributeGenerator {
                         }
                         gen.out("}");
                     } else {
-                        gen.out("return this.", privname, ";}");
+                        if (d.isStatic()) {
+                            gen.out("return ");
+                            gen.visitSingleExpression(that.getSpecifierOrInitializerExpression().getExpression());
+                            gen.out("}");
+                        } else {
+                            gen.out("return this.", privname, ";}");
+                        }
                     }
                     if (d.isVariable() || d.isLate()) {
                         final String pname = gen.getNames().createTempVariable();
@@ -375,6 +389,7 @@ public class AttributeGenerator {
             if (d.isToplevel()) {
                 gen.out("var ");
             } else if (gen.outerSelf(d)) {
+                //TODO what about statics?
                 gen.out(".");
             }
             //issue 297 this is only needed in some cases
@@ -389,6 +404,7 @@ public class AttributeGenerator {
         }
         if (addGetter) {
             if (!d.isToplevel()) {
+                //TODO what about statics?
                 if (gen.outerSelf(d))gen.out(".");
             }
             gen.out(pnameMeta, ".get=");
@@ -408,6 +424,7 @@ public class AttributeGenerator {
         if (addSetter) {
             final String pset = gen.getNames().setter(d instanceof Setter ? ((Setter)d).getGetter() : d);
             if (!d.isToplevel()) {
+                //TODO what about statics?
                 if (gen.outerSelf(d))gen.out(".");
             }
             gen.out(pnameMeta, ".set=", pset);

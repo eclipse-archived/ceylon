@@ -224,7 +224,11 @@ public class FunctionHelper {
                 // prototype definition
                 gen.comment(that);
                 gen.initDefaultedParameters(that.getParameterLists().get(0), that);
-                gen.out(gen.getNames().self(outer), ".");
+                if (m.isStatic()) {
+                    gen.out(gen.getNames().name(outer), ".$st$.");
+                } else {
+                    gen.out(gen.getNames().self(outer), ".");
+                }
             }
             gen.out(gen.getNames().name(m));
             if (!m.isToplevel())gen.out("=");
@@ -243,7 +247,11 @@ public class FunctionHelper {
                     that.getSpecifierExpression().getExpression(), m, true, !m.isToplevel(), gen);
             gen.endLine(true);
             if (outer != null) {
-                gen.out(gen.getNames().self(outer), ".");
+                if (m.isStatic()) {
+                    gen.out(gen.getNames().name(outer), ".$st$.");
+                } else {
+                    gen.out(gen.getNames().self(outer), ".");
+                }
             }
             gen.out(gen.getNames().name(m), ".$crtmm$=");
             TypeUtils.encodeMethodForRuntime(that, gen);
@@ -503,16 +511,16 @@ public class FunctionHelper {
             if (TypeUtils.isConstructor(d)) {
                 Constructor cd = TypeUtils.getConstructor(d);
                 final boolean hasTargs = BmeGenerator.hasTypeParameters(
-                        (Tree.BaseTypeExpression)that.getPrimary());
+                        (Tree.BaseTypeExpression) that.getPrimary());
                 if (hasTargs) {
                     if (that.getDirectlyInvoked()) {
                         gen.out(gen.qualifiedPath(that, cd), gen.getNames().constructorSeparator(cd),
                                 gen.getNames().name(cd));
                     } else {
                         BmeGenerator.printGenericMethodReference(gen,
-                                (Tree.BaseTypeExpression)that.getPrimary(), "0",
+                                (Tree.BaseTypeExpression) that.getPrimary(), "0",
                                 gen.qualifiedPath(that, cd) + gen.getNames().constructorSeparator(cd) +
-                                gen.getNames().name(cd));
+                                        gen.getNames().name(cd));
                     }
                 } else {
                     gen.qualify(that, cd);
@@ -521,6 +529,8 @@ public class FunctionHelper {
                         gen.out("()");
                     }
                 }
+            } else if (d.isStatic()) {
+                BmeGenerator.generateStaticReference(d, gen);
             } else {
                 gen.out("function(x){return ");
                 if (BmeGenerator.hasTypeParameters(that)) {

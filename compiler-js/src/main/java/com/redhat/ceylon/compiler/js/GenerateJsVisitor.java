@@ -952,14 +952,25 @@ public class GenerateJsVisitor extends Visitor {
             out("(function(", names.self(d), ")");
             beginBlock();
             if (enter) {
+                //First of all, add an object to store statics only if needed
+                for (Statement s : statements) {
+                }
                 //Generated attributes with corresponding parameters will remove them from the list
                 if (plist != null) {
                     for (Parameter p : plist) {
                         generateAttributeForParameter(node, (Class)d, p);
                     }
                 }
+                boolean statics = false;
                 InitDeferrer initDeferrer = new InitDeferrer();
                 for (Statement s: statements) {
+                    if (!statics && s instanceof Tree.Declaration) {
+                        Declaration sd = ((Tree.Declaration)s).getDeclarationModel();
+                        if (sd instanceof TypedDeclaration && sd.isStatic()) {
+                            statics = true;
+                            out(names.name(d), ".$st$={};");
+                        }
+                    }
                     if (s instanceof Tree.ClassOrInterface == false && !(s instanceof Tree.AttributeDeclaration &&
                             ((Tree.AttributeDeclaration)s).getDeclarationModel().isParameter())) {
                         addToPrototype(d, s, plist, initDeferrer);
@@ -1405,10 +1416,18 @@ public class GenerateJsVisitor extends Visitor {
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
         initDefaultedParameters(that.getParameterLists().get(0), that);
-        out(names.self(outer), ".", names.name(d), "=");
+        if (d.isStatic()) {
+            out(names.name(outer), ".$st$.", names.name(d), "=");
+        } else {
+            out(names.self(outer), ".", names.name(d), "=");
+        }
         FunctionHelper.methodDefinition(that, this, false, verboseStitcher);
         //Add reference to metamodel
-        out(names.self(outer), ".", names.name(d), ".$crtmm$=");
+        if (d.isStatic()) {
+            out(names.name(outer), ".$st$.", names.name(d), ".$crtmm$=");
+        } else {
+            out(names.self(outer), ".", names.name(d), ".$crtmm$=");
+        }
         TypeUtils.encodeMethodForRuntime(that, this);
         endLine(true);
     }
@@ -1466,7 +1485,8 @@ public class GenerateJsVisitor extends Visitor {
         Value d = that.getDeclarationModel();
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
-        defineAttribute(names.self(outer), names.name(d));
+        defineAttribute(d.isStatic() ? names.name(outer)+".$st$" : names.self(outer),
+                names.name(d));
         if (TypeUtils.isNativeExternal(d)) {
             out("{");
             if (stitchNative(d, that)) {
@@ -1900,6 +1920,8 @@ public class GenerateJsVisitor extends Visitor {
                 if (fd.getTypeDeclaration() instanceof Constructor) {
                     that.getPrimary().visit(this);
                     out(names.constructorSeparator(fd), names.name(fd));
+                } else if (fd.isStatic()) {
+                    BmeGenerator.generateStaticReference(fd, this);
                 } else {
                     out("function($O$){return ");
                     if (BmeGenerator.hasTypeParameters(that)) {
@@ -1910,7 +1932,11 @@ public class GenerateJsVisitor extends Visitor {
                     out(";}");
                 }
             } else {
-                out("function($O$){return $O$.", names.name(d), ";}");
+                if (d.isStatic() && d instanceof TypedDeclaration && d.isClassOrInterfaceMember()) {
+                    BmeGenerator.generateStaticReference(d, this);
+                } else {
+                    out("function($O$){return $O$.", names.name(d), ";}");
+                }
             }
         } else {
             final String lhs = generateToString(new GenerateCallback() {
@@ -2574,7 +2600,13 @@ public class GenerateJsVisitor extends Visitor {
                             if (path.length()>0) {
                                 path.append('.');
                             }
-                            path.append(names.self((TypeDeclaration) scope));
+                            if (d.isStatic() && d instanceof TypedDeclaration) {
+                                TypedDeclaration orig = ((TypedDeclaration)d).getOriginalDeclaration();
+                                path.append(names.name((ClassOrInterface)(orig == null ? d : orig).getContainer()))
+                                        .append(".$st$");
+                            } else {
+                                path.append(names.self((TypeDeclaration) scope));
+                            }
                         }
                     } else {
                         path.setLength(0);
