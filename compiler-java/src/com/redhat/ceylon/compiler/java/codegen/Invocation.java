@@ -1398,13 +1398,7 @@ class NamedArgumentInvocation extends Invocation {
             break;
         case STATIC:
             if (param.getDeclaration().isStaticallyImportable()) {
-                if (param.getDeclaration().getContainer() instanceof ClassOrInterface) {
-                    if (param.getDeclaration()instanceof ClassOrInterface) {
-                        thisExpr = gen.makeJavaType(((ClassOrInterface)param.getDeclaration()).getType(), JT_RAW);
-                    } else {
-                        thisExpr = gen.makeJavaType(((ClassOrInterface)param.getDeclaration().getContainer()).getType(), JT_RAW);
-                    }
-                } 
+                thisExpr = gen.makeStaticQualifier(param.getDeclaration()); 
             }
             break;
         case OUTER:

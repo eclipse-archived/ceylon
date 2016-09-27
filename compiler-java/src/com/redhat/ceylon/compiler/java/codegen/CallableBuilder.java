@@ -425,13 +425,7 @@ public class CallableBuilder {
             JCExpression qualifier;
             Declaration decl = defaultedParam.getDeclaration();
             if (decl.isStatic()) {
-                if (decl instanceof ClassOrInterface) {
-                    qualifier = gen.makeJavaType(((ClassOrInterface)decl).getType(), gen.JT_RAW|gen.JT_NO_PRIMITIVES);
-                } else if (decl instanceof TypedDeclaration) {
-                    qualifier = gen.naming.makeName((TypedDeclaration)decl, Naming.NA_FQ|Naming.NA_WRAPPER);
-                } else {
-                    qualifier = null;
-                }
+                qualifier = gen.makeStaticQualifier(decl);
             } else {
                 qualifier = gen.naming.makeUnquotedIdent(Unfix.$instance$);
             }

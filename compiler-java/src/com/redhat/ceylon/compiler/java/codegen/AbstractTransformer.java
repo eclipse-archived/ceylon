@@ -5744,4 +5744,17 @@ public abstract class AbstractTransformer implements Transformation {
                 null);
         return make().Throw(exception);
     }
+    
+    JCExpression makeStaticQualifier(Declaration d) {
+        if (!d.isStatic()) {
+            throw new BugException("Non-static declaration can't have a static qualifier");
+        }
+        if (d instanceof TypedDeclaration) {
+            return naming.makeName((TypedDeclaration)d, Naming.NA_FQ|Naming.NA_WRAPPER);
+        } else if (d instanceof ClassOrInterface) {
+            return makeJavaType(((ClassOrInterface)d).getType(), JT_RAW|JT_NO_PRIMITIVES);
+        } else {
+            throw BugException.unhandledDeclarationCase(d);
+        }
+    }
 }
