@@ -55,6 +55,7 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -743,15 +744,23 @@ public class CallableBuilder {
         private JCExpression makeDefaultValueCall(Parameter defaultedParam, int i){
             if (Strategy.hasDefaultParameterValueMethod(defaultedParam)) {
                 // add the default value
-                List<JCExpression> defaultMethodArgs = List.nil();
+                ListBuffer<JCExpression> defaultMethodArgs = new ListBuffer<JCExpression>();
+                // pass reified type arguments
+                for (TypeParameter tp : ((Generic)defaultedParam.getDeclaration()).getTypeParameters()) {
+                    Type ta = ((Tree.MemberOrTypeExpression)node).getTarget().getTypeArguments().get(tp);
+                    defaultMethodArgs.add(gen.makeReifiedTypeArgument(ta));
+                }
+                
                 // pass all the previous values
-                for(int a=i-1;a>=0;a--){
+                for(int a=0;a<i;a++){
                     Parameter param = paramLists.getParameters().get(a);
                     JCExpression previousValue = getCallableTempVarName(param).makeIdent();
-                    defaultMethodArgs = defaultMethodArgs.prepend(previousValue);
+                    defaultMethodArgs.add(previousValue);
                 }
+                
+
                 // now call the default value method
-                return defaultValueCall.makeDefaultValueMethod(gen, defaultedParam, defaultMethodArgs);
+                return defaultValueCall.makeDefaultValueMethod(gen, defaultedParam, defaultMethodArgs.toList());
             } else if (Strategy.hasEmptyDefaultArgument(defaultedParam)) {
                 return gen.makeEmptyAsSequential(true);
             }
