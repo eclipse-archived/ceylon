@@ -116,7 +116,7 @@ final class f5_ {
         return (
             let
             {
-                U $ceylontmp$u$6 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.f5$u($reified$U, i);
+                U $ceylontmp$u$6 = .com.redhat.ceylon.compiler.java.test.structure.nesting.f5_.<U>f5$u($reified$U, i);
             }
             returning f5($reified$U, i, $ceylontmp$u$6);
         );
