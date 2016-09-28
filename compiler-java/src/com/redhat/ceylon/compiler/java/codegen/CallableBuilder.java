@@ -60,11 +60,9 @@ import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
 /**
@@ -1727,8 +1725,19 @@ public class CallableBuilder {
 
     private java.util.List<Type> getParameterTypesFromCallableModel() {
         java.util.List<Type> parameterTypes = new ArrayList<Type>(numParams);
+        java.util.List<Parameter> parameters = paramLists.getParameters();
         for(int i=0;i<numParams;i++) {
-            parameterTypes.add(gen.getParameterTypeOfCallable(typeModel, i));
+            Type argType = gen.getParameterTypeOfCallable(typeModel, i);
+            // getting parameter types out of the callable does not tell us if the
+            // argument is small or not, so rectify that
+            if(parameters.size() > i
+                    && parameters.get(i).getModel().isSmall()){
+                if(!"int".equals(argType.getUnderlyingType())){
+                    argType = argType.clone();
+                    argType.setUnderlyingType("int");
+                }
+            }
+            parameterTypes.add(argType);
         }
         return parameterTypes;
     }
