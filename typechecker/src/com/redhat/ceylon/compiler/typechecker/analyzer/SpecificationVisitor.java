@@ -1536,7 +1536,11 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Statement that) {
-        if (that instanceof Tree.Declaration) {
+        if (that instanceof Tree.TypeParameterDeclaration 
+         || that instanceof Tree.TypeConstraint) {
+            //ignore
+        }
+        else if (that instanceof Tree.Declaration) {
             Tree.Declaration dec = (Tree.Declaration) that;
             Declaration model = dec.getDeclarationModel();
             if (model.isStatic()) {
