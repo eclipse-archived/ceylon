@@ -1358,7 +1358,8 @@ public abstract class DeclarationVisitor extends Visitor {
             Scope container = v.getContainer();
             if (container instanceof ClassOrInterface) {
                 ClassOrInterface ci = 
-                        (ClassOrInterface) container;
+                        (ClassOrInterface) 
+                            container;
                 if (!ci.getTypeParameters().isEmpty()) {
                     that.addError("attribute of generic type may not be annotated both 'variable' and 'static'");
                 }
