@@ -209,7 +209,7 @@ public class TypeArgumentVisitor extends Visitor {
         super.visit(that);
         endConstructor(occ);
     }
-
+    
     private void check(Tree.Type that, boolean variable, 
             Declaration d) {
         if (that!=null) {
@@ -233,11 +233,12 @@ public class TypeArgumentVisitor extends Visitor {
             List<TypeParameter> errors, Declaration d) {
         for (TypeParameter tp: errors) {
             Declaration declaration = tp.getDeclaration();
-            if (d==null || 
-                    d.isShared() || d.getOtherInstanceAccess() 
+            if ((d==null 
+                    || d.isShared() 
+                    || d.getOtherInstanceAccess() 
                     || declaration.equals(d))
-            if (constructorClass==null ||
-                    !declaration.equals(constructorClass)) {
+                && !d.isStatic()
+                && !isConstructorClass(declaration)) {
                 String var; String loc;
                 if (tp.isContravariant()) {
                     var = "contravariant ('in')";
@@ -260,6 +261,11 @@ public class TypeArgumentVisitor extends Visitor {
                         "'");
             }
         }
+    }
+
+    private boolean isConstructorClass(Declaration declaration) {
+        return constructorClass!=null &&
+            declaration.equals(constructorClass);
     }
     
     @Override
