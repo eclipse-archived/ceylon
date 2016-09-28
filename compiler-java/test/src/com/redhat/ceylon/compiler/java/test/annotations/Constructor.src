@@ -127,7 +127,6 @@ class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     @.com.redhat.ceylon.compiler.java.test.annotations.CallableConstructorAnnotation$annotation$
     @.ceylon.language.SharedAnnotation$annotation$
     public Constructor(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s$param$) {
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -151,7 +150,6 @@ class Constructor implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     @.com.redhat.ceylon.compiler.java.metadata.Name("other")
     public Constructor(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.annotations.Constructor.other_ $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.ceylon.language.DocAnnotation$annotation$(description = "ctor param doc")
     final .java.lang.String s$param$) {
     }

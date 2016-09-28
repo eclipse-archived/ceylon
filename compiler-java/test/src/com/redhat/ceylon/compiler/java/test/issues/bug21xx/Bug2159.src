@@ -23,7 +23,6 @@ public final class run_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void run() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(

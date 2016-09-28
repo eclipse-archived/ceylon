@@ -881,7 +881,6 @@ public final class runCtorAbstractCtor_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void runCtorAbstractCtor() {
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.rest_, 1L);

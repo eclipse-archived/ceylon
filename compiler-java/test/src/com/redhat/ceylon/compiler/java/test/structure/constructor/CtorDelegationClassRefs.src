@@ -168,7 +168,6 @@ final class runCtorDelegationClassRefs_ {
     private runCtorDelegationClassRefs_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void runCtorDelegationClassRefs() {
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
         .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs> ref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs>(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationClassRefs.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "CtorDelegationClassRefs.concrete()", (short)-1){

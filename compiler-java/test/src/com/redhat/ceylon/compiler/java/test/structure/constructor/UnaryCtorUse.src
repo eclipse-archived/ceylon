@@ -9,7 +9,6 @@ final class unaryCtorUse_ {
     private unaryCtorUse_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void unaryCtorUse() {
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o1 = (
             let

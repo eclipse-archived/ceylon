@@ -12,7 +12,6 @@ class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final long size;
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long getSize$priv$() {
         return size;
     }
@@ -24,7 +23,6 @@ class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return buff;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void bufferTest$priv$() {
         final long start$1 = 0L;
         final long length$2 = getSize$priv$() - 1L;
@@ -35,7 +33,6 @@ class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void buffer() {
         final long startTime = .ceylon.language.system_.get_().getNanoseconds();
         final long $ceylontmp$first$6 = 1L;
@@ -74,7 +71,6 @@ final class bug1467_ {
     private bug1467_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug1467() {
         final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Bug1467 b = new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Bug1467();
         b.buffer();

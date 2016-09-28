@@ -203,7 +203,6 @@ class CPAnnoTest2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     @.javax.annotation.Generated({"by you"})
     @.ceylon.language.SharedAnnotation$annotation$
     public CPAnnoTest2(@.com.redhat.ceylon.compiler.java.metadata.Name("x")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.javax.annotation.Generated({"by me"})
     final .java.lang.String x$param$) {
     }
@@ -225,7 +224,6 @@ class CPAnnoTest2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     @.com.redhat.ceylon.compiler.java.metadata.Name("other")
     public CPAnnoTest2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.interop.CPAnnoTest2.other_ $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("x")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.javax.annotation.Generated({"by me"})
     final .java.lang.String x$param$) {
     }
@@ -248,7 +246,6 @@ final class bug2103_ {
     }
     
     @.javax.annotation.Generated({.java.util.jar.JarFile.MANIFEST_NAME})
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug2103() {
     }
 }

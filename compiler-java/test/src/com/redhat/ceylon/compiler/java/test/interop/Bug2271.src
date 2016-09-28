@@ -9,7 +9,6 @@ final class bug2271_ {
     private bug2271_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug2271(@.com.redhat.ceylon.compiler.java.metadata.Name("ji")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Integer?")
     final .java.lang.Integer ji, @.com.redhat.ceylon.compiler.java.metadata.Name("jf")

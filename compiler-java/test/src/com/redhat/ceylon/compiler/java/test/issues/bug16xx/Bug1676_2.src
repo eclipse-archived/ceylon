@@ -122,7 +122,6 @@ final class bug1676_2_B_ {
     @.ceylon.language.AnnotationAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_B")
     static .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B bug1676_2_B(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s) {
         return new .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B();
     }

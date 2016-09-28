@@ -36,7 +36,6 @@ public final class Object implements .java.io.Serializable, .com.redhat.ceylon.c
         }
         
         @.ceylon.language.SharedAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
         public final void m() {
         }
         
@@ -56,7 +55,6 @@ public final class Object implements .java.io.Serializable, .com.redhat.ceylon.c
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void m() {
         getInnerObject().m();
     }

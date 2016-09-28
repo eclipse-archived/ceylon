@@ -1815,7 +1815,6 @@ final class memberClassRef_ {
     private memberClassRef_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void memberClassRef() {
         final .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef mcr = new .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef();
         mcr.simple();

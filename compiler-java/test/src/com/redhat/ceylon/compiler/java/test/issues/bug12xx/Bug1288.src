@@ -25,7 +25,6 @@ class Bug1288<Element> implements .com.redhat.ceylon.compiler.java.runtime.model
     private final Element plus$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("x")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Element")
     final Element x, @.com.redhat.ceylon.compiler.java.metadata.Name("inc")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long inc) {
         if (x instanceof .ceylon.language.Integer) {
             final long result = ((.ceylon.language.Integer)x).longValue() + inc;

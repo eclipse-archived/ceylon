@@ -10,7 +10,6 @@ public final class swtch_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void swtch() {
         final .java.lang.String s = "xyz";
         switch_0: switch (s) {

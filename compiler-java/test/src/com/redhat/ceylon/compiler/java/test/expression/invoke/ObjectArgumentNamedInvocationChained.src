@@ -38,7 +38,6 @@ public final class objectArgumentNamedInvocationChained_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void objectArgumentNamedInvocationChained() {
         (
             let
@@ -71,7 +70,6 @@ public final class objectArgumentNamedInvocationChained_ {
                             @.ceylon.language.SharedAnnotation$annotation$
                             @.ceylon.language.ActualAnnotation$annotation$
                             @.java.lang.Override
-                            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
                             public final .java.lang.String toString() {
                                 return string;
                             }
@@ -79,7 +77,6 @@ public final class objectArgumentNamedInvocationChained_ {
                             @.ceylon.language.SharedAnnotation$annotation$
                             @.ceylon.language.ActualAnnotation$annotation$
                             @.java.lang.Override
-                            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
                             public final boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
                             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
                             final .java.lang.Object other) {
@@ -91,7 +88,6 @@ public final class objectArgumentNamedInvocationChained_ {
                             @.ceylon.language.SharedAnnotation$annotation$
                             @.ceylon.language.ActualAnnotation$annotation$
                             @.java.lang.Override
-                            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                             public final int hashCode() {
                                 return (int)(
                                     let
@@ -136,7 +132,6 @@ public final class objectArgumentNamedInvocationChained_ {
                     @.ceylon.language.SharedAnnotation$annotation$
                     @.ceylon.language.ActualAnnotation$annotation$
                     @.java.lang.Override
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
                     public final .java.lang.String toString() {
                         return string;
                     }
@@ -144,7 +139,6 @@ public final class objectArgumentNamedInvocationChained_ {
                     @.ceylon.language.SharedAnnotation$annotation$
                     @.ceylon.language.ActualAnnotation$annotation$
                     @.java.lang.Override
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
                     public final boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
                     final .java.lang.Object other) {
@@ -156,7 +150,6 @@ public final class objectArgumentNamedInvocationChained_ {
                     @.ceylon.language.SharedAnnotation$annotation$
                     @.ceylon.language.ActualAnnotation$annotation$
                     @.java.lang.Override
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final int hashCode() {
                         return (int)(
                             let

@@ -56,18 +56,14 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     Quoting(@.com.redhat.ceylon.compiler.java.metadata.Name("string")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     final .java.lang.String string, @.com.redhat.ceylon.compiler.java.metadata.Name("toString")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.String toString, @.com.redhat.ceylon.compiler.java.metadata.Name("hash")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     final long hash, @.com.redhat.ceylon.compiler.java.metadata.Name("hashCode")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.ceylon.language.SharedAnnotation$annotation$
     final long hashCode) {
         this.string = string;
@@ -81,7 +77,6 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String toString() {
         return string;
     }
@@ -89,7 +84,6 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     private final .java.lang.String toString;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getToString() {
         return toString;
     }
@@ -99,7 +93,6 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final int hashCode() {
         return (int)(
             let
@@ -113,7 +106,6 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     private final long hashCode;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getHashCode() {
         return hashCode;
     }
@@ -199,13 +191,9 @@ final class quoting2_ {
     @.ceylon.language.AnnotationAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::Quoting")
     static .com.redhat.ceylon.compiler.java.test.annotations.Quoting quoting2(@.com.redhat.ceylon.compiler.java.metadata.Name("string")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String string, @.com.redhat.ceylon.compiler.java.metadata.Name("toString")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String toString, @.com.redhat.ceylon.compiler.java.metadata.Name("hash")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long hash, @.com.redhat.ceylon.compiler.java.metadata.Name("hashCode")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long hashCode) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Quoting(string, toString, hash, hashCode);
     }

@@ -255,7 +255,6 @@ public final class runCtorConcreteDelegation_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void runCtorConcreteDelegation() {
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.C<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.structure.constructor.C.x_);

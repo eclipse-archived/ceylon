@@ -10,7 +10,6 @@ public final class bug2043_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void bug2043() {
         .ceylon.language.print_.print(new .com.redhat.ceylon.compiler.java.test.fordebug.trace.Bug2043());
     }
