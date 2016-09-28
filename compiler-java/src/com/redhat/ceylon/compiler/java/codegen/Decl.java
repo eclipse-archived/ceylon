@@ -27,6 +27,7 @@ import java.util.List;
 
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.model.FieldValue;
@@ -624,6 +625,33 @@ public class Decl {
         if (annotations != null) {
             for (Annotation ann : annotations) {
                 if ("annotation".equals(ann.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Dodgy method that only uses an untypechecked tree to see if a declaration
+     * is an annotation class, by checking that it's a class with an "annotation"
+     * annotation.
+     */
+    public static boolean isAnnotationClassNoModel(Tree.Declaration decl) {
+        return decl instanceof Tree.AnyClass
+                && TreeUtil.hasAnnotation(decl.getAnnotationList(), "annotation", decl.getUnit());
+    }
+    
+    /**
+     * Dodgy method that only uses an untypechecked tree to see if an annotation class
+     * (as determined previously by {@link isAnnotationClassNoModel}), by checking if 
+     * it directly satisfies a "SequencedAnnotation" interface.
+     */
+    public static boolean isSequencedAnnotationClassNoModel(Tree.AnyClass decl) {
+        if(decl.getSatisfiedTypes() != null){
+            for(Tree.StaticType sat : ((Tree.AnyClass)decl).getSatisfiedTypes().getTypes()){
+                if(sat instanceof Tree.BaseType 
+                    && ((Tree.BaseType) sat).getIdentifier().getText().equals("SequencedAnnotation")){
                     return true;
                 }
             }

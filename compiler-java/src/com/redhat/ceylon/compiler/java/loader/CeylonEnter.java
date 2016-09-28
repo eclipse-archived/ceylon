@@ -82,11 +82,12 @@ import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
 import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.langtools.source.util.TaskEvent;
 import com.redhat.ceylon.langtools.source.util.TaskListener;
+import com.redhat.ceylon.langtools.tools.javac.code.Kinds;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
-import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.ClassType;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.code.Types;
 import com.redhat.ceylon.langtools.tools.javac.comp.Annotate;
 import com.redhat.ceylon.langtools.tools.javac.comp.AttrContext;
@@ -155,6 +156,7 @@ public class CeylonEnter extends Enter {
     private SourceLanguage sourceLanguage;
     private StatusPrinter sp;
     private boolean hasJavaAndCeylonSources;
+    private LanguageCompiler compiler;
 
     
     protected CeylonEnter(Context context) {
@@ -184,6 +186,7 @@ public class CeylonEnter extends Enter {
         annotate = Annotate.instance(context);
         taskListener = context.get(TaskListener.class);
         sourceLanguage = SourceLanguage.instance(context);
+        compiler = (LanguageCompiler) LanguageCompiler.instance(context);
 
         // now superclass init
         init(context);
@@ -212,17 +215,22 @@ public class CeylonEnter extends Enter {
                 javaTrees = javaTrees.prepend(tree);
         }
         timer.startTask("Enter on Java trees");
+        boolean needsModelReset = isBootstrap;
         // enter java trees first to set up their ClassSymbol objects for ceylon trees to use during type-checking
         if(!javaTrees.isEmpty()){
             setupImportedPackagesForJavaTrees(javaTrees);
             hasJavaAndCeylonSources = true;
+            needsModelReset = true;
         }
         if(isBootstrap || hasJavaAndCeylonSources){
             super.main(trees);
         }
         // now we can type-check the Ceylon code
         completeCeylonTrees(trees);
-        if(isBootstrap || hasJavaAndCeylonSources){
+        if(compiler.isHadRunTwiceException()){
+            needsModelReset = true;
+        }
+        if(needsModelReset){
             // bootstrapping the language module is a bit more complex
             resetAndRunEnterAgain(trees);
         }else{
@@ -258,10 +266,7 @@ public class CeylonEnter extends Enter {
         for(ClassSymbol classSymbol : symtab.classes.values()){
             if(Util.isLoadedFromSource(classSymbol) 
                     || (classSymbol.sourcefile != null && classSymbol.sourcefile.getKind() == Kind.SOURCE)){
-                PackageSymbol pkg = classSymbol.packge();
-                String name = pkg.getQualifiedName().toString();
-                if(name.startsWith(AbstractModelLoader.CEYLON_LANGUAGE) || name.startsWith("com.redhat.ceylon.compiler.java"))
-                    resetClassSymbol(classSymbol);
+                resetClassSymbol(classSymbol);
             }
         }
         
@@ -306,10 +311,19 @@ public class CeylonEnter extends Enter {
         classType.interfaces_field = null;
         classType.supertype_field = null;
         classType.typarams_field = null;
+        // make sure we give erroneous types a second chance
+        if(classType.getTag() == TypeTag.ERROR){
+            // This is how ClassSymbol's constructor builds them, so make'em brand new
+            classSymbol.type = new ClassType(com.redhat.ceylon.langtools.tools.javac.code.Type.noType, null, null);
+            classSymbol.type.tsym = classSymbol;
+        }
         
         // reset its members and completer
         classSymbol.members_field = null;
         classSymbol.completer = null;
+        // make sure we revert the class symbol kind to a new state by removing ERR kinds
+        classSymbol.kind = Kinds.TYP;
+        classSymbol.flags_field = 0;
     }
 
     @Override

@@ -328,7 +328,8 @@ public class CodegenUtil {
         } else if (containerScope instanceof Declaration) {
             containerDeclaration = (Declaration)containerScope;
         } else {
-            throw BugException.unhandledCase(containerScope);
+            // probably invalid user code
+            return false;
         }
         return containerDeclaration instanceof Function
                 && ((Function)containerDeclaration).isParameter();

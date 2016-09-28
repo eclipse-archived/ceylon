@@ -3731,8 +3731,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         parameter.setModel(value);
         value.setInitializerParameter(parameter);
         value.setUnit(decl.getUnit());
-        value.setContainer((Scope) decl);
-        value.setScope((Scope) decl);
+        Scope scope = (Scope) decl;
+        value.setContainer(scope);
+        value.setScope(scope);
         parameter.setName("that");
         value.setName("that");
         value.setType(getNonPrimitiveType(getLanguageModule(), CEYLON_OBJECT_TYPE, decl, VarianceLocation.INVARIANT));
@@ -3788,8 +3789,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             enumValueType.setJavaEnum(true);
             enumValueType.setAnonymous(true);
             enumValueType.setExtendedType(type);
-            enumValueType.setContainer(value.getContainer());
-            enumValueType.setScope(value.getContainer());
+            Scope scope = value.getContainer();
+            enumValueType.setContainer(scope);
+            enumValueType.setScope(scope);
             enumValueType.setDeprecated(value.isDeprecated());
             enumValueType.setName(value.getName());
             enumValueType.setFinal(true);
@@ -4229,14 +4231,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             parameter.setName(paramName);
             
             TypeMirror typeMirror = paramMirror.getType();
-            Module module = ModelUtil.getModuleContainer((Scope) decl);
+            Scope scope = (Scope) decl;
+            Module module = ModelUtil.getModuleContainer(scope);
 
             Type type;
             if(isVariadic){
                 // possibly make it optional
                 TypeMirror variadicType = typeMirror.getComponentType();
                 // we pretend it's toplevel because we want to get magic string conversion for variadic methods
-                type = obtainType(ModelUtil.getModuleContainer((Scope)decl), variadicType, (Scope)decl, TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
+                type = obtainType(ModelUtil.getModuleContainer(scope), variadicType, scope, TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
                 if(!isCeylon){
                     // Java parameters are all optional unless primitives or annotated as such
                     if(getUncheckedNullPolicy(isCeylon, variadicType, paramMirror) != NullStatus.NonOptional){
@@ -4247,7 +4250,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // turn it into a Sequential<T>
                 type = typeFactory.getSequentialType(type);
             }else{
-                type = obtainType(typeMirror, paramMirror, (Scope) decl, module, VarianceLocation.CONTRAVARIANT,
+                type = obtainType(typeMirror, paramMirror, scope, module, VarianceLocation.CONTRAVARIANT,
                         "parameter '"+paramName+"' of method '"+methodMirror.getName()+"'", (Declaration)decl);
                 // variadic params may technically be null in Java, but it Ceylon sequenced params may not
                 // so it breaks the typechecker logic for handling them, and it will always be a case of bugs
@@ -4287,10 +4290,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     value.setType(type);
                 }
                 
-                value.setContainer((Scope) decl);
-                value.setScope((Scope) decl);
+                value.setContainer(scope);
+                value.setScope(scope);
                 ModelUtil.setVisibleScope(value);
-                value.setUnit(((Element)decl).getUnit());
+                value.setUnit(scope.getUnit());
                 value.setName(paramName);
             }else{
                 // Ceylon 1.1 had a bug where TypeInfo for functional parameters included the full CallableType on the method
@@ -4683,8 +4686,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
     private SetterWithLocalDeclarations makeSetter(Value value, ClassMirror classMirror) {
         SetterWithLocalDeclarations setter = new SetterWithLocalDeclarations(classMirror);
-        setter.setContainer(value.getContainer());
-        setter.setScope(value.getContainer());
+        Scope scope = value.getContainer();
+        setter.setContainer(scope);
+        setter.setScope(scope);
         setter.setType(value.getType());
         setter.setName(value.getName());
         Parameter p = new Parameter();
@@ -4694,6 +4698,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         v.setUnboxed(value.getUnboxed());
         v.setInitializerParameter(p);
         v.setContainer(setter);
+        v.setScope(setter);
         p.setModel(v);
         v.setName(setter.getName());
         p.setName(setter.getName());
@@ -4782,6 +4787,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         AnnotationProxyMethod ctor = new AnnotationProxyMethod(this, klass);
         ctor.setAnnotationTarget(oe);
         ctor.setContainer(pkg);
+        ctor.setScope(pkg);
         ctor.setAnnotation(true);
         ctor.setName(ctorName);
         ctor.setShared(iface.isShared());
@@ -5006,7 +5012,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         int i=0;
         for(AnnotationMirror typeParamAnnotation : typeParameterAnnotations){
             TypeParameter param = new TypeParameter();
-            param.setUnit(((Element)scope).getUnit());
+            param.setUnit(scope.getUnit());
             param.setContainer(scope);
             param.setScope(scope);
             ModelUtil.setVisibleScope(param);
@@ -5092,7 +5098,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // refer to type params.
         for(TypeParameterMirror typeParam : typeParameters){
             TypeParameter param = new TypeParameter();
-            param.setUnit(((Element)scope).getUnit());
+            param.setUnit(scope.getUnit());
             param.setContainer(scope);
             param.setScope(scope);
             ModelUtil.setVisibleScope(param);

@@ -41,6 +41,7 @@ public class DefaultToolOptions {
     public final static String COMPILER_JDKPROVIDER = "compiler.jdkprovider";
     public final static String COMPILER_APT = "compiler.apt";
     public final static String COMPILER_MODULES = "compiler.module";
+    public final static String COMPILER_JAVAC = "compiler.javac";
     
     public final static String SECTION_RUNTOOL = "runtool";
     
@@ -304,6 +305,19 @@ public class DefaultToolOptions {
         }
     }
     
+    public static List<String> getCompilerJavac() {
+        return getCompilerJavac(CeylonConfig.get());
+    }
+    
+    public static List<String> getCompilerJavac(CeylonConfig config) {
+        String[] javacs = config.getOptionValues(COMPILER_JAVAC);
+        if (javacs != null) {
+            return Arrays.asList(javacs);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public static String getRunToolCompileFlags() {
         return getRunToolCompileFlags(CeylonConfig.get());
     }

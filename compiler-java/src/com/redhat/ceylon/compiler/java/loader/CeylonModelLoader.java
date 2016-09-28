@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.redhat.ceylon.compiler.java.codegen.CeylonCompilationUnit;
+import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.loader.mirror.JavacClass;
 import com.redhat.ceylon.compiler.java.loader.mirror.JavacMethod;
@@ -41,6 +42,7 @@ import com.redhat.ceylon.compiler.java.util.Timer;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
@@ -80,6 +82,7 @@ import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.ModelResolutionException;
 import com.redhat.ceylon.model.loader.NamingBase;
+import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.TypeParser;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.loader.mirror.FunctionalInterface;
@@ -198,6 +201,15 @@ public class CeylonModelLoader extends AbstractModelLoader {
                     String fqn = Naming.toplevelClassName(pkgName, decl);
                     try{
                         reader.enterClass(names.fromString(fqn), tree.getSourceFile());
+                        if(Decl.isAnnotationClassNoModel(decl)){
+                            String annotationName = Naming.suffixName(Suffix.$annotation$, fqn);
+                            reader.enterClass(names.fromString(annotationName), tree.getSourceFile());
+                            
+                            if(Decl.isSequencedAnnotationClassNoModel((Tree.AnyClass)decl)){
+                                String annotationsName = Naming.suffixName(Suffix.$annotations$, fqn);
+                                reader.enterClass(names.fromString(annotationsName), tree.getSourceFile());
+                            }
+                        }
                     }catch(AssertionError error){
                         // this happens when we have already registered a source file for this decl, hopefully the typechecker
                         // will catch this and log an error

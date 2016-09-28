@@ -20,6 +20,7 @@ import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
+import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.SiteVariance;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
@@ -217,7 +218,9 @@ public class InvocationGenerator {
                             p.setName("arg"+c);
                             p.setDeclaration(typeArgSource.getTypeModel().getDeclaration());
                             Value v = new Value();
-                            v.setContainer(that.getPositionalArgumentList().getScope());
+                            Scope scope = that.getPositionalArgumentList().getScope();
+                            v.setContainer(scope);
+                            v.setScope(scope);
                             v.setType(argtype);
                             p.setModel(v);
                             if (callableArgs == null || isSequenced) {

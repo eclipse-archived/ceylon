@@ -2474,7 +2474,7 @@ public abstract class DeclarationVisitor extends Visitor {
         super.visit(that);
         setParameterLists(null, that.getParameterLists(), that);
         if (!that.getLeftTerm()) {
-            that.addError("parameterized expression not the target of a specification statement");
+            that.addError("parameterized expression not the target of a specification statement: parameter list is not followed by '=>' specifier (add '=>' specifier, or explicitly specify 'function' keyword or return type)");
         }
     }
     

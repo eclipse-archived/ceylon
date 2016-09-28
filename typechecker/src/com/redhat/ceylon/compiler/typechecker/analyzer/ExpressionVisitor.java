@@ -3401,6 +3401,7 @@ public class ExpressionVisitor extends Visitor {
         model.setInitializerParameter(parameter);
         Function m = anon.getDeclarationModel();
         model.setContainer(m);
+        model.setScope(m);
         m.addMember(model);
     }
     
