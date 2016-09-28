@@ -38,7 +38,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
-import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBlock;
@@ -57,7 +56,6 @@ import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.langtools.tools.javac.util.Position.LineMap;
-import com.redhat.ceylon.compiler.typechecker.tree.TreeUtil;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.model.OutputElement;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
@@ -158,23 +156,15 @@ public class CeylonTransformer extends AbstractTransformer {
                     defs.add(makeClassDef(decl, 0, implName, WantedDeclaration.InterfaceImpl, defs, ancestors));
                 }
                 
-                // only do it for Bootstrap where we control the annotations, because it's so dodgy ATM
-                if(/*options.get(Option.BOOTSTRAPCEYLON) != null
-                        && */decl instanceof Tree.AnyClass
-                        && TreeUtil.hasAnnotation(decl.getAnnotationList(), "annotation", decl.getUnit())){
+                if(Decl.isAnnotationClassNoModel(decl)){
                     String annotationName = Naming.suffixName(Suffix.$annotation$, name);
                     defs.add(makeClassDef(decl, Flags.ANNOTATION | Flags.INTERFACE, annotationName, WantedDeclaration.Annotation, 
                             defs, ancestors));
                     
-                    if(((Tree.AnyClass)decl).getSatisfiedTypes() != null){
-                        for(Tree.StaticType sat : ((Tree.AnyClass)decl).getSatisfiedTypes().getTypes()){
-                            if(sat instanceof Tree.BaseType 
-                                    && ((Tree.BaseType) sat).getIdentifier().getText().equals("SequencedAnnotation")){
-                                String annotationsName = Naming.suffixName(Suffix.$annotations$, name);
-                                defs.add(makeClassDef(decl, Flags.ANNOTATION | Flags.INTERFACE, 
-                                        annotationsName, WantedDeclaration.AnnotationSequence, defs, ancestors));
-                            }
-                        }
+                    if(Decl.isSequencedAnnotationClassNoModel((Tree.AnyClass)decl)){
+                        String annotationsName = Naming.suffixName(Suffix.$annotations$, name);
+                        defs.add(makeClassDef(decl, Flags.ANNOTATION | Flags.INTERFACE, 
+                                annotationsName, WantedDeclaration.AnnotationSequence, defs, ancestors));
                     }
                 }
             }

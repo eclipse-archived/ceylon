@@ -124,41 +124,32 @@ Alex Szczuczko (aszczucz _AHT_ redhat _DOWT_ com).
 ## ceylon-docker/ceylon
 
  - Check out [ceylon-docker/ceylon](https://github.com/ceylon-docker/ceylon)
- - Make sure you're in the `master` branch
- - Make sure we have all the latest tags: `git fetch --tags`
- - Update the `README.md`, adding a new image/tag line and moving the `latest` tag
  - Edit the `build.sh` and add the new version to the front of the `VERSIONS` list and change the `LATEST` value
- - Commit the change
- - Run `./build.sh`
+ - Run `./build.sh --build`
  - If everything went ok run `./build.sh --push`
- - Follow automated build progress on [Docker Hub](https://hub.docker.com/r/ceylon/ceylon/builds/)
- - When all builds have finished edit the [Full Description](https://hub.docker.com/r/ceylon/ceylon/) to be the same as the `README.md` listed above
+ - Edit the [Full Description](https://hub.docker.com/r/ceylon/ceylon/), adding a new image/tag line and moving the `latest` tag
+ - Update the `README.md` to be the same as the full description
+ - Commit all changes
 
 ## ceylon-docker/s2i-ceylon
 
  - Check out [ceylon-docker/s2i-ceylon](https://github.com/ceylon-docker/s2i-ceylon)
- - Make sure you're in the `master` branch
- - Make sure we have all the latest tags: `git fetch --tags`
- - Update the `README.md`, adding a new image/tag line and moving the `latest` tag
  - Edit the `build.sh` and add the new version to the front of the `VERSIONS` list and change the `LATEST` value
- - Commit the change
- - Run `./build.sh`
+ - Run `./build.sh --build`
  - If everything went ok run `./build.sh --push`
- - Follow automated build progress on [Docker Hub](https://hub.docker.com/r/ceylon/s2i-ceylon/builds/)
- - When all builds have finished edit the [Full Description](https://hub.docker.com/r/ceylon/s2i-ceylon/) to be the same as the `README.md` listed above
+ - Edit the [Full Description](https://hub.docker.com/r/ceylon/s2i-ceylon/), adding a new image/tag line and moving the `latest` tag
+ - Update the `README.md` to be the same as the full description
+ - Commit all changes
 
 ## ceylon-docker/source-runner
 
  - Check out [ceylon-docker/source-runner](https://github.com/ceylon-docker/source-runner)
- - Make sure you're in the `master` branch
- - Make sure we have all the latest tags: `git fetch --tags`
- - Update the `README.md`, adding a new image/tag line and moving the `latest` tag
  - Edit the `build.sh` and add the new version to the front of the `VERSIONS` list and change the `LATEST` value
- - Commit the change
- - Run `./build.sh`
+ - Run `./build.sh --build`
  - If everything went ok run `./build.sh --push`
- - Follow automated build progress on [Docker Hub](https://hub.docker.com/r/ceylon/source-runner/builds/)
- - When all builds have finished edit the [Full Description](https://hub.docker.com/r/ceylon/source-runner/) to be the same as the `README.md` listed above
+ - Edit the [Full Description](https://hub.docker.com/r/ceylon/source-runner/), adding a new image/tag line and moving the `latest` tag
+ - Update the `README.md` to be the same as the full description
+ - Commit all changes
 
 # Update OpenShift
 
