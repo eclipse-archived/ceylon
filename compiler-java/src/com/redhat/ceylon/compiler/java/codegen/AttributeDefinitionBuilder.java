@@ -280,7 +280,7 @@ public class AttributeDefinitionBuilder {
             if(classAnnotations != null)
                 classBuilder.annotations(classAnnotations.toList());
             if(valueConstructor && hasField)
-                generateValueConstructor(classBuilder.addConstructor());
+                generateValueConstructor(classBuilder.addConstructor(this.attrTypedDecl.isDeprecated()));
             return classBuilder.build();
         } else {
             return defs.toList();

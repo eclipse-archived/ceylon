@@ -3323,6 +3323,10 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtIgnore);
     }
     
+    List<JCAnnotation> makeAtDeprecated() {
+        return List.of(make().Annotation(make().Type(syms().deprecatedType), List.<JCExpression>nil()));
+    }
+    
     List<JCAnnotation> makeAtJpa() {
         return makeModelAnnotation(syms().ceylonAtJpa);
     }
