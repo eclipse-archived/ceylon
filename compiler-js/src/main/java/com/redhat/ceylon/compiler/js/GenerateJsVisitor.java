@@ -1612,7 +1612,7 @@ public class GenerateJsVisitor extends Visitor {
                 comment(that);
                 AttributeGenerator.generateAttributeMetamodel(that, false, false, this);
             }
-        } else {
+        } else if (!d.isStatic()) {
             SpecifierOrInitializerExpression specInitExpr =
                         that.getSpecifierOrInitializerExpression();
             final boolean addGetter = (specInitExpr != null) || (param != null) || !d.isMember()
