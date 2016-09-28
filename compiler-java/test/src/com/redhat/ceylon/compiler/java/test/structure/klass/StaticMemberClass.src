@@ -1,0 +1,73 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class StaticMemberClass<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public static class Member<T, U> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U;
+        private final T t;
+        
+        public final T getT() {
+            return t;
+        }
+        private final U u;
+        
+        public final U getU() {
+            return u;
+        }
+        
+        public Member(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
+            this.$reified$T = $reified$T;
+            this.$reified$U = $reified$U;
+            $return$$0: do {
+            }             while (false);
+            this.t = null;
+            this.u = null;
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.class, .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member.class, $reified$U));
+        }
+    }
+    
+    public StaticMemberClass(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.class, $reified$T);
+    }
+}
+final class staticMemberClassUse_ {
+    
+    private staticMemberClassUse_() {
+    }
+    
+    static void staticMemberClassUse() {
+        final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String> mem1 = new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$);
+        .ceylon.language.Integer t = mem1.getT();
+        .ceylon.language.String s = mem1.getU();
+        final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String> mem2 = (
+            let
+            {
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$1 = .ceylon.language.String.$TypeDescriptor$;
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member(arg$1$reified$0, arg$1$reified$1);
+        );
+        t = mem2.getT();
+        s = mem2.getU();
+        final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String>> memref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.class, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member.class, .ceylon.language.String.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "StaticMemberClass<Integer>.Member<String>()", (short)-1){
+            
+            @.java.lang.Override
+            public .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String> $call$() {
+                return new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$);
+            }
+        };
+        t = memref.$call$().getT();
+        s = memref.$call$().getU();
+    }
+}

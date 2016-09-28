@@ -26,6 +26,11 @@ public class StaticTests extends CompilerTests {
     }
     
     @Test
+    public void testStaticMemberClass() {
+        compareWithJavaSource("klass/StaticMemberClass");
+    }
+    
+    @Test
     public void testStaticObject() {
         compareWithJavaSource("klass/StaticObject");
     }
