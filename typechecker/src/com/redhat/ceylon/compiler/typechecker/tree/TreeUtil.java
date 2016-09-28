@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.typechecker.tree;
 
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -606,6 +608,14 @@ public class TreeUtil {
             if (p instanceof Tree.BaseTypeExpression || 
                 p instanceof Tree.QualifiedTypeExpression) {
                 return true;
+            }
+            else if (p instanceof Tree.QualifiedMemberExpression) {
+                Tree.QualifiedMemberExpression qme =
+                        (Tree.QualifiedMemberExpression) p;
+                if (qme.getStaticMethodReference() &&
+                        isConstructor(qme.getDeclaration())) {
+                    return true;
+                }
             }
         }
         return false;
