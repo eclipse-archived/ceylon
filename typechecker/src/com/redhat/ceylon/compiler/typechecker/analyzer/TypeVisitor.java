@@ -482,11 +482,11 @@ public class TypeVisitor extends Visitor {
             Tree.Identifier id = that.getIdentifier();
             if (id!=null) {
                 String name = name(id);
+                Scope scope = that.getScope();
                 TypeDeclaration type = 
                         getTypeMember(d, name, 
-                                null, false, unit, that.getScope());
+                                null, false, unit, scope);
                 if (type==null) {
-                    Scope scope = that.getScope();
                     if (!isNativeForWrongBackend(
                             scope.getScopedBackends())) {
                         if (d.isMemberAmbiguous(name, unit, null, false)) {
@@ -507,6 +507,9 @@ public class TypeVisitor extends Visitor {
                 }
                 else {
                     visitSimpleType(that, pt, type);
+                    if (type.isStatic()) {
+                        ot.setStaticTypePrimary(true);
+                    }
                 }
             }
         }

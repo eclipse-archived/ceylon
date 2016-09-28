@@ -6,6 +6,7 @@ import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.impor
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.memberCorrectionMessage;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.formatPath;
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.name;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAnonymousClass;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isConstructor;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isToplevelAnonymousClass;
@@ -117,7 +118,7 @@ public class ImportVisitor extends Visitor {
             Set<String> ignoredMembers, ImportList til) {
         for (Declaration dec: importedType.getMembers()) {
             if (dec.isShared() && 
-                    (dec.isStatic() || 
+                    (isStaticNonGeneric(dec, importedType) || 
                             isConstructor(dec)) && 
                     isResolvable(dec) &&
                     !ignoredMembers.contains(dec.getName())) {
@@ -398,44 +399,65 @@ public class ImportVisitor extends Visitor {
                     //crazy interop cases like isOpen() + open()
                     id.addError("ambiguous member declaration: '" +
                             name + "' of '" + 
-                            td.getName() + "'");
+                            td.getName() + 
+                            "' is ambiguous");
                     return null;
                 }
             }
             if (!m.isShared()) {
                 id.addError("imported declaration is not shared: '" +
                         name + "' of '" + 
-                        td.getName() + "'", 
+                        td.getName() + 
+                        "' is not shared", 
                         400);
             }
             else if (!declaredInPackage(m, unit)) {
                 if (m.isPackageVisibility()) {
                     id.addError("imported package private declaration is not visible: '" +
                             name + "' of '" + 
-                            td.getName() + "'");
+                            td.getName() + 
+                            "' is package private");
                 }
                 else if (m.isProtectedVisibility()) {
                     id.addError("imported protected declaration is not visible: '" +
                             name + "' of '" + 
-                            td.getName() + "'");
+                            td.getName() + 
+                            "' is protected");
                 }
             }
             i.setTypeDeclaration(td);
-            if (!m.isStatic() && 
+            if (!isStaticNonGeneric(m, td) && 
                     !isToplevelClassConstructor(td, m) &&
                     !isToplevelAnonymousClass(m.getContainer())) {
                 if (alias==null) {
-                    member.addError("does not specify an alias");
+                    if (m.isStatic()) {
+                        member.addError("illegal static import: static member '" + 
+                                name + "' belongs to the generic type '" + 
+                                td.getName() + "'");
+                    }
+                    else if (isConstructor(m)) {
+                        member.addError("illegal static import: '" + 
+                                td.getName() + "' is not a toplevel class");
+                    }
+                    else if (isAnonymousClass(m.getContainer())) {
+                        member.addError("illegal static import: '" + 
+                                td.getName() + "' is not a toplevel anonymous class");
+                    }
+                    else {
+                        member.addError("illegal static import: '" + 
+                                name + "' is not static");
+                    }
                 }
             }
             i.setDeclaration(m);
             member.setDeclarationModel(m);
             if (il.hasImport(m)) {
-                id.addError("already imported: '" +
-                        name + "' of '" + td.getName() + "'");
+                id.addError("duplicate import: '" +
+                        name + "' of '" + td.getName() + 
+                        "' is already imported");
             }
             else {
-                if (m.isStatic() ||
+                if (isStaticNonGeneric(m, td) ||
                         isToplevelClassConstructor(td, m) ||
                         isToplevelAnonymousClass(m.getContainer())) {
                     if (!checkForHiddenToplevel(id, i, alias)) {
@@ -454,6 +476,13 @@ public class ImportVisitor extends Visitor {
         //imtl.addError("member aliases may not have member aliases");
         return name;
     }
+    
+    private boolean isStaticNonGeneric(Declaration dec, 
+            TypeDeclaration outer) {
+        return dec.isStatic() 
+                && (outer.isJava() || 
+                    outer.getTypeParameters().isEmpty()); 
+    }
 
     private void addImport(Tree.ImportMemberOrType member, 
             ImportList il, Import i) {
@@ -466,7 +495,7 @@ public class ImportVisitor extends Visitor {
                 //unless the modifier itself has an alias
                 //(this is perhaps a little heavy-handed)
                 member.addError("import hides a language modifier: '" + 
-                        alias + "'");
+                        alias + "' is a language modifier");
             }
             else {
                 Import o = unit.getImport(alias);
@@ -482,7 +511,7 @@ public class ImportVisitor extends Visitor {
                 }
                 else {
                     member.addError("duplicate import alias: '" + 
-                            alias + "'");
+                            alias + "' is already used");
                 }
             }
         }
@@ -498,7 +527,7 @@ public class ImportVisitor extends Visitor {
             }
             else {
                 member.addError("duplicate member import alias: '" + 
-                        alias + "'");
+                        alias + "' is already used");
             }
         }
     }

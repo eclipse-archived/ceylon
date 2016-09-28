@@ -272,10 +272,12 @@ public class TypeArgumentVisitor extends Visitor {
         if (dec!=null && type!=null) {
             List<TypeParameter> params = 
                     dec.getTypeParameters();
-            if (tal==null && 
-                    !params.isEmpty() && 
-                    !type.isTypeConstructor() &&
-                    !that.getMetamodel()) {
+            if (tal==null 
+                    && !params.isEmpty() 
+                    && !type.isTypeConstructor() 
+                    && !that.getMetamodel() 
+                    && !(that.getStaticTypePrimary() 
+                            && dec.isJava())) {
                 String name = dec.getName(that.getUnit());
                 if (!params.get(0).isDefaulted()) {
                     StringBuilder paramList = 
@@ -292,7 +294,7 @@ public class TypeArgumentVisitor extends Visitor {
                     that.addError("missing type arguments to generic type: '" + 
                             name + "' declares type parameters " + 
                             paramList);
-
+   
                 }
                 else {
                     that.addUsageWarning(Warning.syntaxDeprecation,
