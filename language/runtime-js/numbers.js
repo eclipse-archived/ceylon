@@ -30,9 +30,12 @@ function Integer(value) {
 }
 Integer.$st$={
   format:function(i,r,sep){
+    if(r===undefined)r=10;
+    if(sep===undefined)sep=null;
     return formatInteger(i,r,sep);
   },
   parse:function(s,r) {
+    if (r===undefined)r=10;
     var x = parseInteger(s,r);
     return x===null?ParseException("illegal format for Integer"):x;
   }
