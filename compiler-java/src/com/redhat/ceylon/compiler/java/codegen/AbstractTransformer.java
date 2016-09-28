@@ -3606,7 +3606,19 @@ public abstract class AbstractTransformer implements Transformation {
     /** Determine whether the given declaration requires a 
      * {@code @TypeInfo} annotation 
      */
-    private boolean needsJavaTypeAnnotations(Declaration decl) {
+    private boolean needsJavaTypeAnnotations(Declaration decl, Type type) {
+        if (!(decl instanceof Function && (decl.isParameter()
+                || Decl.isMpl((Function)decl)))
+                && (
+                (decl instanceof Function && !Strategy.useBoxedVoid((Function)decl) && Decl.isUnboxedVoid(decl))
+                || type.isInteger()
+                || type.isString()
+                || type.isBoolean()
+                || type.isFloat())) {
+            // don't use @TypeInfo for void, Integer, String etc methods
+            return false;
+        } 
+        
         Declaration reqdecl;
         if (decl instanceof FunctionOrValue
                 && ((FunctionOrValue)decl).isParameter()) {
@@ -3636,12 +3648,13 @@ public abstract class AbstractTransformer implements Transformation {
         } else {
             type = decl.getType();
         }
+        
         boolean declaredVoid = decl instanceof Function && Strategy.useBoxedVoid((Function)decl) && Decl.isUnboxedVoid(decl);
         
         return makeJavaTypeAnnotations(type, declaredVoid, 
                 CodegenUtil.hasTypeErased(decl),
                 CodegenUtil.hasUntrustedType(decl),
-                needsJavaTypeAnnotations(decl),
+                needsJavaTypeAnnotations(decl, type),
                 decl.hasUncheckedNullType());
     }
 
