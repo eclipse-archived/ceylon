@@ -1285,6 +1285,17 @@ public abstract class DeclarationVisitor extends Visitor {
         that.getType().setTypeModel(t);
         v.setType(t);
         v.setStatic(c.isStatic());
+        if (c.isStatic()) {
+            Scope container = v.getContainer();
+            if (container instanceof ClassOrInterface) {
+                ClassOrInterface ci = 
+                        (ClassOrInterface) 
+                            container;
+                if (!ci.getTypeParameters().isEmpty()) {
+                    that.addError("anonymous class belonging to generic type may not be annotated 'static'");
+                }
+            }
+        }
         Scope o = enterScope(c);
         super.visit(that);
         exitScope(o);
@@ -1343,6 +1354,16 @@ public abstract class DeclarationVisitor extends Visitor {
         v.setTransient(lazy);
         v.setImplemented(sie != null);
         visitDeclaration(that, v);
+        if (!lazy && v.isVariable() && v.isStatic()) {
+            Scope container = v.getContainer();
+            if (container instanceof ClassOrInterface) {
+                ClassOrInterface ci = 
+                        (ClassOrInterface) container;
+                if (!ci.getTypeParameters().isEmpty()) {
+                    that.addError("attribute of generic type may not be annotated both 'variable' and 'static'");
+                }
+            }
+        }
         Scope o = null;
 //        if (lazy) 
             o = enterScope(v);
