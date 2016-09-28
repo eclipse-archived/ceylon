@@ -45,6 +45,27 @@ dependencies {
 }
 
 sourceSets {
+    jdk6Stubs {
+        java {
+            srcDirs = ['src','langtools/src/share/classes']
+            source project(':common').sourceSets.main.java
+            include "**/Java7Checker.java"
+            include "com/redhat/ceylon/tools/Tool.java"
+            include "com/redhat/ceylon/tools/Plugin.java"
+            include "com/redhat/ceylon/ant/**"
+            include "com/redhat/ceylon/launcher/**"
+            include "com/redhat/ceylon/common/*"
+            include "com/redhat/ceylon/common/config/*"
+            include "com/redhat/ceylon/common/tools/ModuleWildcardsHelper.java"
+        }
+        resources {
+            srcDirs = []
+        }
+        compileClasspath = configurations.compile
+        runtimeClasspath = output + compileClasspath
+        output.classesDir = sourceSets.main.output.classesDir
+    }
+
     main {
         java {
             srcDir 'langtools/src/share/classes'
@@ -52,8 +73,6 @@ sourceSets {
             exclude "**/Java7Checker.java"
             exclude "com/redhat/ceylon/ant/**"
             exclude "com/redhat/ceylon/launcher/**"
-            exclude 'com/redhat/ceylon/tools/antdoc/**'
-            exclude 'com/redhat/ceylon/tools/bootstrap/**'
         }
         resources {
             srcDirs = [ 'src',"${project(':common').projectDir}/src",'langtools/src/share/classes' ]
@@ -64,6 +83,7 @@ sourceSets {
             include 'com/redhat/ceylon/langtools/tools/javac/resources/*.properties'
             include 'META-INF/**'
         }
+        compileClasspath = configurations.compile + sourceSets.jdk6Stubs.output
     }
 
 //    antTask {
@@ -105,39 +125,15 @@ sourceSets {
             include "**/*.properties"
         }
     }
-
-    jdk6Stubs {
-        java {
-            srcDirs = ['src','langtools/src/share/classes']
-            source project(':common').sourceSets.main.java
-            include "**/Java7Checker.java"
-            include "com/redhat/ceylon/tools/Tool.java"
-            include "com/redhat/ceylon/tools/Plugin.java"
-            include "com/redhat/ceylon/ant/**"
-            include "com/redhat/ceylon/launcher/**"
-            include "com/redhat/ceylon/common/*"
-            include "com/redhat/ceylon/common/config/*"
-            include "com/redhat/ceylon/common/tools/ModuleWildcardsHelper.java"
-        }
-        resources {
-            srcDirs = []
-        }
-        compileClasspath = configurations.compile
-        runtimeClasspath = output + compileClasspath
-        output.classesDir = sourceSets.main.output.classesDir
-    }
 }
 
 compileJdk6StubsJava {
     sourceCompatibility = '1.6'
     targetCompatibility = '1.6'
-    dependsOn compileJava
 }
 
 
-assemble {
-    dependsOn compileJdk6StubsJava
-}
+compileJava.dependsOn += compileJdk6StubsJava
 
 
 jar {
