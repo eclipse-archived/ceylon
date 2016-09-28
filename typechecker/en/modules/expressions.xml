@@ -893,7 +893,11 @@ Digit{1,2} ":" Digit{2} ( ":" Digit{2} ( ":" Digit{3} )? )?
             <para>Any invocation expression where the invoked expression is a callable 
             reference expression is called a <emphasis>direct invocation expression</emphasis> 
             of the function, class, or callable constructor to which the callable reference 
-            refers.</para> 
+            refers.</para>
+            
+            <para>A direct invocation expression of a callable reference expression that 
+            refers to a class or constructor is called a (direct) 
+            <emphasis>instantiation expression</emphasis>.</para>
             
             <comment><para>TODO: Should we consider <literal>x{y=1;}{z=2;}</literal> a legal
             direct invocation if <literal>x</literal> has multiple parameter lists?</para></comment>
