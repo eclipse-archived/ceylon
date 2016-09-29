@@ -2076,48 +2076,6 @@ public class Type extends Reference {
     
     
     /**
-     * Get the type arguments as a tuple. 
-     */
-    public List<Type> getTypeArgumentList() {
-        List<TypeParameter> tps = 
-                getDeclaration()
-                    .getTypeParameters();
-        if (tps.isEmpty()) {
-            return NO_TYPE_ARGS;
-        }
-        else {
-//            if (TypeCache.isEnabled()) {
-//                if (typeArgumentList==null) {
-//                    typeArgumentList = 
-//                            getTypeArgumentListInternal();
-//                }
-//                return typeArgumentList;
-//            }
-//            else {
-                return getTypeArgumentListInternal();
-            }
-//        }
-    }
-
-    private List<Type> getTypeArgumentListInternal() {
-        TypeDeclaration dec = getDeclaration();
-        List<TypeParameter> tps = dec.getTypeParameters();
-        int size = tps.size();
-        List<Type> argList = new ArrayList<Type>(size);
-        Map<TypeParameter, Type> args = getTypeArguments();
-        for (int i=0; i<size; i++) {
-            TypeParameter tp = tps.get(i);
-            Type arg = args.get(tp);
-            if (arg==null) {
-                arg = dec.getUnit().getUnknownType();
-            }
-            argList.add(arg);
-        }
-//        argList = unmodifiableList(argList);
-        return argList;
-    }
-
-    /**
      * Determine if this is a decidable supertype, i.e. if 
      * it obeys the restriction that types with contravariant 
      * type parameters may only appear in covariant positions. 
