@@ -28,6 +28,7 @@ public abstract class Declaration
         implements Referenceable, Annotated, Named {
     
 	private String name;
+	/** See {@link DeclarationFlags} */
 	protected int flags;
 	private String qualifier;
     private Scope visibleScope;
