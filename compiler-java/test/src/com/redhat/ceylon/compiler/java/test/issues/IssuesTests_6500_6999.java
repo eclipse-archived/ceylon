@@ -44,4 +44,10 @@ public class IssuesTests_6500_6999 extends CompilerTests {
                 new CompilerError(27, "parameterized expression not the target of a specification statement: parameter list is not followed by '=>' specifier (add '=>' specifier, or explicitly specify 'function' keyword or return type)")
                 );
     }
+
+    @Test
+    public void testBug6533() {
+        compile("bug65xx/Bug6533A.ceylon", "bug65xx/Bug6533Annotation.ceylon");
+        compile("bug65xx/Bug6533B.ceylon", "bug65xx/Bug6533Annotation.ceylon");
+    }
 }

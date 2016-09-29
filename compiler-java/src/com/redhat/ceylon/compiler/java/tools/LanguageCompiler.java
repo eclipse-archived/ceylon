@@ -151,6 +151,7 @@ public class LanguageCompiler extends JavaCompiler {
     private Map<String,CeylonFileObject> moduleNamesToFileObjects = new HashMap<String,CeylonFileObject>();
     private SourceLanguage sourceLanguage;
     private boolean addModuleTrees = true;
+    private boolean hadRunTwiceException;
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(final Context context) {
@@ -896,6 +897,7 @@ public class LanguageCompiler extends JavaCompiler {
             sourceLanguage.push(Language.JAVA);
             super.complete(c);
         } catch (RunTwiceException e) {
+            hadRunTwiceException = true;
             throw new CompletionFailure(c, e.getLocalizedMessage());
         } finally {
             sourceLanguage.pop();
@@ -946,5 +948,9 @@ public class LanguageCompiler extends JavaCompiler {
 
     public void setAddModuleTrees(boolean addModuleTrees) {
         this.addModuleTrees = addModuleTrees;
+    }
+    
+    public boolean isHadRunTwiceException() {
+        return hadRunTwiceException;
     }
 }

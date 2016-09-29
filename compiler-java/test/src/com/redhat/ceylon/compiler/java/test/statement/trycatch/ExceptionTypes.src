@@ -86,9 +86,7 @@ final class exceptionTypesUsage_ {
     private exceptionTypesUsage_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void exceptionTypesUsage(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Throwable()")
@@ -156,7 +154,6 @@ final class exceptionTypeAssignment_ {
     private exceptionTypeAssignment_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void exceptionTypeAssignment() {
         final .com.redhat.ceylon.compiler.java.test.statement.trycatch.JavaThrower jt = new .com.redhat.ceylon.compiler.java.test.statement.trycatch.JavaThrower();
         .java.lang.Throwable t = null;

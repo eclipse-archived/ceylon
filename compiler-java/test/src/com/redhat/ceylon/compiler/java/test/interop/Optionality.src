@@ -385,9 +385,6 @@ final class classSubClass_ extends .com.redhat.ceylon.compiler.java.test.interop
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::String",
-            uncheckedNull = true)
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .java.lang.String getType() {
         return (
@@ -408,9 +405,6 @@ final class classSubClass_ extends .com.redhat.ceylon.compiler.java.test.interop
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::String",
-            uncheckedNull = true)
     public final .java.lang.String typeMethod() {
         return (
             let

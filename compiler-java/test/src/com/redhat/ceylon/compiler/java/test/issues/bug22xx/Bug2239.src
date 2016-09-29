@@ -13,7 +13,6 @@ class Bug2239 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.javax.annotation.PostConstruct
     @.ceylon.language.LateAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     private final .java.lang.String getEm$priv$() {
         if (this.em != null) {
             return em;
@@ -25,7 +24,6 @@ class Bug2239 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.javax.annotation.PostConstruct
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final void setEm$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("em")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String em) {
         if (this.em == null) {
             this.em = em;

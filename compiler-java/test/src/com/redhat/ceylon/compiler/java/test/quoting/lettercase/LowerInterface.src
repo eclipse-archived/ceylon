@@ -33,7 +33,6 @@ public interface i_ {
     public .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i$impl_ $com$redhat$ceylon$compiler$java$test$quoting$lettercase$i$impl_();
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public void m();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.quoting.lettercase.i_.class);

@@ -37,7 +37,6 @@ class Bug1975 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long g(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String a) {
         return g.$call$(.ceylon.language.String.instance(a)).longValue();
     }
@@ -47,7 +46,6 @@ class Bug1975 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long h(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String a) {
         return h.$call$(.ceylon.language.String.instance(a)).longValue();
     }
@@ -56,12 +54,10 @@ class Bug1975 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long i$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String a) {
         return i.$call$(.ceylon.language.String.instance(a)).longValue();
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void capture$priv$() {
         i$priv$("");
     }

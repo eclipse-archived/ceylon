@@ -24,9 +24,7 @@ class Bug2265 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void myFunction(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String param) {
         setFoo$priv$(.ceylon.language.String.instance((
             let
@@ -67,7 +65,6 @@ final class bug2265_ {
     private bug2265_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug2265() {
         new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2265().myFunction("foo");
     }

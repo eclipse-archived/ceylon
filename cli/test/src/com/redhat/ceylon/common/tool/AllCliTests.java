@@ -13,9 +13,9 @@ import org.junit.runners.Suite.SuiteClasses;
     MultiplicityTest.class,
     WordWrapTest.class
 })
-public class ToolsSuite {
+public class AllCliTests {
 
-    public ToolsSuite() {
+    public AllCliTests() {
         // TODO Auto-generated constructor stub
     }
 

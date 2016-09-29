@@ -21,7 +21,6 @@ final class bug629_ implements .java.io.Serializable, .com.redhat.ceylon.compile
     private final .java.lang.String version;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getVersion() {
         return version;
     }
@@ -67,7 +66,6 @@ public final class run629_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void run629() {
         .ceylon.language.print_.print(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.metamodel.bug629_.get_().getVersion()));
     }

@@ -1052,13 +1052,11 @@ packageQualifiedClass returns [SimpleType type, ExtendedTypeExpression expressio
             $expression.setType($type); }
           ( //constructor
             m2=MEMBER_OP
-            { qt = new QualifiedType(null);
+            { qt = new QualifiedType($m2);
               qt.setOuterType($type);
-              qt.setEndToken($m2); 
               $type=qt; }
             t2=memberNameWithArguments
             { if ($t2.identifier!=null) {
-                qt.setEndToken(null);
                 qt.setIdentifier($t2.identifier);
               }
               if ($t2.typeArgumentList!=null)
@@ -1083,14 +1081,12 @@ unqualifiedClass returns [SimpleType type, ExtendedTypeExpression expression]
         $expression.setType($type); }
       ( //constructor:
         m3=MEMBER_OP
-        { qt = new QualifiedType(null);
+        { qt = new QualifiedType($m3);
           qt.setOuterType($type);
-          qt.setEndToken($m3);
           $type=qt; }
         (
           t3=memberNameWithArguments
           { if ($t3.identifier!=null) {
-              qt.setEndToken(null);
               qt.setIdentifier($t3.identifier);
             }
             if ($t3.typeArgumentList!=null)
@@ -1580,32 +1576,35 @@ declarationStart
 // recognize some common patterns that are unambiguously
 // type abbreviations - these are not necessary, but 
 // help the IDE
+fullQualifiedType
+    : baseType (MEMBER_OP typeNameWithArguments)*
+    ;
 unambiguousType
-    : qualifiedType 
+    : fullQualifiedType 
       (
         (OPTIONAL | LBRACKET RBRACKET)? 
-        ENTRY_OP qualifiedType
+        ENTRY_OP fullQualifiedType
       )?
       (OPTIONAL | LBRACKET RBRACKET)
     | LBRACE 
-      qualifiedType (OPTIONAL | LBRACKET RBRACKET)?
+      fullQualifiedType (OPTIONAL | LBRACKET RBRACKET)?
       (
-        ENTRY_OP qualifiedType 
+        ENTRY_OP fullQualifiedType 
         (OPTIONAL | LBRACKET RBRACKET)?
       )? 
       (PRODUCT_OP|SUM_OP) 
       RBRACE
     | LBRACKET 
-      qualifiedType (OPTIONAL | LBRACKET RBRACKET)? 
+      fullQualifiedType (OPTIONAL | LBRACKET RBRACKET)? 
       (
-        ENTRY_OP qualifiedType
+        ENTRY_OP fullQualifiedType
         (OPTIONAL | LBRACKET RBRACKET)?
       )? 
       (
         COMMA 
-        qualifiedType (OPTIONAL | LBRACKET RBRACKET)? 
+        fullQualifiedType (OPTIONAL | LBRACKET RBRACKET)? 
         (
-          ENTRY_OP qualifiedType 
+          ENTRY_OP fullQualifiedType 
           (OPTIONAL | LBRACKET RBRACKET)?
         )?
       )* 
@@ -3599,17 +3598,26 @@ baseType returns [StaticType type]
     ;
 
 qualifiedType returns [StaticType type]
+    @init { QualifiedType qt = null; }
     : baseType
       { $type=$baseType.type; }
-      (
+      ( (MEMBER_OP ~LIDENTIFIER) =>
         MEMBER_OP
-        it=typeNameWithArguments
-        { QualifiedType qt = new QualifiedType($MEMBER_OP);
-          qt.setIdentifier($it.identifier);
-          if ($it.typeArgumentList!=null)
-              qt.setTypeArgumentList($it.typeArgumentList);
+        { qt = new QualifiedType($MEMBER_OP);
           qt.setOuterType($type);
           $type=qt; }
+        ( (UIDENTIFIER) =>
+          tna=typeNameWithArguments
+          { qt.setIdentifier($tna.identifier);
+            if ($tna.typeArgumentList!=null)
+                qt.setTypeArgumentList($tna.typeArgumentList); }
+        | 
+          { displayRecognitionError(getTokenNames(), 
+                new MismatchedTokenException(UIDENTIFIER, input)); }
+          { Identifier id = new Identifier($MEMBER_OP);
+            id.setText(""); 
+            qt.setIdentifier(id); }
+        )
       )*
     ;
 
@@ -4360,11 +4368,11 @@ referencePath returns [SimpleType type]
       )
       (
         o2=MEMBER_OP
-        e3=referencePathElement
         { QualifiedType qt = new QualifiedType($o2);
-          qt.setIdentifier($e3.identifier);
           qt.setOuterType($type);
           $type = qt; }
+        e3=referencePathElement
+        { $type.setIdentifier($e3.identifier); }
       )*
     ; 
 

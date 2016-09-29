@@ -49,7 +49,6 @@ final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model
     
     NestedLeaf(@.com.redhat.ceylon.compiler.java.metadata.Name("i1")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.ceylon.language.SharedAnnotation$annotation$
     final long i1) {
         this.i1 = i1;
@@ -58,7 +57,6 @@ final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model
     private final long i1;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getI1() {
         return i1;
     }
@@ -115,7 +113,6 @@ final class nestedLeafDefaultedParameter_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf")
     static .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf nestedLeafDefaultedParameter(@.com.redhat.ceylon.compiler.java.metadata.Name("i2")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i2) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf(i2);
     }
@@ -187,7 +184,6 @@ final class NestedBranch implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     NestedBranch(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.String s, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf")
@@ -200,7 +196,6 @@ final class NestedBranch implements .com.redhat.ceylon.compiler.java.runtime.mod
     private final .java.lang.String s;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getS() {
         return s;
     }

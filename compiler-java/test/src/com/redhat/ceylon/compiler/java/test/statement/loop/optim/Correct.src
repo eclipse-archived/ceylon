@@ -58,7 +58,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long notOptimizedIteration$priv$() {
         long sum = 0L;
         boolean loopentered$0 = false;
@@ -73,7 +72,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return sum;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long rangeOpIteration$priv$() {
         long sum = 0L;
         final long $ceylontmp$first$6 = 1L;
@@ -95,7 +93,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return sum;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long rangeOpIterationReverse$priv$() {
         long sum = 0L;
         final long $ceylontmp$first$16 = 10L;
@@ -117,7 +114,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return sum;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long rangeIteration$priv$() {
         long sum = 0L;
         final .ceylon.language.Range<.ceylon.language.Integer> range = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
@@ -133,7 +129,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return sum;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long rangeIterationReverse$priv$() {
         long sum = 0L;
         final .ceylon.language.Range<.ceylon.language.Integer> range = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(10L));
@@ -158,7 +153,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     class MyOrdinal implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .ceylon.language.Enumerable<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal>, .java.io.Serializable {
         
         MyOrdinal(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
         @.ceylon.language.SharedAnnotation$annotation$
         final long i) {
             this.i = i;
@@ -168,7 +162,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         private final long i;
         
         @.ceylon.language.SharedAnnotation$annotation$
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
         public final long getI() {
             return i;
         }
@@ -207,7 +200,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 erased = true,
                 untrusted = true)
         public final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal neighbour(@.com.redhat.ceylon.compiler.java.metadata.Name("n")
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
         final long n) {
             return new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(getI() + n);
         }
@@ -215,7 +207,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         @.ceylon.language.SharedAnnotation$annotation$
         @.ceylon.language.ActualAnnotation$annotation$
         @.java.lang.Override
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
         public final long offset(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.statement.loop.optim::Correct.MyOrdinal")
         final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal other) {
@@ -229,7 +220,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long rangeIteration2$priv$() {
         long sum = 0L;
         final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> range = .ceylon.language.span_.<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal>span(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal.class)), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(1L), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(10L));
@@ -245,7 +235,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return sum;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long rangeIterationReverse2$priv$() {
         long sum = 0L;
         final .ceylon.language.Range<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal> range = .ceylon.language.span_.<.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal>span(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal.class)), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(10L), new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(1L));
@@ -261,7 +250,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return sum;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long arrayIterationStatic$priv$() {
         final .ceylon.language.Array<.ceylon.language.Integer> array = new .ceylon.language.Array<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(10L)));
         long sum = 0L;
@@ -274,7 +262,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return sum;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long javaArrayIterationStatic$priv$() {
         final int[] array = new int[10];
         final long $ceylontmp$first$47 = 1L;
@@ -302,7 +289,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return sum;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long tupleIterationStatic$priv$() {
         final .ceylon.language.Sequence<? extends .ceylon.language.Integer> array = (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(0L),
@@ -329,7 +315,6 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return sum;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long iterationDynamic$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("iterable")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::Integer*}")
     final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable) {
@@ -354,13 +339,11 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return sum;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long rangeIterationDynamic$priv$() {
         final .ceylon.language.Range<.ceylon.language.Integer> iterable = .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(10L));
         return iterationDynamic$priv$(iterable);
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     private final long arrayIterationDynamic$priv$() {
         final .ceylon.language.Array<.ceylon.language.Integer> iterable = new .ceylon.language.Array<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.span_.<.ceylon.language.Integer>span(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L), .ceylon.language.Integer.instance(10L)));
         return iterationDynamic$priv$(iterable);

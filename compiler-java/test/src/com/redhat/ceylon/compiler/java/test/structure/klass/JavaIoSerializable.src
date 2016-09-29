@@ -16,7 +16,6 @@ class JavaIoSerializableObject extends .java.lang.Object implements .com.redhat.
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     public final boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object other) {
@@ -26,7 +25,6 @@ class JavaIoSerializableObject extends .java.lang.Object implements .com.redhat.
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final int hashCode() {
         return (int)(
@@ -580,7 +578,6 @@ final class javaIoSerializableQuoting_ implements .java.io.Serializable, .com.re
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.class);
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void $readResolve() {
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_ value;
@@ -622,7 +619,6 @@ final class javaIoSerializableQuoting_ implements .java.io.Serializable, .com.re
 class JavaIoSerializableQuoting implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void $writeReplace() {
     }
     
@@ -682,13 +678,11 @@ class JavaIoSerializableNoQuoting implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void readResolve() {
         .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.get_().$readResolve();
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void writeReplace() {
         .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableQuoting.getJavaIoSerializableQuoting$val().$writeReplace();
     }

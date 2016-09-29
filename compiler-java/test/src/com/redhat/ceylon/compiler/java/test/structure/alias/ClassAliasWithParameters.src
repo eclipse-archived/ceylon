@@ -25,10 +25,8 @@ public class ClassAliasWithParameters_Foo implements .com.redhat.ceylon.compiler
     }
     
     public ClassAliasWithParameters_Foo(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s) {
     }
     
@@ -57,9 +55,7 @@ public final class ClassAliasWithParameters {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo ClassAliasWithParameters$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s) {
         throw new .ceylon.language.Exception();
     }

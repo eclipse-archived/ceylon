@@ -33,7 +33,6 @@ public final class Bug2045Annotation implements .com.redhat.ceylon.compiler.java
     }
     
     public Bug2045Annotation(@.com.redhat.ceylon.compiler.java.metadata.Name("order")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long order) {
     }
     
@@ -85,7 +84,6 @@ public final class bug2045_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::Bug2045Annotation")
     public static .com.redhat.ceylon.compiler.java.test.annotations.Bug2045Annotation bug2045(@.com.redhat.ceylon.compiler.java.metadata.Name("order")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long order) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Bug2045Annotation(order);
     }
@@ -121,7 +119,6 @@ final class bug2045Use_ {
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.Bug2045Annotation$annotation$(order = -1L)
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public static .java.lang.String get_() {
         if (bug2045Use_.$init$value) {
             return value;

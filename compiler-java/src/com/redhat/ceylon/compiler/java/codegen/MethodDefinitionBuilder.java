@@ -45,6 +45,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
@@ -102,12 +103,18 @@ public class MethodDefinitionBuilder
     private boolean haveLocation = false;
     private Node location;
 
+    private boolean deprecated;
+
     public static MethodDefinitionBuilder method(AbstractTransformer gen, Function method) {
-        return new MethodDefinitionBuilder(gen, false, gen.naming.selector(method));
+        MethodDefinitionBuilder mdb = new MethodDefinitionBuilder(gen, false, gen.naming.selector(method));
+        mdb.deprecated = method.isDeprecated();
+        return mdb;
     }
     
     public static MethodDefinitionBuilder method(AbstractTransformer gen, TypedDeclaration decl, int namingOptions) {
-        return new MethodDefinitionBuilder(gen, false, Naming.selector(decl, namingOptions));
+        MethodDefinitionBuilder mdb = new MethodDefinitionBuilder(gen, false, Naming.selector(decl, namingOptions));
+        mdb.deprecated = decl.isDeprecated();
+        return mdb;
     }
     
     public static MethodDefinitionBuilder getter(AbstractTransformer gen, TypedDeclaration attr, boolean indirect) {
@@ -135,8 +142,10 @@ public class MethodDefinitionBuilder
         return builder;
     }
     
-    public static MethodDefinitionBuilder constructor(AbstractTransformer gen) {
-        return new MethodDefinitionBuilder(gen, false, null);
+    public static MethodDefinitionBuilder constructor(AbstractTransformer gen, boolean deprecated) {
+        MethodDefinitionBuilder  mdb = new MethodDefinitionBuilder(gen, false, null);
+        mdb.deprecated = deprecated;
+        return mdb;
     }
 
     public static MethodDefinitionBuilder main(AbstractTransformer gen) {
@@ -189,6 +198,12 @@ public class MethodDefinitionBuilder
                 result.appendList(gen.makeAtName(realName));
             }
         }
+        
+        if (deprecated &&
+                (modifiers & Flags.PRIVATE) == 0) {
+            result.addAll(gen.makeAtDeprecated());
+        }
+        
         return result;
     }
     

@@ -1361,7 +1361,6 @@ final class methodRef_ {
     private methodRef_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void methodRef() {
         final .com.redhat.ceylon.compiler.java.test.expression.ref.MethodRef mr = new .com.redhat.ceylon.compiler.java.test.expression.ref.MethodRef();
         mr.simple();

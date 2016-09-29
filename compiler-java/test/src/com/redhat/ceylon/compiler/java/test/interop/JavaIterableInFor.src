@@ -27,7 +27,6 @@ final class javaIterableInFor_ {
     private javaIterableInFor_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void javaIterableInFor() {
         final .java.lang.Iterable<.ceylon.language.String> strings = (.java.lang.Iterable<.ceylon.language.String>)(.java.lang.Object).ceylon.language.nothing_.get_();
         final .java.lang.Iterable<.ceylon.language.Integer> ints = (.java.lang.Iterable<.ceylon.language.Integer>)(.java.lang.Object).ceylon.language.nothing_.get_();

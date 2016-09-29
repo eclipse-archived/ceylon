@@ -24,7 +24,6 @@ class TestListener2 implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         $com$redhat$ceylon$compiler$java$test$issues$bug15xx$TestListener$this$.mShared();
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void log$priv$() {
         .ceylon.language.print_.print(.ceylon.language.String.instance(""));
     }
@@ -46,7 +45,6 @@ class TestListener2 implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void anotherShared() {
         log$priv$();
     }

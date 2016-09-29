@@ -38,7 +38,6 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     public Klass(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long p1, @.com.redhat.ceylon.compiler.java.metadata.Name("p2")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
@@ -59,9 +58,7 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long m1(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long p1) {
         return 1L;
     }

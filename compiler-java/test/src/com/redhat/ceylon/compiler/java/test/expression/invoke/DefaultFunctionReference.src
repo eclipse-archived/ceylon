@@ -171,10 +171,8 @@ final class defaultFunctionReference2_ {
         };
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void defaultFunctionReference2(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s, @.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("!(o*)")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
@@ -310,10 +308,8 @@ final class defaultFunctionReference3_ {
         };
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void defaultFunctionReference3(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s, @.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("!(o+)")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted

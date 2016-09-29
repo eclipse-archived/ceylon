@@ -119,7 +119,6 @@ public final class bug6404_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void bug6404() {
         if ((
             let

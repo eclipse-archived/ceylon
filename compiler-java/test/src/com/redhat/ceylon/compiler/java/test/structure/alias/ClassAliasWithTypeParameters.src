@@ -73,7 +73,6 @@ public final class ClassAliasWithTypeParameters2 {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithTypeParameters_Foo<.ceylon.language.Integer> ClassAliasWithTypeParameters2$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final .ceylon.language.Integer t) {
         throw new .ceylon.language.Exception();
     }
