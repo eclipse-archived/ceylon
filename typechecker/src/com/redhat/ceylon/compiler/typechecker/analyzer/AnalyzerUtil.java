@@ -837,7 +837,7 @@ public class AnalyzerUtil {
         }
     }
 
-    static boolean checkAssignable(Type type, 
+    static void checkAssignable(Type type, 
             Type supertype, Node node, 
             String message, int code) {
         if (isTypeUnknown(type)) {
@@ -847,15 +847,12 @@ public class AnalyzerUtil {
             addTypeUnknownError(node, supertype, message);
         }
         else if (!type.isSubtypeOf(supertype)) {
-            if(canCoerce(type, supertype))
-                return true;
             node.addError(message + 
                     notAssignableMessage(type, supertype, node), 
                     code);
         }
-        return false;
     }
-
+/*
     static boolean canCoerce(Type type, Type supertype) {
         supertype = supertype.eliminateNull();
         Unit unit = type.getDeclaration().getUnit();
@@ -964,6 +961,7 @@ public class AnalyzerUtil {
         }
         return null;
     }
+    */
 
     /*static void checkAssignable(Type type, Type supertype, 
             TypeDeclaration td, Node node, String message) {

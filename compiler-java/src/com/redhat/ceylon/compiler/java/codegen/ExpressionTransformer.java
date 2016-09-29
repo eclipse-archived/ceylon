@@ -343,7 +343,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             // special case to be able to pass expected type to function refs
             // only the outer Expression is marked as Coerced, but we don't deal with function coercion here,
             // we do it in transformMemberExpression, so let's not lose it
-            result = transformMemberExpression((Tree.BaseMemberExpression)term, null, null, expectedType, expr.getCoerced());
+            result = transformMemberExpression((Tree.BaseMemberExpression)term, null, null, expectedType);
         }else{
             CeylonVisitor v = gen().visitor;
             final ListBuffer<JCTree> prevDefs = v.defs;
@@ -4855,11 +4855,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression transformMemberExpression(Tree.StaticMemberOrTypeExpression expr, JCExpression primaryExpr, TermTransformer transformer) {
-        return transformMemberExpression(expr, primaryExpr, transformer, null, expr.getCoerced());
+        return transformMemberExpression(expr, primaryExpr, transformer, null);
     }
     
     private JCExpression transformMemberExpression(Tree.StaticMemberOrTypeExpression expr, JCExpression primaryExpr, 
-            TermTransformer transformer, Type expectedType, boolean coerced) {
+            TermTransformer transformer, Type expectedType) {
         JCExpression result = null;
 
         // do not throw, an error will already have been reported
@@ -4906,17 +4906,17 @@ public class ExpressionTransformer extends AbstractTransformer {
                         || functionalParameterRequiresCallable((Function)decl, expr)) 
                 && isFunctionalResult(expr.getTypeModel())) {
             result = transformFunctional(expr, (Functional)decl, expectedType);
-        } else if (coerced
-                && decl instanceof Value
-                && isFunctionalResult(expr.getTypeModel())
-                && checkForFunctionalInterface(expectedType) != null) {
-            result = transformFunctionalInterfaceBridge(expr, (Value)decl, expectedType);
-        } else if (coerced
-                && decl instanceof Value
-                && isJavaFunctionalInterfaceResult(expr.getTypeModel())
-                && expectedType != null
-                && isCeylonCallable(expectedType)) {
-            result = transformCallableBridge(expr, (Value)decl, expectedType);
+//        } else if (coerced
+//                && decl instanceof Value
+//                && isFunctionalResult(expr.getTypeModel())
+//                && checkForFunctionalInterface(expectedType) != null) {
+//            result = transformFunctionalInterfaceBridge(expr, (Value)decl, expectedType);
+//        } else if (coerced
+//                && decl instanceof Value
+//                && isJavaFunctionalInterfaceResult(expr.getTypeModel())
+//                && expectedType != null
+//                && isCeylonCallable(expectedType)) {
+//            result = transformCallableBridge(expr, (Value)decl, expectedType);
         } else if (Decl.isGetter(decl)) {
             // invoke the getter
             if (decl.isToplevel()) {
