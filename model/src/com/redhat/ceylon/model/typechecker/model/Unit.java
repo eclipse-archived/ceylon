@@ -497,15 +497,6 @@ public class Unit implements LanguageModuleProvider {
     }
     
     @Override
-    public Class getErrorDeclaration() {
-        Module theLanguageModule = getLanguageModule();
-        if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getErrorDeclaration();
-        }
-        return null;
-    }
-    
-    @Override
     public Class getExceptionDeclaration() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
