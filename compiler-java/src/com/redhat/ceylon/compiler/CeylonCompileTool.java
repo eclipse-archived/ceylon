@@ -224,7 +224,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     }
 
     @OptionArgument(longName="apt", argumentName="module")
-    @Description("Specifies the name of the module providing the JDK (default: the underlying JDK).")
+    @Description("Specifies the list of modules to use as Java annotation-processing modules (default: none). Experimental.")
     public void setAptModule(List<String> aptModules) {
         if(aptModules != null){
             this.aptModules = new ArrayList<ModuleSpec>(aptModules.size());
