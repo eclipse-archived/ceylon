@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.TypedDeclarationFlags.*;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.getTypeArgumentMap;
 
 import java.util.List;
@@ -14,13 +15,6 @@ import java.util.Objects;
  */
 public abstract class TypedDeclaration 
         extends Declaration implements Typed {
-    
-    private static final int UNCHECKED_NULL = 1<<11;
-    private static final int UNBOXED_KNOWN = 1<<12;
-    private static final int UNBOXED = 1<<13;
-    private static final int TYPE_ERASED = 1<<14;
-    private static final int UNTRUSTED_TYPE = 1<<15;
-    private static final int DYNAMICALLY_TYPED = 1<<16;
     
     private Type type;
     

@@ -1,16 +1,10 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.FunctionOrValueFlags.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class FunctionOrValue extends TypedDeclaration {
-    
-    private static final int CAPTURED = 1<<17;
-    private static final int SHORTCUT_REFINEMENT = 1<<18;
-    private static final int OVERLOADED = 1<<19;
-    private static final int ABSTRACTION = 1<<20;
-    private static final int IMPLEMENTED = 1<<21;
-    private static final int SMALL = 1<<29;
     
     private Parameter initializerParameter;
     private List<Declaration> members = new ArrayList<Declaration>(3);

@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ClassFlags.*;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
@@ -26,18 +27,6 @@ public class Class extends ClassOrInterface implements Functional {
     private static final int NULL = 1<<2;
     private static final int OBJECT = 1<<1;
     private static final int ANYTHING = 1<<0;
-    
-    private static final int CONSTRUCTORS = 1<<11;
-    private static final int ENUMERATED = 1<<12;
-    private static final int ABSTRACT = 1<<13;
-    private static final int FINAL = 1<<14;
-    private static final int SERIALIZABLE = 1<<15;
-    private static final int ANONYMOUS = 1<<16;
-    private static final int JAVA_ENUM = 1<<17;
-    private static final int VALUE_CONSTRUCTOR = 1<<18;
-    private static final int OVERLOADED = 1<<19;
-    private static final int ABSTRACTION = 1<<20;
-    private static final int NO_NAME = 1<<24;
     
     private ParameterList parameterList;
     private List<Reference> unimplementedFormals = 

@@ -1,6 +1,7 @@
 package com.redhat.ceylon.model.typechecker.model;
 
 import static java.util.Collections.emptyList;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.FunctionFlags.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +14,6 @@ import java.util.List;
  */
 public class Function extends FunctionOrValue implements Generic, Scope, Functional {
 
-    private static final int VOID = 1<<22;
-    private static final int DEFERRED = 1<<23;
-    private static final int NO_NAME = 1<<24;
-    
     private List<TypeParameter> typeParameters = emptyList();
     private List<ParameterList> parameterLists = new ArrayList<ParameterList>(1);
     private Object annotationConstructor;

@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.*;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_TYPE_ARG_MAP;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.contains;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.erase;
@@ -25,19 +26,6 @@ import com.redhat.ceylon.common.Backends;
 public abstract class Declaration 
         extends Element 
         implements Referenceable, Annotated, Named {
-    
-    private static final int SHARED = 1;
-    private static final int FORMAL = 1<<1;
-    private static final int ACTUAL = 1<<2;
-    private static final int DEFAULT = 1<<3;
-    private static final int ANNOTATION = 1<<4;
-    private static final int DEPRECATED = 1<<5;
-    private static final int DYNAMIC = 1<<6;
-    
-    private static final int PROTECTED = 1<<8;
-    private static final int PACKAGE = 1<<9;
-    private static final int STATIC = 1<<10;
-    private static final int DROPPED = 1<<30;
     
 	private String name;
 	protected int flags;

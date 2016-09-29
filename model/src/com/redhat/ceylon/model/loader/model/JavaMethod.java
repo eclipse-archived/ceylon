@@ -7,6 +7,7 @@ import com.redhat.ceylon.model.loader.mirror.MethodMirror;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.Scope;
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.FunctionFlags.*;
 
 /**
  * Instance method that allows us to remember the exact method name
@@ -14,8 +15,6 @@ import com.redhat.ceylon.model.typechecker.model.Scope;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public class JavaMethod extends Function implements LocalDeclarationContainer {
-
-    private static final int VARIADIC = 1<<26;
 
     private String realName;
     private boolean defaultedAnnotation;

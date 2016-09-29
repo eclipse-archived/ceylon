@@ -1,19 +1,13 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ValueFlags.*;
+
 /**
  * Represents any value - either a reference or getter.
  *
  * @author Gavin King
  */
 public class Value extends FunctionOrValue implements Scope {
-    
-    private static final int VARIABLE = 1<<22;
-    private static final int TRANSIENT = 1<<23;
-    private static final int LATE = 1<<24;
-    private static final int ENUM_VALUE = 1<<25;
-    private static final int SPECIFIED_IN_FOR_ELSE = 1<<26;
-    private static final int INFERRED = 1<<27;
-    private static final int SELF_CAPTURED = 1<<28;
     
     private Setter setter;
 

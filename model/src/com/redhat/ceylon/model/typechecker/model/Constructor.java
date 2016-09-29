@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.DeclarationFlags.ConstructorFlags.*;
 import static com.redhat.ceylon.model.typechecker.model.DeclarationKind.CONSTRUCTOR;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -15,10 +16,6 @@ import java.util.Objects;
  */
 public class Constructor extends TypeDeclaration implements Functional {
 
-    private static final int ABSTRACT = 1<<13;
-    private static final int OVERLOADED = 1<<19;
-    private static final int ABSTRACTION = 1<<20;
-    
     private ParameterList parameterList;
     private List<Declaration> overloads;
     private List<Declaration> members = new ArrayList<Declaration>(3);
