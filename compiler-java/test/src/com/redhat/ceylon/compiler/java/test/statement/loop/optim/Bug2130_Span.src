@@ -44,11 +44,8 @@ final class compareSpanInteger2130_ {
         return null;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void compareSpanInteger2130(@.com.redhat.ceylon.compiler.java.metadata.Name("start")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long start, @.com.redhat.ceylon.compiler.java.metadata.Name("end")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long end, @.com.redhat.ceylon.compiler.java.metadata.Name("expect")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]?")
@@ -279,13 +276,9 @@ final class compareSpanIntegerBy2130_ {
         return false;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void compareSpanIntegerBy2130(@.com.redhat.ceylon.compiler.java.metadata.Name("start")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long start, @.com.redhat.ceylon.compiler.java.metadata.Name("end")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long end, @.com.redhat.ceylon.compiler.java.metadata.Name("by")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long by, @.com.redhat.ceylon.compiler.java.metadata.Name("expect")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]?")
@@ -294,7 +287,6 @@ final class compareSpanIntegerBy2130_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
     final .ceylon.language.Integer breakAfter, @.com.redhat.ceylon.compiler.java.metadata.Name("debug")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     final boolean debug) {
         final VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.String>> problems = new VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.String>>((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong index = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
@@ -509,7 +501,6 @@ final class compareSpanCharacter2130_ {
         return null;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void compareSpanCharacter2130(@.com.redhat.ceylon.compiler.java.metadata.Name("start")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character")
     final int start, @.com.redhat.ceylon.compiler.java.metadata.Name("end")
@@ -727,13 +718,11 @@ final class compareSpanCharacterBy2130_ {
         return null;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void compareSpanCharacterBy2130(@.com.redhat.ceylon.compiler.java.metadata.Name("start")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character")
     final int start, @.com.redhat.ceylon.compiler.java.metadata.Name("end")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character")
     final int end, @.com.redhat.ceylon.compiler.java.metadata.Name("by")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long by, @.com.redhat.ceylon.compiler.java.metadata.Name("expect")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character[]?")
@@ -915,7 +904,6 @@ final class bug2130Span_ {
     private bug2130Span_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug2130Span() {
         (
             let

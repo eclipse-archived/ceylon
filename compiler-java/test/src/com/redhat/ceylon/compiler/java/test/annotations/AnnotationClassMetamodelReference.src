@@ -297,13 +297,11 @@ public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.com
     private final long attribute;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long getAttribute() {
         return attribute;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public final long method() {
         return 2L;
     }

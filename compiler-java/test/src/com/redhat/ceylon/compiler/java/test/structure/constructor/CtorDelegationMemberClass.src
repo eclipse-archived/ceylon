@@ -196,7 +196,6 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void runNonShared() {
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().reset();
         new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.ConcreteDelegating(.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.ConcreteDelegating$a);
@@ -401,7 +400,6 @@ public final class runCtorDelegationMemberClass_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void runCtorDelegationMemberClass() {
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass instance = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass();
         instance.runNonShared();

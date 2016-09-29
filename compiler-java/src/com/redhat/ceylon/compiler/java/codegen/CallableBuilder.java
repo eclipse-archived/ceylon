@@ -1638,7 +1638,7 @@ public class CallableBuilder {
         typedApply.body(gen.make().Return(callableInstance));
         //typedApply.body(body.toList());
         
-        MethodDefinitionBuilder ctor = MethodDefinitionBuilder.constructor(gen);
+        MethodDefinitionBuilder ctor = MethodDefinitionBuilder.constructor(gen, false);
         ctor.body(gen.make().Exec(gen.make().Apply(null, gen.naming.makeSuper(), List.<JCExpression>of(gen.make().Literal(typeModel.asString(true))))));
         
         

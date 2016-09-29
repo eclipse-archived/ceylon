@@ -240,6 +240,8 @@ public class ClassTransformer extends AbstractTransformer {
                 .forDefinition(model)
                 .hasDelegatingConstructors(CodegenUtil.hasDelegatingConstructors(def));
         
+        classBuilder.getInitBuilder().deprecated(model.isDeprecated());
+        
         // Very special case for Anything
         if ("ceylon.language::Anything".equals(model.getQualifiedNameString())) {
             classBuilder.extending(model.getType(), null);
@@ -297,7 +299,7 @@ public class ClassTransformer extends AbstractTransformer {
         TransformationPlan plan = errors().hasDeclarationError(def);
         if (plan instanceof ThrowerCatchallConstructor) {
             classBuilder.broken();
-            MethodDefinitionBuilder initBuilder = classBuilder.noInitConstructor().addConstructor();
+            MethodDefinitionBuilder initBuilder = classBuilder.noInitConstructor().addConstructor(model.isDeprecated());
             initBuilder.body(statementGen().makeThrowUnresolvedCompilationError(plan.getErrorMessage().getMessage()));
             // Although we have the class pl which we could use we don't know 
             // that it won't collide with the default named constructor's pl
@@ -310,7 +312,7 @@ public class ClassTransformer extends AbstractTransformer {
             initBuilder.parameter(pdb);
         } else if (plan instanceof PrivateConstructorOnly) {
             classBuilder.broken();
-            MethodDefinitionBuilder initBuilder = classBuilder.noInitConstructor().addConstructor();
+            MethodDefinitionBuilder initBuilder = classBuilder.noInitConstructor().addConstructor(model.isDeprecated());
             initBuilder.body(statementGen().makeThrowUnresolvedCompilationError(plan.getErrorMessage().getMessage()));
             initBuilder.modifiers(PRIVATE);
         }
@@ -449,7 +451,7 @@ public class ClassTransformer extends AbstractTransformer {
     }
 
     protected void buildJpaConstructor(Class model, ClassDefinitionBuilder classBuilder) {
-        MethodDefinitionBuilder ctor = classBuilder.addConstructor();
+        MethodDefinitionBuilder ctor = classBuilder.addConstructor(model.isDeprecated());
         ctor.modelAnnotations(makeAtJpa());
         ctor.modelAnnotations(makeAtIgnore());
         ctor.modifiers(PROTECTED);
@@ -804,7 +806,7 @@ public class ClassTransformer extends AbstractTransformer {
             Tree.AnyClass def,
             ClassDefinitionBuilder classBuilder) {
         Class klass = def.getDeclarationModel();
-        MethodDefinitionBuilder annoCtor = classBuilder.addConstructor();
+        MethodDefinitionBuilder annoCtor = classBuilder.addConstructor(klass.isDeprecated());
         annoCtor.ignoreModelAnnotations();
         // constructors are never final
         annoCtor.modifiers(transformClassDeclFlags(klass) & ~FINAL);
@@ -1471,9 +1473,9 @@ public class ClassTransformer extends AbstractTransformer {
                     MethodDefinitionBuilder overloadBuilder;
                     DefaultedArgumentConstructor dac;
                     if (constructor != null) {
-                        dac = new DefaultedArgumentConstructor(classBuilder.addConstructor(), constructor, node, paramList, delegationConstructor);
+                        dac = new DefaultedArgumentConstructor(classBuilder.addConstructor(constructor.isDeprecated()), constructor, node, paramList, delegationConstructor);
                     } else {
-                        dac = new DefaultedArgumentConstructor(classBuilder.addConstructor(), cls, node, paramList, delegationConstructor);
+                        dac = new DefaultedArgumentConstructor(classBuilder.addConstructor(cls.isDeprecated()), cls, node, paramList, delegationConstructor);
                     }
                     overloadBuilder = dac.makeOverload(
                             paramList.getModel(),
@@ -1554,7 +1556,7 @@ public class ClassTransformer extends AbstractTransformer {
      */
     private void serializationConstructor(Class model, 
             ClassDefinitionBuilder classBuilder) {
-        MethodDefinitionBuilder ctor = classBuilder.addConstructor();
+        MethodDefinitionBuilder ctor = classBuilder.addConstructor(model.isDeprecated());
         ctor.ignoreModelAnnotations();
         ctor.modifiers(PUBLIC);
         
@@ -5645,7 +5647,7 @@ public class ClassTransformer extends AbstractTransformer {
         Class clz = (Class)ctor.getContainer();
         
         at(that);
-        MethodDefinitionBuilder ctorDb = MethodDefinitionBuilder.constructor(this);
+        MethodDefinitionBuilder ctorDb = MethodDefinitionBuilder.constructor(this, ctor.isDeprecated());
         
         ClassDefinitionBuilder decl = null;
         ClassDefinitionBuilder impl = null;

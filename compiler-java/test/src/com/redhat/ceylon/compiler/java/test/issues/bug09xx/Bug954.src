@@ -125,9 +125,7 @@ final class bug954_ {
     private bug954_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug954(@.com.redhat.ceylon.compiler.java.metadata.Name("b")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     final boolean b) {
         final long n = 2L;
         

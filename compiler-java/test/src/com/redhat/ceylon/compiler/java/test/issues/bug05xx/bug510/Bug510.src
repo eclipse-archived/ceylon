@@ -39,7 +39,6 @@ final class goto_ {
     private goto_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void $goto() {
     }
 }
@@ -115,7 +114,6 @@ final class volatile_ {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long get_() {
         if (volatile_.$init$value) {
             return value;

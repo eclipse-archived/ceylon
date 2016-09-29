@@ -9,7 +9,6 @@ final class javaAutoCloseableInTry_ {
     private javaAutoCloseableInTry_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void javaAutoCloseableInTry() {
         final .java.lang.AutoCloseable c = (.java.lang.AutoCloseable)(.java.lang.Object).ceylon.language.nothing_.get_();
         {

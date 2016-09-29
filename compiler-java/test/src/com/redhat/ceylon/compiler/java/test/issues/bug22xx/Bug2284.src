@@ -33,7 +33,6 @@ public final class bug2284_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void bug2284() {
         if (1L == 1L) {
             if (1L == 1L) {

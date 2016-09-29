@@ -130,7 +130,6 @@ final class smallConversionToplvels_ {
     private smallConversionToplvels_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void smallConversionToplvels() {
         .com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversion1_.set_((int).com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversionBig_.get_());
         .com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversion3_.set_((int).com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversionBig_.get_());
@@ -146,7 +145,6 @@ final class smallConversionBig_ {
     private smallConversionBig_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public static long get_() {
         return 1L;
@@ -178,7 +176,6 @@ final class smallConversion1_ {
     
     @.ceylon.language.VariableAnnotation$annotation$
     @.ceylon.language.SmallAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static int get_() {
         if (smallConversion1_.$init$value) {
             return value;
@@ -189,7 +186,6 @@ final class smallConversion1_ {
     }
     
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("smallConversion1")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final int smallConversion1) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = smallConversion1;
@@ -206,7 +202,6 @@ final class smallConversion2_ {
     }
     
     @.ceylon.language.SmallAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public static int get_() {
         return (int).com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversionBig_.get_();
@@ -223,14 +218,12 @@ final class smallConversion3_ {
     }
     
     @.ceylon.language.SmallAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public static int get_() {
         return 1;
     }
     
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("smallConversion3")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final int smallConversion3) {
     }
 }

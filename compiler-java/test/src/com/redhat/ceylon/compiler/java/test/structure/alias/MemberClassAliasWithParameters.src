@@ -43,10 +43,8 @@ public class MemberClassAliasWithParameters_Foo implements .com.redhat.ceylon.co
     public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
         final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
         @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
         final .java.lang.String s) {
         }
         
@@ -64,9 +62,7 @@ public class MemberClassAliasWithParameters_Foo implements .com.redhat.ceylon.co
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member MemberClassAlias$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s) {
         throw new .ceylon.language.Exception();
     }
@@ -85,7 +81,6 @@ public class MemberClassAliasWithParameters_Foo implements .com.redhat.ceylon.co
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void test$priv$() {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasWithParameters_Foo.Member m = MemberClassAlias$new$(1L, "a");
     }

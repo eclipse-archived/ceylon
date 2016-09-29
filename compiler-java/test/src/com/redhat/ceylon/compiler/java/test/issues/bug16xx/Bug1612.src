@@ -28,7 +28,6 @@ class Bug1612<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     Bug1612(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i) {
         this.$reified$T = $reified$T;
     }
@@ -126,7 +125,6 @@ class Bug1612<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         protected Bar2(@.com.redhat.ceylon.compiler.java.metadata.Ignore
         final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$G, @.com.redhat.ceylon.compiler.java.metadata.Name("j")
         @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
         final long j) {
             this.$reified$G = $reified$G;
         }

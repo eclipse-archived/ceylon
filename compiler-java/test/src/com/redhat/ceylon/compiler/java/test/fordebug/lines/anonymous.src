@@ -34,7 +34,6 @@ final class anonymous_ {
     private anonymous_() { // line 6
     }
      // line 6
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything") // line 6
     static void anonymous() { // line 6
         .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer id = ( // line 3
             let

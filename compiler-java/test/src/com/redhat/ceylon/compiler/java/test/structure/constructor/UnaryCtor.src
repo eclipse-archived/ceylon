@@ -16,12 +16,10 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     private final .java.lang.String s;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public final .java.lang.String getS() {
         return s;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void use$priv$() {
         final .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor o1 = (
             let
@@ -48,7 +46,6 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     @.ceylon.language.SharedAnnotation$annotation$
     public UnaryCtor(@.com.redhat.ceylon.compiler.java.metadata.Name("s1")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String s1$param$) {
         s = s1$param$;
     }
@@ -69,7 +66,6 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     @.com.redhat.ceylon.compiler.java.metadata.Name("fromInteger")
     private UnaryCtor(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.fromInteger_ $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i$param$) {
         s = .ceylon.language.Integer.toString(i$param$);
     }
@@ -91,7 +87,6 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     @.com.redhat.ceylon.compiler.java.metadata.Name("sharedFromInteger")
     public UnaryCtor(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     .com.redhat.ceylon.compiler.java.test.structure.constructor.UnaryCtor.sharedFromInteger_ $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long i$param$) {
         s = .ceylon.language.Integer.toString(i$param$);
     }

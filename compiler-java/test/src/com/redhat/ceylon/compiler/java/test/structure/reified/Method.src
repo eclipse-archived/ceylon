@@ -24,7 +24,6 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "T",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -46,7 +45,6 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "T",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -57,7 +55,6 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
         return 2L;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void test$priv$() {
         getMethodSpec().$call$();
     }
@@ -102,7 +99,6 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "T",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -111,10 +107,8 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     public final <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("a")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long b) {
         (
             let
@@ -125,7 +119,6 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
         );
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void test2$priv$() {
         (
             let
@@ -189,7 +182,6 @@ public interface MethodInterface {
     public abstract <T>long methodWithOverloads$b(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final long a);
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "T",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -198,10 +190,8 @@ public interface MethodInterface {
     public <T>void methodWithOverloads(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("a")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long b);
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -405,7 +395,6 @@ public final class method_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "T",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,

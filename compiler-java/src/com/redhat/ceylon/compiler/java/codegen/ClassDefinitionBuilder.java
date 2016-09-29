@@ -307,14 +307,14 @@ public class ClassDefinitionBuilder {
         return typesList.toList();
     }
     
-    public MethodDefinitionBuilder addConstructor() {
-        MethodDefinitionBuilder constructor = MethodDefinitionBuilder.constructor(gen);
+    public MethodDefinitionBuilder addConstructor(boolean deprecated) {
+        MethodDefinitionBuilder constructor = MethodDefinitionBuilder.constructor(gen, deprecated);
         this.constructors.append(constructor);
         return constructor;
     }
 
-    public MethodDefinitionBuilder addConstructorWithInitCode() {
-        MethodDefinitionBuilder constructor = addConstructor();
+    public MethodDefinitionBuilder addConstructorWithInitCode(boolean deprecated) {
+        MethodDefinitionBuilder constructor = addConstructor(deprecated);
         constructor.body(initBuilder.build().body.stats);
         return constructor;
     }
@@ -547,7 +547,7 @@ public class ClassDefinitionBuilder {
                 "$this", 
                 gen.makeJavaType(thisType), 
                 null, false, gen.makeAtIgnore());
-        MethodDefinitionBuilder ctor = companionBuilder.addConstructorWithInitCode();
+        MethodDefinitionBuilder ctor = companionBuilder.addConstructorWithInitCode(decl.isDeprecated());
         ctor.ignoreModelAnnotations();
         if(decl instanceof Generic) {
             ctor.reifiedTypeParameters(((Generic)decl).getTypeParameters());

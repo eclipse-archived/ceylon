@@ -67,7 +67,6 @@ class Bug5898 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         @.ceylon.language.SharedAnnotation$annotation$
         @.ceylon.language.ActualAnnotation$annotation$
         @.java.lang.Override
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
         public final .java.lang.String toString() {
             return string;
         }
@@ -88,7 +87,6 @@ class Bug5898 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         @.com.redhat.ceylon.compiler.java.metadata.Name("create2")
         public D(@.com.redhat.ceylon.compiler.java.metadata.Ignore
         .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.D$create2 $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
-        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
         final .java.lang.String s$param$) {
             string = s$param$;
         }
@@ -117,7 +115,6 @@ final class bug5898_ {
     private bug5898_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug5898() {
         final .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898 c = new .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898();
         final .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.D d = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.D>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.D.class)), .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.$TypeDescriptor$), "Bug5898.D.create()(Bug5898)", (short)-1){

@@ -29,7 +29,6 @@ final class bug6096_ {
     private bug6096_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug6096() {
         final double y = 1L * ((.ceylon.language.Float).ceylon.language.sum_.<.ceylon.language.Float>sum(.ceylon.language.Float.$TypeDescriptor$, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Float, .java.lang.Object>(.ceylon.language.Float.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
             

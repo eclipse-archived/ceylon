@@ -10,7 +10,6 @@ public final class bug2124_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void bug2124() {
         final .java.lang.Object x = .ceylon.language.measure_.<.ceylon.language.Character>measure(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(97), 26L);
         if (!(

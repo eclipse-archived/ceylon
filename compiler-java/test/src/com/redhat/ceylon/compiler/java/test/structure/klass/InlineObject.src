@@ -9,7 +9,6 @@ final class testInlineObjects_ {
     private testInlineObjects_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void testInlineObjects() {
         .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.<.ceylon.language.String>inlineObject(.ceylon.language.String.$TypeDescriptor$);
     }
@@ -62,13 +61,11 @@ final class inlineObject_ {
                     private final long a;
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final long getA() {
                         return a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
                     public final void f() {
                     }
                     
@@ -137,7 +134,6 @@ final class inlineObject_ {
         return false;
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "T",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -155,7 +151,6 @@ final class inlineObject_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object l, @.com.redhat.ceylon.compiler.java.metadata.Name("check")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     final boolean check) {
         final .java.lang.Object local = (
             let
@@ -176,13 +171,11 @@ final class inlineObject_ {
                     private final long a;
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final long getA() {
                         return a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
                     public final void f() {
                     }
                     
@@ -362,13 +355,11 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                     private final long a;
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final long getA() {
                         return a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
                     public final void f() {
                     }
                     
@@ -414,7 +405,6 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                     private final long a;
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final long getA() {
                         return a;
                     }
@@ -476,13 +466,11 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                     private final long a;
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final long getA() {
                         return a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
                     public final void f() {
                     }
                     
@@ -512,7 +500,6 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final void check(@.com.redhat.ceylon.compiler.java.metadata.Name("p")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object p, @.com.redhat.ceylon.compiler.java.metadata.Name("a")
@@ -581,13 +568,11 @@ class InlineObjectInSuperClassParam extends .com.redhat.ceylon.compiler.java.tes
                     private final long a;
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                     public final long getA() {
                         return a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
-                    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
                     public final void f() {
                     }
                     
@@ -646,13 +631,11 @@ final class inlineObjectTopLevel_ {
                         private final long a;
                         
                         @.ceylon.language.SharedAnnotation$annotation$
-                        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
                         public final long getA() {
                             return a;
                         }
                         
                         @.ceylon.language.SharedAnnotation$annotation$
-                        @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
                         public final void f() {
                         }
                         

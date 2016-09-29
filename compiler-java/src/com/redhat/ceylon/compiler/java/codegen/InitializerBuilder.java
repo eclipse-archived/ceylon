@@ -22,6 +22,7 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
     // TODO remove this field
     private JCStatement delegateCall;
     private final ListBuffer<ParameterDefinitionBuilder> params = new ListBuffer<ParameterDefinitionBuilder>();
+    private boolean deprecated = false;
     /** 
      * For classes with parameter lists this is a {@code List<JCStatement>}.
      * For classes with constructors it's a 
@@ -52,7 +53,7 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
             }
             index++;
         }
-        MethodDefinitionBuilder constructor = MethodDefinitionBuilder.constructor(gen);
+        MethodDefinitionBuilder constructor = MethodDefinitionBuilder.constructor(gen, deprecated);
         constructor.modifiers(modifiers)
             .userAnnotations(userAnnos.toList())
             .parameters(params.toList())
@@ -150,6 +151,10 @@ public class InitializerBuilder implements ParameterizedBuilder<InitializerBuild
     
     public List<ParameterDefinitionBuilder> getParameterList() {
         return params.toList();
+    }
+
+    public void deprecated(boolean deprecated) {
+        this.deprecated = deprecated;
     }
 
 }

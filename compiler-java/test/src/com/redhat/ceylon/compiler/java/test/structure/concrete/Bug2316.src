@@ -20,39 +20,30 @@ interface bug2316$A$B_ extends .com.redhat.ceylon.compiler.java.test.structure.c
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public .java.lang.String identS();
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public .java.lang.String outerIdent();
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public .java.lang.String identA1();
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public .java.lang.String identA2();
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public .java.lang.String identB();
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public .java.lang.String outerIdentS();
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public .java.lang.String identA1S();
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public .java.lang.String identA2S();
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public .java.lang.String identBS();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -72,7 +63,6 @@ interface bug2316$A_ {
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.DefaultAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     public .java.lang.String identS();
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -93,7 +83,6 @@ public final class bug2316_ {
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static void bug2316() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -106,7 +95,6 @@ public final class bug2316_ {
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
             private final .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A_ $this;
             
-            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
             private .java.lang.String ident$priv$() {
                 return "A";
             }
@@ -126,7 +114,6 @@ public final class bug2316_ {
                 @.com.redhat.ceylon.compiler.java.metadata.Ignore
                 private final .com.redhat.ceylon.compiler.java.test.structure.concrete.bug2316$A$B_ $this;
                 
-                @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
                 private .java.lang.String ident$priv$() {
                     return "B";
                 }

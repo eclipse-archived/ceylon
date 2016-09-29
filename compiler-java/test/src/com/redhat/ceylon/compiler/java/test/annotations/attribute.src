@@ -24,7 +24,6 @@ final class attr1_ {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long get_() {
         if (attr1_.$init$value) {
             return value;
@@ -59,7 +58,6 @@ final class attr2_ {
     }
     
     @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     public static long get_() {
         if (attr2_.$init$value) {
             return value;
@@ -70,7 +68,6 @@ final class attr2_ {
     }
     
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("attr2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long attr2) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = attr2;
@@ -86,7 +83,6 @@ final class attr3_ {
     private attr3_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public static long get_() {
         return 1L;
@@ -102,14 +98,12 @@ final class attr4_ {
     private attr4_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public static long get_() {
         return 1L;
     }
     
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("attr4")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long attr4) {
     }
 }

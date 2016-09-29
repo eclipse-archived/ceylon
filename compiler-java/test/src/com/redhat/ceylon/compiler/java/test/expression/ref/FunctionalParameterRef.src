@@ -828,7 +828,6 @@ final class functionalParameterRef_ {
     private functionalParameterRef_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void functionalParameterRef() {
         final .com.redhat.ceylon.compiler.java.test.expression.ref.FunctionalParameterRef mr = (
             let

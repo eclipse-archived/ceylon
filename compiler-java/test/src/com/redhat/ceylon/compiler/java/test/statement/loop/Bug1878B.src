@@ -9,7 +9,6 @@ final class bug1878Init_ {
     private bug1878Init_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug1878Init() {
         final long $ceylontmp$first$2 = 1L;
         final long $ceylontmp$last$3 = 1L;
@@ -43,7 +42,6 @@ class Bug1878 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private volatile transient boolean $init$foo;
     
     @.ceylon.language.LateAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     private final boolean getFoo$priv$() {
         if (this.$init$foo) {
             return foo;
@@ -54,7 +52,6 @@ class Bug1878 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final void setFoo$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("foo")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     final boolean foo) {
         if (!this.$init$foo) {
             this.foo = foo;
@@ -64,7 +61,6 @@ class Bug1878 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void loopInit$priv$() {
         final long $ceylontmp$first$11 = 1L;
         final long $ceylontmp$last$12 = 1L;
@@ -105,7 +101,6 @@ final class bug1878_ {
     private static volatile boolean $init$value = false;
     
     @.ceylon.language.LateAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     public static boolean get_() {
         if (bug1878_.$init$value) {
             return value;
@@ -116,7 +111,6 @@ final class bug1878_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("bug1878")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     final boolean bug1878) {
         if (!bug1878_.$init$value) {
             value = bug1878;

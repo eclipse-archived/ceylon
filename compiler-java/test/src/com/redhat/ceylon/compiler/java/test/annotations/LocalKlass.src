@@ -145,7 +145,6 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
         final getter$setter$_ getter$setter$_ = new getter$setter$_();
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void m$priv$() {
         
         @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -172,20 +171,17 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             private final long i1;
             
             @.ceylon.language.SharedAnnotation$annotation$
-            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
             public final long getI1() {
                 return i1;
             }
             
             @.ceylon.language.SharedAnnotation$annotation$
-            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
             @.com.redhat.ceylon.compiler.java.metadata.Transient
             public final long getI2() {
                 return 1L;
             }
             
             public final void setI2(@.com.redhat.ceylon.compiler.java.metadata.Name("i2")
-            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
             final long i2) {
             }
             
@@ -206,9 +202,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             }
             
             @.ceylon.language.SharedAnnotation$annotation$
-            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
             public final void m2(@.com.redhat.ceylon.compiler.java.metadata.Name("arg1")
-            @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
             final long arg1, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
             @.com.redhat.ceylon.compiler.java.metadata.Sequenced
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T[]")

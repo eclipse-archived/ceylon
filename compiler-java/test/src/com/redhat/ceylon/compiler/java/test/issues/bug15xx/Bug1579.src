@@ -12,7 +12,6 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     }
     
     Foo(@.com.redhat.ceylon.compiler.java.metadata.Name("number")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     final long number) {
     }
     
@@ -33,7 +32,6 @@ final class do_ {
     private do_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void $do() {
         final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, ? extends .java.lang.Object> iterable = new .com.redhat.ceylon.compiler.java.language.LazyIterable<.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Foo.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 3, false){
             
@@ -68,7 +66,6 @@ final class bug1579_ {
     private bug1579_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void bug1579() {
         final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> following = (.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 1, false){
             

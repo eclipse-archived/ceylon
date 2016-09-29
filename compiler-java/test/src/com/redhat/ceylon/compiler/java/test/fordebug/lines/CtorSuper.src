@@ -17,14 +17,12 @@ public class CtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model
     private final long v2; // line 2
      // line 3
     @.ceylon.language.SharedAnnotation$annotation$ // line 3
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer") // line 3
     public final long getV2() { // line 3
         return v2; // line 3
     }
      // line 5
     @.ceylon.language.SharedAnnotation$annotation$ // line 5
     public CtorSuper(@.com.redhat.ceylon.compiler.java.metadata.Name("i") // line 5
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer") // line 5
     final long i$param$) { // line 5
         final long v; // line 1, 2
         v = i$param$; // line 6
@@ -56,7 +54,6 @@ public class CtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model
     @.com.redhat.ceylon.compiler.java.metadata.Name("constructor2") // line 12
     public CtorSuper(@.com.redhat.ceylon.compiler.java.metadata.Ignore // line 12
     .com.redhat.ceylon.compiler.java.test.fordebug.lines.CtorSuper.constructor2_ $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("j") // line 12
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer") // line 12
     final long j$param$) { // line 12
         final long v; // line 1, 2
         v = j$param$ * j$param$; // line 13
@@ -96,7 +93,6 @@ public class CtorSuper2 extends .com.redhat.ceylon.compiler.java.test.fordebug.l
      // line 22
     @.ceylon.language.SharedAnnotation$annotation$ // line 22
     public CtorSuper2(@.com.redhat.ceylon.compiler.java.metadata.Name("i") // line 22
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer") // line 22
     final long i$param$) { // line 22
         super(i$param$); // line 23
         final long v; // line 19, 20
@@ -122,7 +118,6 @@ public class CtorSuper2 extends .com.redhat.ceylon.compiler.java.test.fordebug.l
     @.com.redhat.ceylon.compiler.java.metadata.Name("constructor2") // line 29
     public CtorSuper2(@.com.redhat.ceylon.compiler.java.metadata.Ignore // line 29
     .com.redhat.ceylon.compiler.java.test.fordebug.lines.CtorSuper2.constructor2_ $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("j") // line 29
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer") // line 29
     final long j$param$) { // line 29
         super(.com.redhat.ceylon.compiler.java.test.fordebug.lines.CtorSuper.constructor2_, j$param$); // line 30
         final long v; // line 19, 20

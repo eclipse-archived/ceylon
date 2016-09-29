@@ -9,7 +9,6 @@ interface ConcreteString {
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString$impl();
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public void presentYourself();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString.class);
@@ -67,7 +66,6 @@ class ConcreteStringC implements .com.redhat.ceylon.compiler.java.runtime.model.
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .java.lang.String toString() {
         return "foo";
@@ -76,7 +74,6 @@ class ConcreteStringC implements .com.redhat.ceylon.compiler.java.runtime.model.
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final int hashCode() {
         return (int)(
@@ -105,14 +102,12 @@ interface ConcreteString2 {
     public .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteString2$impl $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString2$impl();
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public void presentYourself();
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.ceylon.language.DefaultAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public .java.lang.String toString();
     
@@ -120,7 +115,6 @@ interface ConcreteString2 {
     @.ceylon.language.ActualAnnotation$annotation$
     @.ceylon.language.DefaultAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public int hashCode();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -195,7 +189,6 @@ class ConcreteStringC2 implements .com.redhat.ceylon.compiler.java.runtime.model
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .java.lang.String toString() {
         return $com$redhat$ceylon$compiler$java$test$structure$concrete$ConcreteString2$this$.toString();
@@ -204,7 +197,6 @@ class ConcreteStringC2 implements .com.redhat.ceylon.compiler.java.runtime.model
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final int hashCode() {
         return (int)(
@@ -233,7 +225,6 @@ final class concreteString_ {
     private concreteString_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     static void concreteString() {
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteStringC().presentYourself();
         new .com.redhat.ceylon.compiler.java.test.structure.concrete.ConcreteStringC2().presentYourself();

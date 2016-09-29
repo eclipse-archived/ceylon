@@ -7043,8 +7043,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         // Special case: Generate a @java.lang.Deprecated() if Ceylon deprecated
         if (annotationList != null) {
             for (Tree.Annotation annotation : annotationList.getAnnotations()) {
-                if (AnnotationUtil.isNaturalTarget((Function)typeFact().getLanguageModuleDeclaration("deprecated"), useSite, target) && isDeprecatedAnnotation(annotation.getPrimary())) {
-                    result.append(make().Annotation(make().Type(syms().deprecatedType), List.<JCExpression>nil()));
+                if (AnnotationUtil.isNaturalTarget((Function)typeFact().getLanguageModuleDeclaration("deprecated"), useSite, target) 
+                        && isDeprecatedAnnotation(annotation.getPrimary())
+                        && !(useSite instanceof Function)
+                        && !(useSite instanceof Constructor)) {
+                    result.appendList(makeAtDeprecated());
                 }
             }
         }

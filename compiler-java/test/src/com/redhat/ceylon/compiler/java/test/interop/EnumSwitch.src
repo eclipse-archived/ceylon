@@ -8,7 +8,6 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     EnumSwitch() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void exhaustive$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("e")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::JavaEnum")
     final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e) {
@@ -29,7 +28,6 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void notExhaustive$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("e")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::JavaEnum")
     final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e) {
@@ -46,7 +44,6 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void optionalExhaustive$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("e")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::JavaEnum?")
     final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e) {
@@ -73,7 +70,6 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void optionalExhaustive2$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("e")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::JavaEnum?")
     final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e) {
@@ -97,7 +93,6 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     private final void union$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("e")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.interop::JavaEnum|java.lang::Thread.State",

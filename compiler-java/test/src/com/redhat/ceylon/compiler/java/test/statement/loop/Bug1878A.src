@@ -33,7 +33,6 @@ final class bug1878A2_ {
     private bug1878A2_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean")
     static boolean bug1878A2() {
         final long $ceylontmp$step$18 = 2L;
         if ($ceylontmp$step$18 <= 0) throw new .ceylon.language.AssertionError("Assertion failed" + ": step size must be greater than zero" + (.java.lang.System.lineSeparator() + "\tviolated " + "step > 0"));

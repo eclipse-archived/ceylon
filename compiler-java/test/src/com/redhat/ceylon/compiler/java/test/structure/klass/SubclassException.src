@@ -14,7 +14,6 @@ public class SubclassException extends .ceylon.language.Exception {
     }
     
     public SubclassException(@.com.redhat.ceylon.compiler.java.metadata.Name("description")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String")
     final .java.lang.String description) {
         super(.ceylon.language.String.instance(description), null);
     }
