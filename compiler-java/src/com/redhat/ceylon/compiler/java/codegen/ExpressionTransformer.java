@@ -180,6 +180,11 @@ public class ExpressionTransformer extends AbstractTransformer {
      */
     public static final int EXPR_IS_NOT_BASE_MEMBER = 1 << 10;
 
+    /**
+     * Use this when you want the resulting expression coerced
+     */
+    public static final int EXPR_IS_COERCED = 1 << 11;
+
     static{
         // only there to make sure this class is initialised before the enums defined in it, otherwise we
         // get an initialisation error
@@ -343,7 +348,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             // special case to be able to pass expected type to function refs
             // only the outer Expression is marked as Coerced, but we don't deal with function coercion here,
             // we do it in transformMemberExpression, so let's not lose it
-            result = transformMemberExpression((Tree.BaseMemberExpression)term, null, null, expectedType);
+            result = transformMemberExpression((Tree.BaseMemberExpression)term, null, null, expectedType,
+                                               (flags & EXPR_IS_COERCED) != 0);
         }else{
             CeylonVisitor v = gen().visitor;
             final ListBuffer<JCTree> prevDefs = v.defs;
@@ -3033,6 +3039,9 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (!expr.getSmall() && invocation.getParameterSmall(argIndex)) {
                 flags |=  ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK;
             }
+            if(invocation.isParameterCoerced(argIndex)){
+                flags |=  ExpressionTransformer.EXPR_IS_COERCED;
+            }
             JCExpression ret = transformExpression(expr, 
                     boxingStrategy, 
                     type, flags);
@@ -4855,11 +4864,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     private JCExpression transformMemberExpression(Tree.StaticMemberOrTypeExpression expr, JCExpression primaryExpr, TermTransformer transformer) {
-        return transformMemberExpression(expr, primaryExpr, transformer, null);
+        return transformMemberExpression(expr, primaryExpr, transformer, null, false);
     }
     
     private JCExpression transformMemberExpression(Tree.StaticMemberOrTypeExpression expr, JCExpression primaryExpr, 
-            TermTransformer transformer, Type expectedType) {
+            TermTransformer transformer, Type expectedType, boolean coerced) {
         JCExpression result = null;
 
         // do not throw, an error will already have been reported
@@ -4906,11 +4915,11 @@ public class ExpressionTransformer extends AbstractTransformer {
                         || functionalParameterRequiresCallable((Function)decl, expr)) 
                 && isFunctionalResult(expr.getTypeModel())) {
             result = transformFunctional(expr, (Functional)decl, expectedType);
-//        } else if (coerced
-//                && decl instanceof Value
-//                && isFunctionalResult(expr.getTypeModel())
-//                && checkForFunctionalInterface(expectedType) != null) {
-//            result = transformFunctionalInterfaceBridge(expr, (Value)decl, expectedType);
+        } else if (coerced
+                && decl instanceof Value
+                && isFunctionalResult(expr.getTypeModel())
+                && checkForFunctionalInterface(expectedType) != null) {
+            result = transformFunctionalInterfaceBridge(expr, (Value)decl, expectedType);
 //        } else if (coerced
 //                && decl instanceof Value
 //                && isJavaFunctionalInterfaceResult(expr.getTypeModel())

@@ -468,6 +468,11 @@ abstract class SimpleInvocation extends Invocation {
     protected abstract boolean hasParameter(int argIndex);
 
     // to be overridden
+    public boolean isParameterCoerced(int argIndex) {
+        return false;
+    }
+
+    // to be overridden
     protected boolean isParameterRaw(int argIndex) {
         return false;
     }
@@ -863,9 +868,26 @@ class PositionalInvocation extends DirectInvocation {
             Declaration primaryDeclaration,
             Reference producedReference, Tree.InvocationExpression invocation,
             java.util.List<Parameter> parameters) {
-        super(gen, primary, primaryDeclaration, producedReference, invocation.getTypeModel(), invocation);
+        super(gen, primary, unfake(primaryDeclaration), unfake(producedReference), invocation.getTypeModel(), invocation);
         positional = invocation.getPositionalArgumentList();
         this.parameters = parameters;
+    }
+    private static Declaration unfake(Declaration primaryDeclaration) {
+        if(primaryDeclaration.isCoercionPoint()){
+            // FIXME: constructors/types
+            Function realFunction = ((Function)primaryDeclaration).getRealFunction();
+            return realFunction;
+        }
+        return primaryDeclaration;
+    }
+    private static Reference unfake(Reference producedReference) {
+        Declaration declaration = producedReference.getDeclaration();
+        if(declaration.isCoercionPoint()){
+            // FIXME: constructors/types
+            Function realFunction = ((Function)declaration).getRealFunction();
+            return producedReference.getQualifyingType().getTypedMember(realFunction, producedReference.getTypeArgumentList());
+        }
+        return producedReference;
     }
     java.util.List<Parameter> getParameters() {
         return parameters;
@@ -917,8 +939,22 @@ class PositionalInvocation extends DirectInvocation {
     }
     @Override
     protected Parameter getParameter(int argIndex) {
-        return parameters.get(argIndex >= parameters.size() ? parameters.size()-1 : argIndex);
+        Parameter param = parameters.get(argIndex >= parameters.size() ? parameters.size()-1 : argIndex);
+        if(param.getModel().isCoercionPoint()){
+            // FIXME: constructors/types
+            Parameter realParameter = ((Function)getPrimaryDeclaration()).getFirstParameterList().getParameters().get(argIndex);
+            return realParameter;
+        }
+        return param;
     }
+    
+    @Override
+    public boolean isParameterCoerced(int argIndex) {
+        // FIXME: suboptimal copy
+        Parameter param = parameters.get(argIndex >= parameters.size() ? parameters.size()-1 : argIndex);
+        return param.getModel().isCoercionPoint();
+    }
+    
     @Override
     protected int getNumArguments() {
         return getPositional().getPositionalArguments().size();
