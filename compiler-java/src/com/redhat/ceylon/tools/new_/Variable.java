@@ -95,10 +95,11 @@ public class Variable {
                 new PromptedValue(key, validator, defaultValue));
     }
     
+    public static PatternValidator moduleNameValidator = new PatternValidator("[a-zA-Z0-9.]+");
+    
     public static Variable moduleName(String key, String defaultValue) {
-        PatternValidator validator = new PatternValidator("[a-zA-Z0-9.]+");
-        return new Variable(key, validator,
-                new PromptedValue(key, validator, defaultValue));
+        return new Variable(key, moduleNameValidator,
+                new PromptedValue(key, moduleNameValidator, defaultValue));
     }
     
     public static Variable moduleDir(final String key, final String moduleNameKey) {
@@ -119,10 +120,11 @@ public class Variable {
         });
     }
 
+    public static PatternValidator moduleVersionValidator = new PatternValidator("[a-zA-Z0-9.]+");
+
     public static Variable moduleVersion(String key, String defaultValue) {
-        PatternValidator validator = new PatternValidator("[a-zA-Z0-9.]+");
-        return new Variable(key, validator, 
-                new PromptedValue(key, validator, defaultValue));
+        return new Variable(key, moduleVersionValidator, 
+                new PromptedValue(key, moduleVersionValidator, defaultValue));
     }
     
     public static ChoiceVariable booleanVariable(String key, List<Variable> yesVars, List<Variable> noVars, String dv) {
