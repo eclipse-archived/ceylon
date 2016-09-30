@@ -802,8 +802,8 @@ public class AnnotationVisitor extends Visitor {
                                     base.getName() + "'");
                 }
             }
-            if( parentheses && 
-                    !(base instanceof Functional) ) {
+            if (parentheses && 
+                    !(base instanceof Functional)) {
                 that.addUsageWarning(Warning.doclink, 
                         "linked declaration is not a function: '" + 
                                 base.getName() + "'");
