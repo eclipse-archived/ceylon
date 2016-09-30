@@ -832,6 +832,9 @@ public class CeylonModelLoader extends AbstractModelLoader {
                 return name;
             }
             return null;
+        }catch(Symbol.CompletionFailure err){
+            // bad luck
+            return null;
         }catch(FunctionDescriptorLookupError err){
             return null;
         }
