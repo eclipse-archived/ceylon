@@ -19,6 +19,7 @@
  */
 package com.redhat.ceylon.compiler.java.codegen;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.codegen.Strategy.DefaultParameterMethodOwner;
@@ -35,11 +36,15 @@ import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
+import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
+import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
@@ -275,6 +280,7 @@ class Strategy {
             Class cls = Decl.getConstructedClass(ctor);
             return cls.isMember()
                     && cls.isShared()
+                    && !cls.isStatic()
                     && ctor.isShared();
         } else {
             return false;
@@ -475,6 +481,60 @@ class Strategy {
     public static boolean useSerializationProxy(Class model) {
         return model.hasEnumerated()
                 && (model.isToplevel() || model.isMember());
+    }
+    
+    public static List<TypeParameter> getEffectiveTypeParameters(Declaration decl) {
+        return getEffectiveTypeParameters(decl, decl);
+    }
+    
+    private static List<TypeParameter> getEffectiveTypeParameters(Declaration original, Declaration decl) {
+        if (Decl.isConstructor(original)) {
+            original = Decl.getConstructedClass(original);
+        }
+        if (Decl.isConstructor(decl)) {
+            decl = Decl.getConstructedClass(decl);
+        }
+        Scope container = decl.getContainer();
+        if (decl instanceof Function) {
+            if (original instanceof ClassAlias) {
+                ArrayList<TypeParameter> copyDown = new ArrayList<TypeParameter>(getEffectiveTypeParameters(original, (Declaration)container));
+                copyDown.addAll(((Generic)decl).getTypeParameters());
+                return copyDown;
+            } else {
+                return ((Function)decl).getTypeParameters();
+            }
+        } else if (decl instanceof ClassAlias) {
+            // TODO
+            /*if (container instanceof Declaration) {
+                ArrayList<TypeParameter> copyDown = new ArrayList<TypeParameter>(getEffectiveTypeParameters(original, (Declaration)container));
+                copyDown.addAll(((Class)decl).getTypeParameters());
+                return copyDown;
+            } else*/ {
+                return ((ClassAlias)decl).getTypeParameters();
+            }
+        } else if (decl instanceof Class) {
+            if (((Class) decl).isStatic()
+                    && ((Class)decl).isMember()
+                    && (!(decl instanceof LazyClass) || ((LazyClass)decl).isCeylon())) {// TODO and isCeylon
+                ArrayList<TypeParameter> copyDown = new ArrayList<TypeParameter>(getEffectiveTypeParameters(original, (Declaration)container));
+                copyDown.addAll(((Class)decl).getTypeParameters());
+                return copyDown;
+            } else {
+                return ((Class)decl).getTypeParameters();
+            }
+        } else if (decl instanceof Interface) {
+            /*if (((Interface) decl).isMember()) {
+                ArrayList<TypeParameter> copyDown = new ArrayList<TypeParameter>(getEffectiveTypeParameters(original, (Declaration)container));
+                copyDown.addAll(((Interface)decl).getTypeParameters());
+                return copyDown;
+            } else*/ {
+                return ((Interface)decl).getTypeParameters();
+            }
+        } else if (decl instanceof TypeAlias) {
+            return ((TypeAlias)decl).getTypeParameters();
+        } else {
+            throw BugException.unhandledDeclarationCase((Declaration)decl);
+        }
     }
     
 }

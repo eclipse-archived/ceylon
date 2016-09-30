@@ -292,6 +292,8 @@ public class ClassTransformer extends AbstractTransformer {
         // make sure we set the container in case we move it out
         addAtContainer(classBuilder, model);
         
+        transformTypeParameters(classBuilder, model);
+        
         // Transform the class/interface members
         List<JCStatement> childDefs = visitClassOrInterfaceDefinition(def, classBuilder);
         // everything else is synthetic
@@ -778,9 +780,10 @@ public class ClassTransformer extends AbstractTransformer {
             f = STATIC;
         }
         instantiator.modifiers((transformClassDeclFlags(model) & ~FINAL)| f);
-        for (TypeParameter tp : typeParametersOfAllContainers(model, true)) {
-            instantiator.typeParameter(tp);
+        for (TypeParameter tp : typeParametersOfAllContainers(model, false)) {
+           instantiator.typeParameter(tp);
         }
+        transformTypeParameters(instantiator, model);
         
         instantiator.resultType(null, makeJavaType(aliasedClass));
         instantiator.annotationFlags(Annotations.MODEL_AND_USER | Annotations.IGNORE);
@@ -1328,6 +1331,15 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder.parameter(pdb);
     }
     
+    private void capturedReifiedTypeParameters(ClassOrInterface model,
+            ClassDefinitionBuilder classBuilder) {
+        if (model.isStatic()) {
+            ClassOrInterface outer = (ClassOrInterface)model.getContainer();
+            capturedReifiedTypeParameters(outer, classBuilder);
+            classBuilder.reifiedTypeParameters(outer.getTypeParameters());
+        }
+    }
+    
     private void transformClass(
             Tree.AnyClass def, 
             Class model, 
@@ -1337,7 +1349,12 @@ public class ClassTransformer extends AbstractTransformer {
             ClassDefinitionBuilder instantiatorDeclCb, 
             ClassDefinitionBuilder instantiatorImplCb) {
         // do reified type params first
-        classBuilder.reifiedTypeParameters(model.getTypeParameters());
+        //java.util.List<TypeParameter> typeParameters = typeParametersOfAllContainers(model, false);
+        //for(TypeParameter tp : typeParameters){
+        //    classBuilder.typeParameter(tp, false);
+        //}
+        //capturedReifiedTypeParameters(model, classBuilder);
+        classBuilder.reifiedTypeParameters(Strategy.getEffectiveTypeParameters(model));
         if (def.getParameterList() != null) {
             TransformationPlan error = errors().hasDeclarationAndMarkBrokenness(def);
             if (error instanceof ThrowerCatchallConstructor) {
@@ -4015,6 +4032,17 @@ public class ClassTransformer extends AbstractTransformer {
         
         final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, methodModel);
         
+        /*
+        if (typeParameterList != null) {
+            for (Tree.TypeParameterDeclaration param : typeParameterList.getTypeParameterDeclarations()) {
+                TypeDeclaration container = (TypeDeclaration)param.getDeclarationModel().getContainer();
+                methodBuilder.typeParameter(param.getDeclarationModel());
+                //ClassDefinitionBuilder companionBuilder = methodBuilder.getCompanionBuilder(container);
+                //if/(companionBuilder != null)
+                //    companionBuilder.typeParameter(param);
+            }
+        }*/
+        
         // do the reified type param arguments
         if (gen().supportsReified(methodModel)) {
             methodBuilder.reifiedTypeParameters(methodModel.getTypeParameters());
@@ -5614,12 +5642,33 @@ public class ClassTransformer extends AbstractTransformer {
         // make sure we set the container in case we move it out
         addAtContainer(classBuilder, model);
 
+        transformTypeParameters(classBuilder, model);
+        
         visitClassOrInterfaceDefinition(def, classBuilder);
         return classBuilder
             .modelAnnotations(model.getAnnotations())
             .modifiers(transformTypeAliasDeclFlags(model))
             .satisfies(model.getSatisfiedTypes())
             .build();
+    }
+    
+    <T> void transformTypeParameters(GenericBuilder<T> classBuilder, Declaration model) {
+        java.util.List<TypeParameter> typeParameters = Strategy.getEffectiveTypeParameters(model);
+        if (typeParameters != null) {
+            for (TypeParameter param : typeParameters) {
+                Scope cont = param.getContainer();
+                if (cont instanceof TypeDeclaration) {
+                    TypeDeclaration container = (TypeDeclaration)cont; 
+                    classBuilder.typeParameter(param);
+                    if (classBuilder instanceof ClassDefinitionBuilder) {
+                        // Copy to the companion too
+                        ClassDefinitionBuilder companionBuilder = ((ClassDefinitionBuilder)classBuilder).getCompanionBuilder(container);
+                        if(companionBuilder != null)
+                            companionBuilder.typeParameter(param);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -5674,7 +5723,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         ctorDb.modifiers(mods);
         
-        for (TypeParameter tp : clz.getTypeParameters()) {
+        for (TypeParameter tp : Strategy.getEffectiveTypeParameters(clz)) {
             ctorDb.reifiedTypeParameter(tp);
         }
         if (ctorName != null ) {

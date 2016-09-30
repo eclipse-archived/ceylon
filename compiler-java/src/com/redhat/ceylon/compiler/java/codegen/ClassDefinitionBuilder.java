@@ -62,7 +62,8 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
  * 
  * @author Tako Schotanus
  */
-public class ClassDefinitionBuilder {
+public class ClassDefinitionBuilder 
+        implements GenericBuilder<ClassDefinitionBuilder> {
     private final AbstractTransformer gen;
     
     private final String name;
@@ -355,6 +356,7 @@ public class ClassDefinitionBuilder {
         return gen.make().TypeParameter(gen.names().fromString(name), bounds);
     }
 
+    @Override
     public ClassDefinitionBuilder typeParameter(TypeParameter declarationModel) {
         return typeParameter(declarationModel, true);
     }

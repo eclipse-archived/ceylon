@@ -660,15 +660,6 @@ public class CeylonVisitor extends Visitor {
         // Handled in AbstractTransformer.makeAtAnnotations
     }
 
-    // FIXME: also support Tree.SequencedTypeParameter
-    public void visit(Tree.TypeParameterDeclaration param) {
-        TypeDeclaration container = (TypeDeclaration)param.getDeclarationModel().getContainer();
-        classBuilder.typeParameter(param);
-        ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder(container);
-        if(companionBuilder != null)
-            companionBuilder.typeParameter(param);
-    }
-
     public void visit(Tree.ExtendedType extendedType) {
         ClassOrInterface forDefinition = classBuilder.getForDefinition();
         Type thisType = forDefinition != null ? forDefinition.getType() : null;

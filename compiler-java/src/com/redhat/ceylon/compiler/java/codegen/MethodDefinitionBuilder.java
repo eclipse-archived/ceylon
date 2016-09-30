@@ -69,7 +69,8 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  * @author Tako Schotanus
  */
 public class MethodDefinitionBuilder 
-        implements ParameterizedBuilder<MethodDefinitionBuilder> {
+        implements GenericBuilder<MethodDefinitionBuilder>,
+            ParameterizedBuilder<MethodDefinitionBuilder> {
     private final AbstractTransformer gen;
     
     private final String name;
@@ -329,6 +330,7 @@ public class MethodDefinitionBuilder
         return typeParameter(gen.makeTypeParameter(param, producedBounds), gen.makeAtTypeParameter(param));
     }
     
+    @Override
     public MethodDefinitionBuilder typeParameter(TypeParameter param) {
         return typeParameter(param, null);
     }
