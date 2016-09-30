@@ -36,6 +36,7 @@ import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
+import com.redhat.ceylon.common.tool.Argument;
 import com.redhat.ceylon.common.tool.CeylonBaseTool;
 import com.redhat.ceylon.common.tool.Description;
 import com.redhat.ceylon.common.tool.Hidden;
@@ -52,7 +53,7 @@ public class CeylonNewTool extends CeylonBaseTool {
 
     private ToolModel<CeylonNewTool> model;
     
-    private Project project;
+    private NewSubTool project;
     
     private File from = new File(System.getProperty(Constants.PROP_CEYLON_HOME_DIR), "templates");
     
@@ -62,8 +63,8 @@ public class CeylonNewTool extends CeylonBaseTool {
         this.model = model;
     }
     
-    @Subtool(argumentName="name", classes={Simple.class, HelloWorld.class, JavaInterop.class}, order=2)
-    public void setProject(Project project) {
+    @Subtool(argumentName="name", classes={Simple.class, HelloWorld.class, JavaInterop.class, Module.class}, order=2)
+    public void setProject(NewSubTool project) {
         this.project = project;
     }
     
@@ -323,6 +324,48 @@ public class CeylonNewTool extends CeylonBaseTool {
 
         public JavaInterop() {
             super("javainterop", "com.example.javainterop");
+        }
+    }
+    
+    public  class Module extends NewSubTool {
+        private final Variable moduleName;
+        private final Variable moduleVersion;
+
+        public Module() {
+            moduleName = new Variable("module.name", Variable.moduleNameValidator, new GivenValue("dummy"));
+            moduleVersion = new Variable("module.version", Variable.moduleVersionValidator, new GivenValue("1.0.0"));
+        }
+        
+        @Argument(argumentName="module", multiplicity = "1", order=1)
+        public void setModuleName(String moduleName) {
+            this.moduleName.setVariableValue(new GivenValue(moduleName));
+        }
+        
+        @Argument(argumentName="version", multiplicity = "?", order=2)
+        public void setModuleVersion(String moduleVersion) {
+            this.moduleVersion.setVariableValue(new GivenValue(moduleVersion));
+        }
+        
+        @Override
+        public List<Variable> getVariables() {
+            List<Variable> result = new ArrayList<>();
+            result.add(new Variable("base.dir", null, new GivenValue(".")));
+            result.add(moduleName);
+            result.add(Variable.moduleQuotedName("module.quoted.name", "module.name"));
+            result.add(Variable.moduleDir("module.dir", "module.name"));
+            result.add(moduleVersion);
+            return result;
+        }
+
+        @Override
+        public List<Copy> getResources(Environment env) {
+            FileSystem fs = FileSystems.getDefault();
+            List<Copy> result = new ArrayList<>();
+            result.add(substituting("source",
+                    fs.getPathMatcher("glob:**"), 
+                    new Template("@[source.folder]/@[module.dir]").eval(env)));
+            
+            return result;
         }
     }
 

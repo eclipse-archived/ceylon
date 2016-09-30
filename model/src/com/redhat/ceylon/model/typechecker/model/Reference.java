@@ -1,13 +1,15 @@
 package com.redhat.ceylon.model.typechecker.model;
 
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_TYPE_ARG_MAP;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_VARIANCE_MAP;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.NO_TYPE_ARGS;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
 import static com.redhat.ceylon.model.typechecker.model.Type.checkDepth;
 import static com.redhat.ceylon.model.typechecker.model.Type.decDepth;
 import static com.redhat.ceylon.model.typechecker.model.Type.incDepth;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_TYPE_ARG_MAP;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.EMPTY_VARIANCE_MAP;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isAbstraction;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.appliedType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,6 +113,56 @@ public abstract class Reference {
         this.typeArguments = typeArguments;
     }
     
+    /**
+     * Get the type arguments as a tuple. 
+     */
+    public List<Type> getTypeArgumentList() {
+        Declaration declaration = getDeclaration();
+        if (declaration instanceof Generic) {
+            Generic g = (Generic) declaration;
+            List<TypeParameter> typeParameters = 
+                    g.getTypeParameters();
+            if (typeParameters.isEmpty()) {
+                return NO_TYPE_ARGS;
+            }
+            else {
+    //            if (TypeCache.isEnabled()) {
+    //                if (typeArgumentList==null) {
+    //                    typeArgumentList = 
+    //                            getTypeArgumentListInternal();
+    //                }
+    //                return typeArgumentList;
+    //            }
+    //            else {
+                return getTypeArgumentList(
+                        declaration.getUnit(),
+                        typeParameters,
+                        getTypeArguments());
+            }
+    //        }
+        }
+        else {
+            return NO_TYPE_ARGS;
+        }
+    }
+
+    private static List<Type> getTypeArgumentList(
+            Unit unit, List<TypeParameter> typeParams, 
+            Map<TypeParameter, Type> typeArgs) {
+        int size = typeParams.size();
+        List<Type> argList = new ArrayList<Type>(size);
+        for (int i=0; i<size; i++) {
+            TypeParameter tp = typeParams.get(i);
+            Type arg = typeArgs.get(tp);
+            if (arg==null) {
+                unit.getUnknownType();
+            }
+            argList.add(arg);
+        }
+//        argList = unmodifiableList(argList);
+        return argList;
+    }
+
     /**
      * The type or return type of the referenced thing:
      * 
