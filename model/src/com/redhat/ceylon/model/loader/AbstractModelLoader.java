@@ -1224,7 +1224,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                 // if it's a ceylon class we don't care that they don't match sometimes, like for inner classes
                                 // where the constructor is protected because we want to use an accessor, in this case the class
                                 // visibility is to be used
-                                if(isCeylon || getJavaVisibility(classMirror) == getJavaVisibility(constructor)){
+                                // Same for coercion
+                                if(isCeylon 
+                                        || (getJavaVisibility(classMirror) == getJavaVisibility(constructor)
+                                            && !isCoercedMethod(constructor))){
                                     decl = makeLazyClass(classMirror, null, constructor, isNativeHeaderMember);
                                     setNonLazyDeclarationProperties(decl, classMirror, classMirror, classMirror, isCeylon);
                                     if (isCeylon && shouldCreateNativeHeader(decl, container)) {
@@ -1427,9 +1430,22 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             LazyClass subdecl = makeLazyClass(classMirror, supercls, constructor, false);
             // the subclasses class get the constructor modifiers
             setNonLazyDeclarationProperties(subdecl, constructor, constructor, classMirror, isCeylon);
+            
             subdecl.setOverloaded(true);
             overloads.add(subdecl);
             decls.add(subdecl);
+            
+            if(!isCeylon && isCoercedMethod(constructor)){
+                LazyClass subdecl2 = makeLazyClass(classMirror, supercls, constructor, false);
+                subdecl2.setCoercionPoint(true);
+                subdecl2.setRealClass(subdecl);
+                // the subclasses class get the constructor modifiers
+                setNonLazyDeclarationProperties(subdecl2, constructor, constructor, classMirror, isCeylon);
+                
+                subdecl.setOverloaded(true);
+                overloads.add(subdecl2);
+                decls.add(subdecl2);
+            }
         }
         supercls.setOverloads(overloads);
         return supercls;
@@ -1636,7 +1652,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return method;
     }
     
-    protected LazyClass makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror initOrDefaultConstructor, boolean isNativeHeader) {
+    protected LazyClass makeLazyClass(ClassMirror classMirror, Class superClass, MethodMirror initOrDefaultConstructor, 
+            boolean isNativeHeader) {
         LazyClass klass = new LazyClass(classMirror, this, superClass, initOrDefaultConstructor);
         AnnotationMirror objectAnnotation = classMirror.getAnnotation(CEYLON_OBJECT_ANNOTATION);
         if(objectAnnotation != null){
@@ -3038,7 +3055,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(constructor != null
                 && !isDefaultNamedCtor(classMirror, constructor)
                 && (!(klass instanceof LazyClass) || !((LazyClass)klass).isAnonymous()))
-            setParameters((Class)klass, classMirror, constructor, isCeylon, klass, false);
+            setParameters((Class)klass, classMirror, constructor, isCeylon, klass, klass.isCoercionPoint());
 
         // Now marry-up attributes and parameters)
         if (klass instanceof Class) {

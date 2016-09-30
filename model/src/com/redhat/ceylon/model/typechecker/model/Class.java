@@ -561,6 +561,7 @@ public class Class extends ClassOrInterface implements Functional {
     private int sequentialType;
     
     private int sequenceType;
+    private Class realClass;
     
     @Override
     public boolean isSequentialType() {
@@ -661,4 +662,11 @@ public class Class extends ClassOrInterface implements Functional {
         return "class " + toStringName() + params;
     }
 
+    public Class getRealClass() {
+        return realClass;
+    }
+
+    public void setRealClass(Class realClass) {
+        this.realClass = realClass;
+    }
 }

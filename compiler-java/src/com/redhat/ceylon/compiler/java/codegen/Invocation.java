@@ -874,18 +874,22 @@ class PositionalInvocation extends DirectInvocation {
     }
     private static Declaration unfake(Declaration primaryDeclaration) {
         if(primaryDeclaration.isCoercionPoint()){
-            // FIXME: constructors/types
-            Function realFunction = ((Function)primaryDeclaration).getRealFunction();
-            return realFunction;
+            if(primaryDeclaration instanceof Function)
+                return ((Function)primaryDeclaration).getRealFunction();
+            return ((Class)primaryDeclaration).getRealClass();
         }
         return primaryDeclaration;
     }
     private static Reference unfake(Reference producedReference) {
         Declaration declaration = producedReference.getDeclaration();
         if(declaration.isCoercionPoint()){
-            // FIXME: constructors/types
-            Function realFunction = ((Function)declaration).getRealFunction();
-            return producedReference.getQualifyingType().getTypedMember(realFunction, producedReference.getTypeArgumentList());
+            if(declaration instanceof Function){
+                Function realFunction = ((Function)declaration).getRealFunction();
+                return producedReference.getQualifyingType().getTypedMember(realFunction, producedReference.getTypeArgumentList());
+            }else{
+                Class realClass = ((Class)declaration).getRealClass();
+                return realClass.appliedType(producedReference.getQualifyingType(), producedReference.getTypeArgumentList());
+            }
         }
         return producedReference;
     }
@@ -941,8 +945,7 @@ class PositionalInvocation extends DirectInvocation {
     protected Parameter getParameter(int argIndex) {
         Parameter param = parameters.get(argIndex >= parameters.size() ? parameters.size()-1 : argIndex);
         if(param.getModel().isCoercionPoint()){
-            // FIXME: constructors/types
-            Parameter realParameter = ((Function)getPrimaryDeclaration()).getFirstParameterList().getParameters().get(argIndex);
+            Parameter realParameter = ((Functional)getPrimaryDeclaration()).getFirstParameterList().getParameters().get(argIndex);
             return realParameter;
         }
         return param;
