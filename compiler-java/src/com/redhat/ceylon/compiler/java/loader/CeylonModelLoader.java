@@ -25,6 +25,7 @@ import static com.redhat.ceylon.javax.tools.StandardLocation.PLATFORM_CLASS_PATH
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,7 @@ import com.redhat.ceylon.compiler.java.codegen.Decl;
 import com.redhat.ceylon.compiler.java.codegen.Naming;
 import com.redhat.ceylon.compiler.java.loader.mirror.JavacClass;
 import com.redhat.ceylon.compiler.java.loader.mirror.JavacMethod;
+import com.redhat.ceylon.compiler.java.loader.mirror.JavacType;
 import com.redhat.ceylon.compiler.java.loader.model.CompilerModuleManager;
 import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
@@ -61,6 +63,7 @@ import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.Type.MethodType;
 import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.code.Types;
 import com.redhat.ceylon.langtools.tools.javac.code.Types.FunctionDescriptorLookupError;
@@ -69,6 +72,7 @@ import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.Convert;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
+import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
 import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Name;
@@ -82,7 +86,10 @@ import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.TypeParser;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
+import com.redhat.ceylon.model.loader.mirror.FunctionalInterfaceType;
 import com.redhat.ceylon.model.loader.mirror.MethodMirror;
+import com.redhat.ceylon.model.loader.mirror.TypeKind;
+import com.redhat.ceylon.model.loader.mirror.TypeMirror;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.model.loader.model.LazyFunction;
@@ -829,6 +836,32 @@ public class CeylonModelLoader extends AbstractModelLoader {
             return null;
         }
     }
+    
+    @Override
+    protected FunctionalInterfaceType getFunctionalInterfaceType(TypeMirror typeMirror) {
+        if(typeMirror.getKind() != TypeKind.DECLARED)
+            return null;
+        // FIXME: possibly apply other optimisations to lighten the lookup cost? see what javac does
+        Type type = ((JavacType)typeMirror).type;
+        try{
+            Type descriptorType = types.findDescriptorType(type);
+            // Let's be honest I've no idea what this means, but it happens and Javac seems to refuse it too
+            if(descriptorType.hasTag(TypeTag.FORALL))
+                return null;
+            MethodType methodDescriptorType = (MethodType)descriptorType; 
+            
+            List<Type> parameterTypes = methodDescriptorType.getParameterTypes();
+            ListBuffer<TypeMirror> mirrorParameterTypes = new ListBuffer<>();
+            for(Type parameterType : parameterTypes){
+                mirrorParameterTypes.add(new JavacType(parameterType));
+            }
+            return new FunctionalInterfaceType(new JavacType(methodDescriptorType.getReturnType()),
+                    mirrorParameterTypes.toList());
+        }catch(FunctionDescriptorLookupError err){
+            return null;
+        }
+    }
+
     
     private boolean isGetter(MethodSymbol methodSymbol) {
         if(!methodSymbol.getTypeParameters().isEmpty())

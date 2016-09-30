@@ -833,4 +833,21 @@ public abstract class Declaration
     public boolean isJava(){
         return false;
     }
+
+    /** 
+     * true if the JVM backend generated this method in the model loader to mark coercion points,
+     * but it does not exist.
+     */
+    public boolean isCoercionPoint() {
+        return (flags&COERCION_POINT)!=0;
+    }
+    
+    public void setCoercionPoint(boolean coercionPoint) {
+        if (coercionPoint) {
+            flags|=COERCION_POINT;
+        }
+        else {
+            flags&=(~COERCION_POINT);
+        }
+    }
 }

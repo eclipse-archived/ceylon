@@ -17,6 +17,7 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
     private List<TypeParameter> typeParameters = emptyList();
     private List<ParameterList> parameterLists = new ArrayList<ParameterList>(1);
     private Object annotationConstructor;
+    private Function realFunction;
     
     public Object getAnnotationConstructor() {
         return annotationConstructor;
@@ -148,6 +149,14 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
             return "function " + toStringName() + params + 
                     " => " + type.asString();
         }
+    }
+
+    public Function getRealFunction() {
+        return realFunction;
+    }
+
+    public void setRealFunction(Function realFunction) {
+        this.realFunction = realFunction;
     }
     
 }

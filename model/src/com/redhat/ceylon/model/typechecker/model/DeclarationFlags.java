@@ -7,19 +7,20 @@ package com.redhat.ceylon.model.typechecker.model;
  */
 public class DeclarationFlags {
     
-    public static final int SHARED     = 1 << 0;
-    public static final int FORMAL     = 1 << 1;
-    public static final int ACTUAL     = 1 << 2;
-    public static final int DEFAULT    = 1 << 3;
-    public static final int ANNOTATION = 1 << 4;
-    public static final int DEPRECATED = 1 << 5;
-    public static final int DYNAMIC    = 1 << 6;
-
-    public static final int PROTECTED  = 1 << 7;
-    public static final int PACKAGE    = 1 << 8;
-    public static final int STATIC     = 1 << 9;
-    public static final int DROPPED    = 1 << 10;
-    private static final int LAST      = 10; // KEEP THIS IN SYNC WITH LAST SHIFT
+    public static final int SHARED         = 1 << 0;
+    public static final int FORMAL         = 1 << 1;
+    public static final int ACTUAL         = 1 << 2;
+    public static final int DEFAULT        = 1 << 3;
+    public static final int ANNOTATION     = 1 << 4;
+    public static final int DEPRECATED     = 1 << 5;
+    public static final int DYNAMIC        = 1 << 6;
+                                           
+    public static final int PROTECTED      = 1 << 7;
+    public static final int PACKAGE        = 1 << 8;
+    public static final int STATIC         = 1 << 9;
+    public static final int DROPPED        = 1 << 10;
+    public static final int COERCION_POINT = 1 << 11;
+    private static final int LAST          = 11; // KEEP THIS IN SYNC WITH LAST SHIFT
 
     public static class TypedDeclarationFlags extends DeclarationFlags {
         public static final int UNCHECKED_NULL    = 1 << DeclarationFlags.LAST + 1;

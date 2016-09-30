@@ -34,6 +34,7 @@ import com.redhat.ceylon.model.loader.mirror.AnnotatedMirror;
 import com.redhat.ceylon.model.loader.mirror.AnnotationMirror;
 import com.redhat.ceylon.model.loader.mirror.ClassMirror;
 import com.redhat.ceylon.model.loader.mirror.FieldMirror;
+import com.redhat.ceylon.model.loader.mirror.FunctionalInterfaceType;
 import com.redhat.ceylon.model.loader.mirror.MethodMirror;
 import com.redhat.ceylon.model.loader.mirror.PackageMirror;
 import com.redhat.ceylon.model.loader.mirror.TypeKind;
@@ -193,6 +194,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private static final String CEYLON_LANGUAGE_EMPTY_TYPE_NAME = "ceylon.language::Empty";
     
     private static final TypeMirror OBJECT_TYPE = simpleCeylonObjectType("java.lang.Object");
+    private static final TypeMirror CHAR_SEQUENCE_TYPE = simpleCeylonObjectType("java.lang.CharSequence");
     private static final TypeMirror ANNOTATION_TYPE = simpleCeylonObjectType("java.lang.annotation.Annotation");
     private static final TypeMirror CEYLON_OBJECT_TYPE = simpleCeylonObjectType("ceylon.language.Object");
     private static final TypeMirror CEYLON_ANNOTATION_TYPE = simpleCeylonObjectType("ceylon.language.Annotation");
@@ -2491,7 +2493,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
                 // Read the parameters from the instantiator, rather than the aliased class
                 if (instantiator != null) {
-                    setParameters(alias, alias.classMirror, instantiator, true, alias);
+                    setParameters(alias, alias.classMirror, instantiator, true, alias, false);
                 }
                 timer.stopIgnore(TIMER_MODEL_LOADER_CATEGORY);
             }
@@ -2995,14 +2997,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 
         // Add the methods, treat remaining getters/setters as methods
         for(List<MethodMirror> methodMirrors : methods.values()){
-            boolean isOverloaded = isMethodOverloaded(methodMirrors);
+            boolean isOverloaded = isMethodOverloaded(methodMirrors, isCeylon);
             
             List<Declaration> overloads = null;
             for (MethodMirror methodMirror : methodMirrors) {
                 // normal method
-                Function m = addMethod(klass, methodMirror, classMirror, isCeylon, isOverloaded, isNativeHeaderMember);
+                Function m = addMethod(klass, methodMirror, classMirror, isCeylon, isOverloaded, isNativeHeaderMember, false);
                 if (!isOverloaded && isCeylon && shouldCreateNativeHeader(m, klass)) {
-                    Declaration hdr = addMethod(klass, methodMirror, classMirror, true, isOverloaded, true);
+                    Declaration hdr = addMethod(klass, methodMirror, classMirror, true, isOverloaded, true, false);
                     setNonLazyDeclarationProperties(hdr, classMirror, classMirror, classMirror, true);
                     initNativeHeader(hdr, m);
                 } else if (isCeylon && shouldLinkNatives(m)) {
@@ -3012,11 +3014,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     overloads = overloads == null ? new ArrayList<Declaration>(methodMirrors.size()) :  overloads;
                     overloads.add(m);
                 }
+                if(isOverloaded && !isCeylon && isCoercedMethod(methodMirror)){
+                    Function coercionMethod = addMethod(klass, methodMirror, classMirror, isCeylon, isOverloaded, isNativeHeaderMember, true);
+                    coercionMethod.setRealFunction(m);
+                    overloads.add(coercionMethod);
+                }
             }
             
             if (overloads != null && !overloads.isEmpty()) {
                 // We create an extra "abstraction" method for overloaded methods
-                Function abstractionMethod = addMethod(klass, methodMirrors.get(0), classMirror, isCeylon, false, false);
+                Function abstractionMethod = addMethod(klass, methodMirrors.get(0), classMirror, isCeylon, false, false, false);
                 abstractionMethod.setAbstraction(true);
                 abstractionMethod.setOverloads(overloads);
                 abstractionMethod.setType(newUnknownType());
@@ -3027,7 +3034,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(constructor != null
                 && !isDefaultNamedCtor(classMirror, constructor)
                 && (!(klass instanceof LazyClass) || !((LazyClass)klass).isAnonymous()))
-            setParameters((Class)klass, classMirror, constructor, isCeylon, klass);
+            setParameters((Class)klass, classMirror, constructor, isCeylon, klass, false);
 
         // Now marry-up attributes and parameters)
         if (klass instanceof Class) {
@@ -3166,7 +3173,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return v;
         }
         else {
-            setParameters(constructor, classMirror, ctor, true, klass);
+            setParameters(constructor, classMirror, ctor, true, klass, false);
             klass.setConstructors(true);
             Function f = new Function();
             f.setName(constructor.getName());
@@ -3184,7 +3191,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
     
-    private boolean isMethodOverloaded(List<MethodMirror> methodMirrors) {
+    private boolean isMethodOverloaded(List<MethodMirror> methodMirrors, boolean isCeylon) {
         // it's overloaded if we have more than one method (non constructor/value)
         boolean one = false;
         for (MethodMirror methodMirror : methodMirrors) {
@@ -3199,6 +3206,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     || methodMirror.getName().equals("string")){
                 break;
             }
+            // if we're overloading a supertype method too
+            if(isOverloadingMethod(methodMirror))
+                return true;
+            if(!isCeylon && isCoercedMethod(methodMirror))
+                return true;
             if(one)
                 return true;
             one = true;
@@ -3523,16 +3535,17 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private Function addMethod(ClassOrInterface klass, MethodMirror methodMirror, ClassMirror classMirror, 
-                             boolean isCeylon, boolean isOverloaded, boolean isNativeHeader) {
+                             boolean isCeylon, boolean isOverloaded, boolean isNativeHeader, boolean isCoercedMethod) {
         
         JavaMethod method = new JavaMethod(methodMirror);
         String methodName = methodMirror.getName();
         
+        method.setCoercionPoint(isCoercedMethod);
         method.setContainer(klass);
         method.setScope(klass);
         method.setRealName(methodName);
         method.setUnit(klass.getUnit());
-        method.setOverloaded(isOverloaded || isOverloadingMethod(methodMirror));
+        method.setOverloaded(isOverloaded);
         method.setVariadic(methodMirror.isVariadic());
         
         Type type = null;
@@ -3589,7 +3602,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         if(isEqualsMethod(methodMirror))
             setEqualsParameters(method, methodMirror);
         else
-            setParameters(method, classMirror, methodMirror, isCeylon, klass);
+            setParameters(method, classMirror, methodMirror, isCeylon, klass, isCoercedMethod);
 
         type.setRaw(isRaw(module, methodMirror.getReturnType()));
         markDeclaredVoid(method, methodMirror);
@@ -3736,6 +3749,26 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return sameType(param.getType(), OBJECT_TYPE);
     }
 
+    private boolean isCoercedMethod(MethodMirror methodMirror) {
+        for (VariableMirror param : methodMirror.getParameters()) {
+            TypeMirror type = param.getType();
+            if(isCoercedType(type))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean isCoercedType(TypeMirror type) {
+        if(sameType(type, CHAR_SEQUENCE_TYPE))
+            return true;
+        if(type.getKind() == TypeKind.DECLARED){
+            ClassMirror paramClass = type.getDeclaredClass();
+            if(isFunctionalInterface(paramClass) != null)
+                return true;
+        }
+        return false;
+    }
+    
     private void setEqualsParameters(Function decl, MethodMirror methodMirror) {
         ParameterList parameters = new ParameterList();
         decl.addParameterList(parameters);
@@ -4221,7 +4254,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return constrainedType;
     }
     
-    private void setParameters(Functional decl, ClassMirror classMirror, MethodMirror methodMirror, boolean isCeylon, Scope container) {
+    private void setParameters(Functional decl, ClassMirror classMirror, MethodMirror methodMirror, boolean isCeylon, Scope container, boolean isCoercedMethod) {
         ParameterList parameters = new ParameterList();
         parameters.setNamedParametersSupported(isCeylon);
         decl.addParameterList(parameters);
@@ -4249,6 +4282,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             Module module = ModelUtil.getModuleContainer(scope);
 
             Type type;
+            boolean coercedParameter = false;
             if(isVariadic){
                 // possibly make it optional
                 TypeMirror variadicType = typeMirror.getComponentType();
@@ -4264,11 +4298,16 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // turn it into a Sequential<T>
                 type = typeFactory.getSequentialType(type);
             }else{
-                type = obtainType(typeMirror, paramMirror, scope, module, VarianceLocation.CONTRAVARIANT,
-                        "parameter '"+paramName+"' of method '"+methodMirror.getName()+"'", (Declaration)decl);
-                // variadic params may technically be null in Java, but it Ceylon sequenced params may not
-                // so it breaks the typechecker logic for handling them, and it will always be a case of bugs
-                // in the java side so let's not allow this
+                if(isCoercedMethod && isCoercedType(typeMirror)){
+                    if(sameType(typeMirror, CHAR_SEQUENCE_TYPE))
+                        type = typeFactory.getStringType();
+                    else
+                        type = getFunctionalInterfaceAsCallable(module, scope, typeMirror);
+                    coercedParameter = true;
+                }else{
+                    type = obtainType(typeMirror, paramMirror, scope, module, VarianceLocation.CONTRAVARIANT,
+                            "parameter '"+paramName+"' of method '"+methodMirror.getName()+"'", (Declaration)decl);
+                }
                 if(!isCeylon){
                     // Java parameters are all optional unless primitives or annotated as such
                     if(getUncheckedNullPolicy(isCeylon, typeMirror, paramMirror) != NullStatus.NonOptional){
@@ -4320,6 +4359,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
             }
             value.setInitializerParameter(parameter);
+            value.setCoercionPoint(coercedParameter);
             parameter.setModel(value);
 
             if(paramMirror.getAnnotation(CEYLON_SEQUENCED_ANNOTATION) != null
@@ -4760,8 +4800,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     markTypeErased(method, meth, meth.getReturnType());
                     markUntrustedType(method, meth, meth.getReturnType());
 
-                 // now its parameters
-                    setParameters(method, method.classMirror, meth, true /* toplevel methods are always Ceylon */, method);
+                    // now its parameters
+                    setParameters(method, method.classMirror, meth, true /* toplevel methods are always Ceylon */, method, false);
                     
                     method.setAnnotation(meth.getAnnotation(CEYLON_LANGUAGE_ANNOTATION_ANNOTATION) != null);
                     setAnnotations(method, meth, method.isNativeHeader());
@@ -5305,6 +5345,32 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected String isFunctionalInterface(ClassMirror klass){
         return null;
     }
+
+    protected FunctionalInterfaceType getFunctionalInterfaceType(TypeMirror typeMirror){
+        return null;
+    }
+    
+    private Type getFunctionalInterfaceAsCallable(Module moduleScope,
+            Scope scope, 
+            TypeMirror typeMirror) {
+        FunctionalInterfaceType functionalInterfaceType = getFunctionalInterfaceType(typeMirror);
+            
+        Type returnType = 
+                obtainType(moduleScope, functionalInterfaceType.getReturnType(), 
+                        scope, TypeLocation.TOPLEVEL, VarianceLocation.COVARIANT);
+        java.util.List<Type> modelParameterTypes =
+                new ArrayList<Type>(functionalInterfaceType.getParameterTypes().size());
+        for(TypeMirror parameterType : functionalInterfaceType.getParameterTypes()){
+            Type modelParameterType = 
+                        obtainType(moduleScope, parameterType, scope, 
+                                   TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
+            modelParameterTypes.add(modelParameterType);
+        }
+        com.redhat.ceylon.model.typechecker.model.Type parameterTuple = typeFactory.getTupleType(modelParameterTypes, false, false, -1);
+        com.redhat.ceylon.model.typechecker.model.Type callableType = typeFactory.getCallableDeclaration().appliedType(null, Arrays.asList(returnType, parameterTuple));
+        return callableType;
+    }
+
         
     private TypeMirror applyTypeMapping(TypeMirror type, TypeLocation location) {
         // don't erase to c.l.String if in a type param location
