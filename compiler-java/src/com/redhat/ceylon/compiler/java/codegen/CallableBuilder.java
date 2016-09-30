@@ -1865,14 +1865,8 @@ public class CallableBuilder {
         Target(Tree.Term forwardCallTo) {
             this.forwardCallTo = forwardCallTo;
         }
-        
-        
     }
     
-    /**
-     * @param other
-     * @param functionalInterface
-     */
     public void functionalInterface(Type interfaceType, TypedReference method) {
         this.functionalInterface = interfaceType;
         this.functionalInterfaceMethod = method;
@@ -1881,8 +1875,10 @@ public class CallableBuilder {
     public void checkForFunctionalInterface(Type expectedType) {
         TypedReference functionalInterface = gen.checkForFunctionalInterface(expectedType);
         if(functionalInterface != null){
-            System.err.println("Got functional interface: "+functionalInterface.getQualifyingType()+" / "+functionalInterface);
-            functionalInterface(functionalInterface.getQualifyingType(), functionalInterface);
+            // It's important to ignore the qualifying type because it could be a supertype
+            // of the expected type of the method parameter, which is the one we have to
+            // implement, even if the SAM method comes from a supertype
+            functionalInterface(expectedType, functionalInterface);
         }
     }
 }
