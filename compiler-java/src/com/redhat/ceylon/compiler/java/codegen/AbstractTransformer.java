@@ -5852,31 +5852,6 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
 
-//    TypedReference isFunctionalInterface(Type type) {
-//        // FIXME: use model-loader info somehow
-//        TypeDeclaration declaration = type.getDeclaration();
-//        if(declaration instanceof Interface == false)
-//            return null;
-//        if(!declaration.getSatisfiedTypes().isEmpty())
-//            return null;
-//        FunctionOrValue member = null;
-//        for(Declaration d : declaration.getMembers()){
-//            if(d instanceof FunctionOrValue == false)
-//                continue;
-//            // ignore non-formal members
-//            if(!d.isFormal())
-//                continue;
-//            // allow only one
-//            if(member == null)
-//                member = (FunctionOrValue) d;
-//            else
-//                return null;
-//        }
-//        if(member == null)
-//            return null;
-//        return member.appliedTypedReference(type, Collections.<Type>emptyList());
-//    }
-
     public TypedReference checkForFunctionalInterface(Type expectedType) {
         if(expectedType == null)
             return null;
@@ -5889,26 +5864,6 @@ public abstract class AbstractTransformer implements Transformation {
             TypedReference typedMember = nonNullType.getTypedMember((TypedDeclaration) member, Collections.<Type>emptyList());
             return typedMember;
         }
-//        if(expectedDeclaration instanceof UnionType){
-//            // ignore Callable and Null
-//            Type other = null;
-//            boolean skip = false;
-//            for(Type caseType : expectedDeclaration.getCaseTypes()){
-//                // FIXME: fast-case
-//                if(isNull(caseType)
-//                        || caseType.getDeclaration().inherits(typeFact().getCallableDeclaration()))
-//                    continue;
-//                if(other == null)
-//                    other = caseType;
-//                else{
-//                    skip = true;
-//                    break;
-//                }
-//            }
-//            if(!skip && other != null){
-//                return isFunctionalInterface(other);
-//            }
-//        }
         return null;
     }
 }
