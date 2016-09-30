@@ -813,7 +813,8 @@ public class InteropTests extends CompilerTests {
     public void testIopLambdas(){
         Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
                 || JDKUtils.jdk == JDKUtils.JDK.JDK9);
-        compile("LambdasJava.java", "Lambdas.ceylon");
+        compile(Arrays.asList("-source", "8", "-target", "8"), 
+                "LambdasJava.java", "Lambdas.ceylon");
     }
 
     @Test

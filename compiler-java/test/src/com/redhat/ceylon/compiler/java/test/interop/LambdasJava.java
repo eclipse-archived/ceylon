@@ -2,6 +2,26 @@ package com.redhat.ceylon.compiler.java.test.interop;
 
 import java.util.function.*;
 
+@FunctionalInterface
+interface OverloadedFunction {
+    public default void execute(){
+        execute(0);
+    }
+    public abstract void execute(int param);
+}
+
+@FunctionalInterface
+interface OverloadedFunction2A {
+    public abstract void execute(int param);
+}
+
+@FunctionalInterface
+interface OverloadedFunction2B extends OverloadedFunction2A {
+    public default void execute(){
+        execute(0);
+    }
+}
+
 public class LambdasJava {
 
     public LambdasJava(){}
@@ -22,7 +42,15 @@ public class LambdasJava {
     public int intSupplier(IntSupplier supplier){
         return supplier.getAsInt();
     }
-    
+
+    public void overloadedFunction(OverloadedFunction f){
+        f.execute();
+    }
+
+    public void overloadedFunction2(OverloadedFunction2B f){
+        f.execute();
+    }
+
     public CharSequence getCharSequence(){ return null; }
     public void setCharSequence(CharSequence s){}
 
