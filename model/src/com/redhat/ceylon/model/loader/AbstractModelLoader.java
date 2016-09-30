@@ -2959,8 +2959,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                 // must be a real setter
                                 makeSetter(value, null);
                             }
-                            // remove it as a method
-                            removeMultiMap(methods, setter.getName(), setter);
+                            if(!isCeylon && isCoercedMethod(setter)){
+                                // leave it as a method so we get a fake method for it
+                            }else{
+                                // remove it as a method
+                                removeMultiMap(methods, setter.getName(), setter);
+                            }
                         }else
                             logVerbose("Setter parameter type for "+name+" does not match corresponding getter type, adding setter as a method");
                     } else {
@@ -3199,7 +3203,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if(methodMirror.isConstructor() 
                     || isInstantiator(methodMirror)
                     || isGetter(methodMirror)
-                    || isSetter(methodMirror)
+                    // Don't reject setters because we may have added those that
+                    // did not match the getters or for coercion
                     || isHashAttribute(methodMirror)
                     || isStringAttribute(methodMirror)
                     || methodMirror.getName().equals("hash")
