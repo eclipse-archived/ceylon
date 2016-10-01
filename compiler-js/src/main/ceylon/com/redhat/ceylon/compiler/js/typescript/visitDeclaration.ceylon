@@ -1,3 +1,6 @@
+import ceylon.language.meta {
+    type
+}
 import tsc {
     ...
 }
@@ -8,6 +11,20 @@ import ceylon.json {
 import ceylon.collection {
     ArrayList,
     MutableList
+}
+
+void undress(Object a) {
+    dynamic {
+        eval("(function(a){delete a.getT$all;delete a.$$;})")(a);
+    }
+}
+
+T make<T>(Object t) {
+    if (type(t) == `Anything`) {
+        undress(t);
+    }
+    assert (is T t);
+    return t;
 }
 
 void visitDeclaration(
@@ -22,12 +39,11 @@ void visitDeclaration(
     case (SyntaxKind.\iVariableDeclaration | SyntaxKind.\iPropertyDeclaration | SyntaxKind.\iPropertySignature) {
         try {
             Identifier id;
-            VariableDeclaration vdecl;
             dynamic {
                 id = eval("(function(node){return node.name})")(node); // TODO necessary to dress the name as Identifier (could be BindingPattern). do this properly
-                vdecl = eval("(function(node){return node})")(node);
             }
-            //assert (is VariableDeclaration vdecl = node); // TODO use assert
+            undress(node); // TODO why is the undress before the assert necessary?
+            assert (is VariableDeclaration vdecl = node);
             Boolean const;
             dynamic {
                 const = hasNodeFlag(eval("(function(v){return v.parent.flags})")(vdecl), NodeFlags.\iConst);
@@ -51,9 +67,8 @@ void visitDeclaration(
     }
     case (SyntaxKind.\iFunctionDeclaration | SyntaxKind.\iMethodDeclaration | SyntaxKind.\iMethodSignature) {
         try {
-            //assert (is FunctionDeclaration fdecl = node);
-            FunctionDeclaration fdecl;
-            dynamic { fdecl = eval("(function(x){return x;})")(node); }
+            undress(node); // TODO why is the undress before the assert necessary?
+            assert (is FunctionDeclaration fdecl = node);
             Identifier id;
             dynamic {
                 id = eval("(function(x){return x.name})")(node); // TODO should not be necessary once the backend can handle optional members
@@ -92,28 +107,13 @@ void visitDeclaration(
                 case (SyntaxKind.\iConstructor) {
                     "Class can only have one constructor"
                     assert (!constructor exists);
-                    ConstructorDeclaration consdecl;
-                    dynamic {
-                        consdecl = eval("(function(x){x.getT$all=undefined;x.$$=undefined;return x})")(member);
-                    }
-                    //assert (is ConstructorDeclaration consdecl = member); // TODO use assert
-                    constructor = consdecl;
+                    constructor = make<ConstructorDeclaration>(member);
                 }
                 case (SyntaxKind.\iPropertyDeclaration) {
-                    PropertyDeclaration property;
-                    dynamic {
-                        property = eval("(function(x){x.getT$all=undefined;x.$$=undefined;return x})")(member);
-                    }
-                    //assert (is PropertyDeclaration property = member); // TODO use assert
-                    properties.add(property);
+                    properties.add(make<PropertyDeclaration>(member));
                 }
                 case (SyntaxKind.\iMethodDeclaration) {
-                    MethodDeclaration method;
-                    dynamic {
-                        method = eval("(function(x){x.getT$all=undefined;x.$$=undefined;return x})")(member);
-                    }
-                    //assert (is MethodDeclaration method = member); // TODO use assesrt
-                    methods.add(method);
+                    methods.add(make<MethodDeclaration>(member));
                 }
                 // TODO index signature
                 else {
@@ -159,20 +159,10 @@ void visitDeclaration(
             for (member in idecl.members) {
                 switch (member.kind)
                 case (SyntaxKind.\iPropertyDeclaration | SyntaxKind.\iPropertySignature) {
-                    PropertyDeclaration property;
-                    dynamic {
-                        property = eval("(function(x){x.getT$all=undefined;x.$$=undefined;return x})")(member);
-                    }
-                    //assert (is PropertyDeclaration property = member); // TODO use assert
-                    properties.add(property);
+                    properties.add(make<PropertyDeclaration>(member));
                 }
                 case (SyntaxKind.\iMethodDeclaration | SyntaxKind.\iMethodSignature) {
-                    MethodDeclaration method;
-                    dynamic {
-                        method = eval("(function(x){x.getT$all=undefined;x.$$=undefined;return x})")(member);
-                    }
-                    //assert (is MethodDeclaration method = member); // TODO use assesrt
-                    methods.add(method);
+                    methods.add(make<MethodDeclaration>(member));
                 }
                 // TODO index signature, call signature
                 else {
