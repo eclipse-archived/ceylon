@@ -138,7 +138,7 @@ shared final sealed annotation class StaticAnnotation()
  For example:
  
      class Hello {
-         shared static hello() => print(\"hello\");
+         shared static void hello() => print(\"hello\");
          shared new() {}
      }
      
