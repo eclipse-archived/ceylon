@@ -133,7 +133,16 @@ shared final sealed annotation class StaticAnnotation()
  A `static` member does not have access to any current 
  instance of the class or interface, and must occur before 
  any non-`static` member declarations in the body of the 
- class or interface declaration."
+ class or interface declaration.
+ 
+ For example:
+ 
+     class Hello {
+         shared static hello() => print(\"hello\");
+         shared new() {}
+     }
+     
+     shared void run() => Hello.hello();"
 shared annotation StaticAnnotation static()
         => StaticAnnotation();
 
