@@ -150,15 +150,32 @@ shared annotation LateAnnotation late()
 "The annotation class for the [[native]] annotation."
 shared final sealed annotation class NativeAnnotation(backends)
         satisfies OptionalAnnotation<NativeAnnotation> {
-    "The compiler backend that this native annotation applies to,
-     or the empty string to declare the annotated element is a
-     native header."
+    "The compiler backend that this native annotation applies 
+     to, or the empty string to declare the annotated element 
+     is a native header."
     since("1.2.0")
     shared String* backends;
 }
 
-"Annotation to mark a member whose implementation is defined 
- in platform-native code."
+"Annotation to mark a module, import, or declaration as 
+ platform-native.
+ 
+ For example, this code defines a native function in a 
+ cross-platform module:
+ 
+     import java.lang { System }
+     
+     native void hello();
+     
+     native (\"jvm\") void hello() {
+         System.out.println(\"hello\");
+     }
+     
+     native (\"js\") void hello() {
+         dynamic {
+             console.log(\"hello\");
+         }
+     }"
 shared annotation NativeAnnotation native(
     since("1.2.0")
     String* backends)
