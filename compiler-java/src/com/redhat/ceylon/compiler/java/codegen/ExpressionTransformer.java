@@ -390,7 +390,6 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     JCExpression transform(Tree.FunctionArgument functionArg, Type expectedType) {
-        System.err.println("Function "+functionArg+" return "+expectedType);
         Function model = functionArg.getDeclarationModel();
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
@@ -627,7 +626,6 @@ public class ExpressionTransformer extends AbstractTransformer {
             return ret;
         exprType = simplifyType(exprType);
         expectedType = simplifyType(expectedType);
-        System.err.println("coercions: "+exprType+" to "+expectedType);
         if(isCeylonString(exprType) && isJavaCharSequence(expectedType)){
             // FIXME: only do this if boxed, or rather, do not box in the first place
             return make().Apply(null, makeQualIdent(ret, "toString"), List.<JCTree.JCExpression>nil());
