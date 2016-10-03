@@ -50,8 +50,37 @@ public class Activator implements BundleActivator {
             return null;
         }
         
+        public ClassLoader getClassLoader() {
+            BundleWiring wiring = bundle.adapt(BundleWiring.class);
+            try {
+                return wiring.getClassLoader();
+            } catch(ClassCastException e) {
+                // to solve a problem in Kepler with system bundles throwing a CCE
+            }
+            return null;
+        }
+        
         @Override
         public String version() {
+            ClassLoader  bundleClassLoader = getClassLoader();
+            if (bundleClassLoader != null) {
+                try {
+                    Class<?> moduleClass = bundleClassLoader.loadClass(bundle.getSymbolicName() + ".$module_");
+                    if (moduleClass != null) {
+                        com.redhat.ceylon.compiler.java.metadata.Module moduleAnnotation =
+                                moduleClass.getAnnotation(com.redhat.ceylon.compiler.java.metadata.Module.class);
+                        if (moduleAnnotation != null) {
+                            String ceylonVersion = moduleAnnotation.version();
+                            if (ceylonVersion != null) {
+                                return ceylonVersion;
+                            }                            
+                        }
+                    }
+                } catch(ClassNotFoundException e) {
+                    // to solve a problem in Kepler with system bundles throwing a CCE
+                }
+            }
+
             return bundle.getVersion().toString();
         }
         @Override
@@ -192,27 +221,10 @@ public class Activator implements BundleActivator {
     }
 
     public static void loadBundleAsModule(Bundle bundle) {
-        BundleWiring wiring = bundle.adapt(BundleWiring.class);
-        String symbolicName = bundle.getSymbolicName();
-        Version version = bundle.getVersion();
-        String versionString = new StringBuilder("")
-                                    .append(version.getMajor())
-                                    .append('.')
-                                    .append(version.getMinor())
-                                    .append('.')
-                                    .append(version.getMicro())
-                                    .toString();
-                                    
-        
-        ClassLoader  bundleClassLoader = null;
-        try {
-            bundleClassLoader = wiring.getClassLoader();
-        } catch(ClassCastException e) {
-            // to solve a problem in Kepler with system bundles throwing a CCE
-        }
         BundleArtifactResult artifactResult = new BundleArtifactResult(bundle);
-        if (Metamodel.loadModule(symbolicName, versionString, 
-                artifactResult, bundleClassLoader)) {
+
+        if (Metamodel.loadModule(artifactResult.name(), artifactResult.version(), 
+                artifactResult, artifactResult.getClassLoader())) {
             for (ArtifactResult dependency : artifactResult.dependencies()) {
                 if (dependency instanceof BundleArtifactResult) {
                     Bundle childBundle = ((BundleArtifactResult) dependency).bundle;
