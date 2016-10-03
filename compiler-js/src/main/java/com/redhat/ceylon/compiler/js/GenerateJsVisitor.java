@@ -966,7 +966,7 @@ public class GenerateJsVisitor extends Visitor {
                 for (Statement s: statements) {
                     if (!statics && s instanceof Tree.Declaration) {
                         Declaration sd = ((Tree.Declaration)s).getDeclarationModel();
-                        if (sd instanceof TypedDeclaration && sd.isStatic()) {
+                        if (sd.isStatic()) {
                             statics = true;
                             out(names.name(d), ".$st$={};");
                         }
@@ -1932,7 +1932,7 @@ public class GenerateJsVisitor extends Visitor {
                     out(";}");
                 }
             } else {
-                if (d.isStatic() && d instanceof TypedDeclaration && d.isClassOrInterfaceMember()) {
+                if (d.isStatic()) {
                     BmeGenerator.generateStaticReference(d, this);
                 } else {
                     out("function($O$){return $O$.", names.name(d), ";}");
@@ -1944,7 +1944,11 @@ public class GenerateJsVisitor extends Visitor {
                     GenerateJsVisitor.super.visit(that);
                 }
             });
-            out(memberAccess(that, lhs));
+            if (d.isStatic()) {
+                BmeGenerator.generateStaticReference(d, this);
+            } else {
+                out(memberAccess(that, lhs));
+            }
         }
     }
 

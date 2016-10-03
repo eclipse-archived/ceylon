@@ -270,7 +270,7 @@ public class BmeGenerator {
                     gen.qualify(that, d);
                 }
             } else {
-                if (d instanceof Class && ((Class)d).isDynamic()) {
+                if (d instanceof Class && d.isDynamic()) {
                     gen.out("new ");
                 }
                 gen.qualify(that, d);
@@ -291,7 +291,7 @@ public class BmeGenerator {
     }
 
     static void generateStaticReference(Declaration d, GenerateJsVisitor gen) {
-        TypedDeclaration orig = ((TypedDeclaration)d).getOriginalDeclaration();
+        Declaration orig = d instanceof TypedDeclaration ? ((TypedDeclaration)d).getOriginalDeclaration() : d;
         gen.out(gen.getNames().name((ClassOrInterface)(orig == null ? d : orig).getContainer()),
                 ".$st$.", gen.getNames().name(d));
     }
