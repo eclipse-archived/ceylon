@@ -1,5 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.tools;
 
+import com.redhat.ceylon.common.config.CeylonConfig;
+
 import java.io.File;
 import java.io.Writer;
 import java.util.LinkedList;
@@ -70,5 +72,11 @@ public class CompilerOptions extends Options {
      */
     public void setOutWriter(Writer outWriter) {
         this.outWriter = outWriter;
+    }
+
+    public static CompilerOptions fromConfig(CeylonConfig config) {
+        CompilerOptions options = new CompilerOptions();
+        Options.mapOptions(config, options);
+        return options;
     }
 }
