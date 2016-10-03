@@ -4128,7 +4128,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else if (member instanceof Value) {
                     CallBuilder callBuilder = CallBuilder.instance(this);
                     JCExpression qualExpr = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)member.getContainer(), DeclNameFlag.QUALIFIED);
+                    Type primType = primary.getTarget().getType();
+                    if (member.isStatic()
+                            && ModelUtil.isCeylonDeclaration(member)
+                            && !primType.getTypeArgumentList().isEmpty()) {
+                        for (Type pt : primType.getTypeArgumentList()) {
+                            callBuilder.typeArgument(makeJavaType(pt, JT_TYPE_ARGUMENT));
+                            callBuilder.argument(makeReifiedTypeArgument(pt));
+                        }
+                        
+                    }
                     callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
+                    
                     return callBuilder.build();
                 } else if (member instanceof Class) {
                     Reference producedReference = expr.getTarget();
@@ -5840,10 +5851,23 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT), rhs);
         }
         
+        ListBuffer<JCExpression> typeArguments =  new ListBuffer<JCExpression>();
+        ListBuffer<JCExpression> reifiedTypeArguments =  new ListBuffer<JCExpression>();
+        if (decl.isStatic()
+                && ModelUtil.isCeylonDeclaration(decl)) {
+            Type primType = ((Tree.StaticMemberOrTypeExpression)leftTerm).getTarget().getQualifyingType();
+            if (primType != null) {
+                for (Type pt : primType.getTypeArgumentList()) {
+                    typeArguments.add(makeJavaType(pt, JT_TYPE_ARGUMENT));
+                    reifiedTypeArguments.add(makeReifiedTypeArgument(pt));
+                }
+            }
+        }
+        
         if (result == null) {
-            result = make().Apply(List.<JCTree.JCExpression>nil(),
+            result = make().Apply(typeArguments.toList(),
                     makeQualIdent(lhs, selector),
-                    List.<JCTree.JCExpression>of(rhs));
+                    reifiedTypeArguments.toList().append(rhs));
         }
         
         return result;

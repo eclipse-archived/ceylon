@@ -39,6 +39,7 @@ import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Type;
+import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
 
@@ -140,7 +141,6 @@ public class AttributeDefinitionBuilder {
             .isTransient(Decl.isTransient(attrType))
             .modelAnnotations(attrType.getAnnotations())
             .resultType(attrType(), attrType);
-        
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(owner, attrName);
         pdb.at(node);
         pdb.modifiers(Flags.FINAL);
@@ -157,8 +157,16 @@ public class AttributeDefinitionBuilder {
             .setter(owner, attrType)
             .block(generateDefaultSetterBlock())
             // only actual if the superclass is also variable
-            .isOverride(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable())
-            .parameter(pdb);
+            .isOverride(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable());
+        if (attrType.isStatic()) {
+            for (TypeParameter tp : Strategy.getEffectiveTypeParameters(attrType)) {
+                getterBuilder.typeParameter(tp);
+                getterBuilder.reifiedTypeParameter(tp);
+                setterBuilder.typeParameter(tp);
+                setterBuilder.reifiedTypeParameter(tp);
+            }
+        }
+        setterBuilder.parameter(pdb);
     }
     
     public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, 
@@ -201,10 +209,11 @@ public class AttributeDefinitionBuilder {
     public static AttributeDefinitionBuilder setter(AbstractTransformer owner, 
             Node node, 
             String attrAndFieldName, TypedDeclaration attrType) {
-        return new AttributeDefinitionBuilder(owner, node, attrType, null, null,
+        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, node, attrType, null, null,
                 attrAndFieldName, attrAndFieldName, false, false)
             .skipField()
             .skipGetter();
+        return adb;
     }
     
     public AttributeDefinitionBuilder modelAnnotations(List<JCAnnotation> annotations) {
@@ -480,6 +489,9 @@ public class AttributeDefinitionBuilder {
         // make sure we turn hash long to int properly
         if(isHash)
             returnExpr = owner.convertToIntForHashAttribute(returnExpr);
+        if (attrTypedDecl.isStatic()) {
+            returnExpr = owner.make().TypeCast(owner.makeJavaType(attrType), returnExpr);
+        }
         JCReturn returnValue = owner.make().Return(returnExpr);
         List<JCStatement> stmts;
         

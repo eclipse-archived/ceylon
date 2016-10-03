@@ -20,6 +20,7 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.redhat.ceylon.compiler.java.codegen.Strategy.DefaultParameterMethodOwner;
@@ -495,6 +496,13 @@ class Strategy {
             decl = Decl.getConstructedClass(decl);
         }
         Scope container = decl.getContainer();
+        if (decl instanceof Value) {
+            if (decl.isStatic()) {
+                return getEffectiveTypeParameters(original, (Declaration)container);
+            } else {
+                return Collections.emptyList();
+            }
+        }
         if (decl instanceof Function) {
             if (original instanceof ClassAlias) {
                 ArrayList<TypeParameter> copyDown = new ArrayList<TypeParameter>(getEffectiveTypeParameters(original, (Declaration)container));
