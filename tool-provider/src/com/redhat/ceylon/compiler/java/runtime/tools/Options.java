@@ -1,5 +1,8 @@
 package com.redhat.ceylon.compiler.java.runtime.tools;
 
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -112,6 +115,15 @@ public class Options {
     public void setDowngradeDist(boolean downgradeDist) {
         this.downgradeDist = downgradeDist;
     }
-    
-    
+
+    public static Options fromConfig(CeylonConfig config) {
+        Options options = new Options();
+        mapOptions(config, options);
+        return options;
+    }
+
+    static void mapOptions(CeylonConfig config, Options options) {
+        options.setOffline(DefaultToolOptions.getDefaultOffline(config));
+        options.setOverrides(DefaultToolOptions.getDefaultOverrides(config));
+    }
 }
