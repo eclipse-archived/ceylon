@@ -653,7 +653,7 @@ Use this when NOT doing a release!">
         <delete file="${module.jar}.result" failonerror="false" deleteonexit="true"/>
     </target>
 
-    <target name="addRequiredOSGIHeaders">
+    <target name="addRequiredOSGIHeaders" depends="ceylondefs">
         <loadproperties>
             <zipentry zipfile="${module.jar}" name="META-INF/MANIFEST.MF"/>
             <filterchain>
@@ -768,7 +768,16 @@ Use this when NOT doing a release!">
 		                                    <var name="Require-Bundle" value="${Require-Bundle}," />
 		                                </then>
 		                            </if>
-		                            <var name="Require-Bundle" value="${Require-Bundle}@{moduleName};bundle-version=@{moduleSlot}" />
+		                            <if>
+                                        <contains string="@{moduleName}" substring="ceylon"/>
+		                                <then>
+                                            <ceylon-osgi-version propertyName="depOsgiVersion" ceylonVersion="@{moduleSlot}" addTimeStamp="false"/>
+		                                    <var name="Require-Bundle" value="${Require-Bundle}@{moduleName};bundle-version=${depOsgiVersion}" />
+	                                	</then>
+		                            	<else>
+		                                    <var name="Require-Bundle" value="${Require-Bundle}@{moduleName};bundle-version=@{moduleSlot}" />
+		                            	</else>
+		                            </if>
 		                            <if>
 		                                <equals arg1="@{moduleExport}" arg2="true"/>
 		                                <then>
@@ -808,7 +817,7 @@ Use this when NOT doing a release!">
 		        <if>
 		            <equals arg1="${Bundle-SymbolicName}" arg2="com.redhat.ceylon.model"/>
 		            <then>
-		                <echo file="${bundleDefinitionFile}" append="true">DynamicImport-Package: ceylon.language.*;bundle-version=${ceylon.version},com.redhat.ceylon.compiler.java.*;bundle-version=${ceylon.version}${line.separator}</echo>
+		                <echo file="${bundleDefinitionFile}" append="true">DynamicImport-Package: ceylon.language.*;bundle-version=${module.ceylon.language.osgi.version},com.redhat.ceylon.compiler.java.*;bundle-version=${module.com.redhat.ceylon.compiler.osgi.version}${line.separator}</echo>
 		            </then>
 			
 		        </if>

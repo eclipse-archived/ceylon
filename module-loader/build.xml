@@ -17,7 +17,7 @@
     <property name="ceylon.module-loader.dist" value="${build.dist.repo}/${ceylon.module-loader.dir}" />
 
     <tstamp>
-        <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+        <format property="qualifier" timezone="GMT" pattern="yyyyMMdd-HHmm"/>
     </tstamp>
 
     <path id="module-loader.classpath">
@@ -107,7 +107,7 @@
             </fileset>
             <manifest>
                 <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.module-loader"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.module-loader.version}.${qualifier}"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.module-loader.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">

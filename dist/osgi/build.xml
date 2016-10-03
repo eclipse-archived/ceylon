@@ -40,10 +40,10 @@
     <property name="build.configuration" location="${build}/configuration" />
     <property name="build.dist" location="${build}/dist" />
       <tstamp>
-          <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+          <format property="qualifier" timezone="GMT" pattern="yyyyMMdd-HHmm"/>
       </tstamp>        
-    <property name="ceylon.dist.osgi.jar" value="com.redhat.ceylon.dist_${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}.jar" />
-    <property name="ceylon.dist.osgi.repo.jar" value="com.redhat.ceylon.dist.repo_${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}.jar" />
+    <property name="ceylon.dist.osgi.jar" value="com.redhat.ceylon.dist_${module.com.redhat.ceylon.dist.osgi.osgi.version}-${qualifier}.jar" />
+    <property name="ceylon.dist.osgi.repo.jar" value="com.redhat.ceylon.dist.repo_${module.com.redhat.ceylon.dist.osgi.osgi.version}-${qualifier}.jar" />
     <property name="p2" location="${basedir}/p2" />
     <property name="karaf" location="${basedir}/karaf" />
     <property name="repoDir" location="${basedir}/embeddedRepository" />
@@ -107,7 +107,7 @@
                 <include name="**" />
             </fileset>
             <filterset>
-                <filter token="ceylon-version" value="${ceylon.version}"/>
+                <filter token="ceylon-version" value="${ceylon.osgi.version}"/>
             </filterset>
         </copy>
 
@@ -117,7 +117,7 @@
             </fileset>
         </copy>
         <replaceregexp file="${build.classes}/META-INF/MANIFEST.MF"
-            match="(Bundle-Version: .*\.)qualifier"
+            match="(Bundle-Version: .*\-)qualifier"
             replace="\1${qualifier}"
             byline="true"/>
 
@@ -126,7 +126,7 @@
                 <include name="**" />
             </fileset>
             <filterset>
-                <filter token="ceylon-version" value="${ceylon.version}"/>
+                <filter token="ceylon-version" value="${ceylon.osgi.version}"/>
             </filterset>
         </copy>
     	<copy todir="${build.repo}" >
@@ -135,7 +135,7 @@
             </fileset>
         </copy>
         <replaceregexp file="${build.repo}/META-INF/MANIFEST.MF"
-            match="(Bundle-Version: .*\.)qualifier"
+            match="(Bundle-Version: .*\-)qualifier"
             replace="\1${qualifier}"
             byline="true"/>
     </target>
@@ -282,7 +282,7 @@
         </bindex>
         <ant target="generateFeatures" inheritall="true">
             <property name="feature.id" value="ceylon.distribution.runtime"/>
-            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}"/>
+            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.osgi.version}-${qualifier}"/>
             <property name="includedBundles" value="${osgiRuntimeBundles}"/>
             <property name="xslFile" value="${karaf}/generateKarafRuntimeDistributionFeature.xsl"/>
             <property name="feature.dir" value="${build.dist}"/>
@@ -306,19 +306,19 @@
         <mkdir dir="${build.dist.features}"/>
         <ant target="generateFeatures" inheritall="true">
             <property name="feature.id" value="com.redhat.ceylon.dist.runtime.feature"/>
-            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
+            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.osgi.version}-${qualifier}"/>
             <property name="includedBundles" value="${osgiRuntimeBundles}"/>
             <property name="xslFile" value="${p2}/generateRuntimeDistributionFeature.xsl"/>
         </ant>
         <ant target="generateFeatures" inheritall="true">
             <property name="feature.id" value="com.redhat.ceylon.dist.feature"/>
-            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
+            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.osgi.version}-${qualifier}"/>
             <property name="includedBundles" value=""/>
             <property name="xslFile" value="${p2}/generateDistributionFeature.xsl"/>
         </ant>
         <ant target="generateFeatures" inheritall="true">
             <property name="feature.id" value="com.redhat.ceylon.dist.dependencies.feature"/>
-            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/>
+            <property name="feature.version" value="${module.com.redhat.ceylon.dist.osgi.osgi.version}-${qualifier}"/>
             <property name="includedBundles" value=""/>
             <property name="xslFile" value="${p2}/generateFixedDependenciesFeature.xsl"/>
         </ant>
@@ -334,7 +334,7 @@
             categories="${p2}/category.xml"
             fork="true">
             <module name="com.redhat.ceylon.dist" version="${module.com.redhat.ceylon.dist.osgi.version}"/> 
-            <module name="com.redhat.ceylon.dist.repo" version="${module.com.redhat.ceylon.dist.osgi.version}.${qualifier}"/> 
+            <module name="com.redhat.ceylon.dist.repo" version="${module.com.redhat.ceylon.dist.osgi.osgi.version}-${qualifier}"/> 
             <module name="ceylon.bootstrap" version="${module.ceylon.bootstrap.version}"/> 
             <module name="ceylon.runtime" version="${module.ceylon.runtime.version}"/> 
             <module name="org.slf4j.simple" version="1.6.1"/> 

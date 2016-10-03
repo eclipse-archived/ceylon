@@ -97,14 +97,14 @@
     <target name="ceylon-common.jar" depends="compile">
         <mkdir dir="${build.dist.repo}/${ceylon.common.dir}"/>
         <tstamp>
-            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+            <format property="qualifier" timezone="GMT" pattern="yyyyMMdd-HHmm"/>
         </tstamp>    	
         <jar destfile="${build.dist.repo}/${ceylon.common.jar}">
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
                 <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.common"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.common.version}.${qualifier}"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.common.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">
