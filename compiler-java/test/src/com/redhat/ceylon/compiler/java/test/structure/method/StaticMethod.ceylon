@@ -1,8 +1,11 @@
 @noanno
-class StaticMethod {
+class StaticMethod<S> {
     
     static String nonSharedStat()=>"I'm static";
     shared static String sharedStat<T>(String s="", T? t = null)=>"I'm static";
+    shared static S generic() {
+        return nothing;
+    }
     
     shared new() {
     }

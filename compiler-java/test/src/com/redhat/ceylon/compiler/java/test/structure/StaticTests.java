@@ -16,6 +16,11 @@ public class StaticTests extends CompilerTests {
     }
     
     @Test
+    public void testStaticAttributeGeneric() {
+        compareWithJavaSource("attribute/StaticAttributeGeneric");
+    }
+    
+    @Test
     public void testStaticMethod() {
         compareWithJavaSource("method/StaticMethod");
     }

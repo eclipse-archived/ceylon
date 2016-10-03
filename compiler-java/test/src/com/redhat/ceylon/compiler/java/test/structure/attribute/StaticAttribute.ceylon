@@ -1,36 +1,36 @@
 @noanno
 class StaticAttribute {
     
-    static String nonSharedStat="I'm static";
-    shared static String sharedStat="I'm static";
-    static String nonSharedStatGetter=>"I'm static";
-    shared static String sharedStatGetter=>"I'm static";
+    static String nonSharedStat=nothing;
+    shared static String sharedStat=nothing;
+    static String nonSharedStatGetter=>nothing;
+    shared static String sharedStatGetter=>nothing;
     static String nonSharedStatGetter2 {
-        return "I'm static";
+        return nothing;
     }
     shared static String sharedStatGetter2 {
-        return "I'm static";
+        return nothing;
     }
     
-    static variable String nonSharedVariableStat="I'm static";
-    shared variable static String sharedVariableStat="I'm static";
-    static String nonSharedVariableStatGetter=>"I'm static";
+    static variable String nonSharedVariableStat=nothing;
+    shared variable static String sharedVariableStat=nothing;
+    static String nonSharedVariableStatGetter=>nothing;
     assign nonSharedVariableStatGetter {}
-    shared static String sharedVariableStatGetter=>"I'm static";
+    shared static String sharedVariableStatGetter=>nothing;
     assign sharedVariableStatGetter {}
     static String nonSharedVariableStatGetter2 {
-        return "I'm static";
+        return nothing;
     }
     assign nonSharedVariableStatGetter2 {}
     shared static String sharedVariableStatGetter2 {
-        return "I'm static";
+        return nothing;
     }
     assign sharedVariableStatGetter2 {}
     
     shared new() {
     }
 }
-void staticAttribute() {
+void staticAttributeGeneric() {
     variable value s = StaticAttribute.sharedStat;
     s = StaticAttribute.sharedStatGetter;
     s = StaticAttribute.sharedStatGetter2;

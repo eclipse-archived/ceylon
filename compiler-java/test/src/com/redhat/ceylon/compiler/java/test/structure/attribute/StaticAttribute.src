@@ -1,45 +1,45 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
 class StaticAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
-    private static final .java.lang.String nonSharedStat = "I\'m static";
+    private static final .java.lang.Object nonSharedStat = .ceylon.language.nothing_.get_();
     
     private static final .java.lang.String getNonSharedStat$priv$() {
-        return nonSharedStat;
+        return (.java.lang.String)nonSharedStat;
     }
-    private static final .java.lang.String sharedStat = "I\'m static";
+    private static final .java.lang.Object sharedStat = .ceylon.language.nothing_.get_();
     
     public static final .java.lang.String getSharedStat() {
-        return sharedStat;
+        return (.java.lang.String)sharedStat;
     }
     
     private static final .java.lang.String getNonSharedStatGetter$priv$() {
-        return "I\'m static";
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
     }
     
     public static final .java.lang.String getSharedStatGetter() {
-        return "I\'m static";
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
     }
     
     private static final .java.lang.String getNonSharedStatGetter2$priv$() {
-        return "I\'m static";
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
     }
     
     public static final .java.lang.String getSharedStatGetter2() {
-        return "I\'m static";
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
     }
-    private static .java.lang.String nonSharedVariableStat = "I\'m static";
+    private static .java.lang.Object nonSharedVariableStat = .ceylon.language.nothing_.get_();
     
     private static final .java.lang.String getNonSharedVariableStat$priv$() {
-        return nonSharedVariableStat;
+        return (.java.lang.String)nonSharedVariableStat;
     }
     
     private static final void setNonSharedVariableStat$priv$(final .java.lang.String nonSharedVariableStat) {
         .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.nonSharedVariableStat = nonSharedVariableStat;
     }
-    private static .java.lang.String sharedVariableStat = "I\'m static";
+    private static .java.lang.Object sharedVariableStat = .ceylon.language.nothing_.get_();
     
     public static final .java.lang.String getSharedVariableStat() {
-        return sharedVariableStat;
+        return (.java.lang.String)sharedVariableStat;
     }
     
     public static final void setSharedVariableStat(final .java.lang.String sharedVariableStat) {
@@ -47,28 +47,28 @@ class StaticAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     private static final .java.lang.String getNonSharedVariableStatGetter$priv$() {
-        return "I\'m static";
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
     }
     
     private static final void setNonSharedVariableStatGetter$priv$(final .java.lang.String nonSharedVariableStatGetter) {
     }
     
     public static final .java.lang.String getSharedVariableStatGetter() {
-        return "I\'m static";
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
     }
     
     public static final void setSharedVariableStatGetter(final .java.lang.String sharedVariableStatGetter) {
     }
     
     private static final .java.lang.String getNonSharedVariableStatGetter2$priv$() {
-        return "I\'m static";
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
     }
     
     private static final void setNonSharedVariableStatGetter2$priv$(final .java.lang.String nonSharedVariableStatGetter2) {
     }
     
     public static final .java.lang.String getSharedVariableStatGetter2() {
-        return "I\'m static";
+        return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
     }
     
     public static final void setSharedVariableStatGetter2(final .java.lang.String sharedVariableStatGetter2) {
@@ -87,12 +87,12 @@ class StaticAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.
         major = 8,
         minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Method
-final class staticAttribute_ {
+final class staticAttributeGeneric_ {
     
-    private staticAttribute_() {
+    private staticAttributeGeneric_() {
     }
     
-    static void staticAttribute() {
+    static void staticAttributeGeneric() {
         .java.lang.String s = .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.getSharedStat();
         s = .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.getSharedStatGetter();
         s = .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttribute.getSharedStatGetter2();
