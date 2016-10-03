@@ -670,7 +670,10 @@ public class GenerateJsVisitor extends Visitor {
         if (!(excludeProtoMembers && opts.isOptimize() && d.isClassOrInterfaceMember())
                 && (d instanceof ClassOrInterface || isCaptured(d))) {
             beginNewLine();
-            if (outerSelf(d)) {
+            if (d.isStatic()) {
+                out(names.name(ModelUtil.getContainingClassOrInterface((Scope)d)), ".$st$.");
+                shared = true;
+            } else if (outerSelf(d)) {
                 out(".");
                 shared = true;
             }
@@ -687,7 +690,11 @@ public class GenerateJsVisitor extends Visitor {
     private void addClassDeclarationToPrototype(TypeDeclaration outer, final Tree.ClassDeclaration that) {
         classDeclaration(that);
         final String tname = names.name(that.getDeclarationModel());
-        out(names.self(outer), ".", tname, "=", tname);
+        if (that.getDeclarationModel().isStatic()) {
+            out(names.name(outer), ".$st$.", tname, "=", tname);
+        } else {
+            out(names.self(outer), ".", tname, "=", tname);
+        }
         endLine(true);
     }
 
@@ -726,7 +733,11 @@ public class GenerateJsVisitor extends Visitor {
     private void addInterfaceDeclarationToPrototype(TypeDeclaration outer, final Tree.InterfaceDeclaration that) {
         interfaceDeclaration(that);
         final String tname = names.name(that.getDeclarationModel());
-        out(names.self(outer), ".", tname, "=", tname);
+        if (that.getDeclarationModel().isStatic()) {
+            out(names.name(outer), ".$st$.", tname, "=", tname);
+        } else {
+            out(names.self(outer), ".", tname, "=", tname);
+        }
         endLine(true);
     }
 
@@ -734,7 +745,11 @@ public class GenerateJsVisitor extends Visitor {
         if (type.isDynamic())return;
         TypeGenerator.interfaceDefinition(interfaceDef, this, initDeferrer);
         Interface d = interfaceDef.getDeclarationModel();
-        out(names.self(type), ".", names.name(d), "=", names.name(d));
+        if (d.isStatic()) {
+            out(names.name(type), ".$st$.", names.name(d), "=", names.name(d));
+        } else {
+            out(names.self(type), ".", names.name(d), "=", names.name(d));
+        }
         endLine(true);
     }
 
@@ -753,7 +768,11 @@ public class GenerateJsVisitor extends Visitor {
         if (type.isDynamic())return;
         ClassGenerator.classDefinition(classDef, this, initDeferrer);
         final String tname = names.name(classDef.getDeclarationModel());
-        out(names.self(type), ".", tname, "=", tname);
+        if (classDef.getDeclarationModel().isStatic()) {
+            out(names.name(type), ".$st$.", tname, "=", tname);
+        } else {
+            out(names.self(type), ".", tname, "=", tname);
+        }
         endLine(true);
     }
 
@@ -2577,11 +2596,11 @@ public class GenerateJsVisitor extends Visitor {
                     if (scope instanceof Constructor
                             && scope == innermostDeclaration) {
                         if (that instanceof Tree.BaseTypeExpression) {
-                            path.append(names.name((TypeDeclaration)scope.getContainer()));
+                            path.append(names.name((TypeDeclaration) scope.getContainer()));
                         } else {
-                            path.append(names.self((TypeDeclaration)scope.getContainer()));
+                            path.append(names.self((TypeDeclaration) scope.getContainer()));
                         }
-                        if (scope == id || (nd != null && scope==nd)) {
+                        if (scope == id || (nd != null && scope == nd)) {
                             break;
                         }
                         scope = scope.getContainer();
@@ -2605,8 +2624,8 @@ public class GenerateJsVisitor extends Visitor {
                                 path.append('.');
                             }
                             if (d.isStatic() && d instanceof TypedDeclaration) {
-                                TypedDeclaration orig = ((TypedDeclaration)d).getOriginalDeclaration();
-                                path.append(names.name((ClassOrInterface)(orig == null ? d : orig).getContainer()))
+                                TypedDeclaration orig = ((TypedDeclaration) d).getOriginalDeclaration();
+                                path.append(names.name((ClassOrInterface) (orig == null ? d : orig).getContainer()))
                                         .append(".$st$");
                             } else {
                                 path.append(names.self((TypeDeclaration) scope));
