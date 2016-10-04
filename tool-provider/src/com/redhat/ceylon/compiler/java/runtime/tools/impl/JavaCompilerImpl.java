@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import com.redhat.ceylon.compiler.CeylonCompileTool;
 import com.redhat.ceylon.javax.tools.Diagnostic;
 import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
 import com.redhat.ceylon.javax.tools.DiagnosticListener;
@@ -168,6 +169,9 @@ public class JavaCompilerImpl implements Compiler {
                     translatedOptions.add(Option.CEYLONAPT.getText());
                     translatedOptions.add(aptModule);
                 }
+            }
+            if (javaOptions.getJavacOptions() != null) {
+                CeylonCompileTool.addJavacArguments(translatedOptions, javaOptions.getJavacOptions());
             }
         }
         return translatedOptions;

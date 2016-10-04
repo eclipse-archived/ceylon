@@ -12,6 +12,7 @@ public class JavaCompilerOptions extends CompilerOptions {
     private boolean autoExportMavenDependencies;
     private String jdkProvider;
     private List<String> aptModules = new LinkedList<>();
+    private List<String> javacOptions = new LinkedList<>();
 
     public boolean isFlatClasspath() {
         return flatClasspath;
@@ -45,6 +46,14 @@ public class JavaCompilerOptions extends CompilerOptions {
         this.aptModules = aptModules;
     }
 
+    public List<String> getJavacOptions() {
+        return javacOptions;
+    }
+
+    public void setJavacOptions(List<String> javacOptions) {
+        this.javacOptions = javacOptions;
+    }
+
     public static JavaCompilerOptions fromConfig(CeylonConfig config) {
         JavaCompilerOptions options = new JavaCompilerOptions();
         mapOptions(config, options);
@@ -56,6 +65,7 @@ public class JavaCompilerOptions extends CompilerOptions {
         options.setFlatClasspath(DefaultToolOptions.getDefaultFlatClasspath(config));
         options.setAutoExportMavenDependencies(DefaultToolOptions.getDefaultAutoExportMavenDependencies(config));
         options.setJdkProvider(DefaultToolOptions.getCompilerJdkProvider(config));
+        options.setJavacOptions(DefaultToolOptions.getCompilerJavac(config));
         String[] aptModules = DefaultToolOptions.getCompilerAptModules(config);
         if (aptModules != null) {
             options.setAptModules(Arrays.asList(aptModules));
