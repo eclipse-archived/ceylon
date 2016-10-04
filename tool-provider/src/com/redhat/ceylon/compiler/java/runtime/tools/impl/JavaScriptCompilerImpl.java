@@ -25,6 +25,7 @@ public class JavaScriptCompilerImpl implements Compiler {
         tool.setOffline(options.isOffline());
         tool.setTimeout(options.getTimeout());
         tool.setEncoding(options.getEncoding());
+        tool.setNoDefRepos(options.isNoDefaultRepositories());
         try {
             tool.setRepositoryAsStrings(options.getUserRepositories());
         } catch (Exception e) {

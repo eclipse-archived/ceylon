@@ -163,6 +163,9 @@ public class JavaCompilerImpl implements Compiler {
             translatedOptions.add(Option.ENCODING.getText());
             translatedOptions.add(options.getEncoding());
         }
+        if (options.isNoDefaultRepositories()) {
+            translatedOptions.add(Option.CEYLONNODEFREPOS.getText());
+        }
         if(options instanceof JavaCompilerOptions){
             JavaCompilerOptions javaOptions = (JavaCompilerOptions) options;
             if(javaOptions.isFlatClasspath()) {
