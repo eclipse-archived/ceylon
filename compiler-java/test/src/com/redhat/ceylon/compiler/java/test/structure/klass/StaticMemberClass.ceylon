@@ -27,3 +27,18 @@ void staticMemberClassUse() {
     value doubref = StaticMemberClass<Integer>.Member<String>.Double;
     */*/
 }
+@noanno
+class StaticMemberClassBoxing<T> {
+    shared static class Inner(T t) {
+        shared T get() => t;
+    }
+    shared new () {}
+}
+@noanno
+shared void run() {
+    variable Character character
+            = StaticMemberClassBoxing<Character>().Inner('X').get();
+    character
+            = StaticMemberClassBoxing<Character>{}.Inner{t='X';}.get();
+    
+}

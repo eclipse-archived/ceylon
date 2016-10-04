@@ -75,7 +75,7 @@ final class staticClass_ {
     }
     
     static void staticClass() {
-        .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer> sharedStat = new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic(.ceylon.language.Integer.$TypeDescriptor$);
+        .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer> sharedStat = new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer>(.ceylon.language.Integer.$TypeDescriptor$);
         sharedStat = (
             let
             {
@@ -83,7 +83,7 @@ final class staticClass_ {
                 .java.lang.String arg$3$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.$default$SharedStatic$s(arg$3$reified$0);
                 .ceylon.language.Integer arg$3$1 = .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.$default$SharedStatic$t(arg$3$reified$0, arg$3$0);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic(arg$3$reified$0, arg$3$0, arg$3$1);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer>(arg$3$reified$0, arg$3$0, arg$3$1);
         );
         sharedStat = (
             let
@@ -92,7 +92,7 @@ final class staticClass_ {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$4$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
                 .ceylon.language.Integer arg$4$1 = .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.$default$SharedStatic$t(arg$4$reified$0, arg$4$0);
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic(arg$4$reified$0, arg$4$0, arg$4$1);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer>(arg$4$reified$0, arg$4$0, arg$4$1);
         );
         sharedStat = (
             let
@@ -101,7 +101,7 @@ final class staticClass_ {
                 .ceylon.language.Integer arg$5$1 = .ceylon.language.Integer.instance(1L);
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$5$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic(arg$5$reified$0, arg$5$0, arg$5$1);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer>(arg$5$reified$0, arg$5$0, arg$5$1);
         );
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer>> ref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic<.ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.class, .ceylon.language.Integer.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, 0, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$)), "StaticClass.SharedStatic<Integer>(String=, Integer?=)", (short)-1){
             

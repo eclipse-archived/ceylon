@@ -47,7 +47,7 @@ final class staticMemberClassUse_ {
     }
     
     static void staticMemberClassUse() {
-        final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String> mem1 = new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$);
+        final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String> mem1 = new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$);
         .ceylon.language.Integer t = mem1.getT();
         .ceylon.language.String s = mem1.getU();
         final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String> mem2 = (
@@ -56,7 +56,7 @@ final class staticMemberClassUse_ {
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$0 = .ceylon.language.Integer.$TypeDescriptor$;
                 .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$1$reified$1 = .ceylon.language.String.$TypeDescriptor$;
             }
-            returning new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member(arg$1$reified$0, arg$1$reified$1);
+            returning new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String>(arg$1$reified$0, arg$1$reified$1);
         );
         t = mem2.getT();
         s = mem2.getU();
@@ -69,5 +69,62 @@ final class staticMemberClassUse_ {
         };
         t = memref.$call$().getT();
         s = memref.$call$().getU();
+    }
+}
+class StaticMemberClassBoxing<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    
+    public static class Inner<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        public Inner(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T t) {
+            this.$reified$T = $reified$T;
+            this.t = t;
+        }
+        private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+        private final T t;
+        
+        private final T getT$priv$() {
+            return t;
+        }
+        
+        public final T get() {
+            return getT$priv$();
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClassBoxing.class, .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClassBoxing.Inner.this.$reified$T), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClassBoxing.Inner.class));
+        }
+    }
+    
+    public StaticMemberClassBoxing(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClassBoxing.class, $reified$T);
+    }
+}
+public final class run_ {
+    
+    private run_() {
+    }
+    
+    public static void run() {
+        int character = new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClassBoxing.Inner<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor$, .ceylon.language.Character.instance(88)).get().intValue();
+        character = (
+            let
+            {
+                .ceylon.language.Character arg$2$0 = .ceylon.language.Character.instance(88);
+                .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor arg$2$reified$0 = .ceylon.language.Character.$TypeDescriptor$;
+            }
+            returning new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClassBoxing.Inner<.ceylon.language.Character>(arg$2$reified$0, arg$2$0);
+        ).get().intValue();
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.structure.klass.run_.run();
     }
 }
