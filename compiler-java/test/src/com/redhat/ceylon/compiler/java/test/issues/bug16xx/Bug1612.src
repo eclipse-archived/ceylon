@@ -19,7 +19,7 @@ class Bug1612<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             let
             {
                 long $ceylontmp$i$0 = .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.<T>$default$i($reified$T);
-                this($reified$T, $ceylontmp$i$0);
+                <T>this($reified$T, $ceylontmp$i$0);
             }
             returning null;
         );
@@ -64,7 +64,7 @@ class Bug1612<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                 let
                 {
                     G $ceylontmp$j$1 = $default$Bar1$j($reified$G);
-                    this($reified$G, $ceylontmp$j$1);
+                    <G>this($reified$G, $ceylontmp$j$1);
                 }
                 returning null;
             );

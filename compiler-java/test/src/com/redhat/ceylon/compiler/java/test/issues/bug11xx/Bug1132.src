@@ -61,7 +61,7 @@ public class Bug1132Class2<T> implements .com.redhat.ceylon.compiler.java.runtim
             let
             {
                 .ceylon.language.Callable<? extends T> $ceylontmp$f1$3 = .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1132Class2.<T>$default$f1($reified$T);
-                this($reified$T, $ceylontmp$f1$3);
+                <T>this($reified$T, $ceylontmp$f1$3);
             }
             returning null;
         );

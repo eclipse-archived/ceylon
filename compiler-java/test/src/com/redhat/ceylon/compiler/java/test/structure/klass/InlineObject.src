@@ -34,7 +34,7 @@ final class inlineObject_ {
                 .java.lang.Object $ceylontmp$p$14 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.<T>inlineObject$p($reified$T, $ceylontmp$param$13);
                 .java.lang.Object $ceylontmp$l$15 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.<T>inlineObject$l($reified$T, $ceylontmp$param$13, $ceylontmp$p$14);
                 boolean $ceylontmp$check$16 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.<T>inlineObject$check($reified$T, $ceylontmp$param$13, $ceylontmp$p$14, $ceylontmp$l$15);
-                inlineObject($reified$T, $ceylontmp$param$13, $ceylontmp$p$14, $ceylontmp$l$15, $ceylontmp$check$16);
+                <T>inlineObject($reified$T, $ceylontmp$param$13, $ceylontmp$p$14, $ceylontmp$l$15, $ceylontmp$check$16);
             }
             returning null;
         );
@@ -88,7 +88,7 @@ final class inlineObject_ {
                 .java.lang.Object $ceylontmp$p$17 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.<T>inlineObject$p($reified$T, param);
                 .java.lang.Object $ceylontmp$l$18 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.<T>inlineObject$l($reified$T, param, $ceylontmp$p$17);
                 boolean $ceylontmp$check$19 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.<T>inlineObject$check($reified$T, param, $ceylontmp$p$17, $ceylontmp$l$18);
-                inlineObject($reified$T, param, $ceylontmp$p$17, $ceylontmp$l$18, $ceylontmp$check$19);
+                <T>inlineObject($reified$T, param, $ceylontmp$p$17, $ceylontmp$l$18, $ceylontmp$check$19);
             }
             returning null;
         );
@@ -106,7 +106,7 @@ final class inlineObject_ {
             {
                 .java.lang.Object $ceylontmp$l$20 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.<T>inlineObject$l($reified$T, param, p);
                 boolean $ceylontmp$check$21 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.<T>inlineObject$check($reified$T, param, p, $ceylontmp$l$20);
-                inlineObject($reified$T, param, p, $ceylontmp$l$20, $ceylontmp$check$21);
+                <T>inlineObject($reified$T, param, p, $ceylontmp$l$20, $ceylontmp$check$21);
             }
             returning null;
         );
@@ -123,7 +123,7 @@ final class inlineObject_ {
             let
             {
                 boolean $ceylontmp$check$22 = .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObject_.<T>inlineObject$check($reified$T, param, p, l);
-                inlineObject($reified$T, param, p, l, $ceylontmp$check$22);
+                <T>inlineObject($reified$T, param, p, l, $ceylontmp$check$22);
             }
             returning null;
         );
@@ -322,7 +322,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
             let
             {
                 .java.lang.Object $ceylontmp$param$23 = .com.redhat.ceylon.compiler.java.test.structure.klass.InlineObjectInDefaultClassParam.<T>$default$param($reified$T);
-                this($reified$T, $ceylontmp$param$23);
+                <T>this($reified$T, $ceylontmp$param$23);
             }
             returning null;
         );

@@ -24,7 +24,7 @@ class DefaultedAndTypeParams<X> implements .com.redhat.ceylon.compiler.java.runt
             let
             {
                 X $ceylontmp$x$0 = m$x($reified$Y, y);
-                m$canonical$($reified$Y, y, $ceylontmp$x$0);
+                <Y>m$canonical$($reified$Y, y, $ceylontmp$x$0);
             }
             returning null;
         );
@@ -41,7 +41,7 @@ class DefaultedAndTypeParams<X> implements .com.redhat.ceylon.compiler.java.runt
         (
             let
             {
-                m$canonical$($reified$Y, y, x);
+                <Y>m$canonical$($reified$Y, y, x);
             }
             returning null;
         );

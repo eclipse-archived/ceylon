@@ -117,7 +117,7 @@ final class bug2228Test_ {
             let
             {
                 .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$args$10 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                bug2228Test($reified$T, $ceylontmp$args$10);
+                <T>bug2228Test($reified$T, $ceylontmp$args$10);
             }
             returning null;
         );

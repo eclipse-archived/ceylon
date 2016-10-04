@@ -336,7 +336,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
                 T $ceylontmp$t$14 = m5$t($reified$U, i);
                 U $ceylontmp$u$15 = m5$u($reified$U, i, $ceylontmp$t$14);
             }
-            returning m5$canonical$($reified$U, i, $ceylontmp$t$14, $ceylontmp$u$15);
+            returning <U>m5$canonical$($reified$U, i, $ceylontmp$t$14, $ceylontmp$u$15);
         );
     }
     
@@ -346,7 +346,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
             {
                 U $ceylontmp$u$16 = m5$u($reified$U, i, t);
             }
-            returning m5$canonical$($reified$U, i, t, $ceylontmp$u$16);
+            returning <U>m5$canonical$($reified$U, i, t, $ceylontmp$u$16);
         );
     }
     
@@ -356,7 +356,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     
     @.java.lang.Override
     public final <U>long m5(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final T t, final U u) {
-        return m5$canonical$($reified$U, i, t, u);
+        return <U>m5$canonical$($reified$U, i, t, u);
     }
     
     @.java.lang.Override

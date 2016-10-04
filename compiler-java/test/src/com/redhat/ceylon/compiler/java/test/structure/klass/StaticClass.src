@@ -10,7 +10,7 @@ class StaticClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                 {
                     .java.lang.String $ceylontmp$s$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.<T>$default$SharedStatic$s($reified$T);
                     T $ceylontmp$t$1 = .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.<T>$default$SharedStatic$t($reified$T, $ceylontmp$s$0);
-                    this($reified$T, $ceylontmp$s$0, $ceylontmp$t$1);
+                    <T>this($reified$T, $ceylontmp$s$0, $ceylontmp$t$1);
                 }
                 returning null;
             );
@@ -21,7 +21,7 @@ class StaticClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                 let
                 {
                     T $ceylontmp$t$2 = .com.redhat.ceylon.compiler.java.test.structure.klass.StaticClass.SharedStatic.<T>$default$SharedStatic$t($reified$T, s);
-                    this($reified$T, s, $ceylontmp$t$2);
+                    <T>this($reified$T, s, $ceylontmp$t$2);
                 }
                 returning null;
             );

@@ -7,7 +7,7 @@ public class Bug1395LinkedList<Element> implements .com.redhat.ceylon.compiler.j
             let
             {
                 .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> $ceylontmp$values$0 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1395LinkedList.<Element>$default$values($reified$Element);
-                this($reified$Element, $ceylontmp$values$0);
+                <Element>this($reified$Element, $ceylontmp$values$0);
             }
             returning null;
         );
@@ -39,7 +39,7 @@ class Bug1395MyLinkedList<Element> extends .com.redhat.ceylon.compiler.java.test
             let
             {
                 .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> $ceylontmp$values$1 = .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1395MyLinkedList.<Element>$default$values($reified$Element);
-                this($reified$Element, $ceylontmp$values$1);
+                <Element>this($reified$Element, $ceylontmp$values$1);
             }
             returning null;
         );
