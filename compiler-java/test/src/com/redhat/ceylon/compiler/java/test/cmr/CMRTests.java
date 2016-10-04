@@ -1292,7 +1292,7 @@ public class CMRTests extends CompilerTests {
         final Manifest manifest = getManifest(
                 "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a", "1.1.0");
 
-        String osgiCeylonVersion = OsgiVersion.fromCeylonVersion(Versions.CEYLON_VERSION_NUMBER, false);
+        String osgiCeylonVersion = OsgiVersion.fromCeylonVersion(Versions.CEYLON_VERSION_NUMBER);
         assertEquals("ceylon.language;bundle-version="+osgiCeylonVersion+";visibility:=reexport" +
                 ",com.redhat.ceylon.dist;bundle-version="+osgiCeylonVersion+";visibility:=reexport",
                 manifest.getMainAttributes().get(OsgiUtil.OsgiManifest.Require_Bundle));
@@ -1317,7 +1317,7 @@ public class CMRTests extends CompilerTests {
         String[] exportPackage = attribute.split(",");
         assertEquals(2, exportPackage.length);
 
-        String osgiModuleVersion = OsgiVersion.fromCeylonVersion(moduleVersion, false);
+        String osgiModuleVersion = OsgiVersion.fromCeylonVersion(moduleVersion);
         assertThat(
                 Arrays.asList(exportPackage),
                 CoreMatchers.hasItems(
@@ -1347,8 +1347,8 @@ public class CMRTests extends CompilerTests {
                 .get(OsgiUtil.OsgiManifest.Require_Bundle)).split(",");
         assertEquals(3, requireBundle.length);
 
-        String osgiCeylonVersion = OsgiVersion.fromCeylonVersion(Versions.CEYLON_VERSION_NUMBER, false);
-        String osgiOtherVersion = OsgiVersion.fromCeylonVersion("1.1.0", false);
+        String osgiCeylonVersion = OsgiVersion.fromCeylonVersion(Versions.CEYLON_VERSION_NUMBER);
+        String osgiOtherVersion = OsgiVersion.fromCeylonVersion("1.1.0");
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
                 "ceylon.language;bundle-version="+osgiCeylonVersion+";visibility:=reexport",
                 "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;bundle-version=" + osgiOtherVersion,
@@ -1381,7 +1381,7 @@ public class CMRTests extends CompilerTests {
                 .get(OsgiUtil.OsgiManifest.Require_Bundle)).split(",");
         assertEquals(1, requireBundle.length);
 
-        String osgiCeylonVersion = OsgiVersion.fromCeylonVersion(Versions.CEYLON_VERSION_NUMBER, false);
+        String osgiCeylonVersion = OsgiVersion.fromCeylonVersion(Versions.CEYLON_VERSION_NUMBER);
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
                 "com.redhat.ceylon.dist;bundle-version="+osgiCeylonVersion+";visibility:=reexport"));
     }
@@ -1412,7 +1412,7 @@ public class CMRTests extends CompilerTests {
                 .get(OsgiUtil.OsgiManifest.Require_Bundle)).split(",");
         assertEquals(2, requireBundle.length);
 
-        String osgiCeylonVersion = OsgiVersion.fromCeylonVersion(Versions.CEYLON_VERSION_NUMBER, false);
+        String osgiCeylonVersion = OsgiVersion.fromCeylonVersion(Versions.CEYLON_VERSION_NUMBER);
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
                 "ceylon.language;bundle-version="+osgiCeylonVersion+";visibility:=reexport",
                 "com.redhat.ceylon.dist;bundle-version="+osgiCeylonVersion+";visibility:=reexport"));
@@ -1436,8 +1436,8 @@ public class CMRTests extends CompilerTests {
                 .get(OsgiUtil.OsgiManifest.Require_Bundle)).split(",");
 
         assertEquals(3, requireBundle.length);
-        String osgiCeylonVersion = OsgiVersion.fromCeylonVersion(Versions.CEYLON_VERSION_NUMBER, false);
-        String osgiOtherVersion = OsgiVersion.fromCeylonVersion("1.1.0", false);
+        String osgiCeylonVersion = OsgiVersion.fromCeylonVersion(Versions.CEYLON_VERSION_NUMBER);
+        String osgiOtherVersion = OsgiVersion.fromCeylonVersion("1.1.0");
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
                 "ceylon.language;bundle-version="+osgiCeylonVersion+";visibility:=reexport",
                 "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;bundle-version="+osgiOtherVersion+";visibility:=reexport",
