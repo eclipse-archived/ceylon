@@ -228,7 +228,7 @@ abstract class Invocation {
                         null);
             } else if (methodOrClass instanceof Class) {
                 return new TransformedInvocationPrimary(
-                        gen.makeJavaType(((Class)methodOrClass).getType(), JT_RAW | JT_NO_PRIMITIVES),
+                        gen.makeJavaType(((Tree.StaticMemberOrTypeExpression)getPrimary()).getTarget().getType(), JT_NO_PRIMITIVES),
                         null);
             }
         }
