@@ -23,6 +23,8 @@ public class JavaScriptCompilerImpl implements Compiler {
         if(options.isVerbose())
             tool.setVerbose("");
         tool.setOffline(options.isOffline());
+        tool.setTimeout(options.getTimeout());
+        tool.setEncoding(options.getEncoding());
         try {
             tool.setRepositoryAsStrings(options.getUserRepositories());
         } catch (Exception e) {
@@ -32,6 +34,9 @@ public class JavaScriptCompilerImpl implements Compiler {
         tool.setOut(options.getOutputRepository());
         tool.setSource(options.getSourcePath());
         tool.setResource(options.getResourcePath());
+        if (options.getResourceRootName() != null) {
+            tool.setResourceRoot(options.getResourceRootName());
+        }
         // just mix them all
         List<String> moduleOrFile = new ArrayList<String>();
         moduleOrFile.addAll(options.getModules());

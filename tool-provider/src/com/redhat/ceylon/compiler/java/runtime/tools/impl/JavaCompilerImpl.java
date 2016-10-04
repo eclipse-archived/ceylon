@@ -7,11 +7,6 @@ import java.util.List;
 import java.util.Locale;
 
 import com.redhat.ceylon.compiler.CeylonCompileTool;
-import com.redhat.ceylon.javax.tools.Diagnostic;
-import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
-import com.redhat.ceylon.javax.tools.DiagnosticListener;
-import com.redhat.ceylon.javax.tools.JavaFileObject;
-
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
 import com.redhat.ceylon.compiler.java.launcher.Main.ExitState.CeylonState;
 import com.redhat.ceylon.compiler.java.runtime.tools.CompilationListener;
@@ -21,6 +16,10 @@ import com.redhat.ceylon.compiler.java.runtime.tools.JavaCompilerOptions;
 import com.redhat.ceylon.compiler.java.tools.CeylonTaskListener;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTaskImpl;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
+import com.redhat.ceylon.javax.tools.Diagnostic;
+import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
+import com.redhat.ceylon.javax.tools.DiagnosticListener;
+import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.langtools.source.util.TaskEvent;
 import com.redhat.ceylon.langtools.tools.javac.api.ClientCodeWrapper.Trusted;
 import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
@@ -129,6 +128,10 @@ public class JavaCompilerImpl implements Compiler {
             translatedOptions.add(Option.CEYLONRESOURCEPATH.getText());
             translatedOptions.add(resourcePath.getPath());
         }
+        if (options.getResourceRootName() != null) {
+            translatedOptions.add(Option.CEYLONRESOURCEROOT.getText());
+            translatedOptions.add(options.getResourceRootName());
+        }
         for(String rep : options.getUserRepositories()){
             translatedOptions.add(Option.CEYLONREPO.getText());
             translatedOptions.add(rep);
@@ -151,6 +154,14 @@ public class JavaCompilerImpl implements Compiler {
         }
         if (options.isOffline()) {
             translatedOptions.add(Option.CEYLONOFFLINE.getText());
+        }
+        if (options.getTimeout() != 0) {
+            translatedOptions.add(Option.CEYLONTIMEOUT.getText());
+            translatedOptions.add(Integer.toString(options.getTimeout()));
+        }
+        if (options.getEncoding() != null) {
+            translatedOptions.add(Option.ENCODING.getText());
+            translatedOptions.add(options.getEncoding());
         }
         if(options instanceof JavaCompilerOptions){
             JavaCompilerOptions javaOptions = (JavaCompilerOptions) options;

@@ -1,5 +1,6 @@
 package com.redhat.ceylon.compiler.java.runtime.tools;
 
+import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 
@@ -54,21 +55,38 @@ public class JavaCompilerOptions extends CompilerOptions {
         this.javacOptions = javacOptions;
     }
 
-    public static JavaCompilerOptions fromConfig(CeylonConfig config) {
-        JavaCompilerOptions options = new JavaCompilerOptions();
-        mapOptions(config, options);
-        return options;
-    }
-
-    static void mapOptions(CeylonConfig config, JavaCompilerOptions options) {
-        CompilerOptions.mapOptions(config, options);
-        options.setFlatClasspath(DefaultToolOptions.getDefaultFlatClasspath(config));
-        options.setAutoExportMavenDependencies(DefaultToolOptions.getDefaultAutoExportMavenDependencies(config));
-        options.setJdkProvider(DefaultToolOptions.getCompilerJdkProvider(config));
-        options.setJavacOptions(DefaultToolOptions.getCompilerJavac(config));
+    @Override
+    public void mapOptions(CeylonConfig config) {
+        super.mapOptions(config);
+        setModules(DefaultToolOptions.getCompilerModules(config, Backend.Java));
+        setFlatClasspath(DefaultToolOptions.getDefaultFlatClasspath(config));
+        setAutoExportMavenDependencies(DefaultToolOptions.getDefaultAutoExportMavenDependencies(config));
+        setJdkProvider(DefaultToolOptions.getCompilerJdkProvider(config));
+        setJavacOptions(DefaultToolOptions.getCompilerJavac(config));
         String[] aptModules = DefaultToolOptions.getCompilerAptModules(config);
         if (aptModules != null) {
-            options.setAptModules(Arrays.asList(aptModules));
+            setAptModules(Arrays.asList(aptModules));
         }
+    }
+
+    /**
+     * Create a new <code>JavaCompilerOptions</code> object initialized with the
+     * settings read from the default Ceylon configuration
+     * @return An initialized <code>JavaCompilerOptions</code> object
+     */
+    public static JavaCompilerOptions fromConfig() {
+        return fromConfig(CeylonConfig.get());
+    }
+
+    /**
+     * Create a new <code>JavaCompilerOptions</code> object initialized with the
+     * settings read from the given configuration
+     * @param config The <code>CeylonConfig</code> to take the settings from
+     * @return An initialized <code>JavaCompilerOptions</code> object
+     */
+    public static JavaCompilerOptions fromConfig(CeylonConfig config) {
+        JavaCompilerOptions options = new JavaCompilerOptions();
+        options.mapOptions(config);
+        return options;
     }
 }
