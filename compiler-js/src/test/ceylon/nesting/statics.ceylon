@@ -11,8 +11,24 @@ class Static1 {
     return d();
   }
   shared static Integer f() => e();
-  shared new() {
+
+  shared static interface Iface1 {
+    shared Integer m() => 1;
+    shared formal Integer f();
+    shared formal Integer g();
   }
+  shared static class Class1() {
+    shared default Integer m() => 1;
+  }
+
+  shared new() {
+    print("static1");
+  }
+
+  shared Iface1 iface1() => object satisfies Iface1 {
+    shared actual Integer f() => 2;
+    shared actual Integer g() => 3;
+  };
 }
 class Static2 extends Static1 {
   shared static Integer sa = a;
@@ -25,7 +41,20 @@ class Static2 extends Static1 {
     return e();
   }
   shared static Integer sf() => f();
+  shared static interface Iface2 satisfies Iface1 {
+    shared actual Integer f() => 2;
+  }
+  shared static class Class2() extends Class1() {
+    shared actual Integer m() => super.m() + 1;
+  }
   shared new() extends Static1() {
+    print("static2");
+  }
+  shared Iface2 iface2() {
+    object caca satisfies Iface2 {
+      shared actual Integer g() => 3;
+    }
+    return caca;
   }
 }
 
@@ -56,4 +85,27 @@ void testStatics() {
   check(c2.sd() == 3, "static 4.4");
   check(c2.se() == 3, "static 4.5");
   check(c2.sf() == 3, "static 4.6");
+
+  Object ic1 = Static1.Class1();
+  check(ic1 is Static1.Class1, "static 5.1");
+  Object ic2 = Static2.Class1();
+  check(ic2 is Static1.Class1, "static 5.2");
+  check(ic2 is Static2.Class1, "static 5.3");
+  Object ic3 = Static2.Class2();
+  check(ic3 is Static2.Class2, "static 5.4");
+  check(ic3 is Static2.Class1, "static 5.5");
+  check(ic3 is Static1.Class1, "static 5.6");
+  check(Static2.Class2().m() == 2, "static 5.7");
+  Object ii1 = c1.iface1();
+  check(ii1 is Static1.Iface1, "static 6.1");
+  check(c1.iface1().m() == 1, "static 6.2");
+  check(c1.iface1().f() == 2, "static 6.3");
+  Object ii2 = c2.iface2();
+  check(ii2 is Static2.Iface2, "static 6.4");
+  check(ii2 is Static2.Iface1, "static 6.5");
+  check(ii2 is Static1.Iface1, "static 6.6");
+  check(c2.iface2().m() == 1, "static 6.7");
+  check(c2.iface2().f() == 2, "static 6.8");
+  check(c2.iface2().g() == 3, "static 6.9");
+  check(Static1().c() == 3, "static 7.1");
 }
