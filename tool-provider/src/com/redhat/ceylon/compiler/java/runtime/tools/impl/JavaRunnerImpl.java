@@ -30,6 +30,7 @@ public class JavaRunnerImpl implements JavaRunner {
                 .userRepos(options.getUserRepositories())
                 .systemRepo(options.getSystemRepository())
                 .offline(options.isOffline())
+                .timeout(options.getTimeout())
                 .noDefaultRepos(options.isNoDefaultRepositories())
                 .overrides(options.getOverrides())
                 .upgradeDist(!options.isDowngradeDist())
