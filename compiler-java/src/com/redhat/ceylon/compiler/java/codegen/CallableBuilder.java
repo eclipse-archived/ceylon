@@ -754,7 +754,7 @@ public class CallableBuilder {
                 // add the default value
                 ListBuffer<JCExpression> defaultMethodArgs = new ListBuffer<JCExpression>();
                 // pass reified type arguments
-                for (TypeParameter tp : ((Generic)defaultedParam.getDeclaration()).getTypeParameters()) {
+                for (TypeParameter tp : Strategy.getEffectiveTypeParameters(defaultedParam.getDeclaration())) {
                     Type ta = ((Tree.MemberOrTypeExpression)node).getTarget().getTypeArguments().get(tp);
                     defaultMethodArgs.add(gen.makeReifiedTypeArgument(ta));
                 }
@@ -1625,7 +1625,7 @@ public class CallableBuilder {
             typedApply.parameter(pdb);
         }
         ListBuffer<JCTypeParameter> typeParameters = new ListBuffer<JCTypeParameter>();
-        for (TypeParameter typeParameter : typeModel.getDeclaration().getTypeParameters()) {
+        for (TypeParameter typeParameter : Strategy.getEffectiveTypeParameters(typeModel.getDeclaration())) {
             Type typeArgument = typeModel.getTypeArguments().get(typeParameter);
             typeParameters.add(gen.makeTypeParameter(typeParameter, null));
             typedApply.body(gen.makeVar(Flags.FINAL, 

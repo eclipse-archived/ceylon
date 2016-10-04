@@ -504,7 +504,8 @@ class Strategy {
             }
         }
         if (decl instanceof Function) {
-            if (original instanceof ClassAlias) {
+            if (original instanceof ClassAlias
+                    || decl.isStatic()) {
                 ArrayList<TypeParameter> copyDown = new ArrayList<TypeParameter>(getEffectiveTypeParameters(original, (Declaration)container));
                 copyDown.addAll(((Generic)decl).getTypeParameters());
                 return copyDown;

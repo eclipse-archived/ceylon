@@ -4050,7 +4050,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         // do the reified type param arguments
         if (gen().supportsReified(methodModel)) {
-            methodBuilder.reifiedTypeParameters(methodModel.getTypeParameters());
+            methodBuilder.reifiedTypeParameters(Strategy.getEffectiveTypeParameters(methodModel));
         }
         
         if (methodModel.getParameterLists().size() > 1) {
@@ -4091,7 +4091,7 @@ public class ClassTransformer extends AbstractTransformer {
                             .makeOverload(
                                 parameterList.getModel(),
                                 parameter.getParameterModel(),
-                                methodModel.getTypeParameters());
+                                Strategy.getEffectiveTypeParameters(methodModel));
                         overloadedMethod.location(null);
                         lb.append(overloadedMethod);
                     }
@@ -4117,7 +4117,7 @@ public class ClassTransformer extends AbstractTransformer {
                 .makeOverload(
                     parameterList.getModel(),
                     null,
-                    methodModel.getTypeParameters());
+                    Strategy.getEffectiveTypeParameters(methodModel));
             lb.append(canonicalMethod);
         }
         
@@ -4141,7 +4141,7 @@ public class ClassTransformer extends AbstractTransformer {
                     .makeOverload(
                         parameterList.getModel(),
                         null,
-                        methodModel.getTypeParameters());
+                        Strategy.getEffectiveTypeParameters(methodModel));
                 lb.append(overloadedMethod);
             } else {
                 if (body != null) {
@@ -4605,7 +4605,7 @@ public class ClassTransformer extends AbstractTransformer {
                 ListBuffer<JCExpression> args, 
                 ListBuffer<JCStatement> vars) {
             at(pl, firstExecutable);
-            JCExpression invocation = overloaded.makeInvocation(args);
+            JCExpression invocation = overloaded.makeInvocation(declTree != null ? Strategy.getEffectiveTypeParameters(declTree.getDeclarationModel()) : null, args);
             Declaration model = overloaded.getModel();// TODO Yuk
             if (!isVoid(model)
                     // MPL overloads always return a Callable
@@ -4665,7 +4665,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 args.add(naming.makeUnquotedIdent(parameter.getName()));
             }
-            JCExpression superCall = overloaded.makeInvocation(args);
+            JCExpression superCall = overloaded.makeInvocation(null, args);
             /*JCMethodInvocation superCall = make().Apply(null,
                     naming.makeQualIdent(naming.makeSuper(), ((Function)overloaded.getModel()).getName()),
                     args.toList());*/
@@ -4742,10 +4742,18 @@ public class ClassTransformer extends AbstractTransformer {
 
         protected abstract Declaration getModel();
 
-        protected JCExpression makeInvocation(ListBuffer<JCExpression> args) {
+        protected JCExpression makeInvocation(java.util.List<TypeParameter> tps, ListBuffer<JCExpression> args) {
             final JCExpression methName = makeMethodName();
-            return make().Apply(List.<JCExpression>nil(),
-                    methName, args.toList());
+            ListBuffer<JCExpression> tas = new ListBuffer<JCExpression>();
+            if (tps != null) {
+                for (TypeParameter tp : tps) {
+                    tas.add(makeJavaType(tp.getType(), JT_TYPE_ARGUMENT));
+                }
+            }
+            return make().Apply(
+                    tas.toList(),
+                    methName, 
+                    args.toList());
         }
 
         /** Returns the qualiifier to use when invoking the default parameter value method */
@@ -5206,7 +5214,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         @Override
-        protected JCExpression makeInvocation(ListBuffer<JCExpression> args) {
+        protected JCExpression makeInvocation(java.util.List<TypeParameter> tps, ListBuffer<JCExpression> args) {
             Type type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
             return make().NewClass(null, 
                     null, 
@@ -5327,10 +5335,10 @@ public class ClassTransformer extends AbstractTransformer {
         if (container instanceof Constructor) {
             copyTypeParameters((Class)container.getContainer(), methodBuilder);
             methodBuilder.reifiedTypeParameters(((Class)container.getContainer()).getTypeParameters());
-        } else if(container instanceof Generic) {
+        } else if(container instanceof Declaration) {
             // make sure reified type parameters are accepted
-            copyTypeParameters((Generic)container, methodBuilder);
-            methodBuilder.reifiedTypeParameters(((Generic)container).getTypeParameters());
+            copyTypeParameters((Declaration)container, methodBuilder);
+            methodBuilder.reifiedTypeParameters(Strategy.getEffectiveTypeParameters(container));
         }
         WideningRules wideningRules = !staticMethod && container instanceof Class
                 ? WideningRules.CAN_WIDEN : WideningRules.NONE;
@@ -5614,12 +5622,11 @@ public class ClassTransformer extends AbstractTransformer {
         return methbuilder;
     }
     
-    void copyTypeParameters(Generic def, MethodDefinitionBuilder methodBuilder) {
-        if (def.getTypeParameters() != null) {
-            for (TypeParameter t : def.getTypeParameters()) {
+    void copyTypeParameters(Declaration def, MethodDefinitionBuilder methodBuilder) {
+        for (TypeParameter t : Strategy.getEffectiveTypeParameters(def)) {
                 methodBuilder.typeParameter(t);
             }
-        }
+        
     }
 
     public List<JCTree> transform(final Tree.TypeAliasDeclaration def) {

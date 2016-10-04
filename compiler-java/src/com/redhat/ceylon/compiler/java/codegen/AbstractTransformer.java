@@ -5081,11 +5081,15 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     final List<JCExpression> typeArguments(Functional method) {
-        if (method instanceof Generic) {            
-            return typeArguments(((Generic)method).getTypeParameters(), method.getType().getTypeArguments());
+        if (method instanceof Generic) {
+            Map<TypeParameter, Type> l = new java.util.HashMap();
+            for (TypeParameter tp : Strategy.getEffectiveTypeParameters((Declaration)method)) {
+                l.put(tp, tp.getType());
+            }
+            return typeArguments(Strategy.getEffectiveTypeParameters((Declaration)method), l);
         }
         else {
-            return new ListBuffer<JCExpression>().toList();
+            return List.<JCExpression>nil();
         }
     }
     
@@ -5187,8 +5191,15 @@ public abstract class AbstractTransformer implements Transformation {
             Reference producedReference) {
         java.util.List<TypeParameter> typeParameters = getTypeParameters(producedReference);
         java.util.List<Type> typeArguments = new ArrayList<Type>(typeParameters.size());
-        for(TypeParameter tp : typeParameters)
-            typeArguments.add(producedReference.getTypeArguments().get(tp));
+        for(TypeParameter tp : typeParameters) {
+            Type ta;
+            Reference ref = producedReference;
+            do { 
+                ta = ref.getTypeArguments().get(tp);
+                ref = ref.getQualifyingType();
+            } while (ta == null && ref != null);
+            typeArguments.add(ta);
+        }
         return typeArguments;
     }
 

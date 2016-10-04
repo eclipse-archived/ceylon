@@ -3778,10 +3778,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         java.util.List<TypeParameter> tps = null;
         Declaration declaration = mte.getDeclaration();
         
-        if (declaration instanceof Generic) {
-            tps = ((Generic)declaration).getTypeParameters();
-        }
-        if (mte.getTypeModel().isTypeConstructor()) {
+        if (!mte.getTypeModel().isTypeConstructor()) {
+            tps = Strategy.getEffectiveTypeParameters(declaration);
+        } else {
             for (TypeParameter tp : tps) {
                 callBuilder.typeArgument(makeJavaType(tp.getType(), JT_TYPE_ARGUMENT));
             }
@@ -4115,7 +4114,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (member.isStatic()) {
                 if (member instanceof Function) {
                     Function method = (Function)member;
-                    Reference producedReference = method.appliedReference(qualifyingType, typeArguments.getTypeModels());
+                    Reference producedReference = expr.getTarget();//method.appliedReference(qualifyingType, typeArguments.getTypeModels());
                     return CallableBuilder.javaStaticMethodReference(
                             gen(), 
                             expr,
