@@ -1963,7 +1963,7 @@ public class GenerateJsVisitor extends Visitor {
                     GenerateJsVisitor.super.visit(that);
                 }
             });
-            if (d.isStatic()) {
+            if (d != null && d.isStatic()) {
                 BmeGenerator.generateStaticReference(d, this);
             } else {
                 out(memberAccess(that, lhs));
