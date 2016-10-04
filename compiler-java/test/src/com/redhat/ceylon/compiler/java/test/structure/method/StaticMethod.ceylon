@@ -11,17 +11,17 @@ class StaticMethod<S> {
     }
 }
 void staticMethod() {
-    variable String s = StaticMethod.sharedStat<Integer>();
-    s = StaticMethod.sharedStat<Integer>{};
-    s = StaticMethod.sharedStat<Integer>{
+    variable String s = StaticMethod<String>.sharedStat<Integer>();
+    s = StaticMethod<String>.sharedStat<Integer>{};
+    s = StaticMethod<String>.sharedStat<Integer>{
         s="";
     };
-    s = StaticMethod.sharedStat<Integer>{
+    s = StaticMethod<String>.sharedStat<Integer>{
         s="";
         t=1;
     };
     
-    value ref = StaticMethod.sharedStat<Integer>;
+    value ref = StaticMethod<String>.sharedStat<Integer>;
     ref("", 1);
     
     value i = Integer.parse{
