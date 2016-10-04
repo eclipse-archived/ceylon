@@ -535,7 +535,7 @@
     <target name="typechecker.jar" depends="compile">
         <mkdir dir="${build.dist.repo}/${ceylon.typechecker.dir}"/>
         <tstamp>
-            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+            <format property="qualifier" timezone="GMT" pattern="yyyyMMdd-HHmm"/>
         </tstamp>        
         <jar destfile="${build.dist.repo}/${ceylon.typechecker.jar}">
             <fileset dir="${build.classes}">
@@ -543,7 +543,7 @@
             </fileset>
             <manifest>
                 <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.typechecker"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.typechecker.version}.${qualifier}"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.typechecker.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">

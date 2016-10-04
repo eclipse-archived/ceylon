@@ -76,14 +76,14 @@
         <mkdir dir="${build.dist.repo}/${ceylon.cli.dir}"/>
         <mkdir dir="${build.bin}"/>
         <tstamp>
-            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+            <format property="qualifier" timezone="GMT" pattern="yyyyMMdd-HHmm"/>
         </tstamp>    	
         <jar destfile="${build.dist.repo}/${ceylon.cli.jar}">
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
                 <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.cli"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.cli.version}.${qualifier}"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.cli.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">

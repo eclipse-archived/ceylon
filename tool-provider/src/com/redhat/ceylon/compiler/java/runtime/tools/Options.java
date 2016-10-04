@@ -17,6 +17,7 @@ public class Options {
     private String run;
     private String overrides;
     private boolean downgradeDist;
+    private int timeout;
     
     public String getWorkingDirectory() {
         return workingDirectory;
@@ -75,7 +76,6 @@ public class Options {
         }
         this.verboseCategory = verboseCategory;
     }
-    
     public boolean isVerbose(String category){
         String categories = getVerboseCategory();
         if(categories == null)
@@ -109,21 +109,52 @@ public class Options {
     public void setOverrides(String overrides) {
         this.overrides = overrides;
     }
+    
     public boolean isDowngradeDist() {
         return downgradeDist;
     }
     public void setDowngradeDist(boolean downgradeDist) {
         this.downgradeDist = downgradeDist;
     }
-
-    public static Options fromConfig(CeylonConfig config) {
-        Options options = new Options();
-        mapOptions(config, options);
-        return options;
+    
+    public int getTimeout() {
+        return timeout;
+    }
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 
-    static void mapOptions(CeylonConfig config, Options options) {
-        options.setOffline(DefaultToolOptions.getDefaultOffline(config));
-        options.setOverrides(DefaultToolOptions.getDefaultOverrides(config));
+    /**
+     * Set options according to the configuration settings found in the given
+     * <code>CeylonConfig</code>
+     * @param config The <code>CeylonConfig</code> to take the settings from
+     */
+    public void mapOptions(CeylonConfig config) {
+        setTimeout((int) DefaultToolOptions.getDefaultTimeout(config));
+        setOffline(DefaultToolOptions.getDefaultOffline(config));
+        setOverrides(DefaultToolOptions.getDefaultOverrides(config));
+        setRun(DefaultToolOptions.getRunToolRun(config, null));
+        setDowngradeDist(!DefaultToolOptions.getLinkWithCurrentDistribution(config));
+    }
+
+    /**
+     * Create a new <code>Options</code> object initialized with the
+     * settings read from the default Ceylon configuration
+     * @return An initialized <code>Options</code> object
+     */
+    public static Options fromConfig() {
+        return fromConfig(CeylonConfig.get());
+    }
+
+    /**
+     * Create a new <code>Options</code> object initialized with the
+     * settings read from the given configuration
+     * @param config The <code>CeylonConfig</code> to take the settings from
+     * @return An initialized <code>Options</code> object
+     */
+    public static Options fromConfig(CeylonConfig config) {
+        Options options = new Options();
+        options.mapOptions(config);
+        return options;
     }
 }

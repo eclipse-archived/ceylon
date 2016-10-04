@@ -16,7 +16,7 @@
     <property name="ceylon.java.main.dist" value="${build.dist.repo}/${ceylon.java.main.dir}" />
 
     <tstamp>
-        <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+        <format property="qualifier" timezone="GMT" pattern="yyyyMMdd-HHmm"/>
     </tstamp>
 
     <path id="java.main.classpath">
@@ -110,7 +110,7 @@
             </fileset>
             <manifest>
                 <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.java.main"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.java.main.version}.${qualifier}"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.java.main.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">

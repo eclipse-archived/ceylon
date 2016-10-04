@@ -1,17 +1,10 @@
 package com.redhat.ceylon.model.loader;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.TimeZone;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.log.Logger;
@@ -66,11 +59,7 @@ public class OsgiUtil {
         public static final Attributes.Name Require_Capability = new Attributes.Name("Require-Capability");
         public static final Attributes.Name Bundle_ActivationPolicy = new Attributes.Name("Bundle-ActivationPolicy");
         public static final Attributes.Name Bundle_Activator = new Attributes.Name("Bundle-Activator");
-        private static SimpleDateFormat formatter = new SimpleDateFormat("'v'yyyyMMdd-HHmm");
-        static {
-            formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
-        }
-        
+
         private String osgiProvidedBundles;
 
         private final Manifest originalManifest;
@@ -90,43 +79,18 @@ public class OsgiUtil {
             this.log = log;
             this.jdkProvider = jdkProvider;
         }
-
+/*
         private String toOSGIBundleVersion(String ceylonVersion) {
-            String[] versionParts = ceylonVersion.split("\\.");
-            String major = "";
-            String minor = "";
-            String micro = "";
-            String qualifier = "";
-            
-            for (String part : versionParts) {
-                if (major.isEmpty()) {
-                    major = part;
-                } else if (minor.isEmpty()) {
-                    minor = part;
-                }
-                else if (micro.isEmpty()) {
-                    micro = part;
-                } else {
-                    qualifier = part + "_";
-                }
-            }
-            
-            qualifier += formatter.format(new Date());
-            return new StringBuilder(major)
-                        .append('.').append(minor)
-                        .append('.').append(micro)
-                        .append('.').append(qualifier)
-                        .toString();
-            
+            return OsgiUtil.toOSGIBundleVersion(ceylonVersion);
         }
-
+*/
         public Manifest build() {
             Manifest manifest = super.build();
             Attributes main = manifest.getMainAttributes();
             main.put(Bundle_ManifestVersion, "2");
 
             main.put(Bundle_SymbolicName, module.getNameAsString());
-            main.put(Bundle_Version, toOSGIBundleVersion(module.getVersion()));
+            main.put(Bundle_Version, OsgiVersion.fromCeylonVersion(module.getVersion(), true));
 
             String exportPackageValue = getExportPackage();
             if (exportPackageValue.length() > 0) {
@@ -247,8 +211,18 @@ public class OsgiUtil {
                         requires.append(",");
                     }
 
+                    String depVersion = m.getVersion();
+                    String depOsgiVersion;
+                    boolean isFromCeylonDistribution = module.getLanguageModule().getVersion().equals(depVersion) &&
+                            (m.getNameAsString().startsWith("ceylon.") || m.getNameAsString().startsWith("com.redhat.ceylon."));
+                    
+                    if (! m.isJava() || isFromCeylonDistribution) { // Ceylon module or module from the Ceylon distribution
+                        depOsgiVersion = OsgiVersion.fromCeylonVersion(depVersion, false);
+                    } else {
+                        depOsgiVersion = depVersion;
+                    }
                     requires.append(m.getNameAsString())
-                            .append(";bundle-version=").append(m.getVersion());
+                            .append(";bundle-version=").append(depOsgiVersion);
 
                     if (anImport.isExport()) {
                         requires.append(";visibility:=reexport");
@@ -263,7 +237,7 @@ public class OsgiUtil {
                     requires.append(",");
                 }
                 requires.append("com.redhat.ceylon.dist")
-                .append(";bundle-version=").append(module.getLanguageModule().getVersion()).append(";visibility:=reexport");
+                .append(";bundle-version=").append(OsgiVersion.fromCeylonVersion(module.getLanguageModule().getVersion(), false)).append(";visibility:=reexport");
             }
             return requires.toString();
         }
@@ -282,7 +256,7 @@ public class OsgiUtil {
                     exportPackage.append(pkg.getNameAsString());
                     // Ceylon has no separate versioning of packages, so all
                     // packages implicitly inherit their respective module version
-                    exportPackage.append(";version=").append(module.getVersion());
+                    exportPackage.append(";version=").append(OsgiVersion.fromCeylonVersion(module.getVersion(), false));
                     //TODO : should we analyze package uses as well?
                     alreadyOne = true;
                 }
@@ -292,112 +266,9 @@ public class OsgiUtil {
                     exportPackage.append(",");
                 }
                 exportPackage.append("com.redhat.ceylon.dist.osgi");
-                exportPackage.append(";version=").append(module.getVersion());
+                exportPackage.append(";version=").append(OsgiVersion.fromCeylonVersion(module.getVersion(), false));
             }
             return exportPackage.toString();
         }
-    }
-
-    private static HashMap<String, Integer> ceylonQualifiers;
-    static {
-        ceylonQualifiers = new HashMap<String, Integer>();
-        ceylonQualifiers.put("alpha", 0);
-        ceylonQualifiers.put("a", 0);
-        ceylonQualifiers.put("beta", 1);
-        ceylonQualifiers.put("b", 1);
-        ceylonQualifiers.put("milestone", 2);
-        ceylonQualifiers.put("m", 2);
-        ceylonQualifiers.put("rc", 3);
-        ceylonQualifiers.put("cr", 3);
-        ceylonQualifiers.put("snapshot", 4);
-        ceylonQualifiers.put("ga", 5);
-        ceylonQualifiers.put("final", 5);
-        ceylonQualifiers.put("sp", 6);
-    }
-    private static int QUALIFIER_OTHER = 6; // Same as largest index in above list
-    
-    public static String toOSGIBundleVersionNew(String ceylonVersion) {
-        // Insert a "." between digits and letters
-        StringBuffer buf = new StringBuffer();
-        Pattern p = Pattern.compile("\\d\\pL|\\pL\\d");
-        Matcher m = p.matcher(ceylonVersion);
-        while (m.find()) {
-            String found = m.group();
-            assert(found.length() == 2);
-            m.appendReplacement(buf, found.charAt(0) + "." + found.charAt(1));
-        }
-        m.appendTail(buf);
-        
-        // Split on dots and dashes
-        String[] versionParts = buf.toString().split("[\\.-]");
-
-        // Now iterator over all the parts applying the following rules:
-        // - any empty part is treated as "0"
-        // - any number in the first 3 positions are added as-is
-        // - any number after that gets padded with leading zeros to a length of 3 and prefixed with the letter "n"
-        // - when a non-number is encountered in the first 3 positions enough "0" parts are added to have at least 3 numbers at the start
-        // - a non-number gets lookup in the qualifier table and if found replaced by its index
-        // - when not found we add the part prefixed with the largest index in the qualifier table and a dash
-        boolean inOsgiQualifier = false;
-        boolean lastWasQualifier = false;
-        ArrayList<String> resultParts = new ArrayList<String>();
-        for (int i = 0; i < versionParts.length; i++) {
-            String part = versionParts[i];
-            if (part.isEmpty()) {
-                part = "0";
-            }
-            inOsgiQualifier = inOsgiQualifier || i >= 3;
-            if (isNumber(part)) {
-                if (inOsgiQualifier) {
-                    resultParts.add(String.format("n%03d", Integer.parseInt(part)));
-                } else {
-                    resultParts.add(part);
-                }
-                lastWasQualifier = false;
-            } else {
-                if (!inOsgiQualifier) {
-                    // We need our version to start with at least 3 numbers
-                    for (int j = i; j < 3; j++) {
-                        resultParts.add("0");
-                    }
-                    inOsgiQualifier = true;
-                }
-                Integer idx = ceylonQualifiers.get(part.toLowerCase());
-                if (idx != null) {
-                    resultParts.add(idx.toString());
-                } else {
-                    resultParts.add(QUALIFIER_OTHER + "-" + part);
-                }
-                lastWasQualifier = true;
-            }
-        }
-        // We need our version to start with at least 3 numbers
-        for (int j = resultParts.size(); j < 3; j++) {
-            resultParts.add("0");
-        }
-        
-        if (!lastWasQualifier) {
-            // If we didn't terminate with a qualifier let's treat as if it was "final"
-            resultParts.add(ceylonQualifiers.get("final").toString());
-        }
-        
-        // Now join all the resulting parts together. The first 4
-        // elements get separated by dots, the rest by dashes
-        StringBuffer result = new StringBuffer();
-        for (int i=0; i < resultParts.size(); i++) {
-            String part = resultParts.get(i);
-            if (i > 3) {
-                result.append("-");
-            } else if (i > 0) {
-                result.append(".");
-            }
-            result.append(part);
-        }
-        
-        return result.toString();
-    }
-
-    private static boolean isNumber(String txt) {
-        return txt.matches("\\d+");
     }
 }

@@ -93,6 +93,7 @@ import com.redhat.ceylon.langtools.source.util.TaskEvent;
 import com.redhat.ceylon.langtools.source.util.TaskListener;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.loader.OsgiUtil;
+import com.redhat.ceylon.model.loader.OsgiVersion;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.ModuleImport;
 import com.redhat.ceylon.model.typechecker.model.Modules;
@@ -1291,8 +1292,9 @@ public class CMRTests extends CompilerTests {
         final Manifest manifest = getManifest(
                 "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a", "1.1.0");
 
-        assertEquals("ceylon.language;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport" +
-                ",com.redhat.ceylon.dist;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport",
+        String osgiCeylonVersion = OsgiVersion.fromCeylonVersion(Versions.CEYLON_VERSION_NUMBER, false);
+        assertEquals("ceylon.language;bundle-version="+osgiCeylonVersion+";visibility:=reexport" +
+                ",com.redhat.ceylon.dist;bundle-version="+osgiCeylonVersion+";visibility:=reexport",
                 manifest.getMainAttributes().get(OsgiUtil.OsgiManifest.Require_Bundle));
     }
 
@@ -1315,14 +1317,15 @@ public class CMRTests extends CompilerTests {
         String[] exportPackage = attribute.split(",");
         assertEquals(2, exportPackage.length);
 
+        String osgiModuleVersion = OsgiVersion.fromCeylonVersion(moduleVersion, false);
         assertThat(
                 Arrays.asList(exportPackage),
                 CoreMatchers.hasItems(
-                        "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;version="+ moduleVersion,
-                        "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a.c;version="+ moduleVersion));
+                        "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;version="+ osgiModuleVersion,
+                        "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a.c;version="+ osgiModuleVersion));
 
         assertThat( Arrays.asList(exportPackage),
-                CoreMatchers.not(CoreMatchers.hasItem("com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a.b;version=" + moduleVersion)));
+                CoreMatchers.not(CoreMatchers.hasItem("com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a.b;version=" + osgiModuleVersion)));
     }
 
     @Test
@@ -1344,10 +1347,12 @@ public class CMRTests extends CompilerTests {
                 .get(OsgiUtil.OsgiManifest.Require_Bundle)).split(",");
         assertEquals(3, requireBundle.length);
 
+        String osgiCeylonVersion = OsgiVersion.fromCeylonVersion(Versions.CEYLON_VERSION_NUMBER, false);
+        String osgiOtherVersion = OsgiVersion.fromCeylonVersion("1.1.0", false);
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
-                "ceylon.language;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport",
-                "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;bundle-version=1.1.0",
-                "com.redhat.ceylon.dist;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport"));
+                "ceylon.language;bundle-version="+osgiCeylonVersion+";visibility:=reexport",
+                "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;bundle-version=" + osgiOtherVersion,
+                "com.redhat.ceylon.dist;bundle-version="+osgiCeylonVersion+";visibility:=reexport"));
     }
 
     @Test
@@ -1376,8 +1381,9 @@ public class CMRTests extends CompilerTests {
                 .get(OsgiUtil.OsgiManifest.Require_Bundle)).split(",");
         assertEquals(1, requireBundle.length);
 
+        String osgiCeylonVersion = OsgiVersion.fromCeylonVersion(Versions.CEYLON_VERSION_NUMBER, false);
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
-                "com.redhat.ceylon.dist;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport"));
+                "com.redhat.ceylon.dist;bundle-version="+osgiCeylonVersion+";visibility:=reexport"));
     }
 
     @Test
@@ -1406,9 +1412,10 @@ public class CMRTests extends CompilerTests {
                 .get(OsgiUtil.OsgiManifest.Require_Bundle)).split(",");
         assertEquals(2, requireBundle.length);
 
+        String osgiCeylonVersion = OsgiVersion.fromCeylonVersion(Versions.CEYLON_VERSION_NUMBER, false);
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
-                "ceylon.language;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport",
-                "com.redhat.ceylon.dist;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport"));
+                "ceylon.language;bundle-version="+osgiCeylonVersion+";visibility:=reexport",
+                "com.redhat.ceylon.dist;bundle-version="+osgiCeylonVersion+";visibility:=reexport"));
     }
 
     @Test
@@ -1429,10 +1436,12 @@ public class CMRTests extends CompilerTests {
                 .get(OsgiUtil.OsgiManifest.Require_Bundle)).split(",");
 
         assertEquals(3, requireBundle.length);
+        String osgiCeylonVersion = OsgiVersion.fromCeylonVersion(Versions.CEYLON_VERSION_NUMBER, false);
+        String osgiOtherVersion = OsgiVersion.fromCeylonVersion("1.1.0", false);
         assertThat(Arrays.asList(requireBundle), CoreMatchers.hasItems(
-                "ceylon.language;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport",
-                "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;bundle-version=1.1.0;visibility:=reexport",
-                "com.redhat.ceylon.dist;bundle-version="+Versions.CEYLON_VERSION_NUMBER+";visibility:=reexport"));
+                "ceylon.language;bundle-version="+osgiCeylonVersion+";visibility:=reexport",
+                "com.redhat.ceylon.compiler.java.test.cmr.modules.osgi.a;bundle-version="+osgiOtherVersion+";visibility:=reexport",
+                "com.redhat.ceylon.dist;bundle-version="+osgiCeylonVersion+";visibility:=reexport"));
     }
 
     @Test

@@ -71,14 +71,14 @@
     <target name="ceylon-module-resolver-webdav.jar" depends="compile">
         <mkdir dir="${build.dist.repo}/${ceylon.module-resolver-webdav.dir}"/>
         <tstamp>
-            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+            <format property="qualifier" timezone="GMT" pattern="yyyyMMdd-HHmm"/>
         </tstamp>    	
         <jar destfile="${build.dist.repo}/${ceylon.module-resolver-webdav.jar}">
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
                 <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.module-resolver-webdav"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.module-resolver-webdav.version}.${qualifier}"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.module-resolver-webdav.osgi.version}${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">

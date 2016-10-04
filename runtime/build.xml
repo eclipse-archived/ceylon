@@ -265,14 +265,14 @@
         <mkdir dir="${build.dist.repo}/${ceylon.runtime.dir}"/>
         <mkdir dir="${build.bin}"/>
         <tstamp>
-            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+            <format property="qualifier" timezone="GMT" pattern="yyyyMMdd-HHmm"/>
         </tstamp>        
         <jar destfile="${build.dist.repo}/${ceylon.runtime.jar}">
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
                 <attribute name="Bundle-SymbolicName" value="ceylon.runtime"/>
-                <attribute name="Bundle-Version" value="${module.ceylon.runtime.version}.${qualifier}"/>
+                <attribute name="Bundle-Version" value="${module.ceylon.runtime.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">

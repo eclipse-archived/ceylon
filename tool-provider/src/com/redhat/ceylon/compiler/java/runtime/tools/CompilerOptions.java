@@ -1,6 +1,7 @@
 package com.redhat.ceylon.compiler.java.runtime.tools;
 
 import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 
 import java.io.File;
 import java.io.Writer;
@@ -12,8 +13,10 @@ public class CompilerOptions extends Options {
     private List<File> files = new LinkedList<>();
     private List<File> sourcePath = new LinkedList<>();
     private List<File> resourcePath = new LinkedList<>();
+    private String resourceRootName;
     private String outputRepository;
     private Writer outWriter;
+    private String encoding;
 
     public List<String> getModules() {
         return modules;
@@ -55,6 +58,13 @@ public class CompilerOptions extends Options {
         this.resourcePath.add(resourcePath);
     }
 
+    public String getResourceRootName() {
+        return resourceRootName;
+    }
+    public void setResourceRootName(String resourceRootName) {
+        this.resourceRootName = resourceRootName;
+    }
+    
     public String getOutputRepository() {
         return outputRepository;
     }
@@ -73,10 +83,43 @@ public class CompilerOptions extends Options {
     public void setOutWriter(Writer outWriter) {
         this.outWriter = outWriter;
     }
+    
+    public String getEncoding() {
+        return encoding;
+    }
+    public void setEncoding(String encoding) {
+        this.encoding = encoding;
+    }
 
+    @Override
+    public void mapOptions(CeylonConfig config) {
+        super.mapOptions(config);
+        setEncoding(DefaultToolOptions.getDefaultEncoding(config));
+        setOutputRepository(DefaultToolOptions.getCompilerOutputRepo(config));
+        setSourcePath(DefaultToolOptions.getCompilerSourceDirs(config));
+        setResourcePath(DefaultToolOptions.getCompilerResourceDirs(config));
+        setResourceRootName(DefaultToolOptions.getCompilerResourceRootName(config));
+        setModules(DefaultToolOptions.getCompilerModules(config, null));
+    }
+
+    /**
+     * Create a new <code>CompilerOptions</code> object initialized with the
+     * settings read from the default Ceylon configuration
+     * @return An initialized <code>CompilerOptions</code> object
+     */
+    public static CompilerOptions fromConfig() {
+        return fromConfig(CeylonConfig.get());
+    }
+
+    /**
+     * Create a new <code>CompilerOptions</code> object initialized with the
+     * settings read from the given configuration
+     * @param config The <code>CeylonConfig</code> to take the settings from
+     * @return An initialized <code>CompilerOptions</code> object
+     */
     public static CompilerOptions fromConfig(CeylonConfig config) {
         CompilerOptions options = new CompilerOptions();
-        Options.mapOptions(config, options);
+        options.mapOptions(config);
         return options;
     }
 }

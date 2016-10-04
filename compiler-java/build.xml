@@ -29,7 +29,7 @@
     <property name="parser.test.src" location="corpus/tests" />
     <property name="parser.test.dst" location="${build.dir}/test/parser" />
     <tstamp>
-        <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+        <format property="qualifier" timezone="GMT" pattern="yyyyMMdd-HHmm"/>
     </tstamp>
 
     <path id="compiler.classpath">
@@ -238,7 +238,7 @@
             </fileset>
             <manifest>
                 <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.compiler.java"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.compiler.version}.${qualifier}"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.compiler.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">
@@ -281,7 +281,7 @@
             </fileset>
             <manifest>
                 <attribute name="Bundle-SymbolicName" value="ceylon.bootstrap"/>
-                <attribute name="Bundle-Version" value="${module.ceylon.bootstrap.version}.${qualifier}"/>
+                <attribute name="Bundle-Version" value="${module.ceylon.bootstrap.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
         <antcall target="sha1sum">

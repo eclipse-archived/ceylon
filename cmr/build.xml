@@ -286,14 +286,14 @@
     <!-- Rule to build module-resolver jar -->
     <target name="module-resolver.jar" depends="module-resolver.classes">
         <tstamp>
-            <format property="qualifier" timezone="GMT" pattern="'v'yyyyMMdd-HHmm"/>
+            <format property="qualifier" timezone="GMT" pattern="yyyyMMdd-HHmm"/>
         </tstamp>        
         <jar destfile="${ceylon.module-resolver.lib}">
             <fileset dir="${build.classes}">
             </fileset>
             <manifest>
                 <attribute name="Bundle-SymbolicName" value="com.redhat.ceylon.module-resolver"/>
-                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.module-resolver.version}.${qualifier}"/>
+                <attribute name="Bundle-Version" value="${module.com.redhat.ceylon.module-resolver.osgi.version}-${qualifier}"/>
             </manifest>
         </jar>
     </target>
