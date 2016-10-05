@@ -7,3 +7,28 @@ repositories {
 dependencies {
 }
 
+ext {
+    modelSrc = "${rootProject.projectDir}/../model/src/com/redhat/ceylon/model/loader"
+    modelDest = "${buildDir}/copiedSrc"
+}
+
+task copySrc(type : Copy) {
+    from modelSrc, {
+        include 'OsgiVersion.java'
+    }
+    into modelDest
+}
+
+compileGroovy.dependsOn copySrc
+
+sourceSets {
+    main {
+        groovy {
+            srcDir modelDest
+        }
+    }
+}
+
+assemble.doFirst {
+    println "***** ${rootProject.projectDir}"
+}
