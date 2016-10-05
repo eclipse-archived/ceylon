@@ -1,0 +1,197 @@
+package com.redhat.ceylon.compiler.java.test.structure.klass;
+
+class StaticAccessWithMemberPrimary implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public static final .java.lang.String getAttr() {
+        return "";
+    }
+    
+    public static final void meth() {
+    }
+    
+    public static class Class implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+        
+        public Class() {
+        }
+        
+        @.java.lang.Override
+        public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+            return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticAccessWithMemberPrimary.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticAccessWithMemberPrimary.Class.class));
+        }
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticAccessWithMemberPrimary getSelf() {
+        return this;
+    }
+    
+    public final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticAccessWithMemberPrimary getSelfWithSideEffect() {
+        (
+            let
+            {
+                long $ceylontmp$op$0 = .com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.get_() + 1L;
+                .com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.set_($ceylontmp$op$0);
+            }
+            returning $ceylontmp$op$0;
+        );
+        return this;
+    }
+    
+    public StaticAccessWithMemberPrimary() {
+        (
+            let
+            {
+                long $ceylontmp$op$1 = .com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.get_() + 1L;
+                .com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.set_($ceylontmp$op$1);
+            }
+            returning $ceylontmp$op$1;
+        );
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.StaticAccessWithMemberPrimary.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticAccessWithMemberPrimary.class);
+}
+final class staticAccessWithMemberPrimary_ {
+    
+    private staticAccessWithMemberPrimary_() {
+    }
+    
+    static void staticAccessWithMemberPrimary() {
+        final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticAccessWithMemberPrimary inst = new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticAccessWithMemberPrimary();
+        .com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.set_(0L);
+        .java.lang.Object o = .ceylon.language.String.instance(new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticAccessWithMemberPrimary().getAttr());
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.get_() == 1L) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "staticSideEffect == 1"));
+        }
+        o = .ceylon.language.String.instance(inst.getSelfWithSideEffect().getAttr());
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.get_() == 2L) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "staticSideEffect == 2"));
+        }
+        o = .ceylon.language.String.instance(inst.getSelf().getAttr());
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.get_() == 2L) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "staticSideEffect == 2"));
+        }
+        .com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.set_(0L);
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticAccessWithMemberPrimary().meth();
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.get_() == 1L) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "staticSideEffect == 1"));
+        }
+        inst.getSelfWithSideEffect().meth();
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.get_() == 2L) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "staticSideEffect == 2"));
+        }
+        new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticAccessWithMemberPrimary().meth();
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.get_() == 3L) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "staticSideEffect == 3"));
+        }
+        inst.getSelfWithSideEffect().meth();
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.get_() == 4L) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "staticSideEffect == 4"));
+        }
+        .ceylon.language.Callable<? extends .java.lang.Object> ref = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticAccessWithMemberPrimary $instance$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticAccessWithMemberPrimary();
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return (
+                        let
+                        {
+                            $instance$.meth();
+                        }
+                        returning null;
+                    );
+                }
+            };
+        );
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.get_() == 5L) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "staticSideEffect == 5"));
+        }
+        ref.$call$();
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.get_() == 5L) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "staticSideEffect == 5"));
+        }
+        ref = (
+            let
+            {
+                final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticAccessWithMemberPrimary $instance$ = inst.getSelfWithSideEffect();
+            }
+            returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1){
+                
+                @.java.lang.Override
+                public .java.lang.Object $call$() {
+                    return (
+                        let
+                        {
+                            $instance$.meth();
+                        }
+                        returning null;
+                    );
+                }
+            };
+        );
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.get_() == 6L) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "staticSideEffect == 6"));
+        }
+        ref.$call$();
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.staticSideEffect_.get_() == 6L) {
+        } else {
+            throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "staticSideEffect == 6"));
+        }
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("staticSideEffect")
+final class staticSideEffect_ {
+    
+    private staticSideEffect_() {
+    }
+    private static long value;
+    private static volatile boolean $init$value = false;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            value = 0L;
+            $initException$ = null;
+            $init$value = true;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            value = 0L;
+            $init$value = false;
+        }
+    }
+    
+    @.ceylon.language.VariableAnnotation$annotation$
+    public static long get_() {
+        if (staticSideEffect_.$init$value) {
+            return value;
+        } else {
+            if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+            throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'staticSideEffect\' before it was set");
+        }
+    }
+    
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("staticSideEffect")
+    final long staticSideEffect) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = staticSideEffect;
+    }
+}

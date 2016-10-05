@@ -44,4 +44,10 @@ public class StaticTests extends CompilerTests {
     public void testStaticAlias() {
         compareWithJavaSource("alias/StaticAlias");
     }
+    
+    @Test
+    public void testStaticAccessWithMemberPrimary() {
+        compareWithJavaSource("klass/StaticAccessWithMemberPrimary");
+        run("com.redhat.ceylon.compiler.java.test.structure.klass.staticAccessWithMemberPrimary");
+    }
 }
