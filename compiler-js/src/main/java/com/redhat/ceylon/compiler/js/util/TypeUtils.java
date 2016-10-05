@@ -161,18 +161,30 @@ public class TypeUtils {
                 parent = (ClassOrInterface)parent.getContainer();
                 parents.add(0, parent);
             }
+            boolean first = true;
             for (ClassOrInterface p : parents) {
                 if (p==scope) {
                     if (gen.opts.isOptimize()) {
-                        sb.append(gen.getNames().self(p)).append('.');
+                        sb.append(gen.getNames().name(p)).append('.');
                     }
                 } else {
-                    sb.append(gen.getNames().name(p));
-                    if (gen.opts.isOptimize()) {
-                        sb.append(".$$.prototype");
+                    if (!first) {
+                        if (p.isStatic()) {
+                            sb.append("$st$.");
+                        } else if (gen.opts.isOptimize()) {
+                            sb.append("$$.prototype.");
+                        }
                     }
-                    sb.append('.');
+                    sb.append(gen.getNames().name(p)).append('.');
                 }
+                if (first) {
+                    first = false;
+                }
+            }
+            if (t.isStatic()) {
+                sb.append("$st$.");
+            } else if (t.getContainer() instanceof ClassOrInterface && gen.opts.isOptimize()) {
+                sb.append("$$.prototype.");
             }
         }
         return sb.toString();
