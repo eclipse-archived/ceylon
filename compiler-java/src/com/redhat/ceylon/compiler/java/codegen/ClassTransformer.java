@@ -3787,7 +3787,10 @@ public class ClassTransformer extends AbstractTransformer {
         // Generate a wrapper class for the method
         String name = def.getIdentifier().getText();
         ClassDefinitionBuilder builder = ClassDefinitionBuilder.methodWrapper(this, name, Decl.isShared(def));
-        
+        // Make sure it's Java Serializable (except toplevels which we never instantiate)
+        if(!model.isToplevel())
+            builder.introduce(make().QualIdent(syms().serializableType.tsym));
+
         if (Decl.isAnnotationConstructor(def)) {
             AnnotationInvocation ai = ((AnnotationInvocation)def.getDeclarationModel().getAnnotationConstructor());
             if (ai != null) {
