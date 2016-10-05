@@ -1203,6 +1203,7 @@ public class JsonPackage extends LazyPackage {
             d.setDefault(hasAnnotationBit(bits, "default"));
             d.setNativeBackends(hasAnnotationBit(bits, "native") ? Backend.JavaScript.asSet() : Backends.ANY);
             d.setAnnotation(hasAnnotationBit(bits, "annotation"));
+            d.setStatic(hasAnnotationBit(bits, "static"));
             if (hasAnnotationBit(bits, "sealed")) {
                 ((TypeDeclaration)d).setSealed(true);
             }
