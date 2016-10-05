@@ -28,7 +28,3 @@ sourceSets {
         }
     }
 }
-
-assemble.doFirst {
-    println "***** ${rootProject.projectDir}"
-}
