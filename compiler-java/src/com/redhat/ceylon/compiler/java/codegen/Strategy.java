@@ -39,6 +39,7 @@ import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
+import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Scope;
@@ -488,6 +489,17 @@ class Strategy {
         return getEffectiveTypeParameters(decl, decl);
     }
     
+    /**
+     * Like {@link ModelUtil#isCeylonDeclaration(Declaration)}, but checks 
+     * toplevel decl
+     */
+    private static boolean isCeylon(Declaration d) {
+        while (!d.isToplevel()) {
+            d = (Declaration)Decl.getFirstDeclarationContainer((Scope)d);
+        }
+        return ModelUtil.isCeylonDeclaration(d);
+    }
+    
     private static List<TypeParameter> getEffectiveTypeParameters(Declaration original, Declaration decl) {
         if (Decl.isConstructor(original)) {
             original = Decl.getConstructedClass(original);
@@ -505,7 +517,7 @@ class Strategy {
         }
         if (decl instanceof Function) {
             if (original instanceof ClassAlias
-                    || decl.isStatic()) {
+                    || decl.isStatic() && isCeylon(decl)) {
                 ArrayList<TypeParameter> copyDown = new ArrayList<TypeParameter>(getEffectiveTypeParameters(original, (Declaration)container));
                 copyDown.addAll(((Generic)decl).getTypeParameters());
                 return copyDown;
@@ -524,7 +536,7 @@ class Strategy {
         } else if (decl instanceof Class) {
             if (((Class) decl).isStatic()
                     && ((Class)decl).isMember()
-                    && (!(decl instanceof LazyClass) || ((LazyClass)decl).isCeylon())) {// TODO and isCeylon
+                    && isCeylon(decl)) {// TODO and isCeylon
                 ArrayList<TypeParameter> copyDown = new ArrayList<TypeParameter>(getEffectiveTypeParameters(original, (Declaration)container));
                 copyDown.addAll(((Class)decl).getTypeParameters());
                 return copyDown;
