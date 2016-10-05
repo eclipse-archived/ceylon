@@ -222,7 +222,8 @@ abstract class Invocation {
             
         if (Decl.isJavaStaticOrInterfacePrimary(getPrimary())) {
             Declaration methodOrClass = ((Tree.QualifiedMemberOrTypeExpression)getPrimary()).getDeclaration();
-            if (methodOrClass instanceof Function) {
+            if (methodOrClass instanceof Function
+                    && getQmePrimary() instanceof Tree.BaseTypeExpression) {
                 return new TransformedInvocationPrimary(gen.naming.makeName(
                         (Function)methodOrClass, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED), 
                         null);
