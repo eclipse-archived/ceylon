@@ -932,7 +932,7 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     void referenceOuter(TypeDeclaration d) {
-        if (!d.isToplevel()) {
+        if (!d.isToplevel() && !d.isStatic()) {
             final ClassOrInterface coi = ModelUtil.getContainingClassOrInterface(d.getContainer());
             if (coi != null) {
                 out(names.self(d), ".outer$");
@@ -3178,14 +3178,12 @@ public class GenerateJsVisitor extends Visitor {
         }
         out(",");
         TypeUtils.typeNameOrList(term, type, this, false);
-        //We probably need to check qualifying types of static members for type parameters
-        //but for now let's leave them out
-        if (type.getQualifyingType() != null && (type.getDeclaration() == null || !type.getDeclaration().isStatic())) {
-            out(",[");
+        if (type.getQualifyingType() != null) {
             Type outer = type.getQualifyingType();
             boolean first=true;
             while (outer != null) {
                 if (first) {
+                    out(",[");
                     first=false;
                 } else{
                     out(",");
@@ -3193,7 +3191,9 @@ public class GenerateJsVisitor extends Visitor {
                 TypeUtils.typeNameOrList(term, outer, this, false);
                 outer = outer.getQualifyingType();
             }
-            out("]");
+            if (!first) {
+                out("]");
+            }
         } else if (type.getDeclaration() != null && type.getDeclaration().getContainer() != null) {
             Declaration d = ModelUtil.getContainingDeclarationOfScope(type.getDeclaration().getContainer());
             if (d != null && d instanceof Function && !((Function)d).getTypeParameters().isEmpty()) {
