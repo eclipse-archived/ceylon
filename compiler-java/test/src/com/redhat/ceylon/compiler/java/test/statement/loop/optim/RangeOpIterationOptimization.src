@@ -394,7 +394,7 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
             final long i = i$176;
             $ceylontmp$continue$169: do {
                 
-                final class x_ {
+                final class x_ implements .java.io.Serializable {
                     
                     private x_() {
                     }

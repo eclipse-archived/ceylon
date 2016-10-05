@@ -161,7 +161,7 @@ final class bug1533_callsite_ {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "4 == inst.tupleOrTp(v2, [2, 2])"));
         }
         
-        final class f2_ {
+        final class f2_ implements .java.io.Serializable {
             
             private f2_() {
             }

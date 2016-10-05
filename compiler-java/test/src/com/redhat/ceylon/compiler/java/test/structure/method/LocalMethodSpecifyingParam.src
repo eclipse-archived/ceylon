@@ -7,7 +7,7 @@ final class higher_ {
     
     static void higher(final .ceylon.language.Callable<? extends .ceylon.language.String> ref) {
         
-        final class f_ {
+        final class f_ implements .java.io.Serializable {
             
             private f_() {
             }

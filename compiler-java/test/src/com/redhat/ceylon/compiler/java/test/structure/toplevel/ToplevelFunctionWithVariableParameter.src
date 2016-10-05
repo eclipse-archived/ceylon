@@ -58,7 +58,7 @@ final class functionWithVariableParameterCaptured_ {
     static void functionWithVariableParameterCaptured(final long i$param$) {
         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$param$);
         
-        final class fn_ {
+        final class fn_ implements .java.io.Serializable {
             
             private fn_() {
             }
@@ -94,7 +94,7 @@ final class functionWithHiddenVariableParameterCaptured_ {
     static void functionWithHiddenVariableParameterCaptured(final long i$param$) {
         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$param$);
         
-        final class fn_ {
+        final class fn_ implements .java.io.Serializable {
             
             private fn_() {
             }

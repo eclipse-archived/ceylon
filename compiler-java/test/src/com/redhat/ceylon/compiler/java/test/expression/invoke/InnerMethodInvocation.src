@@ -7,7 +7,7 @@ public final class innerMethodInvocation_ {
     
     public static void innerMethodInvocation() {
         
-        final class fib_ {
+        final class fib_ implements .java.io.Serializable {
             
             private fib_() {
             }

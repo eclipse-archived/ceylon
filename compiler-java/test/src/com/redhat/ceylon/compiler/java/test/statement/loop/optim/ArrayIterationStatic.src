@@ -74,7 +74,7 @@ class ArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
         loop_7: for (int i$31 = 0; i$31 < length$30; i$31++) {
             final long element = .com.redhat.ceylon.compiler.java.Util.getIntegerArray(array$29, i$31);
             
-            final class x_ {
+            final class x_ implements .java.io.Serializable {
                 
                 private x_() {
                 }

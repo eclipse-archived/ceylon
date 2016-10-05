@@ -7,7 +7,7 @@ class LocalMethod implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     
     private final void m$priv$() {
         
-        final class local_ {
+        final class local_ implements .java.io.Serializable {
             
             private local_() {
             }

@@ -7,7 +7,7 @@ final class bug508_ {
     
     static void bug508() {
         
-        final class callFunction_ {
+        final class callFunction_ implements .java.io.Serializable {
             
             private callFunction_() {
             }
@@ -18,7 +18,7 @@ final class bug508_ {
         }
         final callFunction_ callFunction = new callFunction_();
         
-        final class f_ {
+        final class f_ implements .java.io.Serializable {
             
             private f_() {
             }

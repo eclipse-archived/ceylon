@@ -7,7 +7,7 @@ final class deferredFunctionInitialization_ {
     
     static void deferredFunctionInitialization() {
         
-        final class s_ {
+        final class s_ implements .java.io.Serializable {
             
             private s_() {
                 this.s = null;

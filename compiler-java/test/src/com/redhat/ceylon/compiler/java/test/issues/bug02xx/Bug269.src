@@ -102,7 +102,7 @@ final class bug269_2_ {
     
     static void bug269_2() {
         
-        final class string_ {
+        final class string_ implements .java.io.Serializable {
             
             private string_() {
             }
@@ -112,7 +112,7 @@ final class bug269_2_ {
         }
         final string_ string = new string_();
         
-        final class hash_ {
+        final class hash_ implements .java.io.Serializable {
             
             private hash_() {
             }

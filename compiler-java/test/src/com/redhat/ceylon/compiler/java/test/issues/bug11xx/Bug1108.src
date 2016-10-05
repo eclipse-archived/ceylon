@@ -164,7 +164,7 @@ final class bug1108_ {
             };
         )).getBar().$call$().toString();
         
-        final class m_ {
+        final class m_ implements .java.io.Serializable {
             
             private m_() {
             }

@@ -8,7 +8,7 @@ class DeferredMethodInitializationMultipleSpecification implements .com.redhat.c
     
     DeferredMethodInitializationMultipleSpecification(final boolean b) {
         
-        final class s_ {
+        final class s_ implements .java.io.Serializable {
             
             private s_() {
                 this.s$priv$ = null;

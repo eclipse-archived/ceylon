@@ -209,7 +209,7 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
         loop_18: for (long i$84 = 0; i$84 < length$83; i$84++) {
             final long i = i$84 + start$82;
             
-            final class x_ {
+            final class x_ implements .java.io.Serializable {
                 
                 private x_() {
                 }

@@ -83,7 +83,7 @@ class ArrayIterationDynamic implements .com.redhat.ceylon.compiler.java.runtime.
             if (isArray$30 || isTuple$31) elem$26 = iterable$29.getFromFirst(i$32++);
             final long element = ((.ceylon.language.Integer)elem$26).longValue();
             
-            final class x_ {
+            final class x_ implements .java.io.Serializable {
                 
                 private x_() {
                 }

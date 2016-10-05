@@ -7,14 +7,14 @@ final class bug1152_ {
     
     static void bug1152() {
         
-        final class enum_ {
+        final class enum_ implements .java.io.Serializable {
             
             private enum_() {
             }
             
             void $enum() {
                 
-                final class g_ {
+                final class g_ implements .java.io.Serializable {
                     
                     private g_() {
                     }

@@ -27,7 +27,7 @@ final class bug1734_ {
             .java.lang.Throwable $ceylontmp$ex$0 = null;
             try {
                 
-                final class test_ {
+                final class test_ implements .java.io.Serializable {
                     
                     private test_() {
                     }

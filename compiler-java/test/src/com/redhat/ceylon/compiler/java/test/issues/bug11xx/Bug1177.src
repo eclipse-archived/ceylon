@@ -7,7 +7,7 @@ final class bug1177_ {
     
     static void bug1177() {
         
-        final class m_ {
+        final class m_ implements .java.io.Serializable {
             
             private m_() {
                 this.m = null;

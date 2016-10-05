@@ -7,7 +7,7 @@ final class bug997_ {
     
     static void bug997() {
         
-        final class format_ {
+        final class format_ implements .java.io.Serializable {
             
             private format_() {
             }

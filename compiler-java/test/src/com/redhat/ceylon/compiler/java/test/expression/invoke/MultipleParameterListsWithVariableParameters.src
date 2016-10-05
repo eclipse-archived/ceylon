@@ -62,7 +62,7 @@ public final class multipleParameterListsWithVariationParameters2_ {
                         .java.lang.Object c$param$ = $param$0;
                         final VariableBox<.java.lang.Object> c = new VariableBox<.java.lang.Object>(c$param$);
                         
-                        final class fn_ {
+                        final class fn_ implements .java.io.Serializable {
                             
                             private fn_() {
                             }

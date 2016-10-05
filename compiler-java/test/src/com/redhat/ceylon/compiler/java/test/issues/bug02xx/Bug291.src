@@ -7,7 +7,7 @@ final class run_ {
     
     static void run() {
         
-        final class holaMundo_ {
+        final class holaMundo_ implements .java.io.Serializable {
             
             private holaMundo_() {
             }

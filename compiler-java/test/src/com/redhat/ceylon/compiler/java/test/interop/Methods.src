@@ -74,7 +74,7 @@ final class variadicMethods_ {
     
     static void variadicMethods() {
         
-        final class box_ {
+        final class box_ implements .java.io.Serializable {
             
             private box_() {
             }

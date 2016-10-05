@@ -56,7 +56,7 @@ final class methodArgumentWithVariableParameter_fn_ {
                         long y$param$ = ((.ceylon.language.Integer)$param$0).longValue();
                         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong y = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(y$param$);
                         
-                        final class fn_ {
+                        final class fn_ implements .java.io.Serializable {
                             
                             private fn_() {
                             }

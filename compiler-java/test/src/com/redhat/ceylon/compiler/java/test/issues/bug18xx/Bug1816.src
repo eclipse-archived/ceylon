@@ -8,7 +8,7 @@ final class bug1816_ {
     static void bug1816() {
         final boolean normalize = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         
-        final class mpl_ {
+        final class mpl_ implements .java.io.Serializable {
             
             private mpl_() {
                 this.mpl = null;

@@ -4,7 +4,7 @@ public abstract class UninitializedMethod implements .com.redhat.ceylon.compiler
     
     public UninitializedMethod() {
         
-        final class t_ {
+        final class t_ implements .java.io.Serializable {
             
             private t_() {
                 this.t$priv$ = null;

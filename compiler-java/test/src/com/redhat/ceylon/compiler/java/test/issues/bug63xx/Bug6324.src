@@ -24,7 +24,7 @@ public class Bug6324 implements .com.redhat.ceylon.compiler.java.runtime.model.R
             returning null;
         );
         
-        final class something_ {
+        final class something_ implements .java.io.Serializable {
             
             private something_() {
             }

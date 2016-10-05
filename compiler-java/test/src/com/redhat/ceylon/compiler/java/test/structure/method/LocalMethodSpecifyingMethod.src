@@ -11,7 +11,7 @@ class LocalMethodSpecifyingMethod implements .com.redhat.ceylon.compiler.java.ru
     
     private final void m$priv$() {
         
-        final class foo_ {
+        final class foo_ implements .java.io.Serializable {
             
             private foo_() {
             }

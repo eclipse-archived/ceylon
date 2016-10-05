@@ -20,7 +20,7 @@ final class Bug994$impl implements .java.io.Serializable {
     
     public .java.lang.Object m() {
         
-        final class localMethod_ {
+        final class localMethod_ implements .java.io.Serializable {
             
             private localMethod_() {
             }

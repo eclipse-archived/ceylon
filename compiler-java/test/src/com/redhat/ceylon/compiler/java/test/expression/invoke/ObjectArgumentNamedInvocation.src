@@ -7,7 +7,7 @@ public final class objectArgumentNamedInvocation_ {
     
     public static void objectArgumentNamedInvocation() {
         
-        final class callFunction_ {
+        final class callFunction_ implements .java.io.Serializable {
             
             private callFunction_() {
             }

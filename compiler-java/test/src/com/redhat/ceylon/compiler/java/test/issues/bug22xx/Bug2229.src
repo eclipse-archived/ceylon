@@ -7,7 +7,7 @@ public final class bug2229_ {
     
     public static void bug2229() {
         
-        final class bar_ {
+        final class bar_ implements .java.io.Serializable {
             
             private bar_() {
             }

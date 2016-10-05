@@ -67,7 +67,7 @@ final class importObjectMembers_ {
         };
         final .com.redhat.ceylon.compiler.java.test.structure.importIt.obj.toplevel$Interface_ i = c;
         
-        final class f_ {
+        final class f_ implements .java.io.Serializable {
             
             private f_() {
             }

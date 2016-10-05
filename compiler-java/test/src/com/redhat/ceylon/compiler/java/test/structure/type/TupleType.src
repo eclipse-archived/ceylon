@@ -58,7 +58,7 @@ final class tupleTypeTest_ {
                 .ceylon.language.String.instance("hello"),
                 .ceylon.language.String.instance("goodbye")});
         
-        final class fun_ {
+        final class fun_ implements .java.io.Serializable {
             
             private fun_() {
             }

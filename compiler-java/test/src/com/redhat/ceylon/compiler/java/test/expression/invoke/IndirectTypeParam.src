@@ -25,7 +25,7 @@ final class indirectTypeParam_ {
         };
         long i = f1.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)).longValue();
         
-        final class local_ {
+        final class local_ implements .java.io.Serializable {
             
             private local_() {
             }
@@ -45,7 +45,7 @@ final class indirectTypeParam_ {
         };
         i = f2.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L)).longValue();
         
-        final class mpl_ {
+        final class mpl_ implements .java.io.Serializable {
             
             private mpl_() {
             }
@@ -62,7 +62,7 @@ final class indirectTypeParam_ {
         }
         final mpl_ mpl = new mpl_();
         
-        final class f3_ {
+        final class f3_ implements .java.io.Serializable {
             
             private f3_() {
             }

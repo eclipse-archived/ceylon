@@ -7,7 +7,7 @@ final class bug6379_ {
     
     static void bug6379() {
         
-        final class evalMe1_ {
+        final class evalMe1_ implements .java.io.Serializable {
             
             private evalMe1_() {
             }
@@ -30,7 +30,7 @@ final class bug6379_ {
         }
         final evalMe1_ evalMe1 = new evalMe1_();
         
-        final class evalMe2_ {
+        final class evalMe2_ implements .java.io.Serializable {
             
             private evalMe2_() {
             }
@@ -52,7 +52,7 @@ final class bug6379_ {
         }
         final evalMe2_ evalMe2 = new evalMe2_();
         
-        final class evalMe3_ {
+        final class evalMe3_ implements .java.io.Serializable {
             
             private evalMe3_() {
             }
@@ -75,7 +75,7 @@ final class bug6379_ {
         }
         final evalMe3_ evalMe3 = new evalMe3_();
         
-        final class evalMe4_ {
+        final class evalMe4_ implements .java.io.Serializable {
             
             private evalMe4_() {
             }

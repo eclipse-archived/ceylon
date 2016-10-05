@@ -12,7 +12,7 @@ class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     Bug954(final boolean b) {
         this.n = 2L;
         
-        final class x_ {
+        final class x_ implements .java.io.Serializable {
             
             private x_() {
                 this.x$priv$ = null;
@@ -33,7 +33,7 @@ class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             }
         };
         
-        final class y_ {
+        final class y_ implements .java.io.Serializable {
             
             private y_() {
                 this.y$priv$ = null;
@@ -134,7 +134,7 @@ final class bug954_ {
                 minor = 1)
         @.com.redhat.ceylon.compiler.java.metadata.Method
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-        final class x_ {
+        final class x_ implements .java.io.Serializable {
             
             private x_() {
                 this.x = null;
@@ -166,7 +166,7 @@ final class bug954_ {
                 minor = 1)
         @.com.redhat.ceylon.compiler.java.metadata.Method
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-        final class y_ {
+        final class y_ implements .java.io.Serializable {
             
             private y_() {
                 this.y = null;

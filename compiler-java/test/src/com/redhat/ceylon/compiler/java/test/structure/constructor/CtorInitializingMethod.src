@@ -31,7 +31,7 @@ class CtorInitializerMethod implements .com.redhat.ceylon.compiler.java.runtime.
     
     CtorInitializerMethod(final .ceylon.language.Callable<? extends .ceylon.language.String> nom) {
         
-        final class name_ {
+        final class name_ implements .java.io.Serializable {
             
             private name_() {
                 this.name$priv$ = null;

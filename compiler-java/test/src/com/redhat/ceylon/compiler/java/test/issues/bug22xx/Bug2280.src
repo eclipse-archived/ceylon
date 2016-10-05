@@ -7,7 +7,7 @@ public final class bug2280_ {
     
     public static void bug2280() {
         
-        final class bar_ {
+        final class bar_ implements .java.io.Serializable {
             
             private bar_() {
             }
@@ -17,7 +17,7 @@ public final class bug2280_ {
         }
         final bar_ bar = new bar_();
         
-        final class baz_ {
+        final class baz_ implements .java.io.Serializable {
             
             private baz_() {
             }
@@ -27,7 +27,7 @@ public final class bug2280_ {
         }
         final baz_ baz = new baz_();
         
-        final class gee_ {
+        final class gee_ implements .java.io.Serializable {
             
             private gee_() {
             }

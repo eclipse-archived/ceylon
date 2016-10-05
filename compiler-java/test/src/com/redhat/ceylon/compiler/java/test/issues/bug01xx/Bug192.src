@@ -13,7 +13,7 @@ final class bug192_ {
             foo = "goodbye";
         }
         
-        final class printFoo_ {
+        final class printFoo_ implements .java.io.Serializable {
             
             private printFoo_() {
             }
