@@ -70,4 +70,9 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     public void testBug6547() {
         compile("bug65xx/Bug6547.ceylon", "bug65xx/ANRequest.java");
     }
+
+    @Test
+    public void testBugX() {
+        compile("bug65xx/Bug6548.ceylon", "bug65xx/Bug6548.java");
+    }
 }
