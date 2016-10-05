@@ -3178,7 +3178,9 @@ public class GenerateJsVisitor extends Visitor {
         }
         out(",");
         TypeUtils.typeNameOrList(term, type, this, false);
-        if (type.getQualifyingType() != null) {
+        //We probably need to check qualifying types of static members for type parameters
+        //but for now let's leave them out
+        if (type.getQualifyingType() != null && (type.getDeclaration() == null || !type.getDeclaration().isStatic())) {
             out(",[");
             Type outer = type.getQualifyingType();
             boolean first=true;
