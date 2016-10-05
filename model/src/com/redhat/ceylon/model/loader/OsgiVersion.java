@@ -1,5 +1,6 @@
 package com.redhat.ceylon.model.loader;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,6 +8,8 @@ import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.redhat.ceylon.common.log.Logger;
 
 public class OsgiVersion {
     private static HashMap<String, Integer> ceylonQualifiers;
@@ -32,7 +35,35 @@ public class OsgiVersion {
         formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
     
-    public static String fromCeylonVersion(String ceylonVersion, boolean addTimeStamp) {
+    public static String withTimestamp(String osgiVersion, String formattedDateInGmt) {
+        return withTimestamp(osgiVersion, formattedDateInGmt, null);
+    }
+
+    public static String withTimestamp(String osgiVersion, String formattedDateInGmt, Logger log) {
+        Date date;
+        try {
+            date = formatter.parse(formattedDateInGmt);
+        } catch (ParseException e) {
+            String errorMessage = "The provided OSGI qualifier timestamp cannot be parsed. The current date will be used instead.";
+            if (log != null) {
+                log.error(errorMessage);
+            } else {
+                System.err.println("ERROR: " + errorMessage);
+            }
+            date = new Date();
+        }
+        return withTimestamp(osgiVersion, date);
+    }
+    
+    public static String withTimestamp(String osgiVersion) {
+        return withTimestamp(osgiVersion, new Date());
+    }
+    
+    public static String withTimestamp(String osgiVersion, Date date) {
+        return osgiVersion + "-" + formatter.format(date);
+    }
+    
+    public static String fromCeylonVersion(String ceylonVersion) {
         // Insert a "." between digits and letters
         StringBuffer buf = new StringBuffer();
         Pattern p = Pattern.compile("\\d\\pL|\\pL\\d");
@@ -97,10 +128,6 @@ public class OsgiVersion {
             resultParts.add(ceylonQualifiers.get("final").toString());
         }
         
-        if (addTimeStamp) {
-            resultParts.add(formatter.format(new Date()));
-        }
-
         // Now join all the resulting parts together. The first 4
         // elements get separated by dots, the rest by dashes
         StringBuffer result = new StringBuffer();

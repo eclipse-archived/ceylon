@@ -2472,6 +2472,7 @@ public abstract class AbstractTransformer implements Transformation {
                     ta = tp.getSatisfiedTypes().get(0).substitute(tas, null);
                     if(tp.getSatisfiedTypes().size() > 1
                             || isBoundsSelfDependant(tp)
+                            || isBoundsRecursive(simpleType, tp)
                             || willEraseToObject(ta)
                             // we should reject it for all non-covariant types, unless we're in satisfies/extends
                             || ((flags & (JT_SATISFIES | JT_EXTENDS)) == 0 && !simpleType.isCovariant(tp))){
@@ -2578,6 +2579,15 @@ public abstract class AbstractTransformer implements Transformation {
             }
         }
         return typeArgs;
+    }
+
+    private boolean isBoundsRecursive(Type pt, TypeParameter tp) {
+        for (Type bound : tp.getSatisfiedTypes()) {
+            Type appliedBound = bound.substitute(pt);
+            if(appliedBound.getDeclaration().equals(pt.getDeclaration()))
+                return true;
+        }
+        return false;
     }
 
     boolean hasSubstitutedBounds(Type pt){

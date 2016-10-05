@@ -21,6 +21,7 @@
 package com.redhat.ceylon.ant;
 
 import java.lang.reflect.Method;
+import java.util.Date;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -51,6 +52,7 @@ public class CeylonOsgiVersionTask extends Task {
     private String propertyName;
     private CeylonClassLoader loader;
     private Method fromCeylonVersionMethod;
+    private Method withTimestampMethod;
 
     @AntDoc("The Ceylon version from the OSGI version should be built.")
     @Required
@@ -85,12 +87,20 @@ public class CeylonOsgiVersionTask extends Task {
             
             if (fromCeylonVersionMethod == null) {
                 Class<?> klass = loader.loadClass("com.redhat.ceylon.model.loader.OsgiVersion");
-                Class<?>[] parameterTypes = { String.class, Boolean.TYPE };
+                Class<?>[] parameterTypes = { String.class };
                 fromCeylonVersionMethod = klass.getDeclaredMethod("fromCeylonVersion", parameterTypes);
             }
 
-            String existingValue = getProject().getProperty(propertyName);
-            String osgiVersion = (String) fromCeylonVersionMethod.invoke(null, ceylonVersionProperty, addTimeStampProperty);
+            if (withTimestampMethod == null) {
+                Class<?> klass = loader.loadClass("com.redhat.ceylon.model.loader.OsgiVersion");
+                Class<?>[] parameterTypes = { String.class, Date.class };
+                withTimestampMethod = klass.getDeclaredMethod("withTimestamp", parameterTypes);
+            }
+
+            String osgiVersion = (String) fromCeylonVersionMethod.invoke(null, ceylonVersionProperty);
+            if (addTimeStampProperty) {
+                osgiVersion = (String) withTimestampMethod.invoke(null, osgiVersion, new Date());
+            }
             log("Setting " + propertyName + " = " + osgiVersion + " based on value of the Ceylon version: " + ceylonVersionProperty);
             getProject().setProperty(propertyName, osgiVersion);
         } catch (Exception e) {

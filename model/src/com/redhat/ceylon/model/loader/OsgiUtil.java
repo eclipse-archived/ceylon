@@ -90,7 +90,7 @@ public class OsgiUtil {
             main.put(Bundle_ManifestVersion, "2");
 
             main.put(Bundle_SymbolicName, module.getNameAsString());
-            main.put(Bundle_Version, OsgiVersion.fromCeylonVersion(module.getVersion(), true));
+            main.put(Bundle_Version, OsgiVersion.withTimestamp(OsgiVersion.fromCeylonVersion(module.getVersion())));
 
             String exportPackageValue = getExportPackage();
             if (exportPackageValue.length() > 0) {
@@ -217,7 +217,7 @@ public class OsgiUtil {
                             (m.getNameAsString().startsWith("ceylon.") || m.getNameAsString().startsWith("com.redhat.ceylon."));
                     
                     if (! m.isJava() || isFromCeylonDistribution) { // Ceylon module or module from the Ceylon distribution
-                        depOsgiVersion = OsgiVersion.fromCeylonVersion(depVersion, false);
+                        depOsgiVersion = OsgiVersion.fromCeylonVersion(depVersion);
                     } else {
                         depOsgiVersion = depVersion;
                     }
@@ -237,7 +237,7 @@ public class OsgiUtil {
                     requires.append(",");
                 }
                 requires.append("com.redhat.ceylon.dist")
-                .append(";bundle-version=").append(OsgiVersion.fromCeylonVersion(module.getLanguageModule().getVersion(), false)).append(";visibility:=reexport");
+                .append(";bundle-version=").append(OsgiVersion.fromCeylonVersion(module.getLanguageModule().getVersion())).append(";visibility:=reexport");
             }
             return requires.toString();
         }
@@ -256,7 +256,7 @@ public class OsgiUtil {
                     exportPackage.append(pkg.getNameAsString());
                     // Ceylon has no separate versioning of packages, so all
                     // packages implicitly inherit their respective module version
-                    exportPackage.append(";version=").append(OsgiVersion.fromCeylonVersion(module.getVersion(), false));
+                    exportPackage.append(";version=").append(OsgiVersion.fromCeylonVersion(module.getVersion()));
                     //TODO : should we analyze package uses as well?
                     alreadyOne = true;
                 }
@@ -266,7 +266,7 @@ public class OsgiUtil {
                     exportPackage.append(",");
                 }
                 exportPackage.append("com.redhat.ceylon.dist.osgi");
-                exportPackage.append(";version=").append(OsgiVersion.fromCeylonVersion(module.getVersion(), false));
+                exportPackage.append(";version=").append(OsgiVersion.fromCeylonVersion(module.getVersion()));
             }
             return exportPackage.toString();
         }
