@@ -52,6 +52,11 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     }
 
     @Test
+    public void testBug6543() {
+        compile("bug65xx/Bug6543.ceylon");
+    }
+
+    @Test
     public void testBug6547() {
         compile("bug65xx/Bug6547.ceylon", "bug65xx/ANRequest.java");
     }
