@@ -5,6 +5,7 @@ import java.util {
     ArrayList
 }
 import java.lang { CharSequence, ShortArray }
+import com.redhat.ceylon.compiler.java.test.interop { LambdasJava { consumerStatic }}
 
 void toplevel(Integer i) => print(i);
 void toplevelSmall(small Integer i) => print(i);
@@ -26,6 +27,8 @@ void lambdas() {
     
     value j = LambdasJava();
     j.consumer((Boolean b) => print(b), true);
+    j.consumerStatic((Boolean b) => print(b), true);
+    consumerStatic((Boolean b) => print(b), true);
     j.\ifunction((Boolean b) => b, true);
     function f(Integer i) => print(i);
     j.intConsumer(f);

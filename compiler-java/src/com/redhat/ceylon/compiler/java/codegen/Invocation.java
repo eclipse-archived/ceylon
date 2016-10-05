@@ -885,7 +885,7 @@ class PositionalInvocation extends DirectInvocation {
         if(declaration.isCoercionPoint()){
             if(declaration instanceof Function){
                 Function realFunction = ((Function)declaration).getRealFunction();
-                return producedReference.getQualifyingType().getTypedMember(realFunction, producedReference.getTypeArgumentList());
+                return realFunction.appliedTypedReference(producedReference.getQualifyingType(), producedReference.getTypeArgumentList());
             }else{
                 Class realClass = ((Class)declaration).getRealClass();
                 return realClass.appliedType(producedReference.getQualifyingType(), producedReference.getTypeArgumentList());

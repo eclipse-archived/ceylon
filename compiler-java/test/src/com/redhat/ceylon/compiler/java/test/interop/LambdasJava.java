@@ -26,7 +26,11 @@ public class LambdasJava {
 
     public LambdasJava(){}
     public LambdasJava(IntConsumer consumer){}
-    
+
+    public static <T> void consumerStatic(Consumer<T> consumer, T t){
+        consumer.accept(t);
+    }
+
     public <T> void consumer(Consumer<T> consumer, T t){
         consumer.accept(t);
     }
