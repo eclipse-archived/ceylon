@@ -7,7 +7,7 @@ final class twoParamListsAnything_ {
     
     static void twoParamListsAnything() {
         
-        final class f_ {
+        final class f_ implements .java.io.Serializable {
             
             private f_() {
             }
@@ -25,7 +25,7 @@ final class twoParamListsAnything_ {
         }
         final f_ f = new f_();
         
-        final class g_ {
+        final class g_ implements .java.io.Serializable {
             
             private g_() {
             }

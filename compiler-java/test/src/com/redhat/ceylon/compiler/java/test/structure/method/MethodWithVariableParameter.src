@@ -48,7 +48,7 @@ class MethodWithVariableParameter implements .com.redhat.ceylon.compiler.java.ru
     private final void methodWithVariableParameterCaptured$priv$(final long i$param$) {
         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$param$);
         
-        final class fn_ {
+        final class fn_ implements .java.io.Serializable {
             
             private fn_() {
             }
@@ -79,7 +79,7 @@ class MethodWithVariableParameter implements .com.redhat.ceylon.compiler.java.ru
     private final void methodWithHiddenVariableParameterCaptured$priv$(final long i$param$) {
         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong i = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(i$param$);
         
-        final class fn_ {
+        final class fn_ implements .java.io.Serializable {
             
             private fn_() {
             }

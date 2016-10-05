@@ -16,7 +16,7 @@ public class LocalMethod implements .com.redhat.ceylon.compiler.java.runtime.mod
                 minor = 1)
         @.com.redhat.ceylon.compiler.java.metadata.Method
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-        final class m2_ {
+        final class m2_ implements .java.io.Serializable {
             
             private m2_() {
             }

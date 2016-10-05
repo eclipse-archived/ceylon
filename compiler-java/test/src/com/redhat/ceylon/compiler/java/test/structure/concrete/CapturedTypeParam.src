@@ -82,7 +82,7 @@ public final class CapturedTypeParam$impl<OuterT1, OuterT2> implements .java.io.
     
     private <MethodFooT1, MethodFooT2>void foo$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$CapturedTypeParam$foo$MethodFooT1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$CapturedTypeParam$foo$MethodFooT2) {
         
-        final class bar_ {
+        final class bar_ implements .java.io.Serializable {
             
             private bar_() {
             }

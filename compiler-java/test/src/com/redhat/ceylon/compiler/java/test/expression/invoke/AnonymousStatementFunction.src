@@ -7,7 +7,7 @@ final class anonymousStatementFunction_ {
     
     static void anonymousStatementFunction() {
         
-        final class fff_ {
+        final class fff_ implements .java.io.Serializable {
             
             private fff_() {
             }
@@ -17,7 +17,7 @@ final class anonymousStatementFunction_ {
         }
         final fff_ fff = new fff_();
         
-        final class ggg_ {
+        final class ggg_ implements .java.io.Serializable {
             
             private ggg_() {
             }

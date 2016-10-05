@@ -8,7 +8,7 @@ class KeywordInCallable implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final void m$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> $do) {
         $do.$call$();
         
-        final class enum_ {
+        final class enum_ implements .java.io.Serializable {
             
             private enum_() {
             }

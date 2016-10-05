@@ -7,7 +7,7 @@ public class NamedArgumentInvocationLocal implements .com.redhat.ceylon.compiler
     
     public final void f() {
         
-        final class m_ {
+        final class m_ implements .java.io.Serializable {
             
             private m_() {
             }
@@ -18,7 +18,7 @@ public class NamedArgumentInvocationLocal implements .com.redhat.ceylon.compiler
         }
         final m_ m = new m_();
         
-        final class v_ {
+        final class v_ implements .java.io.Serializable {
             
             private v_() {
             }
@@ -67,7 +67,7 @@ class X implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
     
     private final void bar$priv$() {
         
-        final class foo_ {
+        final class foo_ implements .java.io.Serializable {
             
             private foo_() {
             }

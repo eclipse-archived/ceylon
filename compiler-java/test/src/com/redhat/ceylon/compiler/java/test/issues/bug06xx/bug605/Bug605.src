@@ -49,7 +49,7 @@ final class bug605mth_ {
         }
         final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> string$getter$_ = new string$getter$_();
         
-        final class equals_ {
+        final class equals_ implements .java.io.Serializable {
             
             private equals_() {
             }
@@ -93,7 +93,7 @@ class Bug605cls implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         }
         final .com.redhat.ceylon.compiler.java.language.Getter<.java.lang.String> string$getter$_ = new string$getter$_();
         
-        final class equals_ {
+        final class equals_ implements .java.io.Serializable {
             
             private equals_() {
             }

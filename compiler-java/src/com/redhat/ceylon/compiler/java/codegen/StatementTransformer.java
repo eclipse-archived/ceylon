@@ -4002,7 +4002,7 @@ public class StatementTransformer extends AbstractTransformer {
             java.util.List<Tree.CatchClause> catchClauses) {
         Type result = typeFact().getNothingType();
         for (Tree.CatchClause catchClause : catchClauses) {
-            Type pt = catchClause.getCatchVariable().getVariable().getType().getTypeModel();
+            Type pt = catchClause.getCatchVariable().getVariable().getType().getTypeModel().resolveAliases();
             result = ModelUtil.unionType(result, exceptionSupertype(pt), typeFact());
         }
         if (typeFact().isUnion(result)) {

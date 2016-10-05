@@ -18,7 +18,7 @@ class InnerAttributeGetterWithConflictingMethods implements .com.redhat.ceylon.c
         }
         final .com.redhat.ceylon.compiler.java.language.GetterLong x$getter$_ = new x$getter$_();
         
-        final class getX_ {
+        final class getX_ implements .java.io.Serializable {
             
             private getX_() {
             }
@@ -45,7 +45,7 @@ class InnerAttributeGetterWithConflictingMethods implements .com.redhat.ceylon.c
         }
         final .com.redhat.ceylon.compiler.java.language.GetterLong x$getter$_ = new x$getter$_();
         
-        final class getX_ {
+        final class getX_ implements .java.io.Serializable {
             
             private getX_() {
             }

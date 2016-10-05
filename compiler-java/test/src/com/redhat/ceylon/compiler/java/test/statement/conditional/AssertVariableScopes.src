@@ -41,7 +41,7 @@ class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.m
     
     private final void m$priv$() {
         
-        final class m_local_ {
+        final class m_local_ implements .java.io.Serializable {
             
             private m_local_() {
             }
@@ -67,7 +67,7 @@ class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.m
         }
         final m_local_ m_local = new m_local_();
         
-        final class masking_local_ {
+        final class masking_local_ implements .java.io.Serializable {
             
             private masking_local_() {
             }
@@ -112,7 +112,7 @@ class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.m
     
     private final void masking$priv$(final .java.lang.Object x, final .java.lang.Object y) {
         
-        final class m_local_ {
+        final class m_local_ implements .java.io.Serializable {
             
             private m_local_() {
             }
@@ -138,7 +138,7 @@ class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.m
         }
         final m_local_ m_local = new m_local_();
         
-        final class masking_local_ {
+        final class masking_local_ implements .java.io.Serializable {
             
             private masking_local_() {
             }

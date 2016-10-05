@@ -7,7 +7,7 @@ final class methodArgumentNamedIncovation_ {
     
     static void methodArgumentNamedIncovation() {
         
-        final class callFunction_ {
+        final class callFunction_ implements .java.io.Serializable {
             
             private callFunction_() {
             }

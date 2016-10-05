@@ -23,7 +23,7 @@ public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         this.paramMethodRefCaptured = paramMethodRefCaptured;
         this.paramMethodRefCaptured2 = paramMethodRefCaptured2;
         
-        final class initUnusedMethodRef_ {
+        final class initUnusedMethodRef_ implements .java.io.Serializable {
             
             private initUnusedMethodRef_() {
                 this.initUnusedMethodRef$priv$ = null;
@@ -36,7 +36,7 @@ public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
         final initUnusedMethodRef_ initUnusedMethodRef = new initUnusedMethodRef_();
         
-        final class initLateMethodRef_ {
+        final class initLateMethodRef_ implements .java.io.Serializable {
             
             private initLateMethodRef_() {
                 this.initLateMethodRef$priv$ = null;
@@ -102,7 +102,7 @@ public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     private final void m$priv$() {
         
-        final class localUnusedMethodRef_ {
+        final class localUnusedMethodRef_ implements .java.io.Serializable {
             
             private localUnusedMethodRef_() {
                 this.localUnusedMethodRef = null;
@@ -115,7 +115,7 @@ public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         }
         final localUnusedMethodRef_ localUnusedMethodRef = new localUnusedMethodRef_();
         
-        final class localLateMethodRef_ {
+        final class localLateMethodRef_ implements .java.io.Serializable {
             
             private localLateMethodRef_() {
                 this.localLateMethodRef = null;
@@ -143,7 +143,7 @@ public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.R
             }
         };
         
-        final class localLateMethodRefCaptured_ {
+        final class localLateMethodRefCaptured_ implements .java.io.Serializable {
             
             private localLateMethodRefCaptured_() {
                 this.localLateMethodRefCaptured = null;
@@ -168,7 +168,7 @@ public class Bug1001 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         final long x = initLateMethodRefCaptured$priv$();
         final long y = paramMethodRefCaptured$priv$();
         
-        final class n_ {
+        final class n_ implements .java.io.Serializable {
             
             private n_() {
             }

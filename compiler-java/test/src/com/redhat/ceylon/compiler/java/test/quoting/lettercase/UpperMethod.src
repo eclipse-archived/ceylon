@@ -28,7 +28,7 @@ class UpperMethodC implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
                 minor = 1)
         @.com.redhat.ceylon.compiler.java.metadata.Method
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-        final class LocalUpperMethod {
+        final class LocalUpperMethod implements .java.io.Serializable {
             
             private LocalUpperMethod() {
             }

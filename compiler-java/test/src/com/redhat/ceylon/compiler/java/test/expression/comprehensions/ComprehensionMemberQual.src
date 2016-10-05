@@ -345,7 +345,7 @@ final class comprehensionMemberQualLocal_ {
             }
         }
         
-        final class next_ {
+        final class next_ implements .java.io.Serializable {
             
             private next_() {
             }

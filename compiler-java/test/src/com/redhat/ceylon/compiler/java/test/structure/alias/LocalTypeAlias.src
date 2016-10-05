@@ -46,7 +46,7 @@ final class localTypeAliasMethod_ {
                 minor = 1)
         @.com.redhat.ceylon.compiler.java.metadata.Method
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-        final class classAliasMethod1_ {
+        final class classAliasMethod1_ implements .java.io.Serializable {
             
             private classAliasMethod1_() {
             }
@@ -63,7 +63,7 @@ final class localTypeAliasMethod_ {
                 minor = 1)
         @.com.redhat.ceylon.compiler.java.metadata.Method
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-        final class classAliasMethod2_ {
+        final class classAliasMethod2_ implements .java.io.Serializable {
             
             private classAliasMethod2_() {
             }
@@ -80,7 +80,7 @@ final class localTypeAliasMethod_ {
                 minor = 1)
         @.com.redhat.ceylon.compiler.java.metadata.Method
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-        final class classAliasMethod3_ {
+        final class classAliasMethod3_ implements .java.io.Serializable {
             
             private classAliasMethod3_() {
             }
@@ -97,7 +97,7 @@ final class localTypeAliasMethod_ {
                 minor = 1)
         @.com.redhat.ceylon.compiler.java.metadata.Method
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration(qualifier = "1")
-        final class classAliasMethod4_ {
+        final class classAliasMethod4_ implements .java.io.Serializable {
             
             private classAliasMethod4_() {
             }

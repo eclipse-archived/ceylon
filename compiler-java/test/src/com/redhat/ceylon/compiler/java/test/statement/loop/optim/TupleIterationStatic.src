@@ -26,7 +26,7 @@ class TupleIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
             loopentered$4 = true;
             final long element = ((.ceylon.language.Integer)elem$5).longValue();
             
-            final class x_ {
+            final class x_ implements .java.io.Serializable {
                 
                 private x_() {
                 }

@@ -18,7 +18,7 @@ final class bug1227_ifBreak_returnElse_ {
                 from$0 = index;
                 final long from$6 = from$0;
                 
-                final class ohNo_ {
+                final class ohNo_ implements .java.io.Serializable {
                     
                     private ohNo_() {
                     }
@@ -151,7 +151,7 @@ final class bug1227_ifBreak_elseBreak_specifiedElse_ {
                 from$30 = index;
                 final long from$37 = from$30;
                 
-                final class ohNo_ {
+                final class ohNo_ implements .java.io.Serializable {
                     
                     private ohNo_() {
                     }
@@ -210,7 +210,7 @@ final class bug1227_ifBreak_elseBreak_specifiedElse_opt_ {
                 from$39 = index;
                 final long from$46 = from$39;
                 
-                final class ohNo_ {
+                final class ohNo_ implements .java.io.Serializable {
                     
                     private ohNo_() {
                     }
@@ -267,7 +267,7 @@ final class bug1227_ifReturn_specifiedElse_ {
                 from$48 = index;
                 final long from$53 = from$48;
                 
-                final class ohNo_ {
+                final class ohNo_ implements .java.io.Serializable {
                     
                     private ohNo_() {
                     }
@@ -307,7 +307,7 @@ final class bug1227_ifReturn_specifiedElse_opt_ {
                 from$55 = index;
                 final long from$60 = from$55;
                 
-                final class ohNo_ {
+                final class ohNo_ implements .java.io.Serializable {
                     
                     private ohNo_() {
                     }
@@ -434,7 +434,7 @@ final class bug1227_declaredInside_ {
             if (someBoolean) {
                 from = index;
                 
-                final class ohNo_ {
+                final class ohNo_ implements .java.io.Serializable {
                     
                     private ohNo_() {
                     }
@@ -482,7 +482,7 @@ final class bug1227_function_ {
     static long bug1227_function(final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> l) {
         final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         
-        final class from_ {
+        final class from_ implements .java.io.Serializable {
             
             private from_() {
                 this.from = null;

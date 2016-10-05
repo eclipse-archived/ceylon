@@ -7,7 +7,7 @@ final class getterArgumentNamedInvocation_ {
     
     static void getterArgumentNamedInvocation(final long num) {
         
-        final class callFunction_ {
+        final class callFunction_ implements .java.io.Serializable {
             
             private callFunction_() {
             }

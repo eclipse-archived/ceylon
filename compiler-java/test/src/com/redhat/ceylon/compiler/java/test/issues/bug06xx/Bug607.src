@@ -9,7 +9,7 @@ final class bug607mth_ {
         final VariableBox<.java.lang.String> arg3 = new VariableBox<.java.lang.String>(arg3$param$);
         arg2 = "foo";
         
-        final class cap_ {
+        final class cap_ implements .java.io.Serializable {
             
             private cap_() {
             }
@@ -30,7 +30,7 @@ class Bug607cls implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
         final VariableBox<.java.lang.String> arg3 = new VariableBox<.java.lang.String>(arg3$param$);
         arg2 = "bar";
         
-        final class cap_ {
+        final class cap_ implements .java.io.Serializable {
             
             private cap_() {
             }

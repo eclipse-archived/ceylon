@@ -25,7 +25,7 @@ class FunctionInSetter implements .com.redhat.ceylon.compiler.java.runtime.model
                 if (true) {
                     final long i = 1L;
                     
-                    final class bar_ {
+                    final class bar_ implements .java.io.Serializable {
                         
                         private bar_() {
                         }

@@ -7,7 +7,7 @@ class Bug1621 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     private final void f$priv$() {
         
-        final class x_ {
+        final class x_ implements .java.io.Serializable {
             
             private x_() {
             }

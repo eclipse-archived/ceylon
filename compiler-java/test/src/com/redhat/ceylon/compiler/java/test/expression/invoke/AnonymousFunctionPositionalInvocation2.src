@@ -7,7 +7,7 @@ final class anonymousArgument2_ {
     
     static <Y>void anonymousArgument2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final Y y) {
         
-        final class callFunction_ {
+        final class callFunction_ implements .java.io.Serializable {
             
             private callFunction_() {
             }

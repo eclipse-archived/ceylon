@@ -25,7 +25,7 @@ class Bug2039 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     public Bug2039(.com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2039.test2_ $name$, final .java.lang.Object ret$param$) {
         
-        final class somef_ {
+        final class somef_ implements .java.io.Serializable {
             
             private somef_() {
             }

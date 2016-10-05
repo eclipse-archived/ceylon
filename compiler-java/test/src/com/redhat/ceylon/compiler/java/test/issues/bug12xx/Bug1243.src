@@ -38,7 +38,7 @@ class Bug1243<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     
     private final void test$priv$() {
         
-        final class neww_ {
+        final class neww_ implements .java.io.Serializable {
             
             private neww_() {
             }
@@ -49,7 +49,7 @@ class Bug1243<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         }
         final neww_ neww = new neww_();
         
-        final class old_ {
+        final class old_ implements .java.io.Serializable {
             
             private old_() {
             }
@@ -103,7 +103,7 @@ class Bug1243b<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     
     private final void test$priv$() {
         
-        final class neww_ {
+        final class neww_ implements .java.io.Serializable {
             
             private neww_() {
             }
@@ -114,7 +114,7 @@ class Bug1243b<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         }
         final neww_ neww = new neww_();
         
-        final class old_ {
+        final class old_ implements .java.io.Serializable {
             
             private old_() {
             }
@@ -168,7 +168,7 @@ class Bug1243c<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     
     private final void test$priv$() {
         
-        final class neww_ {
+        final class neww_ implements .java.io.Serializable {
             
             private neww_() {
             }
@@ -179,7 +179,7 @@ class Bug1243c<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         }
         final neww_ neww = new neww_();
         
-        final class old_ {
+        final class old_ implements .java.io.Serializable {
             
             private old_() {
             }
@@ -215,7 +215,7 @@ final class bug1243d_ {
             }
         }
         
-        final class neww_ {
+        final class neww_ implements .java.io.Serializable {
             
             private neww_() {
             }
@@ -226,7 +226,7 @@ final class bug1243d_ {
         }
         final neww_ neww = new neww_();
         
-        final class old_ {
+        final class old_ implements .java.io.Serializable {
             
             private old_() {
             }
@@ -257,7 +257,7 @@ final class bug1243e_ {
             }
         }
         
-        final class neww_ {
+        final class neww_ implements .java.io.Serializable {
             
             private neww_() {
             }
@@ -268,7 +268,7 @@ final class bug1243e_ {
         }
         final neww_ neww = new neww_();
         
-        final class old_ {
+        final class old_ implements .java.io.Serializable {
             
             private old_() {
             }
@@ -299,7 +299,7 @@ final class bug1243f_ {
             }
         }
         
-        final class neww_ {
+        final class neww_ implements .java.io.Serializable {
             
             private neww_() {
             }
@@ -310,7 +310,7 @@ final class bug1243f_ {
         }
         final neww_ neww = new neww_();
         
-        final class old_ {
+        final class old_ implements .java.io.Serializable {
             
             private old_() {
             }
