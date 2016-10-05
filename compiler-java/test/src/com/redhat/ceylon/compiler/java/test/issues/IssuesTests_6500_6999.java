@@ -36,7 +36,12 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     protected String transformDestDir(String name) {
         return name + "-6500-6999";
     }
-    
+
+    @Test
+    public void testBug6523() {
+        compareWithJavaSource("bug65xx/Bug6523");
+    }
+
     @Test
     public void testBug6532() {
         assertErrors("bug65xx/Bug6532",
