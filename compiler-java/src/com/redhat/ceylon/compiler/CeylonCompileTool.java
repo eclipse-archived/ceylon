@@ -106,10 +106,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Options;
         "\n\n" +
         "It is possible to pass options to the `javac` compiler by prefixing them " +
         "with `--javac=` and separating the javac option from its argument (if any) " +
-        "using another `=`. For example:" +
-        "\n\n" +
-        "* The option `--javac=-target=1.6` is equivalent to `javac`'s `-target 1.6` and,\n" +
-        "* the option `--javac=-g:none` is equivalent to `javac`'s `-g:none`" +
+        "using another `=`. For example, the option `--javac=-g:none` is equivalent to `javac`'s `-g:none`" +
         "\n\n" +
         "Execute `ceylon compile --javac=-help` for a list of the standard javac " +
         "options, and ceylon compile --javac=-X for a list of the non-standard javac " +
@@ -198,6 +195,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
+    private Long targetVersion = DefaultToolOptions.getCompilerTargetVersion();
     
     private ModuleSpec jdkProvider;
     {
@@ -372,6 +370,14 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             "`importsOtherJdk`, `javaAnnotationElement`.")
     public void setSuppressWarning(EnumSet<Warning> warnings) {
         this.suppressWarnings = warnings;
+    }
+    
+    @Option(shortName='t')
+    @OptionArgument(argumentName="version")
+    @Description("The JVM that generated .class file should target. Use `7` to generate Java 7 JVMs "
+            + "or `8` to target Java 8 JVMs.")
+    public void setTarget(Long version) {
+        this.targetVersion = version;
     }
 
     private List<String> arguments;
@@ -566,6 +572,13 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         if (suppressWarnings != null) {
             arguments.add("-suppress-warnings");
             arguments.add(EnumUtil.enumsToString(suppressWarnings));
+        }
+        
+        if (targetVersion != null) {
+            arguments.add("-source");
+            arguments.add(targetVersion.toString());
+            arguments.add("-target");
+            arguments.add(targetVersion.toString());
         }
         
         addJavacArguments(arguments, javac);
