@@ -15,16 +15,14 @@ class CSmall(small Integer i, small Float v=0.0){}
 void lambdas() {
     /* 
      * TODO:
-     * - overloaded coercion fields (disallowed for now?)
      * - variadic coercion methods
      * - variadic SAM methods
-     * - defaulted params can't happen in theory due to the java limitation
-     * - java limitation and ceylon inheritance
-     * - make sure typechecker rejects implementing coercion methods/attributes
+     * - limited to java but how does it play with ceylon subtypes?
+     * - fix error message when implementing coercion method
+     * - review additions to model and their names
+     * LATER:
+     * - overloaded coercion fields (disallowed for now?)
      * - support named invocations (for auto-factory methods)
-     * - ambiguous callable reference to overloaded method
-     * Error due to small parameter:
-     *     Anything(Integer) ctorRef = FloatArray;
      */ 
     
     value j = LambdasJava();
