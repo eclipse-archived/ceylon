@@ -4,11 +4,13 @@ import java.util.\ifunction {
 import java.util {
     ArrayList
 }
-import java.lang { CharSequence, ShortArray }
+import java.lang { CharSequence, ShortArray, FloatArray }
 import com.redhat.ceylon.compiler.java.test.interop { LambdasJava { consumerStatic }}
 
 void toplevel(Integer i) => print(i);
 void toplevelSmall(small Integer i) => print(i);
+class C(Integer i){}
+class CSmall(small Integer i, small Float v=0.0){}
 
 void lambdas() {
     /* 
@@ -68,13 +70,19 @@ void lambdas() {
     j.intConsumer((Integer i) => print(i));
     j.intSupplier(() => 1);
 
+    value tlref = toplevel;
+    value tlrefSmall = toplevelSmall;
+    value cref = C;
+    value crefSmall = CSmall;
+    value arrayRef = FloatArray;
+
     value l = ArrayList<Integer>();
     value s = l.stream().filter((Integer i) => i.positive)
             .mapToInt((Integer i) => i)
             .sum();
 }
 
-//class Sub(IntConsumer c) extends LambdasJava(c){}
+class Sub(IntConsumer c) extends LambdasJava(c){}
 
 void underlyingTypeTest() {
     value x = `ShortArray`;
