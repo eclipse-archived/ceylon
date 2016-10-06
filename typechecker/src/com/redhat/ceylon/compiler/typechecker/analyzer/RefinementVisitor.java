@@ -809,6 +809,13 @@ public class RefinementVisitor extends Visitor {
                         message(member) + 
                         " refines " + message(root));
             }
+            if (root.isCoercionPoint()) {
+                // FIXME: add message pointing to the real method?
+                that.addError(
+                        "refined declaration is not a real method: " + 
+                        message(member) + 
+                        " refines " + message(root));
+            }
             boolean found = false;
             TypeDeclaration rootType = 
                     (TypeDeclaration) 
