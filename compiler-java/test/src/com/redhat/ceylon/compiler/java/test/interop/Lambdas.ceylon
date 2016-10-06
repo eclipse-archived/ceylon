@@ -1,5 +1,5 @@
 import java.util.\ifunction {
-    Consumer, IntConsumer
+    Consumer, IntConsumer, IntSupplier
 }
 import java.util {
     ArrayList
@@ -83,6 +83,10 @@ void lambdas() {
 }
 
 class Sub(IntConsumer c) extends LambdasJava(c){}
+
+class Sub2() satisfies InterfaceWithCoercedMembers {
+    shared actual void m(CharSequence cs, IntSupplier l){}
+}
 
 void underlyingTypeTest() {
     value x = `ShortArray`;

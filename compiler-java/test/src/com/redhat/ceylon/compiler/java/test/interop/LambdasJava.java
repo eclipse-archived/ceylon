@@ -63,3 +63,7 @@ public class LambdasJava {
     
     public static void takeInt(int i){}
 }
+
+interface InterfaceWithCoercedMembers {
+    public void m(CharSequence cs, IntSupplier l);
+}
