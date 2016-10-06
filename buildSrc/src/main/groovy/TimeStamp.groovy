@@ -1,12 +1,12 @@
 import groovy.transform.CompileStatic
 import java.text.SimpleDateFormat
+import com.redhat.ceylon.model.loader.OsgiVersion
 
 @CompileStatic
 class TimeStamp {
     static final BUILD_START = new Date()
     static final String OSGI_TIMESTAMP = {
-        SimpleDateFormat df = new SimpleDateFormat ("yyyyMMdd-HHmm")
-        df.timeZone = TimeZone.getTimeZone("GMT");
+        SimpleDateFormat df = OsgiVersion.formatter;
         return df.format (BUILD_START)
     }.call()
     static final String DSTAMP = {
