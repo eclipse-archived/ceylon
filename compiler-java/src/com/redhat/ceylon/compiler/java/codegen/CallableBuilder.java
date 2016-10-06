@@ -1749,9 +1749,16 @@ public class CallableBuilder {
             // argument is small or not, so rectify that
             if(parameters.size() > i
                     && parameters.get(i).getModel().isSmall()){
-                if(!"int".equals(argType.getUnderlyingType())){
-                    argType = argType.clone();
-                    argType.setUnderlyingType("int");
+                if(argType.isInteger()){
+                    if(!"int".equals(argType.getUnderlyingType())){
+                        argType = argType.clone();
+                        argType.setUnderlyingType("int");
+                    }
+                }else if(argType.isFloat()){
+                    if(!"float".equals(argType.getUnderlyingType())){
+                        argType = argType.clone();
+                        argType.setUnderlyingType("float");
+                    }
                 }
             }
             parameterTypes.add(argType);
