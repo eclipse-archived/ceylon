@@ -4,8 +4,9 @@ import java.text.SimpleDateFormat
 @CompileStatic
 class TimeStamp {
     static final BUILD_START = new Date()
-    static final String BUILD = {
-        SimpleDateFormat df = new SimpleDateFormat ("'v'yyyyMMdd-HHmm")
+    static final String OSGI_TIMESTAMP = {
+        SimpleDateFormat df = new SimpleDateFormat ("yyyyMMdd-HHmm")
+        df.timeZone = TimeZone.getTimeZone("GMT");
         return df.format (BUILD_START)
     }.call()
     static final String DSTAMP = {

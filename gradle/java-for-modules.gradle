@@ -1,5 +1,6 @@
 import org.apache.tools.ant.filters.EscapeUnicode
 import org.apache.tools.ant.filters.ReplaceTokens
+import com.redhat.ceylon.model.loader.OsgiVersion
 
 // Shorten the recipes required in Gradle scripts byt moving
 // a lot of the common code here.
@@ -40,7 +41,9 @@ requiresCBP 'compile.java.source'
 ext {
     bundleVariant = ext.properties.containsKey('ceylonModuleVariant') ? ".${ceylonModuleVariant}" : ''
     bundleSymbolicName = ceylonNamespace + '.' + ceylonModuleName + bundleVariant
-    bundleVersionName = cbp."module.com.redhat.ceylon.${ceylonModuleName}.version"
+    moduleVersion = cbp."module.com.redhat.ceylon.${ceylonModuleName}.version"
+    bundleVersionWithoutTimestamp =  OsgiVersion.fromCeylonVersion(moduleVersion)
+    bundleVersionWithTimestamp =  OsgiVersion.withTimestamp(bundleVersionWithoutTimestamp, TimeStamp.OSGI_TIMESTAMP)
     archivePublishDir = "${repoDir}/" +  cbp."ceylon.${ceylonPublishModuleName}.dir"
 }
 
@@ -110,7 +113,7 @@ jar {
     ceylon {
         importJavaxModel  false
         bundleSymbolicName project.ext.bundleSymbolicName
-        exportedBundleVersion project.ext.bundleVersionName+versionQualifier
+        bundleVersion project.ext.bundleVersionWithTimestamp
         moduleLocation {moduleXml.destinationFile}
     }
 
@@ -118,7 +121,7 @@ jar {
         into "META-INF/jbossmodules/" + cbp."ceylon.${ceylonPublishModuleName}.dir"
     }
 
-    archiveName = "${bundleSymbolicName}-${bundleVersionName}.jar"
+    archiveName = "${bundleSymbolicName}-${moduleVersion}.jar"
 
 }
 
@@ -130,7 +133,7 @@ task sourceZip( type : Zip ) {
         include '**/*.java'
     }
 
-    archiveName = "${bundleSymbolicName}-${bundleVersionName}.src"
+    archiveName = "${bundleSymbolicName}-${moduleVersion}.src"
 }
 
 task sha1 ( type : Checksum ) {
@@ -144,7 +147,7 @@ task publishJar( type : Copy ) {
     description 'Copies binary artifacts to distribution area'
 
     from sha1, {
-        include "**/${bundleSymbolicName}-${bundleVersionName}.jar.*"
+        include "**/${bundleSymbolicName}-${moduleVersion}.jar.*"
     }
 
     from jar
