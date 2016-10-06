@@ -373,7 +373,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     }
     
     @OptionArgument(shortName='t', argumentName="version")
-    @Description("The JVM that generated .class file should target. Use `7` to generate Java 7 JVMs "
+    @Description("The JVM that generated .class files should target. Use `7` to target Java 7 JVMs "
             + "or `8` to target Java 8 JVMs.")
     public void setTarget(Long version) {
         this.targetVersion = version;
