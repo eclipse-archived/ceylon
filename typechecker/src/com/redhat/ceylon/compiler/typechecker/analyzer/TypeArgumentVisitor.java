@@ -237,7 +237,7 @@ public class TypeArgumentVisitor extends Visitor {
                     || d.isShared() 
                     || d.getOtherInstanceAccess() 
                     || declaration.equals(d))
-                && !d.isStatic()
+                && (d==null || !d.isStatic())
                 && !isConstructorClass(declaration)) {
                 String var; String loc;
                 if (tp.isContravariant()) {
