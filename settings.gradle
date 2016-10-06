@@ -1,3 +1,5 @@
+rootProject.name = 'ceylon'
+
 include 'ant-plugin'
 project(':ant-plugin').buildFileName = 'antplugin.gradle'
 

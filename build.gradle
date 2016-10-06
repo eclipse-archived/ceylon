@@ -17,7 +17,6 @@ allprojects {
     ext {
         buildPrefix = 'builtByGradle'
         buildRelease = false
-        versionQualifier = ".${TimeStamp.BUILD}"
 
         distDir =      file("${rootProject.projectDir}/${buildPrefix}/distribution")
         repoDir =      file("${distDir}/repo")

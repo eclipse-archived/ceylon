@@ -1,5 +1,9 @@
+import com.redhat.ceylon.model.loader.OsgiVersion
+
 ext {
     ceylonModuleName = 'language'
+    ceylonBundleVersionWithoutTimestamp =  OsgiVersion.fromCeylonVersion(version)
+    ceylonBundleVersionWithTimestamp =  OsgiVersion.withTimestamp(ceylonBundleVersionWithoutTimestamp, TimeStamp.OSGI_TIMESTAMP)
 }
 
 apply plugin : LifecycleBasePlugin
@@ -57,7 +61,7 @@ task publishOsgiJar( type : Copy ) {
 
     // TODO: Fix-up not be hard-coded once we migrate language build away from Ant.
     into osgiDistPluginsDir
-    rename ~/.+/,"ceylon.language_${project.version}${versionQualifier}.jar"
+    rename ~/.+/,"ceylon.language_${ceylonBundleVersionWithTimestamp}.jar"
 }
 
 task publishInternal( type : Copy ) {

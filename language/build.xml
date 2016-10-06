@@ -447,6 +447,7 @@
             noMtimeCheck="true"
         	generateModuleInfo="${generateModuleInfo}"
             src="${module.language.src}:${runtime.src}"
+            target="7"
             sysrep="${ceylon.repo.dir}"
             out="${build.dist.repo}">
             <suppressWarning>ceylonNamespace</suppressWarning>

@@ -1,8 +1,5 @@
-import groovy.util.slurpersupport.GPathResult
-import org.gradle.api.GradleException
+import com.redhat.ceylon.model.loader.OsgiVersion
 import org.gradle.api.tasks.bundling.AbstractArchiveTask
-import org.gradle.api.tasks.bundling.Jar
-import org.gradle.util.GradleVersion
 
 /** This extension will be added to each Archive task if
  * the {@code makeOsgiArchive()} extensions ies executed within the archive
@@ -27,27 +24,10 @@ class CeylonOsgiArchiveTaskExtension extends AbstractCeylonOsgiArchiveTaskExtens
      */
     String bundleSymbolicName
 
-    /** Sets the exported bundle version.
-     * Affects {@code Export-Package}
+    /** Sets the bundle version.
+     * Affects {@code Bundle-Version} and {@code Export-Package}
      */
-    String exportedBundleVersion
-
-    /** Gets the bundle version
-     *
-     * @return If the bundle versions has not been set, return the exported bundle version
-     */
-    String getBundleVersion() {
-        this.bundleVersion ?: exportedBundleVersion
-    }
-
-    /** Sets an OSGI bundle version.
-     * Affects {@code Bundle-Version}
-     *
-     * @param bv Version string
-     */
-    void setBundleVersion(final String bv) {
-        this.bundleVersion = bv
-    }
+    String bundleVersion
 
     /** Add packages that needs to be dynamically imported.
      *
@@ -63,9 +43,9 @@ class CeylonOsgiArchiveTaskExtension extends AbstractCeylonOsgiArchiveTaskExtens
      */
     Map<String,String> getManifestInstructions() {
         getManifestInstructions(
-            getBundleVersion(),
-            getBundleSymbolicName(),
-            getExportedBundleVersion(),
+            bundleVersion,
+            bundleSymbolicName,
+            bundleVersion,
             dynamicImports
         )
     }
@@ -80,7 +60,6 @@ class CeylonOsgiArchiveTaskExtension extends AbstractCeylonOsgiArchiveTaskExtens
         }
     }
 
-    private String bundleVersion
     private Map<String,String> dynamicImports = [:]
 
 }

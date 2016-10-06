@@ -185,7 +185,7 @@ class ModuleInfo {
         public List<Dependency> getImportedModules() {
             String value = osgiAttributes.getValue("Require-Bundle");
             List<Dependency> ret = new LinkedList<>();
-            if(value != null){
+            if(value != null && !value.isEmpty()){
                 for(String pkg : split(value, ",")){
                     String[] details = split(pkg, ";");
                     String name = details[0];

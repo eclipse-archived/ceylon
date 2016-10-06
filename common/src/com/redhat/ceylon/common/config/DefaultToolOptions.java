@@ -36,6 +36,7 @@ public class DefaultToolOptions {
     public final static String COMPILER_OSGIPROVIDEDBUNDLES = "compiler.osgiprovidedbundles";
     public final static String COMPILER_NOPOM = "compiler.nopom";
     public final static String COMPILER_GENERATE_MODULE_INFO = "compiler.generatemoduleinfo";
+    public final static String COMPILER_TARGET_VERSION = "compiler.target";
     public final static String COMPILER_PACK200 = "compiler.pack200";
     public final static String COMPILER_PROGRESS = "compiler.progress";
     public final static String COMPILER_JDKPROVIDER = "compiler.jdkprovider";
@@ -271,6 +272,19 @@ public class DefaultToolOptions {
 
     public static boolean getCompilerGenerateModuleInfo(CeylonConfig config) {
         return config.getBoolOption(COMPILER_GENERATE_MODULE_INFO, false);
+    }
+    
+    public static long getCompilerTargetVersion() {
+        return getCompilerTargetVersion(CeylonConfig.get());
+    }
+
+    private static Long getDefaultTarget() {
+        String dottedVersion = System.getProperty("java.version");
+        return Long.parseLong(dottedVersion.split("\\.")[1]);
+    }
+    
+    public static long getCompilerTargetVersion(CeylonConfig config) {
+        return config.getNumberOption(COMPILER_TARGET_VERSION, getDefaultTarget());
     }
 
     public static boolean getCompilerPack200() {

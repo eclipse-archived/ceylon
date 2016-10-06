@@ -1,5 +1,15 @@
+import com.redhat.ceylon.model.loader.OsgiVersion
+
+apply plugin : CeylonCommonBuildProperties
+
 ext {
     ceylonModuleName = 'model'
+    dynamicImportsValue = [
+        "ceylon.language" : "ceylon.language",
+        "com.redhat.ceylon.compiler.java" : "com.redhat.ceylon.compiler"]
+            .collectEntries { pkg , mod ->
+            [ ("${pkg}.*") : OsgiVersion.fromCeylonVersion(cbp."module.${mod}.version")]
+        }
 }
 
 apply from : "${rootProject.projectDir}/gradle/java-for-modules.gradle"
@@ -13,8 +23,7 @@ jar {
     ceylon {
         excludedModuleNames 'ceylon.language'
         importJavaxModel true
-        dynamicImports 'ceylon.language.*' : version,
-            'com.redhat.ceylon.compiler.java.*' : version
+        dynamicImports dynamicImportsValue
     }
 }
 

@@ -3,6 +3,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.tasks.bundling.AbstractArchiveTask
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.util.GradleVersion
+import com.redhat.ceylon.model.loader.OsgiVersion
 
 /**
  * @author Schalk W. Cronjé
@@ -82,7 +83,13 @@ abstract class AbstractCeylonOsgiArchiveTaskExtension {
         moduleContent.dependencies.module.findAll { module ->
             !(excludedModuleNames.contains(module.@name.toString()))
         }.collect { module ->
-            String attr = "${module.@name};bundle-version=${module.@slot}"
+            String depOsgiVersion;
+            if (module.@name.toString().contains("ceylon")) {
+                depOsgiVersion = OsgiVersion.fromCeylonVersion(module.@slot.toString());
+            } else {
+                depOsgiVersion = module.@slot;
+            }
+            String attr = "${module.@name};bundle-version=${depOsgiVersion}"
             if(module.@export == 'true') {
                 attr+=";visibility:=reexport"
             }
@@ -101,20 +108,15 @@ abstract class AbstractCeylonOsgiArchiveTaskExtension {
     protected Map<String,String> getManifestInstructions(
         final String osgiBundleVersion,
         final String osgiBundleSymbolicName,
-        final String origBundleVersion,
+        final String exportedBundleVersion,
         final Map<String,String> osgiDynamicImports = [:]
     ) {
         Map<String,String> instructions = [
-            'Bundle-Version' :  osgiBundleVersion,
             'Bundle-SymbolicName' : osgiBundleSymbolicName,
-            'Export-Package' : "!about.html, !licenses, !settings.xml, *;version=\"${origBundleVersion}\"",
-            '-nouses' : 'true',
-            'Gradle-Version' : GradleVersion.current().toString(),
-            'DSTAMP' : TimeStamp.DSTAMP,
-            'NOW' : TimeStamp.NOW,
-            'TODAY' : TimeStamp.TODAY,
-            'TSTAMP' : TimeStamp.TSTAMP
-        ]
+            'Bundle-Version' :  osgiBundleVersion,
+            'Export-Package' : "!about.html, !licenses, !settings.xml, *;version=\"${exportedBundleVersion}\"",
+            'Require-Bundle' : getRequireBundle()
+        ] as LinkedHashMap<String, String>
 
         if(osgiDynamicImports.size()) {
             String packages = osgiDynamicImports.collect { k,v ->
@@ -129,10 +131,15 @@ abstract class AbstractCeylonOsgiArchiveTaskExtension {
             instructions+= ['-removeheaders' : 'Import-Package' ]
         }
 
-        String requires = getRequireBundle()
-        if(!requires?.empty) {
-            instructions+= ['Require-Bundle' : requires]
-        }
+        instructions+= [
+            '-nouses' : 'true',
+            'Gradle-Version' : GradleVersion.current().toString(),
+            'DSTAMP' : TimeStamp.DSTAMP,
+            'NOW' : TimeStamp.NOW,
+            'TODAY' : TimeStamp.TODAY,
+            'TSTAMP' : TimeStamp.TSTAMP
+        ]
+
         instructions
     }
 

@@ -1,4 +1,5 @@
 import org.apache.tools.ant.filters.ReplaceTokens
+import com.redhat.ceylon.model.loader.OsgiVersion
 
 apply plugin : 'java'
 apply plugin : CeylonBuildInfoPlugin
@@ -43,14 +44,17 @@ dependencies {
 ext {
     embeddedRepoDir  = file("${buildDir}/embeddedRepository")
     zipDir           = file("${buildDir}/distributions")
+    bundleVersionWithoutTimestamp =  OsgiVersion.fromCeylonVersion(project.version)
+    bundleVersionWithTimestamp =  OsgiVersion.withTimestamp(bundleVersionWithoutTimestamp, TimeStamp.OSGI_TIMESTAMP)
+
 
     makeOsgiManifest = {
         from 'meta-inf-templates/MANIFEST.MF', {
             eachEntry {
-                value = value.replaceAll ~/@ceylon-version@/, project.version
+                value = value.replaceAll ~/@ceylon-version@/, bundleVersionWithoutTimestamp
 
                 if(key == 'Bundle-Version') {
-                    value = "${project.version}${versionQualifier}"
+                    value = "${bundleVersionWithTimestamp}"
                 }
             }
         }
@@ -88,7 +92,7 @@ ant.taskdef(
 jar {
     description 'Creates distribution OSGI JAR'
     manifest makeOsgiManifest
-    archiveName "com.redhat.ceylon.dist_${version}${versionQualifier}.jar"
+    archiveName "com.redhat.ceylon.dist_${bundleVersionWithTimestamp}.jar"
 
     from distDir, {
         include "lib/ceylon-bootstrap.jar"
@@ -174,7 +178,7 @@ task repoJar( type : Jar ) {
     group = jar.group
     description 'Creates repository OSGI JAR'
     destinationDir = jar.destinationDir
-    archiveName = "com.redhat.ceylon.dist.repo_${version}${versionQualifier}.jar"
+    archiveName = "com.redhat.ceylon.dist.repo_${bundleVersionWithTimestamp}.jar"
     manifest makeOsgiManifest
 
     from embeddedRepoDir, {
@@ -260,7 +264,7 @@ task generateOsgiFeatures {
     ext {
         xslFile = file('karaf/generateKarafRuntimeDistributionFeature.xsl')
         featureId = 'ceylon.distribution.runtime'
-        featureVersion = project.version
+        featureVersion = bundleVersionWithTimestamp
         featureFile = file("${osgiDistDir}/karaf-features.xml")
     }
 
@@ -288,7 +292,7 @@ task generateOsgiP2Features {
     description "Creates OSGI P2 feature files"
 
     ext {
-        featureVersion = "${project.version}${versionQualifier}"
+        featureVersion = "${bundleVersionWithTimestamp}"
 
         runtimeXsl = file('p2/generateRuntimeDistributionFeature.xsl')
         runtimeFeatureId = 'com.redhat.ceylon.dist.runtime.feature'

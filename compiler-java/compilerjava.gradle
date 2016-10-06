@@ -1,4 +1,6 @@
 import org.apache.tools.ant.filters.ReplaceTokens
+import com.redhat.ceylon.model.loader.OsgiVersion
+
 
 ext {
     ceylonModuleName = 'compiler'
@@ -164,19 +166,21 @@ task bootstrapModule( type : Jar ) {
     destinationDir = jar.destinationDir
 
     ext {
-        bmSymbolicName = 'com.redhat.ceylon.bootstrap'
-        bmVersionName = cbp."module.ceylon.bootstrap.version"
+        bmSymbolicName = 'ceylon.bootstrap'
+        bmModuleVersion = cbp."module.ceylon.bootstrap.version"
+        bmBundleVersionWithoutTimestamp =  OsgiVersion.fromCeylonVersion(bmModuleVersion)
+        bmBundleVersionWithTimestamp =  OsgiVersion.withTimestamp(bmBundleVersionWithoutTimestamp, TimeStamp.OSGI_TIMESTAMP)
     }
 
     ceylon {
         importJavaxModel  false
         bundleSymbolicName bmSymbolicName
-        exportedBundleVersion bmVersionName + versionQualifier
+        bundleVersion bmBundleVersionWithTimestamp
         moduleLocation {bootstrapModuleXml.destinationFile}
         forceOptionalResolutionFor 'ceylon.runtime'
     }
 
-    archiveName = "ceylon.bootstrap-${bmVersionName}.jar"
+    archiveName = "ceylon.bootstrap-${bmModuleVersion}.jar"
 
     from sourceSets.main.output.classesDir, {
         include "com/redhat/ceylon/launcher/**"
@@ -194,7 +198,7 @@ task publishBootstrapOsgiModule( type : Copy ) {
     description 'Copies binary artifacts to OSGI distribution area'
     from bootstrapModule
     into "${osgiDistDir}/plugins"
-    rename ~/.+/, "ceylon.bootstrap_${version}${versionQualifier}.jar"
+    rename ~/.+/, "ceylon.bootstrap_${bootstrapModule.ext.bmBundleVersionWithTimestamp}.jar"
 }
 
 sha1 {
@@ -207,7 +211,7 @@ task publishBootstrapModule( type : Copy ) {
     description 'Copies binary artifacts to distribution area'
 
     from sha1, {
-        include "**/ceylon.bootstrap-${bootstrapModule.ext.bmVersionName}.jar.*"
+        include "**/ceylon.bootstrap-${bootstrapModule.ext.bmModuleVersion}.jar.*"
     }
 
     from bootstrapModule
