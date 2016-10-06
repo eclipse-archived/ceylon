@@ -278,8 +278,13 @@ public class DefaultToolOptions {
         return getCompilerTargetVersion(CeylonConfig.get());
     }
 
+    private static Long getDefaultTarget() {
+        String dottedVersion = System.getProperty("java.version");
+        return Long.parseLong(dottedVersion.split("\\.")[1]);
+    }
+    
     public static long getCompilerTargetVersion(CeylonConfig config) {
-        return config.getNumberOption(COMPILER_TARGET_VERSION, 8);
+        return config.getNumberOption(COMPILER_TARGET_VERSION, getDefaultTarget());
     }
 
     public static boolean getCompilerPack200() {
