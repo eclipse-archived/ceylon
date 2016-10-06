@@ -9948,9 +9948,20 @@ public class ExpressionVisitor extends Visitor {
                 //because we didn't used to have constructors)
                 List<Declaration> overloads = 
                         dec.getOverloads();
-                if (overloads.size()==1) {
-                    return overloads.get(0);
+                Declaration found = null;
+                for(Declaration overload : overloads){
+                    if(overload.isCoercionPoint())
+                        continue;
+                    if(found == null)
+                        found = overload;
+                    else{
+                        // give up if we find two
+                        found = null;
+                        break;
+                    }
                 }
+                if(found != null)
+                    return found;
             }
         }
         return dec;
