@@ -372,8 +372,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         this.suppressWarnings = warnings;
     }
     
-    @Option(shortName='t')
-    @OptionArgument(argumentName="version")
+    @OptionArgument(shortName='t', argumentName="version")
     @Description("The JVM that generated .class file should target. Use `7` to generate Java 7 JVMs "
             + "or `8` to target Java 8 JVMs.")
     public void setTarget(Long version) {
