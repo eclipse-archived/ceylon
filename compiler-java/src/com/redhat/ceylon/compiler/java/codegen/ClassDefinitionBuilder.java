@@ -556,7 +556,7 @@ public class ClassDefinitionBuilder
         }
         ctor.modifiers(decl.isShared() ? PUBLIC : 0);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(gen, "$this");
-        pdb.type(gen.makeJavaType(thisType), null);
+        pdb.type(new TransformedType(gen.makeJavaType(thisType), null, gen.makeAtNonNull()));
         // ...initialize the $this field from a ctor parameter...
         ctor.parameter(pdb);
         ListBuffer<JCStatement> bodyStatements = ListBuffer.<JCStatement>of(
@@ -645,7 +645,7 @@ public class ClassDefinitionBuilder
 
     private ParameterDefinitionBuilder makeReifiedParameter(String descriptorName) {
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(gen, descriptorName);
-        pdb.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
+        pdb.type(new TransformedType(gen.makeTypeDescriptorType(), null, gen.makeAtNonNull()));
         pdb.modifiers(FINAL);
         if(!isCompanion)
             pdb.ignored();
@@ -659,7 +659,7 @@ public class ClassDefinitionBuilder
         }else{
             MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, gen.naming.getGetTypeMethodName());
             method.modifiers(PUBLIC);
-            method.resultType(List.<JCAnnotation>nil(), gen.makeTypeDescriptorType());
+            method.resultType(new TransformedType(gen.makeTypeDescriptorType(), null, gen.makeAtNonNull()));
             method.isOverride(true);
 
             List<JCStatement> body = List.<JCStatement>of(gen.make().Return(gen.makeReifiedTypeArgument(type)));
@@ -674,9 +674,9 @@ public class ClassDefinitionBuilder
     public ClassDefinitionBuilder addAnnotationTypeMethod(Type type){
         MethodDefinitionBuilder method = MethodDefinitionBuilder.systemMethod(gen, "annotationType");
         method.modifiers(PUBLIC);
-        method.resultType(List.<JCAnnotation>nil(), 
+        method.resultType(new TransformedType( 
                 gen.make().TypeApply(gen.make().QualIdent(gen.syms().classType.tsym), 
-                    List.<JCTree.JCExpression>of(gen.make().Wildcard(gen.make().TypeBoundKind(BoundKind.EXTENDS), gen.make().Type(gen.syms().annotationType)))));
+                    List.<JCTree.JCExpression>of(gen.make().Wildcard(gen.make().TypeBoundKind(BoundKind.EXTENDS), gen.make().Type(gen.syms().annotationType)))), null, gen.makeAtNonNull()));
         method.isOverride(true);
 
         List<JCStatement> body = List.<JCStatement>of(gen.make().Return(gen.makeClassLiteral(type, AbstractTransformer.JT_ANNOTATION)));

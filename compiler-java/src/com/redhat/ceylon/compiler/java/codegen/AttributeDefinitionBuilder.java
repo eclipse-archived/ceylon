@@ -149,8 +149,9 @@ public class AttributeDefinitionBuilder {
         if (owner.rawParameters(attrType)) {
             seterParamFlags |= AbstractTransformer.JT_RAW;
         }
-        pdb.type(MethodDefinitionBuilder.paramType(owner, nonWideningTypedRef.getDeclaration(), nonWideningType, seterParamFlags), 
-                owner.makeJavaTypeAnnotations(attrType));
+        pdb.type(new TransformedType(MethodDefinitionBuilder.paramType(owner, nonWideningTypedRef.getDeclaration(), nonWideningType, seterParamFlags), 
+                owner.makeJavaTypeAnnotations(attrType).head,
+                owner.makeNullabilityAnnotations(attrType)));
         
         
         setterBuilder = MethodDefinitionBuilder
@@ -368,7 +369,7 @@ public class AttributeDefinitionBuilder {
     }
     
     private void generateValueConstructor(MethodDefinitionBuilder methodDefinitionBuilder) {
-        ParameterDefinitionBuilder paramBuilder = ParameterDefinitionBuilder.systemParameter(owner, fieldName).type(attrType(), null);
+        ParameterDefinitionBuilder paramBuilder = ParameterDefinitionBuilder.systemParameter(owner, fieldName).type(new TransformedType(attrType()));
         JCTree.JCAssign init = owner.make().Assign(owner.makeQualIdent(owner.naming.makeThis(), fieldName), owner.makeUnquotedIdent(fieldName));
         methodDefinitionBuilder.parameter(paramBuilder).body(owner.make().Exec(init));
     }
