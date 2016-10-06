@@ -330,6 +330,13 @@ public class ModelUtil {
                 && notUnderlyingTypesEqual(
                         defParamType, 
                         defArgType)) {
+            // final attempt: find the erasure of the arg type supertype
+            Type defSupertype = defArgType.getSupertype(defParamType.getDeclaration());
+            if(defSupertype != null){
+                TypeDeclaration erasedSupertype = erase(defSupertype, unit);
+                return erasedSupertype.inherits(erasedParamType);
+            }
+            
             return false;
         }
         TypeDeclaration oa = 
