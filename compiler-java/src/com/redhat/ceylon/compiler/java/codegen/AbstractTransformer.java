@@ -3697,6 +3697,27 @@ public abstract class AbstractTransformer implements Transformation {
         }
         return makeModelAnnotation(syms().ceylonAtTypeInfoType, annotationArgs.toList());
     }
+
+    protected List<JCTree.JCAnnotation> makeNullabilityAnnotations(Type type) {
+        List<JCTree.JCAnnotation> result = List.nil();
+        if (!type.isTypeParameter()) {
+            if (typeFact().getNullType().isSubtypeOf(type)) {
+                result = result.prependList(makeAtNullable());
+            }
+            if (typeFact().getObjectType().isSupertypeOf(type)) {
+                result = result.prependList(makeAtNonNull());
+            }
+        }
+        return result;
+    }
+
+    private List<JCAnnotation> makeAtNonNull() {
+        return makeModelAnnotation(syms().ceylonAtNonNullType);
+    }
+
+    private List<JCAnnotation> makeAtNullable() {
+        return makeModelAnnotation(syms().ceylonAtNullableType);
+    }
     
     private String serialiseTypeSignature(Type type){
         // resolve aliases
