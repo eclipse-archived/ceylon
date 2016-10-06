@@ -9,8 +9,6 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.redhat.ceylon.common.log.Logger;
-
 public class OsgiVersion {
     private static HashMap<String, Integer> ceylonQualifiers;
     static {
@@ -30,23 +28,27 @@ public class OsgiVersion {
     }
     private static int QUALIFIER_OTHER = 6; // Same as largest index in above list
     
-    private static SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd-HHmm");
+    public static final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd-HHmm");
     static {
         formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+    }
+
+    public static interface ErrorReporter {
+        void reportError(String errorMessage, Throwable optionalThrowable);
     }
     
     public static String withTimestamp(String osgiVersion, String formattedDateInGmt) {
         return withTimestamp(osgiVersion, formattedDateInGmt, null);
     }
 
-    public static String withTimestamp(String osgiVersion, String formattedDateInGmt, Logger log) {
+    public static String withTimestamp(String osgiVersion, String formattedDateInGmt, ErrorReporter errorReporter) {
         Date date;
         try {
             date = formatter.parse(formattedDateInGmt);
         } catch (ParseException e) {
             String errorMessage = "The provided OSGI qualifier timestamp cannot be parsed. The current date will be used instead.";
-            if (log != null) {
-                log.error(errorMessage);
+            if (errorReporter != null) {
+                errorReporter.reportError(errorMessage, e);
             } else {
                 System.err.println("ERROR: " + errorMessage);
             }
