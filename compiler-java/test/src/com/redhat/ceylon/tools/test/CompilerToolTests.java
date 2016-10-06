@@ -476,4 +476,14 @@ public class CompilerToolTests extends AbstractToolTests {
         }
         
     }
+    
+    @Test
+    public void testTarget()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
+                options("--src=test/src", "--target=8", "com.redhat.ceylon.tools.test.java8"));
+        tool.run();
+        
+    }
 }
