@@ -166,7 +166,7 @@ task bootstrapModule( type : Jar ) {
     destinationDir = jar.destinationDir
 
     ext {
-        bmSymbolicName = 'com.redhat.ceylon.bootstrap'
+        bmSymbolicName = 'ceylon.bootstrap'
         bmModuleVersion = cbp."module.ceylon.bootstrap.version"
         bmBundleVersionWithoutTimestamp =  OsgiVersion.fromCeylonVersion(bmModuleVersion)
         bmBundleVersionWithTimestamp =  OsgiVersion.withTimestamp(bmBundleVersionWithoutTimestamp, TimeStamp.OSGI_TIMESTAMP)
