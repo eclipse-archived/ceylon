@@ -167,8 +167,10 @@ abstract class Invocation {
                     && !(method.getContainer() instanceof Constructor)){
                 TypeDeclaration container = (TypeDeclaration) method.getContainer();
                 Type qualifyingType = producedReference.getQualifyingType();
-                Type supertype = qualifyingType.getSupertype(container);
-                return paramType.substitute(supertype);
+                if(qualifyingType != null){
+                    Type supertype = qualifyingType.getSupertype(container);
+                    return paramType.substitute(supertype);
+                }
             }
         }
         return paramType;
@@ -1168,6 +1170,9 @@ class CallableInvocation extends DirectInvocation {
 class MethodReferenceSpecifierInvocation extends DirectInvocation {
     
     private final Function method;
+    private boolean variadic;
+    private java.util.List<Parameter> targetParameters;
+    private java.util.List<Parameter> sourceParameters;
 
     public MethodReferenceSpecifierInvocation(
             AbstractTransformer gen, Tree.Primary primary,
@@ -1177,38 +1182,54 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
         this.method = method;
         setUnboxed(primary.getUnboxed());
         setBoxingStrategy(CodegenUtil.getBoxingStrategy(method));
+        this.sourceParameters = method.getFirstParameterList().getParameters();
+        this.targetParameters = ((Functional)getPrimaryDeclaration()).getFirstParameterList().getParameters();
+        this.variadic = getPrimaryDeclaration().isVariadic();
+        if(!targetParameters.isEmpty()){
+            Parameter lastParam = targetParameters.get(targetParameters.size() - 1);
+            this.variadic |= lastParam.isSequenced();
+        }
     }
 
     @Override
     protected int getNumArguments() {
-        return method.getFirstParameterList().getParameters().size();
+        return sourceParameters.size();
     }
     
     @Override
     protected int getNumParameters() {
-        return method.getFirstParameterList().getParameters().size();
+        return targetParameters.size();
     }
     
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
-        Type exprType = getParameterType(argIndex);
-        Parameter declaredParameter = ((Functional)getPrimaryDeclaration()).getFirstParameterList().getParameters().get(argIndex);
-        JCExpression result = getParameterExpression(argIndex);
+        Type exprType = getArgumentType(argIndex);
+        Parameter declaredParameter = getParameter(argIndex);
+        Parameter declaredArgument = sourceParameters.get(argIndex);
+        JCExpression result = gen.naming.makeName(declaredArgument.getModel(), Naming.NA_MEMBER);
+        BoxingStrategy boxingStrategy;
+        if(variadic){
+            boxingStrategy = BoxingStrategy.BOXED;
+        }else{
+            boxingStrategy = CodegenUtil.getBoxingStrategy(declaredParameter.getModel());
+        }
         result = gen.expressionGen().applyErasureAndBoxing(
                 result, 
                 exprType, 
-                !getParameterUnboxed(argIndex), 
-                CodegenUtil.getBoxingStrategy(declaredParameter.getModel()), 
+                !CodegenUtil.isUnBoxed(declaredArgument.getModel()),
+                boxingStrategy, 
                 declaredParameter.getType());
         return result;
     }
     @Override
     protected Parameter getParameter(int argIndex) {
-        return method.getFirstParameterList().getParameters().get(argIndex);
+        if(variadic && argIndex >= targetParameters.size())
+            return targetParameters.get(targetParameters.size() - 1);
+        return targetParameters.get(argIndex);
     }
     @Override
     protected boolean isSpread() {
-        return method.getFirstParameterList().getParameters().get(getNumArguments() - 1).isSequenced();
+        return sourceParameters.get(getNumArguments() - 1).isSequenced();
     }
     @Override
     protected boolean isArgumentSpread(int argIndex) {
@@ -1216,7 +1237,7 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
     }
     @Override
     protected Expression getArgumentExpression(int argIndex) {
-        throw new BugException("I override getTransformedArgumentExpression(), so should never be called");
+        throw new BugException("I override getArgumentExpression(), so should never be called");
     }
     @Override
     protected boolean isArgumentComprehension(int argIndex){
@@ -1228,8 +1249,8 @@ class MethodReferenceSpecifierInvocation extends DirectInvocation {
     }
     @Override
     protected Type getArgumentType(int argIndex) {
-        // those are the same in this case
-        return super.getParameterType(argIndex);
+        Parameter param = sourceParameters.get(argIndex);
+        return getParameterTypeForValueType(appliedReference(), param);
     }
 }
 
