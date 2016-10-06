@@ -3772,8 +3772,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     private boolean isCoercedMethod(MethodMirror methodMirror) {
-        for (VariableMirror param : methodMirror.getParameters()) {
+        List<VariableMirror> parameters = methodMirror.getParameters();
+        for (int i = 0; i < parameters.size(); i++) {
+            VariableMirror param = parameters.get(i);
             TypeMirror type = param.getType();
+            if(methodMirror.isVariadic()
+                    && i == parameters.size()-1){
+                type = type.getComponentType();
+            }
             if(isCoercedType(type))
                 return true;
         }
@@ -4309,7 +4315,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // possibly make it optional
                 TypeMirror variadicType = typeMirror.getComponentType();
                 // we pretend it's toplevel because we want to get magic string conversion for variadic methods
-                type = obtainType(ModelUtil.getModuleContainer(scope), variadicType, scope, TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
+                if(isCoercedMethod && isCoercedType(variadicType)){
+                    type = applyTypeCoercion(variadicType, module, scope);
+                    coercedParameter = true;
+                }else{
+                    type = obtainType(module, variadicType, scope, TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
+                }
                 if(!isCeylon){
                     // Java parameters are all optional unless primitives or annotated as such
                     if(getUncheckedNullPolicy(isCeylon, variadicType, paramMirror) != NullStatus.NonOptional){
@@ -4321,10 +4332,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 type = typeFactory.getSequentialType(type);
             }else{
                 if(isCoercedMethod && isCoercedType(typeMirror)){
-                    if(sameType(typeMirror, CHAR_SEQUENCE_TYPE))
-                        type = typeFactory.getStringType();
-                    else
-                        type = getFunctionalInterfaceAsCallable(module, scope, typeMirror);
+                    type = applyTypeCoercion(typeMirror, module, scope);
                     coercedParameter = true;
                 }else{
                     type = obtainType(typeMirror, paramMirror, scope, module, VarianceLocation.CONTRAVARIANT,
@@ -4421,6 +4429,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
+    private Type applyTypeCoercion(TypeMirror type, Module module, Scope scope) {
+        if(sameType(type, CHAR_SEQUENCE_TYPE))
+            return typeFactory.getStringType();
+        else
+            return getFunctionalInterfaceAsCallable(module, scope, type);
+    }
+    
     private Type makeOptionalTypePreserveUnderlyingType(Type type, Module module) {
         Type optionalType = getOptionalType(type, module);
         if (optionalType.isCached()) {

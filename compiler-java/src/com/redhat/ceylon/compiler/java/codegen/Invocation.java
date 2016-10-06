@@ -943,9 +943,10 @@ class PositionalInvocation extends DirectInvocation {
     }
     @Override
     protected Parameter getParameter(int argIndex) {
-        Parameter param = parameters.get(argIndex >= parameters.size() ? parameters.size()-1 : argIndex);
+        int realIndex = argIndex >= parameters.size() ? parameters.size()-1 : argIndex;
+        Parameter param = parameters.get(realIndex);
         if(param.getModel().isCoercionPoint()){
-            Parameter realParameter = ((Functional)getPrimaryDeclaration()).getFirstParameterList().getParameters().get(argIndex);
+            Parameter realParameter = ((Functional)getPrimaryDeclaration()).getFirstParameterList().getParameters().get(realIndex);
             return realParameter;
         }
         return param;

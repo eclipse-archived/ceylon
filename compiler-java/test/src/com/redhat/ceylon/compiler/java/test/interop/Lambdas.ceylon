@@ -15,7 +15,6 @@ class CSmall(small Integer i, small Float v=0.0){}
 void lambdas() {
     /* 
      * TODO:
-     * - variadic coercion methods
      * - variadic SAM methods
      * - limited to java but how does it play with ceylon subtypes?
      * - fix error message when implementing coercion method
@@ -61,12 +60,19 @@ void lambdas() {
     j.setCharSequence(cs2);
     j.setCharSequence(s2);
     j.charSequence = cs2;
+
+    j.charSequences();
+    j.charSequences("a");
+    j.charSequences("a", "b");
     
     j.intConsumer(toplevel);
     j.intConsumer(toplevelSmall);
     
     j.intConsumer((Integer i) => print(i));
     j.intSupplier(() => 1);
+    j.intSuppliers();
+    j.intSuppliers(() => 1);
+    j.intSuppliers(() => 1, () => 2);
 
     value tlref = toplevel;
     value tlrefSmall = toplevelSmall;

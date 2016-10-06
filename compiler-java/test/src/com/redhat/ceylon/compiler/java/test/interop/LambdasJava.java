@@ -47,12 +47,18 @@ public class LambdasJava {
         return supplier.getAsInt();
     }
 
+    public void intSuppliers(IntSupplier... suppliers){
+    }
+
     public void overloadedFunction(OverloadedFunction f){
         f.execute();
     }
 
     public void overloadedFunction2(OverloadedFunction2B f){
         f.execute();
+    }
+
+    public void charSequences(CharSequence... cs){
     }
 
     public CharSequence getCharSequence(){ return null; }
