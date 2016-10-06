@@ -81,8 +81,7 @@ public class MethodDefinitionBuilder
     private boolean isAbstract;
     private boolean isTransient;
     
-    private JCExpression resultTypeExpr;
-    private List<JCAnnotation> resultTypeAnnos;
+    private TransformedType resultType;
     
     private final ListBuffer<JCAnnotation> userAnnotations = new ListBuffer<JCAnnotation>();
     private final ListBuffer<JCAnnotation> modelAnnotations = new ListBuffer<JCAnnotation>();
@@ -152,7 +151,7 @@ public class MethodDefinitionBuilder
         MethodDefinitionBuilder mdb = new MethodDefinitionBuilder(gen, false, "main")
             .modifiers(PUBLIC | STATIC);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(mdb.gen, "args");
-        pdb.type(gen.make().TypeArray(gen.make().Type(gen.syms().stringType)), List.<JCAnnotation>nil());
+        pdb.type(new TransformedType(gen.make().TypeArray(gen.make().Type(gen.syms().stringType))));
         return mdb.parameter(pdb);
     }
     
@@ -162,7 +161,7 @@ public class MethodDefinitionBuilder
         if (ignoreAnnotations) {
             this.annotationFlags = Annotations.ignore(this.annotationFlags);
         }
-        resultTypeExpr = makeVoidType();
+        resultType = new TransformedType(makeVoidType());
     }
     
     public MethodDefinitionBuilder realName(String realName) {
@@ -185,8 +184,8 @@ public class MethodDefinitionBuilder
             result.appendList(gen.makeAtIgnore());
         }
         if (Annotations.includeModel(this.annotationFlags)) {
-            if (resultTypeAnnos != null) {
-                result.appendList(resultTypeAnnos);
+            if (resultType != null) {
+                result.appendList(resultType.getTypeAnnotations());
             }
             if(!typeParamAnnotations.isEmpty()) {
                 result.appendList(gen.makeAtTypeParameters(typeParamAnnotations.toList()));
@@ -232,7 +231,7 @@ public class MethodDefinitionBuilder
         return gen.make().MethodDef(
                 gen.make().Modifiers(modifiers, getAnnotations().toList()), 
                 makeName(name),
-                resultTypeExpr,
+                resultType.getTypeExpression(),
                 typeParams.toList(), 
                 params.toList(),
                 List.<JCExpression> nil(),
@@ -376,14 +375,16 @@ public class MethodDefinitionBuilder
         pdb.defaulted(decl.isDefaulted());
         if (isParamTypeLocalToMethod(decl,
                 nonWideningType)) {
-            pdb.type(gen.make().Type(gen.syms().objectType), gen.makeJavaTypeAnnotations(decl.getModel()));
+            pdb.type(new TransformedType(gen.make().Type(gen.syms().objectType), gen.makeJavaTypeAnnotations(decl.getModel()).head));
         } else {
             if((modifiers & Flags.VARARGS) != 0){
                 // turn this into a Java variadic
                 Type elementType = gen.typeFact().getIteratedType(nonWideningType);
                 nonWideningType = gen.typeFact().getJavaObjectArrayDeclaration().appliedType(null, Arrays.asList(elementType));
             }
-            pdb.type(paramType(gen, nonWideningDecl, nonWideningType, flags), gen.makeJavaTypeAnnotations(decl.getModel()));
+            pdb.type(new TransformedType(paramType(gen, nonWideningDecl, nonWideningType, flags), 
+                    gen.makeJavaTypeAnnotations(decl.getModel()).head,
+                    gen.makeNullabilityAnnotations(decl.getModel())));
         }
         return parameter(pdb);
     }
@@ -678,14 +679,16 @@ public class MethodDefinitionBuilder
     public MethodDefinitionBuilder resultType(Function method, int flags) {
         if (method.isParameter()) {
             if (Decl.isUnboxedVoid(method) && !Strategy.useBoxedVoid(method)) {
-                return resultType(gen.makeJavaTypeAnnotations(method, false), gen.make().Type(gen.syms().voidType));
+                return resultType(new TransformedType(gen.make().Type(gen.syms().voidType), 
+                        gen.makeJavaTypeAnnotations(method, false).head));
             } else {
                 Parameter parameter = method.getInitializerParameter();
                 Type resultType = parameter.getType();
                 for (int ii = 1; ii < method.getParameterLists().size(); ii++) {
                     resultType = gen.typeFact().getCallableType(resultType);
                 }
-                return resultType(gen.makeJavaType(resultType, CodegenUtil.isUnBoxed(method) ? 0 : AbstractTransformer.JT_NO_PRIMITIVES), method);
+                return resultType(gen.makeJavaType(resultType, CodegenUtil.isUnBoxed(method) ? 0 : AbstractTransformer.JT_NO_PRIMITIVES), 
+                        method);
             }
         }
         TypedReference typedRef = gen.getTypedReference(method);
@@ -714,12 +717,11 @@ public class MethodDefinitionBuilder
     }
 
     public MethodDefinitionBuilder resultType(JCExpression resultType, TypedDeclaration typeDecl) {
-        return resultType(gen.makeJavaTypeAnnotations(typeDecl, false), resultType);
+        return resultType(new TransformedType(resultType, gen.makeJavaTypeAnnotations(typeDecl, false).head));
     }
     
-    public MethodDefinitionBuilder resultType(List<JCAnnotation> resultTypeAnnos, JCExpression resultType) {
-        this.resultTypeAnnos = resultTypeAnnos;
-        this.resultTypeExpr = resultType;
+    public MethodDefinitionBuilder resultType(TransformedType transformedType) {
+        this.resultType = transformedType;
         return this;
     }
 
@@ -728,11 +730,12 @@ public class MethodDefinitionBuilder
         return this;
     }
     
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getAnnotations()).append(' ');
         sb.append(Flags.toString(this.modifiers)).append(' ');
-        sb.append(resultTypeExpr).append(' ');
+        sb.append(resultType.getTypeExpression()).append(' ');
         sb.append(name).append('(');
         int i = 0;
         for (ParameterDefinitionBuilder param : params) {
@@ -754,7 +757,7 @@ public class MethodDefinitionBuilder
     public MethodDefinitionBuilder reifiedTypeParameter(TypeParameter param) {
         String descriptorName = gen.naming.getTypeArgumentDescriptorName(param);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(gen, descriptorName);
-        pdb.type(gen.makeTypeDescriptorType(), List.<JCAnnotation>nil());
+        pdb.type(new TransformedType(gen.makeTypeDescriptorType(), null, gen.makeAtNonNull()));
         pdb.modifiers(FINAL);
         if(!Annotations.includeModel(this.annotationFlags))
             pdb.noUserOrModelAnnotations();

@@ -1582,11 +1582,11 @@ public class CallableBuilder {
         //for (TypeParameter tp : typeModel.getDeclaration().getTypeParameters()) {
         //    apply.typeParameter(tp);
         //}
-        rawApply.resultType(null, gen.makeJavaType(callableType, AbstractTransformer.JT_RAW));
+        rawApply.resultType(new TransformedType(gen.makeJavaType(callableType, AbstractTransformer.JT_RAW)));
         {
             ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(gen, "applied");
             pdb.modifiers(Flags.FINAL);
-            pdb.type(gen.make().TypeArray(gen.make().Type(gen.syms().ceylonTypeDescriptorType)), null);
+            pdb.type(new TransformedType(gen.make().TypeArray(gen.make().Type(gen.syms().ceylonTypeDescriptorType))));
             rawApply.parameter(pdb);
         }
         rawApply.body(List.<JCStatement>of(
@@ -1600,11 +1600,11 @@ public class CallableBuilder {
         //for (TypeParameter tp : typeModel.getDeclaration().getTypeParameters()) {
         //    apply.typeParameter(tp);
         //}
-        typedApply.resultType(null, gen.makeJavaType(callableType));
+        typedApply.resultType(new TransformedType(gen.makeJavaType(callableType)));
         {
             ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(gen, "applied");
             pdb.modifiers(Flags.FINAL);
-            pdb.type(gen.make().TypeArray(gen.make().Type(gen.syms().ceylonTypeDescriptorType)), null);
+            pdb.type(new TransformedType(gen.make().TypeArray(gen.make().Type(gen.syms().ceylonTypeDescriptorType))));
             typedApply.parameter(pdb);
         }
         ListBuffer<JCTypeParameter> typeParameters = new ListBuffer<JCTypeParameter>();
@@ -1703,7 +1703,7 @@ public class CallableBuilder {
             ParameterDefinitionBuilder parameterBuilder = ParameterDefinitionBuilder.systemParameter(gen, Naming.getAliasedParameterName(param));
             JCExpression paramType = gen.makeJavaType(parameterTypes.get(i));
             parameterBuilder.modifiers(Flags.FINAL);
-            parameterBuilder.type(paramType, null);
+            parameterBuilder.type(new TransformedType(paramType));
             methodBuilder.parameter(parameterBuilder);
             i++;
         }
@@ -1731,7 +1731,7 @@ public class CallableBuilder {
         }
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(gen, getParamName(ii));
         pdb.modifiers(Flags.FINAL | flags);
-        pdb.type(type, null);
+        pdb.type(new TransformedType(type));
         return pdb;
     }
     
@@ -1742,7 +1742,7 @@ public class CallableBuilder {
         JCExpression type = gen.makeJavaType(gen.typeFact().getSequentialType(iteratedType), AbstractTransformer.JT_RAW);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(gen, getParamName(ii));
         pdb.modifiers(Flags.FINAL | flags);
-        pdb.type(type, null);
+        pdb.type(new TransformedType(type, null, gen.makeAtNonNull()));
         return pdb;
     }
     

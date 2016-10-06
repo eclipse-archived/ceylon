@@ -305,7 +305,7 @@ public class ClassTransformer extends AbstractTransformer {
             // when the default constructor has pl (ObjectArray).
             ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(this, "ignored");
             pdb.modifiers(VARARGS);
-            pdb.type(make().TypeArray(make().Type(syms().objectType)), null);
+            pdb.type(new TransformedType(make().TypeArray(make().Type(syms().objectType))));
             initBuilder.parameter(pdb);
         } else if (plan instanceof PrivateConstructorOnly) {
             classBuilder.broken();
@@ -396,7 +396,7 @@ public class ClassTransformer extends AbstractTransformer {
     protected void addWriteReplace(final Class model,
             ClassDefinitionBuilder classBuilder) {
         MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, "writeReplace");
-        mdb.resultType(null, make().Type(syms().objectType));
+        mdb.resultType(new TransformedType(make().Type(syms().objectType), null, makeAtNonNull()));
         mdb.modifiers(PRIVATE | FINAL);
         ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
         SyntheticName name = naming.synthetic(Unfix.$name$);
@@ -528,7 +528,7 @@ public class ClassTransformer extends AbstractTransformer {
             ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, formalP.getName());
             pdb.sequenced(formalP.isSequenced());
             pdb.defaulted(formalP.isDefaulted());
-            pdb.type(makeJavaType(unrefined.getTypedParameter(formalP).getType()), null);
+            pdb.type(new TransformedType(makeJavaType(unrefined.getTypedParameter(formalP).getType())));
             mdb.parameter(pdb);
         }
         mdb.resultType(makeJavaType(unrefined.getType()), null);
@@ -779,7 +779,7 @@ public class ClassTransformer extends AbstractTransformer {
             instantiator.typeParameter(tp);
         }
         
-        instantiator.resultType(null, makeJavaType(aliasedClass));
+        instantiator.resultType(new TransformedType(makeJavaType(aliasedClass), null, makeAtNonNull()));
         instantiator.annotationFlags(Annotations.MODEL_AND_USER | Annotations.IGNORE);
         // We need to reify the parameters, at least so they have reified annotations
         
@@ -808,7 +808,7 @@ public class ClassTransformer extends AbstractTransformer {
         // constructors are never final
         annoCtor.modifiers(transformClassDeclFlags(klass) & ~FINAL);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, "anno");
-        pdb.type(makeJavaType(klass.getType(), JT_ANNOTATION), null);
+        pdb.type(new TransformedType(makeJavaType(klass.getType(), JT_ANNOTATION), null, makeAtNonNull()));
         annoCtor.parameter(pdb);
         
         // It's up to the caller to invoke value() on the Java annotation for a sequenced
@@ -865,9 +865,9 @@ public class ClassTransformer extends AbstractTransformer {
                             MethodDefinitionBuilder.systemMethod(this, naming.getAnnotationSequenceMethodName())
                                 .ignoreModelAnnotations()
                                 .modifiers(PRIVATE | STATIC)
-                                .resultType(null, makeJavaType(typeFact().getSequentialType(iteratedType)))
+                                .resultType(new TransformedType(makeJavaType(typeFact().getSequentialType(iteratedType)), null, makeAtNonNull()))
                                 .parameter(ParameterDefinitionBuilder.systemParameter(this, array.getName())
-                                        .type(make().TypeArray(makeJavaType(iteratedType, JT_ANNOTATION)), null))
+                                        .type(new TransformedType(make().TypeArray(makeJavaType(iteratedType, JT_ANNOTATION)))))
                                 .body(stmts.toList()));
                 } else if (isCeylonMetamodelDeclaration(iteratedType)) {
                     argExpr = makeMetamodelInvocation("parseMetamodelReferences", 
@@ -970,7 +970,7 @@ public class ClassTransformer extends AbstractTransformer {
             MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, naming.getSequencedAnnotationMethodName());
             mdb.annotationFlags(Annotations.MODEL_AND_USER);
             mdb.modifiers(PUBLIC | ABSTRACT);
-            mdb.resultType(null, make().TypeArray(makeJavaType(klass.getType(), JT_ANNOTATION)));
+            mdb.resultType(new TransformedType(make().TypeArray(makeJavaType(klass.getType(), JT_ANNOTATION)), null, makeAtNonNull()));
             mdb.noBody();
             ClassDefinitionBuilder sequencedAnnotation = sequencedBuilder.method(mdb);
             sequencedAnnotation.annotations(transformAnnotationConstraints(klass));
@@ -1305,7 +1305,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         pdb.sequenced(param.isSequenced());
         pdb.defaulted(param.isDefaulted());
-        pdb.type(type, makeJavaTypeAnnotations(param.getModel()));
+        pdb.type(new TransformedType(type, makeJavaTypeAnnotations(param.getModel()).head));
         pdb.modifiers(transformClassParameterDeclFlags(param));
         if (!(param.getModel().isShared() || param.getModel().isCaptured())) {
             // We load the model for shared parameters from the corresponding member
@@ -1493,7 +1493,7 @@ public class ClassTransformer extends AbstractTransformer {
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.implicitParameter(this, Naming.Unfix.$name$.toString());
         pdb.ignored();
         JCExpression type = naming.makeTypeDeclarationExpression(null, ctor, flags);
-        pdb.type(type, null);
+        pdb.type(new TransformedType(type, null, makeAtNullable()));
         return pdb;
     }
 
@@ -1559,7 +1559,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         ParameterDefinitionBuilder serializationPdb = ParameterDefinitionBuilder.systemParameter(this, "ignored");
         serializationPdb.modifiers(FINAL);
-        serializationPdb.type(make().Type(syms().ceylonSerializationType), null);
+        serializationPdb.type(new TransformedType(make().Type(syms().ceylonSerializationType), null));
         ctor.parameter(serializationPdb);
         
         for (TypeParameter tp : model.getTypeParameters()) {
@@ -1754,8 +1754,8 @@ public class ClassTransformer extends AbstractTransformer {
         mdb.ignoreModelAnnotations();
         mdb.modifiers(PUBLIC);
         
-        mdb.resultType(null, make().TypeApply(naming.makeQuotedFQIdent("java.util.Collection"),
-                List.<JCExpression>of(make().Type(syms().ceylonReachableReferenceType))));
+        mdb.resultType(new TransformedType(make().TypeApply(naming.makeQuotedFQIdent("java.util.Collection"),
+                List.<JCExpression>of(make().Type(syms().ceylonReachableReferenceType))), null, makeAtNonNull()));
         
         ListBuffer<JCStatement> stmts = new ListBuffer<JCStatement>();
         // TODO this is all static information, but the method itself needs to be 
@@ -1819,10 +1819,10 @@ public class ClassTransformer extends AbstractTransformer {
         
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, Unfix.reference.toString());
         pdb.modifiers(FINAL);
-        pdb.type(make().Type(syms().ceylonReachableReferenceType), null);
+        pdb.type(new TransformedType(make().Type(syms().ceylonReachableReferenceType), null, makeAtNonNull()));
         mdb.parameter(pdb);
         
-        mdb.resultType(null, make().Type(syms().objectType));
+        mdb.resultType(new TransformedType(make().Type(syms().objectType), null, makeAtNonNull()));
         /*
          * public void $set$(Object reference, Object instance) {
          *     switch((String)reference) {
@@ -1955,12 +1955,12 @@ public class ClassTransformer extends AbstractTransformer {
         
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, Unfix.reference.toString());
         pdb.modifiers(FINAL);
-        pdb.type(make().Type(syms().ceylonReachableReferenceType), null);
+        pdb.type(new TransformedType(make().Type(syms().ceylonReachableReferenceType), null, makeAtNonNull()));
         mdb.parameter(pdb);
         
         ParameterDefinitionBuilder pdb2 = ParameterDefinitionBuilder.systemParameter(this, Unfix.instance.toString());
         pdb2.modifiers(FINAL);
-        pdb2.type(make().Type(syms().objectType), null);
+        pdb2.type(new TransformedType(make().Type(syms().objectType), null, makeAtNonNull()));
         mdb.parameter(pdb2);
 
         //mdb.resultType(null, naming.makeQuotedFQIdent("java.util.Collection"));
@@ -2918,7 +2918,7 @@ public class ClassTransformer extends AbstractTransformer {
             explicitReturn = true;
             if(CodegenUtil.isHashAttribute(member)){
                 // delegates for hash attributes are int
-                concreteWrapper.resultType(null, make().Type(syms().intType));
+                concreteWrapper.resultType(new TransformedType(make().Type(syms().intType)));
                 returnType = typedMember.getType();
             }else if (typedMember instanceof TypedReference
                     && defaultedParam == null) {
@@ -2944,9 +2944,9 @@ public class ClassTransformer extends AbstractTransformer {
                 returnType = nonWideningParam.nonWideningType;
                 if(member instanceof Function)
                     returnType = typeFact().getCallableType(returnType);
-                concreteWrapper.resultType(null, makeJavaType(returnType, nonWideningParam.flags));
+                concreteWrapper.resultType(new TransformedType(makeJavaType(returnType, nonWideningParam.flags)));
             } else {
-                concreteWrapper.resultType(null, makeJavaType((Type)typedMember));
+                concreteWrapper.resultType(new TransformedType(makeJavaType((Type)typedMember)));
                 returnType = (Type) typedMember;
             }
         }
@@ -3178,14 +3178,16 @@ public class ClassTransformer extends AbstractTransformer {
         MethodDefinitionBuilder thisMethod = MethodDefinitionBuilder.systemMethod(
                 this, naming.getCompanionAccessorName(iface));
         thisMethod.noModelAnnotations();
+        JCExpression typeExpr;
         if (!forImplementor && Decl.isAncestorLocal(iface)) {
             // For a local interface the return type cannot be a local
             // companion class, because that won't be visible at the 
             // top level, so use Object instead
-            thisMethod.resultType(null, make().Type(syms().objectType));
+            typeExpr = make().Type(syms().objectType);
         } else {
-            thisMethod.resultType(null, makeJavaType(satisfiedType, JT_COMPANION));
+            typeExpr = makeJavaType(satisfiedType, JT_COMPANION);
         }
+        thisMethod.resultType(new TransformedType(typeExpr, null, makeAtNonNull()));
         if (forImplementor) {
             thisMethod.isOverride(true);
         } else {
@@ -3865,7 +3867,7 @@ public class ClassTransformer extends AbstractTransformer {
                     List.<JCExpression>nil())));
         }
         mdb.modifiers(PUBLIC | ABSTRACT);
-        mdb.resultType(null, type);
+        mdb.resultType(new TransformedType(type));
         mdb.defaultValue(defaultValue);
         mdb.noBody();
         return mdb;
@@ -5142,7 +5144,7 @@ public class ClassTransformer extends AbstractTransformer {
             } else {
                 resultType = makeJavaType(type);
             }
-            overloadBuilder.resultType(null, resultType);
+            overloadBuilder.resultType(new TransformedType(resultType, null, makeAtNonNull()));
         }
 
         @Override
@@ -5500,7 +5502,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (Strategy.addReadResolve(cls)) {
             MethodDefinitionBuilder readResolve = MethodDefinitionBuilder.systemMethod(this, "readResolve");
             readResolve.modifiers(PRIVATE);
-            readResolve.resultType(null, make().Type(syms().objectType));
+            readResolve.resultType(new TransformedType(make().Type(syms().objectType)));
             JCExpression apply;
             if (cls.isToplevel()) {
                 apply = make().Apply(null,

@@ -4362,7 +4362,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 nextMdb.isOverride(true);
                 nextMdb.annotationFlags(Annotations.IGNORE);
                 nextMdb.modifiers(Flags.PUBLIC | Flags.FINAL);
-                nextMdb.resultType(null, make().Type(syms().objectType));
+                nextMdb.resultType(new TransformedType(make().Type(syms().objectType)));
                 nextMdb.body(List.of(
                         makeVar(iteratorResultName, 
                             make().Type(syms().objectType), null),
@@ -4392,7 +4392,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 iteratorMdb.isOverride(true);
                 iteratorMdb.annotationFlags(Annotations.IGNORE);
                 iteratorMdb.modifiers(Flags.PUBLIC | Flags.FINAL);
-                iteratorMdb.resultType(null, makeJavaType(typeFact().getIteratorType(resultElementType))); 
+                iteratorMdb.resultType(new TransformedType(makeJavaType(typeFact().getIteratorType(resultElementType)), makeAtNonNull())); 
                 iteratorMdb.body(make().Return(iteratorClass));
                         
                 // new AbstractIterable()
@@ -6472,7 +6472,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             MethodDefinitionBuilder mb = MethodDefinitionBuilder.systemMethod(ExpressionTransformer.this, ctxtName.getName())
                 .ignoreModelAnnotations()
                 .modifiers(Flags.PRIVATE | Flags.FINAL)
-                .resultType(null, makeJavaType(typeFact().getBooleanType()))
+                .resultType(new TransformedType(makeJavaType(typeFact().getBooleanType())))
                 .body(body);
             fields.add(mb.build());
         }

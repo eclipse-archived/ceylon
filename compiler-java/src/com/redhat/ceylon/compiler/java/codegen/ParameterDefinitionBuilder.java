@@ -41,9 +41,7 @@ public class ParameterDefinitionBuilder {
     
     private long modifiers;
     
-    private JCExpression type;
-    
-    private List<JCAnnotation> typeAnnos;
+    private TransformedType type;
 
     private boolean sequenced;
 
@@ -175,9 +173,8 @@ public class ParameterDefinitionBuilder {
         return this;
     }
     
-    public ParameterDefinitionBuilder type(JCExpression type, List<JCAnnotation> typeAnnos) {
+    public ParameterDefinitionBuilder type(TransformedType type) {
         this.type = type;
-        this.typeAnnos = typeAnnos;
         return this;
     }
     
@@ -236,8 +233,8 @@ public class ParameterDefinitionBuilder {
             if (defaulted) {
                 annots.appendList(gen.makeAtDefaulted());
             }
-            if (typeAnnos != null) {
-                annots.appendList(typeAnnos);
+            if (type != null) {
+                annots.appendList(type.getTypeAnnotations());
             }
         }
         if (Annotations.includeUser(annotationFlags)
@@ -255,7 +252,7 @@ public class ParameterDefinitionBuilder {
         }
         Name name = gen.names().fromString(Naming.quoteParameterName(getJavaParameterName()));
         return gen.make().VarDef(gen.make().Modifiers(modifiers | Flags.PARAMETER, annots.toList()), 
-                name, type, null);   
+                name, type.getTypeExpression(), null);   
     }
 
     private String getJavaParameterName() {

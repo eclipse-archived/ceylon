@@ -3698,25 +3698,27 @@ public abstract class AbstractTransformer implements Transformation {
         return makeModelAnnotation(syms().ceylonAtTypeInfoType, annotationArgs.toList());
     }
 
-    protected List<JCTree.JCAnnotation> makeNullabilityAnnotations(Type type) {
-        List<JCTree.JCAnnotation> result = List.nil();
+    protected JCTree.JCAnnotation makeNullabilityAnnotations(TypedDeclaration typedDecl) {
+        if (typedDecl instanceof Function && typedDecl.isParameter()) {
+            return makeAtNonNull();
+        }
+        Type type = typedDecl.getType();
         if (!type.isTypeParameter()) {
-            if (typeFact().getNullType().isSubtypeOf(type)) {
-                result = result.prependList(makeAtNullable());
-            }
             if (typeFact().getObjectType().isSupertypeOf(type)) {
-                result = result.prependList(makeAtNonNull());
+                return makeAtNonNull();
+            } else {
+                return makeAtNullable();
             }
         }
-        return result;
+        return null;
     }
 
-    private List<JCAnnotation> makeAtNonNull() {
-        return makeModelAnnotation(syms().ceylonAtNonNullType);
+    protected JCAnnotation makeAtNonNull() {
+        return makeModelAnnotation(syms().ceylonAtNonNullType).head;
     }
 
-    private List<JCAnnotation> makeAtNullable() {
-        return makeModelAnnotation(syms().ceylonAtNullableType);
+    protected JCAnnotation makeAtNullable() {
+        return makeModelAnnotation(syms().ceylonAtNullableType).head;
     }
     
     private String serialiseTypeSignature(Type type){
@@ -3998,9 +4000,9 @@ public abstract class AbstractTransformer implements Transformation {
                 MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, Unfix.$evaluate$.toString());
                 mdb.isOverride(true);
                 mdb.modifiers(PROTECTED | FINAL);
-                mdb.resultType(null, make().Type(syms().objectType));
+                mdb.resultType(new TransformedType(make().Type(syms().objectType)));
                 mdb.parameter(ParameterDefinitionBuilder.systemParameter(this, Unfix.$index$.toString())
-                        .type(make().Type(syms().intType), null));
+                        .type(new TransformedType(make().Type(syms().intType))));
                 JCSwitch swtch;
                 try (SavedPosition sp = noPosition()) {
                     ListBuffer<JCCase> cases = new ListBuffer<JCCase>();
@@ -4029,7 +4031,7 @@ public abstract class AbstractTransformer implements Transformation {
                 MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, Unfix.$lookup$.toString());
                 mdb.isOverride(true);
                 mdb.modifiers(PROTECTED | FINAL);
-                mdb.resultType(null, naming.makeQualIdent(make().Type(syms().methodHandlesType), "Lookup"));
+                mdb.resultType(new TransformedType(naming.makeQualIdent(make().Type(syms().methodHandlesType), "Lookup"), null, makeAtNonNull()));
                 mdb.body(make().Return(make().Apply(List.<JCExpression>nil(), 
                         naming.makeQualIdent(make().Type(syms().methodHandlesType), "lookup"), 
                         List.<JCExpression>nil())));
@@ -4038,9 +4040,9 @@ public abstract class AbstractTransformer implements Transformation {
                 mdb = MethodDefinitionBuilder.systemMethod(this, Unfix.$invoke$.toString());
                 mdb.isOverride(true);
                 mdb.modifiers(PROTECTED | FINAL);
-                mdb.resultType(null, make().Type(syms().objectType));
+                mdb.resultType(new TransformedType(make().Type(syms().objectType)));
                 mdb.parameter(ParameterDefinitionBuilder.systemParameter(this, "handle")
-                        .type(make().Type(syms().methodHandleType), null));
+                        .type(new TransformedType(make().Type(syms().methodHandleType))));
                 mdb.body(make().Return(make().Apply(List.<JCExpression>nil(), 
                         naming.makeQualIdent(naming.makeUnquotedIdent("handle"), "invokeExact"), 
                         List.<JCExpression>of(naming.makeThis()))));
@@ -4050,7 +4052,7 @@ public abstract class AbstractTransformer implements Transformation {
                     mdb = MethodDefinitionBuilder.systemMethod(this, "$"+i);
                     i++;
                     mdb.modifiers(PRIVATE | FINAL);
-                    mdb.resultType(null, make().Type(syms().objectType));
+                    mdb.resultType(new TransformedType(make().Type(syms().objectType)));
                     mdb.body(expr);
                     methods.add(mdb.build());
                 }
