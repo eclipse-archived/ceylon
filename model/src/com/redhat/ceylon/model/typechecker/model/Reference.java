@@ -155,7 +155,7 @@ public abstract class Reference {
             TypeParameter tp = typeParams.get(i);
             Type arg = typeArgs.get(tp);
             if (arg==null) {
-                unit.getUnknownType();
+                arg = unit.getUnknownType();
             }
             argList.add(arg);
         }
