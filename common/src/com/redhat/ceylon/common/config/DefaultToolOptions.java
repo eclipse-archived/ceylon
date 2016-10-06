@@ -32,17 +32,19 @@ public class DefaultToolOptions {
     public final static String COMPILER_SCRIPT = "compiler.script";
     public final static String COMPILER_DOC = "compiler.doc";
     public final static String COMPILER_SUPPRESSWARNING = "compiler.suppresswarning";
-    public final static String COMPILER_NOOSGI = "compiler.noosgi";
-    public final static String COMPILER_OSGIPROVIDEDBUNDLES = "compiler.osgiprovidedbundles";
-    public final static String COMPILER_NOPOM = "compiler.nopom";
-    public final static String COMPILER_GENERATE_MODULE_INFO = "compiler.generatemoduleinfo";
-    public final static String COMPILER_TARGET_VERSION = "compiler.target";
-    public final static String COMPILER_PACK200 = "compiler.pack200";
     public final static String COMPILER_PROGRESS = "compiler.progress";
-    public final static String COMPILER_JDKPROVIDER = "compiler.jdkprovider";
-    public final static String COMPILER_APT = "compiler.apt";
     public final static String COMPILER_MODULES = "compiler.module";
-    public final static String COMPILER_JAVAC = "compiler.javac";
+    // JVM-only, needing backward compatibility (only for pre-1.3.0 options)
+    public final static String COMPILER_NOOSGI = "compiler.jvm.noosgi";
+    public final static String COMPILER_OSGIPROVIDEDBUNDLES = "compiler.jvm.osgiprovidedbundles";
+    public final static String COMPILER_NOPOM = "compiler.jvm.nopom";
+    public final static String COMPILER_GENERATE_MODULE_INFO = "compiler.jvm.generatemoduleinfo";
+    public final static String COMPILER_PACK200 = "compiler.jvm.pack200";
+    public final static String COMPILER_JDKPROVIDER = "compiler.jvm.jdkprovider";
+    public final static String COMPILER_APT = "compiler.jvm.apt";
+    // JVM-only, not needing backward compatibility (all new options should go here)
+    public final static String COMPILER_TARGET_VERSION = "compiler.jvm.target";
+    public final static String COMPILER_JAVAC = "compiler.jvm.javac";
     
     public final static String SECTION_RUNTOOL = "runtool";
     
@@ -145,22 +147,6 @@ public class DefaultToolOptions {
         return config.getBoolOption(DEFAULTS_LINK_WITH_CURRENT_DISTRIBUTION, true);
     }
 
-    public static String getCompilerJdkProvider() {
-        return getCompilerJdkProvider(CeylonConfig.get());
-    }
-    
-    public static String getCompilerJdkProvider(CeylonConfig config) {
-        return config.getOption(COMPILER_JDKPROVIDER);
-    }
-
-    public static String[] getCompilerAptModules() {
-        return getCompilerAptModules(CeylonConfig.get());
-    }
-
-    public static String[] getCompilerAptModules(CeylonConfig config) {
-        return config.getOptionValues(COMPILER_APT);
-    }
-
     public static List<File> getCompilerSourceDirs() {
         return getCompilerSourceDirs(CeylonConfig.get());
     }
@@ -242,63 +228,6 @@ public class DefaultToolOptions {
         }
     }
     
-    public static boolean getCompilerNoOsgi() {
-        return getCompilerNoOsgi(CeylonConfig.get());
-    }
-    
-    public static boolean getCompilerNoOsgi(CeylonConfig config) {
-        return config.getBoolOption(COMPILER_NOOSGI, false);
-    }
-
-    public static String getCompilerOsgiProvidedBundles() {
-        return getCompilerOsgiProvidedBundles(CeylonConfig.get());
-    }
-    
-    public static String getCompilerOsgiProvidedBundles(CeylonConfig config) {
-        return config.getOption(COMPILER_OSGIPROVIDEDBUNDLES, "");
-    }
-
-    public static boolean getCompilerNoPom() {
-        return getCompilerNoPom(CeylonConfig.get());
-    }
-
-    public static boolean getCompilerNoPom(CeylonConfig config) {
-        return config.getBoolOption(COMPILER_NOPOM, false);
-    }
-
-    public static boolean getCompilerGenerateModuleInfo() {
-        return getCompilerGenerateModuleInfo(CeylonConfig.get());
-    }
-
-    public static boolean getCompilerGenerateModuleInfo(CeylonConfig config) {
-        return config.getBoolOption(COMPILER_GENERATE_MODULE_INFO, false);
-    }
-    
-    public static long getCompilerTargetVersion() {
-        return getCompilerTargetVersion(CeylonConfig.get());
-    }
-
-    private static Long getDefaultTarget() {
-        String dottedVersion = System.getProperty("java.version");
-        return Long.parseLong(dottedVersion.split("\\.")[1]);
-    }
-    
-    public static long getCompilerTargetVersion(CeylonConfig config) {
-        return config.getNumberOption(COMPILER_TARGET_VERSION, getDefaultTarget());
-    }
-
-    public static boolean getCompilerPack200() {
-        return getCompilerPack200(CeylonConfig.get());
-    }
-    
-    public static boolean getCompilerPack200(CeylonConfig config) {
-        return config.getBoolOption(COMPILER_PACK200, false);
-    }
-    
-    public static boolean getCompilerProgress() {
-        return getCompilerProgress(CeylonConfig.get());
-    }
-    
     public static boolean getCompilerProgress(CeylonConfig config) {
         return config.getBoolOption(COMPILER_PROGRESS, false);
     }
@@ -319,6 +248,76 @@ public class DefaultToolOptions {
         }
     }
     
+    public static boolean getCompilerNoOsgi() {
+        return getCompilerNoOsgi(CeylonConfig.get());
+    }
+    
+    public static boolean getCompilerNoOsgi(CeylonConfig config) {
+        return config.getBoolOption(COMPILER_NOOSGI,
+                config.getBoolOption(oldkey(COMPILER_NOOSGI), false));
+    }
+
+    public static String getCompilerOsgiProvidedBundles() {
+        return getCompilerOsgiProvidedBundles(CeylonConfig.get());
+    }
+    
+    public static String getCompilerOsgiProvidedBundles(CeylonConfig config) {
+        return config.getOption(COMPILER_OSGIPROVIDEDBUNDLES,
+                config.getOption(oldkey(COMPILER_OSGIPROVIDEDBUNDLES)));
+    }
+
+    public static boolean getCompilerNoPom() {
+        return getCompilerNoPom(CeylonConfig.get());
+    }
+
+    public static boolean getCompilerNoPom(CeylonConfig config) {
+        return config.getBoolOption(COMPILER_NOPOM,
+                config.getBoolOption(oldkey(COMPILER_NOPOM), false));
+    }
+
+    public static boolean getCompilerGenerateModuleInfo() {
+        return getCompilerGenerateModuleInfo(CeylonConfig.get());
+    }
+
+    public static boolean getCompilerGenerateModuleInfo(CeylonConfig config) {
+        return config.getBoolOption(COMPILER_GENERATE_MODULE_INFO,
+                config.getBoolOption(oldkey(COMPILER_GENERATE_MODULE_INFO), false));
+    }
+
+    public static boolean getCompilerPack200() {
+        return getCompilerPack200(CeylonConfig.get());
+    }
+    
+    public static boolean getCompilerPack200(CeylonConfig config) {
+        return config.getBoolOption(COMPILER_PACK200,
+                config.getBoolOption(oldkey(COMPILER_PACK200), false));
+    }
+    
+    public static boolean getCompilerProgress() {
+        return getCompilerProgress(CeylonConfig.get());
+    }
+    
+    public static String getCompilerJdkProvider() {
+        return getCompilerJdkProvider(CeylonConfig.get());
+    }
+    
+    public static String getCompilerJdkProvider(CeylonConfig config) {
+        return config.getOption(COMPILER_JDKPROVIDER,
+                config.getOption(oldkey(COMPILER_JDKPROVIDER)));
+    }
+
+    public static String[] getCompilerAptModules() {
+        return getCompilerAptModules(CeylonConfig.get());
+    }
+
+    public static String[] getCompilerAptModules(CeylonConfig config) {
+        String[] apts = config.getOptionValues(COMPILER_APT);
+        if (apts == null) {
+            apts = config.getOptionValues(oldkey(COMPILER_APT));
+        }
+        return apts;
+    }
+
     public static List<String> getCompilerJavac() {
         return getCompilerJavac(CeylonConfig.get());
     }
@@ -330,6 +329,19 @@ public class DefaultToolOptions {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    private static Long getDefaultTarget() {
+        String dottedVersion = System.getProperty("java.version");
+        return Long.parseLong(dottedVersion.split("\\.")[1]);
+    }
+    
+    public static long getCompilerTargetVersion() {
+        return getCompilerTargetVersion(CeylonConfig.get());
+    }
+
+    public static long getCompilerTargetVersion(CeylonConfig config) {
+        return config.getNumberOption(COMPILER_TARGET_VERSION, getDefaultTarget());
     }
 
     public static String getRunToolCompileFlags() {
@@ -392,5 +404,12 @@ public class DefaultToolOptions {
         } else {
             return section + "." + key;
         }
+    }
+    
+    // This method is used to turn the newer jvm-specific keys into their
+    // old version for backward compatibility. Eg. "compiler.jvm.javac"
+    // becomes "compiler.javac". Use this only for old JVM compiler options
+    private static String oldkey(String key) {
+        return key.replace("\\.jvm\\.", "");
     }
 }
