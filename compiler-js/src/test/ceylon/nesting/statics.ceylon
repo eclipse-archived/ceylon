@@ -30,6 +30,21 @@ class Static1 {
     shared actual Integer g() => 3;
   };
 }
+class Regular1() extends Static1() {
+  check(super.a == 1, "reg 1.1");
+  check(super.b == 2, "reg 1.2");
+  check(super.c() == 3, "reg 1.3");
+  check(super.d() == 3, "reg 1.4");
+  check(super.e() == 3, "reg 1.5");
+  check(super.f() == 3, "reg 1.6");
+  check(a == 1, "reg 2.1");
+  check(b == 2, "reg 2.2");
+  check(c() == 3, "reg 2.3");
+  check(d() == 3, "reg 2.4");
+  check(e() == 3, "reg 2.5");
+  check(f() == 3, "reg 2.6");
+}
+
 class Static2 extends Static1 {
   shared static Integer sa = a;
   shared static Integer sb = b;
@@ -108,4 +123,11 @@ void testStatics() {
   check(c2.iface2().f() == 2, "static 6.8");
   check(c2.iface2().g() == 3, "static 6.9");
   check(Static1().c() == 3, "static 7.1");
+  Regular1();
+  //refs
+  value sref = Static1.c;
+  check(sref() == 3, "static 8.1");
+  //this shit should be disallowed
+  //value iref = Static1().c;
+  //check(iref() == 3, "static 8.2");
 }
