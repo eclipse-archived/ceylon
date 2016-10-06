@@ -4509,7 +4509,9 @@ public class Type extends Reference {
         else {
             results.add(d);
             for (Type t: getTypeArgumentList()) {
-                t.collectDeclarations(results);
+                if (t!=null) {
+                    t.collectDeclarations(results);
+                }
             }
         }
     }
