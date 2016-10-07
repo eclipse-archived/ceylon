@@ -158,3 +158,11 @@ void testWithGenericStatic() {
     @type:"WithGenericStatic<String>.Inner<Integer>" WithGenericStatic.Inner("", 0);
     @type:"[String, Integer]" WithGenericStatic.Inner("", 0).pair();
 }
+
+shared class Box<out T> {
+    @error static variable T t = nothing;
+    @error static object thing {}
+    
+    shared static Box<T> create(T t) => Box.make(t);
+    new make(T t) {}
+}
