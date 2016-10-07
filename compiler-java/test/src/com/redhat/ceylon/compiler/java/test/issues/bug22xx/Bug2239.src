@@ -13,6 +13,7 @@ class Bug2239 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.javax.annotation.PostConstruct
     @.ceylon.language.LateAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     private final .java.lang.String getEm$priv$() {
         if (this.em != null) {
             return em;

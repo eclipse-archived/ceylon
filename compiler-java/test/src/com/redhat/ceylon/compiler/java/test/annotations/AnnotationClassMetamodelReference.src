@@ -323,6 +323,7 @@ public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.com
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::obj")
     public static .com.redhat.ceylon.compiler.java.test.annotations.obj_ get_() {
         if (obj_.$init$value) {

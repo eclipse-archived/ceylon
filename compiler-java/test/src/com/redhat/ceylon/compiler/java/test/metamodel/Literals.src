@@ -36,7 +36,6 @@ class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     public final void setVariableAttribute(@.com.redhat.ceylon.compiler.java.metadata.Name("variableAttribute")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long variableAttribute) {
         this.variableAttribute = variableAttribute;
     }
@@ -115,12 +114,15 @@ class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime
     final long sharedAttributeAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("attributeAndParameter")
     final long attributeAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("parameterMethod")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer()")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> parameterMethod, @.com.redhat.ceylon.compiler.java.metadata.Name("sharedMethodAndParameter")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer()")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("methodAndParameter")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer()")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodAndParameter) {
         this.parameterAndSharedAttribute = parameterAndSharedAttribute;
@@ -188,12 +190,15 @@ class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compi
     final long sharedAttributeAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("attributeAndParameter")
     final long attributeAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("parameterMethod")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer()")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> parameterMethod, @.com.redhat.ceylon.compiler.java.metadata.Name("sharedMethodAndParameter")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer()")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter, @.com.redhat.ceylon.compiler.java.metadata.Name("methodAndParameter")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer()")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> methodAndParameter) {
         this.$reified$T = $reified$T;
@@ -280,7 +285,6 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
     }
     
     public final void setVariableAttribute(@.com.redhat.ceylon.compiler.java.metadata.Name("variableAttribute")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long variableAttribute) {
         this.variableAttribute = variableAttribute;
     }
@@ -768,6 +772,7 @@ public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.com
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.metamodel::obj")
     public static .com.redhat.ceylon.compiler.java.test.metamodel.obj_ get_() {
         if (obj_.$init$value) {
@@ -819,6 +824,7 @@ class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     RelativeLiterals(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("str")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.String str) {
         this.$reified$T = $reified$T;
@@ -831,6 +837,7 @@ class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     private final .java.lang.String str;
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public final .java.lang.String getStr() {
         return str;
     }
@@ -1110,7 +1117,6 @@ final class litVariable_ {
     }
     
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("litVariable")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long litVariable) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = litVariable;

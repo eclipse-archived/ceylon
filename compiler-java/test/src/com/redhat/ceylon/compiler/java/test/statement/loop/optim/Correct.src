@@ -195,12 +195,12 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         @.ceylon.language.SharedAnnotation$annotation$
         @.ceylon.language.ActualAnnotation$annotation$
         @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.NonNull
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
                 value = "com.redhat.ceylon.compiler.java.test.statement.loop.optim::Correct.MyOrdinal",
                 erased = true,
                 untrusted = true)
         public final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal neighbour(@.com.redhat.ceylon.compiler.java.metadata.Name("n")
-        @.com.redhat.ceylon.compiler.java.metadata.NonNull
         final long n) {
             return new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(getI() + n);
         }

@@ -26,6 +26,7 @@ class GenericWrapper<Value> implements .com.redhat.ceylon.compiler.java.runtime.
     
     GenericWrapper(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, @.com.redhat.ceylon.compiler.java.metadata.Name("val")
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Value?")
     @.ceylon.language.SharedAnnotation$annotation$
     final Value val) {
@@ -38,6 +39,7 @@ class GenericWrapper<Value> implements .com.redhat.ceylon.compiler.java.runtime.
     private final Value val;
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Value?")
     public final Value getVal() {
         return val;
@@ -46,6 +48,7 @@ class GenericWrapper<Value> implements .com.redhat.ceylon.compiler.java.runtime.
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .java.lang.String toString() {
         return (
@@ -124,6 +127,7 @@ class GenericWrapperSub extends .com.redhat.ceylon.compiler.java.test.structure.
     }
     
     GenericWrapperSub(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String s) {
         super(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(s));
     }

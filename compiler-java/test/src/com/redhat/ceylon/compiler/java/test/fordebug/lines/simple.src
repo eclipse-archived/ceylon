@@ -9,8 +9,11 @@ final class name_ {
     private name_() { // line 21
     }
      // line 21
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull // line 21
     static .java.lang.String name(@.com.redhat.ceylon.compiler.java.metadata.Name("firstName") // line 21
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull // line 21
     final .java.lang.String firstName, @.com.redhat.ceylon.compiler.java.metadata.Name("lastName") // line 21
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull // line 21
     final .java.lang.String lastName) { // line 21
         return new .java.lang.StringBuilder().append("My name is ").append(firstName).append(" ").append(lastName).append(". Hello !").toString(); // line 21
     }

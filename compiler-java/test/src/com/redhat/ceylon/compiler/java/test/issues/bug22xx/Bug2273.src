@@ -48,6 +48,7 @@ final class bug2273_ {
     private bug2273_() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug22xx::Bug2273?")
     static .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2273 bug2273() {
         return (

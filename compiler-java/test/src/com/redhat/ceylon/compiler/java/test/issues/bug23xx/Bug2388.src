@@ -31,12 +31,14 @@ public class Bug2388<Key, Value> implements .com.redhat.ceylon.compiler.java.run
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2388Java.Builder<Key, Value> delegate;
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug23xx::Bug2388Java.Builder<Key,Value>")
     private final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2388Java.Builder<Key, Value> getDelegate$priv$() {
         return delegate;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final .java.lang.Object capture() {
         return getDelegate$priv$();

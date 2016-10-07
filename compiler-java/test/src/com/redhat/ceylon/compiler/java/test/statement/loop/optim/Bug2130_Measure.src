@@ -64,9 +64,7 @@ final class compareMeasureInteger2130_ {
     }
     
     static void compareMeasureInteger2130(@.com.redhat.ceylon.compiler.java.metadata.Name("start")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long start, @.com.redhat.ceylon.compiler.java.metadata.Name("length")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long length, @.com.redhat.ceylon.compiler.java.metadata.Name("expect")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.Nullable
@@ -77,7 +75,6 @@ final class compareMeasureInteger2130_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
     final .ceylon.language.Integer breakAfter, @.com.redhat.ceylon.compiler.java.metadata.Name("debug")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final boolean debug) {
         final VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.String>> problems = new VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.String>>((.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
         final .com.redhat.ceylon.compiler.java.language.VariableBoxLong index = new .com.redhat.ceylon.compiler.java.language.VariableBoxLong(0L);
@@ -278,11 +275,8 @@ final class compareMeasureIntegerBy2130_ {
     }
     
     static void compareMeasureIntegerBy2130(@.com.redhat.ceylon.compiler.java.metadata.Name("start")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long start, @.com.redhat.ceylon.compiler.java.metadata.Name("length")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long length, @.com.redhat.ceylon.compiler.java.metadata.Name("by")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long by, @.com.redhat.ceylon.compiler.java.metadata.Name("expect")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.Nullable
@@ -486,10 +480,8 @@ final class compareMeasureCharacter2130_ {
     }
     
     static void compareMeasureCharacter2130(@.com.redhat.ceylon.compiler.java.metadata.Name("start")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character")
     final int start, @.com.redhat.ceylon.compiler.java.metadata.Name("length")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long length, @.com.redhat.ceylon.compiler.java.metadata.Name("expect")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.Nullable
@@ -692,12 +684,9 @@ final class compareMeasureCharacterBy2130_ {
     }
     
     static void compareMeasureCharacterBy2130(@.com.redhat.ceylon.compiler.java.metadata.Name("start")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character")
     final int start, @.com.redhat.ceylon.compiler.java.metadata.Name("length")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long length, @.com.redhat.ceylon.compiler.java.metadata.Name("by")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long by, @.com.redhat.ceylon.compiler.java.metadata.Name("expect")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.Nullable

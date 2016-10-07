@@ -186,7 +186,6 @@ final class smallConversion1_ {
     }
     
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("smallConversion1")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final int smallConversion1) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = smallConversion1;
@@ -225,7 +224,6 @@ final class smallConversion3_ {
     }
     
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("smallConversion3")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final int smallConversion3) {
     }
 }

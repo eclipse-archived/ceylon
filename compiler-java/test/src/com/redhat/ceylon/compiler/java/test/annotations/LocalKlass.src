@@ -82,6 +82,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             private getter$getter$_() {
             }
             
+            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             @.com.redhat.ceylon.compiler.java.metadata.Transient
             public .java.lang.String get_() {
                 
@@ -181,7 +182,6 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             }
             
             public final void setI2(@.com.redhat.ceylon.compiler.java.metadata.Name("i2")
-            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             final long i2) {
             }
             
@@ -203,7 +203,6 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             
             @.ceylon.language.SharedAnnotation$annotation$
             public final void m2(@.com.redhat.ceylon.compiler.java.metadata.Name("arg1")
-            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             final long arg1, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
             @.com.redhat.ceylon.compiler.java.metadata.Sequenced
             @.com.redhat.ceylon.compiler.java.metadata.NonNull
@@ -221,6 +220,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             @.ceylon.language.SharedAnnotation$annotation$
             @.ceylon.language.ActualAnnotation$annotation$
             @.java.lang.Override
+            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
                     value = "com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.1Local<T>",
                     erased = true,

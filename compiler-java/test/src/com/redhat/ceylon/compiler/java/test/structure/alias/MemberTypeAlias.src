@@ -94,6 +94,7 @@ public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.ru
         }
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface",
             erased = true)
@@ -106,6 +107,7 @@ public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.ru
         return f;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface",
             erased = true)
@@ -118,6 +120,7 @@ public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.ru
         return f;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass")
     private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.TypeAliasClass classAliasMethod3$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.NonNull
@@ -126,6 +129,7 @@ public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.ru
         return f;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
     private final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass$TypeAliasInterface classAliasMethod4$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.NonNull
@@ -257,6 +261,7 @@ public final class MemberTypeAliasInterface$impl implements .java.io.Serializabl
         }
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface",
             erased = true)
@@ -269,6 +274,7 @@ public final class MemberTypeAliasInterface$impl implements .java.io.Serializabl
         return f;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface",
             erased = true)
@@ -281,6 +287,7 @@ public final class MemberTypeAliasInterface$impl implements .java.io.Serializabl
         return f;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass")
     private .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$impl.TypeAliasClass classAliasMethod3$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.NonNull
@@ -289,6 +296,7 @@ public final class MemberTypeAliasInterface$impl implements .java.io.Serializabl
         return f;
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface")
     private .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface$TypeAliasInterface classAliasMethod4$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.NonNull

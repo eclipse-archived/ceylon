@@ -97,6 +97,7 @@ final class javaIoSerializableObject_ extends .java.lang.Object implements .java
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::javaIoSerializableObject")
     static .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_ get_() {
         if (javaIoSerializableObject_.$init$value) {
@@ -147,6 +148,7 @@ final class javaIoSerializableBasic_ extends .java.lang.Object implements .java.
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::javaIoSerializableBasic")
     static .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_ get_() {
         if (javaIoSerializableBasic_.$init$value) {
@@ -196,6 +198,7 @@ interface JavaIoSerializable {
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.DefaultAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Anything",
             declaredVoid = true)
@@ -284,6 +287,7 @@ class JavaIoSerializableCtors implements .com.redhat.ceylon.compiler.java.runtim
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::JavaIoSerializableCtors.foo")
     @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
     public static final .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors getJavaIoSerializableCtors$foo() {
@@ -314,6 +318,7 @@ class JavaIoSerializableCtors implements .com.redhat.ceylon.compiler.java.runtim
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::JavaIoSerializableCtors.bar")
     @.com.redhat.ceylon.compiler.java.metadata.Name("bar")
     public static final .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors getJavaIoSerializableCtors$bar() {
@@ -369,6 +374,7 @@ class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.r
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::JavaIoSerializableValueCtors.foo")
     @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
     public static final .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors getJavaIoSerializableValueCtors$foo() {
@@ -399,6 +405,7 @@ class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.r
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::JavaIoSerializableValueCtors.bar")
     @.com.redhat.ceylon.compiler.java.metadata.Name("bar")
     public static final .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors getJavaIoSerializableValueCtors$bar() {
@@ -465,6 +472,7 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::Outer.javaIoSerializableObject")
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.javaIoSerializableObject_ getJavaIoSerializableObject() {
         if (javaIoSerializableObject == null) javaIoSerializableObject = new .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.javaIoSerializableObject_();
@@ -486,6 +494,7 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::Outer.JavaIoSerializableValueCtors.foo")
     @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
     .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.JavaIoSerializableValueCtors getJavaIoSerializableValueCtors$foo() {
@@ -508,6 +517,7 @@ class Outer implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::Outer.JavaIoSerializableValueCtors.bar")
     @.com.redhat.ceylon.compiler.java.metadata.Name("bar")
     .com.redhat.ceylon.compiler.java.test.structure.klass.Outer.JavaIoSerializableValueCtors getJavaIoSerializableValueCtors$bar() {
@@ -597,6 +607,7 @@ final class javaIoSerializableQuoting_ implements .java.io.Serializable, .com.re
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::javaIoSerializableQuoting")
     static .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_ get_() {
         if (javaIoSerializableQuoting_.$init$value) {
@@ -647,6 +658,7 @@ class JavaIoSerializableQuoting implements .com.redhat.ceylon.compiler.java.runt
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Enumerated
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::JavaIoSerializableQuoting.val")
     @.com.redhat.ceylon.compiler.java.metadata.Name("val")
     public static final .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableQuoting getJavaIoSerializableQuoting$val() {

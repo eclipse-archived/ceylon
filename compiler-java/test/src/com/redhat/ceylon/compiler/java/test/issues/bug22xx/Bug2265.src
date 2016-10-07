@@ -12,6 +12,7 @@ class Bug2265 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private .ceylon.language.String foo;
     
     @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
     private final .ceylon.language.String getFoo$priv$() {
         return foo;

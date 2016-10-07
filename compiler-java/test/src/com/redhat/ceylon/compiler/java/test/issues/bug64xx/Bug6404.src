@@ -12,6 +12,7 @@ interface Bug6404I<T> {
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Anything",
             declaredVoid = true)
@@ -29,6 +30,7 @@ interface Bug6404Gettable<T> {
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug64xx::Bug6404I<T>")
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I<T> get();
 }
@@ -54,6 +56,7 @@ class Bug6404C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug64xx::Bug6404I<T>")
     public final .com.redhat.ceylon.compiler.java.test.issues.bug64xx.Bug6404I<T> get() {
         return (
@@ -75,6 +78,7 @@ class Bug6404C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
                     @.ceylon.language.SharedAnnotation$annotation$
                     @.ceylon.language.ActualAnnotation$annotation$
                     @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.Nullable
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
                             value = "ceylon.language::Anything",
                             declaredVoid = true)

@@ -43,6 +43,7 @@ final class EnumeratedReference implements .com.redhat.ceylon.compiler.java.runt
     }
     
     EnumeratedReference(@.com.redhat.ceylon.compiler.java.metadata.Name("comparison")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Comparison")
     @.ceylon.language.SharedAnnotation$annotation$
     final .ceylon.language.Comparison comparison) {
@@ -52,6 +53,7 @@ final class EnumeratedReference implements .com.redhat.ceylon.compiler.java.runt
     private final .ceylon.language.Comparison comparison;
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Comparison")
     public final .ceylon.language.Comparison getComparison() {
         return comparison;
@@ -84,6 +86,7 @@ final class enumeratedReference_ {
     }
     
     @.ceylon.language.AnnotationAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::EnumeratedReference")
     static .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference enumeratedReference(@.com.redhat.ceylon.compiler.java.metadata.Name("comparison")
     @.com.redhat.ceylon.compiler.java.metadata.NonNull
@@ -141,6 +144,7 @@ final class EnumeratedReferenceVariadic implements .com.redhat.ceylon.compiler.j
     
     EnumeratedReferenceVariadic(@.com.redhat.ceylon.compiler.java.metadata.Name("comparison")
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Comparison[]")
     @.ceylon.language.SharedAnnotation$annotation$
     final .ceylon.language.Sequential<? extends .ceylon.language.Comparison> comparison) {
@@ -150,6 +154,7 @@ final class EnumeratedReferenceVariadic implements .com.redhat.ceylon.compiler.j
     private final .ceylon.language.Sequential<? extends .ceylon.language.Comparison> comparison;
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Comparison[]")
     public final .ceylon.language.Sequential<? extends .ceylon.language.Comparison> getComparison() {
         return comparison;
@@ -193,6 +198,7 @@ final class enumeratedReferenceVariadic_ {
     }
     
     @.ceylon.language.AnnotationAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::EnumeratedReferenceVariadic")
     static .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceVariadic enumeratedReferenceVariadic(@.com.redhat.ceylon.compiler.java.metadata.Name("comparison")
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
@@ -251,6 +257,7 @@ final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.
     
     EnumeratedReferenceDefaulted(@.com.redhat.ceylon.compiler.java.metadata.Name("comparison")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Comparison")
     @.ceylon.language.SharedAnnotation$annotation$
     final .ceylon.language.Comparison comparison) {
@@ -260,6 +267,7 @@ final class EnumeratedReferenceDefaulted implements .com.redhat.ceylon.compiler.
     private final .ceylon.language.Comparison comparison;
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Comparison")
     public final .ceylon.language.Comparison getComparison() {
         return comparison;
@@ -314,6 +322,7 @@ final class enumeratedReferenceDefaulted_ {
     }
     
     @.ceylon.language.AnnotationAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::EnumeratedReferenceDefaulted")
     static .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReferenceDefaulted enumeratedReferenceDefaulted(@.com.redhat.ceylon.compiler.java.metadata.Name("comparison")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted

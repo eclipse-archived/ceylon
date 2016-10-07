@@ -73,6 +73,7 @@ interface Bug1625_3<T> {
     
     @.ceylon.language.FormalAnnotation$annotation$
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Anything",
             declaredVoid = true)
@@ -85,6 +86,7 @@ interface Bug1625_3<T> {
     
     @.ceylon.language.FormalAnnotation$annotation$
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T[]")
     public abstract .ceylon.language.Sequential<? extends T> getTs();
 }

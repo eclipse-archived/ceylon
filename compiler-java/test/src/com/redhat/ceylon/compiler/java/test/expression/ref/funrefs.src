@@ -14,6 +14,7 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     }
     
     Person(@.com.redhat.ceylon.compiler.java.metadata.Name("name")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.String name) {
         this.name = name;
@@ -22,6 +23,7 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private final .java.lang.String name;
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public final .java.lang.String getName() {
         return name;
     }
@@ -39,8 +41,11 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     public class Address implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Address(@.com.redhat.ceylon.compiler.java.metadata.Name("house")
+        @.com.redhat.ceylon.compiler.java.metadata.NonNull
         final .java.lang.String house, @.com.redhat.ceylon.compiler.java.metadata.Name("street")
+        @.com.redhat.ceylon.compiler.java.metadata.NonNull
         final .java.lang.String street, @.com.redhat.ceylon.compiler.java.metadata.Name("city")
+        @.com.redhat.ceylon.compiler.java.metadata.NonNull
         final .java.lang.String city) {
             this.house = house;
             this.street = street;
@@ -49,23 +54,27 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .java.lang.String house;
         
+        @.com.redhat.ceylon.compiler.java.metadata.NonNull
         private final .java.lang.String getHouse$priv$() {
             return house;
         }
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .java.lang.String street;
         
+        @.com.redhat.ceylon.compiler.java.metadata.NonNull
         private final .java.lang.String getStreet$priv$() {
             return street;
         }
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .java.lang.String city;
         
+        @.com.redhat.ceylon.compiler.java.metadata.NonNull
         private final .java.lang.String getCity$priv$() {
             return city;
         }
         
         @.ceylon.language.SharedAnnotation$annotation$
+        @.com.redhat.ceylon.compiler.java.metadata.NonNull
         public final .java.lang.String format() {
             return new .java.lang.StringBuilder().append(getHouse$priv$()).append("\n").append(getStreet$priv$()).append("\n").append(getCity$priv$()).toString();
         }

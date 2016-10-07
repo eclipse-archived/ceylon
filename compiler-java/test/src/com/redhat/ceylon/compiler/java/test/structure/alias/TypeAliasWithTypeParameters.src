@@ -91,6 +91,7 @@ final class typeAliasWithTypeParametersMethod1_ {
     private typeAliasWithTypeParametersMethod1_() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>&com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::String>",
             erased = true)
@@ -112,6 +113,7 @@ final class typeAliasWithTypeParametersMethod2_ {
     private typeAliasWithTypeParametersMethod2_() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<ceylon.language::Integer>|com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<ceylon.language::Integer>",
             erased = true)
@@ -133,6 +135,7 @@ final class typeAliasWithTypeParametersMethod3_ {
     private typeAliasWithTypeParametersMethod3_() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersClass<T>")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
             @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
@@ -163,6 +166,7 @@ final class typeAliasWithTypeParametersMethod4_ {
     private typeAliasWithTypeParametersMethod4_() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasWithTypeParametersInterface<V>")
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({
             @.com.redhat.ceylon.compiler.java.metadata.TypeParameter(

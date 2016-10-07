@@ -76,6 +76,7 @@ final class typeAliasMethod1_ {
     private typeAliasMethod1_() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasInterface",
             erased = true)
@@ -97,6 +98,7 @@ final class typeAliasMethod2_ {
     private typeAliasMethod2_() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasInterface",
             erased = true)
@@ -118,6 +120,7 @@ final class typeAliasMethod3_ {
     private typeAliasMethod3_() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasClass")
     static .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasClass typeAliasMethod3(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.NonNull
@@ -135,6 +138,7 @@ final class typeAliasMethod4_ {
     private typeAliasMethod4_() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::TypeAliasInterface")
     static .com.redhat.ceylon.compiler.java.test.structure.alias.TypeAliasInterface typeAliasMethod4(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.NonNull

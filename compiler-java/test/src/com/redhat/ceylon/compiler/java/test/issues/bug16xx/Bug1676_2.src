@@ -30,6 +30,7 @@ final class Bug1676_2_A implements .com.redhat.ceylon.compiler.java.runtime.mode
     }
     
     Bug1676_2_A(@.com.redhat.ceylon.compiler.java.metadata.Name("x")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_B")
     final .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B x) {
     }
@@ -102,6 +103,7 @@ final class bug1676_2_A_ {
     }
     
     @.ceylon.language.AnnotationAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_A")
     static .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_A bug1676_2_A() {
         throw new .com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
@@ -120,6 +122,7 @@ final class bug1676_2_B_ {
     }
     
     @.ceylon.language.AnnotationAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_B")
     static .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B bug1676_2_B(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.NonNull
@@ -140,6 +143,7 @@ class Bug1676_2_site implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     Bug1676_2_site(@.com.redhat.ceylon.compiler.java.metadata.Name("bug1676_2_B")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug16xx::Bug1676_2_B()")
     final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1676_2_B> bug1676_2_B) {
     }

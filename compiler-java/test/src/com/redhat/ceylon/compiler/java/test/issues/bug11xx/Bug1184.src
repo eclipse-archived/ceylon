@@ -25,6 +25,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public final .java.lang.String narySequenced(@.com.redhat.ceylon.compiler.java.metadata.Name("s1")
     @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String s1, @.com.redhat.ceylon.compiler.java.metadata.Name("s2")
@@ -41,6 +42,7 @@ class Bug1184 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         return narySequenced$canonical$(s1, s2, s3, s4, s);
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug11xx::Bug1184")
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1184 self$priv$() {
         return this;

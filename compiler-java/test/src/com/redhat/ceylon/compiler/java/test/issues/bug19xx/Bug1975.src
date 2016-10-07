@@ -16,15 +16,19 @@ class Bug1975 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     Bug1975(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("(a)")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer(ceylon.language::String)")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> f, @.com.redhat.ceylon.compiler.java.metadata.Name("g")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("(a)")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer(ceylon.language::String)")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> g, @.com.redhat.ceylon.compiler.java.metadata.Name("h")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("(a)")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer(ceylon.language::String)")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> h, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("(a)")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer(ceylon.language::String)")
     final .ceylon.language.Callable<? extends .ceylon.language.Integer> i) {
         this.g = g;

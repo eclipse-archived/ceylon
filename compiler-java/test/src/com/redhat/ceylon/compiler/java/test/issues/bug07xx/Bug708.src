@@ -9,6 +9,7 @@ final class bug708_ {
     private bug708_() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
@@ -73,10 +74,12 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     Bug708_Class(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("param")
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
     final .java.lang.Object param, @.com.redhat.ceylon.compiler.java.metadata.Name("param2")
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
@@ -108,6 +111,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.Object param;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
@@ -118,6 +122,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final .java.lang.Object attr;
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
@@ -128,6 +133,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final .java.lang.Object param2;
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
@@ -136,6 +142,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
@@ -669,6 +676,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::String|ceylon.language::Null|T",
             erased = true)
@@ -702,6 +710,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug07xx::Bug708Map<T>")
     public final .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<T> $clone() {
         return this;
@@ -710,6 +719,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Iterator<ceylon.language::Integer->ceylon.language::String|T>",
             erased = true)
@@ -720,6 +730,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Set<ceylon.language::Integer>")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .ceylon.language.Set<? extends .ceylon.language.Integer> getKeys() {
@@ -729,6 +740,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Collection<ceylon.language::String|T>",
             erased = true)
@@ -760,7 +772,6 @@ public final class bug708_test2_ {
     
     @.ceylon.language.SharedAnnotation$annotation$
     public static void bug708_test2(@.com.redhat.ceylon.compiler.java.metadata.Name("key")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long key) {
         .ceylon.language.String entry$17;
         if ((entry$17 = (.ceylon.language.String)(.ceylon.language.String)((.ceylon.language.Correspondence<? super .java.lang.Object, ? extends .ceylon.language.String>)(.ceylon.language.Correspondence).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_cache_.get_()).get(.ceylon.language.Integer.instance(key))) != null) {
@@ -989,6 +1000,7 @@ final class bug708_cache_ {
         }
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug07xx::Bug708Map<ceylon.language::String>")
     public static .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<.ceylon.language.String> get_() {
         if (bug708_cache_.$init$value) {

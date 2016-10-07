@@ -25,6 +25,7 @@ class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.LateAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public final .java.lang.String getLate() {
         if (this.late != null) {
             return late;
@@ -49,6 +50,7 @@ class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.LateAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public final .java.lang.String getLateVariable() {
         if (this.lateVariable != null) {
             return lateVariable;
@@ -69,6 +71,7 @@ class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.LateAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
     public final .ceylon.language.String getLateOpt() {
         if (this.$init$lateOpt) {
@@ -98,6 +101,7 @@ class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.LateAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
     public final .ceylon.language.String getLateVariableOpt() {
         if (this.$init$lateVariableOpt) {

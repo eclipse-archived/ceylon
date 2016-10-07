@@ -65,6 +65,7 @@ class Bug5898 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         @.ceylon.language.SharedAnnotation$annotation$
         @.ceylon.language.ActualAnnotation$annotation$
         @.java.lang.Override
+        @.com.redhat.ceylon.compiler.java.metadata.NonNull
         public final .java.lang.String toString() {
             return string;
         }
@@ -85,6 +86,7 @@ class Bug5898 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         @.com.redhat.ceylon.compiler.java.metadata.Name("create2")
         public D(@.com.redhat.ceylon.compiler.java.metadata.Ignore
         .com.redhat.ceylon.compiler.java.test.expression.ref.Bug5898.D$create2 $name$, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
+        @.com.redhat.ceylon.compiler.java.metadata.NonNull
         final .java.lang.String s$param$) {
             string = s$param$;
         }

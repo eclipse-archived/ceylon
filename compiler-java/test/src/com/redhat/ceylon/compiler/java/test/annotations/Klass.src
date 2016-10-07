@@ -40,9 +40,11 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     public Klass(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
     final long p1, @.com.redhat.ceylon.compiler.java.metadata.Name("p2")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
     final .ceylon.language.Integer p2, @.com.redhat.ceylon.compiler.java.metadata.Name("p3")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]")
     final .ceylon.language.Sequential<? extends .ceylon.language.Integer> p3) {
     }
@@ -59,12 +61,12 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long m1(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long p1) {
         return 1L;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
     public final .ceylon.language.Integer m2(@.com.redhat.ceylon.compiler.java.metadata.Name("p2")
     @.com.redhat.ceylon.compiler.java.metadata.Nullable
@@ -74,6 +76,7 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]")
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> m3(@.com.redhat.ceylon.compiler.java.metadata.Name("p3")
     @.com.redhat.ceylon.compiler.java.metadata.NonNull

@@ -21,13 +21,11 @@ public interface TopInterface {
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
     public abstract long topFormalMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long p1);
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.DefaultAnnotation$annotation$
     public long concreteDefaultMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long p1);
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -37,7 +35,6 @@ public interface TopInterface {
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
     public abstract long topFormalMethod2(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long p1);
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.TopInterface.class);
@@ -92,18 +89,15 @@ public interface Interface extends .com.redhat.ceylon.compiler.java.test.annotat
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
     public long topFormalMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long p1);
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
     public abstract long formalMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long p1);
     
     @.ceylon.language.SharedAnnotation$annotation$
     public long concreteMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long p1);
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -111,7 +105,6 @@ public interface Interface extends .com.redhat.ceylon.compiler.java.test.annotat
     @.ceylon.language.FormalAnnotation$annotation$
     @.java.lang.Override
     public abstract long concreteDefaultMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long p1);
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -124,7 +117,6 @@ public interface Interface extends .com.redhat.ceylon.compiler.java.test.annotat
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
     public long topFormalMethod2(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long p1);
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.Interface.class);
