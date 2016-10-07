@@ -587,8 +587,8 @@ public class TreeUtil {
     }
 
     public static boolean isSelfReference(Tree.Primary that) {
-        return that instanceof Tree.This || 
-                that instanceof Tree.Outer;
+        return that instanceof Tree.This 
+            || that instanceof Tree.Outer;
     }
 
     public static boolean isEffectivelyBaseMemberExpression(Tree.Term term) {
