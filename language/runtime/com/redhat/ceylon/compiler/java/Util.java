@@ -27,6 +27,7 @@ import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
 import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.NonNull;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -1963,5 +1964,13 @@ public class Util {
             array[i++] = val;
         }
         return new Tuple<T,T,Sequential<? extends T>>($reifiedT, array);
+    }
+    
+    @NonNull
+    public static <T> T assertExists(T instance) {
+        if (instance == null) {
+            throw new AssertionError("violated exists assertion");
+        }
+        return instance;
     }
 }
