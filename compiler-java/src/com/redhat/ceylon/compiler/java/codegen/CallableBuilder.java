@@ -1858,21 +1858,10 @@ public class CallableBuilder {
         pdb.type(type, null);
         return pdb;
     }
-    
-
-
-    //Target target = new Target(null);
 
     private TypedReference functionalInterfaceMethod;
 
     private Type functionalInterface;
-    
-    class Target {
-        Tree.Term forwardCallTo;
-        Target(Tree.Term forwardCallTo) {
-            this.forwardCallTo = forwardCallTo;
-        }
-    }
     
     public void functionalInterface(Type interfaceType, TypedReference method) {
         this.functionalInterface = interfaceType;
