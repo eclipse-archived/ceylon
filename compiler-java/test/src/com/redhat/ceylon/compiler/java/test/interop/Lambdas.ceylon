@@ -75,6 +75,7 @@ void lambdas() {
     j.intConsumer(toplevelSmall);
     
     j.intConsumer((Integer i) => print(i));
+    j.intConsumer((Integer i=2, Integer j=3) => print(i));
     j.intSupplier(() => 1);
     j.intSuppliers();
     j.intSuppliers(() => 1);
