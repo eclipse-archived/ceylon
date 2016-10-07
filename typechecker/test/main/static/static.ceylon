@@ -26,6 +26,10 @@ void testClassWithStaticMembers() {
     ClassWithStaticMembers.Inner innerIt = ClassWithStaticMembers.Inner();
     object impl satisfies ClassWithStaticMembers.Inter {}
     ClassWithStaticMembers.Name nameStr = "Gavin";
+    
+    @error ClassWithStaticMembers().hello();
+    @error ClassWithStaticMembers().name.clone();
+    @error ClassWithStaticMembers().Inner();
 }
 
 interface InterfaceWithStaticMembers {
