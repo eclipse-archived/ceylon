@@ -133,6 +133,9 @@ public class CallableBuilder {
     private final int minimumArguments;
     private final boolean hasOptionalParameters;
     private final boolean isVariadic;
+    private TypedReference functionalInterfaceMethod;
+    private Type functionalInterface;
+
     /**
      * For deferred declarations the default parameter value methods are 
      * generated on the wrapper class, not on the Callable (#1177)
@@ -1859,10 +1862,6 @@ public class CallableBuilder {
         return pdb;
     }
 
-    private TypedReference functionalInterfaceMethod;
-
-    private Type functionalInterface;
-    
     public void functionalInterface(Type interfaceType, TypedReference method) {
         this.functionalInterface = interfaceType;
         this.functionalInterfaceMethod = method;
