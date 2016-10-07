@@ -11,21 +11,8 @@ import com.redhat.ceylon.compiler.js.util.JsIdentifierNames;
 import com.redhat.ceylon.compiler.js.util.RetainedVars;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.model.typechecker.model.*;
 import com.redhat.ceylon.model.typechecker.model.Class;
-import com.redhat.ceylon.model.typechecker.model.Declaration;
-import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Generic;
-import com.redhat.ceylon.model.typechecker.model.Interface;
-import com.redhat.ceylon.model.typechecker.model.ModelUtil;
-import com.redhat.ceylon.model.typechecker.model.Parameter;
-import com.redhat.ceylon.model.typechecker.model.ParameterList;
-import com.redhat.ceylon.model.typechecker.model.Scope;
-import com.redhat.ceylon.model.typechecker.model.SiteVariance;
-import com.redhat.ceylon.model.typechecker.model.Type;
-import com.redhat.ceylon.model.typechecker.model.TypeParameter;
-import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
-import com.redhat.ceylon.model.typechecker.model.Value;
 
 /** Generates js code for invocation expression (named and positional). */
 public class InvocationGenerator {
@@ -54,8 +41,12 @@ public class InvocationGenerator {
             final Declaration d = smote.getDeclaration();
             final boolean hasTargs = d != null && d.getContainer() instanceof Generic
                     && !((Generic)d.getContainer()).getTypeParameters().isEmpty();
+            final boolean hasParentTargs = TypeUtils.isStaticWithGenericContainer(d);
+            //TODO if the type is static AND has type arguments of its own, we need to merge them
             if (hasTargs && TypeUtils.isConstructor(d)) {
                 return smote.getTarget().getTypeArguments();
+            } else if (hasParentTargs) {
+                return smote.getTarget().getQualifyingType().getTypeArguments();
             } else if (d instanceof Functional) {
                 Map<TypeParameter,Type> targs = TypeUtils.matchTypeParametersWithArguments(
                         ((Generic)d).getTypeParameters(),

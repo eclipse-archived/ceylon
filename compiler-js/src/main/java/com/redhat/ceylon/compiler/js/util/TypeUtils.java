@@ -1592,4 +1592,11 @@ public class TypeUtils {
         return false;
     }
 
+    public static boolean isStaticWithGenericContainer(Declaration d) {
+        if (d != null && d.isStatic() && d.getContainer() instanceof Generic) {
+            Generic c = (Generic)d.getContainer();
+            return c.getTypeParameters() != null && !c.getTypeParameters().isEmpty();
+        }
+        return false;
+    }
 }

@@ -365,8 +365,9 @@ public class TypeGenerator {
     static boolean generateParameters(final Tree.TypeParameterList tparms,
             final Tree.ParameterList plist, final TypeDeclaration d, final GenerateJsVisitor gen) {
         gen.out("(");
-        final boolean withTargs = tparms != null &&
-                !tparms.getTypeParameterDeclarations().isEmpty();
+        final boolean withTargs = (tparms != null &&
+                !tparms.getTypeParameterDeclarations().isEmpty()) ||
+                TypeUtils.isStaticWithGenericContainer(d);
         if (plist != null) {
             for (Tree.Parameter p: plist.getParameters()) {
                 p.visit(gen);
