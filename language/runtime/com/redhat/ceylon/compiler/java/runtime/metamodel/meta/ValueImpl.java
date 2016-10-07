@@ -18,6 +18,7 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Nullable;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -285,7 +286,7 @@ public class ValueImpl<Get, Set>
 
     @SuppressWarnings("unchecked")
     @Override
-    public java.lang.Object $setIfAssignable(@Name("newValue") @TypeInfo("ceylon.language::Anything") java.lang.Object newValue){
+    public java.lang.Object $setIfAssignable(@Name("newValue") @TypeInfo("ceylon.language::Anything") @Nullable java.lang.Object newValue){
         Type newValueType = Metamodel.getProducedType(newValue);
         if(!newValueType.isSubtypeOf(this.producedType))
             throw new IncompatibleTypeException("Invalid new value type: "+newValueType+", expecting: "+this.producedType);

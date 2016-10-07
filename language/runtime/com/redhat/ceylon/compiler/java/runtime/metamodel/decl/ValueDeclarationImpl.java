@@ -17,6 +17,7 @@ import ceylon.language.meta.declaration.ValueDeclaration$impl;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Nullable;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -193,14 +194,14 @@ public class ValueDeclarationImpl
 
     @TypeInfo("ceylon.language::Anything")
     @Override
-    public Object set(@TypeInfo("ceylon.language::Anything") @Name("newValue") Object newValue){
+    public Object set(@TypeInfo("ceylon.language::Anything") @Name("newValue") @Nullable Object newValue){
         return apply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType).$setIfAssignable(newValue);
     }
 
     @TypeInfo("ceylon.language::Anything")
     @Override
     public Object memberSet(@Name("container") @TypeInfo("ceylon.language::Object") Object container,
-            @TypeInfo("ceylon.language::Anything") @Name("newValue") Object newValue){
+            @TypeInfo("ceylon.language::Anything") @Name("newValue") @Nullable Object newValue){
         ceylon.language.meta.model.Type<?> containerType = Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(container));
         return memberApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor$, TypeDescriptor.NothingType, containerType).bind(container).$setIfAssignable(newValue);
     }

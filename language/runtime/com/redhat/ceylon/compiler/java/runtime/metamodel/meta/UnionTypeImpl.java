@@ -12,6 +12,7 @@ import ceylon.language.meta.model.Type$impl;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Nullable;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -103,7 +104,7 @@ public class UnionTypeImpl<Union>
     }
 
     @Override
-    public boolean typeOf(@TypeInfo("ceylon.language::Anything") Object instance){
+    public boolean typeOf(@TypeInfo("ceylon.language::Anything") @Nullable Object instance){
         return Metamodel.isTypeOf(model, instance);
     }
 

@@ -9,6 +9,7 @@ import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Nullable;
 import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
@@ -1169,7 +1170,7 @@ public abstract class ClassOrInterfaceImpl<Type>
     }
 
     @Override
-    public boolean typeOf(@TypeInfo("ceylon.language::Anything") Object instance){
+    public boolean typeOf(@TypeInfo("ceylon.language::Anything") @Nullable Object instance){
         return Metamodel.isTypeOf(producedType, instance);
     }
     
