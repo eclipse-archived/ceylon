@@ -58,6 +58,7 @@ public class SpecificationVisitor extends Visitor {
     private boolean endsInReturnThrow = false;
     private boolean endsInBreak = false;
     private boolean inExtends = false;
+    private boolean inDelegatedContructor = false;
     private boolean inAnonFunctionOrComprehension = false;
     private Parameter parameter = null;
     private boolean usedInDeclarationSection = false;
@@ -194,12 +195,18 @@ public class SpecificationVisitor extends Visitor {
         if (isSelfReference(that.getPrimary())) {
             visitReference(that);
         }
+        if (that.getStaticMethodReference()) {
+            visitReference(that);
+        }
     }
 
     @Override
     public void visit(Tree.QualifiedTypeExpression that) {
         super.visit(that);
         if (isSelfReference(that.getPrimary())) {
+            visitReference(that);
+        }
+        if (that.getStaticMethodReference()) {
             visitReference(that);
         }
     }
@@ -231,9 +238,6 @@ public class SpecificationVisitor extends Visitor {
                 //TODO: THIS IS TERRIBLE!!!!!
                 !isReferenceToNativeHeaderMember(scope)) {
             if (!declared) {
-                //you are allowed to refer to later 
-                //declarations in a class declaration
-                //section or interface
                 if (!metamodel && 
                         !isForwardReferenceable() && 
                         !hasParameter) {
@@ -313,8 +317,18 @@ public class SpecificationVisitor extends Visitor {
     }
 
     private boolean isForwardReferenceable() {
+        // we are permitted to refer to a later 
+        // declaration:
+        // - in a class declaration section or
+        //   interface, 
+        // - if it is toplevel
+        // - if it is a constructor, and we're
+        //   not in an extends clause
+        
         return declarationSection 
-            || declaration.isToplevel();
+            || declaration.isToplevel()
+            || !inDelegatedContructor 
+                && isConstructor(declaration);
     }
     
     @Override
@@ -632,7 +646,11 @@ public class SpecificationVisitor extends Visitor {
     
     @Override 
     public void visit(Tree.DelegatedConstructor that) {
+        boolean odc = inDelegatedContructor;
+        inDelegatedContructor = true;
         super.visit(that);
+        inDelegatedContructor = odc;
+                
         Tree.SimpleType type = that.getType();
         if (type!=null) {
             delegatedConstructor = 
