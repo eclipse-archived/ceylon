@@ -503,3 +503,14 @@ shared void testWithAssertion() {
     WithAssertion("Hello").do("Hello");
     WithAssertion.withGreeting("Hello").do("Hello");
 }
+
+class BadNew {
+    @error shared new () extends create() {}
+    @error shared new create() extends make() {}
+    shared new make() {}
+}
+class GoodNew {
+    shared new make() {}
+    shared new create() extends make() {}
+    shared new () extends create() {}
+}
