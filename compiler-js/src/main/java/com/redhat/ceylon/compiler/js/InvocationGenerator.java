@@ -46,6 +46,12 @@ public class InvocationGenerator {
             if (hasTargs && TypeUtils.isConstructor(d)) {
                 return smote.getTarget().getTypeArguments();
             } else if (hasParentTargs) {
+                if (smote.getTypeArguments() != null && !smote.getTypeArguments().getTypeModels().isEmpty()) {
+                    Map<TypeParameter, Type> targs = new HashMap<>();
+                    targs.putAll(smote.getTarget().getTypeArguments());
+                    targs.putAll(smote.getTarget().getQualifyingType().getTypeArguments());
+                    return targs;
+                }
                 return smote.getTarget().getQualifyingType().getTypeArguments();
             } else if (d instanceof Functional) {
                 Map<TypeParameter,Type> targs = TypeUtils.matchTypeParametersWithArguments(
