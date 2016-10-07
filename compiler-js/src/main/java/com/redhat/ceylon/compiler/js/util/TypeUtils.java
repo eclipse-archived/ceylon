@@ -165,7 +165,7 @@ public class TypeUtils {
             for (ClassOrInterface p : parents) {
                 if (p==scope) {
                     if (gen.opts.isOptimize()) {
-                        sb.append(gen.getNames().name(p)).append('.');
+                        sb.append(gen.getNames().self(p)).append('.');
                     }
                 } else {
                     if (!first) {
@@ -183,7 +183,8 @@ public class TypeUtils {
             }
             if (t.isStatic()) {
                 sb.append("$st$.");
-            } else if (t.getContainer() instanceof ClassOrInterface && gen.opts.isOptimize()) {
+            } else if (t.getContainer() != scope && t.getContainer() instanceof ClassOrInterface &&
+                    gen.opts.isOptimize()) {
                 sb.append("$$.prototype.");
             }
         }

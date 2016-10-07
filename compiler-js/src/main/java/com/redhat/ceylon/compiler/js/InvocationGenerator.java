@@ -42,11 +42,11 @@ public class InvocationGenerator {
             final boolean hasTargs = d != null && d.getContainer() instanceof Generic
                     && !((Generic)d.getContainer()).getTypeParameters().isEmpty();
             final boolean hasParentTargs = TypeUtils.isStaticWithGenericContainer(d);
-            //TODO if the type is static AND has type arguments of its own, we need to merge them
             if (hasTargs && TypeUtils.isConstructor(d)) {
                 return smote.getTarget().getTypeArguments();
             } else if (hasParentTargs) {
                 if (smote.getTypeArguments() != null && !smote.getTypeArguments().getTypeModels().isEmpty()) {
+                    //If the type is static AND has type arguments of its own, we need to merge them
                     Map<TypeParameter, Type> targs = new HashMap<>();
                     targs.putAll(smote.getTarget().getTypeArguments());
                     targs.putAll(smote.getTarget().getQualifyingType().getTypeArguments());
