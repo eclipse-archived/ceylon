@@ -163,15 +163,15 @@ class PartialImpl extends Partial {
     protected <Id> void initializeTuple(TypeDescriptor $reified$Id,DeserializationContextImpl<Id> context,
             ceylon.language.Tuple<?,?,?> instance) {
         NativeMap<ReachableReference, Id> state = (NativeMap<ReachableReference, Id>)getState();
-        ValueDeclaration firstAttribute = (ValueDeclaration)
+        ValueDeclaration firstAttribute = Util.assertExists((ValueDeclaration)
                 ((ClassDeclaration) Metamodel.getOrCreateMetamodel(Tuple.class))
-                .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first");
+                .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first"));
         MemberImpl firstMember = new MemberImpl(firstAttribute);
         java.lang.Object first = getReferredInstance(context, state, 
                 firstMember);
-        ValueDeclaration restAttribute = (ValueDeclaration)
+        ValueDeclaration restAttribute = Util.assertExists((ValueDeclaration)
                 ((ClassDeclaration) Metamodel.getOrCreateMetamodel(Tuple.class))
-                .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest");
+                .getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest"));
         MemberImpl restMember = new MemberImpl(restAttribute);
         Id restId = state.get(restMember);
         java.lang.Object referredRest = context.leakInstance(restId);

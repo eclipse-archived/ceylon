@@ -1,7 +1,9 @@
 package com.redhat.ceylon.compiler.java.runtime.metamodel.meta;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.NonNull;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
@@ -60,7 +62,7 @@ public class MemberClassValueConstructorImpl<Container, Get>
     
     @Override
     public ceylon.language.meta.model.ClassModel<Get, ?> getContainer() {
-        return (ceylon.language.meta.model.ClassModel)clazz.getContainer();
+        return Util.assertExists((ceylon.language.meta.model.ClassModel)clazz.getContainer());
     }
     
     public ValueConstructorDeclaration getDeclaration() {
@@ -70,7 +72,12 @@ public class MemberClassValueConstructorImpl<Container, Get>
     @TypeInfo("ceylon.language.meta.model::ValueConstructor<Get>")
     @Override
     public ValueConstructor<Get> bind(Object instance) {
-        return null;
+        return new ValueConstructorImpl(
+                $reifiedGet,  
+                declaration,
+                typedReference,
+                (ClassImpl)getContainer(),
+                instance);
     }
     
     

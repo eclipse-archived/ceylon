@@ -1510,7 +1510,7 @@ public class Metamodel {
                     once = false;
                 else
                     string.append(",");
-                ceylon.language.meta.declaration.TypeParameter tpDecl = (ceylon.language.meta.declaration.TypeParameter) it;
+                ceylon.language.meta.declaration.TypeParameter tpDecl = Util.assertExists((ceylon.language.meta.declaration.TypeParameter) it);
                 ceylon.language.Sequence<?> tuple = typeArguments != null ? typeArguments.get(tpDecl) : null;
                 Object val = tuple.getFromFirst(0);
                 ceylon.language.meta.declaration.Variance variance = (ceylon.language.meta.declaration.Variance)tuple.getFromFirst(1);

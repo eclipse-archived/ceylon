@@ -13,6 +13,7 @@ import ceylon.language.meta.declaration.TypeParameter;
 import ceylon.language.meta.model.CallableConstructor;
 import ceylon.language.meta.model.ClassModel;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ClassDeclarationImpl;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
@@ -169,7 +170,7 @@ public class ClassInitializerConstructor<Type, Arguments extends Sequential<? ex
 
     @Override
     public CallableConstructorDeclaration getDeclaration() {
-        return ((ClassDeclarationImpl)clazz.declaration).getDefaultConstructor();
+        return Util.assertExists(((ClassDeclarationImpl)clazz.declaration).getDefaultConstructor());
     }
 
     @Override

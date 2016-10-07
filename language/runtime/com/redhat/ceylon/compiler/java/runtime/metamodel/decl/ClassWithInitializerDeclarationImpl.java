@@ -10,9 +10,11 @@ import ceylon.language.empty_;
 import ceylon.language.meta.declaration.CallableConstructorDeclaration;
 import ceylon.language.meta.model.Type;
 
+import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.NonNull;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Predicates;
@@ -68,8 +70,9 @@ public class ClassWithInitializerDeclarationImpl
     }
     
     @Override
+    @NonNull
     public CallableConstructorDeclaration getDefaultConstructor() {
-        return new ClassWithInitializerDeclarationConstructor((com.redhat.ceylon.model.typechecker.model.Class)declaration);
+        return Util.assertExists(new ClassWithInitializerDeclarationConstructor((com.redhat.ceylon.model.typechecker.model.Class)declaration));
     }
     
     @TypeInfo("ceylon.language.meta.declaration::CallableConstructorDeclaration")
@@ -80,8 +83,9 @@ public class ClassWithInitializerDeclarationImpl
     
     @Override
     @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.declaration::FunctionOrValueDeclaration>")
+    @NonNull
     public Sequential<? extends ceylon.language.meta.declaration.FunctionOrValueDeclaration> getParameterDeclarations(){
-        return super.getParameterDeclarations();
+        return Util.assertExists(super.getParameterDeclarations());
     }
 
     @Override

@@ -747,8 +747,8 @@ public final class Tuple<Element, First extends Element,
         // could put the elements with int indexes and the rest as a String!
         ArrayList<ReachableReference> s = new ArrayList<ReachableReference>(2);
         ClassDeclaration cd = (ClassDeclaration)Metamodel.getOrCreateMetamodel(Tuple.class);
-        s.add(new MemberImpl(cd.<ValueDeclaration>getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first")));
-        s.add(new MemberImpl(cd.<ValueDeclaration>getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest")));
+        s.add(new MemberImpl(Util.assertExists(cd.<ValueDeclaration>getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "first"))));
+        s.add(new MemberImpl(Util.assertExists(cd.<ValueDeclaration>getMemberDeclaration(ValueDeclaration.$TypeDescriptor$, "rest"))));
         return s;
     }
     @Ignore

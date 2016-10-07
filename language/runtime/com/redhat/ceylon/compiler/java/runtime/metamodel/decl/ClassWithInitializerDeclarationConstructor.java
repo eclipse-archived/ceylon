@@ -28,6 +28,7 @@ import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.NonNull;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
@@ -212,6 +213,7 @@ public class ClassWithInitializerDeclarationConstructor
     }
 
     @Override
+    @NonNull
     public Object invoke(Sequential<? extends Type<? extends Object>> typeArguments,
             Sequential<? extends Object> arguments) {
         return apply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, typeArguments).apply(arguments);
@@ -225,6 +227,7 @@ public class ClassWithInitializerDeclarationConstructor
     }
 
     @Override
+    @NonNull
     public Object memberInvoke(Object containerInstance,
             Sequential<? extends Type<? extends Object>> typeArguments,
             Sequential<? extends Object> arguments) {
@@ -249,7 +252,7 @@ public class ClassWithInitializerDeclarationConstructor
                 = clsDecl.<Result, Sequential<? extends java.lang.Object>>classApply(
                         $reified$Result, Nothing.NothingType, typeArguments);
         // then get the constructor from that
-        return (CallableConstructor)cls.<Arguments>getDeclaredConstructor($reified$Arguments, getName());
+        return Util.assertExists((CallableConstructor)cls.<Arguments>getDeclaredConstructor($reified$Arguments, getName()));
     }
     
     @Override
@@ -270,7 +273,7 @@ public class ClassWithInitializerDeclarationConstructor
                 = getContainer().<Container, Result, Sequential<? extends Object>>memberClassApply(
                         $reified$Container, $reified$Result, Nothing.NothingType, containerType, typeArguments);
         // then get the constructor from that
-        return (MemberClassCallableConstructor)cls.<Arguments>getDeclaredConstructor($reified$Arguments, getName());
+        return Util.assertExists((MemberClassCallableConstructor)cls.<Arguments>getDeclaredConstructor($reified$Arguments, getName()));
     }
     
     @Override
