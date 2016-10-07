@@ -10,12 +10,16 @@ final class bug2271_ {
     }
     
     static void bug2271(@.com.redhat.ceylon.compiler.java.metadata.Name("ji")
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Integer?")
     final .java.lang.Integer ji, @.com.redhat.ceylon.compiler.java.metadata.Name("jf")
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Float?")
     final .java.lang.Float jf, @.com.redhat.ceylon.compiler.java.metadata.Name("jc")
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Character?")
     final .java.lang.Character jc, @.com.redhat.ceylon.compiler.java.metadata.Name("js")
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Short?")
     final .java.lang.Short js) {
         boolean $ceylontmp$if$0 = false;

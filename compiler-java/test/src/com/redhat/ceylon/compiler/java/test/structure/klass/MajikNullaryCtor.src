@@ -417,6 +417,7 @@ class MajikNullaryCtorMixin implements .com.redhat.ceylon.compiler.java.runtime.
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
     public final boolean contains(@.com.redhat.ceylon.compiler.java.metadata.Name("element")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .ceylon.language.String element) {
         return true;
     }

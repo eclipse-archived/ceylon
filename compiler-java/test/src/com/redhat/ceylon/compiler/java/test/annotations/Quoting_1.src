@@ -28,6 +28,7 @@ public interface Cloneable<Clone extends .com.redhat.ceylon.compiler.java.test.a
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface Quoting$annotations$ {
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.Quoting$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -191,9 +192,13 @@ final class quoting2_ {
     @.ceylon.language.AnnotationAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::Quoting")
     static .com.redhat.ceylon.compiler.java.test.annotations.Quoting quoting2(@.com.redhat.ceylon.compiler.java.metadata.Name("string")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String string, @.com.redhat.ceylon.compiler.java.metadata.Name("toString")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String toString, @.com.redhat.ceylon.compiler.java.metadata.Name("hash")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long hash, @.com.redhat.ceylon.compiler.java.metadata.Name("hashCode")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long hashCode) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Quoting(string, toString, hash, hashCode);
     }

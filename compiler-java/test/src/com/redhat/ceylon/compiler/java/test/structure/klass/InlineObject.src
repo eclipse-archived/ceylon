@@ -142,15 +142,19 @@ final class inlineObject_ {
     static <T>void inlineObject(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("param")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object param, @.com.redhat.ceylon.compiler.java.metadata.Name("p")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object p, @.com.redhat.ceylon.compiler.java.metadata.Name("l")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object l, @.com.redhat.ceylon.compiler.java.metadata.Name("check")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final boolean check) {
         final .java.lang.Object local = (
             let
@@ -494,6 +498,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     public final .java.lang.Object method(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object param) {
         return method$canonical$(param);
@@ -501,10 +506,13 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final void check(@.com.redhat.ceylon.compiler.java.metadata.Name("p")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object p, @.com.redhat.ceylon.compiler.java.metadata.Name("a")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object a, @.com.redhat.ceylon.compiler.java.metadata.Name("mp")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object mp) {
         if (!.ceylon.language.meta.type_.<.java.lang.Object>type(.ceylon.language.Object.$TypeDescriptor$, getParam()).typeOf(p)) {

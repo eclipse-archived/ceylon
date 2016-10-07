@@ -10,6 +10,7 @@ final class method_ {
     }
     
     static long method(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long i) {
         return 1L;
     }

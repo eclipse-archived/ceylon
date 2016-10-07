@@ -14,6 +14,7 @@ final class bug1608_ {
     }
     
     static void bug1608(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object param) {
         

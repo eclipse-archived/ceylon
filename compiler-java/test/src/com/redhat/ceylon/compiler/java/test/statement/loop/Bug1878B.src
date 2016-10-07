@@ -52,6 +52,7 @@ class Bug1878 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final void setFoo$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("foo")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final boolean foo) {
         if (!this.$init$foo) {
             this.foo = foo;
@@ -111,6 +112,7 @@ final class bug1878_ {
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("bug1878")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final boolean bug1878) {
         if (!bug1878_.$init$value) {
             value = bug1878;

@@ -16,6 +16,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface Repeatable$annotations$ {
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.Repeatable$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(

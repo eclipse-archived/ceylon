@@ -166,6 +166,7 @@ final class bug1240Check_ {
     }
     
     static void bug1240Check(@.com.redhat.ceylon.compiler.java.metadata.Name("b")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.issues.bug12xx::Left&com.redhat.ceylon.compiler.java.test.issues.bug12xx::Middle<com.redhat.ceylon.compiler.java.test.issues.bug12xx::B>&com.redhat.ceylon.compiler.java.test.issues.bug12xx::Right",
             erased = true)

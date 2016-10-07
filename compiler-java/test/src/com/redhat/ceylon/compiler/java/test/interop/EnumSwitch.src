@@ -9,6 +9,7 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     private final void exhaustive$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("e")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::JavaEnum")
     final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e) {
         switch_0: switch (e) {
@@ -29,6 +30,7 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     private final void notExhaustive$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("e")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::JavaEnum")
     final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e) {
         switch_1: switch (e) {
@@ -45,6 +47,7 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     private final void optionalExhaustive$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("e")
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::JavaEnum?")
     final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e) {
         {
@@ -71,6 +74,7 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     private final void optionalExhaustive2$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("e")
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::JavaEnum?")
     final .com.redhat.ceylon.compiler.java.test.interop.JavaEnum e) {
         {
@@ -94,6 +98,7 @@ class EnumSwitch implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     private final void union$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("e")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.interop::JavaEnum|java.lang::Thread.State",
             erased = true)

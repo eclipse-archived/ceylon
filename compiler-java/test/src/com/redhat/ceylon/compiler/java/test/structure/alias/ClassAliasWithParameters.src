@@ -54,6 +54,7 @@ public final class ClassAliasWithParameters {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public static .com.redhat.ceylon.compiler.java.test.structure.alias.ClassAliasWithParameters_Foo ClassAliasWithParameters$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
     final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
     final .java.lang.String s) {

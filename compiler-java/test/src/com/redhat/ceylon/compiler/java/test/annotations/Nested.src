@@ -20,6 +20,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface NestedLeaf$annotations$ {
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -113,6 +114,7 @@ final class nestedLeafDefaultedParameter_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf")
     static .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf nestedLeafDefaultedParameter(@.com.redhat.ceylon.compiler.java.metadata.Name("i2")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long i2) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf(i2);
     }
@@ -160,6 +162,7 @@ final class nestedLeafLiteralArgument_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface NestedBranch$annotations$ {
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -265,6 +268,7 @@ final class nestedBranchDPClassWithLiteralArgument_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedBranch")
     static .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchDPClassWithLiteralArgument(@.com.redhat.ceylon.compiler.java.metadata.Name("b")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf")
     final .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf b) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchDPClassWithLiteralArgument", b);
@@ -310,6 +314,7 @@ final class nestedBranchDPClassDefaultedArgument_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedBranch")
     static .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchDPClassDefaultedArgument(@.com.redhat.ceylon.compiler.java.metadata.Name("b")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf")
     final .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf b) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchDPClassDefaultedArgument", b);
@@ -358,6 +363,7 @@ final class nestedBranchDPCtorWithLiteralArgument_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedBranch")
     static .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchDPCtorWithLiteralArgument(@.com.redhat.ceylon.compiler.java.metadata.Name("b")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf")
     final .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf b) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchDPCtorWithLiteralArgument", b);
@@ -403,6 +409,7 @@ final class nestedBranchDPCtorNullary_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedBranch")
     static .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchDPCtorNullary(@.com.redhat.ceylon.compiler.java.metadata.Name("b")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf")
     final .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf b) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchDPCtorNullary", b);
@@ -448,6 +455,7 @@ final class nestedBranchDPCtorWithDefaultedArgument_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedBranch")
     static .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch nestedBranchDPCtorWithDefaultedArgument(@.com.redhat.ceylon.compiler.java.metadata.Name("b")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf")
     final .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf b) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.NestedBranch("nestedBranchDPCtorWithDefaultedArgument", b);

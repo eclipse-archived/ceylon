@@ -36,12 +36,14 @@ class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     public final void setVariableAttribute(@.com.redhat.ceylon.compiler.java.metadata.Name("variableAttribute")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long variableAttribute) {
         this.variableAttribute = variableAttribute;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long method(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String s) {
         return 1L;
     }
@@ -278,12 +280,14 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
     }
     
     public final void setVariableAttribute(@.com.redhat.ceylon.compiler.java.metadata.Name("variableAttribute")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long variableAttribute) {
         this.variableAttribute = variableAttribute;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long method(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String s) {
         return 1L;
     }
@@ -584,6 +588,7 @@ final class litFunction_ {
     }
     
     static long litFunction(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String s) {
         return 1L;
     }
@@ -896,6 +901,7 @@ final class casting_ {
     }
     
     static void casting(@.com.redhat.ceylon.compiler.java.metadata.Name("l")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.meta.model::Type<com.redhat.ceylon.compiler.java.test.metamodel::LitClass>")
     final .ceylon.language.meta.model.Type<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClass> l) {
         .com.redhat.ceylon.compiler.java.test.metamodel.casting_.casting((.ceylon.language.meta.model.Type<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClass>)(.ceylon.language.meta.model.Class<? extends .com.redhat.ceylon.compiler.java.test.metamodel.LitClass, ? super .ceylon.language.Sequence<? extends .ceylon.language.Integer>>).ceylon.language.meta.typeLiteral_.typeLiteral(.com.redhat.ceylon.compiler.java.test.metamodel.LitClass.$TypeDescriptor$));
@@ -1104,6 +1110,7 @@ final class litVariable_ {
     }
     
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("litVariable")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long litVariable) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         value = litVariable;

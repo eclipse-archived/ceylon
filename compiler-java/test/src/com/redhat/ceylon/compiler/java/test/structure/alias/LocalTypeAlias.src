@@ -52,6 +52,7 @@ final class localTypeAliasMethod_ {
             }
             
             .java.lang.Object classAliasMethod1(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             final .java.lang.Object f) {
                 return f;
             }
@@ -69,6 +70,7 @@ final class localTypeAliasMethod_ {
             }
             
             .java.lang.Object classAliasMethod2(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             final .java.lang.Object f) {
                 return f;
             }
@@ -86,6 +88,7 @@ final class localTypeAliasMethod_ {
             }
             
             TypeAliasClass classAliasMethod3(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             final TypeAliasClass f) {
                 return f;
             }
@@ -103,6 +106,7 @@ final class localTypeAliasMethod_ {
             }
             
             .com.redhat.ceylon.compiler.java.test.structure.alias.localTypeAliasMethod$TypeAliasInterface_ classAliasMethod4(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             final .com.redhat.ceylon.compiler.java.test.structure.alias.localTypeAliasMethod$TypeAliasInterface_ f) {
                 return f;
             }

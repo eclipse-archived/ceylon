@@ -24,6 +24,7 @@ class Bug2239 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.javax.annotation.PostConstruct
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final void setEm$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("em")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String em) {
         if (this.em == null) {
             this.em = em;

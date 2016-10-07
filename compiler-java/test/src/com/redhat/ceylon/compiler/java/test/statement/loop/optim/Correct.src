@@ -200,6 +200,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
                 erased = true,
                 untrusted = true)
         public final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal neighbour(@.com.redhat.ceylon.compiler.java.metadata.Name("n")
+        @.com.redhat.ceylon.compiler.java.metadata.NonNull
         final long n) {
             return new .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal(getI() + n);
         }
@@ -208,6 +209,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         @.ceylon.language.ActualAnnotation$annotation$
         @.java.lang.Override
         public final long offset(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+        @.com.redhat.ceylon.compiler.java.metadata.NonNull
         @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.statement.loop.optim::Correct.MyOrdinal")
         final .com.redhat.ceylon.compiler.java.test.statement.loop.optim.Correct.MyOrdinal other) {
             return getI() - other.getI();
@@ -316,6 +318,7 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     private final long iterationDynamic$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("iterable")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::Integer*}")
     final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable) {
         long sum = 0L;

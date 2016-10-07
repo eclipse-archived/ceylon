@@ -17,6 +17,7 @@ abstract class Bug6344 implements .com.redhat.ceylon.compiler.java.runtime.model
             value = "java.lang::Appendable",
             uncheckedNull = true)
     public final .java.lang.Appendable append(@.com.redhat.ceylon.compiler.java.metadata.Name("cs")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::CharSequence")
     final .java.lang.CharSequence cs) {
         return null;

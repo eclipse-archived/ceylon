@@ -17,6 +17,7 @@ final class bug5752_ {
     }
     
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("bug5752")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String bug5752) {
     }
 }
@@ -37,6 +38,7 @@ final class bug5752_2_ {
     
     @.javax.persistence.Id
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("bug5752_2")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String bug5752_2) {
     }
 }

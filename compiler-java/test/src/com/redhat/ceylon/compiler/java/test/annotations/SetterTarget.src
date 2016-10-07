@@ -44,6 +44,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final void setAttr(@.com.redhat.ceylon.compiler.java.metadata.Name("attr")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String attr) {
         if (this.attr == null) {
             this.attr = attr;
@@ -66,6 +67,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final void setAttr2$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("attr2")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String attr2) {
         if (this.attr2 == null) {
             this.attr2 = attr2;
@@ -84,6 +86,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     public final void setAttr3(@.com.redhat.ceylon.compiler.java.metadata.Name("attr3")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String attr3) {
         this.attr3 = attr3;
     }
@@ -97,6 +100,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     private final void setAttr4$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("attr4")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String attr4) {
         this.attr4 = attr4;
     }
@@ -111,6 +115,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     public final void setParam3(@.com.redhat.ceylon.compiler.java.metadata.Name("param3")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String param3) {
         this.param3 = param3;
     }
@@ -124,6 +129,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     private final void setParam4$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("param4")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String param4) {
         this.param4 = param4;
     }

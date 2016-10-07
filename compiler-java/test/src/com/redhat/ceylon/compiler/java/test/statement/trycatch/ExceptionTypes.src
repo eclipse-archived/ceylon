@@ -87,8 +87,10 @@ final class exceptionTypesUsage_ {
     }
     
     static void exceptionTypesUsage(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long i, @.com.redhat.ceylon.compiler.java.metadata.Name("f")
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("()")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Throwable()")
     final .ceylon.language.Callable<? extends .java.lang.Throwable> f) {
         {

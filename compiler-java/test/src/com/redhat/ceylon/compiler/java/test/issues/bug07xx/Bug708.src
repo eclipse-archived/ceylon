@@ -673,6 +673,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
             value = "ceylon.language::String|ceylon.language::Null|T",
             erased = true)
     public final .java.lang.Object get(@.com.redhat.ceylon.compiler.java.metadata.Name("key")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object key) {
         return null;
@@ -682,6 +683,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
     public final boolean contains(@.com.redhat.ceylon.compiler.java.metadata.Name("element")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object element) {
         return false;
@@ -691,6 +693,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
     public final boolean defines(@.com.redhat.ceylon.compiler.java.metadata.Name("key")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object key) {
         return false;
@@ -757,6 +760,7 @@ public final class bug708_test2_ {
     
     @.ceylon.language.SharedAnnotation$annotation$
     public static void bug708_test2(@.com.redhat.ceylon.compiler.java.metadata.Name("key")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long key) {
         .ceylon.language.String entry$17;
         if ((entry$17 = (.ceylon.language.String)(.ceylon.language.String)((.ceylon.language.Correspondence<? super .java.lang.Object, ? extends .ceylon.language.String>)(.ceylon.language.Correspondence).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_cache_.get_()).get(.ceylon.language.Integer.instance(key))) != null) {

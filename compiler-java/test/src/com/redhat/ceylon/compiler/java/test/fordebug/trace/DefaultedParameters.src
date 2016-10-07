@@ -44,8 +44,10 @@ final class defaultedParameters_ {
     
     static long defaultedParameters(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String s, @.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final long i) {
         return i + .ceylon.language.String.getSize(s);
     }

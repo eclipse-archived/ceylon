@@ -205,6 +205,7 @@ final class bug2315Iterable2_ {
     @.ceylon.language.AnnotationAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::Bug2315Iterable")
     static .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable bug2315Iterable2(@.com.redhat.ceylon.compiler.java.metadata.Name("strings")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("[ceylon.language::String+]")
     final .ceylon.language.Sequence<? extends .ceylon.language.String> strings) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Bug2315Iterable(strings);

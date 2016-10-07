@@ -12,6 +12,7 @@ class NamedArgumentInvocationWithMethodReference implements .com.redhat.ceylon.c
     }
     
     private final void m2$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
     final .ceylon.language.Callable<? extends .java.lang.Object> f) {
     }

@@ -18,6 +18,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface SequenceDefaults_String$annotations$ {
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -114,6 +115,7 @@ final class sequenceDefaults_String_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_String")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String sequenceDefaults_String(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::String*}")
     final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> seq) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String(seq);
@@ -152,6 +154,7 @@ final class sequenceDefaults_String_Empty_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_String")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String sequenceDefaults_String_Empty(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::String*}")
     final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> seq) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_String(seq);
@@ -240,6 +243,7 @@ final class sequenceArguments_String_Empty_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface SequenceDefaults_Boolean$annotations$ {
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -317,6 +321,7 @@ final class sequenceDefaults_Boolean_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Boolean")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceDefaults_Boolean(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::Boolean*}")
     final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> seq) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean(seq);
@@ -355,6 +360,7 @@ final class sequenceDefaults_Boolean_Empty_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Boolean")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean sequenceDefaults_Boolean_Empty(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::Boolean*}")
     final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> seq) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Boolean(seq);
@@ -424,6 +430,7 @@ final class sequenceArguments_Boolean_Empty_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface SequenceDefaults_Character$annotations$ {
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -503,6 +510,7 @@ final class sequenceDefaults_Character_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Character")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character sequenceDefaults_Character(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character[]")
     final .ceylon.language.Sequential<? extends .ceylon.language.Character> seq) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character(seq);
@@ -541,6 +549,7 @@ final class sequenceDefaults_Character_Empty_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Character")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character sequenceDefaults_Character_Empty(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character[]")
     final .ceylon.language.Sequential<? extends .ceylon.language.Character> seq) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Character(seq);
@@ -612,6 +621,7 @@ final class sequenceArguments_Character_Empty_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface SequenceDefaults_Float$annotations$ {
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -691,6 +701,7 @@ final class sequenceDefaults_Float_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Float")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float sequenceDefaults_Float(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Float[]")
     final .ceylon.language.Sequential<? extends .ceylon.language.Float> seq) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float(seq);
@@ -729,6 +740,7 @@ final class sequenceDefaults_Float_Empty_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Float")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float sequenceDefaults_Float_Empty(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Float[]")
     final .ceylon.language.Sequential<? extends .ceylon.language.Float> seq) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Float(seq);
@@ -800,6 +812,7 @@ final class sequenceArguments_Float_Empty_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface SequenceDefaults_Integer$annotations$ {
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -879,6 +892,7 @@ final class sequenceDefaults_Integer_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Integer")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer sequenceDefaults_Integer(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]")
     final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer(seq);
@@ -917,6 +931,7 @@ final class sequenceDefaults_Integer_Empty_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Integer")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer sequenceDefaults_Integer_Empty(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]")
     final .ceylon.language.Sequential<? extends .ceylon.language.Integer> seq) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Integer(seq);
@@ -989,6 +1004,7 @@ final class sequenceArguments_Integer_Empty_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface SequenceDefaults_Object$annotations$ {
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -1066,6 +1082,7 @@ final class sequenceDefaults_Object_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Object")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object sequenceDefaults_Object(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("[][]")
     final .ceylon.language.Sequential<? extends .ceylon.language.Empty> seq) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object(seq);
@@ -1104,6 +1121,7 @@ final class sequenceDefaults_Object_Empty_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Object")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object sequenceDefaults_Object_Empty(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("[][]")
     final .ceylon.language.Sequential<? extends .ceylon.language.Empty> seq) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Object(seq);
@@ -1176,6 +1194,7 @@ final class sequenceArguments_Object_Empty_ {
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface SequenceDefaults_Declaration$annotations$ {
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -1249,6 +1268,7 @@ final class sequenceDefaults_Declaration_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Declaration")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceDefaults_Declaration(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.meta.declaration::ValueDeclaration[]")
     final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> seq) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration(seq);
@@ -1287,6 +1307,7 @@ final class sequenceDefaults_Declaration_Empty_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::SequenceDefaults_Declaration")
     static .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration sequenceDefaults_Declaration_Empty(@.com.redhat.ceylon.compiler.java.metadata.Name("seq")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language.meta.declaration::ValueDeclaration[]")
     final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> seq) {
         return new .com.redhat.ceylon.compiler.java.test.annotations.SequenceDefaults_Declaration(seq);

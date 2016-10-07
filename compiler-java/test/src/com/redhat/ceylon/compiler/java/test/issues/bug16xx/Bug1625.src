@@ -79,6 +79,7 @@ interface Bug1625_3<T> {
     public abstract .java.lang.Object f(@.com.redhat.ceylon.compiler.java.metadata.Name("t")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T")
     final T t, @.com.redhat.ceylon.compiler.java.metadata.Name("ts")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T[]")
     final .ceylon.language.Sequential<? extends T> ts);
     

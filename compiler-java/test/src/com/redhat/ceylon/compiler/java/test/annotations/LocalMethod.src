@@ -34,8 +34,10 @@ public class LocalMethod implements .com.redhat.ceylon.compiler.java.runtime.mod
             }
             
             void m2(@.com.redhat.ceylon.compiler.java.metadata.Name("i1")
+            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             final long i1, @.com.redhat.ceylon.compiler.java.metadata.Name("s")
             @.com.redhat.ceylon.compiler.java.metadata.Sequenced
+            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             final .ceylon.language.Sequential<? extends .ceylon.language.String> s) {
             }
         }

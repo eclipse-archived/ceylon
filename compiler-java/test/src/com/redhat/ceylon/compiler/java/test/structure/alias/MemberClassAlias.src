@@ -40,6 +40,7 @@ public class MemberClassAlias_Foo implements .com.redhat.ceylon.compiler.java.ru
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAlias_Foo.Member MemberClassAlias$aliased$() {
         throw new .ceylon.language.Exception();
     }

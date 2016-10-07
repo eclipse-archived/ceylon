@@ -23,6 +23,7 @@ public final class bug6523_ {
             }
             
             .ceylon.language.Callable<? extends .ceylon.language.Integer> fn(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
+            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             final long i) {
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(

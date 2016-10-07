@@ -21,6 +21,7 @@ public class AnnotationInteropQualifiedEnum implements .com.redhat.ceylon.compil
     
     @.javax.annotation.Resource(authenticationType = .javax.annotation.Resource.AuthenticationType.APPLICATION)
     public final void setField1(@.com.redhat.ceylon.compiler.java.metadata.Name("field1")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String field1) {
         this.field1 = field1;
     }
@@ -35,6 +36,7 @@ public class AnnotationInteropQualifiedEnum implements .com.redhat.ceylon.compil
     
     @.javax.annotation.Resource(authenticationType = .javax.annotation.Resource.AuthenticationType.APPLICATION)
     public final void setField2(@.com.redhat.ceylon.compiler.java.metadata.Name("field2")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String field2) {
         this.field2 = field2;
     }

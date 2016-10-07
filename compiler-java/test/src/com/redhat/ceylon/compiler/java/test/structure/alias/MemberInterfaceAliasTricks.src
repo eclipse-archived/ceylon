@@ -80,6 +80,7 @@ public final class MemberInterfaceAliasTricks_Foo$impl implements .java.io.Seria
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
+        @.com.redhat.ceylon.compiler.java.metadata.NonNull
         public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberClass MemberClassAliasToEnclosingMemberClass$aliased$() {
             throw new .ceylon.language.Exception();
         }
@@ -102,6 +103,7 @@ public final class MemberInterfaceAliasTricks_Foo$impl implements .java.io.Seria
     }
     
     private void test$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("x")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.alias::MemberInterfaceAliasTricks_Foo.MemberInterface")
     final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$MemberInterface x) {
         final .com.redhat.ceylon.compiler.java.test.structure.alias.MemberInterfaceAliasTricks_Foo$impl.MemberClass m1 = x.MemberClassAliasToEnclosingMemberClass$new$();

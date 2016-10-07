@@ -16,8 +16,10 @@ final class assertSameElements_ {
             caseTypes = {})})
     static <T>void assertSameElements(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, @.com.redhat.ceylon.compiler.java.metadata.Name("j")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Iterable<T>")
     final .java.lang.Iterable<T> j, @.com.redhat.ceylon.compiler.java.metadata.Name("c")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{T*}")
     final .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> c) {
         final .java.util.Iterator<T> jit = .com.redhat.ceylon.compiler.java.Util.checkNull(j.iterator());

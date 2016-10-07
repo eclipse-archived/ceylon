@@ -120,6 +120,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             private .java.lang.String value;
             
             public void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("getter")
+            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             final .java.lang.String getter) {
                 
                 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -180,6 +181,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             }
             
             public final void setI2(@.com.redhat.ceylon.compiler.java.metadata.Name("i2")
+            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             final long i2) {
             }
             
@@ -201,8 +203,10 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
             
             @.ceylon.language.SharedAnnotation$annotation$
             public final void m2(@.com.redhat.ceylon.compiler.java.metadata.Name("arg1")
+            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             final long arg1, @.com.redhat.ceylon.compiler.java.metadata.Name("t")
             @.com.redhat.ceylon.compiler.java.metadata.Sequenced
+            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T[]")
             final .ceylon.language.Sequential<? extends T> t) {
                 (
@@ -222,6 +226,7 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                     erased = true,
                     untrusted = true)
             public final Local plus(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+            @.com.redhat.ceylon.compiler.java.metadata.NonNull
             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::LocalKlass.m.1Local<T>")
             final Local<T> other) {
                 return (Local<T>)(.java.lang.Object).ceylon.language.nothing_.get_();

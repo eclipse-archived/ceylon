@@ -44,6 +44,7 @@ final class bug2002Builder2_ {
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Tail, @.com.redhat.ceylon.compiler.java.metadata.Name("head")
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Head")
     final Head head, @.com.redhat.ceylon.compiler.java.metadata.Name("tail")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "Tail[]()",
             erased = true)
