@@ -150,7 +150,7 @@ public class AttributeDefinitionBuilder {
             seterParamFlags |= AbstractTransformer.JT_RAW;
         }
         pdb.type(new TransformedType(MethodDefinitionBuilder.paramType(owner, nonWideningTypedRef.getDeclaration(), nonWideningType, seterParamFlags), 
-                owner.makeJavaTypeAnnotations(attrType).head,
+                owner.makeJavaTypeAnnotations(attrType),
                 owner.makeNullabilityAnnotations(attrType)));
         
         
