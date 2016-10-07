@@ -3643,13 +3643,13 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
 
-    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(TypedDeclaration decl) {
+    JCTree.JCAnnotation makeJavaTypeAnnotations(TypedDeclaration decl) {
         return makeJavaTypeAnnotations(decl, true);
     }
     
-    List<JCTree.JCAnnotation> makeJavaTypeAnnotations(TypedDeclaration decl, boolean handleFunctionalParameter) {
+    JCTree.JCAnnotation makeJavaTypeAnnotations(TypedDeclaration decl, boolean handleFunctionalParameter) {
         if(decl == null || decl.getType() == null)
-            return List.nil();
+            return null;
         Type type;
         if (decl instanceof Function && ((Function)decl).isParameter() && handleFunctionalParameter) {
             type = getTypeForFunctionalParameter((Function)decl);
@@ -3668,11 +3668,11 @@ public abstract class AbstractTransformer implements Transformation {
                 decl.hasUncheckedNullType());
     }
 
-    private List<JCTree.JCAnnotation> makeJavaTypeAnnotations(Type type, boolean declaredVoid, 
+    private JCTree.JCAnnotation makeJavaTypeAnnotations(Type type, boolean declaredVoid, 
                                                               boolean hasTypeErased, boolean untrusted, 
                                                               boolean required, boolean uncheckedNull) {
         if (!required)
-            return List.nil();
+            return null;
         String name = serialiseTypeSignature(type);
         boolean erased = hasTypeErased || hasErasure(type);
         // Add the original type to the annotations
@@ -3695,10 +3695,13 @@ public abstract class AbstractTransformer implements Transformation {
             annotationArgs.add(
                     make().Assign(naming.makeUnquotedIdent("uncheckedNull"), make().Literal(uncheckedNull)));
         }
-        return makeModelAnnotation(syms().ceylonAtTypeInfoType, annotationArgs.toList());
+        return makeModelAnnotation(syms().ceylonAtTypeInfoType, annotationArgs.toList()).head;
     }
 
     protected JCTree.JCAnnotation makeNullabilityAnnotations(TypedDeclaration typedDecl) {
+        if (typedDecl == null) {
+            return null;
+        }
         if (typedDecl instanceof Function && typedDecl.isParameter()) {
             return makeAtNonNull();
         }

@@ -375,7 +375,9 @@ public class MethodDefinitionBuilder
         pdb.defaulted(decl.isDefaulted());
         if (isParamTypeLocalToMethod(decl,
                 nonWideningType)) {
-            pdb.type(new TransformedType(gen.make().Type(gen.syms().objectType), gen.makeJavaTypeAnnotations(decl.getModel()).head));
+            pdb.type(new TransformedType(gen.make().Type(gen.syms().objectType), 
+                    gen.makeJavaTypeAnnotations(decl.getModel()),
+                    gen.makeNullabilityAnnotations(decl.getModel())));
         } else {
             if((modifiers & Flags.VARARGS) != 0){
                 // turn this into a Java variadic
@@ -383,7 +385,7 @@ public class MethodDefinitionBuilder
                 nonWideningType = gen.typeFact().getJavaObjectArrayDeclaration().appliedType(null, Arrays.asList(elementType));
             }
             pdb.type(new TransformedType(paramType(gen, nonWideningDecl, nonWideningType, flags), 
-                    gen.makeJavaTypeAnnotations(decl.getModel()).head,
+                    gen.makeJavaTypeAnnotations(decl.getModel()),
                     gen.makeNullabilityAnnotations(decl.getModel())));
         }
         return parameter(pdb);
@@ -680,7 +682,8 @@ public class MethodDefinitionBuilder
         if (method.isParameter()) {
             if (Decl.isUnboxedVoid(method) && !Strategy.useBoxedVoid(method)) {
                 return resultType(new TransformedType(gen.make().Type(gen.syms().voidType), 
-                        gen.makeJavaTypeAnnotations(method, false).head));
+                        gen.makeJavaTypeAnnotations(method, false),
+                        gen.makeNullabilityAnnotations(method)));
             } else {
                 Parameter parameter = method.getInitializerParameter();
                 Type resultType = parameter.getType();
@@ -717,7 +720,9 @@ public class MethodDefinitionBuilder
     }
 
     public MethodDefinitionBuilder resultType(JCExpression resultType, TypedDeclaration typeDecl) {
-        return resultType(new TransformedType(resultType, gen.makeJavaTypeAnnotations(typeDecl, false).head));
+        return resultType(new TransformedType(resultType, 
+                gen.makeJavaTypeAnnotations(typeDecl, false),
+                gen.makeNullabilityAnnotations(typeDecl)));
     }
     
     public MethodDefinitionBuilder resultType(TransformedType transformedType) {

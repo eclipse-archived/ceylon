@@ -1305,7 +1305,9 @@ public class ClassTransformer extends AbstractTransformer {
         }
         pdb.sequenced(param.isSequenced());
         pdb.defaulted(param.isDefaulted());
-        pdb.type(new TransformedType(type, makeJavaTypeAnnotations(param.getModel()).head));
+        pdb.type(new TransformedType(type, 
+                makeJavaTypeAnnotations(param.getModel()),
+                makeNullabilityAnnotations(param.getModel())));
         pdb.modifiers(transformClassParameterDeclFlags(param));
         if (!(param.getModel().isShared() || param.getModel().isCaptured())) {
             // We load the model for shared parameters from the corresponding member

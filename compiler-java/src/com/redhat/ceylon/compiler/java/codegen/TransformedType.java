@@ -1,11 +1,15 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.langtools.tools.javac.code.Type.JCPrimitiveType;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCIdent;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCPrimitiveTypeTree;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
-import com.redhat.ceylon.model.typechecker.model.Type;
 
+/**
+ * A type expression and {@code @TypeInfo} and/or nullability annotations
+ */
 public class TransformedType {
     
     private final JCExpression typeExpression;
@@ -74,9 +78,9 @@ public class TransformedType {
                     && ident.sym.type.isPrimitiveOrVoid()) {
                 return true;
             }
+        } else if (typeExpression instanceof JCPrimitiveTypeTree) {
+            return true;
         }
         return false;
     }
-    
-    
 }
