@@ -71,6 +71,10 @@ class Static3<T> {
   shared static class Class3(T t) {
     shared T get() => t;
   }
+  shared static class Gen3<E>(T t, E e) {
+    shared T getT() => t;
+    shared E getE() => e;
+  }
   shared new(){}
 }
 
@@ -117,7 +121,14 @@ void testStatics() {
   value g1 = Static3<String>.Class3("one");
   check(g1.get() == "one", "static 9.1");
   check(Static3<String>.Class3("one").get() == "one", "static 9.2");
+  value g2 = Static3<String>.Gen3<Integer>("one",2);
+  check(g2.getT() == "one", "static 9.3");
+  check(g2.getE() == 2, "static 9.4");
   Object og1 = g1;
   check(og1 is Static3<String>.Class3, "static 10.1");
   check(!og1 is Static3<Integer>.Class3, "static 10.2");
+  Object og2 = g2;
+  check(og2 is Static3<String>.Gen3<Integer>, "static 10.3");
+  check(!og2 is Static3<String>.Gen3<String>, "static 10.4");
+  check(!og2 is Static3<Integer>.Gen3<Integer>, "static 10.5");
 }
