@@ -376,6 +376,8 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     @Description("The JVM that generated .class files should target. Use `7` to target Java 7 JVMs "
             + "or `8` to target Java 8 JVMs.")
     public void setTarget(Long version) {
+        validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.TARGET, "-target", version.toString());
+        validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCE, "-source", version.toString());
         this.targetVersion = version;
     }
 
