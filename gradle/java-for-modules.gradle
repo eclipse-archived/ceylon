@@ -100,12 +100,23 @@ if (ext.ceylonSourceLayout) {
 }
 
 
+
+
 moduleXml {
     sourceModule {
         new File(project.file("${project(':runtime').projectDir}/dist/repo/" +
             cbp."ceylon.${ceylonPublishModuleName}.dir").parentFile, '/_version_/module.xml')
     }
 }
+
+task osgiManifestWorkaround( type : Copy ) {
+
+    destinationDir file("${buildDir}/osgi-workaround")
+
+    from processResources
+    from sourceSets.main.output.classesDir
+}
+
 
 jar {
     dependsOn moduleXml
@@ -123,6 +134,9 @@ jar {
 
     archiveName = "${bundleSymbolicName}-${moduleVersion}.jar"
 
+
+    jar.dependsOn osgiManifestWorkaround
+    jar.manifest.classesDir = osgiManifestWorkaround.destinationDir
 }
 
 task sourceZip( type : Zip ) {
