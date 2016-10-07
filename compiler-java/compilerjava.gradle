@@ -148,6 +148,10 @@ jar {
     }
 }
 
+osgiManifestWorkaround {
+    includes = jar.includes
+    excludes = jar.excludes
+}
 
 task bootstrapModuleXml( type : CeylonBuildModuleXml ) {
     description "Create module.xml for the bootstrap JAR"
@@ -156,6 +160,14 @@ task bootstrapModuleXml( type : CeylonBuildModuleXml ) {
             cbp."ceylon.bootstrap.dir").parentFile, '/_version_/module.xml')
     }
     destinationDir = {"${moduleXml.destinationDir}/bootstrap"}
+}
+
+
+task osgiManifestWorkaroundForBootstrap( type : Copy ) {
+    destinationDir file("${buildDir}/osgi-workaround-bootstrap")
+
+    from processResources
+    from sourceSets.main.output.classesDir
 }
 
 task bootstrapModule( type : Jar ) {
@@ -183,14 +195,22 @@ task bootstrapModule( type : Jar ) {
     archiveName = "ceylon.bootstrap-${bmModuleVersion}.jar"
 
     from sourceSets.main.output.classesDir, {
-        include "com/redhat/ceylon/launcher/**"
-        exclude "com/redhat/ceylon/launcher/Start.class"
     }
 
     from bootstrapModuleXml, {
         into "META-INF/jbossmodules/" + cbp."ceylon.bootstrap.dir"
     }
 
+    include "com/redhat/ceylon/launcher/**"
+    exclude "com/redhat/ceylon/launcher/Start.class"
+
+    bootstrapModule.dependsOn osgiManifestWorkaroundForBootstrap
+    bootstrapModule.manifest.classesDir = osgiManifestWorkaroundForBootstrap.destinationDir
+}
+
+osgiManifestWorkaroundForBootstrap {
+    includes = bootstrapModule.includes
+    excludes = bootstrapModule.excludes
 }
 
 task publishBootstrapOsgiModule( type : Copy ) {
