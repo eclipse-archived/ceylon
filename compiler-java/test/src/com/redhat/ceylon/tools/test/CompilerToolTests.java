@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +36,7 @@ import org.junit.Test;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.tool.NonFatalToolMessage;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
+import com.redhat.ceylon.common.tool.OptionArgumentException.InvalidOptionValueException;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.compiler.CeylonCompileTool;
@@ -484,6 +486,20 @@ public class CompilerToolTests extends AbstractToolTests {
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
                 options("--src=test/src", "--target=8", "com.redhat.ceylon.tools.test.java8"));
         tool.run();
+        
+    }
+    
+    @Test
+    public void testTargetInvalid()  throws Exception {
+        ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
+        Assert.assertNotNull(model);
+        try {
+            CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
+                    options("--src=test/src", "--target=56", "com.redhat.ceylon.tools.test.java8"));
+        } catch (InvalidOptionValueException e) {
+            Assert.assertEquals("Invalid value '56' given for option 'target' to command 'compile'", e.getMessage());
+        }
+        
         
     }
 }
