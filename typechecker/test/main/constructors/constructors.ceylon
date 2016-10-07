@@ -505,12 +505,20 @@ shared void testWithAssertion() {
 }
 
 class BadNew {
+    @error shared new construct() extends BadNew() {}
     @error shared new () extends create() {}
     @error shared new create() extends make() {}
     shared new make() {}
 }
 class GoodNew {
-    shared new make() {}
-    shared new create() extends make() {}
-    shared new () extends create() {}
+    shared new make() {
+        GoodNew n = create();
+    }
+    shared new create() extends make() {
+        GoodNew n = GoodNew();
+    }
+    shared new () extends create() {
+        GoodNew n = construct();
+    }
+    shared new construct() extends GoodNew() {}
 }
