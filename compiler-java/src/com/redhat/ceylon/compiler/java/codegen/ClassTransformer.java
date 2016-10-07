@@ -4295,20 +4295,7 @@ public class ClassTransformer extends AbstractTransformer {
     private JCStatement substituteSequentialForJavaVariadic(SyntheticName alias, Parameter lastParameter) {
         JCExpression seqType = makeJavaType(lastParameter.getType());
         Type seqElemType = typeFact().getIteratedType(lastParameter.getType());
-        JCExpression init;
-        if(CodegenUtil.isUnBoxed(lastParameter.getModel())){
-            JCIdent name = makeQuotedIdent(lastParameter.getName());
-            // due to backwards-compat, we had a method named sequentialWrapperBoxed int[] -> Sequential<Character>
-            // so the new one has a special name
-            init = seqElemType.getUnderlyingType() != null && seqElemType.getUnderlyingType().equals("int")
-                    ? utilInvocation().sequentialWrapperBoxedForInteger(name)
-                    : utilInvocation().sequentialWrapperBoxed(name);
-        }else{
-            JCExpression typeArg = makeJavaType(seqElemType, JT_TYPE_ARGUMENT);
-            // make a defensive copy
-            init = utilInvocation().sequentialWrapperCopy(typeArg, makeReifiedTypeArgument(seqElemType), 
-                    makeQuotedIdent(lastParameter.getName()));
-        }
+        JCExpression init = javaVariadicToSequential(seqElemType, lastParameter);
         return make().VarDef(make().Modifiers(FINAL), alias.asName(), seqType , init);
     }
 

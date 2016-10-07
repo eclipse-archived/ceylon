@@ -5403,7 +5403,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                                    TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
             modelParameterTypes.add(modelParameterType);
         }
-        com.redhat.ceylon.model.typechecker.model.Type parameterTuple = typeFactory.getTupleType(modelParameterTypes, false, false, -1);
+        com.redhat.ceylon.model.typechecker.model.Type parameterTuple = typeFactory.getTupleType(modelParameterTypes, functionalInterfaceType.isVariadic(), false, -1);
         com.redhat.ceylon.model.typechecker.model.Type callableType = typeFactory.getCallableDeclaration().appliedType(null, Arrays.asList(returnType, parameterTuple));
         return callableType;
     }

@@ -25,7 +25,6 @@ import static com.redhat.ceylon.javax.tools.StandardLocation.PLATFORM_CLASS_PATH
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,6 +62,7 @@ import com.redhat.ceylon.langtools.tools.javac.code.Symbol.PackageSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.TypeSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symtab;
 import com.redhat.ceylon.langtools.tools.javac.code.Type;
+import com.redhat.ceylon.langtools.tools.javac.code.Type.ArrayType;
 import com.redhat.ceylon.langtools.tools.javac.code.Type.MethodType;
 import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.code.Types;
@@ -852,14 +852,19 @@ public class CeylonModelLoader extends AbstractModelLoader {
             if(descriptorType.hasTag(TypeTag.FORALL))
                 return null;
             MethodType methodDescriptorType = (MethodType)descriptorType; 
+            MethodSymbol methodSymbol = (MethodSymbol) types.findDescriptorSymbol(type.tsym);
             
             List<Type> parameterTypes = methodDescriptorType.getParameterTypes();
             ListBuffer<TypeMirror> mirrorParameterTypes = new ListBuffer<>();
-            for(Type parameterType : parameterTypes){
+            for (int i = 0; i < parameterTypes.size(); i++) {
+                Type parameterType = parameterTypes.get(i);
+                if(methodSymbol.isVarArgs() && i == parameterTypes.size() - 1)
+                    parameterType = ((ArrayType)parameterType).getComponentType();
                 mirrorParameterTypes.add(new JavacType(parameterType));
             }
             return new FunctionalInterfaceType(new JavacType(methodDescriptorType.getReturnType()),
-                    mirrorParameterTypes.toList());
+                    mirrorParameterTypes.toList(),
+                    methodSymbol.isVarArgs());
         }catch(FunctionDescriptorLookupError err){
             return null;
         }

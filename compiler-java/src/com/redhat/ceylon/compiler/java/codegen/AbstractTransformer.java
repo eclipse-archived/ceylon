@@ -5892,4 +5892,22 @@ public abstract class AbstractTransformer implements Transformation {
         // not found
         return null;
     }
+
+    public JCExpression javaVariadicToSequential(Type seqElemType,
+            Parameter lastParameter) {
+        if(CodegenUtil.isUnBoxed(lastParameter.getModel())){
+            JCIdent name = makeQuotedIdent(lastParameter.getName());
+            // due to backwards-compat, we had a method named sequentialWrapperBoxed int[] -> Sequential<Character>
+            // so the new one has a special name
+            return seqElemType.getUnderlyingType() != null && seqElemType.getUnderlyingType().equals("int")
+                    ? utilInvocation().sequentialWrapperBoxedForInteger(name)
+                    : utilInvocation().sequentialWrapperBoxed(name);
+        }else{
+            JCExpression typeArg = makeJavaType(seqElemType, JT_TYPE_ARGUMENT);
+            // make a defensive copy
+            return utilInvocation().sequentialWrapperCopy(typeArg, makeReifiedTypeArgument(seqElemType), 
+                    makeQuotedIdent(lastParameter.getName()));
+        }
+    }
+
 }

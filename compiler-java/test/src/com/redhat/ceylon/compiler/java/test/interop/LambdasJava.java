@@ -3,6 +3,11 @@ package com.redhat.ceylon.compiler.java.test.interop;
 import java.util.function.*;
 
 @FunctionalInterface
+interface VariadicFunction {
+    public abstract void execute(int... param);
+}
+
+@FunctionalInterface
 interface OverloadedFunction {
     public default void execute(){
         execute(0);
@@ -41,6 +46,9 @@ public class LambdasJava {
 
     public void intConsumer(IntConsumer consumer){
         consumer.accept(1);
+    }
+
+    public void variadicFunction(VariadicFunction f){
     }
 
     public int intSupplier(IntSupplier supplier){

@@ -9,17 +9,19 @@ import com.redhat.ceylon.compiler.java.test.interop { LambdasJava { consumerStat
 
 void toplevel(Integer i) => print(i);
 void toplevelSmall(small Integer i) => print(i);
+Integer toplevelVariadic(Integer* i) => 1;
 class C(Integer i){}
 class CSmall(small Integer i, small Float v=0.0){}
 
 void lambdas() {
     /* 
      * TODO:
-     * - variadic SAM methods
+     * - status of null in SAM Callable types
      * - limited to java but how does it play with ceylon subtypes?
      * - fix error message when implementing coercion method
      * - review additions to model and their names
      * LATER:
+     * - optimise to get rid of call/callvariadic/calltyped methods (but complex wrt default values/variadic mismatch with subtyping)
      * - overloaded coercion fields (disallowed for now?)
      * - support named invocations (for auto-factory methods)
      */ 
@@ -42,6 +44,10 @@ void lambdas() {
     j.overloadedFunction((Integer i) => print("yes"));
     j.overloadedFunction2((Integer i) => print("yes"));
 
+    j.variadicFunction((Integer* args) => print("ok"));
+    j.intSupplier((Integer* args) => 1);
+    j.variadicFunction(toplevelVariadic);
+    j.intSupplier(toplevelVariadic);
 
     LambdasJava(f);
 

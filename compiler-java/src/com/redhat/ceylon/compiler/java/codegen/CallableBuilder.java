@@ -1082,26 +1082,48 @@ public class CallableBuilder {
             callMethod.resultType(gen.makeJavaType(returnType, flags), null);
         }
         ListBuffer<JCExpression> args = new ListBuffer<>();
+        boolean variadic = false;
         if(methodOrValue instanceof Function){
-            for(Parameter param : ((Function)methodOrValue).getFirstParameterList().getParameters()){
+            for (Parameter param : ((Function)methodOrValue).getFirstParameterList().getParameters()) {
                 TypedReference typedParameter = functionalInterfaceMethod.getTypedParameter(param);
                 ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(gen, param.getName());
-                pdb.type(gen.makeJavaType(typedParameter.getType(), 0), null);
-                pdb.modifiers(Flags.FINAL);
+                Type paramType = typedParameter.getType();
+                if(param.isSequenced()){
+                    paramType = gen.typeFact().getSequentialElementType(paramType);
+                    variadic = true;
+                }
+                long flags = Flags.FINAL;
+                JCExpression javaType = gen.makeJavaType(paramType, 0);
+                if(param.isSequenced()){
+                    flags |= Flags.VARARGS;
+                    javaType = gen.make().TypeArray(javaType);
+                }
+                pdb.type(javaType, null);
+                pdb.modifiers(flags);
                 callMethod.parameter(pdb);
-                JCExpression arg = gen.makeUnquotedIdent(param.getName());
-                if(CodegenUtil.isUnBoxed(param.getModel())){
-                    arg = gen.expressionGen().applyErasureAndBoxing(arg, typedParameter.getType(), 
-                            false, BoxingStrategy.BOXED,
-                            // possibly this should be the callable method arg type
-                            typedParameter.getType());
+                JCExpression arg;
+                if(param.isSequenced()){
+                    arg = gen.javaVariadicToSequential(paramType, param);
+                }else{
+                    arg = gen.makeUnquotedIdent(param.getName());
+                    if(CodegenUtil.isUnBoxed(param.getModel())){
+                        arg = gen.expressionGen().applyErasureAndBoxing(arg, paramType, 
+                                false, BoxingStrategy.BOXED,
+                                // possibly this should be the callable method arg type
+                                paramType);
+                    }
                 }
                 args.append(arg);
             }
         }else{
             // no-arg getter
         }
-        JCExpression call = gen.make().Apply(null, gen.makeUnquotedIdent(Naming.getCallableMethodName()), args.toList());
+        String callMethodName;
+        if(variadic)
+            callMethodName = Naming.getCallableVariadicMethodName();
+        else
+            callMethodName = Naming.getCallableMethodName();
+        JCExpression call = gen.make().Apply(null, gen.makeUnquotedIdent(callMethodName), args.toList());
         JCStatement body;
         if(methodOrValue instanceof Function 
                 && ((Function)methodOrValue).isDeclaredVoid())
@@ -1157,9 +1179,15 @@ public class CallableBuilder {
     abstract class VariadicMethodWithArity extends MethodWithArity {
         
         protected final JCExpression makeRespread(List<JCExpression> arguments) {
-            
+            JCExpression spreadVarargs;
+            if(functionalInterface != null){
+                spreadVarargs = gen.naming.makeQuotedQualIdent(gen.makeIdent(gen.syms().ceylonAbstractCallableType), 
+                        Naming.name(Unfix.$spreadVarargs$));
+            }else{
+                spreadVarargs = gen.naming.makeUnquotedIdent(Naming.name(Unfix.$spreadVarargs$));
+            }
             JCExpression invocation = gen.make().Apply(null, 
-                    gen.naming.makeUnquotedIdent(Naming.name(Unfix.$spreadVarargs$)), 
+                    spreadVarargs, 
                     arguments);
             if (getVariadicParameter().isAtLeastOne()) {
                 invocation = gen.make().TypeCast(
@@ -1385,7 +1413,8 @@ public class CallableBuilder {
                 makeEllipsisMethod(arity1, stmts, args);
             }
             MethodDefinitionBuilder callVaryMethod = MethodDefinitionBuilder.systemMethod(gen, Naming.getCallableVariadicMethodName());
-            callVaryMethod.isOverride(true);
+            // we only override it if we're not building a functional interface class
+            callVaryMethod.isOverride(functionalInterfaceMethod == null);
             callVaryMethod.modifiers(Flags.PUBLIC);
             Type returnType = gen.getReturnTypeOfCallable(typeModel);
             callVaryMethod.resultType(gen.makeJavaType(returnType, JT_NO_PRIMITIVES), null);
