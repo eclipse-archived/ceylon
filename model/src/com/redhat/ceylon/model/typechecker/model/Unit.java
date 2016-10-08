@@ -190,7 +190,7 @@ public class Unit implements LanguageModuleProvider {
      */
     static boolean isToplevelImport(Import i, Declaration d) {
         return d.isToplevel() || 
-            d.isStaticallyImportable() ||
+            d.isStatic() ||
             isToplevelClassConstructor(i.getTypeDeclaration(), d) ||
             isToplevelAnonymousClass(i.getTypeDeclaration());
     }
@@ -492,15 +492,6 @@ public class Unit implements LanguageModuleProvider {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
             return theLanguageModule.getLanguageModuleCache().getThrowableDeclaration();
-        }
-        return null;
-    }
-    
-    @Override
-    public Class getErrorDeclaration() {
-        Module theLanguageModule = getLanguageModule();
-        if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getErrorDeclaration();
         }
         return null;
     }

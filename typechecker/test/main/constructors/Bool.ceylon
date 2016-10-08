@@ -130,11 +130,11 @@ class PrivateBool of true|false {
     }
 }
 
-@error abstract class AbstractSingleton {
+abstract class AbstractSingleton {
     @error new instance {}
 }
 
-@error class GenericSingleton<T> {
+class GenericSingleton<T> {
     @error new instance {}
 }
 
@@ -247,7 +247,7 @@ class BoolWithNew2 {
 }
 
 interface InterFace {
-    @error class Singleton {
+    class Singleton {
         @error new instance {}
     }
 }

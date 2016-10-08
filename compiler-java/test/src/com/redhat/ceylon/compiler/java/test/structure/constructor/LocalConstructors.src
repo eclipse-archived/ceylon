@@ -22,7 +22,7 @@ final class localConstructors_ {
                     {
                         C$impl<Y> $ceylontmp$impl$0 = new C$impl<Y>();
                         Y $ceylontmp$y$1 = $ceylontmp$impl$0.C$y($reified$Y, x$param$);
-                        this($reified$Y, x$param$, $ceylontmp$y$1);
+                        <Y>this($reified$Y, x$param$, $ceylontmp$y$1);
                     }
                     returning null;
                 );

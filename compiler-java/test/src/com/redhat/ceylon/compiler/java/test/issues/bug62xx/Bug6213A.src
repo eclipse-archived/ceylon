@@ -22,7 +22,7 @@ final class LLVMCodeTarget6213A$impl implements .java.io.Serializable {
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$args$0 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
             }
-            returning call$canonical$($reified$T, name, $ceylontmp$args$0);
+            returning <T>call$canonical$($reified$T, name, $ceylontmp$args$0);
         );
     }
     
@@ -31,7 +31,7 @@ final class LLVMCodeTarget6213A$impl implements .java.io.Serializable {
     }
     
     public <T>T call(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .java.lang.String name, final .ceylon.language.Sequential<? extends .ceylon.language.String> args) {
-        return call$canonical$($reified$T, name, args);
+        return <T>call$canonical$($reified$T, name, args);
     }
 }
 class LLVMFunction6213A implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug62xx.LLVMCodeTarget6213A, .java.io.Serializable {

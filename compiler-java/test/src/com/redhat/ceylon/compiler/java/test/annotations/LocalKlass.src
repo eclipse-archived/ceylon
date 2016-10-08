@@ -30,7 +30,9 @@ public class LocalKlass implements .com.redhat.ceylon.compiler.java.runtime.mode
                         major = 8,
                         minor = 1)
                 @.com.redhat.ceylon.compiler.java.metadata.Name("Inner")
-                @.com.redhat.ceylon.compiler.java.metadata.Container(klass = Local.class)
+                @.com.redhat.ceylon.compiler.java.metadata.Container(
+                        klass = Local.class,
+                        isStatic = false)
                 class Inner implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
                     
                     Inner() {

@@ -81,7 +81,7 @@ public class MetamodelGenerator {
     //DO NOT REARRANGE, only append
     public static final List<String> annotationBits = Arrays.asList("shared", "actual", "formal", "default",
             "sealed", "final", "native", "late", "abstract", "annotation",
-            "variable", "serializable");
+            "variable", "serializable", "static");
 
     private final Map<String, Object> model = new HashMap<>();
     private static final Map<String,Object> unknownTypeMap = new HashMap<>();

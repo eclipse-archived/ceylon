@@ -486,8 +486,27 @@ public class AnalyzerUtil {
         return null;
     }
 
-    static Tree.Declaration getLastConstructor(Tree.ClassBody that) {
-        List<Tree.Statement> statements = that.getStatements();
+    static Tree.Statement getLastStatic(
+            Tree.InterfaceBody that) {
+        List<Tree.Statement> statements = 
+                that.getStatements();
+        for (int i=statements.size()-1; i>=0; i--) {
+            Tree.Statement s = statements.get(i);
+            if (s instanceof Tree.Declaration) {
+                Tree.Declaration d = (Tree.Declaration) s;
+                if (d.getDeclarationModel()
+                        .isStatic()) {
+                    return s;
+                }
+            }
+        }
+        return null;
+    }
+
+    static Tree.Declaration getLastConstructor(
+            Tree.ClassBody that) {
+        List<Tree.Statement> statements = 
+                that.getStatements();
         for (int i=statements.size()-1; i>=0; i--) {
             Tree.Statement s = statements.get(i);
             if (s instanceof Tree.Constructor ||
@@ -1014,7 +1033,7 @@ public class AnalyzerUtil {
                 return true;
             }
             if (that.getStaticMethodReference()) {
-                if (d.isStaticallyImportable() || 
+                if (d.isStatic() || 
                         isConstructor(d)) {
                     Tree.QualifiedMemberOrTypeExpression qmte = 
                             (Tree.QualifiedMemberOrTypeExpression) 

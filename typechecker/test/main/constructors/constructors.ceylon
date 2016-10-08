@@ -408,7 +408,7 @@ class WithMemberRefInDelegation {
     @error shared new broken2(Integer i) extends create(str(i)) {} 
 }
 
-@error class WithNoSharedConstructor {
+class WithNoSharedConstructor {
     new instance {}
     new create() {}
 }
@@ -502,4 +502,23 @@ class WithAssertion {
 shared void testWithAssertion() {
     WithAssertion("Hello").do("Hello");
     WithAssertion.withGreeting("Hello").do("Hello");
+}
+
+class BadNew {
+    @error shared new construct() extends BadNew() {}
+    @error shared new () extends create() {}
+    @error shared new create() extends make() {}
+    shared new make() {}
+}
+class GoodNew {
+    shared new make() {
+        GoodNew n = create();
+    }
+    shared new create() extends make() {
+        GoodNew n = GoodNew();
+    }
+    shared new () extends create() {
+        GoodNew n = construct();
+    }
+    shared new construct() extends GoodNew() {}
 }

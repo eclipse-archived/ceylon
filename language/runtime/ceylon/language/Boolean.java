@@ -4,7 +4,9 @@ import com.redhat.ceylon.compiler.java.metadata.CaseTypes;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
+import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -32,6 +34,16 @@ public abstract class Boolean
 
     @Ignore
     abstract public boolean booleanValue();
+    
+    @SharedAnnotation$annotation$
+    @StaticAnnotation$annotation$
+    @TypeInfo("ceylon.language::Boolean|ceylon.language::ParseException")
+    public static java.lang.Object parse(
+            @Name("string") java.lang.String string) {
+        Boolean bool = parseBoolean_.parseBoolean(string);
+        return bool!=null ? bool : 
+                new ParseException("illegal format for Boolean");
+    }
     
     @Ignore
     public static java.lang.String toString(boolean value) {

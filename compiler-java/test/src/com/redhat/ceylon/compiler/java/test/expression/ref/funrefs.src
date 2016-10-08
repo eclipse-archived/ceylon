@@ -35,7 +35,9 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.expression.ref.Person.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.expression.ref.Person.class,
+            isStatic = false)
     public class Address implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Address(@.com.redhat.ceylon.compiler.java.metadata.Name("house")

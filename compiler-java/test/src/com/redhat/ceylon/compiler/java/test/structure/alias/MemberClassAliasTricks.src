@@ -69,7 +69,9 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasTricks_Foo")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.class,
+            isStatic = false)
     public final class MemberClassAliasToToplevel {
         
         private MemberClassAliasToToplevel() {
@@ -93,7 +95,9 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasTricks_Foo")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.class,
+            isStatic = false)
     public final class MemberClassAliasToToplevel2 {
         
         private MemberClassAliasToToplevel2() {
@@ -143,7 +147,9 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Members({@.com.redhat.ceylon.compiler.java.metadata.Member(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member.MemberClassAliasToEnclosingMemberClass.class)})
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.class,
+            isStatic = false)
     public class Member implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Member(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
@@ -170,7 +176,9 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
                 minor = 1)
         @.ceylon.language.SharedAnnotation$annotation$
         @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberClassAliasTricks_Foo.Member")
-        @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member.class)
+        @.com.redhat.ceylon.compiler.java.metadata.Container(
+                klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member.class,
+                isStatic = false)
         public final class MemberClassAliasToEnclosingMemberClass {
             
             private MemberClassAliasToEnclosingMemberClass() {

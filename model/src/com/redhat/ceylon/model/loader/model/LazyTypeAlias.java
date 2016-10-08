@@ -365,9 +365,9 @@ public class LazyTypeAlias extends TypeAlias implements LazyContainer {
     }
 
     @Override
-    public boolean isStaticallyImportable() {
-        load();
-        return super.isStaticallyImportable();
+    public boolean isStatic() {
+        // no lazy loading since it is set before completion
+        return super.isStatic();
     }
 
     @Override

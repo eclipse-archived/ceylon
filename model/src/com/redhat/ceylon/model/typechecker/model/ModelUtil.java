@@ -2636,7 +2636,7 @@ public class ModelUtil {
     }
 
     /**
-     * Is the given declaration a toplevel anonymous class?
+     * Is the given scope a toplevel anonymous class?
      * 
      * Members of toplevel anonymous classes can be directly
      * imported into the toplevel namespace of a compilation
@@ -2646,6 +2646,19 @@ public class ModelUtil {
         if (s instanceof Class) {
             Class td = (Class) s;
             return td.isAnonymous() && td.isToplevel();
+        }
+        else {
+            return false;
+        }
+    }
+    
+    /**
+     * Is the given scope a toplevel anonymous class?
+     */
+    public static boolean isAnonymousClass(Scope s) {
+        if (s instanceof Class) {
+            Class td = (Class) s;
+            return td.isAnonymous();
         }
         else {
             return false;

@@ -28,9 +28,24 @@ function Integer(value) {
     that.float$=false;
     return that;
 }
+Integer.$st$={
+  format:function(i,r,sep){
+    if(r===undefined)r=10;
+    if(sep===undefined)sep=null;
+    return formatInteger(i,r,sep);
+  },
+  parse:function(s,r) {
+    if (r===undefined)r=10;
+    var x = parseInteger(s,r);
+    return x===null?ParseException("illegal format for Integer"):x;
+  }
+};
 initTypeProto(Integer, 'ceylon.language::Integer', $_Object,$_Number, JSNumber,
         $init$Integral(), $init$Exponentiable(), $init$Binary());
 Integer.$crtmm$=function(){return{an:function(){return[shared(),$_native(),$_final()];},mod:$CCMM$,d:['$','Integer']};}
+function $init$Integer() {
+  return Integer;
+}
 atr$(Integer.$$.prototype,'integer',function(){ return this; },undefined,
      function(){return {mod:$CCMM$,$t:{t:Integer},pa:0,$cont:Integer,d:['$','Integer','$at','integer$woput0']};});
 

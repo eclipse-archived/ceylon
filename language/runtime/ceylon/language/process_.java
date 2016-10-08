@@ -177,6 +177,7 @@ public final class process_ implements ReifiedType {
     private process_() {}
     private static final process_ value = new process_();
     
+    @Ignore
     public static process_ get_() {
         return value;
     }

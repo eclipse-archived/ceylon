@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.GenerateCallback;
+import com.redhat.ceylon.compiler.js.util.JsWriter;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
@@ -269,7 +270,7 @@ public class BmeGenerator {
                     gen.qualify(that, d);
                 }
             } else {
-                if (d instanceof Class && ((Class)d).isDynamic()) {
+                if (d instanceof Class && d.isDynamic()) {
                     gen.out("new ");
                 }
                 gen.qualify(that, d);
@@ -287,6 +288,12 @@ public class BmeGenerator {
                 gen.out(");}");
             }
         }
+    }
+
+    static void generateStaticReference(Declaration d, GenerateJsVisitor gen) {
+        Declaration orig = d instanceof TypedDeclaration ? ((TypedDeclaration)d).getOriginalDeclaration() : d;
+        gen.out(gen.getNames().name((ClassOrInterface)(orig == null ? d : orig).getContainer()),
+                ".$st$.", gen.getNames().name(d));
     }
 
 }

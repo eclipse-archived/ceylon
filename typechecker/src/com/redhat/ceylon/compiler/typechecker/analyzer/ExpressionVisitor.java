@@ -3701,7 +3701,7 @@ public class ExpressionVisitor extends Visitor {
             Declaration dec) {
         Scope scope = that.getScope();
         if (dec.isClassOrInterfaceMember() &&
-                !dec.isStaticallyImportable() &&
+                !dec.isStatic() &&
                 !dec.isDefinedInScope(scope)) {
             ClassOrInterface ci = 
                     (ClassOrInterface) 
@@ -3954,7 +3954,7 @@ public class ExpressionVisitor extends Visitor {
                 return false;
             }
             else {
-                return !declaration.isStaticallyImportable();
+                return !declaration.isStatic();
             }
         }
         else {
@@ -6513,7 +6513,7 @@ public class ExpressionVisitor extends Visitor {
                 member!=null &&
                 member.getContainer()
                     .equals(constructorClass) &&
-                !member.isStaticallyImportable() &&
+                !member.isStatic() &&
                 !isConstructor(member)) {
             that.addError("reference to class member from constructor extends clause");
         }
@@ -6751,6 +6751,7 @@ public class ExpressionVisitor extends Visitor {
             String container;
             boolean ambiguous;
             TypedDeclaration member;
+            Type pt; 
             if (primary instanceof Tree.Package) {
                 Package pack = unit.getPackage();
                 container = "package '" + 
@@ -6759,11 +6760,11 @@ public class ExpressionVisitor extends Visitor {
                         getPackageTypedDeclaration(name, 
                                 signature, spread, unit);
                 ambiguous = false;
+                pt = null;
             }
             else {
-                Type pt = 
-                        primary.getTypeModel()
-                            .resolveAliases(); //needed for aliases like "alias Id<T> => T"
+                pt = primary.getTypeModel()
+                        .resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 if (d instanceof Constructor) {
                     d = d.getExtendedType().getDeclaration();
@@ -6824,6 +6825,7 @@ public class ExpressionVisitor extends Visitor {
                         (TypedDeclaration) 
                             handleAbstractionOrHeader(member, 
                                     that, error);
+                checkStaticPrimary(that, primary, member, pt);
                 that.setDeclaration(member);
                 resetSuperReference(that);
                 boolean selfReference = 
@@ -7018,7 +7020,7 @@ public class ExpressionVisitor extends Visitor {
                             (Tree.QualifiedMemberOrTypeExpression) 
                                 primary;
                     if (qmte.getDeclaration()
-                            .isStaticallyImportable()) {
+                            .isStatic()) {
                         return type;
                     }
                     Tree.MemberOrTypeExpression pp = 
@@ -7044,14 +7046,14 @@ public class ExpressionVisitor extends Visitor {
                         pp.addError("non-static type expression qualifies static member reference");   
                     }
                 }
-                if (member.isStaticallyImportable()) {
+                if (member.isStatic()) {
                     //static member of Java type
                     if (primary.getStaticMethodReference()) {
                         Tree.QualifiedMemberOrTypeExpression qmte = 
                                 (Tree.QualifiedMemberOrTypeExpression) 
                                     primary;
                         if (qmte.getDeclaration()
-                                .isStaticallyImportable()) {
+                                .isStatic()) {
                             return type;
                         }
                         else {
@@ -7528,6 +7530,7 @@ public class ExpressionVisitor extends Visitor {
             String container;
             boolean ambiguous;
             TypeDeclaration type;
+            Type pt;
             if (primary instanceof Tree.Package) {
                 Package pack = unit.getPackage();
                 container = "package '" + 
@@ -7536,11 +7539,11 @@ public class ExpressionVisitor extends Visitor {
                         getPackageTypeDeclaration(name, 
                                 signature, spread, unit);
                 ambiguous = false;
+                pt = null;
             }
             else {
-                Type pt = 
-                        primary.getTypeModel()
-                            .resolveAliases(); //needed for aliases like "alias Id<T> => T"
+                pt = primary.getTypeModel()
+                        .resolveAliases(); //needed for aliases like "alias Id<T> => T"
                 TypeDeclaration d = getDeclaration(that, pt);
                 if (d instanceof Constructor) {
                     d = d.getExtendedType().getDeclaration();
@@ -7571,8 +7574,9 @@ public class ExpressionVisitor extends Visitor {
                         d.isMemberAmbiguous(name, unit, 
                                 signature, spread);
                 if (type==null) {
-                    container += AnalyzerUtil.memberCorrectionMessage(name, 
-                            d, scope, unit, cancellable);
+                    container += 
+                            memberCorrectionMessage(name, 
+                                    d, scope, unit, cancellable);
                 }
             }
             if (type==null) {
@@ -7594,6 +7598,7 @@ public class ExpressionVisitor extends Visitor {
                         (TypeDeclaration) 
                             handleAbstractionOrHeader(type, 
                                     that, error);
+                checkStaticPrimary(that, primary, type, pt);
                 that.setDeclaration(type);
                 resetSuperReference(that);
                 if (!isSelfReference(primary) && 
@@ -7618,13 +7623,40 @@ public class ExpressionVisitor extends Visitor {
             return null;
         }
     }
+
+    private void checkStaticPrimary(
+            Tree.QualifiedMemberOrTypeExpression that, 
+            Tree.Primary primary, 
+            Declaration member, Type pt) {
+        if (member.isStatic() 
+                && !that.getStaticMethodReference()) {
+            TypeDeclaration outer =
+                    (TypeDeclaration)
+                        member.getContainer();
+            if (member.isJava()) {
+                primary.addUsageWarning(Warning.syntaxDeprecation, 
+                        "reference to static member should be qualified by type: '"
+                        + member.getName(unit) 
+                        + "' is a static member of '"
+                        + outer.getName(unit) 
+                        + "'");
+            }
+            else {
+                primary.addError( 
+                        "reference to static member must be qualified by type: '"
+                        + member.getName(unit) 
+                        + "' is a static member of '"
+                        + pt.getSupertype(outer).asString(unit)
+                        + "'");
+            }
+        }
+    }
     
     private static boolean checkMember(
             Tree.QualifiedMemberOrTypeExpression qmte) {
         Tree.Primary p = qmte.getPrimary();
         Type pt = p.getTypeModel();
-        boolean packageQualified = p instanceof Tree.Package;
-        return packageQualified ||
+        return p instanceof Tree.Package ||
                 isResolvedStaticMethodRef(qmte) ||
                 pt!=null && 
                 //account for dynamic blocks
@@ -8102,13 +8134,14 @@ public class ExpressionVisitor extends Visitor {
         else if (term instanceof Tree.MemberOrTypeExpression) {
             TypeDeclaration dec = type.getDeclaration();
             boolean isToplevelInstance = 
-                    dec.isObjectClass() && dec.isToplevel();
+                    dec.isObjectClass() && 
+                    (dec.isToplevel() || dec.isStatic());
             boolean isToplevelClassInstance = 
                     dec.isValueConstructor() &&
-                    (dec.getContainer().isToplevel() || dec.isStaticallyImportable());
+                    (dec.getContainer().isToplevel() || dec.isStatic());
             if (!isToplevelInstance && 
                 !isToplevelClassInstance) {
-                e.addError("case must refer to a toplevel object declaration, value constructor for a toplevel class, or literal value");
+                e.addError("case must refer to a toplevel or static object declaration, a value constructor for a toplevel class, or a literal value");
             }
             else {
                 Type ut = unionType(
@@ -8120,7 +8153,7 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else if (term!=null) {
-            e.addError("case must be a literal value or refer to a toplevel object declaration or value constructor for a toplevel class");
+            e.addError("case must be a literal value or refer to a toplevel or static object declaration or a value constructor for a toplevel class");
         }
     }
 

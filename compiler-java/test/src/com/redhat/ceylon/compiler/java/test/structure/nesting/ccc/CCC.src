@@ -15,7 +15,7 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> i
             {
                 U $ceylontmp$u$0 = m1$u($reified$U, b);
             }
-            returning m1$priv$$canonical$($reified$U, b, $ceylontmp$u$0);
+            returning <U>m1$priv$$canonical$($reified$U, b, $ceylontmp$u$0);
         );
     }
     
@@ -28,7 +28,7 @@ class C<T extends .ceylon.language.String, X extends .ceylon.language.Boolean> i
     }
     
     private final <U>T m1$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final X b, final U u) {
-        return m1$priv$$canonical$($reified$U, b, u);
+        return <U>m1$priv$$canonical$($reified$U, b, u);
     }
     
     class CC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {

@@ -278,10 +278,12 @@ public final class Character
         return $TypeDescriptor$;
     }
 
+    @Ignore
     public static boolean largerThan(int codePoint, Character other) {
     	return codePoint>other.codePoint;
     }
 
+    @Ignore
     public static boolean largerThan(int codePoint, int other) {
         return codePoint>other;
     }
@@ -291,10 +293,12 @@ public final class Character
     	return codePoint>other.codePoint;
     }
 
+    @Ignore
     public static boolean notSmallerThan(int codePoint, Character other) {
     	return codePoint>=other.codePoint;
     }
 
+    @Ignore
     public static boolean notSmallerThan(int codePoint, int other) {
         return codePoint>=other;
     }
@@ -304,10 +308,12 @@ public final class Character
     	return codePoint>=other.codePoint;
     }
 
+    @Ignore
     public static boolean smallerThan(int codePoint, Character other) {
     	return codePoint<other.codePoint;
     }
 
+    @Ignore
     public static boolean smallerThan(int codePoint, int other) {
         return codePoint<other;
     }
@@ -317,10 +323,12 @@ public final class Character
     	return codePoint<other.codePoint;
     }
 
+    @Ignore
     public static boolean notLargerThan(int codePoint, Character other) {
     	return codePoint<=other.codePoint;
     }
 
+    @Ignore
     public static boolean notLargerThan(int codePoint, int other) {
         return codePoint<=other;
     }
@@ -330,6 +338,7 @@ public final class Character
     	return codePoint<=other.codePoint;
     }
 
+    @Ignore
     public static int codepoint(long value) {
         if (value>0x10FFFF || value<0) {
             throw new OverflowException(value + " is not a possible Unicode code point");

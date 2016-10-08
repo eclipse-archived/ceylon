@@ -750,6 +750,12 @@ public class RefinementVisitor extends Visitor {
                         message(member), 1100);
             }
         }
+        if (member.isStatic() 
+                && !type.isToplevel()) {
+            that.addError("static member belongs to a nested class: '" + 
+                    member.getName() + 
+                    "' is a member of nested type '" + type.getName() + "'");
+        }
         if (type.isDynamic()) {
             if (member instanceof Class) {
                 that.addError("member class belongs to dynamic interface");
@@ -1407,7 +1413,27 @@ public class RefinementVisitor extends Visitor {
 
     private void checkNonMember(Tree.Declaration that, Declaration dec) {
         boolean mayBeShared = !(dec instanceof TypeParameter);
-        if (!dec.isClassOrInterfaceMember() && mayBeShared) {
+        boolean nonTypeMember = !dec.isClassOrInterfaceMember();
+        
+        if (dec.isStatic()) {
+            if (nonTypeMember) {
+                that.addError("static declaration is not a member of a class or interface: '" + 
+                        dec.getName() + 
+                        "' is not defined directly in the body of a class or interface");
+            }
+            else {
+                ClassOrInterface type = 
+                        (ClassOrInterface) 
+                            dec.getContainer();
+                if (!type.isToplevel()) {
+                    that.addError("static declaration belongs to a nested a class or interface: '" + 
+                            dec.getName() + 
+                            "' is a member of nested type '" + type.getName() + "'");
+                }
+            }
+        }
+        
+        if (nonTypeMember && mayBeShared) {
             if (dec.isActual()) {
                 that.addError("actual declaration is not a member of a class or interface: '" + 
                         dec.getName() + "'", 
@@ -1458,6 +1484,7 @@ public class RefinementVisitor extends Visitor {
                         1303);
             }
         }
+        
         if (isConstructor(dec) && dec.isShared()) {
             Scope container = dec.getContainer();
             if (container instanceof Class) {

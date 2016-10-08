@@ -32,6 +32,7 @@ import com.redhat.ceylon.compiler.java.codegen.recovery.TransformationPlan;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.langtools.tools.javac.code.BoundKind;
+import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
@@ -61,7 +62,8 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
  * 
  * @author Tako Schotanus
  */
-public class ClassDefinitionBuilder {
+public class ClassDefinitionBuilder 
+        implements GenericBuilder<ClassDefinitionBuilder> {
     private final AbstractTransformer gen;
     
     private final String name;
@@ -328,9 +330,14 @@ public class ClassDefinitionBuilder {
      */
     
     public ClassDefinitionBuilder modifiers(long modifiers) {
-        this.modifiers = modifiers;
+        if (forDefinition instanceof Interface) {
+            this.modifiers = modifiers & ~STATIC;
+        }
+        else {
+            this.modifiers = modifiers;            
+        }
         if (this.concreteInterfaceMemberDefs != null) {
-            this.concreteInterfaceMemberDefs.modifiers((modifiers & PUBLIC) | FINAL);
+            this.concreteInterfaceMemberDefs.modifiers((modifiers & (PUBLIC | STATIC)) | FINAL);
         }
         return this;
     }
@@ -349,6 +356,7 @@ public class ClassDefinitionBuilder {
         return gen.make().TypeParameter(gen.names().fromString(name), bounds);
     }
 
+    @Override
     public ClassDefinitionBuilder typeParameter(TypeParameter declarationModel) {
         return typeParameter(declarationModel, true);
     }
@@ -574,8 +582,14 @@ public class ClassDefinitionBuilder {
         if (!isLocal) {
             // A shared or captured attribute gets turned into a class member
             Name attrNameNm = gen.names().fromString(Naming.quoteFieldName(attrName));
-            defs(gen.make().VarDef(gen.make().Modifiers(modifiers, annotations), attrNameNm, type, null));
-            if (initialValue != null) {
+            JCExpression fieldInit;
+            if ((modifiers & Flags.STATIC) != 0) {
+                fieldInit = initialValue;
+            } else {
+                fieldInit = null;
+            }
+            defs(gen.make().VarDef(gen.make().Modifiers(modifiers, annotations), attrNameNm, type, fieldInit));
+            if (initialValue != null && (modifiers & Flags.STATIC) == 0) {
                 // The attribute's initializer gets moved to the constructor
                 // because it might be using locals of the initializer
                 initBuilder.init(gen.make().Exec(gen.make().Assign(gen.makeSelect("this", Naming.quoteFieldName(attrName)), initialValue)));

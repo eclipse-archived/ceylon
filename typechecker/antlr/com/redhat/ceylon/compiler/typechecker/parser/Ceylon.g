@@ -140,7 +140,7 @@ moduleDescriptor returns [ModuleDescriptor moduleDescriptor]
       |
         STRING_LITERAL
         { $moduleDescriptor.setVersion(new QuotedLiteral($STRING_LITERAL)); }
-      )
+      )?
       importModuleList
       { $moduleDescriptor.setImportModuleList($importModuleList.importModuleList); }
     ;

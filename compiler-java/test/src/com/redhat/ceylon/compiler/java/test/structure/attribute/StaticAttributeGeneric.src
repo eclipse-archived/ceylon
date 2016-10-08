@@ -1,0 +1,87 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+class StaticAttributeGeneric<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
+    private static final .java.lang.Object nonSharedStat = .ceylon.language.nothing_.get_();
+    
+    private static final <T>T getNonSharedStat$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)nonSharedStat;
+    }
+    private static final .java.lang.Object sharedStat = .ceylon.language.nothing_.get_();
+    
+    public static final <T>T getSharedStat(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)sharedStat;
+    }
+    
+    private static final <T>T getNonSharedStatGetter$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    public static final <T>T getSharedStatGetter(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    private static final <T>T getNonSharedStatGetter2$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    public static final <T>T getSharedStatGetter2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    private static final <T>T getNonSharedVariableStatGetter$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    private static final <T>void setNonSharedVariableStatGetter$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T nonSharedVariableStatGetter) {
+    }
+    
+    public static final <T>T getSharedVariableStatGetter(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    public static final <T>void setSharedVariableStatGetter(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T sharedVariableStatGetter) {
+    }
+    
+    private static final <T>T getNonSharedVariableStatGetter2$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    private static final <T>void setNonSharedVariableStatGetter2$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T nonSharedVariableStatGetter2) {
+    }
+    
+    public static final <T>T getSharedVariableStatGetter2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        return (T)(.java.lang.Object).ceylon.language.nothing_.get_();
+    }
+    
+    public static final <T>void setSharedVariableStatGetter2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T sharedVariableStatGetter2) {
+    }
+    
+    public StaticAttributeGeneric(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
+        this.$reified$T = $reified$T;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.class, $reified$T);
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Method
+final class staticAttributeGeneric_ {
+    
+    private staticAttributeGeneric_() {
+    }
+    
+    static void staticAttributeGeneric() {
+        .java.lang.String s = .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.<.ceylon.language.String>getSharedStat(.ceylon.language.String.$TypeDescriptor$).toString();
+        s = .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.<.ceylon.language.String>getSharedStatGetter(.ceylon.language.String.$TypeDescriptor$).toString();
+        s = .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.<.ceylon.language.String>getSharedStatGetter2(.ceylon.language.String.$TypeDescriptor$).toString();
+        s = .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.<.ceylon.language.String>getSharedVariableStatGetter(.ceylon.language.String.$TypeDescriptor$).toString();
+        s = .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.<.ceylon.language.String>getSharedVariableStatGetter2(.ceylon.language.String.$TypeDescriptor$).toString();
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.<.ceylon.language.String>setSharedVariableStatGetter(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(s));
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.<.ceylon.language.String>setSharedVariableStatGetter2(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(s));
+    }
+}

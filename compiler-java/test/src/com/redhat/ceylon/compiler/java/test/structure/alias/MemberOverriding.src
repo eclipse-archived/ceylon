@@ -59,7 +59,9 @@ class MemberOverriding_Super implements .com.redhat.ceylon.compiler.java.runtime
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.DefaultAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Super.class,
+            isStatic = false)
     public final class Inner {
         
         private Inner() {
@@ -101,7 +103,9 @@ class MemberOverriding_Sub1 extends .com.redhat.ceylon.compiler.java.test.struct
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Bar")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub1.class,
+            isStatic = false)
     public final class Inner {
         
         private Inner() {
@@ -143,7 +147,9 @@ class MemberOverriding_Sub2 extends .com.redhat.ceylon.compiler.java.test.struct
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Alias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub2.class,
+            isStatic = false)
     public final class Inner {
         
         private Inner() {
@@ -180,7 +186,9 @@ class MemberOverriding_Sub3 extends .com.redhat.ceylon.compiler.java.test.struct
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub3.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
     public class Inner extends .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo {
         
@@ -224,7 +232,9 @@ class MemberOverriding_Sub4 extends .com.redhat.ceylon.compiler.java.test.struct
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub4.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Foo")
     public class Inner extends .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo {
         
@@ -268,7 +278,9 @@ class MemberOverriding_Sub5 extends .com.redhat.ceylon.compiler.java.test.struct
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Sub5.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.Class(extendsType = "com.redhat.ceylon.compiler.java.test.structure.alias::MemberOverriding_Bar")
     public class Inner extends .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar {
         

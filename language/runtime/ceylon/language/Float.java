@@ -1,14 +1,14 @@
 package ceylon.language;
 
-import ceylon.language.AliasesAnnotation$annotation$;
-
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes;
 import com.redhat.ceylon.compiler.java.metadata.Transient;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.ValueType;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
@@ -70,6 +70,75 @@ public final class Float
     public double doubleValue() {
         return value;
     }
+    
+    @SharedAnnotation$annotation$
+    @StaticAnnotation$annotation$
+    @TypeInfo("ceylon.language::Float|ceylon.language::ParseException")
+    public static java.lang.Object parse(
+            @Name("string") java.lang.String string) {
+        Float result = parseFloat_.parseFloat(string);
+        return result!=null ? result :
+            new ParseException("illegal format for Float");
+    }
+    
+    @Ignore
+    public static java.lang.String format(double f) {
+        return formatFloat_.formatFloat(f);
+    }
+    
+    @Ignore
+    public static final long format$minDecimalPlaces(double $float) {
+        return 1L;
+    }
+    
+    @Ignore
+    public static final java.lang.String format(double f, final long minDecimalPlaces) {
+        return formatFloat_.formatFloat(f, minDecimalPlaces);
+    }
+    
+    @Ignore
+    public static final long format$maxDecimalPlaces(double f, final long minDecimalPlaces) {
+        return 9L;
+    }
+    
+    @Ignore
+    public static final java.lang.String format(double f, final long minDecimalPlaces, final long maxDecimalPlaces) {
+        return formatFloat_.formatFloat(f, minDecimalPlaces, maxDecimalPlaces);
+    }
+    
+    @Ignore
+    public final int format$decimalSeparator(double f, final long minDecimalPlaces, final long maxDecimalPlaces) {
+        return 46;
+    }
+    
+    @Ignore
+    public static java.lang.String format(double f, final long minDecimalPlaces, final long maxDecimalPlaces, final int decimalSeparator) {
+        return formatFloat_.formatFloat(f, minDecimalPlaces, maxDecimalPlaces, decimalSeparator);
+    }
+    
+    @Ignore
+    public final ceylon.language.Character format$thousandsSeparator(double f, final long minDecimalPlaces, final long maxDecimalPlaces, final int decimalSeparator) {
+        return null;
+    }
+        
+    @SharedAnnotation$annotation$
+    @StaticAnnotation$annotation$
+    public static java.lang.String format(
+            @Name("float") double f, 
+            @Name("minDecimalPlaces") @Defaulted
+            long minDecimalPlaces, 
+            @Name("maxDecimalPlaces") @Defaulted
+            long maxDecimalPlaces, 
+            @Name("decimalSeparator") @Defaulted
+            @TypeInfo("ceylon.language::Character")
+            int decimalSeparator, 
+            @Name("thousandsSeparator") @Defaulted
+            @TypeInfo("ceylon.language::Character?")
+            Character thousandsSeparator) {
+        return formatFloat_.formatFloat(f, minDecimalPlaces, maxDecimalPlaces, decimalSeparator, thousandsSeparator);
+    }
+    
+
     
     @Override
     public Float plus(@Name("other") Float other) {
@@ -601,10 +670,12 @@ public final class Float
         return $TypeDescriptor$;
     }
 
+    @Ignore
     public static boolean largerThan(double value, Float other) {
     	return value>other.value;
     }
 
+    @Ignore
     public static boolean largerThan(double value, double other) {
         return value>other;
     }
@@ -614,10 +685,12 @@ public final class Float
     	return value>other.value;
     }
 
+    @Ignore
     public static boolean notSmallerThan(double value, Float other) {
     	return value>=other.value;
     }
 
+    @Ignore
     public static boolean notSmallerThan(double value, double other) {
         return value>=other;
     }
@@ -627,10 +700,12 @@ public final class Float
     	return value>=other.value;
     }
 
+    @Ignore
     public static boolean smallerThan(double value, Float other) {
     	return value<other.value;
     }
 
+    @Ignore
     public static boolean smallerThan(double value, double other) {
         return value<other;
     }
@@ -640,10 +715,12 @@ public final class Float
     	return value<other.value;
     }
 
+    @Ignore
     public static boolean notLargerThan(double value, Float other) {
     	return value<=other.value;
     }
 
+    @Ignore
     public static boolean notLargerThan(double value, double other) {
         return value<=other;
     }
@@ -658,6 +735,7 @@ public final class Float
     	return instance(value*integer);
     }
     
+    @Ignore
     public static double timesInteger(double value, long integer) {
     	return value*integer;
     }
@@ -667,6 +745,7 @@ public final class Float
     	return instance(value+integer);
     }
     
+    @Ignore
     public static double plusInteger(double value, long integer) {
     	return value+integer;
     }
@@ -676,6 +755,7 @@ public final class Float
         return instance(powerOfInteger(value,integer));
     }
     
+    @Ignore
     public static double powerOfInteger(double value, long integer) {
         if (integer == 0 && 
                 !Double.isNaN(value)) {

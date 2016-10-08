@@ -177,9 +177,20 @@ function is$(obj,type,containers){
             cnt=cnt.outer$;
           }
         } else if (obj.$$targs$$) {
-          //Method argument types
-          for (var t in containers) {
-            if (obj.$$targs$$[t] && containers[t] && !extendsType(obj.$$targs$$[t], containers[t], true))return false;
+          if (Array.isArray(containers)) {
+            //Static type, check type arguments against all containers
+            for (var i=0;i<containers.length;i++) {
+              if (containers[i].a) {
+                for (var t in containers[i].a) {
+                  if (obj.$$targs$$[t] && !extendsType(obj.$$targs$$[t], containers[i].a[t], true))return false;
+                }
+              }
+            }
+          } else {
+            //Method argument types
+            for (var t in containers) {
+              if (obj.$$targs$$[t] && !extendsType(obj.$$targs$$[t], containers[t], true))return false;
+            }
           }
         }
       }

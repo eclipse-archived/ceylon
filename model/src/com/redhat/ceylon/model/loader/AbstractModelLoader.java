@@ -66,7 +66,6 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationCompleter;
-import com.redhat.ceylon.model.typechecker.model.Element;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
@@ -1463,15 +1462,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     }
 
     protected Declaration makeClassAlias(ClassMirror classMirror) {
-        return new LazyClassAlias(classMirror, this);
+        LazyClassAlias decl = new LazyClassAlias(classMirror, this);
+        decl.setStatic(classMirror.isStatic());
+        return decl;
     }
 
     protected Declaration makeTypeAlias(ClassMirror classMirror) {
-        return new LazyTypeAlias(classMirror, this);
+        LazyTypeAlias decl = new LazyTypeAlias(classMirror, this);
+        decl.setStatic(classMirror.isStatic());
+        return decl;
     }
 
     protected Declaration makeInterfaceAlias(ClassMirror classMirror) {
-        return new LazyInterfaceAlias(classMirror, this);
+        LazyInterfaceAlias decl = new LazyInterfaceAlias(classMirror, this);
+        decl.setStatic(classMirror.isStatic());
+        return decl;
     }
 
     private void checkBinaryCompatibility(ClassMirror classMirror) {
@@ -1660,7 +1665,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.setActual(actual);
         klass.setActualCompleter(this);
         klass.setFinal(classMirror.isFinal());
-        klass.setStaticallyImportable(!klass.isCeylon() && classMirror.isStatic());
+        klass.setStatic(classMirror.isStatic());
         
         if(objectAnnotation == null) {
             manageNativeBackend(klass, classMirror, isNativeHeader);
@@ -1675,7 +1680,19 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         LazyInterface iface = new LazyInterface(classMirror, this);
         iface.setSealed(classMirror.getAnnotation(CEYLON_LANGUAGE_SEALED_ANNOTATION) != null);
         iface.setDynamic(classMirror.getAnnotation(CEYLON_DYNAMIC_ANNOTATION) != null);
-        iface.setStaticallyImportable(!iface.isCeylon());
+        
+        if (iface.isCeylon()) {
+            AnnotationMirror container = classMirror.getAnnotation(CEYLON_CONTAINER_ANNOTATION);
+            if (container!=null) {
+                Object value = container.getValue("isStatic");
+                if (value!=null) {
+                    iface.setStatic(Boolean.TRUE.equals(value));
+                }
+            }
+        }
+        else {
+            iface.setStatic(true);
+        }
         
         manageNativeBackend(iface, classMirror, isNativeHeader);
         
@@ -3197,9 +3214,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 continue;
             if(methodMirror.isStaticInit())
                 continue;
-            if(isCeylon && methodMirror.isStatic()
-                    && methodMirror.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) == null)
-                continue;
             // these are not relevant for our caller
             if(methodMirror.isConstructor() || isInstantiator(methodMirror)) {
                 continue;
@@ -3518,6 +3532,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         method.setUnit(klass.getUnit());
         method.setOverloaded(isOverloaded || isOverloadingMethod(methodMirror));
         method.setVariadic(methodMirror.isVariadic());
+        
         Type type = null;
         try{
             setMethodOrValueFlags(klass, methodMirror, method, isCeylon);
@@ -3757,7 +3772,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setShared(fieldMirror.isPublic() || fieldMirror.isProtected() || fieldMirror.isDefaultAccess());
         value.setProtectedVisibility(fieldMirror.isProtected());
         value.setPackageVisibility(fieldMirror.isDefaultAccess());
-        value.setStaticallyImportable(fieldMirror.isStatic());
+        value.setStatic(fieldMirror.isStatic());
         setDeclarationAliases(value, fieldMirror);
         // field can't be abstract or interface, so not formal
         // can we override fields? good question. Not really, but from an external point of view?
@@ -3792,7 +3807,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             enumValueType.setName(value.getName());
             enumValueType.setFinal(true);
             enumValueType.setUnit(value.getUnit());
-            enumValueType.setStaticallyImportable(value.isStaticallyImportable());
+            enumValueType.setStatic(value.isStatic());
             value.setType(enumValueType.getType());
             value.setUncheckedNullType(false);
         } else {
@@ -3905,6 +3920,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         value.setContainer(klass);
         value.setScope(klass);
         value.setUnit(klass.getUnit());
+        
         Type type = null;
         try{
             setMethodOrValueFlags(klass, methodMirror, value, isCeylon);
@@ -4008,7 +4024,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 decl.setDefault(true);
             }
         }
-        decl.setStaticallyImportable(methodMirror.isStatic() && methodMirror.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) == null);
+        decl.setStatic(methodMirror.isStatic() && methodMirror.getAnnotation(CEYLON_ENUMERATED_ANNOTATION) == null);
 
         decl.setActualCompleter(this);
     }

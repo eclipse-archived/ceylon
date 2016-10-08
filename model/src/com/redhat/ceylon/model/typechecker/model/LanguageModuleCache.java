@@ -30,7 +30,6 @@ public class LanguageModuleCache  implements LanguageModuleProvider {
     private Class basicDeclaration = null;
     private Interface identifiableDeclaration = null;
     private Class throwableDeclaration = null;
-    private Class errorDeclaration = null;
     private Class exceptionDeclaration = null;
     private Interface categoryDeclaration = null;
     private Interface iterableDeclaration = null;
@@ -108,7 +107,6 @@ public class LanguageModuleCache  implements LanguageModuleProvider {
         basicDeclaration = null;
         identifiableDeclaration = null;
         throwableDeclaration = null;
-        errorDeclaration = null;
         exceptionDeclaration = null;
         categoryDeclaration = null;
         iterableDeclaration = null;
@@ -292,14 +290,6 @@ public class LanguageModuleCache  implements LanguageModuleProvider {
             throwableDeclaration = (Class) getLanguageModuleDeclaration(throwableName);
         }
         return throwableDeclaration;
-    }
-
-    @Override
-    public Class getErrorDeclaration() {
-        if (errorDeclaration == null) {
-            errorDeclaration = (Class) getLanguageModuleDeclaration(errorName);
-        }
-        return errorDeclaration;
     }
 
     @Override

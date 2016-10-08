@@ -95,7 +95,57 @@ public final class Integer
     public long longValue() {
         return value;
     }
-
+    
+    @Ignore 
+    public static long parse$radix(java.lang.String string) {
+        return parseInteger_.parseInteger$radix(string);
+    }
+    
+    @Ignore
+    public static java.lang.Object parse(java.lang.String string) {
+        return parseInteger_.parseInteger(string);
+    }
+            
+    @SharedAnnotation$annotation$
+    @StaticAnnotation$annotation$
+    @TypeInfo("ceylon.language::Integer|ceylon.language::ParseException")
+    public static java.lang.Object parse(
+            @Name("string") java.lang.String string, 
+            @Name("radix") @Defaulted long radix) {
+        Integer result = parseInteger_.parseInteger(string, radix);
+        return result!=null ? result :
+            new ParseException("illegal format for Integer");
+    }
+    
+    @Ignore 
+    public static long format$radix(long integer) {
+        return formatInteger_.formatInteger$radix(integer);
+    }
+    
+    @Ignore 
+    public static Character format$groupingSeparator(long integer, long radix) {
+        return formatInteger_.formatInteger$groupingSeparator(integer, radix);
+    }
+    
+    @Ignore
+    public static java.lang.String format(long integer) {
+        return formatInteger_.formatInteger(integer);
+    }
+            
+    @Ignore
+    public static java.lang.String format(long integer, long radix) {
+        return formatInteger_.formatInteger(integer, radix);
+    }
+    
+    @SharedAnnotation$annotation$
+    @StaticAnnotation$annotation$
+    public static java.lang.String format(
+            @Name("integer") long integer, 
+            @Name("radix") @Defaulted long radix,
+            @Name("groupingSeparator") @Defaulted Character groupingSeparator) {
+        return formatInteger_.formatInteger(integer, radix, groupingSeparator);
+    }
+    
     @Override
     public Integer plus(@Name("other") Integer other) {
         return instance(value + other.value);
@@ -788,10 +838,12 @@ public final class Integer
         return $TypeDescriptor$;
     }
     
+    @Ignore
     public static boolean largerThan(long value, Integer other) {
     	return value>other.value;
     }
 
+    @Ignore
     public static boolean largerThan(long value, long other) {
         return value>other;
     }
@@ -801,10 +853,12 @@ public final class Integer
     	return value>other.value;
     }
 
+    @Ignore
     public static boolean notSmallerThan(long value, Integer other) {
     	return value>=other.value;
     }
 
+    @Ignore
     public static boolean notSmallerThan(long value, long other) {
         return value>=other;
     }
@@ -814,10 +868,12 @@ public final class Integer
     	return value>=other.value;
     }
 
+    @Ignore
     public static boolean smallerThan(long value, Integer other) {
     	return value<other.value;
     }
 
+    @Ignore
     public static boolean smallerThan(long value, long other) {
         return value<other;
     }
@@ -827,10 +883,12 @@ public final class Integer
     	return value<other.value;
     }
 
+    @Ignore
     public static boolean notLargerThan(long value, Integer other) {
     	return value<=other.value;
     }
 
+    @Ignore
     public static boolean notLargerThan(long value, long other) {
         return value<=other;
     }
@@ -845,6 +903,7 @@ public final class Integer
     	return instance(value*integer);
     }
     
+    @Ignore
     public static long timesInteger(long value, long integer) {
     	return value*integer;
     }
@@ -854,6 +913,7 @@ public final class Integer
     	return instance(value+integer);
     }
     
+    @Ignore
     public static long plusInteger(long value, long integer) {
     	return value+integer;
     }
@@ -863,6 +923,7 @@ public final class Integer
         return instance(power(value,integer));
     }
     
+    @Ignore
     public static long powerOfInteger(long value, long integer) {
         return power(value,integer);
     }

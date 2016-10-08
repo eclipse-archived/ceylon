@@ -130,7 +130,9 @@ public final class Observable2118$impl<T> implements .java.io.Serializable {
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug21xx::Observer2118<T>"})
     public class Baz implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observer2118<T>, .java.io.Serializable {
         
@@ -153,7 +155,9 @@ public final class Observable2118$impl<T> implements .java.io.Serializable {
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.issues.bug21xx.Observable2118.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.SatisfiedTypes({"com.redhat.ceylon.compiler.java.test.issues.bug21xx::Observer2118<V>"})
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "V",

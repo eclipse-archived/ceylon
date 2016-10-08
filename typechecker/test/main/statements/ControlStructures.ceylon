@@ -107,6 +107,15 @@ class ControlStructures() {
     try (@error f = file()) {}
     try (@error FileHandle f = file()) {}
     
+    class DestroyMe satisfies Destroyable {
+        shared new createMe() {}
+        shared actual void destroy(Throwable? e) {}
+    }
+    
+    try (DestroyMe.createMe()) {}
+    try (dm = DestroyMe.createMe()) {}
+    try (DestroyMe dm = DestroyMe.createMe()) {}
+    
     try {
         print("hello");
     }

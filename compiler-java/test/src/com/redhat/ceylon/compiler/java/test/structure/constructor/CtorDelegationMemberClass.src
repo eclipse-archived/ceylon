@@ -23,7 +23,9 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.class,
+            isStatic = false)
     public class Super implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected Super() {
@@ -82,7 +84,9 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
             major = 8,
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Name("ConcreteDelegating")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.Class(
             constructors = true,
             extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::CtorDelegationMemberClass.Super")
@@ -155,7 +159,9 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
             major = 8,
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Name("AbstractDelegating")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.Class(
             constructors = true,
             extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::CtorDelegationMemberClass.Super")
@@ -259,7 +265,9 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.Class(
             constructors = true,
             extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::CtorDelegationMemberClass.Super")
@@ -338,7 +346,9 @@ class CtorDelegationMemberClass implements .com.redhat.ceylon.compiler.java.runt
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationMemberClass.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.Class(
             constructors = true,
             extendsType = "com.redhat.ceylon.compiler.java.test.structure.constructor::CtorDelegationMemberClass.Super")

@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.java.codegen.Strategy.DefaultParameterMethodOwner;
 import com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -223,13 +224,14 @@ abstract class Invocation {
             
         if (Decl.isJavaStaticOrInterfacePrimary(getPrimary())) {
             Declaration methodOrClass = ((Tree.QualifiedMemberOrTypeExpression)getPrimary()).getDeclaration();
-            if (methodOrClass instanceof Function) {
+            if (methodOrClass instanceof Function
+                    && getQmePrimary() instanceof Tree.BaseTypeExpression) {
                 return new TransformedInvocationPrimary(gen.naming.makeName(
                         (Function)methodOrClass, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED), 
                         null);
             } else if (methodOrClass instanceof Class) {
                 return new TransformedInvocationPrimary(
-                        gen.makeJavaType(((Class)methodOrClass).getType(), JT_RAW | JT_NO_PRIMITIVES),
+                        gen.makeJavaType(((Tree.StaticMemberOrTypeExpression)getPrimary()).getTarget().getType(), JT_NO_PRIMITIVES),
                         null);
             }
         }
@@ -1369,9 +1371,11 @@ class NamedArgumentInvocation extends Invocation {
             appendVarsForSequencedArguments(sequencedArgument, declaredParams);
         boolean hasDefaulted = appendVarsForDefaulted(declaredParams);
         
+        DefaultParameterMethodOwner owner = Strategy.defaultParameterMethodOwner(getPrimaryDeclaration());
         if (hasDefaulted 
-                && !Strategy.defaultParameterMethodStatic(getPrimaryDeclaration())
-                && !Strategy.defaultParameterMethodOnOuter(getPrimaryDeclaration())) {
+                && owner != DefaultParameterMethodOwner.STATIC
+                && owner != DefaultParameterMethodOwner.OUTER 
+                && owner != DefaultParameterMethodOwner.OUTER_COMPANION) {
             vars.prepend(makeThis());
         }
         gen.expressionGen().withinInvocation(prev);
@@ -1416,7 +1420,11 @@ class NamedArgumentInvocation extends Invocation {
         JCExpression thisExpr = null;
         switch (Strategy.defaultParameterMethodOwner(param.getModel())) {
         case SELF:
+            break;
         case STATIC:
+            if (param.getDeclaration().isStaticallyImportable()) {
+                thisExpr = gen.makeStaticQualifier(param.getDeclaration()); 
+            }
             break;
         case OUTER:
             if(getQmePrimary() != null && !Decl.isConstructor(getPrimaryDeclaration()))
@@ -1815,7 +1823,8 @@ class NamedArgumentInvocation extends Invocation {
         if (vars != null 
                 && !vars.isEmpty() 
                 && primaryExpr != null
-                && selector != null) {
+                && selector != null
+                && !getPrimaryDeclaration().isStatic()) {
             // Prepare the first argument holding the primary for the call
             Type type = ((Tree.MemberOrTypeExpression)getPrimary()).getTarget().getQualifyingType();
             JCExpression varType;

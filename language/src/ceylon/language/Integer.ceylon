@@ -38,15 +38,107 @@
      8660
      #21_D4
      $10_0001_1101_0100"
-see (`value runtime.integerSize`,
-     `function parseInteger`,
-     `function formatInteger`)
+see (`value runtime.integerSize`)
 tagged("Basic types", "Numbers")
-shared native final class Integer(Integer integer)
-        extends Object()
+shared native final class Integer
+        extends Object
         satisfies Integral<Integer> &
                   Binary<Integer> & 
                   Exponentiable<Integer,Integer> {
+    
+    "The [[Integer]] value of the given 
+     [[string representation|string]] of an integer value in 
+     the base given by [[radix]], or `null` if the string 
+     does not represent an integer in that base, or if the 
+     mathematical integer it represents is too large in 
+     magnitude to be represented by an instance of the class 
+     `Integer`.
+     
+     The syntax accepted by this function depends upon the 
+     given [[base|radix]]:
+     
+     - For base 10, the accepted syntax is the same as the 
+       syntax for an `Integer` literal in the Ceylon 
+       language except that it may optionally begin with a 
+       sign character (`+` or `-`) and may not contain 
+       grouping underscore characters. That is, an optional 
+       sign character, followed by a string of decimal 
+       digits, followed by an optional SI magnitude: 
+       `k`, `M`, `G`, `T`, or `P`.
+     - For other bases, the accepted syntax is an optional 
+       sign character, followed by a string of digits of the 
+       given base. 
+     
+     The given `radix` specifies the base of the string 
+     representation. The list of available digits starts 
+     from `0` to `9`, followed by `a` to `z`. When parsing 
+     in a specific base, the first `radix` digits from the 
+     available digits list is used. This function is not 
+     case sensitive; `a` and `A` both correspond to the 
+     digit `a` whose decimal value is `10`.
+     
+     Integer: Base10 | BaseN
+     Base10: Sign? Base10Digits Magnitude
+     BaseN: Sign? BaseNDigits
+     Sign: '+' | '-'
+     Magnitude: 'k' | 'M' | 'G' | 'T' | 'P'
+     Base10Digits: ('0'..'9')+
+     BaseNDigits: ('0'..'9'|'a'..'z'|'A'..'Z')+"
+    throws (`class AssertionError`, 
+            "if [[radix]] is not between [[minRadix]] and 
+             [[maxRadix]]")
+    see (`function format`, `function Float.parse`)
+    tagged("Numbers", "Basic types")
+    since("1.3.1")
+    shared static Integer|ParseException parse(
+        "The string representation to parse."
+        String string,
+        "The base, between [[minRadix]] and [[maxRadix]] 
+         inclusive."
+        Integer radix = 10)
+            => package.parseInteger(string, radix)
+            else ParseException("illegal format for Integer");
+    
+    "The string representation of the given [[integer]] in 
+     the base given by [[radix]]. If the given integer is 
+     [[negative|Integer.negative]], the string 
+     representation will begin with `-`. Digits consist of 
+     decimal digits `0` to `9`, together with and lowercase 
+     letters `a` to `z` for bases greater than 10.
+     
+     For example:
+     
+     - `formatInteger(-46)` is `\"-46\"`
+     - `formatInteger(9,2)` is `\"1001\"`
+     - `formatInteger(10,8)` is `\"12\"`
+     - `formatInteger(511,16)` is `\"1ff\"`
+     - `formatInteger(512,32)` is `\"g0\"`"
+    throws (`class AssertionError`, 
+            "if [[radix]] is not between [[minRadix]] and 
+             [[maxRadix]]")
+    see (`function parse`, `function Float.format`)
+    tagged("Numbers")
+    since("1.3.1")
+    shared static String format(
+        "The integer value to format."
+        Integer integer,
+        "The base, between [[minRadix]] and [[maxRadix]] 
+         inclusive."
+        Integer radix = 10,
+        "If not `null`, `groupingSeparator` will be used to
+         separate each group of three digits if `radix` is 
+         10 (the default), or each group of four digits if 
+         `radix` is 2 or 16.
+         
+         `groupingSeparator` may not be '-', a digit as
+         defined by the Unicode general category *Nd*, or a
+         letter as defined by the Unicode general categories
+         *Lu, Ll, Lt, Lm, and Lo*."
+        Character? groupingSeparator = null)
+            => package.formatInteger(integer, radix, 
+                    groupingSeparator);
+    
+    shared new (Integer integer) extends Object() {}
     
     "The UTF-32 character with this UCS code point."
     throws (`class OverflowException`,

@@ -5,7 +5,9 @@ package com.redhat.ceylon.compiler.java.test.quoting.lettercase;
         minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("ii")
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i_.class)
+@.com.redhat.ceylon.compiler.java.metadata.Container(
+        klass = .com.redhat.ceylon.compiler.java.test.quoting.lettercase.i_.class,
+        isStatic = false)
 public interface i$ii_ {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(

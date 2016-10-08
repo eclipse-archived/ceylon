@@ -15,9 +15,9 @@
 throws (`class AssertionError`, 
         "if [[radix]] is not between [[minRadix]] and 
          [[maxRadix]]")
-see (`function formatFloat`,
-     `function parseInteger`)
+see (`function Integer.format`)
 tagged("Numbers")
+deprecated("Use [[Integer.format]]")
 shared String formatInteger(
         "The integer value to format."
         Integer integer,

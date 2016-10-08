@@ -3778,10 +3778,9 @@ public class ExpressionTransformer extends AbstractTransformer {
         java.util.List<TypeParameter> tps = null;
         Declaration declaration = mte.getDeclaration();
         
-        if (declaration instanceof Generic) {
-            tps = ((Generic)declaration).getTypeParameters();
-        }
-        if (mte.getTypeModel().isTypeConstructor()) {
+        if (!mte.getTypeModel().isTypeConstructor()) {
+            tps = Strategy.getEffectiveTypeParameters(declaration);
+        } else {
             for (TypeParameter tp : tps) {
                 callBuilder.typeArgument(makeJavaType(tp.getType(), JT_TYPE_ARGUMENT));
             }
@@ -4112,10 +4111,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         Tree.TypeArguments typeArguments = expr.getTypeArguments();
         boolean prevSyntheticClassBody = withinSyntheticClassBody(true);
         try {
-            if (member.isStaticallyImportable()) {
+            if (member.isStatic()) {
                 if (member instanceof Function) {
                     Function method = (Function)member;
-                    Reference producedReference = method.appliedReference(qualifyingType, typeArguments.getTypeModels());
+                    Reference producedReference = expr.getTarget();//method.appliedReference(qualifyingType, typeArguments.getTypeModels());
                     return CallableBuilder.javaStaticMethodReference(
                             gen(), 
                             expr,
@@ -4128,7 +4127,18 @@ public class ExpressionTransformer extends AbstractTransformer {
                 } else if (member instanceof Value) {
                     CallBuilder callBuilder = CallBuilder.instance(this);
                     JCExpression qualExpr = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)member.getContainer(), DeclNameFlag.QUALIFIED);
+                    Type primType = primary.getTarget().getType();
+                    if (member.isStatic()
+                            && ModelUtil.isCeylonDeclaration(member)
+                            && !primType.getTypeArgumentList().isEmpty()) {
+                        for (Type pt : primType.getTypeArgumentList()) {
+                            callBuilder.typeArgument(makeJavaType(pt, JT_TYPE_ARGUMENT));
+                            callBuilder.argument(makeReifiedTypeArgument(pt));
+                        }
+                        
+                    }
                     callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
+                    
                     return callBuilder.build();
                 } else if (member instanceof Class) {
                     Reference producedReference = expr.getTarget();
@@ -4525,7 +4535,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                     method, producedReference, parameterList));
         } else if (decl instanceof Class) {
             Class class_ = (Class)decl;
-            if (class_.isStaticallyImportable()) {
+            if (class_.isStatic()) {
                 return naming.makeTypeDeclarationExpression(null, class_, Naming.DeclNameFlag.QUALIFIED);
             } else {
                 final ParameterList parameterList = class_.getFirstParameterList();
@@ -4947,7 +4957,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
             if (qualExpr == null 
-                    && (decl.isStaticallyImportable() || isEnumeratedConstructorGetter)
+                    && (decl.isStatic() || isEnumeratedConstructorGetter)
                     // make sure we only do this for things contained in a type, as otherwise
                     // it breaks for qualified calls to static methods in interfaces in Java 8
                     // it only breaks for interfaces because they are statically importable
@@ -5049,7 +5059,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             typeDecl = decl;
         if (qualExpr == null 
                 // statics are not members that can be inherited
-                && !decl.isStaticallyImportable()
+                && !decl.isStatic()
                 && (!Decl.isConstructor(decl) || !Decl.isConstructor(typeDecl))
                 && typeDecl.isMember()
                 // dodge variable refinements with assert/is (these will be turned to locals
@@ -5749,11 +5759,13 @@ public class ExpressionTransformer extends AbstractTransformer {
                     && !qualified.getDeclaration().isCaptured() 
                     && !qualified.getDeclaration().isShared() ) {
                 expr = null;
-            } else if (!qualified.getDeclaration().isStaticallyImportable()) {
+            } else if (!qualified.getDeclaration().isStatic()) {
                 expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
                 if (Decl.isPrivateAccessRequiringUpcast(qualified)) {
                     expr = makePrivateAccessUpcast(qualified, expr);
                 }
+            } else {
+                expr = makeJavaType(((ClassOrInterface)qualified.getDeclaration().getContainer()).getType(), JT_RAW);
             }
         } else if(leftTerm instanceof Tree.ParameterizedExpression) {
             expr = null;
@@ -5797,7 +5809,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // must use the setter
                 if (Decl.isLocal(decl)) {
                     lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER | Naming.NA_SETTER);
-                } else if (decl.isStaticallyImportable()) {
+                } else if (decl.isStatic()) {
                     lhs = naming.makeTypeDeclarationExpression(null, (TypeDeclaration)decl.getContainer(), DeclNameFlag.QUALIFIED);
                 }
             }
@@ -5813,7 +5825,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if ((variable || decl.isLate()) && (Decl.isClassAttribute(decl))) {
             // must use the setter, nothing to do, unless it's a java field
             if(Decl.isJavaField(decl)){
-                if (decl.isStaticallyImportable()) {
+                if (decl.isStatic()) {
                     // static field
                     result = at(op).Assign(naming.makeName(decl, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED), rhs);
                 }else{
@@ -5838,10 +5850,23 @@ public class ExpressionTransformer extends AbstractTransformer {
             result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT), rhs);
         }
         
+        ListBuffer<JCExpression> typeArguments =  new ListBuffer<JCExpression>();
+        ListBuffer<JCExpression> reifiedTypeArguments =  new ListBuffer<JCExpression>();
+        if (decl.isStatic()
+                && ModelUtil.isCeylonDeclaration(decl)) {
+            Type primType = ((Tree.StaticMemberOrTypeExpression)leftTerm).getTarget().getQualifyingType();
+            if (primType != null) {
+                for (Type pt : primType.getTypeArgumentList()) {
+                    typeArguments.add(makeJavaType(pt, JT_TYPE_ARGUMENT));
+                    reifiedTypeArguments.add(makeReifiedTypeArgument(pt));
+                }
+            }
+        }
+        
         if (result == null) {
-            result = make().Apply(List.<JCTree.JCExpression>nil(),
+            result = make().Apply(typeArguments.toList(),
                     makeQualIdent(lhs, selector),
-                    List.<JCTree.JCExpression>of(rhs));
+                    reifiedTypeArguments.toList().append(rhs));
         }
         
         return result;

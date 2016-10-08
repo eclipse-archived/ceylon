@@ -60,7 +60,7 @@ final class TypeParamRename$impl<T, U> implements .java.io.Serializable {
             {
                 V $ceylontmp$v$1 = m2$v($reified$V, $reified$W);
             }
-            returning m2$canonical$($reified$V, $reified$W, $ceylontmp$v$1);
+            returning <V, W>m2$canonical$($reified$V, $reified$W, $ceylontmp$v$1);
         );
     }
     
@@ -73,7 +73,7 @@ final class TypeParamRename$impl<T, U> implements .java.io.Serializable {
     }
     
     public <V, W>W m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$V, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$W, final V v) {
-        return m2$canonical$($reified$V, $reified$W, v);
+        return <V, W>m2$canonical$($reified$V, $reified$W, v);
     }
 }
 class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.klass.TypeParamRename<X, Y>, .java.io.Serializable {
@@ -128,7 +128,7 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runti
             {
                 A $ceylontmp$v$3 = m2$v($reified$A, $reified$B);
             }
-            returning m2$canonical$($reified$A, $reified$B, $ceylontmp$v$3);
+            returning <A, B>m2$canonical$($reified$A, $reified$B, $ceylontmp$v$3);
         );
     }
     
@@ -138,7 +138,7 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runti
     
     @.java.lang.Override
     public <A, B>B m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B, final A v) {
-        return m2$canonical$($reified$A, $reified$B, v);
+        return <A, B>m2$canonical$($reified$A, $reified$B, v);
     }
     
     @.java.lang.Override

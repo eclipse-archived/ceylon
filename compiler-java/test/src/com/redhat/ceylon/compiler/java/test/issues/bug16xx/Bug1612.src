@@ -19,7 +19,7 @@ class Bug1612<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             let
             {
                 long $ceylontmp$i$0 = .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.<T>$default$i($reified$T);
-                this($reified$T, $ceylontmp$i$0);
+                <T>this($reified$T, $ceylontmp$i$0);
             }
             returning null;
         );
@@ -48,7 +48,9 @@ class Bug1612<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             major = 8,
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.Name("Bar1")
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "G",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,
@@ -62,7 +64,7 @@ class Bug1612<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
                 let
                 {
                     G $ceylontmp$j$1 = $default$Bar1$j($reified$G);
-                    this($reified$G, $ceylontmp$j$1);
+                    <G>this($reified$G, $ceylontmp$j$1);
                 }
                 returning null;
             );
@@ -110,7 +112,9 @@ class Bug1612<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1612.class,
+            isStatic = false)
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "G",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,

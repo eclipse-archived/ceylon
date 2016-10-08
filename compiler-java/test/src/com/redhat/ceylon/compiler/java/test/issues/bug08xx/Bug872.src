@@ -283,7 +283,7 @@ public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.iss
             let
             {
                 .ceylon.language.Sequential $ceylontmp$initialTags$7 = (.ceylon.language.Sequential).ceylon.language.empty_.get_();
-                this($reified$TagType, name, $ceylontmp$initialTags$7);
+                <TagType>this($reified$TagType, name, $ceylontmp$initialTags$7);
             }
             returning null;
         );

@@ -2,6 +2,7 @@ package com.redhat.ceylon.compiler.typechecker.analyzer;
 
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getLastConstructor;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getLastExecutableStatement;
+import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.getLastStatic;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isAlwaysSatisfied;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isAtLeastOne;
 import static com.redhat.ceylon.compiler.typechecker.analyzer.AnalyzerUtil.isNeverSatisfied;
@@ -57,10 +58,12 @@ public class SpecificationVisitor extends Visitor {
     private boolean endsInReturnThrow = false;
     private boolean endsInBreak = false;
     private boolean inExtends = false;
+    private boolean inDelegatedContructor = false;
     private boolean inAnonFunctionOrComprehension = false;
     private Parameter parameter = null;
     private boolean usedInDeclarationSection = false;
     private boolean definedInDeclarationSection = false;
+    private boolean hasNonStatic = false; 
     
     private boolean definitely = false;
     private boolean possibly = false;
@@ -192,6 +195,9 @@ public class SpecificationVisitor extends Visitor {
         if (isSelfReference(that.getPrimary())) {
             visitReference(that);
         }
+        if (that.getStaticMethodReference()) {
+            visitReference(that);
+        }
     }
 
     @Override
@@ -200,6 +206,16 @@ public class SpecificationVisitor extends Visitor {
         if (isSelfReference(that.getPrimary())) {
             visitReference(that);
         }
+        if (that.getStaticMethodReference()) {
+            visitReference(that);
+        }
+    }
+    
+    private String name() {
+        String name = declaration.getName();
+        return name==null ? 
+                "default constructor" : 
+                "'" + name + "'";
     }
 
     private void visitReference(Tree.Primary that) {
@@ -209,6 +225,12 @@ public class SpecificationVisitor extends Visitor {
         if (that instanceof Tree.MemberOrTypeExpression) {
             Tree.MemberOrTypeExpression mte = 
                     (Tree.MemberOrTypeExpression) that;
+            if (that instanceof Tree.BaseTypeExpression || 
+                    that instanceof Tree.QualifiedTypeExpression) {
+                if (mte.getStaticMethodReferencePrimary()) {
+                    return;
+                }
+            }
             member = mte.getDeclaration();
             assigned = mte.getAssigned();
             metamodel = false;
@@ -224,28 +246,26 @@ public class SpecificationVisitor extends Visitor {
         }
 
         Scope scope = that.getScope();
-        if (member==declaration && 
+        if ((member==declaration || 
+                isDelegationToDefaultConstructor(member)) && 
                 declaration.isDefinedInScope(scope) &&
                 //TODO: THIS IS TERRIBLE!!!!!
                 !isReferenceToNativeHeaderMember(scope)) {
             if (!declared) {
-                //you are allowed to refer to later 
-                //declarations in a class declaration
-                //section or interface
                 if (!metamodel && 
                         !isForwardReferenceable() && 
                         !hasParameter) {
                     Scope container = 
                             declaration.getContainer();
                     if (container instanceof Class) {
-                        that.addError("forward reference to class member in initializer: '" + 
-                                declaration.getName() + 
-                                "' is not yet declared (forward references must occur in declaration section)");
+                        that.addError("forward reference to class member in initializer: " + 
+                                name() + 
+                                " is not yet declared (forward references must occur in declaration section)");
                     }
                     else {
-                        that.addError("forward reference to local declaration: '" + 
-                                declaration.getName() + 
-                                "' is not yet declared");
+                        that.addError("forward reference to local declaration: " + 
+                                name() + 
+                                " is not yet declared");
                     }
                 }
             }
@@ -256,20 +276,20 @@ public class SpecificationVisitor extends Visitor {
                 //section or interface
                 if (declaration.isFormal()) {
                     if (!isForwardReferenceable()) {
-                        that.addError("formal member may not be used in initializer: '" + 
-                                member.getName() + "'");                    
+                        that.addError("formal member may not be used in initializer: " + 
+                                name());                    
                     }
                 }
                 else if (!metamodel &&
                         !isNativeHeader(declaration) &&
                         (!isLate() || !isForwardReferenceable())) {
                     if (isVariable()) {
-                        that.addError("not definitely initialized: '" + 
-                                declaration.getName() + "'");                    
+                        that.addError("not definitely initialized: " + 
+                                name());                    
                     }
                     else {
-                        that.addError("not definitely specified: '" + 
-                                declaration.getName() + "'");
+                        that.addError("not definitely specified: " + 
+                                name());
                     }
                 }
             }
@@ -285,16 +305,22 @@ public class SpecificationVisitor extends Visitor {
             }
             if (!assigned && declaration.isDefault() && 
                     !isForwardReferenceable()) {
-                that.addError("default member may not be used in initializer: '" + 
-                        declaration.getName() + "'"); 
+                that.addError("default member may not be used in initializer: " + 
+                        name()); 
             }
             if (inAnonFunctionOrComprehension && 
                 definitely && 
                 isVariable()) {
-                that.addError("variable member may not be captured by comprehension or function in extends clause: '"+
-                        declaration.getName() + "'");
+                that.addError("variable member may not be captured by comprehension or function in extends clause: "+
+                        name());
             }
         }
+    }
+
+    private boolean isDelegationToDefaultConstructor(Declaration member) {
+        return inDelegatedContructor 
+            && member instanceof Class 
+            && declaration == ((Class) member).getDefaultConstructor();
     }
     
     private boolean isReferenceToNativeHeaderMember(Scope scope) {
@@ -311,9 +337,18 @@ public class SpecificationVisitor extends Visitor {
     }
 
     private boolean isForwardReferenceable() {
-        return declarationSection ||
-                declaration.isToplevel() ||
-                declaration.isInterfaceMember();
+        // we are permitted to refer to a later 
+        // declaration:
+        // - in a class declaration section or
+        //   interface, 
+        // - if it is toplevel
+        // - if it is a constructor, and we're
+        //   not in an extends clause
+        
+        return declarationSection 
+            || declaration.isToplevel()
+            || !inDelegatedContructor 
+                && isConstructor(declaration);
     }
     
     @Override
@@ -527,25 +562,25 @@ public class SpecificationVisitor extends Visitor {
                 if ((declaration.isFormal() || 
                      declaration.isDefault()) && 
                          !isForwardReferenceable()) {
-                    term.addError("member is formal or default and may not be assigned here: '" +
-                            member.getName() + "'");
+                    term.addError("member is formal or default and may not be assigned here: " +
+                            name());
                 }
                 else if (!isVariable() && !isLate()) {
                     if (member instanceof Value) {
                         if (node instanceof Tree.AssignOp) {
-                            term.addError("value is not a variable and may not be assigned here: '" +
-                                    member.getName() + "'", 
+                            term.addError("value is not a variable and may not be assigned here: " +
+                                    name(), 
                                     803);
                         }
                         else {
-                            term.addError("value is not a variable: '" +
-                                    member.getName() + "'", 
+                            term.addError("value is not a variable: " +
+                                    name(), 
                                     800);
                         }
                     }
                     else {
-                        term.addError("not a variable value: '" +
-                                member.getName() + "'");
+                        term.addError("not a variable value: " +
+                                name());
                     }
                 }
             }
@@ -631,7 +666,11 @@ public class SpecificationVisitor extends Visitor {
     
     @Override 
     public void visit(Tree.DelegatedConstructor that) {
+        boolean odc = inDelegatedContructor;
+        inDelegatedContructor = true;
         super.visit(that);
+        inDelegatedContructor = odc;
+                
         Tree.SimpleType type = that.getType();
         if (type!=null) {
             delegatedConstructor = 
@@ -949,12 +988,12 @@ public class SpecificationVisitor extends Visitor {
             if (member==declaration) {
                 if (!isForwardReferenceable()) {
                     if (declaration.isFormal()) {
-                        bme.addError("member is formal and may not be specified: '" +
-                                declaration.getName() + "' is declared formal");
+                        bme.addError("member is formal and may not be specified: " +
+                                name() + " is declared formal");
                     }
                     else if (declaration.isDefault()) {
-                        bme.addError("member is default and may not be specified except in its declaration: '" +
-                                declaration.getName() + "' is declared default");
+                        bme.addError("member is default and may not be specified except in its declaration: " +
+                                name() + " is declared default");
                     }
                 }
                 if (that.getRefinement()) {
@@ -1002,17 +1041,17 @@ public class SpecificationVisitor extends Visitor {
                 // kind of specifier, all =>, or all =
                 // TODO: sometimes this error appears only because 
                 //       of a later line which illegally reassigns
-                se.addError("value must be specified using => lazy specifier: '" +
-                        declaration.getName() + "'");
+                se.addError("value must be specified using => lazy specifier: " +
+                        name());
             }
             if (lazy) {
                 if (value.isVariable()) {
-                    se.addError("variable value may not be specified using => lazy specifier: '" +
-                            declaration.getName() + "'");
+                    se.addError("variable value may not be specified using => lazy specifier: " +
+                            name());
                 }
                 else if (value.isLate()) {
-                    se.addError("late reference may not be specified using => lazy specifier: '" +
-                            declaration.getName() + "'");
+                    se.addError("late reference may not be specified using => lazy specifier: " +
+                            name());
                 }
             }
         }
@@ -1027,13 +1066,12 @@ public class SpecificationVisitor extends Visitor {
                 declaration instanceof FunctionOrValue &&
                 ((FunctionOrValue) declaration).isShortcutRefinement())) {
             //this error is added by ExpressionVisitor
-//          that.addError("inherited member is not variable and may not be specified here: '" + 
-//                  member.getName() + "'");
+//          that.addError("inherited member is not variable and may not be specified here: " + 
+//                  name());
         }
         else if (!declared && constant) {
             bme.addError(shortdesc() + 
-                    " is not yet declared: '" + 
-                    declaration.getName() + "'");
+                    " is not yet declared: " + name());
         }
         else if (loopDepth>0 && constant  && 
                 !(endsInReturnThrow && 
@@ -1042,14 +1080,14 @@ public class SpecificationVisitor extends Visitor {
                           lastContinue==null)) {
             if (definitely) {
                 bme.addError(longdesc() + 
-                        " is aready definitely specified: '" + 
-                        declaration.getName() + "'", 
+                        " is aready definitely specified: " + 
+                        name(), 
                         803);
             }
             else {
                 bme.addError(longdesc() + 
-                        " is not definitely unspecified in loop: '" + 
-                        declaration.getName() + "'", 
+                        " is not definitely unspecified in loop: " + 
+                        name(), 
                         803);
                 specify(); //to eliminate dupe error
             }
@@ -1058,28 +1096,28 @@ public class SpecificationVisitor extends Visitor {
             if (withinDeclaration) {
                 bme.addError("cannot specify " + 
                         shortdesc() + 
-                        " from within its own body: '" + 
-                        declaration.getName() + "'");
+                        " from within its own body: " + 
+                        name());
             }
             else {
                 bme.addError("cannot specify " + 
                         shortdesc() + 
-                        " declared in outer scope: '" + 
-                        declaration.getName() + "'", 
+                        " declared in outer scope: " + 
+                        name(), 
                         803);
             }
         }
         else if (possibly && constant) {
             if (definitely) {
                 bme.addError(longdesc() + 
-                        " is aready definitely specified: '" + 
-                        declaration.getName() + "'", 
+                        " is aready definitely specified: " + 
+                        name(),
                         803);
             }
             else {
                 bme.addError(longdesc() + 
-                        " is not definitely unspecified: '" + 
-                        declaration.getName() + "'", 
+                        " is not definitely unspecified: " + 
+                        name(),
                         803);
                 specify(); //to eliminate dupe error
             }
@@ -1244,9 +1282,15 @@ public class SpecificationVisitor extends Visitor {
                 super.visit(that);
                 if (declaration.isToplevel() && 
                         !isNativeHeader(declaration)) {
-                    that.addError("toplevel function must be specified: '" +
-                            declaration.getName() + 
-                            "' may not be forward declared");
+                    that.addError("toplevel function must be specified: " +
+                            name() + 
+                            " may not be forward declared");
+                }
+                else if (declaration.isStatic() && 
+                        !isNativeHeader(declaration)) {
+                    that.addError("static function must be specified: " +
+                            name() + 
+                            " may not be forward declared");
                 }
                 else if (declaration.isClassMember() && 
                         !isNativeHeader(declaration) &&
@@ -1254,15 +1298,15 @@ public class SpecificationVisitor extends Visitor {
                         that.getDeclarationModel()
                             .getInitializerParameter()==null &&
                         declarationSection) {
-                    that.addError("forward declaration may not occur in declaration section: '" +
-                                declaration.getName() + "'", 
+                    that.addError("forward declaration may not occur in declaration section: " +
+                                name(), 
                                 1450);
                 }
                 else if (declaration.isInterfaceMember() && 
                         !isNativeHeader(declaration) &&
                         !declaration.isFormal()) {
-                    that.addError("interface method must be formal or specified: '" +
-                            declaration.getName() + "'", 
+                    that.addError("interface method must be formal or specified: " +
+                            name(), 
                             1400);
                 }
             }
@@ -1345,16 +1389,28 @@ public class SpecificationVisitor extends Visitor {
             }
             else {
                 super.visit(that);
-                if (declaration.isToplevel() && 
-                        !isNativeHeader(declaration) &&
-                        !isLate()) {
+                if (declaration.isToplevel() 
+                        && !isNativeHeader(declaration) 
+                        && !isLate()) {
                     if (isVariable()) {
-                        that.addError("toplevel variable value must be initialized: '" +
-                                declaration.getName() + "'");
+                        that.addError("toplevel variable value must be initialized: " +
+                                name());
                     }
                     else {
-                        that.addError("toplevel value must be specified: '" +
-                                declaration.getName() + "'");
+                        that.addError("toplevel value must be specified: " +
+                                name());
+                    }
+                }
+                else if ((declaration.isStatic()) 
+                        && !isNativeHeader(declaration)
+                        && !isLate()) {
+                    if (isVariable()) {
+                        that.addError("static variable value must be initialized: " +
+                                name());
+                    }
+                    else {
+                        that.addError("static value must be specified: " +
+                                name());
                     }
                 }
                 else if (declaration.isClassOrInterfaceMember() && 
@@ -1364,8 +1420,8 @@ public class SpecificationVisitor extends Visitor {
                             .getInitializerParameter()==null &&
                         !that.getDeclarationModel().isLate() &&
                         declarationSection) {
-                    that.addError("forward declaration may not occur in declaration section: '" +
-                            declaration.getName() + "'", 
+                    that.addError("forward declaration may not occur in declaration section: " +
+                            name(), 
                             1450);
                 }
             }
@@ -1436,7 +1492,22 @@ public class SpecificationVisitor extends Visitor {
         }
         return null;
     }
-        
+    
+    @Override
+    public void visit(Tree.InterfaceBody that) {
+        if (that.getScope()==declaration.getContainer()) {
+            Tree.Statement les = getLastStatic(that);
+            declarationSection = les==null;
+            lastExecutableStatement = les;
+            super.visit(that);
+            declarationSection = false;
+            lastExecutableStatement = null;
+        }
+        else {
+            super.visit(that);
+        }
+    }
+    
     @Override
     public void visit(Tree.ClassBody that) {
         if (that.getScope()==declaration.getContainer()) {
@@ -1472,12 +1543,12 @@ public class SpecificationVisitor extends Visitor {
                     if (declarationSection &&
                             declaration instanceof FunctionOrValue &&
                             that.getDeclaration()==declaration) {
-                        usedInDeclarationSection = true;;
+                        usedInDeclarationSection = true;
                     }
                 }
             }.visit(that);
             
-            super.visit(that);        
+            super.visit(that);
             declarationSection = false;
             lastExecutableStatement = null;
             lastConstructor = null;
@@ -1502,7 +1573,29 @@ public class SpecificationVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Statement that) {
+        if (that instanceof Tree.TypeParameterDeclaration 
+         || that instanceof Tree.TypeConstraint) {
+            //ignore
+        }
+        else if (that instanceof Tree.Declaration) {
+            Tree.Declaration dec = (Tree.Declaration) that;
+            Declaration model = dec.getDeclarationModel();
+            if (model.isStatic()) {
+                if (hasNonStatic && model==declaration) {
+                    that.addError("static member must occur before all non-static members and initializer statements");
+                }
+            }
+            else {
+                hasNonStatic = true;
+            }
+        }
+        else if (that instanceof Tree.ExecutableStatement) {
+            hasNonStatic = true;
+        }
+        boolean ohs = hasNonStatic;
+        hasNonStatic = false;
         super.visit(that);
+        hasNonStatic = ohs;
         checkDeclarationSection(that);
     }
 

@@ -51,6 +51,7 @@ import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.DeferredSpecification;
+import com.redhat.ceylon.compiler.java.codegen.Strategy.DefaultParameterMethodOwner;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Errors;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Generate;
@@ -258,7 +259,9 @@ public class ClassTransformer extends AbstractTransformer {
             if(generateInstantiator
                     && !cls.hasConstructors()
                     && !cls.hasEnumerated()){
-                classBuilder.getInitBuilder().modifiers(PROTECTED);
+                if (!cls.isStatic()) {
+                    classBuilder.getInitBuilder().modifiers(PROTECTED);
+                }
                 generateInstantiators(classBuilder, cls, null, instantiatorDeclCb, instantiatorImplCb, classDef, classDef.getParameterList());
             }
             
@@ -288,6 +291,8 @@ public class ClassTransformer extends AbstractTransformer {
 
         // make sure we set the container in case we move it out
         addAtContainer(classBuilder, model);
+        
+        transformTypeParameters(classBuilder, model);
         
         // Transform the class/interface members
         List<JCStatement> childDefs = visitClassOrInterfaceDefinition(def, classBuilder);
@@ -432,7 +437,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         // return new SerializationProxy(outer, Foo.clazz, name);
         List<JCExpression> args = List.<JCExpression>of(name.makeIdent());
-        if (model.isMember()) {
+        if (model.isMember() && !model.isStatic()) {
             ClassOrInterface outer = (ClassOrInterface)model.getContainer();
             args = args.prepend(makeClassLiteral(outer.getType()));
             args = args.prepend(naming.makeQualifiedThis(naming.makeTypeDeclarationExpression(null, outer, DeclNameFlag.QUALIFIED)));
@@ -775,9 +780,10 @@ public class ClassTransformer extends AbstractTransformer {
             f = STATIC;
         }
         instantiator.modifiers((transformClassDeclFlags(model) & ~FINAL)| f);
-        for (TypeParameter tp : typeParametersOfAllContainers(model, true)) {
-            instantiator.typeParameter(tp);
+        for (TypeParameter tp : typeParametersOfAllContainers(model, false)) {
+           instantiator.typeParameter(tp);
         }
+        transformTypeParameters(instantiator, model);
         
         instantiator.resultType(null, makeJavaType(aliasedClass));
         instantiator.annotationFlags(Annotations.MODEL_AND_USER | Annotations.IGNORE);
@@ -1325,6 +1331,15 @@ public class ClassTransformer extends AbstractTransformer {
         classBuilder.parameter(pdb);
     }
     
+    private void capturedReifiedTypeParameters(ClassOrInterface model,
+            ClassDefinitionBuilder classBuilder) {
+        if (model.isStatic()) {
+            ClassOrInterface outer = (ClassOrInterface)model.getContainer();
+            capturedReifiedTypeParameters(outer, classBuilder);
+            classBuilder.reifiedTypeParameters(outer.getTypeParameters());
+        }
+    }
+    
     private void transformClass(
             Tree.AnyClass def, 
             Class model, 
@@ -1334,7 +1349,12 @@ public class ClassTransformer extends AbstractTransformer {
             ClassDefinitionBuilder instantiatorDeclCb, 
             ClassDefinitionBuilder instantiatorImplCb) {
         // do reified type params first
-        classBuilder.reifiedTypeParameters(model.getTypeParameters());
+        //java.util.List<TypeParameter> typeParameters = typeParametersOfAllContainers(model, false);
+        //for(TypeParameter tp : typeParameters){
+        //    classBuilder.typeParameter(tp, false);
+        //}
+        //capturedReifiedTypeParameters(model, classBuilder);
+        classBuilder.reifiedTypeParameters(Strategy.getEffectiveTypeParameters(model));
         if (def.getParameterList() != null) {
             TransformationPlan error = errors().hasDeclarationAndMarkBrokenness(def);
             if (error instanceof ThrowerCatchallConstructor) {
@@ -2414,7 +2434,7 @@ public class ClassTransformer extends AbstractTransformer {
                 // we do not check for types inside initialiser section which are private and not captured because we treat them as members
                 && !(model instanceof Interface && Decl.hasLocalNotInitializerAncestor(model))){
             ClassOrInterface container = (ClassOrInterface) scope;
-            List<JCAnnotation> atContainer = makeAtContainer(container.getType());
+            List<JCAnnotation> atContainer = makeAtContainer(container.getType(), model.isStatic());
             classBuilder.annotations(atContainer);
         }else{
             if(model instanceof Interface)
@@ -3454,7 +3474,7 @@ public class ClassTransformer extends AbstractTransformer {
                     Value declarationModel = model;
                     initialValue = expressionGen().transformExpression(expression, 
                             CodegenUtil.getBoxingStrategy(declarationModel), 
-                            nonWideningType, flags);
+                            model.isStatic() ? typeFact().getAnythingType() : nonWideningType, flags);
                 }
             }
 
@@ -3463,7 +3483,12 @@ public class ClassTransformer extends AbstractTransformer {
             if (!CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration())) {
                 flags |= JT_NO_PRIMITIVES;
             }
-            JCExpression type = makeJavaType(nonWideningType, flags);
+            JCExpression type;
+            if (model.isStatic()) {
+                type = make().Type(syms().objectType);
+            } else {
+                type = makeJavaType(nonWideningType, flags);
+            }
             
             int modifiers = (useField) ? transformAttributeFieldDeclFlags(decl) : transformLocalDeclFlags(decl);
             
@@ -3593,6 +3618,7 @@ public class ClassTransformer extends AbstractTransformer {
         result |= (cdecl instanceof Interface) ? INTERFACE : 0;
         // aliases are always final placeholders, final classes are also final
         result |= (cdecl instanceof Class) && (cdecl.isAlias() || cdecl.isFinal())  ? FINAL : 0;
+        result |= cdecl.isStatic() ? STATIC : 0;
 
         return result;
     }
@@ -3612,6 +3638,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         result |= transformDeclarationSharedFlags(decl);
         result |= FINAL;
+        result |= decl.isStatic() ? STATIC : 0;
 
         return result;
     }
@@ -3628,6 +3655,7 @@ public class ClassTransformer extends AbstractTransformer {
             result |= def.isShared() ? PUBLIC : PRIVATE;
             result |= def.isFormal() && !def.isDefault() ? ABSTRACT : 0;
             result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface) ? FINAL : 0;
+            result |= def.isStatic() ? STATIC : 0;
         }
 
         return result;
@@ -3637,6 +3665,7 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= Decl.isVariable(cdecl) || Decl.isLate(cdecl) ? 0 : FINAL;
+        result |= cdecl.getDeclarationModel().isStatic() ? STATIC : 0;
         if(!CodegenUtil.hasCompilerAnnotation(cdecl, "packageProtected"))
             result |= PRIVATE;
         
@@ -3647,6 +3676,7 @@ public class ClassTransformer extends AbstractTransformer {
         int result = 0;
 
         result |= Decl.isVariable(cdecl) ? 0 : FINAL;
+        result |= cdecl.getDeclarationModel().isStatic() ? STATIC : 0;
 
         return result;
     }
@@ -3671,6 +3701,7 @@ public class ClassTransformer extends AbstractTransformer {
         result |= tdecl.isShared() ? PUBLIC : PRIVATE;
         result |= ((tdecl.isFormal() && !tdecl.isDefault()) && !forCompanion) ? ABSTRACT : 0;
         result |= !(tdecl.isFormal() || tdecl.isDefault() || Decl.withinInterface(tdecl)) || forCompanion ? FINAL : 0;
+        result |= tdecl.isStatic() ? STATIC : 0;
 
         return result;
     }
@@ -3680,6 +3711,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         result |= FINAL;
         result |= !Decl.isAncestorLocal(cdecl) && Decl.isShared(cdecl) ? PUBLIC : 0;
+        result |= cdecl.isStatic() ? STATIC : 0;
 
         return result;
     }
@@ -3907,7 +3939,8 @@ public class ClassTransformer extends AbstractTransformer {
                     transformMplBodyUnlessSpecifier(def, model, body),
                     refinedResultType 
                     && !Decl.withinInterface(model.getRefinedDeclaration())? new DaoSuper() : new DaoThis(def, def.getParameterLists().get(0)),
-                    !Strategy.defaultParameterMethodOnSelf(model));
+                    !Strategy.defaultParameterMethodOnSelf(model)
+                    && !Strategy.defaultParameterMethodStatic(model));
         } else {// Is within interface
             // Transform the definition to the companion class, how depends
             // on what kind of method it is
@@ -4007,9 +4040,20 @@ public class ClassTransformer extends AbstractTransformer {
         
         final MethodDefinitionBuilder methodBuilder = MethodDefinitionBuilder.method(this, methodModel);
         
+        /*
+        if (typeParameterList != null) {
+            for (Tree.TypeParameterDeclaration param : typeParameterList.getTypeParameterDeclarations()) {
+                TypeDeclaration container = (TypeDeclaration)param.getDeclarationModel().getContainer();
+                methodBuilder.typeParameter(param.getDeclarationModel());
+                //ClassDefinitionBuilder companionBuilder = methodBuilder.getCompanionBuilder(container);
+                //if/(companionBuilder != null)
+                //    companionBuilder.typeParameter(param);
+            }
+        }*/
+        
         // do the reified type param arguments
         if (gen().supportsReified(methodModel)) {
-            methodBuilder.reifiedTypeParameters(methodModel.getTypeParameters());
+            methodBuilder.reifiedTypeParameters(Strategy.getEffectiveTypeParameters(methodModel));
         }
         
         if (methodModel.getParameterLists().size() > 1) {
@@ -4050,7 +4094,7 @@ public class ClassTransformer extends AbstractTransformer {
                             .makeOverload(
                                 parameterList.getModel(),
                                 parameter.getParameterModel(),
-                                methodModel.getTypeParameters());
+                                Strategy.getEffectiveTypeParameters(methodModel));
                         overloadedMethod.location(null);
                         lb.append(overloadedMethod);
                     }
@@ -4076,7 +4120,7 @@ public class ClassTransformer extends AbstractTransformer {
                 .makeOverload(
                     parameterList.getModel(),
                     null,
-                    methodModel.getTypeParameters());
+                    Strategy.getEffectiveTypeParameters(methodModel));
             lb.append(canonicalMethod);
         }
         
@@ -4100,7 +4144,7 @@ public class ClassTransformer extends AbstractTransformer {
                     .makeOverload(
                         parameterList.getModel(),
                         null,
-                        methodModel.getTypeParameters());
+                        Strategy.getEffectiveTypeParameters(methodModel));
                 lb.append(overloadedMethod);
             } else {
                 if (body != null) {
@@ -4441,13 +4485,15 @@ public class ClassTransformer extends AbstractTransformer {
     abstract class DaoBody {
         
         protected List<JCExpression> makeTypeArguments(DefaultedArgumentOverload ol) {
-            if (ol.defaultParameterMethodOnSelf() 
-                    || ol.defaultParameterMethodOnOuter()) {
+            switch(Strategy.defaultParameterMethodOwner(ol.getModel())) {
+            case OUTER:
+            case OUTER_COMPANION:
+            case SELF:
                 return List.<JCExpression>nil();
-            } else if (ol.defaultParameterMethodStatic()){
+            case STATIC:
                 Functional f = (Functional)ol.getModel();
                 return typeArguments(f instanceof Constructor ? (Class)((Constructor)f).getContainer() : f);
-            } else {
+            default:
                 return List.<JCExpression>nil();
             }
         }
@@ -4562,7 +4608,7 @@ public class ClassTransformer extends AbstractTransformer {
                 ListBuffer<JCExpression> args, 
                 ListBuffer<JCStatement> vars) {
             at(pl, firstExecutable);
-            JCExpression invocation = overloaded.makeInvocation(args);
+            JCExpression invocation = overloaded.makeInvocation(declTree != null ? Strategy.getEffectiveTypeParameters(declTree.getDeclarationModel()) : null, args);
             Declaration model = overloaded.getModel();// TODO Yuk
             if (!isVoid(model)
                     // MPL overloads always return a Callable
@@ -4622,7 +4668,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 args.add(naming.makeUnquotedIdent(parameter.getName()));
             }
-            JCExpression superCall = overloaded.makeInvocation(args);
+            JCExpression superCall = overloaded.makeInvocation(null, args);
             /*JCMethodInvocation superCall = make().Apply(null,
                     naming.makeQualIdent(naming.makeSuper(), ((Function)overloaded.getModel()).getName()),
                     args.toList());*/
@@ -4692,29 +4738,25 @@ public class ClassTransformer extends AbstractTransformer {
         private WideningRules getWideningRules(Parameter parameterModel) {
             // static methods don't have to refine anything from the supertype so they're not bound to
             // widening issues
-            return defaultParameterMethodStatic() ? WideningRules.NONE : WideningRules.CAN_WIDEN;
+            return Strategy.defaultParameterMethodOwner(getModel()) == DefaultParameterMethodOwner.STATIC ? WideningRules.NONE : WideningRules.CAN_WIDEN;
         }
 
         protected abstract void initVars(Parameter currentParameter, ListBuffer<JCStatement> vars);
 
-        protected final boolean defaultParameterMethodOnSelf() {
-            return Strategy.defaultParameterMethodOnSelf(getModel());
-        }
-
-        protected final boolean defaultParameterMethodOnOuter() {
-            return Strategy.defaultParameterMethodOnOuter(getModel());
-        }
-
-        protected final boolean defaultParameterMethodStatic() {
-            return Strategy.defaultParameterMethodStatic(getModel());
-        }
-
         protected abstract Declaration getModel();
 
-        protected JCExpression makeInvocation(ListBuffer<JCExpression> args) {
+        protected JCExpression makeInvocation(java.util.List<TypeParameter> tps, ListBuffer<JCExpression> args) {
             final JCExpression methName = makeMethodName();
-            return make().Apply(List.<JCExpression>nil(),
-                    methName, args.toList());
+            ListBuffer<JCExpression> tas = new ListBuffer<JCExpression>();
+            if (tps != null) {
+                for (TypeParameter tp : tps) {
+                    tas.add(makeJavaType(tp.getType(), JT_TYPE_ARGUMENT));
+                }
+            }
+            return make().Apply(
+                    tas.toList(),
+                    methName, 
+                    args.toList());
         }
 
         /** Returns the qualiifier to use when invoking the default parameter value method */
@@ -5015,8 +5057,10 @@ public class ClassTransformer extends AbstractTransformer {
         
         @Override
         protected void initVars(Parameter currentParameter, ListBuffer<JCStatement> vars) {
-            if (!Strategy.defaultParameterMethodStatic(klass)
-                    && !Strategy.defaultParameterMethodOnOuter(klass)
+            DefaultParameterMethodOwner owner = Strategy.defaultParameterMethodOwner(klass);
+            if (owner != DefaultParameterMethodOwner.STATIC
+                    && owner != DefaultParameterMethodOwner.OUTER
+                    && owner != DefaultParameterMethodOwner.OUTER_COMPANION
                     && currentParameter != null) {
                 companionInstanceName = naming.temp("impl");
                 vars.append(makeVar(companionInstanceName, 
@@ -5030,18 +5074,23 @@ public class ClassTransformer extends AbstractTransformer {
         
         @Override
         protected JCIdent makeDefaultArgumentValueMethodQualifier() {
-            if (defaultParameterMethodOnOuter()){
+            switch(Strategy.defaultParameterMethodOwner(getModel())) {
+            case OUTER:
+            case OUTER_COMPANION: {
                 // if we're refining a class we can't declare new default values, so we should get
                 // them from the instance rather than the outer interface impl
                 if(getModel().isActual() && getModel().getContainer() instanceof Interface)
                     return naming.makeUnquotedIdent("$this");
                 return null;
-            }else if (defaultParameterMethodOnSelf() 
-                    || daoBody instanceof DaoCompanion) {
+            }
+            case SELF:
                 return null;
-            } else if (defaultParameterMethodStatic()){
+            case STATIC:
                 return null;
-            } else {
+            default:
+                if (daoBody instanceof DaoCompanion) {
+                    return null;
+                }
                 return companionInstanceName.makeIdent();
             }
         }
@@ -5102,7 +5151,7 @@ public class ClassTransformer extends AbstractTransformer {
             // not for a method if in an interface
             long modifiers = transformClassDeclFlags(klass) & ~FINAL;
             // when refining a member class of an interface because the 
-            // instantiator method is declared inb the companion interface it is
+            // instantiator method is declared in the companion interface it is
             // effectively public.
             if (klass instanceof Class && klass.isActual()) {
                 modifiers &= ~(PRIVATE | PROTECTED);
@@ -5168,7 +5217,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
 
         @Override
-        protected JCExpression makeInvocation(ListBuffer<JCExpression> args) {
+        protected JCExpression makeInvocation(java.util.List<TypeParameter> tps, ListBuffer<JCExpression> args) {
             Type type = klass.isAlias() ? klass.getExtendedType() : klass.getType();
             return make().NewClass(null, 
                     null, 
@@ -5276,7 +5325,7 @@ public class ClassTransformer extends AbstractTransformer {
                 && !noBody)){
             modifiers |= PRIVATE;
         }
-        boolean staticMethod = Strategy.defaultParameterMethodStatic(container);
+        boolean staticMethod = container != null && Strategy.defaultParameterMethodStatic(container);
         if (staticMethod) {
             // static default parameter methods should be consistently public so that if non-shared class Top and
             // shared class Bottom which extends Top both have the same default param name, we don't get an error
@@ -5289,10 +5338,10 @@ public class ClassTransformer extends AbstractTransformer {
         if (container instanceof Constructor) {
             copyTypeParameters((Class)container.getContainer(), methodBuilder);
             methodBuilder.reifiedTypeParameters(((Class)container.getContainer()).getTypeParameters());
-        } else if(container instanceof Generic) {
+        } else if(container instanceof Declaration) {
             // make sure reified type parameters are accepted
-            copyTypeParameters((Generic)container, methodBuilder);
-            methodBuilder.reifiedTypeParameters(((Generic)container).getTypeParameters());
+            copyTypeParameters((Declaration)container, methodBuilder);
+            methodBuilder.reifiedTypeParameters(Strategy.getEffectiveTypeParameters(container));
         }
         WideningRules wideningRules = !staticMethod && container instanceof Class
                 ? WideningRules.CAN_WIDEN : WideningRules.NONE;
@@ -5445,7 +5494,7 @@ public class ClassTransformer extends AbstractTransformer {
         at(def);
         List<JCTree> result = objectClassBuilder.build();
         
-        if (makeLocalInstance) {
+        if (makeLocalInstance && !model.isStatic()) {
             if(model.isSelfCaptured()){
                 // if it's captured we need to box it and define the var before the class, so it can access it
                 JCNewClass newInstance = makeNewClass(objectClassBuilder.getClassName(), false, null);
@@ -5465,7 +5514,7 @@ public class ClassTransformer extends AbstractTransformer {
             boolean generateGetter = Decl.isCaptured(model);
             JCExpression type = makeJavaType(klass.getType());
             if (generateGetter) {
-                int modifiers = TRANSIENT | PRIVATE;
+                int modifiers = TRANSIENT | PRIVATE | (model.isStatic() ? STATIC : 0);
                 JCExpression initialValue = makeNull();
                 containingClassBuilder.field(modifiers, name, type, initialValue, false);
                 AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
@@ -5485,7 +5534,7 @@ public class ClassTransformer extends AbstractTransformer {
                 getter.getterBlock(make().Block(0, stmts.toList()));
                 result = result.appendList(getter.build());
             } else {
-                int modifiers = FINAL;
+                int modifiers = FINAL | (model.isStatic() ? STATIC : 0);
                 JCExpression initialValue = makeNewClass(makeJavaType(klass.getType()), null);
                 containingClassBuilder.field(modifiers, name, type, initialValue, true);
             }
@@ -5576,12 +5625,11 @@ public class ClassTransformer extends AbstractTransformer {
         return methbuilder;
     }
     
-    void copyTypeParameters(Generic def, MethodDefinitionBuilder methodBuilder) {
-        if (def.getTypeParameters() != null) {
-            for (TypeParameter t : def.getTypeParameters()) {
+    void copyTypeParameters(Declaration def, MethodDefinitionBuilder methodBuilder) {
+        for (TypeParameter t : Strategy.getEffectiveTypeParameters(def)) {
                 methodBuilder.typeParameter(t);
             }
-        }
+        
     }
 
     public List<JCTree> transform(final Tree.TypeAliasDeclaration def) {
@@ -5609,12 +5657,33 @@ public class ClassTransformer extends AbstractTransformer {
         // make sure we set the container in case we move it out
         addAtContainer(classBuilder, model);
 
+        transformTypeParameters(classBuilder, model);
+        
         visitClassOrInterfaceDefinition(def, classBuilder);
         return classBuilder
             .modelAnnotations(model.getAnnotations())
             .modifiers(transformTypeAliasDeclFlags(model))
             .satisfies(model.getSatisfiedTypes())
             .build();
+    }
+    
+    <T> void transformTypeParameters(GenericBuilder<T> classBuilder, Declaration model) {
+        java.util.List<TypeParameter> typeParameters = Strategy.getEffectiveTypeParameters(model);
+        if (typeParameters != null) {
+            for (TypeParameter param : typeParameters) {
+                Scope cont = param.getContainer();
+                if (cont instanceof TypeDeclaration) {
+                    TypeDeclaration container = (TypeDeclaration)cont; 
+                    classBuilder.typeParameter(param);
+                    if (classBuilder instanceof ClassDefinitionBuilder) {
+                        // Copy to the companion too
+                        ClassDefinitionBuilder companionBuilder = ((ClassDefinitionBuilder)classBuilder).getCompanionBuilder(container);
+                        if(companionBuilder != null)
+                            companionBuilder.typeParameter(param);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -5669,7 +5738,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         ctorDb.modifiers(mods);
         
-        for (TypeParameter tp : clz.getTypeParameters()) {
+        for (TypeParameter tp : Strategy.getEffectiveTypeParameters(clz)) {
             ctorDb.reifiedTypeParameter(tp);
         }
         if (ctorName != null ) {

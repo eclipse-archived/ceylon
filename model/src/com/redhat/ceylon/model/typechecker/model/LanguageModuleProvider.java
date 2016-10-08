@@ -10,7 +10,6 @@ public interface LanguageModuleProvider {
     public static final String basicName = "Basic";
     public static final String identifiableName = "Identifiable";
     public static final String throwableName = "Throwable";
-    public static final String errorName = "Error";
     public static final String exceptionName = "Exception";
     public static final String categoryName = "Category";
     public static final String iterableName = "Iterable";
@@ -62,7 +61,6 @@ public interface LanguageModuleProvider {
     Class getBasicDeclaration();
     Interface getIdentifiableDeclaration();
     Class getThrowableDeclaration();
-    Class getErrorDeclaration();
     Class getExceptionDeclaration();
     Interface getCategoryDeclaration();
     Interface getIterableDeclaration();

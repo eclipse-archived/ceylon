@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.redhat.ceylon.common.JVMModuleUtil;
+import com.redhat.ceylon.compiler.java.codegen.Strategy.DefaultParameterMethodOwner;
 import com.redhat.ceylon.compiler.java.util.Util;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -920,7 +921,8 @@ public class Naming extends NamingBase implements LocalId {
         }
         Declaration decl = param.getDeclaration();
         String methodName = getDefaultedParamMethodName(decl, param);
-        if (Strategy.defaultParameterMethodOnSelf(param.getModel())) {
+        switch (Strategy.defaultParameterMethodOwner(param.getModel())) {
+        case SELF: {
             // method not within interface
             Declaration container = param.getDeclaration().getRefinedDeclaration();
             if (!container.isToplevel()) {
@@ -928,23 +930,26 @@ public class Naming extends NamingBase implements LocalId {
             }
             JCExpression className = makeTypeDeclarationExpression(qualifier, (TypeDeclaration)container, DeclNameFlag.COMPANION); 
             return makeSelect(className, methodName);
-        } else if (Strategy.defaultParameterMethodOnOuter(param.getModel())) {
+        }
+        case OUTER:
+        case OUTER_COMPANION:
             return makeQuotedQualIdent(qualifier, methodName);
-        } else if (Strategy.defaultParameterMethodStatic(param.getModel())) {
+        case STATIC: {
             // top level method or class
-            if (qualifier != null) {
-                throw new BugException();
-            }
+            //return makeSelect(gen().makeStaticQualifier(param.getDeclaration().getRefinedDeclaration()), methodName);
             Declaration container = param.getDeclaration().getRefinedDeclaration();
-            if (!container.isToplevel()) {
+            if (!container.isToplevel() && !container.isStatic()) {
+                container = (Declaration)container.getContainer();
+            } else if (container.isStatic() && container instanceof TypedDeclaration) {
                 container = (Declaration)container.getContainer();
             }
             if (container instanceof TypedDeclaration) {
                 return makeSelect(makeName((TypedDeclaration)container, NA_FQ | NA_WRAPPER), methodName);
             } else {
-                return makeSelect(gen().makeJavaType(((TypeDeclaration)container).getType(), AbstractTransformer.JT_RAW), methodName);
+                return makeSelect(gen().makeJavaType(((TypeDeclaration)container).getType(), AbstractTransformer.JT_RAW|AbstractTransformer.JT_NO_PRIMITIVES), methodName);
             }
-        } else {
+        }
+        default:
             // inner or local class or method, or method in an interface
             return makeQuotedQualIdent(qualifier, methodName);
         }

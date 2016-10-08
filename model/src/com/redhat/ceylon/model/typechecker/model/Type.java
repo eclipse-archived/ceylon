@@ -863,7 +863,7 @@ public class Type extends Reference {
      */
     private Type trueQualifyingType() {
         return getDeclaration()
-                    .isStaticallyImportable() ? null : 
+                    .isStatic() ? null : 
                 getQualifyingType();
     }
     
@@ -2027,7 +2027,7 @@ public class Type extends Reference {
         //recurse to the qualifying type
         Type outerType;
         if (dec.isMember() && 
-                !dec.isStaticallyImportable()) {
+                !dec.isStatic()) {
             TypeDeclaration outer = 
                     (TypeDeclaration) 
                         dec.getContainer();
@@ -4509,7 +4509,9 @@ public class Type extends Reference {
         else {
             results.add(d);
             for (Type t: getTypeArgumentList()) {
-                t.collectDeclarations(results);
+                if (t!=null) {
+                    t.collectDeclarations(results);
+                }
             }
         }
     }

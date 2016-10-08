@@ -384,11 +384,16 @@ public abstract class Declaration
         return emptyList();
     }
     
+    @Deprecated
     public boolean isStaticallyImportable() {
+        return isStatic();
+    }
+    
+    public boolean isStatic() {
         return (flags&STATIC)!=0;
     }
     
-    public void setStaticallyImportable(boolean staticallyImportable) {
+    public void setStatic(boolean staticallyImportable) {
         if (staticallyImportable) {
             flags|=STATIC;
         }

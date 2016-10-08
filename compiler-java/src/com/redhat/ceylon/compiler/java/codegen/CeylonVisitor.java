@@ -546,7 +546,8 @@ public class CeylonVisitor extends Visitor {
         if (!accept)
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
-        if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl)) {
+        if (Decl.withinClassOrInterface(decl) && !Decl.isLocalToInitializer(decl)
+                || decl.getDeclarationModel().isStatic()) {
             // Class attributes
             gen.classGen().transform(decl, classBuilder);
         } else if (Decl.isToplevel(decl)) {
@@ -572,7 +573,8 @@ public class CeylonVisitor extends Visitor {
         if (!acceptDeclaration(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
-        if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
+        if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)
+                || decl.getDeclarationModel().isStatic()) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
         } else if (Decl.withinInterface(decl) && !Decl.isLocalToInitializer(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
@@ -603,7 +605,8 @@ public class CeylonVisitor extends Visitor {
         if (!acceptDeclaration(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
-        if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)) {
+        if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)
+                || decl.getDeclarationModel().getGetter().isStatic()) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
         } else if (Decl.withinInterface(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
@@ -655,15 +658,6 @@ public class CeylonVisitor extends Visitor {
     }
     public void visit(Tree.AnonymousAnnotation ann) {
         // Handled in AbstractTransformer.makeAtAnnotations
-    }
-
-    // FIXME: also support Tree.SequencedTypeParameter
-    public void visit(Tree.TypeParameterDeclaration param) {
-        TypeDeclaration container = (TypeDeclaration)param.getDeclarationModel().getContainer();
-        classBuilder.typeParameter(param);
-        ClassDefinitionBuilder companionBuilder = classBuilder.getCompanionBuilder(container);
-        if(companionBuilder != null)
-            companionBuilder.typeParameter(param);
     }
 
     public void visit(Tree.ExtendedType extendedType) {

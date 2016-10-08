@@ -631,7 +631,7 @@ public class TypeHierarchyVisitor extends Visitor {
                 if (!(member instanceof FunctionOrValue ||
                       member instanceof Class) || 
                     isConstructor(member) ||
-                    member.isStaticallyImportable() ||
+                    member.isStatic() ||
                     isAbstraction(member)) {
                     continue;
                 }
@@ -687,7 +687,7 @@ public class TypeHierarchyVisitor extends Visitor {
                         !td.isAbstract() && !td.isAlias()) {
                     for (Declaration d: std.getMembers()) {
                         if (d.isShared() && 
-                                !d.isStaticallyImportable() &&
+                                !d.isStatic() &&
                                 !isConstructor(d) &&
                                 !isOverloadedVersion(d) && 
                                 isResolvable(d) && 

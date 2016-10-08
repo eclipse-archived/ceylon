@@ -279,6 +279,7 @@
 
 ^(abstract STATIC_TYPE:TYPE
     TYPE_VARIANCE?
+    boolean staticTypePrimary;
     boolean metamodel;)
 
 ^(GROUPED_TYPE:STATIC_TYPE

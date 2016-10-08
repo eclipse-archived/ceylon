@@ -47,6 +47,7 @@ import com.redhat.ceylon.compiler.typechecker.util.StatisticsVisitor;
 import com.redhat.ceylon.compiler.typechecker.util.UsageVisitor;
 import com.redhat.ceylon.model.typechecker.context.TypeCache;
 import com.redhat.ceylon.model.typechecker.model.Cancellable;
+import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Package;
@@ -437,7 +438,7 @@ public class PhasedUnit  implements Visitor.ExceptionHandler {
             //System.out.println("Validate self references for " + fileName);
             //System.out.println("Validate specification for " + fileName);
             for (Declaration d: unit.getDeclarations()) {
-                if (d.getName()!=null) {
+                if (d.getName()!=null || d instanceof Constructor) {
                     rootNode.visit(new SpecificationVisitor(d).setExceptionHandler(this));
                     if (d instanceof TypeDeclaration) {
                         TypeDeclaration td = 

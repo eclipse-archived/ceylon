@@ -32,6 +32,7 @@ public final class true_ extends Boolean {
 
     private final static true_ value = new true_();
 
+    @Ignore
     public static true_ get_(){
         return value;
     }

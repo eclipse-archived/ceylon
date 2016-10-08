@@ -805,7 +805,7 @@ public class Decl {
             return false;
         Declaration decl = ((Tree.QualifiedMemberOrTypeExpression)term).getDeclaration();
         return decl != null
-                && (decl.isStaticallyImportable() || decl instanceof Interface)
+                && (decl.isStatic() || decl instanceof Interface)
                 && !(decl instanceof Constructor);
     }
     
@@ -819,7 +819,6 @@ public class Decl {
         } else {
             return false;
         }
-        
     }
     
     

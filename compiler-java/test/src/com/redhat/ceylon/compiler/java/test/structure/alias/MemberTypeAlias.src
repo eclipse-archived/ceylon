@@ -5,7 +5,9 @@ package com.redhat.ceylon.compiler.java.test.structure.alias;
         minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("TypeAliasInterface")
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class)
+@.com.redhat.ceylon.compiler.java.metadata.Container(
+        klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class,
+        isStatic = false)
 public interface MemberTypeAliasClass$TypeAliasInterface {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -33,7 +35,9 @@ public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.ru
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class,
+            isStatic = false)
     public class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected TypeAliasClass() {
@@ -51,7 +55,9 @@ public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.ru
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class,
+            isStatic = false)
     public final class TypeAlias1 {
         
         private TypeAlias1() {
@@ -63,7 +69,9 @@ public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.ru
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class,
+            isStatic = false)
     public final class TypeAlias2 {
         
         private TypeAlias2() {
@@ -75,7 +83,9 @@ public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.ru
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasClass")
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class,
+            isStatic = false)
     public final class TypeAlias3 {
         
         private TypeAlias3() {
@@ -87,7 +97,9 @@ public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.ru
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasClass.TypeAliasInterface")
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasClass.class,
+            isStatic = false)
     public final class TypeAlias4 {
         
         private TypeAlias4() {
@@ -149,7 +161,9 @@ public class MemberTypeAliasClass implements .com.redhat.ceylon.compiler.java.ru
         minor = 1)
 @.com.redhat.ceylon.compiler.java.metadata.Name("TypeAliasInterface")
 @.ceylon.language.SharedAnnotation$annotation$
-@.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class)
+@.com.redhat.ceylon.compiler.java.metadata.Container(
+        klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class,
+        isStatic = false)
 public interface MemberTypeAliasInterface$TypeAliasInterface {
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -192,7 +206,9 @@ public final class MemberTypeAliasInterface$impl implements .java.io.Serializabl
             major = 8,
             minor = 1)
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class,
+            isStatic = false)
     public class TypeAliasClass implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
         
         protected TypeAliasClass() {
@@ -210,7 +226,9 @@ public final class MemberTypeAliasInterface$impl implements .java.io.Serializabl
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass&com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface")
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class,
+            isStatic = false)
     public final class TypeAlias1 {
         
         private TypeAlias1() {
@@ -222,7 +240,9 @@ public final class MemberTypeAliasInterface$impl implements .java.io.Serializabl
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass|com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface")
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class,
+            isStatic = false)
     public final class TypeAlias2 {
         
         private TypeAlias2() {
@@ -234,7 +254,9 @@ public final class MemberTypeAliasInterface$impl implements .java.io.Serializabl
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasClass")
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class,
+            isStatic = false)
     public final class TypeAlias3 {
         
         private TypeAlias3() {
@@ -246,7 +268,9 @@ public final class MemberTypeAliasInterface$impl implements .java.io.Serializabl
             minor = 1)
     @.com.redhat.ceylon.compiler.java.metadata.TypeAlias("com.redhat.ceylon.compiler.java.test.structure.alias::MemberTypeAliasInterface.TypeAliasInterface")
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Container(klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class)
+    @.com.redhat.ceylon.compiler.java.metadata.Container(
+            klass = .com.redhat.ceylon.compiler.java.test.structure.alias.MemberTypeAliasInterface.class,
+            isStatic = false)
     public final class TypeAlias4 {
         
         private TypeAlias4() {

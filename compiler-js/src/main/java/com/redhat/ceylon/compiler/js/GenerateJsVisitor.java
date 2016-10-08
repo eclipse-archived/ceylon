@@ -670,7 +670,10 @@ public class GenerateJsVisitor extends Visitor {
         if (!(excludeProtoMembers && opts.isOptimize() && d.isClassOrInterfaceMember())
                 && (d instanceof ClassOrInterface || isCaptured(d))) {
             beginNewLine();
-            if (outerSelf(d)) {
+            if (d.isStatic()) {
+                out(names.name(ModelUtil.getContainingClassOrInterface((Scope)d)), ".$st$.");
+                shared = true;
+            } else if (outerSelf(d)) {
                 out(".");
                 shared = true;
             }
@@ -687,7 +690,11 @@ public class GenerateJsVisitor extends Visitor {
     private void addClassDeclarationToPrototype(TypeDeclaration outer, final Tree.ClassDeclaration that) {
         classDeclaration(that);
         final String tname = names.name(that.getDeclarationModel());
-        out(names.self(outer), ".", tname, "=", tname);
+        if (that.getDeclarationModel().isStatic()) {
+            out(names.name(outer), ".$st$.", tname, "=", tname);
+        } else {
+            out(names.self(outer), ".", tname, "=", tname);
+        }
         endLine(true);
     }
 
@@ -726,7 +733,11 @@ public class GenerateJsVisitor extends Visitor {
     private void addInterfaceDeclarationToPrototype(TypeDeclaration outer, final Tree.InterfaceDeclaration that) {
         interfaceDeclaration(that);
         final String tname = names.name(that.getDeclarationModel());
-        out(names.self(outer), ".", tname, "=", tname);
+        if (that.getDeclarationModel().isStatic()) {
+            out(names.name(outer), ".$st$.", tname, "=", tname);
+        } else {
+            out(names.self(outer), ".", tname, "=", tname);
+        }
         endLine(true);
     }
 
@@ -734,7 +745,11 @@ public class GenerateJsVisitor extends Visitor {
         if (type.isDynamic())return;
         TypeGenerator.interfaceDefinition(interfaceDef, this, initDeferrer);
         Interface d = interfaceDef.getDeclarationModel();
-        out(names.self(type), ".", names.name(d), "=", names.name(d));
+        if (d.isStatic()) {
+            out(names.name(type), ".$st$.", names.name(d), "=", names.name(d));
+        } else {
+            out(names.self(type), ".", names.name(d), "=", names.name(d));
+        }
         endLine(true);
     }
 
@@ -753,7 +768,11 @@ public class GenerateJsVisitor extends Visitor {
         if (type.isDynamic())return;
         ClassGenerator.classDefinition(classDef, this, initDeferrer);
         final String tname = names.name(classDef.getDeclarationModel());
-        out(names.self(type), ".", tname, "=", tname);
+        if (classDef.getDeclarationModel().isStatic()) {
+            out(names.name(type), ".$st$.", tname, "=", tname);
+        } else {
+            out(names.self(type), ".", tname, "=", tname);
+        }
         endLine(true);
     }
 
@@ -913,7 +932,7 @@ public class GenerateJsVisitor extends Visitor {
     }
 
     void referenceOuter(TypeDeclaration d) {
-        if (!d.isToplevel()) {
+        if (!d.isToplevel() && !d.isStatic()) {
             final ClassOrInterface coi = ModelUtil.getContainingClassOrInterface(d.getContainer());
             if (coi != null) {
                 out(names.self(d), ".outer$");
@@ -952,14 +971,25 @@ public class GenerateJsVisitor extends Visitor {
             out("(function(", names.self(d), ")");
             beginBlock();
             if (enter) {
+                //First of all, add an object to store statics only if needed
+                for (Statement s : statements) {
+                }
                 //Generated attributes with corresponding parameters will remove them from the list
                 if (plist != null) {
                     for (Parameter p : plist) {
                         generateAttributeForParameter(node, (Class)d, p);
                     }
                 }
+                boolean statics = false;
                 InitDeferrer initDeferrer = new InitDeferrer();
                 for (Statement s: statements) {
+                    if (!statics && s instanceof Tree.Declaration) {
+                        Declaration sd = ((Tree.Declaration)s).getDeclarationModel();
+                        if (sd.isStatic()) {
+                            statics = true;
+                            out(names.name(d), ".$st$={};");
+                        }
+                    }
                     if (s instanceof Tree.ClassOrInterface == false && !(s instanceof Tree.AttributeDeclaration &&
                             ((Tree.AttributeDeclaration)s).getDeclarationModel().isParameter())) {
                         addToPrototype(d, s, plist, initDeferrer);
@@ -1405,10 +1435,18 @@ public class GenerateJsVisitor extends Visitor {
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
         initDefaultedParameters(that.getParameterLists().get(0), that);
-        out(names.self(outer), ".", names.name(d), "=");
+        if (d.isStatic()) {
+            out(names.name(outer), ".$st$.", names.name(d), "=");
+        } else {
+            out(names.self(outer), ".", names.name(d), "=");
+        }
         FunctionHelper.methodDefinition(that, this, false, verboseStitcher);
         //Add reference to metamodel
-        out(names.self(outer), ".", names.name(d), ".$crtmm$=");
+        if (d.isStatic()) {
+            out(names.name(outer), ".$st$.", names.name(d), ".$crtmm$=");
+        } else {
+            out(names.self(outer), ".", names.name(d), ".$crtmm$=");
+        }
         TypeUtils.encodeMethodForRuntime(that, this);
         endLine(true);
     }
@@ -1466,7 +1504,8 @@ public class GenerateJsVisitor extends Visitor {
         Value d = that.getDeclarationModel();
         if (!opts.isOptimize()||!d.isClassOrInterfaceMember()) return;
         comment(that);
-        defineAttribute(names.self(outer), names.name(d));
+        defineAttribute(d.isStatic() ? names.name(outer)+".$st$" : names.self(outer),
+                names.name(d));
         if (TypeUtils.isNativeExternal(d)) {
             out("{");
             if (stitchNative(d, that)) {
@@ -1592,7 +1631,7 @@ public class GenerateJsVisitor extends Visitor {
                 comment(that);
                 AttributeGenerator.generateAttributeMetamodel(that, false, false, this);
             }
-        } else {
+        } else if (!d.isStatic()) {
             SpecifierOrInitializerExpression specInitExpr =
                         that.getSpecifierOrInitializerExpression();
             final boolean addGetter = (specInitExpr != null) || (param != null) || !d.isMember()
@@ -1900,6 +1939,8 @@ public class GenerateJsVisitor extends Visitor {
                 if (fd.getTypeDeclaration() instanceof Constructor) {
                     that.getPrimary().visit(this);
                     out(names.constructorSeparator(fd), names.name(fd));
+                } else if (fd.isStatic()) {
+                    BmeGenerator.generateStaticReference(fd, this);
                 } else {
                     out("function($O$){return ");
                     if (BmeGenerator.hasTypeParameters(that)) {
@@ -1910,7 +1951,11 @@ public class GenerateJsVisitor extends Visitor {
                     out(";}");
                 }
             } else {
-                out("function($O$){return $O$.", names.name(d), ";}");
+                if (d.isStatic()) {
+                    BmeGenerator.generateStaticReference(d, this);
+                } else {
+                    out("function($O$){return $O$.", names.name(d), ";}");
+                }
             }
         } else {
             final String lhs = generateToString(new GenerateCallback() {
@@ -1918,7 +1963,11 @@ public class GenerateJsVisitor extends Visitor {
                     GenerateJsVisitor.super.visit(that);
                 }
             });
-            out(memberAccess(that, lhs));
+            if (d != null && d.isStatic()) {
+                BmeGenerator.generateStaticReference(d, this);
+            } else {
+                out(memberAccess(that, lhs));
+            }
         }
     }
 
@@ -2547,11 +2596,11 @@ public class GenerateJsVisitor extends Visitor {
                     if (scope instanceof Constructor
                             && scope == innermostDeclaration) {
                         if (that instanceof Tree.BaseTypeExpression) {
-                            path.append(names.name((TypeDeclaration)scope.getContainer()));
+                            path.append(names.name((TypeDeclaration) scope.getContainer()));
                         } else {
-                            path.append(names.self((TypeDeclaration)scope.getContainer()));
+                            path.append(names.self((TypeDeclaration) scope.getContainer()));
                         }
-                        if (scope == id || (nd != null && scope==nd)) {
+                        if (scope == id || (nd != null && scope == nd)) {
                             break;
                         }
                         scope = scope.getContainer();
@@ -2574,7 +2623,13 @@ public class GenerateJsVisitor extends Visitor {
                             if (path.length()>0) {
                                 path.append('.');
                             }
-                            path.append(names.self((TypeDeclaration) scope));
+                            if (d.isStatic() && d instanceof TypedDeclaration) {
+                                TypedDeclaration orig = ((TypedDeclaration) d).getOriginalDeclaration();
+                                path.append(names.name((ClassOrInterface) (orig == null ? d : orig).getContainer()))
+                                        .append(".$st$");
+                            } else {
+                                path.append(names.self((TypeDeclaration) scope));
+                            }
                         }
                     } else {
                         path.setLength(0);
@@ -3124,11 +3179,11 @@ public class GenerateJsVisitor extends Visitor {
         out(",");
         TypeUtils.typeNameOrList(term, type, this, false);
         if (type.getQualifyingType() != null) {
-            out(",[");
             Type outer = type.getQualifyingType();
             boolean first=true;
             while (outer != null) {
                 if (first) {
+                    out(",[");
                     first=false;
                 } else{
                     out(",");
@@ -3136,7 +3191,9 @@ public class GenerateJsVisitor extends Visitor {
                 TypeUtils.typeNameOrList(term, outer, this, false);
                 outer = outer.getQualifyingType();
             }
-            out("]");
+            if (!first) {
+                out("]");
+            }
         } else if (type.getDeclaration() != null && type.getDeclaration().getContainer() != null) {
             Declaration d = ModelUtil.getContainingDeclarationOfScope(type.getDeclaration().getContainer());
             if (d != null && d instanceof Function && !((Function)d).getTypeParameters().isEmpty()) {

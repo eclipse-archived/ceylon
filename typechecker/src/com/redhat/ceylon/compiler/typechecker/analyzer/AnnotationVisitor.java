@@ -230,7 +230,7 @@ public class AnnotationVisitor extends Visitor {
                              .isObjectClass())) {
                     //ok
                 }
-                else if (d != null && d.isStaticallyImportable()) {
+                else if (d != null && d.isStatic()) {
                     // ok
                 }
                 else {
@@ -241,7 +241,7 @@ public class AnnotationVisitor extends Visitor {
                 Tree.QualifiedMemberExpression qme = 
                         (Tree.QualifiedMemberExpression) term;
                 Declaration d = qme.getDeclaration();
-                if (d!=null && !d.isStaticallyImportable()) {
+                if (d!=null && !d.isStatic()) {
                     e.addError("illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
                     
                 }
@@ -802,8 +802,8 @@ public class AnnotationVisitor extends Visitor {
                                     base.getName() + "'");
                 }
             }
-            if( parentheses && 
-                    !(base instanceof Functional) ) {
+            if (parentheses && 
+                    !(base instanceof Functional)) {
                 that.addUsageWarning(Warning.doclink, 
                         "linked declaration is not a function: '" + 
                                 base.getName() + "'");
@@ -1107,7 +1107,7 @@ public class AnnotationVisitor extends Visitor {
                 isAbstraction(dec)) {
             Unit unit = that.getUnit();
             if (that.getStaticMethodReference() && 
-                    !dec.isStaticallyImportable()) {
+                    !dec.isStatic()) {
                 that.addError("ambiguous static reference to overloaded method or class: '" +
                         dec.getName(unit) + "' is overloaded");
             }

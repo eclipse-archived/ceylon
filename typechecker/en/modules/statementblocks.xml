@@ -2672,7 +2672,8 @@ while (n&lt;=max) {
             <para>A destroyable resource expression is:</para>
             
             <itemizedlist>
-                <listitem><para>an instantiation expression, or</para></listitem>
+                <listitem><para>an instantiation expression, as defined in
+                <xref linkend="directinvocations"/>, or</para></listitem>
                 <listitem><para>an inline variable declaration together with 
                 an instantiation expression.</para></listitem>
             </itemizedlist>

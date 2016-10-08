@@ -182,15 +182,16 @@ public class TypeGenerator {
         gen.out("return ", typename, ";");
         gen.endBlockNewLine();
         //If it's nested, share the init function
-        if (gen.outerSelf(d)) {
-            gen.out(".", initname, "=", initname);
-            gen.endLine(true);
+        if (d.isStatic()) {
+            gen.out(gen.getNames().name(ModelUtil.getContainingClassOrInterface(d.getContainer())),
+                    ".$st$.", initname, "=", initname, ";");
+        } else if (gen.outerSelf(d)) {
+            gen.out(".", initname, "=", initname, ";");
         }
-        if(initDeferrer != null){
+        if (initDeferrer != null) {
             initDeferrer.deferred.add(initname+"();");
-        }else{
-            gen.out(initname, "()");
-            gen.endLine(true);
+        } else {
+            gen.out(initname, "();");
         }
     }
 
@@ -263,7 +264,9 @@ public class TypeGenerator {
         boolean first = true;
         for (TypeDeclaration td : parents) {
             if (first) {
-                first=false;
+                first = false;
+            } else if (td.isStatic()) {
+                sb.append(".$st$");
             } else {
                 sb.append(".$$.prototype");
             }
@@ -362,8 +365,9 @@ public class TypeGenerator {
     static boolean generateParameters(final Tree.TypeParameterList tparms,
             final Tree.ParameterList plist, final TypeDeclaration d, final GenerateJsVisitor gen) {
         gen.out("(");
-        final boolean withTargs = tparms != null &&
-                !tparms.getTypeParameterDeclarations().isEmpty();
+        final boolean withTargs = (tparms != null &&
+                !tparms.getTypeParameterDeclarations().isEmpty()) ||
+                TypeUtils.isStaticWithGenericContainer(d);
         if (plist != null) {
             for (Tree.Parameter p: plist.getParameters()) {
                 p.visit(gen);
@@ -385,14 +389,20 @@ public class TypeGenerator {
             Tree.PositionalArgumentList argList = invocation.getPositionalArgumentList();
             final String qpath;
             if (typeDecl instanceof Constructor) {
-                final String path = gen.qualifiedPath(that, (TypeDeclaration)typeDecl.getContainer(), false);
+                final String path = gen.qualifiedPath(that, (TypeDeclaration) typeDecl.getContainer(), false);
                 if (path.isEmpty()) {
-                    qpath = gen.getNames().name((TypeDeclaration)typeDecl.getContainer());
+                    qpath = gen.getNames().name((TypeDeclaration) typeDecl.getContainer());
                 } else {
-                    qpath = path + "." + gen.getNames().name((TypeDeclaration)typeDecl.getContainer());
+                    qpath = path + "." + gen.getNames().name((TypeDeclaration) typeDecl.getContainer());
                 }
             } else {
-                qpath = gen.qualifiedPath(that, typeDecl, false);
+                if (typeDecl.isStatic()) {
+                    Declaration _cont = ModelUtil.getContainingDeclaration(typeDecl);
+                    String qp = gen.qualifiedPath(that, _cont, false);
+                    qpath = qp + (qp.isEmpty() ? "" : ".") + gen.getNames().name(_cont);
+                } else {
+                    qpath = gen.qualifiedPath(that, typeDecl, false);
+                }
             }
             if (pseudoAbstractConstructor) {
                 if (typeDecl instanceof Constructor) {
@@ -486,7 +496,13 @@ public class TypeGenerator {
                         _anoncont = null;
                     }
                     if (_anoncont == null) {
-                        gen.qualify(that, typeDecl);
+                        if (typeDecl.isStatic()) {
+                            Declaration _cont = ModelUtil.getContainingDeclaration(typeDecl);
+                            String qp = gen.qualifiedPath(that, _cont, false);
+                            gen.out(qp, qp.isEmpty() ? "" : ".", gen.getNames().name(_cont), ".");
+                        } else {
+                            gen.qualify(that, typeDecl);
+                        }
                         gen.out(gen.getNames().name(typeDecl), "(");
                     } else {
                         gen.qualify(that, _anoncont);

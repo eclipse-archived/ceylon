@@ -13,8 +13,8 @@ import com.redhat.ceylon.model.typechecker.model.Annotation;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Reference;
-import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.Scope;
+import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 
@@ -28,7 +28,6 @@ public class LazyInterface extends Interface implements LazyContainer {
     public final ClassMirror classMirror;
     private ModelCompleter completer;
     private String realName;
-    private boolean isStatic;
     private boolean isCeylon;
     private Map<String,Declaration> localDeclarations;
     
@@ -49,7 +48,6 @@ public class LazyInterface extends Interface implements LazyContainer {
         this.classMirror = classMirror;
         this.completer = completer;
         this.realName = classMirror.getName();
-        this.isStatic = classMirror.isStatic();
         this.isAnnotationType  = classMirror.isAnnotationType();
         this.isCeylon = classMirror.getAnnotation(AbstractModelLoader.CEYLON_CEYLON_ANNOTATION) != null;
         String ceylonName = JvmBackendUtil.getMirrorName(classMirror);
@@ -68,10 +66,6 @@ public class LazyInterface extends Interface implements LazyContainer {
         return isCeylon;
     }
 
-    public boolean isStatic() {
-        return isStatic;
-    }
-    
     public boolean isAnnotationType() {
         return isAnnotationType;
     }

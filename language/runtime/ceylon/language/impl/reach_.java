@@ -1,6 +1,7 @@
 package ceylon.language.impl;
 
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.Object;
 import com.redhat.ceylon.compiler.java.metadata.Transient;
@@ -20,6 +21,7 @@ public class reach_ {
     private reach_() {}
     private static final reach_ value = new reach_();
     
+    @Ignore
     public static reach_ get_() {
         return value;
     }

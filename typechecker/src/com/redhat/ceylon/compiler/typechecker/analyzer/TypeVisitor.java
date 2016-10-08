@@ -482,11 +482,11 @@ public class TypeVisitor extends Visitor {
             Tree.Identifier id = that.getIdentifier();
             if (id!=null) {
                 String name = name(id);
+                Scope scope = that.getScope();
                 TypeDeclaration type = 
                         getTypeMember(d, name, 
-                                null, false, unit, that.getScope());
+                                null, false, unit, scope);
                 if (type==null) {
-                    Scope scope = that.getScope();
                     if (!isNativeForWrongBackend(
                             scope.getScopedBackends())) {
                         if (d.isMemberAmbiguous(name, unit, null, false)) {
@@ -507,6 +507,9 @@ public class TypeVisitor extends Visitor {
                 }
                 else {
                     visitSimpleType(that, pt, type);
+                    if (type.isStatic()) {
+                        ot.setStaticTypePrimary(true);
+                    }
                 }
             }
         }
@@ -730,7 +733,7 @@ public class TypeVisitor extends Visitor {
         o.getSatisfiedTypes().clear();
         super.visit(that);
     }
-
+    
     @Override 
     public void visit(Tree.ClassDefinition that) {
         Class cd = that.getDeclarationModel();
@@ -743,17 +746,24 @@ public class TypeVisitor extends Visitor {
         cd.getSatisfiedTypes().clear();
         super.visit(that);
         Tree.ParameterList pl = that.getParameterList();
-        if (pl!=null && cd.hasConstructors()) {
-            pl.addError("class with parameters may not declare constructors: class '" + 
-                    cd.getName() + 
-                    "' has a parameter list and a constructor", 1002);
+        if (pl!=null) {
+            if (cd.hasConstructors()) {
+                pl.addError("class with parameters may not declare constructors: class '" + 
+                        cd.getName() + 
+                        "' has a parameter list and a constructor", 1002);
+            }
+            else if (cd.hasEnumerated()) {
+                pl.addError("class with parameters may not declare constructors: class '" + 
+                        cd.getName() + 
+                        "' has a parameter list and a value constructor", 1003);
+            }
+            else if (cd.hasStaticMembers()) {
+                pl.addError("class with parameters may not declare static members: class '" + 
+                        cd.getName() + 
+                        "' has a parameter list and a static member", 1003);
+            }
         }
-        else if (pl!=null && cd.hasEnumerated()) {
-            pl.addError("class with parameters may not declare constructors: class '" + 
-                    cd.getName() + 
-                    "' has a parameter list and a value constructor", 1003);
-        }
-        if (pl==null) {
+        else {
             if (!cd.hasConstructors() && 
                 !cd.hasEnumerated()) {
                 // No parameter list and no constructors or enumerated
@@ -781,7 +791,7 @@ public class TypeVisitor extends Visitor {
                             1001);
                 }
             }
-            else {
+            /*else {
                 // Check if the class has at least one shared constructor
                 boolean found = hasSharedConstructors(cd);
                 // If not found check if the declaration is a native implementation
@@ -801,11 +811,11 @@ public class TypeVisitor extends Visitor {
                             cd.getName() + 
                             "' has no shared constructor");
                 }
-            }
+            }*/
         }
     }
 
-    private boolean hasSharedConstructors(Class cd) {
+   /* private boolean hasSharedConstructors(Class cd) {
         for (Declaration m: cd.getMembers()) {
             if (m instanceof Constructor &&
                     m.isShared()) {
@@ -813,7 +823,7 @@ public class TypeVisitor extends Visitor {
             }
         }
         return false;
-    }
+    }*/
     
     @Override 
     public void visit(Tree.InterfaceDefinition that) {
@@ -1123,7 +1133,7 @@ public class TypeVisitor extends Visitor {
                 TypeDeclaration otd = 
                         qualifiedType.getDeclarationModel();
                 if (otd!=null) {
-                    if (otd.isStaticallyImportable() || 
+                    if (otd.isStatic() || 
                             otd instanceof Constructor) {
                         checkExtendedTypeExpression(outerType);
                     }
