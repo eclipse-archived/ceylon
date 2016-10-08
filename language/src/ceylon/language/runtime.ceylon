@@ -11,18 +11,29 @@ see (`value process`, `value language`, `value system`,
 tagged("Environment")
 shared native object runtime  {
     
-    "The name of the runtime / virtual machine this process 
-     is running on:
+    "A string that identifies the kind of virtual machine
+     this process is executing:
      
-     - `jvm` when running on a Java Virtual Machine
-     - `node.js` when running on Node.js
-     - `Browser` when running in a web browser 
-       (if the `window` object exists)
-     - `DartVM` when running on the Dart VM"
+     - `jvm` when executing a Java Virtual Machine,
+     - `js` when executing any kind of JavaScript virtual 
+       machine, or
+     - `dartvm` when executing the Dart VM."
+    since ("1.3.1")
+    shared native String type;
+    
+    "The name of the virtual machine this process is 
+     executing:
+     
+     - `jvm` when running on a Java Virtual Machine,
+     - `node.js` when running on Node.js,
+     - `Browser` when running in a web browser
+       (if the `window` object exists), or
+     - `DartVM` when running on the Dart VM."
+    deprecated ("Use [[type]]")
     shared native String name;
     
-    "The version of the runtime / virtual machine this 
-     process is running on."
+    "The version of the virtual machine this process is 
+     executing."
     shared native String version;
     
     "The number of bits used to represent the value of an 
@@ -89,15 +100,17 @@ shared native object runtime  {
     since("1.2.0")
     shared native Integer maxExactIntegralFloat;
     
-    string => "runtime [``name`` / ``version``]";
+    string => "runtime [``type`` / ``version``]";
 }
 
 shared native("jvm") object runtime  {
-    shared native("jvm") String name 
-            => "jvm";
+    
+    shared native("jvm") String type => "jvm";
+    shared native("jvm") String name => "jvm";
     shared native("jvm") String version 
             => System.getProperty(
                     "java.specification.version");
+    
     shared native("jvm") Integer integerSize 
             => 64;
     shared native("jvm") Integer integerAddressableSize 
@@ -116,9 +129,12 @@ shared native("jvm") object runtime  {
             = Math.ulp(1.0);
     shared native("jvm") Integer maxExactIntegralFloat 
             = 2^53-1;
+    
 }
 
 shared native("js") object runtime  {
+    
+    shared native("js") String type => "js";
     shared native("js") String name {
         dynamic {
             if (is String version 
@@ -148,6 +164,7 @@ shared native("js") object runtime  {
             }
         }
     }
+    
     shared native("js") Integer integerSize => 53;
     shared native("js") Integer integerAddressableSize => 32;
     shared native("js") Integer minIntegerValue = -(2^53-1);
@@ -166,4 +183,5 @@ shared native("js") object runtime  {
             return \iNumber.\iMIN_VALUE;
         }
     }
+    
 }
