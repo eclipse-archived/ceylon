@@ -2401,7 +2401,9 @@ public class Unit implements LanguageModuleProvider {
         boolean variable = declaration.isVariable();
         Type getType;
         Type setType = getNothingType();
-        Type qualifyingType = reference.getQualifyingType();
+        Type qualifyingType = declaration.isStatic() ?
+                getNullType() :
+                reference.getQualifyingType();
         if (declaration.getTypeDeclaration() 
                 instanceof Constructor) {
             getType = denotableType(reference.getType());
@@ -2432,8 +2434,8 @@ public class Unit implements LanguageModuleProvider {
     }
     
     public Type getFunctionMetatype(TypedReference reference) {
-        TypedDeclaration dec = reference.getDeclaration();
-        Functional fun = (Functional) dec;
+        TypedDeclaration declaration = reference.getDeclaration();
+        Functional fun = (Functional) declaration;
         if (fun.getParameterLists().isEmpty()) {
             return null;
         }
@@ -2448,7 +2450,8 @@ public class Unit implements LanguageModuleProvider {
             return null;
         }
         else {
-            Type qualifyingType = 
+            Type qualifyingType = declaration.isStatic() ?
+                    getNullType() :
                     reference.getQualifyingType();
             if (qualifyingType!=null) {
                 TypeDeclaration md = 
@@ -2566,11 +2569,14 @@ public class Unit implements LanguageModuleProvider {
     }
     
     public Type getClassMetatype(Type type) {
-        Class c = (Class) type.getDeclaration();
-        ParameterList parameterList = c.getParameterList();
+        Class declaration = 
+                (Class) type.getDeclaration();
+        ParameterList parameterList = 
+                declaration.getParameterList();
         Type parameterTuple;
-        if ((c.isClassOrInterfaceMember() || c.isToplevel()) &&
-                parameterList!=null) {
+        if ((declaration.isClassOrInterfaceMember() 
+                || declaration.isToplevel()) 
+            && parameterList!=null) {
             List<Parameter> params = 
                     parameterList.getParameters();
             parameterTuple = 
@@ -2579,7 +2585,9 @@ public class Unit implements LanguageModuleProvider {
         else {
             parameterTuple = getNothingType();
         }
-        Type qualifyingType = type.getQualifyingType();
+        Type qualifyingType = declaration.isStatic() ?
+                getNullType() :
+                type.getQualifyingType();
         if (qualifyingType!=null) {
             TypeDeclaration mcd = 
                     getLanguageModuleModelTypeDeclaration(
@@ -2597,7 +2605,11 @@ public class Unit implements LanguageModuleProvider {
     }
     
     public Type getInterfaceMetatype(Type type) {
-        Type qualifyingType = type.getQualifyingType();
+        Interface declaration = 
+                (Interface) type.getDeclaration();
+        Type qualifyingType = declaration.isStatic() ?
+                getNullType() :
+                type.getQualifyingType();
         if (qualifyingType!=null) {
             TypeDeclaration mid = 
                     getLanguageModuleModelTypeDeclaration(
@@ -2767,7 +2779,8 @@ public class Unit implements LanguageModuleProvider {
     public TypeDeclaration getAnnotationDeclaration() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getAnnotationDeclaration();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getAnnotationDeclaration();
         }
         return null;
     }
@@ -2776,7 +2789,8 @@ public class Unit implements LanguageModuleProvider {
     public TypeDeclaration getConstrainedAnnotationDeclaration() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getConstrainedAnnotationDeclaration();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getConstrainedAnnotationDeclaration();
         }
         return null;
     }
@@ -2785,7 +2799,8 @@ public class Unit implements LanguageModuleProvider {
     public TypeDeclaration getSequencedAnnotationDeclaration() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getSequencedAnnotationDeclaration();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getSequencedAnnotationDeclaration();
         }
         return null;
     }
@@ -2794,7 +2809,8 @@ public class Unit implements LanguageModuleProvider {
     public TypeDeclaration getOptionalAnnotationDeclaration() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getOptionalAnnotationDeclaration();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getOptionalAnnotationDeclaration();
         }
         return null;
     }
