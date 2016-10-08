@@ -522,3 +522,14 @@ class GoodNew {
     }
     shared new construct() extends GoodNew() {}
 }
+
+
+class Stuff {
+    shared new ofStuff() {
+        Stuff thing1 = ofSize();
+        Stuff thing2 = Stuff.ofSize();
+    }
+    shared new ofSize() {
+        value stuff = ofStuff();
+    }
+}
