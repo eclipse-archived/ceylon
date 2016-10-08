@@ -127,12 +127,12 @@ shared native final class Float
          
          If `minDecimalPlaces<=0`, the result may have no
          decimal point."
-        variable Integer minDecimalPlaces=1,
+        Integer minDecimalPlaces=1,
         "The maximum number of allowed decimal places.
          
          If `maxDecimalPlaces<=0`, the result always has no
          decimal point."
-        variable Integer maxDecimalPlaces=9,
+        Integer maxDecimalPlaces=9,
         "The character to use as the decimal separator.
          
          `decimalSeparator` may not be '-' or a digit as

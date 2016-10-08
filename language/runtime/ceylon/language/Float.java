@@ -1,7 +1,5 @@
 package ceylon.language;
 
-import ceylon.language.AliasesAnnotation$annotation$;
-
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Class;
@@ -125,22 +123,18 @@ public final class Float
         
     @SharedAnnotation$annotation$
     @StaticAnnotation$annotation$
-    public static java.lang.String format(@Name("float")
-    @DocAnnotation$annotation$(description = "The floating point value to format.")
-    double f, 
-    @Name("minDecimalPlaces")
-    @Defaulted
-    @VariableAnnotation$annotation$
-    final long minDecimalPlaces, @Name("maxDecimalPlaces")
-    @Defaulted
-    @VariableAnnotation$annotation$
-    final long maxDecimalPlaces, @Name("decimalSeparator")
-    @Defaulted
-    @TypeInfo("ceylon.language::Character")
-    final int decimalSeparator, @Name("thousandsSeparator")
-    @Defaulted
-    @TypeInfo("ceylon.language::Character?")
-    final Character thousandsSeparator) {
+    public static java.lang.String format(
+            @Name("float") double f, 
+            @Name("minDecimalPlaces") @Defaulted
+            long minDecimalPlaces, 
+            @Name("maxDecimalPlaces") @Defaulted
+            long maxDecimalPlaces, 
+            @Name("decimalSeparator") @Defaulted
+            @TypeInfo("ceylon.language::Character")
+            int decimalSeparator, 
+            @Name("thousandsSeparator") @Defaulted
+            @TypeInfo("ceylon.language::Character?")
+            Character thousandsSeparator) {
         return formatFloat_.formatFloat(f, minDecimalPlaces, maxDecimalPlaces, decimalSeparator, thousandsSeparator);
     }
     
