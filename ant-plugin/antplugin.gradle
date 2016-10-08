@@ -6,6 +6,7 @@ targetCompatibility = cbp.'compile.java.target'
 
 dependencies {
     compile project(':cli')
+    compileOnly project(':common')
     compile antDep
     testCompile junitDep
 }
@@ -13,16 +14,13 @@ dependencies {
 sourceSets {
     main {
         java {
-            srcDirs = [ "${project(':compiler-java').projectDir}/src","${project(':common').projectDir}/src"]
+            srcDirs = [ "${project(':compiler-java').projectDir}/src"]
             include 'com/redhat/ceylon/ant/**'
-            include 'com/redhat/ceylon/common/**'
             include 'com/redhat/ceylon/launcher/**'
-            exclude 'com/redhat/ceylon/common/log/**'
         }
         resources {
-            srcDirs = [ "${project(':compiler-java').projectDir}/src","${project(':common').projectDir}/src"]
+            srcDirs = [ "${project(':compiler-java').projectDir}/src"]
             include "com/redhat/ceylon/ant/antlib.xml"
-            include "com/redhat/ceylon/common/config/messages.properties"
         }
     }
 }
@@ -30,6 +28,12 @@ sourceSets {
 jar {
     description 'Create Ant tasks jar'
     archiveName = 'ceylon-ant.jar'
+
+    from ({zipTree(project(':common').configurations.default.allArtifacts.files.singleFile)}) {
+            include 'com/redhat/ceylon/common/**'
+            exclude 'com/redhat/ceylon/common/log/**'
+            exclude 'com/redhat/ceylon/common/resources/**'
+    }
 }
 
 task publishInternal( type : Copy ) {
