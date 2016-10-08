@@ -14,10 +14,11 @@ shared native object runtime  {
     "The name of the runtime / virtual machine this process 
      is running on:
      
-     * `jvm` when running on a Java Virtual Machine
-     * `node.js` when running on NodeJS
-     * `Browser` when running in \"a web browser\" (if the `window` object exists)
-    "
+     - `jvm` when running on a Java Virtual Machine
+     - `node.js` when running on Node.js
+     - `Browser` when running in a web browser 
+       (if the `window` object exists)
+     - `DartVM` when running on the Dart VM"
     shared native String name;
     
     "The version of the runtime / virtual machine this 
