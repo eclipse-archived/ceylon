@@ -1,6 +1,6 @@
 class ClassWithStaticMembers {
     
-    shared static void hello() {}
+    shared static void hello(String str) {}
     shared static String name = "Trompon";
     shared static class Inner() {}
     shared static object inner {
@@ -10,30 +10,32 @@ class ClassWithStaticMembers {
     shared static alias Name => String;
     
     shared new () {
-        hello();
+        hello("");
         String nameIt = name;
         String greeting = inner.greeting;
         Inner innerIt = Inner();
         object impl satisfies Inter {}
         Name nameStr = "Gavin";
+        Anything(String) fun = hello;
     }
 }
 
 void testClassWithStaticMembers() {
-    ClassWithStaticMembers.hello();
+    ClassWithStaticMembers.hello("");
     String name = ClassWithStaticMembers.name;
     String greeting = ClassWithStaticMembers.inner.greeting;
     ClassWithStaticMembers.Inner innerIt = ClassWithStaticMembers.Inner();
     object impl satisfies ClassWithStaticMembers.Inter {}
     ClassWithStaticMembers.Name nameStr = "Gavin";
+    Anything(String) fun = ClassWithStaticMembers.hello;
     
-    @error ClassWithStaticMembers().hello();
+    @error ClassWithStaticMembers().hello("");
     @error ClassWithStaticMembers().name.clone();
     @error ClassWithStaticMembers().Inner();
 }
 
 interface InterfaceWithStaticMembers {
-    @error shared static void hello() {}
+    @error shared static void hello(String str) {}
     @error shared static String name = "Trompon";
     @error shared static class Inner() {}
     @error shared static object inner {
@@ -44,7 +46,7 @@ interface InterfaceWithStaticMembers {
 }
 
 @error class ClassWithParamsAndStaticMembers() {
-    shared static void hello() {}
+    shared static void hello(String str) {}
     shared static String name = "Trompon";
     shared static class Inner() {}
     shared static object inner {
@@ -56,7 +58,7 @@ interface InterfaceWithStaticMembers {
 
 class BadClassWithInitializerAndStaticMembers {
     print("hello");
-    @error shared static void hello() {}
+    @error shared static void hello(String str) {}
     @error shared static String name = "Trompon";
     @error shared static class Inner() {}
     @error shared static object inner {
@@ -69,7 +71,7 @@ class BadClassWithInitializerAndStaticMembers {
 
 class BadClassWithInitializerAndStaticMembers2 {
     shared new make() {}
-    @error shared static void hello() {}
+    @error shared static void hello(String str) {}
     @error shared static String name = "Trompon";
     @error shared static class Inner() {}
     @error shared static object inner {
@@ -81,7 +83,7 @@ class BadClassWithInitializerAndStaticMembers2 {
 }
 
 class GoodClassWithInitializerAndStaticMembers {
-    shared static void hello() {}
+    shared static void hello(String str) {}
     shared static String name = "Trompon";
     shared static class Inner() {}
     shared static object inner {
