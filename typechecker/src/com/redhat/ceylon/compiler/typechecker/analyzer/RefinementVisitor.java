@@ -752,7 +752,9 @@ public class RefinementVisitor extends Visitor {
         }
         if (member.isStatic() 
                 && !type.isToplevel()) {
-            that.addError("static member belongs to a nested class");
+            that.addError("static member belongs to a nested class: '" + 
+                    member.getName() + 
+                    "' is a member of nested type '" + type.getName() + "'");
         }
         if (type.isDynamic()) {
             if (member instanceof Class) {
@@ -1411,7 +1413,27 @@ public class RefinementVisitor extends Visitor {
 
     private void checkNonMember(Tree.Declaration that, Declaration dec) {
         boolean mayBeShared = !(dec instanceof TypeParameter);
-        if (!dec.isClassOrInterfaceMember() && mayBeShared) {
+        boolean nonTypeMember = !dec.isClassOrInterfaceMember();
+        
+        if (dec.isStatic()) {
+            if (nonTypeMember) {
+                that.addError("static declaration is not a member of a class or interface: '" + 
+                        dec.getName() + 
+                        "' is not defined directly in the body of a class or interface");
+            }
+            else {
+                ClassOrInterface type = 
+                        (ClassOrInterface) 
+                            dec.getContainer();
+                if (!type.isToplevel()) {
+                    that.addError("static declaration belongs to a nested a class or interface: '" + 
+                            dec.getName() + 
+                            "' is a member of nested type '" + type.getName() + "'");
+                }
+            }
+        }
+        
+        if (nonTypeMember && mayBeShared) {
             if (dec.isActual()) {
                 that.addError("actual declaration is not a member of a class or interface: '" + 
                         dec.getName() + "'", 
@@ -1426,10 +1448,6 @@ public class RefinementVisitor extends Visitor {
                 that.addError("default declaration is not a member of a class or interface: '" + 
                         dec.getName() + "'", 
                         1303);
-            }
-            if (dec.isStatic()) {
-                that.addError("static declaration is not a member of a class or interface: '" + 
-                        dec.getName() + "'");
             }
         }
         else if (!dec.isShared() && mayBeShared) {
@@ -1466,6 +1484,7 @@ public class RefinementVisitor extends Visitor {
                         1303);
             }
         }
+        
         if (isConstructor(dec) && dec.isShared()) {
             Scope container = dec.getContainer();
             if (container instanceof Class) {

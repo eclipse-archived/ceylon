@@ -168,3 +168,14 @@ shared class Box<out T> {
     shared static Box<T> create(T t) => Box.make(t);
     new make(T t) {}
 }
+
+class Outer {
+    static class InnerClass {
+        @error static Integer count = 0;
+        shared new() {}
+    }
+    static interface InnerInterface {
+        @error static Integer count => 0;
+    }
+    shared new() {}
+}
