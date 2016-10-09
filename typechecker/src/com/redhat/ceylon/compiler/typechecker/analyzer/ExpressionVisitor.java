@@ -2198,15 +2198,21 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    @Override public void visit(Tree.TypedDeclaration that) {
+    @Override 
+    public void visit(Tree.TypedDeclaration that) {
         super.visit(that);
-        TypedDeclaration d = that.getDeclarationModel();
+        TypedDeclaration d = 
+                that.getDeclarationModel();
         Type t = d.getType();
-        if (((FunctionOrValue)d).isSmall()
+        FunctionOrValue fov = (FunctionOrValue) d;
+        if (fov.isSmall()
                 && t != null
                 && !t.isInteger()
                 && !t.isFloat()) {
-            that.addError("type cannot be annotated small: " + t.asString(that.getUnit()));
+            that.addError("type may not be 'small': '" 
+                + d.getName() + "' has type '"
+                + t.asString(that.getUnit()) 
+                + "' (only an `Integer` or `Float` may be small)");
         }
     }
     
