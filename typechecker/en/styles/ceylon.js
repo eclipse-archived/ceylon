@@ -39,7 +39,7 @@ Rainbow.extend( "ceylon", [
   },
   {
     name: "entity.function",
-    pattern: /\b(shared|abstract|formal|default|actual|variable|deprecated|small|late|literal|doc|by|see|throws|optional|license|tagged|final|native|annotation|sealed)\b/g
+    pattern: /\b(shared|abstract|static|formal|default|actual|variable|deprecated|small|late|literal|doc|by|see|since|throws|optional|license|tagged|final|native|annotation|sealed)\b/g
   },
   {
     name: "entity.class",
