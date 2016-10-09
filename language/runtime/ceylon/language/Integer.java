@@ -142,6 +142,7 @@ public final class Integer
     public static java.lang.String format(
             @Name("integer") long integer, 
             @Name("radix") @Defaulted long radix,
+            @TypeInfo("ceylon.language::Character?")
             @Name("groupingSeparator") @Defaulted Character groupingSeparator) {
         return formatInteger_.formatInteger(integer, radix, groupingSeparator);
     }
