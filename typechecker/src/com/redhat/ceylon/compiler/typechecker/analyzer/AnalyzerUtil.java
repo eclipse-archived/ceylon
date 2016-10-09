@@ -35,6 +35,7 @@ import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.DeclarationWithProximity;
@@ -780,12 +781,57 @@ public class AnalyzerUtil {
                 typingMessage(type,
                     " is not assignable to ",
                     supertype, unit);
-        if (unit.isCallableType(type)
+        if (unit.getDefiniteType(type)
+                .isSubtypeOf(supertype)) {
+            return result + 
+                    " (the assigned type contains 'null')";
+        }
+        else if (unit.isCallableType(type)
                 && unit.getCallableReturnType(type)
                     .isSubtypeOf(supertype)) {
-            result += " (specify arguments to the function reference)";
+            return result + 
+                    " (specify arguments to the function reference)";
         }
-        return result;
+        else {
+            TypeDeclaration typeDec = 
+                    type.getDeclaration();
+            TypeDeclaration supertypeDec = 
+                    supertype.getDeclaration();
+            if (typeDec instanceof ClassOrInterface && 
+                supertypeDec instanceof ClassOrInterface 
+                    && typeDec.isToplevel() 
+                    && supertypeDec.isToplevel()) {
+                String typeName = typeDec.getName();
+                String supertypeName = supertypeDec.getName();
+                if (typeName.equals(supertypeName)) {
+                    String typePackage = 
+                            typeDec.getUnit()
+                                .getPackage()
+                                .getNameAsString();
+                    String supertypePackage = 
+                            supertypeDec.getUnit()
+                                .getPackage()
+                                .getNameAsString();
+                    if (typePackage.startsWith("ceylon.") &&
+                        supertypePackage.startsWith("java.")) {
+                        return result +
+                                " (Java '" + 
+                                supertypeName + 
+                                "' is not the same type as Ceylon '" + 
+                                typeName + "')";
+                    }
+                    if (typePackage.startsWith("java.") &&
+                        supertypePackage.startsWith("ceylon.")) {
+                        return result +
+                                " (Ceylon '" + 
+                                supertypeName + 
+                                "' is not the same type as Java '" + 
+                                typeName + "')";
+                    }
+                }
+            }
+            return result;
+        }
     }
 
     static void checkAssignable(Type type, 
