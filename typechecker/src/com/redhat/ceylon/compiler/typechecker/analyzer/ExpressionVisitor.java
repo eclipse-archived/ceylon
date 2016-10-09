@@ -2209,10 +2209,10 @@ public class ExpressionVisitor extends Visitor {
                 && t != null
                 && !t.isInteger()
                 && !t.isFloat()) {
-            that.addError("type may not be 'small': '" 
+            that.addError("type may not be annotated 'small': '" 
                 + d.getName() + "' has type '"
                 + t.asString(that.getUnit()) 
-                + "' (only an `Integer` or `Float` may be small)");
+                + "' (only an 'Integer' or 'Float' may be small)");
         }
     }
     
