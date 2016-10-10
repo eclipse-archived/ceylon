@@ -40,7 +40,9 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     public Klass(@.com.redhat.ceylon.compiler.java.metadata.Name("p1")
     final long p1, @.com.redhat.ceylon.compiler.java.metadata.Name("p2")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Integer?",
+            erased = true)
     final .ceylon.language.Integer p2, @.com.redhat.ceylon.compiler.java.metadata.Name("p3")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]")
@@ -64,9 +66,13 @@ public class Klass implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Integer?",
+            erased = true)
     public final .ceylon.language.Integer m2(@.com.redhat.ceylon.compiler.java.metadata.Name("p2")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Integer?",
+            erased = true)
     final .ceylon.language.Integer p2) {
         return .ceylon.language.Integer.instance(1L);
     }

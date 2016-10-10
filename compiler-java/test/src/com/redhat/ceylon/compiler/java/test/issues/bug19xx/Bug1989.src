@@ -49,7 +49,7 @@ public class Bug1989 implements .com.redhat.ceylon.compiler.java.runtime.model.R
             @.java.lang.Override
             public .java.lang.Object $call$(final .java.lang.Object $param$0) {
                 final .ceylon.language.String x = (.ceylon.language.String)$param$0;
-                return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.fn1989_.fn1989(x);
+                return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.fn1989_.fn1989((.ceylon.language.String)x);
             }
         };
     }

@@ -31,7 +31,7 @@ public final class swtch_ {
         }
         final .ceylon.language.String s2 = .ceylon.language.String.instance("xyz");
         {
-            .ceylon.language.String sel$0 = s2;
+            .ceylon.language.String sel$0 = (.ceylon.language.String)s2;
             if (sel$0 != null && sel$0.toString().equals("abc")) {
             } else if (sel$0 != null && sel$0.toString().equals("xyz")) {
                 .ceylon.language.print_.print(s2);
@@ -40,7 +40,7 @@ public final class swtch_ {
         }
         final .ceylon.language.String s3 = .ceylon.language.String.instance("xyz");
         {
-            .ceylon.language.String sel$1 = s3;
+            .ceylon.language.String sel$1 = (.ceylon.language.String)s3;
             if (sel$1 == null) {
             } else if (sel$1 != null && sel$1.toString().equals("abc")) {
             } else if (sel$1 != null && sel$1.toString().equals("xyz")) {
@@ -60,7 +60,7 @@ public final class swtch_ {
         }
         final .ceylon.language.Integer i2 = .ceylon.language.Integer.instance(42L);
         {
-            .ceylon.language.Integer sel$4 = i2;
+            .ceylon.language.Integer sel$4 = (.ceylon.language.Integer)i2;
             if (sel$4 != null && sel$4.longValue() == 2L) {
             } else if (sel$4 != null && sel$4.longValue() == 42L) {
                 .ceylon.language.print_.print(i2);
@@ -69,7 +69,7 @@ public final class swtch_ {
         }
         final .ceylon.language.Integer i3 = .ceylon.language.Integer.instance(42L);
         {
-            .ceylon.language.Integer sel$5 = i3;
+            .ceylon.language.Integer sel$5 = (.ceylon.language.Integer)i3;
             if (sel$5 == null) {
             } else if (sel$5 != null && sel$5.longValue() == 2L) {
             } else if (sel$5 != null && sel$5.longValue() == 42L) {

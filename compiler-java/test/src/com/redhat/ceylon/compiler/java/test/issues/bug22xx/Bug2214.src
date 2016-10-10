@@ -84,11 +84,11 @@ final class OK$impl implements .java.io.Serializable {
         }
         
         public final T getS() {
-            return $this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$OK$impl$Top$impl().getS();
+            return (T)$this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$OK$impl$Top$impl().getS();
         }
         
         public T m() {
-            return $this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$OK$impl$Top$impl().m();
+            return (T)$this.$com$redhat$ceylon$compiler$java$test$issues$bug22xx$OK$impl$Top$impl().m();
         }
     }
     

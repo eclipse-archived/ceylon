@@ -10,13 +10,21 @@ final class bug2271_ {
     }
     
     static void bug2271(@.com.redhat.ceylon.compiler.java.metadata.Name("ji")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Integer?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "java.lang::Integer?",
+            erased = true)
     final .java.lang.Integer ji, @.com.redhat.ceylon.compiler.java.metadata.Name("jf")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Float?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "java.lang::Float?",
+            erased = true)
     final .java.lang.Float jf, @.com.redhat.ceylon.compiler.java.metadata.Name("jc")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Character?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "java.lang::Character?",
+            erased = true)
     final .java.lang.Character jc, @.com.redhat.ceylon.compiler.java.metadata.Name("js")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::Short?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "java.lang::Short?",
+            erased = true)
     final .java.lang.Short js) {
         boolean $ceylontmp$if$0 = false;
         .ceylon.language.Integer i$1;
@@ -24,7 +32,7 @@ final class bug2271_ {
         if ((i$1 = (
             let
             {
-                .java.lang.Integer safe$2 = ji;
+                .java.lang.Integer safe$2 = (.java.lang.Integer)ji;
             }
             returning safe$2 != null ? .ceylon.language.Integer.instance(safe$2.intValue()) : null;
         )) != null) {
@@ -44,7 +52,7 @@ final class bug2271_ {
         if ((f$5 = (
             let
             {
-                .java.lang.Float safe$6 = jf;
+                .java.lang.Float safe$6 = (.java.lang.Float)jf;
             }
             returning safe$6 != null ? .ceylon.language.Float.instance(safe$6.floatValue()) : null;
         )) != null) {
@@ -64,7 +72,7 @@ final class bug2271_ {
         if ((c$9 = (
             let
             {
-                .java.lang.Character safe$10 = jc;
+                .java.lang.Character safe$10 = (.java.lang.Character)jc;
             }
             returning safe$10 != null ? .ceylon.language.Character.instance(safe$10.charValue()) : null;
         )) != null) {
@@ -84,7 +92,7 @@ final class bug2271_ {
         if ((s$13 = (
             let
             {
-                .java.lang.Short safe$14 = js;
+                .java.lang.Short safe$14 = (.java.lang.Short)js;
             }
             returning safe$14 != null ? .ceylon.language.Integer.instance(safe$14.shortValue()) : null;
         )) != null) {

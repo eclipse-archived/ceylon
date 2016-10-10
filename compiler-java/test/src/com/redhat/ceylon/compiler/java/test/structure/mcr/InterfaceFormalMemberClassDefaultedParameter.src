@@ -80,7 +80,7 @@ class InterfaceFormalMemberClassDefaultedParameterSub implements .com.redhat.cey
     public class X extends .com.redhat.ceylon.compiler.java.test.structure.mcr.InterfaceFormalMemberClassDefaultedParameter$impl.X {
         
         protected X(final .java.lang.String o, final .ceylon.language.String s) {
-            $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this$.super("", s);
+            $com$redhat$ceylon$compiler$java$test$structure$mcr$InterfaceFormalMemberClassDefaultedParameter$this$.super("", (.ceylon.language.String)s);
         }
         
         @.java.lang.Override

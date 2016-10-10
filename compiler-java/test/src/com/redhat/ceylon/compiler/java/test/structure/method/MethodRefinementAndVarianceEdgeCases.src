@@ -86,8 +86,8 @@ class MRAVEC_BottomNull extends .com.redhat.ceylon.compiler.java.test.structure.
     }
     
     @.java.lang.Override
-    public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant f4() {
-        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant)(.java.lang.Object).ceylon.language.nothing_.get_();
+    public final .com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant<? super .java.lang.Object> f4() {
+        return (.com.redhat.ceylon.compiler.java.test.structure.method.MRAVEC_Contravariant<? super .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     
     @.java.lang.Override

@@ -55,11 +55,11 @@ abstract class VariadicImplementations2 extends .com.redhat.ceylon.compiler.java
     @.java.lang.Override
     public final void variadicCeylonBoolean(final .ceylon.language.Boolean... vars) {
         final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> vars$4 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Boolean>sequentialWrapperCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Boolean.$TypeDescriptor$), vars);
-        final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> vars2 = vars$4;
+        final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> vars2 = (.ceylon.language.Sequential<? extends .ceylon.language.Boolean>)(.ceylon.language.Sequential)vars$4;
         variadicCeylonBoolean((
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$5$0 = vars$4;
+                .ceylon.language.Sequential<? extends .ceylon.language.Boolean> $ceylontmp$5$0 = (.ceylon.language.Sequential<? extends .ceylon.language.Boolean>)(.ceylon.language.Sequential)vars$4;
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Boolean>toArray($ceylontmp$5$0, new .ceylon.language.Boolean[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$5$0.getSize())]);
         ));
@@ -131,11 +131,11 @@ abstract class VariadicImplementations2 extends .com.redhat.ceylon.compiler.java
     @.java.lang.Override
     public final void variadicCeylonInteger(final .ceylon.language.Integer... vars) {
         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> vars$11 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>sequentialWrapperCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), vars);
-        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> vars2 = vars$11;
+        final .ceylon.language.Sequential<? extends .ceylon.language.Integer> vars2 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)vars$11;
         variadicCeylonInteger((
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$12$0 = vars$11;
+                .ceylon.language.Sequential<? extends .ceylon.language.Integer> $ceylontmp$12$0 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)vars$11;
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Integer>toArray($ceylontmp$12$0, new .ceylon.language.Integer[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$12$0.getSize())]);
         ));
@@ -171,11 +171,11 @@ abstract class VariadicImplementations2 extends .com.redhat.ceylon.compiler.java
     @.java.lang.Override
     public final void variadicCeylonFloat(final .ceylon.language.Float... vars) {
         final .ceylon.language.Sequential<? extends .ceylon.language.Float> vars$15 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Float>sequentialWrapperCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), vars);
-        final .ceylon.language.Sequential<? extends .ceylon.language.Float> vars2 = vars$15;
+        final .ceylon.language.Sequential<? extends .ceylon.language.Float> vars2 = (.ceylon.language.Sequential<? extends .ceylon.language.Float>)(.ceylon.language.Sequential)vars$15;
         variadicCeylonFloat((
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.Float> $ceylontmp$16$0 = vars$15;
+                .ceylon.language.Sequential<? extends .ceylon.language.Float> $ceylontmp$16$0 = (.ceylon.language.Sequential<? extends .ceylon.language.Float>)(.ceylon.language.Sequential)vars$15;
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.Float>toArray($ceylontmp$16$0, new .ceylon.language.Float[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$16$0.getSize())]);
         ));
@@ -197,11 +197,11 @@ abstract class VariadicImplementations2 extends .com.redhat.ceylon.compiler.java
     @.java.lang.Override
     public final void variadicCeylonString(final .ceylon.language.String... vars) {
         final .ceylon.language.Sequential<? extends .ceylon.language.String> vars$18 = .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>sequentialWrapperCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), vars);
-        final .ceylon.language.Sequential<? extends .ceylon.language.String> vars2 = vars$18;
+        final .ceylon.language.Sequential<? extends .ceylon.language.String> vars2 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)vars$18;
         variadicCeylonString((
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$19$0 = vars$18;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$19$0 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)vars$18;
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.ceylon.language.String>toArray($ceylontmp$19$0, new .ceylon.language.String[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$19$0.getSize())]);
         ));
@@ -213,11 +213,11 @@ abstract class VariadicImplementations2 extends .com.redhat.ceylon.compiler.java
     @.java.lang.Override
     public final void variadicObject(final .java.lang.Object... vars) {
         final .ceylon.language.Sequential<? extends .java.lang.Object> vars$20 = .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object>sequentialWrapperCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Object.$TypeDescriptor$), vars);
-        final .ceylon.language.Sequential<? extends .java.lang.Object> vars2 = vars$20;
+        final .ceylon.language.Sequential<? extends .java.lang.Object> vars2 = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)vars$20;
         variadicObject((
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$21$0 = vars$20;
+                .ceylon.language.Sequential<? extends .java.lang.Object> $ceylontmp$21$0 = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.ceylon.language.Sequential)vars$20;
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object>toArray($ceylontmp$21$0, new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$21$0.getSize())]);
         ));
@@ -229,11 +229,11 @@ abstract class VariadicImplementations2 extends .com.redhat.ceylon.compiler.java
     @.java.lang.Override
     public final void variadicObjectArray(final .java.lang.Object[]... vars) {
         final .ceylon.language.Sequential<? extends .java.lang.Object[]> vars$22 = .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object[]>sequentialWrapperCopy(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.language.ObjectArray.class, .ceylon.language.Object.$TypeDescriptor$)), vars);
-        final .ceylon.language.Sequential<? extends .java.lang.Object[]> vars2 = vars$22;
+        final .ceylon.language.Sequential<? extends .java.lang.Object[]> vars2 = (.ceylon.language.Sequential<? extends .java.lang.Object[]>)(.ceylon.language.Sequential)vars$22;
         variadicObjectArray((
             let
             {
-                .ceylon.language.Sequential<? extends .java.lang.Object[]> $ceylontmp$23$0 = vars$22;
+                .ceylon.language.Sequential<? extends .java.lang.Object[]> $ceylontmp$23$0 = (.ceylon.language.Sequential<? extends .java.lang.Object[]>)(.ceylon.language.Sequential)vars$22;
             }
             returning .com.redhat.ceylon.compiler.java.Util.<.java.lang.Object[]>toArray($ceylontmp$23$0, new .java.lang.Object[.com.redhat.ceylon.compiler.java.Util.toInt($ceylontmp$23$0.getSize())][]);
         ));

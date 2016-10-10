@@ -125,26 +125,26 @@ final class test_ {
         }
         final Key objOrNot = (Key)(.java.lang.Object).ceylon.language.nothing_.get_();
         .java.lang.Object objOrNot$10;
-        if ((objOrNot$10 = objOrNot) != null) {
+        if ((objOrNot$10 = (Key)objOrNot) != null) {
             final Key objOrNot$11 = (Key)objOrNot$10;
         }
         .java.lang.Object objOrNot$13;
-        if ((objOrNot$13 = objOrNot) != null || objOrNot$13 instanceof .ceylon.language.Integer) {
+        if ((objOrNot$13 = (Key)objOrNot) != null || objOrNot$13 instanceof .ceylon.language.Integer) {
             final Key objOrNot$14 = (Key)objOrNot$13;
         }
         .java.lang.Object fu$16;
-        if ((fu$16 = objOrNot) != null) {
+        if ((fu$16 = (Key)objOrNot) != null) {
             final Key fu$17 = (Key)fu$16;
         }
         final boolean b = (
             let
             {
-                .java.lang.Object $ceylontmp$18 = objOrNot;
+                .java.lang.Object $ceylontmp$18 = (Key)objOrNot;
             }
             returning $ceylontmp$18 != null;
         );
         {
-            Key sel$19 = objOrNot;
+            Key sel$19 = (Key)objOrNot;
             if (sel$19 != null) {
                 final Key objOrNot$21 = (Key)sel$19;
             } else {
@@ -210,7 +210,7 @@ public final class first_ {
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, @.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent) {
         final Value first = (Value)(.java.lang.Object).ceylon.language.nothing_.get_();
-        if (.com.redhat.ceylon.compiler.java.Util.isReified(first, $reified$Absent) || .com.redhat.ceylon.compiler.java.Util.isReified(first, $reified$Value)) {
+        if (.com.redhat.ceylon.compiler.java.Util.isReified((Value)first, $reified$Absent) || .com.redhat.ceylon.compiler.java.Util.isReified(first, $reified$Value)) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Absent|Value first"));
         }

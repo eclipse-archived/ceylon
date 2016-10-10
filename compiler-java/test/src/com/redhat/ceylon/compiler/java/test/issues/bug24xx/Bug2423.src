@@ -42,7 +42,7 @@ public final class bug2423_ {
             {
                 .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$ifResult$1;
                 .java.lang.Object ns$3;
-                if ((ns$3 = ns) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423) {
+                if ((ns$3 = (.com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423<? extends .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423)ns) instanceof .com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423) {
                     final .com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423<? extends .ceylon.language.String> ns$4 = (.com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423<? extends .ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug24xx.Li2423)ns$3;
                     $ceylontmp$ifResult$1 = ns$4.getItems();
                 } else {

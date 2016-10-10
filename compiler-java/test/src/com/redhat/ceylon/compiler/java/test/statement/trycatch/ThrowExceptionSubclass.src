@@ -7,7 +7,7 @@ class ThrowExceptionSubclassE extends .ceylon.language.Exception {
     }
     
     ThrowExceptionSubclassE(final .ceylon.language.String description, final .java.lang.Exception cause) {
-        super(description, cause);
+        super((.ceylon.language.String)description, (.java.lang.Throwable)cause);
     }
     
     @.java.lang.Override

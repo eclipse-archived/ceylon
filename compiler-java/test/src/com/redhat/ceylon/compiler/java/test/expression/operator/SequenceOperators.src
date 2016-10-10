@@ -5,7 +5,7 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     public SequenceOperators() {
         this.$ceylon$language$List$this$ = new .ceylon.language.List$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, this);
         this.c1 = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("")});
@@ -707,7 +707,7 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
             }.sequence();
         );
         .ceylon.language.Sequential<? extends .ceylon.language.Character> spreadInvoke = null;
-        spreadInvoke = (
+        spreadInvoke = (.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)(
             let
             {
                 final .ceylon.language.Iterable<? extends .ceylon.language.List<? extends .ceylon.language.Character>, ? extends .java.lang.Object> spread$15$iterable$ = sequence;
@@ -732,7 +732,7 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                 }
             }.sequence();
         );
-        spreadInvoke = (
+        spreadInvoke = (.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)(
             let
             {
                 final .ceylon.language.Iterable<? extends .ceylon.language.List<? extends .ceylon.language.Character>, ? extends .java.lang.Object> spread$17$iterable$ = sequence;
@@ -763,7 +763,7 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                 }
             }.sequence();
         );
-        spreadInvoke = (
+        spreadInvoke = (.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)(
             let
             {
                 final .ceylon.language.Iterable<? extends .ceylon.language.List<? extends .ceylon.language.Character>, ? extends .java.lang.Object> spread$18$iterable$ = this;
@@ -788,7 +788,7 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
                 }
             }.sequence();
         );
-        spreadInvoke = (
+        spreadInvoke = (.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)(
             let
             {
                 final .ceylon.language.Iterable<? extends .ceylon.language.List<? extends .ceylon.language.Character>, ? extends .java.lang.Object> spread$20$iterable$ = this;
@@ -892,7 +892,7 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
         this.$com$redhat$ceylon$compiler$java$test$expression$operator$List2$this$ = new .com.redhat.ceylon.compiler.java.test.expression.operator.List2$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
         this.$ceylon$language$List$this$ = new .ceylon.language.List$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, this);
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, this);
     }
@@ -905,7 +905,7 @@ public abstract class SequenceOperators2 implements .com.redhat.ceylon.compiler.
     
     @.java.lang.Override
     public final .ceylon.language.String getFromFirst(final long i) {
-        return $com$redhat$ceylon$compiler$java$test$expression$operator$List2$this$.getFromFirst(i);
+        return (.ceylon.language.String)$com$redhat$ceylon$compiler$java$test$expression$operator$List2$this$.getFromFirst(i);
     }
     protected final .ceylon.language.List$impl<.ceylon.language.String> $ceylon$language$List$this$;
     

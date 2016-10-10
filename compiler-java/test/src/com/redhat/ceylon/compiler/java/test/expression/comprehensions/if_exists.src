@@ -19,7 +19,7 @@ final class ifFor_ {
                         if ($next$0$exhausted$) return false;
                         $next$0$exhausted$ = true;
                         .ceylon.language.String x$0 = null;
-                        if ((x$0 = x) != null) {
+                        if ((x$0 = (.ceylon.language.String)x) != null) {
                             x$1 = x$0.toString();
                             return true;
                         }

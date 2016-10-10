@@ -31,7 +31,7 @@ final class bug1353_ {
         final .ceylon.language.String s = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1353 safe$0 = num;
+                .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1353 safe$0 = (.com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug1353)num;
             }
             returning safe$0 != null ? .ceylon.language.String.instance(safe$0.getId()) : null;
         );

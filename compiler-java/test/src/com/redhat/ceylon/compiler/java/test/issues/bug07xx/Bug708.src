@@ -172,7 +172,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
         this.$reified$T = $reified$T;
         this.$ceylon$language$Map$this$ = new .ceylon.language.Map$impl(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, $reified$T), (.ceylon.language.Map)this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, $reified$T)), (.ceylon.language.Collection<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>)(.ceylon.language.Collection)this);
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, $reified$T)), .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, $reified$T)), .ceylon.language.Null.$TypeDescriptor$, (.ceylon.language.Iterable<? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>, ? extends .java.lang.Object>)(.ceylon.language.Iterable)this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, (.ceylon.language.Category<? super .java.lang.Object>)(.ceylon.language.Category)this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl(.ceylon.language.Object.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.String.$TypeDescriptor$, $reified$T), (.ceylon.language.Correspondence)this);
     }
@@ -860,7 +860,7 @@ final class bug708extra3_ {
             value = (.ceylon.language.String)(
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> safe$19 = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708obj_.get_();
+                    .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> safe$19 = (.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708obj_.get_();
                 }
                 returning safe$19 != null ? safe$19.test() : null;
             );
@@ -919,7 +919,7 @@ final class bug708extra4_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (
+            value = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)(
                 let
                 {
                     final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, ? extends .java.lang.Object> spread$20$iterable$ = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.get_();

@@ -137,7 +137,7 @@ class SwitchMatch implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     private final void onNullableType$priv$() {
         final .ceylon.language.Boolean b = .ceylon.language.Boolean.instance(true);
         {
-            .ceylon.language.Boolean sel$3 = b;
+            .ceylon.language.Boolean sel$3 = (.ceylon.language.Boolean)b;
             if (sel$3 == null) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("null"));
             } else if (sel$3.booleanValue() == true) {

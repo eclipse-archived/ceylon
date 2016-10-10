@@ -84,7 +84,7 @@ final class isCond_ {
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor$){
                     {
-                        $iterator$0 = seq.iterator();
+                        $iterator$0 = ((.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, ? extends .java.lang.Object>)(.ceylon.language.Iterable)seq).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
@@ -107,7 +107,7 @@ final class isCond_ {
                             if (!this.x()) break ifcomp_1;
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             .java.lang.Object x$1 = null;
-                            if ((x$1 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo) {
+                            if ((x$1 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo) {
                                 x$2 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x$1;
                                 break ifcomp_1;
                             }
@@ -130,7 +130,7 @@ final class isCond_ {
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo.$TypeDescriptor$){
                     {
-                        $iterator$0 = seq.iterator();
+                        $iterator$0 = ((.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, ? extends .java.lang.Object>)(.ceylon.language.Iterable)seq).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
@@ -153,7 +153,7 @@ final class isCond_ {
                             if (!this.x()) break ifcomp_1;
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
                             .java.lang.Object x$4 = null;
-                            if ((x$4 = x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub) {
+                            if ((x$4 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub) {
                                 x$5 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub)x$4;
                                 break ifcomp_1;
                             }
@@ -176,7 +176,7 @@ final class isCond_ {
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor$){
                     {
-                        $iterator$0 = seq.iterator();
+                        $iterator$0 = ((.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, ? extends .java.lang.Object>)(.ceylon.language.Iterable)seq).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
@@ -197,7 +197,7 @@ final class isCond_ {
                         ifcomp_1: while (true) {
                             if (!this.x()) break ifcomp_1;
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
-                            if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo || x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar) {
+                            if ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo || x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Bar) {
                                 break ifcomp_1;
                             }
                         }
@@ -218,7 +218,7 @@ final class isCond_ {
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common.$TypeDescriptor$){
                     {
-                        $iterator$0 = seq.iterator();
+                        $iterator$0 = ((.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, ? extends .java.lang.Object>)(.ceylon.language.Iterable)seq).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
@@ -239,7 +239,7 @@ final class isCond_ {
                         ifcomp_1: while (true) {
                             if (!this.x()) break ifcomp_1;
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
-                            if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
+                            if ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
                                 break ifcomp_1;
                             }
                         }
@@ -260,7 +260,7 @@ final class isCond_ {
             public final .ceylon.language.Iterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface>(.com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface.$TypeDescriptor$){
                     {
-                        $iterator$0 = seq.iterator();
+                        $iterator$0 = ((.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, ? extends .java.lang.Object>)(.ceylon.language.Iterable)seq).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
@@ -281,7 +281,7 @@ final class isCond_ {
                         ifcomp_1: while (true) {
                             if (!this.x()) break ifcomp_1;
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
-                            if (x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
+                            if ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo && x instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.BarInterface) {
                                 break ifcomp_1;
                             }
                         }
@@ -299,10 +299,10 @@ final class isCond_ {
         }.sequence();
         final .ceylon.language.Sequential<? extends .java.lang.Object> nowt = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.java.lang.Object, .java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
-            public final .ceylon.language.Iterator iterator() {
+            public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Null.$TypeDescriptor$){
                     {
-                        $iterator$0 = seq.iterator();
+                        $iterator$0 = ((.ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common, ? extends .java.lang.Object>)(.ceylon.language.Iterable)seq).iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common> $iterator$0;
                     private .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x;
@@ -323,7 +323,7 @@ final class isCond_ {
                         ifcomp_1: while (true) {
                             if (!this.x()) break ifcomp_1;
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common x = this.x;
-                            if (x == null) {
+                            if ((.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Common)x == null) {
                                 break ifcomp_1;
                             }
                         }

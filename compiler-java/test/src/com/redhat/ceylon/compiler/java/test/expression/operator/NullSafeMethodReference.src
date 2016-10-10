@@ -9,7 +9,7 @@ final class nullSafeMethodReference_ {
         final .ceylon.language.Callable<? extends .ceylon.language.String> f = (
             let
             {
-                final .ceylon.language.String $instance$ = s;
+                final .ceylon.language.String $instance$ = (.ceylon.language.String)s;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "String?(Integer)", (short)-1){
                 
@@ -19,7 +19,7 @@ final class nullSafeMethodReference_ {
                     return (
                         let
                         {
-                            .ceylon.language.String safe$1 = $instance$;
+                            .ceylon.language.String safe$1 = (.ceylon.language.String)$instance$;
                         }
                         returning safe$1 != null ? $instance$.initial($ceylontmp$length) : null;
                     );

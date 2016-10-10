@@ -48,8 +48,8 @@ final class staticMemberClassUse_ {
     
     static void staticMemberClassUse() {
         final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String> mem1 = new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String>(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$);
-        .ceylon.language.Integer t = mem1.getT();
-        .ceylon.language.String s = mem1.getU();
+        .ceylon.language.Integer t = (.ceylon.language.Integer)mem1.getT();
+        .ceylon.language.String s = (.ceylon.language.String)mem1.getU();
         final .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String> mem2 = (
             let
             {
@@ -58,8 +58,8 @@ final class staticMemberClassUse_ {
             }
             returning new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String>(arg$1$reified$0, arg$1$reified$1);
         );
-        t = mem2.getT();
-        s = mem2.getU();
+        t = (.ceylon.language.Integer)mem2.getT();
+        s = (.ceylon.language.String)mem2.getU();
         final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String>> memref = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member<.ceylon.language.Integer, .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.class, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member.class, .ceylon.language.String.$TypeDescriptor$)), .ceylon.language.Empty.$TypeDescriptor$, "StaticMemberClass<Integer>.Member<String>()", (short)-1){
             
             @.java.lang.Override
@@ -67,8 +67,8 @@ final class staticMemberClassUse_ {
                 return new .com.redhat.ceylon.compiler.java.test.structure.klass.StaticMemberClass.Member(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$);
             }
         };
-        t = memref.$call$().getT();
-        s = memref.$call$().getU();
+        t = (.ceylon.language.Integer)memref.$call$().getT();
+        s = (.ceylon.language.String)memref.$call$().getU();
     }
 }
 class StaticMemberClassBoxing<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {

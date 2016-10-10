@@ -33,12 +33,16 @@ class ExceptionTypesException extends .ceylon.language.Exception {
     
     ExceptionTypesException(@.com.redhat.ceylon.compiler.java.metadata.Name("description")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::String?",
+            erased = true)
     final .ceylon.language.String description, @.com.redhat.ceylon.compiler.java.metadata.Name("cause")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Throwable?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Throwable?",
+            erased = true)
     final .java.lang.Throwable cause) {
-        super(description, cause);
+        super((.ceylon.language.String)description, (.java.lang.Throwable)cause);
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

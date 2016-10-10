@@ -377,12 +377,6 @@ final class optionalTypes_ {
     static void optionalTypes() {
         final .com.redhat.ceylon.compiler.java.test.interop.TypesJava java = new .com.redhat.ceylon.compiler.java.test.interop.TypesJava();
         final .ceylon.language.String string = .ceylon.language.String.instance("foo");
-        java.stringParams((
-            let
-            {
-                .ceylon.language.String $ceylontmp$24 = string;
-            }
-            returning $ceylontmp$24 != null ? $ceylontmp$24.toString() : null;
-        ), string);
+        java.stringParams(((.ceylon.language.String)string).toString(), (.ceylon.language.String)string);
     }
 }

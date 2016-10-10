@@ -16,7 +16,7 @@ class AssertIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private final long m1$priv$(final .ceylon.language.Integer x) {
         final long x$2;
         .java.lang.Object x$1 = null;
-        if ((x$1 = x) != null) {
+        if ((x$1 = (.ceylon.language.Integer)x) != null) {
             x$2 = ((.ceylon.language.Integer)x$1).longValue();
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer x"));
@@ -27,7 +27,7 @@ class AssertIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private final long m2$priv$(final .ceylon.language.Integer x) {
         final long y$5;
         .java.lang.Object y$4 = null;
-        if ((y$4 = x) != null) {
+        if ((y$4 = (.ceylon.language.Integer)x) != null) {
             y$5 = ((.ceylon.language.Integer)y$4).longValue();
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Integer y=x"));
@@ -36,7 +36,7 @@ class AssertIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     }
     
     private final long m3$priv$(final .ceylon.language.Integer x) {
-        if (x == null) {
+        if ((.ceylon.language.Integer)x == null) {
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null x"));
         }
@@ -46,7 +46,7 @@ class AssertIsNull implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private final long m4$priv$(final .ceylon.language.Integer x) {
         final .java.lang.Object y$10;
         .java.lang.Object y$9 = null;
-        if ((y$9 = x) == null) {
+        if ((y$9 = (.ceylon.language.Integer)x) == null) {
             y$10 = y$9;
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null y=x"));

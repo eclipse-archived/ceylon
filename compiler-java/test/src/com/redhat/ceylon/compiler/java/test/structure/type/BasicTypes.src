@@ -51,7 +51,7 @@ public final class globalMethodOptionalInteger_ {
     }
     
     public static .ceylon.language.Integer globalMethodOptionalInteger(final .ceylon.language.Integer i) {
-        return i;
+        return (.ceylon.language.Integer)i;
     }
 }
 public final class globalMethodOptionalFloat_ {
@@ -60,7 +60,7 @@ public final class globalMethodOptionalFloat_ {
     }
     
     public static .ceylon.language.Float globalMethodOptionalFloat(final .ceylon.language.Float i) {
-        return i;
+        return (.ceylon.language.Float)i;
     }
 }
 public final class globalMethodOptionalString_ {
@@ -69,7 +69,7 @@ public final class globalMethodOptionalString_ {
     }
     
     public static .ceylon.language.String globalMethodOptionalString(final .ceylon.language.String i) {
-        return i;
+        return (.ceylon.language.String)i;
     }
 }
 public final class globalMethodOptionalBoolean_ {
@@ -78,7 +78,7 @@ public final class globalMethodOptionalBoolean_ {
     }
     
     public static .ceylon.language.Boolean globalMethodOptionalBoolean(final .ceylon.language.Boolean i) {
-        return i;
+        return (.ceylon.language.Boolean)i;
     }
 }
 public final class globalMethodOptionalCharacter_ {
@@ -87,7 +87,7 @@ public final class globalMethodOptionalCharacter_ {
     }
     
     public static .ceylon.language.Character globalMethodOptionalCharacter(final .ceylon.language.Character i) {
-        return i;
+        return (.ceylon.language.Character)i;
     }
 }
 class BasicTypes implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
@@ -255,11 +255,11 @@ class BasicTypes implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         final .java.lang.String localAttrString = getPrivateAttrString$priv$();
         final boolean localAttrBoolean = getPrivateAttrBoolean$priv$();
         final int localAttrCharacter = getPrivateAttrCharacter$priv$();
-        final .ceylon.language.Integer localAttrOptionalInteger = getPrivateAttrOptionalInteger$priv$();
-        final .ceylon.language.Float localAttrOptionalFloat = getPrivateAttrOptionalFloat$priv$();
-        final .ceylon.language.String localAttrOptionalString = getPrivateAttrOptionalString$priv$();
-        final .ceylon.language.Boolean localAttrOptionalBoolean = getPrivateAttrOptionalBoolean$priv$();
-        final .ceylon.language.Character localAttrOptionalCharacter = getPrivateAttrOptionalCharacter$priv$();
+        final .ceylon.language.Integer localAttrOptionalInteger = (.ceylon.language.Integer)getPrivateAttrOptionalInteger$priv$();
+        final .ceylon.language.Float localAttrOptionalFloat = (.ceylon.language.Float)getPrivateAttrOptionalFloat$priv$();
+        final .ceylon.language.String localAttrOptionalString = (.ceylon.language.String)getPrivateAttrOptionalString$priv$();
+        final .ceylon.language.Boolean localAttrOptionalBoolean = (.ceylon.language.Boolean)getPrivateAttrOptionalBoolean$priv$();
+        final .ceylon.language.Character localAttrOptionalCharacter = (.ceylon.language.Character)getPrivateAttrOptionalCharacter$priv$();
     }
     
     private final long methodInteger$priv$(final long i) {
@@ -283,23 +283,23 @@ class BasicTypes implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     private final .ceylon.language.Integer methodOptionalInteger$priv$(final .ceylon.language.Integer i) {
-        return i;
+        return (.ceylon.language.Integer)i;
     }
     
     private final .ceylon.language.Float methodOptionalFloat$priv$(final .ceylon.language.Float i) {
-        return i;
+        return (.ceylon.language.Float)i;
     }
     
     private final .ceylon.language.String methodOptionalString$priv$(final .ceylon.language.String i) {
-        return i;
+        return (.ceylon.language.String)i;
     }
     
     private final .ceylon.language.Boolean methodOptionalBoolean$priv$(final .ceylon.language.Boolean i) {
-        return i;
+        return (.ceylon.language.Boolean)i;
     }
     
     private final .ceylon.language.Character methodOptionalCharacter$priv$(final .ceylon.language.Character i) {
-        return i;
+        return (.ceylon.language.Character)i;
     }
     
     @.java.lang.Override

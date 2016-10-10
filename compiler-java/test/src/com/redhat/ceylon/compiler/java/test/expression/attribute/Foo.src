@@ -85,8 +85,8 @@ class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     Bar(final .ceylon.language.String init, .ceylon.language.String variableInit$param$) {
         this.init = init;
         this.variableInit = variableInit$param$;
-        this.variableAttr = getVariableInit$priv$();
-        this.attr = getVariableInit$priv$();
+        this.variableAttr = (.ceylon.language.String)getVariableInit$priv$();
+        this.attr = (.ceylon.language.String)getVariableInit$priv$();
     }
     private final .ceylon.language.String init;
     
@@ -118,10 +118,10 @@ class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     }
     
     public final void m() {
-        final .ceylon.language.String x1 = getInit$priv$();
-        final .ceylon.language.String x2 = getAttr$priv$();
-        final .ceylon.language.String x3 = getVariableAttr$priv$();
-        final .ceylon.language.String x4 = getVariableInit$priv$();
+        final .ceylon.language.String x1 = (.ceylon.language.String)getInit$priv$();
+        final .ceylon.language.String x2 = (.ceylon.language.String)getAttr$priv$();
+        final .ceylon.language.String x3 = (.ceylon.language.String)getVariableAttr$priv$();
+        final .ceylon.language.String x4 = (.ceylon.language.String)getVariableInit$priv$();
         setVariableAttr$priv$(.ceylon.language.String.instance(""));
         setVariableInit$priv$(.ceylon.language.String.instance(""));
     }

@@ -87,7 +87,7 @@ public class Bug2335 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335.D ds3 = (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335 safe$2 = opt;
+                .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335 safe$2 = (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2335)opt;
             }
             returning safe$2 != null ? safe$2.D$new$() : null;
         );

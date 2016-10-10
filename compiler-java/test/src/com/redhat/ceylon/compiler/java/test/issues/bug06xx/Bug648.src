@@ -18,13 +18,17 @@ class Bug648<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "T?",
+            erased = true)
     public final T foo() {
         return null;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::Integer?",
+            erased = true)
     public final .ceylon.language.Integer bar() {
         return null;
     }

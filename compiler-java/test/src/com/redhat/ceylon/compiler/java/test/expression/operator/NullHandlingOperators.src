@@ -15,35 +15,35 @@ public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.r
         final long n = (
             let
             {
-                .ceylon.language.Integer $ceylontmp$0 = natOrNothing1;
+                .ceylon.language.Integer $ceylontmp$0 = (.ceylon.language.Integer)natOrNothing1;
             }
             returning $ceylontmp$0 != null ? $ceylontmp$0 : .ceylon.language.Integer.instance(2L);
         ).longValue();
         final .ceylon.language.Integer nBoxed = (
             let
             {
-                .ceylon.language.Integer $ceylontmp$1 = natOrNothing1;
+                .ceylon.language.Integer $ceylontmp$1 = (.ceylon.language.Integer)natOrNothing1;
             }
             returning $ceylontmp$1 != null ? $ceylontmp$1 : <.ceylon.language.Integer>box$priv$(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Integer.instance(0L));
         );
         .ceylon.language.Integer nullSafeMember = (
             let
             {
-                .ceylon.language.Integer safe$2 = intOrNothing;
+                .ceylon.language.Integer safe$2 = (.ceylon.language.Integer)intOrNothing;
             }
             returning safe$2 != null ? safe$2.getNegated() : null;
         );
         .ceylon.language.Integer nullSafeInvoke = (
             let
             {
-                .ceylon.language.Integer safe$3 = intOrNothing;
+                .ceylon.language.Integer safe$3 = (.ceylon.language.Integer)intOrNothing;
             }
             returning safe$3 != null ? safe$3.plus(.ceylon.language.Integer.instance(1L)) : null;
         );
         nullSafeInvoke = (
             let
             {
-                .ceylon.language.Integer safe$5 = intOrNothing;
+                .ceylon.language.Integer safe$5 = (.ceylon.language.Integer)intOrNothing;
             }
             returning safe$5 != null ? (
                 let
@@ -58,7 +58,7 @@ public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.r
         final .ceylon.language.Sequential<? extends .ceylon.language.String> s2 = (
             let
             {
-                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$6 = s1;
+                .ceylon.language.Sequential<? extends .ceylon.language.String> $ceylontmp$6 = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)s1;
             }
             returning $ceylontmp$6 != null ? $ceylontmp$6 : (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential).ceylon.language.empty_.get_();
         );
@@ -103,7 +103,7 @@ public class NullHandlingOperators implements .com.redhat.ceylon.compiler.java.r
         final .ceylon.language.String bar = (
             let
             {
-                .ceylon.language.String $ceylontmp$10 = foo;
+                .ceylon.language.String $ceylontmp$10 = (.ceylon.language.String)foo;
             }
             returning $ceylontmp$10 != null ? $ceylontmp$10 : .ceylon.language.String.instance("yes");
         );

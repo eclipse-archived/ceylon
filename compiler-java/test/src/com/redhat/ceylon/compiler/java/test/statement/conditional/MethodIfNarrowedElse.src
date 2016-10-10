@@ -7,7 +7,7 @@ class MethodIfNarrowedElse implements .com.redhat.ceylon.compiler.java.runtime.m
     
     public final void isoptional(final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo x) {
         .java.lang.Object x$1;
-        if (!((x$1 = x) != null)) {
+        if (!((x$1 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x) != null)) {
         } else {
             final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo x$2 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x$1;
             x$2.foo();
@@ -42,7 +42,7 @@ class MethodIfNarrowedElse implements .com.redhat.ceylon.compiler.java.runtime.m
     
     public final void existsoptional(final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo x) {
         .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo x$14;
-        if (!((x$14 = x) != null)) {
+        if (!((x$14 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)x) != null)) {
             final .java.lang.Object x$16 = x$14;
         } else {
             final .com.redhat.ceylon.compiler.java.test.statement.conditional.Foo x$15 = x$14;

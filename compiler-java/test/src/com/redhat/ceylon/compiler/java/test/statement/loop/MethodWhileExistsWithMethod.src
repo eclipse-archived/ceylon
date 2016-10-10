@@ -12,7 +12,7 @@ class MethodWhileExistsWithMethod implements .com.redhat.ceylon.compiler.java.ru
     public final long m() {
         loop_0: while (true) {
             .ceylon.language.Integer y$0;
-            if ((y$0 = give$priv$()) != null) {
+            if ((y$0 = (.ceylon.language.Integer)give$priv$()) != null) {
                 final long y$1 = y$0.longValue();
                 return y$1;
             } else {

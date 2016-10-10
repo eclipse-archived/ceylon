@@ -11,7 +11,7 @@ final class bug1925_ {
             {
                 .java.lang.String $ceylontmp$ifResult$0;
                 .ceylon.language.String string$2;
-                if (!((string$2 = string) != null)) {
+                if (!((string$2 = (.ceylon.language.String)string) != null)) {
                     final .java.lang.Object string$4 = string$2;
                     $ceylontmp$ifResult$0 = "hello";
                 } else {
@@ -23,7 +23,7 @@ final class bug1925_ {
         );
         final .java.lang.String val2;
         .ceylon.language.String string$6;
-        if (!((string$6 = string) != null)) {
+        if (!((string$6 = (.ceylon.language.String)string) != null)) {
             final .java.lang.Object string$8 = string$6;
             val2 = "hello";
         } else {

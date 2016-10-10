@@ -56,7 +56,7 @@ final class test_booleans_ {
         final boolean[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_booleans());
         final .ceylon.language.Boolean b = .ceylon.language.Boolean.instance(items[0]);
         .ceylon.language.Boolean b$9;
-        if ((b$9 = b) != null) {
+        if ((b$9 = (.ceylon.language.Boolean)b) != null) {
             final boolean b$10 = b$9.booleanValue();
             items[1] = b$10;
         }
@@ -161,7 +161,7 @@ final class test_JBooleans_ {
         final .java.lang.Boolean[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Booleans());
         final .java.lang.Boolean b = items[0];
         .java.lang.Boolean b$29;
-        if ((b$29 = b) != null) {
+        if ((b$29 = (.java.lang.Boolean)b) != null) {
             final .java.lang.Boolean b$30 = b$29;
             items[1] = b$30;
         }
@@ -178,7 +178,7 @@ final class test_bytes_ {
         final byte[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_bytes());
         final .ceylon.language.Byte n = .ceylon.language.Byte.instance(items[0]);
         .ceylon.language.Byte n$32;
-        if ((n$32 = n) != null) {
+        if ((n$32 = (.ceylon.language.Byte)n) != null) {
             final byte n$33 = n$32.byteValue();
             items[1] = n$33;
         }
@@ -212,7 +212,7 @@ final class test_JBytes_ {
         final .java.lang.Byte[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Bytes());
         final .java.lang.Byte n = items[0];
         .java.lang.Byte n$35;
-        if ((n$35 = n) != null) {
+        if ((n$35 = (.java.lang.Byte)n) != null) {
             final .java.lang.Byte n$36 = n$35;
             items[1] = n$36;
         }
@@ -229,7 +229,7 @@ final class test_shorts_ {
         final short[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_shorts());
         final .ceylon.language.Integer n = .ceylon.language.Integer.instance(items[0]);
         .ceylon.language.Integer n$38;
-        if ((n$38 = n) != null) {
+        if ((n$38 = (.ceylon.language.Integer)n) != null) {
             final long n$39 = n$38.longValue();
             items[1] = .com.redhat.ceylon.compiler.java.Util.toShort(n$39);
         }
@@ -263,7 +263,7 @@ final class test_JShorts_ {
         final .java.lang.Short[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Shorts());
         final .java.lang.Short n = items[0];
         .java.lang.Short n$41;
-        if ((n$41 = n) != null) {
+        if ((n$41 = (.java.lang.Short)n) != null) {
             final .java.lang.Short n$42 = n$41;
             items[1] = n$42;
         }
@@ -280,7 +280,7 @@ final class test_ints_ {
         final int[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_ints());
         final .ceylon.language.Integer n = .ceylon.language.Integer.instance(items[0]);
         .ceylon.language.Integer n$44;
-        if ((n$44 = n) != null) {
+        if ((n$44 = (.ceylon.language.Integer)n) != null) {
             final long n$45 = n$44.longValue();
             items[1] = (int)n$45;
         }
@@ -314,7 +314,7 @@ final class test_JIntegers_ {
         final .java.lang.Integer[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Integers());
         final .java.lang.Integer n = items[0];
         .java.lang.Integer n$47;
-        if ((n$47 = n) != null) {
+        if ((n$47 = (.java.lang.Integer)n) != null) {
             final .java.lang.Integer n$48 = n$47;
             items[1] = n$48;
         }
@@ -331,7 +331,7 @@ final class test_longs_ {
         final long[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_longs());
         final .ceylon.language.Integer n = .ceylon.language.Integer.instance(items[0]);
         .ceylon.language.Integer n$50;
-        if ((n$50 = n) != null) {
+        if ((n$50 = (.ceylon.language.Integer)n) != null) {
             final long n$51 = n$50.longValue();
             items[1] = n$51;
         }
@@ -365,7 +365,7 @@ final class test_JLongs_ {
         final .java.lang.Long[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Longs());
         final .java.lang.Long n = items[0];
         .java.lang.Long n$53;
-        if ((n$53 = n) != null) {
+        if ((n$53 = (.java.lang.Long)n) != null) {
             final .java.lang.Long n$54 = n$53;
             items[1] = n$54;
         }
@@ -382,7 +382,7 @@ final class test_floats_ {
         final float[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_floats());
         final .ceylon.language.Float f = .ceylon.language.Float.instance(items[0]);
         .ceylon.language.Float f$56;
-        if ((f$56 = f) != null) {
+        if ((f$56 = (.ceylon.language.Float)f) != null) {
             final double f$57 = f$56.doubleValue();
             items[1] = (float)f$57;
         }
@@ -416,7 +416,7 @@ final class test_JFloats_ {
         final .java.lang.Float[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Floats());
         final .java.lang.Float f = items[0];
         .java.lang.Float f$59;
-        if ((f$59 = f) != null) {
+        if ((f$59 = (.java.lang.Float)f) != null) {
             final .java.lang.Float f$60 = f$59;
             items[1] = f$60;
         }
@@ -433,7 +433,7 @@ final class test_doubles_ {
         final double[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_doubles());
         final .ceylon.language.Float f = .ceylon.language.Float.instance(items[0]);
         .ceylon.language.Float f$62;
-        if ((f$62 = f) != null) {
+        if ((f$62 = (.ceylon.language.Float)f) != null) {
             final double f$63 = f$62.doubleValue();
             items[1] = f$63;
         }
@@ -467,7 +467,7 @@ final class test_JDoubles_ {
         final .java.lang.Double[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Doubles());
         final .java.lang.Double f = items[0];
         .java.lang.Double f$65;
-        if ((f$65 = f) != null) {
+        if ((f$65 = (.java.lang.Double)f) != null) {
             final .java.lang.Double f$66 = f$65;
             items[1] = f$66;
         }
@@ -484,7 +484,7 @@ final class test_chars_ {
         final char[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_chars());
         final .ceylon.language.Character c = .ceylon.language.Character.instance(items[0]);
         .ceylon.language.Character c$68;
-        if ((c$68 = c) != null) {
+        if ((c$68 = (.ceylon.language.Character)c) != null) {
             final int c$69 = c$68.intValue();
             items[1] = (char)c$69;
         }
@@ -505,7 +505,7 @@ final class test_JCharacters_ {
         final .java.lang.Character[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Characters());
         final .java.lang.Character c = items[0];
         .java.lang.Character c$71;
-        if ((c$71 = c) != null) {
+        if ((c$71 = (.java.lang.Character)c) != null) {
             final .java.lang.Character c$72 = c$71;
             items[1] = c$72;
         }
@@ -522,7 +522,7 @@ final class test_Strings_ {
         final .java.lang.String[] items = .com.redhat.ceylon.compiler.java.Util.checkNull(java.return_Strings());
         final .java.lang.String s = items[0];
         .java.lang.String s$74;
-        if ((s$74 = s) != null) {
+        if ((s$74 = (.java.lang.String)s) != null) {
             final .java.lang.String s$75 = s$74;
             items[1] = s$75;
         }

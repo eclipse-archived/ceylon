@@ -7,7 +7,7 @@ final class optionalCallable_ {
     
     static void optionalCallable(final .ceylon.language.Callable<? extends .java.lang.Object> onRead) {
         .ceylon.language.Callable<? extends .java.lang.Object> callback$1;
-        if ((callback$1 = onRead) != null) {
+        if ((callback$1 = (.ceylon.language.Callable<? extends .java.lang.Object>)(.ceylon.language.Callable)onRead) != null) {
             final .ceylon.language.Callable<? extends .java.lang.Object> callback$2 = callback$1;
             callback$2.$call$();
         }

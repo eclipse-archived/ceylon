@@ -647,7 +647,7 @@ class IfaceInst implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     @.java.lang.Override
     public final .ceylon.language.String Member$t() {
-        return $com$redhat$ceylon$compiler$java$test$issues$bug22xx$InterfaceConstructors$this$.Member$t();
+        return (.ceylon.language.String)$com$redhat$ceylon$compiler$java$test$issues$bug22xx$InterfaceConstructors$this$.Member$t();
     }
     
     @.java.lang.Override

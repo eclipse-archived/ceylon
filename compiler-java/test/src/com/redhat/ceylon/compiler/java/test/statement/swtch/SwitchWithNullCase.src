@@ -8,7 +8,7 @@ class SwitchWithNullCase implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     SwitchWithNullCase(final .ceylon.language.Boolean s, final .ceylon.language.String s2, final .ceylon.language.Character s3, final .java.lang.Object s4) {
         {
-            .ceylon.language.Boolean sel$0 = s;
+            .ceylon.language.Boolean sel$0 = (.ceylon.language.Boolean)s;
             if (sel$0 == null) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("null"));
             } else if (sel$0.booleanValue() == true) {
@@ -18,7 +18,7 @@ class SwitchWithNullCase implements .com.redhat.ceylon.compiler.java.runtime.mod
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
         {
-            .ceylon.language.Boolean sel$1 = s;
+            .ceylon.language.Boolean sel$1 = (.ceylon.language.Boolean)s;
             if (sel$1 == null || sel$1.booleanValue() == false) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("false or null"));
             } else if (sel$1.booleanValue() == true) {
@@ -26,7 +26,7 @@ class SwitchWithNullCase implements .com.redhat.ceylon.compiler.java.runtime.mod
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
         {
-            .ceylon.language.Boolean sel$2 = s;
+            .ceylon.language.Boolean sel$2 = (.ceylon.language.Boolean)s;
             if (sel$2 == null || sel$2.booleanValue() == false) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("false or null"));
             } else if (sel$2.booleanValue() == true) {
@@ -34,7 +34,7 @@ class SwitchWithNullCase implements .com.redhat.ceylon.compiler.java.runtime.mod
             } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
         }
         {
-            .ceylon.language.String sel$3 = s2;
+            .ceylon.language.String sel$3 = (.ceylon.language.String)s2;
             if (sel$3 == null || sel$3 != null && sel$3.toString().equals("false")) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("false or null"));
             } else if (sel$3 != null && sel$3.toString().equals("true")) {
@@ -45,7 +45,7 @@ class SwitchWithNullCase implements .com.redhat.ceylon.compiler.java.runtime.mod
             }
         }
         {
-            .ceylon.language.String sel$5 = s2;
+            .ceylon.language.String sel$5 = (.ceylon.language.String)s2;
             if (sel$5 == null || sel$5 != null && sel$5.toString().equals("false")) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("false or null"));
             } else if (sel$5 != null && sel$5.toString().equals("true")) {
@@ -56,7 +56,7 @@ class SwitchWithNullCase implements .com.redhat.ceylon.compiler.java.runtime.mod
             }
         }
         {
-            .ceylon.language.Character sel$7 = s3;
+            .ceylon.language.Character sel$7 = (.ceylon.language.Character)s3;
             if (sel$7 == null || sel$7 != null && sel$7.intValue() == 102) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("false or null"));
             } else if (sel$7 != null && sel$7.intValue() == 116) {
@@ -67,7 +67,7 @@ class SwitchWithNullCase implements .com.redhat.ceylon.compiler.java.runtime.mod
             }
         }
         {
-            .ceylon.language.Character sel$9 = s3;
+            .ceylon.language.Character sel$9 = (.ceylon.language.Character)s3;
             if (sel$9 == null || sel$9 != null && sel$9.intValue() == 102) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("false or null"));
             } else if (sel$9 != null && sel$9.intValue() == 116) {
@@ -89,7 +89,7 @@ class SwitchWithNullCase implements .com.redhat.ceylon.compiler.java.runtime.mod
             }
         }
         {
-            .ceylon.language.Character sel$13 = s3;
+            .ceylon.language.Character sel$13 = (.ceylon.language.Character)s3;
             if (sel$13 == null || (sel$13 != null && sel$13.intValue() == 102 || sel$13 != null && sel$13.intValue() == 120)) {
                 .ceylon.language.print_.print(.ceylon.language.String.instance("false or null"));
             } else if (sel$13 != null && sel$13.intValue() == 116) {

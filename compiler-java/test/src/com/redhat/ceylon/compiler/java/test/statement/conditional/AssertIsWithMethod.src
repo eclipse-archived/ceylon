@@ -12,7 +12,7 @@ class AssertIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.mod
     public final void m() {
         final .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub y$2;
         .java.lang.Object y$1 = null;
-        if ((y$1 = give$priv$()) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
+        if ((y$1 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)give$priv$()) instanceof .com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub) {
             y$2 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.FooSub)y$1;
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is FooSub y = give()"));
@@ -20,7 +20,7 @@ class AssertIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.mod
         y$2.foo();
         final .java.lang.Object y2$5;
         .java.lang.Object y2$4 = null;
-        if ((y2$4 = give$priv$()) == null) {
+        if ((y2$4 = (.com.redhat.ceylon.compiler.java.test.statement.conditional.Foo)give$priv$()) == null) {
             y2$5 = y2$4;
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is Null y2 = give()"));

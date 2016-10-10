@@ -6,7 +6,7 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
         this.$reified$T = $reified$T;
         this.$ceylon$language$List$this$ = new .ceylon.language.List$impl<T>($reified$T, this);
         this.$ceylon$language$Collection$this$ = new .ceylon.language.Collection$impl<T>($reified$T, this);
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl($reified$T, .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<T, .java.lang.Object>($reified$T, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
         this.$ceylon$language$Correspondence$this$ = new .ceylon.language.Correspondence$impl<.ceylon.language.Integer, T>(.ceylon.language.Integer.$TypeDescriptor$, $reified$T, this);
         this.string = ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
@@ -532,7 +532,7 @@ abstract class Bug446<T> implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     @.java.lang.Override
-    public final <Absent>.ceylon.language.Iterable<? extends T, ? extends Absent> getAll(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends Absent> keys) {
+    public final <Absent>.ceylon.language.Iterable getAll(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends Absent> keys) {
         return (.ceylon.language.Iterable<? extends T, ? extends Absent>)(.java.lang.Object).ceylon.language.nothing_.get_();
     }
     private final .java.lang.String string;

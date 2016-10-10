@@ -7,7 +7,7 @@ class E extends .ceylon.language.Exception {
     }
     
     E(final .ceylon.language.String description, final .java.lang.Exception cause) {
-        super(description, cause);
+        super((.ceylon.language.String)description, (.java.lang.Throwable)cause);
     }
     
     @.java.lang.Override

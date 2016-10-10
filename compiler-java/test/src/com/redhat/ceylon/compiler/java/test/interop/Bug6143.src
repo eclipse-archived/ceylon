@@ -48,7 +48,7 @@ final class bug6143_ {
                     public final .java.lang.Object next() {
                         if (this.element()) {
                             final .ceylon.language.String element = this.element;
-                            return element;
+                            return (.ceylon.language.String)element;
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
@@ -156,7 +156,7 @@ final class bug6143_ {
                     public final .java.lang.Object next() {
                         if (this.element()) {
                             final .ceylon.language.String element = this.element;
-                            return element;
+                            return (.ceylon.language.String)element;
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
@@ -266,7 +266,7 @@ final class bug6143_ {
                     public final .java.lang.Object next() {
                         if (this.element()) {
                             final .ceylon.language.Integer element = this.element;
-                            return element;
+                            return (.ceylon.language.Integer)element;
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

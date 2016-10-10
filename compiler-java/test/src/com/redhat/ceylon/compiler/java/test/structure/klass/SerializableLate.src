@@ -67,7 +67,9 @@ class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.LateAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::String?",
+            erased = true)
     public final .ceylon.language.String getLateOpt() {
         if (this.$init$lateOpt) {
             return lateOpt;
@@ -78,7 +80,9 @@ class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public final void setLateOpt(@.com.redhat.ceylon.compiler.java.metadata.Name("lateOpt")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::String?",
+            erased = true)
     final .ceylon.language.String lateOpt) {
         if (!this.$init$lateOpt) {
             this.lateOpt = lateOpt;
@@ -95,7 +99,9 @@ class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.LateAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::String?",
+            erased = true)
     public final .ceylon.language.String getLateVariableOpt() {
         if (this.$init$lateVariableOpt) {
             return lateVariableOpt;
@@ -105,7 +111,9 @@ class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     public final void setLateVariableOpt(@.com.redhat.ceylon.compiler.java.metadata.Name("lateVariableOpt")
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "ceylon.language::String?",
+            erased = true)
     final .ceylon.language.String lateVariableOpt) {
         this.lateVariableOpt = lateVariableOpt;
         this.$init$lateVariableOpt = true;

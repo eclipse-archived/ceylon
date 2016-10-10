@@ -42,7 +42,7 @@ class OptionalInterface<X> extends .com.redhat.ceylon.compiler.java.test.interop
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface method2(final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x) {
         .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x$1;
-        if ((x$1 = x) != null) {
+        if ((x$1 = (.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface)x) != null) {
             final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface x$2 = x$1;
             .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface z$4;
             if ((z$4 = x$2.getProp1()) != null) {
@@ -255,7 +255,7 @@ class OptionalInterface<X> extends .com.redhat.ceylon.compiler.java.test.interop
             }.sequence();
             return .com.redhat.ceylon.compiler.java.Util.checkNull(x$2.getProp1()).getProp1();
         }
-        final .java.lang.Object x$19 = x;
+        final .java.lang.Object x$19 = (.com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface)x;
         return null;
     }
     
@@ -324,13 +324,7 @@ class OptionalInterface<X> extends .com.redhat.ceylon.compiler.java.test.interop
     
     @.java.lang.Override
     public final .java.lang.String getStringProp3() {
-        return (
-            let
-            {
-                .ceylon.language.String $ceylontmp$20 = getBla$priv$();
-            }
-            returning $ceylontmp$20 != null ? $ceylontmp$20.toString() : null;
-        );
+        return ((.ceylon.language.String)getBla$priv$()).toString();
     }
     private final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface prop3;
     
@@ -377,7 +371,9 @@ final class classSubClass_ extends .com.redhat.ceylon.compiler.java.test.interop
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.interop.OptionalityClass realClass;
     
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::OptionalityClass?")
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
+            value = "com.redhat.ceylon.compiler.java.test.interop::OptionalityClass?",
+            erased = true)
     private final .com.redhat.ceylon.compiler.java.test.interop.OptionalityClass getRealClass$priv$() {
         return realClass;
     }
@@ -390,15 +386,15 @@ final class classSubClass_ extends .com.redhat.ceylon.compiler.java.test.interop
         return (
             let
             {
-                .ceylon.language.String $ceylontmp$22 = (
+                .ceylon.language.String $ceylontmp$21 = (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.interop.OptionalityClass safe$21 = getRealClass$priv$();
+                        .com.redhat.ceylon.compiler.java.test.interop.OptionalityClass safe$20 = (.com.redhat.ceylon.compiler.java.test.interop.OptionalityClass)getRealClass$priv$();
                     }
-                    returning safe$21 != null ? .ceylon.language.String.instance(safe$21.getType()) : null;
+                    returning safe$20 != null ? .ceylon.language.String.instance(safe$20.getType()) : null;
                 );
             }
-            returning $ceylontmp$22 != null ? $ceylontmp$22.toString() : null;
+            returning $ceylontmp$21 != null ? $ceylontmp$21.toString() : null;
         );
     }
     
@@ -409,15 +405,15 @@ final class classSubClass_ extends .com.redhat.ceylon.compiler.java.test.interop
         return (
             let
             {
-                .ceylon.language.String $ceylontmp$24 = (
+                .ceylon.language.String $ceylontmp$23 = (
                     let
                     {
-                        .com.redhat.ceylon.compiler.java.test.interop.OptionalityClass safe$23 = getRealClass$priv$();
+                        .com.redhat.ceylon.compiler.java.test.interop.OptionalityClass safe$22 = (.com.redhat.ceylon.compiler.java.test.interop.OptionalityClass)getRealClass$priv$();
                     }
-                    returning safe$23 != null ? .ceylon.language.String.instance(safe$23.getType()) : null;
+                    returning safe$22 != null ? .ceylon.language.String.instance(safe$22.getType()) : null;
                 );
             }
-            returning $ceylontmp$24 != null ? $ceylontmp$24.toString() : null;
+            returning $ceylontmp$23 != null ? $ceylontmp$23.toString() : null;
         );
     }
     private static final .com.redhat.ceylon.compiler.java.test.interop.classSubClass_ value;

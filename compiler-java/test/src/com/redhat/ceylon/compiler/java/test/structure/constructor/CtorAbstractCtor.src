@@ -840,7 +840,7 @@ class CtorAbstractCtorGeneric<T> extends .com.redhat.ceylon.compiler.java.test.s
         this.$reified$T = $reified$T;
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("a");
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Partial");
-        this.x = x$param$;
+        this.x = (T)x$param$;
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.rest_ rest_ = null;
     
@@ -859,7 +859,7 @@ class CtorAbstractCtorGeneric<T> extends .com.redhat.ceylon.compiler.java.test.s
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("b");
         $return$$37: do {
             .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("Rest");
-            this.y = y$param$;
+            this.y = (T)y$param$;
             .ceylon.language.print_.print(this.getX$priv$());
         }         while (false);
         .ceylon.language.print_.print(this.getX$priv$());

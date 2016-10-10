@@ -29,7 +29,7 @@ class Bug2370C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     
     Bug2370C() {
         this.$com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2370I$this$ = new .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I$impl(this);
-        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
+        this.$ceylon$language$Iterable$this$ = new .ceylon.language.Iterable$impl<.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I, .java.lang.Object>(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$, this);
         this.$ceylon$language$Category$this$ = new .ceylon.language.Category$impl<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$, this);
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I$impl $com$redhat$ceylon$compiler$java$test$issues$bug23xx$Bug2370I$this$;
