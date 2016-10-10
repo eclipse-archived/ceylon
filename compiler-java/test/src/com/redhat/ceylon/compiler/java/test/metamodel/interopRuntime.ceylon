@@ -185,8 +185,8 @@ void interopRuntime(){
     //staticFieldAttr(null).set(3);
     //assert(staticFieldAttr(null).get() == 3);
     // make sure it also works with an instance
-    staticFieldAttr(instance).set(4);
-    assert(staticFieldAttr(instance).get() == 4);
+    staticFieldAttr(null).set(4);
+    assert(staticFieldAttr(null).get() == 4);
     
     // make sure this passes too
     javaType.getAttribute<JavaType,Integer,Integer>("staticField");
@@ -199,8 +199,8 @@ void interopRuntime(){
     //staticGetterAttr(null).set(3);
     //assert(staticGetterAttr(null).get() == 3);
     // make sure it also works with an instance
-    staticGetterAttr(instance).set(4);
-    assert(staticGetterAttr(instance).get() == 4);
+    staticGetterAttr(null).set(4);
+    assert(staticGetterAttr(null).get() == 4);
 
     // make sure this passes too
     javaType.getAttribute<JavaType,Integer,Integer>("staticGetter");
@@ -211,7 +211,7 @@ void interopRuntime(){
     // FIXME: support later
     //assert(staticMethod(null)(2) == 2);
     // make sure it also works with an instance
-    assert(staticMethod(instance)(4) == 4);
+    assert(staticMethod(null)(4) == 4);
 
     // make sure this passes too
     javaType.getMethod<JavaType,Integer,[Integer]>("staticMethod");
@@ -222,7 +222,7 @@ void interopRuntime(){
     // FIXME: support later
     //assert(staticClass(null)(2).v == 2);
     // make sure it also works with an instance
-    assert(staticClass(instance)(4).v == 4);
+    assert(staticClass(null)(4).v == 4);
 
     // make sure this passes too
     javaType.getClass<JavaType,JavaType.StaticClass,[Integer]>("StaticClass");
