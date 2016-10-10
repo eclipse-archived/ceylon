@@ -292,7 +292,11 @@ public class ImportVisitor extends Visitor {
             i.setAlias(name(alias.getIdentifier()));
         }
         if (isNonimportable(importedPackage, name)) {
-            id.addError("root type may not be imported");
+            id.addError("root type may not be imported: '" +
+                    name + "' in '" + 
+                    importedPackage.getNameAsString() + 
+                    "' is represented by '" + 
+                    name + "' in 'ceylon.language'");
             return name;
         }        
         Declaration d = 
