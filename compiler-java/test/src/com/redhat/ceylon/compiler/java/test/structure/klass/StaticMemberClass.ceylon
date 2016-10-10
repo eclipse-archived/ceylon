@@ -37,8 +37,8 @@ class StaticMemberClassBoxing<T> {
 @noanno
 shared void run() {
     variable Character character
-            = StaticMemberClassBoxing<Character>().Inner('X').get();
+            = StaticMemberClassBoxing<Character>.Inner('X').get();
     character
-            = StaticMemberClassBoxing<Character>{}.Inner{t='X';}.get();
+            = StaticMemberClassBoxing<Character>.Inner{t='X';}.get();
     
 }
