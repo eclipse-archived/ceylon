@@ -1110,7 +1110,7 @@ public class GenerateJsVisitor extends Visitor {
             out("\"Cannot instantiate abstract class ", d.getQualifiedNameString(), "\"),'?','?')");
         } else {
             out(names.self(d), "=new ");
-            if (opts.isOptimize() && d.isClassOrInterfaceMember()) {
+            if (opts.isOptimize() && d.isClassOrInterfaceMember() && !d.isStatic()) {
                 out("this.");
             }
             out(names.name(d), ".$$;");
@@ -2595,20 +2595,23 @@ public class GenerateJsVisitor extends Visitor {
                 while (scope != null) {
                     if (scope instanceof Constructor
                             && scope == innermostDeclaration) {
+                        TypeDeclaration consCont = (TypeDeclaration)scope.getContainer();
                         if (that instanceof Tree.BaseTypeExpression) {
-                            path.append(names.name((TypeDeclaration) scope.getContainer()));
+                            path.append(names.name(consCont));
+                        } else if (d.isStatic()) {
+                            path.append(names.name(consCont)).append(".$st$");
                         } else {
-                            path.append(names.self((TypeDeclaration) scope.getContainer()));
+                            path.append(names.self(consCont));
                         }
                         if (scope == id || (nd != null && scope == nd)) {
                             break;
                         }
-                        scope = scope.getContainer();
+                        scope = consCont;
                     } else if (scope instanceof TypeDeclaration) {
                         if (path.length() > 0) {
                             if (scope instanceof Constructor==false) {
                                 Constructor constr = scope instanceof Class ? ((Class)scope).getDefaultConstructor() : null;
-                                if (constr == null || !ModelUtil.contains(constr, (Scope)innermostDeclaration)) {
+                                if ((constr == null || !ModelUtil.contains(constr, (Scope)innermostDeclaration)) && !d.isStatic()) {
                                     path.append(".outer$");
                                 }
                             }
