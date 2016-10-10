@@ -19,9 +19,9 @@
  */
 suppressWarnings("unusedDeclaration")
 class SmallErrors() {
-    @error:"type cannot be annotated small: Integer|Float"
+    @error:"type may not be annotated 'small': 'a' has type 'Integer|Float' (only an 'Integer' or 'Float' may be small)"
     small Integer|Float a = 0;
-    @error:"type cannot be annotated small: Integer?"
+    @error:"type may not be annotated 'small': 'b' has type 'Integer?' (only an 'Integer' or 'Float' may be small)"
     small Integer? b = 0;
     
     shared small Integer smallFunction() => -2147483649;
