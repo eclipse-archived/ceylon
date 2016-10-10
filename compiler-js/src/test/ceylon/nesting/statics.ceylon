@@ -78,6 +78,16 @@ class Static3<T> {
   shared new(){}
 }
 
+class Static4 {
+    static shared String name = "ok";
+    shared static class X() {
+      check(name=="ok", "bye");
+    }
+    shared new () {
+      check(name=="ok", "hello");
+    }
+}
+
 void testStatics() {
   check(Static1.a == 1, "static 1.1");
   check(Static1.b == 2, "static 1.2");
@@ -131,4 +141,8 @@ void testStatics() {
   check(og2 is Static3<String>.Gen3<Integer>, "static 10.3");
   check(!og2 is Static3<String>.Gen3<String>, "static 10.4");
   check(!og2 is Static3<Integer>.Gen3<Integer>, "static 10.5");
+  Static4();
+  Static4.X();
+  Static4.X() st4x = Static4.X;
+  st4x();
 }
