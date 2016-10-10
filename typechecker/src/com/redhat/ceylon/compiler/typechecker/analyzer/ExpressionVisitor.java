@@ -2711,10 +2711,13 @@ public class ExpressionVisitor extends Visitor {
         }
     }*/
     
-    private static void warnIfUncheckedNulls(
+    private void warnIfUncheckedNulls(
             Tree.LocalModifier local, 
             Tree.Expression e) {
-        if (hasUncheckedNulls(e)) {
+        Type type = e.getTypeModel();
+        if (type!=null && !type.isNothing()
+                && !unit.isOptionalType(type) 
+                && hasUncheckedNulls(e)) {
             Tree.Term term = e.getTerm();
             if (term instanceof Tree.InvocationExpression) {
                 Tree.InvocationExpression ie = 
