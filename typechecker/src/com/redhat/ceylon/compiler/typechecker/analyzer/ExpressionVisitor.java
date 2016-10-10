@@ -299,7 +299,7 @@ public class ExpressionVisitor extends Visitor {
                 that.getTypeParameterList();
         if (tpl!=null) {
             checkNotJvm(tpl, 
-                    "type functions are not supported on the JVM");
+                    "type functions are not supported on the JVM: anonymous function is generic (remove type parameters)");
         }
     }
     
@@ -1808,8 +1808,10 @@ public class ExpressionVisitor extends Visitor {
         		        that.getSpecifierExpression());
         	}
             if (isGeneric(model)) {
-                checkNotJvm(that, 
-                        "type functions are not supported on the JVM");
+                checkNotJvm(that,
+                        "type functions are not supported on the JVM: '" + 
+                        model.getName() + 
+                        "' is generic (remove type parameters)");
             }
         }
         else {
@@ -2083,7 +2085,7 @@ public class ExpressionVisitor extends Visitor {
             if (e!=null) {
                 Type returnType = e.getTypeModel();
                 if (!m.isActual() || isTypeUnknown(m.getType())) {
-                    inferFunctionType(that, returnType);
+                    inferFunctionType(that, returnType, e);
                 }
                 if (type!=null && 
                         !(type instanceof Tree.DynamicModifier)) {
@@ -2147,7 +2149,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
                 Type returnType = e.getTypeModel();
-                inferFunctionType(that, returnType);
+                inferFunctionType(that, returnType, e);
                 if (type!=null && 
                         !(type instanceof Tree.DynamicModifier)) {
                     checkFunctionType(returnType, type, se);
@@ -2471,25 +2473,25 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void inferFunctionType(Tree.TypedDeclaration that, 
-            Type et) {
+            Type et, Tree.Expression e) {
         Tree.Type type = that.getType();
         if (type instanceof Tree.FunctionModifier) {
             Tree.FunctionModifier local = 
                     (Tree.FunctionModifier) type;
             if (et!=null) {
-                setFunctionType(local, et, that);
+                setFunctionType(local, et, that, e);
             }
         }
     }
     
     private void inferFunctionType(Tree.MethodArgument that, 
-            Type et) {
+            Type et, Tree.Expression e) {
         Tree.Type type = that.getType();
         if (type instanceof Tree.FunctionModifier) {
             Tree.FunctionModifier local = 
                     (Tree.FunctionModifier) type;
             if (et!=null) {
-                setFunctionType(local, et, that);
+                setFunctionType(local, et, that, e);
             }
         }
     }
@@ -2709,6 +2711,33 @@ public class ExpressionVisitor extends Visitor {
         }
     }*/
     
+    private static void warnIfUncheckedNulls(
+            Tree.LocalModifier local, 
+            Tree.Expression e) {
+        if (hasUncheckedNulls(e)) {
+            Tree.Term term = e.getTerm();
+            if (term instanceof Tree.InvocationExpression) {
+                Tree.InvocationExpression ie = 
+                        (Tree.InvocationExpression) term;
+                Tree.Term p = ie.getPrimary();
+                if (p instanceof Tree.StaticMemberOrTypeExpression) {
+                    Tree.StaticMemberOrTypeExpression bme = 
+                            (Tree.StaticMemberOrTypeExpression) p;
+                    Declaration dec = bme.getDeclaration();
+                    if (dec!=null) {
+                        String qname = 
+                                dec.getQualifiedNameString();
+                        if ("java.util::Arrays.asList".equals(qname)) {
+                            return;
+                        }
+                    }
+                }
+            }
+            local.addUsageWarning(Warning.inferredNotNull, 
+                    "not null type inferred from Java reference (explicitly specify the type)");
+        }
+    }
+        
     private void setType(Tree.LocalModifier local, 
             Tree.SpecifierOrInitializerExpression s, 
             Tree.TypedDeclaration that) {
@@ -2716,13 +2745,14 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             Type type = e.getTypeModel();
             if (type!=null) {
+                warnIfUncheckedNulls(local, e);
                 Type t = inferrableType(type);
                 local.setTypeModel(t);
                 that.getDeclarationModel().setType(t);
             }
         }
     }
-        
+
     private void setType(Tree.LocalModifier local, 
             Tree.SpecifierOrInitializerExpression s, 
             Tree.AttributeArgument that) {
@@ -2730,6 +2760,7 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             Type type = e.getTypeModel();
             if (type!=null) {
+                warnIfUncheckedNulls(local, e);
                 Type t = inferrableType(type);
                 local.setTypeModel(t);
                 that.getDeclarationModel().setType(t);
@@ -2753,14 +2784,18 @@ public class ExpressionVisitor extends Visitor {
     }
         
     private void setFunctionType(Tree.FunctionModifier local, 
-            Type et, Tree.TypedDeclaration that) {
+            Type et, Tree.TypedDeclaration that, 
+            Tree.Expression e) {
+        warnIfUncheckedNulls(local, e);
         Type t = inferrableType(et);
         local.setTypeModel(t);
         that.getDeclarationModel().setType(t);
     }
         
     private void setFunctionType(Tree.FunctionModifier local, 
-            Type et, Tree.MethodArgument that) {
+            Type et, Tree.MethodArgument that, 
+            Tree.Expression e) {
+        warnIfUncheckedNulls(local, e);
         Type t = inferrableType(et);
         local.setTypeModel(t);
         that.getDeclarationModel().setType(t);
@@ -2823,7 +2858,8 @@ public class ExpressionVisitor extends Visitor {
                 	}
                 }
                 else if (returnType instanceof Tree.LocalModifier) {
-                    inferReturnType(et, at);
+                    inferReturnType(et, at, e, 
+                            (Tree.LocalModifier) returnType);
                 }
                 else {
                     if (!isTypeUnknown(et) && 
@@ -2849,16 +2885,19 @@ public class ExpressionVisitor extends Visitor {
         return name;
     }
 
-    private void inferReturnType(Type et, Type at) {
+    private void inferReturnType(Type et, Type at, 
+            Tree.Expression e, 
+            Tree.LocalModifier local) {
         if (at!=null) {
+            warnIfUncheckedNulls(local, e);
             at = unit.denotableType(at);
             if (et==null || et.isSubtypeOf(at)) {
-                returnType.setTypeModel(at);
+                local.setTypeModel(at);
             }
             else {
                 if (!at.isSubtypeOf(et)) {
                     Type rt = unionType(at, et, unit);
-                    returnType.setTypeModel(rt);
+                    local.setTypeModel(rt);
                 }
             }
         }
@@ -6542,7 +6581,9 @@ public class ExpressionVisitor extends Visitor {
                             member, target, unit);
             that.setTypeModel(functionType);
             checkNotJvm(that, 
-                    "type functions are not supported on the JVM");
+                    "type functions are not supported on the JVM: '" + 
+                    member.getName(unit) + 
+                    "' is generic (specify explicit type arguments)");
         }
     }
 
@@ -6677,7 +6718,9 @@ public class ExpressionVisitor extends Visitor {
                             member, target, unit);
             that.setTypeModel(functionType);
             checkNotJvm(that, 
-                    "type functions are not supported on the JVM");
+                    "type functions are not supported on the JVM: '" + 
+                    member.getName(unit) + 
+                    "' is generic (specify explicit type arguments)");
         }
     }
     
@@ -7193,7 +7236,9 @@ public class ExpressionVisitor extends Visitor {
                             type, target, unit);
             that.setTypeModel(functionType);
             checkNotJvm(that, 
-                    "type functions are not supported on the JVM");
+                    "type functions are not supported on the JVM: '" + 
+                    type.getName(unit) + 
+                    "' is generic (specify explicit type arguments)");
         }
     }
 
@@ -7520,7 +7565,9 @@ public class ExpressionVisitor extends Visitor {
                             type, target, unit);
             that.setTypeModel(functionType);
             checkNotJvm(that, 
-                    "type functions are not supported on the JVM");
+                    "type functions are not supported on the JVM: '" + 
+                    type.getName(unit) + 
+                    "' is generic (specify explicit type arguments)");
         }
     }
 
@@ -7771,7 +7818,9 @@ public class ExpressionVisitor extends Visitor {
             if (pt.isTypeConstructor() 
                     && !that.getMetamodel()) {
                 checkNotJvm(that, 
-                        "type functions are not supported on the JVM");
+                        "type functions are not supported on the JVM: '" + 
+                        type.getName(unit) + 
+                        "' is generic (specify explicit type arguments)");
             }
         }
     }
@@ -9323,7 +9372,7 @@ public class ExpressionVisitor extends Visitor {
                 that.getTypeParameterList();
         if (typeParams!=null) {
             checkNotJvm(typeParams, 
-                    "type functions are not supported on the JVM");
+                    "type functions are not supported on the JVM: type parameter is generic (remove type parameters)");
         }
     }
     
@@ -9337,7 +9386,9 @@ public class ExpressionVisitor extends Visitor {
                 md.getTypeParameterList();
         if (tpl!=null) {
             checkNotJvm(tpl, 
-                    "type functions are not supported on the JVM");
+                    "type functions are not supported on the JVM: '" + 
+                    md.getDeclarationModel().getName() + 
+                    "' is generic (remove type parameters)");
         }
     }
     
