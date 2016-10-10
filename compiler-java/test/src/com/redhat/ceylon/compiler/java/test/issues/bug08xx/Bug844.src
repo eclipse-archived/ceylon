@@ -126,12 +126,12 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     
     @.java.lang.Override
     public Element find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Sequence$this$.find(selecting);
+        return (Element)$ceylon$language$Sequence$this$.find(selecting);
     }
     
     @.java.lang.Override
     public Element findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Sequence$this$.findLast(selecting);
+        return (Element)$ceylon$language$Sequence$this$.findLast(selecting);
     }
     
     @.java.lang.Override
@@ -243,17 +243,17 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     
     @.java.lang.Override
     public .ceylon.language.Integer firstIndexWhere(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$List$this$.firstIndexWhere(selecting);
+        return (.ceylon.language.Integer)$ceylon$language$List$this$.firstIndexWhere(selecting);
     }
     
     @.java.lang.Override
     public final Element get(final .ceylon.language.Integer index) {
-        return $ceylon$language$List$this$.get(index);
+        return (Element)$ceylon$language$List$this$.get(index);
     }
     
     @.java.lang.Override
     public Element getFromLast(final long index) {
-        return $ceylon$language$List$this$.getFromLast(index);
+        return (Element)$ceylon$language$List$this$.getFromLast(index);
     }
     
     @.java.lang.Override
@@ -268,7 +268,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     
     @.java.lang.Override
     public .ceylon.language.Integer lastIndexWhere(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$List$this$.lastIndexWhere(selecting);
+        return (.ceylon.language.Integer)$ceylon$language$List$this$.lastIndexWhere(selecting);
     }
     
     @.java.lang.Override
@@ -442,7 +442,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     
     @.java.lang.Override
     public Element getFromFirst(final long index) {
-        return $ceylon$language$Iterable$this$.getFromFirst(index);
+        return (Element)$ceylon$language$Iterable$this$.getFromFirst(index);
     }
     
     @.java.lang.Override
@@ -481,13 +481,13 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element> locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.locate(selecting);
+    public .ceylon.language.Entry locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.locate(selecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element> locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.locateLast(selecting);
+    public .ceylon.language.Entry locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends Element>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.locateLast(selecting);
     }
     
     @.java.lang.Override
@@ -608,8 +608,8 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     }
     
     @.java.lang.Override
-    public <Absent>.ceylon.language.Iterable<? extends Element, ? extends Absent> getAll(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends Absent> keys) {
-        return $ceylon$language$Correspondence$this$.getAll($reified$Absent, keys);
+    public <Absent>.ceylon.language.Iterable getAll(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends Absent> keys) {
+        return (.ceylon.language.Iterable<? extends Element, ? extends Absent>)(.ceylon.language.Iterable)$ceylon$language$Correspondence$this$.getAll($reified$Absent, keys);
     }
     private final First first;
     
@@ -644,7 +644,7 @@ public abstract class Bug844_Tuple<Element, First extends Element, Rest> extends
     @.java.lang.Override
     public final .ceylon.language.Integer getLastIndex() {
         .ceylon.language.Integer restLastIndex$7;
-        if ((restLastIndex$7 = ((.ceylon.language.List<? extends Element>)(.ceylon.language.List)getRest()).getLastIndex()) != null) {
+        if ((restLastIndex$7 = (.ceylon.language.Integer)((.ceylon.language.List<? extends Element>)(.ceylon.language.List)getRest()).getLastIndex()) != null) {
             final long restLastIndex$8 = restLastIndex$7.longValue();
             return .ceylon.language.Integer.instance(restLastIndex$8 + 1L);
         } else {

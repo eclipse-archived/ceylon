@@ -8,9 +8,9 @@ class LookupOperatorOptimization implements .com.redhat.ceylon.compiler.java.run
     
     LookupOperatorOptimization(final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.Boolean> cor, final .ceylon.language.List<? extends .ceylon.language.Boolean> list, final .ceylon.language.Array<.ceylon.language.Boolean> array) {
         .ceylon.language.Boolean first = null;
-        first = cor.get(.ceylon.language.Integer.instance(0L));
-        first = list.getFromFirst(0L);
-        first = array.getFromFirst(0L);
+        first = (.ceylon.language.Boolean)(.ceylon.language.Boolean)cor.get(.ceylon.language.Integer.instance(0L));
+        first = (.ceylon.language.Boolean)(.java.lang.Object)(.ceylon.language.Boolean)list.getFromFirst(0L);
+        first = (.ceylon.language.Boolean)(.java.lang.Object)(.ceylon.language.Boolean)array.getFromFirst(0L);
     }
     
     @.java.lang.Override

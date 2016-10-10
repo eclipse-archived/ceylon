@@ -6,6 +6,6 @@ final class bug249_ {
     }
     
     static void bug249() {
-        final .ceylon.language.Character ch = .ceylon.language.String.instance("hello").getFromFirst(0L);
+        final .ceylon.language.Character ch = (.ceylon.language.Character)(.java.lang.Object)(.ceylon.language.Character).ceylon.language.String.instance("hello").getFromFirst(0L);
     }
 }

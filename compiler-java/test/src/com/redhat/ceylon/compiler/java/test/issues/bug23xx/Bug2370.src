@@ -127,12 +127,12 @@ class Bug2370C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.find(selecting);
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I)$ceylon$language$Iterable$this$.find(selecting);
     }
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findLast(selecting);
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I)$ceylon$language$Iterable$this$.findLast(selecting);
     }
     
     @.java.lang.Override
@@ -162,7 +162,7 @@ class Bug2370C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     
     @.java.lang.Override
     public .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I getFromFirst(final long index) {
-        return $ceylon$language$Iterable$this$.getFromFirst(index);
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I)$ceylon$language$Iterable$this$.getFromFirst(index);
     }
     
     @.java.lang.Override
@@ -211,13 +211,13 @@ class Bug2370C implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I> locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.locate(selecting);
+    public .ceylon.language.Entry locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.locate(selecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I> locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.locateLast(selecting);
+    public .ceylon.language.Entry locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2370I>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.locateLast(selecting);
     }
     
     @.java.lang.Override

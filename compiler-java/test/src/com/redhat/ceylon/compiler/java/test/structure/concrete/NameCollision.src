@@ -84,12 +84,12 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     @.java.lang.Override
     public .ceylon.language.Integer find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.find(selecting);
+        return (.ceylon.language.Integer)$ceylon$language$Iterable$this$.find(selecting);
     }
     
     @.java.lang.Override
     public .ceylon.language.Integer findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.findLast(selecting);
+        return (.ceylon.language.Integer)$ceylon$language$Iterable$this$.findLast(selecting);
     }
     
     @.java.lang.Override
@@ -114,7 +114,7 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     @.java.lang.Override
     public .ceylon.language.Integer getFromFirst(final long index) {
-        return $ceylon$language$Iterable$this$.getFromFirst(index);
+        return (.ceylon.language.Integer)$ceylon$language$Iterable$this$.getFromFirst(index);
     }
     
     @.java.lang.Override
@@ -158,13 +158,13 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer> locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.locate(selecting);
+    public .ceylon.language.Entry locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.locate(selecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer> locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.locateLast(selecting);
+    public .ceylon.language.Entry locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Integer>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.locateLast(selecting);
     }
     
     @.java.lang.Override

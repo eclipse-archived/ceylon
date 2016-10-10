@@ -119,12 +119,12 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     
     @.java.lang.Override
     public T find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$List$this$.find(selecting);
+        return (T)$ceylon$language$List$this$.find(selecting);
     }
     
     @.java.lang.Override
     public T findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$List$this$.findLast(selecting);
+        return (T)$ceylon$language$List$this$.findLast(selecting);
     }
     
     @.java.lang.Override
@@ -134,17 +134,17 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     
     @.java.lang.Override
     public .ceylon.language.Integer firstIndexWhere(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$List$this$.firstIndexWhere(selecting);
+        return (.ceylon.language.Integer)$ceylon$language$List$this$.firstIndexWhere(selecting);
     }
     
     @.java.lang.Override
     public final T get(final .ceylon.language.Integer index) {
-        return $ceylon$language$List$this$.get(index);
+        return (T)$ceylon$language$List$this$.get(index);
     }
     
     @.java.lang.Override
     public T getFromLast(final long index) {
-        return $ceylon$language$List$this$.getFromLast(index);
+        return (T)$ceylon$language$List$this$.getFromLast(index);
     }
     
     @.java.lang.Override
@@ -174,7 +174,7 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     
     @.java.lang.Override
     public .ceylon.language.Integer lastIndexWhere(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$List$this$.lastIndexWhere(selecting);
+        return (.ceylon.language.Integer)$ceylon$language$List$this$.lastIndexWhere(selecting);
     }
     
     @.java.lang.Override
@@ -447,13 +447,13 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.locate(selecting);
+    public .ceylon.language.Entry locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.locate(selecting);
     }
     
     @.java.lang.Override
-    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T> locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return $ceylon$language$Iterable$this$.locateLast(selecting);
+    public .ceylon.language.Entry locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends T>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.locateLast(selecting);
     }
     
     @.java.lang.Override
@@ -584,8 +584,8 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     @.java.lang.Override
-    public <Absent>.ceylon.language.Iterable<? extends T, ? extends Absent> getAll(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends Absent> keys) {
-        return $ceylon$language$Correspondence$this$.getAll($reified$Absent, keys);
+    public <Absent>.ceylon.language.Iterable getAll(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Absent, final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends Absent> keys) {
+        return (.ceylon.language.Iterable<? extends T, ? extends Absent>)(.ceylon.language.Iterable)$ceylon$language$Correspondence$this$.getAll($reified$Absent, keys);
     }
     
     @.java.lang.Override

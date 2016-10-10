@@ -39,16 +39,16 @@ final class cmp_ {
     }
     
     static <Value1 extends .ceylon.language.Comparable<? super Value1>, Value2 extends .ceylon.language.Comparable<? super Value2>>.ceylon.language.Comparison cmp(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value1, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value2, final .ceylon.language.Sequence a, final .ceylon.language.Sequence b) {
-        if (((Value1)a.getFromFirst(0L)).smallerThan((Value1)b.getFromFirst(0L))) {
+        if (((Value1)(.java.lang.Object)(Value1)a.getFromFirst(0L)).smallerThan((Value1)(.java.lang.Object)(Value1)b.getFromFirst(0L))) {
             return .ceylon.language.smaller_.get_();
         } else {
-            if (((Value1)a.getFromFirst(0L)).largerThan((Value1)b.getFromFirst(0L))) {
+            if (((Value1)(.java.lang.Object)(Value1)a.getFromFirst(0L)).largerThan((Value1)(.java.lang.Object)(Value1)b.getFromFirst(0L))) {
                 return .ceylon.language.larger_.get_();
             } else {
-                if (((Value2)a.getFromFirst(1L)).smallerThan((Value2)b.getFromFirst(1L))) {
+                if (((Value2)(.java.lang.Object)(Value2)a.getFromFirst(1L)).smallerThan((Value2)(.java.lang.Object)(Value2)b.getFromFirst(1L))) {
                     return .ceylon.language.smaller_.get_();
                 } else {
-                    if (((Value2)a.getFromFirst(1L)).largerThan((Value2)b.getFromFirst(1L))) {
+                    if (((Value2)(.java.lang.Object)(Value2)a.getFromFirst(1L)).largerThan((Value2)(.java.lang.Object)(Value2)b.getFromFirst(1L))) {
                         return .ceylon.language.larger_.get_();
                     } else {
                         return .ceylon.language.equal_.get_();

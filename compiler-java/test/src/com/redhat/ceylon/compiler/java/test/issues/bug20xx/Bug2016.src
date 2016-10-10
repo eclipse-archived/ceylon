@@ -19,7 +19,7 @@ public final class bug2016_ {
         final .ceylon.language.Sequence enums = (.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Float.$TypeDescriptor$), new .java.lang.Object[]{
                 .ceylon.language.Integer.instance(1L),
                 .ceylon.language.Float.instance(2.0)});
-        final long e0 = ((.ceylon.language.Integer)enums.getFromFirst(0L)).longValue();
+        final long e0 = ((.ceylon.language.Integer)(.java.lang.Object)(.ceylon.language.Integer)enums.getFromFirst(0L)).longValue();
         {
             .ceylon.language.Integer sel$3 = .ceylon.language.Integer.instance(e0);
             if (sel$3 instanceof .ceylon.language.Integer) {
