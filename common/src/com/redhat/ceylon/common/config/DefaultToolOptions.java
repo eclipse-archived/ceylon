@@ -333,7 +333,7 @@ public class DefaultToolOptions {
 
     private static Long getDefaultTarget() {
         String dottedVersion = System.getProperty("java.version");
-        return Long.parseLong(dottedVersion.split("\\.")[1]);
+        return Long.parseLong(dottedVersion.split("\\.|_|-")[1]);
     }
     
     public static long getCompilerTargetVersion() {

@@ -26,7 +26,7 @@ public class Java7Checker {
             try {
                 int major = Integer.parseInt(elems[0]);
                 int minor = Integer.parseInt(elems[1]);
-                int release = Integer.parseInt(elems[2]);
+                //int release = Integer.parseInt(elems[2]);
                 if (major != 1 || minor < 7) {
                     System.err.println("Your Java version is not supported: " + version);
                     System.err.println("Ceylon needs Java 7 or newer. Please install it from http://www.java.com");
