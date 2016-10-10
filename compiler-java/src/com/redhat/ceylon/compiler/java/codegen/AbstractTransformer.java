@@ -739,7 +739,7 @@ public abstract class AbstractTransformer implements Transformation {
     boolean isOptional(Type type) {
         // Note we don't use typeFact().isOptionalType(type) because
         // that implements a stricter test used in the type checker.
-        return typeFact().getNullValueDeclaration().getType().isSubtypeOf(type);
+        return typeFact().getNullValueDeclaration().getType().isSubtypeOf(type) && !type.isNull();
     }
     
     boolean isNull(Type type) {
