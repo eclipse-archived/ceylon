@@ -3818,7 +3818,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         if (!mte.getTypeModel().isTypeConstructor()) {
             tps = Strategy.getEffectiveTypeParameters(declaration);
         } else {
-            for (TypeParameter tp : tps) {
+            for (TypeParameter tp : Strategy.getEffectiveTypeParameters(declaration)) {
                 callBuilder.typeArgument(makeJavaType(tp.getType(), JT_TYPE_ARGUMENT));
             }
             return;
