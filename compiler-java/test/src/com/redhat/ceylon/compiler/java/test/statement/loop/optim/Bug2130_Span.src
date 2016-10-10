@@ -48,11 +48,13 @@ final class compareSpanInteger2130_ {
     final long start, @.com.redhat.ceylon.compiler.java.metadata.Name("end")
     final long end, @.com.redhat.ceylon.compiler.java.metadata.Name("expect")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Integer[]?",
             erased = true)
     final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect, @.com.redhat.ceylon.compiler.java.metadata.Name("breakAfter")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Integer?",
             erased = true)
@@ -285,11 +287,13 @@ final class compareSpanIntegerBy2130_ {
     final long end, @.com.redhat.ceylon.compiler.java.metadata.Name("by")
     final long by, @.com.redhat.ceylon.compiler.java.metadata.Name("expect")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Integer[]?",
             erased = true)
     final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect, @.com.redhat.ceylon.compiler.java.metadata.Name("breakAfter")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Integer?",
             erased = true)
@@ -515,11 +519,13 @@ final class compareSpanCharacter2130_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character")
     final int end, @.com.redhat.ceylon.compiler.java.metadata.Name("expect")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Character[]?",
             erased = true)
     final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect, @.com.redhat.ceylon.compiler.java.metadata.Name("breakAfter")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Integer?",
             erased = true)
@@ -737,11 +743,13 @@ final class compareSpanCharacterBy2130_ {
     final int end, @.com.redhat.ceylon.compiler.java.metadata.Name("by")
     final long by, @.com.redhat.ceylon.compiler.java.metadata.Name("expect")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Character[]?",
             erased = true)
     final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect, @.com.redhat.ceylon.compiler.java.metadata.Name("breakAfter")
     @.com.redhat.ceylon.compiler.java.metadata.Defaulted
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Integer?",
             erased = true)

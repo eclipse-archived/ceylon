@@ -9,8 +9,10 @@ class ObjectArgumentNamedInvocationChained implements .com.redhat.ceylon.compile
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.expression.invoke::ObjectArgumentNamedInvocationChained")
     public final .com.redhat.ceylon.compiler.java.test.expression.invoke.ObjectArgumentNamedInvocationChained callFunction(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object o) {
         .ceylon.language.print_.print(.ceylon.language.String.instance(o.toString()));
@@ -70,6 +72,7 @@ public final class objectArgumentNamedInvocationChained_ {
                             @.ceylon.language.SharedAnnotation$annotation$
                             @.ceylon.language.ActualAnnotation$annotation$
                             @.java.lang.Override
+                            @.com.redhat.ceylon.compiler.java.metadata.NonNull
                             public final .java.lang.String toString() {
                                 return string;
                             }
@@ -78,6 +81,7 @@ public final class objectArgumentNamedInvocationChained_ {
                             @.ceylon.language.ActualAnnotation$annotation$
                             @.java.lang.Override
                             public final boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+                            @.com.redhat.ceylon.compiler.java.metadata.NonNull
                             @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
                             final .java.lang.Object other) {
                                 return false;
@@ -132,6 +136,7 @@ public final class objectArgumentNamedInvocationChained_ {
                     @.ceylon.language.SharedAnnotation$annotation$
                     @.ceylon.language.ActualAnnotation$annotation$
                     @.java.lang.Override
+                    @.com.redhat.ceylon.compiler.java.metadata.NonNull
                     public final .java.lang.String toString() {
                         return string;
                     }
@@ -140,6 +145,7 @@ public final class objectArgumentNamedInvocationChained_ {
                     @.ceylon.language.ActualAnnotation$annotation$
                     @.java.lang.Override
                     public final boolean equals(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
+                    @.com.redhat.ceylon.compiler.java.metadata.NonNull
                     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
                     final .java.lang.Object other) {
                         return false;

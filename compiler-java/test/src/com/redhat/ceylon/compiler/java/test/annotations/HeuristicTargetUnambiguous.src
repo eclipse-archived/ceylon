@@ -34,9 +34,11 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
     }
     
     HeuristicTarget2(@.com.redhat.ceylon.compiler.java.metadata.Name("s")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.test.annotations.ParameterTarget
     @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.String s, @.com.redhat.ceylon.compiler.java.metadata.Name("s2")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.test.annotations.ParameterTarget
     @.ceylon.language.SharedAnnotation$annotation$
     final .java.lang.String s2) {
@@ -50,6 +52,7 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public final .java.lang.String getS() {
         return s;
     }
@@ -59,6 +62,7 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public final .java.lang.String getS2() {
         return s2;
     }
@@ -68,12 +72,14 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public final .java.lang.String getS3() {
         return s3;
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
     public final void setS3(@.com.redhat.ceylon.compiler.java.metadata.Name("s3")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String s3) {
         this.s3 = s3;
     }
@@ -121,6 +127,7 @@ final class heuristicTarget3_ implements .java.io.Serializable, .com.redhat.ceyl
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     @.ceylon.language.DocAnnotation$annotation$(description = "Targeting annotations on object definitions")
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::heuristicTarget3")
     static .com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_ get_() {
         if (heuristicTarget3_.$init$value) {

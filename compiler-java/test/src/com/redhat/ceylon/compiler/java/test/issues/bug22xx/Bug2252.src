@@ -14,6 +14,7 @@ public class Bug2252 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     private final .ceylon.language.Integer id;
     
     @.ceylon.language.SuppressWarningsAnnotation$annotation$(warnings = "unusedDeclaration")
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Integer?",
             erased = true)

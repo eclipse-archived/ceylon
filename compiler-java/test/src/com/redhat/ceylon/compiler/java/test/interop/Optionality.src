@@ -371,6 +371,7 @@ final class classSubClass_ extends .com.redhat.ceylon.compiler.java.test.interop
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.interop.OptionalityClass realClass;
     
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "com.redhat.ceylon.compiler.java.test.interop::OptionalityClass?",
             erased = true)
@@ -381,6 +382,7 @@ final class classSubClass_ extends .com.redhat.ceylon.compiler.java.test.interop
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .java.lang.String getType() {
         return (
@@ -401,6 +403,7 @@ final class classSubClass_ extends .com.redhat.ceylon.compiler.java.test.interop
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public final .java.lang.String typeMethod() {
         return (
             let
@@ -432,6 +435,7 @@ final class classSubClass_ extends .com.redhat.ceylon.compiler.java.test.interop
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::classSubClass")
     static .com.redhat.ceylon.compiler.java.test.interop.classSubClass_ get_() {
         if (classSubClass_.$init$value) {

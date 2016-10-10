@@ -11,12 +11,14 @@ final class bug5752_ {
     }
     
     @.javax.persistence.Id
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public static .java.lang.String get_() {
         return "";
     }
     
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("bug5752")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String bug5752) {
     }
 }
@@ -30,6 +32,7 @@ final class bug5752_2_ {
     private bug5752_2_() {
     }
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public static .java.lang.String get_() {
         return "";
@@ -37,6 +40,7 @@ final class bug5752_2_ {
     
     @.javax.persistence.Id
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("bug5752_2")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     final .java.lang.String bug5752_2) {
     }
 }

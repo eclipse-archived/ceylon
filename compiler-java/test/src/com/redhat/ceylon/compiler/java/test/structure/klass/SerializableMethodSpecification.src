@@ -18,6 +18,7 @@ class SerializableMethodSpecification implements .com.redhat.ceylon.compiler.jav
     }
     
     SerializableMethodSpecification(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
     final .ceylon.language.Callable<? extends .java.lang.Object> f) {
         this.f = f;
@@ -25,12 +26,14 @@ class SerializableMethodSpecification implements .com.redhat.ceylon.compiler.jav
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .ceylon.language.Callable<? extends .java.lang.Object> f;
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
     private final .ceylon.language.Callable<? extends .java.lang.Object> getF$priv$() {
         return f;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final .java.lang.Object m() {
         return getF$priv$().$call$();

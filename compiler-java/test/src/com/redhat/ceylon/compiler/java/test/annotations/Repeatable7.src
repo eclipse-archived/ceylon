@@ -16,6 +16,7 @@ package com.redhat.ceylon.compiler.java.test.annotations;
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface Repeatable$annotations$ {
     
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.Repeatable$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -61,6 +62,7 @@ final class repeatable_ {
     }
     
     @.ceylon.language.AnnotationAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::Repeatable")
     static .com.redhat.ceylon.compiler.java.test.annotations.Repeatable repeatable() {
         return new .com.redhat.ceylon.compiler.java.test.annotations.Repeatable();

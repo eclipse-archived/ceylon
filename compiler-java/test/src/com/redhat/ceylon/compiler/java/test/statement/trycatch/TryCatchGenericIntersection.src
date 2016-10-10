@@ -116,6 +116,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final void catchIntersection(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
     final .java.lang.Exception exception) {
         try {
@@ -130,6 +131,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final void catchExceptionSubIntersection(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
     final .java.lang.Exception exception) {
         try {
@@ -144,6 +146,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final void catchExceptionGenericString(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
     final .java.lang.Exception exception) {
         try {
@@ -158,6 +161,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final void catchExceptionGenericStringOrInteger(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
     final .java.lang.Exception exception) {
         try {
@@ -175,6 +179,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final void catchExceptionGenericStringOrInteger2(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
     final .java.lang.Exception exception) {
         try {
@@ -189,6 +194,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final void catchExceptionGenericStringOrIntegerOrExceptionSub(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
     final .java.lang.Exception exception) {
         try {
@@ -209,6 +215,7 @@ class TryCatchGenericIntersection implements .com.redhat.ceylon.compiler.java.ru
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final void catchExceptionGenericStringOrIntegerOrExceptionSubIntersect(@.com.redhat.ceylon.compiler.java.metadata.Name("exception")
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Exception")
     final .java.lang.Exception exception) {
         try {

@@ -74,6 +74,7 @@ final class synchronized_ implements .java.io.Serializable, .com.redhat.ceylon.c
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510::synchronized")
     static .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_ get_() {
         if (synchronized_.$init$value) {

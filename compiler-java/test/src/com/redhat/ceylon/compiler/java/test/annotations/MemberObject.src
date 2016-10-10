@@ -40,6 +40,7 @@ public class MemberObject implements .com.redhat.ceylon.compiler.java.runtime.mo
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::MemberObject.member")
     public final .com.redhat.ceylon.compiler.java.test.annotations.MemberObject.member_ getMember() {
         if (member == null) member = new .com.redhat.ceylon.compiler.java.test.annotations.MemberObject.member_();

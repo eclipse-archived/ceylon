@@ -39,6 +39,7 @@ public final class ClassAlias<T> {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeParameters({@.com.redhat.ceylon.compiler.java.metadata.TypeParameter(
             value = "T",
             variance = .com.redhat.ceylon.compiler.java.metadata.Variance.NONE,

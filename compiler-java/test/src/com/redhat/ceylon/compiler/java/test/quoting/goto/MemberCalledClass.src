@@ -41,6 +41,7 @@ final class memberCalledClass_ implements .java.io.Serializable, .com.redhat.cey
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.goto::memberCalledClass")
     static .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_ get_() {
         if (memberCalledClass_.$init$value) {
@@ -94,6 +95,7 @@ final class memberCalledClass2_ implements .java.io.Serializable, .com.redhat.ce
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    @.com.redhat.ceylon.compiler.java.metadata.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.goto::memberCalledClass2")
     static .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_ get_() {
         if (memberCalledClass2_.$init$value) {
