@@ -8171,15 +8171,35 @@ public class ExpressionVisitor extends Visitor {
                             }
                         }
                     }
-                    checkValueCase(e);
+                    checkValueCase(e, true);
                 }
             }
         }
     }
 
-    private void checkValueCase(Tree.Expression e) {
+    private void checkValueCase(Tree.Expression e, 
+            boolean enumsAllowed) {
+        if (e==null) {
+            return;
+        }
         Tree.Term term = e.getTerm();
         Type type = e.getTypeModel();
+        if (term instanceof Tree.Tuple) {
+            Tree.Tuple tuple = (Tree.Tuple) term;
+            for (Tree.PositionalArgument pa: 
+                    tuple.getSequencedArgument()
+                        .getPositionalArguments()) {
+                if (pa instanceof Tree.ListedArgument) {
+                    Tree.ListedArgument la = 
+                            (Tree.ListedArgument) pa;
+                    checkValueCase(la.getExpression(), false);
+                }
+                else {
+                    pa.addError("case must be a simple tuple");
+                }
+            }
+            return;
+        }
         if (term instanceof Tree.NegativeOp) {
             Tree.NegativeOp no = (Tree.NegativeOp) term;
             term = no.getTerm();
@@ -8190,24 +8210,29 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else if (term instanceof Tree.MemberOrTypeExpression) {
-            TypeDeclaration dec = type.getDeclaration();
-            boolean isToplevelInstance = 
-                    dec.isObjectClass() && 
-                    (dec.isToplevel() || dec.isStatic());
-            boolean isToplevelClassInstance = 
-                    dec.isValueConstructor() &&
-                    (dec.getContainer().isToplevel() || dec.isStatic());
-            if (!isToplevelInstance && 
-                !isToplevelClassInstance) {
-                e.addError("case must refer to a toplevel or static object declaration, a value constructor for a toplevel class, or a literal value");
+            if (enumsAllowed) {
+                TypeDeclaration dec = type.getDeclaration();
+                boolean isToplevelInstance = 
+                        dec.isObjectClass() && 
+                        (dec.isToplevel() || dec.isStatic());
+                boolean isToplevelClassInstance = 
+                        dec.isValueConstructor() &&
+                        (dec.getContainer().isToplevel() || dec.isStatic());
+                if (!isToplevelInstance && 
+                    !isToplevelClassInstance) {
+                    e.addError("case must refer to a toplevel or static object declaration, a value constructor for a toplevel class, or a literal value");
+                }
+                else {
+                    Type ut = unionType(
+                            unit.getNullType(), 
+                            unit.getIdentifiableType(), 
+                            unit);
+                    checkAssignable(type, ut, e, 
+                            "case must be identifiable or null");
+                }
             }
             else {
-                Type ut = unionType(
-                        unit.getNullType(), 
-                        unit.getIdentifiableType(), 
-                        unit);
-                checkAssignable(type, ut, e, 
-                        "case must be identifiable or null");
+                e.addError("tuple element in case must be a literal value");
             }
         }
         else if (term!=null) {
@@ -8550,44 +8575,92 @@ public class ExpressionVisitor extends Visitor {
     
     private void checkLiteralsDisjoint(Tree.MatchCase cci, Tree.MatchCase occi) {
         for (Tree.Expression e: 
-                cci.getExpressionList().getExpressions()) {
+                cci.getExpressionList()
+                    .getExpressions()) {
             for (Tree.Expression f: 
-                occi.getExpressionList().getExpressions()) {
-                Tree.Term et = e.getTerm();
-                Tree.Term ft = f.getTerm();
-                boolean eneg = et instanceof Tree.NegativeOp;
-                boolean fneg = ft instanceof Tree.NegativeOp;
-                if (eneg) {
-                    et = ((Tree.NegativeOp) et).getTerm();
-                }
-                if (fneg) {
-                    ft = ((Tree.NegativeOp) ft).getTerm();
-                }
-                if (et instanceof Tree.Literal && 
-                        ft instanceof Tree.Literal) {
-                    String ftv = getLiteralText(ft);
-                    String etv = getLiteralText(et);
-                    if (et instanceof Tree.NaturalLiteral && 
-                        ft instanceof Tree.NaturalLiteral &&
-                        ((ftv.startsWith("#") && 
-                                !etv.startsWith("#")) ||
-                        (!ftv.startsWith("#") && 
-                                etv.startsWith("#")) ||
-                        (ftv.startsWith("$") && 
-                                !etv.startsWith("$")) ||
-                        (!ftv.startsWith("$") && 
-                                etv.startsWith("$")))) {
-                        cci.addUnsupportedError("literal cases with mixed bases not yet supported");
-                    }
-                    else if (etv.equals(ftv) && eneg==fneg) {
-                        cci.addError("literal cases must be disjoint: " +
-                                (eneg?"-":"") +
-                                etv.replaceAll("\\p{Cntrl}","?") + 
-                                " occurs in multiple cases");
-                    }
-                }
+                    occi.getExpressionList()
+                        .getExpressions()) {
+                String msg = disjointLiterals(e, f);
+                if (msg!=null) {
+                    cci.addError("literal cases must be disjoint: " +
+                             msg + " occurs in multiple cases");
+                };
             }
         }
+    }
+
+    private String disjointLiterals(Tree.Expression e, Tree.Expression f) {
+        if (e==null || f==null) {
+            return null;
+        }
+        Tree.Term et = e.getTerm();
+        Tree.Term ft = f.getTerm();
+        if (et instanceof Tree.Tuple && 
+            ft instanceof Tree.Tuple) {
+            Tree.Tuple ett = (Tree.Tuple) et;
+            Tree.Tuple ftt = (Tree.Tuple) ft;
+            List<Tree.PositionalArgument> eargs = 
+                    ett.getSequencedArgument()
+                        .getPositionalArguments();
+            List<Tree.PositionalArgument> fargs = 
+                    ftt.getSequencedArgument()
+                        .getPositionalArguments();
+            if (eargs.size()!=fargs.size()) {
+                return null;
+            }
+            for (int i=0, size=eargs.size(); i<size; i++) {
+                Tree.PositionalArgument ee = eargs.get(i);
+                Tree.PositionalArgument ff = fargs.get(i);        
+                if (ff instanceof Tree.ListedArgument &&
+                    ee instanceof Tree.ListedArgument) {
+                    Tree.ListedArgument el =
+                            (Tree.ListedArgument) ee;
+                    Tree.ListedArgument fl =
+                            (Tree.ListedArgument) ff;
+                    String msg =
+                            disjointLiterals(
+                                el.getExpression(),
+                                fl.getExpression());
+                    if (msg==null) {
+                        return null;
+                    }
+                }
+                else {
+                    return null;
+                }
+            }
+            return "tuple"; //TODO!!
+        }
+        boolean eneg = et instanceof Tree.NegativeOp;
+        boolean fneg = ft instanceof Tree.NegativeOp;
+        if (eneg) {
+            et = ((Tree.NegativeOp) et).getTerm();
+        }
+        if (fneg) {
+            ft = ((Tree.NegativeOp) ft).getTerm();
+        }
+        if (et instanceof Tree.Literal && 
+            ft instanceof Tree.Literal) {
+            String ftv = getLiteralText(ft);
+            String etv = getLiteralText(et);
+            if (et instanceof Tree.NaturalLiteral && 
+                ft instanceof Tree.NaturalLiteral &&
+                ((ftv.startsWith("#") && 
+                        !etv.startsWith("#")) ||
+                (!ftv.startsWith("#") && 
+                        etv.startsWith("#")) ||
+                (ftv.startsWith("$") && 
+                        !etv.startsWith("$")) ||
+                (!ftv.startsWith("$") && 
+                        etv.startsWith("$")))) {
+                f.addUnsupportedError("literal cases with mixed bases not yet supported");
+            }
+            else if (etv.equals(ftv) && eneg==fneg) {
+                return (eneg?"-":"") 
+                        + etv.replaceAll("\\p{Cntrl}","?");
+            }
+        }
+        return null;
     }
 
     private static String getLiteralText(Tree.Term et) {
@@ -8624,7 +8697,8 @@ public class ExpressionVisitor extends Visitor {
         else if (ci instanceof Tree.MatchCase) {
             Tree.MatchCase mc = (Tree.MatchCase) ci;
             List<Tree.Expression> es = 
-                    mc.getExpressionList().getExpressions();
+                    mc.getExpressionList()
+                        .getExpressions();
             List<Type> list = 
                     new ArrayList<Type>(es.size());
             for (Tree.Expression e: es) {
@@ -8647,13 +8721,15 @@ public class ExpressionVisitor extends Visitor {
         else if (ci instanceof Tree.MatchCase) {
             Tree.MatchCase mc = (Tree.MatchCase) ci;
             List<Tree.Expression> es = 
-                    mc.getExpressionList().getExpressions();
+                    mc.getExpressionList()
+                        .getExpressions();
             List<Type> list = 
                     new ArrayList<Type>(es.size());
             for (Tree.Expression e: es) {
                 if (e.getTypeModel()!=null) {
                     Tree.Term term = e.getTerm();
                     if (!(term instanceof Tree.Literal ||
+                          term instanceof Tree.Tuple ||
                           term instanceof Tree.NegativeOp)) {
                         addToUnion(list, e.getTypeModel());
                     }
@@ -8674,7 +8750,8 @@ public class ExpressionVisitor extends Visitor {
             if (ccv!=null && 
                     ccv.getVariable()!=null) {
                 Type ct = 
-                        ccv.getVariable().getType()
+                        ccv.getVariable()
+                            .getType()
                             .getTypeModel();
                 if (ct!=null) {
                     for (Tree.CatchClause ecc: 
