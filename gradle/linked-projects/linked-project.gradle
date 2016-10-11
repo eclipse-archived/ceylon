@@ -77,9 +77,10 @@ task status {
 
 clean {
     delete = []
-//    delete localRepoBuildDir
 
-    dependsOn 'cleanAntBuild'
+    if (localRepoFolder.exists()) {
+        dependsOn 'cleanAntBuild'
+    }
 }
 
 
