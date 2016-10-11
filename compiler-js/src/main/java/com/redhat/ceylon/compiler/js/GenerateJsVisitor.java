@@ -1940,7 +1940,7 @@ public class GenerateJsVisitor extends Visitor {
                     that.getPrimary().visit(this);
                     out(names.constructorSeparator(fd), names.name(fd));
                 } else if (fd.isStatic()) {
-                    BmeGenerator.generateStaticReference(fd, this);
+                    BmeGenerator.generateStaticReference(that, fd, this);
                 } else {
                     out("function($O$){return ");
                     if (BmeGenerator.hasTypeParameters(that)) {
@@ -1952,7 +1952,7 @@ public class GenerateJsVisitor extends Visitor {
                 }
             } else {
                 if (d.isStatic()) {
-                    BmeGenerator.generateStaticReference(d, this);
+                    BmeGenerator.generateStaticReference(that, d, this);
                 } else {
                     out("function($O$){return $O$.", names.name(d), ";}");
                 }
@@ -1964,7 +1964,7 @@ public class GenerateJsVisitor extends Visitor {
                 }
             });
             if (d != null && d.isStatic()) {
-                BmeGenerator.generateStaticReference(d, this);
+                BmeGenerator.generateStaticReference(that, d, this);
             } else {
                 out(memberAccess(that, lhs));
             }
