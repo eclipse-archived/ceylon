@@ -6893,7 +6893,9 @@ public class ExpressionVisitor extends Visitor {
                         (TypedDeclaration) 
                             handleAbstractionOrHeader(member, 
                                     that, error);
-                checkStaticPrimary(that, primary, member, pt);
+                if (error) {
+                    checkStaticPrimary(that, primary, member, pt);
+                }
                 that.setDeclaration(member);
                 resetSuperReference(that);
                 boolean selfReference = 
@@ -7670,7 +7672,9 @@ public class ExpressionVisitor extends Visitor {
                         (TypeDeclaration) 
                             handleAbstractionOrHeader(type, 
                                     that, error);
-                checkStaticPrimary(that, primary, type, pt);
+                if (error) {
+                    checkStaticPrimary(that, primary, type, pt);
+                }
                 that.setDeclaration(type);
                 resetSuperReference(that);
                 if (!isSelfReference(primary) && 
@@ -7702,6 +7706,8 @@ public class ExpressionVisitor extends Visitor {
             Declaration member, Type pt) {
         if (member.isStatic() 
                 && !that.getStaticMethodReference()) {
+            Tree.MemberOperator mo = 
+                    that.getMemberOperator();
             TypeDeclaration outer =
                     (TypeDeclaration)
                         member.getContainer();
@@ -7710,6 +7716,14 @@ public class ExpressionVisitor extends Visitor {
                         "reference to static member should be qualified by type: '"
                         + member.getName(unit) 
                         + "' is a static member of '"
+                        + outer.getName(unit) 
+                        + "'");
+            }
+            else if (!(mo instanceof Tree.MemberOp)) {
+                mo.addError("operator '" + mo.getText() + 
+                        "' may not be followed by reference to static member: '" +
+                        member.getName(unit) + 
+                        "' is a static member of '"
                         + outer.getName(unit) 
                         + "'");
             }

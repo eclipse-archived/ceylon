@@ -179,3 +179,15 @@ class Outer {
     }
     shared new() {}
 }
+
+class C2 {
+    shared static String val => "val";
+    shared static String fun() => "fun";
+    value cs = [C2()];
+    @error noop(cs*.val);
+    @error noop(cs*.fun());
+    C2? c = null;
+    @error noop(c?.val);
+    @error noop(c?.fun());
+    shared new () {}
+}
