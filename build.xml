@@ -224,7 +224,7 @@ Some super-charged ant tasks:
     </target>
     
     <target name="eclipse-switch-back-to-master">
-        <ant antfile="${ceylon.dist.dir}/ide-build.xml"
+        <ant antfile="${ceylon.dist.dir}/build.xml"
              target="eclipse-switch-back-to-master"
              inheritall="false"
              useNativeBasedir="true">
@@ -232,7 +232,7 @@ Some super-charged ant tasks:
     </target>
     
     <target name="eclipse-rebuild-last-release-updates">
-        <ant antfile="${ceylon.dist.dir}/ide-build.xml"
+        <ant antfile="${ceylon.dist.dir}/build.xml"
              target="eclipse-rebuild-last-release-updates"
              inheritall="false"
              useNativeBasedir="true">
@@ -240,7 +240,7 @@ Some super-charged ant tasks:
     </target>
 
     <target name="intellij">
-        <ant antfile="${ceylon.dist.dir}/ide-build.xml"
+        <ant antfile="${ceylon.dist.dir}/build.xml"
              target="intellij"
              inheritall="false"
              useNativeBasedir="true">
