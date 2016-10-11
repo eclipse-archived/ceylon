@@ -5583,16 +5583,16 @@ public class ExpressionVisitor extends Visitor {
                 Interface md = unit.getMapDeclaration();
                 Class id = unit.getIntegerDeclaration();
                 Class fd = unit.getFloatDeclaration();
-                if (!(lhst.getSupertype(ld)!=null &&
-                      rhst.getSupertype(ld)!=null) &&
-                    !(lhst.getSupertype(sd)!=null &&
-                      rhst.getSupertype(sd)!=null) &&
-                    !(lhst.getSupertype(md)!=null &&
-                      rhst.getSupertype(md)!=null) &&
-                    !(lhst.getDeclaration().equals(id) &&
-                      rhst.getDeclaration().equals(fd)) &&
-                    !(lhst.getDeclaration().equals(fd) &&
-                      rhst.getDeclaration().equals(id))) {
+                if (!(lhst.getDeclaration().inherits(ld) &&
+                      rhst.getDeclaration().inherits(ld)) &&
+                    !(lhst.getDeclaration().inherits(sd) &&
+                      rhst.getDeclaration().inherits(sd)) &&
+                    !(lhst.getDeclaration().inherits(md) &&
+                      rhst.getDeclaration().inherits(md)) &&
+                    !(lhst.isClass() && lhst.getDeclaration().equals(id) &&
+                      rhst.isClass() && rhst.getDeclaration().equals(fd)) &&
+                    !(lhst.isClass() && lhst.getDeclaration().equals(fd) &&
+                      rhst.isClass() && rhst.getDeclaration().equals(id))) {
                     that.addUsageWarning(Warning.disjointEquals, 
                             "tests equality for operands with disjoint types: '" +
                             lhst.asString(unit) + "' and '" +
