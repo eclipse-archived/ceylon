@@ -62,11 +62,11 @@ final class Middle$impl<T> implements .java.io.Serializable {
     }
     
     public final T getS() {
-        return (T)$this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$impl().getS();
+        return $this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$impl().getS();
     }
     
     public T m() {
-        return (T)$this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$impl().m();
+        return $this.$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Top$impl().m();
     }
 }
 interface Right extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A> {
@@ -128,7 +128,7 @@ class Bottom2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A getS() {
-        return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A)(.java.lang.Object)$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$.getS();
+        return (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A)$com$redhat$ceylon$compiler$java$test$issues$bug12xx$Middle$this$.getS();
     }
     
     @.java.lang.Override
@@ -172,17 +172,17 @@ final class bug1240Check_ {
             erased = true)
     final .java.lang.Object b) {
         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A> ba = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top)b;
-        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A a1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A)ba.getS();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A a1 = ba.getS();
         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B> bb = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Top)b;
-        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B b1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B)bb.getS();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B b1 = bb.getS();
         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A> ma = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle)b;
-        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A a2 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A)(.java.lang.Object)ma.getS();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A a2 = ma.getS();
         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B> mb = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle)b;
-        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B b2 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B)(.java.lang.Object)mb.getS();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B b2 = mb.getS();
         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left l = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Left)b;
-        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A a3 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.A)l.getS();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.A a3 = l.getS();
         final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B> r = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle<? extends .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B>)(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.Middle)b;
-        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B b3 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.B)(.java.lang.Object)r.getS();
+        final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.B b3 = r.getS();
         .ceylon.language.print_.print(.ceylon.language.String.instance("ok"));
     }
 }

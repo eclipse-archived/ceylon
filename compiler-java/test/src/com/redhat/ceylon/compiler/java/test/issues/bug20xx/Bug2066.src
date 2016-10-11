@@ -15,7 +15,7 @@ final class bug2066_ {
         final .ceylon.language.Empty c1 = (
             let
             {
-                .ceylon.language.Callable<? extends .ceylon.language.Empty> $ceylontmp$0 = (.ceylon.language.Callable<? extends .ceylon.language.Empty>)(.ceylon.language.Callable)f1;
+                .ceylon.language.Callable<? extends .ceylon.language.Empty> $ceylontmp$0 = f1;
             }
             returning $ceylontmp$0 != null ? $ceylontmp$0 : (.ceylon.language.Callable<? extends .ceylon.language.Empty>)(.java.lang.Object).ceylon.language.nothing_.get_();
         ).$call$();
@@ -24,7 +24,7 @@ final class bug2066_ {
             {
                 .ceylon.language.Callable<? extends .ceylon.language.Empty> $ceylontmp$ifResult$1;
                 {
-                    .ceylon.language.Callable sel$2 = (.ceylon.language.Callable<? extends .ceylon.language.Empty>)(.ceylon.language.Callable)f1;
+                    .ceylon.language.Callable sel$2 = f1;
                     if (sel$2 != null) {
                         final .ceylon.language.Callable<? extends .ceylon.language.Empty> f1$4 = (.ceylon.language.Callable)sel$2;
                         $ceylontmp$ifResult$1 = f1$4;

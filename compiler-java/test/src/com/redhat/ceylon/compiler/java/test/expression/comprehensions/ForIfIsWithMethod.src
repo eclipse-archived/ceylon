@@ -42,7 +42,7 @@ class ForIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.mode
                             if (!this.x()) break ifcomp_1;
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x = this.x;
                             .java.lang.Object y$1 = null;
-                            if ((y$1 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x.give$priv$()) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub) {
+                            if ((y$1 = x.give$priv$()) instanceof .com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub) {
                                 y$2 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.FooSub)y$1;
                                 break ifcomp_1;
                             }
@@ -88,7 +88,7 @@ class ForIfIsWithMethod implements .com.redhat.ceylon.compiler.java.runtime.mode
                             if (!this.x()) break ifcomp_1;
                             final .com.redhat.ceylon.compiler.java.test.expression.comprehensions.ForIfIsWithMethod x = this.x;
                             .java.lang.Object y$4 = null;
-                            if ((y$4 = (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.Foo)x.give$priv$()) == null) {
+                            if ((y$4 = x.give$priv$()) == null) {
                                 y$5 = y$4;
                                 break ifcomp_1;
                             }

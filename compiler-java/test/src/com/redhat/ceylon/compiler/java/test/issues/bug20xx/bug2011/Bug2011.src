@@ -23,11 +23,9 @@ class MWETreeNode extends .javax.swing.tree.DefaultMutableTreeNode implements .c
     @.java.lang.Override
     public final void remove(@.com.redhat.ceylon.compiler.java.metadata.Name("mutableTreeNode")
     @.com.redhat.ceylon.compiler.java.metadata.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "javax.swing.tree::MutableTreeNode?",
-            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.swing.tree::MutableTreeNode?")
     final .javax.swing.tree.MutableTreeNode mutableTreeNode) {
-        super.remove((.javax.swing.tree.MutableTreeNode)mutableTreeNode);
+        super.remove(mutableTreeNode);
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -35,9 +33,7 @@ class MWETreeNode extends .javax.swing.tree.DefaultMutableTreeNode implements .c
     @.java.lang.Override
     public final void setUserObject(@.com.redhat.ceylon.compiler.java.metadata.Name("obj")
     @.com.redhat.ceylon.compiler.java.metadata.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Object?",
-            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object?")
     final .java.lang.Object obj) {
     }
     

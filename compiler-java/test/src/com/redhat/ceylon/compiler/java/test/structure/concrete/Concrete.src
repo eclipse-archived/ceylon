@@ -318,7 +318,7 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     @.java.lang.Override
     public final B mDefault$a() {
-        return (B)$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mDefault$a();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mDefault$a();
     }
     
     @.java.lang.Override
@@ -355,12 +355,12 @@ class ConcreteImpl<B> implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     @.java.lang.Override
     public final B mFormal$a() {
-        return (B)$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mFormal$a();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mFormal$a();
     }
     
     @.java.lang.Override
     public final B mShared$a() {
-        return (B)$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mShared$a();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mShared$a();
     }
     
     @.java.lang.Override
@@ -591,17 +591,17 @@ class ConcreteImplWithDefault<C> implements .com.redhat.ceylon.compiler.java.run
     
     @.java.lang.Override
     public final C mDefault$a() {
-        return (C)$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mDefault$a();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mDefault$a();
     }
     
     @.java.lang.Override
     public final C mFormal$a() {
-        return (C)$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mFormal$a();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mFormal$a();
     }
     
     @.java.lang.Override
     public final C mShared$a() {
-        return (C)$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mShared$a();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mShared$a();
     }
     
     @.java.lang.Override
@@ -862,7 +862,7 @@ abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final D mDefault$a() {
-        return (D)$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mDefault$a();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mDefault$a();
     }
     
     @.java.lang.Override
@@ -899,12 +899,12 @@ abstract class Abstract<D> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final D mFormal$a() {
-        return (D)$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mFormal$a();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mFormal$a();
     }
     
     @.java.lang.Override
     public final D mShared$a() {
-        return (D)$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mShared$a();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mShared$a();
     }
     
     @.java.lang.Override
@@ -1291,17 +1291,17 @@ abstract class AbstractImpl<F> implements .com.redhat.ceylon.compiler.java.runti
     
     @.java.lang.Override
     public final F mDefault$a() {
-        return (F)$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mDefault$a();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mDefault$a();
     }
     
     @.java.lang.Override
     public final F mFormal$a() {
-        return (F)$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mFormal$a();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mFormal$a();
     }
     
     @.java.lang.Override
     public final F mShared$a() {
-        return (F)$com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mShared$a();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$Concrete$this$.mShared$a();
     }
     
     @.java.lang.Override

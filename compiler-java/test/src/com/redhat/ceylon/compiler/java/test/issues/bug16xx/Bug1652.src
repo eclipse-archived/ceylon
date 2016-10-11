@@ -49,7 +49,7 @@ final class bug1652_ {
         };
         boolean loopentered$6 = false;
         .java.lang.Object elem$7;
-        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$8 = ((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)v3).iterator();
+        .ceylon.language.Iterator<? extends .ceylon.language.String> item$iterator$$8 = v3.iterator();
         loop_2: while (!((elem$7 = item$iterator$$8.next()) instanceof .ceylon.language.Finished)) {
             loopentered$6 = true;
             final .ceylon.language.String item = (.ceylon.language.String)elem$7;

@@ -234,12 +234,12 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     
     @.java.lang.Override
     public final <U>T m5$t(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i) {
-        return (T)$com$redhat$ceylon$compiler$java$test$structure$concrete$I$this$.m5$t($reified$U, i);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this$.m5$t($reified$U, i);
     }
     
     @.java.lang.Override
     public final <U>U m5$u(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final long i, final T t) {
-        return (U)$com$redhat$ceylon$compiler$java$test$structure$concrete$I$this$.m5$u($reified$U, i, t);
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$I$this$.m5$u($reified$U, i, t);
     }
     
     public final .java.lang.Object m() {

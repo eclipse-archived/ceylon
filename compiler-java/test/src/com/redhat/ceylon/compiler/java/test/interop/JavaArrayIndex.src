@@ -27,7 +27,7 @@ final class javaArrayIndex_ {
         final .ceylon.language.String r1 = (
             let
             {
-                .ceylon.language.String[] $ceylontmp$array$3 = (.ceylon.language.String[])(.ceylon.language.String[])ar1;
+                .ceylon.language.String[] $ceylontmp$array$3 = ar1;
                 int $ceylontmp$index$4 = .com.redhat.ceylon.compiler.java.Util.toInt(0L);
             }
             returning $ceylontmp$index$4 >= 0 && $ceylontmp$index$4 < $ceylontmp$array$3.length ? $ceylontmp$array$3[$ceylontmp$index$4] : null;
@@ -36,7 +36,7 @@ final class javaArrayIndex_ {
             let
             {
                 .ceylon.language.String $ceylontmp$op$5 = .ceylon.language.String.instance("a");
-                ((.ceylon.language.String[])(.ceylon.language.String[])ar1)[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = $ceylontmp$op$5;
+                ar1[.com.redhat.ceylon.compiler.java.Util.toInt(0L)] = $ceylontmp$op$5;
             }
             returning $ceylontmp$op$5;
         ).toString();

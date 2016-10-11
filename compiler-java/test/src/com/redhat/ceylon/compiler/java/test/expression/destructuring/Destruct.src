@@ -722,7 +722,7 @@ final class destructureIf_ {
             final long j = i$85;
         }
         .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object> $pattern$entry$87$88;
-        if (($pattern$entry$87$88 = (.ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Entry)maybeEntry) != null) {
+        if (($pattern$entry$87$88 = maybeEntry) != null) {
             final .java.lang.Object v$90 = ((.ceylon.language.Entry)$pattern$entry$87$88).getItem();
             final .java.lang.String k$89 = ((.ceylon.language.String)((.ceylon.language.Entry)$pattern$entry$87$88).getKey()).toString();
             final .java.lang.String key = k$89;
@@ -802,7 +802,7 @@ final class destructureAssert_ {
         final .java.lang.String k$125;
         final .java.lang.Object v$126;
         .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object> $pattern$entry$123$124 = null;
-        if (($pattern$entry$123$124 = (.ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Entry)maybeEntry) != null) {
+        if (($pattern$entry$123$124 = maybeEntry) != null) {
             v$126 = ((.ceylon.language.Entry)$pattern$entry$123$124).getItem();
             k$125 = ((.ceylon.language.String)((.ceylon.language.Entry)$pattern$entry$123$124).getKey()).toString();
         } else {
@@ -877,7 +877,7 @@ final class destructureWhile_ {
         .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object> maybeEntry = new .ceylon.language.Entry<.ceylon.language.String, .ceylon.language.Integer>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.instance(""), .ceylon.language.Integer.instance(2L));
         loop_3: while (true) {
             .ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object> $pattern$entry$147$148;
-            if (($pattern$entry$147$148 = (.ceylon.language.Entry<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Entry)maybeEntry) != null) {
+            if (($pattern$entry$147$148 = maybeEntry) != null) {
                 final .java.lang.Object v$150 = ((.ceylon.language.Entry)$pattern$entry$147$148).getItem();
                 final .java.lang.String k$149 = ((.ceylon.language.String)((.ceylon.language.Entry)$pattern$entry$147$148).getKey()).toString();
                 final .java.lang.String key = k$149;

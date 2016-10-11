@@ -11,7 +11,7 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
             public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$){
                     {
-                        $iterator$0 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)xs).iterator();
+                        $iterator$0 = xs.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
                     private .java.lang.Object x;
@@ -56,7 +56,7 @@ class ForIfIsUnion implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
             public final .ceylon.language.Iterator<.java.lang.Object> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.java.lang.Object>(.ceylon.language.Object.$TypeDescriptor$){
                     {
-                        $iterator$0 = ((.ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object>)(.ceylon.language.Iterable)ys).iterator();
+                        $iterator$0 = ys.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .java.lang.Object> $iterator$0;
                     private .java.lang.Object y;

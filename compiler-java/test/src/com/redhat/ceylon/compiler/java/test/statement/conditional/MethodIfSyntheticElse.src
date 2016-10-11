@@ -8,17 +8,17 @@ class MethodIfSyntheticElse implements .com.redhat.ceylon.compiler.java.runtime.
     public final long m(final .ceylon.language.Integer $int) {
         if (1L == 2L) {
             .ceylon.language.Integer $int$2;
-            if (!(($int$2 = (.ceylon.language.Integer)$int) != null)) {
+            if (!(($int$2 = $int) != null)) {
                 final .java.lang.Object $int$3 = $int$2;
                 return 0L;
             }
-            final long int$4 = ((.ceylon.language.Integer)(.ceylon.language.Integer)$int).longValue();
+            final long int$4 = $int.longValue();
             return int$4 + int$4;
         }
         return (
             let
             {
-                .ceylon.language.Integer $ceylontmp$5 = (.ceylon.language.Integer)$int;
+                .ceylon.language.Integer $ceylontmp$5 = $int;
             }
             returning $ceylontmp$5 != null ? $ceylontmp$5 : .ceylon.language.Integer.instance(2L);
         ).longValue();
@@ -26,29 +26,29 @@ class MethodIfSyntheticElse implements .com.redhat.ceylon.compiler.java.runtime.
     
     public final long m2(final .ceylon.language.Integer $int) {
         .ceylon.language.Integer $int$7;
-        if (($int$7 = (.ceylon.language.Integer)$int) != null) {
+        if (($int$7 = $int) != null) {
             final long $int$8 = $int$7.longValue();
             return $int$8 + 1L;
         }
-        final .java.lang.Object int$9 = (.ceylon.language.Integer)$int;
+        final .java.lang.Object int$9 = $int;
         return 0L;
     }
     
     public final long m3(final .ceylon.language.Integer $int) {
-        if (!((.ceylon.language.Integer)$int != null)) {
+        if (!($int != null)) {
             return 0L;
         }
-        final long int$12 = ((.ceylon.language.Integer)(.ceylon.language.Integer)$int).longValue();
+        final long int$12 = ((.ceylon.language.Integer)$int).longValue();
         return int$12 + 1L;
     }
     
     public final long m4(final .ceylon.language.Integer $int) {
         .java.lang.Object $int$14;
-        if (($int$14 = (.ceylon.language.Integer)$int) != null) {
+        if (($int$14 = $int) != null) {
             final long $int$15 = ((.ceylon.language.Integer)$int$14).longValue();
             return $int$15 + 1L;
         }
-        final .java.lang.Object int$16 = (.ceylon.language.Integer)$int;
+        final .java.lang.Object int$16 = $int;
         return 0L;
     }
     

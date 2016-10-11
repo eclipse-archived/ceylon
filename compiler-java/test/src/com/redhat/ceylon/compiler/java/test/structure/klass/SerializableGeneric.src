@@ -27,9 +27,7 @@ class GenericWrapper<Value> implements .com.redhat.ceylon.compiler.java.runtime.
     GenericWrapper(@.com.redhat.ceylon.compiler.java.metadata.Ignore
     final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Value, @.com.redhat.ceylon.compiler.java.metadata.Name("val")
     @.com.redhat.ceylon.compiler.java.metadata.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "Value?",
-            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Value?")
     @.ceylon.language.SharedAnnotation$annotation$
     final Value val) {
         this.$reified$Value = $reified$Value;
@@ -42,9 +40,7 @@ class GenericWrapper<Value> implements .com.redhat.ceylon.compiler.java.runtime.
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "Value?",
-            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Value?")
     public final Value getVal() {
         return val;
     }

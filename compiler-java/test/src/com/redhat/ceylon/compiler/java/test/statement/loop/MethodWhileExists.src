@@ -8,7 +8,7 @@ class MethodWhileExists implements .com.redhat.ceylon.compiler.java.runtime.mode
     public final long m(final .ceylon.language.Integer x) {
         loop_0: while (true) {
             .ceylon.language.Integer x$0;
-            if ((x$0 = (.ceylon.language.Integer)x) != null) {
+            if ((x$0 = x) != null) {
                 final long x$1 = x$0.longValue();
                 return x$1;
             } else {
@@ -21,7 +21,7 @@ class MethodWhileExists implements .com.redhat.ceylon.compiler.java.runtime.mode
     public final long m2(final .ceylon.language.Integer x) {
         loop_1: while (true) {
             .ceylon.language.Integer y$2;
-            if ((y$2 = (.ceylon.language.Integer)x) != null) {
+            if ((y$2 = x) != null) {
                 final long y$3 = y$2.longValue();
                 return y$3;
             } else {

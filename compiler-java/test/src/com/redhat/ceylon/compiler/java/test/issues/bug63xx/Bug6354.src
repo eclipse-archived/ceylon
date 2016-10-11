@@ -31,17 +31,17 @@ final class bug6354_ {
             C(final C c, final C c2) {
                 this.c = c;
                 this.c2 = c2;
-                final C x1 = (C)(
+                final C x1 = (
                     let
                     {
-                        C safe$2 = (C)getC$priv$();
+                        C safe$2 = getC$priv$();
                     }
                     returning safe$2 != null ? safe$2.getC$priv$() : null;
                 );
-                final C x2 = (C)(
+                final C x2 = (
                     let
                     {
-                        C safe$3 = (C)getC2$priv$();
+                        C safe$3 = getC2$priv$();
                     }
                     returning safe$3 != null ? safe$3.getC2$priv$() : null;
                 );

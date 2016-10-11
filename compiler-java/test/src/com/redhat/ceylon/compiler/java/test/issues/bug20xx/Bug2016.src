@@ -8,7 +8,7 @@ public final class bug2016_ {
     public static void bug2016() {
         final .ceylon.language.Integer wordBoundary = null;
         {
-            .ceylon.language.Integer sel$0 = (.ceylon.language.Integer)wordBoundary;
+            .ceylon.language.Integer sel$0 = wordBoundary;
             if (sel$0 == null) {
                 final .java.lang.Object wordBoundary$2 = (.java.lang.Object)sel$0;
             } else if (sel$0 != null && sel$0.longValue() == 0L) {

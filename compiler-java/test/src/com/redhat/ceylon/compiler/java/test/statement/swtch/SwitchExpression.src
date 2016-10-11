@@ -36,7 +36,7 @@ final class switchExpression_ {
                     .java.lang.Object sel$5 = val2;
                     if (sel$5 == null || sel$5 instanceof .ceylon.language.String) {
                         final .ceylon.language.String val2$7 = (.ceylon.language.String)sel$5;
-                        $ceylontmp$ifResult$4 = (.ceylon.language.String)val2$7;
+                        $ceylontmp$ifResult$4 = val2$7;
                     } else {
                         final .java.lang.Object val2$6 = (.java.lang.Object)sel$5;
                         $ceylontmp$ifResult$4 = .ceylon.language.String.instance("asd");
@@ -87,7 +87,7 @@ class SwitchExpressionBottom extends .com.redhat.ceylon.compiler.java.test.state
                     .java.lang.Object sel$12 = val;
                     if (sel$12 == null || sel$12 instanceof .ceylon.language.String) {
                         final .ceylon.language.String val$14 = (.ceylon.language.String)sel$12;
-                        $ceylontmp$ifResult$11 = (.ceylon.language.String)val$14;
+                        $ceylontmp$ifResult$11 = val$14;
                     } else {
                         final .java.lang.Object val$13 = (.java.lang.Object)sel$12;
                         $ceylontmp$ifResult$11 = .ceylon.language.String.instance("asd");
@@ -102,7 +102,7 @@ class SwitchExpressionBottom extends .com.redhat.ceylon.compiler.java.test.state
             {
                 double $ceylontmp$ifResult$15;
                 {
-                    .ceylon.language.Integer sel$16 = (.ceylon.language.Integer)arg;
+                    .ceylon.language.Integer sel$16 = arg;
                     if (sel$16 == null) {
                         $ceylontmp$ifResult$15 = 0.0;
                     } else if (sel$16 != null) {
@@ -121,7 +121,7 @@ class SwitchExpressionBottom extends .com.redhat.ceylon.compiler.java.test.state
             {
                 .java.lang.String $ceylontmp$ifResult$18;
                 {
-                    .ceylon.language.Integer sel$19 = (.ceylon.language.Integer)arg;
+                    .ceylon.language.Integer sel$19 = arg;
                     if (sel$19 == null) {
                         $ceylontmp$ifResult$18 = "null";
                     } else if (sel$19 != null) {
@@ -140,7 +140,7 @@ class SwitchExpressionBottom extends .com.redhat.ceylon.compiler.java.test.state
             {
                 .java.lang.Object $ceylontmp$ifResult$21;
                 {
-                    .ceylon.language.Integer sel$22 = (.ceylon.language.Integer)arg;
+                    .ceylon.language.Integer sel$22 = arg;
                     if (sel$22 == null) {
                         $ceylontmp$ifResult$21 = .ceylon.language.Float.instance(0.0);
                     } else if (sel$22 != null) {
@@ -159,7 +159,7 @@ class SwitchExpressionBottom extends .com.redhat.ceylon.compiler.java.test.state
             {
                 .ceylon.language.Float $ceylontmp$ifResult$24;
                 {
-                    .ceylon.language.Integer sel$25 = (.ceylon.language.Integer)arg;
+                    .ceylon.language.Integer sel$25 = arg;
                     if (sel$25 == null) {
                         $ceylontmp$ifResult$24 = .ceylon.language.Float.instance(0.0);
                     } else if (sel$25 != null) {
