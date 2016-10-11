@@ -840,7 +840,7 @@ public class CeylonVisitor extends Visitor {
     }
 
     public void visit(Tree.DefaultOp op) {
-        append(gen.expressionGen().transform(op, null));
+        append(gen.expressionGen().transform(op));
     }
 
     public void visit(Tree.ThenOp op) {
@@ -1013,7 +1013,7 @@ public class CeylonVisitor extends Visitor {
     }
 
     public void visit(Tree.FunctionArgument fn) {
-        append(gen.expressionGen().transform(fn, fn.getTypeModel()));
+        append(gen.expressionGen().transform(fn));
     }
 
     public void visit(Tree.ModuleDescriptor that) {

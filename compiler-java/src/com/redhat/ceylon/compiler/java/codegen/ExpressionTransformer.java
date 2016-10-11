@@ -204,6 +204,9 @@ public class ExpressionTransformer extends AbstractTransformer {
     private Naming.SyntheticName memberPrimary = null;
     private ClassOrInterface withinSuperInvocation = null;
     private ClassOrInterface withinDefaultParameterExpression = null;
+
+    private Type expectedType;
+    private boolean coerced;
     
     public static ExpressionTransformer getInstance(Context context) {
         ExpressionTransformer trans = context.get(ExpressionTransformer.class);
@@ -325,56 +328,38 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         
         JCExpression result;
-        if(term instanceof Tree.SequenceEnumeration){
-            // special case to be able to pass expected type to sequences
-            result = transform((Tree.SequenceEnumeration)term, expectedType);
-        }else if(term instanceof Tree.DefaultOp){
-            // special case to be able to pass expected type to else op
-            result = transform((Tree.DefaultOp)term, expectedType);
-        }else if(term instanceof Tree.LetExpression){
-            // special case to be able to pass expected type to let op
-            result = transform((Tree.LetExpression)term, expectedType);
-        }else if(term instanceof Tree.FunctionArgument){
-            // special case to be able to pass expected type to lambdas
-            result = transform((Tree.FunctionArgument)term, expectedType);
-        }else if(term instanceof Tree.IfExpression){
-            // special case to be able to pass expected type to if op
-            result = transform((Tree.IfExpression)term, expectedType);
+        if(term instanceof Tree.IfExpression){
             flags |= EXPR_IS_NOT_BASE_MEMBER;
-        }else if(term instanceof Tree.SwitchExpression){
-            // special case to be able to pass expected type to switch op
-            result = transform((Tree.SwitchExpression)term, expectedType);
-        }else if(term instanceof Tree.BaseMemberExpression){
-            // special case to be able to pass expected type to function refs
-            // only the outer Expression is marked as Coerced, but we don't deal with function coercion here,
-            // we do it in transformMemberExpression, so let's not lose it
-            result = transformMemberExpression((Tree.BaseMemberExpression)term, null, null, expectedType,
-                                               (flags & EXPR_IS_COERCED) != 0);
-        }else{
-            CeylonVisitor v = gen().visitor;
-            final ListBuffer<JCTree> prevDefs = v.defs;
-            final boolean prevInInitializer = v.inInitializer;
-            final ClassDefinitionBuilder prevClassBuilder = v.classBuilder;
-            try {
-                v.defs = new ListBuffer<JCTree>();
-                v.inInitializer = false;
-                v.classBuilder = gen().current();
-                term.visit(v);
-                if (v.hasResult()) {
-                    result = v.getSingleResult();
-                    if (result == null) {
-                        throw new BugException(term, "visitor yielded multiple results");
-                    }
-                } else {
-                    throw new BugException(term, "visitor didn't yield any result");
+        }
+        CeylonVisitor v = gen().visitor;
+        final ListBuffer<JCTree> prevDefs = v.defs;
+        final boolean prevInInitializer = v.inInitializer;
+        final ClassDefinitionBuilder prevClassBuilder = v.classBuilder;
+        final Type prevExpectedType = this.expectedType;
+        final boolean prevCoerced = this.coerced;
+        try {
+            v.defs = new ListBuffer<JCTree>();
+            v.inInitializer = false;
+            v.classBuilder = gen().current();
+            this.expectedType = expectedType;
+            this.coerced = (flags & EXPR_IS_COERCED) != 0;
+            term.visit(v);
+            if (v.hasResult()) {
+                result = v.getSingleResult();
+                if (result == null) {
+                    throw new BugException(term, "visitor yielded multiple results");
                 }
-            } catch (BugException e) {
-                result = e.makeErroneous(this, expr);
-            } finally {
-                v.classBuilder = prevClassBuilder;
-                v.inInitializer = prevInInitializer;
-                v.defs = prevDefs;
+            } else {
+                throw new BugException(term, "visitor didn't yield any result");
             }
+        } catch (BugException e) {
+            result = e.makeErroneous(this, expr);
+        } finally {
+            v.classBuilder = prevClassBuilder;
+            v.inInitializer = prevInInitializer;
+            v.defs = prevDefs;
+            this.coerced = prevCoerced;
+            this.expectedType = prevExpectedType;
         }
 
         if ((flags & EXPR_TARGET_ACCEPTS_NULL) == 0
@@ -390,6 +375,16 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     JCExpression transform(Tree.FunctionArgument functionArg, Type expectedType) {
+        Type prevExpectedType = this.expectedType;
+        try{
+            this.expectedType = expectedType;
+            return transform(functionArg);
+        }finally{
+            this.expectedType = prevExpectedType;
+        }
+    }
+    
+    JCExpression transform(Tree.FunctionArgument functionArg) {
         Function model = functionArg.getDeclarationModel();
         List<JCStatement> body;
         boolean prevNoExpressionlessReturn = statementGen().noExpressionlessReturn;
@@ -1658,11 +1653,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return make().Apply(null, makeSelect(builder, "toString"), List.<JCExpression>nil());
     }
 
-    public JCExpression transform(Tree.SequenceEnumeration value) {
-        return transform(value, null);
-    }
-    
-    private JCExpression transform(Tree.SequenceEnumeration value, Type expectedType) {
+    JCExpression transform(Tree.SequenceEnumeration value) {
         at(value);
         if (value.getSequencedArgument() != null) {
             Tree.SequencedArgument sequencedArgument = value.getSequencedArgument();
@@ -2030,7 +2021,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         return at(op).NewClass(null, null, typeExpr , List.<JCExpression> of(makeReifiedTypeArgument(leftType), makeReifiedTypeArgument(rightType), key, elem), null);
     }
 
-    public JCExpression transform(Tree.DefaultOp op, Type expectedType) {
+    public JCExpression transform(Tree.DefaultOp op) {
         Term elseTerm = unwrapExpressionUntilTerm(op.getRightTerm());
         Type typeModel = typeFact().denotableType(op.getTypeModel());
         // make sure we do not insert null checks if we're going to allow testing for null
@@ -4861,12 +4852,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
 
-    private JCExpression transformMemberExpression(Tree.StaticMemberOrTypeExpression expr, JCExpression primaryExpr, TermTransformer transformer) {
-        return transformMemberExpression(expr, primaryExpr, transformer, null, false);
-    }
-    
     private JCExpression transformMemberExpression(Tree.StaticMemberOrTypeExpression expr, JCExpression primaryExpr, 
-            TermTransformer transformer, Type expectedType, boolean coerced) {
+            TermTransformer transformer) {
         JCExpression result = null;
 
         // do not throw, an error will already have been reported
@@ -7415,11 +7402,6 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.IfExpression op) {
-        return transformIf(op, op.getTypeModel());
-    }
-    
-    // this one does not trust the expected type
-    public JCExpression transform(Tree.IfExpression op, Type expectedType) {
         return transformIf(op, getExpectedTypeForJavaNullChecks(op, expectedType));
     }
     
@@ -7440,11 +7422,6 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
 
     public JCExpression transform(Tree.SwitchExpression op) {
-        return transformSwitch(op, op.getTypeModel());
-    }
-
-    // this one does not trust the expected type
-    public JCExpression transform(Tree.SwitchExpression op, Type expectedType) {
         return transformSwitch(op, getExpectedTypeForJavaNullChecks(op, expectedType));
     }
     
@@ -7461,12 +7438,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                               List.<JCStatement>of(switchExpr), makeUnquotedIdent(tmpVar));
     }
 
-    public JCExpression transform(Tree.LetExpression op) {
-        return transformLet(op, op.getTypeModel());
-    }
-
-    // this one does not trust the given expected type
-    public JCExpression transform(LetExpression op, Type expectedType) {
+    public JCExpression transform(LetExpression op) {
         return transformLet(op, getExpectedTypeForJavaNullChecks(op, expectedType));
     }
     
