@@ -5581,18 +5581,14 @@ public class ExpressionVisitor extends Visitor {
                 Interface ld = unit.getListDeclaration();
                 Interface sd = unit.getSetDeclaration();
                 Interface md = unit.getMapDeclaration();
-                Class id = unit.getIntegerDeclaration();
-                Class fd = unit.getFloatDeclaration();
                 if (!(lhst.getDeclaration().inherits(ld) &&
                       rhst.getDeclaration().inherits(ld)) &&
                     !(lhst.getDeclaration().inherits(sd) &&
                       rhst.getDeclaration().inherits(sd)) &&
                     !(lhst.getDeclaration().inherits(md) &&
                       rhst.getDeclaration().inherits(md)) &&
-                    !(lhst.isClass() && lhst.getDeclaration().equals(id) &&
-                      rhst.isClass() && rhst.getDeclaration().equals(fd)) &&
-                    !(lhst.isClass() && lhst.getDeclaration().equals(fd) &&
-                      rhst.isClass() && rhst.getDeclaration().equals(id))) {
+                    !(lhst.isInteger() && rhst.isFloat()) &&
+                    !(lhst.isFloat() && rhst.isInteger())) {
                     that.addUsageWarning(Warning.disjointEquals, 
                             "tests equality for operands with disjoint types: '" +
                             lhst.asString(unit) + "' and '" +
