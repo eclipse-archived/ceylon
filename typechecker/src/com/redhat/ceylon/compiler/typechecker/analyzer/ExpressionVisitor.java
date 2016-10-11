@@ -5595,6 +5595,26 @@ public class ExpressionVisitor extends Visitor {
                             rhst.asString(unit) + "' are disjoint");
                 }
             }
+            if (lhst.isCallable()) {
+                that.getLeftTerm()
+                    .addUsageWarning(Warning.expressionTypeCallable,
+                            "equality test not meaningful for function references: expression is of type 'Callable'");
+            }
+            if (rhst.isCallable()) {
+                that.getRightTerm()
+                    .addUsageWarning(Warning.expressionTypeCallable,
+                            "equality test not meaningful for function references: expression is of type 'Callable'");
+            }
+            if (lhst.isIterable()) {
+                that.getLeftTerm()
+                    .addUsageWarning(Warning.expressionTypeIterable,
+                            "equality test not meaningful for abstract streams: expression is of type 'Iterable'");
+            }
+            if (rhst.isIterable()) {
+                that.getRightTerm()
+                    .addUsageWarning(Warning.expressionTypeIterable,
+                            "equality test not meaningful for abstract streams: expression is of type 'Iterable'");
+            }
         }
         that.setTypeModel(unit.getBooleanType());
     }

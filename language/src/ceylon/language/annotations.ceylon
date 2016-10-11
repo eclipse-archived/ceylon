@@ -365,6 +365,7 @@ shared annotation SuppressWarningsAnnotation suppressWarnings(
      `doclink`,
      `expressionTypeNothing`,
      `expressionTypeCallable`,
+     `expressionTypeIterable`,
      `unusedDeclaration`,
      `unusedImport`,
      `ceylonNamespace`,
