@@ -742,6 +742,10 @@ public abstract class AbstractTransformer implements Transformation {
         // that implements a stricter test used in the type checker.
         return typeFact().getNullValueDeclaration().getType().isSubtypeOf(type) && !type.isNull();
     }
+
+    boolean isExactlyNull(Type type) {
+        return type.isNull();
+    }
     
     boolean isNull(Type type) {
         return type.getSupertype(typeFact.getNullDeclaration()) != null;
@@ -1496,9 +1500,9 @@ public abstract class AbstractTransformer implements Transformation {
             java.util.List<Type> caseTypes = type.getCaseTypes();
             // special case for optional types
             if(caseTypes.size() == 2){
-                if(isOptional(caseTypes.get(0)))
+                if(isExactlyNull(caseTypes.get(0)))
                     return hasErasureResolved(caseTypes.get(1));
-                if(isOptional(caseTypes.get(1)))
+                if(isExactlyNull(caseTypes.get(1)))
                     return hasErasureResolved(caseTypes.get(0));
             }
             // must be erased
