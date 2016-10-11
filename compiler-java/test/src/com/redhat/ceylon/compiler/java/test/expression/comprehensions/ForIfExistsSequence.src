@@ -34,7 +34,7 @@ class ForIfExistsSequence implements .com.redhat.ceylon.compiler.java.runtime.mo
                             if (!this.x()) break ifcomp_1;
                             final .ceylon.language.Sequential<? extends .ceylon.language.Integer> x = this.x;
                             .ceylon.language.Integer y$1 = null;
-                            if ((y$1 = (.ceylon.language.Integer)(.java.lang.Object)(.ceylon.language.Integer)x.getFromFirst(0L)) != null) {
+                            if ((y$1 = x.getFromFirst(0L)) != null) {
                                 y$2 = y$1.longValue();
                                 break ifcomp_1;
                             }

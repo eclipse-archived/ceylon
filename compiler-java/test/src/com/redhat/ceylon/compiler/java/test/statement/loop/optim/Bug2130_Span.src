@@ -88,7 +88,7 @@ final class compareSpanInteger2130_ {
                 if ((expect$6 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)expect) != null) {
                     final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect$7 = expect$6;
                     .ceylon.language.Integer expected$9;
-                    if ((expected$9 = (.ceylon.language.Integer)(.java.lang.Object)(.ceylon.language.Integer)expect$7.getFromFirst(index.ref)) != null) {
+                    if ((expected$9 = expect$7.getFromFirst(index.ref)) != null) {
                         final long expected$10 = expected$9.longValue();
                         if (!(i == expected$10)) {
                             problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index.ref).append(": got ").append(i).append(" expected ").append(expected$10).toString())}, problems.ref);
@@ -152,7 +152,7 @@ final class compareSpanInteger2130_ {
                     if ((expect$28 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)expect) != null) {
                         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect$29 = expect$28;
                         .ceylon.language.Integer expected$31;
-                        if ((expected$31 = (.ceylon.language.Integer)(.java.lang.Object)(.ceylon.language.Integer)expect$29.getFromFirst(index2.ref)) != null) {
+                        if ((expected$31 = expect$29.getFromFirst(index2.ref)) != null) {
                             final long expected$32 = expected$31.longValue();
                             if (!(i == expected$32)) {
                                 problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index2.ref).append(": got ").append(i).append(" expected ").append(expected$32).toString())}, problems.ref);
@@ -332,7 +332,7 @@ final class compareSpanIntegerBy2130_ {
                 if ((expect$63 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)expect) != null) {
                     final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect$64 = expect$63;
                     .ceylon.language.Integer expected$66;
-                    if ((expected$66 = (.ceylon.language.Integer)(.java.lang.Object)(.ceylon.language.Integer)expect$64.getFromFirst(index.ref)) != null) {
+                    if ((expected$66 = expect$64.getFromFirst(index.ref)) != null) {
                         final long expected$67 = expected$66.longValue();
                         if (!(i == expected$67)) {
                             problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index.ref).append(": got ").append(i).append(" expected ").append(expected$67).toString())}, problems.ref);
@@ -401,7 +401,7 @@ final class compareSpanIntegerBy2130_ {
                     if ((expect$87 = (.ceylon.language.Sequential<? extends .ceylon.language.Integer>)(.ceylon.language.Sequential)expect) != null) {
                         final .ceylon.language.Sequential<? extends .ceylon.language.Integer> expect$88 = expect$87;
                         .ceylon.language.Integer expected$90;
-                        if ((expected$90 = (.ceylon.language.Integer)(.java.lang.Object)(.ceylon.language.Integer)expect$88.getFromFirst(index2.ref)) != null) {
+                        if ((expected$90 = expect$88.getFromFirst(index2.ref)) != null) {
                             final long expected$91 = expected$90.longValue();
                             if (!(i == expected$91)) {
                                 problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index2.ref).append(": got ").append(i).append(" expected ").append(expected$91).toString())}, problems.ref);
@@ -559,7 +559,7 @@ final class compareSpanCharacter2130_ {
                 if ((expect$124 = (.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)expect) != null) {
                     final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect$125 = expect$124;
                     .ceylon.language.Character expected$127;
-                    if ((expected$127 = (.ceylon.language.Character)(.java.lang.Object)(.ceylon.language.Character)expect$125.getFromFirst(index.ref)) != null) {
+                    if ((expected$127 = expect$125.getFromFirst(index.ref)) != null) {
                         final int expected$128 = expected$127.intValue();
                         if (!(i == expected$128)) {
                             problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index.ref).append(": got ").appendCodePoint(i).append(" expected ").appendCodePoint(expected$128).toString())}, problems.ref);
@@ -624,7 +624,7 @@ final class compareSpanCharacter2130_ {
                     if ((expect$147 = (.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)expect) != null) {
                         final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect$148 = expect$147;
                         .ceylon.language.Character expected$150;
-                        if ((expected$150 = (.ceylon.language.Character)(.java.lang.Object)(.ceylon.language.Character)expect$148.getFromFirst(index2.ref)) != null) {
+                        if ((expected$150 = expect$148.getFromFirst(index2.ref)) != null) {
                             final int expected$151 = expected$150.intValue();
                             if (!(i == expected$151)) {
                                 problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index2.ref).append(": got ").appendCodePoint(i).append(" expected ").appendCodePoint(expected$151).toString())}, problems.ref);
@@ -783,7 +783,7 @@ final class compareSpanCharacterBy2130_ {
                 if ((expect$181 = (.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)expect) != null) {
                     final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect$182 = expect$181;
                     .ceylon.language.Character expected$184;
-                    if ((expected$184 = (.ceylon.language.Character)(.java.lang.Object)(.ceylon.language.Character)expect$182.getFromFirst(index.ref)) != null) {
+                    if ((expected$184 = expect$182.getFromFirst(index.ref)) != null) {
                         final int expected$185 = expected$184.intValue();
                         if (!(i == expected$185)) {
                             problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index.ref).append(": got ").appendCodePoint(i).append(" expected ").appendCodePoint(expected$185).toString())}, problems.ref);
@@ -850,7 +850,7 @@ final class compareSpanCharacterBy2130_ {
                     if ((expect$205 = (.ceylon.language.Sequential<? extends .ceylon.language.Character>)(.ceylon.language.Sequential)expect) != null) {
                         final .ceylon.language.Sequential<? extends .ceylon.language.Character> expect$206 = expect$205;
                         .ceylon.language.Character expected$208;
-                        if ((expected$208 = (.ceylon.language.Character)(.java.lang.Object)(.ceylon.language.Character)expect$206.getFromFirst(index2.ref)) != null) {
+                        if ((expected$208 = expect$206.getFromFirst(index2.ref)) != null) {
                             final int expected$209 = expected$208.intValue();
                             if (!(i == expected$209)) {
                                 problems.ref = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance(new .java.lang.StringBuilder().append("iterated over unexpected element on index ").append(index2.ref).append(": got ").appendCodePoint(i).append(" expected ").appendCodePoint(expected$209).toString())}, problems.ref);
