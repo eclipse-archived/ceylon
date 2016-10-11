@@ -3,6 +3,7 @@ package com.redhat.ceylon.compiler.js.loader;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_ANNOTATIONS;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_ATTRIBUTES;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_CLASSES;
+import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_CONSTRUCTOR;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_CONSTRUCTORS;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_DEFAULT;
 import static com.redhat.ceylon.compiler.js.loader.MetamodelGenerator.KEY_DS_VARIANCE;
@@ -49,6 +50,7 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.js.CompilerErrorException;
 import com.redhat.ceylon.model.typechecker.model.Annotation;
+import com.redhat.ceylon.model.typechecker.model.ClassAlias;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
@@ -262,6 +264,17 @@ public class JsonPackage extends LazyPackage {
             }
         }
 
+        if (cls instanceof ClassAlias) {
+            ClassAlias ca = (ClassAlias) cls;
+            if (m.containsKey(KEY_CONSTRUCTOR)) {
+                String constructorName = (String) m.get(KEY_CONSTRUCTOR);
+                Function ctorFn = (Function) ca.getExtendedType().getDeclaration().getDirectMember(constructorName, null, false);
+                ca.setConstructor(ctorFn.getType().getDeclaration());
+            }
+            else {
+                ca.setConstructor(ca.getExtendedType().getDeclaration());
+            }
+        }
         if (m.containsKey(KEY_CONSTRUCTORS)) {
             final Map<String,Map<String,Object>> constructors = (Map<String,Map<String,Object>>)m.remove(
                     KEY_CONSTRUCTORS);
