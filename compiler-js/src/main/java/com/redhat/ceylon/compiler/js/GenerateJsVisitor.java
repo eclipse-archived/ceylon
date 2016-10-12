@@ -1219,13 +1219,14 @@ public class GenerateJsVisitor extends Visitor {
                     || n instanceof Tree.AttributeGetterDefinition
                     || (n instanceof Tree.AttributeDeclaration
                             && ((Tree.AttributeDeclaration)n).getSpecifierOrInitializerExpression() != null))) {
-                String missingDeclarationName = d.getQualifiedNameString();
-                if (d.getName() == null && d instanceof Constructor) {
-                    missingDeclarationName = missingDeclarationName.substring(0, missingDeclarationName.length()-4)
-                            + "<default constructor>";
+                String missingDeclarationName = d.getName();
+                if (missingDeclarationName == null && d instanceof Constructor) {
+                    missingDeclarationName = "default constructor";
                 }
-                final String err = "no native implementation for backend: native '"
-                        + d.getName(d.getUnit()) + "' is not implemented the 'js' backend";
+                final String err = 
+                        "no native implementation for backend: native '"
+                        + missingDeclarationName 
+                        + "' is not implemented for the 'js' backend";
                 n.addError(err, Backend.JavaScript);
                 out("/*", err, "*/");
             }
