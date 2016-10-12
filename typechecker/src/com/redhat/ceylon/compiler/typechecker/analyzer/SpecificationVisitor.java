@@ -522,10 +522,19 @@ public class SpecificationVisitor extends Visitor {
     @Override
     public void visit(Tree.AssignOp that) {
         Tree.Term lt = that.getLeftTerm();
-        if (isEffectivelyBaseMemberExpression(lt)) {
-            Tree.StaticMemberOrTypeExpression m = 
+        if (lt instanceof Tree.IndexExpression) {
+            Tree.IndexExpression ie =
+                    (Tree.IndexExpression) lt;
+            Tree.Term p = ie.getPrimary();
+            if (p!=null) {
+                p.visit(this);
+            }
+            ie.getElementOrRange().visit(this);
+        }
+        else if (isEffectivelyBaseMemberExpression(lt)) {
+            Tree.StaticMemberOrTypeExpression me = 
                     (Tree.StaticMemberOrTypeExpression) lt;
-            Declaration member = m.getDeclaration();
+            Declaration member = me.getDeclaration();
             if (member==declaration) {
                 if (that.getRightTerm()!=null) {
                     that.getRightTerm().visit(this);

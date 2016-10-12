@@ -1325,3 +1325,8 @@ void specificationInLoop12() {
     }
     print(x);
 }
+
+void indexExpressionDefSpec() {
+    Array<String> ds;
+    @error ds[0] = "hello";
+}
