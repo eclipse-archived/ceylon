@@ -309,14 +309,14 @@ public class SpecificationVisitor extends Visitor {
             if (!assigned && declaration.isDefault() && 
                     !isForwardReferenceable()) {
                 that.addError("default member may not be used in initializer: " + 
-                        name()+
+                        name() +
                         " is declared 'default'"); 
             }
             if (inAnonFunctionOrComprehension && 
                 definitely && 
                 isVariable()) {
-                that.addError("variable member may not be captured by comprehension or function in extends clause: "+
-                        name()+
+                that.addError("member may not be captured by comprehension or function in extends clause: "+
+                        name() +
                         " is declared 'variable'");
             }
         }
