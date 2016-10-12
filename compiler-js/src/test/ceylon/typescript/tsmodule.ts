@@ -39,3 +39,31 @@ export class StringBox {
 export function makeIStringBox(s: string): IStringBox {
     return new StringBox(s);
 }
+export enum NonConstEnum {
+    Zero,
+    One,
+    Two = 2,
+    Four = 4,
+    Three = 3,
+    FortyTwo = 42,
+    ThirteenDotThreeSeven = 13.37,
+    MinusOne = -1,
+    Eight = 1 << 3,
+    Twelve = Four | Eight,
+    CounterFromThousand = 1000
+}
+export function incrementNonConstEnumCounter(): void {
+    eval("(function(nce){nce.CounterFromThousand++})")(NonConstEnum);
+}
+export const enum ConstEnum {
+    Zero,
+    One,
+    Two = 2,
+    Four = 4,
+    Three = 3,
+    FortyTwo = 42,
+    ThirteenDotThreeSeven = 13.37,
+    MinusOne = -1,
+    Eight = 1 << 3,
+    Twelve = Four | Eight
+}
