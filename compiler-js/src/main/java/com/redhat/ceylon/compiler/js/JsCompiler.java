@@ -688,10 +688,14 @@ public class JsCompiler {
         String name = d.getName();
         if (name == null && d instanceof Constructor) {
             name = "default$constructor";
-            fqn = fqn.substring(0, fqn.length()-4) + name;
+            fqn = fqn + name;
         }
-        if (fqn.startsWith("ceylon.language"))fqn = fqn.substring(15);
-        if (fqn.startsWith("::"))fqn=fqn.substring(2);
+        if (fqn.startsWith("ceylon.language")) {
+            fqn = fqn.substring(15);
+        }
+        if (fqn.startsWith("::")) {
+            fqn=fqn.substring(2);
+        }
         fqn = fqn.replace('.', '/').replace("::", "/");
         File path;
         if (isCompilingLanguageModule()) {
