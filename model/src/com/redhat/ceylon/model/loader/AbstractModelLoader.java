@@ -1442,7 +1442,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // the subclasses class get the constructor modifiers
                 setNonLazyDeclarationProperties(subdecl2, constructor, constructor, classMirror, isCeylon);
                 
-                subdecl.setOverloaded(true);
+                subdecl2.setOverloaded(true);
                 overloads.add(subdecl2);
                 decls.add(subdecl2);
             }
