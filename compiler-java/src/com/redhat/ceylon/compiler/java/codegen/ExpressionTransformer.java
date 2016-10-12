@@ -3028,12 +3028,24 @@ public class ExpressionTransformer extends AbstractTransformer {
             if (!expr.getSmall() && invocation.getParameterSmall(argIndex)) {
                 flags |=  ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK;
             }
-            if(invocation.isParameterCoerced(argIndex)){
+            boolean coerced = invocation.isParameterCoerced(argIndex);
+            if(coerced){
                 flags |=  ExpressionTransformer.EXPR_IS_COERCED;
             }
             JCExpression ret = transformExpression(expr, 
                     boxingStrategy, 
                     type, flags);
+            
+            // We can coerce most SAMs in transformExpression, EXCEPT invocation
+            // calls which we do here.
+            Term term = Decl.unwrapExpressionsUntilTerm(expr);
+            if (coerced
+                    && term instanceof Tree.InvocationExpression
+                    && isFunctionalResult(term.getTypeModel())
+                    && checkForFunctionalInterface(type) != null) {
+                return transformFunctionalInterfaceBridge((Tree.InvocationExpression)term, ret, type);
+            }
+
             return ret;
         } else {
             // Overloaded methods don't have a reference to a parameter
@@ -4126,6 +4138,25 @@ public class ExpressionTransformer extends AbstractTransformer {
                     paramList, expectedType, expr.getTypeModel(), false);
     }
 
+    public JCExpression transformFunctionalInterfaceBridge(Tree.InvocationExpression expr,
+            JCExpression primaryExpr, Type expectedType) {
+        ParameterList paramList = new ParameterList();
+        int i=0;
+        Type callableType = expr.getTypeModel().getSupertype(typeFact().getCallableDeclaration());
+        for(Type type : typeFact().getCallableArgumentTypes(callableType)){
+            Parameter param = new Parameter();
+            Value paramModel = new Value();
+            param.setModel(paramModel);
+            param.setName("arg"+i);
+            paramModel.setName("arg"+i);
+            paramModel.setType(type);
+            paramList.getParameters().add(param);
+            i++;
+        }
+        return CallableBuilder.callableToFunctionalInterface(gen(), expr, 
+                    paramList, expectedType, expr.getTypeModel(), false, primaryExpr);
+    }
+
     public JCExpression transformCallableBridge(Tree.StaticMemberOrTypeExpression expr,
             Value functional, Type expectedType) {
         ParameterList paramList = new ParameterList();
@@ -4195,6 +4226,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         Declaration member = expr.getDeclaration();
         Type qualifyingType = primary.getTypeModel();
         Tree.TypeArguments typeArguments = expr.getTypeArguments();
+        Type expectedTypeIfCoerced = coerced ? expectedType : null;
         boolean prevSyntheticClassBody = withinSyntheticClassBody(true);
         try {
             if (member.isStatic()) {
@@ -4206,7 +4238,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                             expr,
                             expr.getTypeModel(), 
                             method, 
-                            producedReference).build();
+                            producedReference,
+                            expectedTypeIfCoerced).build();
                 } else if (member instanceof FieldValue) {
                     return naming.makeName(
                             (TypedDeclaration)member, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED);
@@ -4233,7 +4266,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                             expr,
                             expr.getTypeModel(), 
                             (Class)member, 
-                            producedReference).build();
+                            producedReference,
+                            expectedTypeIfCoerced).build();
                 }
             } 
             if (member instanceof Value) {
@@ -4255,7 +4289,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 gen(),
                                 expr,
                                 expr.getTypeModel(), 
-                                ((TypedDeclaration)member)).build();
+                                ((TypedDeclaration)member),
+                                expectedTypeIfCoerced).build();
                         else{
                             qualExpr = primary instanceof Tree.QualifiedMemberOrTypeExpression ? transformExpression(((Tree.QualifiedMemberOrTypeExpression)primary).getPrimary()) : null;
                             callBuilder.invoke(naming.makeQualifiedName(qualExpr, (TypedDeclaration)member, Naming.NA_GETTER | Naming.NA_MEMBER));
@@ -4273,7 +4308,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                             gen(),
                             expr,
                             expr.getTypeModel(), 
-                            ((TypedDeclaration)member)).build();
+                            ((TypedDeclaration)member),
+                            expectedTypeIfCoerced).build();
                 }
             } else if (Decl.isConstructor(member)) {
                 Reference producedReference = expr.getTarget();
@@ -4282,7 +4318,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                         expr,
                         expr.getTypeModel(), 
                         Decl.getConstructor(member), 
-                        producedReference);
+                        producedReference,
+                        expectedTypeIfCoerced);
             } else if (member instanceof Function) {
                 Function method = (Function)member;
                 if (!method.isParameter()) {
@@ -4292,7 +4329,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                             expr,
                             expr.getTypeModel(), 
                             method, 
-                            producedReference);
+                            producedReference,
+                            expectedTypeIfCoerced);
                 } else {
                     Reference producedReference = method.appliedReference(qualifyingType, typeArguments.getTypeModels());
                     return CallableBuilder.unboundFunctionalMemberReference(
@@ -4300,7 +4338,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                             expr,
                             expr.getTypeModel(), 
                             method, 
-                            producedReference);
+                            producedReference,
+                            expectedTypeIfCoerced);
                 }
             } else if (member instanceof Class) {
                 Reference producedReference = expr.getTarget();
@@ -4309,7 +4348,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                         expr,
                         expr.getTypeModel(), 
                         (Class)member, 
-                        producedReference);
+                        producedReference,
+                        expectedTypeIfCoerced);
             } else {
                 return makeErroneous(expr, "compiler bug: member reference of " + expr + " not supported yet");
             }
@@ -6781,7 +6821,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             && !type.isNothing()
             && isCeylonCallableSubtype(type);   
     }
-
+    
     boolean isJavaFunctionalInterfaceResult(Type type) {
         return !isWithinInvocation()
             && !type.isNothing()

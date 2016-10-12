@@ -1102,6 +1102,7 @@ class CallableInvocation extends DirectInvocation {
 
     private Naming.SyntheticName instanceFieldName;
     private boolean instanceFieldIsBoxed;
+    private boolean isCallableToFunctionalInterfaceBridge;
 
     public CallableInvocation(
             AbstractTransformer gen, Naming.SyntheticName primaryName, boolean primaryIsBoxed, Tree.Term primary,
@@ -1122,6 +1123,10 @@ class CallableInvocation extends DirectInvocation {
             }
         }else if(primary instanceof Tree.FunctionArgument)
             functional = ((Tree.FunctionArgument) primary).getDeclarationModel();
+        else if(primary instanceof Tree.InvocationExpression){
+            useParameterList = true;
+            isCallableToFunctionalInterfaceBridge = true;
+        }
         if(useParameterList)
             callableParameters = parameterList.getParameters();
         else if(functional != null)
@@ -1223,12 +1228,19 @@ class CallableInvocation extends DirectInvocation {
                 transformedSelector = samRef.getDeclaration().getName();
             else
                 transformedSelector = Naming.getCallableMethodName();
+        }else if(isCallableToFunctionalInterfaceBridge){
+            transformedSelector = Naming.getCallableMethodName();
         }
         return new TransformedInvocationPrimary(transformedPrimary, transformedSelector);
     }
     
     public Constructor getConstructor() {
         return getConstructorFromPrimary(appliedReference().getDeclaration());
+    }
+    @Override
+    protected void addReifiedArguments(ListBuffer<ExpressionAndType> result) {
+        if(!isCallableToFunctionalInterfaceBridge)
+            super.addReifiedArguments(result);
     }
 }
 
