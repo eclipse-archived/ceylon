@@ -12,7 +12,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 8)
-@Class
+@Class(constructors = true)
 @CaseTypes({"ceylon.language::true", "ceylon.language::false"})
 @SatisfiedTypes({})
 @ValueType
@@ -44,7 +44,10 @@ public abstract class Boolean
         return bool!=null ? bool : 
                 new ParseException("illegal format for Boolean");
     }
-    
+
+    @SharedAnnotation$annotation$
+    public Boolean(){}
+
     @Ignore
     public static java.lang.String toString(boolean value) {
         return value ? "true" : "false";
