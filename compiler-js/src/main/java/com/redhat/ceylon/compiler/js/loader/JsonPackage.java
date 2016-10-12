@@ -339,22 +339,25 @@ public class JsonPackage extends LazyPackage {
             cls.setSatisfiedTypes(parseTypeList(stypes, allparms));
         }
         if (m.containsKey(KEY_OBJECTS)) {
-            for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.remove(KEY_OBJECTS)).entrySet()) {
+            for (Map.Entry<String,Map<String,Object>> inner : ((Map<String,Map<String,Object>>)m.get(KEY_OBJECTS)).entrySet()) {
                 loadObject(inner.getKey(), inner.getValue(), cls, allparms);
             }
+            m.remove(KEY_OBJECTS);
         }
         addAttributesAndMethods(m, cls, allparms);
         if (m.containsKey(KEY_INTERFACES)) {
-            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.remove(KEY_INTERFACES);
+            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.get(KEY_INTERFACES);
             for (Map.Entry<String,Map<String,Object>> cdef : cdefs.entrySet()) {
                 loadInterface(cdef.getKey(), cdef.getValue(), cls, allparms);
             }
+            m.remove(KEY_INTERFACES);
         }
         if (m.containsKey(KEY_CLASSES)) {
-            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.remove(KEY_CLASSES);
+            Map<String,Map<String,Object>> cdefs = (Map<String,Map<String,Object>>)m.get(KEY_CLASSES);
             for (Map.Entry<String,Map<String,Object>> cdef : cdefs.entrySet()) {
                 loadClass(cdef.getKey(), cdef.getValue(), cls, allparms);
             }
+            m.remove(KEY_CLASSES);
         }
         if (cls.isDynamic() &&
                 (getModule().getJsMajor()<9 ||
@@ -1059,7 +1062,7 @@ public class JsonPackage extends LazyPackage {
         final List<Map<String,Object>> modelParms = (List<Map<String,Object>>)m.get(KEY_TYPE_PARAMS);
         if (td != null && modelParms != null) {
             //Substitute type parameters
-            final HashMap<TypeParameter, Type> concretes = new HashMap<TypeParameter, Type>();
+            final HashMap<TypeParameter, Type> concretes = new HashMap<>();
             HashMap<TypeParameter,SiteVariance> variances = null;
             if (td.getTypeParameters().size() < modelParms.size()) {
                 if (td.getUnit().getPackage() == this) {
