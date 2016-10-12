@@ -33,7 +33,7 @@ void visitDeclaration(
     "The writer for the JS file"
     Sha1Writer writer,
     Program program)(Node node) {
-    value typechecker = program.getTypeChecker();
+    value typechecker = program.getDiagnosticsProducingTypeChecker();
     switch (node.kind)
     // actually handled cases
     case (SyntaxKind.\iVariableDeclaration | SyntaxKind.\iPropertyDeclaration | SyntaxKind.\iPropertySignature) {
