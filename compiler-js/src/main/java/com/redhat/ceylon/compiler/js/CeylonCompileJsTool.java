@@ -85,7 +85,7 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
     private List<String> files = DefaultToolOptions.getCompilerModules(Backend.JavaScript);
     private DiagnosticListener diagnosticListener;
     private boolean throwOnError;
-    private EnumSet<Warning> suppwarns = EnumUtil.enumsFromStrings(Warning.class,
+    private EnumSet<Warning> suppwarns = EnumUtil.enumsFromPossiblyInvalidStrings(Warning.class,
             DefaultToolOptions.getCompilerSuppressWarnings());
 
     public CeylonCompileJsTool() {
