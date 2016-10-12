@@ -822,4 +822,11 @@ public class InteropTests extends CompilerTests {
     public void testIopStaticEnumSet(){
         compile("StaticEnumSet.ceylon");
     }
+    
+
+    @Test
+    public void testIopBug6574() {
+        compareWithJavaSource("Bug6574");
+        run("com.redhat.ceylon.compiler.java.test.interop.bug6574");
+    }
 }
