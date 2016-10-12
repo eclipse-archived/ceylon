@@ -136,7 +136,14 @@ public class MissingNativeVisitor extends Visitor {
         
         boolean ok = checkNative(node, model);
         if (!ok) {
-            node.addError("no native implementation for backend: native '" + model.getName() + "' is not implemented for the '" + forBackend.nativeAnnotation + "' backend", forBackend);
+            String name = model.getName();
+            String desc = 
+                    name==null ? "header" : 
+                        "'" + name + "'";
+            node.addError("no native implementation for backend: native " 
+                    + desc + " is not implemented for the '" 
+                    + forBackend.nativeAnnotation + "' backend", 
+                    forBackend);
         }
 
         return true;
