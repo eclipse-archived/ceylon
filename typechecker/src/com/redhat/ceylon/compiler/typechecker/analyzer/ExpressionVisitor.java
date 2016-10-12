@@ -5072,7 +5072,8 @@ public class ExpressionVisitor extends Visitor {
                 if (eor instanceof Tree.Element) {
                     Interface cd = 
                             unit.getCorrespondenceDeclaration();
-                    checkIndexElement(that, pt, cd, true, "Correspondence", false);
+                    checkIndexElement(that, pt, cd, true, 
+                            "Correspondence", false);
                 }
                 else {
                     Interface rd = unit.getRangedDeclaration();
@@ -5130,7 +5131,8 @@ public class ExpressionVisitor extends Visitor {
 
     private Type checkIndexElement(Tree.IndexExpression that,
             Type pt, Interface cd, boolean nullable,
-            String superTypeName, boolean allowIndexedCorrespondenceMutator) {
+            String superTypeName, 
+            boolean allowIndexedCorrespondenceMutator) {
         if (dynamic && 
                 isTypeUnknown(pt)) {
             // In dynamic blocks we allow index assignments
@@ -5151,7 +5153,8 @@ public class ExpressionVisitor extends Visitor {
                 vt = unit.getOptionalType(vt);
         	}
         }
-        if (cst==null && allowIndexedCorrespondenceMutator) {
+        if (cst==null && 
+                allowIndexedCorrespondenceMutator) {
             Interface ld = 
                     unit.getIndexedCorrespondenceMutatorDeclaration();
             cst = pt.getSupertype(ld);
@@ -5206,7 +5209,8 @@ public class ExpressionVisitor extends Visitor {
                         pt.getDeclaration()
                             .getName(unit) + 
                         "' is not a subtype of '" + superTypeName + "'" +
-                        (allowIndexedCorrespondenceMutator ? " or 'IndexedCorrespondenceMutator'" : ""));
+                        (allowIndexedCorrespondenceMutator ? 
+                                " or 'IndexedCorrespondenceMutator'" : ""));
         }
         else {
             Tree.Element e = (Tree.Element) eor;
@@ -5622,15 +5626,22 @@ public class ExpressionVisitor extends Visitor {
     private void visitAssignOperator(Tree.AssignOp that) {
         Type rhst = rightType(that);
         if (!isTypeUnknown(rhst)) {
-            if (that.getLeftTerm() instanceof Tree.IndexExpression) {
-                Tree.IndexExpression idx = (Tree.IndexExpression)that.getLeftTerm();
-                if (idx.getElementOrRange() instanceof Tree.Element) {
+            if (that.getLeftTerm() 
+                    instanceof Tree.IndexExpression) {
+                Tree.IndexExpression idx = 
+                        (Tree.IndexExpression)
+                            that.getLeftTerm();
+                if (idx.getElementOrRange() 
+                        instanceof Tree.Element) {
                     Type pt = type(idx);
-                    if (that.getTypeModel() != null && pt != null) {
+                    if (that.getTypeModel()!=null 
+                            && pt!=null) {
                         Interface cmd = 
                                 unit.getKeyedCorrespondenceMutatorDeclaration();
-                        Type vt = checkIndexElement(idx, pt, cmd, false, "KeyedCorrespondenceMutator", true);
-                        if (vt != null) {
+                        Type vt = 
+                                checkIndexElement(idx, pt, cmd, false, 
+                                        "KeyedCorrespondenceMutator", true);
+                        if (vt!=null) {
                             checkAssignable(rhst, vt,
                                     that.getRightTerm(), 
                                     "assigned expression must be assignable to '" +
@@ -5638,11 +5649,13 @@ public class ExpressionVisitor extends Visitor {
                                     "' of 'CorrespondenceMutator'");
                         }
                     }
-                } else {
+                }
+                else {
                     idx.getPrimary()
                         .addError("ranged index assignment is not supported");
                 }
-            } else {
+            }
+            else {
                 Type lhst = leftType(that);
                 if (!isTypeUnknown(lhst)) {
                     Type leftHandType = lhst;
