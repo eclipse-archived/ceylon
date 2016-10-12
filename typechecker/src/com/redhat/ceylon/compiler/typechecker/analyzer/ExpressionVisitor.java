@@ -4401,8 +4401,9 @@ public class ExpressionVisitor extends Visitor {
                 argType = argRef.getFullType();
             }
             checkArgumentToVoidParameter(param, typedArg);
-            if (!dynamic && 
-                    isTypeUnknown(argType)) {
+            if (!dynamic 
+                    && isTypeUnknown(argType)
+                    && !hasError(arg)) {
                 arg.addError("could not determine type of named argument: '" + 
                         param.getName() + "'");
             }
@@ -5048,8 +5049,11 @@ public class ExpressionVisitor extends Visitor {
     @Override public void visit(Tree.IndexExpression that) {
         super.visit(that);
         Type pt = type(that);
+        Tree.Primary primary = that.getPrimary();
         if (pt==null) {
-            that.addError("could not determine type of receiver");
+            if (primary==null || !hasError(primary)) {
+                that.addError("could not determine type of receiver");
+            }
         }
         else {
             /*if (that.getIndexOperator() instanceof Tree.SafeIndexOp) {
@@ -5079,10 +5083,9 @@ public class ExpressionVisitor extends Visitor {
                     Interface rd = unit.getRangedDeclaration();
                     Type rst = pt.getSupertype(rd);
                     if (rst==null) {
-                        that.getPrimary()
-                            .addError("illegal receiving type for index range expression: '" +
-                                    pt.getDeclaration().getName(unit) + 
-                                    "' is not a subtype of 'Ranged'");
+                        primary.addError("illegal receiving type for index range expression: '" +
+                                pt.getDeclaration().getName(unit) + 
+                                "' is not a subtype of 'Ranged'");
                     }
                     else {
                         List<Type> args = 
@@ -6995,7 +6998,8 @@ public class ExpressionVisitor extends Visitor {
                     !isNativeForWrongBackend(
                             scope.getScopedBackends()) &&
                     !isAbstraction(member) && 
-                    isTypeUnknown(fullType)) {
+                    isTypeUnknown(fullType) &&
+                    !hasError(that)) {
                 //this occurs with an ambiguous reference
                 //to a member of an intersection type
                 String rtname = 
@@ -7202,11 +7206,12 @@ public class ExpressionVisitor extends Visitor {
                     !isNativeForWrongBackend(
                             scope.getScopedBackends()) &&
                     !isAbstraction(member) && 
-                    isTypeUnknown(fullType)) {
+                    isTypeUnknown(fullType) && 
+                    !hasError(that)) {
                 that.addError(
                         "could not determine type of function or value reference: '" +
-                                member.getName(unit) + "'" + 
-                                getTypeUnknownError(fullType));
+                        member.getName(unit) + "'" + 
+                        getTypeUnknownError(fullType));
             }
             if (dynamic && 
                     isTypeUnknown(fullType)) {
@@ -7906,7 +7911,8 @@ public class ExpressionVisitor extends Visitor {
                     !that.getStaticMethodReference() &&
                     memberType instanceof Class &&
                     !isAbstraction(memberType) &&
-                    isTypeUnknown(fullType)) {
+                    isTypeUnknown(fullType) && 
+                    !hasError(that)) {
                 //this occurs with an ambiguous reference
                 //to a member of an intersection type
                 String rtname = 
