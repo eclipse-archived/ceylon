@@ -4,6 +4,9 @@ import java.util.\ifunction {
 import java.util {
     ArrayList
 }
+import java.util.concurrent {
+    CompletableFuture, ExecutorService
+}
 import java.lang { CharSequence, ShortArray, FloatArray }
 import com.redhat.ceylon.compiler.java.test.interop { LambdasJava { consumerStatic }}
 
@@ -70,6 +73,10 @@ void lambdas() {
     j.charSequences();
     j.charSequences("a");
     j.charSequences("a", "b");
+
+    // make sure overloading prefers non-coerced methods in doubt
+    j.intConsumer(null);
+    LambdasJava(null);
     
     j.intConsumer(toplevel);
     j.intConsumer(toplevelSmall);
@@ -91,6 +98,11 @@ void lambdas() {
     value s = l.stream().filter((Integer i) => i.positive)
             .mapToInt((Integer i) => i)
             .sum();
+
+    ExecutorService mes = nothing;
+    
+    CompletableFuture.supplyAsync(() => 2, mes.execute);
+    CompletableFuture.supplyAsync(() => 2);
 }
 
 class Sub(IntConsumer c) extends LambdasJava(c){}
