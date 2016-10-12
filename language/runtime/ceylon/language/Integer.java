@@ -21,7 +21,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
     "ceylon.language::Binary<ceylon.language::Integer>",
     "ceylon.language::Exponentiable<ceylon.language::Integer,ceylon.language::Integer>"
 })
-@Class(extendsType="ceylon.language::Object", basic = false, identifiable = false)
+@Class(extendsType="ceylon.language::Object", basic = false, identifiable = false, constructors = true)
 @ValueType
 @SharedAnnotation$annotation$
 @FinalAnnotation$annotation$
@@ -43,6 +43,7 @@ public final class Integer
     @Ignore
     final long value;
 
+    @SharedAnnotation$annotation$
     public Integer(@Name("integer") long integer) {
         value = integer;
     }
