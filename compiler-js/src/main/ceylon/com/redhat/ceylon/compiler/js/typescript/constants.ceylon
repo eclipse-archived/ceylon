@@ -79,6 +79,15 @@ shared String moduleKey = "md";
 "Key for the package of a type."
 compilerConstant ("KEY_PACKAGE")
 shared String packageKey = "pk";
+"Key for the case types of an enumerated type."
+// no compilerConstant
+shared String caseTypesKey = "of";
+"Key for the constructors of a class."
+compilerConstant ("KEY_CONSTRUCTORS")
+shared String constructorsKey = "$cn";
+"Key for the TypeScript enum value of a value constructor."
+compilerConstant ("KEY_JS_TSENUM")
+shared String tsenumKey = "$tsenum";
 
 // meta type values
 "Meta type for an attribute or toplevel value."

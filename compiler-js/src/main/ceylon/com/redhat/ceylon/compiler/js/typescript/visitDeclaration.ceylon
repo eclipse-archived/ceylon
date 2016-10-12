@@ -192,6 +192,77 @@ void visitDeclaration(
             t.printStackTrace();
         }
     }
+    case (SyntaxKind.\iEnumDeclaration) {
+        try {
+            assert (is EnumDeclaration edecl = node);
+            Identifier id;
+            dynamic {
+                id = eval("(function(x){return x.name})")(node); // TODO should not be necessary once the backend can handle optional members
+            }
+            value name = id.text;
+            Boolean const = isConstEnumDeclaration(edecl);
+            JsonArray caseTypes = JsonArray {};
+            JsonObject constructors = JsonObject {};
+            value mapEnumName = mapEnumNames();
+            for (member in edecl.members) {
+                Identifier mid;
+                dynamic {
+                    mid = eval("(function(x){return x.name})")(member); // TODO handle other name kinds
+                }
+                value memberName = mid.text;
+                value mappedName = mapEnumName(memberName);
+                value tsenum = const then typechecker.getEmitResolver().getConstantValue(member).string else memberName;
+                caseTypes.add(JsonObject {
+                        packageKey->currentModuleOrPackage,
+                        nameKey->"``name``.``mappedName``"
+                    });
+                constructors.put(mappedName, JsonObject {
+                    packedAnnotationsKey->packAnnotations {
+                        shared = true;
+                    },
+                    nameKey->mappedName,
+                    tsenumKey->tsenum
+                });
+            }
+            JsonObject enum = JsonObject {
+                metaTypeKey->classMetaType,
+                nameKey->name,
+                dynamicKey->1,
+                packedAnnotationsKey->packAnnotations {
+                    shared = true;
+                },
+                caseTypesKey->caseTypes,
+                constructorsKey->constructors
+            };
+            container.put(name, enum);
+            if (const) {
+                writer.writeLine("function ``name``(){throw Exception(\"``name`` is a TypeScript enum and has no default constructor.\");}"); // TODO include module name
+            } else {
+                writer.writeLine("``name``=ex$.``name``;");
+            }
+            writer.writeLine("function ``name``$$c($){
+                              $init$``name``();
+                              if($===undefined)$=new ``name``.$$;
+                              return $;
+                              }");
+            // TODO individual members?
+            // TODO $crtmm$?
+            if (const) {
+                writer.writeLine("ex$.``name``=``name``;");
+            }
+            writer.writeLine("function $init$``name``(){
+                              if(``name``.$$===undefined){
+                              m$1.initTypeProto(``name``,'``name``',m$1.Basic);
+                              ``name``.$$.$tsenum=true;
+                              }
+                              return ``name``;
+                              }
+                              ex$.$init$``name``=$init$``name``;
+                              $init$``name``();"); // TODO include module name in type name for initTypeProto; m$1.atr$()?
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
     // descend
     case (SyntaxKind.\iVariableStatement) {
         try {
