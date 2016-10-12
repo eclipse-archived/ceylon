@@ -1976,8 +1976,13 @@ tuple returns [Tuple tuple]
 dynamicObject returns [Dynamic dynamic]
     : DYNAMIC
       { $dynamic = new Dynamic($DYNAMIC); }
-      dynamicArguments
-      { $dynamic.setNamedArgumentList($dynamicArguments.namedArgumentList); }
+      (
+        dynamicArguments
+        { $dynamic.setNamedArgumentList($dynamicArguments.namedArgumentList); }
+      | 
+        LBRACKET COMMA RBRACKET
+        { $dynamic.setEndToken($RBRACKET); }
+      )
     ;
 
 dynamicArguments returns [NamedArgumentList namedArgumentList]
