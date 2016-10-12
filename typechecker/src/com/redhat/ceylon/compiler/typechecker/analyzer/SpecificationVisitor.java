@@ -277,7 +277,8 @@ public class SpecificationVisitor extends Visitor {
                 if (declaration.isFormal()) {
                     if (!isForwardReferenceable()) {
                         that.addError("formal member may not be used in initializer: " + 
-                                name());                    
+                                name() +
+                                " is declared 'formal'");                    
                     }
                 }
                 else if (!metamodel &&
@@ -285,11 +286,13 @@ public class SpecificationVisitor extends Visitor {
                         (!isLate() || !isForwardReferenceable())) {
                     if (isVariable()) {
                         that.addError("not definitely initialized: " + 
-                                name());                    
+                                name() + 
+                                " has not been assigned by every conditional branch");                    
                     }
                     else {
                         that.addError("not definitely specified: " + 
-                                name());
+                                name() + 
+                                " has not been assigned by every conditional branch");
                     }
                 }
             }
@@ -306,13 +309,15 @@ public class SpecificationVisitor extends Visitor {
             if (!assigned && declaration.isDefault() && 
                     !isForwardReferenceable()) {
                 that.addError("default member may not be used in initializer: " + 
-                        name()); 
+                        name()+
+                        " is declared 'default'"); 
             }
             if (inAnonFunctionOrComprehension && 
                 definitely && 
                 isVariable()) {
                 that.addError("variable member may not be captured by comprehension or function in extends clause: "+
-                        name());
+                        name()+
+                        " is declared 'variable'");
             }
         }
     }
@@ -559,17 +564,20 @@ public class SpecificationVisitor extends Visitor {
                     (Tree.StaticMemberOrTypeExpression) term;
             Declaration member = mte.getDeclaration();
             if (member==declaration) {
-                if ((declaration.isFormal() || 
-                     declaration.isDefault()) && 
+                boolean isFormal = declaration.isFormal();
+                boolean isDefault = declaration.isDefault();
+                if ((isFormal || isDefault) && 
                          !isForwardReferenceable()) {
-                    term.addError("member is formal or default and may not be assigned here: " +
-                            name());
+                    term.addError("member may not be assigned here: " +
+                            name() + " is declared '" +
+                            (isFormal ? "formal" : "default") + 
+                            "'");
                 }
                 else if (!isVariable() && !isLate()) {
                     if (member instanceof Value) {
                         if (node instanceof Tree.AssignOp) {
-                            term.addError("value is not a variable and may not be assigned here: " +
-                                    name(), 
+                            term.addError("value may not be assigned here: " +
+                                    name() + " is not a variable", 
                                     803);
                         }
                         else {
