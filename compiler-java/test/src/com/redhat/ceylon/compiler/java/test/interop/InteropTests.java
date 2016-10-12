@@ -27,6 +27,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -813,8 +814,9 @@ public class InteropTests extends CompilerTests {
     public void testIopLambdas(){
         Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
                 || JDKUtils.jdk == JDKUtils.JDK.JDK9);
-        compile(Arrays.asList("-source", "8", "-target", "8"), 
-                "LambdasJava.java", "Lambdas.ceylon");
+        List<String> options = Arrays.asList("-source", "8", "-target", "8");
+        compile(options, "LambdasJava.java");
+        compareWithJavaSource(options, "Lambdas.src", "Lambdas.ceylon");
         assertErrors("LambdasErrors", new CompilerError(12, "refined declaration is not a real method: 'm' in 'Sub3' refines 'm' in 'InterfaceWithCoercedMembers'"));
     }
 

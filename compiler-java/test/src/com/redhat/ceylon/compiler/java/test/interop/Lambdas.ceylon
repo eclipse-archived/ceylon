@@ -38,6 +38,8 @@ void lambdas() {
     j.intConsumer(f);
     value fval = (Integer i) => print(i);
     j.intConsumer(fval);
+    j.intConsumer(Integer);
+    j.intConsumer(LambdasJava.takeInt);
     fval(1);
     value refToIntMethod = LambdasJava.takeInt;
     // make sure we don't wrap this
@@ -51,6 +53,12 @@ void lambdas() {
     j.intSupplier((Integer* args) => 1);
     j.variadicFunction(toplevelVariadic);
     j.intSupplier(toplevelVariadic);
+
+    j.consumeTwoIntegers((Integer a, Integer b) => a+b);
+    value f1 = uncurry(Integer.plus);
+    function f2() => uncurry(Integer.plus);
+    j.consumeTwoIntegers(f1);
+    j.consumeTwoIntegers(f2());
 
     LambdasJava(f);
 
@@ -103,6 +111,10 @@ void lambdas() {
     
     CompletableFuture.supplyAsync(() => 2, mes.execute);
     CompletableFuture.supplyAsync(() => 2);
+
+    CompletableFuture.supplyAsync(()=> "Hello")
+            .thenApply(String.uppercased)
+            .thenAccept(print);
 }
 
 class Sub(IntConsumer c) extends LambdasJava(c){}

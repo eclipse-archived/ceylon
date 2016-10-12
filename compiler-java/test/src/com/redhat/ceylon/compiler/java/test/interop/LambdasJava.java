@@ -27,6 +27,11 @@ interface OverloadedFunction2B extends OverloadedFunction2A {
     }
 }
 
+@FunctionalInterface
+interface ConsumeTwoIntegers {
+    public abstract void execute(int a, int b);
+}
+
 public class LambdasJava {
 
     public LambdasJava(){}
@@ -64,6 +69,9 @@ public class LambdasJava {
 
     public void overloadedFunction2(OverloadedFunction2B f){
         f.execute();
+    }
+
+    public void consumeTwoIntegers(ConsumeTwoIntegers f){
     }
 
     public void charSequences(CharSequence... cs){
