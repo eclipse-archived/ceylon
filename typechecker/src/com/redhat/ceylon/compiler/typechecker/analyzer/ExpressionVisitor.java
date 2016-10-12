@@ -2733,11 +2733,18 @@ public class ExpressionVisitor extends Visitor {
                         if ("java.util::Arrays.asList".equals(qname)) {
                             return;
                         }
+                        else {
+                            local.addUsageWarning(Warning.inferredNotNull, 
+                                    "not null type inferred from reference to function or value with unchecked nulls '" 
+                                    + dec.getName(unit) 
+                                    + "' is not known to be null-safe (explicitly specify the type)");
+                            return;
+                        }
                     }
                 }
             }
             local.addUsageWarning(Warning.inferredNotNull, 
-                    "not null type inferred from Java reference (explicitly specify the type)");
+                    "not null type inferred from reference to function or value with unchecked nulls (explicitly specify the type)");
         }
     }
         
