@@ -2,42 +2,56 @@ import tsmodule {
     ...
 }
 
+void errlog(Object o) {
+    dynamic {
+        console.error(o);
+    }
+}
+
+void assertEquals(Object expected, Object actual) {
+    if (expected != actual) {
+        errlog(expected);
+        errlog(actual);
+        throw AssertionError("expected != actual");
+    }
+}
+
 void testConstEmptyString() {
     String es = constEmptyString;
-    assert (es == "");
-    assert (constEmptyString == "");
+    assertEquals { expected = ""; actual = es; };
+    assertEquals { expected = ""; actual = constEmptyString; };
 }
 
 void testVarEmptyString() {
     String es = varEmptyString;
-    assert (es == "");
-    assert (varEmptyString == "");
+    assertEquals { expected = ""; actual = es; };
+    assertEquals { expected = ""; actual = varEmptyString; };
     varEmptyString = "a";
-    assert (varEmptyString == "a");
+    assertEquals { expected = "a"; actual = varEmptyString; };
     varEmptyString = "";
 }
 
 void testGetVarEmptyString() {
     String es = getVarEmptyString();
-    assert (es == "");
-    assert (getVarEmptyString() == "");
+    assertEquals { expected = ""; actual = es; };
+    assertEquals { expected = ""; actual = getVarEmptyString(); };
     varEmptyString = "a";
-    assert (getVarEmptyString() == "a");
+    assertEquals { expected = "a"; actual = getVarEmptyString(); };
     varEmptyString = "";
 }
 
 void testStringIdentity() {
-    assert (stringIdentity("") == "");
-    assert (stringIdentity("foo") == "foo");
-    assert (stringIdentity { "bar"; } == "bar");
-    assert (stringIdentity { s = "baz"; } == "baz");
+    assertEquals { expected = ""; actual = stringIdentity(""); };
+    assertEquals { expected = "foo"; actual = stringIdentity("foo"); };
+    assertEquals { expected = "bar"; actual = stringIdentity { "bar"; }; };
+    assertEquals { expected = "baz"; actual = stringIdentity { s = "baz"; }; };
 }
 
 void testNumberIdentity() {
-    assert (numberIdentity(4.2) == 4.2);
-    assert (numberIdentity(1.0) == 1.0);
-    assert (numberIdentity(1) == 1.0);
-    assert (numberIdentity(1) == 1);
+    assertEquals { expected = 4.2; actual = numberIdentity(4.2); };
+    assertEquals { expected = 1.0; actual = numberIdentity(1.0); };
+    assertEquals { expected = 1; actual = numberIdentity(1.0); };
+    assertEquals { expected = 1; actual = numberIdentity(1); };
 }
 
 void testBooleanIdentity() {
@@ -54,28 +68,28 @@ void testVoidFunction() {
 
 void testStringBox() {
     value sb = StringBox("s1");
-    assert (sb.s == "s1");
+    assertEquals { expected = "s1"; actual = sb.s; };
     sb.setS("s2");
-    assert (sb.getS() == "s2");
+    assertEquals { expected = "s2"; actual = sb.getS(); };
     sb.s = "s3";
-    assert (sb.getS() == "s3");
+    assertEquals { expected = "s3"; actual = sb.getS(); };
     sb.setS("s4");
-    assert (sb.s == "s4");
+    assertEquals { expected = "s4"; actual = sb.s; };
     StringBox sb2 = sb.self();
-    assert (sb2 == sb);
+    assertEquals { expected = sb; actual = sb2; };
 }
 
 void testIStringBox() {
     IStringBox sb = makeIStringBox("s1");
-    assert (sb.s == "s1");
+    assertEquals { expected = "s1"; actual = sb.s; };
     sb.setS("s2");
-    assert (sb.getS() == "s2");
+    assertEquals { expected = "s2"; actual = sb.getS(); };
     sb.s = "s3";
-    assert (sb.getS() == "s3");
+    assertEquals { expected = "s3"; actual = sb.getS(); };
     sb.setS("s4");
-    assert (sb.s == "s4");
+    assertEquals { expected = "s4"; actual = sb.s; };
     IStringBox sb2 = sb.self();
-    assert (sb2 == sb);
+    assertEquals { expected = sb; actual = sb2; };
 }
 
 shared void run() {
