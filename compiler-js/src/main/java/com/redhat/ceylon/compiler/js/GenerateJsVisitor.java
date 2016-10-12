@@ -953,8 +953,9 @@ public class GenerateJsVisitor extends Visitor {
         ArrayList<Parameter> plist = null;
         final boolean isAbstractNative = TypeUtils.makeAbstractNative(d);
         final String typename = names.name(d);
+        final boolean overrideToString =  d.getDirectMember("toString", null, true) == null;
         if (enter) {
-            enter = !statements.isEmpty();
+            enter = !statements.isEmpty() | overrideToString;
             if (d instanceof Class) {
                 ParameterList _pl = ((Class)d).getParameterList();
                 if (_pl != null) {
@@ -1021,6 +1022,9 @@ public class GenerateJsVisitor extends Visitor {
             }
             if (isSerial && !isAbstractNative) {
                 SerializationHelper.addSerializer(node, (Class)d, this);
+            }
+            if (overrideToString) {
+                out(names.self(d), ".", "toString=function(){return this.string;};");
             }
             endBlock();
             out(")(", typename, ".$$.prototype)");
