@@ -1223,10 +1223,13 @@ public class GenerateJsVisitor extends Visitor {
                 if (missingDeclarationName == null && d instanceof Constructor) {
                     missingDeclarationName = "default constructor";
                 }
+                else {
+                    missingDeclarationName = "'" + missingDeclarationName + "'";
+                }
                 final String err = 
-                        "no native implementation for backend: native '"
+                        "no native implementation for backend: native "
                         + missingDeclarationName 
-                        + "' is not implemented for the 'js' backend";
+                        + " is not implemented for the 'js' backend";
                 n.addError(err, Backend.JavaScript);
                 out("/*", err, "*/");
             }
