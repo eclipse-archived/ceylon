@@ -688,6 +688,9 @@ public class JsCompiler {
         String name = d.getName();
         if (name == null && d instanceof Constructor) {
             name = "default$constructor";
+            if (fqn.endsWith(".null")) {
+                fqn = fqn.substring(0, fqn.length()-4);
+            }
             fqn = fqn + name;
         }
         if (fqn.startsWith("ceylon.language")) {
