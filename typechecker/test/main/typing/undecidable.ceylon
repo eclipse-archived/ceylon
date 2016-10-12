@@ -96,3 +96,10 @@ void moremore() {
 class SatisfiesUnion<T>() satisfies Identifiable? 
 @error: "upper bound" 
         given T satisfies Identifiable? {}
+
+class Constraints() {
+    void f<T, TTypes>() given T satisfies [T] {}
+    void g<T, TTypes>() @error given T satisfies [T,T] {}
+    void h<T, TTypes>() given T satisfies [T*] {}
+    void i<T, TTypes>() @error given T satisfies [Integer,T,T*] {}
+}
