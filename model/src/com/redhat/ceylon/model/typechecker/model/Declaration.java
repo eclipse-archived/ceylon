@@ -150,6 +150,9 @@ public abstract class Declaration
             String qualifier = 
                     container.getQualifiedNameString();
             String name = getName();
+            if (name==null) {
+                name = "";
+            }
             if (qualifier==null || qualifier.isEmpty()) {
                 qualifiedNameAsStringCache = name; 
             }
