@@ -1170,7 +1170,7 @@ class CallableInvocation extends DirectInvocation {
     }
     @Override
     protected boolean isArgumentComprehension(int argIndex){
-        throw new BugException("I override getTransformedArgumentExpression(), so should never be called");
+        return true;
     }
     @Override
     protected JCExpression getTransformedArgumentExpression(int argIndex) {
