@@ -2626,10 +2626,15 @@ public class GenerateJsVisitor extends Visitor {
                             if (path.length()>0) {
                                 path.append('.');
                             }
-                            if (d.isStatic() && d instanceof TypedDeclaration) {
-                                TypedDeclaration orig = ((TypedDeclaration) d).getOriginalDeclaration();
-                                path.append(names.name((ClassOrInterface) (orig == null ? d : orig).getContainer()))
-                                        .append(".$st$");
+                            if (d.isStatic()) {
+                                if (d instanceof TypedDeclaration) {
+                                    TypedDeclaration orig = ((TypedDeclaration) d).getOriginalDeclaration();
+                                    path.append(names.name((ClassOrInterface) (orig == null ? d : orig).getContainer()))
+                                            .append(".$st$");
+                                } else if (d instanceof TypeDeclaration) {
+                                    path.append(names.name((ClassOrInterface)d.getContainer()))
+                                            .append(".$st$");
+                                }
                             } else {
                                 path.append(names.self((TypeDeclaration) scope));
                             }
