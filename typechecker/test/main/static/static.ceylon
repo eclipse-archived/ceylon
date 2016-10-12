@@ -191,3 +191,9 @@ class C2 {
     @error noop(c?.fun());
     shared new () {}
 }
+
+class Obvious {
+    @error static String name;
+    name = "";
+    shared new () {}
+}
