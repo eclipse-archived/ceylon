@@ -57,6 +57,19 @@ function Float(value) {
     that.float$ = true;
     return that;
 }
+Float.$st$={
+  format:function(n,min,max,ds,ts) {
+    if (min===undefined)min=1;
+    if (max===undefined)max=9;
+    if (ds===undefined)ds=Character(46);
+    if (ts===undefined)ts=Character(44);
+    return formatFloat(n,min,max,ds,ts);
+  },
+  parse:function(s) {
+    var x=parseFloat(s);
+    return x===null?ParseException("illegal format for Float"):x;
+  }
+};
 initTypeProto(Float, 'ceylon.language::Float', $_Object,$_Number,$init$Exponentiable(), JSNumber);
 Float.$crtmm$=function(){return{pa:97,mod:$CCMM$,d:['$','Float']};}
 atr$(Float.$$.prototype,'integer',function(){ return Integer(Math.floor(this)); },undefined,
