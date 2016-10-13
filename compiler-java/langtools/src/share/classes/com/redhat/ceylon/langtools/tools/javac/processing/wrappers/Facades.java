@@ -31,6 +31,7 @@ import com.redhat.ceylon.javax.lang.model.util.Types;
 import com.redhat.ceylon.javax.tools.FileObject;
 import com.redhat.ceylon.javax.tools.JavaFileManager.Location;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
+import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.javax.lang.model.type.TypeMirror;
 import com.redhat.ceylon.javax.lang.model.type.TypeKind;
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
@@ -331,9 +332,8 @@ public class Facades {
         return filer == null ? null : new FilerFacade(filer);
     }
 
-    public static Location unfacade(javax.tools.JavaFileManager.Location arg0) {
-        // TODO Auto-generated method stub
-        return null;
+    public static Location unfacade(javax.tools.JavaFileManager.Location location) {
+        return location == null ? null : StandardLocation.valueOf(((javax.tools.StandardLocation)location).name());
     }
 
     public static javax.tools.FileObject facade(FileObject object) {
