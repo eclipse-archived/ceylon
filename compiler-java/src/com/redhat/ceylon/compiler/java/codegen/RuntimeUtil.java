@@ -269,4 +269,12 @@ class RuntimeUtil {
     public JCExpression sequentialToTuple(JCExpression typeArg, JCExpression reifiedTypeArg, JCExpression sequential) {
         return makeUtilInvocation(List.of(typeArg), "sequentialToTuple", List.of(reifiedTypeArg, sequential));
     }
+    
+    public JCExpression toIterable(JCExpression typeArg, JCExpression reifiedElement, JCExpression javaIterable) {
+        return makeUtilInvocation(List.of(typeArg), "toIterable", List.of(reifiedElement, javaIterable));
+    }
+    
+    public JCExpression toIterable(JCExpression javaIterable) {
+        return makeUtilInvocation(null, "toIterable", List.of(javaIterable));
+    }
 }

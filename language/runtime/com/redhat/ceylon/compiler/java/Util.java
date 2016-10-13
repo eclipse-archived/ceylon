@@ -24,6 +24,8 @@ import ceylon.language.finished_;
 import ceylon.language.sequence_;
 
 import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
+import com.redhat.ceylon.compiler.java.language.AbstractIterable;
+import com.redhat.ceylon.compiler.java.language.AbstractIterator;
 import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
 import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Name;
@@ -1973,4 +1975,269 @@ public class Util {
         }
         return instance;
     }
+    
+    /** Convert a java iterable to a ceylon iterable (to support java iterables in spread arguments*/
+    @NonNull
+    public static <Element> ceylon.language.Iterable<Element,java.lang.Object> toIterable(
+            @NonNull
+            final TypeDescriptor $reified$Element,
+            @NonNull
+            final java.lang.Iterable<Element> jit) {
+        return new AbstractIterable<Element, java.lang.Object>($reified$Element, Null.$TypeDescriptor$) {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public Iterator<? extends Element> iterator() {
+                return new AbstractIterator<Element>($reified$Element) {
+                    private static final long serialVersionUID = 1L;
+                    private final java.util.Iterator<Element> it = jit.iterator();
+
+                    @Override
+                    public java.lang.Object next() {
+                        if (it.hasNext()) {
+                            return it.next();
+                        }
+                        return finished_.get_();
+                    }
+                    
+                };
+            }
+        };
+    }
+    
+    /** Convert a java array to a ceylon iterable (to support java iterables in spread arguments*/
+    @NonNull
+    public static <Element> ceylon.language.Iterable<Element,java.lang.Object> toIterable(
+            @NonNull
+            final TypeDescriptor $reified$Element,
+            @NonNull
+            final Element[] jit) {
+        return new AbstractIterable<Element, java.lang.Object>($reified$Element, Null.$TypeDescriptor$) {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public Iterator<? extends Element> iterator() {
+                return new AbstractIterator<Element>($reified$Element) {
+                    private static final long serialVersionUID = 1L;
+                    private int index = 0;
+
+                    @Override
+                    public java.lang.Object next() {
+                        if (index < jit.length) {
+                            return jit[index++];
+                        }
+                        return finished_.get_();
+                    }
+                    
+                };
+            }
+        };
+    }
+    
+    /** Convert a java array to a ceylon iterable (to support java iterables in spread arguments*/
+    @NonNull
+    public static ceylon.language.Iterable<ceylon.language.Boolean,java.lang.Object> toIterable(
+            @NonNull
+            final boolean[] jit) {
+        return new AbstractIterable<ceylon.language.Boolean, java.lang.Object>(ceylon.language.Boolean.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public Iterator<? extends ceylon.language.Boolean> iterator() {
+                return new AbstractIterator<ceylon.language.Boolean>(ceylon.language.Boolean.$TypeDescriptor$) {
+                    private static final long serialVersionUID = 1L;
+                    private int index = 0;
+
+                    @Override
+                    public java.lang.Object next() {
+                        if (index < jit.length) {
+                            return ceylon.language.Boolean.instance(jit[index++]);
+                        }
+                        return finished_.get_();
+                    }
+                    
+                };
+            }
+        };
+    }
+    
+    /** Convert a java array to a ceylon iterable (to support java iterables in spread arguments*/
+    @NonNull
+    public static ceylon.language.Iterable<ceylon.language.Integer,java.lang.Object> toIterable(
+            @NonNull
+            final short[] jit) {
+        return new AbstractIterable<ceylon.language.Integer, java.lang.Object>(ceylon.language.Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public Iterator<? extends ceylon.language.Integer> iterator() {
+                return new AbstractIterator<ceylon.language.Integer>(ceylon.language.Integer.$TypeDescriptor$) {
+                    private static final long serialVersionUID = 1L;
+                    private int index = 0;
+
+                    @Override
+                    public java.lang.Object next() {
+                        if (index < jit.length) {
+                            return ceylon.language.Integer.instance(jit[index++]);
+                        }
+                        return finished_.get_();
+                    }
+                    
+                };
+            }
+        };
+    }
+    
+    /** Convert a java array to a ceylon iterable (to support java iterables in spread arguments*/
+    @NonNull
+    public static ceylon.language.Iterable<ceylon.language.Integer,java.lang.Object> toIterable(
+            @NonNull
+            final int[] jit) {
+        return new AbstractIterable<ceylon.language.Integer, java.lang.Object>(ceylon.language.Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public Iterator<? extends ceylon.language.Integer> iterator() {
+                return new AbstractIterator<ceylon.language.Integer>(ceylon.language.Integer.$TypeDescriptor$) {
+                    private static final long serialVersionUID = 1L;
+                    private int index = 0;
+
+                    @Override
+                    public java.lang.Object next() {
+                        if (index < jit.length) {
+                            return ceylon.language.Integer.instance(jit[index++]);
+                        }
+                        return finished_.get_();
+                    }
+                    
+                };
+            }
+        };
+    }
+    
+    /** Convert a java array to a ceylon iterable (to support java iterables in spread arguments*/
+    @NonNull
+    public static ceylon.language.Iterable<ceylon.language.Integer,java.lang.Object> toIterable(
+            @NonNull
+            final long[] jit) {
+        return new AbstractIterable<ceylon.language.Integer, java.lang.Object>(ceylon.language.Integer.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public Iterator<? extends ceylon.language.Integer> iterator() {
+                return new AbstractIterator<ceylon.language.Integer>(ceylon.language.Integer.$TypeDescriptor$) {
+                    private static final long serialVersionUID = 1L;
+                    private int index = 0;
+
+                    @Override
+                    public java.lang.Object next() {
+                        if (index < jit.length) {
+                            return ceylon.language.Integer.instance(jit[index++]);
+                        }
+                        return finished_.get_();
+                    }
+                    
+                };
+            }
+        };
+    }
+    
+    /** Convert a java array to a ceylon iterable (to support java iterables in spread arguments*/
+    @NonNull
+    public static ceylon.language.Iterable<ceylon.language.Float,java.lang.Object> toIterable(
+            @NonNull
+            final float[] jit) {
+        return new AbstractIterable<ceylon.language.Float, java.lang.Object>(ceylon.language.Float.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public Iterator<? extends ceylon.language.Float> iterator() {
+                return new AbstractIterator<ceylon.language.Float>(ceylon.language.Float.$TypeDescriptor$) {
+                    private static final long serialVersionUID = 1L;
+                    private int index = 0;
+
+                    @Override
+                    public java.lang.Object next() {
+                        if (index < jit.length) {
+                            return ceylon.language.Float.instance(jit[index++]);
+                        }
+                        return finished_.get_();
+                    }
+                    
+                };
+            }
+        };
+    }
+    
+    /** Convert a java array to a ceylon iterable (to support java iterables in spread arguments*/
+    @NonNull
+    public static ceylon.language.Iterable<ceylon.language.Float,java.lang.Object> toIterable(
+            @NonNull
+            final double[] jit) {
+        return new AbstractIterable<ceylon.language.Float, java.lang.Object>(ceylon.language.Float.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public Iterator<? extends ceylon.language.Float> iterator() {
+                return new AbstractIterator<ceylon.language.Float>(ceylon.language.Float.$TypeDescriptor$) {
+                    private static final long serialVersionUID = 1L;
+                    private int index = 0;
+
+                    @Override
+                    public java.lang.Object next() {
+                        if (index < jit.length) {
+                            return ceylon.language.Float.instance(jit[index++]);
+                        }
+                        return finished_.get_();
+                    }
+                    
+                };
+            }
+        };
+    }
+    
+    /** Convert a java array to a ceylon iterable (to support java iterables in spread arguments*/
+    @NonNull
+    public static ceylon.language.Iterable<ceylon.language.Character,java.lang.Object> toIterable(
+            @NonNull
+            final char[] jit) {
+        return new AbstractIterable<ceylon.language.Character, java.lang.Object>(ceylon.language.Character.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public Iterator<? extends ceylon.language.Character> iterator() {
+                return new AbstractIterator<ceylon.language.Character>(ceylon.language.Character.$TypeDescriptor$) {
+                    private static final long serialVersionUID = 1L;
+                    private int index = 0;
+
+                    @Override
+                    public java.lang.Object next() {
+                        if (index < jit.length) {
+                            return ceylon.language.Character.instance(jit[index++]);
+                        }
+                        return finished_.get_();
+                    }
+                    
+                };
+            }
+        };
+    }
+    
+    /** Convert a java array to a ceylon iterable (to support java iterables in spread arguments*/
+    @NonNull
+    public static ceylon.language.Iterable<ceylon.language.Byte,java.lang.Object> toIterable(
+            @NonNull
+            final byte[] jit) {
+        return new AbstractIterable<ceylon.language.Byte, java.lang.Object>(ceylon.language.Byte.$TypeDescriptor$, Null.$TypeDescriptor$) {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public Iterator<? extends ceylon.language.Byte> iterator() {
+                return new AbstractIterator<ceylon.language.Byte>(ceylon.language.Byte.$TypeDescriptor$) {
+                    private static final long serialVersionUID = 1L;
+                    private int index = 0;
+
+                    @Override
+                    public java.lang.Object next() {
+                        if (index < jit.length) {
+                            return ceylon.language.Byte.instance(jit[index++]);
+                        }
+                        return finished_.get_();
+                    }
+                    
+                };
+            }
+        };
+    }
+
 }
