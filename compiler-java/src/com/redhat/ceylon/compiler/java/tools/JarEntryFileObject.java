@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.tools;
 
+import java.io.FileNotFoundException;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -98,7 +99,10 @@ public class JarEntryFileObject implements JavaFileObject {
 
     @Override
     public InputStream openInputStream() throws IOException {
-        return null;
+        // FIXME: perhaps allow reading from the previous car?
+        // This is required by at least the org.netbeans.api:org-netbeans-modules-editor-mimelookup/RELEASE82
+        // APT processor to check that there wasn't already a file
+        throw new FileNotFoundException();
     }
 
     @Override
