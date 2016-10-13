@@ -1095,7 +1095,9 @@ public class ExpressionVisitor extends Visitor {
     }
 
     private void checkIterable(Type pt, Tree.Primary p) {
-        if (!unit.isIterableType(pt)) {
+        if (!unit.isIterableType(pt)
+                && !unit.isJavaIterableType(pt)
+                && !unit.isJavaArrayType(pt)) {
             p.addError("expression must be of iterable type: '" +
                     pt.asString(unit) + 
                     "' is not a subtype of 'Iterable'");
@@ -2961,6 +2963,16 @@ public class ExpressionVisitor extends Visitor {
             else if (op instanceof Tree.SpreadOp) {
                 if (unit.isIterableType(type)) {
                     Type it = unit.getIteratedType(type);
+                    return it==null ?
+                            unit.getUnknownType() : it;
+                }
+                else if (unit.isJavaIterableType(type)) {
+                    Type it = unit.getJavaIteratedType(type);
+                    return it==null ?
+                            unit.getUnknownType() : it;
+                }
+                else if (unit.isJavaArrayType(type)) {
+                    Type it = unit.getJavaArrayElementType(type);
                     return it==null ?
                             unit.getUnknownType() : it;
                 }
