@@ -8263,16 +8263,19 @@ public class ExpressionVisitor extends Visitor {
         Type type = e.getTypeModel();
         if (term instanceof Tree.Tuple) {
             Tree.Tuple tuple = (Tree.Tuple) term;
-            for (Tree.PositionalArgument pa: 
-                    tuple.getSequencedArgument()
-                        .getPositionalArguments()) {
-                if (pa instanceof Tree.ListedArgument) {
-                    Tree.ListedArgument la = 
-                            (Tree.ListedArgument) pa;
-                    checkValueCase(la.getExpression(), false);
-                }
-                else {
-                    pa.addError("case must be a simple tuple");
+            Tree.SequencedArgument sa = 
+                    tuple.getSequencedArgument();
+            if (sa!=null) {
+                for (Tree.PositionalArgument pa: 
+                        sa.getPositionalArguments()) {
+                    if (pa instanceof Tree.ListedArgument) {
+                        Tree.ListedArgument la = 
+                                (Tree.ListedArgument) pa;
+                        checkValueCase(la.getExpression(), false);
+                    }
+                    else {
+                        pa.addError("case must be a simple tuple");
+                    }
                 }
             }
             return;
@@ -8676,12 +8679,16 @@ public class ExpressionVisitor extends Visitor {
             ft instanceof Tree.Tuple) {
             Tree.Tuple ett = (Tree.Tuple) et;
             Tree.Tuple ftt = (Tree.Tuple) ft;
+            Tree.SequencedArgument esa = 
+                    ett.getSequencedArgument();
+            Tree.SequencedArgument fsa = 
+                    ftt.getSequencedArgument();
             List<Tree.PositionalArgument> eargs = 
-                    ett.getSequencedArgument()
-                        .getPositionalArguments();
-            List<Tree.PositionalArgument> fargs = 
-                    ftt.getSequencedArgument()
-                        .getPositionalArguments();
+                    esa == null ? emptyList() :
+                    esa.getPositionalArguments();
+            List<Tree.PositionalArgument> fargs =
+                    fsa == null ? emptyList() :
+                    fsa.getPositionalArguments();
             if (eargs.size()!=fargs.size()) {
                 return null;
             }

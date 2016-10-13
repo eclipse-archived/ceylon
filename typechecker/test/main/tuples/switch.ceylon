@@ -13,8 +13,16 @@ void testTupleSwitch([Integer,String] pair, Object any) {
     else {}
     
     switch (any)
+    case ([]) {}
     case ([0,""]) {}
     case ([0,"",'x']) {}
+    else {}
+    
+    @error switch (any)
+    case ([]) {}
+    case ([0,""]) {}
+    case ([0,"",'x']) {}
+    case ([]) {}
     else {}
     
     @error switch (any)
