@@ -8248,14 +8248,13 @@ public class ExpressionVisitor extends Visitor {
                             }
                         }
                     }
-                    checkValueCase(e, true);
+                    checkValueCase(e);
                 }
             }
         }
     }
 
-    private void checkValueCase(Tree.Expression e, 
-            boolean enumsAllowed) {
+    private void checkValueCase(Tree.Expression e) {
         if (e==null) {
             return;
         }
@@ -8271,7 +8270,7 @@ public class ExpressionVisitor extends Visitor {
                     if (pa instanceof Tree.ListedArgument) {
                         Tree.ListedArgument la = 
                                 (Tree.ListedArgument) pa;
-                        checkValueCase(la.getExpression(), false);
+                        checkValueCase(la.getExpression());
                     }
                     else {
                         pa.addError("case must be a simple tuple");
@@ -8290,29 +8289,24 @@ public class ExpressionVisitor extends Visitor {
             }
         }
         else if (term instanceof Tree.MemberOrTypeExpression) {
-            if (enumsAllowed) {
-                TypeDeclaration dec = type.getDeclaration();
-                boolean isToplevelInstance = 
-                        dec.isObjectClass() && 
-                        (dec.isToplevel() || dec.isStatic());
-                boolean isToplevelClassInstance = 
-                        dec.isValueConstructor() &&
-                        (dec.getContainer().isToplevel() || dec.isStatic());
-                if (!isToplevelInstance && 
-                    !isToplevelClassInstance) {
-                    e.addError("case must refer to a toplevel or static object declaration, a value constructor for a toplevel class, or a literal value");
-                }
-                else {
-                    Type ut = unionType(
-                            unit.getNullType(), 
-                            unit.getIdentifiableType(), 
-                            unit);
-                    checkAssignable(type, ut, e, 
-                            "case must be identifiable or null");
-                }
+            TypeDeclaration dec = type.getDeclaration();
+            boolean isToplevelInstance = 
+                    dec.isObjectClass() && 
+                    (dec.isToplevel() || dec.isStatic());
+            boolean isToplevelClassInstance = 
+                    dec.isValueConstructor() &&
+                    (dec.getContainer().isToplevel() || dec.isStatic());
+            if (!isToplevelInstance && 
+                !isToplevelClassInstance) {
+                e.addError("case must refer to a toplevel or static object declaration, a value constructor for a toplevel class, or a literal value");
             }
             else {
-                e.addError("tuple element in case must be a literal value");
+                Type ut = unionType(
+                        unit.getNullType(), 
+                        unit.getIdentifiableType(), 
+                        unit);
+                checkAssignable(type, ut, e, 
+                        "case must be identifiable or null");
             }
         }
         else if (term!=null) {
@@ -8744,6 +8738,18 @@ public class ExpressionVisitor extends Visitor {
             else if (etv.equals(ftv) && eneg==fneg) {
                 return (eneg?"-":"") 
                         + etv.replaceAll("\\p{Cntrl}","?");
+            }
+        }
+        if (et instanceof Tree.MemberOrTypeExpression &&
+            ft instanceof Tree.MemberOrTypeExpression) {
+            Tree.MemberOrTypeExpression er = 
+                    (Tree.MemberOrTypeExpression) et;
+            Tree.MemberOrTypeExpression fr = 
+                    (Tree.MemberOrTypeExpression) ft;
+            Declaration ed = er.getDeclaration();
+            Declaration fd = fr.getDeclaration();
+            if (ed!=null && fd!=null && ed.equals(fd)) {
+                return "'" + ed.getName(unit) + "'";
             }
         }
         return null;
