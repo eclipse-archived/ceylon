@@ -688,6 +688,20 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
+    public void testIopJavaIterableInSpreadArgument(){
+        //compareWithJavaSource("JavaIterableInSpreadArgument");
+        compile("JavaIterableInSpreadArgument.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.interop.javaIterableInSpreadArgument");
+    }
+    
+    @Test
+    public void testIopJavaArrayInSpreadArgument(){
+        //compareWithJavaSource("JavaArrayInSpreadArgument");
+        compile("JavaArrayInSpreadArgument.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.interop.javaArrayInSpreadArgument");
+    }
+    
+    @Test
     public void testIopJavaAutoCloseableInTry(){
         compareWithJavaSource("JavaAutoCloseableInTry");
     }
