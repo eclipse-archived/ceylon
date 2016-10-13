@@ -1024,7 +1024,7 @@ public class GenerateJsVisitor extends Visitor {
                 SerializationHelper.addSerializer(node, (Class)d, this);
             }
             if (overrideToString) {
-                out(names.self(d), ".", "toString=function(){return this.string;};");
+                out(names.self(d), ".", "toString=function(){return this.string.valueOf();};");
             }
             endBlock();
             out(")(", typename, ".$$.prototype)");
