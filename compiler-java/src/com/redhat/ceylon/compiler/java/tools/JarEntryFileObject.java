@@ -57,7 +57,7 @@ public class JarEntryFileObject implements JavaFileObject {
         // we start to write at a new entry
         jarFile.putNextEntry(new ZipEntry(fileName));
         return new FilterOutputStream(jarFile){
-            // we override the close() method to automagically close the current entry
+            // we override the close() method to not close the current entry
             @Override
             public void close() throws IOException {
             }
