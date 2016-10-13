@@ -68,6 +68,7 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCTypeCast;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCUnary;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.Tag;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.Convert;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
@@ -76,8 +77,6 @@ import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.loader.NamingBase.Prefix;
 import com.redhat.ceylon.model.loader.NamingBase.Suffix;
-import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
-import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.LazyInterface;
 import com.redhat.ceylon.model.loader.model.OutputElement;
@@ -99,7 +98,6 @@ import com.redhat.ceylon.model.typechecker.model.ParameterList;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 import com.redhat.ceylon.model.typechecker.model.Referenceable;
 import com.redhat.ceylon.model.typechecker.model.Scope;
-import com.redhat.ceylon.model.typechecker.model.Setter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeAlias;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -4472,9 +4470,19 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             Naming.SyntheticName srcIteratorName = varBaseName.suffixedBy(Suffix.$iterator$);
             Type srcElementType = expr.getTarget().getQualifyingType();
-            JCExpression srcIterableTypeExpr = makeJavaType(typeFact().getIterableType(srcElementType), JT_NO_PRIMITIVES);
             JCExpression srcIterableExpr;
             boolean isSuperOrSuperOf = false;
+            Type srcIterableType;
+            if (typeFact().isIterableType(expr.getPrimary().getTypeModel())) {
+                srcIterableType = typeFact().getIterableType(srcElementType);
+            } else if (typeFact().isJavaIterableType(expr.getPrimary().getTypeModel())) {
+                srcIterableType = typeFact().getJavaIterableDeclaration().appliedType(null,  Collections.singletonList(srcElementType));
+            } else if (typeFact().isJavaArrayType(expr.getPrimary().getTypeModel())) {
+                srcIterableType = expr.getPrimary().getTypeModel();
+                srcElementType = typeFact().getJavaArrayElementType(srcIterableType);
+            } else {
+                return makeErroneous(expr, "unhandled iterable type");
+            }
             if (spreadMethodReferenceInner) {
                 srcIterableExpr = srcIterableName.makeIdent();
             } else {
@@ -4489,26 +4497,17 @@ public class ExpressionTransformer extends AbstractTransformer {
                     }else
                         srcIterableExpr = transformSuperOf(expr, expr.getPrimary(), "iterator");
                 }else{
-                    srcIterableExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, typeFact().getIterableType(srcElementType));
+                    srcIterableExpr = transformExpression(expr.getPrimary(), BoxingStrategy.BOXED, srcIterableType);
                 }
             }
             // do not capture the iterable for super invocations: see above
             if (!spreadMethodReferenceInner && !isSuperOrSuperOf) {
                 JCVariableDecl srcIterable = null;
+                JCExpression srcIterableTypeExpr = makeJavaType(srcIterableType, JT_NO_PRIMITIVES);
                 srcIterable = makeVar(Flags.FINAL, srcIterableName, srcIterableTypeExpr, srcIterableExpr);
                 letStmts.prepend(srcIterable);
             }
-            Type resultElementType = expr.getTarget().getType();
-            Type resultAbsentType = typeFact().getIteratedAbsentType(expr.getPrimary().getTypeModel());
             
-            // private Iterator<srcElementType> iterator = srcIterableName.iterator();
-            JCVariableDecl srcIterator = makeVar(Flags.FINAL, srcIteratorName, makeJavaType(typeFact().getIteratorType(srcElementType)), 
-                    make().Apply(null,
-                            // for super we do not capture it because we can't and it's constant anyways
-                            naming.makeQualIdent(isSuperOrSuperOf ? srcIterableExpr : srcIterableName.makeIdent(), "iterator"),
-                            List.<JCExpression>nil()));
-            
-            Naming.SyntheticName iteratorResultName = varBaseName.suffixedBy(Suffix.$element$);
             /* public Object next() {
              *     Object result;
              *     if (!((result = iterator.next()) instanceof Finished)) {
@@ -4531,6 +4530,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCNewClass iterableClass;
             boolean prevSyntheticClassBody = expressionGen().withinSyntheticClassBody(true);
             try {
+                Naming.SyntheticName iteratorResultName = varBaseName.suffixedBy(Suffix.$element$);
                 JCExpression transformedElement = applyErasureAndBoxing(iteratorResultName.makeIdent(), typeFact().getAnythingType(), CodegenUtil.hasTypeErased(expr.getPrimary()),
                         true, BoxingStrategy.BOXED, 
                         srcElementType, 0);
@@ -4543,6 +4543,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                     return make().LetExpr(letStmts.toList(), transformedElement);
                 }
                 
+                Type resultElementType = expr.getTarget().getType();
+                final Type resultAbsentType;
                 transformedElement = applyErasureAndBoxing(transformedElement, resultElementType, 
                         // don't trust the erased flag of expr, as it reflects the result type of the overall spread expr,
                         // not necessarily of the applied member
@@ -4550,36 +4552,94 @@ public class ExpressionTransformer extends AbstractTransformer {
                          ? CodegenUtil.hasTypeErased((TypedDeclaration)expr.getTarget().getDeclaration())
                          : false, 
                         !CodegenUtil.isUnBoxed(expr), BoxingStrategy.BOXED, resultElementType, 0);
-                
                 MethodDefinitionBuilder nextMdb = MethodDefinitionBuilder.systemMethod(this, "next");
                 nextMdb.isOverride(true);
                 nextMdb.annotationFlags(Annotations.IGNORE);
                 nextMdb.modifiers(Flags.PUBLIC | Flags.FINAL);
                 nextMdb.resultType(new TransformedType(make().Type(syms().objectType)));
-                nextMdb.body(List.of(
-                        makeVar(iteratorResultName, 
-                            make().Type(syms().objectType), null),
-                        make().If(
-                                make().Unary(JCTree.Tag.NOT, 
-                                make().TypeTest(make().Assign(
-                                        iteratorResultName.makeIdent(), 
-                                        make().Apply(null,
-                                                naming.makeQualIdent(srcIteratorName.makeIdent(), "next"),
-                                                List.<JCExpression>nil())), 
-                                        make().Type(syms().ceylonFinishedType))), 
-                                make().Block(0, List.<JCStatement>of(make().Exec(make().Assign(iteratorResultName.makeIdent(), 
-                                        transformedElement)))), 
-                                null),
-                        make().Return(iteratorResultName.makeIdent())));
-                JCMethodDecl nextMethod = nextMdb.build();
-                
+                final List<JCTree> l;
+                if (typeFact().isIterableType(expr.getPrimary().getTypeModel())) {
+                    // private Iterator<srcElementType> iterator = srcIterableName.iterator();
+                    JCVariableDecl srcIterator = makeVar(Flags.FINAL, srcIteratorName, makeJavaType(typeFact().getIteratorType(srcElementType)), 
+                            make().Apply(null,
+                                    // for super we do not capture it because we can't and it's constant anyways
+                                    naming.makeQualIdent(isSuperOrSuperOf ? srcIterableExpr : srcIterableName.makeIdent(), "iterator"),
+                                    List.<JCExpression>nil()));
+                    
+                    resultAbsentType = typeFact().getIteratedAbsentType(expr.getPrimary().getTypeModel());
+                    nextMdb.body(List.of(
+                            makeVar(iteratorResultName, 
+                                make().Type(syms().objectType), null),
+                            make().If(
+                                    make().Unary(JCTree.Tag.NOT, 
+                                    make().TypeTest(make().Assign(
+                                            iteratorResultName.makeIdent(), 
+                                            make().Apply(null,
+                                                    naming.makeQualIdent(srcIteratorName.makeIdent(), "next"),
+                                                    List.<JCExpression>nil())), 
+                                            make().Type(syms().ceylonFinishedType))), 
+                                    make().Block(0, List.<JCStatement>of(make().Exec(make().Assign(iteratorResultName.makeIdent(), 
+                                            transformedElement)))), 
+                                    null),
+                            make().Return(iteratorResultName.makeIdent())));
+                    l = List.of(srcIterator, nextMdb.build());
+                } else if (typeFact().isJavaIterableType(expr.getPrimary().getTypeModel())) {
+                    // private Iterator<srcElementType> iterator = srcIterableName.iterator();
+                    JCVariableDecl srcIterator = makeVar(Flags.PRIVATE|Flags.FINAL, srcIteratorName, makeJavaType(typeFact().getJavaIteratorType(srcElementType)), 
+                            make().Apply(null,
+                                    // for super we do not capture it because we can't and it's constant anyways
+                                    naming.makeQualIdent(isSuperOrSuperOf ? srcIterableExpr : srcIterableName.makeIdent(), "iterator"),
+                                    List.<JCExpression>nil()));
+                    
+                    resultAbsentType = typeFact().getNullType();
+                    nextMdb.body(List.<JCStatement>of(
+                            make().If(
+                                    make().Apply(null,
+                                            naming.makeQualIdent(srcIteratorName.makeIdent(), "hasNext"),
+                                            List.<JCExpression>nil()), 
+                                    make().Block(0, List.<JCStatement>of(
+                                            makeVar(iteratorResultName, 
+                                                    make().Type(syms().objectType), 
+                                                    make().Apply(null,
+                                                            naming.makeQualIdent(srcIteratorName.makeIdent(), "next"),
+                                                    List.<JCExpression>nil())),
+                                            make().Return(transformedElement))), 
+                                    make().Return(makeFinished()))));
+                    l = List.of(srcIterator, nextMdb.build());
+                } else if (typeFact().isJavaArrayType(expr.getPrimary().getTypeModel())) {
+                    resultAbsentType = typeFact().getNullType();
+                    JCVariableDecl srcIndex = makeVar(Flags.PRIVATE, srcIteratorName, make().Type(syms().intType), 
+                            make().Literal(0));
+                    JCExpression indexed = make().Indexed(
+                            srcIterableName.makeIdent(), 
+                            make().Unary(Tag.POSTINC, 
+                                    srcIteratorName.makeIdent()));
+                    if (typeFact().isJavaPrimitiveArrayType(expr.getPrimary().getTypeModel())) {
+                        indexed = applyErasureAndBoxing(indexed, srcElementType, false, BoxingStrategy.BOXED, srcElementType);
+                    }
+                    nextMdb.body(List.<JCStatement>of(
+                            make().If(
+                                    make().Binary(Tag.LT, 
+                                            srcIteratorName.makeIdent(), 
+                                            // for super we do not capture it because we can't and it's constant anyways
+                                            naming.makeQualIdent(isSuperOrSuperOf ? srcIterableExpr : srcIterableName.makeIdent(), "length")),
+                                    make().Block(0, List.<JCStatement>of(
+                                            makeVar(iteratorResultName, 
+                                                    make().Type(syms().objectType),
+                                                    indexed),
+                                            make().Return(transformedElement))), 
+                                    make().Return(makeFinished()))));
+                    l = List.of(srcIndex, nextMdb.build());
+                } else {
+                    return makeErroneous(expr, "unhandled iterable type");
+                }
                 // new AbstractIterator()
                 JCNewClass iteratorClass = make().NewClass(null, 
                         null, 
                         make().TypeApply(make().QualIdent(syms().ceylonAbstractIteratorType.tsym),
                                 List.of(makeJavaType(resultElementType, JT_TYPE_ARGUMENT))),
                         List.of(makeReifiedTypeArgument(resultElementType)),
-                        make().AnonymousClassDef(make().Modifiers(0), List.of(srcIterator, nextMethod)));
+                        make().AnonymousClassDef(make().Modifiers(0), l));
                         
                 MethodDefinitionBuilder iteratorMdb = MethodDefinitionBuilder.systemMethod(this, "iterator");
                 iteratorMdb.isOverride(true);
