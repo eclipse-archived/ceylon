@@ -426,7 +426,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
 
             @Override
             public ModuleSourceMapper createModuleManagerUtil(Context context, ModuleManager moduleManager) {
-                return new CeylonDocModuleSourceMapper(context, (CeylonDocModuleManager) moduleManager, CeylonDocTool.this);
+                return new CeylonDocModuleSourceMapper(context, (CeylonDocModuleManager) moduleManager, getEncoding());
             }
         });
         

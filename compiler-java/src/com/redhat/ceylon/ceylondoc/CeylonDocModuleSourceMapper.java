@@ -32,18 +32,17 @@ import com.redhat.ceylon.model.loader.model.LazyModuleManager;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public class CeylonDocModuleSourceMapper extends LazyModuleSourceMapper {
-
-    private CeylonDocTool tool;
-
-    public CeylonDocModuleSourceMapper(Context context, LazyModuleManager moduleManager, CeylonDocTool tool) {
+    private final String encoding;
+    
+    public CeylonDocModuleSourceMapper(Context context, LazyModuleManager moduleManager, String encoding) {
         super(context, moduleManager);
-        this.tool = tool;
+        this.encoding = encoding;
     }
 
     @Override
     protected PhasedUnits createPhasedUnits() {
         PhasedUnits units = super.createPhasedUnits();
-        String fileEncoding  = tool.getEncoding();
+        String fileEncoding  = encoding;
         if (fileEncoding == null) {
             fileEncoding = CeylonConfig.get(DefaultToolOptions.DEFAULTS_ENCODING);
         }
