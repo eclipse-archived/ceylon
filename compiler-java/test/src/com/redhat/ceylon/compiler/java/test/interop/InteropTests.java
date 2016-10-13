@@ -703,12 +703,16 @@ public class InteropTests extends CompilerTests {
     
     @Test
     public void testIopJavaIterableWithSpreadOperator(){
-        compareWithJavaSource("JavaIterableWithSpreadOperator");
+        //compareWithJavaSource("JavaIterableWithSpreadOperator");
+        compile("JavaIterableWithSpreadOperator.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.interop.javaIterableWithSpreadOperator");
     }
     
     @Test
     public void testIopJavaArrayWithSpreadOperator(){
-        compareWithJavaSource("JavaArrayWithSpreadOperator");
+        //compareWithJavaSource("JavaArrayWithSpreadOperator");
+        compile("JavaArrayWithSpreadOperator.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.interop.javaArrayWithSpreadOperator");
     }
     
     @Test
