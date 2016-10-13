@@ -1186,9 +1186,20 @@ public class AnalyzerUtil {
                     /*if (requireSequential) { 
                         checkSpreadArgumentSequential((Tree.SpreadArgument) a, et);
                     }*/
-                    ut = unit.getIteratedType(et);
-                    result = spreadType(et, unit, 
+                    if (unit.isIterableType(et)) {
+                        ut = unit.getIteratedType(et);
+                        result = spreadType(et, unit, 
                                 requireSequential);
+                    } else if (unit.isJavaIterableType(et)) {
+                        ut = unit.getJavaIteratedType(et);
+                        result = unit.getIterableType(ut);
+                    } else if (unit.isJavaArrayType(et)) {
+                        ut = unit.getJavaArrayElementType(et);
+                        result = unit.getIterableType(ut);
+                    } else {
+                        result = unit.getUnknownType();
+                    }
+                    
                 }
                 else if (a instanceof Tree.Comprehension) {
                     ut = et;

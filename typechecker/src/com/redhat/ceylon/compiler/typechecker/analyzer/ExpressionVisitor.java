@@ -5043,7 +5043,10 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             Type t = e.getTypeModel();
             if (!isTypeUnknown(t)) {
-                if (!unit.isIterableType(t)) {
+                if (!unit.isIterableType(t)
+                        && !unit.isJavaIterableType(t)
+                        && !unit.isJavaObjectArrayType(t)
+                        && !unit.isJavaPrimitiveArrayType(t)) {
                     e.addError("spread argument is not iterable: '" + 
                             t.asString(unit) + 
                             "' is not a subtype of 'Iterable'");
