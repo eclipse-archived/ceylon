@@ -8684,10 +8684,12 @@ public class ExpressionVisitor extends Visitor {
             Tree.SequencedArgument fsa = 
                     ftt.getSequencedArgument();
             List<Tree.PositionalArgument> eargs = 
-                    esa == null ? emptyList() :
+                    esa == null ?
+                    Collections.<Tree.PositionalArgument>emptyList() :
                     esa.getPositionalArguments();
-            List<Tree.PositionalArgument> fargs =
-                    fsa == null ? emptyList() :
+            List<Tree.PositionalArgument> fargs = 
+                    fsa == null ?
+                    Collections.<Tree.PositionalArgument>emptyList() :
                     fsa.getPositionalArguments();
             if (eargs.size()!=fargs.size()) {
                 return null;
