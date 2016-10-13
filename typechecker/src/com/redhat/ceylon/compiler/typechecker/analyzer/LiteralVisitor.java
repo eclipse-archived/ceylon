@@ -19,6 +19,7 @@ import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Literal;
@@ -611,13 +612,18 @@ public class LiteralVisitor extends Visitor {
         switchId = oid;
     }
 
-    private void createSwitchVariable(Tree.SwitchClause switchClause, Tree.SwitchCaseList switchCaseList) {
+    private void createSwitchVariable(
+            Tree.SwitchClause switchClause, 
+            Tree.SwitchCaseList switchCaseList) {
         switchId = null;
         if (switchClause!=null && switchCaseList!=null) {
-            Tree.Switched switched = switchClause.getSwitched();
+            Tree.Switched switched = 
+                    switchClause.getSwitched();
             if (switched!=null) {
-                Tree.Variable variable = switched.getVariable();
-                Tree.Expression expression = switched.getExpression();
+                Tree.Variable variable = 
+                        switched.getVariable();
+                Tree.Expression expression = 
+                        switched.getExpression();
                 if (variable != null) {
                     switchId = variable.getIdentifier();
                 }
@@ -630,16 +636,19 @@ public class LiteralVisitor extends Visitor {
                         switchId = bme.getIdentifier();
                     }
                     else {
-                        for (Tree.CaseClause cc: switchCaseList.getCaseClauses()) {
+                        for (Tree.CaseClause cc: 
+                                switchCaseList.getCaseClauses()) {
                             Tree.CaseItem item = cc.getCaseItem();
                             if (item instanceof Tree.IsCase) {
                                 return;
                             }
                             if (item instanceof Tree.PatternCase) {
-                                Tree.Identifier id = new Tree.Identifier(null);
+                                Tree.Identifier id = 
+                                        new Tree.Identifier(null);
                                 id.setText("_");
                                 switchId = id;
-                                switched.setVariable(createVariable(id, expression));
+                                switched.setVariable(
+                                        createVariable(id, expression));
                                 switched.setExpression(null);
                                 return;
                             }
@@ -664,7 +673,7 @@ public class LiteralVisitor extends Visitor {
             }
             Tree.Identifier id = new Tree.Identifier(null);
             id.setText(switchId==null ? "_" : switchId.getText());
-            that.setCaseItem(createIsCase(type, id));
+            that.setCaseItem(createIsCase(type, id, pc));
             Tree.Destructure destructure = 
                     destructure(pattern, id);
             destructure.setPatternCase(true);
@@ -685,14 +694,17 @@ public class LiteralVisitor extends Visitor {
         super.visit(that);
     }
 
-    private Tree.IsCase createIsCase(Tree.Type type, Tree.Identifier id) {
-        Tree.IsCase ic = new Tree.IsCase(null);
+    private Tree.IsCase createIsCase(Tree.Type type, 
+            Tree.Identifier id, Tree.PatternCase item) {
+        Tree.IsCase ic = new Tree.IsCase(item.getToken());
+        ic.setEndToken(item.getEndToken());
         ic.setType(type);
         ic.setVariable(createVariable(id));
         return ic;
     }
 
-    private Tree.Variable createVariable(Tree.Identifier id, Tree.Expression e) {
+    private Tree.Variable createVariable(Tree.Identifier id, 
+            Tree.Expression e) {
         Tree.SpecifierExpression se = 
                 new Tree.SpecifierExpression(null);
         se.setExpression(e);
