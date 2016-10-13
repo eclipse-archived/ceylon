@@ -61,4 +61,16 @@ void testTupleSwitch([Integer,String] pair, Object any) {
     case ([1, null]) {}
     else {}
     
+    switch (any)
+    case ([true]) {}
+    case ([false]) {}
+    case ([null]) {}
+    else {}
+    
+    @error switch (any)
+    case ([true]) {}
+    case ([true]) {}
+    case ([null]) {}
+    else {}
+    
 }
