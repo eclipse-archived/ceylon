@@ -4068,10 +4068,12 @@ caseBlock returns [CaseClause clause]
     ;
 
 caseItemList returns [CaseItem item]
-    : LPAREN //TODO: we really should not throw away this token!
+    : LPAREN
       (
         ci=caseItem
-        { $item = $ci.item; }
+        { $item = $ci.item;
+          if ($item!=null) 
+              $item.setEndToken($LPAREN); }
       )?
       RPAREN 
       { if ($item!=null) 
