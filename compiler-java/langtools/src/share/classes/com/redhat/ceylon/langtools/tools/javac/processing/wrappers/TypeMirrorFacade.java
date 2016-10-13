@@ -26,11 +26,6 @@ public class TypeMirrorFacade implements javax.lang.model.type.TypeMirror {
         return Facades.facade(f.getKind());
     }
 
-    @Override
-    public String toString() {
-        return f.toString();
-    }
-
     // Java 8 method    
 //    @Override
     public <A extends Annotation> A getAnnotation(Class<A> arg0) {
@@ -65,5 +60,22 @@ public class TypeMirrorFacade implements javax.lang.model.type.TypeMirror {
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof TypeMirrorFacade == false)
+            return false;
+        return f.equals(((TypeMirrorFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
     }
 }

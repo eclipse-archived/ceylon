@@ -34,5 +34,21 @@ public class TypeElementFacade extends ElementFacade implements javax.lang.model
     public List<? extends javax.lang.model.element.TypeParameterElement> getTypeParameters() {
         return Facades.facadeTypeParameterElementList(((TypeElement)f).getTypeParameters());
     }
-
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof TypeElementFacade == false)
+            return false;
+        return f.equals(((TypeElementFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
 }

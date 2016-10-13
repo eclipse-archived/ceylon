@@ -19,10 +19,21 @@
  */
 package com.redhat.ceylon.compiler.java.test.issues;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 
 
 public class IssuesTests_6500_6999 extends CompilerTests {
@@ -74,5 +85,22 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     @Test
     public void testBug6548() {
         compile("bug65xx/Bug6548.ceylon", "bug65xx/Bug6548.java");
+    }
+
+    @Test
+    public void testBug6566() throws IOException {
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
+        compile(Arrays.asList("-apt", "maven:org.netbeans.api:org-netbeans-modules-editor-mimelookup/RELEASE82",
+                "-target", "8", "-source", "8",
+                "-rep", "aether:"+getPackagePath()+"bug65xx/bug6566/settings.xml"), 
+                "bug65xx/bug6566/Bug6566.ceylon");
+        File archive = getModuleArchive("com.redhat.ceylon.compiler.java.test.issues.bug65xx.bug6566", "1");
+        assertTrue(archive.exists());
+
+        try(JarFile car = new JarFile(archive)){
+            ZipEntry generatedFile = car.getEntry("META-INF/generated-layer.xml");
+            assertNotNull(generatedFile);
+        }
     }
 }

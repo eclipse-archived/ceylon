@@ -31,6 +31,18 @@ public class NameFacade implements Name {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof NameFacade == false)
+            return false;
+        return f.equals(((NameFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
     public String toString() {
         return f.toString();
     }

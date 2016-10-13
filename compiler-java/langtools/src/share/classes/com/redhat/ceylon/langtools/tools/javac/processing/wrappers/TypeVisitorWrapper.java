@@ -94,4 +94,20 @@ public class TypeVisitorWrapper<R, P> implements TypeVisitor<R, P> {
         return null;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof TypeVisitorWrapper == false)
+            return false;
+        return d.equals(((TypeVisitorWrapper)obj).d);
+    }
+    
+    @Override
+    public int hashCode() {
+        return d.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return d.toString();
+    }
 }

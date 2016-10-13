@@ -2,7 +2,7 @@ package com.redhat.ceylon.langtools.tools.javac.processing.wrappers;
 
 import com.redhat.ceylon.javax.lang.model.element.AnnotationValueVisitor;
 import com.redhat.ceylon.javax.lang.model.element.ElementVisitor;
-
+import com.redhat.ceylon.javax.annotation.processing.Processor;
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
 import com.redhat.ceylon.javax.lang.model.element.TypeElement;
 import com.redhat.ceylon.javax.lang.model.type.TypeKind;
@@ -38,6 +38,12 @@ public class Wrappers {
 
     public static TypeKind wrap(javax.lang.model.type.TypeKind arg0) {
         return TypeKind.valueOf(arg0.name());
+    }
+
+    public static Class<?> unwrapProcessorClass(Processor processor) {
+        if(processor instanceof ProcessorWrapper)
+            return ((ProcessorWrapper)processor).d.getClass();
+        return processor.getClass();
     }
 
 }

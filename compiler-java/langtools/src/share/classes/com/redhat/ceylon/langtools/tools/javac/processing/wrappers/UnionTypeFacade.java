@@ -15,4 +15,20 @@ public class UnionTypeFacade extends TypeMirrorFacade implements javax.lang.mode
         return Facades.facadeTypeMirrorList(((UnionType)f).getAlternatives());
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof UnionTypeFacade == false)
+            return false;
+        return f.equals(((UnionTypeFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
 }

@@ -6,6 +6,8 @@ function is$(obj,type,containers){
       return obj===finished();
     } else if (type.t===$_String && typeof(obj)==='string') {
       return true;
+    } else if (type.t.$$ && type.t.$$.$tsenum) {
+      return typeof(obj) === 'number';
     }
     if(obj===null||obj===undefined){
       return type.t===Null||type.t===Anything;

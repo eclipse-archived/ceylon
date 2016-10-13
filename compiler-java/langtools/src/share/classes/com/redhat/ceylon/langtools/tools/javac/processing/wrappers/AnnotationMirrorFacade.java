@@ -22,4 +22,20 @@ public class AnnotationMirrorFacade implements javax.lang.model.element.Annotati
         return Facades.facadeElementValues(f.getElementValues());
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof AnnotationMirrorFacade == false)
+            return false;
+        return f.equals(((AnnotationMirrorFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
 }

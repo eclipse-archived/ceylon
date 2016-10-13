@@ -108,4 +108,20 @@ public class TypesFacade implements javax.lang.model.util.Types {
         return Facades.facade(f.unboxedType(Facades.unfacade(arg0)));
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof TypesFacade == false)
+            return false;
+        return f.equals(((TypesFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
 }

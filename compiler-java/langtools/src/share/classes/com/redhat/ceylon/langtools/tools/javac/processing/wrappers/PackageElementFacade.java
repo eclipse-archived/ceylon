@@ -21,4 +21,21 @@ public class PackageElementFacade extends ElementFacade implements javax.lang.mo
         return ((PackageElement)f).isUnnamed();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof PackageElementFacade == false)
+            return false;
+        return f.equals(((PackageElementFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
+
 }

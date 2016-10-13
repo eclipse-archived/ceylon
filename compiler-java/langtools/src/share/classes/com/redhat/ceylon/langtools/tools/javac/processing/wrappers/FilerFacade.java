@@ -32,4 +32,20 @@ public class FilerFacade implements javax.annotation.processing.Filer {
         return Facades.facade(f.getResource(Facades.unfacade(arg0), arg1, arg2));
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof FilerFacade == false)
+            return false;
+        return f.equals(((FilerFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
 }

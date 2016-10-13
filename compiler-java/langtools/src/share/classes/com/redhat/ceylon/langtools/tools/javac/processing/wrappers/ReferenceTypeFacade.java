@@ -8,4 +8,20 @@ public class ReferenceTypeFacade extends TypeMirrorFacade implements javax.lang.
         super(f);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof ReferenceTypeFacade == false)
+            return false;
+        return f.equals(((ReferenceTypeFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
 }

@@ -20,6 +20,7 @@
 
 package com.redhat.ceylon.compiler.java.tools;
 
+import java.io.FileNotFoundException;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,7 +57,7 @@ public class JarEntryFileObject implements JavaFileObject {
         // we start to write at a new entry
         jarFile.putNextEntry(new ZipEntry(fileName));
         return new FilterOutputStream(jarFile){
-            // we override the close() method to automagically close the current entry
+            // we override the close() method to not close the current entry
             @Override
             public void close() throws IOException {
             }
@@ -65,14 +66,18 @@ public class JarEntryFileObject implements JavaFileObject {
 
     @Override
     public int hashCode() {
-        return jarFileName.hashCode();
+        int ret = 17;
+        ret = (37 * ret) + jarFileName.hashCode();
+        ret = (37 * ret) + fileName.hashCode();
+        return ret;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof JarEntryFileObject) {
             JarEntryFileObject r = (JarEntryFileObject)obj;
-            return jarFileName.equals(r.jarFileName);
+            return jarFileName.equals(r.jarFileName)
+                    && fileName.equals(r.fileName);
         } else {
             return false;
         }
@@ -98,7 +103,10 @@ public class JarEntryFileObject implements JavaFileObject {
 
     @Override
     public InputStream openInputStream() throws IOException {
-        return null;
+        // FIXME: perhaps allow reading from the previous car?
+        // This is required by at least the org.netbeans.api:org-netbeans-modules-editor-mimelookup/RELEASE82
+        // APT processor to check that there wasn't already a file
+        throw new FileNotFoundException();
     }
 
     @Override

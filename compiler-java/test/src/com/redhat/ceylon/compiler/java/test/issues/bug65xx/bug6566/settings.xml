@@ -1,0 +1,17 @@
+<settings>
+ <profiles>
+  <profile>
+   <id>myprofile</id>
+   <repositories>
+    <repository>
+     <id>nb-maven-repo</id>
+     <name>Maven Repository for NetBeans Modules</name>
+     <url>http://bits.netbeans.org/nexus/content/groups/netbeans/</url>
+    </repository>
+   </repositories>
+  </profile>
+ </profiles>
+ <activeProfiles>
+  <activeProfile>myprofile</activeProfile>
+ </activeProfiles>
+</settings>

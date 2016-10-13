@@ -512,7 +512,10 @@ public class JarOutputRepositoryManager {
             	addMappingEntry(entryName, JarUtils.toPlatformIndependentPath(srcCreator.getPaths(), sourceFile.getPath()));
             } else {
                 modifiedResourceFilesRel.add(entryName);
-                modifiedResourceFilesFull.add(FileUtil.applyPath(resourceCreator.getPaths(), fileName).getPath());
+                File full = FileUtil.applyPath(resourceCreator.getPaths(), fileName);
+                // this can be null for APT-generated resources
+                if(full != null)
+                    modifiedResourceFilesFull.add(full.getPath());
                 if (OsgiUtil.CeylonManifest.isManifestFileName(entryName) && 
                         (module.isDefaultModule() || writeOsgiManifest)) {
                     manifest = new JarEntryManifestFileObject(outputJarFile.getPath(), entryName, 

@@ -11,6 +11,14 @@ function dre$$(object, type, loc) {
   if (typeof(object)==='object' && Object.isFrozen(object)) {
     throw new Error("Cannot add Ceylon type information to a frozen object");
   }
+  //If it's a TypeScript enum, accept number values and nothing else
+  if (type.t.$$.$tsenum) {
+    if (typeof(object)==='number') {
+      return object;
+    } else {
+      throw new Error("Native object cannot be a TypeScript enum");
+    }
+  }
   function memberTypeIsDynamicInterface$(t) {
     if (t.t && t.t.dynmem$) {
       return t;

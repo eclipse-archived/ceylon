@@ -25,4 +25,21 @@ public class DeclaredTypeFacade extends ReferenceTypeFacade implements javax.lan
         return Facades.facadeTypeMirrorList(((DeclaredType)f).getTypeArguments());
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof DeclaredTypeFacade == false)
+            return false;
+        return f.equals(((DeclaredTypeFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
+
 }

@@ -79,4 +79,20 @@ public class ElementFacade implements Element {
         }
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof ElementFacade == false)
+            return false;
+        return f.equals(((ElementFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
 }
