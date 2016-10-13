@@ -30,4 +30,13 @@ void testTupleSwitch([Integer,String] pair, Object any) {
     case ([0,""]) {}
     case ([0,"",'x']) {}
     else {}
+    
+    @error switch (pair)
+    case ([0,""]) {}
+    case ([Integer i, String s]) {}
+    
+    @error switch (pair)
+    case ([0,""]) {}
+    case (is [Integer, String]) {}
+    
 }
