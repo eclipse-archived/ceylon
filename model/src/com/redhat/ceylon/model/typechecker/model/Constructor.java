@@ -21,6 +21,8 @@ public class Constructor extends TypeDeclaration implements Functional {
     private List<Declaration> members = new ArrayList<Declaration>(3);
     private List<Annotation> annotations = new ArrayList<Annotation>(4);
     
+    private String typescriptEnum = null;
+    
     public boolean isValueConstructor() {
         return parameterList==null;
     }
@@ -117,6 +119,44 @@ public class Constructor extends TypeDeclaration implements Functional {
             }
         }
         return null;
+    }
+    
+    /**
+     * Whether this constructor corresponds to a TypeScript enum.
+     *
+     * @return
+     * <ul>
+     *   <li>{@code null} if this constructor does not correspond to a TypeScript enum.</li>
+     *   <li>A numerical string if this constructor corresponds to a {@code const} TypeScript enum.</li>
+     *   <li>An identifier string if this constructor corresponds to a non-{@code const} TypeScript enum.</li>
+     * </ul>
+     */
+    public String getTypescriptEnum() {
+        return typescriptEnum;
+    }
+    
+    /**
+     * @see #getTypescriptEnum
+     * @throws IllegalStateException if this is not a value constructor.
+     * @throws IllegalArgumentException if the argument is neither numeric nor a legal JavaScript identifier.
+     */
+    public void setTypescriptEnum(String val) {
+        if (val != null) {
+            if (!isValueConstructor())
+                throw new IllegalStateException("Only value constructors can be TypeScript enums");
+            if (!val.matches("[0-9.-]+") && !val.matches("[\\p{L}\\{Nl}$_][\\p{L}\\p{Nl}$_\u200C\u200D\\p{Mn}\\p{Mc}\\p{Nd}\\p{Pc}]*")) {
+                StringBuilder message = new StringBuilder("Illegal TypeScript enum name or value '");
+                message.append(val);
+                message.append("'");
+                if (isMember()) {
+                    message.append(" for member of '");
+                    message.append(((ClassOrInterface)getContainer()).getName());
+                    message.append("'");
+                }
+                throw new IllegalArgumentException(message.toString());
+            }
+        }
+        typescriptEnum = val;
     }
     
     @Override

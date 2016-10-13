@@ -68,7 +68,7 @@ public class MetamodelGenerator {
     public static final String KEY_DYNAMIC      = "dyn";
 
     // backend specific keys
-    public static final String KEY_JS_NEW       = "$new"; // should be instantiated with new; TypeScript interop
+    public static final String KEY_JS_TSENUM    = "$tsenum"; // case constructor is a TypeScript enum
 
     public static final String METATYPE_CLASS           = "c";
     public static final String METATYPE_INTERFACE       = "i";
