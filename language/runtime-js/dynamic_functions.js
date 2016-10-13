@@ -14,7 +14,7 @@ function dre$$(object, type, loc) {
   //If it's a TypeScript enum, accept number values and nothing else
   if (type.t.$$.$tsenum) {
     if (typeof(object)==='number') {
-      return undefined;
+      return object;
     } else {
       throw new Error("Native object cannot be a TypeScript enum");
     }
