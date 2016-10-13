@@ -62,6 +62,7 @@ import com.redhat.ceylon.langtools.tools.javac.model.JavacElements;
 import com.redhat.ceylon.langtools.tools.javac.model.JavacTypes;
 import com.redhat.ceylon.langtools.tools.javac.parser.*;
 import com.redhat.ceylon.langtools.tools.javac.processing.wrappers.ProcessorWrapper;
+import com.redhat.ceylon.langtools.tools.javac.processing.wrappers.Wrappers;
 import com.redhat.ceylon.langtools.tools.javac.tree.*;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.*;
 import com.redhat.ceylon.langtools.tools.javac.util.Abort;
@@ -551,7 +552,7 @@ public class JavacProcessingEnvironment implements ProcessingEnvironment, Closea
             if (procSourceVersion.compareTo(Source.toSourceVersion(source)) < 0 )  {
                 log.warning("proc.processor.incompatible.source.version",
                             procSourceVersion,
-                            processor.getClass().getName(),
+                            Wrappers.unwrapProcessorClass(processor).getName(),
                             source.name);
             }
         }
@@ -561,7 +562,7 @@ public class JavacProcessingEnvironment implements ProcessingEnvironment, Closea
             if (!valid)
                 log.error("proc.processor.bad.option.name",
                             optionName,
-                            processor.getClass().getName());
+                            Wrappers.unwrapProcessorClass(processor).getName());
             return valid;
         }
 

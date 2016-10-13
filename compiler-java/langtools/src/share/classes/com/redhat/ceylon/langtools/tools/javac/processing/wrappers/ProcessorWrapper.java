@@ -15,7 +15,7 @@ import com.redhat.ceylon.javax.lang.model.element.TypeElement;
 
 public class ProcessorWrapper implements Processor {
 
-    private javax.annotation.processing.Processor d;
+    javax.annotation.processing.Processor d;
 
     public ProcessorWrapper(javax.annotation.processing.Processor d) {
         this.d = d;
