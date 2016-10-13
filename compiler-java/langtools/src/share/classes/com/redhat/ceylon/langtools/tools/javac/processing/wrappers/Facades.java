@@ -339,9 +339,6 @@ public class Facades {
     public static javax.tools.FileObject facade(FileObject object) {
         if(object == null)
             return null;
-        
-        if(object instanceof FileObject)
-            return facade((FileObject)object);
         return new FileObjectFacade(object);
     }
 
