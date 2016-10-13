@@ -702,6 +702,16 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
+    public void testIopJavaIterableWithSpreadOperator(){
+        compareWithJavaSource("JavaIterableWithSpreadOperator");
+    }
+    
+    @Test
+    public void testIopJavaArrayWithSpreadOperator(){
+        compareWithJavaSource("JavaArrayWithSpreadOperator");
+    }
+    
+    @Test
     public void testIopJavaAutoCloseableInTry(){
         compareWithJavaSource("JavaAutoCloseableInTry");
     }
