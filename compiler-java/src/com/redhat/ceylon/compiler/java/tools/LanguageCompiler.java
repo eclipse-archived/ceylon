@@ -953,4 +953,8 @@ public class LanguageCompiler extends JavaCompiler {
     public boolean isHadRunTwiceException() {
         return hadRunTwiceException;
     }
+    
+    public Set<Module> getCompiledModules(){
+        return modulesLoadedFromSource;
+    }
 }

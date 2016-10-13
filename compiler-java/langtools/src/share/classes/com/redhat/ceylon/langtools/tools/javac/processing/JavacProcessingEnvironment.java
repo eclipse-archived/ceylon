@@ -34,6 +34,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.regex.*;
 
+import com.redhat.ceylon.compiler.java.tools.CeyloncFileManager;
 import com.redhat.ceylon.compiler.java.tools.LanguageCompiler;
 import com.redhat.ceylon.javax.annotation.processing.*;
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
@@ -719,6 +720,14 @@ public class JavacProcessingEnvironment implements ProcessingEnvironment, Closea
             }
 
             if (matchedNames.size() > 0 || ps.contributed) {
+                // Ceylon: set the output module for APT-generated files
+                LanguageCompiler compiler = (LanguageCompiler) LanguageCompiler.instance(context);
+                if(compiler.getCompiledModules().size() == 1){
+                    CeyloncFileManager fm = (CeyloncFileManager) context.get(JavaFileManager.class);
+                    fm.setModule(compiler.getCompiledModules().iterator().next());
+                }else{
+                    log.error("Running APT processors while compiling more than one module is not supported yet");
+                }
                 boolean processingResult = callProcessor(ps.processor, typeElements, renv);
                 ps.contributed = true;
                 ps.removeSupportedOptions(unmatchedProcessorOptions);
