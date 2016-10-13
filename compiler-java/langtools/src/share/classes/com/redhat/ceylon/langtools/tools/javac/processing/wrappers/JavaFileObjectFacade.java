@@ -28,4 +28,20 @@ public class JavaFileObjectFacade extends FileObjectFacade implements javax.tool
         return ((JavaFileObject)f).isNameCompatible(arg0, Wrappers.wrap(arg1));
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof JavaFileObjectFacade == false)
+            return false;
+        return f.equals(((JavaFileObjectFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
 }

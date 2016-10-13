@@ -8,4 +8,21 @@ public class NullTypeFacade extends ReferenceTypeFacade implements javax.lang.mo
         super(f);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof NullTypeFacade == false)
+            return false;
+        return f.equals(((NullTypeFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
+
 }

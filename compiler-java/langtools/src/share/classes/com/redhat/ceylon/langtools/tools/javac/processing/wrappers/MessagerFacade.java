@@ -35,4 +35,20 @@ public class MessagerFacade implements javax.annotation.processing.Messager {
         f.printMessage(Wrappers.wrap(arg0), arg1, Facades.unfacade(arg2), Facades.unfacade(arg3), Facades.unfacade(arg4));
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof MessagerFacade == false)
+            return false;
+        return f.equals(((MessagerFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
 }

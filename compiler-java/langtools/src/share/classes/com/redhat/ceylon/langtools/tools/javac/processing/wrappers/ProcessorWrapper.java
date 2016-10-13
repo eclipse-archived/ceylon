@@ -76,4 +76,21 @@ public class ProcessorWrapper implements Processor {
             set.add(s);
         return Collections.unmodifiableSet(set);
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof ProcessorWrapper == false)
+            return false;
+        return d.equals(((ProcessorWrapper)obj).d);
+    }
+    
+    @Override
+    public int hashCode() {
+        return d.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return d.toString();
+    }
 }

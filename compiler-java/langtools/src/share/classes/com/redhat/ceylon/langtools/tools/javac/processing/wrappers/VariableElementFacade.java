@@ -12,4 +12,21 @@ public class VariableElementFacade extends ElementFacade implements javax.lang.m
     public Object getConstantValue() {
         return ((VariableElement)f).getConstantValue();
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof VariableElementFacade == false)
+            return false;
+        return f.equals(((VariableElementFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
 }

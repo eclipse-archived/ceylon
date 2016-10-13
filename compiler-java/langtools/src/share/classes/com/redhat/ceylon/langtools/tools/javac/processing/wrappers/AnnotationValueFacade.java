@@ -58,4 +58,20 @@ public class AnnotationValueFacade implements javax.lang.model.element.Annotatio
         throw new RuntimeException("Don't know how to facade value type "+value);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof AnnotationValueFacade == false)
+            return false;
+        return f.equals(((AnnotationValueFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
 }

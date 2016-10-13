@@ -96,4 +96,20 @@ public class AnnotationValueVisitorWrapper<R, P> implements AnnotationValueVisit
         return d.visitUnknown(Facades.facade(av), p);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof AnnotationValueVisitorWrapper == false)
+            return false;
+        return d.equals(((AnnotationValueVisitorWrapper)obj).d);
+    }
+    
+    @Override
+    public int hashCode() {
+        return d.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return d.toString();
+    }
 }

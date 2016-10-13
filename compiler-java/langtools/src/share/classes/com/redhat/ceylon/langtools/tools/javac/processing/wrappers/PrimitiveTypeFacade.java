@@ -8,4 +8,21 @@ public class PrimitiveTypeFacade extends TypeMirrorFacade implements javax.lang.
         super(f);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof PrimitiveTypeFacade == false)
+            return false;
+        return f.equals(((PrimitiveTypeFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
+
 }

@@ -18,4 +18,20 @@ public class WildcardTypeFacade extends TypeMirrorFacade implements javax.lang.m
         return Facades.facade(((WildcardType)f).getSuperBound());
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof WildcardTypeFacade == false)
+            return false;
+        return f.equals(((WildcardTypeFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
 }

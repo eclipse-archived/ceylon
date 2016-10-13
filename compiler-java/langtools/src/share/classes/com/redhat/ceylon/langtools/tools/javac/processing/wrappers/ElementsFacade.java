@@ -106,4 +106,20 @@ public class ElementsFacade implements javax.lang.model.util.Elements {
         }
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof ElementsFacade == false)
+            return false;
+        return f.equals(((ElementsFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
 }

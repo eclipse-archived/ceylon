@@ -56,4 +56,20 @@ public class ElementVisitorWrapper<R, P> implements ElementVisitor<R, P> {
         return d.visitUnknown(Facades.facade(e), p);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof ElementVisitorWrapper == false)
+            return false;
+        return d.equals(((ElementVisitorWrapper)obj).d);
+    }
+    
+    @Override
+    public int hashCode() {
+        return d.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return d.toString();
+    }
 }

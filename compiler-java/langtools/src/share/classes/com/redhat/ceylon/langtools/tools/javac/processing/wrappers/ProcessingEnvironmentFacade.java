@@ -53,4 +53,20 @@ public class ProcessingEnvironmentFacade implements ProcessingEnvironment {
         return Facades.facade(f.getTypeUtils());
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof ProcessingEnvironmentFacade == false)
+            return false;
+        return f.equals(((ProcessingEnvironmentFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
 }

@@ -13,4 +13,21 @@ public class ArrayTypeFacade extends ReferenceTypeFacade implements javax.lang.m
         return Facades.facade(((ArrayType)f).getComponentType());
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof ArrayTypeFacade == false)
+            return false;
+        return f.equals(((ArrayTypeFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
+
 }

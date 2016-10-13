@@ -46,4 +46,20 @@ public class ExecutableTypeFacade extends TypeMirrorFacade implements javax.lang
         }
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof ExecutableTypeFacade == false)
+            return false;
+        return f.equals(((ExecutableTypeFacade)obj).f);
+    }
+    
+    @Override
+    public int hashCode() {
+        return f.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return f.toString();
+    }
 }
