@@ -14,7 +14,7 @@ import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 
 @Ceylon(major = 8)
-@Class(extendsType="ceylon.language::Object", basic = false, identifiable = false)
+@Class(extendsType="ceylon.language::Object", basic = false, identifiable = false, constructors = true)
 @SatisfiedTypes({
     "ceylon.language::Number<ceylon.language::Float>",
     "ceylon.language::Exponentiable<ceylon.language::Float,ceylon.language::Float>"
@@ -38,6 +38,7 @@ public final class Float
     @Ignore
     final double value;
     
+    @SharedAnnotation$annotation$
     public Float(@Name("float") double f) {
         value = f;
     }

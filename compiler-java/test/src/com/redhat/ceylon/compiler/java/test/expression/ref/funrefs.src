@@ -228,7 +228,7 @@ final class funrefs_ {
                 return (.ceylon.language.String)$instance$.getFirst();
             }
         }.$call$(new .ceylon.language.Singleton<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance(""))).toString();
-        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> get = (.ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>>)(.ceylon.language.Callable)new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, .ceylon.language.String.$TypeDescriptor$)), "String?(Integer)(Singleton<String>)", (short)-1){
+        final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> get = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.String>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Singleton.class, .ceylon.language.String.$TypeDescriptor$)), "String?(Integer)(Singleton<String>)", (short)-1){
             
             @.java.lang.Override
             @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -240,7 +240,7 @@ final class funrefs_ {
                     @.com.redhat.ceylon.compiler.java.metadata.Ignore
                     public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
                         final .ceylon.language.Integer index = (.ceylon.language.Integer)$param$0;
-                        return (.ceylon.language.String)$instance$.get(index);
+                        return $instance$.get(index);
                     }
                 };
             }

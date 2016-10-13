@@ -27,7 +27,8 @@ public enum Warning {
     redundantIteration("Redundant iterations"),
     missingImportPrefix("Missing import prefixes"),
     uncheckedTypeArguments("Unchecked type arguments"),
-    expressionTypeCallable("Expressions of type 'Callable'"), 
+    expressionTypeCallable("Expressions of type 'Callable'"),
+    expressionTypeIterable("Expressions of type 'Iterable'"), 
     inferredNotNull("Inferred not null types");
     /*
      * Don't forget to update the documentation

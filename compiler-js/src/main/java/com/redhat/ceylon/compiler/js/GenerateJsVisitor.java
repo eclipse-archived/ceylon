@@ -953,8 +953,9 @@ public class GenerateJsVisitor extends Visitor {
         ArrayList<Parameter> plist = null;
         final boolean isAbstractNative = TypeUtils.makeAbstractNative(d);
         final String typename = names.name(d);
+        final boolean overrideToString =  d.getDirectMember("toString", null, true) == null;
         if (enter) {
-            enter = !statements.isEmpty();
+            enter = !statements.isEmpty() | overrideToString;
             if (d instanceof Class) {
                 ParameterList _pl = ((Class)d).getParameterList();
                 if (_pl != null) {
@@ -1021,6 +1022,9 @@ public class GenerateJsVisitor extends Visitor {
             }
             if (isSerial && !isAbstractNative) {
                 SerializationHelper.addSerializer(node, (Class)d, this);
+            }
+            if (overrideToString) {
+                out(names.self(d), ".", "toString=function(){return this.string;};");
             }
             endBlock();
             out(")(", typename, ".$$.prototype)");
@@ -1219,13 +1223,17 @@ public class GenerateJsVisitor extends Visitor {
                     || n instanceof Tree.AttributeGetterDefinition
                     || (n instanceof Tree.AttributeDeclaration
                             && ((Tree.AttributeDeclaration)n).getSpecifierOrInitializerExpression() != null))) {
-                String missingDeclarationName = d.getQualifiedNameString();
-                if (d.getName() == null && d instanceof Constructor) {
-                    missingDeclarationName = missingDeclarationName.substring(0, missingDeclarationName.length()-4)
-                            + "<default constructor>";
+                String missingDeclarationName = d.getName();
+                if (missingDeclarationName == null && d instanceof Constructor) {
+                    missingDeclarationName = "default constructor";
                 }
-                final String err = "no native implementation for backend: native '"
-                        + d.getName(d.getUnit()) + "' is not implemented the 'js' backend";
+                else {
+                    missingDeclarationName = "'" + missingDeclarationName + "'";
+                }
+                final String err = 
+                        "no native implementation for backend: native "
+                        + missingDeclarationName 
+                        + " is not implemented for the 'js' backend";
                 n.addError(err, Backend.JavaScript);
                 out("/*", err, "*/");
             }
@@ -1940,7 +1948,7 @@ public class GenerateJsVisitor extends Visitor {
                     that.getPrimary().visit(this);
                     out(names.constructorSeparator(fd), names.name(fd));
                 } else if (fd.isStatic()) {
-                    BmeGenerator.generateStaticReference(fd, this);
+                    BmeGenerator.generateStaticReference(that, fd, this);
                 } else {
                     out("function($O$){return ");
                     if (BmeGenerator.hasTypeParameters(that)) {
@@ -1952,7 +1960,7 @@ public class GenerateJsVisitor extends Visitor {
                 }
             } else {
                 if (d.isStatic()) {
-                    BmeGenerator.generateStaticReference(d, this);
+                    BmeGenerator.generateStaticReference(that, d, this);
                 } else {
                     out("function($O$){return $O$.", names.name(d), ";}");
                 }
@@ -1964,7 +1972,7 @@ public class GenerateJsVisitor extends Visitor {
                 }
             });
             if (d != null && d.isStatic()) {
-                BmeGenerator.generateStaticReference(d, this);
+                BmeGenerator.generateStaticReference(that, d, this);
             } else {
                 out(memberAccess(that, lhs));
             }
@@ -2626,10 +2634,15 @@ public class GenerateJsVisitor extends Visitor {
                             if (path.length()>0) {
                                 path.append('.');
                             }
-                            if (d.isStatic() && d instanceof TypedDeclaration) {
-                                TypedDeclaration orig = ((TypedDeclaration) d).getOriginalDeclaration();
-                                path.append(names.name((ClassOrInterface) (orig == null ? d : orig).getContainer()))
-                                        .append(".$st$");
+                            if (d.isStatic()) {
+                                if (d instanceof TypedDeclaration) {
+                                    TypedDeclaration orig = ((TypedDeclaration) d).getOriginalDeclaration();
+                                    path.append(names.name((ClassOrInterface) (orig == null ? d : orig).getContainer()))
+                                            .append(".$st$");
+                                } else if (d instanceof TypeDeclaration) {
+                                    path.append(names.name((ClassOrInterface)d.getContainer()))
+                                            .append(".$st$");
+                                }
                             } else {
                                 path.append(names.self((TypeDeclaration) scope));
                             }

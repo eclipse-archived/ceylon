@@ -69,7 +69,7 @@ class AppliedTypeDefaultedParameterSub implements .com.redhat.ceylon.compiler.ja
     
     @.java.lang.Override
     public final .ceylon.language.String $default$Member$t() {
-        return (.ceylon.language.String)$com$redhat$ceylon$compiler$java$test$structure$concrete$AppliedTypeDefaultedParameter$this$.$default$Member$t();
+        return $com$redhat$ceylon$compiler$java$test$structure$concrete$AppliedTypeDefaultedParameter$this$.$default$Member$t();
     }
     
     @.java.lang.Override

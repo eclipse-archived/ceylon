@@ -223,7 +223,7 @@ class JavaArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runti
             .ceylon.language.print_.print((
                 let
                 {
-                    .ceylon.language.Integer $ceylontmp$106 = (.ceylon.language.Integer)element;
+                    .ceylon.language.Integer $ceylontmp$106 = element;
                 }
                 returning $ceylontmp$106 != null ? $ceylontmp$106 : .ceylon.language.Integer.instance(0L);
             ));

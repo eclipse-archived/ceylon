@@ -27,7 +27,7 @@ public final class bug671_ {
             }
             returning new .ceylon.language.Array<.ceylon.language.Integer>(arg$0$reified$0, arg$0$0);
         );
-        ((.ceylon.language.Array<.ceylon.language.Integer>)(.ceylon.language.Array)a6).set(0L, null);
+        a6.set(0L, null);
     }
     
     public static void main(.java.lang.String[] args) {

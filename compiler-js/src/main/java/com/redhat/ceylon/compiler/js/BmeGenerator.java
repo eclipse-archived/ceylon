@@ -9,6 +9,7 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.js.GenerateJsVisitor.GenerateCallback;
 import com.redhat.ceylon.compiler.js.util.JsWriter;
 import com.redhat.ceylon.compiler.js.util.TypeUtils;
+import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.TypeArguments;
 import com.redhat.ceylon.model.typechecker.model.Class;
@@ -290,10 +291,11 @@ public class BmeGenerator {
         }
     }
 
-    static void generateStaticReference(Declaration d, GenerateJsVisitor gen) {
+    static void generateStaticReference(Node n, Declaration d, GenerateJsVisitor gen) {
         Declaration orig = d instanceof TypedDeclaration ? ((TypedDeclaration)d).getOriginalDeclaration() : d;
-        gen.out(gen.getNames().name((ClassOrInterface)(orig == null ? d : orig).getContainer()),
-                ".$st$.", gen.getNames().name(d));
+        ClassOrInterface coi = (ClassOrInterface)(orig == null ? d : orig).getContainer();
+        gen.qualify(n, coi);
+        gen.out(gen.getNames().name(coi), ".$st$.", gen.getNames().name(d));
     }
 
 }

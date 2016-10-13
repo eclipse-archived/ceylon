@@ -27,7 +27,7 @@ final class bug1507_ {
                     final long j = j$11;
                     $ceylontmp$continue$4: do {
                         .java.lang.Object k$13;
-                        if ((k$13 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper).com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1507generateInt_.bug1507generateInt(j == 0L)) != null) {
+                        if ((k$13 = .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1507generateInt_.bug1507generateInt(j == 0L)) != null) {
                             final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper k$14 = (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper)k$13;
                             i$0 = k$14;
                             final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.Bug1507IntWrapper i$15 = i$0;

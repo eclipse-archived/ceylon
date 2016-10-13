@@ -190,6 +190,9 @@ public class Type extends Reference {
         if (isNothing()) {
             return true;
         }
+        else if (isTypeParameter()) {
+            return false;
+        }
         else {
             if (exactlyNothing==0) {
                 exactlyNothing =

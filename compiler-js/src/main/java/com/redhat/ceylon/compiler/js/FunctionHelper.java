@@ -530,7 +530,7 @@ public class FunctionHelper {
                     }
                 }
             } else if (d.isStatic()) {
-                BmeGenerator.generateStaticReference(d, gen);
+                BmeGenerator.generateStaticReference(that, d, gen);
             } else {
                 gen.out("function(x){return ");
                 if (BmeGenerator.hasTypeParameters(that)) {

@@ -30,7 +30,34 @@ public abstract class EnumUtil {
         return result;
     }
     
+    /**
+     * Turns a list of strings containing the names of enumeration options from the given
+     * enumeration class into a set of enumerations.
+     * @param enumClass The enumeration's class
+     * @param elems The list of enumeration option names or <code>null</code>
+     * @return An <code>EnumSet</code> containing the options found or <code>null</code>
+     * if <code>elems</code> was <code>null</code>
+     * @throws IllegalArgumentException if a string was found with an option name that
+     * was not found in the given enumeration
+     */
     public static <ENUM extends Enum<ENUM>> EnumSet<ENUM> enumsFromStrings(Class<ENUM> enumClass, List<String> elems) {
+        return enumsFromStrings(enumClass, elems, false);
+    }
+    
+    /**
+     * Turns a list of strings containing the names of enumeration options from the given
+     * enumeration class into a set of enumerations. String containing option names that
+     * are not part of the given enumeration will be silently skipped.
+     * @param enumClass The enumeration's class
+     * @param elems The list of enumeration option names or <code>null</code>
+     * @return An <code>EnumSet</code> containing the options found or <code>null</code>
+     * if <code>elems</code> was <code>null</code>
+     */
+    public static <ENUM extends Enum<ENUM>> EnumSet<ENUM> enumsFromPossiblyInvalidStrings(Class<ENUM> enumClass, List<String> elems) {
+        return enumsFromStrings(enumClass, elems, true);
+    }
+    
+    private static <ENUM extends Enum<ENUM>> EnumSet<ENUM> enumsFromStrings(Class<ENUM> enumClass, List<String> elems, boolean skipErrors) {
         if (elems != null) {
             EnumSet<ENUM> result = EnumSet.noneOf(enumClass);
             for (String elem : elems) {
@@ -41,7 +68,15 @@ public abstract class EnumUtil {
                         elem = e.name();
                     }
                 }
-                result.add(EnumUtil.valueOf(enumClass, elem));
+                if (skipErrors) {
+                    try {
+                        result.add(EnumUtil.valueOf(enumClass, elem));
+                    } catch (IllegalArgumentException ex) {
+                        // Ignore any invalid enumeration options
+                    }
+                } else {
+                    result.add(EnumUtil.valueOf(enumClass, elem));
+                }
             }
             return result;
         } else {

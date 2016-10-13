@@ -1442,7 +1442,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 // the subclasses class get the constructor modifiers
                 setNonLazyDeclarationProperties(subdecl2, constructor, constructor, classMirror, isCeylon);
                 
-                subdecl.setOverloaded(true);
+                subdecl2.setOverloaded(true);
                 overloads.add(subdecl2);
                 decls.add(subdecl2);
             }
@@ -5379,33 +5379,42 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return ret;
     }
     
+    protected boolean isFunctionalInterfaceType(TypeMirror typeMirror) {
+        return false;
+    }
+
     protected String isFunctionalInterface(ClassMirror klass){
         return null;
     }
 
-    protected FunctionalInterfaceType getFunctionalInterfaceType(TypeMirror typeMirror){
+    protected FunctionalInterfaceType getFunctionalInterfaceType(TypeMirror typeMirror)
+        throws ModelResolutionException {
         return null;
     }
     
     private Type getFunctionalInterfaceAsCallable(Module moduleScope,
             Scope scope, 
             TypeMirror typeMirror) {
-        FunctionalInterfaceType functionalInterfaceType = getFunctionalInterfaceType(typeMirror);
-            
-        Type returnType = 
-                obtainType(moduleScope, functionalInterfaceType.getReturnType(), 
-                        scope, TypeLocation.TOPLEVEL, VarianceLocation.COVARIANT);
-        java.util.List<Type> modelParameterTypes =
-                new ArrayList<Type>(functionalInterfaceType.getParameterTypes().size());
-        for(TypeMirror parameterType : functionalInterfaceType.getParameterTypes()){
-            Type modelParameterType = 
+        try{
+            FunctionalInterfaceType functionalInterfaceType = getFunctionalInterfaceType(typeMirror);
+
+            Type returnType = 
+                    obtainType(moduleScope, functionalInterfaceType.getReturnType(), 
+                            scope, TypeLocation.TOPLEVEL, VarianceLocation.COVARIANT);
+            java.util.List<Type> modelParameterTypes =
+                    new ArrayList<Type>(functionalInterfaceType.getParameterTypes().size());
+            for(TypeMirror parameterType : functionalInterfaceType.getParameterTypes()){
+                Type modelParameterType = 
                         obtainType(moduleScope, parameterType, scope, 
-                                   TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
-            modelParameterTypes.add(modelParameterType);
+                                TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
+                modelParameterTypes.add(modelParameterType);
+            }
+            com.redhat.ceylon.model.typechecker.model.Type parameterTuple = typeFactory.getTupleType(modelParameterTypes, functionalInterfaceType.isVariadic(), false, -1);
+            com.redhat.ceylon.model.typechecker.model.Type callableType = typeFactory.getCallableDeclaration().appliedType(null, Arrays.asList(returnType, parameterTuple));
+            return callableType;
+        }catch(ModelResolutionException x){
+            return logModelResolutionException(x, scope, "Failure to turn functional interface to Callable type");
         }
-        com.redhat.ceylon.model.typechecker.model.Type parameterTuple = typeFactory.getTupleType(modelParameterTypes, functionalInterfaceType.isVariadic(), false, -1);
-        com.redhat.ceylon.model.typechecker.model.Type callableType = typeFactory.getCallableDeclaration().appliedType(null, Arrays.asList(returnType, parameterTuple));
-        return callableType;
     }
 
         

@@ -363,6 +363,14 @@ public class ModelUtil {
     
     static boolean betterMatch(Declaration d, Declaration r, 
             List<Type> signature) {
+        //always prefer a non-coerced member 
+        //over a coerced one
+        if (!d.isCoercionPoint() && r.isCoercionPoint()) {
+            return true;
+        }
+        if (d.isCoercionPoint() && !r.isCoercionPoint()) {
+            return false;
+        }
         if (d instanceof Functional && 
             r instanceof Functional) {
             Functional df = (Functional) d;

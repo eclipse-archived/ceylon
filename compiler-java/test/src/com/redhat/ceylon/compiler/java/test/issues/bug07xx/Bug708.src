@@ -363,13 +363,13 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Entry find(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.find(selecting);
+        return $ceylon$language$Iterable$this$.find(selecting);
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Entry findLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.findLast(selecting);
+        return $ceylon$language$Iterable$this$.findLast(selecting);
     }
     
     @.java.lang.Override
@@ -405,7 +405,7 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .ceylon.language.Entry getFromFirst(final long index) {
-        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.getFromFirst(index);
+        return $ceylon$language$Iterable$this$.getFromFirst(index);
     }
     
     @.java.lang.Override
@@ -463,14 +463,14 @@ public class Bug708Map<T> extends .java.lang.Object implements .com.redhat.ceylo
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Entry locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.locate(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> locate(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locate(selecting);
     }
     
     @.java.lang.Override
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    public .ceylon.language.Entry locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
-        return (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>>)(.ceylon.language.Entry)$ceylon$language$Iterable$this$.locateLast(selecting);
+    public .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .java.lang.Object>> locateLast(final .ceylon.language.Callable<? extends .ceylon.language.Boolean> selecting) {
+        return $ceylon$language$Iterable$this$.locateLast(selecting);
     }
     
     @.java.lang.Override
@@ -875,7 +875,7 @@ final class bug708extra3_ {
             value = (.ceylon.language.String)(
                 let
                 {
-                    .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> safe$19 = (.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>)(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708obj_.get_();
+                    .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> safe$19 = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708obj_.get_();
                 }
                 returning safe$19 != null ? safe$19.test() : null;
             );
@@ -934,7 +934,7 @@ final class bug708extra4_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (.ceylon.language.Sequential<? extends .ceylon.language.String>)(.ceylon.language.Sequential)(
+            value = (
                 let
                 {
                     final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>, ? extends .java.lang.Object> spread$20$iterable$ = .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.get_();

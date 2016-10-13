@@ -141,7 +141,7 @@ class MyException extends .ceylon.language.Exception implements .com.redhat.ceyl
     }
     
     MyException(final .ceylon.language.String m, final .java.lang.Exception x) {
-        super((.ceylon.language.String)m, (.java.lang.Throwable)x);
+        super(m, x);
     }
     
     @.java.lang.Override

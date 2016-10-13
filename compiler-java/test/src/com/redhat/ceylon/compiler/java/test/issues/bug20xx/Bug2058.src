@@ -18,7 +18,7 @@ public final class bug2058_ {
             .ceylon.language.print_.print((
                 let
                 {
-                    .ceylon.language.String $ceylontmp$6 = (.ceylon.language.String)item$5;
+                    .ceylon.language.String $ceylontmp$6 = item$5;
                 }
                 returning $ceylontmp$6 != null ? $ceylontmp$6 : .ceylon.language.String.instance("null");
             ));

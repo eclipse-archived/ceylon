@@ -152,7 +152,7 @@ class ExtendsBasic<X> implements .com.redhat.ceylon.compiler.java.runtime.model.
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("1");
         final X who;
         .com.redhat.ceylon.compiler.java.test.structure.constructor.checker_.get_().note("For");
-        who = (X)who$param$;
+        who = who$param$;
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.ExtendsBasic.pour_ pour_ = null;
     

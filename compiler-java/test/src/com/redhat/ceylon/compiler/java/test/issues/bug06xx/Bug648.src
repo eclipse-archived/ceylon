@@ -19,18 +19,14 @@ class Bug648<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "T?",
-            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("T?")
     public final T foo() {
         return null;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
-            value = "ceylon.language::Integer?",
-            erased = true)
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
     public final .ceylon.language.Integer bar() {
         return null;
     }

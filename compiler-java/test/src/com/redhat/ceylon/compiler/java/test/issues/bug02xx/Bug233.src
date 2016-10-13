@@ -3,7 +3,7 @@ package com.redhat.ceylon.compiler.java.test.issues.bug02xx;
 class Bug233_Ceylon extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Java implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
     
     Bug233_Ceylon(final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type arg) {
-        super((.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type)arg);
+        super(arg);
     }
     
     @.java.lang.Override
@@ -11,7 +11,7 @@ class Bug233_Ceylon extends .com.redhat.ceylon.compiler.java.test.issues.bug02xx
         return (
             let
             {
-                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type $ceylontmp$0 = (.com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type)arg;
+                .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type $ceylontmp$0 = arg;
             }
             returning $ceylontmp$0 != null ? $ceylontmp$0 : new .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug233_Type();
         );

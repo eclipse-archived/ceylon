@@ -94,7 +94,7 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runti
     
     @.java.lang.Override
     public final X m$t2(final X t1) {
-        return (X)$com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this$.m$t2(t1);
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this$.m$t2(t1);
     }
     
     @.java.lang.Override
@@ -119,7 +119,7 @@ class TypeParamRenameKls<X, Y> implements .com.redhat.ceylon.compiler.java.runti
     
     @.java.lang.Override
     public final <A, B>A m2$v(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B) {
-        return (A)$com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this$.m2$v($reified$A, $reified$B);
+        return $com$redhat$ceylon$compiler$java$test$structure$klass$TypeParamRename$this$.m2$v($reified$A, $reified$B);
     }
     
     public <A, B>B m2(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$A, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$B) {

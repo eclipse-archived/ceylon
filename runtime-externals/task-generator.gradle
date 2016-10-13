@@ -1,5 +1,7 @@
 apply plugin : CeylonBuildOsgiPlugin
 
+tasks.remove(tasks.moduleXml)
+
 ext.createTasksFor = { File baseFile,File jarFile, File depsDestination, Task checksum, Task parentLifecycleTask ->
     String taskNamePostfix = jarFile.name[0..-5]
     String relativePath = CeylonBuildUtil.relativeTo(jarFile.parentFile.absoluteFile,baseFile)

@@ -173,7 +173,7 @@ public class Stitcher {
             pu.getCompilationUnit().visit(errVisitor);
             if (errVisitor.getErrorCount() > 0) {
                 errVisitor.printErrors(false, false);
-                System.out.println("whoa, errors in the language module "
+                System.out.println("errors in the language module "
                         + pu.getCompilationUnit().getLocation());
                 return 1;
             }

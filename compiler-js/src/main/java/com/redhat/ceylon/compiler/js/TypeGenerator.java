@@ -499,7 +499,7 @@ public class TypeGenerator {
                         if (typeDecl.isStatic()) {
                             Declaration _cont = ModelUtil.getContainingDeclaration(typeDecl);
                             String qp = gen.qualifiedPath(that, _cont, false);
-                            gen.out(qp, qp.isEmpty() ? "" : ".", gen.getNames().name(_cont), ".");
+                            gen.out(qp, qp.isEmpty() ? "" : ".", gen.getNames().name(_cont), ".$st$.");
                         } else {
                             gen.qualify(that, typeDecl);
                         }

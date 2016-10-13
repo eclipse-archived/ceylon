@@ -20,21 +20,21 @@ final class bug1419_ {
     }
     
     static void bug1419(final .ceylon.language.meta.model.ClassOrInterface<? extends .java.lang.Object> t, final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419COI<.java.lang.Object> t2) {
-        final .ceylon.language.meta.model.Attribute string1 = (.ceylon.language.meta.model.Attribute)(.ceylon.language.meta.model.Attribute)t.<.java.lang.Object, .ceylon.language.String, .java.lang.Object>getAttribute(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "str");
-        final .ceylon.language.meta.model.Attribute string2 = (.ceylon.language.meta.model.Attribute)(.ceylon.language.meta.model.Attribute)t.<.java.lang.Object, .ceylon.language.String, .java.lang.Object>getAttribute(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "str");
-        final .ceylon.language.meta.model.Attribute<? super .java.lang.Object, ? extends .ceylon.language.String, ? super .ceylon.language.String> string3 = (.ceylon.language.meta.model.Attribute<? super .java.lang.Object, ? extends .ceylon.language.String, ? super .ceylon.language.String>)(.ceylon.language.meta.model.Attribute)t.<.java.lang.Object, .ceylon.language.String, .ceylon.language.String>getAttribute(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, "str");
+        final .ceylon.language.meta.model.Attribute string1 = t.<.java.lang.Object, .ceylon.language.String, .java.lang.Object>getAttribute(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "str");
+        final .ceylon.language.meta.model.Attribute string2 = t.<.java.lang.Object, .ceylon.language.String, .java.lang.Object>getAttribute(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "str");
+        final .ceylon.language.meta.model.Attribute<? super .java.lang.Object, ? extends .ceylon.language.String, ? super .ceylon.language.String> string3 = t.<.java.lang.Object, .ceylon.language.String, .ceylon.language.String>getAttribute(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, "str");
         .java.lang.String $ceylontmp$assert$0 = null;
         final .ceylon.language.meta.model.Attribute<? super .java.lang.Object, ? extends .ceylon.language.String, ? super .ceylon.language.String> string3$6;
         final .ceylon.language.meta.model.Attribute string2$4;
         final .ceylon.language.meta.model.Attribute string1$2;
         .ceylon.language.meta.model.Attribute string1$1 = null;
-        if ((string1$1 = (.ceylon.language.meta.model.Attribute)(.ceylon.language.meta.model.Attribute)string1) != null) {
+        if ((string1$1 = string1) != null) {
             string1$2 = string1$1;
             .ceylon.language.meta.model.Attribute string2$3 = null;
-            if ((string2$3 = (.ceylon.language.meta.model.Attribute)(.ceylon.language.meta.model.Attribute)string2) != null) {
+            if ((string2$3 = string2) != null) {
                 string2$4 = string2$3;
                 .ceylon.language.meta.model.Attribute<? super .java.lang.Object, ? extends .ceylon.language.String, ? super .ceylon.language.String> string3$5 = null;
-                if ((string3$5 = (.ceylon.language.meta.model.Attribute<? super .java.lang.Object, ? extends .ceylon.language.String, ? super .ceylon.language.String>)(.ceylon.language.meta.model.Attribute)string3) != null) {
+                if ((string3$5 = string3) != null) {
                     string3$6 = string3$5;
                 } else {
                     string3$6 = null;
@@ -55,10 +55,10 @@ final class bug1419_ {
         final .ceylon.language.meta.model.Value a1 = (.ceylon.language.meta.model.Value)string1$2.$call$((.java.lang.Object)t);
         final .ceylon.language.meta.model.Value a2 = (.ceylon.language.meta.model.Value)string2$4.$call$((.java.lang.Object)t);
         final .ceylon.language.meta.model.Value<? extends .ceylon.language.String, ? super .ceylon.language.String> a3 = string3$6.$call$((.java.lang.Object)t);
-        final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr string4 = (.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr)(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr)t2.<.java.lang.Object, .ceylon.language.String, .java.lang.Object>getAttribute(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "str");
+        final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr string4 = t2.<.java.lang.Object, .ceylon.language.String, .java.lang.Object>getAttribute(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, "str");
         final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr string4$9;
         .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr string4$8 = null;
-        if ((string4$8 = (.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr)(.com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1419Attr)string4) != null) {
+        if ((string4$8 = string4) != null) {
             string4$9 = string4$8;
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists string4"));

@@ -52,7 +52,7 @@ class Bottom extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right 
         super();
         this.sides = sides;
         .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right mid$1;
-        if ((mid$1 = (.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right)mid) != null) {
+        if ((mid$1 = mid) != null) {
             final .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right mid$3 = mid$1;
             children = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top>)(.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left.$TypeDescriptor$), new .java.lang.Object[]{mid$3}, getSides$priv$());
             children2 = (.ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top>)(.ceylon.language.Sequential)(.ceylon.language.Sequence<? extends .java.lang.Object>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left.$TypeDescriptor$), new .java.lang.Object[]{mid$3}, getSides$priv$());

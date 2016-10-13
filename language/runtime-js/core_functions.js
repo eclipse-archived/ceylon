@@ -326,7 +326,7 @@ ex$.$eq$=$eq$;
 function $cnt$(a,b) {
   if (a===null||a===undefined)return false;
   if (Array.isArray(a))return $arr$cnt(a,b);
-  return a.contains&&a.contains(b);
+  return a.contains?a.contains(b):false;
 }
 ex$.$cnt$=$cnt$;
 //Check spread destructuring

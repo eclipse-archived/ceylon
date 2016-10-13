@@ -24,18 +24,18 @@ final class letMethod_ {
         final .java.lang.String s2 = (
             let
             {
-                final .ceylon.language.String x = (.ceylon.language.String)sOrNull;
+                final .ceylon.language.String x = sOrNull;
                 final .java.lang.String y = "world";
             }
             returning y;
         );
-        final .ceylon.language.String s3 = (.ceylon.language.String)(
+        final .ceylon.language.String s3 = (
             let
             {
-                final .ceylon.language.String x = (.ceylon.language.String)sOrNull;
+                final .ceylon.language.String x = sOrNull;
                 final .java.lang.String y = "world";
             }
-            returning (.ceylon.language.String)x;
+            returning x;
         );
         final .java.lang.String s4 = (
             let

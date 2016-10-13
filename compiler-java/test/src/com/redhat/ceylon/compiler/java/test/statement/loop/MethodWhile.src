@@ -20,7 +20,7 @@ class MethodWhile implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
         .ceylon.language.Boolean cont = .ceylon.language.Boolean.instance(true);
         loop_1: while (true) {
             .ceylon.language.Boolean c$0;
-            if ((c$0 = (.ceylon.language.Boolean)cont) != null) {
+            if ((c$0 = cont) != null) {
                 final boolean c$1 = c$0.booleanValue();
                 cont = null;
             } else {

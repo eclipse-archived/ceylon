@@ -410,6 +410,6 @@ public class DefaultToolOptions {
     // old version for backward compatibility. Eg. "compiler.jvm.javac"
     // becomes "compiler.javac". Use this only for old JVM compiler options
     private static String oldkey(String key) {
-        return key.replace("\\.jvm\\.", "");
+        return key.replace(".jvm.", ".");
     }
 }

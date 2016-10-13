@@ -7,7 +7,7 @@ class E1 extends .ceylon.language.Exception {
     }
     
     E1(final .ceylon.language.String description, final .java.lang.Exception cause) {
-        super((.ceylon.language.String)description, (.java.lang.Throwable)cause);
+        super(description, cause);
     }
     
     @.java.lang.Override
@@ -23,7 +23,7 @@ class E2 extends .ceylon.language.Exception {
     }
     
     E2(final .ceylon.language.String description, final .java.lang.Exception cause) {
-        super((.ceylon.language.String)description, (.java.lang.Throwable)cause);
+        super(description, cause);
     }
     
     @.java.lang.Override

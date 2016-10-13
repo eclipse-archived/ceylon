@@ -75,7 +75,7 @@ class LLVMFunction6213B implements .com.redhat.ceylon.compiler.java.runtime.mode
         
         private .java.lang.Object store$canonical$(final T val, final .com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B off) {
             .com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B off$2;
-            if ((off$2 = (.com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B)off) != null) {
+            if ((off$2 = off) != null) {
                 final .com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B off$3 = off$2;
                 ((.com.redhat.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B<T>)(.com.redhat.ceylon.compiler.java.test.issues.bug62xx.Ptr6213B)$this.offset(off$3)).store((T)val);
             }
@@ -152,7 +152,7 @@ class LLVMFunction6213B implements .com.redhat.ceylon.compiler.java.runtime.mode
                     
                     @.java.lang.Override
                     public final .com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B store$off(final .com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B val) {
-                        return (.com.redhat.ceylon.compiler.java.test.issues.bug62xx.I646213B)$com$redhat$ceylon$compiler$java$test$issues$bug62xx$Ptr6213B$this$.store$off(val);
+                        return $com$redhat$ceylon$compiler$java$test$issues$bug62xx$Ptr6213B$this$.store$off(val);
                     }
                     
                     @.java.lang.Override

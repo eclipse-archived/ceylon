@@ -17,7 +17,7 @@ final class existsCond_ {
             public final .ceylon.language.Iterator<.ceylon.language.Character> iterator() {
                 return new .com.redhat.ceylon.compiler.java.language.AbstractIterator<.ceylon.language.Character>(.ceylon.language.Character.$TypeDescriptor$){
                     {
-                        $iterator$0 = ((.ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object>)(.ceylon.language.Iterable)seq).iterator();
+                        $iterator$0 = seq.iterator();
                     }
                     private final .ceylon.language.Iterator<? extends .ceylon.language.String> $iterator$0;
                     private .ceylon.language.String x;
@@ -40,7 +40,7 @@ final class existsCond_ {
                             if (!this.x()) break ifcomp_1;
                             final .ceylon.language.String x = this.x;
                             .ceylon.language.String x$1 = null;
-                            if ((x$1 = (.ceylon.language.String)x) != null) {
+                            if ((x$1 = x) != null) {
                                 x$2 = x$1.toString();
                                 break ifcomp_1;
                             }
@@ -55,7 +55,7 @@ final class existsCond_ {
                             final .java.lang.String x$2 = this.x$2;
                             final .ceylon.language.String x = this.x;
                             .ceylon.language.Character c$3 = null;
-                            if ((c$3 = (.ceylon.language.Character)(.java.lang.Object)(.ceylon.language.Character).ceylon.language.String.instance(.ceylon.language.String.initial(x$2, 1L)).getFromFirst(0L)) != null) {
+                            if ((c$3 = .ceylon.language.String.instance(.ceylon.language.String.initial(x$2, 1L)).getFromFirst(0L)) != null) {
                                 c$4 = c$3.intValue();
                                 break ifcomp_2;
                             }

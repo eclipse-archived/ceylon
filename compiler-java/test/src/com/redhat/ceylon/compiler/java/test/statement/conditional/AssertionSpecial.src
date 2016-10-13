@@ -18,7 +18,7 @@ final class assertionSpecial_ {
         final .ceylon.language.String v2 = .ceylon.language.String.instance("X");
         final .java.lang.String a2$5;
         .ceylon.language.String a2$4 = null;
-        if ((a2$4 = (.ceylon.language.String)v2) != null) {
+        if ((a2$4 = v2) != null) {
             a2$5 = a2$4.toString();
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists a2 = v2"));
@@ -45,7 +45,7 @@ final class assertionSpecial_ {
         }
         final .java.lang.String v2$14;
         .ceylon.language.String v2$13 = null;
-        if ((v2$13 = (.ceylon.language.String)v2) != null) {
+        if ((v2$13 = v2) != null) {
             v2$14 = v2$13.toString();
         } else {
             throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "exists v2"));

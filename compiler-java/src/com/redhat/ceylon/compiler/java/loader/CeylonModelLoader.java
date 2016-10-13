@@ -839,18 +839,45 @@ public class CeylonModelLoader extends AbstractModelLoader {
             return null;
         }
     }
-    
+
     @Override
-    protected FunctionalInterfaceType getFunctionalInterfaceType(TypeMirror typeMirror) {
+    protected boolean isFunctionalInterfaceType(TypeMirror typeMirror) {
         if(typeMirror.getKind() != TypeKind.DECLARED)
-            return null;
+            return false;
         // FIXME: possibly apply other optimisations to lighten the lookup cost? see what javac does
         Type type = ((JavacType)typeMirror).type;
         try{
             Type descriptorType = types.findDescriptorType(type);
             // Let's be honest I've no idea what this means, but it happens and Javac seems to refuse it too
             if(descriptorType.hasTag(TypeTag.FORALL))
-                return null;
+                return false;
+            MethodType methodDescriptorType = (MethodType)descriptorType; 
+            MethodSymbol methodSymbol = (MethodSymbol) types.findDescriptorSymbol(type.tsym);
+            
+            // make sure we can load them
+            methodDescriptorType.complete();
+            methodSymbol.complete();
+            
+            return true;
+        }catch(Symbol.CompletionFailure err){
+            // bad luck
+            return false;
+        }catch(FunctionDescriptorLookupError err){
+            return false;
+        }
+    }
+
+    @Override
+    protected FunctionalInterfaceType getFunctionalInterfaceType(TypeMirror typeMirror) throws ModelResolutionException {
+        if(typeMirror.getKind() != TypeKind.DECLARED)
+            throw new ModelResolutionException("Failed to find functional interface type in "+typeMirror);
+        // FIXME: possibly apply other optimisations to lighten the lookup cost? see what javac does
+        Type type = ((JavacType)typeMirror).type;
+        try{
+            Type descriptorType = types.findDescriptorType(type);
+            // Let's be honest I've no idea what this means, but it happens and Javac seems to refuse it too
+            if(descriptorType.hasTag(TypeTag.FORALL))
+                throw new ModelResolutionException("Failed to find functional interface type in "+typeMirror);
             MethodType methodDescriptorType = (MethodType)descriptorType; 
             MethodSymbol methodSymbol = (MethodSymbol) types.findDescriptorSymbol(type.tsym);
             
@@ -865,8 +892,11 @@ public class CeylonModelLoader extends AbstractModelLoader {
             return new FunctionalInterfaceType(new JavacType(methodDescriptorType.getReturnType()),
                     mirrorParameterTypes.toList(),
                     methodSymbol.isVarArgs());
+        }catch(Symbol.CompletionFailure err){
+            // bad luck
+            throw new ModelResolutionException("Failed to find functional interface type in "+typeMirror, err);
         }catch(FunctionDescriptorLookupError err){
-            return null;
+            throw new ModelResolutionException("Failed to find functional interface type in "+typeMirror, err);
         }
     }
 

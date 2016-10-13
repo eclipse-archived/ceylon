@@ -31,6 +31,7 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.FileUtil;
@@ -42,6 +43,7 @@ import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.compiler.CeylonCompileTool;
 import com.redhat.ceylon.compiler.CompilerErrorException;
 import com.redhat.ceylon.compiler.SystemErrorException;
+import com.redhat.ceylon.model.cmr.JDKUtils;
 
 public class CompilerToolTests extends AbstractToolTests {
     
@@ -481,6 +483,8 @@ public class CompilerToolTests extends AbstractToolTests {
     
     @Test
     public void testTarget()  throws Exception {
+        Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
+                || JDKUtils.jdk == JDKUtils.JDK.JDK9);
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),

@@ -271,7 +271,58 @@ public class CallableBuilder {
         
         return letStmts.isEmpty() ? cb.build() : gen.make().LetExpr(letStmts.toList(), cb.build());
     }
-    
+
+    public static JCExpression callableToFunctionalInterface(CeylonTransformer gen, 
+            final Tree.InvocationExpression node, 
+            ParameterList parameterList, 
+            Type expectedType, 
+            Type callableType, 
+            boolean useParameterTypesFromCallableModel,
+            JCExpression primaryExpr) {
+        ListBuffer<JCStatement> letStmts = new ListBuffer<JCStatement>();
+        CallableBuilder cb = new CallableBuilder(gen, node, callableType, parameterList);
+        cb.parameterTypes = useParameterTypesFromCallableModel
+                ? cb.getParameterTypesFromCallableModel()
+                : cb.getParameterTypesFromParameterModels();
+        Naming.SyntheticName instanceFieldName;
+        boolean instanceFieldIsBoxed = true;
+        boolean prevCallableInv = gen.expressionGen().withinSyntheticClassBody(true);
+        try {
+            instanceFieldName = gen.naming.synthetic(Unfix.$instance$);
+            letStmts.add(gen.makeVar(Flags.FINAL, 
+                    instanceFieldName, 
+                    gen.makeJavaType(callableType), 
+                    primaryExpr));
+                    
+        } finally {
+            gen.expressionGen().withinSyntheticClassBody(prevCallableInv);
+        }
+        
+        CallableTransformation tx;
+        cb.defaultValueCall = new DefaultValueMethodTransformation() {
+            @Override
+            public JCExpression makeDefaultValueMethod(AbstractTransformer gen, 
+                    Parameter defaultedParam, 
+                    List<JCExpression> defaultMethodArgs) {
+                JCExpression fn = null;
+                return gen.make().Apply(null, 
+                        fn,
+                        defaultMethodArgs);
+            }
+        };
+        if (cb.isVariadic) {
+            tx = cb.new VariadicCallableTransformation(
+                    cb.new CallMethodWithForwardedBody(instanceFieldName, instanceFieldIsBoxed, node, false, callableType));
+        } else {
+            tx = cb.new FixedArityCallableTransformation(cb.new CallMethodWithForwardedBody(instanceFieldName, instanceFieldIsBoxed, node, true, callableType), null);
+        }
+        cb.useTransformation(tx);
+        
+        cb.checkForFunctionalInterface(expectedType);
+        
+        return letStmts.isEmpty() ? cb.build() : gen.make().LetExpr(letStmts.toList(), cb.build());
+    }
+
     /**
      * Used for "static" method or class references. For example:
      * <pre>
@@ -285,7 +336,8 @@ public class CallableBuilder {
             Tree.QualifiedMemberOrTypeExpression qmte,
             Type typeModel, 
             final Functional methodClassOrCtor, 
-            Reference producedReference) {
+            Reference producedReference,
+            Type expectedType) {
         final ParameterList parameterList = methodClassOrCtor.getFirstParameterList();
         Type type = typeModel;
         JCExpression target;
@@ -419,7 +471,9 @@ public class CallableBuilder {
         List<JCStatement> outerBody = List.<JCStatement>of(gen.make().Return(callable));
         outer.useDefaultTransformation(outerBody);
         outer.companionAccess = Decl.isPrivateAccessRequiringCompanion(qmte);
-        
+        if(expectedType != null)
+            outer.checkForFunctionalInterface(expectedType);
+            
         return outer.build();
     }
     
@@ -449,7 +503,8 @@ public class CallableBuilder {
             Node node,
             Type typeModel, 
             final Functional methodOrClass, 
-            Reference producedReference) {
+            Reference producedReference,
+            Type expectedType) {
         final ParameterList parameterList = methodOrClass.getFirstParameterList();
         CallableBuilder inner = new CallableBuilder(gen, node, typeModel, parameterList);
         
@@ -476,6 +531,9 @@ public class CallableBuilder {
         }
         List<JCStatement> innerBody = List.<JCStatement>of(gen.make().Return(innerInvocation));
         inner.useDefaultTransformation(innerBody);
+        if(expectedType != null)
+            inner.checkForFunctionalInterface(expectedType);
+
         return inner;
     }
     
@@ -491,7 +549,8 @@ public class CallableBuilder {
             CeylonTransformer gen,
             Tree.QualifiedMemberOrTypeExpression qmte,
             Type typeModel,
-            final TypedDeclaration value) {
+            final TypedDeclaration value,
+            Type expectedType) {
         CallBuilder callBuilder = CallBuilder.instance(gen);
         Type qualifyingType = qmte.getTarget().getQualifyingType();
         JCExpression target = gen.naming.makeUnquotedIdent(Unfix.$instance$);
@@ -538,6 +597,8 @@ public class CallableBuilder {
         List<JCStatement> innerBody = List.<JCStatement>of(gen.make().Return(innerInvocation));
         outer.useDefaultTransformation(innerBody);
         outer.companionAccess = Decl.isPrivateAccessRequiringCompanion(qmte);
+        if(expectedType != null)
+            outer.checkForFunctionalInterface(expectedType);
         
         return outer;
     }
@@ -976,6 +1037,8 @@ public class CallableBuilder {
             } else if (forwardCallTo instanceof Tree.FunctionArgument) {
                 Function method = ((Tree.FunctionArgument) forwardCallTo).getDeclarationModel();
                 target = method.appliedReference(null, Collections.<Type>emptyList());
+            } else if (forwardCallTo instanceof Tree.InvocationExpression) {
+                target = ((Tree.InvocationExpression)forwardCallTo).getTypeModel();
             } else {
                 throw new RuntimeException(forwardCallTo.getNodeType());
             }

@@ -13,7 +13,7 @@ final class bug6450_ {
         final .ceylon.language.String s3 = (
             let
             {
-                .ceylon.language.String safe$0 = (.ceylon.language.String)v;
+                .ceylon.language.String safe$0 = v;
             }
             returning safe$0 != null ? .ceylon.language.String.instance(safe$0.getTrimmed()) : null;
         );

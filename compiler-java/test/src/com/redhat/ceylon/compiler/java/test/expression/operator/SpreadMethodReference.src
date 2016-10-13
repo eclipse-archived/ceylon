@@ -9,7 +9,7 @@ final class spreadMethodReference_ {
         .ceylon.language.Callable<? extends .ceylon.language.Integer> nullSafeMethodRef = (
             let
             {
-                final .ceylon.language.Integer $instance$ = (.ceylon.language.Integer)i;
+                final .ceylon.language.Integer $instance$ = i;
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer?(Integer)", (short)-1){
                 
@@ -19,7 +19,7 @@ final class spreadMethodReference_ {
                     return (
                         let
                         {
-                            .ceylon.language.Integer safe$1 = (.ceylon.language.Integer)$instance$;
+                            .ceylon.language.Integer safe$1 = $instance$;
                         }
                         returning safe$1 != null ? $instance$.plus($ceylontmp$other) : null;
                     );
@@ -29,7 +29,7 @@ final class spreadMethodReference_ {
         nullSafeMethodRef = (
             let
             {
-                final .ceylon.language.Integer $instance$ = (.ceylon.language.Integer)im.$call$();
+                final .ceylon.language.Integer $instance$ = im.$call$();
             }
             returning new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Integer>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer?(Integer)", (short)-1){
                 
@@ -39,7 +39,7 @@ final class spreadMethodReference_ {
                     return (
                         let
                         {
-                            .ceylon.language.Integer safe$3 = (.ceylon.language.Integer)im.$call$();
+                            .ceylon.language.Integer safe$3 = im.$call$();
                         }
                         returning safe$3 != null ? $instance$.plus($ceylontmp$other) : null;
                     );
