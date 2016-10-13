@@ -1769,10 +1769,42 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if(sequentialSpreadType != null){
                     tail = transformExpression(spreadExpr.getExpression(), BoxingStrategy.BOXED, sequentialSpreadType);
                 }else {
-                    // must at least be an Iterable then
-                    Type iterableSpreadType = spreadType.getSupertype(typeFact().getIterableDeclaration());
-                    tail = transformExpression(spreadExpr.getExpression(), BoxingStrategy.BOXED, iterableSpreadType);
-                    tail = utilInvocation().sequentialOf(makeReifiedTypeArgument(typeFact().getIteratedType(iterableSpreadType)), tail);
+                    // must at least be an Iterable, Java Iterable, or Java array then
+                    Type iterableSpreadType;
+                    Type iteratedType;
+                    if (typeFact().isIterableType(spreadType)) {
+                        iterableSpreadType = spreadType.getSupertype(typeFact().getIterableDeclaration());
+                        iteratedType = typeFact().getIteratedType(iterableSpreadType);
+                        tail = transformExpression(spreadExpr.getExpression(), BoxingStrategy.BOXED, iterableSpreadType);
+                        tail = utilInvocation().sequentialOf(makeReifiedTypeArgument(iteratedType), tail);
+                    } else if (typeFact().isJavaIterableType(spreadType)) {
+                        iterableSpreadType = spreadType.getSupertype(typeFact().getJavaIterableDeclaration());
+                        iteratedType = typeFact().getJavaIteratedType(iterableSpreadType);
+                        tail = transformExpression(spreadExpr.getExpression(), BoxingStrategy.BOXED, iterableSpreadType);
+                        tail = utilInvocation().toIterable(
+                                makeJavaType(iteratedType, JT_TYPE_ARGUMENT), 
+                                makeReifiedTypeArgument(iteratedType), tail);
+                        tail = make().Apply(null, makeSelect(tail, "sequence"), List.<JCExpression>nil());
+                    } else if (typeFact().isJavaArrayType(spreadType)) {
+                        if (typeFact().isJavaObjectArrayType(spreadType)) {
+                            iterableSpreadType = spreadType.getSupertype(typeFact().getJavaObjectArrayDeclaration());
+                        } else {//primitive
+                            iterableSpreadType = spreadType;
+                        }
+                        iteratedType = typeFact().getJavaArrayElementType(iterableSpreadType);
+                        tail = transformExpression(spreadExpr.getExpression(), BoxingStrategy.BOXED, iterableSpreadType);
+                        if (typeFact().isJavaObjectArrayType(spreadType)) {
+                            tail = utilInvocation().toIterable(
+                                    makeJavaType(iteratedType, JT_TYPE_ARGUMENT), 
+                                    makeReifiedTypeArgument(iteratedType), tail);
+                        } else {//primitive
+                            tail = utilInvocation().toIterable(tail);
+                        }
+                        tail = make().Apply(null, makeSelect(tail, "sequence"), List.<JCExpression>nil());
+                    } else {
+                        throw BugException.unhandledTypeCase(spreadType);
+                    }
+                    
                     Type elementType = typeFact().getIteratedType(spreadExpr.getTypeModel());
                     Type sequentialType = typeFact().getSequentialType(elementType);
                     Type expectedType = spreadExpr.getTypeModel();
@@ -3423,7 +3455,28 @@ public class ExpressionTransformer extends AbstractTransformer {
         JCExpression tupleType;
         JCExpression tupleExpr = transformExpression(tupleArgument, BoxingStrategy.BOXED, null);
         tupleType = makeJavaType(typeFact().getSequentialDeclaration().getType(), JT_RAW);
-        tupleExpr = make().TypeCast(makeJavaType(typeFact().getSequentialDeclaration().getType(), JT_RAW), tupleExpr);
+        if (typeFact().isIterableType(tupleArgument.getTypeModel())) {
+            tupleExpr = make().TypeCast(makeJavaType(typeFact().getSequentialDeclaration().getType(), JT_RAW), tupleExpr);
+        } else if (typeFact().isJavaIterableType(tupleArgument.getTypeModel())) {
+            // need to convert j.l.Iterable to a c.l.Iterable
+            Type iteratedType = typeFact().getJavaIteratedType(tupleArgument.getTypeModel());
+            tupleExpr = utilInvocation().toIterable(
+                    makeJavaType(iteratedType, JT_TYPE_ARGUMENT), 
+                    makeReifiedTypeArgument(iteratedType), tupleExpr);
+            tupleExpr = make().Apply(null, makeSelect(tupleExpr, "sequence"), List.<JCExpression>nil());
+        } else if (typeFact().isJavaArrayType(tupleArgument.getTypeModel())) {
+            Type iteratedType = typeFact().getJavaArrayElementType(tupleArgument.getTypeModel());
+            if (typeFact().isJavaObjectArrayType(tupleArgument.getTypeModel())) {
+                tupleExpr = utilInvocation().toIterable(
+                        makeJavaType(iteratedType, JT_TYPE_ARGUMENT), 
+                        makeReifiedTypeArgument(iteratedType), tupleExpr);
+            } else {//primitive
+                tupleExpr = utilInvocation().toIterable(tupleExpr);
+            }
+            tupleExpr = make().Apply(null, makeSelect(tupleExpr, "sequence"), List.<JCExpression>nil());
+        } else {
+            throw BugException.unhandledTypeCase(tupleArgument.getTypeModel());
+        }
         
         callBuilder.appendStatement(makeVar(tupleAlias, tupleType, tupleExpr));
         
@@ -3509,6 +3562,10 @@ public class ExpressionTransformer extends AbstractTransformer {
                 && argumentsToExtract >= minimumTupleArguments
                 && !tupleUnbounded) {
             result = result.append(new ExpressionAndType(makeEmptyAsSequential(true), makeJavaType(typeFact().getSequenceType(typeFact().getAnythingDeclaration().getType()), JT_RAW)));
+        } else if (!variadic 
+                && tupleUnbounded
+                && !invocation.isIndirect()){
+            result = result.append(new ExpressionAndType(tupleAlias.makeIdent(), tupleType));
         }
         return result;
     }

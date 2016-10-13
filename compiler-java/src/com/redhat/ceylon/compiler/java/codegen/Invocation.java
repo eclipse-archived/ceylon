@@ -1480,15 +1480,34 @@ class NamedArgumentInvocation extends Invocation {
         Parameter parameter = sequencedArgument.getParameter();
         Type parameterType = parameterType(parameter, parameter.getType(), gen.TP_TO_BOUND);
         // find out the individual type, we use the argument type for the value, and the param type for the temp variable
+        gen.at(sequencedArgument);
         Type tupleType = AnalyzerUtil.getTupleType(sequencedArgument.getPositionalArguments(), gen.typeFact(), false);
-        Type argumentsType = tupleType.getSupertype(gen.typeFact().getIterableDeclaration());
-        Type iteratedType = gen.typeFact().getIteratedType(argumentsType);
-        Type absentType = gen.typeFact().getIteratedAbsentType(argumentsType);
         // we can't just generate types like Foo<?> if the target type param is not raw because the bounds will
         // not match, so we go raw, we also ignore primitives naturally
         int flags = JT_RAW | JT_NO_PRIMITIVES;
-        gen.at(sequencedArgument);
-        JCTree.JCExpression sequenceValue = gen.makeLazyIterable(sequencedArgument, iteratedType, absentType, flags);
+        Type argumentsType;
+        Type iteratedType;
+        Type absentType;
+        if (gen.typeFact().isIterableType(tupleType)) {
+            argumentsType = tupleType.getSupertype(gen.typeFact().getIterableDeclaration());
+            iteratedType = gen.typeFact().getIteratedType(argumentsType);
+            absentType = gen.typeFact().getIteratedAbsentType(argumentsType);
+        } else if (gen.typeFact().isJavaIterableType(tupleType)) {
+            argumentsType = tupleType.getSupertype(gen.typeFact().getJavaIterableDeclaration());
+            iteratedType = gen.typeFact().getJavaIteratedType(argumentsType);
+            absentType = gen.typeFact().getNullType();
+        } else if (gen.typeFact().isJavaObjectArrayType(tupleType)) {
+            argumentsType = tupleType.getSupertype(gen.typeFact().getJavaObjectArrayDeclaration());
+            iteratedType = gen.typeFact().getJavaArrayElementType(argumentsType);
+            absentType = gen.typeFact().getNullType();
+        } else if (gen.typeFact().isJavaPrimitiveArrayType(tupleType)) {
+            argumentsType = tupleType.getSupertype(gen.typeFact().getJavaObjectArrayDeclaration());
+            iteratedType = gen.typeFact().getJavaArrayElementType(tupleType);
+            absentType = gen.typeFact().getNullType();
+        } else {
+            throw BugException.unhandledTypeCase(tupleType);
+        }
+        JCTree.JCExpression sequenceValue  = gen.makeLazyIterable(sequencedArgument, iteratedType, absentType, flags);
         JCTree.JCExpression sequenceType = gen.makeJavaType(parameterType, flags);
         
         Naming.SyntheticName argName = argName(parameter);

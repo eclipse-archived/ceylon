@@ -4024,8 +4024,30 @@ public abstract class AbstractTransformer implements Transformation {
                         spread = true;
                         if(arg instanceof Tree.SpreadArgument){
                             Tree.Expression expr = ((Tree.SpreadArgument) arg).getExpression();
-                            // always boxed since it is a sequence
-                            jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
+                            if (typeFact().isIterableType(expr.getTypeModel())) {
+                                // always boxed since it is a sequence
+                                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
+                            } else if (typeFact().isJavaIterableType(expr.getTypeModel())) {
+                                // need to convert j.l.Iterable to a c.l.Iterable
+                                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
+                                Type iteratedType = typeFact().getJavaIteratedType(expr.getTypeModel());
+                                jcExpression = utilInvocation().toIterable(
+                                        makeJavaType(iteratedType, JT_TYPE_ARGUMENT), 
+                                        makeReifiedTypeArgument(iteratedType), jcExpression);
+                            } else if (typeFact().isJavaArrayType(expr.getTypeModel())) {
+                                jcExpression = expressionGen().transformExpression(expr, BoxingStrategy.BOXED, type);
+                                Type iteratedType = typeFact().getJavaArrayElementType(expr.getTypeModel());
+                                if (typeFact().isJavaObjectArrayType(expr.getTypeModel())) {
+                                    jcExpression = utilInvocation().toIterable(
+                                            makeJavaType(iteratedType, JT_TYPE_ARGUMENT), 
+                                            makeReifiedTypeArgument(iteratedType), jcExpression);
+                                } else { //primitive
+                                    jcExpression = utilInvocation().toIterable(jcExpression);
+                                }
+                            } else {
+                                throw BugException.unhandledTypeCase(expr.getTypeModel());
+                            }
+
                         }else{
                             jcExpression = expressionGen().transformComprehension((Comprehension) arg, type);
                         }
