@@ -71,6 +71,7 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.unionType;
 import static java.util.Collections.emptyList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -3001,6 +3002,7 @@ public class ExpressionVisitor extends Visitor {
      */
     @Override public void visit(Tree.InvocationExpression that) {
         
+        visitInvocationPositionalArgs(that);
         Tree.Primary p = that.getPrimary();
         p.visit(this);
         
@@ -3017,16 +3019,14 @@ public class ExpressionVisitor extends Visitor {
             inferParameterTypes(p, nal);
             nal.visit(this);
         }
-        
-        if (p!=null) {
-            visitInvocationPositionalArgs(that);
-            visitInvocationPrimary(that);
-            if (isIndirectInvocation(that)) {
-                visitIndirectInvocation(that);
-            }
-            else {
-                visitDirectInvocation(that);
-            }
+    
+        visitInvocationPositionalArgs(that);
+        visitInvocationPrimary(that);
+        if (isIndirectInvocation(that)) {
+            visitIndirectInvocation(that);
+        }
+        else {
+            visitDirectInvocation(that);
         }
         
     }
@@ -3481,27 +3481,48 @@ public class ExpressionVisitor extends Visitor {
                 Tree.PositionalArgument pa = args.get(i);
                 Type t = pa.getTypeModel();
                 Type pat = unit.denotableType(t);
-                if (pa instanceof Tree.SpreadArgument) {
-                    if (unit.isTupleType(pat)) {
-                        signature.addAll(unit.getTupleElementTypes(pat));
-                        spread = unit.isTupleLengthUnbounded(pat);
+                if (pa instanceof Tree.ListedArgument) {
+                    if (isTypeUnknown(pat)) {
+                        Tree.ListedArgument la = 
+                                (Tree.ListedArgument) pa;
+                        Tree.Expression ex = 
+                                la.getExpression();
+                        if (ex!=null && 
+                                ex.getTerm() instanceof 
+                                    Tree.FunctionArgument) {
+                            pat = getCallableSupertype();
+                        }
                     }
-                    else {
-                        signature.add(pat);
+                    signature.add(pat);
+                }
+                else if (pat!=null) {
+                    if (pa instanceof Tree.SpreadArgument) {
+                        if (unit.isTupleType(pat)) {
+                            signature.addAll(unit.getTupleElementTypes(pat));
+                            spread = unit.isTupleLengthUnbounded(pat);
+                        }
+                        else {
+                            signature.add(pat);
+                            spread = true;
+                        }
+                    }
+                    else if (pa instanceof Tree.Comprehension) {
+                        signature.add(unit.getSequentialType(pat));
                         spread = true;
                     }
-                }
-                else if (pa instanceof Tree.Comprehension) {
-                    signature.add(unit.getSequentialType(pat));
-                    spread = true;
-                }
-                else {
-                    signature.add(pat);
                 }
             }
             mte.setSignature(signature);
             mte.setEllipsis(spread);
         }
+    }
+
+    private Type getCallableSupertype() {
+        return unit.getCallableDeclaration()
+                .appliedType(null,
+                        Arrays.asList(
+                                unit.getAnythingType(),
+                                unit.getNothingType()));
     }
     
     private void checkSuperInvocation(
