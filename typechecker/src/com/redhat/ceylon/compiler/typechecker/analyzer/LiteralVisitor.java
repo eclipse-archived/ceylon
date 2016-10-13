@@ -554,7 +554,8 @@ public class LiteralVisitor extends Visitor {
                     (Tree.VariablePattern) pattern;
             Tree.Variable variable = vp.getVariable();
             Tree.Type type = variable.getType();
-            if (!(type instanceof Tree.StaticType)) {
+            if (!(type instanceof Tree.StaticType || 
+                  type instanceof Tree.SequencedType)) {
                 return null;
             }
             return type;
@@ -579,7 +580,8 @@ public class LiteralVisitor extends Visitor {
             Tree.TupleType tt = new Tree.TupleType(null);
             for (Tree.Pattern p: tp.getPatterns()) {
                 Tree.Type type = asType(p);
-                if (!(type instanceof Tree.StaticType)) {
+                if (!(type instanceof Tree.StaticType || 
+                      type instanceof Tree.SequencedType)) {
                     return null;
                 }
                 tt.getElementTypes().add(type);
@@ -658,6 +660,7 @@ public class LiteralVisitor extends Visitor {
             if (type==null) {
                 //TODO: better to construct a partial type!
                 type = new Tree.ValueModifier(null);
+                pattern.addError("missing type in pattern case: (pattern case must specify explicit types for every variable)");
             }
             Tree.Identifier id = new Tree.Identifier(null);
             id.setText(switchId==null ? "_" : switchId.getText());

@@ -469,11 +469,9 @@ public class ExpressionVisitor extends Visitor {
         if (se != null) {
             Tree.Expression e = se.getExpression();
             if (e!=null) {
-                if (that.getPatternCase()) {
-                    patternCaseHint = " (try specifying explicit pattern variable types)";
-                }
+                inPatternCase = that.getPatternCase();
                 destructure(pattern, e.getTypeModel());
-                patternCaseHint = "";
+                inPatternCase = false;
             }
         }
     }
@@ -525,23 +523,26 @@ public class ExpressionVisitor extends Visitor {
         }
     }
     
-    private String patternCaseHint = "";
+    private boolean inPatternCase;
     
     private void destructure(Type entryType,
             Tree.KeyValuePattern keyValuePattern) {
         Tree.Pattern key = keyValuePattern.getKey();
         Tree.Pattern value = keyValuePattern.getValue();
         if (entryType.isExactlyNothing()) {
-            keyValuePattern
-                .addError("assigned expression has bottom type 'Nothing', so may not be destructured");
+            if (!inPatternCase) {
+                keyValuePattern
+                    .addError("assigned expression has bottom type 'Nothing', so may not be destructured");
+            }
         }
         else if (!unit.isEntryType(entryType)) {
-            keyValuePattern
-                .addError(
-                    "assigned expression is not an entry type, so may not be destructured: '" + 
-                    entryType.asString(unit) + 
-                    "' is not an entry type" + 
-                    patternCaseHint);
+            if (!inPatternCase) {
+                keyValuePattern
+                    .addError(
+                        "assigned expression is not an entry type, so may not be destructured: '" + 
+                        entryType.asString(unit) + 
+                        "' is not an entry type");
+            }
         }
         else {
             destructure(key, unit.getKeyType(entryType));
@@ -559,8 +560,10 @@ public class ExpressionVisitor extends Visitor {
                 .addError("tuple pattern must have at least one variable");
         }
         else if (sequenceType.isExactlyNothing()) {
-            tuplePattern
-                .addError("assigned expression has bottom type 'Nothing', so may not be destructured");
+            if (!inPatternCase) {
+                tuplePattern
+                    .addError("assigned expression has bottom type 'Nothing', so may not be destructured");
+            }
         }
         else {
             for (int i=0; i<length-1; i++) {
@@ -578,12 +581,13 @@ public class ExpressionVisitor extends Visitor {
                 }
             }
             if (!unit.isSequentialType(sequenceType)) {
-                tuplePattern
-                    .addError(
-                        "assigned expression is not a sequence type, so may not be destructured: '" + 
-                        sequenceType.asString(unit) + 
-                        "' is not a subtype of 'Sequential'" + 
-                        patternCaseHint);
+                if (!inPatternCase) {
+                    tuplePattern
+                        .addError(
+                            "assigned expression is not a sequence type, so may not be destructured: '" + 
+                            sequenceType.asString(unit) + 
+                            "' is not a subtype of 'Sequential'");
+                }
             }
             else if (unit.isEmptyType(sequenceType)) {
                 tuplePattern
