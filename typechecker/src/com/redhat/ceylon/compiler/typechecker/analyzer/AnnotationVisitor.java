@@ -1023,7 +1023,9 @@ public class AnnotationVisitor extends Visitor {
                         Tree.SpecifierOrInitializerExpression se = 
                                 ad.getSpecifierOrInitializerExpression();
                         if (se!=null) {
-                            if (se instanceof Tree.LazySpecifierExpression) {
+                            Value model = ad.getDeclarationModel();
+                            if (se instanceof Tree.LazySpecifierExpression 
+                                    || model.isFormal()) {
                                 if (target.contains(METHOD)) {
                                     //there is no field, so it
                                     //goes on the getter
@@ -1034,7 +1036,6 @@ public class AnnotationVisitor extends Visitor {
                                 //there is some sort of field or local
                                 //in this case it *never* goes on the
                                 //getter or setter!
-                                Value model = ad.getDeclarationModel();
                                 boolean classMember = 
                                         model.isClassMember();
                                 boolean parameter = 
