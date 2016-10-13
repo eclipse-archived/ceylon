@@ -2994,7 +2994,7 @@ public class ClassTransformer extends AbstractTransformer {
             } else if (declaration instanceof Setter){
                 parameter = ((Setter)declaration).getParameter();
             } else {
-                throw BugException.unhandledCase(declaration);
+                throw BugException.unhandledDeclarationCase(declaration);
             }
             
             final TypedReference typedParameter = typedMember.getTypedParameter(parameter);

@@ -6,6 +6,7 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
+import com.redhat.ceylon.model.typechecker.model.Type;
 
 /**
  * <p>Thrown when the code generator is in a seemingly impossible situation 
@@ -144,6 +145,10 @@ public class BugException extends RuntimeException {
      */
     public static <E extends Enum<E>> BugException unhandledEnumCase(Enum<E> element) {
         return new BugException("unhandled enum case " + element);
+    }
+    
+    public static BugException unhandledTypeCase(Type t) {
+        return new BugException("unhandled case " + (t == null ? "null" : t.toString()));
     }
     
     /**

@@ -1952,7 +1952,7 @@ public class Naming extends NamingBase implements LocalId {
         } else if (pattern instanceof Tree.TuplePattern) {
             return synthetic(Prefix.$pattern$, "tuple").alias();
         } else {
-            throw BugException.unhandledCase(pattern);
+            throw BugException.unhandledNodeCase(pattern);
         }
     }
     
@@ -1962,7 +1962,7 @@ public class Naming extends NamingBase implements LocalId {
         } else if (varOrDes instanceof Tree.Destructure) {
             return synthetic(((Tree.Destructure)varOrDes).getPattern());
         } else {
-            throw BugException.unhandledCase(varOrDes);
+            throw BugException.unhandledNodeCase(varOrDes);
         }
     }
     
@@ -1972,7 +1972,7 @@ public class Naming extends NamingBase implements LocalId {
         } else if (forIterator instanceof Tree.PatternIterator) {
             return synthetic(((Tree.PatternIterator)forIterator).getPattern());
         } else {
-            throw BugException.unhandledCase(forIterator);
+            throw BugException.unhandledNodeCase(forIterator);
         }
     }
     

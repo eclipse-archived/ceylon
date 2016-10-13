@@ -1016,7 +1016,7 @@ public class StatementTransformer extends AbstractTransformer {
                 type = ((Tree.Destructure)varOrDes).getType();
                 toTypeBoxed = false;
             } else {
-                throw BugException.unhandledCase(varOrDes);
+                throw BugException.unhandledNodeCase(varOrDes);
             }
             if (type != null) {
                 this.toType = type.getTypeModel();
@@ -1899,7 +1899,7 @@ public class StatementTransformer extends AbstractTransformer {
                 transformedBlock = transformedBlock.prepend(keyVariable);
                 transformedBlock = transformedBlock.prepend(entryVariable);
             } else {
-                throw BugException.unhandledCase(forIterator);
+                throw BugException.unhandledNodeCase(forIterator);
             }
             if (needsLoopEnteredCheck()) {
                 transformedBlock = transformedBlock.prepend(makeLoopEntered());
@@ -3761,7 +3761,7 @@ public class StatementTransformer extends AbstractTransformer {
                 } else if (javacJavaTypeToProducedType(syms().autoCloseableType).isSupertypeOf(resExpr.getTypeModel())) {
                     resourceTx = javaAutoCloseableResource;
                 } else {
-                    throw BugException.unhandledCase(resExpr.getTypeModel());
+                    throw BugException.unhandledTypeCase(resExpr.getTypeModel());
                 }
                 
                 Type resVarType = resExpr.getTypeModel();
@@ -4777,7 +4777,7 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.Destructure des = (Tree.Destructure)varOrDes;
             vars = vars.appendList(transform(des));
         } else {
-            throw BugException.unhandledCase(varOrDes);
+            throw BugException.unhandledNodeCase(varOrDes);
         }
         return vars;
     }
@@ -4915,7 +4915,7 @@ public class StatementTransformer extends AbstractTransformer {
         } else if (stmt instanceof Tree.Destructure) {
             result = result.appendList(transformPattern(((Tree.Destructure)stmt).getPattern(), varAccessExpr));
         } else {
-            throw BugException.unhandledCase(stmt);
+            throw BugException.unhandledNodeCase(stmt);
         }
         return result;
     }
@@ -4988,7 +4988,7 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.VariablePattern var = (Tree.VariablePattern)pat;
             result = result.append(transformVariable(var.getVariable(), varAccessExpr));
         } else {
-            throw BugException.unhandledCase(pat);
+            throw BugException.unhandledNodeCase(pat);
         }
         
         return result;
@@ -5031,7 +5031,7 @@ public class StatementTransformer extends AbstractTransformer {
         } else if (varOrDes instanceof Tree.Destructure) {
             specExpr = ((Tree.Destructure)varOrDes).getSpecifierExpression();
         } else {
-            throw BugException.unhandledCase(varOrDes);
+            throw BugException.unhandledNodeCase(varOrDes);
         }
         return (specExpr != null) ? specExpr.getExpression() : null;
     }

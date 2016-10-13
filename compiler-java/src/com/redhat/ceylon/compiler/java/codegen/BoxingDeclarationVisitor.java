@@ -469,7 +469,7 @@ public abstract class BoxingDeclarationVisitor extends Visitor {
         } else if (pattern instanceof Tree.VariablePattern) {
             ((Tree.VariablePattern)pattern).getVariable().getDeclarationModel().setUnboxed(false);
         } else {
-            throw BugException.unhandledCase(pattern);
+            throw BugException.unhandledNodeCase(pattern);
         }
     }
     

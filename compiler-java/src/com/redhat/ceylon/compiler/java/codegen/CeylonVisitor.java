@@ -509,7 +509,7 @@ public class CeylonVisitor extends Visitor {
             } else if (stmt instanceof Tree.ExecutableStatement) {
                 // ignore it: the Tree is malformed.
             } else {
-                throw BugException.unhandledCase(stmt);
+                throw BugException.unhandledNodeCase(stmt);
             }
         }
     }
