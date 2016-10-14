@@ -60,6 +60,7 @@ public class ModuleVisitor extends Visitor {
     private Phase phase = Phase.SRC_MODULE;
     private boolean completeOnlyAST = false;
     private Backends moduleBackends = Backends.ANY;
+    private boolean moduleFile;
 
     public void setCompleteOnlyAST(boolean completeOnlyAST) {
         this.completeOnlyAST = completeOnlyAST;
@@ -70,10 +71,12 @@ public class ModuleVisitor extends Visitor {
     }
 
     public ModuleVisitor(ModuleManager moduleManager, 
-            ModuleSourceMapper moduleManagerUtil, Package pkg) {
+            ModuleSourceMapper moduleManagerUtil, Package pkg, 
+            boolean moduleFile) {
         this.moduleManager = moduleManager;
         this.moduleManagerUtil = moduleManagerUtil;
         this.pkg = pkg;
+        this.moduleFile = moduleFile;
     }
 
     public void setPhase(Phase phase) {
@@ -84,6 +87,12 @@ public class ModuleVisitor extends Visitor {
     @Override
     public void visit(Tree.CompilationUnit that) {
         unit = that;
+        if (moduleFile && that.getModuleDescriptors().isEmpty()) {
+            that.addError("missing module descriptor");
+        }
+        if (!moduleFile && that.getPackageDescriptors().isEmpty()) {
+            that.addError("missing package descriptor");
+        }
         super.visit(that);
     }
     
