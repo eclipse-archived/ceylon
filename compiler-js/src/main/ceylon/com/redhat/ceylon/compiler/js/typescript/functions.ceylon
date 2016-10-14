@@ -20,7 +20,7 @@ String initUCase(String name) {
  (The haystack has type `Anything` so that call sites do not attempt to typecheck the argument.)"
 Boolean hasTypeFlag(Anything haystack, TypeFlags needle) {
     dynamic {
-        return eval("(function(h,n){return (h&n)!=0})")(haystack, needle);
+        return eval("(function(h,n){if(!h||!n)throw'haystack or needle is invalid (remember, ctsl does not support all enum member kinds)';return (h&n)!=0})")(haystack, needle);
     }
 }
 
