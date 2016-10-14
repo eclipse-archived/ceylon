@@ -1,6 +1,6 @@
 #!/bin/sh
 ceylon=../../ceylon/dist/dist/bin/ceylon
-$ceylon compile-js --src src/main/ceylon com.redhat.ceylon.compiler.js.typescript &&
+$ceylon compile-js com.redhat.ceylon.compiler.js.typescript &&
 $ceylon run-js com.redhat.ceylon.compiler.js.typescript tsmodule 1 src/test/ceylon/typescript/tsmodule.ts &&
 $ceylon compile-js --src src/test/ceylon typescript &&
 $ceylon run-js typescript
