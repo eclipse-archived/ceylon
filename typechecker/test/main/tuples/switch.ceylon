@@ -73,6 +73,8 @@ void testTupleSwitch([Integer,String] pair, Object any) {
     case ([null]) {}
     else {}
     
+    Integer y = switch (pair = [1, 2]) case ([1, 1]) 1 case([0,0]) 0 else 2;
+    
 }
 
 void testPatterns(
@@ -135,4 +137,12 @@ void testPatterns(
     //switch (entry)
     //case (key -> item) {}
     //case (null) {}
+    
+    Float x 
+            = switch ([Float, Float*] floats = [1.0, 2.0]) 
+            case ([Float x, Float* ys]) x + (ys[0] else 0.0);
+    
+    Float y 
+            = switch (coord = [1.0, 2.0]) 
+            case ([Float x, Float y]) x^2 + y^2;
 }
