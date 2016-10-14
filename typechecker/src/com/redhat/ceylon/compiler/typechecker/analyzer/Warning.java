@@ -15,6 +15,7 @@ public enum Warning {
     suppressesNothing("Warnings suppressing 'nothing'"),
     unknownWarning("Unknown warnings"),
     ambiguousAnnotation("Ambiguous annotations"),
+    lateFieldAnnotation("Late field annotations"),
     similarModule("Similar modules"),
     importsOtherJdk("Imports another JDK"),
     javaAnnotationElement("Java annotation elements"),

@@ -140,9 +140,9 @@ public class UnsupportedVisitor extends Visitor {
             if(target != null){
                 addWarnings = !AnnotationUtil.isNaturalTarget(annoCtorDecl, useSite, target);
             }
-            AnnotationUtil.interopAnnotationTargeting(outputs, annotation, true, addWarnings);
+            AnnotationUtil.interopAnnotationTargeting(outputs, annotation, true, addWarnings, annotated.getDeclarationModel());
         }
-        AnnotationUtil.duplicateInteropAnnotation(outputs, annotations);
+        AnnotationUtil.duplicateInteropAnnotation(outputs, annotations, annotated.getDeclarationModel());
     }    
 
 }
