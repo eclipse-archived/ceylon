@@ -126,6 +126,7 @@ final class javaxInjectInjectSetter_ {
     
     private javaxInjectInjectSetter_() {
     }
+    @.javax.inject.Inject
     private static .java.lang.String value;
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
@@ -160,6 +161,7 @@ final class javaxInjectInjectField_ {
     
     private javaxInjectInjectField_() {
     }
+    @.javax.inject.Inject
     private static .java.lang.String value;
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
