@@ -24,12 +24,3 @@ class Bug6587() {
     produces persistenceContext
     shared EntityManager sharedEntityManager = nothing;
 }
-/*
-class Bug65872() {
-    
-    produces 
-    //persistenceContext
-    EntityManager assignableEntityManager => nothing;
-    assign assignableEntityManager {}
-    
-}*/
