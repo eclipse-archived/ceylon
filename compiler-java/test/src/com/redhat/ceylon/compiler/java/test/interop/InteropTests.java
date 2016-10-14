@@ -859,4 +859,9 @@ public class InteropTests extends CompilerTests {
         compareWithJavaSource("Bug6574");
         run("com.redhat.ceylon.compiler.java.test.interop.bug6574");
     }
+    
+    @Test
+    public void testIopBug6587() {
+        compareWithJavaSource("Bug6587");
+    }
 }

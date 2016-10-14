@@ -29,4 +29,6 @@ module com.redhat.ceylon.compiler.java.test.interop "1" {
     import javax.inject "1";
     import maven:"javax.validation:validation-api" "1.1.0.Final";
     import maven:"javax.ws.rs:javax.ws.rs-api" "2.0.1";
+    import maven:"javax.persistence:persistence-api" "1.0.2";
+    import maven:"javax.enterprise:cdi-api" "2.0.Alpha4a";
 }
