@@ -26,6 +26,7 @@ import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 
@@ -297,6 +298,14 @@ public class AnnotationsTests extends CompilerTests {
     public void testSetterTarget(){
         compile("Targets.java");
         compareWithJavaSource("SetterTarget");
+    }
+    @Test
+    public void test5751(){
+        compile("Targets.java");
+        assertErrors("5751", true,
+                CompilerError.warning(3, "ambiguous annotation target: methodTarget could be applied to several targets, use one of methodTarget__GETTER, methodTarget__SETTER to disambiguate"),
+                CompilerError.warning(6, "ambiguous annotation target: methodTarget could be applied to several targets, use one of methodTarget__GETTER, methodTarget__SETTER to disambiguate")
+                );
     }
     
     @Test
