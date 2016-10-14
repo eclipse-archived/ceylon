@@ -3052,6 +3052,9 @@ public class ModelUtil {
     }
 
     public static boolean isLocalToInitializer(Declaration decl) {
+        if (decl instanceof Setter) {
+            decl = ((Setter)decl).getGetter();
+        }
         return withinClass(decl) && !isCaptured(decl);
     }
 

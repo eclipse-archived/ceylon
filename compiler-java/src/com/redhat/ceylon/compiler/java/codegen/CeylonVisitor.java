@@ -605,9 +605,8 @@ public class CeylonVisitor extends Visitor {
         if (!acceptDeclaration(decl))
             return;
         int annots = gen.checkCompilerAnnotations(decl, defs);
-        Value getter = decl.getDeclarationModel().getGetter();
-        if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(getter)
-                || getter.isStatic()) {
+        if (Decl.withinClass(decl) && !Decl.isLocalToInitializer(decl)
+                || decl.getDeclarationModel().getGetter().isStatic()) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
         } else if (Decl.withinInterface(decl)) {
             classBuilder.attribute(gen.classGen().transform(decl, false));
