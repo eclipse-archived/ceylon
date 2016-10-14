@@ -7022,7 +7022,7 @@ public class ExpressionVisitor extends Visitor {
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
         if (acceptsTypeArguments(member, receiverType, 
-                typeArgs, tal, that)) {
+                typeArgs, tal, that) || true) {
             TypedReference ptr = 
                     receiverType.getTypedMember(member, 
                             typeArgs, that.getAssigned());
@@ -7234,7 +7234,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypeArguments tal, 
             Type receivingType) {
         if (acceptsTypeArguments(member, null, typeArgs, 
-                tal, that)) {
+                tal, that) || true) {
             Scope scope = that.getScope();
             Type outerType = scope.getDeclaringType(member);
             if (outerType==null) {
@@ -7946,7 +7946,7 @@ public class ExpressionVisitor extends Visitor {
                 accountForStaticReferenceReceiverType(that, 
                         unwrap(receivingType, that));
         if (acceptsTypeArguments(memberType, receiverType, 
-                typeArgs, tal, that)) {
+                typeArgs, tal, that) || true) {
             Type type = 
                     receiverType.getTypeMember(memberType, 
                             typeArgs);
@@ -7985,7 +7985,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypeArguments tal, 
             Type receivingType) {
         if (acceptsTypeArguments(baseType, null, typeArgs, 
-                tal, that)) {
+                tal, that) || true) {
             Type outerType = 
                     that.getScope()
                         .getDeclaringType(baseType);
@@ -9856,7 +9856,7 @@ public class ExpressionVisitor extends Visitor {
                         tal.setTypeModels(typeArgs);
                     }
                     if (acceptsTypeArguments(method,
-                            outerType, typeArgs, tal, that)) {
+                            outerType, typeArgs, tal, that) || true) {
                         TypedReference pr = outerType==null ? 
                                 method.appliedTypedReference(null, typeArgs) : 
                                 outerType.getTypedMember(method, typeArgs);
