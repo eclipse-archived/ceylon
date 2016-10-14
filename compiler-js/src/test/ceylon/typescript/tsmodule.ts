@@ -67,3 +67,15 @@ export const enum ConstEnum {
     Eight = 1 << 3,
     Twelve = Four | Eight
 }
+export function numberOrStringIdentity(value: number | string): number | string {
+    return value;
+}
+export interface HasStringA {
+    a: string;
+}
+export interface HasNumberB {
+    b: number;
+}
+export function getAB(a: string, b: number): HasStringA & HasNumberB {
+    return { a: a, b: b };
+}

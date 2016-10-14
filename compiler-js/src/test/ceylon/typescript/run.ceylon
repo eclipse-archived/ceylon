@@ -133,6 +133,21 @@ void testConstEnum() {
     } 
 }
 
+void testNumberOrStringIdentity() {
+    Float|Integer|String fis0 = numberOrStringIdentity(0);
+    Float|Integer|String fis1337 = numberOrStringIdentity(13.37);
+    Float|Integer|String fisA = numberOrStringIdentity("A");
+    assertEquals { expected = 0; actual = fis0; };
+    assertEquals { expected = 13.37; actual = fis1337; };
+    assertEquals { expected = "A"; actual = fisA; };
+}
+
+void testGetAB() {
+    HasStringA&HasNumberB ab = getAB("a", 2);
+    assertEquals { expected = "a"; actual = ab.a; };
+    assertEquals { expected = 2; actual = ab.b; };
+}
+
 shared void run() {
     testConstEmptyString();
     testVarEmptyString();
@@ -145,4 +160,6 @@ shared void run() {
     testIStringBox();
     testNonConstEnum();
     testConstEnum();
+    testNumberOrStringIdentity();
+    testGetAB();
 }
