@@ -104,7 +104,7 @@ public final class Integer
     
     @Ignore
     public static java.lang.Object parse(java.lang.String string) {
-        return parseInteger_.parseInteger(string);
+        return parse(string, parse$radix(string));
     }
             
     @SharedAnnotation$annotation$
