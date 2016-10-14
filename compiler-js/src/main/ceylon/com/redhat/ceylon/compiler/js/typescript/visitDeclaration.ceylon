@@ -63,6 +63,7 @@ void visitDeclaration(
             // TODO write metamodel stuff
         } catch (Throwable t) {
             t.printStackTrace();
+            makeExitFail();
         }
     }
     case (SyntaxKind.\iFunctionDeclaration | SyntaxKind.\iMethodDeclaration | SyntaxKind.\iMethodSignature) {
@@ -89,6 +90,7 @@ void visitDeclaration(
                 });
         } catch (Throwable t) {
             t.printStackTrace();
+            makeExitFail();
         }
     }
     case (SyntaxKind.\iClassDeclaration) {
@@ -144,6 +146,7 @@ void visitDeclaration(
             container.put(name, klass);
         } catch (Throwable t) {
             t.printStackTrace();
+            makeExitFail();
         }
     }
     case (SyntaxKind.\iInterfaceDeclaration) {
@@ -190,6 +193,7 @@ void visitDeclaration(
             container.put(name, iface);
         } catch (Throwable t) {
             t.printStackTrace();
+            makeExitFail();
         }
     }
     case (SyntaxKind.\iEnumDeclaration) {
@@ -261,6 +265,7 @@ void visitDeclaration(
                               $init$``name``();"); // TODO include module name in type name for initTypeProto; m$1.atr$()?
         } catch (Throwable t) {
             t.printStackTrace();
+            makeExitFail();
         }
     }
     // descend
@@ -271,7 +276,10 @@ void visitDeclaration(
                 assert (is VariableStatement decl = node);
                 forEachChild(decl.declarationList, visitDeclaration(container, writer, program));
             }
-        } catch (Throwable t) { t.printStackTrace(); }
+        } catch (Throwable t) {
+            t.printStackTrace();
+            makeExitFail();
+        }
     }
     case (SyntaxKind.\iVariableDeclarationList) {
         forEachChild(node, visitDeclaration(container, writer, program));

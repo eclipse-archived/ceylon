@@ -31,3 +31,11 @@ Boolean hasNodeFlag(Anything haystack, NodeFlags needle) {
         return eval("(function(h,n){return (h&n)!=0})")(haystack, needle);
     }
 }
+
+"Sets Node’s `process.exitCode` to 1,
+ which results in the process terminating with an error code when the main program returns."
+void makeExitFail() {
+    dynamic {
+        eval("process.exitCode = 1;");
+    }
+}
