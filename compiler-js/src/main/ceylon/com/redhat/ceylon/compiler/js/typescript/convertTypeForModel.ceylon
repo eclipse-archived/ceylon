@@ -2,6 +2,7 @@ import tsc {
     ...
 }
 import ceylon.json {
+    JsonArray,
     JsonObject
 }
 
@@ -34,6 +35,17 @@ JsonObject convertTypeForModel(type, parameterType = false) {
                 nameKey->name
             };
         }
+    //} else if (hasTypeFlag(type.flags, TypeFlags.\iUnionOrIntersection)) { // TODO use this once UnionOrIntersection isn’t mapped to “undefined”
+    } else if (hasTypeFlag(type.flags, TypeFlags.\iUnion) || hasTypeFlag(type.flags, TypeFlags.\iIntersection)) {
+        assert (is UnionOrIntersectionType type);
+        value comp = hasTypeFlag(type.flags, TypeFlags.\iUnion) then unionTypeComp else intersectionTypeComp;
+        return JsonObject {
+            compKey->comp,
+            typesKey -> JsonArray {
+                for (t in type.types)
+                    convertTypeForModel(t, parameterType)
+            }
+        };
     } else {
         throw AssertionError("Type of flags ``type.flags`` not implemented");
     }
