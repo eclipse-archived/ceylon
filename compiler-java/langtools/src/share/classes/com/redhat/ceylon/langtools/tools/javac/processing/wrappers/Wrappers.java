@@ -1,12 +1,14 @@
 package com.redhat.ceylon.langtools.tools.javac.processing.wrappers;
 
-import com.redhat.ceylon.javax.lang.model.element.AnnotationValueVisitor;
-import com.redhat.ceylon.javax.lang.model.element.ElementVisitor;
 import com.redhat.ceylon.javax.annotation.processing.Processor;
 import com.redhat.ceylon.javax.lang.model.SourceVersion;
-import com.redhat.ceylon.javax.lang.model.element.TypeElement;
+import com.redhat.ceylon.javax.lang.model.element.AnnotationValueVisitor;
+import com.redhat.ceylon.javax.lang.model.element.ElementVisitor;
+import com.redhat.ceylon.javax.lang.model.element.UnknownAnnotationValueException;
+import com.redhat.ceylon.javax.lang.model.element.UnknownElementException;
 import com.redhat.ceylon.javax.lang.model.type.TypeKind;
 import com.redhat.ceylon.javax.lang.model.type.TypeVisitor;
+import com.redhat.ceylon.javax.lang.model.type.UnknownTypeException;
 import com.redhat.ceylon.javax.tools.Diagnostic;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 
@@ -36,6 +38,19 @@ public class Wrappers {
         return JavaFileObject.Kind.valueOf(kind.name());
     }
 
+    public static UnknownElementException wrap(javax.lang.model.element.UnknownElementException x) {
+        return new UnknownElementException(Facades.unfacade(x.getUnknownElement()), x.getArgument());
+    }
+
+
+    public static UnknownAnnotationValueException wrap(javax.lang.model.element.UnknownAnnotationValueException x) {
+        return new UnknownAnnotationValueException(Facades.unfacade(x.getUnknownAnnotationValue()), x.getArgument());
+    }
+
+    public static UnknownTypeException wrap(javax.lang.model.type.UnknownTypeException x) {
+        return new UnknownTypeException(Facades.unfacade(x.getUnknownType()), x.getArgument());
+    }
+
     public static TypeKind wrap(javax.lang.model.type.TypeKind arg0) {
         return TypeKind.valueOf(arg0.name());
     }
@@ -45,5 +60,4 @@ public class Wrappers {
             return ((ProcessorWrapper)processor).d.getClass();
         return processor.getClass();
     }
-
 }

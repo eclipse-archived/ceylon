@@ -34,7 +34,7 @@ public class ElementFacade implements Element {
 
     @Override
     public <A extends Annotation> A getAnnotation(Class<A> annotationType) {
-        return f.getAnnotation(annotationType);
+        return Facades.facadeAnnotation(f.getAnnotation(annotationType));
     }
 
     @Override
@@ -73,7 +73,7 @@ public class ElementFacade implements Element {
         // must use reflection for it to work on Java 7
         try {
             Method method = com.redhat.ceylon.javax.lang.model.element.Element.class.getMethod("getAnnotationsByType", Class.class);
-            return (A[]) method.invoke(f, arg0);
+            return Facades.facadeAnnotations((A[]) method.invoke(f, arg0));
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }

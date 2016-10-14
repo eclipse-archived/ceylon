@@ -93,7 +93,11 @@ public class AnnotationValueVisitorWrapper<R, P> implements AnnotationValueVisit
 
     @Override
     public R visitUnknown(AnnotationValue av, P p) {
-        return d.visitUnknown(Facades.facade(av), p);
+        try{
+            return d.visitUnknown(Facades.facade(av), p);
+        }catch(javax.lang.model.element.UnknownAnnotationValueException x){
+            throw Wrappers.wrap(x);
+        }
     }
 
     @Override

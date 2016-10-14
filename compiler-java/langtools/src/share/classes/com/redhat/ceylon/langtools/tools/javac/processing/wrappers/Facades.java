@@ -1,5 +1,11 @@
 package com.redhat.ceylon.langtools.tools.javac.processing.wrappers;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -9,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.javax.annotation.processing.Filer;
+import com.redhat.ceylon.javax.annotation.processing.FilerException;
 import com.redhat.ceylon.javax.annotation.processing.Messager;
 import com.redhat.ceylon.javax.annotation.processing.ProcessingEnvironment;
 import com.redhat.ceylon.javax.annotation.processing.RoundEnvironment;
@@ -19,6 +26,8 @@ import com.redhat.ceylon.javax.lang.model.type.ArrayType;
 import com.redhat.ceylon.javax.lang.model.type.DeclaredType;
 import com.redhat.ceylon.javax.lang.model.type.ErrorType;
 import com.redhat.ceylon.javax.lang.model.type.ExecutableType;
+import com.redhat.ceylon.javax.lang.model.type.MirroredTypeException;
+import com.redhat.ceylon.javax.lang.model.type.MirroredTypesException;
 import com.redhat.ceylon.javax.lang.model.type.NoType;
 import com.redhat.ceylon.javax.lang.model.type.NullType;
 import com.redhat.ceylon.javax.lang.model.type.PrimitiveType;
@@ -360,6 +369,10 @@ public class Facades {
         return new TypesFacade(typeUtils);
     }
 
+    public static javax.annotation.processing.FilerException facade(FilerException x) {
+        return new javax.annotation.processing.FilerException(x.getMessage());
+    }
+
     public static TypeMirror unfacade(javax.lang.model.type.TypeMirror arg0) {
         return ((TypeMirrorFacade)arg0).f;
     }
@@ -374,5 +387,57 @@ public class Facades {
 
     public static ExecutableType unfacade(javax.lang.model.type.ExecutableType arg0) {
         return (ExecutableType) ((ExecutableTypeFacade)arg0).f;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <A extends Annotation> A facadeAnnotation(final A annotation) {
+        if(annotation == null)
+            return null;
+        Class<? extends Annotation> annotationType = annotation.annotationType();
+        // Make sure annotations don't throw our internal type but the right external one
+        Object proxy = Proxy.newProxyInstance(annotationType.getClassLoader(), 
+                new Class[]{annotationType}, 
+                new InvocationHandler(){
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                try{
+                    Object ret = method.invoke(annotation, args);
+                    return facadeAnnotationValue(ret);
+                }catch(InvocationTargetException x){
+                    Throwable cause = x.getCause();
+                    // Do this one first because it's a subtype of the next one
+                    if(cause instanceof MirroredTypeException)
+                        throw new javax.lang.model.type.MirroredTypeException(Facades.facade(((MirroredTypeException)cause).getTypeMirror()));
+                    if(cause instanceof MirroredTypesException)
+                        throw new javax.lang.model.type.MirroredTypesException(Facades.facadeTypeMirrorList(((MirroredTypeException)cause).getTypeMirrors()));
+                    throw cause;
+                }
+            }
+        });
+        return (A) proxy;
+    }
+
+    private static Object facadeAnnotationValue(Object ret) {
+        if(ret instanceof Annotation){
+            return facadeAnnotation((Annotation)ret);
+        }
+        if(ret instanceof Annotation[]){
+            return facadeAnnotations((Annotation[]) ret);
+        }
+        // FIXME: arrays of arrays?
+        return ret;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <A extends Annotation> A[] facadeAnnotations(A[] annotations) {
+        if(annotations == null)
+            return null;
+        // find the right subtype
+        Class<?> componentType = annotations.getClass().getComponentType();
+        Annotation[] newArray = (Annotation[]) Array.newInstance(componentType, annotations.length);
+        for (int i = 0; i < annotations.length; i++) {
+            newArray[i] = (Annotation) facadeAnnotationValue(annotations[i]);
+        }
+        return (A[]) newArray;
     }
 }

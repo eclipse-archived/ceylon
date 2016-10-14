@@ -32,7 +32,7 @@ public class TypeMirrorFacade implements javax.lang.model.type.TypeMirror {
         // must use reflection for it to work on Java 7
         try {
             Method method = TypeMirror.class.getMethod("getAnnotation", Class.class);
-            return (A) method.invoke(f, arg0);
+            return Facades.facadeAnnotation((A) method.invoke(f, arg0));
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
@@ -56,7 +56,7 @@ public class TypeMirrorFacade implements javax.lang.model.type.TypeMirror {
         // must use reflection for it to work on Java 7
         try {
             Method method = TypeMirror.class.getMethod("getAnnotationsByType", Class.class);
-            return (A[]) method.invoke(f, arg0);
+            return Facades.facadeAnnotations((A[]) method.invoke(f, arg0));
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }

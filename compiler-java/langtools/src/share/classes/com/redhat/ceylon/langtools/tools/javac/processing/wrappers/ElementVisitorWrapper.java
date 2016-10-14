@@ -53,7 +53,11 @@ public class ElementVisitorWrapper<R, P> implements ElementVisitor<R, P> {
 
     @Override
     public R visitUnknown(Element e, P p) {
-        return d.visitUnknown(Facades.facade(e), p);
+        try{
+            return d.visitUnknown(Facades.facade(e), p);
+        }catch(javax.lang.model.element.UnknownElementException x){
+            throw Wrappers.wrap(x);
+        }
     }
 
     @Override

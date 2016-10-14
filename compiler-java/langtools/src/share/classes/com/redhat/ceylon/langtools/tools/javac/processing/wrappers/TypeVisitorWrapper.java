@@ -79,7 +79,11 @@ public class TypeVisitorWrapper<R, P> implements TypeVisitor<R, P> {
 
     @Override
     public R visitUnknown(TypeMirror t, P p) {
-        return d.visitUnknown(Facades.facade(t), p);
+        try{
+            return d.visitUnknown(Facades.facade(t), p);
+        }catch(javax.lang.model.type.UnknownTypeException x){
+            throw Wrappers.wrap(x);
+        }
     }
 
     @Override
