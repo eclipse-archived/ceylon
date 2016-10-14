@@ -575,6 +575,7 @@ public class CeylonTransformer extends AbstractTransformer {
         
         if (annotated != null) {
             builder.userAnnotations(expressionGen().transformAnnotations(OutputElement.GETTER, annotated));
+            builder.fieldAnnotations(expressionGen().transformAnnotations(OutputElement.FIELD, annotated));
         }
         
         if (Decl.isLocal(declarationModel)) {
