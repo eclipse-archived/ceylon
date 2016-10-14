@@ -174,8 +174,11 @@ public class PhasedUnit  implements Visitor.ExceptionHandler {
     }
 
     public Module visitSrcModulePhase() {
-        if (ModuleManager.MODULE_FILE.equals(fileName) ||
-            ModuleManager.PACKAGE_FILE.equals(fileName)) {
+        boolean moduleFile = 
+                ModuleManager.MODULE_FILE.equals(fileName);
+        boolean packageFile = 
+                ModuleManager.PACKAGE_FILE.equals(fileName);
+        if (moduleFile || packageFile) {
             if (!moduleVisited) {
                 moduleVisited = true;
                 processLiterals();
@@ -183,7 +186,7 @@ public class PhasedUnit  implements Visitor.ExceptionHandler {
                         new ModuleVisitor(
                                 moduleManagerRef.get(), 
                                 moduleSourceMapperRef.get(), 
-                                pkg);
+                                pkg, moduleFile);
                 moduleVisitor.setExceptionHandler(this);
                 moduleVisitor.setCompleteOnlyAST(!isAllowedToChangeModel(null));
                 rootNode.visit(moduleVisitor);
