@@ -8,6 +8,8 @@ class JavaxInjectInject implements .com.redhat.ceylon.compiler.java.runtime.mode
         this.steve = null;
         this.darren = null;
     }
+    @.javax.inject.Inject
+    @.javax.inject.Named("dave")
     private .java.lang.String dave;
     
     @.ceylon.language.LateAnnotation$annotation$
@@ -19,8 +21,6 @@ class JavaxInjectInject implements .com.redhat.ceylon.compiler.java.runtime.mode
         }
     }
     
-    @.javax.inject.Inject
-    @.javax.inject.Named("dave")
     private final void setDave$priv$(final .java.lang.String dave) {
         if (this.dave == null) {
             this.dave = dave;
@@ -28,6 +28,7 @@ class JavaxInjectInject implements .com.redhat.ceylon.compiler.java.runtime.mode
         }
         throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
+    @.javax.inject.Inject
     private .java.lang.String steve;
     
     @.ceylon.language.VariableAnnotation$annotation$
@@ -35,7 +36,6 @@ class JavaxInjectInject implements .com.redhat.ceylon.compiler.java.runtime.mode
         return steve;
     }
     
-    @.javax.inject.Inject
     private final void setSteve$priv$(final .java.lang.String steve) {
         this.steve = steve;
     }
