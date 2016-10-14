@@ -88,6 +88,12 @@ shared String constructorsKey = "$cn";
 "Key for the TypeScript enum value of a value constructor."
 compilerConstant ("KEY_JS_TSENUM")
 shared String tsenumKey = "$tsenum";
+"Key for the “composition”(?) of a union or intersection type (“u” or “i”)."
+// no compilerConstant
+shared String compKey = "comp";
+"Key for the type list of a union or intersection type."
+compilerConstant ("KEY_TYPES")
+shared String typesKey = "l";
 
 // meta type values
 "Meta type for an attribute or toplevel value."
@@ -112,6 +118,12 @@ shared String currentModuleOrPackage = ".";
 "Abbreviation for the language module or package."
 shared String languageModuleOrPackage = "$";
 
+// comp values
+"Composition(?) of a union type."
+shared String unionTypeComp = "u";
+"Composition(?) of an intersection type."
+shared String intersectionTypeComp = "i";
+
 // commonly used objects
 
 JsonObject stringTypeForModel = JsonObject {
@@ -130,8 +142,8 @@ JsonObject integerTypeForModel = JsonObject {
     nameKey->"Integer"
 };
 JsonObject floatOrIntegerTypeForModel = JsonObject {
-    "comp"->"u",
-    "l" -> JsonArray { floatTypeForModel, integerTypeForModel }
+    compKey->unionTypeComp,
+    typesKey -> JsonArray { floatTypeForModel, integerTypeForModel }
 };
 JsonObject booleanTypeForModel = JsonObject {
     moduleKey->languageModuleOrPackage,
