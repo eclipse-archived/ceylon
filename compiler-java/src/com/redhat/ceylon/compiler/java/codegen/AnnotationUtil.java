@@ -298,9 +298,9 @@ public class AnnotationUtil {
                 boolean p = value.isParameter()
                         && target == OutputElement.PARAMETER;
                 if (annotationCtorDecl instanceof AnnotationProxyMethod) {
-                    if (value.isLate() || value.isVariable()) {
-                        return target == OutputElement.SETTER;
-                    } else if (!value.isTransient()) {
+                    if (!value.isTransient() &&
+                            (interopTargets == null ||
+                            interopTargets.contains(AnnotationTarget.FIELD))) {
                         return target == OutputElement.FIELD;
                     } else {
                         return target == OutputElement.GETTER;
