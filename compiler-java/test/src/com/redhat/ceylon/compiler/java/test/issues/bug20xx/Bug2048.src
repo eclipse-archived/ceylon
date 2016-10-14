@@ -41,7 +41,7 @@ interface Bug2048UseTop {
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug20xx::Bug2048List<ceylon.language::String>")
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2048List<? extends .ceylon.language.String> m();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -57,7 +57,7 @@ interface Bug2048UseSub2 extends .com.redhat.ceylon.compiler.java.test.issues.bu
     @.ceylon.language.ActualAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug20xx::Bug2048Mutable<ceylon.language::String>")
     public abstract .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2048Mutable<.ceylon.language.String> m();
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

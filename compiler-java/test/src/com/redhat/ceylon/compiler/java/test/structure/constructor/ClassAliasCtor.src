@@ -55,7 +55,7 @@ final class ClassAliasCtorDefault {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     static .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorDefault$aliased$$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     final long j) {
         throw new .ceylon.language.Exception();
@@ -71,7 +71,7 @@ final class ClassAliasCtorQualDefault {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     static .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorQualDefault$aliased$$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     final long j) {
         throw new .ceylon.language.Exception();
@@ -89,7 +89,7 @@ final class ClassAliasCtorOther {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     static .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorOther$aliased$$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     final long j) {
         throw new .ceylon.language.Exception();
@@ -107,7 +107,7 @@ final class ClassAliasCtorAlias {
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     static .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassAliasCtor ClassAliasCtorAlias$aliased$$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("j")
     final long j) {
         throw new .ceylon.language.Exception();

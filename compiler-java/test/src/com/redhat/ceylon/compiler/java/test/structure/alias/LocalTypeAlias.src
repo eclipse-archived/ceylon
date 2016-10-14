@@ -51,9 +51,9 @@ final class localTypeAliasMethod_ {
             private classAliasMethod1_() {
             }
             
-            @.com.redhat.ceylon.compiler.java.metadata.NonNull
+            @.com.redhat.ceylon.common.NonNull
             .java.lang.Object classAliasMethod1(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
-            @.com.redhat.ceylon.compiler.java.metadata.NonNull
+            @.com.redhat.ceylon.common.NonNull
             final .java.lang.Object f) {
                 return f;
             }
@@ -70,9 +70,9 @@ final class localTypeAliasMethod_ {
             private classAliasMethod2_() {
             }
             
-            @.com.redhat.ceylon.compiler.java.metadata.NonNull
+            @.com.redhat.ceylon.common.NonNull
             .java.lang.Object classAliasMethod2(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
-            @.com.redhat.ceylon.compiler.java.metadata.NonNull
+            @.com.redhat.ceylon.common.NonNull
             final .java.lang.Object f) {
                 return f;
             }
@@ -89,9 +89,9 @@ final class localTypeAliasMethod_ {
             private classAliasMethod3_() {
             }
             
-            @.com.redhat.ceylon.compiler.java.metadata.NonNull
+            @.com.redhat.ceylon.common.NonNull
             TypeAliasClass classAliasMethod3(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
-            @.com.redhat.ceylon.compiler.java.metadata.NonNull
+            @.com.redhat.ceylon.common.NonNull
             final TypeAliasClass f) {
                 return f;
             }
@@ -108,9 +108,9 @@ final class localTypeAliasMethod_ {
             private classAliasMethod4_() {
             }
             
-            @.com.redhat.ceylon.compiler.java.metadata.NonNull
+            @.com.redhat.ceylon.common.NonNull
             .com.redhat.ceylon.compiler.java.test.structure.alias.localTypeAliasMethod$TypeAliasInterface_ classAliasMethod4(@.com.redhat.ceylon.compiler.java.metadata.Name("f")
-            @.com.redhat.ceylon.compiler.java.metadata.NonNull
+            @.com.redhat.ceylon.common.NonNull
             final .com.redhat.ceylon.compiler.java.test.structure.alias.localTypeAliasMethod$TypeAliasInterface_ f) {
                 return f;
             }

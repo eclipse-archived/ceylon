@@ -54,7 +54,7 @@ final class ConstrainedToClass implements .com.redhat.ceylon.compiler.java.runti
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface ConstrainedToClassSeq$annotations$ {
     
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToClassSeq$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -141,7 +141,7 @@ final class ConstrainedToInterface implements .com.redhat.ceylon.compiler.java.r
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface ConstrainedToInterfaceSeq$annotations$ {
     
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToInterfaceSeq$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -308,7 +308,7 @@ final class ConstrainedToFunction implements .com.redhat.ceylon.compiler.java.ru
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface ConstrainedToFunctionSeq$annotations$ {
     
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToFunctionSeq$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -399,7 +399,7 @@ final class ConstrainedToValue implements .com.redhat.ceylon.compiler.java.runti
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface ConstrainedToValueSeq$annotations$ {
     
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToValueSeq$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -647,7 +647,7 @@ final class ConstrainedToPackage implements .com.redhat.ceylon.compiler.java.run
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface ConstrainedToPackageSeq$annotations$ {
     
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToPackageSeq$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -734,7 +734,7 @@ final class ConstrainedToModule implements .com.redhat.ceylon.compiler.java.runt
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface ConstrainedToModuleSeq$annotations$ {
     
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToModuleSeq$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -821,7 +821,7 @@ final class ConstrainedToImport implements .com.redhat.ceylon.compiler.java.runt
 @.com.redhat.ceylon.compiler.java.metadata.Ignore
 @interface ConstrainedToImportSeq$annotations$ {
     
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     public abstract .com.redhat.ceylon.compiler.java.test.annotations.ConstrainedToImportSeq$annotation$[] value();
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(

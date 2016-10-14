@@ -678,8 +678,8 @@ public class Symtab {
         ceylonAtSequencedType = enterClass("com.redhat.ceylon.compiler.java.metadata.Sequenced");
         ceylonAtDefaultedType = enterClass("com.redhat.ceylon.compiler.java.metadata.Defaulted");
         ceylonAtTypeInfoType = enterClass("com.redhat.ceylon.compiler.java.metadata.TypeInfo");
-        ceylonAtNullableType = enterClass("com.redhat.ceylon.compiler.java.metadata.Nullable");
-        ceylonAtNonNullType = enterClass("com.redhat.ceylon.compiler.java.metadata.NonNull");
+        ceylonAtNullableType = enterClass("com.redhat.ceylon.common.Nullable");
+        ceylonAtNonNullType = enterClass("com.redhat.ceylon.common.NonNull");
         ceylonAtAttributeType = enterClass("com.redhat.ceylon.compiler.java.metadata.Attribute");
         ceylonAtMethodType = enterClass("com.redhat.ceylon.compiler.java.metadata.Method");
         ceylonAtFunctionalParameterType = enterClass("com.redhat.ceylon.compiler.java.metadata.FunctionalParameter");

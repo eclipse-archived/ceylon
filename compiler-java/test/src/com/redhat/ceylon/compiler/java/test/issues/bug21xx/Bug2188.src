@@ -24,7 +24,7 @@ final class bug2188_ {
         }
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null[1000]")
     public static .ceylon.language.Sequence<? extends .java.lang.Object> get_() {
         if (bug2188_.$init$value) {

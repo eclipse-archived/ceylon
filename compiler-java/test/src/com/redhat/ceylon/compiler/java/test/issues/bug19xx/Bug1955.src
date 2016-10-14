@@ -29,7 +29,7 @@ public final class bug1955r_ {
             private val1$getter$_() {
             }
             
-            @.com.redhat.ceylon.compiler.java.metadata.NonNull
+            @.com.redhat.ceylon.common.NonNull
             @.com.redhat.ceylon.compiler.java.metadata.Transient
             public .java.lang.String get_() {
                 
@@ -72,7 +72,7 @@ public final class bug1955r_ {
                     private val$getter$_() {
                     }
                     
-                    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+                    @.com.redhat.ceylon.common.NonNull
                     @.com.redhat.ceylon.compiler.java.metadata.Transient
                     public .java.lang.String get_() {
                         

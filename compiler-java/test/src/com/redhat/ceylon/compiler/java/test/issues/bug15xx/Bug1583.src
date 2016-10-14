@@ -45,7 +45,7 @@ public final class mixers_ implements .java.io.Serializable, .com.redhat.ceylon.
     @.ceylon.language.DocAnnotation$annotation$(description = "Nice stuff")
     @.ceylon.language.SeeAnnotation$annotations$({@.ceylon.language.SeeAnnotation$annotation$(programElements = "::1:com.redhat.ceylon.compiler.java.test.issues:bug15xx:ABug1583Mixer")})
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug15xx::mixers")
     public static .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_ get_() {
         if (mixers_.$init$value) {

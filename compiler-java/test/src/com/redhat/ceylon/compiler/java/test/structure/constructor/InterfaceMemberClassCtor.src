@@ -227,7 +227,7 @@ final class useInterfaceMemberClassCtor_ {
     }
     
     static void useInterfaceMemberClassCtor(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.constructor::InterfaceMemberClassCtor")
     final .com.redhat.ceylon.compiler.java.test.structure.constructor.InterfaceMemberClassCtor other) {
         other.SharedMember$new$(0L);

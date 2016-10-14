@@ -11,7 +11,7 @@ public final class multipleParameterLists_ {
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("(x)")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String(ceylon.language::Integer)")
     public static .ceylon.language.Callable<? extends .ceylon.language.String> multipleParameterLists() {
         return new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "String(Integer)", (short)-1){
@@ -36,7 +36,7 @@ public final class multipleParameterLists2_ {
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.FunctionalParameter("(b)(c)")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String(ceylon.language::Object)(ceylon.language::Float)")
     public static .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> multipleParameterLists2(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
     final long a) {

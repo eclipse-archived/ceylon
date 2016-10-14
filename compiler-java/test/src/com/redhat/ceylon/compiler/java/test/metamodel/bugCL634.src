@@ -14,7 +14,7 @@ class BugCL634 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     private final .java.lang.Object good;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Nullable
+    @.com.redhat.ceylon.common.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null")
     public final .java.lang.Object getGood() {
         return good;
@@ -23,7 +23,7 @@ class BugCL634 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     private final .java.lang.Object \ud835\udcb7\ud835\udcb6\ud835\udcb9;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Nullable
+    @.com.redhat.ceylon.common.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null")
     public final .java.lang.Object get\ud835\udcb7\ud835\udcb6\ud835\udcb9() {
         return \ud835\udcb7\ud835\udcb6\ud835\udcb9;
@@ -32,7 +32,7 @@ class BugCL634 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     private final .java.lang.Object \ud801\udc28;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Nullable
+    @.com.redhat.ceylon.common.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Null")
     public final .java.lang.Object get\ud801\udc00() {
         return \ud801\udc28;

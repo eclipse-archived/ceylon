@@ -155,7 +155,7 @@ public class ParameterisedMemberKlass<T> implements .com.redhat.ceylon.compiler.
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::ParameterisedMemberKlass<T>.foo")
     public final .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_ getFoo() {
         if (foo == null) foo = new .com.redhat.ceylon.compiler.java.test.annotations.ParameterisedMemberKlass<T>.foo_();

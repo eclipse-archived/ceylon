@@ -36,7 +36,7 @@ public interface My1543Iterable<Element, Absent> extends .ceylon.language.Catego
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "{Element|Other+}",
             erased = true)
@@ -67,7 +67,7 @@ public interface My1543Sequential<Element> extends .com.redhat.ceylon.compiler.j
     @.ceylon.language.ActualAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "[Other, Element*]",
             erased = true,
@@ -84,7 +84,7 @@ public interface My1543Sequential<Element> extends .com.redhat.ceylon.compiler.j
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "[Other, Element*]",
             erased = true)
@@ -100,7 +100,7 @@ public interface My1543Sequential<Element> extends .com.redhat.ceylon.compiler.j
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "[ceylon.language::Integer, Element*]",
             erased = true)
@@ -108,7 +108,7 @@ public interface My1543Sequential<Element> extends .com.redhat.ceylon.compiler.j
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "[ceylon.language::Integer, Element*]",
             erased = true)
@@ -130,7 +130,7 @@ public interface My1543Sequence<Element> extends .com.redhat.ceylon.compiler.jav
     @.ceylon.language.ActualAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "[Other, Element+]",
             erased = true,
@@ -158,7 +158,7 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "[Other]",
             erased = true,
@@ -176,7 +176,7 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "[Other]",
             erased = true,
@@ -194,7 +194,7 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "[ceylon.language::Integer]",
             erased = true,
@@ -205,7 +205,7 @@ public interface My1543Empty extends .com.redhat.ceylon.compiler.java.test.issue
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "[ceylon.language::Integer]",
             erased = true,

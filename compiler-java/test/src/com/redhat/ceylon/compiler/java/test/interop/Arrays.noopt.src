@@ -20,10 +20,10 @@ final class booleanArray_ {
     private booleanArray_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::BooleanArray")
     static boolean[] booleanArray(@.com.redhat.ceylon.compiler.java.metadata.Name("values")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::Boolean*}")
     final .ceylon.language.Iterable<? extends .ceylon.language.Boolean, ? extends .java.lang.Object> values) {
         final boolean[] ret = new boolean[(int)values.getSize()];

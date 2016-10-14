@@ -9,7 +9,7 @@ class Bug65872 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     @.javax.enterprise.inject.Produces
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     private final .javax.persistence.EntityManager getAssignableEntityManager$priv$() {
@@ -17,7 +17,7 @@ class Bug65872 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     private final void setAssignableEntityManager$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("assignableEntityManager")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     final .javax.persistence.EntityManager assignableEntityManager) {
     }

@@ -16,7 +16,7 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private .javax.persistence.EntityManager lateEntityManager;
     
     @.ceylon.language.LateAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     private final .javax.persistence.EntityManager getLateEntityManager$priv$() {
         if (this.lateEntityManager != null) {
@@ -28,7 +28,7 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final void setLateEntityManager$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("lateEntityManager")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     final .javax.persistence.EntityManager lateEntityManager) {
         if (this.lateEntityManager == null) {
@@ -43,14 +43,14 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private .javax.persistence.EntityManager variableEntityManager;
     
     @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     private final .javax.persistence.EntityManager getVariableEntityManager$priv$() {
         return variableEntityManager;
     }
     
     private final void setVariableEntityManager$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("variableEntityManager")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     final .javax.persistence.EntityManager variableEntityManager) {
         this.variableEntityManager = variableEntityManager;
@@ -60,7 +60,7 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .javax.persistence.EntityManager entityManager;
     
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     private final .javax.persistence.EntityManager getEntityManager$priv$() {
         return entityManager;
@@ -68,7 +68,7 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.javax.enterprise.inject.Produces
     @.javax.persistence.PersistenceContext
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     private final .javax.persistence.EntityManager getTransientEntityManager$priv$() {
@@ -78,7 +78,7 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.javax.enterprise.inject.Produces
     @.javax.persistence.PersistenceContext
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     @.com.redhat.ceylon.compiler.java.metadata.Transient
     public final .javax.persistence.EntityManager getAssignableEntityManager() {
@@ -86,7 +86,7 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     public final void setAssignableEntityManager(@.com.redhat.ceylon.compiler.java.metadata.Name("assignableEntityManager")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     final .javax.persistence.EntityManager assignableEntityManager) {
     }
@@ -96,7 +96,7 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final .javax.persistence.EntityManager sharedEntityManager;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     public final .javax.persistence.EntityManager getSharedEntityManager() {
         return sharedEntityManager;

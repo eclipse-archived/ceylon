@@ -325,7 +325,7 @@ final class useClassMemberClassCtor_ {
     }
     
     static void useClassMemberClassCtor(@.com.redhat.ceylon.compiler.java.metadata.Name("other")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.constructor::ClassMemberClassCtor")
     final .com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberClassCtor other) {
         final long i = 0L;

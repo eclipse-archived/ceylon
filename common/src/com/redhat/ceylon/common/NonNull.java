@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.metadata;
+package com.redhat.ceylon.common;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.LOCAL_VARIABLE;

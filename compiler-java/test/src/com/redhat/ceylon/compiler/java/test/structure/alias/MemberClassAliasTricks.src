@@ -58,7 +58,7 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo MemberClassAliasToToplevel$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
     final long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
     final long b) {
@@ -85,7 +85,7 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo MemberClassAliasToToplevel2$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
     final long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
     final long b) {
@@ -167,7 +167,7 @@ public class MemberClassAliasTricks_Foo implements .com.redhat.ceylon.compiler.j
         }
         
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
-        @.com.redhat.ceylon.compiler.java.metadata.NonNull
+        @.com.redhat.ceylon.common.NonNull
         public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberClassAliasTricks_Foo.Member MemberClassAliasToEnclosingMemberClass$aliased$(@.com.redhat.ceylon.compiler.java.metadata.Name("a")
         final long a, @.com.redhat.ceylon.compiler.java.metadata.Name("b")
         final long b) {

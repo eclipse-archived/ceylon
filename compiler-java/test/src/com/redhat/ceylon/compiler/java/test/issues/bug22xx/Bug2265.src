@@ -12,14 +12,14 @@ class Bug2265 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private .ceylon.language.String foo;
     
     @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Nullable
+    @.com.redhat.ceylon.common.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
     private final .ceylon.language.String getFoo$priv$() {
         return foo;
     }
     
     private final void setFoo$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("foo")
-    @.com.redhat.ceylon.compiler.java.metadata.Nullable
+    @.com.redhat.ceylon.common.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
     final .ceylon.language.String foo) {
         this.foo = foo;
@@ -27,7 +27,7 @@ class Bug2265 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final void myFunction(@.com.redhat.ceylon.compiler.java.metadata.Name("param")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     final .java.lang.String param) {
         setFoo$priv$(.ceylon.language.String.instance((
             let

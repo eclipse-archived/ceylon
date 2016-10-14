@@ -74,7 +74,7 @@ public class OuterClass<Outer> implements .com.redhat.ceylon.compiler.java.runti
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final void outerMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object o) {
         
@@ -203,7 +203,7 @@ public final class outerMethod_ {
     
     @.ceylon.language.SharedAnnotation$annotation$
     public static void outerMethod(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object o) {
         
@@ -318,7 +318,7 @@ public final class testMembers_ {
     
     @.ceylon.language.SharedAnnotation$annotation$
     public static void testMembers(@.com.redhat.ceylon.compiler.java.metadata.Name("o")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     final .java.lang.Object o) {
         .java.lang.Object o$13;

@@ -51,7 +51,7 @@ final class toplevelVariadic_ {
     
     static long toplevelVariadic(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
     @.com.redhat.ceylon.compiler.java.metadata.Sequenced
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]")
     final .ceylon.language.Sequential<? extends .ceylon.language.Integer> i) {
         return 1L;
@@ -236,7 +236,7 @@ final class lambdas_ {
             private f_() {
             }
             
-            @.com.redhat.ceylon.compiler.java.metadata.Nullable
+            @.com.redhat.ceylon.common.Nullable
             .java.lang.Object f(@.com.redhat.ceylon.compiler.java.metadata.Name("i")
             final long i) {
                 return (
@@ -764,7 +764,7 @@ final class lambdas_ {
             private f2_() {
             }
             
-            @.com.redhat.ceylon.compiler.java.metadata.NonNull
+            @.com.redhat.ceylon.common.NonNull
             .ceylon.language.Callable<? extends .ceylon.language.Integer> f2() {
                 return .ceylon.language.uncurry_.<.ceylon.language.Integer, .java.lang.Object, .ceylon.language.Integer, .ceylon.language.Sequence<? extends .ceylon.language.Integer>>uncurry(.ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .ceylon.language.Integer>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), "Integer(Integer)(Integer)", (short)-1){
                     
@@ -1262,7 +1262,7 @@ class Sub extends .com.redhat.ceylon.compiler.java.test.interop.LambdasJava impl
     }
     
     Sub(@.com.redhat.ceylon.compiler.java.metadata.Name("c")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.util.function::IntConsumer")
     final .java.util.function.IntConsumer c) {
         super(c);
@@ -1289,10 +1289,10 @@ class Sub2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
     public final void m(@.com.redhat.ceylon.compiler.java.metadata.Name("cs")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::CharSequence")
     final .java.lang.CharSequence cs, @.com.redhat.ceylon.compiler.java.metadata.Name("l")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.util.function::IntSupplier")
     final .java.util.function.IntSupplier l) {
     }

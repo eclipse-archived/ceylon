@@ -49,7 +49,7 @@ class MemberOverriding_Super implements .com.redhat.ceylon.compiler.java.runtime
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo Inner$aliased$() {
         throw new .ceylon.language.Exception();
     }
@@ -94,7 +94,7 @@ class MemberOverriding_Sub1 extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Bar Inner$aliased$() {
         throw new .ceylon.language.Exception();
     }
@@ -139,7 +139,7 @@ class MemberOverriding_Sub2 extends .com.redhat.ceylon.compiler.java.test.struct
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     public .com.redhat.ceylon.compiler.java.test.structure.alias.MemberOverriding_Foo Inner$aliased$() {
         throw new .ceylon.language.Exception();
     }

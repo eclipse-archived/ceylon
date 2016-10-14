@@ -39,7 +39,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     private final .ceylon.language.Callable<? extends .java.lang.Object> methodSpec;
     
     @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
     public final .ceylon.language.Callable<? extends .java.lang.Object> getMethodSpec() {
         return methodSpec;
@@ -197,7 +197,7 @@ public interface MethodInterface {
     
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.FormalAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Nullable
+    @.com.redhat.ceylon.common.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Anything",
             declaredVoid = true)
@@ -283,7 +283,7 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
     }
     
     public MethodInterfaceImpl(@.com.redhat.ceylon.compiler.java.metadata.Name("c")
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.reified::MethodClass")
     final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass c) {
         this.c = c;
@@ -306,7 +306,7 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass c;
     
-    @.com.redhat.ceylon.compiler.java.metadata.NonNull
+    @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.reified::MethodClass")
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass getC$priv$() {
         return c;
@@ -374,7 +374,7 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Nullable
+    @.com.redhat.ceylon.common.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo(
             value = "ceylon.language::Anything",
             declaredVoid = true)
