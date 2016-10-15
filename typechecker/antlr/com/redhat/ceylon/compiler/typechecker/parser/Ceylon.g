@@ -1358,7 +1358,10 @@ parameterRef returns [InitializerParameter parameter]
     ;
 
 parameterDeclarationOrRefOrPattern returns [Parameter parameter]
-    : (patternStart) => pattern
+    : (tupleType LIDENTIFIER) =>
+      parameter
+      { $parameter = $parameter.parameter; }
+    | (patternStart) => pattern
       { PatternParameter pp = new PatternParameter(null);
         pp.setPattern($pattern.pattern);
         $parameter = pp; }
@@ -2495,7 +2498,7 @@ anonParametersStart
       LPAREN
       ( 
         RPAREN
-      | (LIDENTIFIER|LBRACKET) => pattern (COMMA | RPAREN anonParametersStart2)
+      | (LIDENTIFIER|LBRACKET) => pattern LIDENTIFIER? (COMMA | RPAREN anonParametersStart2)
       | compilerAnnotations annotatedDeclarationStart 
       )
     ;
@@ -2506,7 +2509,7 @@ anonParametersStart2
         RPAREN anonParametersStart2
       | (LIDENTIFIER COMMA)*
         (
-          (LIDENTIFIER|LBRACKET) => pattern RPAREN anonParametersStart2 
+          (LIDENTIFIER|LBRACKET) => pattern LIDENTIFIER? RPAREN anonParametersStart2 
         | compilerAnnotations annotatedDeclarationStart
         )
       )
