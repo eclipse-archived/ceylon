@@ -16,6 +16,7 @@ import ceylon.json {
 shared variable String moduleName = "";
 shared variable String moduleVersion = "";
 shared variable [String+] files = [""];
+shared variable String outputRepositoryPath = "modules";
 
 "Parses the given [[arguments]] into options (`--foo=bar`, `--foo bar`) and positional arguments.
  Returns a tuple of options and positional arguments, or a string error message if the arguments can’t be parsed.
@@ -58,7 +59,13 @@ shared String? processArguments([Map<String, String>, List<String>] arguments) {
     for (optionName->optionValue in options) {
         switch (optionName)
         case ("out") {
-            return "Option 'out' not yet implemented";
+            if (optionValue.startsWith("+")) {
+                return "Named output repositories are not supported";
+            }
+            if (optionValue.startsWith("http://") || optionValue.startsWith("https://") || optionValue.startsWith("aether:")) {
+                return "Remote output repositories are not supported";
+            }
+            outputRepositoryPath = optionValue;
         }
         else {
             return "Unknown option '``optionName``'";
@@ -118,8 +125,8 @@ shared void start() {
     assert (moduleName != "",
         moduleVersion != "",
         files != [""]);
-    try (js = Sha1Writer("modules/``moduleName``/``moduleVersion``/``moduleName``-``moduleVersion``.js"),
-        model = Sha1Writer("modules/``moduleName``/``moduleVersion``/``moduleName``-``moduleVersion``-model.js")) {
+    try (js = Sha1Writer("``outputRepositoryPath``/``moduleName``/``moduleVersion``/``moduleName``-``moduleVersion``.js"),
+        model = Sha1Writer("``outputRepositoryPath``/``moduleName``/``moduleVersion``/``moduleName``-``moduleVersion``-model.js")) {
         
         CompilerOptions options;
         dynamic { options = eval("({module: 3})"); } // UMD; TODO don’t hardcode enum constant
