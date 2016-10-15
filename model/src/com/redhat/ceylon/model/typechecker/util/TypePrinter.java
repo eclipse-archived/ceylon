@@ -579,7 +579,8 @@ public class TypePrinter {
                             if (defaulted) {
                                 argtype += "=";
                             }
-                            if (names!=null && names.size()>index) {
+                            if (!printFullyQualified && //TODO: remove this condition once the TypeParser can handle element names
+                                    names!=null && names.size()>index) {
                                 String name = names.get(index);
                                 if (name!=null) {
                                     argtype += " " + name;
