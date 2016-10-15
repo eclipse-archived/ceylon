@@ -216,8 +216,7 @@ public abstract class Reference {
                         new UnknownType(unit).getType());
             }
             else {
-                return unit.getCallableType(this, 
-                        wrappedType);
+                return unit.getCallableType(this, wrappedType);
             }
         }
         else {

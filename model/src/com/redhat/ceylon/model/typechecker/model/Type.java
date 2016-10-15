@@ -55,6 +55,16 @@ public class Type extends Reference {
     private boolean typeConstructor;
     private boolean isCached;
     
+    private List<String> tupleElementNames;
+    
+    public void setTupleElementNames(List<String> tupleElementNames) {
+        this.tupleElementNames = tupleElementNames;
+    }
+    
+    public List<String> getTupleElementNames() {
+        return tupleElementNames;
+    }
+    
     // cache
     private int hashCode;
 //    private List<Type> typeArgumentList;
@@ -3101,6 +3111,8 @@ public class Type extends Reference {
                     type.getVarianceOverrides());
             result.setUnderlyingType(
                     type.getUnderlyingType());
+            result.setTupleElementNames(
+                    type.getTupleElementNames());
             return result;
         }
 
@@ -3607,8 +3619,10 @@ public class Type extends Reference {
         pt.setQualifyingType(getQualifyingType());
         pt.setTypeArguments(getTypeArguments());
         pt.setVarianceOverrides(getVarianceOverrides());
+        pt.setTupleElementNames(getTupleElementNames());
         pt.setTypeConstructor(isTypeConstructor());
         pt.setTypeConstructorParameter(getTypeConstructorParameter());
+        pt.setTupleElementNames(getTupleElementNames());
         return pt;
     }
 

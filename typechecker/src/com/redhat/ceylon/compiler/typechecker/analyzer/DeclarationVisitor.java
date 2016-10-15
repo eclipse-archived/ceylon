@@ -42,6 +42,7 @@ import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.tree.CustomTree;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Identifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassAlias;
@@ -2836,10 +2837,12 @@ public abstract class DeclarationVisitor extends Visitor {
         if (inExtends) {
             final List<Tree.Type> ets = 
                     that.getElementTypes();
+            final List<Identifier> names = 
+                    that.getNames();
             Type t = 
                     new LazyType(unit) {
                 private Type tupleType() {
-                    return getTupleType(ets, unit);
+                    return getTupleType(ets, names, unit);
                 }
                 @Override
                 public TypeDeclaration initDeclaration() {
@@ -3116,6 +3119,8 @@ public abstract class DeclarationVisitor extends Visitor {
             if (rt!=null) {
                 final List<Tree.Type> args = 
                         that.getArgumentTypes();
+                final List<Tree.Identifier> names = 
+                        that.getNames();
                 Type t = 
                         new LazyType(unit) {
                     @Override
@@ -3137,7 +3142,7 @@ public abstract class DeclarationVisitor extends Visitor {
                         map.put(ctps.get(0), 
                                 rt.getTypeModel());
                         map.put(ctps.get(1),
-                                getTupleType(args, unit));
+                                getTupleType(args, names, unit));
                         return map;
                     }
                 };

@@ -1965,10 +1965,10 @@ enumeration returns [SequenceEnumeration sequenceEnumeration]
 tuple returns [Tuple tuple]
     : LBRACKET 
       { $tuple = new Tuple($LBRACKET); }
-      (
-        sequencedArgument
-        { $tuple.setSequencedArgument($sequencedArgument.sequencedArgument); }
-      )?
+      tupleArguments
+      { for (NamedArgument na: $tupleArguments.namedArgumentList.getNamedArguments())
+            $tuple.addNamedArgument(na);
+        $tuple.setSequencedArgument($tupleArguments.namedArgumentList.getSequencedArgument()); }
       RBRACKET
       { $tuple.setEndToken($RBRACKET); }
     ;
@@ -1976,30 +1976,30 @@ tuple returns [Tuple tuple]
 dynamicObject returns [Dynamic dynamic]
     : DYNAMIC
       { $dynamic = new Dynamic($DYNAMIC); }
-      dynamicArguments
-      { $dynamic.setNamedArgumentList($dynamicArguments.namedArgumentList); }
+      LBRACKET
+      tupleArguments
+      { $dynamic.setNamedArgumentList($tupleArguments.namedArgumentList); }
+      RBRACKET
+      { $dynamic.setEndToken($RBRACKET); }
     ;
 
-dynamicArguments returns [NamedArgumentList namedArgumentList]
-    : LBRACKET
-      { $namedArgumentList = new NamedArgumentList($LBRACKET); }
-      ( //TODO: get rid of the predicate and use the approach
+tupleArguments returns [NamedArgumentList namedArgumentList]
+    @init { $namedArgumentList = new NamedArgumentList(null); }
+    : ( //TODO: get rid of the predicate and use the approach
         //      in expressionOrSpecificationStatement
         (namedArgumentStart) 
         => namedArgument
         { if ($namedArgument.namedArgument!=null) 
               $namedArgumentList.addNamedArgument($namedArgument.namedArgument); }
-      | (anonymousArgument)
+      /*| (anonymousArgument)
         => anonymousArgument
         { if ($anonymousArgument.namedArgument!=null) 
-              $namedArgumentList.addNamedArgument($anonymousArgument.namedArgument); }
+              $namedArgumentList.addNamedArgument($anonymousArgument.namedArgument); }*/
       )*
       ( 
         sequencedArgument
         { $namedArgumentList.setSequencedArgument($sequencedArgument.sequencedArgument); }
-      )?
-      RBRACKET
-      { $namedArgumentList.setEndToken($RBRACKET); }
+      )?      
     ;
 
 valueCaseList returns [ExpressionList expressionList]
@@ -3397,6 +3397,7 @@ tupleType returns [TupleType type]
         t1=defaultedType
         { if ($t1.type!=null)
               $type.addElementType($t1.type); }
+        (n1=LIDENTIFIER { $type.addName(new Identifier($n1)); })?
         (
           c=COMMA
           { $type.setEndToken($c); }
@@ -3404,6 +3405,7 @@ tupleType returns [TupleType type]
           { if ($t2.type!=null) {
                 $type.addElementType($t2.type);
                 $type.setEndToken(null); } }
+          (n2=LIDENTIFIER { $type.addName(new Identifier($n2)); })?
         )*
       )?
       RBRACKET
@@ -3559,12 +3561,14 @@ primaryType returns [StaticType type]
             t1=defaultedType
             { if ($t1.type!=null)
                   bt.addArgumentType($t1.type); }
+            (n1=LIDENTIFIER { bt.addName(new Identifier($n1)); })?
             (
               COMMA
               { bt.setEndToken($COMMA); }
               t2=defaultedType
               { if ($t2.type!=null)
                     bt.addArgumentType($t2.type); }
+              (n2=LIDENTIFIER { bt.addName(new Identifier($n2)); })?
             )*
           )?
         RPAREN

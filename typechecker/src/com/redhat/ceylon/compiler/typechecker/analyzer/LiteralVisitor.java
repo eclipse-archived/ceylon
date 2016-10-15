@@ -19,7 +19,6 @@ import org.antlr.runtime.Token;
 
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.CaseItem;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CharLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Literal;
@@ -27,6 +26,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.PatternParameter;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.QuotedLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringLiteral;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.StringTemplate;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Tuple;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ValueModifier;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 
@@ -838,6 +838,93 @@ public class LiteralVisitor extends Visitor {
                 new Tree.SpecifierExpression(null);
         spec.setExpression(destExpression);
         return spec;
+    }
+    
+    @Override
+    public void visit(Tuple that) {
+        super.visit(that);
+        List<Tree.NamedArgument> nas 
+            = that.getNamedArguments();
+        if (!nas.isEmpty()) {
+            Tree.SequencedArgument pas =
+                    that.getSequencedArgument();
+            Tree.SequencedArgument sa = 
+                    new Tree.SequencedArgument(null);
+            for (Tree.NamedArgument na: nas) {
+                if (na instanceof Tree.SpecifiedArgument) {
+                    Tree.SpecifiedArgument spa = 
+                            (Tree.SpecifiedArgument) na;
+                    Tree.SpecifierExpression se = 
+                            spa.getSpecifierExpression();
+                    if (se!=null) {
+                        Tree.Expression e = se.getExpression();
+                        if (e!=null) {
+                            Tree.ListedArgument pa =
+                                    new Tree.ListedArgument(null);
+                            pa.setExpression(e);
+                            sa.addPositionalArgument(pa);
+                            nas.remove(sa);
+                            that.addName(spa.getIdentifier());
+                            continue;
+                        }
+                    }
+                }
+                else if (na instanceof Tree.MethodArgument) {
+                    Tree.MethodArgument ma = 
+                            (Tree.MethodArgument) na;
+                    Tree.FunctionArgument f =
+                            new Tree.FunctionArgument(null);
+                    f.setType(ma.getType());
+                    for (Tree.ParameterList pl: 
+                            ma.getParameterLists()) {
+                        f.addParameterList(pl);
+                    }
+                    Tree.SpecifierExpression se = 
+                            ma.getSpecifierExpression();
+                    if (se!=null) {
+                        f.setExpression(se.getExpression());
+                    }
+                    f.setBlock(ma.getBlock());
+                    Tree.Expression e = 
+                            new Tree.Expression(null);
+                    e.setTerm(f);
+                    Tree.ListedArgument pa =
+                            new Tree.ListedArgument(null);
+                    pa.setExpression(e);
+                    sa.addPositionalArgument(pa);
+                    nas.remove(sa);
+                    that.addName(ma.getIdentifier());
+                    continue;
+                }
+                else if (na instanceof Tree.ObjectArgument) {
+                    Tree.ObjectArgument oa = 
+                            (Tree.ObjectArgument) na;
+                    Tree.ObjectExpression oe =
+                            new Tree.ObjectExpression(oa.getToken());
+                    oe.setExtendedType(oa.getExtendedType());                    
+                    oe.setSatisfiedTypes(oa.getSatisfiedTypes());
+                    oe.setClassBody(oa.getClassBody());
+                    Tree.Expression e = 
+                            new Tree.Expression(null);
+                    e.setTerm(oe);
+                    Tree.ListedArgument pa =
+                            new Tree.ListedArgument(null);
+                    pa.setExpression(e);
+                    sa.addPositionalArgument(pa);
+                    nas.remove(sa);
+                    that.addName(oa.getIdentifier());
+                    continue;
+                }
+                na.addError("syntax error");
+            }
+            if (pas!=null) {
+                for (Tree.PositionalArgument pa: 
+                        pas.getPositionalArguments()) {
+                    sa.addPositionalArgument(pa);
+                }
+            }
+            that.setSequencedArgument(sa);
+        }
     }
     
 }

@@ -315,11 +315,13 @@
     STATIC_TYPE definiteType)
 
 ^(TUPLE_TYPE: STATIC_TYPE
-    TYPE* elementType)
+    TYPE* elementType
+    IDENTIFIER* name)
 
 ^(FUNCTION_TYPE: STATIC_TYPE
     STATIC_TYPE returnType
-    TYPE* argumentType)
+    TYPE* argumentType
+    IDENTIFIER* name)
 
 ^(ENTRY_TYPE: STATIC_TYPE
     STATIC_TYPE keyType
@@ -902,6 +904,8 @@
 
 "Enumerated elements of a tuple."
 ^(TUPLE:ATOM
+    NAMED_ARGUMENT*
+    IDENTIFIER* name
     SEQUENCED_ARGUMENT?)
 
 ^(DYNAMIC:ATOM

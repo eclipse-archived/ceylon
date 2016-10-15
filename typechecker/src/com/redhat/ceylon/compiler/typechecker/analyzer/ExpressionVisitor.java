@@ -8123,6 +8123,17 @@ public class ExpressionVisitor extends Visitor {
             List<Tree.PositionalArgument> pas = 
                     sa.getPositionalArguments();
             tt = getTupleType(pas, unit, true);
+            List<Tree.Identifier> names = 
+                    that.getNames();
+            if (names!=null) {
+                List<String> strings = 
+                        new ArrayList<String>
+                            (names.size());
+                for (Tree.Identifier id: names) {
+                    strings.add(id.getText());
+                }
+                tt.setTupleElementNames(strings);
+            }
         }
         else {
             tt = unit.getEmptyType();

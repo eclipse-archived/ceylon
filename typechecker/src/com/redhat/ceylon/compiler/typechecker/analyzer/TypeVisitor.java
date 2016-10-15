@@ -248,9 +248,10 @@ public class TypeVisitor extends Visitor {
         Tree.StaticType rt = 
                 that.getReturnType();
         if (rt!=null) {
-            List<Tree.Type> argumentTypes = 
-                    that.getArgumentTypes();
-            Type tt = getTupleType(argumentTypes, unit);
+            Type tt = 
+                    getTupleType(
+                        that.getArgumentTypes(), 
+                        that.getNames(), unit);
             Interface cd = unit.getCallableDeclaration();
             Type pt = 
                     appliedType(cd, rt.getTypeModel(), tt);
@@ -261,13 +262,15 @@ public class TypeVisitor extends Visitor {
     @Override
     public void visit(Tree.TupleType that) {
         super.visit(that);
-        List<Tree.Type> elementTypes = 
-                that.getElementTypes();
-        Type tt = getTupleType(elementTypes, unit);
+        Type tt = 
+                getTupleType(
+                    that.getElementTypes(), 
+                    that.getNames(), unit);
         that.setTypeModel(tt);
     }
 
     static Type getTupleType(List<Tree.Type> ets, 
+            List<Tree.Identifier> names,
             Unit unit) {
         List<Type> args = 
                 new ArrayList<Type>
@@ -316,8 +319,19 @@ public class TypeVisitor extends Visitor {
             }
             args.add(arg);
         }
-        return getTupleType(args, sequenced, atleastone, 
-                firstDefaulted, unit);
+        Type type = 
+                getTupleType(args, sequenced, atleastone, 
+                        firstDefaulted, unit);
+        if (names!=null) {
+            List<String> strings = 
+                    new ArrayList<String>
+                        (names.size());
+            for (Tree.Identifier id: names) {
+                strings.add(id.getText());
+            }
+            type.setTupleElementNames(strings);
+        }
+        return type;
     }
 
     //Note: quite similar to Unit.getTupleType(), but does 

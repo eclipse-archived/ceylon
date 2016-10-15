@@ -198,7 +198,7 @@ public class TypePrinter {
                             if (!isPrimitiveAbbreviatedType(rt)) {
                                 rtn = lt() + rtn + gt();
                             }
-                            return rtn + "(" + paramTypes + ")";
+                            return rtn + "(" + insertNames(at, paramTypes) + ")";
                         }
                     }
                     else {
@@ -219,7 +219,7 @@ public class TypePrinter {
                     String elemTypes = 
                             getTupleElementTypeNames(pt, unit);
                     if (elemTypes!=null) {
-                        return "[" + elemTypes + "]";
+                        return "[" + insertNames(pt, elemTypes) + "]";
                     }
                 }
             }
@@ -351,6 +351,28 @@ public class TypePrinter {
                 }
             }
         }
+    }
+
+    private String insertNames(Type at, String paramTypes) {
+        List<String> names = 
+                at.getTupleElementNames();
+        if (names!=null && !names.isEmpty()) {
+            StringBuilder sb = 
+                    new StringBuilder(paramTypes);
+            int offset = -1;
+            int i = 0;
+            do {
+                offset = sb.indexOf(",", offset);
+                if (offset<0) offset = sb.length();
+                String name = names.get(i++);
+                sb.insert(offset, name);
+                sb.insert(offset, ' ');
+                offset += name.length() + 2;
+            }
+            while (i<names.size());
+            paramTypes = sb.toString();
+        }
+        return paramTypes;
     }
 
     private boolean abbreviateHomoTuple(Type pt) {

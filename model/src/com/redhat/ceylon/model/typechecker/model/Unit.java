@@ -1007,12 +1007,17 @@ public class Unit implements LanguageModuleProvider {
                 boolean atLeastOne = false;
                 int firstDefaulted = -1;
                 List<Parameter> ps = 
-                        pls.get(i).getParameters();
+                        pls.get(i)
+                            .getParameters();
                 List<Type> args = 
                         new ArrayList<Type>
                             (ps.size());
+                List<String> names =
+                        new ArrayList<String>
+                            (ps.size());
                 for (int j=0; j<ps.size(); j++) {
                     Parameter p = ps.get(j);
+                    names.add(p.getName());
                     if (p.getModel()==null) {
                         args.add(getUnknownType());
                     }
@@ -1047,6 +1052,7 @@ public class Unit implements LanguageModuleProvider {
                         getTupleType(args, 
                                 hasSequenced, atLeastOne, 
                                 firstDefaulted);
+                paramListType.setTupleElementNames(names);
                 result = appliedType(getCallableDeclaration(), 
                         result, paramListType);
             }
@@ -1709,6 +1715,7 @@ public class Unit implements LanguageModuleProvider {
                     }
                     dt.setUnderlyingType(type.getUnderlyingType());
                     dt.setRaw(type.isRaw());
+                    dt.setTupleElementNames(type.getTupleElementNames());
                     return dt;
                 }
             }
