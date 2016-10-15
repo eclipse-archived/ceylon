@@ -3774,6 +3774,8 @@ public class Type extends Reference {
                                 aliasedArgs);
                 result.setVarianceOverrides(
                         getVarianceOverrides());
+                result.setTupleElementNames(
+                        getTupleElementNames());
                 return result;
             }
         }
