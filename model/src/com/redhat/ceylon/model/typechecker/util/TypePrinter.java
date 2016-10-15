@@ -192,13 +192,14 @@ public class TypePrinter {
                     Type at = tal.get(1);
                     if (abbreviateCallableArg(at)) {
                         String paramTypes = 
-                                getTupleElementTypeNames(at, unit);
+                                getTupleElementTypeNames(at, unit, 
+                                        0, at.getTupleElementNames());
                         if (rt!=null && paramTypes!=null) {
                             String rtn = print(rt, unit);
                             if (!isPrimitiveAbbreviatedType(rt)) {
                                 rtn = lt() + rtn + gt();
                             }
-                            return rtn + "(" + insertNames(at, paramTypes) + ")";
+                            return rtn + "(" + paramTypes + ")";
                         }
                     }
                     else {
@@ -217,9 +218,10 @@ public class TypePrinter {
                 }
                 if (abbreviateTuple(pt)) {
                     String elemTypes = 
-                            getTupleElementTypeNames(pt, unit);
+                            getTupleElementTypeNames(pt, unit, 
+                                    0, pt.getTupleElementNames());
                     if (elemTypes!=null) {
-                        return "[" + insertNames(pt, elemTypes) + "]";
+                        return "[" + elemTypes + "]";
                     }
                 }
             }
@@ -351,28 +353,6 @@ public class TypePrinter {
                 }
             }
         }
-    }
-
-    private String insertNames(Type at, String paramTypes) {
-        List<String> names = 
-                at.getTupleElementNames();
-        if (names!=null && !names.isEmpty()) {
-            StringBuilder sb = 
-                    new StringBuilder(paramTypes);
-            int offset = -1;
-            int i = 0;
-            do {
-                offset = sb.indexOf(",", offset);
-                if (offset<0) offset = sb.length();
-                String name = names.get(i++);
-                sb.insert(offset, name);
-                sb.insert(offset, ' ');
-                offset += name.length() + 2;
-            }
-            while (i<names.size());
-            paramTypes = sb.toString();
-        }
-        return paramTypes;
     }
 
     private boolean abbreviateHomoTuple(Type pt) {
@@ -567,7 +547,7 @@ public class TypePrinter {
     }
 
     private String getTupleElementTypeNames(Type args, 
-            Unit unit) {
+            Unit unit, int index, List<String> names) {
         if (args!=null) {
             Unit u = args.getDeclaration().getUnit();
             boolean defaulted=false;
@@ -596,17 +576,24 @@ public class TypePrinter {
                         if (first!=null && rest!=null) {
                             String argtype = 
                                     print(first, unit);
+                            if (defaulted) {
+                                argtype += "=";
+                            }
+                            if (names!=null && names.size()>index) {
+                                String name = names.get(index);
+                                if (name!=null) {
+                                    argtype += " " + name;
+                                }
+                            }
                             if (rest.isEmpty()) {
-                                return defaulted ? 
-                                        argtype + "=" : argtype;
+                                return argtype;
                             }
                             String argtypes = 
                                     getTupleElementTypeNames(
-                                            rest, unit);
+                                            rest, unit, 
+                                            index+1, names);
                             if (argtypes!=null) {
-                                return defaulted ? 
-                                        argtype + "=, " + argtypes : 
-                                        argtype + ", " + argtypes;
+                                return argtype + ", " + argtypes;
                             }
                         }
                     }
