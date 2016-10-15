@@ -1364,7 +1364,8 @@ public class Unit implements LanguageModuleProvider {
     }
 
     public Type getKeyType(Type type) {
-        Type st = type.getSupertype(getEntryDeclaration());
+        Type st = type.isEntry() ? type :
+            type.getSupertype(getEntryDeclaration());
         if (st!=null && 
                 st.getTypeArguments().size()==2) {
             return st.getTypeArgumentList().get(0);
@@ -1375,7 +1376,8 @@ public class Unit implements LanguageModuleProvider {
     }
 
     public Type getValueType(Type type) {
-        Type st = type.getSupertype(getEntryDeclaration());
+        Type st = type.isEntry() ? type :
+            type.getSupertype(getEntryDeclaration());
         if (st!=null && 
                 st.getTypeArguments().size()==2) {
             return st.getTypeArgumentList().get(1);
@@ -1386,8 +1388,8 @@ public class Unit implements LanguageModuleProvider {
     }
 
     public Type getIteratedType(Type type) {
-        Interface id = getIterableDeclaration();
-        Type st = type.getSupertype(id);
+        Type st = type.isIterable() ? type : 
+            type.getSupertype(getIterableDeclaration());
         if (st!=null && 
                 st.getTypeArguments().size()>0) {
             return st.getTypeArgumentList().get(0);
@@ -1453,8 +1455,8 @@ public class Unit implements LanguageModuleProvider {
     }
 
     public Type getAbsentType(Type type) {
-        Interface id = getIterableDeclaration();
-        Type st = type.getSupertype(id);
+        Type st = type.isIterable() ? type :
+                type.getSupertype(getIterableDeclaration());
         if (st!=null && 
                 st.getTypeArguments().size()>1) {
             return st.getTypeArgumentList().get(1);
@@ -1481,8 +1483,8 @@ public class Unit implements LanguageModuleProvider {
     }
 
     public Type getSequentialElementType(Type type) {
-        Interface sd = getSequentialDeclaration();
-        Type st = type.getSupertype(sd);
+        Type st = type.isSequential() ? type :
+            type.getSupertype(getSequentialDeclaration());
         if (st!=null && 
                 st.getTypeArguments().size()==1) {
             Type et = st.getTypeArgumentList().get(0);
@@ -1617,7 +1619,8 @@ public class Unit implements LanguageModuleProvider {
     public NothingType getNothingDeclaration() {
         Module theLanguageModule = getLanguageModule();
         if (theLanguageModule != null) {
-            return theLanguageModule.getLanguageModuleCache().getNothingDeclaration();
+            return theLanguageModule.getLanguageModuleCache()
+                    .getNothingDeclaration();
         }
         return null;
     }
