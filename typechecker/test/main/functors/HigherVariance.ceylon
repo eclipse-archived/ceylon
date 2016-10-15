@@ -92,21 +92,21 @@ void testVariantGet(Variant<Inv, in Integer> foo,
 
 void testVariantAccept(Variant<Inv, in Integer> foo, 
     Variant<Inv, out Integer> bar) {
-    @type:"Object(Nothing)" 
+    @type:"Object(Nothing t)" 
     value fooOut = foo.getOut().accept;
-    @type:"Anything(Integer)" 
+    @type:"Anything(Integer t)" 
     value fooIn = foo.getIn().accept;
-    @type:"Integer(Nothing)" 
+    @type:"Integer(Nothing t)" 
     value barOut = bar.getOut().accept;
-    @type:"Anything(Nothing)" 
+    @type:"Anything(Nothing t)" 
     value barIn = bar.getIn().accept;
     
-    @type:"Object(Nothing)" 
+    @type:"Object(Nothing t)" 
     value fooOut0 = foo.getOut0().accept;
-    @type:"Anything(Integer)" 
+    @type:"Anything(Integer t)" 
     value fooIn0 = foo.getIn0().accept;
-    @type:"Integer(Nothing)" 
+    @type:"Integer(Nothing t)" 
     value barOut0 = bar.getOut0().accept;
-    @type:"Anything(Nothing)" 
+    @type:"Anything(Nothing t)" 
     value barIn0 = bar.getIn0().accept;
 }
