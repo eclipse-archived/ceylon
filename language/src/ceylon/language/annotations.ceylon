@@ -131,9 +131,9 @@ shared final sealed annotation class StaticAnnotation()
 
 "Annotation to mark a member of a toplevel class as static. 
  A `static` member does not have access to any current 
- instance of the class or interface, and must occur before 
- any non-`static` member declarations in the body of the 
- class or interface declaration.
+ instance of the class, and must occur before all 
+ constructor declarations and non-`static` member 
+ declarations in the body of the class.
  
  For example:
  
@@ -141,8 +141,23 @@ shared final sealed annotation class StaticAnnotation()
          shared static void hello() => print(\"hello\");
          shared new() {}
      }
+ 
+ A `static` member may be invoked or evaluated without any
+ receiving instance of the class, by qualifying the member
+ by a reference to the class itself.
+ 
+     shared void run() => Hello.hello();
+ 
+ The type parameters of a generic class are in scope at the
+ declaration of a `static` member.
+ 
+     class Box<Element> {
+         shared static Box<Element>[2] pair(Element x, Element y)
+                => [create(x), create(y)];
+         shared new create(Element element) {}
+     }
      
-     shared void run() => Hello.hello();"
+     Box<Float>[2] boxes = Box.pair(1.0, 2.0);"
 shared annotation StaticAnnotation static()
         => StaticAnnotation();
 
