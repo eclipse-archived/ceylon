@@ -1742,14 +1742,14 @@ public class Util {
     public static int arrayLength(Object array) {
         //TODO: wouldn't it be faster to just use java.lang.reflect.Array.getLength() ?
         if (array instanceof Object[]) return ((Object[])array).length;
-        else if (array instanceof boolean[]) return ((boolean[])array).length;
-        else if (array instanceof float[]) return ((float[])array).length;
-        else if (array instanceof double[]) return ((double[])array).length;
-        else if (array instanceof char[]) return ((char[])array).length;
-        else if (array instanceof byte[]) return ((byte[])array).length;
-        else if (array instanceof short[]) return ((short[])array).length;
-        else if (array instanceof int[]) return ((int[])array).length;
         else if (array instanceof long[]) return ((long[])array).length;
+        else if (array instanceof double[]) return ((double[])array).length;
+        else if (array instanceof byte[]) return ((byte[])array).length;
+        else if (array instanceof int[]) return ((int[])array).length;
+        else if (array instanceof boolean[]) return ((boolean[])array).length;
+        else if (array instanceof short[]) return ((short[])array).length;
+        else if (array instanceof float[]) return ((float[])array).length;
+        else if (array instanceof char[]) return ((char[])array).length;
         throw new ClassCastException(notArrayType(array));
     }
     
