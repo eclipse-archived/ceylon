@@ -152,7 +152,21 @@ shared final sealed annotation class LateAnnotation()
                     ValueDeclaration> {}
 
 "Annotation to disable definite initialization analysis for 
- a reference."
+ a toplevel value, or for an attribute of a class.
+ 
+ - In the case of a class attribute, the attribute may not
+   be initialized by its declaration, and may be left 
+   unassigned by the class initializer.
+ - In the case of a toplevel value, the value may not be
+   initialized by its declaration.
+ 
+ A `late` value may be assigned by any code to which it is
+ visible, but repeated assignment produces an 
+ [[InitializationError]].
+ 
+ Evaluation of a `late` value cannot be guaranteed sound by
+ the compiler, and so evaluation of a `late` value before 
+ initialization produces an [[InitializationError]]."
 shared annotation LateAnnotation late()
         => LateAnnotation();
 
