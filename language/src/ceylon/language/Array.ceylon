@@ -20,7 +20,15 @@
  
  This class is provided primarily to support interoperation 
  with Java, and for some performance-critical low-level 
- programming tasks."
+ programming tasks.
+ 
+ _Note: on the JVM, for \"primitive\" element types 
+ [[Integer]], [[Float]], [[Byte]], [[Character]], and 
+ [[Boolean]], `Array` is easily the most efficient sort of 
+ `List` in Ceylon. However, certain performance 
+ optimizations are impossible if the `Array` is assigned to 
+ the generic type `List`. Peak efficiency is only obtained
+ for algorithms coded to the static type `Array`._"
 tagged("Collections")
 shared final serializable native 
 class Array<Element>
