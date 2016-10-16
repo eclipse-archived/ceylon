@@ -371,9 +371,11 @@ shared deprecated</programlisting>
                 </listitem>
                 <listitem>
                     <para><literal>late</literal> disables definite 
-                    initialization checking for a reference, allowing the 
-                    reference to be initialized after the initializer of
-                    the class to which it belongs has already completed.</para>
+                    initialization checking for a reference, allowing a toplevel 
+                    reference to omit initialization in its declaration, or a
+                    reference which is an attribute of a class to be left
+                    unassigned by the initializer of the class, and allows the 
+                    value to be assigned by any other code.</para>
                 </listitem>
                 <listitem>
                     <para><literal>native</literal> specifies that a program
