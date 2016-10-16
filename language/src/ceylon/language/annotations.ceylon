@@ -230,15 +230,27 @@ shared annotation InheritedAnnotation inherited()
 
 "The annotation class for the [[doc]] annotation."
 shared final sealed annotation class DocAnnotation(
-    "Documentation, in Markdown syntax, about the annotated 
-     program element"
+    "Documentation, in Markdown syntax, describing the 
+     annotated program element"
     shared String description)
         satisfies OptionalAnnotation<DocAnnotation> {}
 
-"Annotation to specify API documentation of a program
- element."
+"Annotation to specify API documentation of a program 
+ element. The `doc` annotation need not be explicitly 
+ specified, since a string literal at the beginning of a
+ declaration is implicitly considered an argument to
+ `doc()`.
+ 
+     \"Something awesome\"
+     void hello() => print(\"hello\");
+ 
+ Is an abbreviation for:
+ 
+     doc (\"Something awesome\")
+     void hello() => print(\"hello\");"
 shared annotation DocAnnotation doc(
-    "Documentation, in Markdown syntax, about the annotated element"
+    "Documentation, in Markdown syntax, describing the 
+     annotated program element"
     String description) 
         => DocAnnotation(description);
 
@@ -282,7 +294,10 @@ shared final sealed annotation class ThrownExceptionAnnotation(
                   | ConstructorDeclaration> {}
 
 "Annotation to document the exception types thrown by a 
- function, value, class, or constructor."
+ function, value, class, or constructor.
+ 
+     throws(`class Exception`)
+     void die() { throw; }"
 shared annotation ThrownExceptionAnnotation throws(
     "The [[Exception]] type that is thrown."
     Declaration type,
@@ -333,8 +348,9 @@ shared final sealed annotation class AliasesAnnotation(
     shared String* aliases)
         satisfies OptionalAnnotation<AliasesAnnotation> {}
 
-"Annotation to specify a list of aliases that tools such as auto-completion and
- quick-fixes should consider, to help users find a declaration using its aliases."
+"Annotation to specify a list of aliases that tools such as 
+ auto-completion and quick-fixes should consider, to help 
+ users find a declaration using its aliases."
 since("1.2.0")
 shared annotation AliasesAnnotation aliased(
     "The aliases, in plain text."
@@ -355,13 +371,30 @@ shared annotation LicenseAnnotation license(
     String description)
         => LicenseAnnotation(description);
 
+"The annotation class for the [[since]] annotation."
+since("1.3.0")
+shared final sealed annotation class SinceAnnotation(
+    "The version of the module when this declaration was added."
+    shared String version)
+        satisfies OptionalAnnotation<SinceAnnotation> {}
+
+"Annotation to indicate at which moment the annotated declaration
+ was added to the module."
+since("1.3.0")
+shared annotation SinceAnnotation since(
+    "The version of the module when this declaration was added."
+    String version) 
+        => SinceAnnotation(version);
+
 "The annotation class for the [[optional]] annotation."
 shared final sealed annotation class OptionalImportAnnotation()
         satisfies OptionalAnnotation<OptionalImportAnnotation,
                     Import> {}
 
 "Annotation to specify that a module can be executed even if 
- the annotated dependency is not available."
+ the annotated dependency is not available.
+ 
+     optional import org.some.service.provider \"1.2.3\";"
 shared annotation OptionalImportAnnotation optional()
         => OptionalImportAnnotation();
 
@@ -443,7 +476,9 @@ shared final annotation class SmallAnnotation()
 
 "Annotation to hint to the compiler that an `Integer` or 
  `Float` typed value or function should be represented using 
- a 32-bit signed integer or 32-bit IEEE float if possible."
+ a 32-bit signed integer or 32-bit IEEE float if possible.
+ 
+     small Integer zero = 0;"
 since("1.3.0")
 shared annotation SmallAnnotation small() 
         => SmallAnnotation();
@@ -480,17 +515,3 @@ shared annotation ServiceAnnotation service(
     ClassOrInterfaceDeclaration contract) 
         => ServiceAnnotation(contract);
 
-"The annotation class for the [[since]] annotation."
-since("1.3.0")
-shared final sealed annotation class SinceAnnotation(
-    "The version of the module when this declaration was added."
-    shared String version)
-        satisfies OptionalAnnotation<SinceAnnotation> {}
-
-"Annotation to indicate at which moment the annotated declaration
- was added to the module."
-since("1.3.0")
-shared annotation SinceAnnotation since(
-    "The version of the module when this declaration was added."
-    String version) 
-        => SinceAnnotation(version);
