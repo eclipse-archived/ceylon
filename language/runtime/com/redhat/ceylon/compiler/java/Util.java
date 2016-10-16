@@ -6,6 +6,18 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import com.redhat.ceylon.common.NonNull;
+import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
+import com.redhat.ceylon.compiler.java.language.AbstractIterable;
+import com.redhat.ceylon.compiler.java.language.AbstractIterator;
+import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
+import com.redhat.ceylon.compiler.java.metadata.Class;
+import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
+import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.cmr.ArtifactResult;
+
 import ceylon.language.ArraySequence;
 import ceylon.language.AssertionError;
 import ceylon.language.Callable;
@@ -22,18 +34,6 @@ import ceylon.language.Tuple;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.sequence_;
-
-import com.redhat.ceylon.compiler.java.language.AbstractArrayIterable;
-import com.redhat.ceylon.compiler.java.language.AbstractIterable;
-import com.redhat.ceylon.compiler.java.language.AbstractIterator;
-import com.redhat.ceylon.compiler.java.language.ObjectArrayIterable;
-import com.redhat.ceylon.compiler.java.metadata.Class;
-import com.redhat.ceylon.compiler.java.metadata.Name;
-import com.redhat.ceylon.common.NonNull;
-import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
-import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
-import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
-import com.redhat.ceylon.model.cmr.ArtifactResult;
 
 /**
  * Helper class for generated Ceylon code that needs to call implementation logic.
@@ -1692,7 +1692,8 @@ public class Util {
      * @param variadicElementType element type of the varargs sequence we need, or null if we don't care and trust it
      * @return a new sequence or the original sequence's span
      */
-    private static Sequential<?> safeSpanFrom(Sequential<? extends Object> arguments, int start, TypeDescriptor variadicElementType) {
+    private static Sequential<?> safeSpanFrom(Sequential<? extends Object> arguments, int start, 
+            TypeDescriptor variadicElementType) {
         if(variadicElementType == null){
             if(start == 0)
                 return arguments;
@@ -1738,116 +1739,100 @@ public class Util {
         return (java.lang.Class<T>) Object.class;
     }
     
-    public static int arrayLength(Object o) {
-        if (o instanceof Object[]) 
-            return ((Object[])o).length;
-        else if (o instanceof boolean[])
-            return ((boolean[])o).length;
-        else if (o instanceof float[])
-            return ((float[])o).length;
-        else if (o instanceof double[])
-            return ((double[])o).length;
-        else if (o instanceof char[])
-            return ((char[])o).length;
-        else if (o instanceof byte[])
-            return ((byte[])o).length;
-        else if (o instanceof short[])
-            return ((short[])o).length;
-        else if (o instanceof int[])
-            return ((int[])o).length;
-        else if (o instanceof long[])
-            return ((long[])o).length;
-        throw new ClassCastException(notArrayType(o));
+    public static int arrayLength(Object array) {
+        //TODO: wouldn't it be faster to just use java.lang.reflect.Array.getLength() ?
+        if (array instanceof Object[]) return ((Object[])array).length;
+        else if (array instanceof boolean[]) return ((boolean[])array).length;
+        else if (array instanceof float[]) return ((float[])array).length;
+        else if (array instanceof double[]) return ((double[])array).length;
+        else if (array instanceof char[]) return ((char[])array).length;
+        else if (array instanceof byte[]) return ((byte[])array).length;
+        else if (array instanceof short[]) return ((short[])array).length;
+        else if (array instanceof int[]) return ((int[])array).length;
+        else if (array instanceof long[]) return ((long[])array).length;
+        throw new ClassCastException(notArrayType(array));
     }
     
     /**
      * Used by the JVM backend to get unboxed items from an Array&lt;Integer> backing array
      */
-    public static long getIntegerArray(Object o, int index) {
-        if (o instanceof short[])
-            return ((short[])o)[index];
-        else if (o instanceof int[])
-            return ((int[])o)[index];
-        else if (o instanceof long[])
-            return ((long[])o)[index];
-        throw new ClassCastException(notArrayType(o));
+    public static long getIntegerArray(Object array, int index) {
+        if (array instanceof long[]) return ((long[])array)[index];
+        if (array instanceof int[]) return ((int[])array)[index];
+        if (array instanceof short[]) return ((short[])array)[index];
+        throw new ClassCastException(notArrayType(array));
     }
     
     /**
      * Used by the JVM backend to get unboxed items from an Array&lt;Float> backing array
      */
-    public static double getFloatArray(Object o, int index) {
-        if (o instanceof float[])
-            return ((float[])o)[index];
-        else if (o instanceof double[])
-            return ((double[])o)[index];
-        throw new ClassCastException(notArrayType(o));
+    public static double getFloatArray(Object array, int index) {
+        if (array instanceof double[]) return ((double[])array)[index];
+        if (array instanceof float[]) return ((float[])array)[index];
+        throw new ClassCastException(notArrayType(array));
     }
     
     /**
      * Used by the JVM backend to get unboxed items from an Array&lt;Character> backing array
      */
-    public static int getCharacterArray(Object o, int index) {
-        if (o instanceof int[])
-            return ((int[])o)[index];
-        throw new ClassCastException(notArrayType(o));
+    public static int getCharacterArray(Object array, int index) {
+        if (array instanceof int[]) return ((int[])array)[index];
+        throw new ClassCastException(notArrayType(array));
     }
     
     /**
      * Used by the JVM backend to get unboxed items from an Array&lt;Byte> backing array
      */
-    public static byte getByteArray(Object o, int index) {
-        if (o instanceof byte[])
-            return ((byte[])o)[index];
-        throw new ClassCastException(notArrayType(o));
+    public static byte getByteArray(Object array, int index) {
+        if (array instanceof byte[]) return ((byte[])array)[index];
+        throw new ClassCastException(notArrayType(array));
     }
     
     /**
      * Used by the JVM backend to get unboxed items from an Array&lt;Boolean> backing array
      */
-    public static boolean getBooleanArray(Object o, int index) {
-        if (o instanceof boolean[])
-            return ((boolean[])o)[index];
-        throw new ClassCastException(notArrayType(o));
+    public static boolean getBooleanArray(Object array, int index) {
+        if (array instanceof boolean[]) return ((boolean[])array)[index];
+        throw new ClassCastException(notArrayType(array));
     }
     
     /**
      * Used by the JVM backend to get unboxed items from an Array&lt;Integer> backing array
      */
-    public static java.lang.String getStringArray(Object o, int index) {
-        if (o instanceof java.lang.String[])
-            return ((java.lang.String[])o)[index];
-        throw new ClassCastException(notArrayType(o));
+    public static java.lang.String getStringArray(Object array, int index) {
+        if (array instanceof java.lang.String[])
+            return ((java.lang.String[])array)[index];
+        throw new ClassCastException(notArrayType(array));
     }
     
     /**
      * Used by the JVM backend to get items from an ArraySequence object. Beware: do not use that
      * for Array&lt;Object> as there's too much magic in there.
      */
-    public static Object getObjectArray(Object o, int index) {
-        if (o instanceof Object[])
-            return ((Object[])o)[index];
-        else if (o instanceof boolean[])
-            return ceylon.language.Boolean.instance(((boolean[])o)[index]);
-        else if (o instanceof float[])
-            return ceylon.language.Float.instance(((float[])o)[index]);
-        else if (o instanceof double[])
-            return ceylon.language.Float.instance(((double[])o)[index]);
-        else if (o instanceof char[])
-            return ceylon.language.Character.instance(((char[])o)[index]);
-        else if (o instanceof byte[])
-            return ceylon.language.Byte.instance(((byte[])o)[index]);
-        else if (o instanceof short[])
-            return ceylon.language.Integer.instance(((short[])o)[index]);
-        else if (o instanceof int[])
-            return ceylon.language.Integer.instance(((int[])o)[index]);
-        else if (o instanceof long[])
-            return ceylon.language.Integer.instance(((long[])o)[index]);
-        throw new ClassCastException(notArrayType(o));
+    public static Object getObjectArray(Object array, int index) {
+        if (array instanceof Object[])
+            return ((Object[])array)[index];
+        else if (array instanceof boolean[])
+            return ceylon.language.Boolean.instance(((boolean[])array)[index]);
+        else if (array instanceof float[])
+            return ceylon.language.Float.instance(((float[])array)[index]);
+        else if (array instanceof double[])
+            return ceylon.language.Float.instance(((double[])array)[index]);
+        else if (array instanceof char[])
+            return ceylon.language.Character.instance(((char[])array)[index]);
+        else if (array instanceof byte[])
+            return ceylon.language.Byte.instance(((byte[])array)[index]);
+        else if (array instanceof short[])
+            return ceylon.language.Integer.instance(((short[])array)[index]);
+        else if (array instanceof int[])
+            return ceylon.language.Integer.instance(((int[])array)[index]);
+        else if (array instanceof long[])
+            return ceylon.language.Integer.instance(((long[])array)[index]);
+        throw new ClassCastException(notArrayType(array));
     }
     
-    private static String notArrayType(Object o) {
-        return (o == null ? "null" : o.getClass().getName()) + " is not an array type";
+    private static String notArrayType(Object obj) {
+        return (obj == null ? "null" : obj.getClass().getName()) + " is not an array type";
     }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
