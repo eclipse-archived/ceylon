@@ -49,6 +49,7 @@ import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.util.JarUtils;
 import com.redhat.ceylon.common.FileUtil;
@@ -212,8 +213,13 @@ public class LanguageCompiler extends JavaCompiler {
         Options options = Options.instance(context);
         options.put("-Xprefer", "source");
         // make sure it's registered
-        CeylonLog.instance(context);
-        CeylonEnter.instance(context);
+        Log log = CeylonLog.instance(context);
+        try {
+            CeylonEnter.instance(context);
+        } catch (Overrides.OverrideException e) {
+            log.error("ceylon.overrides", e.getMessage());
+            return null;
+        }
         CeylonClassWriter.instance(context);
         JavaCompiler instance = context.get(compilerKey);
         if (instance == null)

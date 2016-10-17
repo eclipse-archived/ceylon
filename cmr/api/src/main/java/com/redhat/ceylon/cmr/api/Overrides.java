@@ -61,17 +61,39 @@ public class Overrides {
     
     private static final Logger log = Logger.getLogger(Overrides.class.getName());
     
-    public static class InvalidOverrideException extends IllegalArgumentException {
+    public static class OverrideException extends IllegalArgumentException {
+        private static final long serialVersionUID = 1L;
+        
+        public OverrideException(String message) {
+            super(message);
+        }
+    }
+    
+    public static class OverrideNotFoundException extends OverrideException {
+        private static final long serialVersionUID = 1L;
+        
+        public OverrideNotFoundException(String message) {
+            super(message);
+        }
+    }
+    
+    public static class InvalidOverrideException extends OverrideException {
         private static final long serialVersionUID = 1L;
         public int line = -1;
         public int column = -1;
-        public InvalidOverrideException(String message, Element element) {
+        InvalidOverrideException(String message, Element element) {
             super(message);
             Object data = null;
             data = element.getUserData(LINE_NUMBER_KEY_NAME);
             this.line = data == null ? -1 : Integer.parseInt((String) data);
             data = element.getUserData(COLUMN_NUMBER_KEY_NAME);
             this.column = data == null ? -1 : Integer.parseInt((String) data);
+        }
+        private InvalidOverrideException(InvalidOverrideException e, String file) {
+            super(file + ":" +e.line +":"+e.column+ ": " + e.getMessage());
+            this.line = e.line;
+            this.column = e.column;
+            this.setStackTrace(e.getStackTrace());
         }
     }
     
@@ -95,8 +117,8 @@ public class Overrides {
     public static Overrides getDistOverrides(boolean upgradeDist) {
         try {
             return parseDistOverrides(upgradeDist);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -242,19 +264,25 @@ public class Overrides {
         return new ModuleInfo(module, version, filter, result);
     }
 
-    private static Overrides parse(String overridesFileName, Overrides overrides) throws FileNotFoundException, Exception{
+    private static Overrides parse(String overridesFileName, Overrides overrides) throws OverrideException{
         File overridesFile = new File(overridesFileName);
         if (overridesFile.exists() == false) {
-            throw new IllegalArgumentException("No such overrides file: " + overridesFile);
+            throw new OverrideNotFoundException("No such overrides file: " + overridesFile);
         }
         try(InputStream is = new FileInputStream(overridesFile)){
             Overrides.parse(is, overrides);
             overrides.source = overridesFile.getAbsolutePath();
             return overrides;
+        } catch (InvalidOverrideException e ) {
+            throw new InvalidOverrideException(e, overridesFileName);
+        } catch (FileNotFoundException e) {
+            throw new OverrideNotFoundException("No such overrides file: " + overridesFile);
+        } catch (Exception e) {
+            throw new OverrideException(e.getMessage());
         }
     }
     
-    public static Overrides parseDistOverrides(boolean upgradeDist) throws FileNotFoundException, Exception{
+    public static Overrides parseDistOverrides(boolean upgradeDist) throws OverrideException {
         URL resource = Overrides.class.getResource("/com/redhat/ceylon/cmr/api/dist-overrides.xml");
         try(InputStream is = resource.openStream()){
             try {
@@ -276,6 +304,11 @@ public class Overrides {
                 } catch (IOException ignored) {
                 }
             }
+        }
+        catch (FileNotFoundException e) {
+            throw new OverrideNotFoundException("No such overrides file: " + resource);
+        } catch (Exception e) {
+            throw new OverrideException(e.getMessage());
         }
     }
     
