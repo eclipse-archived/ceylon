@@ -152,9 +152,9 @@ public class Naming extends NamingBase implements LocalId {
         if (decl.isClassOrInterfaceMember()) {
             String name = decl.getName();
             // ERASURE
-            if ((namingOptions & NA_ANNOTATION_MEMBER) == 0 && "hash".equals(name)) {
+            if (decl instanceof Value && (namingOptions & NA_ANNOTATION_MEMBER) == 0 && "hash".equals(name)) {
                 return "hashCode";
-            } else if ((namingOptions & NA_ANNOTATION_MEMBER) == 0 && "string".equals(name)) {
+            } else if (decl instanceof Value && (namingOptions & NA_ANNOTATION_MEMBER) == 0 && "string".equals(name)) {
                 return "toString";
             } else if ("equals".equals(name)) {
                 // This is a special case where we override the mangling of getMethodNameInternal()
