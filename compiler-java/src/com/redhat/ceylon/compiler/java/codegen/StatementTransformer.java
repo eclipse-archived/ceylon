@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.BooleanUtil;
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -2613,9 +2614,17 @@ public class StatementTransformer extends AbstractTransformer {
         }
 
         protected ListBuffer<JCStatement> transformForClause() {
-            Naming.SyntheticName elem_name = naming.alias("elem");
-            
             Tree.ForIterator forIterator = stmt.getForClause().getForIterator();
+            Tree.Expression specifierExpression = forIterator.getSpecifierExpression().getExpression();
+            Type sequenceElementType = typeFact().getIteratedType(specifierExpression.getTypeModel());
+            Type sequenceType = specifierExpression.getTypeModel().getSupertype(typeFact().getIterableDeclaration());
+            Type expectedIterableType = typeFact().isNonemptyIterableType(sequenceType)
+                    ? typeFact().getNonemptyIterableType(sequenceElementType)
+                    : typeFact().getIterableType(sequenceElementType);
+            Type iterableType = forIterator.getSpecifierExpression().getExpression().getTypeModel();
+            Type iteratorElementType = sequenceElementType;
+            
+            Naming.SyntheticName elem_name = naming.alias("elem");
             List<JCStatement> itemDecls = List.nil();
             final Naming.SyntheticName iteratorVarName;
             if (forIterator instanceof Tree.ValueIterator) {
@@ -2635,13 +2644,6 @@ public class StatementTransformer extends AbstractTransformer {
                 throw BugException.unhandledNodeCase(forIterator);
             }
             
-            Tree.Expression specifierExpression = forIterator.getSpecifierExpression().getExpression();
-            Type sequenceElementType = typeFact().getIteratedType(specifierExpression.getTypeModel());
-            Type sequenceType = specifierExpression.getTypeModel().getSupertype(typeFact().getIterableDeclaration());
-            Type expectedIterableType = typeFact().isNonemptyIterableType(sequenceType)
-                    ? typeFact().getNonemptyIterableType(sequenceElementType)
-                    : typeFact().getIterableType(sequenceElementType);
-
             // ceylon.language.Iterator<T> $V$iter$X = ITERABLE.getIterator();
             JCExpression containment = expressionGen().transformExpression(specifierExpression, BoxingStrategy.BOXED, expectedIterableType);
             
@@ -2650,205 +2652,160 @@ public class StatementTransformer extends AbstractTransformer {
             List<JCStatement> stmts = transformBlock(stmt.getForClause().getBlock());
             currentForClause = prevControlClause;
             
-            return new ListBuffer<JCStatement>().appendList(transformIterableIteration(stmt,
-                    this.label,
-                    elem_name, 
-                    iteratorVarName,
-                    forIterator.getSpecifierExpression().getExpression().getTypeModel(),
-                    sequenceElementType,
-                    containment,
-                    itemDecls,
-                    stmts,
-                    needsLoopEnteredCheck() ? makeLoopEntered() : null,
-                    !isOptimizationDisabled(stmt, Optimization.ArrayIterationDynamic),
-                    !isOptimizationDisabled(stmt, Optimization.TupleIterationDynamic)));
+            JCStatement loopEntered = needsLoopEnteredCheck() ? makeLoopEntered() : null;
+            
+            ListBuffer<JCStatement> result1 = new ListBuffer<JCStatement>();
+            
+            // TODO Only when the iterable *could be* an array (e.g. if static type is Iterable, but not if static type is Sequence)
+            // TODO Need to use naming.Infix for the hidden members of Array
+            boolean optForArray = !isOptimizationDisabled(stmt, Optimization.ArrayIterationDynamic) && typeFact().getArrayType(sequenceElementType).isSubtypeOf(iterableType);
+            boolean optForTuple = !isOptimizationDisabled(stmt, Optimization.TupleIterationDynamic) && typeFact().getTupleType(Collections.singletonList(sequenceElementType), true, false, -1).isSubtypeOf(iterableType);
+            
+            SyntheticName iterableName = optForArray || optForTuple ? naming.alias("iterable") : null;
+            SyntheticName isArrayName = optForArray ? naming.alias("isArray") : null;
+            SyntheticName isTupleName = optForTuple ? naming.alias("isTuple") : null;
+            SyntheticName arrayIndex = optForArray || optForTuple ? naming.alias("i") : null;
+            SyntheticName arrayLength = optForArray || optForTuple ? naming.alias("length") : null;
+            if (optForArray || optForTuple) {
+                result1.append(makeVar(FINAL, iterableName, makeJavaType(typeFact().getIterableType(iteratorElementType)), containment));
+            }
+            if (optForArray) {
+                result1.append(makeVar(FINAL, isArrayName, 
+                        make().Type(syms().booleanType), 
+                        make().TypeTest(iterableName.makeIdent(), 
+                                makeJavaType(typeFact().getArrayType(iteratorElementType), JT_RAW))));
+            }
+            if (optForTuple) {
+                result1.append(makeVar(FINAL, isTupleName, 
+                        make().Type(syms().booleanType), 
+                        make().Binary(JCTree.Tag.AND, 
+                                make().TypeTest(iterableName.makeIdent(), 
+                                        make().QualIdent(syms().ceylonTupleType.tsym)),
+                                make().Binary(JCTree.Tag.NE, 
+                                        make().Apply(null, 
+                                                naming.makeQualIdent(
+                                                        make().TypeCast(make().QualIdent(syms().ceylonTupleType.tsym), iterableName.makeIdent()),
+                                                        Unfix.$getArray$.toString()),
+                                                    List.<JCExpression>nil()),
+                                        makeNull()))));
+            }
+            
+            // java.lang.Object ELEM_NAME;
+            JCVariableDecl elemDecl = makeVar(elem_name, make().Type(syms().objectType), optForArray || optForTuple ? makeNull() : null);
+            result1.append(elemDecl);
+            
+            SyntheticName iterName = iteratorVarName;
+            
+            Type iteratorType = typeFact().getIteratorType(iteratorElementType);
+            JCExpression iteratorTypeExpr = makeJavaType(iteratorType, CeylonTransformer.JT_TYPE_ARGUMENT);
+            
+            // ceylon.language.Iterator<T> LOOP_VAR_NAME$iter$X = ITERABLE.getIterator();
+            // We don't need to unerase here as anything remotely a sequence will be erased to Iterable, which has getIterator()
+            JCExpression getIter;
+            if (optForArray || optForTuple) {
+                at(stmt);
+                result1.append(makeVar(arrayIndex, make().Type(syms().intType), make().Literal(0)));
+                result1.append(makeVar(FINAL, arrayLength, make().Type(syms().intType), null));
+                ListBuffer<JCStatement> whenTupleOrArray = new ListBuffer<JCStatement>();
+                whenTupleOrArray.append(make().Exec(make().Assign(
+                        arrayLength.makeIdent(),
+                        make().TypeCast(make().Type(syms().intType),
+                                make().Apply(null,
+                                        naming.makeQualIdent(
+                                                iterableName.makeIdent(),
+                                                "getSize"),
+                                        List.<JCExpression>nil())))));
+                
+                ListBuffer<JCStatement> whenIterable = new ListBuffer<JCStatement>();
+                whenIterable.append(make().Exec(make().Assign(
+                        arrayLength.makeIdent(),
+                        make().Literal(0))));
+                
+                JCExpression cond;
+                if(optForArray && optForTuple)
+                    cond = make().Binary(JCTree.Tag.OR, isArrayName.makeIdent(), isTupleName.makeIdent());
+                else if(optForArray)
+                    cond = isArrayName.makeIdent();
+                else
+                    cond = isTupleName.makeIdent();
+                result1.append(make().If(cond,
+                            make().Block(0, whenTupleOrArray.toList()),
+                            make().Block(0, whenIterable.toList())));
+                
+                getIter = make().Conditional(
+                        optForArray && optForTuple ? make().Binary(JCTree.Tag.OR, isTupleName.makeIdent(), isArrayName.makeIdent()): optForArray ? isArrayName.makeIdent() : isTupleName.makeIdent(), 
+                        makeNull(), 
+                        make().Apply(null, makeSelect(iterableName.makeIdent(), "iterator"), List.<JCExpression> nil()));
+            } else {
+                getIter = at(stmt).Apply(null, makeSelect(containment, "iterator"), List.<JCExpression> nil());
+            }
+            getIter = gen().expressionGen().applyErasureAndBoxing(getIter, iteratorType, true, BoxingStrategy.BOXED, iteratorType);
+            JCVariableDecl iteratorDecl = at(stmt).VarDef(make().Modifiers(0), iterName.asName(), iteratorTypeExpr, getIter);
+            // .ceylon.language.Iterator<T> LOOP_VAR_NAME$iter$X = ITERABLE.getIterator();
+            result1.append(iteratorDecl);
+            
+            ListBuffer<JCStatement> loopBody = new ListBuffer<JCStatement>();
+            if (loopEntered != null) {
+                loopBody.append(loopEntered);
+            }
+            
+            if(optForArray || optForTuple) {
+                JCExpression cond;
+                if(optForArray && optForTuple)
+                    cond = make().Binary(JCTree.Tag.OR, isArrayName.makeIdent(), isTupleName.makeIdent());
+                else if(optForArray)
+                    cond = isArrayName.makeIdent();
+                else
+                    cond = isTupleName.makeIdent();
+                loopBody.append(make().If(cond,
+                        make().Exec(make().Assign(elem_name.makeIdent(),
+                                make().Apply(null,
+                                        naming.makeQualIdent(iterableName.makeIdent(), "getFromFirst"),
+                                        List.<JCExpression>of(make().Unary(JCTree.Tag.POSTINC, arrayIndex.makeIdent()))))),
+                        null));
+            }
+            
+            if (itemDecls != null) {
+                loopBody.appendList(itemDecls);
+            }
+            
+            // The user-supplied contents of the loop
+            loopBody.appendList(stmts);
+            
+            // ELEM_NAME = LOOP_VAR_NAME$iter$X.next()
+            JCExpression iter_elem = make().Apply(null, makeSelect(iterName.makeIdent(), "next"), List.<JCExpression> nil());
+            JCExpression elem_assign = make().Assign(elem_name.makeIdent(), iter_elem);
+            // !((ELEM_NAME = LOOP_VAR_NAME$iter$X.next()) instanceof Finished)
+            JCExpression instof = make().TypeTest(elem_assign, makeIdent(syms().ceylonFinishedType));
+            JCExpression loopCond = make().Unary(JCTree.Tag.NOT, instof);
+            if (optForArray || optForTuple) {
+                JCExpression cond;
+                if (optForArray && optForTuple) {
+                    cond = make().Binary(JCTree.Tag.OR, isTupleName.makeIdent(), isArrayName.makeIdent());
+                } else if (optForArray) {
+                    cond = isArrayName.makeIdent();
+                } else {
+                    cond = isTupleName.makeIdent();
+                }
+                loopCond = make().Conditional(cond,
+                        make().Binary(JCTree.Tag.LT, arrayIndex.makeIdent(), arrayLength.makeIdent()), 
+                        make().Unary(JCTree.Tag.NOT, instof));
+            }
+            
+            // while (!(($elem$X = $V$iter$X.next()) instanceof Finished); ) {
+            JCStatement whileLoop = at(stmt).WhileLoop(loopCond, at(stmt).Block(0, loopBody.toList()));
+            if (this.label != null) {
+                whileLoop = make().Labelled(this.label, whileLoop);
+            }
+            
+            List<JCStatement> result = result1.append(whileLoop).toList();
+            return new ListBuffer<JCStatement>().appendList(result);
         }
         
         protected final Tree.Block getBlock() {
             return stmt.getForClause().getBlock();
         }
     }
-    
-    /**
-     * The transformation of a ceylon {@code for} loop:
-     * 
-     * <pre>
-     *     java.lang.Object ITERATION_VAR_NAME;
-     *     Iterator<ITERATOR_ELEMENT_TYPE> ITERATOR_VAR_NAME = ITERABLE.getIterator();
-     *     while (
-     *             !((ITERATION_VAR_NAME = ITERATOR_VAR_NAME.getNext()) instanceof ceylon.language.Finished;
-     *         ) {
-     *         ITEM_DECLS;
-     *         BODY_STMTS;
-     *     }
-     * </pre>
-     * @param label 
-     * 
-     * @param iterationVarName The iteration variable (which recieves the value of {@code Iterator.next()})
-     * @param iteratorVarName The name of the {@code Iterator} variable
-     * @param iteratorElementType The type argument of the {@code Iterator}
-     * @param iterableExpr The {@code Iterable} expression
-     * @param itemDecls variable declarations for the iteration variables which 
-     * begin the loop body (these depend on {@code iterationVarName} and may 
-     * typecast or destructure it). May be null.
-     * @param bodyStmts Other statements in the loop body
-     * @return
-     */
-    List<JCStatement> transformIterableIteration(Node node,
-            Name label, Naming.SyntheticName iterationVarName,
-            Naming.SyntheticName iteratorVarName,
-            Type iterableType, Type iteratedType, 
-            JCExpression iterableExpr,
-            List<JCStatement> itemDecls,
-            List<JCStatement> bodyStmts,
-            JCStatement loopEntered, boolean allowArrayOpt, boolean allowArraySeqOpt) {
-        Type iteratorElementType = iteratedType;
-        ListBuffer<JCStatement> result = new ListBuffer<JCStatement>();
-        
-        // TODO Only when the iterable *could be* an array (e.g. if static type is Iterable, but not if static type is Sequence)
-        // TODO Need to use naming.Infix for the hidden members of Array
-        boolean optForArray = allowArrayOpt && typeFact().getArrayType(iteratedType).isSubtypeOf(iterableType);
-        boolean optForTuple = allowArraySeqOpt && typeFact().getTupleType(Collections.singletonList(iteratedType), true, false, -1).isSubtypeOf(iterableType);
-        
-        SyntheticName iterableName = optForArray || optForTuple ? naming.alias("iterable") : null;
-        SyntheticName isArrayName = optForArray ? naming.alias("isArray") : null;
-        SyntheticName isTupleName = optForTuple ? naming.alias("isTuple") : null;
-        SyntheticName arrayIndex = optForArray || optForTuple ? naming.alias("i") : null;
-        SyntheticName arrayLength = optForArray || optForTuple ? naming.alias("length") : null;
-        if (optForArray || optForTuple) {
-            result.append(makeVar(FINAL, iterableName, makeJavaType(typeFact().getIterableType(iteratorElementType)), iterableExpr));
-        }
-        if (optForArray) {
-            result.append(makeVar(FINAL, isArrayName, 
-                    make().Type(syms().booleanType), 
-                    make().TypeTest(iterableName.makeIdent(), 
-                            makeJavaType(typeFact().getArrayType(iteratorElementType), JT_RAW))));
-        }
-        if (optForTuple) {
-            result.append(makeVar(FINAL, isTupleName, 
-                    make().Type(syms().booleanType), 
-                    make().Binary(JCTree.Tag.AND, 
-                            make().TypeTest(iterableName.makeIdent(), 
-                                    make().QualIdent(syms().ceylonTupleType.tsym)),
-                            make().Binary(JCTree.Tag.NE, 
-                                    make().Apply(null, 
-                                            naming.makeQualIdent(
-                                                    make().TypeCast(make().QualIdent(syms().ceylonTupleType.tsym), iterableName.makeIdent()),
-                                                    Unfix.$getArray$.toString()),
-                                                List.<JCExpression>nil()),
-                                    makeNull()))));
-        }
-        
-        // java.lang.Object ELEM_NAME;
-        JCVariableDecl elemDecl = makeVar(iterationVarName, make().Type(syms().objectType), optForArray || optForTuple ? makeNull() : null);
-        result.append(elemDecl);
-        
-        SyntheticName iterName = iteratorVarName;
-        
-        Type iteratorType = typeFact().getIteratorType(iteratorElementType);
-        JCExpression iteratorTypeExpr = makeJavaType(iteratorType, CeylonTransformer.JT_TYPE_ARGUMENT);
-        
-        // ceylon.language.Iterator<T> LOOP_VAR_NAME$iter$X = ITERABLE.getIterator();
-        // We don't need to unerase here as anything remotely a sequence will be erased to Iterable, which has getIterator()
-        JCExpression getIter;
-        if (optForArray || optForTuple) {
-            at(node);
-            result.append(makeVar(arrayIndex, make().Type(syms().intType), make().Literal(0)));
-            result.append(makeVar(FINAL, arrayLength, make().Type(syms().intType), null));
-            ListBuffer<JCStatement> whenTupleOrArray = new ListBuffer<JCStatement>();
-            whenTupleOrArray.append(make().Exec(make().Assign(
-                    arrayLength.makeIdent(),
-                    make().TypeCast(make().Type(syms().intType),
-                    		make().Apply(null,
-                    				naming.makeQualIdent(
-                    						iterableName.makeIdent(),
-                    						"getSize"),
-                    				List.<JCExpression>nil())))));
-
-            ListBuffer<JCStatement> whenIterable = new ListBuffer<JCStatement>();
-            whenIterable.append(make().Exec(make().Assign(
-                    arrayLength.makeIdent(),
-                    make().Literal(0))));
-            
-        	JCExpression cond;
-        	if(optForArray && optForTuple)
-        		cond = make().Binary(JCTree.Tag.OR, isArrayName.makeIdent(), isTupleName.makeIdent());
-        	else if(optForArray)
-        		cond = isArrayName.makeIdent();
-        	else
-        		cond = isTupleName.makeIdent();
-        	result.append(make().If(cond,
-                        make().Block(0, whenTupleOrArray.toList()),
-                        make().Block(0, whenIterable.toList())));
-            
-            getIter = make().Conditional(
-                    optForArray && optForTuple ? make().Binary(JCTree.Tag.OR, isTupleName.makeIdent(), isArrayName.makeIdent()): optForArray ? isArrayName.makeIdent() : isTupleName.makeIdent(), 
-                    makeNull(), 
-                    make().Apply(null, makeSelect(iterableName.makeIdent(), "iterator"), List.<JCExpression> nil()));
-        } else {
-            getIter = at(node).Apply(null, makeSelect(iterableExpr, "iterator"), List.<JCExpression> nil());
-        }
-        getIter = gen().expressionGen().applyErasureAndBoxing(getIter, iteratorType, true, BoxingStrategy.BOXED, iteratorType);
-        JCVariableDecl iteratorDecl = at(node).VarDef(make().Modifiers(0), iterName.asName(), iteratorTypeExpr, getIter);
-        // .ceylon.language.Iterator<T> LOOP_VAR_NAME$iter$X = ITERABLE.getIterator();
-        result.append(iteratorDecl);
-        
-        ListBuffer<JCStatement> loopBody = new ListBuffer<JCStatement>();
-        if (loopEntered != null) {
-            loopBody.append(loopEntered);
-        }
-        
-        if(optForArray || optForTuple) {
-        	JCExpression cond;
-        	if(optForArray && optForTuple)
-        		cond = make().Binary(JCTree.Tag.OR, isArrayName.makeIdent(), isTupleName.makeIdent());
-        	else if(optForArray)
-        		cond = isArrayName.makeIdent();
-        	else
-        		cond = isTupleName.makeIdent();
-        	loopBody.append(make().If(cond,
-        						make().Exec(make().Assign(iterationVarName.makeIdent(),
-        								make().Apply(null,
-        										naming.makeQualIdent(iterableName.makeIdent(), "getFromFirst"),
-        										List.<JCExpression>of(make().Unary(JCTree.Tag.POSTINC, arrayIndex.makeIdent()))))),
-                    				null));
-        }
-        
-        if (itemDecls != null) {
-            loopBody.appendList(itemDecls);
-        }
-
-        // The user-supplied contents of the loop
-        loopBody.appendList(bodyStmts);
-        
-        // ELEM_NAME = LOOP_VAR_NAME$iter$X.next()
-        JCExpression iter_elem = make().Apply(null, makeSelect(iterName.makeIdent(), "next"), List.<JCExpression> nil());
-        JCExpression elem_assign = make().Assign(iterationVarName.makeIdent(), iter_elem);
-        // !((ELEM_NAME = LOOP_VAR_NAME$iter$X.next()) instanceof Finished)
-        JCExpression instof = make().TypeTest(elem_assign, makeIdent(syms().ceylonFinishedType));
-        JCExpression loopCond = make().Unary(JCTree.Tag.NOT, instof);
-        if (optForArray || optForTuple) {
-            JCExpression cond;
-            if (optForArray && optForTuple) {
-                cond = make().Binary(JCTree.Tag.OR, isTupleName.makeIdent(), isArrayName.makeIdent());
-            } else if (optForArray) {
-                cond = isArrayName.makeIdent();
-            } else {
-                cond = isTupleName.makeIdent();
-            }
-            loopCond = make().Conditional(cond,
-                    make().Binary(JCTree.Tag.LT, arrayIndex.makeIdent(), arrayLength.makeIdent()), 
-                    make().Unary(JCTree.Tag.NOT, instof));
-        }
-        
-        // while (!(($elem$X = $V$iter$X.next()) instanceof Finished); ) {
-        JCStatement whileLoop = at(node).WhileLoop(loopCond, at(node).Block(0, loopBody.toList()));
-        if (label != null) {
-            whileLoop = make().Labelled(label, whileLoop);
-        }
-        return result.append(whileLoop).toList();
-    }
-    
     
     /**
      * <p>Transformation of {@code for} loops over {@code Span<Integer>} 
