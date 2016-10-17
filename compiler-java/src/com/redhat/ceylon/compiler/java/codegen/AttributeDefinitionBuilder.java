@@ -582,6 +582,8 @@ public class AttributeDefinitionBuilder {
             } else {
                 initFlagFieldOwner = owner.naming.makeUnquotedIdent(javaClassName);
             }
+        } else if (attrTypedDecl.isStatic()) {
+            initFlagFieldOwner = owner.makeJavaType((((ClassOrInterface)attrTypedDecl.getContainer())).getType(), AbstractTransformer.JT_RAW);
         } else {
             initFlagFieldOwner = owner.naming.makeThis();
         }
