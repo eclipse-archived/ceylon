@@ -75,6 +75,7 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCThrow;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCTry;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCUnary;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.DiagnosticSource;
@@ -2625,13 +2626,70 @@ public class StatementTransformer extends AbstractTransformer {
             Type iteratorElementType = sequenceElementType;
             boolean optForArray = !isOptimizationDisabled(stmt, Optimization.ArrayIterationDynamic) && typeFact().getArrayType(sequenceElementType).isSubtypeOf(iterableType);
             boolean optForTuple = !isOptimizationDisabled(stmt, Optimization.TupleIterationDynamic) && typeFact().getTupleType(Collections.singletonList(sequenceElementType), true, false, -1).isSubtypeOf(iterableType);
-            
             Naming.SyntheticName elem_name = naming.alias("elem");
+            SyntheticName iterableName = optForArray || optForTuple ? naming.alias("iterable") : null;
+            SyntheticName isArrayName = optForArray ? naming.alias("isArray") : null;
+            SyntheticName isTupleName = optForTuple ? naming.alias("isTuple") : null;
+            SyntheticName arrayIndex = optForArray || optForTuple ? naming.alias("i") : null;
+            SyntheticName arrayLength = optForArray || optForTuple ? naming.alias("length") : null;
+            
             List<JCStatement> itemDecls = List.nil();
             final Naming.SyntheticName iteratorVarName;
             if (forIterator instanceof Tree.ValueIterator) {
                 Tree.Variable variable = ((Tree.ValueIterator) forIterator).getVariable();
-                JCVariableDecl varExpr = transformVariable(variable, elem_name.makeIdent()).build();
+                BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(variable.getDeclarationModel());
+                JCExpression expr = elem_name.makeIdent();
+                if (expr != null) {
+                    Type type;
+                    if (variable.getType().getTypeModel().getDeclaration().isAnonymous()) {
+                        type = variable.getType().getTypeModel();
+                    } else {
+                        type = simplifyType(typeFact().denotableType(variable.getType().getTypeModel()));
+                    }
+                    expr = expressionGen().applyErasureAndBoxing(
+                            expr, typeFact().getObjectType(), false, true,
+                            boxingStrategy, type,
+                            ExpressionTransformer.EXPR_DOWN_CAST);
+                }
+                if (isArrayName != null && isCeylonBasicType(iteratorElementType)) {
+                    JCExpression array = make().Apply(null,
+                                makeSelect(make().TypeCast(
+                                        make().QualIdent(syms().ceylonArrayType.tsym), iterableName.makeIdent()), 
+                                        "toArray"), 
+                            List.<JCExpression>nil());
+                    JCUnary index = make().Unary(JCTree.Tag.POSTINC, arrayIndex.makeIdent());
+                    JCExpression getter;
+                    if (iteratorElementType.isByte()) {
+                        getter = utilInvocation().getByteArray(
+                                array, 
+                                index);
+                    } else if (iteratorElementType.isInteger()) { 
+                        getter = utilInvocation().getIntegerArray(
+                                array, 
+                                index);
+                    } else if (iteratorElementType.isFloat()) { 
+                        getter = utilInvocation().getFloatArray(
+                                array, 
+                                index);
+                    } else if (iteratorElementType.isBoolean()) { 
+                        getter = utilInvocation().getBooleanArray(
+                                array, 
+                                index);
+                    } else if (iteratorElementType.isString()) { 
+                        getter = utilInvocation().getStringArray(
+                                array, 
+                                index);
+                    } else if (iteratorElementType.isCharacter()) { 
+                        getter = utilInvocation().getCharacterArray(
+                                array, 
+                                index);
+                    } else {
+                        getter = makeErroneous(variable, "WTF");
+                    }
+                    expr = make().Conditional(isArrayName.makeIdent(), getter, expr);
+                }
+                JCVariableDecl varExpr = new VarDefBuilder(expressionGen(), variable, expr).build();
+                //JCVariableDecl varExpr = transformVariable(variable, elem_name.makeIdent()).build();
                 itemDecls = itemDecls.append(varExpr);
                 iteratorVarName = naming.synthetic(variable.getDeclarationModel()).suffixedBy(Suffix.$iterator$).alias();
             } else if (forIterator instanceof Tree.PatternIterator) {
@@ -2660,21 +2718,16 @@ public class StatementTransformer extends AbstractTransformer {
             
             // TODO Only when the iterable *could be* an array (e.g. if static type is Iterable, but not if static type is Sequence)
             // TODO Need to use naming.Infix for the hidden members of Array
-            SyntheticName iterableName = optForArray || optForTuple ? naming.alias("iterable") : null;
-            SyntheticName isArrayName = optForArray ? naming.alias("isArray") : null;
-            SyntheticName isTupleName = optForTuple ? naming.alias("isTuple") : null;
-            SyntheticName arrayIndex = optForArray || optForTuple ? naming.alias("i") : null;
-            SyntheticName arrayLength = optForArray || optForTuple ? naming.alias("length") : null;
-            if (optForArray || optForTuple) {
+            if (isArrayName != null || isTupleName != null) {
                 result1.append(makeVar(FINAL, iterableName, makeJavaType(typeFact().getIterableType(iteratorElementType)), containment));
             }
-            if (optForArray) {
+            if (isArrayName != null) {
                 result1.append(makeVar(FINAL, isArrayName, 
                         make().Type(syms().booleanType), 
                         make().TypeTest(iterableName.makeIdent(), 
                                 makeJavaType(typeFact().getArrayType(iteratorElementType), JT_RAW))));
             }
-            if (optForTuple) {
+            if (isTupleName != null) {
                 result1.append(makeVar(FINAL, isTupleName, 
                         make().Type(syms().booleanType), 
                         make().Binary(JCTree.Tag.AND, 
@@ -2690,7 +2743,7 @@ public class StatementTransformer extends AbstractTransformer {
             }
             
             // java.lang.Object ELEM_NAME;
-            JCVariableDecl elemDecl = makeVar(elem_name, make().Type(syms().objectType), optForArray || optForTuple ? makeNull() : null);
+            JCVariableDecl elemDecl = makeVar(elem_name, make().Type(syms().objectType), isArrayName != null || isTupleName != null ? makeNull() : null);
             result1.append(elemDecl);
             
             Type iteratorType = typeFact().getIteratorType(iteratorElementType);
@@ -2699,7 +2752,7 @@ public class StatementTransformer extends AbstractTransformer {
             // ceylon.language.Iterator<T> LOOP_VAR_NAME$iter$X = ITERABLE.getIterator();
             // We don't need to unerase here as anything remotely a sequence will be erased to Iterable, which has getIterator()
             JCExpression getIter;
-            if (optForArray || optForTuple) {
+            if (isArrayName != null || isTupleName != null) {
                 at(stmt);
                 result1.append(makeVar(arrayIndex, make().Type(syms().intType), make().Literal(0)));
                 result1.append(makeVar(FINAL, arrayLength, make().Type(syms().intType), null));
@@ -2719,9 +2772,9 @@ public class StatementTransformer extends AbstractTransformer {
                         make().Literal(0))));
                 
                 JCExpression cond;
-                if(optForArray && optForTuple)
+                if(isArrayName != null && isTupleName != null)
                     cond = make().Binary(JCTree.Tag.OR, isArrayName.makeIdent(), isTupleName.makeIdent());
-                else if(optForArray)
+                else if(isArrayName != null)
                     cond = isArrayName.makeIdent();
                 else
                     cond = isTupleName.makeIdent();
@@ -2730,7 +2783,7 @@ public class StatementTransformer extends AbstractTransformer {
                             make().Block(0, whenIterable.toList())));
                 
                 getIter = make().Conditional(
-                        optForArray && optForTuple ? make().Binary(JCTree.Tag.OR, isTupleName.makeIdent(), isArrayName.makeIdent()): optForArray ? isArrayName.makeIdent() : isTupleName.makeIdent(), 
+                        isArrayName != null && isTupleName != null ? make().Binary(JCTree.Tag.OR, isTupleName.makeIdent(), isArrayName.makeIdent()): isArrayName != null ? isArrayName.makeIdent() : isTupleName.makeIdent(), 
                         makeNull(), 
                         make().Apply(null, makeSelect(iterableName.makeIdent(), "iterator"), List.<JCExpression> nil()));
             } else {
@@ -2745,21 +2798,31 @@ public class StatementTransformer extends AbstractTransformer {
             if (loopEntered != null) {
                 loopBody.append(loopEntered);
             }
-            
-            if(optForArray || optForTuple) {
-                JCExpression cond;
-                if(optForArray && optForTuple)
-                    cond = make().Binary(JCTree.Tag.OR, isArrayName.makeIdent(), isTupleName.makeIdent());
-                else if(optForArray)
-                    cond = isArrayName.makeIdent();
-                else
+            if(isArrayName != null || isTupleName != null) {
+                JCExpression cond = null;
+                if(isArrayName != null) {
+                    if (isCeylonBasicType(iteratorElementType)) {
+                        if (isTupleName != null){
+                            cond = isTupleName.makeIdent();
+                        }
+                    } else {
+                        if (isTupleName != null) {
+                            cond = make().Binary(JCTree.Tag.OR, isArrayName.makeIdent(), isTupleName.makeIdent());
+                        } else {
+                            cond = isArrayName.makeIdent();
+                        }
+                    }
+                } else if (isTupleName != null){
                     cond = isTupleName.makeIdent();
-                loopBody.append(make().If(cond,
-                        make().Exec(make().Assign(elem_name.makeIdent(),
-                                make().Apply(null,
-                                        naming.makeQualIdent(iterableName.makeIdent(), "getFromFirst"),
-                                        List.<JCExpression>of(make().Unary(JCTree.Tag.POSTINC, arrayIndex.makeIdent()))))),
-                        null));
+                }
+                if (cond != null) {
+                    loopBody.append(make().If(cond,
+                            make().Exec(make().Assign(elem_name.makeIdent(),
+                                    make().Apply(null,
+                                            naming.makeQualIdent(iterableName.makeIdent(), "getFromFirst"),
+                                            List.<JCExpression>of(make().Unary(JCTree.Tag.POSTINC, arrayIndex.makeIdent()))))),
+                            null));
+                }
             }
             
             if (itemDecls != null) {
@@ -2775,11 +2838,11 @@ public class StatementTransformer extends AbstractTransformer {
             // !((ELEM_NAME = LOOP_VAR_NAME$iter$X.next()) instanceof Finished)
             JCExpression instof = make().TypeTest(elem_assign, makeIdent(syms().ceylonFinishedType));
             JCExpression loopCond = make().Unary(JCTree.Tag.NOT, instof);
-            if (optForArray || optForTuple) {
+            if (isArrayName != null || isTupleName != null) {
                 JCExpression cond;
-                if (optForArray && optForTuple) {
+                if (isArrayName != null && isTupleName != null) {
                     cond = make().Binary(JCTree.Tag.OR, isTupleName.makeIdent(), isArrayName.makeIdent());
-                } else if (optForArray) {
+                } else if (isArrayName != null) {
                     cond = isArrayName.makeIdent();
                 } else {
                     cond = isTupleName.makeIdent();
