@@ -13,13 +13,12 @@ final class bug6589_ {
     @.javax.enterprise.context.RequestScoped
     @.javax.persistence.PersistenceContext
     private static .javax.persistence.EntityManager value;
-    private static volatile boolean $init$value = false;
     
     @.ceylon.language.LateAnnotation$annotation$
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     public static .javax.persistence.EntityManager get_() {
-        if (bug6589_.$init$value) {
+        if (bug6589_.value != null) {
             return value;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'bug6589\'");
@@ -31,9 +30,8 @@ final class bug6589_ {
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     final .javax.persistence.EntityManager bug6589) {
-        if (!bug6589_.$init$value) {
+        if (bug6589_.value == null) {
             value = bug6589;
-            bug6589_.$init$value = true;
             return;
         }
         throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");

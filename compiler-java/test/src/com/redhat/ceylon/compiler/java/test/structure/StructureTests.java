@@ -149,6 +149,11 @@ public class StructureTests extends CompilerTests {
         compareWithJavaSource("attribute/SmallLoadingUse");
     }
     
+    @Test
+    public void testAtrLateToplevel(){
+        compareWithJavaSource("attribute/LateToplevel");
+    }
+    
     //
     // Classes
     

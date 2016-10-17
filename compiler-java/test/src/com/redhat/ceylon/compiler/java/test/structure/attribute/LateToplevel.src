@@ -1,0 +1,72 @@
+package com.redhat.ceylon.compiler.java.test.structure.attribute;
+
+final class lateToplevel_ {
+    
+    private lateToplevel_() {
+    }
+    private static .java.lang.String value;
+    
+    public static .java.lang.String get_() {
+        if (lateToplevel_.value != null) {
+            return value;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateToplevel\'");
+        }
+    }
+    
+    public static void set_(final .java.lang.String lateToplevel) {
+        if (lateToplevel_.value == null) {
+            value = lateToplevel;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+}
+final class lateToplevel2_ {
+    
+    private lateToplevel2_() {
+    }
+    private static long value;
+    private static volatile boolean $init$value = false;
+    
+    public static long get_() {
+        if (lateToplevel2_.$init$value) {
+            return value;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateToplevel2\'");
+        }
+    }
+    
+    public static void set_(final long lateToplevel2) {
+        if (!lateToplevel2_.$init$value) {
+            value = lateToplevel2;
+            lateToplevel2_.$init$value = true;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+}
+final class lateToplevel3_ {
+    
+    private lateToplevel3_() {
+    }
+    private static .ceylon.language.String value;
+    private static volatile boolean $init$value = false;
+    
+    public static .ceylon.language.String get_() {
+        if (lateToplevel3_.$init$value) {
+            return value;
+        } else {
+            throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateToplevel3\'");
+        }
+    }
+    
+    public static void set_(final .ceylon.language.String lateToplevel3) {
+        if (!lateToplevel3_.$init$value) {
+            value = lateToplevel3;
+            lateToplevel3_.$init$value = true;
+            return;
+        }
+        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
+    }
+}
