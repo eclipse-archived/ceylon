@@ -463,10 +463,14 @@ public class ConditionGenerator {
                     exp.visit(gen);
                     gen.out(")");
                 } else if (term instanceof Tree.Tuple) {
-                    gen.out(gen.getClAlias(), "is$(", expvar, ",{t:",gen.getClAlias(), "Tuple})&&",
-                            expvar, ".equals(");
-                    exp.visit(gen);
-                    gen.out(")");
+                    if (((Tree.Tuple) term).getSequencedArgument() == null) {
+                        gen.out(expvar, "===", gen.getClAlias(), "empty()");
+                    } else {
+                        gen.out(gen.getClAlias(), "is$(", expvar, ",{t:",gen.getClAlias(), "Tuple})&&",
+                                expvar, ".equals(");
+                        exp.visit(gen);
+                        gen.out(")");
+                    }
                 } else {
                     gen.out(expvar, "===");
                     exp.visit(gen);
