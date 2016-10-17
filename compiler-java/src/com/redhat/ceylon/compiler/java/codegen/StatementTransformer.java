@@ -2623,6 +2623,8 @@ public class StatementTransformer extends AbstractTransformer {
                     : typeFact().getIterableType(sequenceElementType);
             Type iterableType = forIterator.getSpecifierExpression().getExpression().getTypeModel();
             Type iteratorElementType = sequenceElementType;
+            boolean optForArray = !isOptimizationDisabled(stmt, Optimization.ArrayIterationDynamic) && typeFact().getArrayType(sequenceElementType).isSubtypeOf(iterableType);
+            boolean optForTuple = !isOptimizationDisabled(stmt, Optimization.TupleIterationDynamic) && typeFact().getTupleType(Collections.singletonList(sequenceElementType), true, false, -1).isSubtypeOf(iterableType);
             
             Naming.SyntheticName elem_name = naming.alias("elem");
             List<JCStatement> itemDecls = List.nil();
@@ -2658,9 +2660,6 @@ public class StatementTransformer extends AbstractTransformer {
             
             // TODO Only when the iterable *could be* an array (e.g. if static type is Iterable, but not if static type is Sequence)
             // TODO Need to use naming.Infix for the hidden members of Array
-            boolean optForArray = !isOptimizationDisabled(stmt, Optimization.ArrayIterationDynamic) && typeFact().getArrayType(sequenceElementType).isSubtypeOf(iterableType);
-            boolean optForTuple = !isOptimizationDisabled(stmt, Optimization.TupleIterationDynamic) && typeFact().getTupleType(Collections.singletonList(sequenceElementType), true, false, -1).isSubtypeOf(iterableType);
-            
             SyntheticName iterableName = optForArray || optForTuple ? naming.alias("iterable") : null;
             SyntheticName isArrayName = optForArray ? naming.alias("isArray") : null;
             SyntheticName isTupleName = optForTuple ? naming.alias("isTuple") : null;
@@ -2693,8 +2692,6 @@ public class StatementTransformer extends AbstractTransformer {
             // java.lang.Object ELEM_NAME;
             JCVariableDecl elemDecl = makeVar(elem_name, make().Type(syms().objectType), optForArray || optForTuple ? makeNull() : null);
             result1.append(elemDecl);
-            
-            SyntheticName iterName = iteratorVarName;
             
             Type iteratorType = typeFact().getIteratorType(iteratorElementType);
             JCExpression iteratorTypeExpr = makeJavaType(iteratorType, CeylonTransformer.JT_TYPE_ARGUMENT);
@@ -2740,7 +2737,7 @@ public class StatementTransformer extends AbstractTransformer {
                 getIter = at(stmt).Apply(null, makeSelect(containment, "iterator"), List.<JCExpression> nil());
             }
             getIter = gen().expressionGen().applyErasureAndBoxing(getIter, iteratorType, true, BoxingStrategy.BOXED, iteratorType);
-            JCVariableDecl iteratorDecl = at(stmt).VarDef(make().Modifiers(0), iterName.asName(), iteratorTypeExpr, getIter);
+            JCVariableDecl iteratorDecl = at(stmt).VarDef(make().Modifiers(0), iteratorVarName.asName(), iteratorTypeExpr, getIter);
             // .ceylon.language.Iterator<T> LOOP_VAR_NAME$iter$X = ITERABLE.getIterator();
             result1.append(iteratorDecl);
             
@@ -2773,7 +2770,7 @@ public class StatementTransformer extends AbstractTransformer {
             loopBody.appendList(stmts);
             
             // ELEM_NAME = LOOP_VAR_NAME$iter$X.next()
-            JCExpression iter_elem = make().Apply(null, makeSelect(iterName.makeIdent(), "next"), List.<JCExpression> nil());
+            JCExpression iter_elem = make().Apply(null, makeSelect(iteratorVarName.makeIdent(), "next"), List.<JCExpression> nil());
             JCExpression elem_assign = make().Assign(elem_name.makeIdent(), iter_elem);
             // !((ELEM_NAME = LOOP_VAR_NAME$iter$X.next()) instanceof Finished)
             JCExpression instof = make().TypeTest(elem_assign, makeIdent(syms().ceylonFinishedType));
