@@ -42,6 +42,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.eclipse.aether.ConfigurationProperties;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RequestTrace;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.collection.CollectRequest;
@@ -65,6 +66,9 @@ import org.eclipse.aether.resolution.VersionRangeResolutionException;
 import org.eclipse.aether.resolution.VersionRangeResult;
 import org.eclipse.aether.spi.connector.RepositoryConnectorFactory;
 import org.eclipse.aether.spi.connector.transport.TransporterFactory;
+import org.eclipse.aether.transfer.TransferCancelledException;
+import org.eclipse.aether.transfer.TransferEvent;
+import org.eclipse.aether.transfer.TransferListener;
 import org.eclipse.aether.transport.file.FileTransporterFactory;
 import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.eclipse.aether.util.artifact.JavaScopes;
@@ -257,6 +261,42 @@ public class AetherResolverImpl implements AetherResolver {
         RepositorySystem repoSystem = newRepositorySystem();
         DefaultRepositorySystemSession session = newSession( repoSystem );
         List<RemoteRepository> repos = configureSession(repoSystem, session);
+        // TODO figure out how to map this to ArtifactCallback 
+//        session.setTransferListener(new TransferListener(){
+//
+//            @Override
+//            public void transferCorrupted(TransferEvent arg0) throws TransferCancelledException {
+//                System.err.println("Transfer corrupted "+arg0.getResource());
+//            }
+//
+//            @Override
+//            public void transferFailed(TransferEvent arg0) {
+//                System.err.println("Transfer failed "+arg0.getResource());
+//            }
+//
+//            @Override
+//            public void transferInitiated(TransferEvent arg0) throws TransferCancelledException {
+//                System.err.println("Transfer initiated "+arg0.getResource());
+//            }
+//
+//            @Override
+//            public void transferProgressed(TransferEvent arg0) throws TransferCancelledException {
+//                System.err.println("Transfer progressed "+arg0.getResource());
+//                System.err.println("Data length: "+arg0.getDataLength());
+//                System.err.println("Transferred bytes: "+arg0.getTransferredBytes());
+//            }
+//
+//            @Override
+//            public void transferStarted(TransferEvent arg0) throws TransferCancelledException {
+//                System.err.println("Transfer started "+arg0.getResource());
+//                
+//            }
+//
+//            @Override
+//            public void transferSucceeded(TransferEvent arg0) {
+//                System.err.println("Transfer succeeded "+arg0.getResource());
+//                
+//            }});
 
         if(extension == null){
             // I don't think POMs with a classifier exist, so let's not set it
