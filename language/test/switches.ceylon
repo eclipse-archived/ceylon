@@ -78,6 +78,13 @@ Integer testAnyValues(Anything val) {
     else { return 0; }
 }
 
+Integer matchTuples([Integer*] t) =>
+  switch(t)
+  case ([1,2]) 1
+  case ([2,1]) 2
+  case ([]) 0
+  else -1;
+
 @test
 shared void switches() {
     value enums = [1, 2.0];
@@ -145,5 +152,10 @@ shared void switches() {
     check(testAnyValues(3.14) == 0, "testAnyValues 4");
     
     //TODO satisfies
+    //tuples
+    check(matchTuples([1,2]) == 1, "match tuples 1");
+    check(matchTuples([2,1]) == 2, "match tuples 2");
+    check(matchTuples([3,2]) == -1, "match tuples 3 (no match)");
+    check(matchTuples([]) == 0, "match tuples 4 (empty)");
 }
 
