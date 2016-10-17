@@ -1,0 +1,1 @@
+module com.redhat.ceylon.compiler.java.test.issues.bug65xx.bug6592 "1" {}

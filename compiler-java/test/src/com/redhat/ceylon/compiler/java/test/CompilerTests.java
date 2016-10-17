@@ -559,12 +559,13 @@ public abstract class CompilerTests {
         Assert.assertEquals("Source code differs", expectedSrc, compiledSrc);
     }
 
-    protected void assertCompilesOk(ErrorCollector collector, ExitState exitState)
-            throws AssertionError {
-        switch (exitState.ceylonState) {
-        case OK:
-            break;
-        case BUG:
+    /** Base CompilationAssertion: calls Assert.fail() for every case. */
+    @SuppressWarnings("unused") 
+    public static class CompilationAssertion {
+        public void onOk(ErrorCollector collector, ExitState exitState) {
+            Assert.fail("OK");
+        }
+        public void onBug(ErrorCollector collector, ExitState exitState) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             if (exitState.abortingException != null) {
@@ -574,12 +575,40 @@ public abstract class CompilerTests {
             }
             pw.flush();
             Assert.fail(collector.getAssertionFailureMessage() + sw.toString());
+        }
+        public void onError(ErrorCollector collector, ExitState exitState) {
+            Assert.fail(collector.getAssertionFailureMessage());
+        }
+        public void onSys(ErrorCollector collector, ExitState exitState) {
+            Assert.fail("System error");
+        }
+    }
+    
+    /** {@link CeylonState#OK} does not fail, every other state fails.*/
+    static CompilationAssertion COMPILES_OK  = new CompilationAssertion() {
+        @Override
+        public void onOk(ErrorCollector collector, ExitState exitState) {}
+    };
+    
+    protected void assertCompilesOk(ErrorCollector collector, ExitState exitState)
+            throws AssertionError {
+        assertCompiles(collector, exitState, COMPILES_OK);
+    }
+    
+    protected void assertCompiles(ErrorCollector collector, ExitState exitState, CompilationAssertion assertion)
+            throws AssertionError {
+        switch (exitState.ceylonState) {
+        case OK:
+            assertion.onOk(collector, exitState);
+            break;
+        case BUG:
+            assertion.onBug(collector, exitState);
             break;
         case ERROR:
-            Assert.fail(collector.getAssertionFailureMessage());
+            assertion.onError(collector, exitState);
             break;
         case SYS:
-            Assert.fail("System error");
+            assertion.onSys(collector, exitState);
             break;
         default:
             Assert.fail("Unknown exit state");
@@ -629,6 +658,11 @@ public abstract class CompilerTests {
     protected void compile(List<String> options, String... ceylon) {
         ErrorCollector c = new ErrorCollector();
         assertCompilesOk(c, getCompilerTask(options, c, ceylon).call2());
+    }
+    
+    protected void assertCompiles(List<String> options, String[] ceylon, CompilationAssertion assertion) {
+        ErrorCollector c = new ErrorCollector();
+        assertCompiles(c, getCompilerTask(options, c, ceylon).call2(), assertion);
     }
     
     protected void compile(String... ceylon) {
