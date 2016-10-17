@@ -121,7 +121,7 @@ public class IssuesTests_6500_6999 extends CompilerTests {
                 }
             };
             assertCompiles(Arrays.asList("-overrides", "doesNotExist.xml"), 
-                    "bug65xx/bug6592/bug6592.ceylon", 
+                    new String[]{"bug65xx/bug6592/bug6592.ceylon"}, 
                     expectSysError);
             assertEquals("ERROR:No such overrides file: /home/tom/ceylon/ceylon/compiler-java/doesNotExist.xml", out.toString().trim());
             
@@ -129,8 +129,8 @@ public class IssuesTests_6500_6999 extends CompilerTests {
             out = new ByteArrayOutputStream();
             System.setErr(new PrintStream(out));
             assertCompiles(Arrays.asList("-overrides", "test/src/com/redhat/ceylon/compiler/java/test/issues/bug65xx/bug6592/overrides.xml"),
-            "bug65xx/bug6592/bug6592.ceylon", 
-            expectSysError);
+                    new String[]{"bug65xx/bug6592/bug6592.ceylon"}, 
+                    expectSysError);
             assertEquals("ERROR:/home/tom/ceylon/ceylon/compiler-java/test/src/com/redhat/ceylon/compiler/java/test/issues/bug65xx/bug6592/overrides.xml:2:12: Missing 'module' attribute in element [module: null].", out.toString().trim());
         } finally {
             System.setErr(err);
