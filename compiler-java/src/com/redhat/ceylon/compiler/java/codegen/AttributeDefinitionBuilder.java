@@ -526,7 +526,7 @@ public class AttributeDefinitionBuilder {
     
     
     private boolean hasInitFlag() {
-        return toplevel || lateWithInit;
+        return (toplevel && !late) || lateWithInit;
     }
 
     public JCTree.JCBlock generateDefaultSetterBlock() {
