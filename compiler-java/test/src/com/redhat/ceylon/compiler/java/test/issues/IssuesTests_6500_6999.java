@@ -38,9 +38,10 @@ import com.redhat.ceylon.compiler.java.launcher.Main.ExitState;
 import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
+import com.redhat.ceylon.compiler.java.test.RunSingleThreaded;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 
-
+@RunSingleThreaded
 public class IssuesTests_6500_6999 extends CompilerTests {
 
     @Override
