@@ -17,6 +17,7 @@ import com.redhat.ceylon.javax.lang.model.element.TypeElement;
 public class ProcessorWrapper implements Processor {
 
     javax.annotation.processing.Processor d;
+    private javax.annotation.processing.ProcessingEnvironment processingEnvironment;
 
     public ProcessorWrapper(javax.annotation.processing.Processor d) {
         this.d = d;
@@ -54,7 +55,10 @@ public class ProcessorWrapper implements Processor {
 
     @Override
     public void init(ProcessingEnvironment processingEnv) {
-        d.init(Facades.facade(processingEnv));
+        // keep it around so it does not get GCed (required by NetBeans) who uses the Filer as
+        // a weak key
+        processingEnvironment = Facades.facade(processingEnv);
+        d.init(processingEnvironment);
     }
 
     @Override

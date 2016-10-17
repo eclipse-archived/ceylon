@@ -13,9 +13,11 @@ import javax.lang.model.util.Types;
 public class ProcessingEnvironmentFacade implements ProcessingEnvironment {
 
     private com.redhat.ceylon.javax.annotation.processing.ProcessingEnvironment f;
+    private Filer filer;
 
     public ProcessingEnvironmentFacade(com.redhat.ceylon.javax.annotation.processing.ProcessingEnvironment f) {
         this.f = f;
+        this.filer = Facades.facade(f.getFiler());
     }
 
     @Override
@@ -25,7 +27,7 @@ public class ProcessingEnvironmentFacade implements ProcessingEnvironment {
 
     @Override
     public Filer getFiler() {
-        return Facades.facade(f.getFiler());
+        return filer;
     }
 
     @Override
