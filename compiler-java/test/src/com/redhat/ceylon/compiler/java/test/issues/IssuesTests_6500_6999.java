@@ -97,7 +97,11 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     public void testBug6566() throws IOException {
         Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8
                 || JDKUtils.jdk == JDKUtils.JDK.JDK9);
-        compile(Arrays.asList("-apt", "maven:org.netbeans.api:org-netbeans-modules-editor-mimelookup/RELEASE82",
+        compile(Arrays.asList(
+                "-apt", "maven:org.netbeans.api:org-netbeans-modules-editor-mimelookup/RELEASE81",
+                "-apt", "maven:org.netbeans.api:org-netbeans-modules-csl-api/RELEASE81",
+                // this one required due to https://netbeans.org/bugzilla/show_bug.cgi?id=255174
+                "-apt", "maven:org.netbeans.modules:org-netbeans-modules-editor-errorstripe/RELEASE81",
                 "-target", "8", "-source", "8",
                 "-rep", "aether:"+getPackagePath()+"bug65xx/bug6566/settings.xml"), 
                 "bug65xx/bug6566/Bug6566.ceylon");

@@ -82,8 +82,8 @@ import com.redhat.ceylon.javax.annotation.processing.Processor;
 import com.redhat.ceylon.javax.tools.FileObject;
 import com.redhat.ceylon.javax.tools.JavaFileManager;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
-import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
+import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.ClassSymbol;
 import com.redhat.ceylon.langtools.tools.javac.code.Symbol.CompletionFailure;
 import com.redhat.ceylon.langtools.tools.javac.comp.AttrContext;
@@ -95,21 +95,20 @@ import com.redhat.ceylon.langtools.tools.javac.main.JavaCompiler;
 import com.redhat.ceylon.langtools.tools.javac.main.Option;
 import com.redhat.ceylon.langtools.tools.javac.parser.JavacParser;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
-import com.redhat.ceylon.langtools.tools.javac.tree.TreeInfo;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCClassDecl;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCompilationUnit;
+import com.redhat.ceylon.langtools.tools.javac.tree.TreeInfo;
 import com.redhat.ceylon.langtools.tools.javac.util.Abort;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.Convert;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
-import com.redhat.ceylon.langtools.tools.javac.util.Log;
 import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.langtools.tools.javac.util.Options;
 import com.redhat.ceylon.langtools.tools.javac.util.Pair;
 import com.redhat.ceylon.langtools.tools.javac.util.Position;
-import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage;
 import com.redhat.ceylon.langtools.tools.javac.util.Position.LineMap;
+import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage;
 import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage.Language;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
@@ -153,6 +152,7 @@ public class LanguageCompiler extends JavaCompiler {
     private SourceLanguage sourceLanguage;
     private boolean addModuleTrees = true;
     private boolean hadRunTwiceException;
+    private StatusPrinter sp;
 
     /** Get the PhasedUnits instance for this context. */
     public static PhasedUnits getPhasedUnitsInstance(final Context context) {
@@ -245,8 +245,11 @@ public class LanguageCompiler extends JavaCompiler {
         timer = Timer.instance(context);
         sourceLanguage = SourceLanguage.instance(context);
         boolean isProgressPrinted = options.get(Option.CEYLONPROGRESS) != null && StatusPrinter.canPrint();
-        if(isProgressPrinted && taskListener == null){
-            taskListener.add(new StatusPrinterTaskListener(getStatusPrinterInstance(context)));
+        if(isProgressPrinted){
+            sp = getStatusPrinterInstance(context);
+            if(taskListener == null){
+                taskListener.add(new StatusPrinterTaskListener(sp));
+            }
         }
     }
 
@@ -870,10 +873,25 @@ public class LanguageCompiler extends JavaCompiler {
         if(aptModules != null){
             CeyloncFileManager dfm = (CeyloncFileManager) fileManager;
             RepositoryManager repositoryManager = dfm.getRepositoryManager();
-            Set<ModuleSpec> visited = new HashSet<>();
+            final Set<ModuleSpec> visited = new HashSet<>();
+            StatusPrinterAptProgressListener progressListener = null;
+            if(sp != null){
+                progressListener = new StatusPrinterAptProgressListener(sp) {
+                    @Override
+                    protected long getNumberOfModulesResolved() {
+                        return visited.size();
+                    }
+                };
+                sp.clearLine();
+                sp.log("Starting APT resolving");
+            }
             for(String aptModule : aptModules){
                 ModuleSpec moduleSpec = ModuleSpec.parse(aptModule);
-                addDependenciesToAptPath(repositoryManager, moduleSpec, visited);
+                addDependenciesToAptPath(repositoryManager, moduleSpec, visited, progressListener);
+            }
+            if(sp != null){
+                sp.clearLine();
+                sp.log("Done APT resolving");
             }
             // we only run APT if asked explicitly with the --apt flag
             super.initProcessAnnotations(processors);
@@ -881,19 +899,31 @@ public class LanguageCompiler extends JavaCompiler {
         // else don't do anything, which will leave the "processAnnotations" field to false
     }
 
-    private void addDependenciesToAptPath(RepositoryManager repositoryManager, ModuleSpec moduleSpec, Set<ModuleSpec> visited) {
+    private void addDependenciesToAptPath(RepositoryManager repositoryManager, 
+            ModuleSpec moduleSpec, 
+            Set<ModuleSpec> visited, 
+            StatusPrinterAptProgressListener progressListener) {
         if(!visited.add(moduleSpec))
             return;
 
         String ns = ModuleUtil.getNamespaceFromUri(moduleSpec.getName());
         String name = ModuleUtil.getModuleNameFromUri(moduleSpec.getName());
         ArtifactContext context = new ArtifactContext(ns, name, moduleSpec.getVersion(), ArtifactContext.JAR);
+        if(progressListener != null)
+            progressListener.retrievingModuleArtifact(moduleSpec, context);
         ArtifactResult result = repositoryManager.getArtifactResult(context);
+        if(progressListener != null){
+            if (result == null) {
+                progressListener.retrievingModuleArtifactFailed(moduleSpec, context);
+            }else{
+                progressListener.retrievingModuleArtifactSuccess(moduleSpec, result);
+            }
+        }
         ceylonEnter.addModuleToAptPath(moduleSpec, result);
 
         for(ArtifactResult dep : result.dependencies()){
             ModuleSpec depSpec = new ModuleSpec(dep.name(), dep.version());
-            addDependenciesToAptPath(repositoryManager, depSpec, visited);
+            addDependenciesToAptPath(repositoryManager, depSpec, visited, progressListener);
         }
     }
 

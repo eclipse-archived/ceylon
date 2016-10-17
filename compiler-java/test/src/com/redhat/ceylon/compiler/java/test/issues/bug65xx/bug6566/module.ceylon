@@ -19,6 +19,12 @@
  */
 native("jvm")
 module com.redhat.ceylon.compiler.java.test.issues.bug65xx.bug6566 "1" {
-    import java.base "7";
-    import maven:"org.netbeans.api:org-netbeans-modules-editor-mimelookup" "RELEASE82";
+    import java.base "8";
+    import maven:"org.netbeans.api:org-netbeans-modules-editor-mimelookup" "RELEASE81";
+    import maven:"org.netbeans.modules:org-netbeans-modules-editor-errorstripe" "RELEASE81";
+    import maven:"org.netbeans.api:org-netbeans-modules-csl-api" "RELEASE81";
+    import maven:"org.netbeans.api:org-openide-util" "RELEASE81";
+    import maven:"org.netbeans.api:org-openide-util-lookup" "RELEASE81";
+    import maven:"org.netbeans.api:org-netbeans-modules-lexer" "RELEASE81";
+    import maven:"org.netbeans.api:org-openide-awt" "RELEASE81";
 }
