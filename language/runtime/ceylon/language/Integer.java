@@ -930,4 +930,9 @@ public final class Integer
         return power(value,integer);
     }
     
+    @Ignore
+    public static Integer valueOf(java.lang.String string) {
+        return instance(java.lang.Long.parseLong(string));
+    }
+    
 }

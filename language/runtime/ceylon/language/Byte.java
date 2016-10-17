@@ -424,4 +424,9 @@ public final class Byte implements
         return value==other ? 0 : 1;
     }
     
+    @Ignore
+    public static Byte valueOf(java.lang.String string) {
+        return instance(java.lang.Byte.parseByte(string));
+    }
+    
 }

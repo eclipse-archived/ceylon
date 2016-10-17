@@ -80,4 +80,9 @@ public abstract class Boolean
         return $TypeDescriptor$;
     }
     
+    @Ignore
+    public static Boolean valueOf(java.lang.String string) {
+        return instance(java.lang.Boolean.parseBoolean(string));
+    }
+    
 }

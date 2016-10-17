@@ -812,5 +812,10 @@ public final class Float
         }
     }
     
+    @Ignore
+    public static Float valueOf(java.lang.String string) {
+        return instance(java.lang.Double.parseDouble(string));
+    }
+    
 }
 

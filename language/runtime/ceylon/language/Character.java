@@ -346,4 +346,9 @@ public final class Character
         return Util.toInt(value);
     }
     
+    @Ignore
+    public static Character valueOf(java.lang.String string) {
+        return instance(string.codePointAt(0));
+    }
+    
 }
