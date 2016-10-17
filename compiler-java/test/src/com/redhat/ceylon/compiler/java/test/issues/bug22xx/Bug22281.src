@@ -135,25 +135,25 @@ final class bug2228Test_ {
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object[]")
     final .ceylon.language.Sequential<? extends .java.lang.Object> args) {
         .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append("Testing with ").append(((.ceylon.language.meta.model.Type<? extends T>)(.ceylon.language.meta.model.Type<? extends T>).ceylon.language.meta.typeLiteral_.typeLiteral($reified$T)).toString()).toString()));
-        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$6 = args;
-        final boolean isTuple$7 = iterable$6 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$6).$getArray$() != null;
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$2 = args;
+        final boolean isTuple$3 = iterable$2 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$2).$getArray$() != null;
         .java.lang.Object elem$1 = null;
-        int i$8 = 0;
-        final int length$9;
-        if (isTuple$7) {
-            length$9 = (int)iterable$6.getSize();
+        int i$4 = 0;
+        final int length$5;
+        if (isTuple$3) {
+            length$5 = (int)iterable$2.getSize();
         } else {
-            length$9 = 0;
+            length$5 = 0;
         }
-        .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$2 = isTuple$7 ? null : iterable$6.iterator();
-        loop_0: while (isTuple$7 ? i$8 < length$9 : !((elem$1 = arg$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$7) elem$1 = iterable$6.getFromFirst(i$8++);
+        .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$6 = isTuple$3 ? null : iterable$2.iterator();
+        loop_0: while (isTuple$3 ? i$4 < length$5 : !((elem$1 = arg$iterator$$6.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$3) elem$1 = iterable$2.getFromFirst(i$4++);
             final .java.lang.Object arg = elem$1;
             .ceylon.language.print_.print(.ceylon.language.String.instance(new .java.lang.StringBuilder().append(" value ").append(arg.toString()).toString()));
-            final T arg$5;
-            .java.lang.Object arg$4 = null;
-            if (.com.redhat.ceylon.compiler.java.Util.isReified(arg$4 = arg, $reified$T)) {
-                arg$5 = (T)arg$4;
+            final T arg$9;
+            .java.lang.Object arg$8 = null;
+            if (.com.redhat.ceylon.compiler.java.Util.isReified(arg$8 = arg, $reified$T)) {
+                arg$9 = (T)arg$8;
             } else {
                 throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "is T arg"));
             }

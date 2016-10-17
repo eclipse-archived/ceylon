@@ -65,28 +65,28 @@ public final class bug1535_ {
                 return (Value)result$20;
             } else {
                 Value sum = (Value)((.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values).getFirst();
-                final .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> iterable$8 = ((.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values).getRest();
-                final boolean isArray$9 = iterable$8 instanceof .ceylon.language.Array;
-                final boolean isTuple$10 = iterable$8 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$8).$getArray$() != null;
+                final .ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object> iterable$6 = ((.ceylon.language.Iterable<? extends Value, ? extends .java.lang.Object>)(.ceylon.language.Iterable)values).getRest();
+                final boolean isArray$7 = iterable$6 instanceof .ceylon.language.Array;
+                final boolean isTuple$8 = iterable$6 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$6).$getArray$() != null;
                 .java.lang.Object elem$5 = null;
-                int i$11 = 0;
-                final int length$12;
-                if (isArray$9 || isTuple$10) {
-                    length$12 = (int)iterable$8.getSize();
+                int i$9 = 0;
+                final int length$10;
+                if (isArray$7 || isTuple$8) {
+                    length$10 = (int)iterable$6.getSize();
                 } else {
-                    length$12 = 0;
+                    length$10 = 0;
                 }
-                .ceylon.language.Iterator<? extends Value> val$iterator$$6 = isTuple$10 || isArray$9 ? null : iterable$8.iterator();
-                loop_2: while (isTuple$10 || isArray$9 ? i$11 < length$12 : !((elem$5 = val$iterator$$6.next()) instanceof .ceylon.language.Finished)) {
-                    if (isArray$9 || isTuple$10) elem$5 = iterable$8.getFromFirst(i$11++);
+                .ceylon.language.Iterator<? extends Value> val$iterator$$11 = isTuple$8 || isArray$7 ? null : iterable$6.iterator();
+                loop_2: while (isTuple$8 || isArray$7 ? i$9 < length$10 : !((elem$5 = val$iterator$$11.next()) instanceof .ceylon.language.Finished)) {
+                    if (isArray$7 || isTuple$8) elem$5 = iterable$6.getFromFirst(i$9++);
                     final Value val = (Value)elem$5;
                     (
                         let
                         {
-                            Value $ceylontmp$op$7 = ((Value)sum).plus((Value)val);
-                            sum = $ceylontmp$op$7;
+                            Value $ceylontmp$op$12 = ((Value)sum).plus((Value)val);
+                            sum = $ceylontmp$op$12;
                         }
-                        returning $ceylontmp$op$7;
+                        returning $ceylontmp$op$12;
                     );
                 }
                 return (Value)sum;

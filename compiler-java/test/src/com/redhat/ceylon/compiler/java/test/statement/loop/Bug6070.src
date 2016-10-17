@@ -53,40 +53,40 @@ final class bug1227_again_ {
         final boolean someBoolean = ((.ceylon.language.Boolean)(.java.lang.Object).ceylon.language.nothing_.get_()).booleanValue();
         final long from;
         long from$14 = 0L;
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$28 = l;
-        final boolean isArray$29 = iterable$28 instanceof .ceylon.language.Array;
-        final boolean isTuple$30 = iterable$28 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$28).$getArray$() != null;
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$17 = l;
+        final boolean isArray$18 = iterable$17 instanceof .ceylon.language.Array;
+        final boolean isTuple$19 = iterable$17 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$17).$getArray$() != null;
         .java.lang.Object elem$16 = null;
-        int i$31 = 0;
-        final int length$32;
-        if (isArray$29 || isTuple$30) {
-            length$32 = (int)iterable$28.getSize();
+        int i$20 = 0;
+        final int length$21;
+        if (isArray$18 || isTuple$19) {
+            length$21 = (int)iterable$17.getSize();
         } else {
-            length$32 = 0;
+            length$21 = 0;
         }
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$17 = isTuple$30 || isArray$29 ? null : iterable$28.iterator();
-        loop_2: while (isTuple$30 || isArray$29 ? i$31 < length$32 : !((elem$16 = index$iterator$$17.next()) instanceof .ceylon.language.Finished)) {
-            if (isArray$29 || isTuple$30) elem$16 = iterable$28.getFromFirst(i$31++);
-            final long index = ((.ceylon.language.Integer)elem$16).longValue();
-            final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$23 = l;
-            final boolean isArray$24 = iterable$23 instanceof .ceylon.language.Array;
-            final boolean isTuple$25 = iterable$23 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$23).$getArray$() != null;
-            .java.lang.Object elem$19 = null;
-            int i$26 = 0;
-            final int length$27;
-            if (isArray$24 || isTuple$25) {
-                length$27 = (int)iterable$23.getSize();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> index$iterator$$22 = isTuple$19 || isArray$18 ? null : iterable$17.iterator();
+        loop_2: while (isTuple$19 || isArray$18 ? i$20 < length$21 : !((elem$16 = index$iterator$$22.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$19) elem$16 = iterable$17.getFromFirst(i$20++);
+            final long index = isArray$18 ? .com.redhat.ceylon.compiler.java.Util.getIntegerArray(((.ceylon.language.Array)iterable$17).toArray(), i$20++) : ((.ceylon.language.Integer)elem$16).longValue();
+            final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$25 = l;
+            final boolean isArray$26 = iterable$25 instanceof .ceylon.language.Array;
+            final boolean isTuple$27 = iterable$25 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$25).$getArray$() != null;
+            .java.lang.Object elem$24 = null;
+            int i$28 = 0;
+            final int length$29;
+            if (isArray$26 || isTuple$27) {
+                length$29 = (int)iterable$25.getSize();
             } else {
-                length$27 = 0;
+                length$29 = 0;
             }
-            .ceylon.language.Iterator<? extends .ceylon.language.Integer> index2$iterator$$20 = isTuple$25 || isArray$24 ? null : iterable$23.iterator();
-            loop_3: while (isTuple$25 || isArray$24 ? i$26 < length$27 : !((elem$19 = index2$iterator$$20.next()) instanceof .ceylon.language.Finished)) {
-                if (isArray$24 || isTuple$25) elem$19 = iterable$23.getFromFirst(i$26++);
-                final long index2 = ((.ceylon.language.Integer)elem$19).longValue();
+            .ceylon.language.Iterator<? extends .ceylon.language.Integer> index2$iterator$$30 = isTuple$27 || isArray$26 ? null : iterable$25.iterator();
+            loop_3: while (isTuple$27 || isArray$26 ? i$28 < length$29 : !((elem$24 = index2$iterator$$30.next()) instanceof .ceylon.language.Finished)) {
+                if (isTuple$27) elem$24 = iterable$25.getFromFirst(i$28++);
+                final long index2 = isArray$26 ? .com.redhat.ceylon.compiler.java.Util.getIntegerArray(((.ceylon.language.Array)iterable$25).toArray(), i$28++) : ((.ceylon.language.Integer)elem$24).longValue();
                 if (someBoolean) {
                     from$14 = index + index2;
-                    final long from$22 = from$14;
-                    return from$22;
+                    final long from$32 = from$14;
+                    return from$32;
                 }
             }
         }

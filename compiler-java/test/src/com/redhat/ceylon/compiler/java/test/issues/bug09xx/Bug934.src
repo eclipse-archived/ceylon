@@ -8,19 +8,19 @@ final class bug934_collectMatches_ {
     static <Element>.ceylon.language.Sequence bug934_collectMatches(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element, final .ceylon.language.Sequential<? extends Element> data, final .ceylon.language.Callable<? extends .ceylon.language.Integer> search) {
         final VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>> ok = new VariableBox<.ceylon.language.Sequential<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>>((.ceylon.language.Sequential<? extends .ceylon.language.Sequence<? extends .java.lang.Object>>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
         final VariableBox<.ceylon.language.Sequential<? extends Element>> ko = new VariableBox<.ceylon.language.Sequential<? extends Element>>((.ceylon.language.Sequential<? extends Element>)(.ceylon.language.Sequential).ceylon.language.empty_.get_());
-        final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> iterable$4 = data;
-        final boolean isTuple$5 = iterable$4 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$4).$getArray$() != null;
+        final .ceylon.language.Iterable<? extends Element, ? extends .java.lang.Object> iterable$2 = data;
+        final boolean isTuple$3 = iterable$2 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$2).$getArray$() != null;
         .java.lang.Object elem$1 = null;
-        int i$6 = 0;
-        final int length$7;
-        if (isTuple$5) {
-            length$7 = (int)iterable$4.getSize();
+        int i$4 = 0;
+        final int length$5;
+        if (isTuple$3) {
+            length$5 = (int)iterable$2.getSize();
         } else {
-            length$7 = 0;
+            length$5 = 0;
         }
-        .ceylon.language.Iterator<? extends Element> element$iterator$$2 = isTuple$5 ? null : iterable$4.iterator();
-        loop_0: while (isTuple$5 ? i$6 < length$7 : !((elem$1 = element$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$5) elem$1 = iterable$4.getFromFirst(i$6++);
+        .ceylon.language.Iterator<? extends Element> element$iterator$$6 = isTuple$3 ? null : iterable$2.iterator();
+        loop_0: while (isTuple$3 ? i$4 < length$5 : !((elem$1 = element$iterator$$6.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$3) elem$1 = iterable$2.getFromFirst(i$4++);
             final Element element = (Element)elem$1;
             final long result = search.$call$((.java.lang.Object)element).longValue();
             if (result > 0L) {

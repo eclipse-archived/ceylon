@@ -240,23 +240,23 @@ class KeywordInForLoop3 implements .com.redhat.ceylon.compiler.java.runtime.mode
         final boolean minors;
         boolean minors$42 = false;
         boolean doforelse$43 = true;
-        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .java.lang.Object> iterable$49 = people;
-        final boolean isTuple$50 = iterable$49 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$49).$getArray$() != null;
+        final .ceylon.language.Iterable<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3, ? extends .java.lang.Object> iterable$46 = people;
+        final boolean isTuple$47 = iterable$46 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$46).$getArray$() != null;
         .java.lang.Object elem$45 = null;
-        int i$51 = 0;
-        final int length$52;
-        if (isTuple$50) {
-            length$52 = (int)iterable$49.getSize();
+        int i$48 = 0;
+        final int length$49;
+        if (isTuple$47) {
+            length$49 = (int)iterable$46.getSize();
         } else {
-            length$52 = 0;
+            length$49 = 0;
         }
-        .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3> $byte$iterator$$46 = isTuple$50 ? null : iterable$49.iterator();
-        loop_11: while (isTuple$50 ? i$51 < length$52 : !((elem$45 = $byte$iterator$$46.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$50) elem$45 = iterable$49.getFromFirst(i$51++);
+        .ceylon.language.Iterator<? extends .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3> $byte$iterator$$50 = isTuple$47 ? null : iterable$46.iterator();
+        loop_11: while (isTuple$47 ? i$48 < length$49 : !((elem$45 = $byte$iterator$$50.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$47) elem$45 = iterable$46.getFromFirst(i$48++);
             final .com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3 $byte = (.com.redhat.ceylon.compiler.java.test.quoting.$goto.KeywordInForLoop3)elem$45;
             if ($byte.getAge() < 18L) {
                 minors$42 = true;
-                final boolean minors$48 = minors$42;
+                final boolean minors$52 = minors$42;
                 doforelse$43 = false;
                 break loop_11;
             }

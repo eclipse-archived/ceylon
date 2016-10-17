@@ -18,19 +18,19 @@ class InitializerVarargs implements .com.redhat.ceylon.compiler.java.runtime.mod
     }
     
     InitializerVarargs(final .java.lang.String f, final .ceylon.language.Sequential<? extends .ceylon.language.String> fs) {
-        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$4 = fs;
-        final boolean isTuple$5 = iterable$4 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$4).$getArray$() != null;
+        final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> iterable$3 = fs;
+        final boolean isTuple$4 = iterable$3 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$3).$getArray$() != null;
         .java.lang.Object elem$2 = null;
-        int i$6 = 0;
-        final int length$7;
-        if (isTuple$5) {
-            length$7 = (int)iterable$4.getSize();
+        int i$5 = 0;
+        final int length$6;
+        if (isTuple$4) {
+            length$6 = (int)iterable$3.getSize();
         } else {
-            length$7 = 0;
+            length$6 = 0;
         }
-        .ceylon.language.Iterator<? extends .ceylon.language.String> ff$iterator$$3 = isTuple$5 ? null : iterable$4.iterator();
-        loop_0: while (isTuple$5 ? i$6 < length$7 : !((elem$2 = ff$iterator$$3.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$5) elem$2 = iterable$4.getFromFirst(i$6++);
+        .ceylon.language.Iterator<? extends .ceylon.language.String> ff$iterator$$7 = isTuple$4 ? null : iterable$3.iterator();
+        loop_0: while (isTuple$4 ? i$5 < length$6 : !((elem$2 = ff$iterator$$7.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$4) elem$2 = iterable$3.getFromFirst(i$5++);
             final .java.lang.String ff = ((.ceylon.language.String)elem$2).toString();
         }
     }

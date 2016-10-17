@@ -324,21 +324,21 @@ class Correct implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{ceylon.language::Integer*}")
     final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable) {
         long sum = 0L;
-        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$66 = iterable;
-        final boolean isArray$67 = iterable$66 instanceof .ceylon.language.Array;
-        final boolean isTuple$68 = iterable$66 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$66).$getArray$() != null;
+        final .ceylon.language.Iterable<? extends .ceylon.language.Integer, ? extends .java.lang.Object> iterable$65 = iterable;
+        final boolean isArray$66 = iterable$65 instanceof .ceylon.language.Array;
+        final boolean isTuple$67 = iterable$65 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$65).$getArray$() != null;
         .java.lang.Object elem$64 = null;
-        int i$69 = 0;
-        final int length$70;
-        if (isArray$67 || isTuple$68) {
-            length$70 = (int)iterable$66.getSize();
+        int i$68 = 0;
+        final int length$69;
+        if (isArray$66 || isTuple$67) {
+            length$69 = (int)iterable$65.getSize();
         } else {
-            length$70 = 0;
+            length$69 = 0;
         }
-        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$65 = isTuple$68 || isArray$67 ? null : iterable$66.iterator();
-        loop_11: while (isTuple$68 || isArray$67 ? i$69 < length$70 : !((elem$64 = i$iterator$$65.next()) instanceof .ceylon.language.Finished)) {
-            if (isArray$67 || isTuple$68) elem$64 = iterable$66.getFromFirst(i$69++);
-            final long i = ((.ceylon.language.Integer)elem$64).longValue();
+        .ceylon.language.Iterator<? extends .ceylon.language.Integer> i$iterator$$70 = isTuple$67 || isArray$66 ? null : iterable$65.iterator();
+        loop_11: while (isTuple$67 || isArray$66 ? i$68 < length$69 : !((elem$64 = i$iterator$$70.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$67) elem$64 = iterable$65.getFromFirst(i$68++);
+            final long i = isArray$66 ? .com.redhat.ceylon.compiler.java.Util.getIntegerArray(((.ceylon.language.Array)iterable$65).toArray(), i$68++) : ((.ceylon.language.Integer)elem$64).longValue();
             sum += i;
         }
         return sum;

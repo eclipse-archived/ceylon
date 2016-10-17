@@ -6,28 +6,28 @@ public final class bug1731_ {
     }
     
     public static void bug1731(final .ceylon.language.Sequential values) {
-        final .ceylon.language.Iterable iterable$6 = values;
-        final boolean isTuple$7 = iterable$6 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$6).$getArray$() != null;
+        final .ceylon.language.Iterable iterable$2 = values;
+        final boolean isTuple$3 = iterable$2 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$2).$getArray$() != null;
         .java.lang.Object elem$1 = null;
-        int i$8 = 0;
-        final int length$9;
-        if (isTuple$7) {
-            length$9 = (int)iterable$6.getSize();
+        int i$4 = 0;
+        final int length$5;
+        if (isTuple$3) {
+            length$5 = (int)iterable$2.getSize();
         } else {
-            length$9 = 0;
+            length$5 = 0;
         }
-        .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$2 = isTuple$7 ? null : iterable$6.iterator();
-        loop_0: while (isTuple$7 ? i$8 < length$9 : !((elem$1 = val$iterator$$2.next()) instanceof .ceylon.language.Finished)) {
-            if (isTuple$7) elem$1 = iterable$6.getFromFirst(i$8++);
+        .ceylon.language.Iterator<? extends .java.lang.Object> val$iterator$$6 = isTuple$3 ? null : iterable$2.iterator();
+        loop_0: while (isTuple$3 ? i$4 < length$5 : !((elem$1 = val$iterator$$6.next()) instanceof .ceylon.language.Finished)) {
+            if (isTuple$3) elem$1 = iterable$2.getFromFirst(i$4++);
             final .java.lang.Object val = elem$1;
             {
-                .java.lang.Object sel$3 = val;
-                if (sel$3 instanceof .ceylon.language.Integer) {
-                    final long val$5 = ((.ceylon.language.Integer)sel$3).longValue();
-                    .ceylon.language.print_.print(.ceylon.language.Integer.instance(val$5 + val$5));
-                } else if (sel$3 instanceof .ceylon.language.String) {
-                    final .java.lang.String val$4 = ((.ceylon.language.String)sel$3).toString();
-                    .ceylon.language.print_.print(.ceylon.language.String.instance(val$4));
+                .java.lang.Object sel$7 = val;
+                if (sel$7 instanceof .ceylon.language.Integer) {
+                    final long val$9 = ((.ceylon.language.Integer)sel$7).longValue();
+                    .ceylon.language.print_.print(.ceylon.language.Integer.instance(val$9 + val$9));
+                } else if (sel$7 instanceof .ceylon.language.String) {
+                    final .java.lang.String val$8 = ((.ceylon.language.String)sel$7).toString();
+                    .ceylon.language.print_.print(.ceylon.language.String.instance(val$8));
                 } else throw new .com.redhat.ceylon.compiler.java.language.EnumeratedTypeError("Supposedly exhaustive switch was not exhaustive");
             }
         }

@@ -5,23 +5,23 @@ class Bug1818 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     Bug1818() {
         .java.lang.String s$0 = null;
         boolean doforelse$1 = true;
-        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$6 = .ceylon.language.empty_.get_();
-        final boolean isArray$7 = iterable$6 instanceof .ceylon.language.Array;
-        final boolean isTuple$8 = iterable$6 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$6).$getArray$() != null;
+        final .ceylon.language.Iterable<? extends .java.lang.Object, ? extends .java.lang.Object> iterable$4 = .ceylon.language.empty_.get_();
+        final boolean isArray$5 = iterable$4 instanceof .ceylon.language.Array;
+        final boolean isTuple$6 = iterable$4 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$4).$getArray$() != null;
         .java.lang.Object elem$3 = null;
-        int i$9 = 0;
-        final int length$10;
-        if (isArray$7 || isTuple$8) {
-            length$10 = (int)iterable$6.getSize();
+        int i$7 = 0;
+        final int length$8;
+        if (isArray$5 || isTuple$6) {
+            length$8 = (int)iterable$4.getSize();
         } else {
-            length$10 = 0;
+            length$8 = 0;
         }
-        .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$4 = isTuple$8 || isArray$7 ? null : iterable$6.iterator();
-        loop_0: while (isTuple$8 || isArray$7 ? i$9 < length$10 : !((elem$3 = arg$iterator$$4.next()) instanceof .ceylon.language.Finished)) {
-            if (isArray$7 || isTuple$8) elem$3 = iterable$6.getFromFirst(i$9++);
+        .ceylon.language.Iterator<? extends .java.lang.Object> arg$iterator$$9 = isTuple$6 || isArray$5 ? null : iterable$4.iterator();
+        loop_0: while (isTuple$6 || isArray$5 ? i$7 < length$8 : !((elem$3 = arg$iterator$$9.next()) instanceof .ceylon.language.Finished)) {
+            if (isArray$5 || isTuple$6) elem$3 = iterable$4.getFromFirst(i$7++);
             final .java.lang.Object arg = elem$3;
             s$0 = ((.ceylon.language.String)(.java.lang.Object)arg).toString();
-            .java.lang.String s$5 = s$0;
+            .java.lang.String s$10 = s$0;
             doforelse$1 = false;
             break loop_0;
         }
