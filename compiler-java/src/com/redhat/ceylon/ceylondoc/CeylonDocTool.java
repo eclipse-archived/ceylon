@@ -43,6 +43,7 @@ import java.util.IdentityHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -65,7 +66,6 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
-import com.redhat.ceylon.compiler.java.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
@@ -77,8 +77,6 @@ import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.tree.Walker;
 import com.redhat.ceylon.compiler.typechecker.util.AssertionVisitor;
@@ -175,7 +173,6 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private File tempDestDir;
     private final List<PhasedUnit> phasedUnits = new LinkedList<PhasedUnit>();
     private final List<Module> modules = new LinkedList<Module>();
-    private final List<String> compiledClasses = new LinkedList<String>();
     private final Map<TypeDeclaration, List<Class>> subclasses = new IdentityHashMap<TypeDeclaration, List<Class>>();
     private final Map<TypeDeclaration, List<ClassOrInterface>> satisfyingClassesOrInterfaces = new IdentityHashMap<TypeDeclaration, List<ClassOrInterface>>();
     private final Map<TypeDeclaration, List<Function>> annotationConstructors = new IdentityHashMap<TypeDeclaration, List<Function>>();
@@ -383,10 +380,6 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         this.resourceFolder = resourceFolder;
     }
 
-    public List<String> getCompiledClasses() {
-        return compiledClasses;
-    }
-
     public String getOut() {
         return out;
     }
@@ -417,11 +410,18 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         List<String> expandedModules = ModuleWildcardsHelper.expandWildcards(srcs , moduleSpecs, null);
         final List<ModuleSpec> modules = ModuleSpec.parseEachList(expandedModules);
         
+        final Callable<PhasedUnits> getPhasedUnits = new Callable<PhasedUnits>() {
+            @Override
+            public PhasedUnits call() throws Exception {
+                return typeChecker.getPhasedUnits();
+            }
+        };
+        
         // we need to plug in the module manager which can load from .cars
         builder.moduleManagerFactory(new ModuleManagerFactory(){
             @Override
             public ModuleManager createModuleManager(Context context) {
-                return new CeylonDocModuleManager(CeylonDocTool.this, context, modules, outputRepositoryManager, bootstrapCeylon, getLogger());
+                return new CeylonDocModuleManager(getPhasedUnits, context, modules, outputRepositoryManager, bootstrapCeylon, getLogger());
             }
 
             @Override
@@ -451,8 +451,6 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         // running typeChecker.process();
         builder.skipDependenciesVerification();
         typeChecker = builder.getTypeChecker();
-        // collect all units we are typechecking
-        initTypeCheckedUnits(typeChecker);
         
         {
             PhasedUnits phasedUnits = typeChecker.getPhasedUnits();
@@ -480,29 +478,6 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         
         initModules(modules);
         initPhasedUnits();
-    }
-
-    private void initTypeCheckedUnits(TypeChecker typeChecker) {
-        for(PhasedUnit unit : typeChecker.getPhasedUnits().getPhasedUnits()){
-            // obtain the unit container path
-            final String pkgName = Util.getUnitPackageName(unit); 
-            unit.getCompilationUnit().visit(new SourceDeclarationVisitor(){
-                @Override
-                public void loadFromSource(com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration decl) {
-                    compiledClasses.add(Util.getQuotedFQN(pkgName, decl));
-                }
-
-                @Override
-                public void loadFromSource(ModuleDescriptor that) {
-                    // don't think we care about these
-                }
-
-                @Override
-                public void loadFromSource(PackageDescriptor that) {
-                    // don't think we care about these
-                }
-            });
-        }
     }
 
     private void initModules(List<ModuleSpec> moduleSpecs) {
@@ -1399,10 +1374,6 @@ public class CeylonDocTool extends OutputRepoUsingTool {
             return "(" + node.getUnit().getFilename() + ":" + node.getToken().getLine() + ")";
         }
         return "";
-    }
-
-    public ModuleSourceMapper getModuleSourceMapper() {
-        return typeChecker.getPhasedUnits().getModuleSourceMapper();
     }
     
 }

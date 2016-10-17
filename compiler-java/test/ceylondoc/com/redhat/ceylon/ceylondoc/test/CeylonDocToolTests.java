@@ -70,10 +70,10 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.tools.CeyloncTool;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.javax.tools.JavaCompiler;
+import com.redhat.ceylon.javax.tools.JavaCompiler.CompilationTask;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.javax.tools.StandardJavaFileManager;
 import com.redhat.ceylon.javax.tools.ToolProvider;
-import com.redhat.ceylon.javax.tools.JavaCompiler.CompilationTask;
 import com.redhat.ceylon.langtools.source.util.JavacTask;
 import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
@@ -528,8 +528,8 @@ public class CeylonDocToolTests {
         try{
             tool("source", moduleName, true, true);
             fail();
-        }catch(CeylondException x){
-            assertEquals("Failed to find the language module sources in the specified source paths: source", x.getMessage());
+        }catch(RuntimeException x){
+            assertEquals("Failed to find the language module sources in the specified source paths", x.getMessage());
         }
     }
 

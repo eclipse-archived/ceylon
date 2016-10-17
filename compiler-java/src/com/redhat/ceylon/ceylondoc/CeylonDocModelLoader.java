@@ -24,8 +24,10 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
+import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.loader.LoaderJULLogger;
@@ -53,14 +55,14 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
 
 	ModulesClassLoader classLoader;
     Set<Module> modulesAddedToClassPath = new HashSet<Module>();
-    private CeylonDocTool tool;
+    private Callable<PhasedUnits> getPhasedUnits;
 
-    public CeylonDocModelLoader(ModuleManager moduleManager, Modules modules, CeylonDocTool tool, boolean bootstrapCeylon){
+    public CeylonDocModelLoader(ModuleManager moduleManager, Modules modules, Callable<PhasedUnits> getPhasedUnits, boolean bootstrapCeylon){
         super(moduleManager, modules, new LoaderJULLogger());
         // FIXME: this probably needs to support alternate JDKs
         this.jdkProvider = new JdkProvider();
         this.classLoader = new ModulesClassLoader(CeylonDocModelLoader.class.getClassLoader(), jdkProvider);
-        this.tool = tool;
+        this.getPhasedUnits = getPhasedUnits;
         this.isBootstrap = bootstrapCeylon;
     }
 
@@ -123,7 +125,7 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
 
     @Override
     protected ErrorReporter makeModelErrorReporter(Module module, String message) {
-        return new ModuleErrorAttacherRunnable(tool.getModuleSourceMapper(), module, message);
+        return new ModuleErrorAttacherRunnable(getPasedUnits().getModuleSourceMapper(), module, message);
     }
 
     public static class ModuleErrorAttacherRunnable extends UnknownType.ErrorReporter {
@@ -151,5 +153,13 @@ public class CeylonDocModelLoader extends ReflectionModelLoader {
     @Override
     protected void makeInteropAnnotationConstructorInvocation(AnnotationProxyMethod ctor, AnnotationProxyClass klass, List<Parameter> ctorParams) {
         // nothing to do
+    }
+    
+    private PhasedUnits getPasedUnits() {
+        try {
+            return getPhasedUnits.call();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
