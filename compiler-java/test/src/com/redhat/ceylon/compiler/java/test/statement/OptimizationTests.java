@@ -221,4 +221,9 @@ public class OptimizationTests extends CompilerTests {
         compileAndRun("com.redhat.ceylon.compiler.java.test.statement.loop.optim.dynamicIterationBench_main",
                 "loop/optim/DynamicIterationBench.ceylon");
     }
+    
+    @Test
+    public void testLopOptimPrimitiveArrayIteration() {
+        compareWithJavaSource("loop/optim/PrimitiveArrayIteration");
+    }
 }
