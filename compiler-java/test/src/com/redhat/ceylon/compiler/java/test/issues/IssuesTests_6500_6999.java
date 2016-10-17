@@ -137,4 +137,9 @@ public class IssuesTests_6500_6999 extends CompilerTests {
             System.setErr(err);
         }
     }
+    
+    @Test
+    public void testBug6606() {
+        compareWithJavaSource("bug65xx/Bug6606");
+    }
 }
