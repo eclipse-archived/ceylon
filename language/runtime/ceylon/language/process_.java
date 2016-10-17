@@ -49,7 +49,7 @@ public final class process_ implements ReifiedType {
     
     @Ignore
     public void writeLine() {
-        writeLine(writeErrorLine$line());
+        writeLine(writeLine$line());
     }
     
     @Ignore
