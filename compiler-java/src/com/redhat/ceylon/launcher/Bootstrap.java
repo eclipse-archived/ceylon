@@ -94,47 +94,70 @@ public class Bootstrap {
     }
     
     public int runInternal(String... args) throws Throwable {
+        boolean canRetry = false;
+        String ceylonVersion;
+        if (isDistBootstrap()) {
+            // Load configuration
+            Config cfg = loadBootstrapConfig();
+            setupDistHome(cfg);
+            ceylonVersion = determineDistVersion();
+        } else if (distArgument(args) != null) {
+            String dist = distArgument(args);
+            args = stripDistArgument(args);
+            Config cfg = createDistributionConfig(dist);
+            setupDistHome(cfg);
+            ceylonVersion = determineDistVersion();
+        } else {
+            ceylonVersion = LauncherUtil.determineSystemVersion();
+            //canRetry = true; // Disabled for now, enable if we want automatic fall-back to the current version
+        }
+        try {
+            if (!canRetry || Versions.CEYLON_VERSION_NUMBER.equals(ceylonVersion)) {
+                // Using current Ceylon version, or no retries allowed
+                return runVersion(ceylonVersion, args);
+            } else {
+                // Using Ceylon version different from current, if the first
+                // run fails we'll retry with the current one
+                try {
+                    return runVersion(ceylonVersion, args);
+                } catch (ClassNotFoundException ex) {
+                    System.err.println("Fatal: Ceylon distribution could not be found for version: " + ceylonVersion + ", using default");
+                    ceylonVersion = Versions.CEYLON_VERSION_NUMBER;
+                    System.setProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, ceylonVersion);
+                    return runVersion(Versions.CEYLON_VERSION_NUMBER, args);
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            System.err.println("Fatal: Ceylon distribution could not be found for version: " + ceylonVersion);
+            return -1;
+        } catch (Exception e) {
+            System.err.println("Fatal: Ceylon command could not be executed");
+            if (e.getCause() != null) {
+                throw e;
+            } else {
+                if (!(e instanceof RuntimeException) || e.getMessage() == null) {
+                    System.err.println("   --> " + e.toString());
+                } else {
+                    System.err.println("   --> " + e.getMessage());
+                }
+                return -1;
+            }
+        }
+    }
+    
+    private int runVersion(String ceylonVersion, String... args) throws Throwable {
         CeylonClassLoader cl = null;
         try {
             Integer result = -1;
             Method runMethod = null;
-            try {
-                String ceylonVersion;
-                if (isDistBootstrap()) {
-                    // Load configuration
-                    Config cfg = loadBootstrapConfig();
-                    setupDistHome(cfg);
-                    ceylonVersion = determineDistVersion();
-                } else if (distArgument(args) != null) {
-                    String dist = distArgument(args);
-                    args = stripDistArgument(args);
-                    Config cfg = createDistributionConfig(dist);
-                    setupDistHome(cfg);
-                    ceylonVersion = determineDistVersion();
-                } else {
-                    ceylonVersion = LauncherUtil.determineSystemVersion();
-                }
-                File module = CeylonClassLoader.getRepoJar("ceylon.bootstrap", ceylonVersion);
-                if (!module.exists()) {
-                    File homeLib = new File(System.getProperty(Constants.PROP_CEYLON_HOME_DIR), "lib");
-                    module = new File(homeLib, FILE_BOOTSTRAP_JAR);
-                }
-                cl = CeylonClassLoader.newInstance(Arrays.asList(module));
-                Class<?> launcherClass = cl.loadClass("com.redhat.ceylon.launcher.Launcher");
-                runMethod = launcherClass.getMethod("run", String[].class);
-            } catch (Exception e) {
-                System.err.println("Fatal: Ceylon command could not be executed");
-                if (e.getCause() != null) {
-                    throw e;
-                } else {
-                    if (!(e instanceof RuntimeException) || e.getMessage() == null) {
-                        System.err.println("   --> " + e.toString());
-                    } else {
-                        System.err.println("   --> " + e.getMessage());
-                    }
-                    return -1;
-                }
+            File module = CeylonClassLoader.getRepoJar("ceylon.bootstrap", ceylonVersion);
+            if (!module.exists()) {
+                File homeLib = new File(System.getProperty(Constants.PROP_CEYLON_HOME_DIR), "lib");
+                module = new File(homeLib, FILE_BOOTSTRAP_JAR);
             }
+            cl = CeylonClassLoader.newInstance(Arrays.asList(module));
+            Class<?> launcherClass = cl.loadClass("com.redhat.ceylon.launcher.Launcher");
+            runMethod = launcherClass.getMethod("run", String[].class);
             try {
                 result = (Integer)runMethod.invoke(null, (Object)args);
             } catch (InvocationTargetException e) {

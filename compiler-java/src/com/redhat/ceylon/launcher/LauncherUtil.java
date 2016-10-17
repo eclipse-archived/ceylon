@@ -80,9 +80,12 @@ public class LauncherUtil {
     
     public static String determineSystemVersion() {
         // Determine the Ceylon system/language/runtime version
-        String ceylonVersion = System.getenv(Constants.ENV_CEYLON_VERSION);
+        String ceylonVersion = System.getProperty(Constants.PROP_CEYLON_SYSTEM_VERSION);
         if (ceylonVersion == null) {
-            ceylonVersion = System.getProperty(Constants.PROP_CEYLON_SYSTEM_VERSION, Versions.CEYLON_VERSION_NUMBER);
+            ceylonVersion = System.getenv(Constants.ENV_CEYLON_VERSION);
+            if (ceylonVersion == null) {
+                ceylonVersion = Versions.CEYLON_VERSION_NUMBER;
+            }
         }
         return ceylonVersion;
     }
