@@ -55,6 +55,7 @@ import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
 import com.redhat.ceylon.javax.tools.StandardJavaFileManager;
 import com.redhat.ceylon.javax.tools.StandardLocation;
 import com.redhat.ceylon.langtools.tools.javac.api.MultiTaskListener;
+import com.redhat.ceylon.langtools.tools.javac.file.BaseFileObject;
 import com.redhat.ceylon.langtools.tools.javac.file.JavacFileManager;
 import com.redhat.ceylon.langtools.tools.javac.file.RegularFileObject;
 import com.redhat.ceylon.langtools.tools.javac.file.RelativePath.RelativeFile;
@@ -336,5 +337,13 @@ public class CeyloncFileManager extends JavacFileManager implements StandardJava
     @Override
     protected boolean isValidDirectory(String s) {
         return true;
+    }
+
+    @Override
+    public boolean isSameFile(FileObject a, FileObject b) {
+        nullCheck(a);
+        nullCheck(b);
+        // don't check on subtypes
+        return a.equals(b);
     }
 }
