@@ -45,4 +45,9 @@ public class StaticTests extends CompilerTests {
         compareWithJavaSource("alias/StaticAlias");
     }
     
+    @Test
+    public void testStaticLate() {
+        compareWithJavaSource("attribute/StaticLate");
+    }
+    
 }
