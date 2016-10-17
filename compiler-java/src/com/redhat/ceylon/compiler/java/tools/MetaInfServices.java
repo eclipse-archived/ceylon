@@ -2,11 +2,13 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,8 +16,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-import java.util.jar.JarOutputStream;
-import java.util.zip.ZipEntry;
 
 public class MetaInfServices  {
     /** 
@@ -66,13 +66,13 @@ public class MetaInfServices  {
     }
     
 
-    public static void writeAllServices(JarOutputStream outputStream, Map<String, Set<String>> previousServices) {
+    public static void writeAllServices(File outputFolder, Map<String, Set<String>> previousServices) {
         for (Map.Entry<String, Set<String>> serviceEntry : previousServices.entrySet()) {
             String serviceInterface = serviceEntry.getKey();
             Set<String> serviceClasses = serviceEntry.getValue();
-            try {
-                outputStream.putNextEntry(new ZipEntry("META-INF/services/"+serviceInterface));
-                OutputStreamWriter writer = new OutputStreamWriter(outputStream, "UTF-8");
+            try (Writer writer = new OutputStreamWriter(new FileOutputStream(
+                    new File(outputFolder, "META-INF/services/"+serviceInterface)),
+                    "UTF-8")){
                 for (String impl : serviceClasses) {
                     writer.append(impl).append('\n');
                 }
@@ -80,12 +80,6 @@ public class MetaInfServices  {
             }
             catch(IOException e) {
                 // TODO : log to the right place
-            }
-            finally {
-                try {
-                    outputStream.closeEntry();
-                } catch (IOException e) {
-                }
             }
         }
     }

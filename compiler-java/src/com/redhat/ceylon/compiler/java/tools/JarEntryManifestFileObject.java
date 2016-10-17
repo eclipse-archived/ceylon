@@ -22,6 +22,7 @@ package com.redhat.ceylon.compiler.java.tools;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,9 +30,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URI;
-import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
-import java.util.zip.ZipEntry;
 
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.javax.lang.model.element.Modifier;
@@ -43,17 +42,17 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 
 public class JarEntryManifestFileObject implements JavaFileObject {
 
-    private String jarFileName;
+    private File jarTempFolder;
     private String fileName;
     private Module module;
     private String osgiProvidedBundles;
     private ByteArrayOutputStream baos;
 	private JdkProvider jdkProvider;
 	
-    public JarEntryManifestFileObject(String jarFileName, String fileName, Module module, String osgiProvidedBundles,
+    public JarEntryManifestFileObject(File jarTempFolder, String fileName, Module module, String osgiProvidedBundles,
     		JdkProvider jdkProvider) {
         super();
-        this.jarFileName = jarFileName;
+        this.jarTempFolder = jarTempFolder;
         this.fileName = fileName;
         this.module = module;
         this.osgiProvidedBundles = osgiProvidedBundles;
@@ -75,21 +74,21 @@ public class JarEntryManifestFileObject implements JavaFileObject {
         };
     }
     
-    public void writeManifest(JarOutputStream jarFile, Logger log) throws IOException {
+    public Manifest writeManifest(Logger log) throws IOException {
         if (baos != null) {
-            writeManifestJarEntry(jarFile, readManifest(baos), log);
+            return writeManifestJarEntry(readManifest(baos), log);
         }
+        return null;
     }
 
-    private void writeManifestJarEntry(JarOutputStream jarFile, Manifest originalManifest, Logger log) throws IOException {
+    private Manifest writeManifestJarEntry(Manifest originalManifest, Logger log) throws IOException {
         Manifest manifest;
         if (module.isDefaultModule()) {
             manifest = new OsgiUtil.DefaultModuleManifest().build();
         } else {
             manifest = new OsgiUtil.OsgiManifest(module, jdkProvider, osgiProvidedBundles, originalManifest, log).build();
         }
-        jarFile.putNextEntry(new ZipEntry(fileName));
-        manifest.write(jarFile);
+        return manifest;
     }
 
     private Manifest readManifest(ByteArrayOutputStream baos) throws IOException {
@@ -98,14 +97,18 @@ public class JarEntryManifestFileObject implements JavaFileObject {
 
     @Override
     public int hashCode() {
-        return jarFileName.hashCode();
+        int ret = 17;
+        ret = (37 * ret) + jarTempFolder.hashCode();
+        ret = (37 * ret) + fileName.hashCode();
+        return ret;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof JarEntryManifestFileObject) {
             JarEntryManifestFileObject r = (JarEntryManifestFileObject)obj;
-            return jarFileName.equals(r.jarFileName);
+            return jarTempFolder.equals(r.jarTempFolder)
+                    && fileName.equals(r.fileName);
         } else {
             return false;
         }
@@ -113,9 +116,8 @@ public class JarEntryManifestFileObject implements JavaFileObject {
 
     @Override
     public String toString() {
-        return jarFileName+":"+fileName;
-    }
-    
+        return jarTempFolder+":"+fileName;
+    }    
     //
     // All the following methods are just boilerplate and never called
     

@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Enumeration;
@@ -148,95 +149,109 @@ public class Java9Util {
 		}
 	}
 
-	public static void writeModuleDescriptor(ZipOutputStream jarOutputStream, Java9ModuleDescriptor module) {
+	public static void writeModuleDescriptor(File outputFolder, Java9ModuleDescriptor module) {
     	ClassWriter classWriter = new ClassWriter();
-    	CPInfo[] pool = new ConstantPool.CPInfo[1+6
-    	                                        + module.imports.size()
-    	                                        + module.getPackagesSize()
-    	                                        + (module.main != null ? 3 : 0)];
-    	ConstantPool constantPool = new ConstantPool(pool);
-    	
-    	int cp = 1;
-    	// 1: this_class name
-    	pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(module.name.replace('.', '/')+"/module-info");
-    	// 2: this_class
-    	pool[cp++] = new ConstantPool.CONSTANT_Class_info(constantPool, 1);
-    	// 3: module attr
-    	pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.Module);
-    	// 4: concealed pkgs attr
-    	pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.ConcealedPackages);
-    	// 5: version attr
-    	pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.Version);
-    	// 6: version
-    	pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(module.version);
-    	if(module.main != null){
-    		// 7: main attr
-    		pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.MainClass);
-    		// 8: main class name
-    		pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(module.main.replace('.', '/'));
-        	// 9: main class
-        	pool[cp++] = new ConstantPool.CONSTANT_Class_info(constantPool, 8);
-    	}
-    	int i=0;
-    	// now imports
-    	Module_attribute.RequiresEntry[] requires = new Module_attribute.RequiresEntry[module.imports.size()];
-    	for(Java9ModuleImport imp : module.imports){
-    		pool[cp] = new ConstantPool.CONSTANT_Utf8_info(imp.name);
-    		int flag = 0;
-    		if(imp.exported)
-    			flag &= Module_attribute.ACC_PUBLIC;
-    		requires[i] = new Module_attribute.RequiresEntry(cp, flag);
-    		i++;
-    		cp++;
-    	}
-    	Module_attribute.ExportsEntry[] exports = new Module_attribute.ExportsEntry[module.exportedPackages.size()];
-    	i = 0;
-    	for(String pkg : module.exportedPackages){
-    		pool[cp] = new ConstantPool.CONSTANT_Utf8_info(pkg.replace('.', '/'));
-    		exports[i++] = new Module_attribute.ExportsEntry(cp, new int[0]);
-    		cp++;
-    	}
-    	int[] concealedPackages = new int[module.concealedPackages.size()];
-    	i = 0;
-    	for(String pkg : module.concealedPackages){
-    		pool[cp] = new ConstantPool.CONSTANT_Utf8_info(pkg.replace('.', '/'));
-    		concealedPackages[i++] = cp;
-    		cp++;
-    	}
-    	Attribute[] attributesArray = new Attribute[3 + (module.main != null ? 1 : 0)];
-    	attributesArray[0] = new Module_attribute(3, 
-    					requires,
-    					exports, 
-    					new int[0], 
-    					new Module_attribute.ProvidesEntry[0]);
-    	attributesArray[1] = new ConcealedPackages_attribute(4, concealedPackages);
-    	attributesArray[2] = new Version_attribute(5, 6);
-    	if(module.main != null)
-    		attributesArray[3] = new MainClass_attribute(7, 9);
-    			
-		Attributes attributes = new Attributes(constantPool, attributesArray );
-		ClassFile classFile = new ClassFile(com.redhat.ceylon.langtools.tools.javac.jvm.ClassFile.JAVA_MAGIC,
-    			com.redhat.ceylon.langtools.tools.javac.jvm.ClassFile.Version.V53.major,
-    			com.redhat.ceylon.langtools.tools.javac.jvm.ClassFile.Version.V53.minor,
-    			constantPool,
-    			new com.redhat.ceylon.langtools.classfile.AccessFlags(com.redhat.ceylon.langtools.classfile.AccessFlags.ACC_MODULE),
-    			2,
-    			0,
-    			new int[0],
-    			new com.redhat.ceylon.langtools.classfile.Field[0],
-    			new com.redhat.ceylon.langtools.classfile.Method[0],
-    			attributes);
-        try {
-            jarOutputStream.putNextEntry(new ZipEntry("module-info.class"));
-            
-            classWriter.write(classFile, jarOutputStream);
-            jarOutputStream.flush();
-            jarOutputStream.closeEntry();
+    	ClassFile classFile = generateModuleDescriptor(module);
+        try (OutputStream os = new FileOutputStream(new File(outputFolder, "module-info.class"))){
+            classWriter.write(classFile, os);
         } catch (IOException e) {
         	e.printStackTrace();
             throw new RuntimeException(e);
         }
 	}
+
+    private static void writeModuleDescriptor(ZipOutputStream zos, Java9ModuleDescriptor module) {
+        ClassWriter classWriter = new ClassWriter();
+        ClassFile classFile = generateModuleDescriptor(module);
+        try {
+            zos.putNextEntry(new ZipEntry("module-info.class"));
+            classWriter.write(classFile, zos);
+            zos.flush();
+            zos.closeEntry();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static ClassFile generateModuleDescriptor(Java9ModuleDescriptor module) {
+        CPInfo[] pool = new ConstantPool.CPInfo[1+6
+                                                + module.imports.size()
+                                                + module.getPackagesSize()
+                                                + (module.main != null ? 3 : 0)];
+        ConstantPool constantPool = new ConstantPool(pool);
+        
+        int cp = 1;
+        // 1: this_class name
+        pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(module.name.replace('.', '/')+"/module-info");
+        // 2: this_class
+        pool[cp++] = new ConstantPool.CONSTANT_Class_info(constantPool, 1);
+        // 3: module attr
+        pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.Module);
+        // 4: concealed pkgs attr
+        pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.ConcealedPackages);
+        // 5: version attr
+        pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.Version);
+        // 6: version
+        pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(module.version);
+        if(module.main != null){
+            // 7: main attr
+            pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(Attribute.MainClass);
+            // 8: main class name
+            pool[cp++] = new ConstantPool.CONSTANT_Utf8_info(module.main.replace('.', '/'));
+            // 9: main class
+            pool[cp++] = new ConstantPool.CONSTANT_Class_info(constantPool, 8);
+        }
+        int i=0;
+        // now imports
+        Module_attribute.RequiresEntry[] requires = new Module_attribute.RequiresEntry[module.imports.size()];
+        for(Java9ModuleImport imp : module.imports){
+            pool[cp] = new ConstantPool.CONSTANT_Utf8_info(imp.name);
+            int flag = 0;
+            if(imp.exported)
+                flag &= Module_attribute.ACC_PUBLIC;
+            requires[i] = new Module_attribute.RequiresEntry(cp, flag);
+            i++;
+            cp++;
+        }
+        Module_attribute.ExportsEntry[] exports = new Module_attribute.ExportsEntry[module.exportedPackages.size()];
+        i = 0;
+        for(String pkg : module.exportedPackages){
+            pool[cp] = new ConstantPool.CONSTANT_Utf8_info(pkg.replace('.', '/'));
+            exports[i++] = new Module_attribute.ExportsEntry(cp, new int[0]);
+            cp++;
+        }
+        int[] concealedPackages = new int[module.concealedPackages.size()];
+        i = 0;
+        for(String pkg : module.concealedPackages){
+            pool[cp] = new ConstantPool.CONSTANT_Utf8_info(pkg.replace('.', '/'));
+            concealedPackages[i++] = cp;
+            cp++;
+        }
+        Attribute[] attributesArray = new Attribute[3 + (module.main != null ? 1 : 0)];
+        attributesArray[0] = new Module_attribute(3, 
+                        requires,
+                        exports, 
+                        new int[0], 
+                        new Module_attribute.ProvidesEntry[0]);
+        attributesArray[1] = new ConcealedPackages_attribute(4, concealedPackages);
+        attributesArray[2] = new Version_attribute(5, 6);
+        if(module.main != null)
+            attributesArray[3] = new MainClass_attribute(7, 9);
+                
+        Attributes attributes = new Attributes(constantPool, attributesArray );
+        return new ClassFile(com.redhat.ceylon.langtools.tools.javac.jvm.ClassFile.JAVA_MAGIC,
+                com.redhat.ceylon.langtools.tools.javac.jvm.ClassFile.Version.V53.major,
+                com.redhat.ceylon.langtools.tools.javac.jvm.ClassFile.Version.V53.minor,
+                constantPool,
+                new com.redhat.ceylon.langtools.classfile.AccessFlags(com.redhat.ceylon.langtools.classfile.AccessFlags.ACC_MODULE),
+                2,
+                0,
+                new int[0],
+                new com.redhat.ceylon.langtools.classfile.Field[0],
+                new com.redhat.ceylon.langtools.classfile.Method[0],
+                attributes);
+    }
 
     private static final String METAINF_JBOSSMODULES = "META-INF/jbossmodules/";
     private static final String MODULE_XML = "module.xml";

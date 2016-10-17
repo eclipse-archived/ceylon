@@ -36,6 +36,7 @@ import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
+import java.util.jar.Manifest;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -215,18 +216,45 @@ public class IOUtils {
         return zipFolders(new ZipRoot(root, ""));
     }
 
+    public static File zipFolder(Manifest manifest, File root) throws IOException {
+        return zipFolders(manifest, new ZipRoot(root, ""));
+    }
+
     public static File zipFolders(ZipRoot... zipRoots) throws IOException {
+        return zipFolders(null, zipRoots);
+    }
+    
+    public static File zipFolders(Manifest manifest, ZipRoot... zipRoots) throws IOException {
         for (ZipRoot zipRoot : zipRoots) {
             if (!zipRoot.root.isDirectory())
                 throw new IOException("Zip root must be a folder");
         }
         File zipFile = File.createTempFile("ceylon-zipper-", ".zip");
         try {
+            boolean skipManifest = manifest != null;
             ZipOutputStream os = new ZipOutputStream(new FileOutputStream(zipFile));
             try {
+                // JarOutputStream puts the manifest first, but does not create the
+                // META-INF folder before, so it causes issues on Windows, so we roll
+                // our own
+                if(skipManifest){
+                    // write the jar file first
+                    ZipEntry entry = new ZipEntry("META-INF/");
+                    os.putNextEntry(entry);
+                    os.closeEntry();
+                    entry = new ZipEntry("META-INF/MANIFEST.MF");
+                    os.putNextEntry(entry);
+                    manifest.write(os);
+                    os.closeEntry();
+                }
                 for (ZipRoot zipRoot : zipRoots) {
+                    // first folders
                     for (File f : zipRoot.root.listFiles()) {
-                        zipInternal(zipRoot.prefix, f, os);
+                        zipInternal(zipRoot.prefix, f, os, true, skipManifest);
+                    }
+                    // then files
+                    for (File f : zipRoot.root.listFiles()) {
+                        zipInternal(zipRoot.prefix, f, os, false, skipManifest);
                     }
                 }
             } finally {
@@ -240,22 +268,34 @@ public class IOUtils {
         }
     }
 
-    private static void zipInternal(String path, File file, ZipOutputStream os) throws IOException {
+    private static void zipInternal(String path, File file, ZipOutputStream os, 
+            boolean justFolders, 
+            boolean skipManifest)
+                    throws IOException {
         String filePath;
         if(path.isEmpty())
             filePath = file.getName();
         else
             filePath = path + "/" + file.getName();
         if (file.isDirectory()) {
-            for (File f : file.listFiles())
-                zipInternal(filePath, f, os);
-        } else {
-            ZipEntry entry = new ZipEntry(filePath);
-            os.putNextEntry(entry);
-            try (FileInputStream in = new FileInputStream(file)) {
-                copyStreamNoClose(in, os);
+            if(justFolders){
+                if(!filePath.equalsIgnoreCase("META-INF") || !skipManifest){
+                    ZipEntry entry = new ZipEntry(filePath+"/");
+                    os.putNextEntry(entry);
+                    os.closeEntry();
+                }
             }
-            os.closeEntry();
+            for (File f : file.listFiles())
+                zipInternal(filePath, f, os, justFolders, skipManifest);
+        } else if(!justFolders) {
+            if(!filePath.equalsIgnoreCase("META-INF/MANIFEST.MF") || !skipManifest){
+                ZipEntry entry = new ZipEntry(filePath);
+                os.putNextEntry(entry);
+                try (FileInputStream in = new FileInputStream(file)) {
+                    copyStreamNoClose(in, os);
+                }
+                os.closeEntry();
+            }
         }
     }
 

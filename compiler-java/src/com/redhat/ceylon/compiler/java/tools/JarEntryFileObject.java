@@ -20,32 +20,33 @@
 
 package com.redhat.ceylon.compiler.java.tools;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FilterOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URI;
-import java.util.jar.JarOutputStream;
-import java.util.zip.ZipEntry;
 
+import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.javax.lang.model.element.Modifier;
 import com.redhat.ceylon.javax.lang.model.element.NestingKind;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 
 public class JarEntryFileObject implements JavaFileObject {
 
-    private JarOutputStream jarFile;
+    private File jarTempFolder;
     private String fileName;
-    private String jarFileName;
+    private File file;
 
-    public JarEntryFileObject(String jarFileName, JarOutputStream jarFile, String fileName) {
+    public JarEntryFileObject(File jarTempFolder, String fileName) {
         super();
-        this.jarFileName = jarFileName;
-        this.jarFile = jarFile;
+        this.jarTempFolder = jarTempFolder;
         this.fileName = fileName;
+        this.file = new File(jarTempFolder, fileName);
     }
 
     /*
@@ -54,20 +55,14 @@ public class JarEntryFileObject implements JavaFileObject {
      */
     @Override
     public OutputStream openOutputStream() throws IOException {
-        // we start to write at a new entry
-        jarFile.putNextEntry(new ZipEntry(fileName));
-        return new FilterOutputStream(jarFile){
-            // we override the close() method to not close the current entry
-            @Override
-            public void close() throws IOException {
-            }
-        };
+        FileUtil.mkdirs(file.getParentFile());
+        return new FileOutputStream(file);
     }
 
     @Override
     public int hashCode() {
         int ret = 17;
-        ret = (37 * ret) + jarFileName.hashCode();
+        ret = (37 * ret) + jarTempFolder.hashCode();
         ret = (37 * ret) + fileName.hashCode();
         return ret;
     }
@@ -76,7 +71,7 @@ public class JarEntryFileObject implements JavaFileObject {
     public boolean equals(Object obj) {
         if (obj instanceof JarEntryFileObject) {
             JarEntryFileObject r = (JarEntryFileObject)obj;
-            return jarFileName.equals(r.jarFileName)
+            return jarTempFolder.equals(r.jarTempFolder)
                     && fileName.equals(r.fileName);
         } else {
             return false;
@@ -85,7 +80,7 @@ public class JarEntryFileObject implements JavaFileObject {
 
     @Override
     public String toString() {
-        return jarFileName+":"+fileName;
+        return jarTempFolder+":"+fileName;
     }
     
     //
@@ -98,15 +93,13 @@ public class JarEntryFileObject implements JavaFileObject {
 
     @Override
     public String getName() {
-        return null;
+        return fileName;
     }
 
     @Override
     public InputStream openInputStream() throws IOException {
         // FIXME: perhaps allow reading from the previous car?
-        // This is required by at least the org.netbeans.api:org-netbeans-modules-editor-mimelookup/RELEASE82
-        // APT processor to check that there wasn't already a file
-        throw new FileNotFoundException();
+        return new FileInputStream(file);
     }
 
     @Override
