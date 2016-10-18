@@ -4085,6 +4085,8 @@ caseItem returns [CaseItem item]
       { $item = $isCaseCondition.item; }
     | (SATISFIES) => satisfiesCaseCondition
       { $item = $satisfiesCaseCondition.item; }
+    | (LBRACKET LIDENTIFIER) => matchCaseCondition
+      { $item = $matchCaseCondition.item; }
     | (patternStart) => pattern
       { PatternCase pc = new PatternCase(null);
         pc.setPattern($pattern.pattern);
