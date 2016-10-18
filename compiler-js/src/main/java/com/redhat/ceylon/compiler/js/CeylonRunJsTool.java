@@ -232,15 +232,15 @@ public class CeylonRunJsTool extends RepoUsingTool {
     }
 
     private static String getCeylonRepo() {
-        return getFromEnv("CEYLON_REPO", Constants.PROP_CEYLON_SYSTEM_REPO);
+        return System.getProperty(Constants.PROP_CEYLON_SYSTEM_REPO);
     }
 
     private static String getFromEnv(String env, String prop){
-        String path = System.getenv(env);
+        String path = System.getProperty(prop);
         if (path != null) {
             return path;
         }
-        return System.getProperty(prop);
+        return System.getenv(env);
     }
 
     /** Creates a ProcessBuilder ready to run the Node.js executable with the specified parameters.
