@@ -40,6 +40,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.MissingResourceException;
 
+import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.tools.SourceArgumentsResolver;
 import com.redhat.ceylon.compiler.EnvironmentException;
@@ -623,7 +624,13 @@ public class Main extends com.redhat.ceylon.langtools.tools.javac.main.Main {
 
             fileManager = context.get(JavaFileManager.class);
 
-            comp = LanguageCompiler.instance(context);
+            try {
+                comp = LanguageCompiler.instance(context);
+            } catch (Overrides.OverrideException e) {
+                CeylonLog.instance(context).error("ceylon.overrides", e.getMessage());
+                this.exitState = ExitState.cmderror();
+                return CMDERR;
+            } 
             if (comp == null) {
                 this.exitState = ExitState.systemError(null, null);
                 return SYSERR;

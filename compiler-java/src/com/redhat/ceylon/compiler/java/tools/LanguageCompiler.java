@@ -215,12 +215,7 @@ public class LanguageCompiler extends JavaCompiler {
         options.put("-Xprefer", "source");
         // make sure it's registered
         Log log = CeylonLog.instance(context);
-        try {
-            CeylonEnter.instance(context);
-        } catch (Overrides.OverrideException e) {
-            log.error("ceylon.overrides", e.getMessage());
-            return null;
-        }
+        CeylonEnter.instance(context);
         CeylonClassWriter.instance(context);
         JavaCompiler instance = context.get(compilerKey);
         if (instance == null)
