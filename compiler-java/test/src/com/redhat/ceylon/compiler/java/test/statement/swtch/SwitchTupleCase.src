@@ -16,7 +16,7 @@ class SwitchTupleCase implements .com.redhat.ceylon.compiler.java.runtime.model.
     final .ceylon.language.Sequential<? extends .ceylon.language.String> strings) {
         {
             .ceylon.language.Sequential sel$0 = strings;
-            if (sel$0.equals(.ceylon.language.empty_.get_())) {
+            if (sel$0 instanceof .ceylon.language.Empty) {
                 return "empty";
             } else if (sel$0 instanceof .ceylon.language.Tuple && sel$0.equals((.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                     .ceylon.language.String.instance("a"),
@@ -43,7 +43,7 @@ class SwitchTupleCase implements .com.redhat.ceylon.compiler.java.runtime.model.
                     .ceylon.language.Sequential sel$3 = strings;
                     if (sel$3 == null) {
                         $ceylontmp$ifResult$2 = "null";
-                    } else if (sel$3.equals(.ceylon.language.empty_.get_())) {
+                    } else if (sel$3 instanceof .ceylon.language.Empty) {
                         $ceylontmp$ifResult$2 = "empty";
                     } else if (sel$3 instanceof .ceylon.language.Tuple && sel$3.equals((.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{
                             .ceylon.language.String.instance("a"),
