@@ -155,7 +155,7 @@ public class AnnotationUtil {
     }
 
     public static EnumSet<OutputElement> outputs(Tree.PackageDescriptor annotated) {
-        return EnumSet.of(TYPE);
+        return EnumSet.of(TYPE, PACKAGE);
     }
 
     public static EnumSet<OutputElement> outputs(Tree.ImportModule annotated) {
@@ -350,7 +350,7 @@ public class AnnotationUtil {
                 return target == OutputElement.TYPE;
             } 
         } else if (useSite instanceof Package) {
-            return target == OutputElement.TYPE;
+            return (annotationCtorDecl instanceof AnnotationProxyMethod) ?  target == OutputElement.PACKAGE : target == OutputElement.TYPE;
         } else if (useSite instanceof Module) {
             return target == OutputElement.TYPE;
         } else if (useSite instanceof Tree.ImportModule) {

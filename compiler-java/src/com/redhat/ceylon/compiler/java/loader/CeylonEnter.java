@@ -230,7 +230,10 @@ public class CeylonEnter extends Enter {
             super.main(trees);
         }
         // now we can type-check the Ceylon code
-        completeCeylonTrees(trees);
+        List<JCCompilationUnit> packageInfo = completeCeylonTrees(trees);
+        trees = trees.prependList(packageInfo);
+        ceylonTrees = ceylonTrees.prependList(packageInfo);
+        
         if(compiler.isHadRunTwiceException()){
             needsModelReset = true;
         }
@@ -387,7 +390,7 @@ public class CeylonEnter extends Enter {
     }
 
     
-    public void completeCeylonTrees(List<JCCompilationUnit> trees){
+    public List<JCCompilationUnit> completeCeylonTrees(List<JCCompilationUnit> trees){
         // run the type checker
         timer.startTask("Ceylon type checking");
         typeCheck();
@@ -404,6 +407,7 @@ public class CeylonEnter extends Enter {
         }
         int i=1;
         int size = countCeylonFiles(trees);
+        List<JCCompilationUnit> packageInfos = List.<JCCompilationUnit>nil();
         for (JCCompilationUnit tree : trees) {
             if (tree instanceof CeylonCompilationUnit) {
                 CeylonCompilationUnit ceylonTree = (CeylonCompilationUnit) tree;
@@ -426,6 +430,7 @@ public class CeylonEnter extends Enter {
                 if (taskListener != null) {
                     taskListener.finished(event);
                 }
+                packageInfos = packageInfos.prependList(gen.transformPackageInfo(ceylonTree));
                 nested.endTask();
                 if(isVerbose("ast")){
                     log.printRawLines(WriterKind.ERROR, "Model tree for "+tree.getSourceFile());
@@ -437,6 +442,12 @@ public class CeylonEnter extends Enter {
                 }
             }
         }
+        if(isVerbose("code")){
+            for (JCCompilationUnit packageInfo : packageInfos) {
+                log.printRawLines(WriterKind.ERROR, packageInfo.toString());
+            }
+        }
+        
         if(sp != null){
             sp.clearLine();
         }
@@ -446,6 +457,7 @@ public class CeylonEnter extends Enter {
         // write some stats
         if(verbose)
             modelLoader.printStats();
+        return packageInfos;
     }
 
     private int countCeylonFiles(List<JCCompilationUnit> trees) {
