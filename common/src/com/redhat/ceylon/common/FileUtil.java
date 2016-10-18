@@ -255,8 +255,17 @@ public class FileUtil {
      * If the value was empty a array of size 0 will be returned.
      */
     public static File[] getExecPath() {
+        return getExecPath(null);
+    }
+    
+    /**
+     * Returns the environment variable {@code PATH} as an array of {@code File}.
+     * If the value was empty a array of size 0 will be returned.
+     * @param cwd Use the given root path as the base for any relative paths
+     */
+    public static File[] getExecPath(String cwd) {
         String path = System.getenv("PATH");
-        return pathToFileArray(path);
+        return pathToFileArray(cwd, path);
     }
     
     private static final String[] EMPTY_STRINGS = new String[0];
@@ -286,9 +295,13 @@ public class FileUtil {
     }
     
     public static File[] pathToFileArray(String path) {
+        return pathToFileArray(null, path);
+    }
+    
+    public static File[] pathToFileArray(String cwd, String path) {
         if (path != null && !path.isEmpty()) {
             String[] items = path.split(Pattern.quote(File.pathSeparator));
-            return pathsToFileArray(items);
+            return pathsToFileArray(cwd, items);
         } else {
             return EMPTY_FILES;
         }
@@ -296,10 +309,14 @@ public class FileUtil {
     }
     
     public static File[] pathsToFileArray(String[] paths) {
+        return pathsToFileArray(null, paths);
+    }
+    
+    public static File[] pathsToFileArray(String cwd, String[] paths) {
         if (paths != null) {
             File[] result = new File[paths.length];
             for (int i = 0; i < paths.length; i++) {
-                result[i] = new File(paths[i]);
+                result[i] = new File(cwd, paths[i]);
             }
             return result;
         } else {

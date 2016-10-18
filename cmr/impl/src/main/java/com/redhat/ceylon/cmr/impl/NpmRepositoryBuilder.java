@@ -53,16 +53,16 @@ public class NpmRepositoryBuilder implements RepositoryBuilder {
     @Override
     public CmrRepository buildRepository(String token, RepositoryBuilderConfig config) throws Exception {
         if (token.equals("npm:") || token.equals("npm:/#")) {
-            return createNpmRepository("npm:", config.log, config.offline);
+            return createNpmRepository("npm:", config.log, config.offline, config.currentDirectory);
         } else if (token.startsWith("npm:")) {
-            return createNpmRepository(token, config.log, config.offline);
+            return createNpmRepository(token, config.log, config.offline, config.currentDirectory);
         } else {
             return null;
         }
     }
     
-    private CmrRepository createNpmRepository(String token, Logger log, boolean offline) {
-        File local = new File("node_modules");
+    private CmrRepository createNpmRepository(String token, Logger log, boolean offline, String currentDirectory) {
+        File local = new File(currentDirectory, "node_modules");
         
         String nodePath = token.substring(4);
         if (nodePath.isEmpty()) {
@@ -72,7 +72,7 @@ public class NpmRepositoryBuilder implements RepositoryBuilder {
             }
         }
 
-        File[] roots = FileUtil.pathToFileArray(nodePath);
+        File[] roots = FileUtil.pathToFileArray(currentDirectory, nodePath);
         
         // If we have a single root to look up NPM modules we assume
         // we can use it for output as well. If we have several we
