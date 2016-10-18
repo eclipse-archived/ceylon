@@ -202,6 +202,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
 //    private static final TypeMirror CEYLON_FUNCTION_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.FunctionDeclaration");
     private static final TypeMirror CEYLON_FUNCTION_OR_VALUE_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.FunctionOrValueDeclaration");
     private static final TypeMirror CEYLON_VALUE_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.ValueDeclaration");
+    private static final TypeMirror CEYLON_PACKAGE_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.Package");
     private static final TypeMirror CEYLON_ALIAS_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.AliasDeclaration");
     private static final TypeMirror CEYLON_CLASS_OR_INTERFACE_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.ClassOrInterfaceDeclaration");
     private static final TypeMirror CEYLON_CLASS_WITH_INIT_DECLARATION_TYPE = simpleCeylonObjectType("ceylon.language.meta.declaration.ClassWithInitializerDeclaration");
@@ -4254,6 +4255,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 case "FIELD":
                 case "LOCAL_VARIABLE":
                     decl = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(getLanguageModule(), CEYLON_VALUE_DECLARATION_TYPE, klass, DeclarationType.TYPE);
+                    types.add(decl.getType());
+                    break;
+                case "PACKAGE":
+                    decl = (TypeDeclaration) convertNonPrimitiveTypeToDeclaration(getLanguageModule(), CEYLON_PACKAGE_DECLARATION_TYPE, klass, DeclarationType.TYPE);
                     types.add(decl.getType());
                     break;
                 default:
