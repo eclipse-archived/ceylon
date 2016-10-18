@@ -12,7 +12,7 @@ public enum Warning {
     ceylonNamespace("Discouraged 'ceylon' namespaces"),
     javaNamespace("Discouraged 'java' namespaces"),
     suppressedAlready("Already suppressed warnings"),
-    suppressesNothing("Warnings suppressing 'nothing'"),
+    suppressesNothing("Warnings about suppressed warnings that aren't actually generated"),
     unknownWarning("Unknown warnings"),
     ambiguousAnnotation("Ambiguous annotations"),
     lateFieldAnnotation("Late field annotations"),
