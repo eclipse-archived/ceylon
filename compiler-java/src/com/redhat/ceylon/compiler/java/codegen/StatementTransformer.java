@@ -77,6 +77,7 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCThrow;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCTry;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCUnary;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
+import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.Tag;
 import com.redhat.ceylon.langtools.tools.javac.util.Context;
 import com.redhat.ceylon.langtools.tools.javac.util.DiagnosticSource;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
@@ -4655,7 +4656,17 @@ public class StatementTransformer extends AbstractTransformer {
                 } else {
                     selectorExpr = selectorAlias.makeIdent();
                 }
-                test = make().Binary(JCTree.Tag.EQ, selectorExpr, transformedExpression);
+                if (term instanceof Tree.Tuple) {
+                    test = make().Apply(null, makeSelect(selectorExpr, "equals"), List.<JCExpression>of(transformedExpression));
+                    if (!term.getTypeModel().isEmpty()) {
+                        test = make().Binary(Tag.AND, 
+                                make().TypeTest(selectorAlias.makeIdent(), 
+                                        make().QualIdent(syms().ceylonTupleType.tsym)),
+                                test);
+                    }
+                } else {
+                    test = make().Binary(JCTree.Tag.EQ, selectorExpr, transformedExpression);
+                }
             }
             if(tests == null)
                 tests = test;
