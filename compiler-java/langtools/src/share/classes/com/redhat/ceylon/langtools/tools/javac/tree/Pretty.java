@@ -35,6 +35,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.List;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.*;
 import static com.redhat.ceylon.langtools.tools.javac.code.Flags.ANNOTATION;
 import static com.redhat.ceylon.langtools.tools.javac.tree.JCTree.Tag.*;
+import com.redhat.ceylon.javax.tools.JavaFileObject.Kind;
 
 /** Prints out a tree as an indented Java source program.
  *
@@ -400,6 +401,9 @@ public class Pretty extends JCTree.Visitor {
 
     public void visitTopLevel(JCCompilationUnit tree) {
         try {
+            if (tree.sourcefile.isNameCompatible("package-info", Kind.SOURCE)) {
+                printAnnotations(tree.packageAnnotations);
+            }
             printUnit(tree, null);
         } catch (IOException e) {
             throw new UncheckedIOException(e);

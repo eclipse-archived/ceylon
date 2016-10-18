@@ -22,12 +22,19 @@ package com.redhat.ceylon.compiler.java.codegen;
 
 import static com.redhat.ceylon.compiler.typechecker.tree.TreeUtil.isForBackend;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
+import java.net.URI;
 import java.util.Iterator;
 import java.util.Stack;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.java.loader.SourceDeclarationVisitor;
+import com.redhat.ceylon.compiler.java.tools.CeylonPhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnit;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ClassOrInterface;
@@ -36,6 +43,8 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Declaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ModuleDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PackageDescriptor;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
+import com.redhat.ceylon.javax.lang.model.element.Modifier;
+import com.redhat.ceylon.javax.lang.model.element.NestingKind;
 import com.redhat.ceylon.javax.tools.JavaFileObject;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
@@ -697,5 +706,86 @@ public class CeylonTransformer extends AbstractTransformer {
         builder.getInitBuilder().modifiers(Flags.PRIVATE);
         builder.annotations(expressionGen().transformAnnotations(OutputElement.TYPE, pack));
         return builder.build();
+    }
+    
+    public List<JCCompilationUnit> transformPackageInfo(CeylonCompilationUnit ccu) {
+        CeylonFileObject fo = (CeylonFileObject) ((CeylonPhasedUnit)ccu.phasedUnit).getFileObject();
+        ListBuffer<JCCompilationUnit> packageInfos = new ListBuffer<JCCompilationUnit>();
+        for (Tree.PackageDescriptor pack : ccu.ceylonTree.getPackageDescriptors()) {
+            List<JCAnnotation> packageAnnotations = expressionGen().transformAnnotations(OutputElement.PACKAGE, pack);
+            JCCompilationUnit packageInfo = make().TopLevel(packageAnnotations, naming.makeQuotedFQIdent(pack.getScope().getQualifiedNameString()), List.nil());
+            // Enter.visitTopLevel(JCCompilationUnit) uses the tree.sourceFile 
+            // to decide whether it's seeing a package-info.java
+            // So set up a fake one...
+            packageInfo.sourcefile = new JavaFileObject() {
+                @Override
+                public boolean isNameCompatible(String simpleName, Kind kind) {
+                    return "package-info".equals(simpleName) &&
+                            JavaFileObject.Kind.SOURCE == kind;
+                }
+                
+                @Override
+                public URI toUri() {
+                    return fo.toUri();
+                }
+    
+                @Override
+                public String getName() {
+                    return fo.getName();
+                }
+    
+                @Override
+                public InputStream openInputStream() throws IOException {
+                    return fo.openInputStream();
+                }
+    
+                @Override
+                public OutputStream openOutputStream() throws IOException {
+                    return fo.openOutputStream();
+                }
+    
+                @Override
+                public Reader openReader(boolean ignoreEncodingErrors) throws IOException {
+                    return fo.openReader(ignoreEncodingErrors);
+                }
+    
+                @Override
+                public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException {
+                    return fo.getCharContent(ignoreEncodingErrors);
+                }
+    
+                @Override
+                public Writer openWriter() throws IOException {
+                    return fo.openWriter();
+                }
+    
+                @Override
+                public long getLastModified() {
+                    return fo.getLastModified();
+                }
+    
+                @Override
+                public boolean delete() {
+                    return fo.delete();
+                }
+    
+                @Override
+                public Kind getKind() {
+                    return fo.getKind();
+                }
+    
+                @Override
+                public NestingKind getNestingKind() {
+                    return fo.getNestingKind();
+                }
+    
+                @Override
+                public Modifier getAccessLevel() {
+                    return fo.getAccessLevel();
+                }
+            };
+            packageInfos.add(packageInfo);
+        }
+        return packageInfos.toList();
     }
 }
