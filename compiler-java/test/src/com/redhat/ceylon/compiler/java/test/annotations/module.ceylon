@@ -21,8 +21,7 @@
 by("Stef FroMage", "Tomas Hradec")
 license("http://www.gnu.org/licenses/gpl.html")
 native("jvm")
-suppressWarnings("importsOtherJdk")
-suppressWarnings("suppressesNothing")
+suppressWarnings("importsOtherJdk", "suppressesNothing")
 module com.redhat.ceylon.compiler.java.test.annotations "1.2.3" {
     import java.base "7";
     import javax.xml "7";
