@@ -2093,7 +2093,7 @@ public class GenerateJsVisitor extends Visitor {
         }
         if (plainName != null) {
             return ((lhs != null) && (lhs.length() > 0))
-                    ? (lhs + "." + plainName) : plainName;            
+                    ? (lhs + "." + plainName) : plainName;
         }
         boolean protoCall = opts.isOptimize() && (getSuperMemberScope(expr) != null);
         if (accessDirectly(decl) && !(protoCall && AttributeGenerator.defineAsProperty(decl))) {
@@ -2541,7 +2541,7 @@ public class GenerateJsVisitor extends Visitor {
                 super.visit(qme);
                 out(",", lhsVar, ".");
                 returnValue = memberAccess(qme, lhsVar);
-            } else {
+            } else if (qme.getPrimary() instanceof Tree.Package == false) {
                 super.visit(qme);
                 out(".");
             }
