@@ -105,7 +105,8 @@ public class IssuesTests_6500_6999 extends CompilerTests {
                 "-apt", "maven:org.netbeans.modules:org-netbeans-modules-editor-errorstripe/RELEASE81",
                 "-target", "8", "-source", "8",
                 "-rep", "aether:"+getPackagePath()+"bug65xx/bug6566/settings.xml"), 
-                "bug65xx/bug6566/Bug6566.ceylon");
+                "bug65xx/bug6566/Bug6566.ceylon",
+                "bug65xx/bug6566/Bug6566Java.java");
         File archive = getModuleArchive("com.redhat.ceylon.compiler.java.test.issues.bug65xx.bug6566", "1");
         assertTrue(archive.exists());
 

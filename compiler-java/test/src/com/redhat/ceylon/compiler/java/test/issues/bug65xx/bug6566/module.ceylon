@@ -27,4 +27,5 @@ module com.redhat.ceylon.compiler.java.test.issues.bug65xx.bug6566 "1" {
     import maven:"org.netbeans.api:org-openide-util-lookup" "RELEASE81";
     import maven:"org.netbeans.api:org-netbeans-modules-lexer" "RELEASE81";
     import maven:"org.netbeans.api:org-openide-awt" "RELEASE81";
+    import ceylon.collection "1.3.0";
 }

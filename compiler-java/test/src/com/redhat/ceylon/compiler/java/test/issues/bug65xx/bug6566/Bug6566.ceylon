@@ -15,6 +15,7 @@ import org.netbeans.api.lexer {
 import org.openide.util.lookup {
     serviceProvider
 }
+import ceylon.collection { ArrayList }
 
 mimeRegistration {
     mimeType = "text/x-java";
@@ -31,7 +32,9 @@ actionID {
 serviceProvider {
     service = `class Bug6566`;
 }
-shared class Bug6566() {  }
+shared class Bug6566() {
+    shared ArrayList<Integer> i = nothing; 
+ }
 
 
 languageRegistration {
