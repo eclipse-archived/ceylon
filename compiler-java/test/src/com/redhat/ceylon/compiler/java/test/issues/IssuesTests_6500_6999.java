@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.TreeSet;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
@@ -39,9 +40,9 @@ import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
 import com.redhat.ceylon.compiler.java.test.RunSingleThreaded;
+import com.redhat.ceylon.javax.tools.Diagnostic.Kind;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 
-@RunSingleThreaded
 public class IssuesTests_6500_6999 extends CompilerTests {
 
     @Override
@@ -116,30 +117,29 @@ public class IssuesTests_6500_6999 extends CompilerTests {
     
     @Test
     public void testBug6592() {
-        PrintStream err = System.err;
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            System.setErr(new PrintStream(out));
-            CompilationAssertion expectSysError = new CompilationAssertion() {
-                public void onSys(ErrorCollector collector, ExitState exitState) {
-                    
-                }
-            };
-            assertCompiles(Arrays.asList("-overrides", "doesNotExist.xml"), 
-                    new String[]{"bug65xx/bug6592/bug6592.ceylon"}, 
-                    expectSysError);
-            assertEquals("ERROR:No such overrides file: /home/tom/ceylon/ceylon/compiler-java/doesNotExist.xml", out.toString().trim());
-            
-            
-            out = new ByteArrayOutputStream();
-            System.setErr(new PrintStream(out));
-            assertCompiles(Arrays.asList("-overrides", "test/src/com/redhat/ceylon/compiler/java/test/issues/bug65xx/bug6592/overrides.xml"),
-                    new String[]{"bug65xx/bug6592/bug6592.ceylon"}, 
-                    expectSysError);
-            assertEquals("ERROR:/home/tom/ceylon/ceylon/compiler-java/test/src/com/redhat/ceylon/compiler/java/test/issues/bug65xx/bug6592/overrides.xml:2:12: Missing 'module' attribute in element [module: null].", out.toString().trim());
-        } finally {
-            System.setErr(err);
-        }
+        CompilationAssertion expectSysError = new CompilationAssertion() {
+            public void onBug(ErrorCollector collector, ExitState exitState) {
+                TreeSet<CompilerError> treeSet = collector.get(Kind.ERROR);
+                assertEquals(1, treeSet.size());
+                CompilerError e = treeSet.iterator().next();
+                assertTrue(e.message.contains("No such overrides file: "));
+                assertTrue(e.message.contains("doesNotExist.xml"));
+            }
+        };
+        assertCompiles(Arrays.asList("-overrides", "doesNotExist.xml"), 
+                new String[]{"bug65xx/bug6592/bug6592.ceylon"}, 
+                expectSysError);
+        expectSysError = new CompilationAssertion() {
+            public void onBug(ErrorCollector collector, ExitState exitState) {
+                TreeSet<CompilerError> treeSet = collector.get(Kind.ERROR);
+                assertEquals(1, treeSet.size());
+                CompilerError e = treeSet.iterator().next();
+                assertTrue(e.message.contains("overrides.xml:2:12: Missing 'module' attribute in element [module: null]."));
+            }
+        };
+        assertCompiles(Arrays.asList("-overrides", "test/src/com/redhat/ceylon/compiler/java/test/issues/bug65xx/bug6592/overrides.xml"),
+                new String[]{"bug65xx/bug6592/bug6592.ceylon"}, 
+                expectSysError);
     }
     
     @Test
