@@ -1925,7 +1925,12 @@ public class Resolve {
                 // See https://github.com/ceylon/ceylon-compiler/issues/2003
                 String nameString = name.toString();
                 if(!nameString.equals("java.lang.String")
-                        && !nameString.equals("java.lang.Override")){
+                        && !nameString.equals("java.lang.Override")
+                        // Lie about those two to avoid importing the common module
+                        // See https://github.com/ceylon/ceylon/issues/6524
+                        && !nameString.equals("com.redhat.ceylon.common.Nullable")
+                        && !nameString.equals("com.redhat.ceylon.common.NonNull")
+                        ){
                     // Check if the class is accessible according to Ceylon's access rules
                     String scopePackageName = pkgSymbol(env.info.scope.owner).toString();
                     com.redhat.ceylon.model.typechecker.model.Package scopePackage = modelLoader.findPackage(scopePackageName);

@@ -563,6 +563,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         // make sure the language module has its real dependencies added, because we need them in the classpath
         // otherwise we will get errors on the Util and Metamodel calls we insert
         // WARNING! Make sure this list is always the same as the one in /ceylon-runtime/dist/repo/ceylon/language/_version_/module.xml
+        // Note that we lie about the module exports: we pretend they're not imported at compile-time
+        // while they are at run-time (in the module.xml file), so that users don't get these imports
+        // visible in all their modules.
         languageModule.addImport(new ModuleImport(null, findOrCreateModule("com.redhat.ceylon.common", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
         languageModule.addImport(new ModuleImport(null, findOrCreateModule("com.redhat.ceylon.model", Versions.CEYLON_VERSION_NUMBER), false, false, Backend.Java));
         

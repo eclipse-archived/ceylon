@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 
 @Retention(CLASS)
 @Target({ FIELD, METHOD, PARAMETER, LOCAL_VARIABLE })
+//WARNING: that class is used by name in Resolve.java
 public @interface NonNull {
 
 }
