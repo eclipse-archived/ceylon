@@ -272,6 +272,7 @@ shared void issues() {
     issue5952();
     issue5959();
     issue6057();
+    issue6604();
 }
 
 void issue5952() {
@@ -337,4 +338,28 @@ void issue6057() {
   dynamic { DefaultObject o = eval("this"); }
   check(identityHash(object extends Basic() {}) >= 0, "#6057 1");
   check(identityHash(object extends Basic() {}) > 0, "#6057 2");
+}
+
+void issue6604() {
+  variable value i = 0;
+  dynamic {
+    dynamic obj = dynamic [
+      value count => i++;
+      other=2;
+      some => 3;
+      String f() {
+        return "what";
+      }
+      object o {
+        string = "soy un objeto";
+      }
+    ];
+    check(obj.other==2, "#6604.1");
+    check(obj.some==3, "#6604.2");
+    check(obj.count==0, "#6604.3");
+    check(obj.count==1, "#6604.4");
+    check(obj.count==2, "#6604.5");
+    check(obj.f()=="what", "#6604.6");
+    check(obj.o.string=="soy un objeto", "#6604.7");
+  }
 }
