@@ -445,13 +445,18 @@ public class JvmBackendUtil {
                 && !path.equals("module-info.class");
     }
 
-    public static void writeStaticMetamodel(File outputFolder, List<ArtifactResult> entries, JdkProvider jdkProvider) throws IOException {
-        File meta = new File(outputFolder, "META-INF/ceylon");
+    public static void writeStaticMetamodel(File outputFolder, List<ArtifactResult> entries, JdkProvider jdkProvider, String metaInfEntry) throws IOException {
+        File meta = new File(outputFolder, metaInfEntry + "/ceylon");
         meta.mkdirs();
         File metamodel = new File(meta, "metamodel");
         try(FileWriter ret = new FileWriter(metamodel)){
             writeStaticMetamodel(ret, entries, jdkProvider, Collections.<String>emptySet());
         }
+    }
+
+    public static void writeStaticMetamodel(File outputFolder, List<ArtifactResult> entries, JdkProvider jdkProvider) throws IOException {
+        writeStaticMetamodel(outputFolder, entries, jdkProvider, "META-INF");
+        
     }
 
     public static void writeStaticMetamodel(ZipOutputStream outputZip, Set<String> added, 
@@ -761,7 +766,11 @@ public class JvmBackendUtil {
     }
 
     public static InputStream getStaticMetamodelInputStream(java.lang.Class<?> fromClass) {
-        return fromClass.getResourceAsStream("/META-INF/ceylon/metamodel");
+        InputStream stream = fromClass.getResourceAsStream("/META-INF/ceylon/metamodel");
+        if (stream == null) {
+            stream = fromClass.getResourceAsStream("/ANDROID-META-INF/ceylon/metamodel");
+        }
+        return stream;
     }
 
     public static List<String> getCurrentJarEntries() {
