@@ -28,7 +28,9 @@ package com.redhat.ceylon.compiler.java.test.annotations;
         "Tomas Hradec"})
 @.ceylon.language.LicenseAnnotation$annotation$(description = "http://www.gnu.org/licenses/gpl.html")
 @.ceylon.language.NativeAnnotation$annotation$(backends = "jvm")
-@.ceylon.language.SuppressWarningsAnnotation$annotation$(warnings = "importsOtherJdk")
+@.ceylon.language.SuppressWarningsAnnotation$annotation$(warnings = {
+        "importsOtherJdk",
+        "suppressesNothing"})
 final class $module_ {
     
     private $module_() {
