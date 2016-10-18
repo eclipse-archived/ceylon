@@ -628,18 +628,49 @@ public class InvocationGenerator {
     void nativeObject(Tree.NamedArgumentList argList) {
         final List<Tree.NamedArgument> nargs = argList.getNamedArguments();
         if (argList.getSequencedArgument() == null) {
+            ArrayList<Tree.NamedArgument> getters = null;
+            for (Tree.NamedArgument arg : nargs) {
+                if (arg instanceof Tree.AttributeArgument) {
+                    if (getters == null) {
+                        getters = new ArrayList<>(nargs.size());
+                    }
+                    getters.add(arg);
+                }
+            }
+            final String tmpobjvar = getters == null ? null : gen.createRetainedTempVar();
+            if (getters != null) {
+                gen.out("(", tmpobjvar, "=");
+            }
             gen.out("{");
             boolean first = true;
             for (Tree.NamedArgument arg : nargs) {
-                if (first) { first = false; } else { gen.out(","); }
-                String argName = arg.getIdentifier().getText();
-                if (JsIdentifierNames.isReservedWord(argName)) {
-                    gen.out("$_");
+                if (arg instanceof Tree.AttributeArgument == false) {
+                    if (first) { first = false; } else { gen.out(","); }
+                    String argName = arg.getIdentifier().getText();
+                    if (JsIdentifierNames.isReservedWord(argName)) {
+                        gen.out("$_");
+                    }
+                    gen.out(argName, ":");
+                    arg.visit(gen);
                 }
-                gen.out(argName, ":");
-                arg.visit(gen);
             }
             gen.out("}");
+            if (getters != null) {
+                for (Tree.NamedArgument arg : getters) {
+                    if (first) { first = false; } else { gen.out(","); }
+                    gen.out("Object.defineProperty(", tmpobjvar, ",'");
+                    if (arg instanceof Tree.AttributeArgument) {
+                        String argName = arg.getIdentifier().getText();
+                        if (JsIdentifierNames.isReservedWord(argName)) {
+                            gen.out("$_");
+                        }
+                        gen.out(argName, "',{get:function(){ return ");
+                        gen.visitSingleExpression(((Tree.AttributeArgument) arg).getSpecifierExpression().getExpression());
+                        gen.out("},configurable:true,enumerable:true})");
+                    }
+                }
+                gen.out(",", tmpobjvar, ")");
+            }
         } else {
             String arr = null;
             boolean isComp = false;
