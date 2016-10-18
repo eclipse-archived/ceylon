@@ -143,29 +143,15 @@ public class CeylonRunJsTool extends RepoUsingTool {
         if (path != null && !path.isEmpty() && isExe(path)) {
             return path;
         }
-        //quick search for most common cases
-        String[] paths = { "/usr/bin/node", "/usr/bin/nodejs", "/usr/local/bin/node", "/bin/node", "/opt/bin/node",
-                "C:\\Program Files\\nodejs\\node.exe", "C:\\Program Files (x86)\\nodejs\\node.exe",
-                "C:\\Program Files\\nodejs\\nodejs.exe", "C:\\Program Files (x86)\\nodejs\\nodejs.exe" };
-        for (String p : paths) {
-            if (isExe(p)) {
-                return p;
-            }
-        }
         //Now let's look for the executable in all path elements
-        String winpath = findNodeInPath(System.getenv("Path"));
-        //And why not, look for it in PATH
-        if (winpath != null) {
-            return winpath;
-        }
-        winpath = findNodeInPath(System.getenv("PATH"));
+        String winpath = findNodeInPath(System.getenv("PATH"));
         if (winpath != null) {
             return winpath;
         }
         String errmsg = "Could not find 'node' executable. Please install Node.js (from http://nodejs.org)."
                 + "\nMake sure the path to the node executable is included in your PATH environment variable."
                 + "\nIf you have node installed in a non-standard location, you can either set the environment variable"
-                + "\nNODE_EXE or the JVM system property node.exe with the full path to the node executable.";
+                + "\nNODE_EXE or the JVM system property '" + Constants.PROP_CEYLON_EXTCMD_NODE + "' with the full path to the node executable.";
         throw new CeylonRunJsException(errmsg);
     }
 
@@ -242,7 +228,7 @@ public class CeylonRunJsTool extends RepoUsingTool {
     }
 
     private static String getNodeExe() {
-        return getFromEnv("NODE_EXE", "node.exe");
+        return getFromEnv("NODE_EXE", Constants.PROP_CEYLON_EXTCMD_NODE);
     }
 
     private static String getCeylonRepo() {
@@ -268,9 +254,8 @@ public class CeylonRunJsTool extends RepoUsingTool {
             String exepath, final List<File> repos, PrintStream output) {
         final String node = exepath == null ? findNode() : exepath;
         if (exepath != null) {
-            File _f = new File(exepath);
-            if (!(_f.exists() && _f.canExecute())) {
-                throw new CeylonRunJsException("Specified node.js executable is invalid.");
+            if (!isExe(exepath)) {
+                throw new CeylonRunJsException("Specified Node.js executable is invalid.");
             }
         }
 

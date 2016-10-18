@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
@@ -162,8 +163,9 @@ public class NpmContentStore extends AbstractContentStore {
             String name = ac.getName();
             String version = ac.getVersion();
             if (log != null) log.debug("Installing NPM module " + name + "@" + version + " in " + out);
+            String npmCmd = System.getProperty(Constants.PROP_CEYLON_EXTCMD_NPM, "npm");
             ProcessBuilder pb = new ProcessBuilder()
-                    .command("npm", "install", "-q", name + "@" + version)
+                    .command(npmCmd, "install", "-q", name + "@" + version)
                     .directory(out.getParentFile())
                     .inheritIO();
             

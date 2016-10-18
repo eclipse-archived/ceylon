@@ -36,6 +36,9 @@ public abstract class Constants {
     
     public static final String PROP_CEYLON_TERM_COLORS = "ceylon.terminal.usecolors";
     
+    public static final String PROP_CEYLON_EXTCMD_NODE = "ceylon.command.node";
+    public static final String PROP_CEYLON_EXTCMD_NPM = "ceylon.command.npm";
+    
     public static final String DEFAULT_SOURCE_DIR = "source";
     public static final String DEFAULT_RESOURCE_DIR = "resource";
     public static final String DEFAULT_SCRIPT_DIR = "script";
