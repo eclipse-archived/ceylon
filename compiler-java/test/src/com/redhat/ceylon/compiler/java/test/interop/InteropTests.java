@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.File;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -873,5 +874,18 @@ public class InteropTests extends CompilerTests {
     @Test
     public void testIopBug6589() {
         compareWithJavaSource("Bug6589");
+    }
+    
+    @Test
+    public void testIopAnnotateJavaPackage() throws Exception {
+        compile("packageannotations/AnnotateJavaPackage.ceylon", "packageannotations/package.ceylon");
+        String main = "com.redhat.ceylon.compiler.java.test.interop.packageannotations.AnnotateJavaPackage";
+        try (URLClassLoader classLoader = getClassLoader(main, new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.interop.packageannotations", "1"))) {
+            Class<?> c = Class.forName("com.redhat.ceylon.compiler.java.test.interop.packageannotations.IntegerAdaptor", false, classLoader);
+            Package p = c.getPackage();
+            Class ac = Class.forName("javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters", false, classLoader);
+            assertNotNull(p.getAnnotation(ac));
+        }
+        
     }
 }
