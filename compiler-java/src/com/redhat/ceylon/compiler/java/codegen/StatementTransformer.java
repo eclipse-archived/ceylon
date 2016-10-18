@@ -4657,8 +4657,12 @@ public class StatementTransformer extends AbstractTransformer {
                     selectorExpr = selectorAlias.makeIdent();
                 }
                 if (term instanceof Tree.Tuple) {
-                    test = make().Apply(null, makeSelect(selectorExpr, "equals"), List.<JCExpression>of(transformedExpression));
-                    if (!term.getTypeModel().isEmpty()) {
+                    
+                    if (term.getTypeModel().isEmpty()) {
+                        test = make().TypeTest(selectorAlias.makeIdent(), 
+                                makeJavaType(typeFact().getEmptyType(), JT_RAW));
+                    } else {
+                        test = make().Apply(null, makeSelect(selectorExpr, "equals"), List.<JCExpression>of(transformedExpression));
                         test = make().Binary(Tag.AND, 
                                 make().TypeTest(selectorAlias.makeIdent(), 
                                         make().QualIdent(syms().ceylonTupleType.tsym)),
