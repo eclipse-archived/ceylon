@@ -74,6 +74,9 @@ final class ImportScanner extends JCTree.Visitor {
         String importedPkg = selected.toString();
         if(importedPkg.isEmpty())
             return;
+        // Also work with Ceylon qualified types
+        if(importedPkg.startsWith("."))
+            importedPkg = importedPkg.substring(1);
         Package importedPackage = importingModule.getPackage(importedPkg);
         if(importedPackage == null){
             // try one level up to skip potential types

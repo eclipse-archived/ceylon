@@ -982,6 +982,10 @@ public class LanguageCompiler extends JavaCompiler {
         this.addModuleTrees = addModuleTrees;
     }
     
+    public boolean isAddModuleTrees() {
+        return addModuleTrees;
+    }
+    
     public boolean isHadRunTwiceException() {
         return hadRunTwiceException;
     }

@@ -222,6 +222,10 @@ public class CeylonEnter extends Enter {
             hasJavaAndCeylonSources = true;
             needsModelReset = true;
         }
+        // this is false if we're in an APT round where we did not generate the trees
+        if(!compiler.isAddModuleTrees()){
+            setupImportedPackagesForJavaTrees(ceylonTrees);
+        }
         if(isBootstrap || hasJavaAndCeylonSources){
             super.main(trees);
         }
