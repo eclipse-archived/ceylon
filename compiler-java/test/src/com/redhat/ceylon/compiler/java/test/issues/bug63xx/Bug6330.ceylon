@@ -21,5 +21,5 @@
 void bug6333() {
     String[2] tup = ["one", "two"];
     switch(tup)
-    case ([a,b]) { String x = b; }
+    case ([String a, String b]) { String x = b; }
 }
