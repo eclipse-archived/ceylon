@@ -563,6 +563,13 @@ public class StatementTests extends CompilerTests {
     }
     
     @Test
+    public void testSwitchTupleCase(){
+        compareWithJavaSource("swtch/SwitchTupleCase");
+        //compile("swtch/SwitchTupleCase.ceylon");
+        run("com.redhat.ceylon.compiler.java.test.statement.swtch.switchTupleCase");
+    }
+    
+    @Test
     public void testReturnAnonFunction(){
         compareWithJavaSource("retrn/ReturnAnonFunction");
     }
