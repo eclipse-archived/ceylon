@@ -382,4 +382,9 @@ public class AnnotationsTests extends CompilerTests {
         compile("AnnotationCharacterSequence.ceylon");
         run("com.redhat.ceylon.compiler.java.test.annotations.AnnotationCharacterSequenceUse");
     }
+    
+    @Test
+    public void testAnnotationSpreadArgs() {
+        compareWithJavaSource("AnnotationSpreadArgs");
+    }
  }

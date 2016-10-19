@@ -478,6 +478,12 @@ public class InteropTests extends CompilerTests {
     }
     
     @Test
+    public void testAnnotationSequencedArgs(){
+        compile("JavaAnnotation.java");
+        compareWithJavaSource("AnnotationSequencedArgs");
+    }
+    
+    @Test
     public void testBannedAnnotation(){
       assertErrors("BannedAnnotation",
               new CompilerError(13, "inappropiate java annotation: interoperation with @Target is not supported"),

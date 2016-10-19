@@ -80,3 +80,11 @@ import java.lang.annotation.ElementType;
 @interface JavaAnnotationClass2 {
     java.lang.Class<?> clas();
 }
+
+@interface JavaAnnotationSequencedArgs {
+    String[] value() default {};
+}
+@interface JavaAnnotationSequencedArgs2 {
+    String[] foo() default {};
+    JavaAnnotationSequencedArgs[] bar() default {};
+}
