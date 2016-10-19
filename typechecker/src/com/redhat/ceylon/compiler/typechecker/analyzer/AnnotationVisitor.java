@@ -563,8 +563,22 @@ public class AnnotationVisitor extends Visitor {
             Tree.SequencedArgument sa = 
                     nal.getSequencedArgument();
             if (sa!=null) {
-                sa.addError("illegal annotation argument");
-//                checkPositionlArgument(a, nal.getSequencedArgument().getPositionalArguments());
+                Parameter p = sa.getParameter();
+                if (p!=null) {
+                    for (Tree.PositionalArgument pa: sa.getPositionalArguments()) {
+                        if (pa!=null) {
+                            if (pa instanceof Tree.ListedArgument) {
+                                Tree.ListedArgument la = 
+                                        (Tree.ListedArgument) pa;
+                                checkAnnotationArgument(a, 
+                                        la.getExpression());
+                            }
+                            else {
+                                pa.addError("illegal annotation argument");
+                            }
+                        }
+                    }
+                }
             }
         }
     }

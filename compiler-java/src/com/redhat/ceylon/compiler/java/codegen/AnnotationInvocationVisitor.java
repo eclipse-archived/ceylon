@@ -41,8 +41,6 @@ import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Functional;
 import com.redhat.ceylon.model.typechecker.model.Function;
-import com.redhat.ceylon.model.typechecker.model.Module;
-import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
@@ -349,6 +347,28 @@ class AnnotationInvocationVisitor extends Visitor {
                         visitor.transformArgument(na);
                         found = true;
                         break;
+                    }
+                }
+                Tree.SequencedArgument sa = invocation.getNamedArgumentList().getSequencedArgument();
+                if (sa != null) {
+                    Parameter parameter = sa.getParameter();
+                    int parameterIndex = anno.indexOfConstructorParameter(parameter);
+                    if (parameterIndex == argumentIndex) {
+                        ListBuffer<JCExpression> prevArray = visitor.startArray();
+                        for (Tree.PositionalArgument pa : sa.getPositionalArguments()) {
+                            if (pa instanceof Tree.ListedArgument) {
+                                visitor.transformArgument(pa);
+                            } else if (pa instanceof Tree.SpreadArgument) {
+                                ListBuffer<JCExpression> listed = visitor.arrayExprs;
+                                visitor.arrayExprs = null;
+                                ((Tree.SpreadArgument)pa).getExpression().visit(visitor);
+                                listed.addAll(((JCNewArray)visitor.argumentExpr).elems);
+                                visitor.argumentExpr = null;
+                                visitor.arrayExprs = listed;
+                            }
+                        }
+                        visitor.appendBuiltArray(prevArray);
+                        found = true;
                     }
                 }
                 if (!found) {
