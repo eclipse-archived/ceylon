@@ -318,7 +318,8 @@ function $eq$(a,b) {
   if (a===null)return b===null;
   if (a===undefined)return b===undefined;
   if (Array.isArray(a))return $arr$eq(a,b);
-  //Be very careful about the ordering of this operators
+  //Be very careful about the ordering of these operators
+  if (typeof(a)==='number' && typeof(b)==='number')return a==b;
   if (a.equals)return a.equals(b);
   return a==b;
 }
