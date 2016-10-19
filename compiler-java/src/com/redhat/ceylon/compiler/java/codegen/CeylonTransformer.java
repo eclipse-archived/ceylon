@@ -709,7 +709,7 @@ public class CeylonTransformer extends AbstractTransformer {
     }
     
     public List<JCCompilationUnit> transformPackageInfo(CeylonCompilationUnit ccu) {
-        CeylonFileObject fo = (CeylonFileObject) ((CeylonPhasedUnit)ccu.phasedUnit).getFileObject();
+        final CeylonFileObject fo = (CeylonFileObject) ((CeylonPhasedUnit)ccu.phasedUnit).getFileObject();
         ListBuffer<JCCompilationUnit> packageInfos = new ListBuffer<JCCompilationUnit>();
         for (Tree.PackageDescriptor pack : ccu.ceylonTree.getPackageDescriptors()) {
             List<JCAnnotation> packageAnnotations = expressionGen().transformAnnotations(OutputElement.PACKAGE, pack);
