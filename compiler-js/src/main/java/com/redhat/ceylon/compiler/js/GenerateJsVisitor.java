@@ -2815,7 +2815,17 @@ public class GenerateJsVisitor extends Visitor {
         if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             Operators.nativeBinaryOp(that, "plus", "+", null, this);
         } else {
-            Operators.simpleBinaryOp(that, null, ".plus(", ")", this);
+            Type lt = that.getLeftTerm().getTypeModel();
+            Type rt = that.getRightTerm().getTypeModel();
+            if (TypeUtils.intsOrFloats(lt,rt)) {
+                if (lt.isFloat() || rt.isFloat()) {
+                    out(getClAlias(), "Float");
+                }
+                out("(");
+                Operators.simpleBinaryOp(that, null, "+", ")", this);
+            } else {
+                Operators.simpleBinaryOp(that, null, ".plus(", ")", this);
+            }
         }
     }
 
@@ -2830,7 +2840,17 @@ public class GenerateJsVisitor extends Visitor {
         if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             Operators.nativeBinaryOp(that, "minus", "-", null, this);
         } else {
-            Operators.simpleBinaryOp(that, null, ".minus(", ")", this);
+            Type lt = that.getLeftTerm().getTypeModel();
+            Type rt = that.getRightTerm().getTypeModel();
+            if (TypeUtils.intsOrFloats(lt,rt)) {
+                if (lt.isFloat() || rt.isFloat()) {
+                    out(getClAlias(), "Float");
+                }
+                out("(");
+                Operators.simpleBinaryOp(that, null, "-", ")", this);
+            } else {
+                Operators.simpleBinaryOp(that, null, ".minus(", ")", this);
+            }
         }
     }
 
@@ -2839,7 +2859,17 @@ public class GenerateJsVisitor extends Visitor {
         if (isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getLeftTerm().getTypeModel())) {
             Operators.nativeBinaryOp(that, "times", "*", null, this);
         } else {
-            Operators.simpleBinaryOp(that, null, ".times(", ")", this);
+            Type lt = that.getLeftTerm().getTypeModel();
+            Type rt = that.getRightTerm().getTypeModel();
+            if (TypeUtils.intsOrFloats(lt,rt)) {
+                if (lt.isFloat() || rt.isFloat()) {
+                    out(getClAlias(), "Float");
+                }
+                out("(");
+                Operators.simpleBinaryOp(that, null, "*", ")", this);
+            } else {
+                Operators.simpleBinaryOp(that, null, ".times(", ")", this);
+            }
         }
     }
 
@@ -3028,7 +3058,7 @@ public class GenerateJsVisitor extends Visitor {
         }
         final Type lt = left.getTypeModel();
         final Type rt = right.getTypeModel();
-        return (lt.isInteger() && rt.isInteger()) || (lt.isBoolean() && rt.isBoolean());
+        return TypeUtils.bothInts(lt, rt) || (lt.isBoolean() && rt.isBoolean());
     }
 
     @Override public void visit(final Tree.SmallerOp that) {
