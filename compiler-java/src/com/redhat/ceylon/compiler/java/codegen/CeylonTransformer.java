@@ -713,7 +713,7 @@ public class CeylonTransformer extends AbstractTransformer {
         ListBuffer<JCCompilationUnit> packageInfos = new ListBuffer<JCCompilationUnit>();
         for (Tree.PackageDescriptor pack : ccu.ceylonTree.getPackageDescriptors()) {
             List<JCAnnotation> packageAnnotations = expressionGen().transformAnnotations(OutputElement.PACKAGE, pack);
-            JCCompilationUnit packageInfo = make().TopLevel(packageAnnotations, naming.makeQuotedFQIdent(pack.getScope().getQualifiedNameString()), List.nil());
+            JCCompilationUnit packageInfo = make().TopLevel(packageAnnotations, naming.makeQuotedFQIdent(pack.getScope().getQualifiedNameString()), List.<JCTree>nil());
             // Enter.visitTopLevel(JCCompilationUnit) uses the tree.sourceFile 
             // to decide whether it's seeing a package-info.java
             // So set up a fake one...
