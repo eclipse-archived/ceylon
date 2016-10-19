@@ -2742,12 +2742,24 @@ public class ExpressionVisitor extends Visitor {
                         }
                         else {
                             local.addUsageWarning(Warning.inferredNotNull, 
-                                    "not null type inferred from reference to function or value with unchecked nulls '" 
+                                    "not null type inferred from invocation of function with unchecked nulls: '" 
                                     + dec.getName(unit) 
                                     + "' is not known to be null-safe (explicitly specify the type '" + type.asSourceCodeString(unit) + "')");
                             return;
                         }
                     }
+                }
+            }
+            else if (term instanceof Tree.StaticMemberOrTypeExpression) {
+                Tree.StaticMemberOrTypeExpression bme = 
+                        (Tree.StaticMemberOrTypeExpression) term;
+                Declaration dec = bme.getDeclaration();
+                if (dec!=null) {
+                    local.addUsageWarning(Warning.inferredNotNull, 
+                            "not null type inferred from reference to value with unchecked nulls: '" 
+                            + dec.getName(unit) 
+                            + "' is not known to be null-safe (explicitly specify the type '" + type.asSourceCodeString(unit) + "')");
+                    return;
                 }
             }
             local.addUsageWarning(Warning.inferredNotNull, 
