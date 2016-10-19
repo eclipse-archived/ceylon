@@ -26,7 +26,7 @@ public class OsgiVersion {
         ceylonQualifiers.put("final", 5);
         ceylonQualifiers.put("sp", 6);
     }
-    private static int QUALIFIER_OTHER = 6; // Same as largest index in above list
+    private static int QUALIFIER_OTHER = 7; // Same as the size of the above list
     
     public static final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd-HHmm");
     static {
@@ -86,7 +86,7 @@ public class OsgiVersion {
         // - any number after that gets padded with leading zeros to a length of 3 and prefixed with the letter "n"
         // - when a non-number is encountered in the first 3 positions enough "0" parts are added to have at least 3 numbers at the start
         // - a non-number gets lookup in the qualifier table and if found replaced by its index
-        // - when not found we add the part prefixed with the largest index in the qualifier table and a dash
+        // - when not found we add the part prefixed with the size of the qualifier table and a dash
         boolean inOsgiQualifier = false;
         boolean lastWasQualifier = false;
         ArrayList<String> resultParts = new ArrayList<String>();
@@ -98,9 +98,7 @@ public class OsgiVersion {
             inOsgiQualifier = inOsgiQualifier || i >= 3;
             if (isNumber(part)) {
                 if (inOsgiQualifier) {
-                    resultParts.add(String.format("n%03d", Integer.parseInt(part)));
-                } else {
-                    resultParts.add(part);
+                    part = String.format("n%03d", Integer.parseInt(part));
                 }
                 lastWasQualifier = false;
             } else {
@@ -113,16 +111,18 @@ public class OsgiVersion {
                 }
                 Integer idx = ceylonQualifiers.get(part.toLowerCase());
                 if (idx != null) {
-                    resultParts.add(idx.toString());
+                    part = idx.toString();
                 } else {
-                    resultParts.add(QUALIFIER_OTHER + "-" + part);
+                    part = QUALIFIER_OTHER + "-" + part;
                 }
                 lastWasQualifier = true;
             }
+            resultParts.add(part);
         }
         // We need our version to start with at least 3 numbers
         for (int j = resultParts.size(); j < 3; j++) {
             resultParts.add("0");
+            lastWasQualifier = false;
         }
         
         if (!lastWasQualifier) {
@@ -131,7 +131,8 @@ public class OsgiVersion {
         }
         
         // Now join all the resulting parts together. The first 4
-        // elements get separated by dots, the rest by dashes
+        // elements get separated by dots, the rest by dashes and the
+        // qualifier always starts with 'osgi-'
         StringBuffer result = new StringBuffer();
         for (int i=0; i < resultParts.size(); i++) {
             String part = resultParts.get(i);
@@ -139,6 +140,9 @@ public class OsgiVersion {
                 result.append("-");
             } else if (i > 0) {
                 result.append(".");
+            }
+            if (i == 3) {
+                result.append("osgi-");
             }
             result.append(part);
         }
