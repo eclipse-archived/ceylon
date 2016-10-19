@@ -140,13 +140,18 @@ public class AnnotationVisitor extends Visitor {
     		}
     		if (se!=null) {
     			checkAnnotationArgument(a, 
-    			        se.getExpression(), pt);
+    			        se.getExpression());
     		}
     	}
     }
     
+    /** 
+     * Checks that the given expression is a valid 
+     * annotation argument 
+     * (literal, tuple, annotation invocation etc)
+     */
     private void checkAnnotationArgument(Functional a, 
-            Tree.Expression e, Type pt) {
+            Tree.Expression e) {
         if (e!=null) {
             Tree.Term term = e.getTerm();
             if (term instanceof Tree.Literal) {
@@ -174,8 +179,7 @@ public class AnnotationVisitor extends Visitor {
                                     la.getExpression();
                             if (expression!=null) {
                                 checkAnnotationArgument(a, 
-                                        expression, 
-                                        arg.getTypeModel());
+                                        expression);
                             }
                         }
                         else {
@@ -199,8 +203,7 @@ public class AnnotationVisitor extends Visitor {
                                     la.getExpression();
                             if (expression!=null) {
                                 checkAnnotationArgument(a, 
-                                        expression, 
-                                        arg.getTypeModel());
+                                        expression);
                             }
                         }
                         else {
@@ -210,7 +213,7 @@ public class AnnotationVisitor extends Visitor {
                 }
             }
             else if (term instanceof Tree.InvocationExpression) {
-                checkAnnotationInstantiation(a, e, pt, "illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
+                checkAnnotationInstantiation(a, e, "illegal annotation argument: must be a literal value, metamodel reference, annotation instantiation, or parameter reference");
             }
             else if (term instanceof Tree.BaseMemberExpression) {
                 Tree.BaseMemberExpression bme = 
@@ -484,7 +487,6 @@ public class AnnotationVisitor extends Visitor {
                         Tree.Expression e = 
                                 r.getExpression();
                         checkAnnotationInstantiation(a, e, 
-                                a.getType(),
                                 "annotation constructor must return a newly-instantiated annotation");
                     }
                     else {
@@ -504,7 +506,6 @@ public class AnnotationVisitor extends Visitor {
             if (se!=null) {
                 checkAnnotationInstantiation(a, 
                         se.getExpression(), 
-                        a.getType(),
                         "annotation constructor must return a newly-instantiated annotation");
             }
         }
@@ -524,7 +525,7 @@ public class AnnotationVisitor extends Visitor {
     }
     
     private void checkAnnotationInstantiation(Functional a, 
-            Tree.Expression e, Type pt, String errorMessage) {
+            Tree.Expression e, String errorMessage) {
         if (e!=null) {
             Tree.Term term = e.getTerm();
             if (term instanceof Tree.InvocationExpression) {
@@ -580,8 +581,7 @@ public class AnnotationVisitor extends Visitor {
                     Parameter p = na.getParameter();
                     if (se!=null && p!=null) {
                         checkAnnotationArgument(a, 
-                                se.getExpression(),
-                                p.getType());
+                                se.getExpression());
                     }
                 }
                 else {
@@ -601,15 +601,13 @@ public class AnnotationVisitor extends Visitor {
                         Tree.ListedArgument la = 
                                 (Tree.ListedArgument) pa;
                         checkAnnotationArgument(a, 
-                                la.getExpression(),
-                                p.getType());
+                                la.getExpression());
                     }
                     else if (pa instanceof Tree.SpreadArgument) {
                         Tree.SpreadArgument sa = 
                                 (Tree.SpreadArgument) pa;
                         checkAnnotationArgument(a, 
-                                sa.getExpression(),
-                                p.getType());
+                                sa.getExpression());
                     }
                     else {
                         pa.addError("illegal annotation argument");
