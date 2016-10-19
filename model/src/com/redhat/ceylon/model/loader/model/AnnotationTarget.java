@@ -65,7 +65,7 @@ public enum AnnotationTarget {
     PACKAGE {
         @Override
         public Set<OutputElement> outputs() {
-            return EnumSet.of(OutputElement.PACKAGE, OutputElement.TYPE);
+            return Collections.singleton(OutputElement.PACKAGE);
         }
     },
     TYPE_USE {
