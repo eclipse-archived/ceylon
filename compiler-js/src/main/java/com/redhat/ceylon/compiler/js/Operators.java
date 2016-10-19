@@ -13,6 +13,15 @@ import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 
 public class Operators {
 
+    static void unwrappedNumberOrTerm(final Tree.Term term, final GenerateJsVisitor gen) {
+        if (term instanceof Tree.NaturalLiteral) {
+            gen.out("(", Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)term, false)), ")");
+        } else if (term instanceof Tree.FloatLiteral) {
+            gen.out(gen.getClAlias(), "Float(", term.getText(), ")");
+        } else {
+            gen.box(term);
+        }
+    }
     static void simpleBinaryOp(final Tree.BinaryOperatorExpression exp,
             final String before, final String op, final String after, final GenerateJsVisitor gen) {
         if (before != null) {
@@ -21,14 +30,10 @@ public class Operators {
         if (op.charAt(0)!='.' && exp.getLeftTerm() instanceof Tree.NaturalLiteral) {
             gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getLeftTerm(), false)));
         } else {
-            gen.box(exp.getLeftTerm());
+            unwrappedNumberOrTerm(exp.getLeftTerm(), gen);
         }
         gen.out(op);
-        if (exp.getRightTerm() instanceof Tree.NaturalLiteral) {
-            gen.out(Long.toString(gen.parseNaturalLiteral((Tree.NaturalLiteral)exp.getRightTerm(), false)));
-        } else {
-            gen.box(exp.getRightTerm());
-        }
+        unwrappedNumberOrTerm(exp.getRightTerm(), gen);
         if (after != null) {
             gen.out(after);
         }
