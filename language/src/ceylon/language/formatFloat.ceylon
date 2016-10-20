@@ -185,10 +185,8 @@ shared String formatFloat(
             result.appendCharacter('0'.neighbour(digit));
         }
     }
-    if (float < 0.0) {
-        if (result.containsAny('1'..'9')) {
-            result.appendCharacter('-');
-        }
+    if (float < 0.0 && result.containsAny('1'..'9')) {
+        result.appendCharacter('-');
     }
     return(result.string.reversed);
 }
