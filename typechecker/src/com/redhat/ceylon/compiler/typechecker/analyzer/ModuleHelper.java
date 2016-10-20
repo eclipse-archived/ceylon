@@ -70,7 +70,8 @@ public class ModuleHelper {
         else {
             error.append("'")
                 .append(module.getNameAsString())
-                .append(" \"").append(module.getVersion()).append("\"")
+                .append("/")
+                .append(module.getVersion())
                 .append("'");
         }
     }
