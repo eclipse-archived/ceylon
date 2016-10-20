@@ -1115,6 +1115,10 @@ void checkFormatFloat() {
     check(formatFloat(111111.1, 1, 1, '.', ',') == "111,111.1", "formatFloat separators #5");
     check(formatFloat(1.0e20, 1, 1, '.', ',') == "100,000,000,000,000,000,000.0", "formatFloat separators #6");
 
+    check(formatFloat(-0.0, 1, 1) == "0.0", "formatFloat negative zero #1");
+    check(formatFloat(-0.01, 1, 1) == "0.0", "formatFloat negative zero #2");
+    check(formatFloat(-0.01, 2, 2) == "-0.01", "formatFloat negative (non) zero #3");
+
     void checkNanComparisons<T>(T nan, T zero) 
             given T satisfies Comparable<T> {
         check(!nan == zero, "generic nan comparison");
