@@ -33,5 +33,8 @@ shared sealed interface GettableDeclaration {
     throws(`class StorageException`,
         "If this attribute is not stored at runtime, for example if it is neither shared nor captured.")
     shared formal Anything memberGet(Object container);
+    
+    "Reads the current value of this `static` attribute."
+    shared formal Anything staticGet(AppliedType<Object> containerType);
 
 }

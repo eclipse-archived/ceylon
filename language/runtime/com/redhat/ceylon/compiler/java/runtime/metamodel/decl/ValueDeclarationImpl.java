@@ -17,6 +17,7 @@ import ceylon.language.meta.declaration.ValueDeclaration$impl;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.common.NonNull;
 import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
@@ -102,8 +103,17 @@ public class ValueDeclarationImpl
     })
     public <Get, Set> ceylon.language.meta.model.Value<Get,Set> apply(@Ignore TypeDescriptor $reifiedGet,
                                                                       @Ignore TypeDescriptor $reifiedSet){
-        if(!getToplevel())
-            throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use memberApply");
+        if(!getToplevel()) {
+            throw new ceylon.language.meta.model.TypeApplicationException(getStatic() ? 
+                    "Cannot apply a static declaration: use staticApply": 
+                    "Cannot apply a member declaration with no container type: use memberApply");
+        }
+        return applyInternal($reifiedGet, $reifiedSet, null);
+    }
+
+    protected <Get,Set>ceylon.language.meta.model.Value<Get, Set> applyInternal(TypeDescriptor $reifiedGet,
+            TypeDescriptor $reifiedSet,
+            ceylon.language.meta.model.Type<?> container) {
         com.redhat.ceylon.model.typechecker.model.Value modelDecl = (com.redhat.ceylon.model.typechecker.model.Value)declaration;
         com.redhat.ceylon.model.typechecker.model.TypedReference typedReference = modelDecl.appliedTypedReference(null, Collections.<Type>emptyList());
 
@@ -117,7 +127,7 @@ public class ValueDeclarationImpl
         Metamodel.checkReifiedTypeArgument("apply", "Value<$1,$2>", 
                 Variance.OUT, getType, $reifiedGet,
                 Variance.IN, setType, $reifiedSet);
-        return new ValueImpl<Get,Set>(reifiedGet, reifiedSet, this, typedReference, null, null);
+        return new ValueImpl<Get,Set>(reifiedGet, reifiedSet, this, typedReference, container, null);
     }
 
     @TypeInfo("ceylon.language.meta.model::Attribute<Container,Get,Set>")
@@ -156,6 +166,20 @@ public class ValueDeclarationImpl
                 Variance.IN, setType, $reifiedSet);
         return new AttributeImpl<Container,Get,Set>(reifiedContainer, reifiedGet, reifiedSet, this, typedReference, containerType);
     }
+    
+    @Override
+    @TypeInfo(value="ceylon.language.meta.model::Value<Get,Set>", erased=true)
+    @TypeParameters({
+        @TypeParameter("Get"),
+        @TypeParameter(value="Set", defaultValue="ceylon.language::Nothing"),
+    })
+    public <Get, Set> ceylon.language.meta.model.Value<Get,Set> staticApply(@Ignore TypeDescriptor $reifiedGet,
+                                                                      @Ignore TypeDescriptor $reifiedSet,
+                                                                      @Name("containerType") ceylon.language.meta.model.Type<? extends Object> containerType){
+        if(!getStatic())
+            throw new ceylon.language.meta.model.TypeApplicationException("Cannot apply a member declaration with no container type: use apply");
+        return applyInternal($reifiedGet, $reifiedSet, containerType);
+    }
 
     @Override
     @TypeInfo("ceylon.language.meta.declaration::OpenType")
@@ -174,6 +198,16 @@ public class ValueDeclarationImpl
     public Object memberGet(@Name("container") @TypeInfo("ceylon.language::Object") Object container){
         ceylon.language.meta.model.Type<?> containerType = Metamodel.getAppliedMetamodel(Metamodel.getTypeDescriptor(container));
         return memberApply(TypeDescriptor.NothingType, Anything.$TypeDescriptor$, TypeDescriptor.NothingType, containerType).bind(container).get();
+    }
+    
+    @Nullable
+    @TypeInfo("ceylon.language::Anything")
+    @Override
+    public Object staticGet(
+            @NonNull
+            @TypeInfo("ceylon.language.meta.model::Type<ceylon.language::Object>")
+            ceylon.language.meta.model.Type<?> containerType) {
+        return staticApply(Anything.$TypeDescriptor$, TypeDescriptor.NothingType, containerType).get();
     }
 
     @Override
