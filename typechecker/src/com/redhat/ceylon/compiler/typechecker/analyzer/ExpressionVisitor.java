@@ -2862,7 +2862,8 @@ public class ExpressionVisitor extends Visitor {
                 if (!(returnType instanceof Tree.VoidModifier)) {
                 	if (returnDeclaration instanceof Function) {
 	                    that.addError("function must return a value: " +
-	                    		returndesc() + " is not a 'void' function", 12000);
+	                    		returndesc() + " is not a 'void' function", 
+	                    		12000);
                 	}
                 	else {
 	                    that.addError("getter must return a value: " +
@@ -2876,7 +2877,8 @@ public class ExpressionVisitor extends Visitor {
                 if (returnType instanceof Tree.VoidModifier) {
                 	if (returnDeclaration instanceof Function) {
                         that.addError("function may not return a value: " +
-                                returndesc() + " is a 'void' function", 13000);
+                                returndesc() + " is a 'void' function", 
+                                13000);
                 	}
                 	else if (returnDeclaration instanceof TypedDeclaration) {
 	                    that.addError("setter may not return a value: " +
@@ -2895,7 +2897,8 @@ public class ExpressionVisitor extends Visitor {
                             !isTypeUnknown(at)) {
                         checkAssignable(at, et, e, 
                                 "returned expression must be assignable to return type of " +
-                                        returndesc(), 2100);
+                                returndesc(), 
+                                2100);
                     }
                 }
             }
