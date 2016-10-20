@@ -186,7 +186,9 @@ shared String formatFloat(
         }
     }
     if (float < 0.0) {
-        result.appendCharacter('-');
+        if (result.containsAny('1'..'9')) {
+            result.appendCharacter('-');
+        }
     }
     return(result.string.reversed);
 }
