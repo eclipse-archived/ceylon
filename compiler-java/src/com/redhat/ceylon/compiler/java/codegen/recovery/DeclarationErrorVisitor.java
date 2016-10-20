@@ -230,7 +230,7 @@ class DeclarationErrorVisitor extends Visitor {
                     }
                 }
             }
-            if (hasPrivateCtor) {
+            if (hasPrivateCtor && that.getInvocationExpression() != null) {
                 that.getInvocationExpression().visit(this);
             }
         }
