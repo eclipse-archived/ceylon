@@ -1176,6 +1176,8 @@ final class statics_ {
     
     static void statics() {
         final .ceylon.language.meta.declaration.ValueDeclaration staticAttr = ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.StaticMembers.class)).<.ceylon.language.meta.declaration.ValueDeclaration>getMemberDeclaration(.ceylon.language.meta.declaration.ValueDeclaration.$TypeDescriptor$, "attribute");
+        final .ceylon.language.meta.declaration.FunctionDeclaration staticMeth = ((.ceylon.language.meta.declaration.ClassOrInterfaceDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.StaticMembers.class)).<.ceylon.language.meta.declaration.FunctionDeclaration>getMemberDeclaration(.ceylon.language.meta.declaration.FunctionDeclaration.$TypeDescriptor$, "method");
+        final .ceylon.language.meta.declaration.ClassWithInitializerDeclaration staticClass = (.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.metamodel.StaticMembers.MemberClass.class);
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
