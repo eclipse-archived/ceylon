@@ -3715,7 +3715,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 }
                 if(useCount == 1){
                     // we can substitute it
-                    System.err.println("Substituting "+typeParameter+" from "+method);
                     for (Parameter parameter : method.getFirstParameterList().getParameters()) {
                         FunctionOrValue model = parameter.getModel();
                         model.setType(substituteTypeParameter(typeParameter, model.getType()));
