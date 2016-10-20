@@ -402,6 +402,8 @@ public class Pretty extends JCTree.Visitor {
     public void visitTopLevel(JCCompilationUnit tree) {
         try {
             if (tree.sourcefile.isNameCompatible("package-info", Kind.SOURCE)) {
+                print("/* package-info */");
+                println();
                 printAnnotations(tree.packageAnnotations);
             }
             printUnit(tree, null);
