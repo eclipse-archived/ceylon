@@ -124,14 +124,14 @@ public class NpmContentStore extends AbstractContentStore {
                     } else if (main == null) {
                         return "index.js";
                     } else {
-                        throw new RepositoryException("Unexpected value for 'main' in NPM descriptor: " + json);
+                        throw new RepositoryException("unexpected value for 'main' in npm descriptor: " + json);
                     }
                 }
             } else {
-                throw new RepositoryException("NPM descriptor not found: " + json);
+                throw new RepositoryException("npm descriptor not found: " + json);
             }
         } catch (IOException ex) {
-            throw new RepositoryException("Error reading NPM descriptor: " + out + "/package.json", ex);
+            throw new RepositoryException("error reading npm descriptor: " + out + "/package.json", ex);
         }
     }
     
@@ -162,7 +162,7 @@ public class NpmContentStore extends AbstractContentStore {
             ArtifactContext ac = ArtifactContext.fromNode(node);
             String name = ac.getName();
             String version = ac.getVersion();
-            if (log != null) log.debug("Installing NPM module " + name + "@" + version + " in " + out);
+            if (log != null) log.debug("installing npm module " + name + "@" + version + " in " + out);
             String npmCmd = System.getProperty(Constants.PROP_CEYLON_EXTCMD_NPM, "npm");
             ProcessBuilder pb = new ProcessBuilder()
                     .command(npmCmd, "install", "-q", name + "@" + version)
@@ -172,10 +172,10 @@ public class NpmContentStore extends AbstractContentStore {
             Process p = pb.start();
             p.waitFor();
             if (p.exitValue() != 0) {
-                throw new RepositoryException("NPM installer failed with exit code: " + p.exitValue());
+                throw new RepositoryException("npm installer failed with exit code: " + p.exitValue());
             }
         } catch (InterruptedException | IOException ex) {
-            throw new RepositoryException("Error running NPM installer (make sure 'npm' is installed and available in your PATH)", ex);
+            throw new RepositoryException("error running npm installer (make sure 'npm' is installed and available in your PATH)", ex);
         }
     }
 
@@ -200,7 +200,7 @@ public class NpmContentStore extends AbstractContentStore {
     }
     
     public String getDisplayString() {
-        String name = "NPM";
+        String name = "npm";
         if (offline) {
             name += " (offline)";
         }
