@@ -1080,3 +1080,18 @@ class OpenEnumValueConstructors {
     shared new alpha {}
     new beta {}
 }
+
+
+class StaticMembers<T> {
+    shared static String attribute => "";
+    shared static T method(T t) => t;
+    shared static class MemberClass(T t) {
+        shared T attribute => nothing;
+        shared T method(T t) => t;
+    }
+    //shared static interface MemberInterface {
+    //    shared T attribute => nothing;
+    //    shared T method(T t) => t;
+    //}
+    shared new (){}
+}
