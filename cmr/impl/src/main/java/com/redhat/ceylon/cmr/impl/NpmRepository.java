@@ -10,6 +10,7 @@ import java.util.List;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.spi.ContentStore;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
@@ -72,6 +73,13 @@ public class NpmRepository extends AbstractRepository {
         return "[NPM] " + super.getDisplayString();
     }
 
+    public void setNpmCommand(String npmCommand) {
+        NpmContentStore store = (NpmContentStore) getRoot().getService(ContentStore.class);
+        if (store != null) {
+            store.setNpmCommand(npmCommand);
+        }
+    }
+    
     private static class NpmArtifactResult extends AbstractArtifactResult {
         private Node node;
 
