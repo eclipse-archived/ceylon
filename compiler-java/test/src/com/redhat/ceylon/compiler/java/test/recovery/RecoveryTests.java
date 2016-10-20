@@ -819,7 +819,7 @@ public class RecoveryTests extends CompilerTests {
 
         TreeSet<CompilerError> actualErrors = c.get(Diagnostic.Kind.ERROR);
         compareErrors(actualErrors,
-//                new CompilerError(21, "cannot find module artifact notfound-1(.car|.jar)\n  \t- dependency tree: okmodule/1.0.0 -> notfound/1"),
+//                new CompilerError(21, "cannot find module artifact 'notfound-1(.car|.jar)'\n  \t- dependency tree: 'okmodule/1.0.0' -> 'notfound/1'"),
                 new CompilerError(20, "duplicate declaration: the name 'run' is not unique in this scope"));
         
         File carFile = getModuleArchive("default", null);
@@ -860,7 +860,7 @@ public class RecoveryTests extends CompilerTests {
 
         TreeSet<CompilerError> actualErrors = c.get(Diagnostic.Kind.ERROR);
         compareErrors(actualErrors,
-                new CompilerError(21, "cannot find module artifact notfound-1(.car|.jar)\n  \t- dependency tree: okmodule/1.0.0 -> notfound/1"));
+                new CompilerError(21, "cannot find module artifact 'notfound-1(.car|.jar)'\n  \t- dependency tree: 'okmodule/1.0.0' -> 'notfound/1'"));
         
         File carFile = getModuleArchive("default", null);
         assertTrue(carFile.exists());
@@ -996,8 +996,8 @@ public class RecoveryTests extends CompilerTests {
         compareErrors(actualErrors,
                 new CompilerError(1, "package not found in imported modules: 'java.lang' (define a module and add module import to its module descriptor)"),
                 new CompilerError(2, "source code imports two different versions of module 'ceylon.file': version '0.5' and version '1.1.0'"),
-                new CompilerError(2, "cannot find module artifact fooxhilio.bastardo-77.9(.car|.jar)\n"
-                +"  \t- dependency tree: unknownmodule/1.0.0 -> fooxhilio.bastardo/77.9"),
+                new CompilerError(2, "cannot find module artifact 'fooxhilio.bastardo-77.9(.car|.jar)'\n"
+                +"  \t- dependency tree: 'unknownmodule/1.0.0' -> 'fooxhilio.bastardo/77.9'"),
                 new CompilerError(4, "function or value is not defined: 'nanoTime' might be misspelled or is not imported"),
                 new CompilerError(4, "type does not exist: 'Test'"),
                 new CompilerError(4, "unsupported module name: this namespace is used by Java platform modules"),

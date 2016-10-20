@@ -26,7 +26,7 @@ public class ModuleHelper {
             error.append("source ");
         }
         error.append("artifact ");
-        error.append( artifactContext.toString() );
+        error.append("'").append( artifactContext.toString() ).append("'");
         if ( exceptionOnGetArtifact != null ) {
             error.append( "\ndue to connection error: " + exceptionOnGetArtifact.getMessage() );
         }
@@ -57,11 +57,21 @@ public class ModuleHelper {
 
     public static void buildDependencyString(LinkedList<Module> dependencyTree, Module module, StringBuilder error) {
         for (Module errorModule : dependencyTree) {
-            error.append(errorModule.getNameAsString())
-                .append("/").append(errorModule.getVersion())
-                .append(" -> ");
+            appendModuleDesc(errorModule, error);
+            error.append(" -> ");
         }
-        error.append(module.getNameAsString())
-            .append("/").append(module.getVersion());
+        appendModuleDesc(module, error);
+    }
+
+    private static void appendModuleDesc(Module module, StringBuilder error) {
+        if (module.isDefaultModule()) {
+            error.append("default module");
+        }
+        else {
+            error.append("'")
+                .append(module.getNameAsString())
+                .append(" \"").append(module.getVersion()).append("\"")
+                .append("'");
+        }
     }
 }
