@@ -6418,10 +6418,17 @@ public class ExpressionVisitor extends Visitor {
 			if (outerType instanceof Tree.SimpleType) {
 				Tree.SimpleType st = 
 				        (Tree.SimpleType) outerType;
-                if (st.getDeclarationModel() 
-                        instanceof TypeParameter) {
-					outerType.addError("type parameter should not occur as qualifying type: " +
-							qualifiedDescription(that));
+				TypeDeclaration std = st.getDeclarationModel();
+				if (std.isAlias()) {
+				    Type et = std.getExtendedType();
+				    if (et!=null) {
+				        std = et.resolveAliases()
+				                .getDeclaration();
+				    }
+				}
+                if (std instanceof TypeParameter) {
+					outerType.addError("type parameter should not occur as qualifying type: '" +
+							std.getName(unit) + "' is a type parameter");
 				}
 			}
         }
