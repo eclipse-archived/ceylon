@@ -246,7 +246,7 @@ public class LazyPackage extends Package {
                 if (d instanceof LazyInterface
                         && !((LazyInterface)d).isCeylon()
                         && ((LazyInterface)d).isAnnotationType()) {
-                    makeInteropAnnotation((LazyInterface)d);
+                    compiledDeclarations.addAll(modelLoader.makeInteropAnnotation((LazyInterface)d, LazyPackage.this));
                     
                 }
                 if ((d instanceof LazyClass ||
@@ -255,33 +255,6 @@ public class LazyPackage extends Package {
                 }
             }
         });
-    }
-
-    /**
-     * Adds extra members to the package for annotation interop.
-     * For a Java declaration {@code @interface Annotation} we generate 
-     * a model corresponding to:
-     * <pre>
-     *   annotation class Annotation$Proxy(...) satisfies Annotation {
-     *       // a `shared` class parameter for each method of Annotation
-     *   }
-     *   annotation JavaAnnotation javaAnnotation(...) => JavaAnnotation$Proxy(...);
-     * </pre>
-     * 
-     * We also make a {@code *__method}, {@code *__field} etc version for each
-     * {@code @Target} program element
-     * @param iface The model of the annotation @interface
-     */
-    private void makeInteropAnnotation(LazyInterface iface) {
-        AnnotationProxyClass klass = modelLoader.makeInteropAnnotationClass(iface, this);
-        
-        compiledDeclarations.add(modelLoader.makeInteropAnnotationConstructor(iface, klass, null, this));
-        
-        for (OutputElement target : AnnotationTarget.outputTargets(klass)) {
-            compiledDeclarations.add(modelLoader.makeInteropAnnotationConstructor(iface, klass, target, this));
-        }
-        
-        compiledDeclarations.add(klass);
     }
 
     @Override

@@ -43,6 +43,7 @@ import com.redhat.ceylon.model.loader.mirror.TypeParameterMirror;
 import com.redhat.ceylon.model.loader.mirror.VariableMirror;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
+import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaBeanValue;
 import com.redhat.ceylon.model.loader.model.JavaMethod;
@@ -795,8 +796,48 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                         ModelUtil.setVisibleScope(overload);
                     }
                 }
+
+                // Adds extra members for annotation interop.
+                if (d instanceof LazyInterface
+                        && !((LazyInterface)d).isCeylon()
+                        && ((LazyInterface)d).isAnnotationType()) {
+                    for (Declaration decl : makeInteropAnnotation((LazyInterface) d, container)) {
+                        container.addMember(decl);
+                    }
+                }
             }
         }
+    }
+
+    /**
+     * Creates extra members to be added to the {@code container} for annotation interop.
+     * For a Java declaration {@code @interface Annotation} we generate
+     * a model corresponding to:
+     * <pre>
+     *   annotation class Annotation$Proxy(...) satisfies Annotation {
+     *       // a `shared` class parameter for each method of Annotation
+     *   }
+     *   annotation JavaAnnotation javaAnnotation(...) => JavaAnnotation$Proxy(...);
+     * </pre>
+     *
+     * We also make a {@code *__method}, {@code *__field} etc version for each
+     * {@code @Target} program element
+     * @param iface The model of the annotation @interface
+     * @param container The container in which the generated members belong
+     * @return A list of members to add to the container
+     */
+    public List<Declaration> makeInteropAnnotation(LazyInterface iface, Scope container) {
+        List<Declaration> declarations = new ArrayList<>();
+
+        AnnotationProxyClass klass = makeInteropAnnotationClass(iface, container);
+        AnnotationProxyMethod method = makeInteropAnnotationConstructor(iface, klass, null, container);
+        declarations.add(method);
+        for (OutputElement target : AnnotationTarget.outputTargets(klass)) {
+            declarations.add(makeInteropAnnotationConstructor(iface, klass, target, container));
+        }
+        declarations.add(klass);
+
+        return declarations;
     }
 
     protected void setInterfaceCompanionClass(Declaration d, ClassOrInterface container, LazyPackage pkg) {
@@ -4881,12 +4922,15 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     protected abstract void setAnnotationConstructor(LazyFunction method, MethodMirror meth);
 
     public AnnotationProxyMethod makeInteropAnnotationConstructor(LazyInterface iface,
-            AnnotationProxyClass klass, OutputElement oe, Package pkg){
+            AnnotationProxyClass klass, OutputElement oe, Scope scope){
         String ctorName = oe == null ? NamingBase.getJavaBeanName(iface.getName()) : NamingBase.getDisambigAnnoCtorName(iface, oe);
         AnnotationProxyMethod ctor = new AnnotationProxyMethod(this, klass);
         ctor.setAnnotationTarget(oe);
-        ctor.setContainer(pkg);
-        ctor.setScope(pkg);
+        ctor.setContainer(scope);
+        ctor.setScope(scope);
+        if (!(scope instanceof Package)) {
+            ctor.setStatic(true);
+        }
         ctor.setAnnotation(true);
         ctor.setName(ctorName);
         ctor.setShared(iface.isShared());
@@ -4914,10 +4958,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * @return The annotation class for the given interface
      */
     public AnnotationProxyClass makeInteropAnnotationClass(
-            LazyInterface iface, Package pkg) {
+            LazyInterface iface, Scope scope) {
         AnnotationProxyClass klass = new AnnotationProxyClass(this, iface);
-        klass.setContainer(pkg);
-        klass.setScope(pkg);
+        klass.setContainer(scope);
+        klass.setScope(scope);
+        if (!(scope instanceof Package)) {
+            klass.setStatic(true);
+        }
         klass.setName(iface.getName()+"$Proxy");
         klass.setShared(iface.isShared());
         klass.setAnnotation(true);
@@ -4926,7 +4973,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         klass.getAnnotations().add(annotationAnnotation);
         klass.getSatisfiedTypes().add(iface.getType());
         klass.setUnit(iface.getUnit());
-        klass.setScope(pkg);
+        klass.setScope(scope);
         
         return klass;
     }

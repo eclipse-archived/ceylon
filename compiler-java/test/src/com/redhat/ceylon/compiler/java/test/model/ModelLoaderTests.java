@@ -42,6 +42,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -1766,6 +1767,48 @@ public class ModelLoaderTests extends CompilerTests {
                 Interface interf = (Interface) refinedDeclaration.getContainer();
                 Assert.assertEquals("Bug6437JavaInterface", interf.getName());
                 Assert.assertEquals("List<String>", refinedDeclaration.getType().asString());
+            }
+        });
+    }
+
+    @Test
+    public void javaInnerAnnotations() {
+        compile("Bug6584AnnotationInClass.java", "Bug6584AnnotationInInterface.java");
+        verifyCompilerClassLoading("Bug6584.ceylon", new RunnableTest() {
+            @Override
+            public void test(ModelLoader loader) {
+                Module mod = loader.getLoadedModule(moduleForJavaModelLoading(), moduleVersionForJavaModelLoading());
+                Assert.assertNotNull(mod);
+                Package p = mod.getDirectPackage(packageForJavaModelLoading());
+                Assert.assertNotNull(p);
+
+                // check inner annotations in classes
+                Declaration javaType = p.getDirectMember("Bug6584AnnotationInClass", null, false);
+                Assert.assertNotNull(javaType);
+
+                Declaration annotation = javaType.getMember("myAnnotation", null, false);
+                Assert.assertTrue(annotation instanceof AnnotationProxyMethod);
+                Function method = (Function) annotation;
+                List<Parameter> params = method.getFirstParameterList().getParameters();
+                Assert.assertEquals(1, params.size());
+                Assert.assertEquals("{String*}", params.get(0).getType().asString());
+
+                // check inner annotations in interfaces
+                javaType = p.getDirectMember("Bug6584AnnotationInInterface", null, false);
+                Assert.assertNotNull(javaType);
+
+                annotation = javaType.getMember("myOtherAnnotation", null, false);
+                Assert.assertTrue(annotation instanceof AnnotationProxyMethod);
+                method = (Function) annotation;
+                params = method.getFirstParameterList().getParameters();
+                Assert.assertEquals(2, params.size());
+                Assert.assertEquals("{String*}", params.get(0).getType().asString());
+                Assert.assertEquals("Integer", params.get(1).getType().asString());
+
+                // check that we also have declarations for @Target elements
+                Assert.assertNotNull(javaType.getMember("myOtherAnnotation__TYPE", null, false));
+                Assert.assertNotNull(javaType.getMember("myOtherAnnotation__FIELD", null, false));
+                Assert.assertNotNull(javaType.getMember("myOtherAnnotation__METHOD", null, false));
             }
         });
     }
