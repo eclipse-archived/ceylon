@@ -272,9 +272,13 @@ public class FileUtil {
     private static final File[] EMPTY_FILES = new File[0];
     
     public static List<File> pathToFileList(String path) {
+        return pathToFileList(null, path);
+    }
+    
+    public static List<File> pathToFileList(String cwd, String path) {
         if (path != null && !path.isEmpty()) {
             String[] items = path.split(Pattern.quote(File.pathSeparator));
-            return pathsToFileList(Arrays.asList(items));
+            return pathsToFileList(cwd, Arrays.asList(items));
         } else {
             return Collections.emptyList();
         }
@@ -282,10 +286,14 @@ public class FileUtil {
     }
     
     public static List<File> pathsToFileList(Collection<String> paths) {
+        return pathsToFileList(null, paths);
+    }
+    
+    public static List<File> pathsToFileList(String cwd, Collection<String> paths) {
         if (paths != null) {
             List<File> result = new ArrayList<File>(paths.size());
             for (String s : paths) {
-                result.add(new File(s));
+                result.add(applyCwd(cwd != null ? new File(cwd) : null, new File(s)));
             }
             return result;
         } else {
@@ -316,7 +324,7 @@ public class FileUtil {
         if (paths != null) {
             File[] result = new File[paths.length];
             for (int i = 0; i < paths.length; i++) {
-                result[i] = new File(cwd, paths[i]);
+                result[i] = applyCwd(cwd != null ? new File(cwd) : null, new File(paths[i]));
             }
             return result;
         } else {
