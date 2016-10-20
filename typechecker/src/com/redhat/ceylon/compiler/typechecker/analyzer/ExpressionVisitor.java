@@ -5639,10 +5639,10 @@ public class ExpressionVisitor extends Visitor {
             Type obt = unit.getObjectType();
             checkAssignable(lhst, obt, 
                     that.getLeftTerm(), 
-                    "operand expression must be of type Object");
+                    "operand expression must be of type 'Object'");
             checkAssignable(rhst, obt, 
                     that.getRightTerm(), 
-                    "operand expression must be of type Object");
+                    "operand expression must be of type 'Object'");
             if (intersectionType(lhst, rhst, unit).isNothing()) {
                 Interface ld = unit.getListDeclaration();
                 Interface sd = unit.getSetDeclaration();
