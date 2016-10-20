@@ -81,6 +81,11 @@ public abstract class NestableDeclarationImpl
     }
 
     @Override
+    public boolean getStatic() {
+        return declaration.isStatic();
+    }
+    
+    @Override
     @TypeInfo(value = "ceylon.language.meta.declaration::NestableDeclaration|ceylon.language.meta.declaration::Package", erased = true)
     public java.lang.Object getContainer() {
         return Metamodel.getContainer(declaration);
