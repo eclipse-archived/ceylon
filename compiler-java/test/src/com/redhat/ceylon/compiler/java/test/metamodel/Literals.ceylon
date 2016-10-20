@@ -276,3 +276,19 @@ void constructors(){
 
      */
 }
+class StaticMembers<T> {
+    shared static String attribute => "";
+    shared static T method(T t) => t;
+    shared static class MemberClass(T t) {
+        shared T attribute => nothing;
+        shared T method(T t) => t;
+    }
+    //shared static interface MemberInterface {
+    //    shared T attribute => nothing;
+    //    shared T method(T t) => t;
+    //}
+    shared new (){}
+}
+void statics() {
+    value staticAttr = `value StaticMembers.attribute`;
+}
