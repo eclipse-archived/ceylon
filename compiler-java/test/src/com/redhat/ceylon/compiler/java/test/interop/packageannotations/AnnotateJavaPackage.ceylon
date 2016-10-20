@@ -1,1 +1,2 @@
 shared class IntegerAdaptor() {}
+

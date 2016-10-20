@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.File;
+import java.lang.ProcessBuilder.Redirect;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +44,7 @@ import com.redhat.ceylon.compiler.java.test.CompilerError;
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
 import com.redhat.ceylon.compiler.java.test.ErrorCollector;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 
 public class InteropTests extends CompilerTests {
 
@@ -893,5 +895,34 @@ public class InteropTests extends CompilerTests {
             assertNotNull(p.getAnnotation(ac));
         }
         
+    }
+    
+    @Test
+    public void testIopAnnotatedJavaPackageRecompile() throws Exception {
+        ArrayList<String> a = new ArrayList<String>();
+        a.add("../dist/dist/bin/ceylon");
+        a.add("compile");
+        a.add("--verbose=code");
+        a.add("--rep");
+        a.add(getOutPath());
+        a.add("--src");
+        a.add("test/src");
+        a.add("com.redhat.ceylon.compiler.java.test.interop.packageannotations");
+        System.err.println(a);
+        ProcessBuilder pb = new ProcessBuilder(a);
+        pb.redirectError(Redirect.INHERIT);
+        pb.redirectOutput(Redirect.INHERIT);
+        // use the same JVM as the current one
+        pb.environment().put("JAVA_HOME", System.getProperty("java.home"));
+        if(JDKUtils.jdk.providesVersion(JDK.JDK9.version)){
+            pb.environment().put("JAVA_OPTS", "-XaddExports:java.xml/com.sun.org.apache.xerces.internal.jaxp=ALL-UNNAMED"
+                    +",java.xml/com.sun.org.apache.xalan.internal.xsltc.trax=ALL-UNNAMED"
+                    +",java.xml/com.sun.xml.internal.stream=ALL-UNNAMED");
+        }
+        Process p = pb.start();
+        assertEquals(0, p.waitFor());
+        // Now run it again
+        p = pb.start();
+        assertEquals(0, p.waitFor());
     }
 }
