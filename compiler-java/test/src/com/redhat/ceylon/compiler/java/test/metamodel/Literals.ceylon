@@ -291,4 +291,6 @@ class StaticMembers<T> {
 }
 void statics() {
     value staticAttr = `value StaticMembers.attribute`;
+    value staticMeth = `function StaticMembers.method`;
+    value staticClass = `class StaticMembers.MemberClass`;
 }
