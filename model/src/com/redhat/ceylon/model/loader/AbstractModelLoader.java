@@ -47,6 +47,7 @@ import com.redhat.ceylon.model.loader.model.AnnotationTarget;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaBeanValue;
 import com.redhat.ceylon.model.loader.model.JavaMethod;
+import com.redhat.ceylon.model.loader.model.JavaParameterValue;
 import com.redhat.ceylon.model.loader.model.LazyClass;
 import com.redhat.ceylon.model.loader.model.LazyClassAlias;
 import com.redhat.ceylon.model.loader.model.LazyContainer;
@@ -4529,7 +4530,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     parameter.setDeclaredAnything(method.isDeclaredVoid());
                 } else {
                     // A value parameter to a method
-                    value = new Value();
+                    value = isCeylon ? new Value() : new JavaParameterValue();
                     value.setType(type);
                 }
                 
