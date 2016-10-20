@@ -33,6 +33,7 @@ import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.loader.model.JavaBeanValue;
 import com.redhat.ceylon.model.loader.model.LazyValue;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.ModelUtil;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
@@ -96,7 +97,14 @@ public class ValueImpl<Get, Set>
             }
             String getterName = ((JavaBeanValue) decl).getGetterName();
             try {
-                Class<?>[] params = NO_PARAMS;
+                Class<?>[] params;
+                if (!declaration.getStatic()) {
+                    params = NO_PARAMS; 
+                } else {
+                    int numCapturedTypeParams = ((ClassOrInterface)declaration.declaration.getContainer()).getTypeParameters().size();
+                    params = new Class[numCapturedTypeParams];
+                    Arrays.fill(params, TypeDescriptor.class);
+                }
                 boolean isJavaArray = MethodHandleUtil.isJavaArray(javaClass);
                 if(isJavaArray)
                     params = MethodHandleUtil.getJavaArrayGetArrayParameterTypes(javaClass, getterName);
@@ -111,8 +119,16 @@ public class ValueImpl<Get, Set>
                         && (isJavaArray || !Modifier.isStatic(m.getModifiers()))) {
                     getter = getter.bindTo(instance);
                 }
-                // we need to cast to Object because this is what comes out when calling it in $call
-                getter = getter.asType(MethodType.methodType(Object.class));
+                
+                if (declaration.getStatic()) {
+                    getter = getter.asType(MethodType.methodType(Object.class, params));
+                    TypeDescriptor[] typeArguments = ((TypeDescriptor.Class)((ClassOrInterfaceImpl<?>) container).$reifiedType).getTypeArguments();
+                    getter = getter.asSpreader(TypeDescriptor[].class, typeArguments.length);
+                    getter = getter.bindTo(typeArguments);
+                } else {
+                    // we need to cast to Object because this is what comes out when calling it in $call
+                    getter = getter.asType(MethodType.methodType(Object.class));
+                }
 
                 initSetter(decl, javaClass, getterType, instance, valueType);
             } catch (NoSuchMethodException | SecurityException | IllegalAccessException e) {
