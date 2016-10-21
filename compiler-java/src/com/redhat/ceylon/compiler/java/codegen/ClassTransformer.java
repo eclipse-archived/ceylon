@@ -248,7 +248,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (def instanceof Tree.AnyClass) {
-            classBuilder.getInitBuilder().modifiers(transformConstructorDeclFlags(model));
+            classBuilder.getInitBuilder().modifiers(modifierTransformation().constructor(model));
             Tree.AnyClass classDef = (Tree.AnyClass)def;
             Class cls = classDef.getDeclarationModel();
             // Member classes need a instantiator method
@@ -325,7 +325,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         classBuilder
             .modelAnnotations(model.getAnnotations())
-            .modifiers(transformClassDeclFlags(model))
+            .modifiers(modifierTransformation().classFlags(model))
             .satisfies(model.getSatisfiedTypes())
             .caseTypes(model.getCaseTypes(), model.getSelfType())
             .defs((List)childDefs);
@@ -524,7 +524,7 @@ public class ClassTransformer extends AbstractTransformer {
             String message, ClassOrInterface classModel, Class formalClass, Reference unrefined) {
         MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, 
                 naming.getInstantiatorMethodName(formalClass));
-        mdb.modifiers(transformClassDeclFlags(formalClass) &~ABSTRACT);
+        mdb.modifiers(modifierTransformation().classFlags(formalClass) &~ABSTRACT);
         for (TypeParameter tp: formalClass.getTypeParameters()) {
             mdb.typeParameter(tp);
             mdb.reifiedTypeParameter(tp);
@@ -567,7 +567,7 @@ public class ClassTransformer extends AbstractTransformer {
         for (java.util.List<Parameter> parameterList : overloads(refined)) {
             MethodDefinitionBuilder mdb = MethodDefinitionBuilder.method(this, refined);
             mdb.isOverride(true);
-            mdb.modifiers(transformMethodDeclFlags(refined));
+            mdb.modifiers(modifierTransformation().method(refined));
             for (TypeParameter tp: formalMethod.getTypeParameters()) {
                 mdb.typeParameter(tp);
                 mdb.reifiedTypeParameter(tp);
@@ -699,13 +699,13 @@ public class ClassTransformer extends AbstractTransformer {
         Value refined = refineValue(formalAttribute, formalAttribute.appliedTypedReference(null, null), classModel, classModel.getUnit());
         AttributeDefinitionBuilder getterBuilder = AttributeDefinitionBuilder.getter(this, refined.getName(), refined);
         getterBuilder.skipField();
-        getterBuilder.modifiers(transformAttributeGetSetDeclFlags(refined, false));
+        getterBuilder.modifiers(modifierTransformation().getterSetter(refined, false));
         getterBuilder.getterBlock(make().Block(0, List.<JCStatement>of(makeThrowUnresolvedCompilationError(error))));
         classBuilder.attribute(getterBuilder);
         if (formalAttribute.isVariable()) {
             AttributeDefinitionBuilder setterBuilder = AttributeDefinitionBuilder.setter(this, node, refined.getName(), refined);
             setterBuilder.skipField();
-            setterBuilder.modifiers(transformAttributeGetSetDeclFlags(refined, false));
+            setterBuilder.modifiers(modifierTransformation().getterSetter(refined, false));
             setterBuilder.setterBlock(make().Block(0, List.<JCStatement>of(makeThrowUnresolvedCompilationError(error))));
             classBuilder.attribute(setterBuilder);
         }
@@ -779,7 +779,7 @@ public class ClassTransformer extends AbstractTransformer {
         if (Strategy.defaultParameterMethodStatic(def.getDeclarationModel())) {
             f = STATIC;
         }
-        instantiator.modifiers((transformClassDeclFlags(model) & ~FINAL)| f);
+        instantiator.modifiers((modifierTransformation().classFlags(model) & ~FINAL)| f);
         for (TypeParameter tp : typeParametersOfAllContainers(model, false)) {
            instantiator.typeParameter(tp);
         }
@@ -812,7 +812,7 @@ public class ClassTransformer extends AbstractTransformer {
         MethodDefinitionBuilder annoCtor = classBuilder.addConstructor(klass.isDeprecated());
         annoCtor.ignoreModelAnnotations();
         // constructors are never final
-        annoCtor.modifiers(transformClassDeclFlags(klass) & ~FINAL);
+        annoCtor.modifiers(modifierTransformation().classFlags(klass) & ~FINAL);
         ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(this, "anno");
         pdb.type(new TransformedType(makeJavaType(klass.getType(), JT_ANNOTATION), null, makeAtNonNull()));
         annoCtor.parameter(pdb);
@@ -945,8 +945,8 @@ public class ClassTransformer extends AbstractTransformer {
         ClassDefinitionBuilder annoBuilder = ClassDefinitionBuilder.klass(this, annotationName, null, false);
         
         // annotations are never explicitly final in Java
-        annoBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (transformClassDeclFlags(klass) & ~FINAL));
-        annoBuilder.getInitBuilder().modifiers(transformClassDeclFlags(klass) & ~FINAL);
+        annoBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (modifierTransformation().classFlags(klass) & ~FINAL));
+        annoBuilder.getInitBuilder().modifiers(modifierTransformation().classFlags(klass) & ~FINAL);
         annoBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
         annoBuilder.annotations(makeAtIgnore());
         annoBuilder.annotations(expressionGen().transformAnnotations(OutputElement.ANNOTATION_TYPE, def));
@@ -971,7 +971,7 @@ public class ClassTransformer extends AbstractTransformer {
             String wrapperName = Naming.suffixName(Suffix.$annotations$, klass.getName());
             ClassDefinitionBuilder sequencedBuilder = ClassDefinitionBuilder.klass(this, wrapperName, null, false);
             // annotations are never explicitely final in Java
-            sequencedBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (transformClassDeclFlags(klass) & ~FINAL));
+            sequencedBuilder.modifiers(Flags.ANNOTATION | Flags.INTERFACE | (modifierTransformation().classFlags(klass) & ~FINAL));
             sequencedBuilder.annotations(makeAtRetention(RetentionPolicy.RUNTIME));
             MethodDefinitionBuilder mdb = MethodDefinitionBuilder.systemMethod(this, naming.getSequencedAnnotationMethodName());
             mdb.annotationFlags(Annotations.MODEL_AND_USER);
@@ -1246,12 +1246,12 @@ public class ClassTransformer extends AbstractTransformer {
                 && (value.isShared() || value.isCaptured())) {
             makeFieldForParameter(classBuilder, decl, memberTree);
             AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.getter(this, decl.getName(), decl.getModel());
-            adb.modifiers(classGen().transformAttributeGetSetDeclFlags(decl.getModel(), false));
+            adb.modifiers(classGen().modifierTransformation().getterSetter(decl.getModel(), false));
             adb.userAnnotations(expressionGen().transformAnnotations(OutputElement.GETTER, memberTree));
             classBuilder.attribute(adb);
             if (value.isVariable()) {
                 AttributeDefinitionBuilder setter = AttributeDefinitionBuilder.setter(this, parameterTree, decl.getName(), decl.getModel());
-                setter.modifiers(classGen().transformAttributeGetSetDeclFlags(decl.getModel(), false));
+                setter.modifiers(classGen().modifierTransformation().getterSetter(decl.getModel(), false));
                 //setter.userAnnotations(expressionGen().transform(AnnotationTarget.SETTER, memberTree.getAnnotationList()));
                 classBuilder.attribute(setter);
             }
@@ -1450,7 +1450,7 @@ public class ClassTransformer extends AbstractTransformer {
                             makeDelegateToCompanion((Interface)cls.getRefinedDeclaration().getContainer(),
                                     constructor != null ? constructor.getReference() : cls.getReference(),
                                     ((TypeDeclaration)cls.getContainer()).getType(),
-                                    FINAL | (transformClassDeclFlags(cls) & ~ABSTRACT), 
+                                    FINAL | (modifierTransformation().classFlags(cls) & ~ABSTRACT), 
                                     List.<TypeParameter>nil(), Collections.<java.util.List<Type>>emptyList(),
                                     paramModel.getType().getFullType(), 
                                     Naming.getDefaultedParamMethodName(cls, paramModel),
@@ -3492,7 +3492,7 @@ public class ClassTransformer extends AbstractTransformer {
                 type = makeJavaType(nonWideningType, flags);
             }
             
-            long modifiers = (useField) ? transformAttributeFieldDeclFlags(decl) : transformLocalDeclFlags(decl);
+            long modifiers = (useField) ? modifierTransformation().field(decl) : modifierTransformation().localVar(decl);
             
             // If the attribute is really from a parameter then don't generate a field
             // (makeAttributeForValueParameter() or makeMethodForFunctionalParameter() 
@@ -3567,7 +3567,7 @@ public class ClassTransformer extends AbstractTransformer {
                  * declaration we can use to make sure we're not widening the attribute type.
                  */
             .setter(this, decl, name, decl.getDeclarationModel().getGetter())
-            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion));
+            .modifiers(modifierTransformation().getterSetter(decl.getDeclarationModel(), forCompanion));
         
         // companion class members are never actual no matter what the Declaration says
         if(forCompanion)
@@ -3591,7 +3591,7 @@ public class ClassTransformer extends AbstractTransformer {
         //expressionGen().transform(decl.getAnnotationList());
         final AttributeDefinitionBuilder builder = AttributeDefinitionBuilder
             .getter(this, name, decl.getDeclarationModel())
-            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion));
+            .modifiers(modifierTransformation().getterSetter(decl.getDeclarationModel(), forCompanion));
         
         // companion class members are never actual no matter what the Declaration says
         if(forCompanion)
@@ -3610,7 +3610,7 @@ public class ClassTransformer extends AbstractTransformer {
     /**
      * Encapsulates the modifiers we use for various things.
      */
-    private static class ModifierTransformation {
+    static class ModifierTransformation {
         protected long declarationSharedFlags(Declaration decl){
             return Decl.isShared(decl) && !Decl.isAncestorLocal(decl) ? PUBLIC : 0;
         }
@@ -3882,57 +3882,11 @@ public class ClassTransformer extends AbstractTransformer {
     ModifierTransformation modifierTransformation = null;
     ModifierTransformation modifierTransformation() {
         if (modifierTransformation == null) {
-            modifierTransformation = new ModifierTransformation();
+            modifierTransformation = new EeModifierTransformation();
         }
         return modifierTransformation;
     }
     
-    private long transformDeclarationSharedFlags(Declaration decl){
-        return modifierTransformation().declarationSharedFlags(decl);
-    }
-    
-    private long transformClassDeclFlags(ClassOrInterface cdecl) {
-        return modifierTransformation().classFlags(cdecl);
-    }
-    
-    private long transformConstructorDeclFlags(ClassOrInterface cdecl) {
-        return modifierTransformation().constructor(cdecl);
-    }
-    int transformConstructorDeclFlags(Constructor ctor) {
-        return modifierTransformation().constructor(ctor);
-    }
-
-    private long transformTypeAliasDeclFlags(TypeAlias decl) {
-        return modifierTransformation().typeAlias(decl);
-    }
-    
-    private long transformMethodDeclFlags(Function def) {
-        return modifierTransformation().method(def);
-    }
-    
-    private long transformAttributeFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
-        return modifierTransformation().field(cdecl);
-    }
-
-    private long transformLocalDeclFlags(Tree.AttributeDeclaration cdecl) {
-        return modifierTransformation().localVar(cdecl);
-    }
-
-    /**
-     * Returns the modifier flags to be used for the getter & setter for the 
-     * given attribute-like declaration.  
-     * @param tdecl attribute-like declaration (Value, Getter, Parameter etc)
-     * @param forCompanion Whether the getter/setter is on a companion type
-     * @return The modifier flags.
-     */
-    long transformAttributeGetSetDeclFlags(TypedDeclaration tdecl, boolean forCompanion) {
-        return modifierTransformation().getterSetter(tdecl, forCompanion);
-    }
-
-    private long transformObjectDeclFlags(Value cdecl) {
-        return modifierTransformation().object(cdecl);
-    }
-
     private AttributeDefinitionBuilder makeGetterOrSetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy, 
                                                           AttributeDefinitionBuilder builder, boolean isGetter) {
         at(decl);
@@ -3987,7 +3941,7 @@ public class ClassTransformer extends AbstractTransformer {
         if(forCompanion)
             builder.notActual();
         return builder
-            .modifiers(transformAttributeGetSetDeclFlags(decl.getDeclarationModel(), forCompanion))
+            .modifiers(modifierTransformation().getterSetter(decl.getDeclarationModel(), forCompanion))
             .isFormal((Decl.isFormal(decl) || Decl.withinInterface(decl)) && !forCompanion);
     }
     
@@ -4342,7 +4296,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         
         if (transformMethod) {
-            methodBuilder.modifiers(transformMethodDeclFlags(methodModel));
+            methodBuilder.modifiers(modifierTransformation().method(methodModel));
             if (actual) {
                 methodBuilder.isOverride(methodModel.isActual());
             }
@@ -5652,7 +5606,7 @@ public class ClassTransformer extends AbstractTransformer {
         if(model != null)
             objectClassBuilder
             .modelAnnotations(model.getAnnotations())
-            .modifiers(transformObjectDeclFlags(model));
+            .modifiers(modifierTransformation().object(model));
         at(def);
         List<JCTree> result = objectClassBuilder.build();
         
@@ -5681,7 +5635,7 @@ public class ClassTransformer extends AbstractTransformer {
                 containingClassBuilder.field(modifiers, name, type, initialValue, false);
                 AttributeDefinitionBuilder getter = AttributeDefinitionBuilder
                 .getter(this, name, model)
-                .modifiers(transformAttributeGetSetDeclFlags(model, false));
+                .modifiers(modifierTransformation().getterSetter(model, false));
                 if (def instanceof Tree.ObjectDefinition) {
                     getter.userAnnotations(expressionGen().transformAnnotations(OutputElement.GETTER, ((Tree.ObjectDefinition)def)));
                 }
@@ -5824,7 +5778,7 @@ public class ClassTransformer extends AbstractTransformer {
         visitClassOrInterfaceDefinition(def, classBuilder);
         return classBuilder
             .modelAnnotations(model.getAnnotations())
-            .modifiers(transformTypeAliasDeclFlags(model))
+            .modifiers(modifierTransformation().typeAlias(model))
             .satisfies(model.getSatisfiedTypes())
             .build();
     }

@@ -455,7 +455,7 @@ public class CeylonVisitor extends Visitor {
         
         String ctorName = !Decl.isDefaultConstructor(ctorModel) ? gen.naming.makeTypeDeclarationName(ctorModel) : null;
         classBuilder.defs(gen.classGen().makeNamedConstructor(ctor, parameterList, ctorModel, classBuilder, Strategy.generateInstantiator(ctorModel),
-                gen.classGen().transformConstructorDeclFlags(ctorModel), false,
+                gen.classGen().modifierTransformation().constructor(ctorModel), false,
                 ctorName, stmts.toList(),
                 DeclNameFlag.QUALIFIED));
     }
