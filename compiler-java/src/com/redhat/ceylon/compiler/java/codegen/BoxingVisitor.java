@@ -191,9 +191,9 @@ public abstract class BoxingVisitor extends Visitor {
 
     @Override
     public void visit(Expression that) {
-        Stack<Boolean> npebs = setPEB();
+        Stack<Boolean> npebs = popPEB();
         super.visit(that);
-        resetPEB(npebs);
+        resetPEBStack(npebs);
         
         Term term = that.getTerm();
         propagateFromTerm(that, term);
@@ -682,7 +682,7 @@ public abstract class BoxingVisitor extends Visitor {
     public void visit(Tree.Parameter that) {
         if (that.getParameterModel().getModel() == null)
             return;
-        Boolean currentPEB = setNextPEBs(that.getParameterModel().getModel().getUnboxed());
+        Boolean currentPEB = pushPEBs(that.getParameterModel().getModel().getUnboxed());
         super.visit(that);
         preferredExpressionBoxing = currentPEB;
     }
@@ -690,16 +690,21 @@ public abstract class BoxingVisitor extends Visitor {
     
     @Override
     public void visit(Tree.ElementRange that) {
-        Boolean currentPEB = setNextPEBs(false, true);
+        Boolean currentPEB = pushPEBs(false, true);
         super.visit(that);
         preferredExpressionBoxing = currentPEB;
+    }
+    
+    // Return the current preferred expression boxing
+    protected Boolean getPEB() {
+        return preferredExpressionBoxing;
     }
     
     // Set the stack for to preferred boxing that shall be used
     // for the next N occurrences of Expression as the child
     // nodes of the current node (where N is the number of
     // booleans passed to this function)
-    private Boolean setNextPEBs(Boolean... boxings) {
+    private Boolean pushPEBs(Boolean... boxings) {
         nextPreferredExpressionBoxings = new Stack<Boolean>();
         for (Boolean b : boxings) {
             nextPreferredExpressionBoxings.push(b);
@@ -708,7 +713,7 @@ public abstract class BoxingVisitor extends Visitor {
     }
     
     // Set the next preferred boxing to be the currently active one
-    private Stack<Boolean> setPEB() {
+    private Stack<Boolean> popPEB() {
         Stack<Boolean> npebs = nextPreferredExpressionBoxings;
         preferredExpressionBoxing = (npebs != null && !npebs.isEmpty()) ? npebs.pop() : null;
         nextPreferredExpressionBoxings = null;
@@ -717,7 +722,7 @@ public abstract class BoxingVisitor extends Visitor {
     
     // Unset the currently active preferred boxing and reset the
     // list of next boxings to what's left of the list
-    private void resetPEB(Stack<Boolean> npebs) {
+    private void resetPEBStack(Stack<Boolean> npebs) {
         preferredExpressionBoxing = null;
         nextPreferredExpressionBoxings = npebs;
     }

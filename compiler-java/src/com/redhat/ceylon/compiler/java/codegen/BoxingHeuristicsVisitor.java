@@ -21,7 +21,6 @@
 package com.redhat.ceylon.compiler.java.codegen;
 
 import java.util.HashMap;
-import java.util.Stack;
 
 import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
@@ -29,18 +28,13 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.ArithmeticOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BaseMemberExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.BitwiseOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.CompilationUnit;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.InvocationExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LogicalOp;
-import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.model.typechecker.model.Value;
 
-public abstract class BoxingHeuristicsVisitor extends Visitor {
+public abstract class BoxingHeuristicsVisitor extends BoxingVisitor {
 
     protected abstract boolean isInvocationExpressionOptimizable(Tree.InvocationExpression ce);
-    
-    private Stack<Boolean> nextPreferredExpressionBoxings = null;
-    private Boolean preferredExpressionBoxing = null;
     
     private HashMap<Value, ValueUsageInfo> values;
     
@@ -60,20 +54,13 @@ public abstract class BoxingHeuristicsVisitor extends Visitor {
     }
 
     @Override
-    public void visit(Expression that) {
-        Stack<Boolean> npebs = setPEB();
-        super.visit(that);
-        resetPEB(npebs);
-    }
-    
-    @Override
     public void visit(ArithmeticOp that) {
         super.visit(that);
         // can't optimise the ** operator in Java
         // we are unboxed if any term is 
         if(that.getLeftTerm().getUnboxed()
                 || that.getRightTerm().getUnboxed()
-                || BooleanUtil.isFalse(preferredExpressionBoxing))
+                || BooleanUtil.isFalse(getPEB()))
             CodegenUtil.markUnBoxed(that);
     }
     
@@ -83,7 +70,7 @@ public abstract class BoxingHeuristicsVisitor extends Visitor {
         // we are unboxed if any term is 
         if(that.getLeftTerm().getUnboxed()
                 || that.getRightTerm().getUnboxed()
-                || BooleanUtil.isFalse(preferredExpressionBoxing))
+                || BooleanUtil.isFalse(getPEB()))
             CodegenUtil.markUnBoxed(that);
     }
 
@@ -93,7 +80,7 @@ public abstract class BoxingHeuristicsVisitor extends Visitor {
         // we are unboxed if any term is 
         if(that.getLeftTerm().getUnboxed()
                 || that.getRightTerm().getUnboxed()
-                || BooleanUtil.isFalse(preferredExpressionBoxing))
+                || BooleanUtil.isFalse(getPEB()))
             CodegenUtil.markUnBoxed(that);
     }
 
@@ -105,60 +92,6 @@ public abstract class BoxingHeuristicsVisitor extends Visitor {
         }
     }
 
-    // The following methods are only used to set the "Preferred Expression Boxing"
-    
-    @Override
-    public void visit(Tree.Parameter that) {
-        Boolean currentPEB = setNextPEBs(that.getParameterModel().getModel().getUnboxed());
-        super.visit(that);
-        preferredExpressionBoxing = currentPEB;
-    }
-    
-    @Override
-    public void visit(Tree.ListedArgument that) {
-        if (that.getParameter() != null) {
-            Boolean currentPEB = setNextPEBs(that.getParameter().getModel().getUnboxed());
-            super.visit(that);
-            preferredExpressionBoxing = currentPEB;
-        }else {
-            super.visit(that);
-        }
-    }
-    
-    @Override
-    public void visit(Tree.ElementRange that) {
-        Boolean currentPEB = setNextPEBs(false, true);
-        super.visit(that);
-        preferredExpressionBoxing = currentPEB;
-    }
-    
-    // Set the stack for to preferred boxing that shall be used
-    // for the next N occurrences of Expression as the child
-    // nodes of the current node (where N is the number of
-    // booleans passed to this function)
-    private Boolean setNextPEBs(Boolean... boxings) {
-        nextPreferredExpressionBoxings = new Stack<Boolean>();
-        for (Boolean b : boxings) {
-            nextPreferredExpressionBoxings.push(b);
-        }
-        return preferredExpressionBoxing;
-    }
-    
-    // Set the next preferred boxing to be the currently active one
-    private Stack<Boolean> setPEB() {
-        Stack<Boolean> npebs = nextPreferredExpressionBoxings;
-        preferredExpressionBoxing = (npebs != null && !npebs.isEmpty()) ? npebs.pop() : null;
-        nextPreferredExpressionBoxings = null;
-        return npebs;
-    }
-    
-    // Unset the currently active preferred boxing and reset the
-    // list of next boxings to what's left of the list
-    private void resetPEB(Stack<Boolean> npebs) {
-        preferredExpressionBoxing = null;
-        nextPreferredExpressionBoxings = npebs;
-    }
-    
     public class ValueUsageInfo {
         private final Value value;
         private int unboxedAccessCount = 0;
@@ -167,8 +100,8 @@ public abstract class BoxingHeuristicsVisitor extends Visitor {
             this.value = value;
         }
         public void analyse() {
-            if (preferredExpressionBoxing != null) {
-                if (preferredExpressionBoxing || BooleanUtil.isTrue(preferredExpressionBoxing)) {
+            if (getPEB() != null) {
+                if (getPEB() || BooleanUtil.isTrue(getPEB())) {
                     unboxedAccessCount++;
                 } else {
                     boxedAccessCount++;
