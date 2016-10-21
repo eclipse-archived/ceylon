@@ -3826,7 +3826,7 @@ public class ClassTransformer extends AbstractTransformer {
     private static class EeModifierTransformation extends ModifierTransformation {
         @Override
         public long jpaConstructor(Class model) {
-            return model.isShared() ? PUBLIC : 0;
+            return PUBLIC;
         }
         @Override
         public long method(Function def) {
