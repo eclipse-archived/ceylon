@@ -3610,80 +3610,156 @@ public class ClassTransformer extends AbstractTransformer {
         return builder;    
     }
 
+    static class ModifierTransformation {
+        private int transformDeclarationSharedFlags(Declaration decl){
+            return Decl.isShared(decl) && !Decl.isAncestorLocal(decl) ? PUBLIC : 0;
+        }
+        
+        private int transformClassDeclFlags(ClassOrInterface cdecl) {
+            int result = 0;
+
+            result |= transformDeclarationSharedFlags(cdecl);
+            // aliases cannot be abstract, especially since they're just placeholders
+            result |= (cdecl instanceof Class) && (cdecl.isAbstract() || cdecl.isFormal()) && !cdecl.isAlias() ? ABSTRACT : 0;
+            result |= (cdecl instanceof Interface) ? INTERFACE : 0;
+            // aliases are always final placeholders, final classes are also final
+            result |= (cdecl instanceof Class) && (cdecl.isAlias() || cdecl.isFinal())  ? FINAL : 0;
+            result |= cdecl.isStatic() ? STATIC : 0;
+
+            return result;
+        }
+        
+        private int transformConstructorDeclFlags(ClassOrInterface cdecl) {
+            return transformDeclarationSharedFlags(cdecl);
+        }
+        int transformConstructorDeclFlags(Constructor ctor) {
+            return Decl.isShared(ctor) 
+                    && !Decl.isAncestorLocal(ctor) 
+                    && !ctor.isAbstract() 
+                    && !Decl.isEnumeratedConstructor(ctor)? PUBLIC : PRIVATE;
+        }
+
+        private int transformTypeAliasDeclFlags(TypeAlias decl) {
+            int result = 0;
+
+            result |= transformDeclarationSharedFlags(decl);
+            result |= FINAL;
+            result |= decl.isStatic() ? STATIC : 0;
+
+            return result;
+        }
+        
+        private int transformMethodDeclFlags(Function def) {
+            int result = 0;
+
+            if (def.isToplevel()) {
+                result |= def.isShared() ? PUBLIC : 0;
+                result |= STATIC;
+            } else if (Decl.isLocalNotInitializer(def)) {
+                result |= def.isShared() ? PUBLIC : 0;
+            } else {
+                result |= def.isShared() ? PUBLIC : PRIVATE;
+                result |= def.isFormal() && !def.isDefault() ? ABSTRACT : 0;
+                result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface) ? FINAL : 0;
+                result |= def.isStatic() ? STATIC : 0;
+            }
+
+            return result;
+        }
+        
+        private int transformAttributeFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
+            int result = 0;
+
+            result |= Decl.isVariable(cdecl) || Decl.isLate(cdecl) ? 0 : FINAL;
+            result |= cdecl.getDeclarationModel().isStatic() ? STATIC : 0;
+            if(!CodegenUtil.hasCompilerAnnotation(cdecl, "packageProtected"))
+                result |= PRIVATE;
+            
+            return result;
+        }
+
+        private int transformLocalDeclFlags(Tree.AttributeDeclaration cdecl) {
+            int result = 0;
+
+            result |= Decl.isVariable(cdecl) ? 0 : FINAL;
+            result |= cdecl.getDeclarationModel().isStatic() ? STATIC : 0;
+
+            return result;
+        }
+
+        /**
+         * Returns the modifier flags to be used for the getter & setter for the 
+         * given attribute-like declaration.  
+         * @param tdecl attribute-like declaration (Value, Getter, Parameter etc)
+         * @param forCompanion Whether the getter/setter is on a companion type
+         * @return The modifier flags.
+         */
+        int transformAttributeGetSetDeclFlags(TypedDeclaration tdecl, boolean forCompanion) {
+            if (tdecl instanceof Setter) {
+                // Spec says: A setter may not be annotated shared, default or 
+                // actual. The visibility and refinement modifiers of an attribute 
+                // with a setter are specified by annotating the matching getter.
+                tdecl = ((Setter)tdecl).getGetter();
+            }
+            
+            int result = 0;
+
+            result |= tdecl.isShared() ? PUBLIC : PRIVATE;
+            result |= ((tdecl.isFormal() && !tdecl.isDefault()) && !forCompanion) ? ABSTRACT : 0;
+            result |= !(tdecl.isFormal() || tdecl.isDefault() || Decl.withinInterface(tdecl)) || forCompanion ? FINAL : 0;
+            result |= tdecl.isStatic() ? STATIC : 0;
+
+            return result;
+        }
+
+        private int transformObjectDeclFlags(Value cdecl) {
+            int result = 0;
+
+            result |= FINAL;
+            result |= !Decl.isAncestorLocal(cdecl) && Decl.isShared(cdecl) ? PUBLIC : 0;
+            result |= cdecl.isStatic() ? STATIC : 0;
+
+            return result;
+        }
+    }
+    
+    ModifierTransformation modifierTransformation = null;
+    ModifierTransformation modifierTransformation() {
+        if (modifierTransformation == null) {
+            modifierTransformation = new ModifierTransformation();
+        }
+        return modifierTransformation;
+    }
+    
     private int transformDeclarationSharedFlags(Declaration decl){
-        return Decl.isShared(decl) && !Decl.isAncestorLocal(decl) ? PUBLIC : 0;
+        return modifierTransformation().transformDeclarationSharedFlags(decl);
     }
     
     private int transformClassDeclFlags(ClassOrInterface cdecl) {
-        int result = 0;
-
-        result |= transformDeclarationSharedFlags(cdecl);
-        // aliases cannot be abstract, especially since they're just placeholders
-        result |= (cdecl instanceof Class) && (cdecl.isAbstract() || cdecl.isFormal()) && !cdecl.isAlias() ? ABSTRACT : 0;
-        result |= (cdecl instanceof Interface) ? INTERFACE : 0;
-        // aliases are always final placeholders, final classes are also final
-        result |= (cdecl instanceof Class) && (cdecl.isAlias() || cdecl.isFinal())  ? FINAL : 0;
-        result |= cdecl.isStatic() ? STATIC : 0;
-
-        return result;
+        return modifierTransformation().transformClassDeclFlags(cdecl);
     }
     
     private int transformConstructorDeclFlags(ClassOrInterface cdecl) {
-        return transformDeclarationSharedFlags(cdecl);
+        return modifierTransformation().transformConstructorDeclFlags(cdecl);
     }
     int transformConstructorDeclFlags(Constructor ctor) {
-        return Decl.isShared(ctor) 
-                && !Decl.isAncestorLocal(ctor) 
-                && !ctor.isAbstract() 
-                && !Decl.isEnumeratedConstructor(ctor)? PUBLIC : PRIVATE;
+        return modifierTransformation().transformConstructorDeclFlags(ctor);
     }
 
     private int transformTypeAliasDeclFlags(TypeAlias decl) {
-        int result = 0;
-
-        result |= transformDeclarationSharedFlags(decl);
-        result |= FINAL;
-        result |= decl.isStatic() ? STATIC : 0;
-
-        return result;
+        return modifierTransformation().transformTypeAliasDeclFlags(decl);
     }
     
     private int transformMethodDeclFlags(Function def) {
-        int result = 0;
-
-        if (def.isToplevel()) {
-            result |= def.isShared() ? PUBLIC : 0;
-            result |= STATIC;
-        } else if (Decl.isLocalNotInitializer(def)) {
-            result |= def.isShared() ? PUBLIC : 0;
-        } else {
-            result |= def.isShared() ? PUBLIC : PRIVATE;
-            result |= def.isFormal() && !def.isDefault() ? ABSTRACT : 0;
-            result |= !(def.isFormal() || def.isDefault() || def.getContainer() instanceof Interface) ? FINAL : 0;
-            result |= def.isStatic() ? STATIC : 0;
-        }
-
-        return result;
+        return modifierTransformation().transformMethodDeclFlags(def);
     }
     
     private int transformAttributeFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
-        int result = 0;
-
-        result |= Decl.isVariable(cdecl) || Decl.isLate(cdecl) ? 0 : FINAL;
-        result |= cdecl.getDeclarationModel().isStatic() ? STATIC : 0;
-        if(!CodegenUtil.hasCompilerAnnotation(cdecl, "packageProtected"))
-            result |= PRIVATE;
-        
-        return result;
+        return modifierTransformation().transformAttributeFieldDeclFlags(cdecl);
     }
 
     private int transformLocalDeclFlags(Tree.AttributeDeclaration cdecl) {
-        int result = 0;
-
-        result |= Decl.isVariable(cdecl) ? 0 : FINAL;
-        result |= cdecl.getDeclarationModel().isStatic() ? STATIC : 0;
-
-        return result;
+        return modifierTransformation().transformLocalDeclFlags(cdecl);
     }
 
     /**
@@ -3694,31 +3770,11 @@ public class ClassTransformer extends AbstractTransformer {
      * @return The modifier flags.
      */
     int transformAttributeGetSetDeclFlags(TypedDeclaration tdecl, boolean forCompanion) {
-        if (tdecl instanceof Setter) {
-            // Spec says: A setter may not be annotated shared, default or 
-            // actual. The visibility and refinement modifiers of an attribute 
-            // with a setter are specified by annotating the matching getter.
-            tdecl = ((Setter)tdecl).getGetter();
-        }
-        
-        int result = 0;
-
-        result |= tdecl.isShared() ? PUBLIC : PRIVATE;
-        result |= ((tdecl.isFormal() && !tdecl.isDefault()) && !forCompanion) ? ABSTRACT : 0;
-        result |= !(tdecl.isFormal() || tdecl.isDefault() || Decl.withinInterface(tdecl)) || forCompanion ? FINAL : 0;
-        result |= tdecl.isStatic() ? STATIC : 0;
-
-        return result;
+        return modifierTransformation().transformAttributeGetSetDeclFlags(tdecl, forCompanion);
     }
 
     private int transformObjectDeclFlags(Value cdecl) {
-        int result = 0;
-
-        result |= FINAL;
-        result |= !Decl.isAncestorLocal(cdecl) && Decl.isShared(cdecl) ? PUBLIC : 0;
-        result |= cdecl.isStatic() ? STATIC : 0;
-
-        return result;
+        return modifierTransformation().transformObjectDeclFlags(cdecl);
     }
 
     private AttributeDefinitionBuilder makeGetterOrSetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy, 
