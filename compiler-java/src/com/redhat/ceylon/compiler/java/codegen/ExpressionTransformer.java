@@ -1980,7 +1980,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         JCExpression ret;
-        if(operator.getUnOpOptimisationStrategy(op, op.getTerm(), this).useJavaOperator()){
+        if(operator.getUnOpOptimisationStrategy(op.getUnboxed(), op.getTerm(), this).useJavaOperator()){
             // optimisation for unboxed types
             JCExpression expr = transformExpression(term, BoxingStrategy.UNBOXED, expectedType, EXPR_WIDEN_PRIM);
             // unary + is essentially a NOOP
@@ -2265,7 +2265,7 @@ public class ExpressionTransformer extends AbstractTransformer {
     public JCExpression transform(Tree.IdenticalOp op){
         // The only thing which might be unboxed is boolean, and we can follow the rules of == for optimising it,
         // which are simple and require that both types be booleans to be unboxed, otherwise they must be boxed
-        OptimisationStrategy optimisationStrategy = OperatorTranslation.BINARY_EQUAL.getBinOpOptimisationStrategy(op, op.getLeftTerm(), op.getRightTerm(), this);
+        OptimisationStrategy optimisationStrategy = OperatorTranslation.BINARY_EQUAL.getBinOpOptimisationStrategy(op.getUnboxed(), op.getLeftTerm(), op.getRightTerm(), this);
         JCExpression left = transformExpression(op.getLeftTerm(), optimisationStrategy.getBoxingStrategy(), null);
         JCExpression right = transformExpression(op.getRightTerm(), optimisationStrategy.getBoxingStrategy(), null);
         return at(op).Binary(JCTree.Tag.EQ, left, right);
@@ -2517,7 +2517,7 @@ public class ExpressionTransformer extends AbstractTransformer {
 
     protected JCExpression transformOverridableBinaryOperator(Tree.BinaryOperatorExpression op,
             OperatorTranslation operator, Type leftType, Type rightType) {
-        OptimisationStrategy optimisationStrategy = operator.getBinOpOptimisationStrategy(op, 
+        OptimisationStrategy optimisationStrategy = operator.getBinOpOptimisationStrategy(op.getUnboxed(), 
                 op.getLeftTerm(), leftType, op.getRightTerm(), rightType, this);
 
         at(op);
@@ -2714,7 +2714,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             return makeErroneous(expr, "compiler bug "+expr.getNodeType() + " is not yet supported");
         }
         
-        OptimisationStrategy optimisationStrategy = operator.getUnOpOptimisationStrategy(expr, expr.getTerm(), this);
+        OptimisationStrategy optimisationStrategy = operator.getUnOpOptimisationStrategy(expr.getUnboxed(), expr.getTerm(), this);
         boolean canOptimise = optimisationStrategy.useJavaOperator();
         
         // only fully optimise if we don't have to access the getter/setter
@@ -2849,7 +2849,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             return makeErroneous(expr, "compiler bug: "+expr.getNodeType() + " is not supported yet");
         }
         
-        OptimisationStrategy optimisationStrategy = operator.getUnOpOptimisationStrategy(expr, expr.getTerm(), this);
+        OptimisationStrategy optimisationStrategy = operator.getUnOpOptimisationStrategy(expr.getUnboxed(), expr.getTerm(), this);
         final boolean canOptimise = optimisationStrategy.useJavaOperator();
         
         Tree.Term term = expr.getTerm();
@@ -7170,7 +7170,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             if(operator.getArity() == 2){
                 if(right == null)
                     return null;
-                OptimisationStrategy optimisationStrategy = operator.getBinOpOptimisationStrategy(node, left, right, this);
+                OptimisationStrategy optimisationStrategy = operator.getBinOpOptimisationStrategy(node.getUnboxed(), left, right, this);
                 // check that we can optimise it
                 if(!optimisationStrategy.useJavaOperator())
                     return null;
@@ -7190,7 +7190,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // must be unary
                 if(right != null)
                     return null;
-                OptimisationStrategy optimisationStrategy = operator.getUnOpOptimisationStrategy(node, left, this);
+                OptimisationStrategy optimisationStrategy = operator.getUnOpOptimisationStrategy(node.getUnboxed(), left, this);
                 // check that we can optimise it
                 if(!optimisationStrategy.useJavaOperator())
                     return null;

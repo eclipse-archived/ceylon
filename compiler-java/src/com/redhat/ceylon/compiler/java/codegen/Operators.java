@@ -141,11 +141,11 @@ public class Operators {
         
         BINARY_EQUAL(Tree.EqualOp.class, 2, "equals", JCTree.Tag.EQ, All){
             @Override
-            public OptimisationStrategy getBinOpOptimisationStrategy(Tree.Term t, 
+            public OptimisationStrategy getBinOpOptimisationStrategy(boolean exprUnboxed, 
                     Tree.Term leftTerm, Type leftType, 
                     Tree.Term rightTerm, Type rightType, AbstractTransformer gen) {
                 // no optimised operator returns a boxed type 
-                if(!t.getUnboxed())
+                if(!exprUnboxed)
                     return OptimisationStrategy.NONE;
                 OptimisationStrategy left = isTermOptimisable(leftTerm, gen);
                 OptimisationStrategy right = isTermOptimisable(rightTerm, gen);
@@ -213,25 +213,25 @@ public class Operators {
             this(operatorClass, arity, ceylonMethod, null);
         }
         
-        public final OptimisationStrategy getUnOpOptimisationStrategy(Tree.Term expression, Tree.Term term, AbstractTransformer gen){
+        public final OptimisationStrategy getUnOpOptimisationStrategy(boolean exprUnboxed, Tree.Term term, AbstractTransformer gen){
             // no optimised operator returns a boxed type 
-            if(!expression.getUnboxed())
+            if(!exprUnboxed)
                 return OptimisationStrategy.NONE;
             return isTermOptimisable(term, gen);
         }
         
-        public OptimisationStrategy getBinOpOptimisationStrategy(Tree.Term expression, 
+        public OptimisationStrategy getBinOpOptimisationStrategy(boolean exprUnboxed, 
                 Tree.Term leftTerm, 
                 Tree.Term rightTerm, AbstractTransformer gen){
-            return getBinOpOptimisationStrategy(expression, leftTerm, leftTerm.getTypeModel(),
+            return getBinOpOptimisationStrategy(exprUnboxed, leftTerm, leftTerm.getTypeModel(),
                     rightTerm, rightTerm.getTypeModel(), gen);
         }
         
-        public OptimisationStrategy getBinOpOptimisationStrategy(Tree.Term expression, 
+        public OptimisationStrategy getBinOpOptimisationStrategy(boolean exprUnboxed,
                 Tree.Term leftTerm, Type leftType, 
                 Tree.Term rightTerm, Type rightType, AbstractTransformer gen){
             // no optimised operator returns a boxed type 
-            if(!expression.getUnboxed())
+            if(!exprUnboxed)
                 return OptimisationStrategy.NONE;
             // Can we do an operator optimization?
             OptimisationStrategy optimisationStrategy;
