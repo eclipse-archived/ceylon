@@ -5827,7 +5827,7 @@ public class ClassTransformer extends AbstractTransformer {
     
     void copyTypeParameters(Declaration def, MethodDefinitionBuilder methodBuilder) {
         for (TypeParameter t : Strategy.getEffectiveTypeParameters(def)) {
-                methodBuilder.typeParameter(t);
+                methodBuilder.typeParameter(makeTypeParameter(t, null), t.getContainer() == def ? makeAtTypeParameter(t) : null);
             }
         
     }
