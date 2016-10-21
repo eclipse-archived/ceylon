@@ -651,7 +651,7 @@ public class AttributeDefinitionBuilder {
                 ));
             }
         }
-        if (hasInitFlag() && isDeferredInitError()){
+        if (isDeferredInitError()){
             JCStatement rethrow = owner.make().Exec(owner.utilInvocation().rethrow( 
                     owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName())));
             // rethrow the init exception if we have one
