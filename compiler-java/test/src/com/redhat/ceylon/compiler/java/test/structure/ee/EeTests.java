@@ -11,4 +11,9 @@ public class EeTests extends CompilerTests {
         compareWithJavaSource("NoFinalMethods");
     }
     
+    @Test
+    public void testPublicImplicitCtor() {
+        compareWithJavaSource("PublicImplicitCtor");
+    }
+    
 }
