@@ -24,6 +24,7 @@ import com.redhat.ceylon.compiler.java.runtime.metamodel.MethodHandleUtil;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.FunctionDeclarationImpl;
 import com.redhat.ceylon.compiler.java.runtime.model.ReifiedType;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
+import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.Reference;
 
@@ -221,6 +222,13 @@ public class FunctionImpl<Type, Arguments extends Sequential<? extends Object>>
                 throw Metamodel.newModelError("Problem getting a MH for constructor for: "+javaClass, e);
             }
             reifiedTypeParameters = functionModel.getTypeParameters();
+            if (functionModel.isStatic()) {
+                reifiedTypeParameters = new ArrayList<com.redhat.ceylon.model.typechecker.model.TypeParameter>();
+                reifiedTypeParameters.addAll(((ClassOrInterface)functionModel.getContainer()).getTypeParameters());
+                reifiedTypeParameters.addAll(functionModel.getTypeParameters());
+            } else {
+                reifiedTypeParameters = functionModel.getTypeParameters();
+            }
         } else {
             throw new RuntimeException();
         }

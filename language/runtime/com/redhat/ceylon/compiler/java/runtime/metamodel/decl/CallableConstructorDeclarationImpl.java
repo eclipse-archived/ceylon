@@ -19,11 +19,14 @@ import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.model.CallableConstructor;
 import ceylon.language.meta.model.MemberClassCallableConstructor;
 import ceylon.language.meta.model.Type;
+import ceylon.language.meta.model.TypeApplicationException;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.common.NonNull;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
@@ -312,6 +315,65 @@ public class CallableConstructorDeclarationImpl
     public java.lang.Object memberInvoke(java.lang.Object container){
         return memberInvoke(container, (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>>)(Sequential)empty_.get_());
     }
-
+    
+    @Override
+    public <Return extends Object, Arguments extends Sequential<? extends Object>> ceylon.language.meta.model.Function<Return, Arguments> staticApply(
+            @Ignore TypeDescriptor $reifiedReturn,
+            @Ignore TypeDescriptor $reifiedArguments,
+            @Name("containerType") ceylon.language.meta.model.Type<? extends Object> containerType) {
+        return staticApply($reifiedReturn, $reifiedArguments, containerType, (Sequential)empty_.get_());
+    }
+    
+    @Override
+    public <Return extends Object, Arguments extends Sequential<? extends Object>> ceylon.language.meta.model.Function<Return, Arguments> staticApply(
+            @Ignore TypeDescriptor $reifiedReturn,
+            @Ignore TypeDescriptor $reifiedArguments,
+            @Name("containerType") ceylon.language.meta.model.Type<? extends Object> containerType,
+            @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments) {
+        throw new TypeApplicationException("");
+    }
+    
+    @Override
+    public Sequential<? extends ceylon.language.meta.model.Type<?>> 
+            staticInvoke$typeArguments(ceylon.language.meta.model.Type<? extends Object> containerType) {
+        return (Sequential)empty_.get_();
+    }
+    
+    @Override
+    public java.lang.Object staticInvoke(
+            @Name("containerType") 
+            ceylon.language.meta.model.Type<? extends Object> containerType){
+        return staticInvoke(containerType, (Sequential)empty_.get_());
+    }
+    
+    public ceylon.language.Sequential<?> 
+    staticInvoke$arguments(ceylon.language.meta.model.Type<? extends Object> containerType,
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments) {
+        return (Sequential)empty_.get_();
+    }
+    
+    @Override
+    public java.lang.Object staticInvoke(
+            @Name("containerType") 
+            ceylon.language.meta.model.Type<? extends Object> containerType,
+            @Name("typeArguments") @Defaulted 
+            @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
+        return staticInvoke(containerType, typeArguments, empty_.get_());
+    }
+    
+    @SuppressWarnings("unchecked")
+    @TypeInfo("ceylon.language::Anything")
+    @Override
+    public java.lang.Object staticInvoke(
+            @Name("containerType") 
+            ceylon.language.meta.model.Type<? extends Object> containerType,
+            @Name("typeArguments") @Defaulted 
+            @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments,
+            @Name("arguments") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>") 
+            ceylon.language.Sequential<?> arguments){
+        throw new TypeApplicationException("");
+    }
 
 }

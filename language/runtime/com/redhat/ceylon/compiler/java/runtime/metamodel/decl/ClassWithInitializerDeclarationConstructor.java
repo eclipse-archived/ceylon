@@ -23,21 +23,27 @@ import ceylon.language.meta.declaration.Package;
 import ceylon.language.meta.model.CallableConstructor;
 import ceylon.language.meta.model.MemberClassCallableConstructor;
 import ceylon.language.meta.model.Type;
+import ceylon.language.meta.model.TypeApplicationException;
 
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.metadata.Ceylon;
+import com.redhat.ceylon.compiler.java.metadata.Defaulted;
 import com.redhat.ceylon.compiler.java.metadata.Ignore;
 import com.redhat.ceylon.compiler.java.metadata.Name;
+import com.redhat.ceylon.compiler.java.metadata.Sequenced;
 import com.redhat.ceylon.common.NonNull;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameter;
 import com.redhat.ceylon.compiler.java.metadata.TypeParameters;
+import com.redhat.ceylon.compiler.java.metadata.Variance;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.AnnotationBearing;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.FunctionalUtil;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.meta.FunctionImpl;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.Nothing;
 import com.redhat.ceylon.model.typechecker.model.Class;
+import com.redhat.ceylon.model.typechecker.model.Functional;
 
 @Ceylon(major = 8)
 @com.redhat.ceylon.compiler.java.metadata.Class
@@ -333,5 +339,80 @@ public class ClassWithInitializerDeclarationConstructor
         return memberInvoke(container, (ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>>)(Sequential)empty_.get_());
     }
 
+    
+    @Override
+    public Sequential<? extends ceylon.language.meta.model.Type<?>> 
+            staticInvoke$typeArguments(ceylon.language.meta.model.Type<? extends Object> containerType) {
+        return (Sequential)empty_.get_();
+    }
+    
+    @Override
+    public java.lang.Object staticInvoke(
+            @Name("containerType") 
+            ceylon.language.meta.model.Type<? extends Object> containerType){
+        return staticInvoke(containerType, (Sequential)empty_.get_());
+    }
+    
+    public ceylon.language.Sequential<?> 
+    staticInvoke$arguments(ceylon.language.meta.model.Type<? extends Object> containerType,
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments) {
+        return (Sequential)empty_.get_();
+    }
+    
+    @Override
+    public java.lang.Object staticInvoke(
+            @Name("containerType") 
+            ceylon.language.meta.model.Type<? extends Object> containerType,
+            @Name("typeArguments") @Defaulted 
+            @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments){
+        return staticInvoke(containerType, typeArguments, empty_.get_());
+    }
+    
+    @SuppressWarnings("unchecked")
+    @TypeInfo("ceylon.language::Anything")
+    @Override
+    public java.lang.Object staticInvoke(
+            @Name("containerType") 
+            ceylon.language.meta.model.Type<? extends Object> containerType,
+            @Name("typeArguments") @Defaulted 
+            @TypeInfo("ceylon.language::Sequential<ceylon.language.meta.model::Type<ceylon.language::Anything>>")
+            ceylon.language.Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments,
+            @Name("arguments") @Sequenced @TypeInfo("ceylon.language::Sequential<ceylon.language::Anything>") 
+            ceylon.language.Sequential<?> arguments){
+        throw new TypeApplicationException("");
+    }
+    
+    @Override
+    public <Return extends Object, Arguments extends Sequential<? extends Object>> ceylon.language.meta.model.Function<Return, Arguments> staticApply(
+            @Ignore TypeDescriptor $reifiedReturn,
+            @Ignore TypeDescriptor $reifiedArguments,
+            @Name("containerType") ceylon.language.meta.model.Type<? extends Object> containerType) {
+        return staticApply($reifiedReturn, $reifiedArguments, containerType, (Sequential)empty_.get_());
+    }
+    
+    @Override
+    public <Return extends Object, Arguments extends Sequential<? extends Object>> ceylon.language.meta.model.Function<Return, Arguments> staticApply(
+            @Ignore TypeDescriptor $reifiedReturn,
+            @Ignore TypeDescriptor $reifiedArguments,
+            @Name("containerType") ceylon.language.meta.model.Type<? extends Object> containerType,
+            @Name("typeArguments") @Sequenced Sequential<? extends ceylon.language.meta.model.Type<?>> typeArguments) {
+        throw new ceylon.language.meta.model.TypeApplicationException("Not implemented");
+        /*if(!getStatic())
+            throw new ceylon.language.meta.model.TypeApplicationException(
+                    "Cannot apply a " 
+            + (getToplevel() ? "toplevel" : "member") 
+            + " declaration to a container type: use " 
+            + (getToplevel() ? "apply" : "memberApply"));
+        List<com.redhat.ceylon.model.typechecker.model.Type> producedTypes = Metamodel.getProducedTypes(typeArguments);
+        Metamodel.checkTypeArguments(null, declaration, producedTypes);
+        com.redhat.ceylon.model.typechecker.model.Reference appliedFunction = declaration.appliedReference(null, producedTypes);
+        TypeDescriptor reifiedType = Metamodel.getTypeDescriptorForFunction(appliedFunction);
+        TypeDescriptor reifiedArguments = Metamodel.getTypeDescriptorForArguments(declaration.getUnit(), (Functional) declaration, appliedFunction);
 
+        Metamodel.checkReifiedTypeArgument("apply", "Function<$1,$2>", Variance.OUT, 
+                declaration.getUnit().getCallableReturnType(appliedFunction.getFullType()), $reifiedReturn, 
+                Variance.IN, Metamodel.getProducedTypeForArguments(declaration.getUnit(), (Functional)declaration, appliedFunction), $reifiedArguments);
+        return new FunctionImpl<Return,Arguments>(reifiedType, reifiedArguments, appliedFunction, this, containerType, null);*/
+    }
 }
