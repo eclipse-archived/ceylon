@@ -333,9 +333,11 @@ public class MethodDefinitionBuilder
         return typeParameter(param, null);
     }
     
-    private MethodDefinitionBuilder typeParameter(JCTypeParameter tp, JCAnnotation tpAnno) {
+    public MethodDefinitionBuilder typeParameter(JCTypeParameter tp, JCAnnotation tpAnno) {
         typeParams.append(tp);
-        typeParamAnnotations.append(tpAnno);
+        if (tpAnno != null) {
+            typeParamAnnotations.append(tpAnno);
+        }
         return this;
     }
 
