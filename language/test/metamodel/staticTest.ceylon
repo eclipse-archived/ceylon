@@ -22,15 +22,17 @@ shared void staticTest() {
     
     assert(`function StaticMembers.method`.name == "method");
     assert(`function StaticMembers.method`.static);
-    /*try {
+    try {
         `function StaticMembers.method`.invoke();
         assert(false);
     } catch (TypeApplicationException e) {
         // TODO
     } 
-    assert(is String result = `function StaticMembers.method`.staticInvoke(StaticMembers<Anything>()),
-        got == "");
-    */
+    assert(is String staticResult = `function StaticMembers.method`.staticInvoke(`StaticMembers<String>`, [`Integer`], *["", 1]),
+        staticResult == "");
+    assert(is String memberResult = `function StaticMembers.method`.memberInvoke(StaticMembers<String>(), [`Integer`], *["", 1]),
+        memberResult == "");
+    
     
     assert(`class StaticMembers.MemberClass`.name == "MemberClass");
     assert(`class StaticMembers.MemberClass`.static);
