@@ -456,7 +456,7 @@ public class ClassTransformer extends AbstractTransformer {
         MethodDefinitionBuilder ctor = classBuilder.addConstructor(model.isDeprecated());
         ctor.modelAnnotations(makeAtJpa());
         ctor.modelAnnotations(makeAtIgnore());
-        ctor.modifiers(PROTECTED);
+        ctor.modifiers(modifierTransformation().jpaConstructor(model));
         for (TypeParameter tp : model.getTypeParameters()) {
             ctor.reifiedTypeParameter(tp);
         }
@@ -3615,6 +3615,10 @@ public class ClassTransformer extends AbstractTransformer {
             return Decl.isShared(decl) && !Decl.isAncestorLocal(decl) ? PUBLIC : 0;
         }
         
+        public long jpaConstructor(Class model) {
+            return PROTECTED;
+        }
+
         public long canonicalMethodBridge() {
             return PRIVATE;
         }
@@ -3817,8 +3821,13 @@ public class ClassTransformer extends AbstractTransformer {
      * <ul>
      * <li>We don't generate <code>final</code> methods</li>
      * <li>The implict no-args constructor is generated as public, not protected</li>
-     * </ul>*/
+     * </ul>
+     */
     private static class EeModifierTransformation extends ModifierTransformation {
+        @Override
+        public long jpaConstructor(Class model) {
+            return model.isShared() ? PUBLIC : 0;
+        }
         @Override
         public long method(Function def) {
             long result = super.method(def);
