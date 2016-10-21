@@ -5039,6 +5039,12 @@ public class ExpressionVisitor extends Visitor {
             Type at = a.getTypeModel();
             if (!isTypeUnknown(at) && 
                     !isTypeUnknown(paramType)) {
+                if(model.isFunctional() && model.hasUncheckedNullType()){
+                    Type ret = unit.getCallableReturnType(paramType);
+                    Type args = unit.getCallableTuple(paramType);
+                    ret = unit.getOptionalType(ret);
+                    paramType = unit.getCallableDeclaration().appliedType(null, Arrays.asList(ret, args));
+                }
                 checkAssignable(at, paramType, a, 
                         "argument must be assignable to parameter " + 
                                 argdesc(p, pr), 2100);

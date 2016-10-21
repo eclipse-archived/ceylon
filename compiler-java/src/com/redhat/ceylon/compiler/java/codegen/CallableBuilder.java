@@ -1147,6 +1147,7 @@ public class CallableBuilder {
         ListBuffer<JCExpression> args = new ListBuffer<>();
         boolean variadic = false;
         if(methodOrValue instanceof Function){
+            int index = 0;
             for (Parameter param : ((Function)methodOrValue).getFirstParameterList().getParameters()) {
                 TypedReference typedParameter = functionalInterfaceMethod.getTypedParameter(param);
                 ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(gen, param.getName());
@@ -1169,14 +1170,19 @@ public class CallableBuilder {
                     arg = gen.javaVariadicToSequential(paramType, param);
                 }else{
                     arg = gen.makeUnquotedIdent(param.getName());
+                    Type argumentType = parameterTypes.get(index);
+                    if(gen.isOptional(paramType)
+                            && argumentType.isSubtypeOf(gen.typeFact().getObjectType())){
+                        arg = gen.utilInvocation().checkNull(arg);
+                    }
                     if(CodegenUtil.isUnBoxed(param.getModel())){
                         arg = gen.expressionGen().applyErasureAndBoxing(arg, paramType, 
                                 false, BoxingStrategy.BOXED,
-                                // possibly this should be the callable method arg type
-                                paramType);
+                                argumentType);
                     }
                 }
                 args.append(arg);
+                index++;
             }
         }else{
             // no-arg getter
@@ -1193,11 +1199,11 @@ public class CallableBuilder {
             body = gen.make().Exec(call);
         else{
             if(CodegenUtil.isUnBoxed(methodOrValue)){
+                Type callableReturnType = gen.getReturnTypeOfCallable(typeModel);
                 call = gen.expressionGen().applyErasureAndBoxing(call, 
-                        returnType, 
+                        callableReturnType, 
                         true, 
                         BoxingStrategy.UNBOXED,
-                        // possibly this should be the callable method return type
                         returnType);
             }
             body = gen.make().Return(call);
