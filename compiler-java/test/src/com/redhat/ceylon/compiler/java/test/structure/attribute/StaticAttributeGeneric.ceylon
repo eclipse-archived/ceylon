@@ -1,4 +1,3 @@
-@noanno
 class StaticAttributeGeneric<T> {
     
     static T nonSharedStat=nothing;
