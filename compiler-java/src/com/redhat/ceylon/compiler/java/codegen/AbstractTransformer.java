@@ -5404,11 +5404,6 @@ public abstract class AbstractTransformer implements Transformation {
                 declarationModel.getDefaultTypeArgument());
     }
     
-    JCAnnotation makeAtTypeParameter(Tree.TypeParameterDeclaration param) {
-        at(param);
-        return makeAtTypeParameter(param.getDeclarationModel());
-    }
-    
     final List<JCExpression> typeArguments(Functional method) {
         if (method instanceof Generic) {
             Map<TypeParameter, Type> l = new java.util.HashMap();
