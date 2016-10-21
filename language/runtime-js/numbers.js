@@ -269,10 +269,13 @@ $specialiseForNumber$(Integer, 'powerOfInteger', function(){return {mod:$CCMM$,$
 $specialiseForNumber$(Float, 'powerOfInteger', function(){return {mod:$CCMM$,$t:{t:Float},pa:67,$cont:Float,ps:[{$t:{t:Integer},nm:'integer'}],d:['$','Float','$m','powerOfInteger']};})
 
 atr$(JSNum$proto, 'negated', function() {
-  if (this.valueOf()==0 && this.float$) {
-    var f=Float(0.0);
-    if (!this.fmz$)f.fmz$=true;
-    return f;
+  if (this.valueOf()==0) {
+    if (this.float$) {
+      var f=Float(0.0);
+      if (!this.fmz$)f.fmz$=true;
+      return f;
+    }
+    return 0;
   }
   return nflt$(this) ? Float(-this) : -this;
 },undefined,function(){return{an:function(){return[shared(),actual()]},mod:$CCMM$,$cont:Invertible,d:['$','Invertible','$at','negated']};});
