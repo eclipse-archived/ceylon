@@ -156,7 +156,7 @@ final class lambdas_ {
             @.java.lang.Override
             public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
             final .ceylon.language.Boolean arg0) {
-                $call$(arg0);
+                $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
             }
         }, .ceylon.language.Boolean.instance(true));
         j.<.ceylon.language.Boolean>consumerStatic(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.Consumer<.ceylon.language.Boolean>()
@@ -180,7 +180,7 @@ final class lambdas_ {
             @.java.lang.Override
             public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
             final .ceylon.language.Boolean arg0) {
-                $call$(arg0);
+                $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
             }
         }, .ceylon.language.Boolean.instance(true));
         .com.redhat.ceylon.compiler.java.test.interop.LambdasJava.<.ceylon.language.Boolean>consumerStatic(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#2") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.Consumer<.ceylon.language.Boolean>()
@@ -204,7 +204,7 @@ final class lambdas_ {
             @.java.lang.Override
             public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
             final .ceylon.language.Boolean arg0) {
-                $call$(arg0);
+                $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
             }
         }, .ceylon.language.Boolean.instance(true));
         j.<.ceylon.language.Boolean, .ceylon.language.Boolean>function(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#3") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.Function<.ceylon.language.Boolean, .ceylon.language.Boolean>()
@@ -222,7 +222,7 @@ final class lambdas_ {
             @.java.lang.Override
             public .ceylon.language.Boolean apply(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
             final .ceylon.language.Boolean arg0) {
-                return $call$(arg0);
+                return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
             }
         }, .ceylon.language.Boolean.instance(true));
         
@@ -1121,7 +1121,7 @@ final class lambdas_ {
             @.java.lang.Override
             public boolean test(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
             final .ceylon.language.Integer arg0) {
-                return $call$(arg0).booleanValue();
+                return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)).booleanValue();
             }
         })).mapToInt(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#17") @.com.redhat.ceylon.compiler.java.metadata.Method .java.util.function.ToIntFunction<.ceylon.language.Integer>()
         @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
@@ -1138,7 +1138,7 @@ final class lambdas_ {
             @.java.lang.Override
             public int applyAsInt(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
             final .ceylon.language.Integer arg0) {
-                return .com.redhat.ceylon.compiler.java.Util.toInt($call$(arg0).longValue());
+                return .com.redhat.ceylon.compiler.java.Util.toInt($call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)).longValue());
             }
         })).sum();
         final .java.util.concurrent.ExecutorService mes = (.java.util.concurrent.ExecutorService)(.java.lang.Object).ceylon.language.nothing_.get_();
@@ -1225,7 +1225,7 @@ final class lambdas_ {
             @.java.lang.Override
             public .ceylon.language.String apply(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
             final .ceylon.language.String arg0) {
-                return $call$(arg0);
+                return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
             }
         })).thenAccept(new .java.util.function.Consumer<.ceylon.language.String>(){
             
@@ -1245,6 +1245,90 @@ final class lambdas_ {
             public void accept(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
             final .ceylon.language.String arg0) {
                 $call$(arg0);
+            }
+        });
+        j.stringFunction(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#21") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.test.interop.StringFunction()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#21")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(s);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .java.lang.String arg0) {
+                return $call$((
+                    let
+                    {
+                        .java.lang.String $ceylontmp$2 = .com.redhat.ceylon.compiler.java.Util.checkNull(arg0);
+                    }
+                    returning $ceylontmp$2 != null ? .ceylon.language.String.instance($ceylontmp$2) : null;
+                )).toString();
+            }
+        });
+        j.stringFunction(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#22") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.test.interop.StringFunction()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#22")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.String s = (.ceylon.language.String)$param$0;
+                return s;
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .java.lang.String arg0) {
+                return (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$4 = $call$((
+                            let
+                            {
+                                .java.lang.String $ceylontmp$3 = arg0;
+                            }
+                            returning $ceylontmp$3 != null ? .ceylon.language.String.instance($ceylontmp$3) : null;
+                        ));
+                    }
+                    returning $ceylontmp$4 != null ? $ceylontmp$4.toString() : null;
+                );
+            }
+        });
+        j.stringFunction(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#23") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.test.interop.StringFunction()
+        @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
+        @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#23")
+        @.com.redhat.ceylon.compiler.java.metadata.Method
+        {
+            
+            @.com.redhat.ceylon.compiler.java.metadata.Ignore
+            public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
+                final .java.lang.String s = ((.ceylon.language.String)$param$0).toString();
+                return .ceylon.language.String.instance(s);
+            }
+            
+            @.java.lang.Override
+            public .java.lang.String execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
+            final .java.lang.String arg0) {
+                return (
+                    let
+                    {
+                        .ceylon.language.String $ceylontmp$6 = $call$((
+                            let
+                            {
+                                .java.lang.String $ceylontmp$5 = .com.redhat.ceylon.compiler.java.Util.checkNull(arg0);
+                            }
+                            returning $ceylontmp$5 != null ? .ceylon.language.String.instance($ceylontmp$5) : null;
+                        ));
+                    }
+                    returning $ceylontmp$6 != null ? $ceylontmp$6.toString() : null;
+                );
             }
         });
     }
