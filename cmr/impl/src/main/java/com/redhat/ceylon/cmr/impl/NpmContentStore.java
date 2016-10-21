@@ -44,6 +44,7 @@ public class NpmContentStore extends AbstractContentStore {
     private final FileContentStore[] stores;
     private final FileContentStore outstore;
     private String npmCommand;
+    private String path;
     
     public NpmContentStore(File[] roots, File out, Logger log, boolean offline) {
         super(log, offline, -1);
@@ -165,6 +166,16 @@ public class NpmContentStore extends AbstractContentStore {
                     .command(npmCmd, "install", "-q", name + "@" + version)
                     .directory(out.getParentFile())
                     .inheritIO();
+            Map<String, String> env = pb.environment();
+            String pathVariableName = "PATH";
+            for (String key : env.keySet()) {
+                if (key.equalsIgnoreCase("path")) {
+                    pathVariableName = key;
+                    break;
+                }
+            }
+            String pathForRunningNpm = path != null ? path : System.getProperty(Constants.PROP_CEYLON_EXTCMD_PATH, System.getenv("PATH"));
+            env.put(pathVariableName, pathForRunningNpm);
             
             Process p = pb.start();
             p.waitFor();
@@ -216,5 +227,9 @@ public class NpmContentStore extends AbstractContentStore {
 
     public void setNpmCommand(String npmCommand) {
         this.npmCommand = npmCommand;
+    }
+
+    public void setPathForRunningNpm(String path) {
+        this.path = path;
     }
 }

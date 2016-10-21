@@ -80,6 +80,13 @@ public class NpmRepository extends AbstractRepository {
         }
     }
     
+    public void setPathForRunningNpm(String npmCommand) {
+        NpmContentStore store = (NpmContentStore) getRoot().getService(ContentStore.class);
+        if (store != null) {
+            store.setPathForRunningNpm(npmCommand);
+        }
+    }
+    
     private static class NpmArtifactResult extends AbstractArtifactResult {
         private Node node;
 
