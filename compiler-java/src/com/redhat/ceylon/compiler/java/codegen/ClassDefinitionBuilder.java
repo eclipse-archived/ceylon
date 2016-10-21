@@ -573,11 +573,11 @@ public class ClassDefinitionBuilder
         return companionBuilder;
     }
 
-    public ClassDefinitionBuilder field(int modifiers, String attrName, JCExpression type, JCExpression initialValue, boolean isLocal) {
+    public ClassDefinitionBuilder field(long modifiers, String attrName, JCExpression type, JCExpression initialValue, boolean isLocal) {
         return field(modifiers, attrName, type, initialValue, isLocal, List.<JCTree.JCAnnotation>nil());
     }
     
-    public ClassDefinitionBuilder field(int modifiers, String attrName, JCExpression type, JCExpression initialValue, boolean isLocal, 
+    public ClassDefinitionBuilder field(long modifiers, String attrName, JCExpression type, JCExpression initialValue, boolean isLocal, 
             List<JCTree.JCAnnotation> annotations) {
         if (!isLocal) {
             // A shared or captured attribute gets turned into a class member

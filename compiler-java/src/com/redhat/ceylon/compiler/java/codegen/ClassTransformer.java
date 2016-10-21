@@ -2608,7 +2608,7 @@ public class ClassTransformer extends AbstractTransformer {
                                 final MethodDefinitionBuilder defaultValueDelegate = makeDelegateToCompanion(iface,
                                         typedMember,
                                         model.getType(),
-                                        PUBLIC | FINAL, 
+                                        modifierTransformation().defaultValueMethodBridge(), 
                                         typeParameters, producedTypeParameterBounds,
                                         typedParameter.getFullType(), 
                                         Naming.getDefaultedParamMethodName(method, param), 
@@ -2642,7 +2642,7 @@ public class ClassTransformer extends AbstractTransformer {
                         final MethodDefinitionBuilder concreteMemberDelegate = makeDelegateToCompanion(iface,
                                 typedMember,
                                 model.getType(),
-                                PUBLIC | (method.isDefault() ? 0 : FINAL),
+                                modifierTransformation().methodBridge(method),
                                 typeParameters, 
                                 producedTypeParameterBounds, 
                                 typedMember.getType(), 
@@ -2660,7 +2660,7 @@ public class ClassTransformer extends AbstractTransformer {
                         final MethodDefinitionBuilder canonicalMethod = makeDelegateToCompanion(iface,
                                 typedMember,
                                 model.getType(),
-                                PRIVATE,
+                                modifierTransformation().canonicalMethodBridge(),
                                 subMethod.getTypeParameters(), 
                                 producedTypeParameterBounds,
                                 typedMember.getType(), 
@@ -2679,19 +2679,20 @@ public class ClassTransformer extends AbstractTransformer {
                 if (needsCompanionDelegate(model, typedMember)) {
                     Setter setter = (member instanceof Setter) ? (Setter)member : null;
                     if (member instanceof Value) {
+                        Value getter = (Value)member;
                         if (member instanceof JavaBeanValue) {
                             setter = ((Value) member).getSetter();
                         }
                         final MethodDefinitionBuilder getterDelegate = makeDelegateToCompanion(iface, 
                                 typedMember,
                                 model.getType(),
-                                PUBLIC | (attr.isDefault() ? 0 : FINAL), 
+                                modifierTransformation().getterBridge(getter), 
                                 Collections.<TypeParameter>emptyList(), 
                                 Collections.<java.util.List<Type>>emptyList(),
                                 typedMember.getType(), 
-                                Naming.getGetterName(attr), 
+                                Naming.getGetterName(getter), 
                                 Collections.<Parameter>emptyList(),
-                                attr.getTypeErased(),
+                                getter.getTypeErased(),
                                 null,
                                 null);
                         classBuilder.method(getterDelegate);
@@ -2700,7 +2701,7 @@ public class ClassTransformer extends AbstractTransformer {
                         final MethodDefinitionBuilder setterDelegate = makeDelegateToCompanion(iface, 
                                 satisfiedType.getTypedMember(setter, null),
                                 model.getType(),
-                                PUBLIC | (setter.getGetter().isDefault() ? 0 : FINAL), 
+                                modifierTransformation().setterBridge(setter), 
                                 Collections.<TypeParameter>emptyList(), 
                                 Collections.<java.util.List<Type>>emptyList(),
                                 typeFact().getAnythingType(), 
@@ -2783,11 +2784,7 @@ public class ClassTransformer extends AbstractTransformer {
         }
         java.util.List<TypeParameter> typeParameters = klass.getTypeParameters();
         java.util.List<Parameter> parameters = (ctor != null ? ctor.getParameterLists() : klass.getParameterLists()).get(0).getParameters();
-        long flags = PUBLIC;
-        if(includeBody)
-            flags |= FINAL;
-        else
-            flags |= ABSTRACT;
+        long flags = modifierTransformation().instantiatorBridgeFlags(includeBody);
         
         String instantiatorMethodName = naming.getInstantiatorMethodName(klass);
         for (Parameter param : parameters) {
@@ -3495,7 +3492,7 @@ public class ClassTransformer extends AbstractTransformer {
                 type = makeJavaType(nonWideningType, flags);
             }
             
-            int modifiers = (useField) ? transformAttributeFieldDeclFlags(decl) : transformLocalDeclFlags(decl);
+            long modifiers = (useField) ? transformAttributeFieldDeclFlags(decl) : transformLocalDeclFlags(decl);
             
             // If the attribute is really from a parameter then don't generate a field
             // (makeAttributeForValueParameter() or makeMethodForFunctionalParameter() 
@@ -3610,15 +3607,47 @@ public class ClassTransformer extends AbstractTransformer {
         return builder;    
     }
 
-    static class ModifierTransformation {
-        private int transformDeclarationSharedFlags(Declaration decl){
+    /**
+     * Encapsulates the modifiers we use for various things.
+     */
+    private static class ModifierTransformation {
+        protected long declarationSharedFlags(Declaration decl){
             return Decl.isShared(decl) && !Decl.isAncestorLocal(decl) ? PUBLIC : 0;
         }
         
-        private int transformClassDeclFlags(ClassOrInterface cdecl) {
+        public long canonicalMethodBridge() {
+            return PRIVATE;
+        }
+
+        public long methodBridge(Function method) {
+            return PUBLIC | (method.isDefault() ? 0 : FINAL);
+        }
+
+        public long setterBridge(Setter setter) {
+            return PUBLIC | (setter.getGetter().isDefault() ? 0 : FINAL);
+        }
+
+        public long getterBridge(Value attr) {
+            return PUBLIC | (attr.isDefault() ? 0 : FINAL);
+        }
+
+        public long defaultValueMethodBridge() {
+            return PUBLIC | FINAL;
+        }
+
+        public long instantiatorBridgeFlags(boolean includeBody) {
+            long flags = PUBLIC;
+            if(includeBody)
+                flags |= FINAL;
+            else
+                flags |= ABSTRACT;
+            return flags;
+        }
+
+        public long classFlags(ClassOrInterface cdecl) {
             int result = 0;
 
-            result |= transformDeclarationSharedFlags(cdecl);
+            result |= declarationSharedFlags(cdecl);
             // aliases cannot be abstract, especially since they're just placeholders
             result |= (cdecl instanceof Class) && (cdecl.isAbstract() || cdecl.isFormal()) && !cdecl.isAlias() ? ABSTRACT : 0;
             result |= (cdecl instanceof Interface) ? INTERFACE : 0;
@@ -3629,27 +3658,27 @@ public class ClassTransformer extends AbstractTransformer {
             return result;
         }
         
-        private int transformConstructorDeclFlags(ClassOrInterface cdecl) {
-            return transformDeclarationSharedFlags(cdecl);
+        public long constructor(ClassOrInterface cdecl) {
+            return declarationSharedFlags(cdecl);
         }
-        int transformConstructorDeclFlags(Constructor ctor) {
+        public int constructor(Constructor ctor) {
             return Decl.isShared(ctor) 
                     && !Decl.isAncestorLocal(ctor) 
                     && !ctor.isAbstract() 
                     && !Decl.isEnumeratedConstructor(ctor)? PUBLIC : PRIVATE;
         }
 
-        private int transformTypeAliasDeclFlags(TypeAlias decl) {
+        public long typeAlias(TypeAlias decl) {
             int result = 0;
 
-            result |= transformDeclarationSharedFlags(decl);
+            result |= declarationSharedFlags(decl);
             result |= FINAL;
             result |= decl.isStatic() ? STATIC : 0;
 
             return result;
         }
         
-        private int transformMethodDeclFlags(Function def) {
+        public long method(Function def) {
             int result = 0;
 
             if (def.isToplevel()) {
@@ -3667,7 +3696,7 @@ public class ClassTransformer extends AbstractTransformer {
             return result;
         }
         
-        private int transformAttributeFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
+        public long field(Tree.AttributeDeclaration cdecl) {
             int result = 0;
 
             result |= Decl.isVariable(cdecl) || Decl.isLate(cdecl) ? 0 : FINAL;
@@ -3678,7 +3707,7 @@ public class ClassTransformer extends AbstractTransformer {
             return result;
         }
 
-        private int transformLocalDeclFlags(Tree.AttributeDeclaration cdecl) {
+        public long localVar(Tree.AttributeDeclaration cdecl) {
             int result = 0;
 
             result |= Decl.isVariable(cdecl) ? 0 : FINAL;
@@ -3694,7 +3723,7 @@ public class ClassTransformer extends AbstractTransformer {
          * @param forCompanion Whether the getter/setter is on a companion type
          * @return The modifier flags.
          */
-        int transformAttributeGetSetDeclFlags(TypedDeclaration tdecl, boolean forCompanion) {
+        public long getterSetter(TypedDeclaration tdecl, boolean forCompanion) {
             if (tdecl instanceof Setter) {
                 // Spec says: A setter may not be annotated shared, default or 
                 // actual. The visibility and refinement modifiers of an attribute 
@@ -3712,7 +3741,7 @@ public class ClassTransformer extends AbstractTransformer {
             return result;
         }
 
-        private int transformObjectDeclFlags(Value cdecl) {
+        public long object(Value cdecl) {
             int result = 0;
 
             result |= FINAL;
@@ -3720,6 +3749,124 @@ public class ClassTransformer extends AbstractTransformer {
             result |= cdecl.isStatic() ? STATIC : 0;
 
             return result;
+        }
+
+        public long defaultParameterMethodOverload(Function method, DaoBody daoBody) {
+            long mods = method(method);
+            if (daoBody instanceof DaoAbstract == false) {
+                mods &= ~ABSTRACT;
+            }
+            if (daoBody instanceof DaoCompanion) {
+                mods |= FINAL;
+            };
+            return mods;
+        }
+
+        public long defaultParameterInstantiatorOverload(Class klass) {
+         // remove the FINAL bit in case it gets set, because that is valid for a class decl, but
+            // not for a method if in an interface
+            long modifiers = classFlags(klass) & ~FINAL;
+            // when refining a member class of an interface because the 
+            // instantiator method is declared in the companion interface it is
+            // effectively public.
+            if (klass instanceof Class && klass.isActual()) {
+                modifiers &= ~(PRIVATE | PROTECTED);
+                modifiers |= PUBLIC;
+            }
+            // alias classes cannot be abstract since they're placeholders, but it's possible to have formal class aliases
+            // and the instantiator method needs the abstract bit
+            if(klass.isFormal() && klass.isAlias())
+                modifiers |= ABSTRACT;
+            return modifiers;
+        }
+
+        public long defaultParameterConstructorOverload(Class klass) {
+            return constructor(klass) & (PUBLIC | PRIVATE | PROTECTED);
+        }
+
+        public long defaultParameterMethod(boolean noBody, Declaration container) {
+            int modifiers = 0;
+            if (noBody) {
+                modifiers |= PUBLIC | ABSTRACT;
+            } else if (container == null
+                    || !(container instanceof Class 
+                            && Strategy.defaultParameterMethodStatic(container))) {
+                // initializers can override parameter defaults
+                modifiers |= FINAL;
+            }
+            if (container != null && container.isShared()) {
+                modifiers |= PUBLIC;
+            } else if (container == null || (!container.isToplevel()
+                    && !noBody)){
+                modifiers |= PRIVATE;
+            }
+            boolean staticMethod = container != null && Strategy.defaultParameterMethodStatic(container);
+            if (staticMethod) {
+                // static default parameter methods should be consistently public so that if non-shared class Top and
+                // shared class Bottom which extends Top both have the same default param name, we don't get an error
+                // if the Bottom class tries to "hide" a static public method with a private one
+                modifiers &= ~PRIVATE;
+                modifiers |= STATIC | PUBLIC;
+            }
+            return modifiers;
+        }
+    }
+    
+    /** 
+     * <p>In EE mode we change the modifiers:</p>
+     * <ul>
+     * <li>We don't generate <code>final</code> methods</li>
+     * <li>The implict no-args constructor is generated as public, not protected</li>
+     * </ul>*/
+    private static class EeModifierTransformation extends ModifierTransformation {
+        @Override
+        public long method(Function def) {
+            long result = super.method(def);
+            return result & (~FINAL);
+        }
+        @Override
+        public long defaultParameterMethodOverload(Function method, DaoBody daoBody) {
+            long result = super.defaultParameterMethodOverload(method, daoBody);
+            return result & (~FINAL);
+        }
+        @Override
+        public long getterSetter(TypedDeclaration tdecl, boolean forCompanion) {
+            long result = super.getterSetter(tdecl, forCompanion);
+            if (!forCompanion) {
+                return result & (~FINAL);
+            } else {
+                return result;
+            }
+        }
+        @Override
+        public long methodBridge(Function method) {
+            long result = super.methodBridge(method);
+            return result & (~FINAL);
+        }
+        @Override
+        public long setterBridge(Setter setter) {
+            long result = super.setterBridge(setter);
+            return result & (~FINAL);
+        }
+        @Override
+        public long getterBridge(Value attr) {
+            long result = super.getterBridge(attr);
+            return result & (~FINAL);
+        }
+        @Override
+        public long defaultValueMethodBridge() {
+            long result = super.defaultValueMethodBridge();
+            return result & (~FINAL);
+        }
+        @Override
+        public long instantiatorBridgeFlags(boolean includeBody) {
+            long result = super.instantiatorBridgeFlags(includeBody);
+            return result & (~FINAL);
+        }
+        @Override
+        public long defaultParameterMethod(boolean noBody, Declaration container) {
+            long result = super.defaultParameterMethod(noBody, container);
+            return result & (~FINAL);
         }
     }
     
@@ -3731,35 +3878,35 @@ public class ClassTransformer extends AbstractTransformer {
         return modifierTransformation;
     }
     
-    private int transformDeclarationSharedFlags(Declaration decl){
-        return modifierTransformation().transformDeclarationSharedFlags(decl);
+    private long transformDeclarationSharedFlags(Declaration decl){
+        return modifierTransformation().declarationSharedFlags(decl);
     }
     
-    private int transformClassDeclFlags(ClassOrInterface cdecl) {
-        return modifierTransformation().transformClassDeclFlags(cdecl);
+    private long transformClassDeclFlags(ClassOrInterface cdecl) {
+        return modifierTransformation().classFlags(cdecl);
     }
     
-    private int transformConstructorDeclFlags(ClassOrInterface cdecl) {
-        return modifierTransformation().transformConstructorDeclFlags(cdecl);
+    private long transformConstructorDeclFlags(ClassOrInterface cdecl) {
+        return modifierTransformation().constructor(cdecl);
     }
     int transformConstructorDeclFlags(Constructor ctor) {
-        return modifierTransformation().transformConstructorDeclFlags(ctor);
+        return modifierTransformation().constructor(ctor);
     }
 
-    private int transformTypeAliasDeclFlags(TypeAlias decl) {
-        return modifierTransformation().transformTypeAliasDeclFlags(decl);
+    private long transformTypeAliasDeclFlags(TypeAlias decl) {
+        return modifierTransformation().typeAlias(decl);
     }
     
-    private int transformMethodDeclFlags(Function def) {
-        return modifierTransformation().transformMethodDeclFlags(def);
+    private long transformMethodDeclFlags(Function def) {
+        return modifierTransformation().method(def);
     }
     
-    private int transformAttributeFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
-        return modifierTransformation().transformAttributeFieldDeclFlags(cdecl);
+    private long transformAttributeFieldDeclFlags(Tree.AttributeDeclaration cdecl) {
+        return modifierTransformation().field(cdecl);
     }
 
-    private int transformLocalDeclFlags(Tree.AttributeDeclaration cdecl) {
-        return modifierTransformation().transformLocalDeclFlags(cdecl);
+    private long transformLocalDeclFlags(Tree.AttributeDeclaration cdecl) {
+        return modifierTransformation().localVar(cdecl);
     }
 
     /**
@@ -3769,12 +3916,12 @@ public class ClassTransformer extends AbstractTransformer {
      * @param forCompanion Whether the getter/setter is on a companion type
      * @return The modifier flags.
      */
-    int transformAttributeGetSetDeclFlags(TypedDeclaration tdecl, boolean forCompanion) {
-        return modifierTransformation().transformAttributeGetSetDeclFlags(tdecl, forCompanion);
+    long transformAttributeGetSetDeclFlags(TypedDeclaration tdecl, boolean forCompanion) {
+        return modifierTransformation().getterSetter(tdecl, forCompanion);
     }
 
-    private int transformObjectDeclFlags(Value cdecl) {
-        return modifierTransformation().transformObjectDeclFlags(cdecl);
+    private long transformObjectDeclFlags(Value cdecl) {
+        return modifierTransformation().object(cdecl);
     }
 
     private AttributeDefinitionBuilder makeGetterOrSetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy, 
@@ -4863,14 +5010,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         @Override
         protected long getModifiers() {
-            long mods = transformMethodDeclFlags(method);
-            if (daoBody instanceof DaoAbstract == false) {
-                mods &= ~ABSTRACT;
-            }
-            if (daoBody instanceof DaoCompanion) {
-                mods |= FINAL;
-            }
-            return mods;
+            return modifierTransformation().defaultParameterMethodOverload(method, daoBody);
         }
 
         @Override
@@ -5160,7 +5300,7 @@ public class ClassTransformer extends AbstractTransformer {
         
         @Override
         protected long getModifiers() {
-            return transformConstructorDeclFlags(klass) & (PUBLIC | PRIVATE | PROTECTED);
+            return modifierTransformation().defaultParameterConstructorOverload(klass);
         }
 
         @Override
@@ -5195,21 +5335,7 @@ public class ClassTransformer extends AbstractTransformer {
 
         @Override
         protected long getModifiers() {
-            // remove the FINAL bit in case it gets set, because that is valid for a class decl, but
-            // not for a method if in an interface
-            long modifiers = transformClassDeclFlags(klass) & ~FINAL;
-            // when refining a member class of an interface because the 
-            // instantiator method is declared in the companion interface it is
-            // effectively public.
-            if (klass instanceof Class && klass.isActual()) {
-                modifiers &= ~(PRIVATE | PROTECTED);
-                modifiers |= PUBLIC;
-            }
-            // alias classes cannot be abstract since they're placeholders, but it's possible to have formal class aliases
-            // and the instantiator method needs the abstract bit
-            if(klass.isFormal() && klass.isAlias())
-                modifiers |= ABSTRACT;
-            return modifiers;
+            return modifierTransformation().defaultParameterInstantiatorOverload(klass);
             
         }
 
@@ -5358,30 +5484,8 @@ public class ClassTransformer extends AbstractTransformer {
                 }
             }
         }
-        int modifiers = 0;
-        if (noBody) {
-            modifiers |= PUBLIC | ABSTRACT;
-        } else if (container == null
-                || !(container instanceof Class 
-                        && Strategy.defaultParameterMethodStatic(container))) {
-            // initializers can override parameter defaults
-            modifiers |= FINAL;
-        }
-        if (container != null && container.isShared()) {
-            modifiers |= PUBLIC;
-        } else if (container == null || (!container.isToplevel()
-                && !noBody)){
-            modifiers |= PRIVATE;
-        }
-        boolean staticMethod = container != null && Strategy.defaultParameterMethodStatic(container);
-        if (staticMethod) {
-            // static default parameter methods should be consistently public so that if non-shared class Top and
-            // shared class Bottom which extends Top both have the same default param name, we don't get an error
-            // if the Bottom class tries to "hide" a static public method with a private one
-            modifiers &= ~PRIVATE;
-            modifiers |= STATIC | PUBLIC;
-        }
-        methodBuilder.modifiers(modifiers);
+        
+        methodBuilder.modifiers(modifierTransformation().defaultParameterMethod(noBody, container));
         
         if (container instanceof Constructor) {
             copyTypeParameters((Class)container.getContainer(), methodBuilder);
@@ -5391,6 +5495,7 @@ public class ClassTransformer extends AbstractTransformer {
             copyTypeParameters((Declaration)container, methodBuilder);
             methodBuilder.reifiedTypeParameters(Strategy.getEffectiveTypeParameters(container));
         }
+        boolean staticMethod = container != null && Strategy.defaultParameterMethodStatic(container);
         WideningRules wideningRules = !staticMethod && container instanceof Class
                 ? WideningRules.CAN_WIDEN : WideningRules.NONE;
         // Add any of the preceding parameters as parameters to the method
