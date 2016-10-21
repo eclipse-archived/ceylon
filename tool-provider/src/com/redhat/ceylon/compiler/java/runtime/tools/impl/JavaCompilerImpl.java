@@ -187,6 +187,8 @@ public class JavaCompilerImpl implements Compiler {
             if (javaOptions.getJavacOptions() != null) {
                 CeylonCompileTool.addJavacArguments(translatedOptions, javaOptions.getJavacOptions());
             }
+            translatedOptions.add(Option.TARGET.getText());
+            translatedOptions.add(String.valueOf(javaOptions.getJavacTarget()));
         }
         return translatedOptions;
     }
