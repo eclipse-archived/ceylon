@@ -2720,53 +2720,131 @@ public class ExpressionVisitor extends Visitor {
     
     private void warnIfUncheckedNulls(
             Tree.LocalModifier local, 
-            Tree.Expression e) {
-        Type type = e.getTypeModel();
+            Tree.Expression ex,
+            Declaration declaration) {
+        Type type = ex.getTypeModel();
         if (type!=null && !type.isNothing()
                 && !unit.isOptionalType(type) 
-                && hasUncheckedNulls(e)) {
-            Tree.Term term = e.getTerm();
-            if (term instanceof Tree.InvocationExpression) {
-                Tree.InvocationExpression ie = 
-                        (Tree.InvocationExpression) term;
-                Tree.Term p = ie.getPrimary();
-                if (p instanceof Tree.StaticMemberOrTypeExpression) {
-                    Tree.StaticMemberOrTypeExpression bme = 
-                            (Tree.StaticMemberOrTypeExpression) p;
-                    Declaration dec = bme.getDeclaration();
-                    if (dec!=null) {
-                        String qname = 
-                                dec.getQualifiedNameString();
-                        if ("java.util::Arrays.asList".equals(qname)) {
-                            return;
-                        }
-                        else {
-                            local.addUsageWarning(Warning.inferredNotNull, 
-                                    "not null type inferred from invocation of function with unchecked nulls: '" 
-                                    + dec.getName(unit) 
-                                    + "' is not known to be null-safe (explicitly specify the type '" + type.asSourceCodeString(unit) + "')");
-                            return;
-                        }
+                && hasUncheckedNulls(ex)) {
+            if (declaration instanceof TypedDeclaration
+                && !type.isInteger() && !type.isFloat()
+                && !type.isBoolean() && !type.isByte()
+                && !type.isCharacter() && !type.isString()) {
+                TypedDeclaration td =
+                        (TypedDeclaration) 
+                            declaration;
+                td.setUncheckedNullType(true);                
+            }
+            else {
+                warnUncheckedNulls(local, type, ex.getTerm());
+            }
+        }
+    }
+    
+    private static List<String> knownNullSafe = Arrays.asList(
+            "java.util::Objects.toString",
+            "java.util::Arrays.asList",
+            "java.util::Arrays.copyOf",
+            "java.util::Arrays.copyOfRange",
+            "java.util::Arrays.deepToString",
+            "java.util::Collections.unmodifiableList",
+            "java.util::Collections.unmodifiableMap",
+            "java.util::Collections.unmodifiableSet",
+            "java.util::Collections.unmodifiableSortedMap",
+            "java.util::Collections.unmodifiableSortedSet",
+            "java.util::Collections.synchronizedList",
+            "java.util::Collections.synchronizedMap",
+            "java.util::Collections.synchronizedSet",
+            "java.util::Collections.synchronizedSortedMap",
+            "java.util::Collections.synchronizedSortedSet",
+            "java.util::Collections.emptyIterator",
+            "java.util::Collections.emptyListIterator",
+            "java.util::Collections.emptyList",
+            "java.util::Collections.emptyMap",
+            "java.util::Collections.emptySet",
+            "java.util::Collections.emptySortedMap",
+            "java.util::Collections.emptySortedSet",
+            "java.util::Collections.singleton",
+            "java.util::Collections.singletonList",
+            "java.util::Collections.singletonMap",
+            "java.lang::String.substring",
+            "java.lang::String.toLowerCase",
+            "java.lang::String.toUpperCase",
+            "java.lang::String.intern",
+            "java.lang::String.replace",
+            "java.lang::String.replaceAll",
+            "java.lang::String.replaceFirst",
+            "java.lang::String.toCharArray",
+            "java.lang::String.getBytes",
+            "java.lang::String.getChars",
+            "java.lang::String.trim",
+            "java.lang::String.format",
+            "java.lang::String.join",
+            "java.lang::String.split",
+            "java.lang::String.copyValueOf",
+            "java.lang::String.valueOf",
+            "java.lang::Double.valueOf",
+            "java.lang::Float.valueOf",
+            "java.lang::Long.valueOf",
+            "java.lang::Integer.valueOf",
+            "java.lang::Short.valueOf",
+            "java.lang::Byte.valueOf",
+            "java.lang::Boolean.valueOf",
+            "java.lang::Character.valueOf",
+            "java.lang::Double.toString",
+            "java.lang::Float.toString",
+            "java.lang::Long.toString",
+            "java.lang::Integer.toString",
+            "java.lang::Short.toString",
+            "java.lang::Byte.toString",
+            "java.lang::Boolean.toString",
+            "java.lang::Character.toString"
+    );
+    
+    private static void warnUncheckedNulls(
+            Tree.LocalModifier local, 
+            Type type, Tree.Term term) {
+        Unit unit = local.getUnit();
+        if (term instanceof Tree.InvocationExpression) {
+            Tree.InvocationExpression ie = 
+                    (Tree.InvocationExpression) term;
+            Tree.Term p = ie.getPrimary();
+            if (p instanceof Tree.StaticMemberOrTypeExpression) {
+                Tree.StaticMemberOrTypeExpression bme = 
+                        (Tree.StaticMemberOrTypeExpression) p;
+                Declaration dec = bme.getDeclaration();
+                if (dec!=null) {
+                    String qname = 
+                            dec.getQualifiedNameString();
+                    if (knownNullSafe.contains(qname)) {
+                        return;
+                    }
+                    else {
+                        local.addUsageWarning(Warning.inferredNotNull, 
+                                "not null type inferred from invocation of function with unchecked nulls: '" 
+                                + dec.getName(unit) 
+                                + "' is not known to be null-safe (explicitly specify the type '" + type.asSourceCodeString(unit) + "')");
+                        return;
                     }
                 }
             }
-            else if (term instanceof Tree.StaticMemberOrTypeExpression) {
-                Tree.StaticMemberOrTypeExpression bme = 
-                        (Tree.StaticMemberOrTypeExpression) term;
-                Declaration dec = bme.getDeclaration();
-                if (dec!=null) {
-                    local.addUsageWarning(Warning.inferredNotNull, 
-                            "not null type inferred from reference to value with unchecked nulls: '" 
-                            + dec.getName(unit) 
-                            + "' is not known to be null-safe (explicitly specify the type '" + type.asSourceCodeString(unit) + "')");
-                    return;
-                }
-            }
-            local.addUsageWarning(Warning.inferredNotNull, 
-                    "not null type inferred from reference to function or value with unchecked nulls (explicitly specify the type '" + type.asSourceCodeString(unit) + "')");
         }
+        else if (term instanceof Tree.StaticMemberOrTypeExpression) {
+            Tree.StaticMemberOrTypeExpression bme = 
+                    (Tree.StaticMemberOrTypeExpression) term;
+            Declaration dec = bme.getDeclaration();
+            if (dec!=null) {
+                local.addUsageWarning(Warning.inferredNotNull, 
+                        "not null type inferred from reference to value with unchecked nulls: '" 
+                        + dec.getName(unit) 
+                        + "' is not known to be null-safe (explicitly specify the type '" + type.asSourceCodeString(unit) + "')");
+                return;
+            }
+        }
+        local.addUsageWarning(Warning.inferredNotNull, 
+                "not null type inferred from reference to function or value with unchecked nulls (explicitly specify the type '" + type.asSourceCodeString(unit) + "')");
     }
-        
+    
     private void setType(Tree.LocalModifier local, 
             Tree.SpecifierOrInitializerExpression s, 
             Tree.TypedDeclaration that) {
@@ -2774,10 +2852,12 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             Type type = e.getTypeModel();
             if (type!=null) {
-                warnIfUncheckedNulls(local, e);
+                TypedDeclaration dec = 
+                        that.getDeclarationModel();
+                warnIfUncheckedNulls(local, e, dec);
                 Type t = inferrableType(type);
                 local.setTypeModel(t);
-                that.getDeclarationModel().setType(t);
+                dec.setType(t);
             }
         }
     }
@@ -2789,10 +2869,11 @@ public class ExpressionVisitor extends Visitor {
         if (e!=null) {
             Type type = e.getTypeModel();
             if (type!=null) {
-                warnIfUncheckedNulls(local, e);
+                Value dec = that.getDeclarationModel();
+                warnIfUncheckedNulls(local, e, dec);
                 Type t = inferrableType(type);
                 local.setTypeModel(t);
-                that.getDeclarationModel().setType(t);
+                dec.setType(t);
             }
         }
     }
@@ -2815,19 +2896,22 @@ public class ExpressionVisitor extends Visitor {
     private void setFunctionType(Tree.FunctionModifier local, 
             Type et, Tree.TypedDeclaration that, 
             Tree.Expression e) {
-        warnIfUncheckedNulls(local, e);
+        TypedDeclaration dec = 
+                that.getDeclarationModel();
+        warnIfUncheckedNulls(local, e, dec);
         Type t = inferrableType(et);
         local.setTypeModel(t);
-        that.getDeclarationModel().setType(t);
+        dec.setType(t);
     }
         
     private void setFunctionType(Tree.FunctionModifier local, 
             Type et, Tree.MethodArgument that, 
             Tree.Expression e) {
-        warnIfUncheckedNulls(local, e);
+        Function dec = that.getDeclarationModel();
+        warnIfUncheckedNulls(local, e, dec);
         Type t = inferrableType(et);
         local.setTypeModel(t);
-        that.getDeclarationModel().setType(t);
+        dec.setType(t);
     }
 
     private Type inferrableType(Type et) {
@@ -2921,7 +3005,8 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e, 
             Tree.LocalModifier local) {
         if (at!=null) {
-            warnIfUncheckedNulls(local, e);
+            warnIfUncheckedNulls(local, e, 
+                    returnDeclaration);
             at = unit.denotableType(at);
             if (et==null || et.isSubtypeOf(at)) {
                 local.setTypeModel(at);

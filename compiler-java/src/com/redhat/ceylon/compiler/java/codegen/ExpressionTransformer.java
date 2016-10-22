@@ -48,6 +48,7 @@ import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.VarTrans;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
@@ -252,8 +253,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(Tree.SpecifierOrInitializerExpression expr,
-            BoxingStrategy boxing, Type expectedType) {
-        return transformExpression(expr.getExpression(), boxing, expectedType);
+            TypedDeclaration decl) {
+        //TODO: is there missing logic for small here?
+        //      see ClassTransformer.transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder)
+        return transformExpression(expr.getExpression(), 
+                CodegenUtil.getBoxingStrategy(decl), decl.getType(), 
+                decl.hasUncheckedNullType() ? EXPR_TARGET_ACCEPTS_NULL : 0);
     }
     
     //
