@@ -1262,13 +1262,7 @@ final class lambdas_ {
             @.java.lang.Override
             public .java.lang.String execute(@.com.redhat.ceylon.compiler.java.metadata.Name("arg0")
             final .java.lang.String arg0) {
-                return $call$((
-                    let
-                    {
-                        .java.lang.String $ceylontmp$2 = .com.redhat.ceylon.compiler.java.Util.checkNull(arg0);
-                    }
-                    returning $ceylontmp$2 != null ? .ceylon.language.String.instance($ceylontmp$2) : null;
-                )).toString();
+                return $call$(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0))).toString();
             }
         });
         j.stringFunction(new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#22") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.test.interop.StringFunction()
@@ -1289,15 +1283,9 @@ final class lambdas_ {
                 return (
                     let
                     {
-                        .ceylon.language.String $ceylontmp$4 = $call$((
-                            let
-                            {
-                                .java.lang.String $ceylontmp$3 = arg0;
-                            }
-                            returning $ceylontmp$3 != null ? .ceylon.language.String.instance($ceylontmp$3) : null;
-                        ));
+                        .ceylon.language.String $ceylontmp$2 = $call$(.ceylon.language.String.instance(arg0));
                     }
-                    returning $ceylontmp$4 != null ? $ceylontmp$4.toString() : null;
+                    returning $ceylontmp$2 != null ? $ceylontmp$2.toString() : null;
                 );
             }
         });
@@ -1319,15 +1307,9 @@ final class lambdas_ {
                 return (
                     let
                     {
-                        .ceylon.language.String $ceylontmp$6 = $call$((
-                            let
-                            {
-                                .java.lang.String $ceylontmp$5 = .com.redhat.ceylon.compiler.java.Util.checkNull(arg0);
-                            }
-                            returning $ceylontmp$5 != null ? .ceylon.language.String.instance($ceylontmp$5) : null;
-                        ));
+                        .ceylon.language.String $ceylontmp$3 = $call$(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0)));
                     }
-                    returning $ceylontmp$6 != null ? $ceylontmp$6.toString() : null;
+                    returning $ceylontmp$3 != null ? $ceylontmp$3.toString() : null;
                 );
             }
         });

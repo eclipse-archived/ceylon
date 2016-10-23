@@ -23,5 +23,6 @@ void bug1784() {
     if (exists a = vl.foo) {}
     Anything b = vl.foo else vl.bar;
     value d = vl.foo else vl.bar;
+    String e = vl.foo else vl.bar;
     if (exists c = vl.foo else vl.bar) {}
 }
