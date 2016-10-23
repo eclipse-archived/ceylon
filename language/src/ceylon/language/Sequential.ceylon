@@ -160,4 +160,15 @@ shared interface Sequential<out Element=Anything>
     String string 
             => empty then "[]" else "[``commaList(this)``]";
     
+    shared actual formal 
+    Element[] measure(Integer from, Integer length);
+
+    shared actual formal 
+    Element[] span(Integer from, Integer to);
+
+    shared actual formal
+    Element[] spanFrom(Integer from);
+
+    shared actual formal
+    Element[] spanTo(Integer to);
 }
