@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.compiler.typechecker.parser.CeylonLexer;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
@@ -27,7 +28,9 @@ import com.redhat.ceylon.model.typechecker.model.Cancellable;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Import;
 import com.redhat.ceylon.model.typechecker.model.ImportList;
+import com.redhat.ceylon.model.typechecker.model.ImportScope;
 import com.redhat.ceylon.model.typechecker.model.Package;
+import com.redhat.ceylon.model.typechecker.model.Scope;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
@@ -78,6 +81,15 @@ public class ImportVisitor extends Visitor {
     
     @Override
     public void visit(Tree.Import that) {
+        Backends scopedBackends =
+                that.getScope()
+                    .getScopedBackends();
+        if (!scopedBackends.none() 
+         && !scopedBackends.supports(
+                 unit.getSupportedBackends())) {
+            return;
+        }
+        
         Package importedPackage = 
                 importedPackage(that.getImportPath(), unit);
         if (importedPackage!=null) {
@@ -100,6 +112,12 @@ public class ImportVisitor extends Visitor {
                 }
             }
         }
+    }
+    
+    private ImportScope getImportScope(ImportList imp) {
+        Scope container = imp.getContainer();
+        return container instanceof ImportScope ? 
+                (ImportScope) imp.getScope() : unit;
     }
     
     private void importAllMembers(Package importedPackage, 
@@ -155,13 +173,14 @@ public class ImportVisitor extends Visitor {
         if (notOverloaded(dec)) {
             String alias = i.getAlias();
             if (alias!=null) {
-                Import o = unit.getImport(dec.getName());
+                ImportScope scope = getImportScope(il);
+                Import o = scope.getImport(dec.getName());
                 if (o!=null && o.isWildcardImport()) {
                     if (o.getDeclaration().equals(dec) || 
                             dec.isNativeHeader()) {
                         //this case only happens in the IDE,
                         //due to reuse of the Unit
-                        unit.removeImport(o);
+                        scope.removeImport(o);
                         il.getImports().remove(o);
                     }
                     else if (!dec.isNative()) {
@@ -169,7 +188,7 @@ public class ImportVisitor extends Visitor {
                         o.setAmbiguous(true);
                     }
                 }
-                unit.addImport(i);
+                scope.addImport(i);
                 il.getImports().add(i);
             }
         }
@@ -502,15 +521,16 @@ public class ImportVisitor extends Visitor {
                         alias + "' is a language modifier");
             }
             else {
-                Import o = unit.getImport(alias);
+                ImportScope scope = getImportScope(il);
+                Import o = scope.getImport(alias);
                 if (o==null) {
-                    unit.addImport(i);
+                    scope.addImport(i);
                     il.getImports().add(i);
                 }
                 else if (o.isWildcardImport()) {
-                    unit.removeImport(o);
+                    scope.removeImport(o);
                     il.getImports().remove(o);
-                    unit.addImport(i);
+                    scope.addImport(i);
                     il.getImports().add(i);
                 }
                 else {
@@ -526,7 +546,7 @@ public class ImportVisitor extends Visitor {
         String alias = i.getAlias();
         if (alias!=null) {
             if (il.getImport(alias)==null) {
-                unit.addImport(i);
+                getImportScope(il).addImport(i);
                 il.getImports().add(i);
             }
             else {

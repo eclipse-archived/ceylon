@@ -5,8 +5,10 @@ import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isOverloadedVe
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.isResolvable;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
 import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberForBackend;
+import static com.redhat.ceylon.model.typechecker.model.Unit.isToplevelImport;
 import static java.util.Collections.emptyList;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -19,14 +21,47 @@ import com.redhat.ceylon.common.Backends;
  * @author Gavin King
  *
  */
-public abstract class Element implements Scoped {
+public abstract class Element implements Scoped, ImportScope {
     
     Element() {}
     
 	private Scope container;
 	private Scope scope;
 	protected Unit unit;
+	
+	private List<Import> imports = null;
+	
+	public List<Import> getImports() {
+        return imports;
+    }
+	
+    public void addImport(Import imp) {
+        if (imports==null) {
+            imports = new ArrayList<Import>(3);
+        }
+        imports.add(imp);
+    }
+
+    public void removeImport(Import imp) {
+        if (imports!=null) {
+            imports.remove(imp);
+        }
+    }
     
+    public Import getImport(String name) {
+        List<Import> imports = getImports();
+        if (imports!=null) {
+            for (Import i: imports) {
+                if (!i.isAmbiguous() &&
+                        i.getTypeDeclaration()==null &&
+                        i.getAlias().equals(name)) {
+                    return i;
+                }
+            }
+        }
+        return null;
+    }
+
 	@Override
 	public List<Declaration> getMembers() {
         return emptyList();
@@ -151,6 +186,28 @@ public abstract class Element implements Scoped {
                 variadic, false);
     }
     
+    public Declaration getImportedDeclaration(String name, 
+            List<Type> signature, boolean ellipsis) {
+        List<Import> imports = getImports();
+        if (imports!=null) {
+            for (Import i: imports) {
+                if (!i.isAmbiguous() && 
+                        i.getAlias().equals(name)) {
+                    //in case of an overloaded member, this will
+                    //be the "abstraction", so search for the 
+                    //correct overloaded version
+                    Declaration d = i.getDeclaration();
+                    if (isToplevelImport(i, d)) {
+                        return d.getContainer()
+                                .getMember(d.getName(), 
+                                        signature, ellipsis);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
     /**
      * Search in this scope, taking into account containing 
      * scopes, imports, and members inherited by this scope
@@ -161,7 +218,12 @@ public abstract class Element implements Scoped {
             List<Type> signature, boolean variadic, 
             boolean onlyExactMatches) {
         Declaration d = 
-                getMemberOrParameter(name, signature, variadic);
+                getImportedDeclaration(name, 
+                        signature, variadic);
+        if (d!=null) {
+            return d;
+        }
+        d = getMemberOrParameter(name, signature, variadic);
         if (d!=null) {
             return d;
         }

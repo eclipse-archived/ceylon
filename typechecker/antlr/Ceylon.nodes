@@ -262,6 +262,7 @@
 
 "A list of statements."
 ^(abstract BODY
+    IMPORT_LIST?
     STATEMENT*)
 
 "A method or attribute body containing statements and declarations."

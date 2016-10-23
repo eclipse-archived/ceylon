@@ -28,7 +28,7 @@ import java.util.TreeMap;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.model.typechecker.context.TypeCache;
 
-public class Unit implements LanguageModuleProvider {
+public class Unit implements LanguageModuleProvider, ImportScope {
 
     private Package pkg;
     private List<Import> imports = new ArrayList<Import>();

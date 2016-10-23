@@ -80,7 +80,7 @@ options {
 
 compilationUnit returns [CompilationUnit compilationUnit]
     @init { $compilationUnit = new CompilationUnit(null);
-            ImportList importList = new ImportList(null); 
+            ImportList importList = new ImportList(null);
             $compilationUnit.setImportList(importList); }
     : (
         ca=compilerAnnotations
@@ -966,9 +966,14 @@ assertion returns [Assertion assertion]
     ;
 
 block returns [Block block]
+    @init { ImportList importList = new ImportList(null); } 
     : LBRACE 
       { $block = new Block($LBRACE); }
       (
+        importDeclaration 
+        { importList.addImport($importDeclaration.importDeclaration); 
+          $block.setImportList(importList); }
+      |
         declarationOrStatement
         { if ($declarationOrStatement.statement!=null)
               $block.addStatement($declarationOrStatement.statement); }
@@ -982,9 +987,14 @@ block returns [Block block]
 //      much better if we validate that later
 //      on, instead of doing it in the parser.
 interfaceBody returns [InterfaceBody interfaceBody]
+    @init { ImportList importList = new ImportList(null); } 
     : LBRACE 
       { $interfaceBody = new InterfaceBody($LBRACE); }
       (
+        importDeclaration 
+        { importList.addImport($importDeclaration.importDeclaration); 
+          $interfaceBody.setImportList(importList); }
+      |
         declarationOrStatement
         { if ($declarationOrStatement.statement!=null)
               $interfaceBody.addStatement($declarationOrStatement.statement); }
@@ -994,9 +1004,14 @@ interfaceBody returns [InterfaceBody interfaceBody]
     ;
 
 classBody returns [ClassBody classBody]
+    @init { ImportList importList = new ImportList(null); } 
     : LBRACE
       { $classBody = new ClassBody($LBRACE); }
       (
+        importDeclaration 
+        { importList.addImport($importDeclaration.importDeclaration); 
+          $classBody.setImportList(importList); }
+      |
         declarationOrStatement
         { if ($declarationOrStatement.statement!=null)
               $classBody.addStatement($declarationOrStatement.statement); }
