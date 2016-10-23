@@ -126,7 +126,6 @@ import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypeParameter;
 import com.redhat.ceylon.model.typechecker.model.TypedDeclaration;
 import com.redhat.ceylon.model.typechecker.model.TypedReference;
-import com.redhat.ceylon.model.typechecker.model.UnionType;
 import com.redhat.ceylon.model.typechecker.model.Unit;
 import com.redhat.ceylon.model.typechecker.util.TypePrinter;
 
@@ -3846,8 +3845,7 @@ public abstract class AbstractTransformer implements Transformation {
         } else if (isCeylonBoolean(exprType)) {
             expr = unboxBoolean(expr);
         } else if (isOptional(exprType)) {
-            exprType = typeFact().getDefiniteType(exprType);
-            if (isCeylonString(exprType)){
+            if (isCeylonString(typeFact().getDefiniteType(exprType))){
                 expr = unboxOptionalString(expr);
             }
         }
@@ -3872,10 +3870,11 @@ public abstract class AbstractTransformer implements Transformation {
             expr = make().LetExpr(List.<JCStatement>of(make().Exec(expr)), makeNull());
         } else if (isOptional(exprType)) {
             // sometimes, due to interop we will get an unboxed java.lang.String whose Ceylon type
-            // is String? or passes for a boxed thing, and if we need to box it well we do
-            exprType = typeFact().getDefiniteType(exprType);
-            if (isCeylonString(exprType)){
-                expr = boxOptionalJavaString(expr);
+            // is String? or passed for a boxed thing, and if we need to box it well we do
+            if (isCeylonString(typeFact().getDefiniteType(exprType))){
+                //no need to produce a let because String.instance()
+                //already does the right thing with null
+                expr = boxString(expr);//boxOptionalJavaString(expr);
             }
         }
         return expr;
@@ -3943,14 +3942,14 @@ public abstract class AbstractTransformer implements Transformation {
         return makeLetExpr(name, null, type, value, expr);
     }
 
-    private JCExpression boxOptionalJavaString(JCExpression value){
-        Naming.SyntheticName name = naming.temp();
-        JCExpression type = makeJavaType(typeFact().getStringType());
-        JCExpression expr = make().Conditional(make().Binary(JCTree.Tag.NE, name.makeIdent(), makeNull()), 
-                boxString(name.makeIdent()),
-                makeNull());
-        return makeLetExpr(name, null, type, value, expr);
-    }
+//    private JCExpression boxOptionalJavaString(JCExpression value){
+//        Naming.SyntheticName name = naming.temp();
+//        JCExpression type = makeJavaType(typeFact().getStringType());
+//        JCExpression expr = make().Conditional(make().Binary(JCTree.Tag.NE, name.makeIdent(), makeNull()), 
+//                boxString(name.makeIdent()),
+//                makeNull());
+//        return makeLetExpr(name, null, type, value, expr);
+//    }
 
     private JCTree.JCMethodInvocation unboxCharacter(JCExpression value) {
         return makeUnboxType(value, "intValue");

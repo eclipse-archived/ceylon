@@ -2729,7 +2729,7 @@ public class ExpressionVisitor extends Visitor {
             if (declaration instanceof TypedDeclaration
                 && !type.isInteger() && !type.isFloat()
                 && !type.isBoolean() && !type.isByte()
-                && !type.isCharacter() && !type.isString()) {
+                && !type.isCharacter()) {
                 TypedDeclaration td =
                         (TypedDeclaration) 
                             declaration;

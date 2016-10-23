@@ -5958,8 +5958,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             int flags = decl.hasUncheckedNullType() ? EXPR_TARGET_ACCEPTS_NULL : 0;
             flags |= leftTerm.getSmall() && !rightTerm.getSmall() ? EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK : 0;
-            rhs = transformExpression(rightTerm, boxing, targetType, 
-                                      flags);
+            rhs = transformExpression(rightTerm, boxing, targetType, flags);
         } else if (leftTerm instanceof Tree.IndexExpression) {
             Tree.IndexExpression idx = (Tree.IndexExpression)leftTerm;
             Unit unit = op.getUnit();
