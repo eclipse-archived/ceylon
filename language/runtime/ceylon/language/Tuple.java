@@ -377,7 +377,7 @@ public final class Tuple<Element, First extends Element,
             // leading elements of rest
             java.lang.Object[] copy = Arrays.copyOfRange(this.array, 
                     toInt(fromIndex), toInt(this.array.length));
-            Sequential<Element> rest =
+            Sequential<? extends Element> rest =
                     this.rest.measure(Integer.instance(0), 
                             l-(this.array.length-toInt(fromIndex)));
             return new Tuple<Element,Element,Sequential<? extends Element>>
