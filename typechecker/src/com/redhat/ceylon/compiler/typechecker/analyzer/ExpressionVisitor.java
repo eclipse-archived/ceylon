@@ -2718,7 +2718,7 @@ public class ExpressionVisitor extends Visitor {
         }
     }*/
     
-    private void warnIfUncheckedNulls(
+    private void handleUncheckedNulls(
             Tree.LocalModifier local, 
             Tree.Expression ex,
             Declaration declaration) {
@@ -2854,7 +2854,7 @@ public class ExpressionVisitor extends Visitor {
             if (type!=null) {
                 TypedDeclaration dec = 
                         that.getDeclarationModel();
-                warnIfUncheckedNulls(local, e, dec);
+                handleUncheckedNulls(local, e, dec);
                 Type t = inferrableType(type);
                 local.setTypeModel(t);
                 dec.setType(t);
@@ -2870,7 +2870,7 @@ public class ExpressionVisitor extends Visitor {
             Type type = e.getTypeModel();
             if (type!=null) {
                 Value dec = that.getDeclarationModel();
-                warnIfUncheckedNulls(local, e, dec);
+                handleUncheckedNulls(local, e, dec);
                 Type t = inferrableType(type);
                 local.setTypeModel(t);
                 dec.setType(t);
@@ -2898,7 +2898,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e) {
         TypedDeclaration dec = 
                 that.getDeclarationModel();
-        warnIfUncheckedNulls(local, e, dec);
+        handleUncheckedNulls(local, e, dec);
         Type t = inferrableType(et);
         local.setTypeModel(t);
         dec.setType(t);
@@ -2908,7 +2908,7 @@ public class ExpressionVisitor extends Visitor {
             Type et, Tree.MethodArgument that, 
             Tree.Expression e) {
         Function dec = that.getDeclarationModel();
-        warnIfUncheckedNulls(local, e, dec);
+        handleUncheckedNulls(local, e, dec);
         Type t = inferrableType(et);
         local.setTypeModel(t);
         dec.setType(t);
@@ -3005,7 +3005,7 @@ public class ExpressionVisitor extends Visitor {
             Tree.Expression e, 
             Tree.LocalModifier local) {
         if (at!=null) {
-            warnIfUncheckedNulls(local, e, 
+            handleUncheckedNulls(local, e, 
                     returnDeclaration);
             at = unit.denotableType(at);
             if (et==null || et.isSubtypeOf(at)) {
