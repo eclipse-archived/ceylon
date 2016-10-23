@@ -6927,7 +6927,8 @@ public class ExpressionVisitor extends Visitor {
             Tree.TypeArguments qtas = 
                     smte.getTypeArguments();
             if (!explicitTypeArguments(qtd, qtas)
-                    && isGeneric(qtd)) {
+                    && isGeneric(qtd) 
+                    && !qtd.isJava()) {
                 if (!explicitTypeArguments(member, tas)) {
                     Generic dec = (Generic) qtd;
                     that.addError("missing explicit type arguments to generic qualifying type: '" + 
