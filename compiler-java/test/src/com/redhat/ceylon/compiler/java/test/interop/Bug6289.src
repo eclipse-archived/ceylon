@@ -16,13 +16,7 @@ final class bug6289_ {
                 .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> safe$0 = (
                     let
                     {
-                        .ceylon.language.String safe$1 = (
-                            let
-                            {
-                                .java.lang.String $ceylontmp$2 = new .java.io.File("hello").getAbsolutePath();
-                            }
-                            returning $ceylontmp$2 != null ? .ceylon.language.String.instance($ceylontmp$2) : null;
-                        );
+                        .ceylon.language.String safe$1 = .ceylon.language.String.instance(new .java.io.File("hello").getAbsolutePath());
                     }
                     returning safe$1 != null ? safe$1.split((
                         let

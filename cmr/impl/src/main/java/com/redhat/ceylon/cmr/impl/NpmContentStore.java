@@ -22,21 +22,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
-import com.redhat.ceylon.common.Constants;
-import com.redhat.ceylon.common.log.Logger;
-import com.redhat.ceylon.model.cmr.RepositoryException;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
-import com.redhat.ceylon.cmr.impl.AbstractContentStore;
-import com.redhat.ceylon.cmr.impl.RootNode;
 import com.redhat.ceylon.cmr.resolver.javascript.JavaScriptResolver;
 import com.redhat.ceylon.cmr.spi.ContentHandle;
 import com.redhat.ceylon.cmr.spi.ContentOptions;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.common.Constants;
+import com.redhat.ceylon.common.log.Logger;
+import com.redhat.ceylon.model.cmr.RepositoryException;
 
 /**
  * NPM content store.
@@ -47,6 +43,8 @@ public class NpmContentStore extends AbstractContentStore {
     private final File out;
     private final FileContentStore[] stores;
     private final FileContentStore outstore;
+    private String npmCommand;
+    private String path;
     
     public NpmContentStore(File[] roots, File out, Logger log, boolean offline) {
         super(log, offline, -1);
@@ -163,11 +161,21 @@ public class NpmContentStore extends AbstractContentStore {
             String name = ac.getName();
             String version = ac.getVersion();
             if (log != null) log.debug("installing npm module " + name + "@" + version + " in " + out);
-            String npmCmd = System.getProperty(Constants.PROP_CEYLON_EXTCMD_NPM, "npm");
+            String npmCmd = npmCommand != null ? npmCommand : System.getProperty(Constants.PROP_CEYLON_EXTCMD_NPM, "npm");
             ProcessBuilder pb = new ProcessBuilder()
                     .command(npmCmd, "install", "-q", name + "@" + version)
                     .directory(out.getParentFile())
                     .inheritIO();
+            Map<String, String> env = pb.environment();
+            String pathVariableName = "PATH";
+            for (String key : env.keySet()) {
+                if (key.equalsIgnoreCase("path")) {
+                    pathVariableName = key;
+                    break;
+                }
+            }
+            String pathForRunningNpm = path != null ? path : System.getProperty(Constants.PROP_CEYLON_EXTCMD_PATH, System.getenv("PATH"));
+            env.put(pathVariableName, pathForRunningNpm);
             
             Process p = pb.start();
             p.waitFor();
@@ -215,5 +223,13 @@ public class NpmContentStore extends AbstractContentStore {
     @Override
     public boolean canHandleFolders() {
         return false;
+    }
+
+    public void setNpmCommand(String npmCommand) {
+        this.npmCommand = npmCommand;
+    }
+
+    public void setPathForRunningNpm(String path) {
+        this.path = path;
     }
 }

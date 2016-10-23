@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.redhat.ceylon.common.BooleanUtil;
-import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.CName;
 import com.redhat.ceylon.compiler.java.codegen.Naming.Substitution;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
@@ -3525,6 +3524,7 @@ public class StatementTransformer extends AbstractTransformer {
                     return List.<JCStatement>of(this.makeThrowUnresolvedCompilationError(error));
                 }
                 int flags = CodegenUtil.downcastForSmall(initOrSpec.getExpression(), decl.getDeclarationModel()) ? ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK : 0;
+                flags |= decl.getDeclarationModel().hasUncheckedNullType() ? ExpressionTransformer.EXPR_TARGET_ACCEPTS_NULL : 0;
                 initialValue = expressionGen().transformExpression(initOrSpec.getExpression(), 
                         CodegenUtil.getBoxingStrategy(decl.getDeclarationModel()), 
                         decl.getDeclarationModel().getType(), flags);

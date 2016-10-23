@@ -889,7 +889,9 @@ public class CeylonModelLoader extends AbstractModelLoader {
                     parameterType = ((ArrayType)parameterType).getComponentType();
                 mirrorParameterTypes.add(new JavacType(parameterType));
             }
-            return new FunctionalInterfaceType(new JavacType(methodDescriptorType.getReturnType()),
+            return new FunctionalInterfaceType(
+                    new JavacMethod(new JavacClass(methodSymbol.enclClass()), methodSymbol),
+                    new JavacType(methodDescriptorType.getReturnType()),
                     mirrorParameterTypes.toList(),
                     methodSymbol.isVarArgs());
         }catch(Symbol.CompletionFailure err){

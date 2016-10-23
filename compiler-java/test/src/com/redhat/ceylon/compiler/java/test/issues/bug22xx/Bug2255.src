@@ -6,43 +6,43 @@ final class bug2254_ {
     }
     
     static void bug2254() {
-        final .ceylon.language.String name1 = (
+        final .ceylon.language.String name1 = .ceylon.language.String.instance((
             let
             {
-                .java.lang.String $ceylontmp$2 = (
-                    let
-                    {
-                        .java.lang.String $ceylontmp$ifResult$0;
-                        if (true) {
-                            $ceylontmp$ifResult$0 = "a";
-                        } else {
-                            $ceylontmp$ifResult$0 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
-                        }
-                    }
-                    returning $ceylontmp$ifResult$0;
-                );
+                .java.lang.String $ceylontmp$ifResult$0;
+                if (true) {
+                    $ceylontmp$ifResult$0 = "a";
+                } else {
+                    $ceylontmp$ifResult$0 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
+                }
             }
-            returning $ceylontmp$2 != null ? .ceylon.language.String.instance($ceylontmp$2) : null;
-        );
-        final .ceylon.language.String name1b = (
+            returning $ceylontmp$ifResult$0;
+        ));
+        final .ceylon.language.String name1b = .ceylon.language.String.instance((
             let
             {
-                .java.lang.String $ceylontmp$5 = (
-                    let
-                    {
-                        .java.lang.String $ceylontmp$ifResult$3;
-                        if (true) {
-                            $ceylontmp$ifResult$3 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
-                        } else {
-                            $ceylontmp$ifResult$3 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
-                        }
-                    }
-                    returning $ceylontmp$ifResult$3;
-                );
+                .java.lang.String $ceylontmp$ifResult$2;
+                if (true) {
+                    $ceylontmp$ifResult$2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
+                } else {
+                    $ceylontmp$ifResult$2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
+                }
             }
-            returning $ceylontmp$5 != null ? .ceylon.language.String.instance($ceylontmp$5) : null;
-        );
+            returning $ceylontmp$ifResult$2;
+        ));
         final .java.lang.String name1c = .com.redhat.ceylon.compiler.java.Util.checkNull((
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$4;
+                if (true) {
+                    $ceylontmp$ifResult$4 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
+                } else {
+                    $ceylontmp$ifResult$4 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
+                }
+            }
+            returning $ceylontmp$ifResult$4;
+        ));
+        final .java.lang.Object name1d = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull((
             let
             {
                 .java.lang.String $ceylontmp$ifResult$6;
@@ -53,152 +53,98 @@ final class bug2254_ {
                 }
             }
             returning $ceylontmp$ifResult$6;
-        ));
-        final .java.lang.Object name1d = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull((
+        )));
+        final .java.lang.Object name1e = .ceylon.language.String.instance((
             let
             {
                 .java.lang.String $ceylontmp$ifResult$8;
                 if (true) {
-                    $ceylontmp$ifResult$8 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
+                    $ceylontmp$ifResult$8 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
                 } else {
-                    $ceylontmp$ifResult$8 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
+                    $ceylontmp$ifResult$8 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
                 }
             }
             returning $ceylontmp$ifResult$8;
-        )));
-        final .java.lang.Object name1e = (
-            let
-            {
-                .java.lang.String $ceylontmp$12 = (
-                    let
-                    {
-                        .java.lang.String $ceylontmp$ifResult$10;
-                        if (true) {
-                            $ceylontmp$ifResult$10 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
-                        } else {
-                            $ceylontmp$ifResult$10 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
-                        }
-                    }
-                    returning $ceylontmp$ifResult$10;
-                );
-            }
-            returning $ceylontmp$12 != null ? .ceylon.language.String.instance($ceylontmp$12) : null;
-        );
-        final .ceylon.language.String name2 = (
-            let
-            {
-                .java.lang.String $ceylontmp$13 = true ? "a" : .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
-            }
-            returning $ceylontmp$13 != null ? .ceylon.language.String.instance($ceylontmp$13) : null;
-        );
-        final .ceylon.language.String name3 = (
-            let
-            {
-                .java.lang.String $ceylontmp$14 = true ? .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName() : .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
-            }
-            returning $ceylontmp$14 != null ? .ceylon.language.String.instance($ceylontmp$14) : null;
-        );
+        ));
+        final .ceylon.language.String name2 = .ceylon.language.String.instance(true ? "a" : .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
+        final .ceylon.language.String name3 = .ceylon.language.String.instance(true ? .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName() : .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
         final .java.lang.String name3b = .com.redhat.ceylon.compiler.java.Util.checkNull(true ? .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName() : .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
         final .java.lang.Object name3c = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(true ? .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName() : .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName()));
-        final .java.lang.Object name3d = (
+        final .java.lang.Object name3d = .ceylon.language.String.instance(true ? .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName() : .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
+        final .ceylon.language.String name4 = .ceylon.language.String.instance((
             let
             {
-                .java.lang.String $ceylontmp$15 = true ? .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName() : .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
-            }
-            returning $ceylontmp$15 != null ? .ceylon.language.String.instance($ceylontmp$15) : null;
-        );
-        final .ceylon.language.String name4 = (
-            let
-            {
-                .java.lang.String $ceylontmp$18 = (
-                    let
-                    {
-                        .java.lang.String $ceylontmp$ifResult$16;
-                        {
-                            boolean sel$17 = true;
-                            if (sel$17 == true) {
-                                $ceylontmp$ifResult$16 = "a";
-                            } else {
-                                $ceylontmp$ifResult$16 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
-                            }
-                        }
-                    }
-                    returning $ceylontmp$ifResult$16;
-                );
-            }
-            returning $ceylontmp$18 != null ? .ceylon.language.String.instance($ceylontmp$18) : null;
-        );
-        final .ceylon.language.String name4b = (
-            let
-            {
-                .java.lang.String $ceylontmp$21 = (
-                    let
-                    {
-                        .java.lang.String $ceylontmp$ifResult$19;
-                        {
-                            boolean sel$20 = true;
-                            if (sel$20 == true) {
-                                $ceylontmp$ifResult$19 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
-                            } else {
-                                $ceylontmp$ifResult$19 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
-                            }
-                        }
-                    }
-                    returning $ceylontmp$ifResult$19;
-                );
-            }
-            returning $ceylontmp$21 != null ? .ceylon.language.String.instance($ceylontmp$21) : null;
-        );
-        final .java.lang.String name4c = .com.redhat.ceylon.compiler.java.Util.checkNull((
-            let
-            {
-                .java.lang.String $ceylontmp$ifResult$22;
+                .java.lang.String $ceylontmp$ifResult$10;
                 {
-                    boolean sel$23 = true;
-                    if (sel$23 == true) {
-                        $ceylontmp$ifResult$22 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
+                    boolean sel$11 = true;
+                    if (sel$11 == true) {
+                        $ceylontmp$ifResult$10 = "a";
                     } else {
-                        $ceylontmp$ifResult$22 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
+                        $ceylontmp$ifResult$10 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
                     }
                 }
             }
-            returning $ceylontmp$ifResult$22;
+            returning $ceylontmp$ifResult$10;
+        ));
+        final .ceylon.language.String name4b = .ceylon.language.String.instance((
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$12;
+                {
+                    boolean sel$13 = true;
+                    if (sel$13 == true) {
+                        $ceylontmp$ifResult$12 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
+                    } else {
+                        $ceylontmp$ifResult$12 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$12;
+        ));
+        final .java.lang.String name4c = .com.redhat.ceylon.compiler.java.Util.checkNull((
+            let
+            {
+                .java.lang.String $ceylontmp$ifResult$14;
+                {
+                    boolean sel$15 = true;
+                    if (sel$15 == true) {
+                        $ceylontmp$ifResult$14 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
+                    } else {
+                        $ceylontmp$ifResult$14 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
+                    }
+                }
+            }
+            returning $ceylontmp$ifResult$14;
         ));
         final .java.lang.Object name4d = .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull((
             let
             {
-                .java.lang.String $ceylontmp$ifResult$24;
+                .java.lang.String $ceylontmp$ifResult$16;
                 {
-                    boolean sel$25 = true;
-                    if (sel$25 == true) {
-                        $ceylontmp$ifResult$24 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
+                    boolean sel$17 = true;
+                    if (sel$17 == true) {
+                        $ceylontmp$ifResult$16 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
                     } else {
-                        $ceylontmp$ifResult$24 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
+                        $ceylontmp$ifResult$16 = .com.redhat.ceylon.compiler.java.Util.checkNull(.com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName());
                     }
                 }
             }
-            returning $ceylontmp$ifResult$24;
+            returning $ceylontmp$ifResult$16;
         )));
-        final .java.lang.Object name4e = (
+        final .java.lang.Object name4e = .ceylon.language.String.instance((
             let
             {
-                .java.lang.String $ceylontmp$28 = (
-                    let
-                    {
-                        .java.lang.String $ceylontmp$ifResult$26;
-                        {
-                            boolean sel$27 = true;
-                            if (sel$27 == true) {
-                                $ceylontmp$ifResult$26 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
-                            } else {
-                                $ceylontmp$ifResult$26 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
-                            }
-                        }
+                .java.lang.String $ceylontmp$ifResult$18;
+                {
+                    boolean sel$19 = true;
+                    if (sel$19 == true) {
+                        $ceylontmp$ifResult$18 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
+                    } else {
+                        $ceylontmp$ifResult$18 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Locale.FRENCH).getDisplayName();
                     }
-                    returning $ceylontmp$ifResult$26;
-                );
+                }
             }
-            returning $ceylontmp$28 != null ? .ceylon.language.String.instance($ceylontmp$28) : null;
-        );
+            returning $ceylontmp$ifResult$18;
+        ));
     }
 }

@@ -3471,14 +3471,15 @@ public class ClassTransformer extends AbstractTransformer {
                 Tree.Expression expression = decl.getSpecifierOrInitializerExpression().getExpression();
                 HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getTerm());
                 int flags = CodegenUtil.downcastForSmall(expression, model) ? ExpressionTransformer.EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK : 0;
+                flags |= model.hasUncheckedNullType() ? ExpressionTransformer.EXPR_TARGET_ACCEPTS_NULL : 0;
                 if (error != null) {
                     initialValue = null;
                     err = makeThrowUnresolvedCompilationError(error.getErrorMessage().getMessage());
                 } else {
-                    Value declarationModel = model;
                     initialValue = expressionGen().transformExpression(expression, 
-                            CodegenUtil.getBoxingStrategy(declarationModel), 
-                            model.isStatic() ? typeFact().getAnythingType() : nonWideningType, flags);
+                            CodegenUtil.getBoxingStrategy(model), 
+                            model.isStatic() ? typeFact().getAnythingType() : nonWideningType, 
+                            flags);
                 }
             }
 
@@ -4303,7 +4304,7 @@ public class ClassTransformer extends AbstractTransformer {
         return make().VarDef(make().Modifiers(FINAL), alias.asName(), seqType , init);
     }
 
-    List<JCStatement> transformSpecifiedMethodBody(Tree.MethodDeclaration  def, SpecifierExpression specifierExpression) {
+    List<JCStatement> transformSpecifiedMethodBody(Tree.MethodDeclaration def, SpecifierExpression specifierExpression) {
         final Function model = def.getDeclarationModel();
         Tree.MethodDeclaration methodDecl = def;
         boolean isLazy = specifierExpression instanceof Tree.LazySpecifierExpression;

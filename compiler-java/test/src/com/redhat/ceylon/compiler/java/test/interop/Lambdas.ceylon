@@ -115,6 +115,10 @@ void lambdas() {
     CompletableFuture.supplyAsync(()=> "Hello")
             .thenApply(String.uppercased)
             .thenAccept(print);
+    
+    j.stringFunction((String s) => s);
+    j.stringFunction((String? s) => s);
+    j.stringFunction((String s) => (s of String?));
 }
 
 class Sub(IntConsumer c) extends LambdasJava(c){}

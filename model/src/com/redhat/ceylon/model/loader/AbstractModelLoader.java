@@ -3946,11 +3946,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private boolean isCoercedType(TypeMirror type) {
         if(sameType(type, CHAR_SEQUENCE_TYPE))
             return true;
-        if(type.getKind() == TypeKind.DECLARED){
-            ClassMirror paramClass = type.getDeclaredClass();
-            if(isFunctionalInterface(paramClass) != null)
-                return true;
-        }
+        if(isFunctionCercion(type))
+            return true;
         return false;
     }
     
@@ -4528,6 +4525,10 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     Function method = loadFunctionalParameter((Declaration)decl, paramName, type, (String)functionalParameterAnnotation.getValue());
                     value = method;
                     parameter.setDeclaredAnything(method.isDeclaredVoid());
+                } else if(coercedParameter && isFunctionCercion(typeMirror)){
+                    Function method = loadFunctionCoercionParameter((Declaration) decl, paramName, typeMirror, module, scope);
+                    value = method;
+                    parameter.setDeclaredAnything(method.isDeclaredVoid());
                 } else {
                     // A value parameter to a method
                     value = isCeylon ? new Value() : new JavaParameterValue();
@@ -4590,6 +4591,75 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
+    private Function loadFunctionCoercionParameter(Declaration decl, String paramName, TypeMirror typeMirror,
+            Module moduleScope, Scope scope) {
+        Function method = new Function();
+        method.setName(paramName);
+        method.setUnit(decl.getUnit());
+        method.setUncheckedNullType(true);
+        try{
+            FunctionalInterfaceType functionalInterfaceType = getFunctionalInterfaceType(typeMirror);
+            MethodMirror functionalMethod = functionalInterfaceType.getMethod();
+
+            Type returnType = 
+                    obtainType(moduleScope, functionalInterfaceType.getReturnType(), 
+                            scope, TypeLocation.TOPLEVEL, VarianceLocation.COVARIANT);
+            switch(getUncheckedNullPolicy(false, functionalInterfaceType.getReturnType(), functionalMethod)){
+            case Optional:
+                returnType = makeOptionalTypePreserveUnderlyingType(returnType, moduleScope);
+                break;
+            case UncheckedNull:
+                method.setUncheckedNullType(true);
+                break;
+            }
+            method.setType(returnType);
+            
+            ParameterList pl = new ParameterList();
+            int count = 0;
+            List<VariableMirror> functionalParameters = functionalMethod.getParameters();
+            for(TypeMirror parameterType : functionalInterfaceType.getParameterTypes()){
+                VariableMirror functionalParameter = functionalParameters.get(count);
+                Type modelParameterType = 
+                        obtainType(moduleScope, parameterType, scope, 
+                                TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
+                Parameter p = new Parameter();
+                Value v = new Value();
+                String name = "arg" + count++;
+                p.setName(name);
+                v.setName(name);
+                v.setType(modelParameterType);
+                v.setContainer(method);
+                v.setScope(method);
+                p.setModel(v);
+                v.setInitializerParameter(p);
+
+                switch(getUncheckedNullPolicy(false, parameterType, functionalMethod)){
+                case Optional:
+                    modelParameterType = makeOptionalTypePreserveUnderlyingType(modelParameterType, moduleScope);
+                    break;
+                case UncheckedNull:
+                    v.setUncheckedNullType(true);
+                    break;
+                }
+
+                pl.getParameters().add(p);
+                method.addMember(v);
+            }
+            method.addParameterList(pl);
+        }catch(ModelResolutionException x){
+            method.setType(logModelResolutionException(x, scope, "Failure to turn functional interface to Callable type"));
+        }
+        return method;
+    }
+    
+    private boolean isFunctionCercion(TypeMirror type) {
+        if(type.getKind() == TypeKind.DECLARED){
+            ClassMirror paramClass = type.getDeclaredClass();
+            return isFunctionalInterface(paramClass) != null;
+        }
+        return false;
+    }
+    
     private Type applyTypeCoercion(TypeMirror type, Module module, Scope scope) {
         if(sameType(type, CHAR_SEQUENCE_TYPE))
             return typeFactory.getStringType();

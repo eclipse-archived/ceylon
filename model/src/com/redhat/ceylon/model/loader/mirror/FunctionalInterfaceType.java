@@ -7,8 +7,10 @@ public class FunctionalInterfaceType {
     private final List<TypeMirror> parameterTypes;
     private final TypeMirror returnType;
     private boolean variadic;
+    private MethodMirror method;
 
-    public FunctionalInterfaceType(TypeMirror returnType, List<TypeMirror> parameterTypes, boolean variadic) {
+    public FunctionalInterfaceType(MethodMirror method, TypeMirror returnType, List<TypeMirror> parameterTypes, boolean variadic) {
+        this.method = method;
         this.returnType = returnType;
         this.parameterTypes = parameterTypes;
         this.variadic = variadic;
@@ -24,5 +26,9 @@ public class FunctionalInterfaceType {
 
     public TypeMirror getReturnType() {
         return returnType;
+    }
+    
+    public MethodMirror getMethod() {
+        return method;
     }
 }

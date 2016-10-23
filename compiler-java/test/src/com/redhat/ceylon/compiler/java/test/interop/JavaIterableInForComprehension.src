@@ -22,12 +22,12 @@ final class assertSameElements_ {
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{T*}")
     final .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> c) {
-        final .java.util.Iterator<T> jit = .com.redhat.ceylon.compiler.java.Util.checkNull(j.iterator());
+        final .java.util.Iterator<T> jit = j.iterator();
         final .ceylon.language.Iterator<? extends T> cit = c.iterator();
         loop_0: while (true) {
             if (true) {
-                if (jit.hasNext()) {
-                    final T je = .com.redhat.ceylon.compiler.java.Util.checkNull(jit.next());
+                if (.com.redhat.ceylon.compiler.java.Util.checkNull(jit).hasNext()) {
+                    final T je = .com.redhat.ceylon.compiler.java.Util.checkNull(jit).next();
                     final T ce$6;
                     .java.lang.Object ce$5 = null;
                     if (!((ce$5 = cit.next()) instanceof .ceylon.language.Finished)) {
@@ -35,7 +35,7 @@ final class assertSameElements_ {
                     } else {
                         throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is Finished ce=cit.next()"));
                     }
-                    if (je.equals(ce$6)) {
+                    if (.com.redhat.ceylon.compiler.java.Util.checkNull(je).equals(ce$6)) {
                     } else {
                         throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "je == ce"));
                     }
@@ -79,10 +79,10 @@ final class javaIterableInForComprehension_ {
     }
     
     static void javaIterableInForComprehension() {
-        final .java.lang.Iterable<.ceylon.language.String> strings = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Arrays.<.ceylon.language.String>asList(.ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"), .ceylon.language.String.instance("c")));
-        final .java.lang.Iterable<.ceylon.language.Integer> ints = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Arrays.<.ceylon.language.Integer>asList(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L)));
-        final .java.lang.Iterable<.java.lang.String> jstrings = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Arrays.<.java.lang.String>asList(new .java.lang.String("a"), new .java.lang.String("b"), new .java.lang.String("c")));
-        final .java.lang.Iterable<.java.lang.Integer> jints = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.Arrays.<.java.lang.Integer>asList(new .java.lang.Integer(1), new .java.lang.Integer(2), new .java.lang.Integer(3)));
+        final .java.lang.Iterable<.ceylon.language.String> strings = .java.util.Arrays.<.ceylon.language.String>asList(.ceylon.language.String.instance("a"), .ceylon.language.String.instance("b"), .ceylon.language.String.instance("c"));
+        final .java.lang.Iterable<.ceylon.language.Integer> ints = .java.util.Arrays.<.ceylon.language.Integer>asList(.ceylon.language.Integer.instance(1L), .ceylon.language.Integer.instance(2L), .ceylon.language.Integer.instance(3L));
+        final .java.lang.Iterable<.java.lang.String> jstrings = .java.util.Arrays.<.java.lang.String>asList(new .java.lang.String("a"), new .java.lang.String("b"), new .java.lang.String("c"));
+        final .java.lang.Iterable<.java.lang.Integer> jints = .java.util.Arrays.<.java.lang.Integer>asList(new .java.lang.Integer(1), new .java.lang.Integer(2), new .java.lang.Integer(3));
         .com.redhat.ceylon.compiler.java.test.interop.assertSameElements_.<.ceylon.language.String>assertSameElements(.ceylon.language.String.$TypeDescriptor$, strings, (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Null.$TypeDescriptor$){
             
             public final .ceylon.language.Iterator<.ceylon.language.String> iterator() {

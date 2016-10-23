@@ -42,7 +42,13 @@ public class Function extends FunctionOrValue implements Generic, Scope, Functio
     
     @Override
     public ParameterList getFirstParameterList() {
-        return getParameterLists().get(0);
+        List<ParameterList> lists = getParameterLists();
+        if (lists.isEmpty()) {
+            return null;
+        }
+        else {
+            return lists.get(0);
+        }
     }
 
     @Override

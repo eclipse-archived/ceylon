@@ -197,3 +197,8 @@ class Obvious {
     name = "";
     shared new () {}
 }
+
+class StaticAsDefaultConstructorArg {
+    static Integer defaultVal = 100;
+    shared new (Integer val = defaultVal) {}
+}

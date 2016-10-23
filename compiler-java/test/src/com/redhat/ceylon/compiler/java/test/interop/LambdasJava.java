@@ -32,6 +32,11 @@ interface ConsumeTwoIntegers {
     public abstract void execute(int a, int b);
 }
 
+@FunctionalInterface
+interface StringFunction {
+    public abstract String execute(String a);
+}
+
 public class LambdasJava {
 
     public LambdasJava(){}
@@ -43,6 +48,9 @@ public class LambdasJava {
 
     public <T> void consumer(Consumer<T> consumer, T t){
         consumer.accept(t);
+    }
+
+    public void stringFunction(StringFunction f){
     }
 
     public <T,R> R function(Function<T,R> function, T t){

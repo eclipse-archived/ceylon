@@ -9,10 +9,10 @@ final class bug1568_ {
         final long x1 = .java.sql.DriverManager.getLoginTimeout();
         .java.sql.DriverManager.setLoginTimeout(10);
         .java.sql.DriverManager.println("");
-        final .java.sql.Driver x2 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.sql.DriverManager.getDriver(""));
+        final .java.sql.Driver x2 = .java.sql.DriverManager.getDriver("");
         final long x3 = .java.sql.DriverManager.getLoginTimeout();
         .java.sql.DriverManager.setLoginTimeout(20);
         .java.sql.DriverManager.println("");
-        final .java.sql.Driver x4 = .com.redhat.ceylon.compiler.java.Util.checkNull(.java.sql.DriverManager.getDriver(""));
+        final .java.sql.Driver x4 = .java.sql.DriverManager.getDriver("");
     }
 }

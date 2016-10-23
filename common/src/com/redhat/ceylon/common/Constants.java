@@ -38,6 +38,7 @@ public abstract class Constants {
     
     public static final String PROP_CEYLON_EXTCMD_NODE = "ceylon.command.node";
     public static final String PROP_CEYLON_EXTCMD_NPM = "ceylon.command.npm";
+    public static final String PROP_CEYLON_EXTCMD_PATH = "ceylon.command.path";
     
     public static final String DEFAULT_SOURCE_DIR = "source";
     public static final String DEFAULT_RESOURCE_DIR = "resource";
