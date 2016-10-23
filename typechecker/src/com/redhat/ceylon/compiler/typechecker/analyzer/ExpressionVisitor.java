@@ -6915,8 +6915,9 @@ public class ExpressionVisitor extends Visitor {
         }
         
         Tree.Primary primary = that.getPrimary();
-        if (!that.getDirectlyInvoked() &&
-                primary instanceof 
+        if (!that.getDirectlyInvoked() 
+                && (member.isStatic() || isConstructor(member))
+                && primary instanceof 
                     Tree.StaticMemberOrTypeExpression) {
             Tree.StaticMemberOrTypeExpression smte =
                     (Tree.StaticMemberOrTypeExpression) 
