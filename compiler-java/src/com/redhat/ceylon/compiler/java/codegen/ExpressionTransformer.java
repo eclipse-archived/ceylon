@@ -48,7 +48,6 @@ import com.redhat.ceylon.compiler.java.codegen.StatementTransformer.VarTrans;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree;
-import com.redhat.ceylon.compiler.typechecker.tree.Tree.AttributeDeclaration;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.LetExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.PositionalArgument;
@@ -368,7 +367,8 @@ public class ExpressionTransformer extends AbstractTransformer {
         if ((flags & EXPR_TARGET_ACCEPTS_NULL) == 0
                 && expectedType != null 
                 && hasUncheckedNulls(expr)
-                && expectedType.isSubtypeOf(typeFact().getObjectType())) {
+                && expectedType.isSubtypeOf(typeFact().getObjectType())
+                && !knownNullSafe(term)) {
             result = utilInvocation().checkNull(result);
             flags |= EXPR_HAS_NULL_CHECK_FENCE;
         }
@@ -376,6 +376,85 @@ public class ExpressionTransformer extends AbstractTransformer {
 
         return result;
     }
+
+    private static boolean knownNullSafe(Tree.Term term) {
+        if (term instanceof Tree.InvocationExpression) {
+            Tree.InvocationExpression ie = 
+                    (Tree.InvocationExpression) term;
+            Tree.Term p = ie.getPrimary();
+            if (p instanceof Tree.StaticMemberOrTypeExpression) {
+                Tree.StaticMemberOrTypeExpression bme = 
+                        (Tree.StaticMemberOrTypeExpression) p;
+                Declaration dec = bme.getDeclaration();
+                if (dec!=null) {
+                    String qname = 
+                            dec.getQualifiedNameString();
+                    return knownNullSafe.contains(qname);
+                }
+            }
+        }
+        return false;
+    }
+    
+    private static java.util.List<String> knownNullSafe = Arrays.asList(
+            "java.util::Objects.toString",
+            "java.util::Arrays.asList",
+            "java.util::Arrays.copyOf",
+            "java.util::Arrays.copyOfRange",
+            "java.util::Arrays.deepToString",
+            "java.util::Collections.unmodifiableList",
+            "java.util::Collections.unmodifiableMap",
+            "java.util::Collections.unmodifiableSet",
+            "java.util::Collections.unmodifiableSortedMap",
+            "java.util::Collections.unmodifiableSortedSet",
+            "java.util::Collections.synchronizedList",
+            "java.util::Collections.synchronizedMap",
+            "java.util::Collections.synchronizedSet",
+            "java.util::Collections.synchronizedSortedMap",
+            "java.util::Collections.synchronizedSortedSet",
+            "java.util::Collections.emptyIterator",
+            "java.util::Collections.emptyListIterator",
+            "java.util::Collections.emptyList",
+            "java.util::Collections.emptyMap",
+            "java.util::Collections.emptySet",
+            "java.util::Collections.emptySortedMap",
+            "java.util::Collections.emptySortedSet",
+            "java.util::Collections.singleton",
+            "java.util::Collections.singletonList",
+            "java.util::Collections.singletonMap",
+            "java.lang::String.substring",
+            "java.lang::String.toLowerCase",
+            "java.lang::String.toUpperCase",
+            "java.lang::String.intern",
+            "java.lang::String.replace",
+            "java.lang::String.replaceAll",
+            "java.lang::String.replaceFirst",
+            "java.lang::String.toCharArray",
+            "java.lang::String.getBytes",
+            "java.lang::String.getChars",
+            "java.lang::String.trim",
+            "java.lang::String.format",
+            "java.lang::String.join",
+            "java.lang::String.split",
+            "java.lang::String.copyValueOf",
+            "java.lang::String.valueOf",
+            "java.lang::Double.valueOf",
+            "java.lang::Float.valueOf",
+            "java.lang::Long.valueOf",
+            "java.lang::Integer.valueOf",
+            "java.lang::Short.valueOf",
+            "java.lang::Byte.valueOf",
+            "java.lang::Boolean.valueOf",
+            "java.lang::Character.valueOf",
+            "java.lang::Double.toString",
+            "java.lang::Float.toString",
+            "java.lang::Long.toString",
+            "java.lang::Integer.toString",
+            "java.lang::Short.toString",
+            "java.lang::Byte.toString",
+            "java.lang::Boolean.toString",
+            "java.lang::Character.toString"
+    );
     
     JCExpression transform(Tree.FunctionArgument functionArg, Type expectedType) {
         Type prevExpectedType = this.expectedType;
