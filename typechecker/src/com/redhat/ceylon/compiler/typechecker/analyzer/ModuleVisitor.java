@@ -388,7 +388,7 @@ public class ModuleVisitor extends Visitor {
                     for (Backend b : bs) {
                         if (!b.isRegistered()) {
                             node.addError("illegal native backend name: '\"" + 
-                                    b.name + "\"' (must be either '\"jvm\"' or '\"js\"')");
+                                    b.nativeAnnotation + "\"' (must be either '\"jvm\"' or '\"js\"')");
                         }
                     }
                     if (!moduleBackends.none() && !moduleBackends.supports(bs)) {

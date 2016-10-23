@@ -2272,7 +2272,7 @@ public abstract class DeclarationVisitor extends Visitor {
                     Backend backend = Backend.fromAnnotation(be);
                     if (!backend.isRegistered()) {
                         na.addError("illegal native backend name: '\"" +
-                                be +
+                                backend.nativeAnnotation +
                                 "\"' (must be either '\"jvm\"' or '\"js\"')");
                     }
                     backends = backends.merged(backend);
