@@ -24,7 +24,7 @@ final class x_ {
     }
     
     static <Element>.java.lang.Object x(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Element) {
-        final .java.util.Iterator<Element> jit = .com.redhat.ceylon.compiler.java.Util.checkNull(new .java.util.ArrayList<Element>().iterator());
-        return jit.next();
+        final .java.util.Iterator<Element> jit = new .java.util.ArrayList<Element>().iterator();
+        return .com.redhat.ceylon.compiler.java.Util.checkNull(jit).next();
     }
 }

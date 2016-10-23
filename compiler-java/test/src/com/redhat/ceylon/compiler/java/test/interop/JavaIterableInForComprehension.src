@@ -22,12 +22,12 @@ final class assertSameElements_ {
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("{T*}")
     final .ceylon.language.Iterable<? extends T, ? extends .java.lang.Object> c) {
-        final .java.util.Iterator<T> jit = .com.redhat.ceylon.compiler.java.Util.checkNull(j.iterator());
+        final .java.util.Iterator<T> jit = j.iterator();
         final .ceylon.language.Iterator<? extends T> cit = c.iterator();
         loop_0: while (true) {
             if (true) {
-                if (jit.hasNext()) {
-                    final T je = .com.redhat.ceylon.compiler.java.Util.checkNull(jit.next());
+                if (.com.redhat.ceylon.compiler.java.Util.checkNull(jit).hasNext()) {
+                    final T je = .com.redhat.ceylon.compiler.java.Util.checkNull(jit).next();
                     final T ce$6;
                     .java.lang.Object ce$5 = null;
                     if (!((ce$5 = cit.next()) instanceof .ceylon.language.Finished)) {
@@ -35,7 +35,7 @@ final class assertSameElements_ {
                     } else {
                         throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "!is Finished ce=cit.next()"));
                     }
-                    if (je.equals(ce$6)) {
+                    if (.com.redhat.ceylon.compiler.java.Util.checkNull(je).equals(ce$6)) {
                     } else {
                         throw new .ceylon.language.AssertionError("Assertion failed" + (.java.lang.System.lineSeparator() + "\tviolated " + "je == ce"));
                     }
