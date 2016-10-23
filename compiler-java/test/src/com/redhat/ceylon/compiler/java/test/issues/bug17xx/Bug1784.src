@@ -24,7 +24,7 @@ final class bug1784_ {
                 .ceylon.language.String $ceylontmp$5 = (
                     let
                     {
-                        .java.lang.String $ceylontmp$4 = .ceylon.language.String.instance(vl.getFoo());
+                        .ceylon.language.String $ceylontmp$4 = .ceylon.language.String.instance(vl.getFoo());
                     }
                     returning $ceylontmp$4 != null ? $ceylontmp$4 : .ceylon.language.String.instance(vl.getBar());
                 );
@@ -34,25 +34,19 @@ final class bug1784_ {
         final .java.lang.String e = .com.redhat.ceylon.compiler.java.Util.checkNull((
             let
             {
-                .ceylon.language.String $ceylontmp$5 = (
-                    let
-                    {
-                        .java.lang.String $ceylontmp$4 = .ceylon.language.String.instance(vl.getFoo());
-                    }
-                    returning $ceylontmp$4 != null ? $ceylontmp$4 : .ceylon.language.String.instance(vl.getBar());
-                );
+                java.lang.String $ceylontmp$6 = .ceylon.language.String.instance(vl.getFoo());
             }
-            returning $ceylontmp$5 != null ? $ceylontmp$5.toString() : null;
-        ));
-        .ceylon.language.String c$7;
-        if ((c$7 = (
+            returning $ceylontmp$6 != null ? $ceylontmp$6 : .ceylon.language.String.instance(vl.getBar());
+        )).toString();
+        .ceylon.language.String c$8;
+        if ((c$8 = (
             let
             {
-                .ceylon.language.String $ceylontmp$8 = .ceylon.language.String.instance(vl.getFoo());
+                .ceylon.language.String $ceylontmp$9 = .ceylon.language.String.instance(vl.getFoo());
             }
-            returning $ceylontmp$8 != null ? $ceylontmp$8 : .ceylon.language.String.instance(vl.getBar());
+            returning $ceylontmp$9 != null ? $ceylontmp$9 : .ceylon.language.String.instance(vl.getBar());
         )) != null) {
-            final .java.lang.String c$9 = c$7.toString();
+            final .java.lang.String c$10 = c$8.toString();
         }
     }
 }
