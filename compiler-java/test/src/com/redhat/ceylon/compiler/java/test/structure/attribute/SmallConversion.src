@@ -165,8 +165,8 @@ final class smallConversion1_ {
     static {
         try {
             value = .com.redhat.ceylon.compiler.java.Util.toInt(.com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversionBig_.get_());
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0;

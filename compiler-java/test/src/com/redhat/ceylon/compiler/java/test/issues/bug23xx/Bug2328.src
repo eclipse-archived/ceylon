@@ -10,8 +10,8 @@ public final class bug2328Name_ {
     static {
         try {
             value = "Gavin";
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -47,8 +47,8 @@ public final class bug2328ReferenceDeclaration_ {
     static {
         try {
             value = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.issues", "1"), "com.redhat.ceylon.compiler.java.test.issues", "1").findPackage("com.redhat.ceylon.compiler.java.test.issues.bug23xx").getValue("bug2328Name");
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -75,8 +75,8 @@ public final class bug2328ReferenceDeclaration2_ {
     static {
         try {
             value = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.issues", "1"), "com.redhat.ceylon.compiler.java.test.issues", "1").findPackage("com.redhat.ceylon.compiler.java.test.issues.bug23xx").getValue("bug2328Name2");
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

@@ -18,8 +18,8 @@ public final class bug1225available_ implements .java.io.Serializable, .com.redh
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -56,8 +56,8 @@ public final class bug1225unavailableBy_O_ implements .java.io.Serializable, .co
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -94,8 +94,8 @@ public final class bug1225unavailableBy_X_ implements .java.io.Serializable, .co
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

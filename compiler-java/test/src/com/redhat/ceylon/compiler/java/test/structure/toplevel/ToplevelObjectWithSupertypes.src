@@ -41,8 +41,8 @@ public final class topLevelObjectWithSuperTypes_ extends .com.redhat.ceylon.comp
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

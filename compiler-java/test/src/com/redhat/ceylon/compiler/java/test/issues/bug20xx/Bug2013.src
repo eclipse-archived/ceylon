@@ -115,8 +115,8 @@ final class d_ {
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Trucker();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -143,8 +143,8 @@ final class carBigB_ {
     static {
         try {
             value = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.d_.get_().driveCar();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

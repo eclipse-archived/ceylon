@@ -21,8 +21,8 @@ final class bug1080Attr_ {
     static {
         try {
             value = .ceylon.language.Integer.instance(1L);
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

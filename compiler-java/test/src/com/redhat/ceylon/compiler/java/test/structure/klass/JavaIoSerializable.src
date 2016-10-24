@@ -87,8 +87,8 @@ final class javaIoSerializableObject_ extends .java.lang.Object implements .java
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -138,8 +138,8 @@ final class javaIoSerializableBasic_ extends .java.lang.Object implements .java.
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -601,8 +601,8 @@ final class javaIoSerializableQuoting_ implements .java.io.Serializable, .com.re
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

@@ -33,8 +33,8 @@ final class test_ {
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.C<.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A>(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.A.$TypeDescriptor$);
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

@@ -368,8 +368,8 @@ public final class globalAttrInteger_ {
     static {
         try {
             value = 1L;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
@@ -396,8 +396,8 @@ public final class globalAttrFloat_ {
     static {
         try {
             value = 1.0;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0.0;
@@ -424,8 +424,8 @@ public final class globalAttrString_ {
     static {
         try {
             value = "a";
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -452,8 +452,8 @@ public final class globalAttrBoolean_ {
     static {
         try {
             value = true;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = false;
@@ -480,8 +480,8 @@ public final class globalAttrCharacter_ {
     static {
         try {
             value = 97;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0;
@@ -508,8 +508,8 @@ public final class globalAttrOptionalInteger_ {
     static {
         try {
             value = null;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -536,8 +536,8 @@ public final class globalAttrOptionalFloat_ {
     static {
         try {
             value = null;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -564,8 +564,8 @@ public final class globalAttrOptionalString_ {
     static {
         try {
             value = null;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -592,8 +592,8 @@ public final class globalAttrOptionalBoolean_ {
     static {
         try {
             value = null;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -620,8 +620,8 @@ public final class globalAttrOptionalCharacter_ {
     static {
         try {
             value = null;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

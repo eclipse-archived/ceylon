@@ -836,8 +836,8 @@ final class toplevelByte1_ {
     static {
         try {
             value = (byte)0L;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = "0";
@@ -869,8 +869,8 @@ final class toplevelByte2_ {
     static {
         try {
             value = (byte)0L;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = "0";
@@ -902,8 +902,8 @@ final class toplevelByte3_ {
     static {
         try {
             value = (byte)0L;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = "0";

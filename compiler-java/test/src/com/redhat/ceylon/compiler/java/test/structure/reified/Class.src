@@ -161,8 +161,8 @@ public final class toplevelObject_ implements .java.io.Serializable, .com.redhat
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.reified.toplevelObject_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

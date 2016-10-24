@@ -67,8 +67,8 @@ public final class Object implements .java.io.Serializable, .com.redhat.ceylon.c
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

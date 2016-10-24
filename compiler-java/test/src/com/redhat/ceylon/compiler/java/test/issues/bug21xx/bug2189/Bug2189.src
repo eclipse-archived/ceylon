@@ -24,8 +24,8 @@ final class null_ {
     static {
         try {
             value = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

@@ -113,8 +113,8 @@ final class bug2338J_ {
                 }
                 returning new anonymous_1_();
             ).getJ();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -154,8 +154,8 @@ final class bug2338NewC_ {
                     };
                 }
             }.$call$(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338J_.get_());
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

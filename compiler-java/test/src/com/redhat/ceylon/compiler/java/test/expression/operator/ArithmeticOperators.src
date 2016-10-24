@@ -1209,8 +1209,8 @@ final class toplevelN1_ {
     static {
         try {
             value = 0L;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
@@ -1242,8 +1242,8 @@ final class toplevelN2_ {
     static {
         try {
             value = 0L;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
@@ -1275,8 +1275,8 @@ final class toplevelI1_ {
     static {
         try {
             value = 0L;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;

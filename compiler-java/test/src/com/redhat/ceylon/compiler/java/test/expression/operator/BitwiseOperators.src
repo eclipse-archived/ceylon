@@ -491,8 +491,8 @@ final class bwToplevelN1_ {
     static {
         try {
             value = 0L;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
@@ -524,8 +524,8 @@ final class bwToplevelN2_ {
     static {
         try {
             value = 0L;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
@@ -557,8 +557,8 @@ final class bwToplevelI1_ {
     static {
         try {
             value = 0L;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;

@@ -39,8 +39,8 @@ final class toplevelObject_ {
     static {
         try {
             value = .ceylon.language.nothing_.get_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -67,8 +67,8 @@ final class toplevelInteger_ {
     static {
         try {
             value = ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;

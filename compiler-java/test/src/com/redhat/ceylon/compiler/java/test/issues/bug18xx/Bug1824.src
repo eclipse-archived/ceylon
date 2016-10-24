@@ -26,8 +26,8 @@ final class i1824_ {
     static {
         try {
             value = 0L;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;

@@ -10,8 +10,8 @@ public final class goto_ {
     static {
         try {
             value = 0L;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
@@ -38,8 +38,8 @@ public final class module_ {
     static {
         try {
             value = 0L;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
@@ -66,8 +66,8 @@ public final class package_ {
     static {
         try {
             value = 0L;
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;

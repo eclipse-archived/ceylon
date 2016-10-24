@@ -15,8 +15,8 @@ final class bug2188_ {
     static {
         try {
             value = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

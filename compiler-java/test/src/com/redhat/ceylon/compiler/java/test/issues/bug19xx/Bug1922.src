@@ -31,8 +31,8 @@ final class random_ extends .java.util.Random implements .java.io.Serializable, 
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

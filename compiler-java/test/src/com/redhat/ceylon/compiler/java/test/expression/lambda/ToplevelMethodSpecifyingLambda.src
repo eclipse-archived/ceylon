@@ -17,8 +17,8 @@ final class toplevel_ {
                     return .ceylon.language.String.instance("hello " + name2);
                 }
             };
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

@@ -34,8 +34,8 @@ final class namedArgumentInvocationTopLevelX_ {
                 }
                 returning .com.redhat.ceylon.compiler.java.test.expression.invoke.namedArgumentInvocationTopLevelF_.namedArgumentInvocationTopLevelF(arg$0$0, arg$0$1);
             );
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
@@ -76,8 +76,8 @@ final class namedArgumentInvocationTopLevelY_ {
                 }
                 returning null;
             );
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

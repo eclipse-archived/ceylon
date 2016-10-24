@@ -27,8 +27,8 @@ final class bug329_se_ implements .java.io.Serializable, .com.redhat.ceylon.comp
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -70,8 +70,8 @@ final class bug329_se2_ implements .java.io.Serializable, .com.redhat.ceylon.com
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

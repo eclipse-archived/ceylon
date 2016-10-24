@@ -27,8 +27,8 @@ final class bug327_foo_ extends .com.redhat.ceylon.compiler.java.test.issues.bug
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -66,8 +66,8 @@ final class bug327_bar_ extends .com.redhat.ceylon.compiler.java.test.issues.bug
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

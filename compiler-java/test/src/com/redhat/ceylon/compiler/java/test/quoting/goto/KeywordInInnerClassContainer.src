@@ -61,8 +61,8 @@ final class transient_ implements .java.io.Serializable, .com.redhat.ceylon.comp
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

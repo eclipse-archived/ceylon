@@ -24,8 +24,8 @@ final class bug1593_anything_ {
                 }
                 returning null;
             );
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -52,8 +52,8 @@ final class bug1593_empty_ {
     static {
         try {
             value = .ceylon.language.empty_.get_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

@@ -133,8 +133,8 @@ final class javaxInjectInjectSetter_ {
     static {
         try {
             value = "";
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -168,8 +168,8 @@ final class javaxInjectInjectField_ {
     static {
         try {
             value = "";
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

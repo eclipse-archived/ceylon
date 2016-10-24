@@ -57,8 +57,8 @@ final class topLevelObjectWithMembers_ implements .java.io.Serializable, .com.re
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

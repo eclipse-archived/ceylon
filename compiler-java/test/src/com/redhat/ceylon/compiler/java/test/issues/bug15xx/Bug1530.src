@@ -72,8 +72,8 @@ final class bug1530_foo_ implements .java.io.Serializable, .com.redhat.ceylon.co
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1530_foo_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

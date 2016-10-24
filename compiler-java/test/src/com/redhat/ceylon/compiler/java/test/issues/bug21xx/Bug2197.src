@@ -71,8 +71,8 @@ final class bug2197_copyTo_ {
                     }
                 };
             );
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

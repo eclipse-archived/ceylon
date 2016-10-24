@@ -49,8 +49,8 @@ final class eBug2082_ implements .java.io.Serializable, .com.redhat.ceylon.compi
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -99,8 +99,8 @@ final class fBug2082_ implements .java.io.Serializable, .com.redhat.ceylon.compi
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_();
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

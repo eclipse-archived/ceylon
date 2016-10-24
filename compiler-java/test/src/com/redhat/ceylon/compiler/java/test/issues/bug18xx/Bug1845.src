@@ -123,8 +123,8 @@ final class bug1845_1_ {
                     return null;
                 }
             };
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
@@ -189,8 +189,8 @@ final class bug1845_2_ {
                     return null;
                 }
             };
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

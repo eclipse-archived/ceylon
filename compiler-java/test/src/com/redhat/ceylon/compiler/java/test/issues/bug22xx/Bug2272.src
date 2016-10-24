@@ -92,8 +92,8 @@ final class bug2272_ {
                     return null;
                 }
             };
-            $initException$ = null;
             $init$value = true;
+            $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;

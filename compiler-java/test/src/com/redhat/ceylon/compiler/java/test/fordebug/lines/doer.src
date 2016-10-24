@@ -39,8 +39,8 @@ final class id_ {
                 }
                 returning new .com.redhat.ceylon.compiler.java.test.fordebug.lines.Doer(arg$0$0); // line 2, 3
             );
-            $initException$ = null; // line 2
             $init$value = true; // line 2
+            $initException$ = null; // line 2
         } catch (.java.lang.Throwable x) { // line 2
             $initException$ = x; // line 2
             value = null; // line 2
