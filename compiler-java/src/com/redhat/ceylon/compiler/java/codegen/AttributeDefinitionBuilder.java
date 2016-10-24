@@ -437,7 +437,7 @@ public class AttributeDefinitionBuilder {
                 flags |= Flags.TRANSIENT;
             
             return stmts.append(owner.make().VarDef(
-                    owner.make().Modifiers(flags),
+                    owner.make().Modifiers(flags, owner.makeAtIgnore()),
                     owner.names().fromString(Naming.getInitializationFieldName(fieldName)),
                     owner.make().Type(owner.syms().booleanType),
                     owner.make().Literal(false)));
