@@ -4596,7 +4596,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         Function method = new Function();
         method.setName(paramName);
         method.setUnit(decl.getUnit());
-        method.setUncheckedNullType(true);
         try{
             FunctionalInterfaceType functionalInterfaceType = getFunctionalInterfaceType(typeMirror);
             MethodMirror functionalMethod = functionalInterfaceType.getMethod();
