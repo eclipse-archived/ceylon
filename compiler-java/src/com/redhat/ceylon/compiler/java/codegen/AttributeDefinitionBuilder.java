@@ -319,7 +319,7 @@ public class AttributeDefinitionBuilder {
                 defs.appendList((List)makeFields(attrTypedDecl));
                 if(initialValue != null) {
                     long flags = (modifiers & Flags.STATIC);
-                    defs.append(owner.make().Block(flags, initCheck(attrTypedDecl).init()));
+                    defs.append(owner.make().Block(flags, makeInit(attrTypedDecl)));
                 }
             }
         }
@@ -392,29 +392,14 @@ public class AttributeDefinitionBuilder {
         return mods & (Flags.PUBLIC | Flags.PRIVATE | Flags.ABSTRACT | Flags.FINAL | Flags.STATIC);
     }
 
-    private JCStatement generateField() {
-        long flags = Flags.PRIVATE | (modifiers & Flags.STATIC);
-        // only make it final if we have an init, otherwise we still have to initialise it
-        if (!writable && (initialValue != null || valueConstructor)) {
-            flags |= Flags.FINAL;
-        }
-
-        return owner.make().VarDef(
-                owner.make().Modifiers(flags, fieldAnnotations != null ? fieldAnnotations.toList() : List.<JCAnnotation>nil()),
-                owner.names().fromString(Naming.quoteFieldName(fieldName)),
-                attrType(),
-                null
-        );
+    /** Generate the initializer statements where the field gets set to its initial value */
+    private List<JCStatement> initValueField() {
+        JCTree.JCStatement init = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(Naming.quoteFieldName(fieldName)), initialValue));
+        return List.<JCStatement>of(init);
     }
-
-
+    
     abstract class InitCheck {
         
-        /** Generate the initializer statements where the field gets set to its initial value */
-        public List<JCStatement> init() {
-            JCTree.JCStatement init = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(Naming.quoteFieldName(fieldName)), initialValue));
-            return List.<JCStatement>of(init);
-        }
         public List<JCTree.JCStatement> getter() {
             JCTree.JCExpression returnExpr = owner.makeQuotedIdent(fieldName);
             // make sure we turn hash long to int properly
@@ -466,29 +451,14 @@ public class AttributeDefinitionBuilder {
         }
         
     }
-    
-    /** A boolean field is used to track initialization of a value */
-    public List<JCStatement> makeInitCheckFields(List<JCStatement> stmts) {
-        long flags = Flags.PRIVATE | (modifiers & Flags.STATIC) | Flags.VOLATILE;
-        if((flags & Flags.STATIC) == 0)
-            flags |= Flags.TRANSIENT;
-        
-        return stmts.prepend(owner.make().VarDef(
-                owner.make().Modifiers(flags),
-                owner.names().fromString(Naming.getInitializationFieldName(fieldName)),
-                owner.make().Type(owner.syms().booleanType),
-                owner.make().Literal(false)));
-    }
+
     
     class Blag extends InitCheck {
         private InitCheck other;
         Blag(InitCheck other) {
             this.other = other;
         }
-        /** delegates to other */
-        public List<JCStatement> init() {
-            return other.init();
-        }
+        
         /** generates a getter, adding initialized logic*/
         @Override
         public List<JCStatement> getter() {
@@ -550,16 +520,7 @@ public class AttributeDefinitionBuilder {
         
     }
     
-    public List<JCStatement> makeDeferredInitErrorField(List<JCStatement> stmts) {
-        long flags = Flags.PRIVATE | Flags.STATIC | Flags.FINAL;
 
-        List<JCStatement> result = List.of(owner.make().VarDef(
-                owner.make().Modifiers(flags),
-                owner.names().fromString(Naming.quoteIfJavaKeyword(Naming.getToplevelAttributeSavedExceptionName())),
-                owner.makeJavaType(owner.syms().throwableType.tsym),
-                null));
-        return result.prependList(stmts);
-    }
     
     /** Decorator of other InitCheck which save exceptions during init until the value is accessed */
     class DeferredInitError extends InitCheck {
@@ -582,63 +543,104 @@ public class AttributeDefinitionBuilder {
             stmts = stmts.prepend(ifThrow);
             return stmts;
         }
+    }
+    /** surrounda the init expression with a try/catch that saves the exception */
+    public List<JCStatement> initWithExceptionHandling(List<JCStatement> stmts) {
         
+        String exceptionName = "x"; // doesn't matter
         
-        /** surrounda the init expression with a try/catch that saves the exception */
-        @Override
-        public List<JCStatement> init() {
-            List<JCStatement> stmts = super.init();
+        // $initException$ = null
+        JCTree.JCStatement nullException = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
+                owner.makeNull()));
+        // $init$value = true;
+        JCTree.JCStatement initFlagTrue = owner.make().Exec(owner.make().Assign(
+                owner.naming.makeUnquotedIdent(Naming.getInitializationFieldName(fieldName)), 
+                owner.make().Literal(true)));
+        // save the value, mark the exception as null
+        stmts = stmts.append(nullException);
+        stmts = stmts.append(initFlagTrue);
         
-            String exceptionName = "x"; // doesn't matter
-            
-            // $initException$ = null
-            JCTree.JCStatement nullException = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
-                    owner.makeNull()));
-            // $init$value = true;
-            JCTree.JCStatement initFlagTrue = owner.make().Exec(owner.make().Assign(
-                    owner.naming.makeUnquotedIdent(Naming.getInitializationFieldName(fieldName)), 
-                    owner.make().Literal(true)));
-            // save the value, mark the exception as null
-            stmts = stmts.append(nullException);
-            stmts = stmts.append(initFlagTrue);
-            
-            // $initException$ = x
-            JCStatement saveException = owner.make().Exec(owner.make().Assign(
-                    owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
-                    owner.makeUnquotedIdent(exceptionName)));
-            // value = null
-            JCStatement nullValue = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(fieldName), owner.makeDefaultExprForType(attrType)));
-            // the catch statements
-            JCStatement initFlagFalse = owner.make().Exec(owner.make().Assign(
-                    owner.naming.makeUnquotedIdent(Naming.getInitializationFieldName(fieldName)), 
-                    owner.make().Literal(false)));
-            JCBlock handlerBlock = owner.make().Block(0, List.<JCTree.JCStatement>of(saveException, nullValue, initFlagFalse));
-            
-            // the catch block
-            JCExpression throwableType = owner.makeJavaType(owner.syms().throwableType.tsym);
-            JCVariableDecl exceptionParam = owner.make().VarDef(owner.make().Modifiers(0), 
-                    owner.naming.makeUnquotedName(exceptionName), 
-                    throwableType , null);
-            JCCatch catchers = owner.make().Catch(exceptionParam, handlerBlock);
-            
-            // the try/catch
-            JCTree.JCTry try_ = owner.make().Try(owner.make().Block(0, stmts), List.<JCTree.JCCatch>of(catchers), null);
-            return List.<JCTree.JCStatement>of(try_);
-        }
+        // $initException$ = x
+        JCStatement saveException = owner.make().Exec(owner.make().Assign(
+                owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
+                owner.makeUnquotedIdent(exceptionName)));
+        // value = null
+        JCStatement nullValue = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(fieldName), owner.makeDefaultExprForType(attrType)));
+        // the catch statements
+        JCStatement initFlagFalse = owner.make().Exec(owner.make().Assign(
+                owner.naming.makeUnquotedIdent(Naming.getInitializationFieldName(fieldName)), 
+                owner.make().Literal(false)));
+        JCBlock handlerBlock = owner.make().Block(0, List.<JCTree.JCStatement>of(saveException, nullValue, initFlagFalse));
         
+        // the catch block
+        JCExpression throwableType = owner.makeJavaType(owner.syms().throwableType.tsym);
+        JCVariableDecl exceptionParam = owner.make().VarDef(owner.make().Modifiers(0), 
+                owner.naming.makeUnquotedName(exceptionName), 
+                throwableType , null);
+        JCCatch catchers = owner.make().Catch(exceptionParam, handlerBlock);
+        
+        // the try/catch
+        JCTree.JCTry try_ = owner.make().Try(owner.make().Block(0, stmts), List.<JCTree.JCCatch>of(catchers), null);
+        return List.<JCTree.JCStatement>of(try_);
     }
     
-    public List<JCStatement> makeFields(TypedDeclaration attrType) {
+    private JCStatement generateField() {
+        long flags = Flags.PRIVATE | (modifiers & Flags.STATIC);
+        // only make it final if we have an init, otherwise we still have to initialise it
+        if (!writable && (initialValue != null || valueConstructor)) {
+            flags |= Flags.FINAL;
+        }
+
+        return owner.make().VarDef(
+                owner.make().Modifiers(flags, fieldAnnotations != null ? fieldAnnotations.toList() : List.<JCAnnotation>nil()),
+                owner.names().fromString(Naming.quoteFieldName(fieldName)),
+                attrType(),
+                null
+        );
+    }
+    
+    /** A boolean field is used to track initialization of a value */
+    private  List<JCStatement> makeInitCheckField(List<JCStatement> stmts) {
+        long flags = Flags.PRIVATE | (modifiers & Flags.STATIC) | Flags.VOLATILE;
+        if((flags & Flags.STATIC) == 0)
+            flags |= Flags.TRANSIENT;
+        
+        return stmts.append(owner.make().VarDef(
+                owner.make().Modifiers(flags),
+                owner.names().fromString(Naming.getInitializationFieldName(fieldName)),
+                owner.make().Type(owner.syms().booleanType),
+                owner.make().Literal(false)));
+    }
+    
+    private List<JCStatement> makeExceptionField(List<JCStatement> stmts) {
+        long flags = Flags.PRIVATE | Flags.STATIC | Flags.FINAL;
+
+        List<JCStatement> result = List.of(owner.make().VarDef(
+                owner.make().Modifiers(flags),
+                owner.names().fromString(Naming.quoteIfJavaKeyword(Naming.getToplevelAttributeSavedExceptionName())),
+                owner.makeJavaType(owner.syms().throwableType.tsym),
+                null));
+        return result.prependList(stmts);
+    }
+    
+    private List<JCStatement> makeFields(TypedDeclaration attrType) {
         List<JCStatement> stmts = List.of(generateField());
         if (hasInitFlag()) {
-            stmts = makeInitCheckFields(stmts);
+            stmts = makeInitCheckField(stmts);
         }
         if (isDeferredInitError()) {
-            stmts = makeDeferredInitErrorField(stmts);
+            stmts = makeExceptionField(stmts);
         }
         return stmts;
     }
     
+    public List<JCStatement> makeInit(TypedDeclaration attrType) {
+        List<JCStatement> result = initValueField();
+        if (isDeferredInitError()) {
+            result = initWithExceptionHandling(result);
+        }
+        return result;
+    }
     
     public InitCheck initCheck(TypedDeclaration attrType) {
         InitCheck initCheck;
