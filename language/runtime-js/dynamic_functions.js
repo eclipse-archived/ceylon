@@ -5,10 +5,12 @@ function dre$$(object, type, loc) {
   if (is$(object, type))return object;
   //If it's already of another type, throw
   if (object.$$ !== undefined && object.getT$all()[object.getT$name()].dynmem$===undefined) {
+    if (loc===false)return object;
     throw new TypeError("Cannot modify the type of an object to "+qname$(type)+" at runtime " + loc);
   }
   //If it's frozen, throw because we won't be able to dress it up
   if (typeof(object)==='object' && Object.isFrozen(object)) {
+    if (loc===false)return object;
     throw new Error("Cannot add Ceylon type information to a frozen object");
   }
   //If it's a TypeScript enum, accept number values and nothing else
@@ -16,6 +18,7 @@ function dre$$(object, type, loc) {
     if (typeof(object)==='number') {
       return object;
     } else {
+      if (loc===false)return object;
       throw new Error("Native object cannot be a TypeScript enum");
     }
   }
@@ -37,14 +40,85 @@ function dre$$(object, type, loc) {
     }
     return undefined;
   }
-  //Check members
+  //Check members, non-invasively first
   var actual = typeof(object)==='object'?Object.getOwnPropertyNames(object):[];
   var sats = type.t.$$.prototype.getT$all();
-  object.$$=type.t.$$;
-  object.getT$name=function(){return type.t.$$.T$name};
-  object.getT$all=function(){return sats;}
+  var tname=type.t.$$.T$name;
   if (type.a) {
-    object.$$targs$$=type.a;
+    var otargs={};
+    for (var t in type.a) {
+      otargs[t]=type.a[t];
+    }
+  }
+  var t_all=sats;
+  for (var sat in sats) {
+    var expected = sats[sat].dynmem$;
+    if (expected) {
+      for (var i=0; i < expected.length; i++) {
+        var propname="$prop$get"+expected[i][0].uppercased+expected[i].substring(1);
+        var proptype=type.t.$$.prototype[propname];
+        if (proptype) {
+          proptype=getrtmm$$(proptype);
+        }
+        if (actual.indexOf(expected[i])<0 && object[expected[i]]===undefined) {
+          if (!(proptype && extendsType({t:Null},proptype.$t))) {
+            if (loc===false)return object;
+            throw new Error("Native object is missing property '" + expected[i] + "' " + loc);
+          }
+        } else {
+          var val=object[expected[i]],dynmemberType;
+          if (val===object) {
+            //avoid instance circularity
+            if (!is$(val,proptype.$t)) {
+              //and make this an intersection type
+              tname=tname+"|"+proptype.$t.t.$$.T$name;
+              //Copy the satisfied types and add the new one
+              var _ts={};
+              for (var _tn in t_all) {
+                _ts[_tn]=t_all[_tn];
+              }
+              _ts[proptype.$t.t.$$.prototype.getT$name()]=proptype.$t.t;
+              t_all=_ts;
+            }
+          } else if (proptype && proptype.$t && !is$(val,proptype.$t)) {
+            if (proptype.$t.t===$_Array) {
+              if (natc$(val,proptype.$t.a.Element$Array,false)===false)return object;
+            } else if (proptype.$t.t===Integer) {
+              if (ndnc$(val,'i',false)===false)return object;
+            } else if (proptype.$t.t===Float) {
+              if (ndnc$(val,'f',false)===false)return object;
+            } else if ((dynmemberType=memberTypeIsDynamicInterface$(proptype.$t))!==undefined) {
+              //If the member type is a dynamic interface, dress up the value
+              dre$$(val,dynmemberType,loc);
+            } else {
+              var _t=proptype.$t;
+              if (typeof(_t)==='string') {
+                if (otargs[_t]) {
+                  _t=otargs[_t];
+                } else {
+                  var mm=getrtmm$$(type.t);
+                  if (mm && mm.sts) {
+                    for (var i=0;i<mm.sts.length;i++) {
+                      if (mm.sts[i].a && mm.sts[i].a[_t]) {
+                        otargs[_t]=mm.sts[i].a[_t];
+                        _t=mm.sts[i].a[_t]; break;
+                      }
+                    }
+                  }
+                }
+              }
+              if (ndtc$(val,_t,false)===false)return object;
+            }
+          }
+        }
+      }
+    }
+  }
+  object.$$=type.t.$$;
+  object.getT$name=function(){return tname}
+  object.getT$all=function(){return t_all} 
+  if (type.a) {
+    object.$$targs$$=otargs;
   }
   for (var sat in sats) {
     var expected = sats[sat].dynmem$;
@@ -59,6 +133,7 @@ function dre$$(object, type, loc) {
           if (proptype && extendsType({t:Null},proptype.$t)) {
             object[expected[i]]=null;
           } else {
+            if (loc===false)return object;
             throw new Error("Native object is missing property '" + expected[i] + "' " + loc);
           }
         } else {
@@ -146,12 +221,14 @@ function ndnc$(n,t,loc) {
     if (typeof(n)==='number')return Math.floor(n);
     if (is$(n,{t:Integer}))return n;
   }
+  if (loc===false)return false;
   throw new TypeError('Expected ' + (t==='f'?'Float':'Integer') + ' (' + loc + ')');
 }
 ex$.ndnc$=ndnc$;
 //Check if an object if really of a certain type
 function ndtc$(o,t,loc) {
   if (is$(o,t))return o;
+  if (loc===false)return false;
   throw new TypeError('Expected ' + qname$(t) + ' (' + loc + ')');
 }
 ex$.ndtc$=ndtc$;
@@ -166,6 +243,7 @@ function natc$(a,t,loc) {
     }
     return $arr$(a,t);
   }
+  if(loc===false)return false;
   throw new TypeError('Expected ' + qname$(t) + ' (' + loc + ')');
 }
 ex$.natc$=natc$;
