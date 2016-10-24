@@ -1143,6 +1143,8 @@ public class CallableBuilder {
             callMethod.resultType(gen.makeJavaType(returnType, flags), null);
         }
         ListBuffer<JCExpression> args = new ListBuffer<>();
+        // this depends on how we're declared to Java
+        boolean turnedToRaw = gen.rawSupertype(functionalInterface, JT_EXTENDS | JT_CLASS_NEW);
         boolean variadic = false;
         if(methodOrValue instanceof Function){
             int index = 0;
@@ -1153,6 +1155,10 @@ public class CallableBuilder {
                 if(param.isSequenced()){
                     paramType = gen.typeFact().getSequentialElementType(paramType);
                     variadic = true;
+                }
+                // This is very special-casey, but is required and I haven't found more subtle
+                if(turnedToRaw && gen.simplifyType(param.getType()).isTypeParameter()){
+                    paramType = gen.typeFact().getObjectType();
                 }
                 long flags = Flags.FINAL;
                 JCExpression javaType = gen.makeJavaType(paramType, 0);
