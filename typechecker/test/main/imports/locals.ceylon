@@ -10,6 +10,15 @@ void withNestedImport() {
     print("".sub(0, 2));
     Int i = 0;
     print(fs);
+    if (1==1) {
+        import ceylon.language.meta.model { 
+            Int=Interface, 
+            Att=Attribute
+        }
+        Att<Object>? withInterface(Int<Object> i) {
+            return i.getAttribute<Object>("name");
+        }
+    }
 }
 
 void withoutImport() {
