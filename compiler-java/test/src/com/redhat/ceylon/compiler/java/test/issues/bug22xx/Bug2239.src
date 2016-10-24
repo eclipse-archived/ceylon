@@ -29,9 +29,9 @@ class Bug2239 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     final .java.lang.String em) {
         if (this.em == null) {
             this.em = em;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     
     @.java.lang.Override

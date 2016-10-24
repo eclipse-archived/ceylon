@@ -24,9 +24,9 @@ class JavaxInjectInject implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final void setDave$priv$(final .java.lang.String dave) {
         if (this.dave == null) {
             this.dave = dave;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     @.javax.inject.Inject
     private .java.lang.String steve;

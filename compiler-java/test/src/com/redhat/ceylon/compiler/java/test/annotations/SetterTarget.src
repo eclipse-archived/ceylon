@@ -51,9 +51,9 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     final .java.lang.String attr) {
         if (this.attr == null) {
             this.attr = attr;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private .java.lang.String attr2;
@@ -75,9 +75,9 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     final .java.lang.String attr2) {
         if (this.attr2 == null) {
             this.attr2 = attr2;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private .java.lang.String attr3;

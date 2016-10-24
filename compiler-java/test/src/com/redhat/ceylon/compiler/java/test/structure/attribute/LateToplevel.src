@@ -17,9 +17,9 @@ final class lateToplevel_ {
     public static void set_(final .java.lang.String lateToplevel) {
         if (lateToplevel_.value == null) {
             value = lateToplevel;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
 }
 final class lateToplevel2_ {
@@ -41,9 +41,9 @@ final class lateToplevel2_ {
         if (!lateToplevel2_.$init$value) {
             value = lateToplevel2;
             lateToplevel2_.$init$value = true;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
 }
 final class lateToplevel3_ {
@@ -65,8 +65,8 @@ final class lateToplevel3_ {
         if (!lateToplevel3_.$init$value) {
             value = lateToplevel3;
             lateToplevel3_.$init$value = true;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
 }

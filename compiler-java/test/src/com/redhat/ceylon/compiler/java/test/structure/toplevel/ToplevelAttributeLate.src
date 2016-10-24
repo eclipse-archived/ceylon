@@ -29,9 +29,9 @@ final class toplevelAttributeLate_ {
         if (!toplevelAttributeLate_.$init$value) {
             value = toplevelAttributeLate;
             toplevelAttributeLate_.$init$value = true;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
 }
 final class toplevelAttributeLateVariable_ {

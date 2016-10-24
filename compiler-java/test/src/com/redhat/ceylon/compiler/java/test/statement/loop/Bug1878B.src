@@ -56,9 +56,9 @@ class Bug1878 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         if (!this.$init$foo) {
             this.foo = foo;
             this.$init$foo = true;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     
     private final void loopInit$priv$() {
@@ -115,8 +115,8 @@ final class bug1878_ {
         if (!bug1878_.$init$value) {
             value = bug1878;
             bug1878_.$init$value = true;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
 }

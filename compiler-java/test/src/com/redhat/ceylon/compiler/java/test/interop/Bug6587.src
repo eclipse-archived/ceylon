@@ -33,9 +33,9 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     final .javax.persistence.EntityManager lateEntityManager) {
         if (this.lateEntityManager == null) {
             this.lateEntityManager = lateEntityManager;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     @.javax.enterprise.inject.Produces
     @.javax.persistence.PersistenceContext

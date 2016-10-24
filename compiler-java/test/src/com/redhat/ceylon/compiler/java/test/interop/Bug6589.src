@@ -32,8 +32,8 @@ final class bug6589_ {
     final .javax.persistence.EntityManager bug6589) {
         if (bug6589_.value == null) {
             value = bug6589;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
 }

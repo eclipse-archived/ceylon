@@ -27,9 +27,9 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
     public final void setLateStringAttr(final .java.lang.String lateStringAttr) {
         if (this.lateStringAttr == null) {
             this.lateStringAttr = lateStringAttr;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     private .java.lang.String lateStringVariableAttr;
     
@@ -57,9 +57,9 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
     public final void setLateNonNullAttr(final .java.lang.Object lateNonNullAttr) {
         if (this.lateNonNullAttr == null) {
             this.lateNonNullAttr = lateNonNullAttr;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     private .java.lang.Object lateNonNullVariableAttr;
     
@@ -89,9 +89,9 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
         if (!this.$init$lateOptionalAttr) {
             this.lateOptionalAttr = lateOptionalAttr;
             this.$init$lateOptionalAttr = true;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     private .java.lang.Object lateOptionalVariableAttr;
     private volatile transient boolean $init$lateOptionalVariableAttr;
@@ -123,9 +123,9 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
         if (!this.$init$lateGenericAttr) {
             this.lateGenericAttr = lateGenericAttr;
             this.$init$lateGenericAttr = true;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     private T lateGenericVariableAttr;
     private volatile transient boolean $init$lateGenericVariableAttr;
@@ -155,9 +155,9 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
     public final void setLateGenericNonNullAttr(final U lateGenericNonNullAttr) {
         if (this.lateGenericNonNullAttr == null) {
             this.lateGenericNonNullAttr = lateGenericNonNullAttr;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     private U lateGenericNonNullVariableAttr;
     
@@ -187,9 +187,9 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
         if (!this.$init$lateAttr) {
             this.lateAttr = lateAttr;
             this.$init$lateAttr = true;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     private long lateVariableAttr;
     private volatile transient boolean $init$lateVariableAttr;

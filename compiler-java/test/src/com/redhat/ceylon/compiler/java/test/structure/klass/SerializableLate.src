@@ -40,9 +40,9 @@ class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model
     final .java.lang.String late) {
         if (this.late == null) {
             this.late = late;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private .java.lang.String lateVariable;
@@ -89,9 +89,9 @@ class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model
         if (!this.$init$lateOpt) {
             this.lateOpt = lateOpt;
             this.$init$lateOpt = true;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private .ceylon.language.String lateVariableOpt;

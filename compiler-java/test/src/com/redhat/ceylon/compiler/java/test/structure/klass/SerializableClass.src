@@ -161,9 +161,9 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
     public final void setPartner(final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass partner) {
         if (this.partner == null) {
             this.partner = partner;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     private long variableInteger;
     private volatile transient boolean $init$variableInteger;
@@ -195,9 +195,9 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
         if (!this.$init$integer) {
             this.integer = integer;
             this.$init$integer = true;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     
     @.java.lang.Override

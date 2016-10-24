@@ -25,9 +25,9 @@ public class Bug1479<T> implements .com.redhat.ceylon.compiler.java.runtime.mode
     public final void setParent(final .com.redhat.ceylon.compiler.java.test.issues.bug14xx.Bug1479<T> parent) {
         if (this.parent == null) {
             this.parent = parent;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     
     @.java.lang.Override

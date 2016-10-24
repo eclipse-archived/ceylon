@@ -27,8 +27,8 @@ final class bug1659_ {
         if (!bug1659_.$init$value) {
             value = bug1659;
             bug1659_.$init$value = true;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
 }
