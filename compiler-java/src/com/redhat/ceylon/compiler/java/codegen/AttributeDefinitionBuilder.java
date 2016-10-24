@@ -391,98 +391,80 @@ public class AttributeDefinitionBuilder {
         }
         return mods & (Flags.PUBLIC | Flags.PRIVATE | Flags.ABSTRACT | Flags.FINAL | Flags.STATIC);
     }
-
-    /** Generate the initializer statements where the field gets set to its initial value */
-    private List<JCStatement> initValueField() {
-        JCTree.JCStatement init = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(Naming.quoteFieldName(fieldName)), initialValue));
-        return List.<JCStatement>of(init);
-    }
     
-    abstract class InitCheck {
+    public List<JCTree.JCStatement> getter() {
+        JCTree.JCExpression returnExpr = owner.makeQuotedIdent(fieldName);
+        // make sure we turn hash long to int properly
+        if(isHash)
+            returnExpr = owner.convertToIntForHashAttribute(returnExpr);
+        if (attrTypedDecl.isStatic()) {
+            returnExpr = owner.make().TypeCast(owner.makeJavaType(attrType), returnExpr);
+        }
+        JCReturn returnValue = owner.make().Return(returnExpr);
+        List<JCStatement> stmts;
         
-        public List<JCTree.JCStatement> getter() {
-            JCTree.JCExpression returnExpr = owner.makeQuotedIdent(fieldName);
-            // make sure we turn hash long to int properly
-            if(isHash)
-                returnExpr = owner.convertToIntForHashAttribute(returnExpr);
-            if (attrTypedDecl.isStatic()) {
-                returnExpr = owner.make().TypeCast(owner.makeJavaType(attrType), returnExpr);
-            }
-            JCReturn returnValue = owner.make().Return(returnExpr);
-            List<JCStatement> stmts;
+        stmts = List.<JCTree.JCStatement>of(returnValue);
+        return stmts;
+    }
+    private List<JCStatement> setter() {
+        JCExpression fld = fld();
+        JCExpressionStatement assign = owner.make().Exec(
+                owner.make().Assign(
+                        fld,
+                        owner.makeQuotedIdent(attrName)));
+        List<JCStatement> stmts = List.<JCTree.JCStatement>of(assign);
+        if (late) {
             
-            stmts = List.<JCTree.JCStatement>of(returnValue);
-            return stmts;
-        }
-        public List<JCStatement> setter() {
-            JCExpression fld = fld();
-            JCExpressionStatement assign = owner.make().Exec(
-                    owner.make().Assign(
-                            fld,
-                            owner.makeQuotedIdent(attrName)));
-            List<JCStatement> stmts = List.<JCTree.JCStatement>of(assign);
-            if (late) {
-                
-                JCExpressionStatement makeInit = null;
-                if(hasInitFlag())
-                    makeInit = owner.make().Exec(owner.make().Assign(makeInitFlagExpr(true),
-                                                                     owner.make().Literal(true)));
-                if (variable) {
-                    if(makeInit != null)
-                        stmts = List.<JCStatement>of(assign, makeInit);
-                    //else stmts is already assign
-                } else {
-                    List<JCStatement> then = List.<JCStatement>of(owner.make().Return(null));
-                    if(makeInit != null)
-                        then = then.prepend(makeInit);
-                    then = then.prepend(assign);
-                    stmts = List.of(
-                        owner.make().If(
-                            makeInitFlagExpr(false),
-                            owner.make().Block(0, then), 
-                            null),
-                        owner.make().Throw(owner.makeNewClass( 
-                                           owner.make().Type(owner.syms().ceylonInitializationErrorType), 
-                                           List.<JCExpression>of(owner.make().Literal("Re-initialization of 'late' attribute")))
-                    ));
-                }
+            JCExpressionStatement makeInit = null;
+            if(hasInitFlag())
+                makeInit = owner.make().Exec(owner.make().Assign(makeInitFlagExpr(true),
+                                                                 owner.make().Literal(true)));
+            if (variable) {
+                if(makeInit != null)
+                    stmts = List.<JCStatement>of(assign, makeInit);
+                //else stmts is already assign
+            } else {
+                List<JCStatement> then = List.<JCStatement>of(owner.make().Return(null));
+                if(makeInit != null)
+                    then = then.prepend(makeInit);
+                then = then.prepend(assign);
+                stmts = List.of(
+                    owner.make().If(
+                        makeInitFlagExpr(false),
+                        owner.make().Block(0, then), 
+                        null),
+                    owner.make().Throw(owner.makeNewClass( 
+                                       owner.make().Type(owner.syms().ceylonInitializationErrorType), 
+                                       List.<JCExpression>of(owner.make().Literal("Re-initialization of 'late' attribute")))
+                ));
             }
-            return stmts;
         }
-        
+        return stmts;
     }
 
     
-    class Blag extends InitCheck {
-        private InitCheck other;
-        Blag(InitCheck other) {
-            this.other = other;
+    
+    public List<JCStatement> getterBlag(List<JCStatement> getter) {
+        List<JCStatement> catchStmts;
+        JCExpression msg = owner.make().Literal(late ? "Accessing uninitialized 'late' attribute '"+attrName+"'" : "Cyclic initialization trying to read the value of '"+attrName+"' before it was set");
+        JCTree.JCThrow throwStmt = owner.make().Throw(owner.makeNewClass(owner.makeIdent(owner.syms().ceylonInitializationErrorType), 
+                List.<JCExpression>of(msg)));
+        if(isDeferredInitError()){
+            JCStatement rethrow = owner.make().Exec(owner.utilInvocation().rethrow( 
+                    owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName())));
+            // rethrow the init exception if we have one
+            JCIf ifThrow = owner.make().If(owner.make().Binary(JCTree.Tag.NE, owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
+                    owner.makeNull()), rethrow, null);
+            catchStmts = List.<JCTree.JCStatement>of(ifThrow, throwStmt);
+        }else{
+            catchStmts = List.<JCTree.JCStatement>of(throwStmt);
         }
-        
-        /** generates a getter, adding initialized logic*/
-        @Override
-        public List<JCStatement> getter() {
-            List<JCStatement> getter = other.getter();
-            List<JCStatement> catchStmts;
-            JCExpression msg = owner.make().Literal(late ? "Accessing uninitialized 'late' attribute '"+attrName+"'" : "Cyclic initialization trying to read the value of '"+attrName+"' before it was set");
-            JCTree.JCThrow throwStmt = owner.make().Throw(owner.makeNewClass(owner.makeIdent(owner.syms().ceylonInitializationErrorType), 
-                    List.<JCExpression>of(msg)));
-            if(isDeferredInitError()){
-                JCStatement rethrow = owner.make().Exec(owner.utilInvocation().rethrow( 
-                        owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName())));
-                // rethrow the init exception if we have one
-                JCIf ifThrow = owner.make().If(owner.make().Binary(JCTree.Tag.NE, owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
-                        owner.makeNull()), rethrow, null);
-                catchStmts = List.<JCTree.JCStatement>of(ifThrow, throwStmt);
-            }else{
-                catchStmts = List.<JCTree.JCStatement>of(throwStmt);
-            }
-            return List.<JCTree.JCStatement>of(
-                    owner.make().If(makeInitFlagExpr(true), 
-                    owner.make().Block(0, getter),
-                    owner.make().Block(0, catchStmts)));
-        }
+        return List.<JCTree.JCStatement>of(
+                owner.make().If(makeInitFlagExpr(true), 
+                owner.make().Block(0, getter),
+                owner.make().Block(0, catchStmts)));
     }
+    
     private JCExpression makeInitFlagExpr(boolean positiveIfTest) {
         final JCExpression initFlagFieldOwner;
         if (toplevel) {
@@ -509,79 +491,17 @@ public class AttributeDefinitionBuilder {
                                        owner.naming.makeQualIdent(initFlagFieldOwner, fieldName), owner.makeNull());
     }
     
-    
-    
-    /** The nullness of the value field is used to track initialization of a value */
-    class NullInitCheck extends InitCheck {
-        
-    }
-    /** Initialization of the value will not be checked */
-    class NoInitCheck extends InitCheck {
-        
-    }
-    
 
     
     /** Decorator of other InitCheck which save exceptions during init until the value is accessed */
-    class DeferredInitError extends InitCheck {
-        private final InitCheck other;
-        public DeferredInitError(InitCheck other) {
-            this.other = other;
-        }
-        /** Delegates to other */
-        public List<JCTree.JCStatement> getter() {
-            return other.getter();
-        }
-        
-        public List<JCTree.JCStatement> setter() {
-            List<JCTree.JCStatement> stmts = other.setter();
-            JCStatement rethrow = owner.make().Exec(owner.utilInvocation().rethrow( 
-                    owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName())));
-            // rethrow the init exception if we have one
-            JCIf ifThrow = owner.make().If(owner.make().Binary(JCTree.Tag.NE, owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
-                    owner.makeNull()), rethrow, null);
-            stmts = stmts.prepend(ifThrow);
-            return stmts;
-        }
-    }
-    /** surrounda the init expression with a try/catch that saves the exception */
-    public List<JCStatement> initWithExceptionHandling(List<JCStatement> stmts) {
-        
-        String exceptionName = "x"; // doesn't matter
-        
-        // $initException$ = null
-        JCTree.JCStatement nullException = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
-                owner.makeNull()));
-        // $init$value = true;
-        JCTree.JCStatement initFlagTrue = owner.make().Exec(owner.make().Assign(
-                owner.naming.makeUnquotedIdent(Naming.getInitializationFieldName(fieldName)), 
-                owner.make().Literal(true)));
-        // save the value, mark the exception as null
-        stmts = stmts.append(nullException);
-        stmts = stmts.append(initFlagTrue);
-        
-        // $initException$ = x
-        JCStatement saveException = owner.make().Exec(owner.make().Assign(
-                owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
-                owner.makeUnquotedIdent(exceptionName)));
-        // value = null
-        JCStatement nullValue = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(fieldName), owner.makeDefaultExprForType(attrType)));
-        // the catch statements
-        JCStatement initFlagFalse = owner.make().Exec(owner.make().Assign(
-                owner.naming.makeUnquotedIdent(Naming.getInitializationFieldName(fieldName)), 
-                owner.make().Literal(false)));
-        JCBlock handlerBlock = owner.make().Block(0, List.<JCTree.JCStatement>of(saveException, nullValue, initFlagFalse));
-        
-        // the catch block
-        JCExpression throwableType = owner.makeJavaType(owner.syms().throwableType.tsym);
-        JCVariableDecl exceptionParam = owner.make().VarDef(owner.make().Modifiers(0), 
-                owner.naming.makeUnquotedName(exceptionName), 
-                throwableType , null);
-        JCCatch catchers = owner.make().Catch(exceptionParam, handlerBlock);
-        
-        // the try/catch
-        JCTree.JCTry try_ = owner.make().Try(owner.make().Block(0, stmts), List.<JCTree.JCCatch>of(catchers), null);
-        return List.<JCTree.JCStatement>of(try_);
+    private List<JCTree.JCStatement> rethrowInitialError(List<JCTree.JCStatement> stmts) {
+        JCStatement rethrow = owner.make().Exec(owner.utilInvocation().rethrow( 
+                owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName())));
+        // rethrow the init exception if we have one
+        JCIf ifThrow = owner.make().If(owner.make().Binary(JCTree.Tag.NE, owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
+                owner.makeNull()), rethrow, null);
+        stmts = stmts.prepend(ifThrow);
+        return stmts;
     }
     
     private JCStatement generateField() {
@@ -634,6 +554,52 @@ public class AttributeDefinitionBuilder {
         return stmts;
     }
     
+    /** Generate the initializer statements where the field gets set to its initial value */
+    private List<JCStatement> initValueField() {
+        JCTree.JCStatement init = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(Naming.quoteFieldName(fieldName)), initialValue));
+        return List.<JCStatement>of(init);
+    }
+    
+    /** surrounda the init expression with a try/catch that saves the exception */
+    private List<JCStatement> initWithExceptionHandling(List<JCStatement> stmts) {
+        
+        String exceptionName = "x"; // doesn't matter
+        
+        // $initException$ = null
+        JCTree.JCStatement nullException = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
+                owner.makeNull()));
+        // $init$value = true;
+        JCTree.JCStatement initFlagTrue = owner.make().Exec(owner.make().Assign(
+                owner.naming.makeUnquotedIdent(Naming.getInitializationFieldName(fieldName)), 
+                owner.make().Literal(true)));
+        // save the value, mark the exception as null
+        stmts = stmts.append(nullException);
+        stmts = stmts.append(initFlagTrue);
+        
+        // $initException$ = x
+        JCStatement saveException = owner.make().Exec(owner.make().Assign(
+                owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
+                owner.makeUnquotedIdent(exceptionName)));
+        // value = null
+        JCStatement nullValue = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(fieldName), owner.makeDefaultExprForType(attrType)));
+        // the catch statements
+        JCStatement initFlagFalse = owner.make().Exec(owner.make().Assign(
+                owner.naming.makeUnquotedIdent(Naming.getInitializationFieldName(fieldName)), 
+                owner.make().Literal(false)));
+        JCBlock handlerBlock = owner.make().Block(0, List.<JCTree.JCStatement>of(saveException, nullValue, initFlagFalse));
+        
+        // the catch block
+        JCExpression throwableType = owner.makeJavaType(owner.syms().throwableType.tsym);
+        JCVariableDecl exceptionParam = owner.make().VarDef(owner.make().Modifiers(0), 
+                owner.naming.makeUnquotedName(exceptionName), 
+                throwableType , null);
+        JCCatch catchers = owner.make().Catch(exceptionParam, handlerBlock);
+        
+        // the try/catch
+        JCTree.JCTry try_ = owner.make().Try(owner.make().Block(0, stmts), List.<JCTree.JCCatch>of(catchers), null);
+        return List.<JCTree.JCStatement>of(try_);
+    }
+    
     public List<JCStatement> makeInit(TypedDeclaration attrType) {
         List<JCStatement> result = initValueField();
         if (isDeferredInitError()) {
@@ -642,40 +608,34 @@ public class AttributeDefinitionBuilder {
         return result;
     }
     
-    public InitCheck initCheck(TypedDeclaration attrType) {
-        InitCheck initCheck;
-        if (hasInitFlag()) {
-            initCheck = new InitCheck() {
-                
-            };
-        } else {
-            initCheck = new NullInitCheck();
-        }
+    public List<JCStatement> initCheckGetter(TypedDeclaration attrType) {
+        List<JCStatement> stmts = getter();
         if ((toplevel || late)) {
-            initCheck = new Blag(initCheck);
+            stmts = getterBlag(stmts);
         }
-        if (isDeferredInitError()) {
-            initCheck = new DeferredInitError(initCheck);
-        }
-        return initCheck;
+        return stmts;
     }
     
+    private List<JCStatement> initCheckSetter(TypedDeclaration attrType) {
+        List<JCStatement> stmts = setter();
+        if (isDeferredInitError()) {
+            stmts = rethrowInitialError(stmts);
+        }
+        return stmts;
+    }
     
     private JCTree.JCBlock generateDefaultGetterBlock() {
-        return owner.make().Block(0L, initCheck(attrTypedDecl).getter());
+        return owner.make().Block(0L, initCheckGetter(attrTypedDecl));
     }
-    
     
     private boolean hasInitFlag() {
         return (toplevel && !late) || lateWithInit;
     }
 
     public JCTree.JCBlock generateDefaultSetterBlock() {
-        return owner.make().Block(0L, initCheck(attrTypedDecl).setter()); 
+        return owner.make().Block(0L, initCheckSetter(attrTypedDecl)); 
     }
-
     
-
     private JCExpression fld() {
         JCExpression fld;
         if (fieldName.equals(attrName)) {
