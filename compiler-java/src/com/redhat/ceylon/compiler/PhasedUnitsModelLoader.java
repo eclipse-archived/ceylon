@@ -18,7 +18,7 @@
  * MA  02110-1301, USA.
  */
 
-package com.redhat.ceylon.ceylondoc;
+package com.redhat.ceylon.compiler;
 
 import java.io.File;
 import java.util.HashSet;
@@ -51,17 +51,17 @@ import com.redhat.ceylon.model.typechecker.util.ModuleManager;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 // FIXME: we're still using a flat classpath here
-public class CeylonDocModelLoader extends ReflectionModelLoader {
+public class PhasedUnitsModelLoader extends ReflectionModelLoader {
 
 	ModulesClassLoader classLoader;
     Set<Module> modulesAddedToClassPath = new HashSet<Module>();
     private Callable<PhasedUnits> getPhasedUnits;
 
-    public CeylonDocModelLoader(ModuleManager moduleManager, Modules modules, Callable<PhasedUnits> getPhasedUnits, boolean bootstrapCeylon){
+    public PhasedUnitsModelLoader(ModuleManager moduleManager, Modules modules, Callable<PhasedUnits> getPhasedUnits, boolean bootstrapCeylon){
         super(moduleManager, modules, new LoaderJULLogger());
         // FIXME: this probably needs to support alternate JDKs
         this.jdkProvider = new JdkProvider();
-        this.classLoader = new ModulesClassLoader(CeylonDocModelLoader.class.getClassLoader(), jdkProvider);
+        this.classLoader = new ModulesClassLoader(PhasedUnitsModelLoader.class.getClassLoader(), jdkProvider);
         this.getPhasedUnits = getPhasedUnits;
         this.isBootstrap = bootstrapCeylon;
     }

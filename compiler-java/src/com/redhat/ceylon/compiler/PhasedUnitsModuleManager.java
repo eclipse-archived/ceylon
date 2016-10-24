@@ -17,13 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
-package com.redhat.ceylon.ceylondoc;
+package com.redhat.ceylon.compiler;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import com.redhat.ceylon.ceylondoc.Util;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Backend;
@@ -47,7 +48,7 @@ import com.redhat.ceylon.model.typechecker.model.Module;
 import com.redhat.ceylon.model.typechecker.model.Modules;
 import com.redhat.ceylon.model.typechecker.model.Package;
 
-public class CeylonDocModuleManager extends ReflectionModuleManager {
+public class PhasedUnitsModuleManager extends ReflectionModuleManager {
 
     private List<ModuleSpec> modulesSpecs;
     private Callable<PhasedUnits> getPhasedUnits;
@@ -56,7 +57,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
 
     private List<String> compiledClasses;
     
-    public CeylonDocModuleManager(Callable<PhasedUnits> getPhasedUnits, Context context, List<ModuleSpec> modules, RepositoryManager outputRepositoryManager, boolean bootstrapCeylon, Logger log) {
+    public PhasedUnitsModuleManager(Callable<PhasedUnits> getPhasedUnits, Context context, List<ModuleSpec> modules, RepositoryManager outputRepositoryManager, boolean bootstrapCeylon, Logger log) {
         super();
         this.outputRepositoryManager = outputRepositoryManager;
         this.modulesSpecs = modules;
@@ -106,7 +107,7 @@ public class CeylonDocModuleManager extends ReflectionModuleManager {
 
     @Override
     protected AbstractModelLoader createModelLoader(Modules modules) {
-        return new CeylonDocModelLoader(this, modules, getPhasedUnits, bootstrapCeylon){
+        return new PhasedUnitsModelLoader(this, modules, getPhasedUnits, bootstrapCeylon){
             @Override
             protected boolean isLoadedFromSource(String className) {
                 return getCompiledClasses().contains(className);

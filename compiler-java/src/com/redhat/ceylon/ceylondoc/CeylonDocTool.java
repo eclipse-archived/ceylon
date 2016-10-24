@@ -66,6 +66,8 @@ import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.ModuleWildcardsHelper;
 import com.redhat.ceylon.common.tools.OutputRepoUsingTool;
+import com.redhat.ceylon.compiler.PhasedUnitsModuleManager;
+import com.redhat.ceylon.compiler.java.loader.model.LazyModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
@@ -151,7 +153,7 @@ public class CeylonDocTool extends OutputRepoUsingTool {
     private static final String OPTION_LINK = OPTION_SECTION + "link";
     private static final String OPTION_RESOURCE_FOLDER = OPTION_SECTION + "resource-folder";
 
-    private String encoding;
+    private String encoding = CeylonConfig.get(DefaultToolOptions.DEFAULTS_ENCODING);
     private String header;
     private String footer;
     private boolean includeNonShared;
@@ -421,12 +423,12 @@ public class CeylonDocTool extends OutputRepoUsingTool {
         builder.moduleManagerFactory(new ModuleManagerFactory(){
             @Override
             public ModuleManager createModuleManager(Context context) {
-                return new CeylonDocModuleManager(getPhasedUnits, context, modules, outputRepositoryManager, bootstrapCeylon, getLogger());
+                return new PhasedUnitsModuleManager(getPhasedUnits, context, modules, outputRepositoryManager, bootstrapCeylon, getLogger());
             }
 
             @Override
             public ModuleSourceMapper createModuleManagerUtil(Context context, ModuleManager moduleManager) {
-                return new CeylonDocModuleSourceMapper(context, (CeylonDocModuleManager) moduleManager, getEncoding());
+                return new LazyModuleSourceMapper(context, (PhasedUnitsModuleManager) moduleManager, getEncoding());
             }
         });
         

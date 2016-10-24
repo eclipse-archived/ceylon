@@ -26,7 +26,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
@@ -35,6 +34,8 @@ import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
+import com.redhat.ceylon.common.config.CeylonConfig;
+import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
@@ -55,9 +56,25 @@ import com.redhat.ceylon.model.typechecker.util.ModuleManager;
  * @author Stéphane Épardaud <stef@epardaud.fr>
  */
 public class LazyModuleSourceMapper extends ModuleSourceMapper {
+    private final String encoding;
 
     public LazyModuleSourceMapper(Context context, LazyModuleManager moduleManager) {
         super(context, moduleManager);
+        this.encoding = null;
+    }
+
+    public LazyModuleSourceMapper(Context context, LazyModuleManager moduleManager, String encoding) {
+        super(context, moduleManager);
+        this.encoding = encoding;
+    }
+
+    @Override
+    protected PhasedUnits createPhasedUnits() {
+        PhasedUnits units = super.createPhasedUnits();
+        if (encoding != null) {
+            units.setEncoding(encoding);
+        }
+        return units;
     }
 
     protected LazyModuleManager getModuleManager(){
