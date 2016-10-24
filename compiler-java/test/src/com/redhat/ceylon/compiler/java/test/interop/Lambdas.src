@@ -1315,6 +1315,287 @@ final class lambdas_ {
         });
     }
 }
+@.com.redhat.ceylon.compiler.java.metadata.CompileTimeError
+public final class bug6634_ {
+    
+    private bug6634_() {
+    }
+    
+    public static void bug6634() {
+        
+        final class longStream$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.util.stream.LongStream> {
+            
+            private longStream$getter$_() {
+            }
+            
+            public .java.util.stream.LongStream get_() {
+                return .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.stream.LongStream.of(new long[]{
+                        1L,
+                        2L,
+                        3L}));
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.util.stream.LongStream> longStream$getter$_ = new longStream$getter$_();
+        .com.redhat.ceylon.compiler.java.Util.checkNull(longStream$getter$_.get_().map(new .java.util.function.LongUnaryOperator(){
+            
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                return .ceylon.language.Integer.instance(i);
+            }
+            
+            @.java.lang.Override
+            public long applyAsLong(final long arg0) {
+                return $call$(.ceylon.language.Integer.instance(arg0)).longValue();
+            }
+        })).forEach(new .java.util.function.LongConsumer(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final long arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        .com.redhat.ceylon.compiler.java.Util.checkNull(longStream$getter$_.get_().map(new .java.util.function.LongUnaryOperator(){
+            
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.Integer $ceylontmp$7 = i;
+                    }
+                    returning $ceylontmp$7 != null ? $ceylontmp$7 : .ceylon.language.Integer.instance(0L);
+                );
+            }
+            
+            @.java.lang.Override
+            public long applyAsLong(final long arg0) {
+                return $call$(.ceylon.language.Integer.instance(arg0)).longValue();
+            }
+        })).forEach(new .java.util.function.LongConsumer(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final long arg0) {
+                $call$(.ceylon.language.Integer.instance(arg0));
+            }
+        });
+        
+        final class integerStream$getter$_ implements .com.redhat.ceylon.compiler.java.language.Getter<.java.util.stream.Stream<.ceylon.language.Integer>> {
+            
+            private integerStream$getter$_() {
+            }
+            
+            public .java.util.stream.Stream<.ceylon.language.Integer> get_() {
+                return .com.redhat.ceylon.compiler.java.Util.checkNull(.java.util.stream.Stream.<.ceylon.language.Integer>of(.ceylon.language.Integer.instance(1L), (.ceylon.language.Integer)null, .ceylon.language.Integer.instance(3L)));
+            }
+        }
+        final .com.redhat.ceylon.compiler.java.language.Getter<.java.util.stream.Stream<.ceylon.language.Integer>> integerStream$getter$_ = new integerStream$getter$_();
+        .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map(new .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>(){
+            
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.Integer $ceylontmp$8 = i;
+                    }
+                    returning $ceylontmp$8 != null ? $ceylontmp$8 : .ceylon.language.Integer.instance(0L);
+                );
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
+                return $call$(arg0);
+            }
+        })).forEach(new .java.util.function.Consumer<.ceylon.language.Integer>(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final .ceylon.language.Integer arg0) {
+                $call$(arg0);
+            }
+        });
+        .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map(new .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>(){
+            
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return i;
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
+                return $call$(arg0);
+            }
+        })).forEach(new .java.util.function.Consumer<.ceylon.language.Integer>(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final .ceylon.language.Integer arg0) {
+                $call$(arg0);
+            }
+        });
+        .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.java.lang.Object>map(new .java.util.function.Function(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return null;
+            }
+            
+            @.java.lang.Override
+            public .java.lang.Object apply(final .java.lang.Object arg0) {
+                return $call$(arg0);
+            }
+        })).forEach(new .java.util.function.Consumer(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final .java.lang.Object arg0) {
+                $call$(arg0);
+            }
+        });
+        final .java.util.function.Function<.ceylon.language.Integer, .java.lang.Object> f = (
+            let
+            {
+                
+                class anonymous_29_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.util.function.Function<.ceylon.language.Integer, .java.lang.Object> {
+                    
+                    private anonymous_29_() {
+                    }
+                    
+                    @.java.lang.Override
+                    public final .java.lang.Object apply(final .ceylon.language.Integer i) {
+                        return null;
+                    }
+                    
+                    @.java.lang.Override
+                    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+                        return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.functionOrValue(.com.redhat.ceylon.compiler.java.test.interop.bug6634_.class), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(anonymous_29_.class));
+                    }
+                }
+            }
+            returning new anonymous_29_();
+        );
+        .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map(new .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>(){
+            
+            public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                final .ceylon.language.Integer i = (.ceylon.language.Integer)$param$0;
+                return (.ceylon.language.Integer)null;
+            }
+            
+            @.java.lang.Override
+            public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
+                return $call$(arg0);
+            }
+        })).forEach(new .java.util.function.Consumer<.ceylon.language.Integer>(){
+            
+            public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                final .java.lang.Object $ceylontmp$val = $param$0;
+                return (
+                    let
+                    {
+                        .ceylon.language.print_.print($ceylontmp$val);
+                    }
+                    returning null;
+                );
+            }
+            
+            @.java.lang.Override
+            public void accept(final .ceylon.language.Integer arg0) {
+                $call$(arg0);
+            }
+        });
+        try {
+            .com.redhat.ceylon.compiler.java.Util.checkNull(integerStream$getter$_.get_().<.ceylon.language.Integer>map(new .java.util.function.Function<.ceylon.language.Integer, .ceylon.language.Integer>(){
+                
+                public .ceylon.language.Integer $call$(final .java.lang.Object $param$0) {
+                    final long i = ((.ceylon.language.Integer)$param$0).longValue();
+                    return .ceylon.language.Integer.instance(i);
+                }
+                
+                @.java.lang.Override
+                public .ceylon.language.Integer apply(final .ceylon.language.Integer arg0) {
+                    return $call$(.com.redhat.ceylon.compiler.java.Util.checkNull(arg0));
+                }
+            })).forEach(new .java.util.function.Consumer<.ceylon.language.Integer>(){
+                
+                public .java.lang.Object $call$(final .java.lang.Object $param$0) {
+                    final .java.lang.Object $ceylontmp$val = $param$0;
+                    return (
+                        let
+                        {
+                            .ceylon.language.print_.print($ceylontmp$val);
+                        }
+                        returning null;
+                    );
+                }
+                
+                @.java.lang.Override
+                public void accept(final .ceylon.language.Integer arg0) {
+                    $call$(arg0);
+                }
+            });
+        } catch (final .ceylon.language.AssertionError e) {
+            .ceylon.language.print_.print(.ceylon.language.String.instance("good"));
+        }
+        throw new .com.redhat.ceylon.compiler.java.language.UnresolvedCompilationError("argument must be assignable to parameter \'arg0\' of \'map\' in \'LongStream\': \'Integer?(Integer?)\' is not assignable to \'Integer(Integer)\'");
+    }
+    
+    public static void main(.java.lang.String[] args) {
+        .ceylon.language.process_.get_().setupArguments(args);
+        .com.redhat.ceylon.compiler.java.test.interop.bug6634_.bug6634();
+    }
+}
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
         major = 8,
         minor = 1)

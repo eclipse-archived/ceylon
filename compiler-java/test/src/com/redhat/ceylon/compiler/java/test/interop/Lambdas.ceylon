@@ -1,5 +1,8 @@
 import java.util.\ifunction {
-    Consumer, IntConsumer, IntSupplier
+    Consumer, IntConsumer, IntSupplier, Function
+}
+import java.util.stream {
+    LongStream, Stream
 }
 import java.util {
     ArrayList
@@ -7,7 +10,7 @@ import java.util {
 import java.util.concurrent {
     CompletableFuture, ExecutorService
 }
-import java.lang { CharSequence, ShortArray, FloatArray }
+import java.lang { CharSequence, ShortArray, FloatArray, LongArray }
 import com.redhat.ceylon.compiler.java.test.interop { LambdasJava { consumerStatic }}
 
 void toplevel(Integer i) => print(i);
@@ -119,6 +122,36 @@ void lambdas() {
     j.stringFunction((String s) => s);
     j.stringFunction((String? s) => s);
     j.stringFunction((String s) => (s of String?));
+}
+
+@noanno
+shared void bug6634() {
+    LongStream longStream => LongStream.\iof(1,2,3);
+    longStream.map((Integer i) => i).forEach(print); // ok
+    longStream.map((Integer? i) => i else 0).forEach(print); // ok
+    
+    Stream<Integer> integerStream => Stream.\iof(1,null,3);
+    integerStream.map((Integer? i) => i else 0).forEach(print); // ok
+    integerStream.map((Integer? i) => i).forEach(print);
+    integerStream.map((Integer? i) => null).forEach(print); // error
+    value f = object satisfies Function<Integer?, Nothing> {
+        apply(Integer? i) => null;
+    };
+    
+    integerStream.map((Integer? i) => null of Integer?).forEach(print); // ok
+    try {
+        integerStream.map((Integer i) => i).forEach(print); // ok
+    }
+    catch (AssertionError e) {
+        print("good"); // ok
+    }
+
+    // errors last because they stop code generation in the block
+    @error
+    longStream.map((Integer? i) => i).forEach(print); // error
+    
+    @error
+    longStream.map((Integer? i) => null).forEach(print); // error
 }
 
 class Sub(IntConsumer c) extends LambdasJava(c){}
