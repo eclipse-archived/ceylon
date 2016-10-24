@@ -89,7 +89,8 @@ public class TryCatchGenerator {
             gen.beginBlock();
             //Check if it's native and if so, wrap it
             gen.out("if(");
-            gen.generateIsOfType(that, catchVarName, that.getUnit().getThrowableType(), catchVarName, true);
+            gen.generateIsOfType(that, catchVarName, that.getUnit().getThrowableType(),
+                    catchVarName, true, false);
             gen.out(")", catchVarName, "=",
                     gen.getClAlias(), "NatErr(", catchVarName, ")");
             gen.endLine(true);
@@ -110,7 +111,8 @@ public class TryCatchGenerator {
                 }
                 firstCatch = false;
                 gen.out("if(");
-                gen.generateIsOfType(variable, catchVarName, variable.getType().getTypeModel(), null, false);
+                gen.generateIsOfType(variable, catchVarName, variable.getType().getTypeModel(),
+                        null, false, false);
                 gen.out(")");
 
                 if (catchClause.getBlock().getStatements().isEmpty()) {

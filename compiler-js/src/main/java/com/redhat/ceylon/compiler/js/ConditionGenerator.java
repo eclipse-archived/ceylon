@@ -31,6 +31,7 @@ import com.redhat.ceylon.model.typechecker.model.Value;
  */
 public class ConditionGenerator {
 
+    public static final String ASSERTFUNC = "asrt$(";
     private final GenerateJsVisitor gen;
     private final JsIdentifierNames names;
     private final Set<Declaration> directAccess;
@@ -44,8 +45,8 @@ public class ConditionGenerator {
     /** Generate a list of all the variables from conditions in the list.
      * @param conditions The ConditionList that may contain variable declarations.
      * @param output Whether to generate the variable declarations or not. */
-    List<VarHolder> gatherVariables(Tree.ConditionList conditions, boolean output) {
-        ArrayList<VarHolder> vars = new ArrayList<VarHolder>();
+    List<VarHolder> gatherVariables(Tree.ConditionList conditions, boolean output, final boolean forAssert) {
+        ArrayList<VarHolder> vars = new ArrayList<>();
         boolean first = true;
         for (Condition cond : conditions.getConditions()) {
             Tree.Variable variable = null;
@@ -85,7 +86,8 @@ public class ConditionGenerator {
                 }
                 vars.add(new VarHolder(variable, variableRHS, varName, member));
             } else if (destruct != null) {
-                final Destructurer d=new Destructurer(destruct.getPattern(), null, directAccess, "", first);
+                final Destructurer d=new Destructurer(destruct.getPattern(), null, directAccess,
+                        "", first, forAssert);
                 for (Tree.Variable v : d.getVariables()) {
                     if (output) {
                         final String vname = names.name(v.getDeclarationModel());
@@ -139,9 +141,9 @@ public class ConditionGenerator {
 
     /** Handles the "is", "exists" and "nonempty" conditions */
     List<VarHolder> specialConditionsAndBlock(Tree.ConditionList conditions,
-            Tree.Block block, String keyword) {
-        final List<VarHolder> vars = gatherVariables(conditions, true);
-        specialConditions(vars, conditions, keyword);
+            Tree.Block block, String keyword, final boolean forAssert) {
+        final List<VarHolder> vars = gatherVariables(conditions, true, forAssert);
+        specialConditions(vars, conditions, keyword, forAssert);
         if (block != null) {
             gen.encloseBlockInFunction(block, true, getCaptured(vars));
         }
@@ -150,12 +152,12 @@ public class ConditionGenerator {
 
     /** Handles the "is", "exists" and "nonempty" conditions, with a pre-generated
      * list of the variables from the conditions. */
-    void specialConditions(final List<VarHolder> vars, Tree.ConditionList conditions, String keyword) {
+    void specialConditions(final List<VarHolder> vars, Tree.ConditionList conditions, String keyword,
+                           final boolean forAssert) {
         //The first pass is gathering the conditions, which we already get here
         //Second pass: generate the conditions
-        gen.out(keyword);
         if (!keyword.isEmpty()) {
-            gen.out("(");
+            gen.out(keyword, "(");
         }
         boolean first = true;
         final Iterator<VarHolder> ivars = vars.iterator();
@@ -173,13 +175,13 @@ public class ConditionGenerator {
                     if (vh.member) {
                         String cname = gen.getNames().self(((ClassOrInterface)ModelUtil.getRealScope(
                                 vh.var.getDeclarationModel().getContainer())));
-                        specialConditionCheck(cond, vh.term, cname + "." + vh.name);
+                        specialConditionCheck(cond, vh.term, cname + "." + vh.name, forAssert);
                     } else {
-                        specialConditionCheck(cond, vh.term, vh.name);
+                        specialConditionCheck(cond, vh.term, vh.name, forAssert);
                         directAccess.add(vh.var.getDeclarationModel());
                     }
                 } else {
-                    destructureCondition(cond, vh);
+                    destructureCondition(cond, vh, forAssert);
                 }
             }
         }
@@ -188,7 +190,8 @@ public class ConditionGenerator {
         }
     }
 
-    private void specialConditionCheck(Condition condition, Tree.Term variableRHS, String varName) {
+    private void specialConditionCheck(Condition condition, Tree.Term variableRHS, String varName,
+                                       final boolean forAssert) {
         if (condition instanceof ExistsOrNonemptyCondition) {
             if (((ExistsOrNonemptyCondition) condition).getNot()) {
                 gen.out("!");
@@ -203,7 +206,7 @@ public class ConditionGenerator {
         } else {
             Tree.Type type = ((IsCondition) condition).getType();
             gen.generateIsOfType(variableRHS, null, type.getTypeModel(),
-                    varName, ((IsCondition)condition).getNot());
+                    varName, ((IsCondition)condition).getNot(), forAssert);
         }
     }
 
@@ -234,7 +237,7 @@ public class ConditionGenerator {
         final Tree.IfClause ifClause = that.getIfClause();
         final Tree.Block ifBlock = ifClause.getBlock();
         final Tree.ElseClause anoserque = that.getElseClause();
-        final List<VarHolder> vars = specialConditionsAndBlock(ifClause.getConditionList(), ifBlock, "if");
+        final List<VarHolder> vars = specialConditionsAndBlock(ifClause.getConditionList(), ifBlock, "if", false);
         if (anoserque != null) {
             final Tree.Variable elsevar = anoserque.getVariable();
             final Value elseDec = elsevar != null ? elsevar.getDeclarationModel() : null;
@@ -262,7 +265,7 @@ public class ConditionGenerator {
     }
 
     void generateIfExpression(Tree.IfExpression that, boolean nested) {
-        final List<VarHolder> vars = gatherVariables(that.getIfClause().getConditionList(), false);
+        final List<VarHolder> vars = gatherVariables(that.getIfClause().getConditionList(), false, false);
         final Tree.ElseClause anoserque = that.getElseClause();
         final Tree.Variable elsevar = anoserque == null ? null : anoserque.getVariable();
         if (elsevar != null) {
@@ -282,7 +285,7 @@ public class ConditionGenerator {
                 gen.out("(");
             }
             //No special conditions means we can use a simple ternary
-            specialConditions(vars, that.getIfClause().getConditionList(), "");
+            specialConditions(vars, that.getIfClause().getConditionList(), "", false);
             gen.out("?");
             that.getIfClause().getExpression().visit(gen);
             gen.out(":");
@@ -301,7 +304,7 @@ public class ConditionGenerator {
                 gen.out("function(){");
             }
             outputVariables(vars);
-            specialConditions(vars, that.getIfClause().getConditionList(), "if");
+            specialConditions(vars, that.getIfClause().getConditionList(), "if", false);
             gen.out("return ");
             that.getIfClause().getExpression().visit(gen);
             for (VarHolder v : vars) {
@@ -336,7 +339,7 @@ public class ConditionGenerator {
     void generateWhile(Tree.WhileStatement that) {
         Tree.WhileClause whileClause = that.getWhileClause();
         List<VarHolder> vars = specialConditionsAndBlock(whileClause.getConditionList(),
-                whileClause.getBlock(), "while");
+                whileClause.getBlock(), "while", false);
         for (VarHolder v : vars) {
             v.forget();
         }
@@ -428,7 +431,7 @@ public class ConditionGenerator {
         Value caseDec = null;
         if (item instanceof IsCase) {
             IsCase isCaseItem = (IsCase) item;
-            gen.generateIsOfType(item, expvar, isCaseItem.getType().getTypeModel(), null, false);
+            gen.generateIsOfType(item, expvar, isCaseItem.getType().getTypeModel(), null, false, false);
             caseVar = isCaseItem.getVariable();
             if (caseVar != null) {
                 caseDec = caseVar.getDeclarationModel();
@@ -488,7 +491,7 @@ public class ConditionGenerator {
         }
     }
 
-    void destructureCondition(Condition cond, VarHolder vh) {
+    void destructureCondition(Condition cond, VarHolder vh, final boolean forAssert) {
         final String expvar = names.createTempVariable();
         gen.out("function(", expvar, "){if(");
         if (cond instanceof ExistsCondition) {
@@ -504,11 +507,12 @@ public class ConditionGenerator {
         } else {
             Tree.Type type = ((IsCondition) cond).getType();
             gen.generateIsOfType(null, expvar, type.getTypeModel(),
-                    null, ((IsCondition)cond).getNot());
+                    null, ((IsCondition)cond).getNot(), forAssert);
             gen.out(")return false;");
         }
         gen.out("return(");
-        final Destructurer d=new Destructurer(vh.destr.getPattern(), gen, directAccess, expvar, true);
+        final Destructurer d=new Destructurer(vh.destr.getPattern(), gen, directAccess, expvar,
+                true, forAssert);
         gen.out(",true);}(");
         vh.destr.getSpecifierExpression().visit(gen);
         gen.out(")");

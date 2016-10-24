@@ -26,6 +26,7 @@ public class Destructurer extends Visitor {
     private final String expvar;
     private final Set<Declaration> directAccess;
     private boolean first;
+    private final boolean forAssert;
     private final Set<Tree.Variable> added = new HashSet<>();
     private final Set<Value> attribs = new HashSet<>();
     private final Set<Value> caps = new HashSet<>();
@@ -38,15 +39,18 @@ public class Destructurer extends Visitor {
      * @param gen The generator to output the code.
      * @param directAccess the set in which to store the declarations for direct access.
      * @param expvar the name of the variable storing the expression for destructuring.
-     * @param first If false, a comma is output before the very first declaration is output. */
+     * @param first If false, a comma is output before the very first declaration is output.
+     * @param forAssert indices if the destructuring is inside an assert, to try and coerce dynamic
+     * objects. */
     public Destructurer(final Tree.Pattern that, final GenerateJsVisitor gen,
-            final Set<Declaration> directAccess, final String expvar, boolean first) {
+            final Set<Declaration> directAccess, final String expvar, boolean first, final boolean forAssert) {
         this.gen = gen;
         jsw = gen == null ? null : gen.out;
         names = gen == null ? null : gen.getNames();
         this.directAccess = directAccess;
         this.expvar = expvar;
         this.first=first;
+        this.forAssert=forAssert;
         that.visit(this);
         if (jsw != null && !attribs.isEmpty()) {
             for (Value attr : attribs) {
@@ -87,7 +91,7 @@ public class Destructurer extends Visitor {
                 }
             } else {
                 added.addAll(new Destructurer(p, gen, directAccess, expvar+".$_get("+(idx++)+")",
-                        first && idx==0).getVariables());
+                        first && idx==0, forAssert).getVariables());
             }
         }
     }
@@ -99,7 +103,8 @@ public class Destructurer extends Visitor {
                 jsw.write(".key");
             }
         } else {
-            added.addAll(new Destructurer(that.getKey(), gen, directAccess, expvar+".key", first).getVariables());
+            added.addAll(new Destructurer(that.getKey(), gen, directAccess, expvar+".key",
+                    first, forAssert).getVariables());
             first = false;
         }
         if (that.getValue() instanceof Tree.VariablePattern) {
@@ -108,7 +113,8 @@ public class Destructurer extends Visitor {
                 jsw.write(".item");
             }
         } else {
-            added.addAll(new Destructurer(that.getValue(), gen, directAccess, expvar+".item", false).getVariables());
+            added.addAll(new Destructurer(that.getValue(), gen, directAccess, expvar+".item",
+                    false, forAssert).getVariables());
         }
     }
 

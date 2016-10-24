@@ -3221,15 +3221,24 @@ public class GenerateJsVisitor extends Visitor {
      * @param tmpvar (optional) a variable to which the term is assigned
      * @param negate If true, negates the generated condition
      */
-    void generateIsOfType(Node term, String termString, final Type type, String tmpvar, final boolean negate) {
+    void generateIsOfType(Node term, String termString, final Type type, String tmpvar, final boolean negate,
+                          final boolean coerceDynamic) {
         if (negate) {
             out("!");
         }
         out(getClAlias(), "is$(");
+        if (coerceDynamic) {
+            out(getClAlias(), "dre$$(");
+        }
         if (term instanceof Term) {
             conds.specialConditionRHS((Term)term, tmpvar);
         } else {
             conds.specialConditionRHS(termString, tmpvar);
+        }
+        if (coerceDynamic) {
+            out(",");
+            TypeUtils.typeNameOrList(term, type, this, false);
+            out(",false)");
         }
         out(",");
         TypeUtils.typeNameOrList(term, type, this, false);
@@ -3260,7 +3269,7 @@ public class GenerateJsVisitor extends Visitor {
 
     @Override
     public void visit(final Tree.IsOp that) {
-        generateIsOfType(that.getTerm(), null, that.getType().getTypeModel(), null, false);
+        generateIsOfType(that.getTerm(), null, that.getType().getTypeModel(), null, false, false);
     }
 
     @Override public void visit(final Tree.Break that) {
@@ -3489,7 +3498,7 @@ public class GenerateJsVisitor extends Visitor {
             }
             sb.append("' at ").append(that.getUnit().getFilename()).append(" (").append(
                     conditionList.getLocation()).append(")");
-            conds.specialConditionsAndBlock(conditionList, null, getClAlias()+"asrt$(");
+            conds.specialConditionsAndBlock(conditionList, null, getClAlias()+ConditionGenerator.ASSERTFUNC, true);
             //escape
             out(",\"", JsUtils.escapeStringLiteral(sb.toString()), "\",'",that.getLocation(), "','",
                     that.getUnit().getFilename(), "');");
@@ -3590,7 +3599,7 @@ public class GenerateJsVisitor extends Visitor {
         final String expvar = names.createTempVariable();
         out("var ", expvar, "=");
         that.getSpecifierExpression().visit(this);
-        new Destructurer(that.getPattern(), this, directAccess, expvar, false);
+        new Destructurer(that.getPattern(), this, directAccess, expvar, false, false);
         endLine(true);
     }
 

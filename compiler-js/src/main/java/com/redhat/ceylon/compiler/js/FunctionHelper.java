@@ -386,7 +386,7 @@ public class FunctionHelper {
                 gen.out(expvar, "=");
                 ((Tree.Destructure)st).getSpecifierExpression().visit(gen);
                 decs2.addAll(new Destructurer(((Tree.Destructure)st).getPattern(),
-                        gen, directs, expvar, false).getDeclarations());
+                        gen, directs, expvar, false, false).getDeclarations());
             }
             first=false;
         }

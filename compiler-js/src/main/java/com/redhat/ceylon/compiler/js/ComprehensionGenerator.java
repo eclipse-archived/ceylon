@@ -75,7 +75,7 @@ class ComprehensionGenerator {
                 if (clause instanceof Tree.IfComprehensionClause) {
                     Tree.IfComprehensionClause ifClause = (Tree.IfComprehensionClause) clause;
                     loop.conditions.add(ifClause.getConditionList());
-                    loop.conditionVars.add(gen.conds.gatherVariables(ifClause.getConditionList(), true));
+                    loop.conditionVars.add(gen.conds.gatherVariables(ifClause.getConditionList(), true, false));
                     clause = ifClause.getComprehensionClause();
 
                 } else if (clause instanceof Tree.ExpressionComprehensionClause) {
@@ -114,9 +114,9 @@ class ComprehensionGenerator {
                 // check the condition
                 Tree.IfComprehensionClause ifClause = (Tree.IfComprehensionClause)startClause;
                 gen.conds.specialConditions(
-                        gen.conds.gatherVariables(ifClause.getConditionList(), true),
+                        gen.conds.gatherVariables(ifClause.getConditionList(), true, false),
                         ifClause.getConditionList(),
-                        "if");
+                        "if", false);
                 initialIfClauses++;
                 gen.beginBlock();
                 startClause = ifClause.getComprehensionClause();
@@ -153,7 +153,7 @@ class ComprehensionGenerator {
             gen.out(",", loop.valueVarName, "=", finished);
             if (loop.pattern != null) {
                 HashSet<Declaration> decs = new HashSet<>();
-                new Destructurer(loop.pattern, null, decs, "", true);
+                new Destructurer(loop.pattern, null, decs, "", true, false);
                 for (Declaration d : decs) {
                     gen.out(",", names.name(d));
                 }
@@ -186,7 +186,7 @@ class ComprehensionGenerator {
 
                 // get key/value if necessary
                 if (loop.pattern != null) {
-                    new Destructurer(loop.pattern, gen, directAccess, elemVarName, true);
+                    new Destructurer(loop.pattern, gen, directAccess, elemVarName, true, false);
                     gen.endLine(true);
                 }
                 final String capname;
@@ -200,7 +200,7 @@ class ComprehensionGenerator {
 
                 // generate conditions as nested ifs
                 for (int i=0; i<loop.conditions.size(); i++) {
-                    gen.conds.specialConditions(loop.conditionVars.get(i), loop.conditions.get(i), "if");
+                    gen.conds.specialConditions(loop.conditionVars.get(i), loop.conditions.get(i), "if", false);
                     gen.beginBlock();
                 }
 

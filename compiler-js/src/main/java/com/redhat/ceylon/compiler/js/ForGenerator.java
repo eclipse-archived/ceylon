@@ -92,7 +92,7 @@ public class ForGenerator {
         } else if (that instanceof Tree.PatternIterator) {
             gen.out("var ");
             Destructurer d = new Destructurer(((Tree.PatternIterator) that).getPattern(), gen, directAccess,
-                    itemVar, true);
+                    itemVar, true, false);
             if (d.getCapturedValues() != null) {
                 capturedValues.addAll(d.getCapturedValues());
             }
