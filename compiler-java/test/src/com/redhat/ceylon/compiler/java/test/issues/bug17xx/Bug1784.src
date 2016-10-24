@@ -34,7 +34,7 @@ final class bug1784_ {
         final .java.lang.String e = .com.redhat.ceylon.compiler.java.Util.checkNull((
             let
             {
-                java.lang.String $ceylontmp$6 = .ceylon.language.String.instance(vl.getFoo());
+                .ceylon.language.String $ceylontmp$6 = .ceylon.language.String.instance(vl.getFoo());
             }
             returning $ceylontmp$6 != null ? $ceylontmp$6 : .ceylon.language.String.instance(vl.getBar());
         )).toString();

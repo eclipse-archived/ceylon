@@ -77,7 +77,7 @@ final class bug2271_ {
                 $ceylontmp$if$8 = true;
             }
         } else {
-            c$11 = 0;
+            c$11 = (char)0;
         }
         if ($ceylontmp$if$8) {
         } else {

@@ -46,7 +46,7 @@ final class variance_ {
         final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> v4 = var.getRwProperty();
         final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> v5 = var.getRwCovariantProperty();
         final .com.redhat.ceylon.compiler.java.test.interop.Class<? super .com.redhat.ceylon.compiler.java.test.interop.JavaVariance> v6 = var.getRwContravariantProperty();
-        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> v7 = (.com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object>)var.getRwRawProperty();
+        final .com.redhat.ceylon.compiler.java.test.interop.Class<? extends .java.lang.Object> v7 = var.getRwRawProperty();
         final .com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object> anythingClass = (.com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
         final .com.redhat.ceylon.compiler.java.test.interop.Class<.ceylon.language.Integer> integerClass = (.com.redhat.ceylon.compiler.java.test.interop.Class<.ceylon.language.Integer>)(.java.lang.Object).ceylon.language.nothing_.get_();
         final .com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object> nothingClass = (.com.redhat.ceylon.compiler.java.test.interop.Class<.java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
