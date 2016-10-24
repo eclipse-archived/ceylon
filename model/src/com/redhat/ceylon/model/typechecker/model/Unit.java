@@ -42,18 +42,21 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     private Backends supportedBackends = Backends.ANY;
     private boolean unresolvedReferences;
     
+    @Override
     public List<Import> getImports() {
         synchronized (imports) {
             return new ArrayList<Import>(imports);
         }
     }
 
+    @Override
     public void addImport(Import imp) {
         synchronized (imports) {
             imports.add(imp);
         }
     }
 
+    @Override
     public void removeImport(Import imp) {
         synchronized (imports) {
             imports.remove(imp);

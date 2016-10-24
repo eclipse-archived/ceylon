@@ -440,6 +440,35 @@ public abstract class TypeDeclaration extends Declaration
     }
     
     /**
+     * Search for a member of this type with the given
+     * alias in the given scope.
+     * 
+     * @param scope the scope in which the alias is defined
+     * @param alias
+     */
+    //TODO: this should be done directly in getMember()
+    //      but I'm leaving it here to avoid breakage
+    public Declaration getImportedMember(
+            Scope scope, 
+            String alias, 
+            List<Type> signature, 
+            boolean variadic) {
+        while (scope!=null) {
+            if (scope instanceof Element) {
+                Element elem = (Element) scope;
+                Declaration dec = 
+                        elem.getImportedDeclaration(this, 
+                                alias, signature, variadic);
+                if (dec!=null) {
+                    return dec;
+                }
+            }
+            scope = scope.getContainer();
+        }
+        return null;
+    }
+    
+    /**
      * Get the most-refined member with the given name,
      * searching this type first, taking aliases into
      * account, followed by supertypes. We're looking
@@ -1229,4 +1258,6 @@ public abstract class TypeDeclaration extends Declaration
     public void setSamName(String samName){
         this.samName = samName;
     }
+
+
 }

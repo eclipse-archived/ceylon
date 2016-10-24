@@ -73,10 +73,15 @@ public class AnalyzerUtil {
     static final List<Type> NO_TYPE_ARGS = emptyList();
     
     static TypedDeclaration getTypedMember(TypeDeclaration td, 
-            String name, List<Type> signature, boolean ellipsis, 
+            String name, List<Type> signature, boolean variadic, 
             Unit unit, Scope scope) {
+
         Declaration member = 
-                td.getMember(name, unit, signature, ellipsis);
+                td.getImportedMember(scope, name, signature, variadic);
+        if (member==null) {
+            member = td.getMember(name, unit, signature, variadic);
+        }
+        
         if (member instanceof TypedDeclaration) {
             return (TypedDeclaration) member;
         }
@@ -85,7 +90,7 @@ public class AnalyzerUtil {
                     && isForBackend(scope.getScopedBackends(), Backend.Java) 
                     && !JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.getJavaBeanName(name);
-                member = td.getMember(name, unit, signature, ellipsis);
+                member = td.getMember(name, unit, signature, variadic);
                 if (member instanceof TypedDeclaration) {
                     return (TypedDeclaration) member;
                 }
@@ -95,10 +100,15 @@ public class AnalyzerUtil {
     }
 
     static TypeDeclaration getTypeMember(TypeDeclaration td, 
-            String name, List<Type> signature, boolean ellipsis, 
+            String name, List<Type> signature, boolean variadic, 
             Unit unit, Scope scope) {
+        
         Declaration member = 
-                td.getMember(name, unit, signature, ellipsis);
+                td.getImportedMember(scope, name, signature, variadic);
+        if (member==null) {
+            member = td.getMember(name, unit, signature, variadic);
+        }
+        
         if (member instanceof TypeDeclaration) {
             return (TypeDeclaration) member;
         }
@@ -112,7 +122,7 @@ public class AnalyzerUtil {
                     && JvmBackendUtil.isInitialLowerCase(name)) {
                 name = NamingBase.capitalize(name);
                 member = 
-                        td.getMember(name, unit, signature, ellipsis);
+                        td.getMember(name, unit, signature, variadic);
                 if (member instanceof TypeDeclaration) {
                     return (TypeDeclaration) member;
                 }
@@ -128,9 +138,11 @@ public class AnalyzerUtil {
     static TypedDeclaration getTypedDeclaration(Scope scope,
             String name, List<Type> signature, boolean ellipsis,
             Unit unit) {
+        
         Declaration result = 
                 scope.getMemberOrParameter(unit, 
                         name, signature, ellipsis);
+        
         if (result instanceof TypedDeclaration) {
             return (TypedDeclaration) result;
         }
@@ -166,9 +178,11 @@ public class AnalyzerUtil {
     static TypeDeclaration getTypeDeclaration(Scope scope,
             String name, List<Type> signature, boolean ellipsis,
             Unit unit) {
+        
         Declaration result = 
                 scope.getMemberOrParameter(unit, 
                         name, signature, ellipsis);
+        
         if (result instanceof TypeDeclaration) {
         	return (TypeDeclaration) result;
         }

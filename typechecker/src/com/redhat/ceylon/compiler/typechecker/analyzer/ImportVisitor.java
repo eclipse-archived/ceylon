@@ -114,10 +114,13 @@ public class ImportVisitor extends Visitor {
         }
     }
     
-    private ImportScope getImportScope(ImportList imp) {
-        Scope container = imp.getContainer();
-        return container instanceof ImportScope ? 
-                (ImportScope) imp.getScope() : unit;
+    private ImportScope getImportScope(ImportList importList) {
+        Scope scope = importList;
+        while (scope instanceof ImportList) {
+            scope = scope.getContainer();
+        }
+        return scope instanceof ImportScope ? 
+                (ImportScope) scope : unit;
     }
     
     private void importAllMembers(Package importedPackage, 

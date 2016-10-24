@@ -31,10 +31,12 @@ public abstract class Element implements Scoped, ImportScope {
 	
 	private List<Import> imports = null;
 	
+	@Override
 	public List<Import> getImports() {
         return imports;
     }
 	
+	@Override
     public void addImport(Import imp) {
         if (imports==null) {
             imports = new ArrayList<Import>(3);
@@ -42,6 +44,7 @@ public abstract class Element implements Scoped, ImportScope {
         imports.add(imp);
     }
 
+    @Override
     public void removeImport(Import imp) {
         if (imports!=null) {
             imports.remove(imp);
@@ -186,7 +189,8 @@ public abstract class Element implements Scoped, ImportScope {
                 variadic, false);
     }
     
-    public Declaration getImportedDeclaration(String name, 
+    //TODO: copy/pasted from Unit
+    private Declaration getImportedDeclaration(String name, 
             List<Type> signature, boolean ellipsis) {
         List<Import> imports = getImports();
         if (imports!=null) {
@@ -202,6 +206,30 @@ public abstract class Element implements Scoped, ImportScope {
                                 .getMember(d.getName(), 
                                         signature, ellipsis);
                     }
+                }
+            }
+        }
+        return null;
+    }
+    
+    //TODO: copy/pasted from Unit
+    public Declaration getImportedDeclaration(TypeDeclaration td, 
+            String name, List<Type> signature, 
+            boolean ellipsis) {
+        List<Import> imports = getImports();
+        if (imports!=null) {
+            for (Import i: imports) {
+                TypeDeclaration itd = i.getTypeDeclaration();
+                if (itd!=null && td.inherits(itd) && 
+                        !i.isAmbiguous() &&
+                        i.getAlias().equals(name)) {
+                    //in case of an overloaded member, this will
+                    //be the "abstraction", so search for the 
+                    //correct overloaded version
+                    Declaration d = i.getDeclaration();
+                    return d.getContainer()
+                            .getMember(d.getName(), 
+                                    signature, ellipsis);
                 }
             }
         }
