@@ -614,18 +614,13 @@ public class AttributeDefinitionBuilder {
             stmts = stmts.append(markInitialized);
         }           
         if (!variable) {
-            stmts = stmts.append(owner.make().Return(null));
             stmts = List.of(
                     owner.make().If(
                         initTest.makeInitTest(false),
                         owner.make().Block(0, stmts), 
-                        null));
-            
-            stmts = stmts.append(
-                owner.make().Throw(owner.makeNewClass( 
-                                   owner.make().Type(owner.syms().ceylonInitializationErrorType), 
-                                   List.<JCExpression>of(owner.make().Literal("Re-initialization of 'late' attribute")))
-            ));
+                        owner.make().Block(0, List.<JCStatement>of(owner.make().Throw(owner.makeNewClass( 
+                                owner.make().Type(owner.syms().ceylonInitializationErrorType), 
+                                List.<JCExpression>of(owner.make().Literal("Re-initialization of 'late' attribute"))))))));
         }
         return stmts;
     }
