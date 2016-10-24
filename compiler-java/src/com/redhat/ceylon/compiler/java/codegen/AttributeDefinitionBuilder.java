@@ -522,17 +522,15 @@ public class AttributeDefinitionBuilder {
     private List<JCStatement> initWithExceptionHandling(List<JCStatement> stmts) {
         
         String exceptionName = "x"; // doesn't matter
+
+        // $init$value = true;
+        stmts = stmts.append(owner.make().Exec(owner.make().Assign(
+                owner.naming.makeUnquotedIdent(Naming.getInitializationFieldName(fieldName)), 
+                owner.make().Literal(true))));
         
         // $initException$ = null
-        JCTree.JCStatement nullException = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
-                owner.makeNull()));
-        // $init$value = true;
-        JCTree.JCStatement initFlagTrue = owner.make().Exec(owner.make().Assign(
-                owner.naming.makeUnquotedIdent(Naming.getInitializationFieldName(fieldName)), 
-                owner.make().Literal(true)));
-        // save the value, mark the exception as null
-        stmts = stmts.append(nullException);
-        stmts = stmts.append(initFlagTrue);
+        stmts = stmts.append(owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
+                owner.makeNull())));
         
         // $initException$ = x
         JCStatement saveException = owner.make().Exec(owner.make().Assign(
