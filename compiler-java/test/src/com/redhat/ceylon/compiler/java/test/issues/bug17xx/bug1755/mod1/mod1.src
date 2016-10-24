@@ -124,12 +124,12 @@ public final class utf8_ implements .java.io.Serializable, .com.redhat.ceylon.co
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1755.mod1.utf8_();
-            $init$value = true;
+            utf8_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            utf8_.$init$value = false;
         }
     }
     

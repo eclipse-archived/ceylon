@@ -385,12 +385,12 @@ final class annotationTargetObject_ implements .java.io.Serializable, .com.redha
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_();
-            $init$value = true;
+            annotationTargetObject_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            annotationTargetObject_.$init$value = false;
         }
     }
     
@@ -419,12 +419,12 @@ final class annotationTargetValue_ {
     static {
         try {
             value = true;
-            $init$value = true;
+            annotationTargetValue_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = false;
-            $init$value = false;
+            annotationTargetValue_.$init$value = false;
         }
     }
     

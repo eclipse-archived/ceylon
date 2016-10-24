@@ -43,12 +43,12 @@ final class typeGroupAttribute_ {
     static {
         try {
             value = .ceylon.language.nothing_.get_();
-            $init$value = true;
+            typeGroupAttribute_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            typeGroupAttribute_.$init$value = false;
         }
     }
     

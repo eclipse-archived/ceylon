@@ -110,12 +110,12 @@ final class bug2045Use_ {
     static {
         try {
             value = "";
-            $init$value = true;
+            bug2045Use_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug2045Use_.$init$value = false;
         }
     }
     

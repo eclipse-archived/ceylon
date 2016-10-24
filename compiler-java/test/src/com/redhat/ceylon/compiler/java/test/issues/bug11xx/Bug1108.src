@@ -57,12 +57,12 @@ final class process_ implements .java.io.Serializable, .com.redhat.ceylon.compil
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_();
-            $init$value = true;
+            process_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            process_.$init$value = false;
         }
     }
     

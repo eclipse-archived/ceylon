@@ -26,12 +26,12 @@ final class i1824_ {
     static {
         try {
             value = 0L;
-            $init$value = true;
+            i1824_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            i1824_.$init$value = false;
         }
     }
     

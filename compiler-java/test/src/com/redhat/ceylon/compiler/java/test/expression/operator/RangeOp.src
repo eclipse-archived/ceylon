@@ -79,12 +79,12 @@ final class rangeOpF_ extends .com.redhat.ceylon.compiler.java.test.expression.o
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpF_();
-            $init$value = true;
+            rangeOpF_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            rangeOpF_.$init$value = false;
         }
     }
     
@@ -118,12 +118,12 @@ final class rangeOpE_ extends .com.redhat.ceylon.compiler.java.test.expression.o
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.expression.operator.rangeOpE_();
-            $init$value = true;
+            rangeOpE_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            rangeOpE_.$init$value = false;
         }
     }
     

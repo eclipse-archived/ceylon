@@ -15,12 +15,12 @@ final class bug6129_ {
     static {
         try {
             value = (.ceylon.language.Callable<? extends .ceylon.language.Boolean>)(.java.lang.Object).ceylon.language.nothing_.get_();
-            $init$value = true;
+            bug6129_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug6129_.$init$value = false;
         }
     }
     
@@ -43,12 +43,12 @@ final class bug6129Ignored_ {
     static {
         try {
             value = .com.redhat.ceylon.compiler.java.test.issues.bug61xx.bug6129_.get_().$call$((.java.lang.Object).ceylon.language.String.instance("Adfasd"));
-            $init$value = true;
+            bug6129Ignored_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug6129Ignored_.$init$value = false;
         }
     }
     

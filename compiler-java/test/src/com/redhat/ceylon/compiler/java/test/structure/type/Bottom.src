@@ -39,12 +39,12 @@ final class toplevelObject_ {
     static {
         try {
             value = .ceylon.language.nothing_.get_();
-            $init$value = true;
+            toplevelObject_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            toplevelObject_.$init$value = false;
         }
     }
     
@@ -67,12 +67,12 @@ final class toplevelInteger_ {
     static {
         try {
             value = ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
-            $init$value = true;
+            toplevelInteger_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            toplevelInteger_.$init$value = false;
         }
     }
     

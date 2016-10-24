@@ -10,12 +10,12 @@ public final class topLevelVariableShared_ {
     static {
         try {
             value = 0L;
-            $init$value = true;
+            topLevelVariableShared_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            topLevelVariableShared_.$init$value = false;
         }
     }
     

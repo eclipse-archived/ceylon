@@ -15,12 +15,12 @@ final class attr1_ {
     static {
         try {
             value = 1L;
-            $init$value = true;
+            attr1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            attr1_.$init$value = false;
         }
     }
     
@@ -48,12 +48,12 @@ final class attr2_ {
     static {
         try {
             value = 1L;
-            $init$value = true;
+            attr2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            attr2_.$init$value = false;
         }
     }
     

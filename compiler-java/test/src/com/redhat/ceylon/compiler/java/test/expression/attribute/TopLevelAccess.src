@@ -28,12 +28,12 @@ final class b1_ {
     static {
         try {
             value = true;
-            $init$value = true;
+            b1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = false;
-            $init$value = false;
+            b1_.$init$value = false;
         }
     }
     
@@ -56,12 +56,12 @@ public final class b2_ {
     static {
         try {
             value = true;
-            $init$value = true;
+            b2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = false;
-            $init$value = false;
+            b2_.$init$value = false;
         }
     }
     

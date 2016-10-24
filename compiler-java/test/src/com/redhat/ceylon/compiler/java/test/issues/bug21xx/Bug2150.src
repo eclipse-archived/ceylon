@@ -27,12 +27,12 @@ final class bug2150True_ extends .com.redhat.ceylon.compiler.java.test.issues.bu
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_();
-            $init$value = true;
+            bug2150True_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug2150True_.$init$value = false;
         }
     }
     
@@ -66,12 +66,12 @@ final class bug2150False_ extends .com.redhat.ceylon.compiler.java.test.issues.b
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_();
-            $init$value = true;
+            bug2150False_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug2150False_.$init$value = false;
         }
     }
     

@@ -18,12 +18,12 @@ final class topLevelObject_ implements .java.io.Serializable, .com.redhat.ceylon
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_();
-            $init$value = true;
+            topLevelObject_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            topLevelObject_.$init$value = false;
         }
     }
     

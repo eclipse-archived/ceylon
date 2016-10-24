@@ -491,12 +491,12 @@ final class bwToplevelN1_ {
     static {
         try {
             value = 0L;
-            $init$value = true;
+            bwToplevelN1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            bwToplevelN1_.$init$value = false;
         }
     }
     
@@ -524,12 +524,12 @@ final class bwToplevelN2_ {
     static {
         try {
             value = 0L;
-            $init$value = true;
+            bwToplevelN2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            bwToplevelN2_.$init$value = false;
         }
     }
     
@@ -557,12 +557,12 @@ final class bwToplevelI1_ {
     static {
         try {
             value = 0L;
-            $init$value = true;
+            bwToplevelI1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            bwToplevelI1_.$init$value = false;
         }
     }
     

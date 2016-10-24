@@ -10,12 +10,12 @@ final class bug2359_ {
     static {
         try {
             value = ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
-            $init$value = true;
+            bug2359_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug2359_.$init$value = false;
         }
     }
     

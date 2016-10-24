@@ -82,12 +82,12 @@ final class forForIfBooleanConditions_ {
                     };
                 }
             }.sequence();
-            $init$value = true;
+            forForIfBooleanConditions_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            forForIfBooleanConditions_.$init$value = false;
         }
     }
     

@@ -73,12 +73,12 @@ final class ctorMemberClassOfNestedAnonymousClass_ {
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass().getMemberObject().Ctor$new$((.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor$other)null);
-            $init$value = true;
+            ctorMemberClassOfNestedAnonymousClass_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            ctorMemberClassOfNestedAnonymousClass_.$init$value = false;
         }
     }
     

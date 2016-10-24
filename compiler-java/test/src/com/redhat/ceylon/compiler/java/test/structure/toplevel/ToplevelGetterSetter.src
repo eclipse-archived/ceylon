@@ -10,12 +10,12 @@ final class topLevelGetterSetterX_ {
     static {
         try {
             value = 0L;
-            $init$value = true;
+            topLevelGetterSetterX_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            topLevelGetterSetterX_.$init$value = false;
         }
     }
     

@@ -80,12 +80,12 @@ final class forForIf_ {
                     };
                 }
             }.sequence();
-            $init$value = true;
+            forForIf_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            forForIf_.$init$value = false;
         }
     }
     

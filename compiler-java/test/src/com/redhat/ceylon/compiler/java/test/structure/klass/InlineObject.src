@@ -659,12 +659,12 @@ final class inlineObjectTopLevel_ {
                 }
                 returning new anonymous_2_();
             );
-            $init$value = true;
+            inlineObjectTopLevel_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            inlineObjectTopLevel_.$init$value = false;
         }
     }
     

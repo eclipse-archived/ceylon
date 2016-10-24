@@ -368,12 +368,12 @@ public final class globalAttrInteger_ {
     static {
         try {
             value = 1L;
-            $init$value = true;
+            globalAttrInteger_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            globalAttrInteger_.$init$value = false;
         }
     }
     
@@ -396,12 +396,12 @@ public final class globalAttrFloat_ {
     static {
         try {
             value = 1.0;
-            $init$value = true;
+            globalAttrFloat_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0.0;
-            $init$value = false;
+            globalAttrFloat_.$init$value = false;
         }
     }
     
@@ -424,12 +424,12 @@ public final class globalAttrString_ {
     static {
         try {
             value = "a";
-            $init$value = true;
+            globalAttrString_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            globalAttrString_.$init$value = false;
         }
     }
     
@@ -452,12 +452,12 @@ public final class globalAttrBoolean_ {
     static {
         try {
             value = true;
-            $init$value = true;
+            globalAttrBoolean_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = false;
-            $init$value = false;
+            globalAttrBoolean_.$init$value = false;
         }
     }
     
@@ -480,12 +480,12 @@ public final class globalAttrCharacter_ {
     static {
         try {
             value = 97;
-            $init$value = true;
+            globalAttrCharacter_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0;
-            $init$value = false;
+            globalAttrCharacter_.$init$value = false;
         }
     }
     
@@ -508,12 +508,12 @@ public final class globalAttrOptionalInteger_ {
     static {
         try {
             value = null;
-            $init$value = true;
+            globalAttrOptionalInteger_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            globalAttrOptionalInteger_.$init$value = false;
         }
     }
     
@@ -536,12 +536,12 @@ public final class globalAttrOptionalFloat_ {
     static {
         try {
             value = null;
-            $init$value = true;
+            globalAttrOptionalFloat_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            globalAttrOptionalFloat_.$init$value = false;
         }
     }
     
@@ -564,12 +564,12 @@ public final class globalAttrOptionalString_ {
     static {
         try {
             value = null;
-            $init$value = true;
+            globalAttrOptionalString_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            globalAttrOptionalString_.$init$value = false;
         }
     }
     
@@ -592,12 +592,12 @@ public final class globalAttrOptionalBoolean_ {
     static {
         try {
             value = null;
-            $init$value = true;
+            globalAttrOptionalBoolean_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            globalAttrOptionalBoolean_.$init$value = false;
         }
     }
     
@@ -620,12 +620,12 @@ public final class globalAttrOptionalCharacter_ {
     static {
         try {
             value = null;
-            $init$value = true;
+            globalAttrOptionalCharacter_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            globalAttrOptionalCharacter_.$init$value = false;
         }
     }
     

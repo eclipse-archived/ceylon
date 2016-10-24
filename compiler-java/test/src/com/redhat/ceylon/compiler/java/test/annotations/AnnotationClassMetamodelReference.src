@@ -312,12 +312,12 @@ public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.com
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.annotations.obj_();
-            $init$value = true;
+            obj_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            obj_.$init$value = false;
         }
     }
     

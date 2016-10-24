@@ -21,12 +21,12 @@ final class bug1080Attr_ {
     static {
         try {
             value = .ceylon.language.Integer.instance(1L);
-            $init$value = true;
+            bug1080Attr_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug1080Attr_.$init$value = false;
         }
     }
     

@@ -25,12 +25,12 @@ final class f_ {
     static {
         try {
             value = 2L;
-            $init$value = true;
+            f_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            f_.$init$value = false;
         }
     }
     

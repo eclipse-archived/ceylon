@@ -133,12 +133,12 @@ final class javaxInjectInjectSetter_ {
     static {
         try {
             value = "";
-            $init$value = true;
+            javaxInjectInjectSetter_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            javaxInjectInjectSetter_.$init$value = false;
         }
     }
     
@@ -168,12 +168,12 @@ final class javaxInjectInjectField_ {
     static {
         try {
             value = "";
-            $init$value = true;
+            javaxInjectInjectField_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            javaxInjectInjectField_.$init$value = false;
         }
     }
     

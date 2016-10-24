@@ -15,12 +15,12 @@ final class bug2188_ {
     static {
         try {
             value = (.ceylon.language.Sequence<? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
-            $init$value = true;
+            bug2188_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug2188_.$init$value = false;
         }
     }
     

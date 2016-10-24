@@ -115,12 +115,12 @@ final class d_ {
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Trucker();
-            $init$value = true;
+            d_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            d_.$init$value = false;
         }
     }
     
@@ -143,12 +143,12 @@ final class carBigB_ {
     static {
         try {
             value = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.d_.get_().driveCar();
-            $init$value = true;
+            carBigB_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            carBigB_.$init$value = false;
         }
     }
     

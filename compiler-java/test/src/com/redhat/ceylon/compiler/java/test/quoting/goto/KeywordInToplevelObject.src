@@ -15,12 +15,12 @@ public final class transient_ implements .java.io.Serializable, .com.redhat.ceyl
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.transient_();
-            $init$value = true;
+            transient_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            transient_.$init$value = false;
         }
     }
     
@@ -53,12 +53,12 @@ public final class module_ implements .java.io.Serializable, .com.redhat.ceylon.
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.module_();
-            $init$value = true;
+            module_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            module_.$init$value = false;
         }
     }
     
@@ -91,12 +91,12 @@ public final class package_ implements .java.io.Serializable, .com.redhat.ceylon
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.package_();
-            $init$value = true;
+            package_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            package_.$init$value = false;
         }
     }
     

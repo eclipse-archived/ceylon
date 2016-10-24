@@ -27,12 +27,12 @@ final class switchMatch_foo_ extends .com.redhat.ceylon.compiler.java.test.state
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_foo_();
-            $init$value = true;
+            switchMatch_foo_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            switchMatch_foo_.$init$value = false;
         }
     }
     
@@ -66,12 +66,12 @@ final class switchMatch_bar_ extends .com.redhat.ceylon.compiler.java.test.state
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.statement.swtch.switchMatch_bar_();
-            $init$value = true;
+            switchMatch_bar_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            switchMatch_bar_.$init$value = false;
         }
     }
     

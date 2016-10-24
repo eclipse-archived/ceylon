@@ -40,12 +40,12 @@ final class comp1_ {
                     };
                 }
             }.sequence();
-            $init$value = true;
+            comp1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            comp1_.$init$value = false;
         }
     }
     

@@ -24,12 +24,12 @@ final class bug1593_anything_ {
                 }
                 returning null;
             );
-            $init$value = true;
+            bug1593_anything_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug1593_anything_.$init$value = false;
         }
     }
     
@@ -52,12 +52,12 @@ final class bug1593_empty_ {
     static {
         try {
             value = .ceylon.language.empty_.get_();
-            $init$value = true;
+            bug1593_empty_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug1593_empty_.$init$value = false;
         }
     }
     

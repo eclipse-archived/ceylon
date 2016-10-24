@@ -115,12 +115,12 @@ final class heuristicTarget3_ implements .java.io.Serializable, .com.redhat.ceyl
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_();
-            $init$value = true;
+            heuristicTarget3_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            heuristicTarget3_.$init$value = false;
         }
     }
     

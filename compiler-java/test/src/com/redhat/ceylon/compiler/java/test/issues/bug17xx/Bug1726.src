@@ -42,12 +42,12 @@ final class bug1726_ implements .java.io.Serializable, .com.redhat.ceylon.compil
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1726_();
-            $init$value = true;
+            bug1726_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug1726_.$init$value = false;
         }
     }
     

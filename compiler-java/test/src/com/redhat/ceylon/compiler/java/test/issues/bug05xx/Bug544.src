@@ -174,12 +174,12 @@ final class s_ {
     static {
         try {
             value = "";
-            $init$value = true;
+            s_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            s_.$init$value = false;
         }
     }
     

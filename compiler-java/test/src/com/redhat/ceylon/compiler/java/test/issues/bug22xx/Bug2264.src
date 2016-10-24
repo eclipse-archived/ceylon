@@ -15,12 +15,12 @@ public final class xInt_ {
     static {
         try {
             value = 2L;
-            $init$value = true;
+            xInt_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            xInt_.$init$value = false;
         }
     }
     

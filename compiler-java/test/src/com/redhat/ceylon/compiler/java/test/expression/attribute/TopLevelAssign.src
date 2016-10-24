@@ -28,12 +28,12 @@ final class topLevelAssignB1_ {
     static {
         try {
             value = true;
-            $init$value = true;
+            topLevelAssignB1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = false;
-            $init$value = false;
+            topLevelAssignB1_.$init$value = false;
         }
     }
     
@@ -61,12 +61,12 @@ public final class topLevelAssignB2_ {
     static {
         try {
             value = true;
-            $init$value = true;
+            topLevelAssignB2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = false;
-            $init$value = false;
+            topLevelAssignB2_.$init$value = false;
         }
     }
     

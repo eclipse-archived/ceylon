@@ -10,12 +10,12 @@ public final class bug2328Name_ {
     static {
         try {
             value = "Gavin";
-            $init$value = true;
+            bug2328Name_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug2328Name_.$init$value = false;
         }
     }
     
@@ -47,12 +47,12 @@ public final class bug2328ReferenceDeclaration_ {
     static {
         try {
             value = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.issues", "1"), "com.redhat.ceylon.compiler.java.test.issues", "1").findPackage("com.redhat.ceylon.compiler.java.test.issues.bug23xx").getValue("bug2328Name");
-            $init$value = true;
+            bug2328ReferenceDeclaration_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug2328ReferenceDeclaration_.$init$value = false;
         }
     }
     
@@ -75,12 +75,12 @@ public final class bug2328ReferenceDeclaration2_ {
     static {
         try {
             value = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.issues", "1"), "com.redhat.ceylon.compiler.java.test.issues", "1").findPackage("com.redhat.ceylon.compiler.java.test.issues.bug23xx").getValue("bug2328Name2");
-            $init$value = true;
+            bug2328ReferenceDeclaration2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug2328ReferenceDeclaration2_.$init$value = false;
         }
     }
     

@@ -789,12 +789,12 @@ final class bug708extra1_ {
     static {
         try {
             value = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708(.ceylon.language.String.$TypeDescriptor$);
-            $init$value = true;
+            bug708extra1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug708extra1_.$init$value = false;
         }
     }
     
@@ -817,12 +817,12 @@ final class bug708extra2_ {
     static {
         try {
             value = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$).test();
-            $init$value = true;
+            bug708extra2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug708extra2_.$init$value = false;
         }
     }
     
@@ -845,12 +845,12 @@ final class bug708obj_ {
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
-            $init$value = true;
+            bug708obj_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug708obj_.$init$value = false;
         }
     }
     
@@ -879,12 +879,12 @@ final class bug708extra3_ {
                 }
                 returning safe$19 != null ? safe$19.test() : null;
             );
-            $init$value = true;
+            bug708extra3_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug708extra3_.$init$value = false;
         }
     }
     
@@ -907,12 +907,12 @@ final class bug708seq_ {
     static {
         try {
             value = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708.class, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$)});
-            $init$value = true;
+            bug708seq_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug708seq_.$init$value = false;
         }
     }
     
@@ -958,12 +958,12 @@ final class bug708extra4_ {
                     }
                 }.sequence();
             );
-            $init$value = true;
+            bug708extra4_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug708extra4_.$init$value = false;
         }
     }
     
@@ -991,12 +991,12 @@ final class bug708_cache_ {
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
-            $init$value = true;
+            bug708_cache_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug708_cache_.$init$value = false;
         }
     }
     

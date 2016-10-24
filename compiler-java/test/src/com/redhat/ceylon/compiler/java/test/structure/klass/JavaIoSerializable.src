@@ -87,12 +87,12 @@ final class javaIoSerializableObject_ extends .java.lang.Object implements .java
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_();
-            $init$value = true;
+            javaIoSerializableObject_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            javaIoSerializableObject_.$init$value = false;
         }
     }
     
@@ -138,12 +138,12 @@ final class javaIoSerializableBasic_ extends .java.lang.Object implements .java.
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_();
-            $init$value = true;
+            javaIoSerializableBasic_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            javaIoSerializableBasic_.$init$value = false;
         }
     }
     
@@ -601,12 +601,12 @@ final class javaIoSerializableQuoting_ implements .java.io.Serializable, .com.re
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_();
-            $init$value = true;
+            javaIoSerializableQuoting_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            javaIoSerializableQuoting_.$init$value = false;
         }
     }
     

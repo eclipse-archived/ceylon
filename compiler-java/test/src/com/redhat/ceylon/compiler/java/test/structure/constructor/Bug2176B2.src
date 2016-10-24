@@ -10,12 +10,12 @@ final class bug2176B_ {
     static {
         try {
             value = .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176B1.getBug2176B1$true_();
-            $init$value = true;
+            bug2176B_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug2176B_.$init$value = false;
         }
     }
     

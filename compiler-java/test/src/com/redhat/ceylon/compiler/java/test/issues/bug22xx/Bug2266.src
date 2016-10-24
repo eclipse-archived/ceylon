@@ -15,12 +15,12 @@ final class foo2266_ implements .java.io.Serializable, .com.redhat.ceylon.compil
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug22xx.foo2266_();
-            $init$value = true;
+            foo2266_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            foo2266_.$init$value = false;
         }
     }
     

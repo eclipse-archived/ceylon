@@ -94,12 +94,12 @@ public final class bug1725baseExpression_ implements .java.io.Serializable, .com
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug17xx.bug1725baseExpression_();
-            $init$value = true;
+            bug1725baseExpression_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug1725baseExpression_.$init$value = false;
         }
     }
     

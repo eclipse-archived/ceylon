@@ -771,12 +771,12 @@ public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.com
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.metamodel.obj_();
-            $init$value = true;
+            obj_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            obj_.$init$value = false;
         }
     }
     
@@ -1078,12 +1078,12 @@ final class litValue_ {
     static {
         try {
             value = 2L;
-            $init$value = true;
+            litValue_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            litValue_.$init$value = false;
         }
     }
     
@@ -1111,12 +1111,12 @@ final class litVariable_ {
     static {
         try {
             value = 2L;
-            $init$value = true;
+            litVariable_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            litVariable_.$init$value = false;
         }
     }
     

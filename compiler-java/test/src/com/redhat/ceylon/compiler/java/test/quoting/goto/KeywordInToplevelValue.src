@@ -10,12 +10,12 @@ public final class goto_ {
     static {
         try {
             value = 0L;
-            $init$value = true;
+            goto_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            goto_.$init$value = false;
         }
     }
     
@@ -38,12 +38,12 @@ public final class module_ {
     static {
         try {
             value = 0L;
-            $init$value = true;
+            module_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            module_.$init$value = false;
         }
     }
     
@@ -66,12 +66,12 @@ public final class package_ {
     static {
         try {
             value = 0L;
-            $init$value = true;
+            package_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            package_.$init$value = false;
         }
     }
     

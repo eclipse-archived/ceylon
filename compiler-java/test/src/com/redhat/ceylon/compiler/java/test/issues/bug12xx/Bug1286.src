@@ -169,12 +169,12 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .java
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_();
-            $init$value = true;
+            bug1286_objectDefinition_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug1286_objectDefinition_.$init$value = false;
         }
     }
     

@@ -10,12 +10,12 @@ final class topLevelAttributeGenerics_ {
     static {
         try {
             value = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")});
-            $init$value = true;
+            topLevelAttributeGenerics_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            topLevelAttributeGenerics_.$init$value = false;
         }
     }
     
@@ -38,12 +38,12 @@ public final class topLevelAttributeGenericsShared_ {
     static {
         try {
             value = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")});
-            $init$value = true;
+            topLevelAttributeGenericsShared_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            topLevelAttributeGenericsShared_.$init$value = false;
         }
     }
     
@@ -66,12 +66,12 @@ final class topLevelVariableGenerics_ {
     static {
         try {
             value = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")});
-            $init$value = true;
+            topLevelVariableGenerics_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            topLevelVariableGenerics_.$init$value = false;
         }
     }
     
@@ -99,12 +99,12 @@ public final class topLevelVariableGenericsShared_ {
     static {
         try {
             value = (.ceylon.language.Sequence<? extends .ceylon.language.String>).ceylon.language.Tuple.instance(.ceylon.language.String.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.String.instance("hello")});
-            $init$value = true;
+            topLevelVariableGenericsShared_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            topLevelVariableGenericsShared_.$init$value = false;
         }
     }
     

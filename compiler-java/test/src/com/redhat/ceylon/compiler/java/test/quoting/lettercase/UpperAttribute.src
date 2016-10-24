@@ -15,12 +15,12 @@ public final class Zero {
     static {
         try {
             value = 0L;
-            $init$value = true;
+            Zero.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            Zero.$init$value = false;
         }
     }
     

@@ -52,12 +52,12 @@ final class bug1119Addition_ extends .com.redhat.ceylon.compiler.java.test.issue
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_();
-            $init$value = true;
+            bug1119Addition_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug1119Addition_.$init$value = false;
         }
     }
     

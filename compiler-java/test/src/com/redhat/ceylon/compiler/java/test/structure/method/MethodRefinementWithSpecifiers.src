@@ -430,12 +430,12 @@ final class methodRefinementWithSpecifiers_attributeMethod_ {
     static {
         try {
             value = .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_returnsMethod_.methodRefinementWithSpecifiers_returnsMethod();
-            $init$value = true;
+            methodRefinementWithSpecifiers_attributeMethod_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            methodRefinementWithSpecifiers_attributeMethod_.$init$value = false;
         }
     }
     

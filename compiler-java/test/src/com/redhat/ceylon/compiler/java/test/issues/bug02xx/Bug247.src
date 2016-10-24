@@ -26,12 +26,12 @@ final class bug247_toplevel_ {
     static {
         try {
             value = 0L;
-            $init$value = true;
+            bug247_toplevel_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            bug247_toplevel_.$init$value = false;
         }
     }
     

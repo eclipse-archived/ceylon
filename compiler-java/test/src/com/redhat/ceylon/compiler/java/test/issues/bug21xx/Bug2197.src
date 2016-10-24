@@ -71,12 +71,12 @@ final class bug2197_copyTo_ {
                     }
                 };
             );
-            $init$value = true;
+            bug2197_copyTo_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug2197_copyTo_.$init$value = false;
         }
     }
     

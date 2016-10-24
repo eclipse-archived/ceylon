@@ -60,12 +60,12 @@ final class bug1239_ {
                     }
                 }
             });
-            $init$value = true;
+            bug1239_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug1239_.$init$value = false;
         }
     }
     

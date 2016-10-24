@@ -13,12 +13,12 @@ final class arr1_ {
                     .ceylon.language.Integer.instance(1L),
                     .ceylon.language.Integer.instance(2L),
                     .ceylon.language.Integer.instance(3L)}));
-            $init$value = true;
+            arr1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            arr1_.$init$value = false;
         }
     }
     
@@ -67,12 +67,12 @@ final class arr3_ {
                 }
                 returning new .ceylon.language.Array<.ceylon.language.Integer>(arg$0$reified$0, arg$0$0);
             );
-            $init$value = true;
+            arr3_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            arr3_.$init$value = false;
         }
     }
     

@@ -53,12 +53,12 @@ final class bug1242_yi_ {
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.Bug1242<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.String.instance("hello")).<.ceylon.language.Sequence<? extends .ceylon.language.Integer>>Y$new$(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$), (.ceylon.language.Sequence<? extends .ceylon.language.Integer>).ceylon.language.Tuple.instance(.ceylon.language.Integer.$TypeDescriptor$, new .java.lang.Object[]{.ceylon.language.Integer.instance(1L)}));
-            $init$value = true;
+            bug1242_yi_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug1242_yi_.$init$value = false;
         }
     }
     

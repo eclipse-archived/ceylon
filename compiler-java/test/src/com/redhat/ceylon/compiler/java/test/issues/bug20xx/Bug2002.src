@@ -86,12 +86,12 @@ final class bug2002BuilderTest1_ {
                     return .ceylon.language.empty_.get_();
                 }
             }));
-            $init$value = true;
+            bug2002BuilderTest1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug2002BuilderTest1_.$init$value = false;
         }
     }
     
@@ -134,12 +134,12 @@ final class bug2002BuilderTest2_ {
                     return .ceylon.language.empty_.get_();
                 }
             });
-            $init$value = true;
+            bug2002BuilderTest2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug2002BuilderTest2_.$init$value = false;
         }
     }
     

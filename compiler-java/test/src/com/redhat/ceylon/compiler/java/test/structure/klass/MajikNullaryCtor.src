@@ -694,12 +694,12 @@ final class majikNullaryCtorValueCtorOf_ extends .com.redhat.ceylon.compiler.jav
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_();
-            $init$value = true;
+            majikNullaryCtorValueCtorOf_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            majikNullaryCtorValueCtorOf_.$init$value = false;
         }
     }
     

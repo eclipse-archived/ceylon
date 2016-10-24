@@ -27,12 +27,12 @@ final class bug327_foo_ extends .com.redhat.ceylon.compiler.java.test.issues.bug
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_();
-            $init$value = true;
+            bug327_foo_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug327_foo_.$init$value = false;
         }
     }
     
@@ -66,12 +66,12 @@ final class bug327_bar_ extends .com.redhat.ceylon.compiler.java.test.issues.bug
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_();
-            $init$value = true;
+            bug327_bar_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug327_bar_.$init$value = false;
         }
     }
     

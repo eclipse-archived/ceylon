@@ -113,12 +113,12 @@ final class bug2338J_ {
                 }
                 returning new anonymous_1_();
             ).getJ();
-            $init$value = true;
+            bug2338J_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug2338J_.$init$value = false;
         }
     }
     
@@ -154,12 +154,12 @@ final class bug2338NewC_ {
                     };
                 }
             }.$call$(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338J_.get_());
-            $init$value = true;
+            bug2338NewC_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug2338NewC_.$init$value = false;
         }
     }
     

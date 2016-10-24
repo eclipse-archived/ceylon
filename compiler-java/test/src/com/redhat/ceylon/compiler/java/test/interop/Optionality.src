@@ -429,12 +429,12 @@ final class classSubClass_ extends .com.redhat.ceylon.compiler.java.test.interop
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.interop.classSubClass_();
-            $init$value = true;
+            classSubClass_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            classSubClass_.$init$value = false;
         }
     }
     

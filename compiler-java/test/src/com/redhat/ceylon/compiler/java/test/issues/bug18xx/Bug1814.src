@@ -19,12 +19,12 @@ final class bug1814_ {
     static {
         try {
             value = 0L;
-            $init$value = true;
+            bug1814_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            bug1814_.$init$value = false;
         }
     }
     

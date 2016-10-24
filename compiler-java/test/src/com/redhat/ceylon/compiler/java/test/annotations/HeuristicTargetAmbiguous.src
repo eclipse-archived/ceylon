@@ -84,12 +84,12 @@ final class ambiguousObject_ implements .java.io.Serializable, .com.redhat.ceylo
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_();
-            $init$value = true;
+            ambiguousObject_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            ambiguousObject_.$init$value = false;
         }
     }
     

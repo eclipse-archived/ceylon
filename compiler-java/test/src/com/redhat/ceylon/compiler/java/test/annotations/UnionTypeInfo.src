@@ -261,12 +261,12 @@ final class toplevelAttribute_ {
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
-            $init$value = true;
+            toplevelAttribute_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            toplevelAttribute_.$init$value = false;
         }
     }
     
@@ -298,12 +298,12 @@ public final class sharedToplevelAttribute_ {
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.annotations.Bar();
-            $init$value = true;
+            sharedToplevelAttribute_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            sharedToplevelAttribute_.$init$value = false;
         }
     }
     

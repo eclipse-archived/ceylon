@@ -10,12 +10,12 @@ final class topLevelAttribute_ {
     static {
         try {
             value = 0L;
-            $init$value = true;
+            topLevelAttribute_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            $init$value = false;
+            topLevelAttribute_.$init$value = false;
         }
     }
     

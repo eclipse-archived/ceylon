@@ -54,12 +54,12 @@ final class bug6447obj_ implements .java.io.Serializable, .com.redhat.ceylon.com
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_();
-            $init$value = true;
+            bug6447obj_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug6447obj_.$init$value = false;
         }
     }
     

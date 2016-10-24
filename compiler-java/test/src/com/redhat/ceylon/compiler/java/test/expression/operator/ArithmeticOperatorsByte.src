@@ -836,12 +836,12 @@ final class toplevelByte1_ {
     static {
         try {
             value = (byte)0L;
-            $init$value = true;
+            toplevelByte1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = "0";
-            $init$value = false;
+            toplevelByte1_.$init$value = false;
         }
     }
     
@@ -869,12 +869,12 @@ final class toplevelByte2_ {
     static {
         try {
             value = (byte)0L;
-            $init$value = true;
+            toplevelByte2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = "0";
-            $init$value = false;
+            toplevelByte2_.$init$value = false;
         }
     }
     
@@ -902,12 +902,12 @@ final class toplevelByte3_ {
     static {
         try {
             value = (byte)0L;
-            $init$value = true;
+            toplevelByte3_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = "0";
-            $init$value = false;
+            toplevelByte3_.$init$value = false;
         }
     }
     

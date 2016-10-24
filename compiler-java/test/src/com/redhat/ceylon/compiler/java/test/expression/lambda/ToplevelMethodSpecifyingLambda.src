@@ -17,12 +17,12 @@ final class toplevel_ {
                     return .ceylon.language.String.instance("hello " + name2);
                 }
             };
-            $init$value = true;
+            toplevel_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            toplevel_.$init$value = false;
         }
     }
     

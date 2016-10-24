@@ -18,12 +18,12 @@ public final class bug1225available_ implements .java.io.Serializable, .com.redh
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_();
-            $init$value = true;
+            bug1225available_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug1225available_.$init$value = false;
         }
     }
     
@@ -56,12 +56,12 @@ public final class bug1225unavailableBy_O_ implements .java.io.Serializable, .co
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_();
-            $init$value = true;
+            bug1225unavailableBy_O_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug1225unavailableBy_O_.$init$value = false;
         }
     }
     
@@ -94,12 +94,12 @@ public final class bug1225unavailableBy_X_ implements .java.io.Serializable, .co
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_();
-            $init$value = true;
+            bug1225unavailableBy_X_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug1225unavailableBy_X_.$init$value = false;
         }
     }
     

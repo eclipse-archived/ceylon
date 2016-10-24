@@ -31,12 +31,12 @@ final class memberCalledClass_ implements .java.io.Serializable, .com.redhat.cey
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_();
-            $init$value = true;
+            memberCalledClass_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            memberCalledClass_.$init$value = false;
         }
     }
     
@@ -85,12 +85,12 @@ final class memberCalledClass2_ implements .java.io.Serializable, .com.redhat.ce
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_();
-            $init$value = true;
+            memberCalledClass2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            memberCalledClass2_.$init$value = false;
         }
     }
     

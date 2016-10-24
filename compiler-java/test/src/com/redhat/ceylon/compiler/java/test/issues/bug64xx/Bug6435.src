@@ -20,12 +20,12 @@ final class bug6435toplevel_ implements .java.io.Serializable, .com.redhat.ceylo
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6435toplevel_();
-            $init$value = true;
+            bug6435toplevel_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            $init$value = false;
+            bug6435toplevel_.$init$value = false;
         }
     }
     
