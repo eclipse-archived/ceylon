@@ -50,13 +50,11 @@ import com.redhat.ceylon.model.loader.NamingBase.Suffix;
 import com.redhat.ceylon.model.loader.NamingBase.Unfix;
 import com.redhat.ceylon.model.loader.model.FieldValue;
 import com.redhat.ceylon.model.typechecker.model.Class;
-import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
 import com.redhat.ceylon.model.typechecker.model.Constructor;
 import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 import com.redhat.ceylon.model.typechecker.model.FunctionOrValue;
 import com.redhat.ceylon.model.typechecker.model.Functional;
-import com.redhat.ceylon.model.typechecker.model.Generic;
 import com.redhat.ceylon.model.typechecker.model.Interface;
 import com.redhat.ceylon.model.typechecker.model.Parameter;
 import com.redhat.ceylon.model.typechecker.model.ParameterList;
@@ -1850,15 +1848,21 @@ public class CallableBuilder {
             // argument is small or not, so rectify that
             if(parameters.size() > i
                     && parameters.get(i).getModel().isSmall()){
+                String underlyingType = argType.getUnderlyingType();
                 if(argType.isInteger()){
-                    if(!"int".equals(argType.getUnderlyingType())){
+                    if(!"int".equals(underlyingType)){
                         argType = argType.clone();
                         argType.setUnderlyingType("int");
                     }
                 }else if(argType.isFloat()){
-                    if(!"float".equals(argType.getUnderlyingType())){
+                    if(!"float".equals(underlyingType)){
                         argType = argType.clone();
                         argType.setUnderlyingType("float");
+                    }
+                }else if(argType.isCharacter()){
+                    if(!"char".equals(underlyingType)){
+                        argType = argType.clone();
+                        argType.setUnderlyingType("char");
                     }
                 }
             }

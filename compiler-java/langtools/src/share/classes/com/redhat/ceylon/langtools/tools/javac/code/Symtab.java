@@ -219,6 +219,7 @@ public class Symtab {
     public  Type ceylonGetterFloatType;
     public  Type ceylonGetterByteType;
     public  Type ceylonGetterBooleanType;
+    public  Type ceylonGetterCharType;
     
     public final Type ceylonAtCeylonType;
     public final Type ceylonAtDynamicType;
@@ -989,6 +990,6 @@ public class Symtab {
         ceylonGetterFloatType = enterClass("com.redhat.ceylon.compiler.java.language.GetterFloat");
         ceylonGetterByteType = enterClass("com.redhat.ceylon.compiler.java.language.GetterByte");
         ceylonGetterBooleanType = enterClass("com.redhat.ceylon.compiler.java.language.GetterBoolean");
-        
+        ceylonGetterCharType = enterClass("com.redhat.ceylon.compiler.java.language.GetterChar");
     }
 }

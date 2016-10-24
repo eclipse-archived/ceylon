@@ -493,22 +493,25 @@ public abstract class AbstractTransformer implements Transformation {
     
     JCExpression makeDefaultExprForType(Type type) {
         if (canUnbox(type)) {
+            String underlyingType = type.getUnderlyingType();
             if (isCeylonBoolean(type)) {
                 return makeBoolean(false);
-            } else if (isCeylonFloat(type)  && type.getUnderlyingType() == null) {
+            } else if (isCeylonFloat(type) && underlyingType == null) {
                 return make().Literal(0.0);
-            } else if ("float".equals(type.getUnderlyingType())) {
+            } else if ("float".equals(underlyingType)) {
                 return make().Literal((float)0.0);
-            }  else if (isCeylonInteger(type) && type.getUnderlyingType() == null) {
+            }  else if (isCeylonInteger(type) && underlyingType == null) {
                 return makeLong(0);
-            } else if ("long".equals(type.getUnderlyingType())) {
+            } else if ("long".equals(underlyingType)) {
                 return makeLong(0);
-            } else if ("int".equals(type.getUnderlyingType())) {
+            } else if ("int".equals(underlyingType)) {
                 return make().Literal(0);
-            } else if ("short".equals(type.getUnderlyingType())) {
+            } else if ("short".equals(underlyingType)) {
                 return make().TypeCast(make().Type(syms().shortType), make().Literal(0));
-            } else if (isCeylonCharacter(type)) {
+            } else if (isCeylonCharacter(type) && underlyingType == null) {
                 return make().Literal(0);
+            } else if ("char".equals(underlyingType)) {
+                return make().TypeCast(make().Type(syms().charType), make().Literal(0));
             } else if (isCeylonByte(type)) {
                 return makeByte((byte)0);
             }
@@ -1996,7 +1999,7 @@ public abstract class AbstractTransformer implements Transformation {
                     return make().TypeIdent(TypeTag.DOUBLE);
                 }
             } else if (isCeylonCharacter(type)) {
-                if ("char".equals(type.getUnderlyingType())) {
+                if ((flags & JT_SMALL) != 0 || "char".equals(type.getUnderlyingType())) {
                     return make().TypeIdent(TypeTag.CHAR);
                 } else {
                     return make().TypeIdent(TypeTag.INT);
@@ -4196,20 +4199,21 @@ public abstract class AbstractTransformer implements Transformation {
         // find the sequence element type
         Type type = simplifyType(typeFact().getIteratedType(sequenceType));
         if(boxingStrategy == BoxingStrategy.UNBOXED){
+            String underlyingType = type.getUnderlyingType();
             if(isCeylonInteger(type)){
-                if("short".equals(type.getUnderlyingType()))
+                if("short".equals(underlyingType))
                     return utilInvocation().toShortArray(expr, initialElements);
-                else if("int".equals(type.getUnderlyingType()))
+                else if("int".equals(underlyingType))
                     return utilInvocation().toIntArray(expr, initialElements);
                 else
                     return utilInvocation().toLongArray(expr, initialElements);
             }else if(isCeylonFloat(type)){
-                if("float".equals(type.getUnderlyingType()))
+                if("float".equals(underlyingType))
                     return utilInvocation().toFloatArray(expr, initialElements);
                 else
                     return utilInvocation().toDoubleArray(expr, initialElements);
             } else if (isCeylonCharacter(type)) {
-                if ("char".equals(type.getUnderlyingType()))
+                if ("char".equals(underlyingType))
                     return utilInvocation().toCharArray(expr, initialElements);
                 // else it must be boxed, right?
             } else if (isCeylonByte(type)) {
@@ -5732,7 +5736,12 @@ public abstract class AbstractTransformer implements Transformation {
                 type = javacCeylonTypeToProducedType(syms().ceylonGetterDoubleType);
             }
         } else if (unboxed && isCeylonCharacter(nonWideningType)) {
-            type = javacCeylonTypeToProducedType(syms().ceylonGetterIntType);
+            if (Decl.isSmall(attrTypedDecl)) {
+                type = javacCeylonTypeToProducedType(syms().ceylonGetterCharType);
+            }
+            else {
+                type = javacCeylonTypeToProducedType(syms().ceylonGetterIntType);
+            }
         } else if (unboxed && isCeylonByte(nonWideningType)) {
             type = javacCeylonTypeToProducedType(syms().ceylonGetterByteType);
         } else {

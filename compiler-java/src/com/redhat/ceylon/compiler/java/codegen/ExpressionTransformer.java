@@ -962,6 +962,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 convertTo = "int";
             } else if (definiteExpectedType.isFloat()) {
                 convertTo = "float";
+            } else if (definiteExpectedType.isCharacter()) {
+                convertTo = "char";
             }
         }
         // check for identity conversion

@@ -27,6 +27,9 @@ public class SmallDeclarationVisitor extends Visitor {
         } else if (type.isFloat()) {
             result = type.withoutUnderlyingType();
             result.setUnderlyingType("float");
+        } else if (type.isCharacter()) {
+            result = type.withoutUnderlyingType();
+            result.setUnderlyingType("char");
         } else {
             result = type;
         }
