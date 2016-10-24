@@ -474,9 +474,16 @@ shared final annotation class SmallAnnotation()
                     FunctionOrValueDeclaration> {
 }
 
-"Annotation to hint to the compiler that an `Integer` or 
- `Float` typed value or function should be represented using 
- a 32-bit signed integer or 32-bit IEEE float if possible.
+"Annotation to hint to the compiler that, if possible:
+ 
+  - an [[Integer]] type should be represented using a 32-bit 
+    signed integer,
+  - a [[Float]] type should be represented using 32-bit IEEE 
+    float, or
+  - a [[Character]] type should be represented as a single 
+    16-bit code point in the Basic Multilingual Plane.
+ 
+ The compiler is permitted to ignore this hint.
  
      small Integer zero = 0;"
 since("1.3.0")
