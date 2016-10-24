@@ -47,7 +47,8 @@ shared interface SearchableList<Element>
             => let (elem = getFromFirst(index))
             if (exists element, exists elem) 
             then elem == element 
-            else element exists == elem exists;
+            else (0 <= index < size)
+                && !element exists && !elem exists;
     
     "The indexes in this list at which the given 
      [[value|element]] occurs."
@@ -123,9 +124,16 @@ shared interface SearchableList<Element>
          at any index in this list with a null element."
         Element element,
         "The smallest index to consider."
-        Integer from = 0,
+        variable Integer from = 0,
         "The number of indexes to consider."
-        Integer length = size-from) {
+        variable Integer length = size-from) {
+        if (from < 0) {
+            length += from;
+            from = 0;
+        }
+        if (length > size - from) {
+            length = size - from;
+        }
         for (index in from:length) {
             if (occursAt(index,element)) {
                 return index;
@@ -150,11 +158,18 @@ shared interface SearchableList<Element>
          a reverse index counting from the _end_ of the 
          list, where `0` is the last element of the list, 
          and `size-1` is the first element of the list."
-        Integer from = 0,
+        variable Integer from = 0,
         "The number of indexes to consider."
-        Integer length = size-from) {
+        variable Integer length = size-from) {
         //TODO: refine reversed to return a SearchableList
         // => reversed.firstOccurrence(element, from, length)
+        if (from < 0) {
+            length += from;
+            from = 0;
+        }
+        if (length > size - from) {
+            length = size - from;
+        }
         for (index in (size-length-from:length).reversed) {
             if (occursAt(index,element)) {
                 return index;
