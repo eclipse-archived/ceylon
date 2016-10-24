@@ -315,10 +315,8 @@ public class AttributeDefinitionBuilder {
     public void appendDefinitionsTo(ListBuffer<JCTree> defs) {
         if (hasField) {
             if (initialException == null) {
-                // the value field
-                defs.append(generateField());
-                // flag and exception fields
-                defs.appendList(initCheckFields(attrTypedDecl).fields());
+                // the value, init flag and exception fields
+                defs.appendList((List)makeFields(attrTypedDecl));
                 if(initialValue != null) {
                     long flags = (modifiers & Flags.STATIC);
                     defs.append(owner.make().Block(flags, initCheck(attrTypedDecl).init()));
@@ -394,7 +392,7 @@ public class AttributeDefinitionBuilder {
         return mods & (Flags.PUBLIC | Flags.PRIVATE | Flags.ABSTRACT | Flags.FINAL | Flags.STATIC);
     }
 
-    private JCTree generateField() {
+    private JCStatement generateField() {
         long flags = Flags.PRIVATE | (modifiers & Flags.STATIC);
         // only make it final if we have an init, otherwise we still have to initialise it
         if (!writable && (initialValue != null || valueConstructor)) {
@@ -409,12 +407,6 @@ public class AttributeDefinitionBuilder {
         );
     }
 
-    abstract class InitCheckFields {
-        /** Generate fields */
-        public List<JCTree> fields() {
-            return List.nil();
-        }
-    }
 
     abstract class InitCheck {
         
@@ -474,20 +466,18 @@ public class AttributeDefinitionBuilder {
         }
         
     }
+    
     /** A boolean field is used to track initialization of a value */
-    class FieldInitCheckFields extends InitCheckFields {
-        @Override
-        public List<JCTree> fields() {
-            long flags = Flags.PRIVATE | (modifiers & Flags.STATIC) | Flags.VOLATILE;
-            if((flags & Flags.STATIC) == 0)
-                flags |= Flags.TRANSIENT;
-            
-            return List.<JCTree>of(owner.make().VarDef(
-                    owner.make().Modifiers(flags),
-                    owner.names().fromString(Naming.getInitializationFieldName(fieldName)),
-                    owner.make().Type(owner.syms().booleanType),
-                    owner.make().Literal(false)));
-        }
+    public List<JCStatement> makeInitCheckFields(List<JCStatement> stmts) {
+        long flags = Flags.PRIVATE | (modifiers & Flags.STATIC) | Flags.VOLATILE;
+        if((flags & Flags.STATIC) == 0)
+            flags |= Flags.TRANSIENT;
+        
+        return stmts.prepend(owner.make().VarDef(
+                owner.make().Modifiers(flags),
+                owner.names().fromString(Naming.getInitializationFieldName(fieldName)),
+                owner.make().Type(owner.syms().booleanType),
+                owner.make().Literal(false)));
     }
     
     class Blag extends InitCheck {
@@ -559,25 +549,18 @@ public class AttributeDefinitionBuilder {
     class NoInitCheck extends InitCheck {
         
     }
-    /** Decorator of other InitCheck which save exceptions during init until the value is accessed */
-    class DeferredInitErrorFields extends InitCheckFields {
-        private final InitCheckFields other;
-        public DeferredInitErrorFields(InitCheckFields other) {
-            this.other = other;
-        }
-        /** Adds a throwable field */
-        @Override
-        public List<JCTree> fields() {
-            long flags = Flags.PRIVATE | Flags.STATIC | Flags.FINAL;
+    
+    public List<JCStatement> makeDeferredInitErrorField(List<JCStatement> stmts) {
+        long flags = Flags.PRIVATE | Flags.STATIC | Flags.FINAL;
 
-            List<JCTree> result = List.of(owner.make().VarDef(
-                    owner.make().Modifiers(flags),
-                    owner.names().fromString(Naming.quoteIfJavaKeyword(Naming.getToplevelAttributeSavedExceptionName())),
-                    owner.makeJavaType(owner.syms().throwableType.tsym),
-                    null));
-            return result.prependList(other.fields());
-        }
+        List<JCStatement> result = List.of(owner.make().VarDef(
+                owner.make().Modifiers(flags),
+                owner.names().fromString(Naming.quoteIfJavaKeyword(Naming.getToplevelAttributeSavedExceptionName())),
+                owner.makeJavaType(owner.syms().throwableType.tsym),
+                null));
+        return result.prependList(stmts);
     }
+    
     /** Decorator of other InitCheck which save exceptions during init until the value is accessed */
     class DeferredInitError extends InitCheck {
         private final InitCheck other;
@@ -645,20 +628,15 @@ public class AttributeDefinitionBuilder {
         
     }
     
-    public InitCheckFields initCheckFields(TypedDeclaration attrType) {
-        InitCheckFields initCheck;
+    public List<JCStatement> makeFields(TypedDeclaration attrType) {
+        List<JCStatement> stmts = List.of(generateField());
         if (hasInitFlag()) {
-            initCheck = new FieldInitCheckFields();
-        } else {
-            initCheck = new InitCheckFields(){};//new NullInitCheckFields();
+            stmts = makeInitCheckFields(stmts);
         }
-        /*if ((toplevel || late)) {
-            initCheck = new BlagFields(initCheck);
-        }*/
         if (isDeferredInitError()) {
-            initCheck = new DeferredInitErrorFields(initCheck);
+            stmts = makeDeferredInitErrorField(stmts);
         }
-        return initCheck;
+        return stmts;
     }
     
     
