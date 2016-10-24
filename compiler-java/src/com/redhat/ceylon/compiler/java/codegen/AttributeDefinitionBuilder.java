@@ -407,7 +407,7 @@ public class AttributeDefinitionBuilder {
         }
         public abstract List<JCStatement> makeInitCheckField(List<JCStatement> stmts);
         public abstract JCExpression makeInitTest(boolean positiveIfTest);
-        public abstract JCStatement makeInitInitialized();
+        public abstract JCStatement makeInitInitialized(boolean initialized);
     }    
     class NullnessInitTest extends InitTest {
         @Override
@@ -424,7 +424,7 @@ public class AttributeDefinitionBuilder {
         }
 
         @Override
-        public JCStatement makeInitInitialized() {
+        public JCStatement makeInitInitialized(boolean initialized) {
             return null;
         }
     }
@@ -455,9 +455,9 @@ public class AttributeDefinitionBuilder {
         }
 
         @Override
-        public JCStatement makeInitInitialized() {
+        public JCStatement makeInitInitialized(boolean initialized) {
             return owner.make().Exec(owner.make().Assign(makeInitTest(true),
-                    owner.make().Literal(true)));
+                    owner.make().Literal(initialized)));
         }
     }
     class NoInitTest extends InitTest {
@@ -467,7 +467,7 @@ public class AttributeDefinitionBuilder {
         }
 
         @Override
-        public JCStatement makeInitInitialized() {
+        public JCStatement makeInitInitialized(boolean initialized) {
             return null;
         }
 
@@ -523,11 +523,6 @@ public class AttributeDefinitionBuilder {
         
         String exceptionName = "x"; // doesn't matter
 
-        // $init$value = true;
-        stmts = stmts.append(owner.make().Exec(owner.make().Assign(
-                owner.naming.makeUnquotedIdent(Naming.getInitializationFieldName(fieldName)), 
-                owner.make().Literal(true))));
-        
         // $initException$ = null
         stmts = stmts.append(owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
                 owner.makeNull())));
@@ -539,9 +534,7 @@ public class AttributeDefinitionBuilder {
         // value = null
         JCStatement nullValue = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(fieldName), owner.makeDefaultExprForType(attrType)));
         // the catch statements
-        JCStatement initFlagFalse = owner.make().Exec(owner.make().Assign(
-                owner.naming.makeUnquotedIdent(Naming.getInitializationFieldName(fieldName)), 
-                owner.make().Literal(false)));
+        JCStatement initFlagFalse = initTest.makeInitInitialized(false);
         JCBlock handlerBlock = owner.make().Block(0, List.<JCTree.JCStatement>of(saveException, nullValue, initFlagFalse));
         
         // the catch block
@@ -558,6 +551,11 @@ public class AttributeDefinitionBuilder {
     
     private List<JCStatement> makeInit() {
         List<JCStatement> result = initValueField();
+        // $init$value = true;
+        JCStatement makeInitInitialized = initTest.makeInitInitialized(true);
+        if (makeInitInitialized != null) {
+            result = result.append(makeInitInitialized);
+        }
         if (deferredInitError) {
             result = initWithExceptionHandling(result);
         }
@@ -618,7 +616,7 @@ public class AttributeDefinitionBuilder {
     }
 
     private List<JCStatement> makeMarkInitialized(InitTest initTest, List<JCStatement> stmts) {
-        JCStatement markInitialized = initTest.makeInitInitialized();
+        JCStatement markInitialized = initTest.makeInitInitialized(true);
         if (markInitialized != null) {
             stmts = stmts.append(markInitialized);
         }           
