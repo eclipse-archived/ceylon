@@ -99,6 +99,8 @@ public class AttributeDefinitionBuilder {
     
     private JCExpression setterClass;
     private JCExpression getterClass;
+    private boolean hasInitFlag;
+    private boolean deferredInitError;
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, Node node, TypedDeclaration attrType, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, String fieldName, boolean toplevel, boolean indirect) {
@@ -128,13 +130,15 @@ public class AttributeDefinitionBuilder {
         this.attrName = attrName;
         this.fieldName = fieldName;
         this.toplevel = toplevel;
-        this.late = attrType.isLate();
+        this.late = attrTypedDecl.isLate();
         this.lateWithInit = this.late && CodegenUtil.needsLateInitField(attrType, owner.typeFact());
+        this.hasInitFlag = (toplevel && !late) || lateWithInit;
         this.variable = attrType.isVariable();
+        this.deferredInitError = toplevel && !late;
         
         // Make sure we use the declaration for building the getter/setter names, as we might be trying to
         // override a JavaBean property with an "isFoo" getter, or non-Ceylon casing, and we have to respect that.
-        InitTest initTest = hasInitFlag() ? new FieldInitTest() : new NullnessInitTest();
+        InitTest initTest = hasInitFlag ? new FieldInitTest() : new NullnessInitTest();
         getterBuilder = MethodDefinitionBuilder
             .getter(owner, attrType, indirect)
             .block(owner.make().Block(0L, makeGetter(initTest)))
@@ -354,14 +358,6 @@ public class AttributeDefinitionBuilder {
         }
     }
 
-    /** 
-     * Whether any exceptions during initialization should be kept 
-     * and rethrown on each subsequent access 
-     */
-    private boolean isDeferredInitError() {
-        return toplevel && !late;
-    }
-
     private List<Type> getSatisfies() {
         List<Type> types = List.<Type>nil();
         if (javaClassName != null && readable && !toplevel) {
@@ -410,21 +406,27 @@ public class AttributeDefinitionBuilder {
             }
             return initFlagFieldOwner;
         }
-        public abstract JCExpression makeInitFlagExpr(boolean positiveIfTest);
+        public abstract JCExpression makeInitTest(boolean positiveIfTest);
+        public abstract JCStatement makeInitInitialized();
     }    
     class NullnessInitTest extends InitTest {
         @Override
-        public JCExpression makeInitFlagExpr(boolean positiveIfTest) {
+        public JCExpression makeInitTest(boolean positiveIfTest) {
             final JCExpression initFlagFieldOwner = initFieldOwner();
             // TODO this should be encapsulated so the s11n stuff and this
             // code can just call something common
             return owner.make().Binary(positiveIfTest ? JCTree.Tag.NE : JCTree.Tag.EQ, 
                     owner.naming.makeQualIdent(initFlagFieldOwner, fieldName), owner.makeNull());
         }
+
+        @Override
+        public JCStatement makeInitInitialized() {
+            return null;
+        }
     }
     class FieldInitTest extends InitTest {
         @Override
-        public JCExpression makeInitFlagExpr(boolean positiveIfTest) {
+        public JCExpression makeInitTest(boolean positiveIfTest) {
             final JCExpression initFlagFieldOwner = initFieldOwner();
             // TODO this should be encapsulated so the s11n stuff and this
             // code can just call something common
@@ -432,6 +434,24 @@ public class AttributeDefinitionBuilder {
             if(!positiveIfTest)
                 return owner.make().Unary(JCTree.Tag.NOT, ret);
             return ret;
+        }
+
+        @Override
+        public JCStatement makeInitInitialized() {
+            return owner.make().Exec(owner.make().Assign(makeInitTest(true),
+                    owner.make().Literal(true)));
+        }
+    }
+    class NoInitTest extends InitTest {
+        @Override
+        public JCExpression makeInitTest(boolean positiveIfTest) {
+            return null;
+        }
+
+        @Override
+        public JCStatement makeInitInitialized() {
+            // TODO Auto-generated method stub
+            return null;
         }
     }
     
@@ -476,10 +496,10 @@ public class AttributeDefinitionBuilder {
     
     private List<JCStatement> makeFields() {
         List<JCStatement> stmts = List.of(generateField());
-        if (hasInitFlag()) {
+        if (hasInitFlag) {
             stmts = makeInitCheckField(stmts);
         }
-        if (isDeferredInitError()) {
+        if (deferredInitError) {
             stmts = makeExceptionField(stmts);
         }
         return stmts;
@@ -533,7 +553,7 @@ public class AttributeDefinitionBuilder {
     
     private List<JCStatement> makeInit() {
         List<JCStatement> result = initValueField();
-        if (isDeferredInitError()) {
+        if (deferredInitError) {
             result = initWithExceptionHandling(result);
         }
         return result;
@@ -552,10 +572,10 @@ public class AttributeDefinitionBuilder {
     
     private List<JCStatement> getterExceptionThrowing(InitTest initTest, List<JCStatement> getter) {
         List<JCStatement> catchStmts;
-        JCExpression msg = owner.make().Literal(late ? "Accessing uninitialized 'late' attribute '"+attrName+"'" : "Cyclic initialization trying to read the value of '"+attrName+"' before it was set");
+        JCExpression msg = owner.make().Literal(attrTypedDecl.isLate() ? "Accessing uninitialized 'late' attribute '"+attrName+"'" : "Cyclic initialization trying to read the value of '"+attrName+"' before it was set");
         JCTree.JCThrow throwStmt = owner.make().Throw(owner.makeNewClass(owner.makeIdent(owner.syms().ceylonInitializationErrorType), 
                 List.<JCExpression>of(msg)));
-        if(isDeferredInitError()){
+        if(deferredInitError){
             JCStatement rethrow = owner.make().Exec(owner.utilInvocation().rethrow( 
                     owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName())));
             // rethrow the init exception if we have one
@@ -566,7 +586,7 @@ public class AttributeDefinitionBuilder {
             catchStmts = List.<JCTree.JCStatement>of(throwStmt);
         }
         return List.<JCTree.JCStatement>of(
-                owner.make().If(initTest.makeInitFlagExpr(true), 
+                owner.make().If(initTest.makeInitTest(true), 
                     owner.make().Block(0, getter),
                     owner.make().Block(0, catchStmts)));
     }
@@ -579,41 +599,33 @@ public class AttributeDefinitionBuilder {
         return stmts;
     }
     
-    private List<JCStatement> setter(InitTest initTest) {
+    private List<JCStatement> setter() {
         JCExpression fld = fld();
-        JCExpressionStatement assign = owner.make().Exec(
+        List<JCStatement> stmts = List.<JCStatement>of(owner.make().Exec(
                 owner.make().Assign(
                         fld,
-                        owner.makeQuotedIdent(attrName)));
-        final List<JCStatement> stmts;
-        if (late) {
-            
-            JCExpressionStatement makeInit = null;
-            if(hasInitFlag())
-                makeInit = owner.make().Exec(owner.make().Assign(initTest.makeInitFlagExpr(true),
-                                                                 owner.make().Literal(true)));
-            if (variable) {
-                if(makeInit != null)
-                    stmts = List.<JCStatement>of(assign, makeInit);
-                else 
-                    stmts = List.<JCTree.JCStatement>of(assign);
-            } else {
-                List<JCStatement> then = List.<JCStatement>of(owner.make().Return(null));
-                if(makeInit != null)
-                    then = then.prepend(makeInit);
-                then = then.prepend(assign);
-                stmts = List.of(
+                        owner.makeQuotedIdent(attrName))));
+        return stmts;
+    }
+
+    private List<JCStatement> lateSetter(InitTest initTest, List<JCStatement> stmts) {
+        JCStatement markInitialized = initTest.makeInitInitialized();
+        if (markInitialized != null) {
+            stmts = stmts.append(markInitialized);
+        }           
+        if (!variable) {
+            stmts = stmts.append(owner.make().Return(null));
+            stmts = List.of(
                     owner.make().If(
-                        initTest.makeInitFlagExpr(false),
-                        owner.make().Block(0, then), 
-                        null),
-                    owner.make().Throw(owner.makeNewClass( 
-                                       owner.make().Type(owner.syms().ceylonInitializationErrorType), 
-                                       List.<JCExpression>of(owner.make().Literal("Re-initialization of 'late' attribute")))
-                ));
-            }
-        } else {
-            stmts = List.<JCTree.JCStatement>of(assign);
+                        initTest.makeInitTest(false),
+                        owner.make().Block(0, stmts), 
+                        null));
+            
+            stmts = stmts.append(
+                owner.make().Throw(owner.makeNewClass( 
+                                   owner.make().Type(owner.syms().ceylonInitializationErrorType), 
+                                   List.<JCExpression>of(owner.make().Literal("Re-initialization of 'late' attribute")))
+            ));
         }
         return stmts;
     }
@@ -630,17 +642,15 @@ public class AttributeDefinitionBuilder {
     }
     
     private List<JCStatement> makeSetter(InitTest initTest) {
-        List<JCStatement> stmts = setter(initTest);
-        if (isDeferredInitError()) {
+        List<JCStatement> stmts = setter();
+        if (late) {
+            stmts = lateSetter(initTest, stmts);
+        }
+        if (deferredInitError) {
             stmts = rethrowInitialError(stmts);
         }
         return stmts;
     }
-    
-    private boolean hasInitFlag() {
-        return (toplevel && !late) || lateWithInit;
-    }
-
     
     private JCExpression fld() {
         JCExpression fld;
