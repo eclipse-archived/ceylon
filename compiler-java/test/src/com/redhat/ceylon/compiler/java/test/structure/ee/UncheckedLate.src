@@ -3,45 +3,42 @@ package com.redhat.ceylon.compiler.java.test.structure.ee;
 class UncheckedLate implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
     UncheckedLate() {
-        this.$init$a1 = false;
-        this.$init$a2 = false;
-        this.$init$a3 = false;
         setA4(true);
     }
     private .ceylon.language.String a1;
     
-    public final .ceylon.language.String getA1() {
+    public .ceylon.language.String getA1() {
         return a1;
     }
     
-    public final void setA1(final .ceylon.language.String a1) {
+    public void setA1(final .ceylon.language.String a1) {
         this.a1 = a1;
     }
     private long a2;
     
-    public final long getA2() {
+    public long getA2() {
         return a2;
     }
     
-    public final void setA2(final long a2) {
+    public void setA2(final long a2) {
         this.a2 = a2;
     }
     private double a3;
     
-    public final double getA3() {
+    public double getA3() {
         return a3;
     }
     
-    public final void setA3(final double a3) {
+    public void setA3(final double a3) {
         this.a3 = a3;
     }
     private boolean a4;
     
-    public final boolean getA4() {
+    public boolean getA4() {
         return a4;
     }
     
-    public final void setA4(final boolean a4) {
+    public void setA4(final boolean a4) {
         this.a4 = a4;
     }
     
