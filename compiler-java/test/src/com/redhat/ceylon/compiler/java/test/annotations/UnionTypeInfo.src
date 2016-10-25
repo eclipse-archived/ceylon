@@ -115,7 +115,7 @@ class UnionTypeInfo implements .com.redhat.ceylon.compiler.java.runtime.model.Re
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
     public final .java.lang.Object getSharedAttr() {
-        return sharedAttr;
+        return this.sharedAttr;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -262,12 +262,12 @@ final class toplevelAttribute_ {
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.annotations.Foo();
-            toplevelAttribute_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.annotations.toplevelAttribute_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            toplevelAttribute_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.annotations.toplevelAttribute_.$init$value = false;
         }
     }
     
@@ -276,8 +276,8 @@ final class toplevelAttribute_ {
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
     public static .java.lang.Object get_() {
-        if (toplevelAttribute_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.annotations.toplevelAttribute_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.annotations.toplevelAttribute_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelAttribute\' before it was set");
@@ -300,12 +300,12 @@ public final class sharedToplevelAttribute_ {
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.annotations.Bar();
-            sharedToplevelAttribute_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.annotations.sharedToplevelAttribute_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            sharedToplevelAttribute_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.annotations.sharedToplevelAttribute_.$init$value = false;
         }
     }
     
@@ -315,8 +315,8 @@ public final class sharedToplevelAttribute_ {
             value = "com.redhat.ceylon.compiler.java.test.annotations::Foo|com.redhat.ceylon.compiler.java.test.annotations::Bar",
             erased = true)
     public static .java.lang.Object get_() {
-        if (sharedToplevelAttribute_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.annotations.sharedToplevelAttribute_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.annotations.sharedToplevelAttribute_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'sharedToplevelAttribute\' before it was set");

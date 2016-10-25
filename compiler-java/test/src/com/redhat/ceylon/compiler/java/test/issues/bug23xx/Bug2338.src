@@ -113,18 +113,18 @@ final class bug2338J_ {
                 }
                 returning new anonymous_1_();
             ).getJ();
-            bug2338J_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338J_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug2338J_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338J_.$init$value = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J get_() {
-        if (bug2338J_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338J_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338J_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2338J\' before it was set");
@@ -154,18 +154,18 @@ final class bug2338NewC_ {
                     };
                 }
             }.$call$(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338J_.get_());
-            bug2338NewC_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338NewC_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug2338NewC_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338NewC_.$init$value = false;
         }
     }
     
     public static .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C> get_() {
-        if (bug2338NewC_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338NewC_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338NewC_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2338NewC\' before it was set");

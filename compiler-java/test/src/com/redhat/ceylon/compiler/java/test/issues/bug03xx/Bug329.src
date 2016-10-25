@@ -19,7 +19,7 @@ final class bug329_se_ implements .java.io.Serializable, .com.redhat.ceylon.comp
     
     @.java.lang.Override
     public final .ceylon.language.String getSomething() {
-        return something;
+        return this.something;
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_ value;
     private static volatile boolean $init$value = false;
@@ -27,18 +27,18 @@ final class bug329_se_ implements .java.io.Serializable, .com.redhat.ceylon.comp
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_();
-            bug329_se_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug329_se_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_.$init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_ get_() {
-        if (bug329_se_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug329_se\' before it was set");
@@ -70,18 +70,18 @@ final class bug329_se2_ implements .java.io.Serializable, .com.redhat.ceylon.com
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_();
-            bug329_se2_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug329_se2_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_.$init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_ get_() {
-        if (bug329_se2_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug329_se2_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug329_se2\' before it was set");

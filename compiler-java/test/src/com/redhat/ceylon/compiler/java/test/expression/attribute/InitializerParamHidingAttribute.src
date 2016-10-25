@@ -31,12 +31,12 @@ class InitializerParamHidingAttribute2 implements .com.redhat.ceylon.compiler.ja
     private final boolean b;
     
     public final boolean getB() {
-        return b;
+        return this.b;
     }
     private final boolean b2;
     
     public final boolean getB2() {
-        return b2;
+        return this.b2;
     }
     
     @.java.lang.Override

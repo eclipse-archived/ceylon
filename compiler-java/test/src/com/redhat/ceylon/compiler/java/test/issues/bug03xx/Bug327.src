@@ -27,18 +27,18 @@ final class bug327_foo_ extends .com.redhat.ceylon.compiler.java.test.issues.bug
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_();
-            bug327_foo_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug327_foo_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_.$init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_ get_() {
-        if (bug327_foo_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_foo_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug327_foo\' before it was set");
@@ -66,18 +66,18 @@ final class bug327_bar_ extends .com.redhat.ceylon.compiler.java.test.issues.bug
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_();
-            bug327_bar_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug327_bar_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_.$init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_ get_() {
-        if (bug327_bar_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug03xx.bug327_bar_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug327_bar\' before it was set");

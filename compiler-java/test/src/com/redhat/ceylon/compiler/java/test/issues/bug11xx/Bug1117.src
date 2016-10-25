@@ -27,7 +27,7 @@ class Bug1117Constant extends .com.redhat.ceylon.compiler.java.test.issues.bug11
     private final long val;
     
     private final long getVal$priv$() {
-        return val;
+        return this.val;
     }
     
     @.java.lang.Override
@@ -57,7 +57,7 @@ class Bug1117UnaryOperator extends .com.redhat.ceylon.compiler.java.test.issues.
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree branch;
     
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree getBranch$priv$() {
-        return branch;
+        return this.branch;
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> f;
     
@@ -94,12 +94,12 @@ class Bug1117BinaryOperator extends .com.redhat.ceylon.compiler.java.test.issues
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree left;
     
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree getLeft$priv$() {
-        return left;
+        return this.left;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree right;
     
     private final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1117Tree getRight$priv$() {
-        return right;
+        return this.right;
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> f;
     

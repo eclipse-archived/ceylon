@@ -65,12 +65,12 @@ final class synchronized_ implements .java.io.Serializable, .com.redhat.ceylon.c
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_();
-            synchronized_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            synchronized_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.$init$value = false;
         }
     }
     
@@ -78,8 +78,8 @@ final class synchronized_ implements .java.io.Serializable, .com.redhat.ceylon.c
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510::synchronized")
     static .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_ get_() {
-        if (synchronized_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'synchronized\' before it was set");
@@ -108,18 +108,18 @@ final class volatile_ {
     static {
         try {
             value = 5L;
-            volatile_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.volatile_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            volatile_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.volatile_.$init$value = false;
         }
     }
     
     public static long get_() {
-        if (volatile_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.volatile_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.volatile_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'volatile\' before it was set");

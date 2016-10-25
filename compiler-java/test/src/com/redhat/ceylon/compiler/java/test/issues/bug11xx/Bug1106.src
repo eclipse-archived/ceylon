@@ -44,13 +44,13 @@ public final class Bug1106_Resource$impl implements .java.io.Serializable {
         
         @.java.lang.Override
         public final .java.lang.String getPath() {
-            return path;
+            return this.path;
         }
         private final .java.lang.String contents;
         
         @.java.lang.Override
         public final .java.lang.String getContents() {
-            return contents;
+            return this.contents;
         }
         
         @.java.lang.Override

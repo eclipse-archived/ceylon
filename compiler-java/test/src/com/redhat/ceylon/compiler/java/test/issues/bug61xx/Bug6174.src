@@ -32,7 +32,7 @@ class Bug6174 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         private .java.lang.String model;
         
         public final .java.lang.String getModel() {
-            return model;
+            return this.model;
         }
         
         public final void setModel(final .java.lang.String model) {
@@ -41,7 +41,7 @@ class Bug6174 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         private long size;
         
         public final long getSize() {
-            return size;
+            return this.size;
         }
         
         public final void setSize(final long size) {

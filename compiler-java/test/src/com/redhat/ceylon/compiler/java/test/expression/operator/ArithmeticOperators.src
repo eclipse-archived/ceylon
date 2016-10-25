@@ -139,17 +139,17 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initN;
     
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getInitN$priv$() {
-        return initN;
+        return this.initN;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger initI;
     
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getInitI$priv$() {
-        return initI;
+        return this.initI;
     }
     private long n1;
     
     public final long getN1() {
-        return n1;
+        return this.n1;
     }
     
     public final void setN1(final long n1) {
@@ -158,7 +158,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     private long n2;
     
     public final long getN2() {
-        return n2;
+        return this.n2;
     }
     
     public final void setN2(final long n2) {
@@ -167,7 +167,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     private long i1;
     
     public final long getI1() {
-        return i1;
+        return this.i1;
     }
     
     public final void setI1(final long i1) {
@@ -200,7 +200,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     private .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger boxedN1;
     
     public final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getBoxedN1() {
-        return boxedN1;
+        return this.boxedN1;
     }
     
     public final void setBoxedN1(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger boxedN1) {
@@ -209,7 +209,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     private .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger boxedN2;
     
     public final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getBoxedN2() {
-        return boxedN2;
+        return this.boxedN2;
     }
     
     public final void setBoxedN2(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger boxedN2) {
@@ -218,7 +218,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     private .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger boxedI1;
     
     public final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger getBoxedI1() {
-        return boxedI1;
+        return this.boxedI1;
     }
     
     public final void setBoxedI1(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyInteger boxedI1) {
@@ -1208,19 +1208,19 @@ final class toplevelN1_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            toplevelN1_.value = 0L;
-            toplevelN1_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            toplevelN1_.value = 0L;
-            toplevelN1_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$init$value = false;
         }
     }
     
     public static long get_() {
-        if (toplevelN1_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelN1\' before it was set");
@@ -1229,7 +1229,7 @@ final class toplevelN1_ {
     
     public static void set_(final long toplevelN1) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = toplevelN1;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN1_.value = toplevelN1;
     }
 }
 final class toplevelN2_ {
@@ -1241,19 +1241,19 @@ final class toplevelN2_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            toplevelN2_.value = 0L;
-            toplevelN2_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            toplevelN2_.value = 0L;
-            toplevelN2_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.$init$value = false;
         }
     }
     
     public static long get_() {
-        if (toplevelN2_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelN2\' before it was set");
@@ -1262,7 +1262,7 @@ final class toplevelN2_ {
     
     public static void set_(final long toplevelN2) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = toplevelN2;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelN2_.value = toplevelN2;
     }
 }
 final class toplevelI1_ {
@@ -1274,19 +1274,19 @@ final class toplevelI1_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            toplevelI1_.value = 0L;
-            toplevelI1_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            toplevelI1_.value = 0L;
-            toplevelI1_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.$init$value = false;
         }
     }
     
     public static long get_() {
-        if (toplevelI1_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelI1\' before it was set");
@@ -1295,7 +1295,7 @@ final class toplevelI1_ {
     
     public static void set_(final long toplevelI1) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = toplevelI1;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelI1_.value = toplevelI1;
     }
 }
 final class toplevelGetterN1_ {

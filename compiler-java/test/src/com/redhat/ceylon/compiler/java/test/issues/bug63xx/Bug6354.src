@@ -49,12 +49,12 @@ final class bug6354_ {
             private final C c;
             
             private final C getC$priv$() {
-                return c;
+                return this.c;
             }
             private final C c2;
             
             private final C getC2$priv$() {
-                return c2;
+                return this.c2;
             }
             
             @.java.lang.Override

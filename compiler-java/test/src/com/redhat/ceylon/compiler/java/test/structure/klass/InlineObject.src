@@ -62,7 +62,7 @@ final class inlineObject_ {
                     
                     @.ceylon.language.SharedAnnotation$annotation$
                     public final long getA() {
-                        return a;
+                        return this.a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
@@ -175,7 +175,7 @@ final class inlineObject_ {
                     
                     @.ceylon.language.SharedAnnotation$annotation$
                     public final long getA() {
-                        return a;
+                        return this.a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
@@ -360,7 +360,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                     
                     @.ceylon.language.SharedAnnotation$annotation$
                     public final long getA() {
-                        return a;
+                        return this.a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
@@ -386,7 +386,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     public final .java.lang.Object getParam() {
-        return param;
+        return this.param;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -411,7 +411,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                     
                     @.ceylon.language.SharedAnnotation$annotation$
                     public final long getA() {
-                        return a;
+                        return this.a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
@@ -437,7 +437,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     public final .java.lang.Object getAttribute() {
-        return attribute;
+        return this.attribute;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -473,7 +473,7 @@ class InlineObjectInDefaultClassParam<T> implements .com.redhat.ceylon.compiler.
                     
                     @.ceylon.language.SharedAnnotation$annotation$
                     public final long getA() {
-                        return a;
+                        return this.a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
@@ -580,7 +580,7 @@ class InlineObjectInSuperClassParam extends .com.redhat.ceylon.compiler.java.tes
                     
                     @.ceylon.language.SharedAnnotation$annotation$
                     public final long getA() {
-                        return a;
+                        return this.a;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
@@ -644,7 +644,7 @@ final class inlineObjectTopLevel_ {
                         
                         @.ceylon.language.SharedAnnotation$annotation$
                         public final long getA() {
-                            return a;
+                            return this.a;
                         }
                         
                         @.ceylon.language.SharedAnnotation$annotation$
@@ -660,20 +660,20 @@ final class inlineObjectTopLevel_ {
                 }
                 returning new anonymous_2_();
             );
-            inlineObjectTopLevel_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObjectTopLevel_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            inlineObjectTopLevel_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObjectTopLevel_.$init$value = false;
         }
     }
     
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Object")
     public static .java.lang.Object get_() {
-        if (inlineObjectTopLevel_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.inlineObjectTopLevel_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.klass.inlineObjectTopLevel_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'inlineObjectTopLevel\' before it was set");

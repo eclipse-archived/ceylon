@@ -13,18 +13,18 @@ final class arr1_ {
                     .ceylon.language.Integer.instance(1L),
                     .ceylon.language.Integer.instance(2L),
                     .ceylon.language.Integer.instance(3L)}));
-            arr1_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug05xx.arr1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            arr1_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug05xx.arr1_.$init$value = false;
         }
     }
     
     public static .ceylon.language.Array<.ceylon.language.Integer> get_() {
-        if (arr1_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug05xx.arr1_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.arr1_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'arr1\' before it was set");
@@ -67,18 +67,18 @@ final class arr3_ {
                 }
                 returning new .ceylon.language.Array<.ceylon.language.Integer>(arg$0$reified$0, arg$0$0);
             );
-            arr3_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug05xx.arr3_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            arr3_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug05xx.arr3_.$init$value = false;
         }
     }
     
     public static .ceylon.language.Array<.ceylon.language.Integer> get_() {
-        if (arr3_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug05xx.arr3_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.arr3_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'arr3\' before it was set");

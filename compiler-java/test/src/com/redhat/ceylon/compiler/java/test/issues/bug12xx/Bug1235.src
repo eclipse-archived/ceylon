@@ -25,7 +25,7 @@ public class Bug1235A implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     @.java.lang.Override
     public final .ceylon.language.String getS() {
-        return s;
+        return this.s;
     }
     
     public static .ceylon.language.String $default$s() {
@@ -67,7 +67,7 @@ public class Bug1235B implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     @.java.lang.Override
     public final .ceylon.language.String getS() {
-        return s;
+        return this.s;
     }
     
     public static void main(.java.lang.String[] args) {

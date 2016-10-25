@@ -38,7 +38,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     @.com.redhat.ceylon.common.NonNull
     public final .java.lang.String getAttr() {
         if (this.attr != null) {
-            return attr;
+            return this.attr;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'attr\'");
         }
@@ -62,7 +62,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     @.com.redhat.ceylon.common.NonNull
     private final .java.lang.String getAttr2$priv$() {
         if (this.attr2 != null) {
-            return attr2;
+            return this.attr2;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'attr2\'");
         }
@@ -86,7 +86,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     @.ceylon.language.VariableAnnotation$annotation$
     @.com.redhat.ceylon.common.NonNull
     public final .java.lang.String getAttr3() {
-        return attr3;
+        return this.attr3;
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
@@ -101,7 +101,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     @.ceylon.language.VariableAnnotation$annotation$
     @.com.redhat.ceylon.common.NonNull
     private final .java.lang.String getAttr4$priv$() {
-        return attr4;
+        return this.attr4;
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
@@ -117,7 +117,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     @.ceylon.language.VariableAnnotation$annotation$
     @.com.redhat.ceylon.common.NonNull
     public final .java.lang.String getParam3() {
-        return param3;
+        return this.param3;
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget
@@ -132,7 +132,7 @@ class SetterTarget implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     @.ceylon.language.VariableAnnotation$annotation$
     @.com.redhat.ceylon.common.NonNull
     private final .java.lang.String getParam4$priv$() {
-        return param4;
+        return this.param4;
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.MethodTarget

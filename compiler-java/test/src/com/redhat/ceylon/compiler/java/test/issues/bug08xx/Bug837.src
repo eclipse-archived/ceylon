@@ -35,7 +35,7 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     private final long length;
     
     private final long getLength$priv$() {
-        return length;
+        return this.length;
     }
     protected final .ceylon.language.Sequence$impl<Element> $ceylon$language$Sequence$this$;
     
@@ -545,13 +545,13 @@ class Bug837<Element extends .ceylon.language.Ordinal<? extends Element>> extend
     
     @.java.lang.Override
     public final Element getFirst() {
-        return first;
+        return this.first;
     }
     private final Element last;
     
     @.java.lang.Override
     public final Element getLast() {
-        return last;
+        return this.last;
     }
     
     @.java.lang.Override

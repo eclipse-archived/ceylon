@@ -18,19 +18,19 @@ final class bug1814_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            bug1814_.value = 0L;
-            bug1814_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1814_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1814_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            bug1814_.value = 0L;
-            bug1814_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1814_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1814_.$init$value = false;
         }
     }
     
     public static long get_() {
-        if (bug1814_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1814_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1814_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1814\' before it was set");
@@ -39,6 +39,6 @@ final class bug1814_ {
     
     public static void set_(final long bug1814) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = bug1814;
+        .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1814_.value = bug1814;
     }
 }

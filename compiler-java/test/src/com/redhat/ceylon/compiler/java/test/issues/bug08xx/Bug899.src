@@ -15,7 +15,7 @@ public final class bug899_ {
             private final long i;
             
             private final long getI$priv$() {
-                return i;
+                return this.i;
             }
             
             public final long f() {

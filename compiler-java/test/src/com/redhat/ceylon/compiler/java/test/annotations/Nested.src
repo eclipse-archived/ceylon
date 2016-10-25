@@ -59,7 +59,7 @@ final class NestedLeaf implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getI1() {
-        return i1;
+        return this.i1;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -204,7 +204,7 @@ final class NestedBranch implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.common.NonNull
     public final .java.lang.String getS() {
-        return s;
+        return this.s;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf b;
@@ -213,7 +213,7 @@ final class NestedBranch implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::NestedLeaf")
     public final .com.redhat.ceylon.compiler.java.test.annotations.NestedLeaf getB() {
-        return b;
+        return this.b;
     }
     
     @.java.lang.Override

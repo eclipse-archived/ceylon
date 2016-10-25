@@ -5,7 +5,7 @@ public class StaticLate implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     private static final .java.lang.String getEntityManager$priv$() {
         if (.com.redhat.ceylon.compiler.java.test.structure.attribute.StaticLate.entityManager != null) {
-            return (.java.lang.String)entityManager;
+            return (.java.lang.String).com.redhat.ceylon.compiler.java.test.structure.attribute.StaticLate.entityManager;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'entityManager\'");
         }

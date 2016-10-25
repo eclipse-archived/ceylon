@@ -35,7 +35,7 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private final .java.lang.String name;
     
     public final .java.lang.String getName() {
-        return name;
+        return this.name;
     }
     
     @.java.lang.Override

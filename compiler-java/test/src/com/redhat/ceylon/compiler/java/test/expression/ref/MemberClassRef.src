@@ -37,7 +37,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .java.lang.String s;
         
         private final .java.lang.String getS$priv$() {
-            return s;
+            return this.s;
         }
         
         @.java.lang.Override
@@ -64,12 +64,12 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .java.lang.String s1;
         
         private final .java.lang.String getS1$priv$() {
-            return s1;
+            return this.s1;
         }
         private final .java.lang.String s2;
         
         private final .java.lang.String getS2$priv$() {
-            return s2;
+            return this.s2;
         }
         
         @.java.lang.Override
@@ -97,17 +97,17 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .java.lang.String s1;
         
         private final .java.lang.String getS1$priv$() {
-            return s1;
+            return this.s1;
         }
         private final .java.lang.String s2;
         
         private final .java.lang.String getS2$priv$() {
-            return s2;
+            return this.s2;
         }
         private final .java.lang.String s3;
         
         private final .java.lang.String getS3$priv$() {
-            return s3;
+            return this.s3;
         }
         
         @.java.lang.Override
@@ -136,22 +136,22 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .java.lang.String s1;
         
         private final .java.lang.String getS1$priv$() {
-            return s1;
+            return this.s1;
         }
         private final .java.lang.String s2;
         
         private final .java.lang.String getS2$priv$() {
-            return s2;
+            return this.s2;
         }
         private final .java.lang.String s3;
         
         private final .java.lang.String getS3$priv$() {
-            return s3;
+            return this.s3;
         }
         private final .java.lang.String s4;
         
         private final .java.lang.String getS4$priv$() {
-            return s4;
+            return this.s4;
         }
         
         @.java.lang.Override
@@ -294,7 +294,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .java.lang.String s;
         
         private final .java.lang.String getS$priv$() {
-            return s;
+            return this.s;
         }
         
         @.java.lang.Override
@@ -350,12 +350,12 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .java.lang.String s1;
         
         private final .java.lang.String getS1$priv$() {
-            return s1;
+            return this.s1;
         }
         private final .java.lang.String s2;
         
         private final .java.lang.String getS2$priv$() {
-            return s2;
+            return this.s2;
         }
         
         @.java.lang.Override
@@ -428,17 +428,17 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .java.lang.String s1;
         
         private final .java.lang.String getS1$priv$() {
-            return s1;
+            return this.s1;
         }
         private final .java.lang.String s2;
         
         private final .java.lang.String getS2$priv$() {
-            return s2;
+            return this.s2;
         }
         private final .java.lang.String s3;
         
         private final .java.lang.String getS3$priv$() {
-            return s3;
+            return this.s3;
         }
         
         @.java.lang.Override
@@ -529,22 +529,22 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .java.lang.String s1;
         
         private final .java.lang.String getS1$priv$() {
-            return s1;
+            return this.s1;
         }
         private final .java.lang.String s2;
         
         private final .java.lang.String getS2$priv$() {
-            return s2;
+            return this.s2;
         }
         private final .java.lang.String s3;
         
         private final .java.lang.String getS3$priv$() {
-            return s3;
+            return this.s3;
         }
         private final .java.lang.String s4;
         
         private final .java.lang.String getS4$priv$() {
-            return s4;
+            return this.s4;
         }
         
         @.java.lang.Override
@@ -801,7 +801,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .ceylon.language.Sequential<? extends .ceylon.language.String> s;
         
         private final .ceylon.language.Sequential<? extends .ceylon.language.String> getS$priv$() {
-            return s;
+            return this.s;
         }
         
         @.java.lang.Override
@@ -838,12 +838,12 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .java.lang.String s1;
         
         private final .java.lang.String getS1$priv$() {
-            return s1;
+            return this.s1;
         }
         private final .ceylon.language.Sequential<? extends .ceylon.language.String> s;
         
         private final .ceylon.language.Sequential<? extends .ceylon.language.String> getS$priv$() {
-            return s;
+            return this.s;
         }
         
         @.java.lang.Override
@@ -881,17 +881,17 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .java.lang.String s1;
         
         private final .java.lang.String getS1$priv$() {
-            return s1;
+            return this.s1;
         }
         private final .java.lang.String s2;
         
         private final .java.lang.String getS2$priv$() {
-            return s2;
+            return this.s2;
         }
         private final .ceylon.language.Sequential<? extends .ceylon.language.String> s;
         
         private final .ceylon.language.Sequential<? extends .ceylon.language.String> getS$priv$() {
-            return s;
+            return this.s;
         }
         
         @.java.lang.Override
@@ -930,22 +930,22 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .java.lang.String s1;
         
         private final .java.lang.String getS1$priv$() {
-            return s1;
+            return this.s1;
         }
         private final .java.lang.String s2;
         
         private final .java.lang.String getS2$priv$() {
-            return s2;
+            return this.s2;
         }
         private final .java.lang.String s3;
         
         private final .java.lang.String getS3$priv$() {
-            return s3;
+            return this.s3;
         }
         private final .ceylon.language.Sequential<? extends .ceylon.language.String> s;
         
         private final .ceylon.language.Sequential<? extends .ceylon.language.String> getS$priv$() {
-            return s;
+            return this.s;
         }
         
         @.java.lang.Override
@@ -985,27 +985,27 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .java.lang.String s1;
         
         private final .java.lang.String getS1$priv$() {
-            return s1;
+            return this.s1;
         }
         private final .java.lang.String s2;
         
         private final .java.lang.String getS2$priv$() {
-            return s2;
+            return this.s2;
         }
         private final .java.lang.String s3;
         
         private final .java.lang.String getS3$priv$() {
-            return s3;
+            return this.s3;
         }
         private final .java.lang.String s4;
         
         private final .java.lang.String getS4$priv$() {
-            return s4;
+            return this.s4;
         }
         private final .ceylon.language.Sequential<? extends .ceylon.language.String> s;
         
         private final .ceylon.language.Sequential<? extends .ceylon.language.String> getS$priv$() {
-            return s;
+            return this.s;
         }
         
         @.java.lang.Override
@@ -1445,7 +1445,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final T1 s;
         
         private final T1 getS$priv$() {
-            return s;
+            return this.s;
         }
         
         @.java.lang.Override
@@ -1476,12 +1476,12 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final T1 s1;
         
         private final T1 getS1$priv$() {
-            return s1;
+            return this.s1;
         }
         private final T2 s2;
         
         private final T2 getS2$priv$() {
-            return s2;
+            return this.s2;
         }
         
         @.java.lang.Override
@@ -1515,17 +1515,17 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final T1 s1;
         
         private final T1 getS1$priv$() {
-            return s1;
+            return this.s1;
         }
         private final T2 s2;
         
         private final T2 getS2$priv$() {
-            return s2;
+            return this.s2;
         }
         private final T3 s3;
         
         private final T3 getS3$priv$() {
-            return s3;
+            return this.s3;
         }
         
         @.java.lang.Override
@@ -1562,22 +1562,22 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final T1 s1;
         
         private final T1 getS1$priv$() {
-            return s1;
+            return this.s1;
         }
         private final T2 s2;
         
         private final T2 getS2$priv$() {
-            return s2;
+            return this.s2;
         }
         private final T3 s3;
         
         private final T3 getS3$priv$() {
-            return s3;
+            return this.s3;
         }
         private final T4 s4;
         
         private final T4 getS4$priv$() {
-            return s4;
+            return this.s4;
         }
         
         @.java.lang.Override
@@ -1743,7 +1743,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final .java.lang.String s;
         
         private final .java.lang.String getS$priv$() {
-            return s;
+            return this.s;
         }
         
         public .com.redhat.ceylon.compiler.java.test.expression.ref.MemberClassRef.Inner.M M$new$(final .java.lang.String s2) {
@@ -1758,7 +1758,7 @@ class MemberClassRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
             private final .java.lang.String s2;
             
             private final .java.lang.String getS2$priv$() {
-                return s2;
+                return this.s2;
             }
             
             @.java.lang.Override

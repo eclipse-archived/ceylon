@@ -21,12 +21,12 @@ class GenericBottom<T, U> implements .com.redhat.ceylon.compiler.java.runtime.mo
     private final T attrTp;
     
     private final T getAttrTp$priv$() {
-        return attrTp;
+        return this.attrTp;
     }
     private final .java.lang.Object attrIntersection;
     
     private final .java.lang.Object getAttrIntersection$priv$() {
-        return attrIntersection;
+        return this.attrIntersection;
     }
     
     private final T methodTp$priv$(final T o) {

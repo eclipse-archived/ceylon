@@ -17,7 +17,7 @@ class Bug979Iterable implements .com.redhat.ceylon.compiler.java.runtime.model.R
     private final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings;
     
     private final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getStrings$priv$() {
-        return strings;
+        return this.strings;
     }
     protected final .ceylon.language.Iterable$impl<.ceylon.language.String, .java.lang.Object> $ceylon$language$Iterable$this$;
     
@@ -370,7 +370,7 @@ class Bug979Set extends .java.lang.Object implements .com.redhat.ceylon.compiler
     private final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> strings;
     
     private final .ceylon.language.Iterable<? extends .ceylon.language.String, ? extends .java.lang.Object> getStrings$priv$() {
-        return strings;
+        return this.strings;
     }
     protected final .ceylon.language.Set$impl<.ceylon.language.String> $ceylon$language$Set$this$;
     

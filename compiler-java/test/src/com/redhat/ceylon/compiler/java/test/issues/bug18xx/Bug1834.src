@@ -65,19 +65,19 @@ class Bottom extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Right 
     private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left> sides;
     
     private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Left> getSides$priv$() {
-        return sides;
+        return this.sides;
     }
     private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top> children;
     
     @.java.lang.Override
     public final .ceylon.language.Sequential getChildren() {
-        return children;
+        return this.children;
     }
     private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug18xx.Top> children2;
     
     @.java.lang.Override
     public final .ceylon.language.Sequential getChildren2() {
-        return children2;
+        return this.children2;
     }
     
     @.java.lang.Override

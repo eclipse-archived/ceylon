@@ -18,7 +18,7 @@ class SingletonConstructorTargets implements .com.redhat.ceylon.compiler.java.ru
     
     @.ceylon.language.SharedAnnotation$annotation$
     public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getSingletonConstructorTargets$fieldAnnotated() {
-        return fieldAnnotated;
+        return .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.fieldAnnotated;
     }
     
     private static final class methodAnnotated_ {
@@ -37,7 +37,7 @@ class SingletonConstructorTargets implements .com.redhat.ceylon.compiler.java.ru
     @.com.redhat.ceylon.compiler.java.test.annotations.ConstructorOrFieldOrMethodTarget
     @.ceylon.language.SharedAnnotation$annotation$
     public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getSingletonConstructorTargets$methodAnnotated() {
-        return methodAnnotated;
+        return .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.methodAnnotated;
     }
     
     private static final class constructorAnnotated_ {
@@ -57,7 +57,7 @@ class SingletonConstructorTargets implements .com.redhat.ceylon.compiler.java.ru
     
     @.ceylon.language.SharedAnnotation$annotation$
     public static final .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets getSingletonConstructorTargets$constructorAnnotated() {
-        return constructorAnnotated;
+        return .com.redhat.ceylon.compiler.java.test.annotations.SingletonConstructorTargets.constructorAnnotated;
     }
     
     @.java.lang.Override

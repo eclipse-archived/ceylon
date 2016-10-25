@@ -9,12 +9,12 @@ class AttributeAccess implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final boolean b1;
     
     private final boolean getB1$priv$() {
-        return b1;
+        return this.b1;
     }
     private final boolean b2;
     
     public final boolean getB2() {
-        return b2;
+        return this.b2;
     }
     
     private final boolean getB3$priv$() {

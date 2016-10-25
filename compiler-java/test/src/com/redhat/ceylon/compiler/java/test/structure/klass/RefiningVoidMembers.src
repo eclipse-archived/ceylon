@@ -16,7 +16,7 @@ abstract class RefiningAnythingMembersClass<T> implements .com.redhat.ceylon.com
     private final T t;
     
     private final T getT$priv$() {
-        return t;
+        return this.t;
     }
     
     public final void notRefinable() {

@@ -60,18 +60,18 @@ final class bug6409_ implements .java.io.Serializable, .com.redhat.ceylon.compil
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6409_();
-            bug6409_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6409_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug6409_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6409_.$init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6409_ get_() {
-        if (bug6409_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6409_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6409_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug6409\' before it was set");

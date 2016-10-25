@@ -13,12 +13,12 @@ class Bug6215 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     .java.lang.String getS$priv$() {
-        return s;
+        return this.s;
     }
     final .java.lang.String s;
     
     long getI$priv$() {
-        return i;
+        return this.i;
     }
     final long i;
     

@@ -155,7 +155,7 @@ class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final .ceylon.language.Callable<? extends .java.lang.Object> value1;
     
     private final .ceylon.language.Callable<? extends .java.lang.Object> getValue1$priv$() {
-        return value1;
+        return this.value1;
     }
     
     private final void mValue1$priv$() {
@@ -164,7 +164,7 @@ class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> value2;
     
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getValue2$priv$() {
-        return value2;
+        return this.value2;
     }
     
     private final long mValue2$priv$() {
@@ -173,7 +173,7 @@ class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> value3;
     
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> getValue3$priv$() {
-        return value3;
+        return this.value3;
     }
     
     private final boolean mValue3$priv$() {
@@ -182,7 +182,7 @@ class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final .ceylon.language.Callable<? extends .ceylon.language.String> value4;
     
     private final .ceylon.language.Callable<? extends .ceylon.language.String> getValue4$priv$() {
-        return value4;
+        return this.value4;
     }
     
     private final .java.lang.String mValue4$priv$() {
@@ -191,7 +191,7 @@ class IndirectInvoke<X> implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final .ceylon.language.Callable<? extends X> value5;
     
     private final .ceylon.language.Callable<? extends X> getValue5$priv$() {
-        return value5;
+        return this.value5;
     }
     
     private final X mValue5$priv$() {

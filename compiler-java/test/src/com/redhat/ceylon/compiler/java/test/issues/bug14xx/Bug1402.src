@@ -13,7 +13,7 @@ class Bug1402Parent implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     private final .ceylon.language.Sequence<? extends .ceylon.language.String> attrs;
     
     private final .ceylon.language.Sequence<? extends .ceylon.language.String> getAttrs$priv$() {
-        return attrs;
+        return this.attrs;
     }
     
     @.java.lang.Override

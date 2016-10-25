@@ -99,7 +99,7 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .java
                         return (int)(
                             let
                             {
-                                long $ceylontmp$hash$2 = hash;
+                                long $ceylontmp$hash$2 = this.hash;
                             }
                             returning $ceylontmp$hash$2 ^ $ceylontmp$hash$2 >>> 32;
                         );
@@ -150,7 +150,7 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .java
         return (int)(
             let
             {
-                long $ceylontmp$hash$0 = hash;
+                long $ceylontmp$hash$0 = this.hash;
             }
             returning $ceylontmp$hash$0 ^ $ceylontmp$hash$0 >>> 32;
         );
@@ -169,18 +169,18 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .java
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_();
-            bug1286_objectDefinition_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug1286_objectDefinition_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.$init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_ get_() {
-        if (bug1286_objectDefinition_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1286_objectDefinition\' before it was set");
@@ -226,7 +226,7 @@ final class bug1286_method_ {
                                 return (int)(
                                     let
                                     {
-                                        long $ceylontmp$hash$5 = hash;
+                                        long $ceylontmp$hash$5 = this.hash;
                                     }
                                     returning $ceylontmp$hash$5 ^ $ceylontmp$hash$5 >>> 32;
                                 );
@@ -303,7 +303,7 @@ class Bug1286_initializer implements .com.redhat.ceylon.compiler.java.runtime.mo
                                 return (int)(
                                     let
                                     {
-                                        long $ceylontmp$hash$8 = hash;
+                                        long $ceylontmp$hash$8 = this.hash;
                                     }
                                     returning $ceylontmp$hash$8 ^ $ceylontmp$hash$8 >>> 32;
                                 );
@@ -455,7 +455,7 @@ final class bug1286_getterSetter_ {
                 return (int)(
                     let
                     {
-                        long $ceylontmp$hash$9 = hash;
+                        long $ceylontmp$hash$9 = this.hash;
                     }
                     returning $ceylontmp$hash$9 ^ $ceylontmp$hash$9 >>> 32;
                 );

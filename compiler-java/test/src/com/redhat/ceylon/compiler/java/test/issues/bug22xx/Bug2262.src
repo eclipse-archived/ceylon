@@ -16,7 +16,7 @@ class Bug2262 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     }
     
     public static final .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262 getBug2262$bar() {
-        return bar;
+        return .com.redhat.ceylon.compiler.java.test.issues.bug22xx.Bug2262.bar;
     }
     
     @.java.lang.Override

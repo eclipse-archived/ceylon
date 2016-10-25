@@ -10,18 +10,18 @@ final class topLevelAttribute_ {
     static {
         try {
             value = 0L;
-            topLevelAttribute_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelAttribute_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            topLevelAttribute_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelAttribute_.$init$value = false;
         }
     }
     
     public static long get_() {
-        if (topLevelAttribute_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelAttribute_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelAttribute_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelAttribute\' before it was set");

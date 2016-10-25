@@ -104,7 +104,7 @@ class SerializableInterfaceSatisfierGeneric<U> implements .com.redhat.ceylon.com
     private final U u;
     
     private final U getU$priv$() {
-        return u;
+        return this.u;
     }
     protected final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableInterface$impl<U> $com$redhat$ceylon$compiler$java$test$structure$klass$SerializableInterface$this$;
     

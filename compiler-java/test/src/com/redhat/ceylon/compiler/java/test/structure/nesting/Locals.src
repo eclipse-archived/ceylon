@@ -85,7 +85,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
             private final long j;
             
             private final long getJ$priv$() {
-                return j;
+                return this.j;
             }
             
             final class LCI$impl implements .java.io.Serializable {
@@ -124,7 +124,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                 private final long k;
                 
                 private final long getK$priv$() {
-                    return k;
+                    return this.k;
                 }
                 protected final LC.LCI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LC$LCI$this$;
                 
@@ -193,7 +193,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                 private final long j;
                 
                 private final long getJ$priv$() {
-                    return j;
+                    return this.j;
                 }
                 protected final LI$impl.LII$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$local$LI$LII$this$;
                 
@@ -248,7 +248,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
         private final long i;
         
         private final long getI$priv$() {
-            return i;
+            return this.i;
         }
         
         private final void local2$priv$() {
@@ -295,7 +295,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                 private final long k;
                 
                 private final long getK$priv$() {
-                    return k;
+                    return this.k;
                 }
                 
                 final class LCI$impl implements .java.io.Serializable {
@@ -334,7 +334,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                     private final long l;
                     
                     private final long getL$priv$() {
-                        return l;
+                        return this.l;
                     }
                     protected final CL.LCI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$C$local2$CL$LCI$this$;
                     
@@ -428,7 +428,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                 private final long j;
                 
                 private final long getJ$priv$() {
-                    return j;
+                    return this.j;
                 }
                 
                 final class ICI$impl implements .java.io.Serializable {
@@ -467,7 +467,7 @@ class Local implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
                     private final long k;
                     
                     private final long getK$priv$() {
-                        return k;
+                        return this.k;
                     }
                     protected final IL.ICI$impl $com$redhat$ceylon$compiler$java$test$structure$nesting$Local$I$local3$IL$ICI$this$;
                     

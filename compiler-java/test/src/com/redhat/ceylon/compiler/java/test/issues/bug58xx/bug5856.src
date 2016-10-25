@@ -25,12 +25,12 @@ class Bug5856 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
             private final ActualNode node1;
             
             private final ActualNode getNode1$priv$() {
-                return node1;
+                return this.node1;
             }
             private final ActualNode node2;
             
             private final ActualNode getNode2$priv$() {
-                return node2;
+                return this.node2;
             }
             
             public boolean touches(final ActualNode node) {

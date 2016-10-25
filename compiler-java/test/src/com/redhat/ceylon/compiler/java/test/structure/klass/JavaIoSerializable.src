@@ -88,12 +88,12 @@ final class javaIoSerializableObject_ extends .java.lang.Object implements .java
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_();
-            javaIoSerializableObject_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            javaIoSerializableObject_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$init$value = false;
         }
     }
     
@@ -101,8 +101,8 @@ final class javaIoSerializableObject_ extends .java.lang.Object implements .java
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::javaIoSerializableObject")
     static .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_ get_() {
-        if (javaIoSerializableObject_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'javaIoSerializableObject\' before it was set");
@@ -140,12 +140,12 @@ final class javaIoSerializableBasic_ extends .java.lang.Object implements .java.
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_();
-            javaIoSerializableBasic_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            javaIoSerializableBasic_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$init$value = false;
         }
     }
     
@@ -153,8 +153,8 @@ final class javaIoSerializableBasic_ extends .java.lang.Object implements .java.
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::javaIoSerializableBasic")
     static .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_ get_() {
-        if (javaIoSerializableBasic_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'javaIoSerializableBasic\' before it was set");
@@ -293,7 +293,7 @@ class JavaIoSerializableCtors implements .com.redhat.ceylon.compiler.java.runtim
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::JavaIoSerializableCtors.foo")
     @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
     public static final .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors getJavaIoSerializableCtors$foo() {
-        return foo;
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.foo;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -324,7 +324,7 @@ class JavaIoSerializableCtors implements .com.redhat.ceylon.compiler.java.runtim
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::JavaIoSerializableCtors.bar")
     @.com.redhat.ceylon.compiler.java.metadata.Name("bar")
     public static final .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors getJavaIoSerializableCtors$bar() {
-        return bar;
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableCtors.bar;
     }
     
     @.java.lang.Override
@@ -380,7 +380,7 @@ class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.r
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::JavaIoSerializableValueCtors.foo")
     @.com.redhat.ceylon.compiler.java.metadata.Name("foo")
     public static final .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors getJavaIoSerializableValueCtors$foo() {
-        return foo;
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors.foo;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
@@ -411,7 +411,7 @@ class JavaIoSerializableValueCtors implements .com.redhat.ceylon.compiler.java.r
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::JavaIoSerializableValueCtors.bar")
     @.com.redhat.ceylon.compiler.java.metadata.Name("bar")
     public static final .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors getJavaIoSerializableValueCtors$bar() {
-        return bar;
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableValueCtors.bar;
     }
     
     @.java.lang.Override
@@ -604,12 +604,12 @@ final class javaIoSerializableQuoting_ implements .java.io.Serializable, .com.re
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_();
-            javaIoSerializableQuoting_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            javaIoSerializableQuoting_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$init$value = false;
         }
     }
     
@@ -617,8 +617,8 @@ final class javaIoSerializableQuoting_ implements .java.io.Serializable, .com.re
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::javaIoSerializableQuoting")
     static .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_ get_() {
-        if (javaIoSerializableQuoting_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'javaIoSerializableQuoting\' before it was set");
@@ -669,7 +669,7 @@ class JavaIoSerializableQuoting implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::JavaIoSerializableQuoting.val")
     @.com.redhat.ceylon.compiler.java.metadata.Name("val")
     public static final .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableQuoting getJavaIoSerializableQuoting$val() {
-        return val;
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.JavaIoSerializableQuoting.val;
     }
     
     @.java.lang.Override

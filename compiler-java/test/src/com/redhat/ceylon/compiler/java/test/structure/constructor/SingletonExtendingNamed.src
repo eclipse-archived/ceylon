@@ -39,7 +39,7 @@ class SingletonExtendingNamed_Bar extends .com.redhat.ceylon.compiler.java.test.
     }
     
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar getSingletonExtendingNamed_Bar$bar() {
-        return bar;
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonExtendingNamed_Bar.bar;
     }
     
     @.java.lang.Override

@@ -24,19 +24,19 @@ final class f_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            f_.value = 2L;
-            f_.$init$value = true;
+            .bug148_2.f_.value = 2L;
+            .bug148_2.f_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            f_.value = 0L;
-            f_.$init$value = false;
+            .bug148_2.f_.value = 0L;
+            .bug148_2.f_.$init$value = false;
         }
     }
     
     public static long get_() {
-        if (f_.$init$value) {
-            return value;
+        if (.bug148_2.f_.$init$value) {
+            return .bug148_2.f_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'f\' before it was set");
@@ -45,6 +45,6 @@ final class f_ {
     
     public static void set_(final long f) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = f;
+        .bug148_2.f_.value = f;
     }
 }

@@ -10,18 +10,18 @@ public final class topLevelAttributeShared_ {
     static {
         try {
             value = 0L;
-            topLevelAttributeShared_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelAttributeShared_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = 0L;
-            topLevelAttributeShared_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelAttributeShared_.$init$value = false;
         }
     }
     
     public static long get_() {
-        if (topLevelAttributeShared_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelAttributeShared_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelAttributeShared_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelAttributeShared\' before it was set");

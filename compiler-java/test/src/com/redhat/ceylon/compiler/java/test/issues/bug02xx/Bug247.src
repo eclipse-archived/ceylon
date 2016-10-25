@@ -25,19 +25,19 @@ final class bug247_toplevel_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            bug247_toplevel_.value = 0L;
-            bug247_toplevel_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            bug247_toplevel_.value = 0L;
-            bug247_toplevel_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.$init$value = false;
         }
     }
     
     public static long get_() {
-        if (bug247_toplevel_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug247_toplevel\' before it was set");
@@ -46,6 +46,6 @@ final class bug247_toplevel_ {
     
     public static void set_(final long bug247_toplevel) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = bug247_toplevel;
+        .com.redhat.ceylon.compiler.java.test.issues.bug02xx.bug247_toplevel_.value = bug247_toplevel;
     }
 }

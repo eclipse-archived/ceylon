@@ -90,17 +90,17 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte initN;
     
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte getInitN$priv$() {
-        return initN;
+        return this.initN;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte initI;
     
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte getInitI$priv$() {
-        return initI;
+        return this.initI;
     }
     private byte n1;
     
     public final byte getN1() {
-        return n1;
+        return this.n1;
     }
     
     public final void setN1(final byte n1) {
@@ -109,7 +109,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     private byte n2;
     
     public final byte getN2() {
-        return n2;
+        return this.n2;
     }
     
     public final void setN2(final byte n2) {
@@ -118,7 +118,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     private byte i1;
     
     public final byte getI1() {
-        return i1;
+        return this.i1;
     }
     
     public final void setI1(final byte i1) {
@@ -151,7 +151,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     private .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte boxedByte1;
     
     public final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte getBoxedByte1() {
-        return boxedByte1;
+        return this.boxedByte1;
     }
     
     public final void setBoxedByte1(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte boxedByte1) {
@@ -160,7 +160,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     private .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte boxedByte2;
     
     public final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte getBoxedByte2() {
-        return boxedByte2;
+        return this.boxedByte2;
     }
     
     public final void setBoxedByte2(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte boxedByte2) {
@@ -169,7 +169,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
     private .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte boxedByte3;
     
     public final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte getBoxedByte3() {
-        return boxedByte3;
+        return this.boxedByte3;
     }
     
     public final void setBoxedByte3(final .com.redhat.ceylon.compiler.java.test.expression.operator.BWMyByte boxedByte3) {
@@ -424,19 +424,19 @@ final class bwToplevelByte1_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            bwToplevelByte1_.value = (byte)0L;
-            bwToplevelByte1_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.value = (byte)0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            bwToplevelByte1_.value = "0";
-            bwToplevelByte1_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.value = "0";
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.$init$value = false;
         }
     }
     
     public static byte get_() {
-        if (bwToplevelByte1_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bwToplevelByte1\' before it was set");
@@ -445,7 +445,7 @@ final class bwToplevelByte1_ {
     
     public static void set_(final byte bwToplevelByte1) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = bwToplevelByte1;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte1_.value = bwToplevelByte1;
     }
 }
 final class bwToplevelByte2_ {
@@ -457,19 +457,19 @@ final class bwToplevelByte2_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            bwToplevelByte2_.value = (byte)0L;
-            bwToplevelByte2_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.value = (byte)0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            bwToplevelByte2_.value = "0";
-            bwToplevelByte2_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.value = "0";
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.$init$value = false;
         }
     }
     
     public static byte get_() {
-        if (bwToplevelByte2_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bwToplevelByte2\' before it was set");
@@ -478,7 +478,7 @@ final class bwToplevelByte2_ {
     
     public static void set_(final byte bwToplevelByte2) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = bwToplevelByte2;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte2_.value = bwToplevelByte2;
     }
 }
 final class bwToplevelByte3_ {
@@ -490,19 +490,19 @@ final class bwToplevelByte3_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            bwToplevelByte3_.value = (byte)0L;
-            bwToplevelByte3_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.value = (byte)0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            bwToplevelByte3_.value = "0";
-            bwToplevelByte3_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.value = "0";
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.$init$value = false;
         }
     }
     
     public static byte get_() {
-        if (bwToplevelByte3_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bwToplevelByte3\' before it was set");
@@ -511,7 +511,7 @@ final class bwToplevelByte3_ {
     
     public static void set_(final byte bwToplevelByte3) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = bwToplevelByte3;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelByte3_.value = bwToplevelByte3;
     }
 }
 final class bwToplevelGetterByte1_ {

@@ -10,12 +10,12 @@ class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtim
     private final double x;
     
     public final double getX() {
-        return x;
+        return this.x;
     }
     private final double y;
     
     public final double getY() {
-        return y;
+        return this.y;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.cartesian$delegation$_ cartesian$delegation$_ = null;
     
@@ -56,7 +56,7 @@ class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation getSingletonCtorDelegation$origin() {
-        return origin;
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.origin;
     }
     
     private static final class oneone_ {
@@ -74,7 +74,7 @@ class SingletonCtorDelegation implements .com.redhat.ceylon.compiler.java.runtim
     }
     
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation getSingletonCtorDelegation$oneone() {
-        return oneone;
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorDelegation.oneone;
     }
     
     @.java.lang.Override
@@ -103,12 +103,12 @@ class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.jav
     private final double x;
     
     public final double getX() {
-        return x;
+        return this.x;
     }
     private final double y;
     
     public final double getY() {
-        return y;
+        return this.y;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.point_ point_ = null;
     
@@ -138,7 +138,7 @@ class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.jav
     }
     
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation getSingletonCtorAbstractDelegation$origin() {
-        return origin;
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.origin;
     }
     
     private static final class oneone_ {
@@ -156,7 +156,7 @@ class SingletonCtorAbstractDelegation implements .com.redhat.ceylon.compiler.jav
     }
     
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation getSingletonCtorAbstractDelegation$oneone() {
-        return oneone;
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtorAbstractDelegation.oneone;
     }
     
     @.java.lang.Override

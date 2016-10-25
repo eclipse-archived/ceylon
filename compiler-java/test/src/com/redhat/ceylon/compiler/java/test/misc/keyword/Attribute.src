@@ -125,257 +125,257 @@ public class AttributeShared implements .com.redhat.ceylon.compiler.java.runtime
     private final boolean $abstract;
     
     public final boolean getAbstract() {
-        return $abstract;
+        return this.$abstract;
     }
     private final boolean $assert;
     
     public final boolean getAssert() {
-        return $assert;
+        return this.$assert;
     }
     private final boolean $boolean;
     
     public final boolean getBoolean() {
-        return $boolean;
+        return this.$boolean;
     }
     private final boolean $break;
     
     public final boolean getBreak() {
-        return $break;
+        return this.$break;
     }
     private final boolean $byte;
     
     public final boolean getByte() {
-        return $byte;
+        return this.$byte;
     }
     private final boolean $case;
     
     public final boolean getCase() {
-        return $case;
+        return this.$case;
     }
     private final boolean $catch;
     
     public final boolean getCatch() {
-        return $catch;
+        return this.$catch;
     }
     private final boolean $char;
     
     public final boolean getChar() {
-        return $char;
+        return this.$char;
     }
     private final boolean $const;
     
     public final boolean getConst() {
-        return $const;
+        return this.$const;
     }
     private final boolean $continue;
     
     public final boolean getContinue() {
-        return $continue;
+        return this.$continue;
     }
     private final boolean $default;
     
     public final boolean getDefault() {
-        return $default;
+        return this.$default;
     }
     private final boolean $do;
     
     public final boolean getDo() {
-        return $do;
+        return this.$do;
     }
     private final boolean $double;
     
     public final boolean getDouble() {
-        return $double;
+        return this.$double;
     }
     private final boolean $else;
     
     public final boolean getElse() {
-        return $else;
+        return this.$else;
     }
     private final boolean $enum;
     
     public final boolean getEnum() {
-        return $enum;
+        return this.$enum;
     }
     private final boolean $extends;
     
     public final boolean getExtends() {
-        return $extends;
+        return this.$extends;
     }
     private final boolean $final;
     
     public final boolean getFinal() {
-        return $final;
+        return this.$final;
     }
     private final boolean $finally;
     
     public final boolean getFinally() {
-        return $finally;
+        return this.$finally;
     }
     private final boolean $float;
     
     public final boolean getFloat() {
-        return $float;
+        return this.$float;
     }
     private final boolean $for;
     
     public final boolean getFor() {
-        return $for;
+        return this.$for;
     }
     private final boolean $goto;
     
     public final boolean getGoto() {
-        return $goto;
+        return this.$goto;
     }
     private final boolean $if;
     
     public final boolean getIf() {
-        return $if;
+        return this.$if;
     }
     private final boolean $implements;
     
     public final boolean getImplements() {
-        return $implements;
+        return this.$implements;
     }
     private final boolean $import;
     
     public final boolean getImport() {
-        return $import;
+        return this.$import;
     }
     private final boolean $instanceof;
     
     public final boolean getInstanceof() {
-        return $instanceof;
+        return this.$instanceof;
     }
     private final boolean $int;
     
     public final boolean getInt() {
-        return $int;
+        return this.$int;
     }
     private final boolean $interface;
     
     public final boolean getInterface() {
-        return $interface;
+        return this.$interface;
     }
     private final boolean $long;
     
     public final boolean getLong() {
-        return $long;
+        return this.$long;
     }
     private final boolean $native;
     
     public final boolean getNative() {
-        return $native;
+        return this.$native;
     }
     private final boolean $new;
     
     public final boolean getNew() {
-        return $new;
+        return this.$new;
     }
     private final boolean $package;
     
     public final boolean getPackage() {
-        return $package;
+        return this.$package;
     }
     private final boolean $private;
     
     public final boolean getPrivate() {
-        return $private;
+        return this.$private;
     }
     private final boolean $protected;
     
     public final boolean getProtected() {
-        return $protected;
+        return this.$protected;
     }
     private final boolean $public;
     
     public final boolean getPublic() {
-        return $public;
+        return this.$public;
     }
     private final boolean $return;
     
     public final boolean getReturn() {
-        return $return;
+        return this.$return;
     }
     private final boolean $short;
     
     public final boolean getShort() {
-        return $short;
+        return this.$short;
     }
     private final boolean $static;
     
     public final boolean getStatic() {
-        return $static;
+        return this.$static;
     }
     private final boolean $strictfp;
     
     public final boolean getStrictfp() {
-        return $strictfp;
+        return this.$strictfp;
     }
     private final boolean $super;
     
     public final boolean getSuper() {
-        return $super;
+        return this.$super;
     }
     private final boolean $switch;
     
     public final boolean getSwitch() {
-        return $switch;
+        return this.$switch;
     }
     private final boolean $synchronized;
     
     public final boolean getSynchronized() {
-        return $synchronized;
+        return this.$synchronized;
     }
     private final boolean $this;
     
     public final boolean getThis() {
-        return $this;
+        return this.$this;
     }
     private final boolean $throw;
     
     public final boolean getThrow() {
-        return $throw;
+        return this.$throw;
     }
     private final boolean $throws;
     
     public final boolean getThrows() {
-        return $throws;
+        return this.$throws;
     }
     private final boolean $transient;
     
     public final boolean getTransient() {
-        return $transient;
+        return this.$transient;
     }
     private final boolean $try;
     
     public final boolean getTry() {
-        return $try;
+        return this.$try;
     }
     private final boolean $void;
     
     public final boolean getVoid() {
-        return $void;
+        return this.$void;
     }
     private final boolean $volatile;
     
     public final boolean getVolatile() {
-        return $volatile;
+        return this.$volatile;
     }
     private final boolean $while;
     
     public final boolean getWhile() {
-        return $while;
+        return this.$while;
     }
     private final boolean $true;
     
     public final boolean getTrue() {
-        return $true;
+        return this.$true;
     }
     private final boolean $null;
     
     public final boolean getNull() {
-        return $null;
+        return this.$null;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -509,7 +509,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $abstract;
     
     public final boolean getAbstract() {
-        return $abstract;
+        return this.$abstract;
     }
     
     public final void setAbstract(final boolean $abstract) {
@@ -518,7 +518,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $assert;
     
     public final boolean getAssert() {
-        return $assert;
+        return this.$assert;
     }
     
     public final void setAssert(final boolean $assert) {
@@ -527,7 +527,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $boolean;
     
     public final boolean getBoolean() {
-        return $boolean;
+        return this.$boolean;
     }
     
     public final void setBoolean(final boolean $boolean) {
@@ -536,7 +536,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $break;
     
     public final boolean getBreak() {
-        return $break;
+        return this.$break;
     }
     
     public final void setBreak(final boolean $break) {
@@ -545,7 +545,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $byte;
     
     public final boolean getByte() {
-        return $byte;
+        return this.$byte;
     }
     
     public final void setByte(final boolean $byte) {
@@ -554,7 +554,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $case;
     
     public final boolean getCase() {
-        return $case;
+        return this.$case;
     }
     
     public final void setCase(final boolean $case) {
@@ -563,7 +563,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $catch;
     
     public final boolean getCatch() {
-        return $catch;
+        return this.$catch;
     }
     
     public final void setCatch(final boolean $catch) {
@@ -572,7 +572,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $char;
     
     public final boolean getChar() {
-        return $char;
+        return this.$char;
     }
     
     public final void setChar(final boolean $char) {
@@ -581,7 +581,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $const;
     
     public final boolean getConst() {
-        return $const;
+        return this.$const;
     }
     
     public final void setConst(final boolean $const) {
@@ -590,7 +590,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $continue;
     
     public final boolean getContinue() {
-        return $continue;
+        return this.$continue;
     }
     
     public final void setContinue(final boolean $continue) {
@@ -599,7 +599,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $default;
     
     public final boolean getDefault() {
-        return $default;
+        return this.$default;
     }
     
     public final void setDefault(final boolean $default) {
@@ -608,7 +608,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $do;
     
     public final boolean getDo() {
-        return $do;
+        return this.$do;
     }
     
     public final void setDo(final boolean $do) {
@@ -617,7 +617,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $double;
     
     public final boolean getDouble() {
-        return $double;
+        return this.$double;
     }
     
     public final void setDouble(final boolean $double) {
@@ -626,7 +626,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $else;
     
     public final boolean getElse() {
-        return $else;
+        return this.$else;
     }
     
     public final void setElse(final boolean $else) {
@@ -635,7 +635,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $enum;
     
     public final boolean getEnum() {
-        return $enum;
+        return this.$enum;
     }
     
     public final void setEnum(final boolean $enum) {
@@ -644,7 +644,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $extends;
     
     public final boolean getExtends() {
-        return $extends;
+        return this.$extends;
     }
     
     public final void setExtends(final boolean $extends) {
@@ -653,7 +653,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $final;
     
     public final boolean getFinal() {
-        return $final;
+        return this.$final;
     }
     
     public final void setFinal(final boolean $final) {
@@ -662,7 +662,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $finally;
     
     public final boolean getFinally() {
-        return $finally;
+        return this.$finally;
     }
     
     public final void setFinally(final boolean $finally) {
@@ -671,7 +671,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $float;
     
     public final boolean getFloat() {
-        return $float;
+        return this.$float;
     }
     
     public final void setFloat(final boolean $float) {
@@ -680,7 +680,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $for;
     
     public final boolean getFor() {
-        return $for;
+        return this.$for;
     }
     
     public final void setFor(final boolean $for) {
@@ -689,7 +689,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $goto;
     
     public final boolean getGoto() {
-        return $goto;
+        return this.$goto;
     }
     
     public final void setGoto(final boolean $goto) {
@@ -698,7 +698,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $if;
     
     public final boolean getIf() {
-        return $if;
+        return this.$if;
     }
     
     public final void setIf(final boolean $if) {
@@ -707,7 +707,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $implements;
     
     public final boolean getImplements() {
-        return $implements;
+        return this.$implements;
     }
     
     public final void setImplements(final boolean $implements) {
@@ -716,7 +716,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $import;
     
     public final boolean getImport() {
-        return $import;
+        return this.$import;
     }
     
     public final void setImport(final boolean $import) {
@@ -725,7 +725,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $instanceof;
     
     public final boolean getInstanceof() {
-        return $instanceof;
+        return this.$instanceof;
     }
     
     public final void setInstanceof(final boolean $instanceof) {
@@ -734,7 +734,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $int;
     
     public final boolean getInt() {
-        return $int;
+        return this.$int;
     }
     
     public final void setInt(final boolean $int) {
@@ -743,7 +743,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $interface;
     
     public final boolean getInterface() {
-        return $interface;
+        return this.$interface;
     }
     
     public final void setInterface(final boolean $interface) {
@@ -752,7 +752,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $long;
     
     public final boolean getLong() {
-        return $long;
+        return this.$long;
     }
     
     public final void setLong(final boolean $long) {
@@ -761,7 +761,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $native;
     
     public final boolean getNative() {
-        return $native;
+        return this.$native;
     }
     
     public final void setNative(final boolean $native) {
@@ -770,7 +770,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $new;
     
     public final boolean getNew() {
-        return $new;
+        return this.$new;
     }
     
     public final void setNew(final boolean $new) {
@@ -779,7 +779,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $package;
     
     public final boolean getPackage() {
-        return $package;
+        return this.$package;
     }
     
     public final void setPackage(final boolean $package) {
@@ -788,7 +788,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $private;
     
     public final boolean getPrivate() {
-        return $private;
+        return this.$private;
     }
     
     public final void setPrivate(final boolean $private) {
@@ -797,7 +797,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $protected;
     
     public final boolean getProtected() {
-        return $protected;
+        return this.$protected;
     }
     
     public final void setProtected(final boolean $protected) {
@@ -806,7 +806,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $public;
     
     public final boolean getPublic() {
-        return $public;
+        return this.$public;
     }
     
     public final void setPublic(final boolean $public) {
@@ -815,7 +815,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $return;
     
     public final boolean getReturn() {
-        return $return;
+        return this.$return;
     }
     
     public final void setReturn(final boolean $return) {
@@ -824,7 +824,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $short;
     
     public final boolean getShort() {
-        return $short;
+        return this.$short;
     }
     
     public final void setShort(final boolean $short) {
@@ -833,7 +833,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $static;
     
     public final boolean getStatic() {
-        return $static;
+        return this.$static;
     }
     
     public final void setStatic(final boolean $static) {
@@ -842,7 +842,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $strictfp;
     
     public final boolean getStrictfp() {
-        return $strictfp;
+        return this.$strictfp;
     }
     
     public final void setStrictfp(final boolean $strictfp) {
@@ -851,7 +851,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $super;
     
     public final boolean getSuper() {
-        return $super;
+        return this.$super;
     }
     
     public final void setSuper(final boolean $super) {
@@ -860,7 +860,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $switch;
     
     public final boolean getSwitch() {
-        return $switch;
+        return this.$switch;
     }
     
     public final void setSwitch(final boolean $switch) {
@@ -869,7 +869,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $synchronized;
     
     public final boolean getSynchronized() {
-        return $synchronized;
+        return this.$synchronized;
     }
     
     public final void setSynchronized(final boolean $synchronized) {
@@ -878,7 +878,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $this;
     
     public final boolean getThis() {
-        return $this;
+        return this.$this;
     }
     
     public final void setThis(final boolean $this) {
@@ -887,7 +887,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $throw;
     
     public final boolean getThrow() {
-        return $throw;
+        return this.$throw;
     }
     
     public final void setThrow(final boolean $throw) {
@@ -896,7 +896,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $throws;
     
     public final boolean getThrows() {
-        return $throws;
+        return this.$throws;
     }
     
     public final void setThrows(final boolean $throws) {
@@ -905,7 +905,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $transient;
     
     public final boolean getTransient() {
-        return $transient;
+        return this.$transient;
     }
     
     public final void setTransient(final boolean $transient) {
@@ -914,7 +914,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $try;
     
     public final boolean getTry() {
-        return $try;
+        return this.$try;
     }
     
     public final void setTry(final boolean $try) {
@@ -923,7 +923,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $void;
     
     public final boolean getVoid() {
-        return $void;
+        return this.$void;
     }
     
     public final void setVoid(final boolean $void) {
@@ -932,7 +932,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $volatile;
     
     public final boolean getVolatile() {
-        return $volatile;
+        return this.$volatile;
     }
     
     public final void setVolatile(final boolean $volatile) {
@@ -941,7 +941,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $while;
     
     public final boolean getWhile() {
-        return $while;
+        return this.$while;
     }
     
     public final void setWhile(final boolean $while) {
@@ -950,7 +950,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $true;
     
     public final boolean getTrue() {
-        return $true;
+        return this.$true;
     }
     
     public final void setTrue(final boolean $true) {
@@ -959,7 +959,7 @@ public class VariableAttributeShared implements .com.redhat.ceylon.compiler.java
     private boolean $null;
     
     public final boolean getNull() {
-        return $null;
+        return this.$null;
     }
     
     public final void setNull(final boolean $null) {

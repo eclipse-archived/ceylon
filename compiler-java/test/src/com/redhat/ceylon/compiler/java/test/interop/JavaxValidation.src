@@ -12,7 +12,7 @@ class JavaxValidationMax implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.ceylon.language.VariableAnnotation$annotation$
     @.javax.validation.constraints.Max(5L)
     public final long getMaxOnGetter() {
-        return maxOnGetter;
+        return this.maxOnGetter;
     }
     
     public final void setMaxOnGetter(final long maxOnGetter) {
@@ -24,7 +24,7 @@ class JavaxValidationMax implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
     public final long getMaxOnField() {
-        return maxOnField;
+        return this.maxOnField;
     }
     
     public final void setMaxOnField(final long maxOnField) {

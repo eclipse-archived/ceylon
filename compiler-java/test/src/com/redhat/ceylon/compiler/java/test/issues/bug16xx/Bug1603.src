@@ -16,7 +16,7 @@ class Bug1603<Element extends .ceylon.language.Ordinal<? extends Element> & .cey
     private final Element first;
     
     public final Element getFirst() {
-        return first;
+        return this.first;
     }
     
     public final boolean m1(final .java.lang.Object element) {

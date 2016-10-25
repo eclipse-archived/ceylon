@@ -16,7 +16,7 @@ class Bug2239 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.common.NonNull
     private final .java.lang.String getEm$priv$() {
         if (this.em != null) {
-            return em;
+            return this.em;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'em\'");
         }

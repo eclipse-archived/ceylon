@@ -40,7 +40,7 @@ class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.run
     private .ceylon.language.String firstName;
     
     private final .ceylon.language.String getFirstName$priv$() {
-        return firstName;
+        return this.firstName;
     }
     
     private final void setFirstName$priv$(final .ceylon.language.String firstName) {
@@ -49,7 +49,7 @@ class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.run
     private .ceylon.language.String lastName;
     
     private final .ceylon.language.String getLastName$priv$() {
-        return lastName;
+        return this.lastName;
     }
     
     private final void setLastName$priv$(final .ceylon.language.String lastName) {

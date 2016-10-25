@@ -47,7 +47,7 @@ public class Bug2037 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     @.com.redhat.ceylon.common.NonNull
     private final .java.lang.String getP2$priv$() {
-        return p2;
+        return this.p2;
     }
     @.javax.annotation.Generated({"by me"})
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -55,7 +55,7 @@ public class Bug2037 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     @.com.redhat.ceylon.common.NonNull
     private final .java.lang.String getP1$priv$() {
-        return p1;
+        return this.p1;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$

@@ -21,13 +21,13 @@ class SatisfiesWithMembersClass implements .com.redhat.ceylon.compiler.java.runt
     
     @.java.lang.Override
     public final boolean getB() {
-        return b;
+        return this.b;
     }
     private boolean b2;
     
     @.java.lang.Override
     public boolean getB2() {
-        return b2;
+        return this.b2;
     }
     
     @.java.lang.Override

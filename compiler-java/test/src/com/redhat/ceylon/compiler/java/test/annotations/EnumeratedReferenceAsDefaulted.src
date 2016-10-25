@@ -36,7 +36,7 @@ public final class EnumeratedReference_X implements .com.redhat.ceylon.compiler.
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final .com.redhat.ceylon.compiler.java.test.annotations.EnumeratedReference_Y getY() {
-        return y;
+        return this.y;
     }
     
     @.java.lang.Override

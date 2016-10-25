@@ -10,7 +10,7 @@ class CtorAliasBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.
     
     @.java.lang.Override
     public final .java.lang.String toString() {
-        return string;
+        return this.string;
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAliasBoxing.bar_ bar_ = null;
     

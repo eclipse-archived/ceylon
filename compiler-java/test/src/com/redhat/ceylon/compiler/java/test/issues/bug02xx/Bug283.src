@@ -8,7 +8,7 @@ class Bug283 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private .ceylon.language.Ordinal<? extends .ceylon.language.Integer> oi;
     
     private final .ceylon.language.Ordinal<? extends .ceylon.language.Integer> getOi$priv$() {
-        return oi;
+        return this.oi;
     }
     
     private final void setOi$priv$(final .ceylon.language.Ordinal<? extends .ceylon.language.Integer> oi) {

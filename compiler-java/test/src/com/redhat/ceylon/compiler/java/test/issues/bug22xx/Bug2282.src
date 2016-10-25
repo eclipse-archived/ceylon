@@ -14,7 +14,7 @@ class Bug2282 extends .java.lang.Object implements .com.redhat.ceylon.compiler.j
         return (int)(
             let
             {
-                long $ceylontmp$hash$0 = hash;
+                long $ceylontmp$hash$0 = this.hash;
             }
             returning $ceylontmp$hash$0 ^ $ceylontmp$hash$0 >>> 32;
         );
@@ -102,7 +102,7 @@ class Bug2282M extends .java.lang.Object implements .com.redhat.ceylon.compiler.
         return (int)(
             let
             {
-                long $ceylontmp$hash$1 = hash;
+                long $ceylontmp$hash$1 = this.hash;
             }
             returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
         );

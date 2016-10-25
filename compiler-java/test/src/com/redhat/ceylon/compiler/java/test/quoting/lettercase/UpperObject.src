@@ -68,12 +68,12 @@ public final class Object implements .java.io.Serializable, .com.redhat.ceylon.c
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object();
-            Object.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            Object.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.$init$value = false;
         }
     }
     
@@ -82,8 +82,8 @@ public final class Object implements .java.io.Serializable, .com.redhat.ceylon.c
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.lettercase::Object")
     public static .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object get_() {
-        if (Object.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'Object\' before it was set");

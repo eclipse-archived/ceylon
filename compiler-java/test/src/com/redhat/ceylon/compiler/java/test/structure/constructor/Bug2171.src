@@ -146,7 +146,7 @@ class TestB1 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private final .java.lang.String name;
     
     private final .java.lang.String getName$priv$() {
-        return name;
+        return this.name;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB1.a$delegation$_ a$delegation$_ = null;
     
@@ -201,7 +201,7 @@ class TestB2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private final .java.lang.String name;
     
     private final .java.lang.String getName$priv$() {
-        return name;
+        return this.name;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB2.a$delegation$_ a$delegation$_ = null;
     
@@ -255,7 +255,7 @@ class TestB3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private final .java.lang.String name;
     
     private final .java.lang.String getName$priv$() {
-        return name;
+        return this.name;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB3.a$delegation$_ a$delegation$_ = null;
     
@@ -312,7 +312,7 @@ class TestB4 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private final .java.lang.String name;
     
     private final .java.lang.String getName$priv$() {
-        return name;
+        return this.name;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestB4.a$delegation$_ a$delegation$_ = null;
     
@@ -394,7 +394,7 @@ class TestC implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     private final .java.lang.String name;
     
     private final .java.lang.String getName$priv$() {
-        return name;
+        return this.name;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.TestC.a$delegation$_ a$delegation$_ = null;
     
@@ -490,13 +490,13 @@ class Super implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     private final .java.lang.String name;
     
     private final .java.lang.String getName$priv$() {
-        return name;
+        return this.name;
     }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final .java.lang.String name2;
     
     private final .java.lang.String getName2$priv$() {
-        return name2;
+        return this.name2;
     }
     
     public Super() {
@@ -549,13 +549,13 @@ class Super2 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private final .java.lang.String name;
     
     private final .java.lang.String getName$priv$() {
-        return name;
+        return this.name;
     }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final .java.lang.String name2;
     
     private final .java.lang.String getName2$priv$() {
-        return name2;
+        return this.name2;
     }
     
     public Super2() {

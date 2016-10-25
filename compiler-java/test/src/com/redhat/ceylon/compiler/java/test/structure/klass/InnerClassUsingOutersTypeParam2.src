@@ -26,12 +26,12 @@ public class MutableList<T> implements .com.redhat.ceylon.compiler.java.runtime.
         private final T car;
         
         public final T getCar() {
-            return car;
+            return this.car;
         }
         private final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> cdr;
         
         public final .com.redhat.ceylon.compiler.java.test.structure.klass.MutableList<T>.Cell<T> getCdr() {
-            return cdr;
+            return this.cdr;
         }
         
         @.java.lang.Override

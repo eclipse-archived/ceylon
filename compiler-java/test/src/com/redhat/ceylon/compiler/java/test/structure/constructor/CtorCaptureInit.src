@@ -14,22 +14,22 @@ class CtorCaptureInit implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final .java.lang.String sharedName;
     
     public final .java.lang.String getSharedName() {
-        return sharedName;
+        return this.sharedName;
     }
     private final long init;
     
     private final long getInit$priv$() {
-        return init;
+        return this.init;
     }
     private final long sharedInit;
     
     public final long getSharedInit() {
-        return sharedInit;
+        return this.sharedInit;
     }
     private long count;
     
     private final long getCount$priv$() {
-        return count;
+        return this.count;
     }
     
     private final void setCount$priv$(final long count) {
@@ -38,7 +38,7 @@ class CtorCaptureInit implements .com.redhat.ceylon.compiler.java.runtime.model.
     private long sharedCount;
     
     public final long getSharedCount() {
-        return sharedCount;
+        return this.sharedCount;
     }
     
     public final void setSharedCount(final long sharedCount) {
@@ -47,7 +47,7 @@ class CtorCaptureInit implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final .java.lang.String captured;
     
     private final .java.lang.String getCaptured$priv$() {
-        return captured;
+        return this.captured;
     }
     
     private final void inc$priv$() {

@@ -54,7 +54,7 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.common.NonNull
     public final .java.lang.String getS() {
-        return s;
+        return this.s;
     }
     @.com.redhat.ceylon.compiler.java.test.annotations.FieldTarget
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -64,7 +64,7 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.common.NonNull
     public final .java.lang.String getS2() {
-        return s2;
+        return this.s2;
     }
     @.com.redhat.ceylon.compiler.java.test.annotations.FieldTarget
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -75,7 +75,7 @@ class HeuristicTarget2 implements .com.redhat.ceylon.compiler.java.runtime.model
     @.ceylon.language.VariableAnnotation$annotation$
     @.com.redhat.ceylon.common.NonNull
     public final .java.lang.String getS3() {
-        return s3;
+        return this.s3;
     }
     
     public final void setS3(@.com.redhat.ceylon.compiler.java.metadata.Name("s3")
@@ -116,12 +116,12 @@ final class heuristicTarget3_ implements .java.io.Serializable, .com.redhat.ceyl
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_();
-            heuristicTarget3_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            heuristicTarget3_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_.$init$value = false;
         }
     }
     
@@ -131,8 +131,8 @@ final class heuristicTarget3_ implements .java.io.Serializable, .com.redhat.ceyl
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::heuristicTarget3")
     static .com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_ get_() {
-        if (heuristicTarget3_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'heuristicTarget3\' before it was set");

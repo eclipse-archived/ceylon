@@ -104,17 +104,17 @@ class Bug689<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private final .ceylon.language.Sequence attributeWithUnion;
     
     private final .ceylon.language.Sequence getAttributeWithUnion$priv$() {
-        return attributeWithUnion;
+        return this.attributeWithUnion;
     }
     private final .ceylon.language.Sequence attributeWithIntersection;
     
     private final .ceylon.language.Sequence getAttributeWithIntersection$priv$() {
-        return attributeWithIntersection;
+        return this.attributeWithIntersection;
     }
     private .ceylon.language.Sequence variableWithUnion;
     
     private final .ceylon.language.Sequence getVariableWithUnion$priv$() {
-        return variableWithUnion;
+        return this.variableWithUnion;
     }
     
     private final void setVariableWithUnion$priv$(final .ceylon.language.Sequence variableWithUnion) {
@@ -123,7 +123,7 @@ class Bug689<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private .ceylon.language.Sequence variableWithIntersection;
     
     private final .ceylon.language.Sequence getVariableWithIntersection$priv$() {
-        return variableWithIntersection;
+        return this.variableWithIntersection;
     }
     
     private final void setVariableWithIntersection$priv$(final .ceylon.language.Sequence variableWithIntersection) {
@@ -132,12 +132,12 @@ class Bug689<X, Y> implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private final .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> attributeWithUnionWithinTypeArg;
     
     private final .ceylon.language.Sequence<? extends .ceylon.language.Sequence<? extends .java.lang.Object>> getAttributeWithUnionWithinTypeArg$priv$() {
-        return attributeWithUnionWithinTypeArg;
+        return this.attributeWithUnionWithinTypeArg;
     }
     private final .java.lang.Object attributeWithUnionErasedToIterable;
     
     private final .java.lang.Object getAttributeWithUnionErasedToIterable$priv$() {
-        return attributeWithUnionErasedToIterable;
+        return this.attributeWithUnionErasedToIterable;
     }
     
     @.java.lang.Override

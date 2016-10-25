@@ -205,7 +205,7 @@ class SetOperatorsSuper implements .com.redhat.ceylon.compiler.java.runtime.mode
     private .ceylon.language.Set<? extends .ceylon.language.Integer> a;
     
     public final .ceylon.language.Set<? extends .ceylon.language.Integer> getA() {
-        return a;
+        return this.a;
     }
     
     public final void setA(final .ceylon.language.Set<? extends .ceylon.language.Integer> a) {
@@ -214,7 +214,7 @@ class SetOperatorsSuper implements .com.redhat.ceylon.compiler.java.runtime.mode
     private .ceylon.language.Set<? extends .ceylon.language.Integer> b;
     
     public final .ceylon.language.Set<? extends .ceylon.language.Integer> getB() {
-        return b;
+        return this.b;
     }
     
     public final void setB(final .ceylon.language.Set<? extends .ceylon.language.Integer> b) {
@@ -223,7 +223,7 @@ class SetOperatorsSuper implements .com.redhat.ceylon.compiler.java.runtime.mode
     private .ceylon.language.Set<? extends .ceylon.language.Integer> sync;
     
     public final .ceylon.language.Set<? extends .ceylon.language.Integer> getSync() {
-        return sync;
+        return this.sync;
     }
     
     public final void setSync(final .ceylon.language.Set<? extends .ceylon.language.Integer> sync) {

@@ -20,7 +20,7 @@ class SerializableClass implements .com.redhat.ceylon.compiler.java.runtime.mode
     private long sharedVariableInteger;
     
     public final long getSharedVariableInteger() {
-        return sharedVariableInteger;
+        return this.sharedVariableInteger;
     }
     
     public final void setSharedVariableInteger(final long sharedVariableInteger) {
@@ -29,22 +29,22 @@ class SerializableClass implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final long sharedInteger;
     
     public final long getSharedInteger() {
-        return sharedInteger;
+        return this.sharedInteger;
     }
     private final .ceylon.language.Integer sharedOptionalInteger;
     
     public final .ceylon.language.Integer getSharedOptionalInteger() {
-        return sharedOptionalInteger;
+        return this.sharedOptionalInteger;
     }
     private final .ceylon.language.String sharedOptionalString;
     
     public final .ceylon.language.String getSharedOptionalString() {
-        return sharedOptionalString;
+        return this.sharedOptionalString;
     }
     private final long deferred;
     
     public final long getDeferred() {
-        return deferred;
+        return this.deferred;
     }
     
     @.java.lang.Override
@@ -139,7 +139,7 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
     
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass getVariablePartner() {
         if (this.variablePartner != null) {
-            return variablePartner;
+            return this.variablePartner;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'variablePartner\'");
         }
@@ -152,7 +152,7 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
     
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.SerializableSubclass getPartner() {
         if (this.partner != null) {
-            return partner;
+            return this.partner;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'partner\'");
         }
@@ -170,7 +170,7 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
     
     public final long getVariableInteger() {
         if (this.$init$variableInteger) {
-            return variableInteger;
+            return this.variableInteger;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'variableInteger\'");
         }
@@ -185,7 +185,7 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
     
     public final long getInteger() {
         if (this.$init$integer) {
-            return integer;
+            return this.integer;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'integer\'");
         }

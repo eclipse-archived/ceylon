@@ -8,7 +8,7 @@ public abstract class Bug902 implements .com.redhat.ceylon.compiler.java.runtime
     private final long y;
     
     private final long getY$priv$() {
-        return y;
+        return this.y;
     }
     
     public final long getZ() {

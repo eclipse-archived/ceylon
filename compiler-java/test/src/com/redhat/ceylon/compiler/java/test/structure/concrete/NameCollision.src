@@ -316,7 +316,7 @@ class NameCollision implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     @.java.lang.Override
     public final boolean getEmpty() {
-        return empty;
+        return this.empty;
     }
     
     @.java.lang.Override

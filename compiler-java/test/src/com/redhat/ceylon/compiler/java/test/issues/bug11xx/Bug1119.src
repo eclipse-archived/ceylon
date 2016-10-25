@@ -37,7 +37,7 @@ final class bug1119Addition_ extends .com.redhat.ceylon.compiler.java.test.issue
     
     @.java.lang.Override
     public final .java.lang.String toString() {
-        return string;
+        return this.string;
     }
     
     @.java.lang.Override
@@ -52,18 +52,18 @@ final class bug1119Addition_ extends .com.redhat.ceylon.compiler.java.test.issue
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_();
-            bug1119Addition_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug1119Addition_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.$init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_ get_() {
-        if (bug1119Addition_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1119Addition\' before it was set");

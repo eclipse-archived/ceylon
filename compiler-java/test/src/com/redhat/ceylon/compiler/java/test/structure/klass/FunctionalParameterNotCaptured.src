@@ -14,7 +14,7 @@ class FunctionalParameterNotCaptured implements .com.redhat.ceylon.compiler.java
     
     @.java.lang.Override
     public final .java.lang.String toString() {
-        return string;
+        return this.string;
     }
     
     @.java.lang.Override

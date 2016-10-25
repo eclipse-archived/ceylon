@@ -17,17 +17,17 @@ class IntegerSpans implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private final long first;
     
     private final long getFirst$priv$() {
-        return first;
+        return this.first;
     }
     private final long last;
     
     private final long getLast$priv$() {
-        return last;
+        return this.last;
     }
     private final boolean a;
     
     private final boolean getA$priv$() {
-        return a;
+        return this.a;
     }
     
     private final void simple$priv$() {
@@ -167,22 +167,22 @@ class IntegerSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime.m
     private final long first;
     
     private final long getFirst$priv$() {
-        return first;
+        return this.first;
     }
     private final long last;
     
     private final long getLast$priv$() {
-        return last;
+        return this.last;
     }
     private final long step;
     
     private final long getStep$priv$() {
-        return step;
+        return this.step;
     }
     private final boolean a;
     
     private final boolean getA$priv$() {
-        return a;
+        return this.a;
     }
     
     private final void simple$priv$() {
@@ -335,17 +335,17 @@ class CharacterSpans implements .com.redhat.ceylon.compiler.java.runtime.model.R
     private final int first;
     
     private final int getFirst$priv$() {
-        return first;
+        return this.first;
     }
     private final int last;
     
     private final int getLast$priv$() {
-        return last;
+        return this.last;
     }
     private final boolean a;
     
     private final boolean getA$priv$() {
-        return a;
+        return this.a;
     }
     
     private final void simple$priv$() {
@@ -490,22 +490,22 @@ class CharacterSpansWithStep implements .com.redhat.ceylon.compiler.java.runtime
     private final int first;
     
     private final int getFirst$priv$() {
-        return first;
+        return this.first;
     }
     private final int last;
     
     private final int getLast$priv$() {
-        return last;
+        return this.last;
     }
     private final long step;
     
     private final long getStep$priv$() {
-        return step;
+        return this.step;
     }
     private final boolean a;
     
     private final boolean getA$priv$() {
-        return a;
+        return this.a;
     }
     
     private final void simple$priv$() {

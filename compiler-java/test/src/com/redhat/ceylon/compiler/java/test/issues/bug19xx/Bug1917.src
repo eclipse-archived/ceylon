@@ -84,7 +84,7 @@ class Bug1917Interop extends .com.redhat.ceylon.compiler.java.test.issues.bug19x
     private final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java dataSource;
     
     private final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.Bug1917Java getDataSource$priv$() {
-        return dataSource;
+        return this.dataSource;
     }
     
     public final long getLoginTimeout1() {

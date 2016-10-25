@@ -36,12 +36,12 @@ final class NamedArgumentInvocationInterfaceMember$impl implements .java.io.Seri
         private final .java.lang.String foo;
         
         public final .java.lang.String getFoo() {
-            return foo;
+            return this.foo;
         }
         private final long bar;
         
         public final long getBar() {
-            return bar;
+            return this.bar;
         }
         
         @.java.lang.Override
@@ -76,12 +76,12 @@ final class NamedArgumentInvocationInterfaceMember$impl implements .java.io.Seri
         private final .java.lang.String foo;
         
         public final .java.lang.String getFoo() {
-            return foo;
+            return this.foo;
         }
         private final long bar;
         
         public final long getBar() {
-            return bar;
+            return this.bar;
         }
         
         public InnerWithCtor() {

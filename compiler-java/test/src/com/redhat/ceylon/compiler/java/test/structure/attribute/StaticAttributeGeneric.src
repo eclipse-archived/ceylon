@@ -8,7 +8,7 @@ class StaticAttributeGeneric<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     private static final <T>T getNonSharedStat$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-        return (T)nonSharedStat;
+        return (T).com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.nonSharedStat;
     }
     private static final .java.lang.Object sharedStat;
     static {
@@ -16,7 +16,7 @@ class StaticAttributeGeneric<T> implements .com.redhat.ceylon.compiler.java.runt
     }
     
     public static final <T>T getSharedStat(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
-        return (T)sharedStat;
+        return (T).com.redhat.ceylon.compiler.java.test.structure.attribute.StaticAttributeGeneric.sharedStat;
     }
     
     private static final <T>T getNonSharedStatGetter$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {

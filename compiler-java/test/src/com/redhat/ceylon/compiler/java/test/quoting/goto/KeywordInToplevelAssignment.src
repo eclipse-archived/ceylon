@@ -18,19 +18,19 @@ final class goto_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            goto_.value = 0L;
-            goto_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.quoting.$goto.goto_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.quoting.$goto.goto_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            goto_.value = 0L;
-            goto_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.quoting.$goto.goto_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.quoting.$goto.goto_.$init$value = false;
         }
     }
     
     public static long get_() {
-        if (goto_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.quoting.$goto.goto_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.quoting.$goto.goto_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'goto\' before it was set");
@@ -39,6 +39,6 @@ final class goto_ {
     
     public static void set_(final long $goto) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = $goto;
+        .com.redhat.ceylon.compiler.java.test.quoting.$goto.goto_.value = $goto;
     }
 }

@@ -19,7 +19,7 @@ class Bug920_Tuple<Element, First extends Element> implements .com.redhat.ceylon
     private final First first;
     
     public final First getFirst() {
-        return first;
+        return this.first;
     }
     
     @.java.lang.Override

@@ -25,7 +25,7 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.common.NonNull
     public final .java.lang.String getName() {
-        return name;
+        return this.name;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -58,21 +58,21 @@ class Person implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         
         @.com.redhat.ceylon.common.NonNull
         private final .java.lang.String getHouse$priv$() {
-            return house;
+            return this.house;
         }
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .java.lang.String street;
         
         @.com.redhat.ceylon.common.NonNull
         private final .java.lang.String getStreet$priv$() {
-            return street;
+            return this.street;
         }
         @.com.redhat.ceylon.compiler.java.metadata.Ignore
         private final .java.lang.String city;
         
         @.com.redhat.ceylon.common.NonNull
         private final .java.lang.String getCity$priv$() {
-            return city;
+            return this.city;
         }
         
         @.ceylon.language.SharedAnnotation$annotation$

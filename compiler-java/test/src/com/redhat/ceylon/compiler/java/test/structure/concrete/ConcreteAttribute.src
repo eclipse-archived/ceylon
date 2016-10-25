@@ -145,13 +145,13 @@ class ConcreteAttributeValueImpl<C> implements .com.redhat.ceylon.compiler.java.
     
     @.java.lang.Override
     public final C getAFormal() {
-        return aFormal;
+        return this.aFormal;
     }
     private C aVariableFormal;
     
     @.java.lang.Override
     public final C getAVariableFormal() {
-        return aVariableFormal;
+        return this.aVariableFormal;
     }
     
     @.java.lang.Override
@@ -162,7 +162,7 @@ class ConcreteAttributeValueImpl<C> implements .com.redhat.ceylon.compiler.java.
     
     @.java.lang.Override
     public final C getADefault() {
-        return aDefault;
+        return this.aDefault;
     }
     
     public final void setADefault(final C aDefault) {

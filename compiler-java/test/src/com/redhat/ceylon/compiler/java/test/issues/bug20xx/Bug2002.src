@@ -87,12 +87,12 @@ final class bug2002BuilderTest1_ {
                     return .ceylon.language.empty_.get_();
                 }
             }));
-            bug2002BuilderTest1_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug2002BuilderTest1_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest1_.$init$value = false;
         }
     }
     
@@ -101,8 +101,8 @@ final class bug2002BuilderTest1_ {
             value = "<ceylon.language::String|ceylon.language::Integer>[]()",
             erased = true)
     public static .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> get_() {
-        if (bug2002BuilderTest1_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest1_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest1_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2002BuilderTest1\' before it was set");
@@ -136,20 +136,20 @@ final class bug2002BuilderTest2_ {
                     return .ceylon.language.empty_.get_();
                 }
             });
-            bug2002BuilderTest2_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug2002BuilderTest2_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest2_.$init$value = false;
         }
     }
     
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean[]()")
     public static .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>> get_() {
-        if (bug2002BuilderTest2_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest2_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest2_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2002BuilderTest2\' before it was set");

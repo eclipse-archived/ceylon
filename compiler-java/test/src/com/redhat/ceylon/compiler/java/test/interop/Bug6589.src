@@ -18,8 +18,8 @@ final class bug6589_ {
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     public static .javax.persistence.EntityManager get_() {
-        if (bug6589_.value != null) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.interop.bug6589_.value != null) {
+            return .com.redhat.ceylon.compiler.java.test.interop.bug6589_.value;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'bug6589\'");
         }
@@ -30,8 +30,8 @@ final class bug6589_ {
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     final .javax.persistence.EntityManager bug6589) {
-        if (bug6589_.value == null) {
-            value = bug6589;
+        if (.com.redhat.ceylon.compiler.java.test.interop.bug6589_.value == null) {
+            .com.redhat.ceylon.compiler.java.test.interop.bug6589_.value = bug6589;
         } else {
             throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }

@@ -26,7 +26,7 @@ class Test1927 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
             private final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.In1927<? super .ceylon.language.Sequence<? extends .java.lang.Object>> positions;
             
             public final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.In1927<? super .ceylon.language.Sequence<? extends .java.lang.Object>> getPositions() {
-                return positions;
+                return this.positions;
             }
             
             @.java.lang.Override

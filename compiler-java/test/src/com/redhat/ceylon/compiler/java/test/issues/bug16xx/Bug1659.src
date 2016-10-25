@@ -15,8 +15,8 @@ final class bug1659_ {
     
     @.ceylon.language.LateAnnotation$annotation$
     public static long get_() {
-        if (bug1659_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1659_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1659_.value;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'bug1659\'");
         }
@@ -25,9 +25,9 @@ final class bug1659_ {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("bug1659")
     final long bug1659) {
-        if (!bug1659_.$init$value) {
-            value = bug1659;
-            bug1659_.$init$value = true;
+        if (!.com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1659_.$init$value) {
+            .com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1659_.value = bug1659;
+            .com.redhat.ceylon.compiler.java.test.issues.bug16xx.bug1659_.$init$value = true;
         } else {
             throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }

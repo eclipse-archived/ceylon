@@ -31,7 +31,7 @@ public final class Bug1384 implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final .ceylon.language.meta.declaration.ValueDeclaration getReference() {
-        return reference;
+        return this.reference;
     }
     
     @.java.lang.Override
@@ -76,7 +76,7 @@ public final class Bug1384_sequence implements .com.redhat.ceylon.compiler.java.
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final .ceylon.language.Sequential<? extends .ceylon.language.meta.declaration.ValueDeclaration> getReferences() {
-        return references;
+        return this.references;
     }
     
     @.java.lang.Override

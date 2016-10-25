@@ -10,18 +10,18 @@ public final class bug2328Name_ {
     static {
         try {
             value = "Gavin";
-            bug2328Name_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2328Name_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug2328Name_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2328Name_.$init$value = false;
         }
     }
     
     public static .java.lang.String get_() {
-        if (bug2328Name_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2328Name_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2328Name_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2328Name\' before it was set");
@@ -47,18 +47,18 @@ public final class bug2328ReferenceDeclaration_ {
     static {
         try {
             value = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.issues", "1"), "com.redhat.ceylon.compiler.java.test.issues", "1").findPackage("com.redhat.ceylon.compiler.java.test.issues.bug23xx").getValue("bug2328Name");
-            bug2328ReferenceDeclaration_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug2328ReferenceDeclaration_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration_.$init$value = false;
         }
     }
     
     public static .ceylon.language.meta.declaration.ValueDeclaration get_() {
-        if (bug2328ReferenceDeclaration_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2328ReferenceDeclaration\' before it was set");
@@ -75,18 +75,18 @@ public final class bug2328ReferenceDeclaration2_ {
     static {
         try {
             value = .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.checkModule(.ceylon.language.meta.modules_.get_().find("com.redhat.ceylon.compiler.java.test.issues", "1"), "com.redhat.ceylon.compiler.java.test.issues", "1").findPackage("com.redhat.ceylon.compiler.java.test.issues.bug23xx").getValue("bug2328Name2");
-            bug2328ReferenceDeclaration2_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug2328ReferenceDeclaration2_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration2_.$init$value = false;
         }
     }
     
     public static .ceylon.language.meta.declaration.ValueDeclaration get_() {
-        if (bug2328ReferenceDeclaration2_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration2_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2328ReferenceDeclaration2_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2328ReferenceDeclaration2\' before it was set");

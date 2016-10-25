@@ -37,7 +37,7 @@ class Bug1120Bottom extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx
     
     @.java.lang.Override
     public final long getAttr2() {
-        return attr2;
+        return this.attr2;
     }
     
     @.java.lang.Override

@@ -116,7 +116,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
     private final .java.lang.Object getParam$priv$() {
-        return param;
+        return this.param;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.Object attr;
@@ -127,7 +127,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
     public final .java.lang.Object getAttr() {
-        return attr;
+        return this.attr;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.Object param2;
@@ -138,7 +138,7 @@ class Bug708_Class<T> implements .com.redhat.ceylon.compiler.java.runtime.model.
             value = "T|ceylon.language::Null|ceylon.language::String",
             erased = true)
     public final .java.lang.Object getParam2() {
-        return param2;
+        return this.param2;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -789,18 +789,18 @@ final class bug708extra1_ {
     static {
         try {
             value = (.ceylon.language.String).com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_.<.ceylon.language.String>bug708(.ceylon.language.String.$TypeDescriptor$);
-            bug708extra1_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug708extra1_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra1_.$init$value = false;
         }
     }
     
     public static .ceylon.language.String get_() {
-        if (bug708extra1_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra1_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra1_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug708extra1\' before it was set");
@@ -817,18 +817,18 @@ final class bug708extra2_ {
     static {
         try {
             value = (.ceylon.language.String)new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$).test();
-            bug708extra2_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug708extra2_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra2_.$init$value = false;
         }
     }
     
     public static .ceylon.language.String get_() {
-        if (bug708extra2_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra2_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra2_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug708extra2\' before it was set");
@@ -845,18 +845,18 @@ final class bug708obj_ {
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
-            bug708obj_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708obj_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug708obj_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708obj_.$init$value = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String> get_() {
-        if (bug708obj_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708obj_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708obj_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug708obj\' before it was set");
@@ -879,18 +879,18 @@ final class bug708extra3_ {
                 }
                 returning safe$19 != null ? safe$19.test() : null;
             );
-            bug708extra3_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra3_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug708extra3_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra3_.$init$value = false;
         }
     }
     
     public static .ceylon.language.String get_() {
-        if (bug708extra3_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra3_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra3_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug708extra3\' before it was set");
@@ -907,18 +907,18 @@ final class bug708seq_ {
     static {
         try {
             value = (.ceylon.language.Sequence<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>>).ceylon.language.Tuple.instance(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708.class, .ceylon.language.String.$TypeDescriptor$), new .java.lang.Object[]{new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$)});
-            bug708seq_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug708seq_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.$init$value = false;
         }
     }
     
     public static .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708<.ceylon.language.String>> get_() {
-        if (bug708seq_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708seq_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug708seq\' before it was set");
@@ -958,18 +958,18 @@ final class bug708extra4_ {
                     }
                 }.sequence();
             );
-            bug708extra4_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra4_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug708extra4_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra4_.$init$value = false;
         }
     }
     
     public static .ceylon.language.Sequential<? extends .ceylon.language.String> get_() {
-        if (bug708extra4_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra4_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708extra4_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug708extra4\' before it was set");
@@ -992,20 +992,20 @@ final class bug708_cache_ {
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$);
-            bug708_cache_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_cache_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bug708_cache_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_cache_.$init$value = false;
         }
     }
     
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.issues.bug07xx::Bug708Map<ceylon.language::String>")
     public static .com.redhat.ceylon.compiler.java.test.issues.bug07xx.Bug708Map<.ceylon.language.String> get_() {
-        if (bug708_cache_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_cache_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug07xx.bug708_cache_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug708_cache\' before it was set");

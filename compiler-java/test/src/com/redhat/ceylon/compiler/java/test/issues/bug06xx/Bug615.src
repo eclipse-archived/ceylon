@@ -19,7 +19,7 @@ class C implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .
     
     @.java.lang.Override
     public final .ceylon.language.Integer getX() {
-        return x;
+        return this.x;
     }
     
     @.java.lang.Override

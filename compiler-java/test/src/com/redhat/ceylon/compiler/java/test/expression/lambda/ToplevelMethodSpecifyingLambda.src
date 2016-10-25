@@ -17,18 +17,18 @@ final class toplevel_ {
                     return .ceylon.language.String.instance("hello " + name2);
                 }
             };
-            toplevel_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.lambda.toplevel_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            toplevel_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.lambda.toplevel_.$init$value = false;
         }
     }
     
     public static .ceylon.language.Callable<? extends .ceylon.language.String> get_() {
-        if (toplevel_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.lambda.toplevel_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.expression.lambda.toplevel_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevel\' before it was set");

@@ -20,7 +20,7 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     private final .javax.persistence.EntityManager getLateEntityManager$priv$() {
         if (this.lateEntityManager != null) {
-            return lateEntityManager;
+            return this.lateEntityManager;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateEntityManager\'");
         }
@@ -46,7 +46,7 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     private final .javax.persistence.EntityManager getVariableEntityManager$priv$() {
-        return variableEntityManager;
+        return this.variableEntityManager;
     }
     
     private final void setVariableEntityManager$priv$(@.com.redhat.ceylon.compiler.java.metadata.Name("variableEntityManager")
@@ -63,7 +63,7 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     private final .javax.persistence.EntityManager getEntityManager$priv$() {
-        return entityManager;
+        return this.entityManager;
     }
     
     @.javax.enterprise.inject.Produces
@@ -99,7 +99,7 @@ class Bug6587 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("javax.persistence::EntityManager")
     public final .javax.persistence.EntityManager getSharedEntityManager() {
-        return sharedEntityManager;
+        return this.sharedEntityManager;
     }
     
     @.java.lang.Override

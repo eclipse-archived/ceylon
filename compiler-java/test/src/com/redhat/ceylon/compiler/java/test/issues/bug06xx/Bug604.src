@@ -20,12 +20,12 @@ abstract class Bug604<N extends .com.redhat.ceylon.compiler.java.test.issues.bug
         private final N n1;
         
         public final N getN1() {
-            return n1;
+            return this.n1;
         }
         private final N n2;
         
         public final N getN2() {
-            return n2;
+            return this.n2;
         }
         
         public final boolean touches(final N node) {

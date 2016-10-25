@@ -18,18 +18,18 @@ final class topLevelObject_ implements .java.io.Serializable, .com.redhat.ceylon
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_();
-            topLevelObject_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            topLevelObject_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.$init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_ get_() {
-        if (topLevelObject_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelObject\' before it was set");

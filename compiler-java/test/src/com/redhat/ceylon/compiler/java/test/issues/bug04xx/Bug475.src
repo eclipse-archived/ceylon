@@ -12,7 +12,7 @@ abstract class Bug475 implements .com.redhat.ceylon.compiler.java.runtime.model.
         return (int)(
             let
             {
-                long $ceylontmp$hash$0 = hash;
+                long $ceylontmp$hash$0 = this.hash;
             }
             returning $ceylontmp$hash$0 ^ $ceylontmp$hash$0 >>> 32;
         );

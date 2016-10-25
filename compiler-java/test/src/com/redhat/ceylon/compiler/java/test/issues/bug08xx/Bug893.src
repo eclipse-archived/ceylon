@@ -83,7 +83,7 @@ public abstract class XSingleton893<Element> extends .java.lang.Object implement
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.XIterable893 getFail2() {
-        return fail2;
+        return this.fail2;
     }
     
     @.java.lang.Override

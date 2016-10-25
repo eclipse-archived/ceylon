@@ -18,7 +18,7 @@ final class bug261_ {
             private long vi;
             
             public final long getVi() {
-                return vi;
+                return this.vi;
             }
             
             public final void setVi(final long vi) {
@@ -27,7 +27,7 @@ final class bug261_ {
             private long vj;
             
             public final long getVj() {
-                return vj;
+                return this.vj;
             }
             
             public final void setVj(final long vj) {

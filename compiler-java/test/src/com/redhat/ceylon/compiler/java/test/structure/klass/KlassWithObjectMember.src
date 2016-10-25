@@ -18,7 +18,7 @@ class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.
     private final .java.lang.String x;
     
     private final .java.lang.String getX$priv$() {
-        return x;
+        return this.x;
     }
     
     final class localobj_ implements .java.io.Serializable, .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType {
@@ -29,7 +29,7 @@ class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.
         private final .java.lang.String f;
         
         public final .java.lang.String getF() {
-            return f;
+            return this.f;
         }
         
         public final .java.lang.String m() {
@@ -57,7 +57,7 @@ class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.
         private final .java.lang.String f;
         
         public final .java.lang.String getF() {
-            return f;
+            return this.f;
         }
         
         public final .java.lang.String m() {
@@ -90,7 +90,7 @@ class KlassWithObjectMember implements .com.redhat.ceylon.compiler.java.runtime.
         private final .java.lang.String f;
         
         public final .java.lang.String getF() {
-            return f;
+            return this.f;
         }
         
         public final .java.lang.String m() {

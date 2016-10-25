@@ -39,7 +39,7 @@ public final class objectArgumentNamedInvocation_ {
                         return (int)(
                             let
                             {
-                                long $ceylontmp$hash$1 = hash;
+                                long $ceylontmp$hash$1 = this.hash;
                             }
                             returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
                         );

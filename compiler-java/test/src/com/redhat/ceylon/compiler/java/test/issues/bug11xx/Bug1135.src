@@ -14,7 +14,7 @@ public class Bug1135 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     private .ceylon.language.Array<.ceylon.language.Callable<? extends .java.lang.Object>> listeners;
     
     private final .ceylon.language.Array<.ceylon.language.Callable<? extends .java.lang.Object>> getListeners$priv$() {
-        return listeners;
+        return this.listeners;
     }
     
     private final void setListeners$priv$(final .ceylon.language.Array<.ceylon.language.Callable<? extends .java.lang.Object>> listeners) {

@@ -19,7 +19,7 @@ public abstract class Bug1332<Attached> implements .com.redhat.ceylon.compiler.j
         private final Attached attached;
         
         public final Attached getAttached() {
-            return attached;
+            return this.attached;
         }
         
         @.java.lang.Override

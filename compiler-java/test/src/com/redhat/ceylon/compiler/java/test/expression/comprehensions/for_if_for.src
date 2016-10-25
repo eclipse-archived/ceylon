@@ -79,18 +79,18 @@ final class forIfFor_ {
                     };
                 }
             }.sequence();
-            forIfFor_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.comprehensions.forIfFor_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            forIfFor_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.comprehensions.forIfFor_.$init$value = false;
         }
     }
     
     public static .ceylon.language.Sequential<? extends .ceylon.language.Integer> get_() {
-        if (forIfFor_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.comprehensions.forIfFor_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.expression.comprehensions.forIfFor_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'forIfFor\' before it was set");

@@ -38,7 +38,7 @@ class ThisQualifiedSpecification implements .com.redhat.ceylon.compiler.java.run
     private final long e;
     
     public final long getE() {
-        return e;
+        return this.e;
     }
     private .ceylon.language.Callable<? extends .ceylon.language.Boolean> m$priv$;
     

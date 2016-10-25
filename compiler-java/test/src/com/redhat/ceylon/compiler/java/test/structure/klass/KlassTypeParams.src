@@ -59,12 +59,12 @@ class KlassTypeParams<U, V> implements .com.redhat.ceylon.compiler.java.runtime.
     private final U attr;
     
     private final U getAttr$priv$() {
-        return attr;
+        return this.attr;
     }
     private V var;
     
     private final V getVar$priv$() {
-        return var;
+        return this.var;
     }
     
     private final void setVar$priv$(final V var) {

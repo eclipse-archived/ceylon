@@ -27,18 +27,18 @@ public final class foo_ extends .com.redhat.ceylon.compiler.java.test.structure.
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.klass.foo_();
-            foo_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.foo_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            foo_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.foo_.$init$value = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.structure.klass.foo_ get_() {
-        if (foo_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.foo_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.klass.foo_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'foo\' before it was set");
@@ -66,18 +66,18 @@ public final class bar_ extends .com.redhat.ceylon.compiler.java.test.structure.
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.klass.bar_();
-            bar_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.bar_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            bar_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.bar_.$init$value = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.structure.klass.bar_ get_() {
-        if (bar_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.bar_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.klass.bar_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bar\' before it was set");

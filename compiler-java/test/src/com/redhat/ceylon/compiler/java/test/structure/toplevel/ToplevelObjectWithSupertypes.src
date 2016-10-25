@@ -41,18 +41,18 @@ public final class topLevelObjectWithSuperTypes_ extends .com.redhat.ceylon.comp
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_();
-            topLevelObjectWithSuperTypes_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            topLevelObjectWithSuperTypes_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_.$init$value = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_ get_() {
-        if (topLevelObjectWithSuperTypes_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithSuperTypes_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelObjectWithSuperTypes\' before it was set");

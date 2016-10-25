@@ -19,7 +19,7 @@ class Bug639WideningImpl implements .com.redhat.ceylon.compiler.java.runtime.mod
     
     @.java.lang.Override
     public final .ceylon.language.String getImplementation() {
-        return implementation;
+        return this.implementation;
     }
     
     public final long getLength() {
@@ -46,7 +46,7 @@ class Bug639WideningImpl2 implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     @.java.lang.Override
     public final .ceylon.language.Integer getImplementation() {
-        return implementation;
+        return this.implementation;
     }
     
     public final void neg(final .com.redhat.ceylon.compiler.java.test.issues.bug06xx.Bug639Widening w) {

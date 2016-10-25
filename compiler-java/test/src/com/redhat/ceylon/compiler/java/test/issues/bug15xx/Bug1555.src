@@ -18,12 +18,12 @@ class Bug1555<Element extends .ceylon.language.Enumerable<Element>> implements .
     private final long first;
     
     public final long getFirst() {
-        return first;
+        return this.first;
     }
     private final long last;
     
     public final long getLast() {
-        return last;
+        return this.last;
     }
     
     public final .ceylon.language.Range<Element> shifted(final long shift) {

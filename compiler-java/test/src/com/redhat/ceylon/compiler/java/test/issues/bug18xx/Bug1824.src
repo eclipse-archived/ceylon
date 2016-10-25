@@ -25,19 +25,19 @@ final class i1824_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            i1824_.value = 0L;
-            i1824_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            i1824_.value = 0L;
-            i1824_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.$init$value = false;
         }
     }
     
     public static long get_() {
-        if (i1824_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'i1824\' before it was set");
@@ -46,6 +46,6 @@ final class i1824_ {
     
     public static void set_(final long i1824) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = i1824;
+        .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.value = i1824;
     }
 }

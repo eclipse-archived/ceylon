@@ -27,7 +27,7 @@ public class Bug1383 extends .com.redhat.ceylon.compiler.java.test.issues.bug13x
     
     @.java.lang.Override
     public final .java.lang.String toString() {
-        return string;
+        return this.string;
     }
     private final long hash;
     
@@ -36,7 +36,7 @@ public class Bug1383 extends .com.redhat.ceylon.compiler.java.test.issues.bug13x
         return (int)(
             let
             {
-                long $ceylontmp$hash$0 = hash;
+                long $ceylontmp$hash$0 = this.hash;
             }
             returning $ceylontmp$hash$0 ^ $ceylontmp$hash$0 >>> 32;
         );

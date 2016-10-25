@@ -17,12 +17,12 @@ class SmallFloat implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     private final float floatp;
     
     public final float getFloatp() {
-        return floatp;
+        return this.floatp;
     }
     private float floata;
     
     private final float getFloata$priv$() {
-        return floata;
+        return this.floata;
     }
     
     private final void setFloata$priv$(final float floata) {

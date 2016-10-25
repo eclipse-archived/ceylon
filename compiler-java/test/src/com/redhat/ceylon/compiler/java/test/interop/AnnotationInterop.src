@@ -77,7 +77,7 @@ class AnnotationInterop implements .com.redhat.ceylon.compiler.java.runtime.mode
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
     public final .java.lang.String getTom() {
-        return tom;
+        return this.tom;
     }
     
     @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationDefaultTarget

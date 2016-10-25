@@ -18,18 +18,18 @@ public final class topLevelObjectShared_ implements .java.io.Serializable, .com.
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_();
-            topLevelObjectShared_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            topLevelObjectShared_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.$init$value = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_ get_() {
-        if (topLevelObjectShared_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelObjectShared\' before it was set");

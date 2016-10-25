@@ -16,7 +16,7 @@ class Bug2234Sample implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     }
     
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234Sample getBug2234Sample$foo() {
-        return foo;
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234Sample.foo;
     }
     
     @.java.lang.Override
@@ -59,7 +59,7 @@ class Bug2234 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         private final .java.lang.String name;
         
         public final .java.lang.String getName() {
-            return name;
+            return this.name;
         }
         
         private Inner(.com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner$foo $name$) {
@@ -86,7 +86,7 @@ class Bug2234 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner member;
     
     public final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2234.Inner getMember() {
-        return member;
+        return this.member;
     }
     
     public final void test() {

@@ -34,13 +34,13 @@ class CtorAbstractCtorPartial extends .com.redhat.ceylon.compiler.java.test.stru
     private final long x;
     
     private final long getX$priv$() {
-        return x;
+        return this.x;
     }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final long y;
     
     private final long getY$priv$() {
-        return y;
+        return this.y;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartial.partial_ partial_ = null;
     
@@ -93,13 +93,13 @@ class CtorAbstractCtorPartialShared extends .com.redhat.ceylon.compiler.java.tes
     private final long x;
     
     public final long getX() {
-        return x;
+        return this.x;
     }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final long y;
     
     public final long getY() {
-        return y;
+        return this.y;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorPartialShared.partial_ partial_ = null;
     
@@ -150,13 +150,13 @@ class CtorAbstractCtorPartialCaptured extends .com.redhat.ceylon.compiler.java.t
     private final long x;
     
     private final long getX$priv$() {
-        return x;
+        return this.x;
     }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final long y;
     
     private final long getY$priv$() {
-        return y;
+        return this.y;
     }
     
     public final long capture() {
@@ -211,7 +211,7 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
     private long x;
     
     private final long getX$priv$() {
-        return x;
+        return this.x;
     }
     
     private final void setX$priv$(final long x) {
@@ -221,7 +221,7 @@ class CtorAbstractCtorPartialVariable extends .com.redhat.ceylon.compiler.java.t
     private long y;
     
     private final long getY$priv$() {
-        return y;
+        return this.y;
     }
     
     private final void setY$priv$(final long y) {
@@ -403,7 +403,7 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
     private long x;
     
     public final long getX() {
-        return x;
+        return this.x;
     }
     
     public final void setX(final long x) {
@@ -413,7 +413,7 @@ class CtorAbstractCtorPartialSharedVariable extends .com.redhat.ceylon.compiler.
     private long y;
     
     public final long getY() {
-        return y;
+        return this.y;
     }
     
     public final void setY(final long y) {
@@ -595,7 +595,7 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
     private long x;
     
     private final long getX$priv$() {
-        return x;
+        return this.x;
     }
     
     private final void setX$priv$(final long x) {
@@ -605,7 +605,7 @@ class CtorAbstractCtorPartialCapturedVariable extends .com.redhat.ceylon.compile
     private long y;
     
     private final long getY$priv$() {
-        return y;
+        return this.y;
     }
     
     private final void setY$priv$(final long y) {
@@ -815,13 +815,13 @@ class CtorAbstractCtorGeneric<T> extends .com.redhat.ceylon.compiler.java.test.s
     private final T x;
     
     private final T getX$priv$() {
-        return x;
+        return this.x;
     }
     @.com.redhat.ceylon.compiler.java.metadata.NoInitCheck
     private final T y;
     
     private final T getY$priv$() {
-        return y;
+        return this.y;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorAbstractCtorGeneric.partial_ partial_ = null;
     

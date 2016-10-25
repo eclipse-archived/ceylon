@@ -523,7 +523,7 @@ class EC_Tuple<Element, First extends Element> implements .com.redhat.ceylon.com
     private final First first;
     
     public final First getFirst() {
-        return first;
+        return this.first;
     }
     
     @.java.lang.Override

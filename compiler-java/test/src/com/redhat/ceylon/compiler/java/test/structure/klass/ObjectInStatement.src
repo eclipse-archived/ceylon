@@ -18,7 +18,7 @@ class ObjectInStatement implements .com.redhat.ceylon.compiler.java.runtime.mode
                 
                 @.java.lang.Override
                 public final .java.lang.String toString() {
-                    return string;
+                    return this.string;
                 }
                 
                 @.java.lang.Override

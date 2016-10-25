@@ -7,16 +7,16 @@ final class lateToplevel_ {
     private static .java.lang.String value;
     
     public static .java.lang.String get_() {
-        if (lateToplevel_.value != null) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.attribute.lateToplevel_.value != null) {
+            return .com.redhat.ceylon.compiler.java.test.structure.attribute.lateToplevel_.value;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateToplevel\'");
         }
     }
     
     public static void set_(final .java.lang.String lateToplevel) {
-        if (lateToplevel_.value == null) {
-            value = lateToplevel;
+        if (.com.redhat.ceylon.compiler.java.test.structure.attribute.lateToplevel_.value == null) {
+            .com.redhat.ceylon.compiler.java.test.structure.attribute.lateToplevel_.value = lateToplevel;
         } else {
             throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
@@ -30,17 +30,17 @@ final class lateToplevel2_ {
     private static volatile boolean $init$value = false;
     
     public static long get_() {
-        if (lateToplevel2_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.attribute.lateToplevel2_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.attribute.lateToplevel2_.value;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateToplevel2\'");
         }
     }
     
     public static void set_(final long lateToplevel2) {
-        if (!lateToplevel2_.$init$value) {
-            value = lateToplevel2;
-            lateToplevel2_.$init$value = true;
+        if (!.com.redhat.ceylon.compiler.java.test.structure.attribute.lateToplevel2_.$init$value) {
+            .com.redhat.ceylon.compiler.java.test.structure.attribute.lateToplevel2_.value = lateToplevel2;
+            .com.redhat.ceylon.compiler.java.test.structure.attribute.lateToplevel2_.$init$value = true;
         } else {
             throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
@@ -54,17 +54,17 @@ final class lateToplevel3_ {
     private static volatile boolean $init$value = false;
     
     public static .ceylon.language.String get_() {
-        if (lateToplevel3_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.attribute.lateToplevel3_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.attribute.lateToplevel3_.value;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateToplevel3\'");
         }
     }
     
     public static void set_(final .ceylon.language.String lateToplevel3) {
-        if (!lateToplevel3_.$init$value) {
-            value = lateToplevel3;
-            lateToplevel3_.$init$value = true;
+        if (!.com.redhat.ceylon.compiler.java.test.structure.attribute.lateToplevel3_.$init$value) {
+            .com.redhat.ceylon.compiler.java.test.structure.attribute.lateToplevel3_.value = lateToplevel3;
+            .com.redhat.ceylon.compiler.java.test.structure.attribute.lateToplevel3_.$init$value = true;
         } else {
             throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }

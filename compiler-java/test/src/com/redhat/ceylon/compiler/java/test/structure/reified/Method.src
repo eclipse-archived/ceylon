@@ -42,7 +42,7 @@ public class MethodClass implements .com.redhat.ceylon.compiler.java.runtime.mod
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
     public final .ceylon.language.Callable<? extends .java.lang.Object> getMethodSpec() {
-        return methodSpec;
+        return this.methodSpec;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -309,7 +309,7 @@ public class MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.run
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.reified::MethodClass")
     private final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodClass getC$priv$() {
-        return c;
+        return this.c;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .com.redhat.ceylon.compiler.java.test.structure.reified.MethodInterface$impl $com$redhat$ceylon$compiler$java$test$structure$reified$MethodInterface$this$;

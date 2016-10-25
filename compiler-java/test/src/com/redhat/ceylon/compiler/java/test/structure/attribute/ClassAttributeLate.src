@@ -18,7 +18,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
     
     public final .java.lang.String getLateStringAttr() {
         if (this.lateStringAttr != null) {
-            return lateStringAttr;
+            return this.lateStringAttr;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateStringAttr\'");
         }
@@ -35,7 +35,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
     
     public final .java.lang.String getLateStringVariableAttr() {
         if (this.lateStringVariableAttr != null) {
-            return lateStringVariableAttr;
+            return this.lateStringVariableAttr;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateStringVariableAttr\'");
         }
@@ -48,7 +48,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
     
     public final .java.lang.Object getLateNonNullAttr() {
         if (this.lateNonNullAttr != null) {
-            return lateNonNullAttr;
+            return this.lateNonNullAttr;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateNonNullAttr\'");
         }
@@ -65,7 +65,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
     
     public final .java.lang.Object getLateNonNullVariableAttr() {
         if (this.lateNonNullVariableAttr != null) {
-            return lateNonNullVariableAttr;
+            return this.lateNonNullVariableAttr;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateNonNullVariableAttr\'");
         }
@@ -79,7 +79,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
     
     public final .java.lang.Object getLateOptionalAttr() {
         if (this.$init$lateOptionalAttr) {
-            return lateOptionalAttr;
+            return this.lateOptionalAttr;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateOptionalAttr\'");
         }
@@ -98,7 +98,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
     
     public final .java.lang.Object getLateOptionalVariableAttr() {
         if (this.$init$lateOptionalVariableAttr) {
-            return lateOptionalVariableAttr;
+            return this.lateOptionalVariableAttr;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateOptionalVariableAttr\'");
         }
@@ -113,7 +113,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
     
     public final T getLateGenericAttr() {
         if (this.$init$lateGenericAttr) {
-            return lateGenericAttr;
+            return this.lateGenericAttr;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateGenericAttr\'");
         }
@@ -132,7 +132,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
     
     public final T getLateGenericVariableAttr() {
         if (this.$init$lateGenericVariableAttr) {
-            return lateGenericVariableAttr;
+            return this.lateGenericVariableAttr;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateGenericVariableAttr\'");
         }
@@ -146,7 +146,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
     
     public final U getLateGenericNonNullAttr() {
         if (this.lateGenericNonNullAttr != null) {
-            return lateGenericNonNullAttr;
+            return this.lateGenericNonNullAttr;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateGenericNonNullAttr\'");
         }
@@ -163,7 +163,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
     
     public final U getLateGenericNonNullVariableAttr() {
         if (this.lateGenericNonNullVariableAttr != null) {
-            return lateGenericNonNullVariableAttr;
+            return this.lateGenericNonNullVariableAttr;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateGenericNonNullVariableAttr\'");
         }
@@ -177,7 +177,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
     
     public final long getLateAttr() {
         if (this.$init$lateAttr) {
-            return lateAttr;
+            return this.lateAttr;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateAttr\'");
         }
@@ -196,7 +196,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
     
     public final long getLateVariableAttr() {
         if (this.$init$lateVariableAttr) {
-            return lateVariableAttr;
+            return this.lateVariableAttr;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'lateVariableAttr\'");
         }

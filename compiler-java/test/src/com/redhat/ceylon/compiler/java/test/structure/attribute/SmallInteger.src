@@ -17,12 +17,12 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
     private final int intp;
     
     public final int getIntp() {
-        return intp;
+        return this.intp;
     }
     private int inta;
     
     private final int getInta$priv$() {
-        return inta;
+        return this.inta;
     }
     
     private final void setInta$priv$(final int inta) {

@@ -27,7 +27,7 @@ class Bug1888 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private .java.lang.String cycled;
     
     public final .java.lang.String getCycled() {
-        return cycled;
+        return this.cycled;
     }
     
     public final void setCycled(final .java.lang.String cycled) {

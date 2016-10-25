@@ -90,17 +90,17 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte initN;
     
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getInitN$priv$() {
-        return initN;
+        return this.initN;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte initI;
     
     private final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getInitI$priv$() {
-        return initI;
+        return this.initI;
     }
     private byte n1;
     
     public final byte getN1() {
-        return n1;
+        return this.n1;
     }
     
     public final void setN1(final byte n1) {
@@ -109,7 +109,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     private byte n2;
     
     public final byte getN2() {
-        return n2;
+        return this.n2;
     }
     
     public final void setN2(final byte n2) {
@@ -118,7 +118,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     private byte i1;
     
     public final byte getI1() {
-        return i1;
+        return this.i1;
     }
     
     public final void setI1(final byte i1) {
@@ -151,7 +151,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     private .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte boxedByte1;
     
     public final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getBoxedByte1() {
-        return boxedByte1;
+        return this.boxedByte1;
     }
     
     public final void setBoxedByte1(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte boxedByte1) {
@@ -160,7 +160,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     private .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte boxedByte2;
     
     public final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getBoxedByte2() {
-        return boxedByte2;
+        return this.boxedByte2;
     }
     
     public final void setBoxedByte2(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte boxedByte2) {
@@ -169,7 +169,7 @@ class ArithmeticOperators implements .com.redhat.ceylon.compiler.java.runtime.mo
     private .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte boxedByte3;
     
     public final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte getBoxedByte3() {
-        return boxedByte3;
+        return this.boxedByte3;
     }
     
     public final void setBoxedByte3(final .com.redhat.ceylon.compiler.java.test.expression.operator.MyByte boxedByte3) {
@@ -835,19 +835,19 @@ final class toplevelByte1_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            toplevelByte1_.value = (byte)0L;
-            toplevelByte1_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.value = (byte)0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            toplevelByte1_.value = "0";
-            toplevelByte1_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.value = "0";
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.$init$value = false;
         }
     }
     
     public static byte get_() {
-        if (toplevelByte1_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelByte1\' before it was set");
@@ -856,7 +856,7 @@ final class toplevelByte1_ {
     
     public static void set_(final byte toplevelByte1) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = toplevelByte1;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte1_.value = toplevelByte1;
     }
 }
 final class toplevelByte2_ {
@@ -868,19 +868,19 @@ final class toplevelByte2_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            toplevelByte2_.value = (byte)0L;
-            toplevelByte2_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.value = (byte)0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            toplevelByte2_.value = "0";
-            toplevelByte2_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.value = "0";
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.$init$value = false;
         }
     }
     
     public static byte get_() {
-        if (toplevelByte2_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelByte2\' before it was set");
@@ -889,7 +889,7 @@ final class toplevelByte2_ {
     
     public static void set_(final byte toplevelByte2) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = toplevelByte2;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte2_.value = toplevelByte2;
     }
 }
 final class toplevelByte3_ {
@@ -901,19 +901,19 @@ final class toplevelByte3_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            toplevelByte3_.value = (byte)0L;
-            toplevelByte3_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.value = (byte)0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            toplevelByte3_.value = "0";
-            toplevelByte3_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.value = "0";
+            .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.$init$value = false;
         }
     }
     
     public static byte get_() {
-        if (toplevelByte3_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelByte3\' before it was set");
@@ -922,7 +922,7 @@ final class toplevelByte3_ {
     
     public static void set_(final byte toplevelByte3) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = toplevelByte3;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.toplevelByte3_.value = toplevelByte3;
     }
 }
 final class toplevelGetterByte1_ {

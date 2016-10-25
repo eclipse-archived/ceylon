@@ -13,7 +13,7 @@ class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final long size;
     
     private final long getSize$priv$() {
-        return size;
+        return this.size;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final int[] buff;
@@ -21,7 +21,7 @@ class Bug1467 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("java.lang::IntArray")
     private final int[] getBuff$priv$() {
-        return buff;
+        return this.buff;
     }
     
     private final void bufferTest$priv$() {

@@ -8,7 +8,7 @@ class SuperReference implements .com.redhat.ceylon.compiler.java.runtime.model.R
     private long a;
     
     public final long getA() {
-        return a;
+        return this.a;
     }
     
     public final void setA(final long a) {

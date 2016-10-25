@@ -199,7 +199,7 @@ class Hello implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTyp
     private final .java.lang.String who;
     
     private final .java.lang.String getWho$priv$() {
-        return who;
+        return this.who;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Hello.pour$delegation$_ pour$delegation$_ = null;
     

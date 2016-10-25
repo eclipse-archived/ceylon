@@ -430,18 +430,18 @@ final class methodRefinementWithSpecifiers_attributeMethod_ {
     static {
         try {
             value = .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_returnsMethod_.methodRefinementWithSpecifiers_returnsMethod();
-            methodRefinementWithSpecifiers_attributeMethod_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_attributeMethod_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            methodRefinementWithSpecifiers_attributeMethod_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_attributeMethod_.$init$value = false;
         }
     }
     
     public static .ceylon.language.Callable<? extends .java.lang.Object> get_() {
-        if (methodRefinementWithSpecifiers_attributeMethod_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_attributeMethod_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.method.methodRefinementWithSpecifiers_attributeMethod_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'methodRefinementWithSpecifiers_attributeMethod\' before it was set");

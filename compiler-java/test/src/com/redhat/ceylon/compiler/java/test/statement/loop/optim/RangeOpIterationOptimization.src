@@ -15,12 +15,12 @@ class OptimizedForWithRange implements .com.redhat.ceylon.compiler.java.runtime.
     private final long start;
     
     private final long getStart$priv$() {
-        return start;
+        return this.start;
     }
     private final long end;
     
     private final long getEnd$priv$() {
-        return end;
+        return this.end;
     }
     
     private final void literals$priv$() {

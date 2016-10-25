@@ -28,18 +28,18 @@ final class b1_ {
     static {
         try {
             value = true;
-            b1_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.attribute.b1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = false;
-            b1_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.attribute.b1_.$init$value = false;
         }
     }
     
     public static boolean get_() {
-        if (b1_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.attribute.b1_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.expression.attribute.b1_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'b1\' before it was set");
@@ -56,18 +56,18 @@ public final class b2_ {
     static {
         try {
             value = true;
-            b2_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.attribute.b2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = false;
-            b2_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.attribute.b2_.$init$value = false;
         }
     }
     
     public static boolean get_() {
-        if (b2_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.attribute.b2_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.expression.attribute.b2_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'b2\' before it was set");

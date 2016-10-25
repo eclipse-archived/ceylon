@@ -56,18 +56,18 @@ final class interfaceWithinObject_ implements .java.io.Serializable, .com.redhat
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_();
-            interfaceWithinObject_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            interfaceWithinObject_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.$init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_ get_() {
-        if (interfaceWithinObject_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.nesting.interfaceWithinObject_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'interfaceWithinObject\' before it was set");

@@ -9,19 +9,19 @@ public final class topLevelVariableShared_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            topLevelVariableShared_.value = 0L;
-            topLevelVariableShared_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelVariableShared_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelVariableShared_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            topLevelVariableShared_.value = 0L;
-            topLevelVariableShared_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelVariableShared_.value = 0L;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelVariableShared_.$init$value = false;
         }
     }
     
     public static long get_() {
-        if (topLevelVariableShared_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelVariableShared_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelVariableShared_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelVariableShared\' before it was set");
@@ -30,6 +30,6 @@ public final class topLevelVariableShared_ {
     
     public static void set_(final long topLevelVariableShared) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = topLevelVariableShared;
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelVariableShared_.value = topLevelVariableShared;
     }
 }

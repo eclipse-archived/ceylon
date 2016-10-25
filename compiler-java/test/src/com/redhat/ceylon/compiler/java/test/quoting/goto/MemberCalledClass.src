@@ -23,7 +23,7 @@ final class memberCalledClass_ implements .java.io.Serializable, .com.redhat.cey
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.Name("class")
     public final long getClass$() {
-        return $class;
+        return this.$class;
     }
     private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_ value;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -32,12 +32,12 @@ final class memberCalledClass_ implements .java.io.Serializable, .com.redhat.cey
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_();
-            memberCalledClass_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            memberCalledClass_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_.$init$value = false;
         }
     }
     
@@ -45,8 +45,8 @@ final class memberCalledClass_ implements .java.io.Serializable, .com.redhat.cey
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.goto::memberCalledClass")
     static .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_ get_() {
-        if (memberCalledClass_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'memberCalledClass\' before it was set");
@@ -87,12 +87,12 @@ final class memberCalledClass2_ implements .java.io.Serializable, .com.redhat.ce
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_();
-            memberCalledClass2_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            memberCalledClass2_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_.$init$value = false;
         }
     }
     
@@ -100,8 +100,8 @@ final class memberCalledClass2_ implements .java.io.Serializable, .com.redhat.ce
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.quoting.goto::memberCalledClass2")
     static .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_ get_() {
-        if (memberCalledClass2_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'memberCalledClass2\' before it was set");

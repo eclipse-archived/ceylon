@@ -8,7 +8,7 @@ class MethodWithDefaultParams implements .com.redhat.ceylon.compiler.java.runtim
     private final long prop;
     
     public final long getProp() {
-        return prop;
+        return this.prop;
     }
     
     private final void f1$priv$() {

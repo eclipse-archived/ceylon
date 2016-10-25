@@ -29,7 +29,7 @@ class Bug544SharedAttribute extends .com.redhat.ceylon.compiler.java.test.issues
     private final .java.lang.String s;
     
     public final .java.lang.String getS() {
-        return s;
+        return this.s;
     }
     
     @.java.lang.Override
@@ -52,7 +52,7 @@ class Bug544Captured extends .com.redhat.ceylon.compiler.java.test.issues.bug05x
     private final .java.lang.String s;
     
     private final .java.lang.String getS$priv$() {
-        return s;
+        return this.s;
     }
     
     private final .java.lang.String m$priv$() {
@@ -117,7 +117,7 @@ class Bug544ContainerClass implements .com.redhat.ceylon.compiler.java.runtime.m
     private final .java.lang.String s;
     
     public final .java.lang.String getS() {
-        return s;
+        return this.s;
     }
     
     class Bug544CapturesFromOuterClass extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx.Bug544 {
@@ -174,18 +174,18 @@ final class s_ {
     static {
         try {
             value = "";
-            s_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            s_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.$init$value = false;
         }
     }
     
     public static .java.lang.String get_() {
-        if (s_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'s\' before it was set");

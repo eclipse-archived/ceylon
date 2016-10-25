@@ -14,32 +14,32 @@ class CtorIntermixedStatementsAndConstructors implements .com.redhat.ceylon.comp
     private final long a;
     
     public final long getA() {
-        return a;
+        return this.a;
     }
     private final long c;
     
     public final long getC() {
-        return c;
+        return this.c;
     }
     private final long b;
     
     public final long getB() {
-        return b;
+        return this.b;
     }
     private final long d;
     
     public final long getD() {
-        return d;
+        return this.d;
     }
     private final long e;
     
     public final long getE() {
-        return e;
+        return this.e;
     }
     private final long f;
     
     public final long getF() {
-        return f;
+        return this.f;
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorIntermixedStatementsAndConstructors.foo_ foo_ = null;
     

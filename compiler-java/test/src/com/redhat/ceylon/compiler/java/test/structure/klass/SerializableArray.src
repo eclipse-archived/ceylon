@@ -16,7 +16,7 @@ class SerializableClass implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final .ceylon.language.Array<.ceylon.language.Integer> array;
     
     public final .ceylon.language.Array<.ceylon.language.Integer> getArray() {
-        return array;
+        return this.array;
     }
     
     @.java.lang.Override

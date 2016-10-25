@@ -19,7 +19,7 @@ abstract class AbstractBug1188 implements .com.redhat.ceylon.compiler.java.runti
     
     @.java.lang.Override
     public final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1188> getParents() {
-        return parents;
+        return this.parents;
     }
     
     @.java.lang.Override

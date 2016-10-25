@@ -16,7 +16,7 @@ class Bug2176A implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A getBug2176A$true() {
-        return $true;
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A.$true;
     }
     
     private static final class false_ {
@@ -33,7 +33,7 @@ class Bug2176A implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     }
     
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A getBug2176A$false() {
-        return $false;
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.Bug2176A.$false;
     }
     
     @.java.lang.Override

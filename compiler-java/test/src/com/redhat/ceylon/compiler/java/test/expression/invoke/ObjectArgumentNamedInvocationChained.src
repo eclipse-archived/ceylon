@@ -74,7 +74,7 @@ public final class objectArgumentNamedInvocationChained_ {
                             @.java.lang.Override
                             @.com.redhat.ceylon.common.NonNull
                             public final .java.lang.String toString() {
-                                return string;
+                                return this.string;
                             }
                             
                             @.ceylon.language.SharedAnnotation$annotation$
@@ -96,7 +96,7 @@ public final class objectArgumentNamedInvocationChained_ {
                                 return (int)(
                                     let
                                     {
-                                        long $ceylontmp$hash$2 = hash;
+                                        long $ceylontmp$hash$2 = this.hash;
                                     }
                                     returning $ceylontmp$hash$2 ^ $ceylontmp$hash$2 >>> 32;
                                 );
@@ -138,7 +138,7 @@ public final class objectArgumentNamedInvocationChained_ {
                     @.java.lang.Override
                     @.com.redhat.ceylon.common.NonNull
                     public final .java.lang.String toString() {
-                        return string;
+                        return this.string;
                     }
                     
                     @.ceylon.language.SharedAnnotation$annotation$
@@ -160,7 +160,7 @@ public final class objectArgumentNamedInvocationChained_ {
                         return (int)(
                             let
                             {
-                                long $ceylontmp$hash$3 = hash;
+                                long $ceylontmp$hash$3 = this.hash;
                             }
                             returning $ceylontmp$hash$3 ^ $ceylontmp$hash$3 >>> 32;
                         );

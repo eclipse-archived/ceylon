@@ -130,7 +130,7 @@ class ConstructorRef implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     @.java.lang.Override
     public final .java.lang.String toString() {
-        return string;
+        return this.string;
     }
     
     public ConstructorRef(final .java.lang.String s$param$) {
@@ -300,7 +300,7 @@ class ConstructorRefTp<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     @.java.lang.Override
     @.com.redhat.ceylon.common.NonNull
     public final .java.lang.String toString() {
-        return string;
+        return this.string;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$

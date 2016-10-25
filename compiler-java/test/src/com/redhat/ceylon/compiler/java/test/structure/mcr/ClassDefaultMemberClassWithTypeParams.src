@@ -16,7 +16,7 @@ class ClassDefaultMemberClassWithTypeParams<T> implements .com.redhat.ceylon.com
     private final T tt;
     
     private final T getTt$priv$() {
-        return tt;
+        return this.tt;
     }
     
     public <U>.com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassWithTypeParams<T>.Member<U> Member$new$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U, final T t, final U u) {
@@ -71,7 +71,7 @@ class ClassDefaultMemberClassWithTypeParams_sub<X> extends .com.redhat.ceylon.co
     private final X xx;
     
     private final X getXx$priv$() {
-        return xx;
+        return this.xx;
     }
     
     @.java.lang.Override

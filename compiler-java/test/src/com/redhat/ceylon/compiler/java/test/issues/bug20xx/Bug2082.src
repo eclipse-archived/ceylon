@@ -49,18 +49,18 @@ final class eBug2082_ implements .java.io.Serializable, .com.redhat.ceylon.compi
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_();
-            eBug2082_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            eBug2082_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_.$init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_ get_() {
-        if (eBug2082_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'eBug2082\' before it was set");
@@ -99,18 +99,18 @@ final class fBug2082_ implements .java.io.Serializable, .com.redhat.ceylon.compi
     static {
         try {
             value = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_();
-            fBug2082_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            fBug2082_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_.$init$value = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_ get_() {
-        if (fBug2082_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'fBug2082\' before it was set");

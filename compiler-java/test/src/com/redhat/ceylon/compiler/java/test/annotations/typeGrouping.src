@@ -44,12 +44,12 @@ final class typeGroupAttribute_ {
     static {
         try {
             value = .ceylon.language.nothing_.get_();
-            typeGroupAttribute_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.annotations.typeGroupAttribute_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
             value = null;
-            typeGroupAttribute_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.annotations.typeGroupAttribute_.$init$value = false;
         }
     }
     
@@ -58,8 +58,8 @@ final class typeGroupAttribute_ {
             value = "com.redhat.ceylon.compiler.java.test.annotations::TypeGroupA&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupB&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupD|com.redhat.ceylon.compiler.java.test.annotations::TypeGroupA&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupC&com.redhat.ceylon.compiler.java.test.annotations::TypeGroupD",
             erased = true)
     public static .java.lang.Object get_() {
-        if (typeGroupAttribute_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.annotations.typeGroupAttribute_.$init$value) {
+            return .com.redhat.ceylon.compiler.java.test.annotations.typeGroupAttribute_.value;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'typeGroupAttribute\' before it was set");
