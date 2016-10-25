@@ -152,10 +152,10 @@ public class AttributeDefinitionBuilder {
                 .isTransient(Decl.isTransient(attrType))
                 .modelAnnotations(attrType.getAnnotations())
                 .resultType(attrType(), attrType);
-            ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(owner, attrName);
+            ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(owner, setterParameterName());
             pdb.at(node);
             pdb.modifiers(Flags.FINAL);
-            pdb.aliasName(attrName);
+            pdb.aliasName(setterParameterName());
             int seterParamFlags = 0;
             if (owner.rawParameters(attrType)) {
                 seterParamFlags |= AbstractTransformer.JT_RAW;
@@ -183,6 +183,10 @@ public class AttributeDefinitionBuilder {
             setterBuilder = null;
             getterBuilder = null;
         }
+    }
+    
+    public String setterParameterName() {
+        return attrName;
     }
     
     public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, 
@@ -520,6 +524,21 @@ public class AttributeDefinitionBuilder {
         );
     }
     
+    private boolean useJavaBox() {
+        if (owner.isEe()
+                && owner.typeFact().isOptionalType(attrType)) {
+            Type t = owner.simplifyType(attrType);
+            if (t.isInteger() 
+                    || t.isFloat()
+                    || t.isString()
+                    || t.isByte()
+                    || t.isBoolean()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     private JCExpression valueFieldType() {
         if ((valueFieldModifiers() & Flags.STATIC) != 0
                 && attrType.isTypeParameter()) {
@@ -528,9 +547,9 @@ public class AttributeDefinitionBuilder {
         if (owner.isEe()) {
             Type t = owner.simplifyType(attrType);
             if (t.isInteger()) {
-                return owner.make().Type(owner.syms().integerObjectType);
+                return owner.make().Type(owner.syms().longObjectType);
             } else if (t.isFloat()) {
-                return owner.make().Type(owner.syms().floatObjectType);
+                return owner.make().Type(owner.syms().doubleObjectType);
             } else if (t.isString()) {
                 return owner.make().Type(owner.syms().stringType);
             } else if (t.isByte()) {
@@ -657,6 +676,13 @@ public class AttributeDefinitionBuilder {
         // make sure we turn hash long to int properly
         if(isHash)
             returnExpr = owner.convertToIntForHashAttribute(returnExpr);
+        if (useJavaBox()) {
+            returnExpr = owner.make().Conditional(
+                    owner.make().Binary(JCTree.Tag.EQ, makeValueFieldAccess(), owner.makeNull()), 
+                    owner.makeNull(), 
+                    owner.boxType(owner.unboxJavaType(returnExpr, owner.simplifyType(attrType)),
+                            owner.simplifyType(attrType)));
+        }
         if (attrTypedDecl.isStatic()) {
             returnExpr = owner.make().TypeCast(owner.makeJavaType(attrType), returnExpr);
         }
@@ -698,10 +724,22 @@ public class AttributeDefinitionBuilder {
     
     private List<JCStatement> setter() {
         JCExpression fld = makeValueFieldAccess();
+        JCExpression setValue = owner.makeQuotedIdent(setterParameterName());
+        if (useJavaBox()) {
+            setValue = owner.make().Conditional(
+                    owner.make().Binary(JCTree.Tag.EQ, 
+                            owner.makeQuotedIdent(setterParameterName()), 
+                            owner.makeNull()),
+                    owner.makeNull(),
+                    owner.make().Apply(null,
+                            owner.makeSelect(valueFieldType(), "valueOf"),
+                            List.<JCExpression>of(
+                    owner.unboxType(setValue, owner.simplifyType(attrType)))));
+        }
         List<JCStatement> stmts = List.<JCStatement>of(owner.make().Exec(
                 owner.make().Assign(
                         fld,
-                        owner.makeQuotedIdent(attrName))));
+                        setValue)));
         return stmts;
     }
 

@@ -3886,6 +3886,26 @@ public abstract class AbstractTransformer implements Transformation {
         return expr;
     }
     
+    
+    JCExpression unboxJavaType(JCExpression expr, Type type) {
+        String method;
+        if (type.isString()) {
+            return expr;
+        } else if (type.isInteger()) {
+            method = "longValue";
+        } else if (type.isFloat()) {
+            method = "doubleValue";
+        } else if (type.isByte()) {
+            method = "byteValue";
+        } else if (type.isBoolean()) {
+            method = "booleanValue";
+        } else {
+            return expr;// ??
+        }
+        return make().Apply(null, 
+                makeSelect(expr, method), List.<JCExpression>nil());
+    }
+    
     private JCTree.JCMethodInvocation boxInteger(JCExpression value) {
         return makeBoxType(value, syms().ceylonIntegerType);
     }
