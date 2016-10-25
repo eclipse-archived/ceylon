@@ -166,7 +166,7 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
         }
     }
     private long variableInteger;
-    private volatile transient boolean $init$variableInteger;
+    private volatile transient boolean $init$variableInteger = false;
     
     public final long getVariableInteger() {
         if (this.$init$variableInteger) {
@@ -181,7 +181,7 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
         this.$init$variableInteger = true;
     }
     private long integer;
-    private volatile transient boolean $init$integer;
+    private volatile transient boolean $init$integer = false;
     
     public final long getInteger() {
         if (this.$init$integer) {

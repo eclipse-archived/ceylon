@@ -524,6 +524,32 @@ public class AttributeDefinitionBuilder {
                 null
         );
     }
+    
+    private JCExpression valueFieldType() {
+        if ((valueFieldModifiers() & Flags.STATIC) != 0
+                && attrType.isTypeParameter()) {
+            return owner.make().Type(owner.syms().objectType);
+        }
+        if (owner.isEe()) {
+            Type t = owner.simplifyType(attrType);
+            if (t.isInteger()) {
+                return owner.make().Type(owner.syms().integerObjectType);
+            } else if (t.isFloat()) {
+                return owner.make().Type(owner.syms().floatObjectType);
+            } else if (t.isString()) {
+                return owner.make().Type(owner.syms().stringType);
+            } else if (t.isByte()) {
+                return owner.makeQuotedQualIdentFromString("java.lang.Byte");
+            } else if (t.isBoolean()) {
+                return owner.make().Type(owner.syms().booleanObjectType);
+            } else {
+                // XXX Character?
+                return owner.makeJavaType(attrType, typeFlags);
+            }
+        } else {
+            return owner.makeJavaType(attrType, typeFlags);
+        }
+    }
 
     /** The modifiers for the value field */
     protected long valueFieldModifiers() {

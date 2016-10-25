@@ -1,7 +1,7 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
 public class StaticLate implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
-    private static .java.lang.Object entityManager;
+    private static .java.lang.String entityManager;
     
     private static final .java.lang.String getEntityManager$priv$() {
         if (.com.redhat.ceylon.compiler.java.test.structure.attribute.StaticLate.entityManager != null) {

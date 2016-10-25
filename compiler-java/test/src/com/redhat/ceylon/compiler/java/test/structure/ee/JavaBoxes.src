@@ -1,0 +1,236 @@
+package com.redhat.ceylon.compiler.java.test.structure.ee;
+
+class JavaBoxes implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    JavaBoxes() {
+        this.i = null;
+        this.f = null;
+        this.s = null;
+        this.o = null;
+        this.b = null;
+    }
+    private .java.lang.Long i;
+    
+    public .ceylon.language.Integer getI() {
+        return i == null ? null : .ceylon.language.Integer.instance(i.longValue());
+    }
+    
+    public void setI(final .ceylon.language.Integer i) {
+        this.i = i == null ? null : .java.lang.Long.valueOf(i.longValue());
+    }
+    private .java.lang.Float f;
+    
+    public .ceylon.language.Float getF() {
+        return f;
+    }
+    
+    public void setF(final .ceylon.language.Float f) {
+        this.f = f;
+    }
+    private .java.lang.String s;
+    
+    public .ceylon.language.String getS() {
+        return s;
+    }
+    
+    public void setS(final .ceylon.language.String s) {
+        this.s = s;
+    }
+    private .java.lang.Byte o;
+    
+    public .ceylon.language.Byte getO() {
+        return o;
+    }
+    
+    public void setO(final .ceylon.language.Byte o) {
+        this.o = o;
+    }
+    private .java.lang.Boolean b;
+    
+    public .ceylon.language.Boolean getB() {
+        return b;
+    }
+    
+    public void setB(final .ceylon.language.Boolean b) {
+        this.b = b;
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxes.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxes.class);
+}
+public final class iJavaBoxes_ {
+    
+    private iJavaBoxes_() {
+    }
+    private static .java.lang.Integer value;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            iJavaBoxes_.value = null;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            iJavaBoxes_.value = null;
+        }
+    }
+    
+    public static .ceylon.language.Integer get_() {
+        return value;
+    }
+    
+    public static void set_(final .ceylon.language.Integer iJavaBoxes) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = iJavaBoxes;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("fJavaBoxes")
+public final class fJavaBoxes_ {
+    
+    private fJavaBoxes_() {
+    }
+    private static .java.lang.Float value;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            fJavaBoxes_.value = null;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            fJavaBoxes_.value = null;
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.common.Nullable
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Float?")
+    public static .ceylon.language.Float get_() {
+        return value;
+    }
+    
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("fJavaBoxes")
+    @.com.redhat.ceylon.common.Nullable
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Float?")
+    final .ceylon.language.Float fJavaBoxes) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = fJavaBoxes;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("sJavaBoxes")
+public final class sJavaBoxes_ {
+    
+    private sJavaBoxes_() {
+    }
+    private static .java.lang.String value;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            sJavaBoxes_.value = null;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            sJavaBoxes_.value = null;
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.common.Nullable
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    public static .ceylon.language.String get_() {
+        return value;
+    }
+    
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("sJavaBoxes")
+    @.com.redhat.ceylon.common.Nullable
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
+    final .ceylon.language.String sJavaBoxes) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = sJavaBoxes;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("oJavaBoxes")
+public final class oJavaBoxes_ {
+    
+    private oJavaBoxes_() {
+    }
+    private static .java.lang.Byte value;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            oJavaBoxes_.value = null;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            oJavaBoxes_.value = null;
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.common.Nullable
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Byte?")
+    public static .ceylon.language.Byte get_() {
+        return value;
+    }
+    
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("oJavaBoxes")
+    @.com.redhat.ceylon.common.Nullable
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Byte?")
+    final .ceylon.language.Byte oJavaBoxes) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = oJavaBoxes;
+    }
+}
+@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
+        major = 8,
+        minor = 1)
+@.com.redhat.ceylon.compiler.java.metadata.Attribute
+@.com.redhat.ceylon.compiler.java.metadata.Name("bJavaBoxes")
+public final class bJavaBoxes_ {
+    
+    private bJavaBoxes_() {
+    }
+    private static .java.lang.Boolean value;
+    private static final .java.lang.Throwable $initException$;
+    static {
+        try {
+            bJavaBoxes_.value = null;
+            $initException$ = null;
+        } catch (.java.lang.Throwable x) {
+            $initException$ = x;
+            bJavaBoxes_.value = null;
+        }
+    }
+    
+    @.ceylon.language.SharedAnnotation$annotation$
+    @.ceylon.language.VariableAnnotation$annotation$
+    @.com.redhat.ceylon.common.Nullable
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean?")
+    public static .ceylon.language.Boolean get_() {
+        return value;
+    }
+    
+    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("bJavaBoxes")
+    @.com.redhat.ceylon.common.Nullable
+    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean?")
+    final .ceylon.language.Boolean bJavaBoxes) {
+        if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
+        value = bJavaBoxes;
+    }
+}

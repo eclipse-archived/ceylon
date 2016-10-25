@@ -2,12 +2,18 @@ package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
 class StaticAttributeGeneric<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     private final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T;
-    private static final .java.lang.Object nonSharedStat = .ceylon.language.nothing_.get_();
+    private static final .java.lang.Object nonSharedStat;
+    static {
+        nonSharedStat = .ceylon.language.nothing_.get_();
+    }
     
     private static final <T>T getNonSharedStat$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         return (T)nonSharedStat;
     }
-    private static final .java.lang.Object sharedStat = .ceylon.language.nothing_.get_();
+    private static final .java.lang.Object sharedStat;
+    static {
+        sharedStat = .ceylon.language.nothing_.get_();
+    }
     
     public static final <T>T getSharedStat(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T) {
         return (T)sharedStat;

@@ -75,7 +75,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
         this.lateNonNullVariableAttr = lateNonNullVariableAttr;
     }
     private .java.lang.Object lateOptionalAttr;
-    private volatile transient boolean $init$lateOptionalAttr;
+    private volatile transient boolean $init$lateOptionalAttr = false;
     
     public final .java.lang.Object getLateOptionalAttr() {
         if (this.$init$lateOptionalAttr) {
@@ -94,7 +94,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
         }
     }
     private .java.lang.Object lateOptionalVariableAttr;
-    private volatile transient boolean $init$lateOptionalVariableAttr;
+    private volatile transient boolean $init$lateOptionalVariableAttr = false;
     
     public final .java.lang.Object getLateOptionalVariableAttr() {
         if (this.$init$lateOptionalVariableAttr) {
@@ -109,7 +109,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
         this.$init$lateOptionalVariableAttr = true;
     }
     private T lateGenericAttr;
-    private volatile transient boolean $init$lateGenericAttr;
+    private volatile transient boolean $init$lateGenericAttr = false;
     
     public final T getLateGenericAttr() {
         if (this.$init$lateGenericAttr) {
@@ -128,7 +128,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
         }
     }
     private T lateGenericVariableAttr;
-    private volatile transient boolean $init$lateGenericVariableAttr;
+    private volatile transient boolean $init$lateGenericVariableAttr = false;
     
     public final T getLateGenericVariableAttr() {
         if (this.$init$lateGenericVariableAttr) {
@@ -173,7 +173,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
         this.lateGenericNonNullVariableAttr = lateGenericNonNullVariableAttr;
     }
     private long lateAttr;
-    private volatile transient boolean $init$lateAttr;
+    private volatile transient boolean $init$lateAttr = false;
     
     public final long getLateAttr() {
         if (this.$init$lateAttr) {
@@ -192,7 +192,7 @@ class ClassAttributeLate<T, U> implements .com.redhat.ceylon.compiler.java.runti
         }
     }
     private long lateVariableAttr;
-    private volatile transient boolean $init$lateVariableAttr;
+    private volatile transient boolean $init$lateVariableAttr = false;
     
     public final long getLateVariableAttr() {
         if (this.$init$lateVariableAttr) {
