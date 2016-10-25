@@ -183,6 +183,8 @@ public abstract class AbstractTransformer implements Transformation {
 
     private final Target target;
 
+    private boolean ee;
+
     public AbstractTransformer(Context context) {
         this.context = context;
         make = TreeMaker.instance(context);
@@ -194,6 +196,7 @@ public abstract class AbstractTransformer implements Transformation {
         naming = Naming.instance(context);
         simpleAnnotationModels = Options.instance(context).get(Option.BOOTSTRAPCEYLON) != null;
         target = Target.instance(context);
+        ee = Options.instance(context).get(Option.CEYLONEE) != null;
     }
 
     Context getContext() {
@@ -5968,6 +5971,10 @@ public abstract class AbstractTransformer implements Transformation {
             return utilInvocation().sequentialWrapperCopy(typeArg, makeReifiedTypeArgument(seqElemType), 
                     makeQuotedIdent(lastParameter.getName()));
         }
+    }
+    
+    public boolean isEe() {
+        return ee;
     }
 
 }

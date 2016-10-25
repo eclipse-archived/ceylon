@@ -45,6 +45,7 @@ public class DefaultToolOptions {
     // JVM-only, not needing backward compatibility (all new options should go here)
     public final static String COMPILER_TARGET_VERSION = "compiler.jvm.target";
     public final static String COMPILER_JAVAC = "compiler.jvm.javac";
+    public final static String COMPILER_EE = "compiler.jvm.ee";
     
     public final static String SECTION_RUNTOOL = "runtool";
     
@@ -342,6 +343,14 @@ public class DefaultToolOptions {
 
     public static long getCompilerTargetVersion(CeylonConfig config) {
         return config.getNumberOption(COMPILER_TARGET_VERSION, getDefaultTarget());
+    }
+    
+    public static boolean getCompilerEe() {
+        return getCompilerEe(CeylonConfig.get());
+    }
+
+    public static boolean getCompilerEe(CeylonConfig config) {
+        return config.getBoolOption(COMPILER_EE, false);
     }
 
     public static String getRunToolCompileFlags() {

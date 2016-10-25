@@ -196,6 +196,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
     private Long targetVersion = DefaultToolOptions.getCompilerTargetVersion();
+    private boolean ee = DefaultToolOptions.getCompilerEe();
     
     private ModuleSpec jdkProvider;
     {
@@ -379,6 +380,12 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.TARGET, "-target", version.toString());
         validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCE, "-source", version.toString());
         this.targetVersion = version;
+    }
+    
+    @Option
+    @Description("Enable \"EE mode\"")
+    public void setEe(boolean ee) {
+        this.ee = ee;
     }
 
     private List<String> arguments;
@@ -580,6 +587,10 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add(targetVersion.toString());
             arguments.add("-target");
             arguments.add(targetVersion.toString());
+        }
+        
+        if (ee) {
+            arguments.add("-ee");
         }
         
         addJavacArguments(arguments, javac);
