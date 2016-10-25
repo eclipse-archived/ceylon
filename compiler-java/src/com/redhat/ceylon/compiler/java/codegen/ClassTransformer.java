@@ -3508,7 +3508,7 @@ public class ClassTransformer extends AbstractTransformer {
                     if (err == null) {
                         // TODO This should really be using AttributeDefinitionBuilder some how
                         classBuilder.field(modifiers, attrName, type, initialValue, !useField, annos);
-                        if (model.isLate() && CodegenUtil.needsLateInitField(model, typeFact())) {
+                        if (!isEe() && model.isLate() && CodegenUtil.needsLateInitField(model, typeFact())) {
                             classBuilder.field(PRIVATE | Flags.VOLATILE | Flags.TRANSIENT, Naming.getInitializationFieldName(attrName), 
                                     make().Type(syms().booleanType), 
                                     make().Literal(false), false, makeAtIgnore());
