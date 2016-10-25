@@ -1746,6 +1746,25 @@ public abstract class DeclarationVisitor extends Visitor {
         id=0;
         super.visit(that);
         id=oid;
+
+        Tree.ImportList importList = 
+                that.getImportList();
+        if (importList!=null) {
+            Node firstNonImportNode = null;
+            for (Node d: that.getStatements()) {
+                firstNonImportNode = d;
+                break;
+            }
+            if (firstNonImportNode!=null) {
+                for (Tree.Import im: 
+                        importList.getImports()) {
+                    if (im.getEndIndex() > 
+                            firstNonImportNode.getStartIndex()) {
+                        im.addError("import statement must occur before any other statement in block");
+                    }
+                }
+            }
+        }
     }
 
     private static void addGuardedVariables(Tree.Body that, 
