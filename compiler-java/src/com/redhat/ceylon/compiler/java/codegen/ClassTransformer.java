@@ -1872,7 +1872,7 @@ public class ClassTransformer extends AbstractTransformer {
                         && ((Value)member).isLate()) {
                     // TODO this should be encapsulated so the ADB and this
                     // code can just call something common
-                    JCExpression test = AttributeDefinitionBuilder.field(this, null, member.getName(), (Value)member).buildUninitTest();
+                    JCExpression test = AttributeDefinitionBuilder.field(this, null, member.getName(), (Value)member, false).buildUninitTest();
                     if (test != null) {
                         caseStmts.add(make().If(
                                 test,
@@ -3507,11 +3507,30 @@ public class ClassTransformer extends AbstractTransformer {
                     // fields should be ignored, they are accessed by the getters
                     if (err == null) {
                         // TODO This should really be using AttributeDefinitionBuilder some how
-                        classBuilder.field(modifiers, attrName, type, initialValue, !useField, annos);
-                        if (!isEe() && model.isLate() && CodegenUtil.needsLateInitField(model, typeFact())) {
-                            classBuilder.field(PRIVATE | Flags.VOLATILE | Flags.TRANSIENT, Naming.getInitializationFieldName(attrName), 
-                                    make().Type(syms().booleanType), 
-                                    make().Literal(false), false, makeAtIgnore());
+                        if (useField) {
+                            AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.field(this, null, attrName, model, Decl.isIndirect(decl)).
+                                    fieldAnnotations(annos).
+                                    initialValue(initialValue).
+                                    fieldVisibilityModifiers(modifiers).
+                                    modifiers(modifiers);
+                            classBuilder.defs((List)adb.
+                                    buildFields());
+                            List<JCStatement> buildInit = adb.buildInit(false);
+                            if (!buildInit.isEmpty()) {
+                                if (model.isStatic()) {
+                                    classBuilder.defs(make().Block(STATIC, buildInit));
+                                } else {
+                                    classBuilder.getInitBuilder().init((List)buildInit);
+                                }
+                            }
+                        } else {
+                            
+                            classBuilder.field(modifiers, attrName, type, initialValue, !useField, annos);
+                            if (!isEe() && model.isLate() && CodegenUtil.needsLateInitField(model, typeFact())) {
+                                classBuilder.field(PRIVATE | Flags.VOLATILE | Flags.TRANSIENT, Naming.getInitializationFieldName(attrName), 
+                                        make().Type(syms().booleanType), 
+                                        make().Literal(false), false, makeAtIgnore());
+                            }
                         }
                     }
                 }

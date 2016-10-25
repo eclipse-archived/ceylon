@@ -101,7 +101,8 @@ public class AttributeDefinitionBuilder {
     private final InitTest initTest; 
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, Node node, TypedDeclaration attrType, 
-            String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, String fieldName, boolean toplevel, boolean indirect) {
+            String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, String fieldName, boolean toplevel, boolean indirect, 
+            boolean field, boolean isIndirect) {
         int typeFlags = 0;
         TypedReference typedRef = owner.getTypedReference(attrType);
         TypedReference nonWideningTypedRef = owner.nonWideningTypeDecl(typedRef);
@@ -139,52 +140,57 @@ public class AttributeDefinitionBuilder {
         this.initTest = owner.isEe() ? new NoInitTest() : 
                         hasInitFlag ? new FieldInitTest() : 
                             new NullnessInitTest();
-        getterBuilder = MethodDefinitionBuilder
-            .getter(owner, attrType, indirect)
-            .block(owner.make().Block(0L, makeGetter()))
-            .isOverride(attrType.isActual())
-            .isTransient(Decl.isTransient(attrType))
-            .modelAnnotations(attrType.getAnnotations())
-            .resultType(attrType(), attrType);
-        ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(owner, attrName);
-        pdb.at(node);
-        pdb.modifiers(Flags.FINAL);
-        pdb.aliasName(attrName);
-        int seterParamFlags = 0;
-        if (owner.rawParameters(attrType)) {
-            seterParamFlags |= AbstractTransformer.JT_RAW;
-        }
-        pdb.type(new TransformedType(MethodDefinitionBuilder.paramType(owner, nonWideningTypedRef.getDeclaration(), nonWideningType, seterParamFlags), 
-                owner.makeJavaTypeAnnotations(attrType),
-                owner.makeNullabilityAnnotations(attrType)));
-        
-        
-        setterBuilder = MethodDefinitionBuilder
-            .setter(owner, attrType)
-            .block(owner.make().Block(0L, makeSetter()))
-            // only actual if the superclass is also variable
-            .isOverride(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable());
-        if (attrType.isStatic()) {
-            for (TypeParameter tp : Strategy.getEffectiveTypeParameters(attrType)) {
-                getterBuilder.typeParameter(tp);
-                getterBuilder.reifiedTypeParameter(tp);
-                setterBuilder.typeParameter(tp);
-                setterBuilder.reifiedTypeParameter(tp);
+        if (!field) {
+            getterBuilder = MethodDefinitionBuilder
+                .getter(owner, attrType, indirect)
+                .block(owner.make().Block(0L, makeGetter()))
+                .isOverride(attrType.isActual())
+                .isTransient(Decl.isTransient(attrType))
+                .modelAnnotations(attrType.getAnnotations())
+                .resultType(attrType(), attrType);
+            ParameterDefinitionBuilder pdb = ParameterDefinitionBuilder.systemParameter(owner, attrName);
+            pdb.at(node);
+            pdb.modifiers(Flags.FINAL);
+            pdb.aliasName(attrName);
+            int seterParamFlags = 0;
+            if (owner.rawParameters(attrType)) {
+                seterParamFlags |= AbstractTransformer.JT_RAW;
             }
+            pdb.type(new TransformedType(MethodDefinitionBuilder.paramType(owner, nonWideningTypedRef.getDeclaration(), nonWideningType, seterParamFlags), 
+                    owner.makeJavaTypeAnnotations(attrType),
+                    owner.makeNullabilityAnnotations(attrType)));
+            
+            
+            setterBuilder = MethodDefinitionBuilder
+                .setter(owner, attrType)
+                .block(owner.make().Block(0L, makeSetter()))
+                // only actual if the superclass is also variable
+                .isOverride(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable());
+            if (attrType.isStatic()) {
+                for (TypeParameter tp : Strategy.getEffectiveTypeParameters(attrType)) {
+                    getterBuilder.typeParameter(tp);
+                    getterBuilder.reifiedTypeParameter(tp);
+                    setterBuilder.typeParameter(tp);
+                    setterBuilder.reifiedTypeParameter(tp);
+                }
+            }
+            setterBuilder.parameter(pdb);
+        } else {
+            setterBuilder = null;
+            getterBuilder = null;
         }
-        setterBuilder.parameter(pdb);
     }
     
     public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, "value", toplevel, false);
+        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, "value", toplevel, false, false, false);
     }
     
     public static AttributeDefinitionBuilder singleton(AbstractTransformer owner, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, attrName, toplevel, false);
+        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, attrName, toplevel, false, false, false);
         adb.getterBuilder.realName(attrType.getName());
         return adb;
     }
@@ -192,14 +198,14 @@ public class AttributeDefinitionBuilder {
     public static AttributeDefinitionBuilder indirect(AbstractTransformer owner, 
             String javaClassName, String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, null, attrName, "value", toplevel, true);
+        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, null, attrName, "value", toplevel, true, false, false);
     }
     
     public static AttributeDefinitionBuilder getter(AbstractTransformer owner, 
             String attrAndFieldName, TypedDeclaration attrType) {
         String getterName = Naming.getGetterName(attrType, false);
         AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, null, attrType, null, null,
-                        attrAndFieldName, attrAndFieldName, false, false);
+                        attrAndFieldName, attrAndFieldName, false, false, false, false);
         if (!"ref".equals(getterName)
                 && !"get_".equals(getterName)
                 && !attrType.getName().equals(NamingBase.getJavaAttributeName(getterName))
@@ -216,7 +222,7 @@ public class AttributeDefinitionBuilder {
             Node node, 
             String attrAndFieldName, TypedDeclaration attrType) {
         AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, node, attrType, null, null,
-                attrAndFieldName, attrAndFieldName, false, false)
+                attrAndFieldName, attrAndFieldName, false, false, false, false)
             .skipField()
             .skipGetter();
         return adb;
@@ -224,9 +230,9 @@ public class AttributeDefinitionBuilder {
     
     public static AttributeDefinitionBuilder field(AbstractTransformer owner, 
             Node node, 
-            String attrAndFieldName, TypedDeclaration attrType) {
+            String attrAndFieldName, TypedDeclaration attrType, boolean isIndirect) {
         AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, node, attrType, null, null,
-                attrAndFieldName, attrAndFieldName, false, false).skipField();
+                attrAndFieldName, attrAndFieldName, false, false, true, isIndirect).skipField();
         return adb;
     }
     
