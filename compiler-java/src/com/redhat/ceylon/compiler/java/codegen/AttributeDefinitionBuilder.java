@@ -107,7 +107,11 @@ public class AttributeDefinitionBuilder {
         TypedReference typedRef = owner.getTypedReference(attrType);
         TypedReference nonWideningTypedRef = owner.nonWideningTypeDecl(typedRef);
         Type nonWideningType = owner.nonWideningType(typedRef, nonWideningTypedRef);
-        if(attrType.isActual()
+        if (isIndirect) {
+            //attrName = Naming.getAttrClassName(model, 0);
+            nonWideningType = owner.getGetterInterfaceType(attrType);
+        }
+        if(!field && attrType.isActual()
                 && CodegenUtil.hasTypeErased(attrType))
             typeFlags |= AbstractTransformer.JT_RAW;
         if (!CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration())) {
@@ -381,8 +385,8 @@ public class AttributeDefinitionBuilder {
     }
     
     private void generateValueConstructor(MethodDefinitionBuilder methodDefinitionBuilder) {
-        ParameterDefinitionBuilder paramBuilder = ParameterDefinitionBuilder.systemParameter(owner, fieldName).type(new TransformedType(attrType()));
-        JCTree.JCAssign init = owner.make().Assign(owner.makeQualIdent(owner.naming.makeThis(), fieldName), owner.makeUnquotedIdent(fieldName));
+        ParameterDefinitionBuilder paramBuilder = ParameterDefinitionBuilder.systemParameter(owner, fieldName).type(new TransformedType(valueFieldType()));
+        JCTree.JCAssign init = owner.make().Assign(makeValueFieldAccess(), owner.makeUnquotedIdent(fieldName));
         methodDefinitionBuilder.parameter(paramBuilder).body(owner.make().Exec(init));
     }
 
@@ -516,7 +520,7 @@ public class AttributeDefinitionBuilder {
         return owner.make().VarDef(
                 owner.make().Modifiers(valueFieldModifiers(), fieldAnnotations != null ? fieldAnnotations.toList() : List.<JCAnnotation>nil()),
                 owner.names().fromString(Naming.quoteFieldName(fieldName)),
-                attrType(),
+                valueFieldType(),
                 null
         );
     }

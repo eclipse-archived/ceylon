@@ -3472,8 +3472,7 @@ public class ClassTransformer extends AbstractTransformer {
                 } else {
                     initialValue = expressionGen().transformExpression(expression, 
                             CodegenUtil.getBoxingStrategy(model), 
-                            model.isStatic() ? typeFact().getAnythingType() : nonWideningType, 
-                            flags);
+                            model.isStatic() ? typeFact().getAnythingType() : nonWideningType, flags);
                 }
             }
 
@@ -3481,12 +3480,6 @@ public class ClassTransformer extends AbstractTransformer {
             
             if (!CodegenUtil.isUnBoxed(nonWideningTypedRef.getDeclaration())) {
                 flags |= JT_NO_PRIMITIVES;
-            }
-            JCExpression type;
-            if (model.isStatic()) {
-                type = make().Type(syms().objectType);
-            } else {
-                type = makeJavaType(nonWideningType, flags);
             }
             
             long modifiers = (useField) ? modifierTransformation().field(decl) : modifierTransformation().localVar(decl);
@@ -3496,6 +3489,13 @@ public class ClassTransformer extends AbstractTransformer {
             //  does it in those cases)
             if (parameter == null
                     || parameter.isHidden()) {
+                JCExpression type;
+                if (model.isStatic() && nonWideningType.isTypeParameter()) {
+                    type = make().Type(syms().objectType);
+                } else {
+                    type = makeJavaType(nonWideningType, flags);
+                }
+                
                 if (concrete) {
                     classBuilder.getCompanionBuilder((TypeDeclaration)model.getContainer()).field(modifiers, attrName, type, initialValue, !useField);
                 } else {
