@@ -332,7 +332,7 @@ public class AttributeDefinitionBuilder {
                 defs.appendList((List)makeFields());
                 if(initialValue != null) {
                     long flags = (modifiers & Flags.STATIC);
-                    defs.append(owner.make().Block(flags, makeInit()));
+                    defs.append(owner.make().Block(flags, makeInit(true)));
                 }
             }
         }
@@ -603,18 +603,18 @@ public class AttributeDefinitionBuilder {
         return List.<JCTree.JCStatement>of(try_);
     }
     
-    public List<JCStatement> makeInit() {
+    public List<JCStatement> makeInit(boolean isInitialized) {
         List<JCStatement> result = initValueField();
         // $init$value = true;
-        result = makeInitialized(result);
+        result = makeInitialized(isInitialized, result);
         if (deferredInitError) {
             result = initWithExceptionHandling(result);
         }
         return result;
     }
 
-    private List<JCStatement> makeInitialized(List<JCStatement> result) {
-        JCStatement makeInitInitialized = initTest.makeInitInitialized(true);
+    private List<JCStatement> makeInitialized(boolean isInitialized, List<JCStatement> result) {
+        JCStatement makeInitInitialized = initTest.makeInitInitialized(isInitialized);
         if (makeInitInitialized != null) {
             result = result.append(makeInitInitialized);
         }
@@ -889,5 +889,13 @@ public class AttributeDefinitionBuilder {
     
     public JCExpression buildUninitTest() {
         return initTest.makeInitTest(false);
+    }
+    
+    public List<JCStatement> buildFields() {
+        return makeFields();
+    }
+    
+    public List<JCStatement> buildInit(boolean isInitialized) {
+        return makeInit(isInitialized);
     }
 }
