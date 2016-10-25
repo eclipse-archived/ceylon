@@ -1872,12 +1872,7 @@ public class ClassTransformer extends AbstractTransformer {
                         && ((Value)member).isLate()) {
                     // TODO this should be encapsulated so the ADB and this
                     // code can just call something common
-                    JCExpression test;
-                    if (CodegenUtil.needsLateInitField((Value)member, typeFact())) {
-                        test = make().Unary(JCTree.Tag.NOT, naming.makeUnquotedIdent(Naming.getInitializationFieldName(member.getName())));
-                    } else {
-                        test = make().Binary(JCTree.Tag.EQ, naming.makeQualifiedName(naming.makeThis(), (Value)member, Naming.NA_IDENT), makeNull());
-                    }
+                    JCExpression test = AttributeDefinitionBuilder.field(this, null, member.getName(), (Value)member).buildUninitTest();
                     caseStmts.add(make().If(
                             test,
                             make().Return(makeLanguageSerializationValue("uninitializedLateValue")), null));

@@ -140,7 +140,7 @@ public class AttributeDefinitionBuilder {
         this.initTest = hasInitFlag ? new FieldInitTest() : new NullnessInitTest();
         getterBuilder = MethodDefinitionBuilder
             .getter(owner, attrType, indirect)
-            .block(owner.make().Block(0L, makeGetter(initTest)))
+            .block(owner.make().Block(0L, makeGetter()))
             .isOverride(attrType.isActual())
             .isTransient(Decl.isTransient(attrType))
             .modelAnnotations(attrType.getAnnotations())
@@ -160,7 +160,7 @@ public class AttributeDefinitionBuilder {
         
         setterBuilder = MethodDefinitionBuilder
             .setter(owner, attrType)
-            .block(owner.make().Block(0L, makeSetter(initTest)))
+            .block(owner.make().Block(0L, makeSetter()))
             // only actual if the superclass is also variable
             .isOverride(attrType.isActual() && ((TypedDeclaration)attrType.getRefinedDeclaration()).isVariable());
         if (attrType.isStatic()) {
@@ -218,6 +218,14 @@ public class AttributeDefinitionBuilder {
                 attrAndFieldName, attrAndFieldName, false, false)
             .skipField()
             .skipGetter();
+        return adb;
+    }
+    
+    public static AttributeDefinitionBuilder field(AbstractTransformer owner, 
+            Node node, 
+            String attrAndFieldName, TypedDeclaration attrType) {
+        AttributeDefinitionBuilder adb = new AttributeDefinitionBuilder(owner, node, attrType, null, null,
+                attrAndFieldName, attrAndFieldName, false, false).skipField();
         return adb;
     }
     
@@ -490,17 +498,17 @@ public class AttributeDefinitionBuilder {
         }
     }
     
-    private JCStatement generateField() {
+    private JCStatement makeValueField() {
         return owner.make().VarDef(
-                owner.make().Modifiers(fieldModifiers(), fieldAnnotations != null ? fieldAnnotations.toList() : List.<JCAnnotation>nil()),
+                owner.make().Modifiers(valueFieldModifiers(), fieldAnnotations != null ? fieldAnnotations.toList() : List.<JCAnnotation>nil()),
                 owner.names().fromString(Naming.quoteFieldName(fieldName)),
                 attrType(),
                 null
         );
     }
 
-    protected long fieldModifiers() {
-        long flags = Flags.PRIVATE | (modifiers & Flags.STATIC);
+    protected long valueFieldModifiers() {
+        long flags = Flags.PRIVATE | (modifiers & (Flags.STATIC | Flags.FINAL));
         // only make it final if we have an init, otherwise we still have to initialise it
         if (!writable && (initialValue != null || valueConstructor)) {
             flags |= Flags.FINAL;
@@ -522,7 +530,7 @@ public class AttributeDefinitionBuilder {
     }
     
     private List<JCStatement> makeFields() {
-        List<JCStatement> stmts = List.of(generateField());
+        List<JCStatement> stmts = List.of(makeValueField());
         stmts = initTest.makeInitCheckField(stmts);
         if (deferredInitError) {
             stmts = makeExceptionField(stmts);
@@ -532,15 +540,17 @@ public class AttributeDefinitionBuilder {
     
     /** Generate the initializer statements where the field gets set to its initial value */
     private List<JCStatement> initValueField() {
-        JCTree.JCStatement init = owner.make().Exec(owner.make().Assign(
-                makeValueFieldAccess(),
-                //owner.makeUnquotedIdent(Naming.quoteFieldName(fieldName)),
-                initialValue));
-        return List.<JCStatement>of(init);
+        List<JCStatement> stmts = List.<JCStatement>nil();
+        if (initialValue != null) {
+            stmts = stmts.prepend(owner.make().Exec(owner.make().Assign(
+                    makeValueFieldAccess(),
+                    initialValue)));
+        }
+        return stmts;
     }
 
     protected JCExpression makeValueFieldAccess() {
-        return makeFieldAccess(fieldModifiers(), Naming.quoteFieldName(fieldName));
+        return makeFieldAccess(valueFieldModifiers(), Naming.quoteFieldName(fieldName));
     }
     
     /** surrounda the init expression with a try/catch that saves the exception */
@@ -604,7 +614,7 @@ public class AttributeDefinitionBuilder {
         return List.<JCTree.JCStatement>of(owner.make().Return(returnExpr));
     }
     
-    private List<JCStatement> getterExceptionThrowing(InitTest initTest, List<JCStatement> stmts) {
+    public List<JCStatement> getterExceptionThrowing(List<JCStatement> stmts) {
         JCExpression init = initTest.makeInitTest(true);
         if (init != null) {
             List<JCStatement> catchStmts;
@@ -629,10 +639,10 @@ public class AttributeDefinitionBuilder {
         return stmts;
     }
     
-    private List<JCStatement> makeGetter(InitTest initTest) {
+    private List<JCStatement> makeGetter() {
         List<JCStatement> stmts = makeStandardGetter();
         if ((toplevel || late)) {
-            stmts = getterExceptionThrowing(initTest, stmts);
+            stmts = getterExceptionThrowing(stmts);
         }
         return stmts;
     }
@@ -646,7 +656,7 @@ public class AttributeDefinitionBuilder {
         return stmts;
     }
 
-    private List<JCStatement> makeMarkInitialized(InitTest initTest, List<JCStatement> stmts) {
+    private List<JCStatement> makeMarkInitialized(List<JCStatement> stmts) {
         JCStatement markInitialized = initTest.makeInitInitialized(true);
         if (markInitialized != null) {
             stmts = stmts.append(markInitialized);
@@ -669,13 +679,13 @@ public class AttributeDefinitionBuilder {
         return makeFieldAccess(exceptionFieldMods(), Naming.getToplevelAttributeSavedExceptionName());
     }
     
-    private List<JCStatement> makeSetter(InitTest initTest) {
+    private List<JCStatement> makeSetter() {
         List<JCStatement> stmts = setter();
         if (late) {
-            stmts = makeMarkInitialized(initTest, stmts);
+            stmts = makeMarkInitialized(stmts);
         }
         if (!variable) {
-            stmts = makeMarkReinitialized(initTest, stmts);
+            stmts = makeMarkReinitialized(stmts);
         }
         if (deferredInitError) {
             stmts = rethrowInitialError(stmts);
@@ -683,7 +693,7 @@ public class AttributeDefinitionBuilder {
         return stmts;
     }
 
-    protected List<JCStatement> makeMarkReinitialized(InitTest initTest, List<JCStatement> stmts) {
+    protected List<JCStatement> makeMarkReinitialized(List<JCStatement> stmts) {
         JCExpression init = initTest.makeInitTest(false);
         if (init != null) {
             stmts = List.of(
@@ -852,5 +862,9 @@ public class AttributeDefinitionBuilder {
      */
     public void isSetter(JCExpression getterClass) {
         this.getterClass = getterClass;
+    }
+    
+    public JCExpression buildUninitTest() {
+        return initTest.makeInitTest(false);
     }
 }
