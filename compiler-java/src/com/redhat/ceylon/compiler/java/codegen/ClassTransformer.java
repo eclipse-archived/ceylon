@@ -3880,7 +3880,7 @@ public class ClassTransformer extends AbstractTransformer {
     ModifierTransformation modifierTransformation = null;
     ModifierTransformation modifierTransformation() {
         if (modifierTransformation == null) {
-            modifierTransformation = new EeModifierTransformation();
+            modifierTransformation = isEe() ? new EeModifierTransformation() : new ModifierTransformation();
         }
         return modifierTransformation;
     }
