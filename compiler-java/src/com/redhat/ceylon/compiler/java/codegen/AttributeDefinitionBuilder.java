@@ -557,7 +557,8 @@ public class AttributeDefinitionBuilder {
                 makeExceptionFieldAccess(), 
                 owner.makeUnquotedIdent(exceptionName)));
         // value = null
-        JCStatement nullValue = owner.make().Exec(owner.make().Assign(owner.makeUnquotedIdent(fieldName), owner.makeDefaultExprForType(attrType)));
+        JCStatement nullValue = owner.make().Exec(owner.make().Assign(
+                makeValueFieldAccess(), owner.makeDefaultExprForType(attrType)));
         // the catch statements
         JCStatement initFlagFalse = initTest.makeInitInitialized(false);
         JCBlock handlerBlock = owner.make().Block(0, List.<JCTree.JCStatement>of(saveException, nullValue, initFlagFalse));
@@ -658,7 +659,7 @@ public class AttributeDefinitionBuilder {
         JCStatement rethrow = owner.make().Exec(owner.utilInvocation().rethrow( 
                 makeExceptionFieldAccess()));
         // rethrow the init exception if we have one
-        JCIf ifThrow = owner.make().If(owner.make().Binary(JCTree.Tag.NE, owner.makeUnquotedIdent(Naming.getToplevelAttributeSavedExceptionName()), 
+        JCIf ifThrow = owner.make().If(owner.make().Binary(JCTree.Tag.NE, makeExceptionFieldAccess(), 
                 owner.makeNull()), rethrow, null);
         stmts = stmts.prepend(ifThrow);
         return stmts;
