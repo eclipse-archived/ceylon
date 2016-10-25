@@ -26,7 +26,7 @@ import com.redhat.ceylon.compiler.java.metadata.Module;
         version = "1.0.0.Beta23",
         dependencies = {
                 @Import(name = "org.jboss.modules:jboss-modules",
-                        version = "1.4.4.Final")
+                        version = "1.5.2.Final")
         })
 public class $module_ {
 }
