@@ -766,6 +766,7 @@ public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.com
         return t;
     }
     private static final .com.redhat.ceylon.compiler.java.test.metamodel.obj_ value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
@@ -1073,6 +1074,7 @@ final class litValue_ {
     private litValue_() {
     }
     private static final long value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
@@ -1106,6 +1108,7 @@ final class litVariable_ {
     private litVariable_() {
     }
     private static long value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {

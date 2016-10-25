@@ -617,6 +617,7 @@ final class inlineObjectTopLevel_ {
     private inlineObjectTopLevel_() {
     }
     private static final .java.lang.Object value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {

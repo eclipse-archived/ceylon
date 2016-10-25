@@ -307,6 +307,7 @@ public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.com
         return 2L;
     }
     private static final .com.redhat.ceylon.compiler.java.test.annotations.obj_ value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {

@@ -62,6 +62,7 @@ public final class Object implements .java.io.Serializable, .com.redhat.ceylon.c
         getInnerObject().m();
     }
     private static final .com.redhat.ceylon.compiler.java.test.quoting.lettercase.Object value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {

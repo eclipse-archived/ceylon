@@ -110,6 +110,7 @@ final class heuristicTarget3_ implements .java.io.Serializable, .com.redhat.ceyl
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_.class);
     @.com.redhat.ceylon.compiler.java.test.annotations.FieldTarget
     private static final .com.redhat.ceylon.compiler.java.test.annotations.heuristicTarget3_ value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {

@@ -27,6 +27,7 @@ public final class mixers_ implements .java.io.Serializable, .com.redhat.ceylon.
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_.class);
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug15xx.mixers_ value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {

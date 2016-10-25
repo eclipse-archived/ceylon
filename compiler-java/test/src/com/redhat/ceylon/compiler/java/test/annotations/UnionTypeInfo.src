@@ -256,6 +256,7 @@ final class toplevelAttribute_ {
     private toplevelAttribute_() {
     }
     private static final .java.lang.Object value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
@@ -293,6 +294,7 @@ public final class sharedToplevelAttribute_ {
     private sharedToplevelAttribute_() {
     }
     private static final .java.lang.Object value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {

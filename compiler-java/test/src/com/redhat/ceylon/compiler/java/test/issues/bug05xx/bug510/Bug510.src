@@ -59,6 +59,7 @@ final class synchronized_ implements .java.io.Serializable, .com.redhat.ceylon.c
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_.class);
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug05xx.bug510.synchronized_ value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
@@ -101,6 +102,7 @@ final class volatile_ {
     private volatile_() {
     }
     private static final long value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {

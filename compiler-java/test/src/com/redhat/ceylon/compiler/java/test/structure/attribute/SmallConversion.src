@@ -160,6 +160,7 @@ final class smallConversion1_ {
     private smallConversion1_() {
     }
     private static int value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {

@@ -98,6 +98,7 @@ final class bug1878_ {
     private bug1878_() {
     }
     private static boolean value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     
     @.ceylon.language.LateAnnotation$annotation$

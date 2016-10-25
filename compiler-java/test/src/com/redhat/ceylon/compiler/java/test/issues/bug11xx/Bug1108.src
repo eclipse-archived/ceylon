@@ -52,6 +52,7 @@ final class process_ implements .java.io.Serializable, .com.redhat.ceylon.compil
         return ((.ceylon.language.String)(.java.lang.Object).ceylon.language.nothing_.get_()).toString();
     }
     private static final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.process_ value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {

@@ -10,6 +10,7 @@ final class bug1659_ {
     private bug1659_() {
     }
     private static long value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     
     @.ceylon.language.LateAnnotation$annotation$

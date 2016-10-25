@@ -82,6 +82,7 @@ final class javaIoSerializableObject_ extends .java.lang.Object implements .java
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.class);
     private static final .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_ value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
@@ -133,6 +134,7 @@ final class javaIoSerializableBasic_ extends .java.lang.Object implements .java.
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.class);
     private static final .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_ value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
@@ -596,6 +598,7 @@ final class javaIoSerializableQuoting_ implements .java.io.Serializable, .com.re
     public final void $readResolve() {
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_ value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {

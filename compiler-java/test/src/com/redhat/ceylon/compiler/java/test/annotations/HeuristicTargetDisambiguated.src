@@ -78,6 +78,7 @@ final class ambiguousObject_ implements .java.io.Serializable, .com.redhat.ceylo
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_.class);
     @.com.redhat.ceylon.compiler.java.test.annotations.FieldOrMethodTarget
     private static final .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_ value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {

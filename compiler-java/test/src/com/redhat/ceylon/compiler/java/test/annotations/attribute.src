@@ -10,6 +10,7 @@ final class attr1_ {
     private attr1_() {
     }
     private static final long value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
@@ -43,6 +44,7 @@ final class attr2_ {
     private attr2_() {
     }
     private static long value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {

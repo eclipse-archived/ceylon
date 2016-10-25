@@ -70,6 +70,7 @@ final class bug2002BuilderTest1_ {
     private bug2002BuilderTest1_() {
     }
     private static final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
@@ -118,6 +119,7 @@ final class bug2002BuilderTest2_ {
     private bug2002BuilderTest2_() {
     }
     private static final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>> value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {

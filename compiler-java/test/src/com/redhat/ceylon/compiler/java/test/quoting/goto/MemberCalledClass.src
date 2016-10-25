@@ -26,6 +26,7 @@ final class memberCalledClass_ implements .java.io.Serializable, .com.redhat.cey
         return $class;
     }
     private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass_ value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
@@ -80,6 +81,7 @@ final class memberCalledClass2_ implements .java.io.Serializable, .com.redhat.ce
         return 2L;
     }
     private static final .com.redhat.ceylon.compiler.java.test.quoting.$goto.memberCalledClass2_ value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {

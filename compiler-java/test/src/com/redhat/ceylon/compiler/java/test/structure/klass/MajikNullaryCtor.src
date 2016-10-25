@@ -689,6 +689,7 @@ final class majikNullaryCtorValueCtorOf_ extends .com.redhat.ceylon.compiler.jav
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.class);
     private static final .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_ value;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private static volatile boolean $init$value = false;
     private static final .java.lang.Throwable $initException$;
     static {
