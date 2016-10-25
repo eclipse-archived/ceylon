@@ -887,14 +887,15 @@ public class InteropTests extends CompilerTests {
     @Test
     public void testIopAnnotateJavaPackage() throws Exception {
         compile("packageannotations/AnnotateJavaPackage.ceylon", "packageannotations/package.ceylon");
-        String main = "com.redhat.ceylon.compiler.java.test.interop.packageannotations.AnnotateJavaPackage";
-        try (URLClassLoader classLoader = getClassLoader(main, new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.interop.packageannotations", "1"))) {
-            java.lang.Class<?> c = java.lang.Class.forName("com.redhat.ceylon.compiler.java.test.interop.packageannotations.IntegerAdaptor", false, classLoader);
-            java.lang.Package p = c.getPackage();
-            java.lang.Class ac = java.lang.Class.forName("javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters", false, classLoader);
-            assertNotNull(p.getAnnotation(ac));
+        synchronized(RUN_LOCK){
+            String main = "com.redhat.ceylon.compiler.java.test.interop.packageannotations.AnnotateJavaPackage";
+            try (URLClassLoader classLoader = getClassLoader(main, new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.interop.packageannotations", "1"))) {
+                java.lang.Class<?> c = java.lang.Class.forName("com.redhat.ceylon.compiler.java.test.interop.packageannotations.IntegerAdaptor", false, classLoader);
+                java.lang.Package p = c.getPackage();
+                java.lang.Class ac = java.lang.Class.forName("javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters", false, classLoader);
+                assertNotNull(p.getAnnotation(ac));
+            }
         }
-        
     }
     
     @Test
