@@ -622,7 +622,10 @@ public class TypePrinter {
     }
 
     private boolean isPrimitiveAbbreviatedType(Type pt) {
-        if (pt.isIntersection()) {
+        if (pt==null) {
+            return true;
+        }
+        else if (pt.isIntersection()) {
             return false;
         }
         else if (pt.isUnion()) {
