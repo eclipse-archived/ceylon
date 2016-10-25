@@ -858,6 +858,7 @@ public abstract class CompilerTests {
 
     protected URLClassLoader getClassLoader(String main,
             ModuleWithArtifact... modules) throws MalformedURLException {
+        assert Thread.holdsLock(RUN_LOCK) : "getClassLoader() must be called from within a synchronized(RUN_LOCK) block";
         List<URL> urls = getClassPathAsUrls(modules);
         System.err.println("Running " + main +" with classpath" + urls);
         URLClassLoader loader = new URLClassLoader(urls.toArray(new URL[urls.size()]));
