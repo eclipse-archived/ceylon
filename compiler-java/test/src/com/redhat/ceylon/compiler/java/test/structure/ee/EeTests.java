@@ -30,4 +30,9 @@ public class EeTests extends CompilerTests {
         compareWithJavaSource("UncheckedLate");
     }
     
+    @Test
+    public void testJavaBoxes() {
+        compareWithJavaSource("JavaBoxes");
+    }
+    
 }
