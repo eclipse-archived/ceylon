@@ -28,9 +28,7 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCBlock;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCatch;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpression;
-import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCExpressionStatement;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCIf;
-import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCReturn;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
@@ -72,6 +70,7 @@ public class AttributeDefinitionBuilder {
     private final boolean variable;
     
     private long modifiers;
+    private long fieldModifiers = Flags.PRIVATE;
 
     private boolean readable = true;
     private final MethodDefinitionBuilder getterBuilder;
@@ -518,7 +517,7 @@ public class AttributeDefinitionBuilder {
 
     /** The modifiers for the value field */
     protected long valueFieldModifiers() {
-        long flags = Flags.PRIVATE | (modifiers & (Flags.STATIC | Flags.FINAL));
+        long flags = fieldModifiers | (modifiers & (Flags.STATIC | Flags.FINAL));
         // only make it final if we have an init, otherwise we still have to initialise it
         if (!writable && (initialValue != null || valueConstructor)) {
             flags |= Flags.FINAL;
@@ -756,6 +755,11 @@ public class AttributeDefinitionBuilder {
         } else {
             this.modifiers &= ~flag;
         }
+        return this;
+    }
+    
+    public AttributeDefinitionBuilder fieldVisibilityModifiers(long modifiers) {
+        this.fieldModifiers = modifiers & (Flags.PUBLIC | Flags.PRIVATE | Flags.PROTECTED);
         return this;
     }
 
