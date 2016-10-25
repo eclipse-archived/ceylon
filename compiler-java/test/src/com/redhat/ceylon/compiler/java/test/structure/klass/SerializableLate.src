@@ -151,11 +151,11 @@ class SerializableLate implements .com.redhat.ceylon.compiler.java.runtime.model
             return .ceylon.language.String.instance(this.getLateVariable());
         
         case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableLate.lateOpt": 
-            if (!$init$lateOpt) return .ceylon.language.serialization.uninitializedLateValue_.get_();
+            if (!this.$init$lateOpt) return .ceylon.language.serialization.uninitializedLateValue_.get_();
             return this.getLateOpt();
         
         case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableLate.lateVariableOpt": 
-            if (!$init$lateVariableOpt) return .ceylon.language.serialization.uninitializedLateValue_.get_();
+            if (!this.$init$lateVariableOpt) return .ceylon.language.serialization.uninitializedLateValue_.get_();
             return this.getLateVariableOpt();
         
         default: 

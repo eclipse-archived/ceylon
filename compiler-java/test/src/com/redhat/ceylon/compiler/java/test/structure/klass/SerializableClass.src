@@ -228,11 +228,11 @@ class SerializableSubclass extends .com.redhat.ceylon.compiler.java.test.structu
             return this.getPartner();
         
         case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableSubclass.variableInteger": 
-            if (!$init$variableInteger) return .ceylon.language.serialization.uninitializedLateValue_.get_();
+            if (!this.$init$variableInteger) return .ceylon.language.serialization.uninitializedLateValue_.get_();
             return .ceylon.language.Integer.instance(this.getVariableInteger());
         
         case "com.redhat.ceylon.compiler.java.test.structure.klass::SerializableSubclass.integer": 
-            if (!$init$integer) return .ceylon.language.serialization.uninitializedLateValue_.get_();
+            if (!this.$init$integer) return .ceylon.language.serialization.uninitializedLateValue_.get_();
             return .ceylon.language.Integer.instance(this.getInteger());
         
         default: 
