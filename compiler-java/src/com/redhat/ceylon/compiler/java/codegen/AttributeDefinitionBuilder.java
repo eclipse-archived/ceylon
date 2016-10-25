@@ -417,12 +417,16 @@ public class AttributeDefinitionBuilder {
             return owner.makeQualIdent(initFlagFieldOwner, Naming.quoteFieldName(fieldName));
         }
     }
+    /** Abstraction for initialization checking */
     abstract class InitTest {
-        
+        /** Make the declaration of the initialization check field */
         public abstract List<JCStatement> makeInitCheckField(List<JCStatement> stmts);
+        /** Make an initialization test expression, or return null if there is no initialization test */
         public abstract JCExpression makeInitTest(boolean positiveIfTest);
+        /** Mark the value as initialized or uninitialized */
         public abstract JCStatement makeInitInitialized(boolean initialized);
-    }    
+    }
+    /** The nullness of the value field is used to track initialization */
     class NullnessInitTest extends InitTest {
         @Override
         public List<JCStatement> makeInitCheckField(List<JCStatement> stmts) {
@@ -441,6 +445,7 @@ public class AttributeDefinitionBuilder {
             return null;
         }
     }
+    /** A separate boolean flag field is used to track initialization */
     class FieldInitTest extends InitTest {
         /** A boolean field is used to track initialization of a value */
         @Override
@@ -481,6 +486,7 @@ public class AttributeDefinitionBuilder {
                     owner.make().Literal(initialized)));
         }
     }
+    /** Initialization checking is disabled */
     class NoInitTest extends InitTest {
         @Override
         public JCExpression makeInitTest(boolean positiveIfTest) {
@@ -498,6 +504,7 @@ public class AttributeDefinitionBuilder {
         }
     }
     
+    /** Make the declaration of the value field */
     private JCStatement makeValueField() {
         return owner.make().VarDef(
                 owner.make().Modifiers(valueFieldModifiers(), fieldAnnotations != null ? fieldAnnotations.toList() : List.<JCAnnotation>nil()),
@@ -507,6 +514,7 @@ public class AttributeDefinitionBuilder {
         );
     }
 
+    /** The modifiers for the value field */
     protected long valueFieldModifiers() {
         long flags = Flags.PRIVATE | (modifiers & (Flags.STATIC | Flags.FINAL));
         // only make it final if we have an init, otherwise we still have to initialise it
@@ -516,6 +524,7 @@ public class AttributeDefinitionBuilder {
         return flags;
     }
     
+    /** Make the declaration of the saved exception field */
     private List<JCStatement> makeExceptionField(List<JCStatement> stmts) {
         List<JCStatement> result = List.of(owner.make().VarDef(
                 owner.make().Modifiers(exceptionFieldMods()),
@@ -525,10 +534,12 @@ public class AttributeDefinitionBuilder {
         return result.prependList(stmts);
     }
 
+    /** The modifiers for the saved exception field */
     protected int exceptionFieldMods() {
         return Flags.PRIVATE | Flags.STATIC | Flags.FINAL;
     }
     
+    /** Make the declaration of the value, initialization check and saved exception fields */
     private List<JCStatement> makeFields() {
         List<JCStatement> stmts = List.of(makeValueField());
         stmts = initTest.makeInitCheckField(stmts);
@@ -570,8 +581,14 @@ public class AttributeDefinitionBuilder {
         JCStatement nullValue = owner.make().Exec(owner.make().Assign(
                 makeValueFieldAccess(), owner.makeDefaultExprForType(attrType)));
         // the catch statements
+        List<JCStatement> handlerStmts = List.<JCStatement>nil();
         JCStatement initFlagFalse = initTest.makeInitInitialized(false);
-        JCBlock handlerBlock = owner.make().Block(0, List.<JCTree.JCStatement>of(saveException, nullValue, initFlagFalse));
+        if (initFlagFalse != null) {
+            handlerStmts = handlerStmts.prepend(initFlagFalse);
+        }
+        handlerStmts = handlerStmts.prepend(nullValue);
+        handlerStmts = handlerStmts.prepend(saveException);
+        JCBlock handlerBlock = owner.make().Block(0, handlerStmts);
         
         // the catch block
         JCExpression throwableType = owner.makeJavaType(owner.syms().throwableType.tsym);
