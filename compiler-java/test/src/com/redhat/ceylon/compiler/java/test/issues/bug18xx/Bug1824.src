@@ -25,12 +25,12 @@ final class i1824_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = 0L;
+            i1824_.value = 0L;
             i1824_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = 0L;
+            i1824_.value = 0L;
             i1824_.$init$value = false;
         }
     }

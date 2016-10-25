@@ -149,7 +149,7 @@ final class bug270Variable_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (
+            bug270Variable_.value = (
                 let
                 {
                     .ceylon.language.String arg$9$1 = .ceylon.language.String.instance("hello");
@@ -163,7 +163,7 @@ final class bug270Variable_ {
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            bug270Variable_.value = null;
             bug270Variable_.$init$value = false;
         }
     }

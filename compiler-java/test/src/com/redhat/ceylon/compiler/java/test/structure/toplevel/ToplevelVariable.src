@@ -9,12 +9,12 @@ final class topLevelVariable_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = 0L;
+            topLevelVariable_.value = 0L;
             topLevelVariable_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = 0L;
+            topLevelVariable_.value = 0L;
             topLevelVariable_.$init$value = false;
         }
     }

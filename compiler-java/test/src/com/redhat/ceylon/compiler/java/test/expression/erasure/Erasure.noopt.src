@@ -715,12 +715,12 @@ final class topLevelLeftAttribute_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft();
+            topLevelLeftAttribute_.value = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft();
             topLevelLeftAttribute_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
+            topLevelLeftAttribute_.value = null;
             topLevelLeftAttribute_.$init$value = false;
         }
     }

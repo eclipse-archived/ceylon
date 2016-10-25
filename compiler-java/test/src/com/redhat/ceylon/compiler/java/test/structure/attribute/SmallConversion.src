@@ -165,12 +165,12 @@ final class smallConversion1_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = .com.redhat.ceylon.compiler.java.Util.toInt(.com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversionBig_.get_());
+            smallConversion1_.value = .com.redhat.ceylon.compiler.java.Util.toInt(.com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversionBig_.get_());
             smallConversion1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = 0;
+            smallConversion1_.value = 0;
             smallConversion1_.$init$value = false;
         }
     }

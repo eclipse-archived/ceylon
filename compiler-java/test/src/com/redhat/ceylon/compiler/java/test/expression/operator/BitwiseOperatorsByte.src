@@ -424,12 +424,12 @@ final class bwToplevelByte1_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (byte)0L;
+            bwToplevelByte1_.value = (byte)0L;
             bwToplevelByte1_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = "0";
+            bwToplevelByte1_.value = "0";
             bwToplevelByte1_.$init$value = false;
         }
     }
@@ -457,12 +457,12 @@ final class bwToplevelByte2_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (byte)0L;
+            bwToplevelByte2_.value = (byte)0L;
             bwToplevelByte2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = "0";
+            bwToplevelByte2_.value = "0";
             bwToplevelByte2_.$init$value = false;
         }
     }
@@ -490,12 +490,12 @@ final class bwToplevelByte3_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (byte)0L;
+            bwToplevelByte3_.value = (byte)0L;
             bwToplevelByte3_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = "0";
+            bwToplevelByte3_.value = "0";
             bwToplevelByte3_.$init$value = false;
         }
     }

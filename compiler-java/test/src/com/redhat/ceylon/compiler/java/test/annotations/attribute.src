@@ -49,12 +49,12 @@ final class attr2_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = 1L;
+            attr2_.value = 1L;
             attr2_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = 0L;
+            attr2_.value = 0L;
             attr2_.$init$value = false;
         }
     }

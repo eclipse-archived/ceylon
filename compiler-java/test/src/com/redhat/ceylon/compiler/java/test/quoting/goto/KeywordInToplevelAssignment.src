@@ -18,12 +18,12 @@ final class goto_ {
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = 0L;
+            goto_.value = 0L;
             goto_.$init$value = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = 0L;
+            goto_.value = 0L;
             goto_.$init$value = false;
         }
     }
