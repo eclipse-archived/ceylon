@@ -1050,7 +1050,7 @@ Integer f(Integer n) => n+package.n;</programlisting>
             <title>Pattern variables</title>
             
             <para>A <emphasis>pattern variable</emphasis> is just a variable, as 
-            defined above, that occurs as in a pattern.</para>
+            defined above, that occurs in a pattern.</para>
             
             <para>If the variable has an explicit type, then the patterned type
             must be assignable to this type. Otherwise, the type of the variable
