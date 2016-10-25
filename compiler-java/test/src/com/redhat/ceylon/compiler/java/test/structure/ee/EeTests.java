@@ -16,4 +16,9 @@ public class EeTests extends CompilerTests {
         compareWithJavaSource("PublicImplicitCtor");
     }
     
+    @Test
+    public void testUncheckedLate() {
+        compareWithJavaSource("UncheckedLate");
+    }
+    
 }
