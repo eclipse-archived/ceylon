@@ -414,12 +414,7 @@ public class AttributeDefinitionBuilder {
         } else {
             final JCExpression initFlagFieldOwner;
             if (toplevel) {
-                if (classBuilder != null) {
-                    // TODO Needs to be qualified name
-                    initFlagFieldOwner = owner.naming.makeUnquotedIdent(classBuilder.getClassName());
-                } else {
-                    initFlagFieldOwner = owner.naming.makeUnquotedIdent(javaClassName);
-                }
+                initFlagFieldOwner = owner.naming.makeName(attrTypedDecl, Naming.NA_FQ | Naming.NA_WRAPPER);
             } else if (attrTypedDecl.isStatic() || Decl.isValueConstructor(attrTypedDecl)) {
                 initFlagFieldOwner = owner.makeJavaType((((ClassOrInterface)attrTypedDecl.getContainer())).getType(), AbstractTransformer.JT_RAW);
             } else {
@@ -658,7 +653,7 @@ public class AttributeDefinitionBuilder {
     }
     
     private List<JCTree.JCStatement> makeStandardGetter() {
-        JCTree.JCExpression returnExpr = owner.makeQuotedIdent(fieldName);
+        JCTree.JCExpression returnExpr = makeValueFieldAccess();
         // make sure we turn hash long to int properly
         if(isHash)
             returnExpr = owner.convertToIntForHashAttribute(returnExpr);
@@ -702,7 +697,7 @@ public class AttributeDefinitionBuilder {
     }
     
     private List<JCStatement> setter() {
-        JCExpression fld = fld();
+        JCExpression fld = makeValueFieldAccess();
         List<JCStatement> stmts = List.<JCStatement>of(owner.make().Exec(
                 owner.make().Assign(
                         fld,
@@ -761,21 +756,6 @@ public class AttributeDefinitionBuilder {
         return stmts;
     }
     
-    private JCExpression fld() {
-        JCExpression fld;
-        if (fieldName.equals(attrName)) {
-            if (attrTypedDecl.isStatic()
-                    && attrTypedDecl.getContainer() instanceof ClassOrInterface) {
-                fld = owner.makeSelect(owner.makeJavaType(((ClassOrInterface)attrTypedDecl.getContainer()).getType(), AbstractTransformer.JT_RAW), Naming.quoteFieldName(fieldName));
-            } else {
-                fld = owner.makeSelect("this", Naming.quoteFieldName(fieldName));
-            }
-        } else {
-            fld = owner.makeQuotedIdent(fieldName);
-        }
-        return fld;
-    }
-
     public AttributeDefinitionBuilder modifiers(long... modifiers) {
         long mods = 0;
         for (long mod : modifiers) {
