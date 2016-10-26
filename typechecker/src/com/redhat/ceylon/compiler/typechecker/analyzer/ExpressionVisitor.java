@@ -829,37 +829,37 @@ public class ExpressionVisitor extends Visitor {
                         checkReified(t, type, knownType, 
                                 that.getAssertion());
                     }
-                    if (!hasUncheckedNulls(e) || 
-                            !unit.getNullValueDeclaration()
-                                .getType()
-                                .isSubtypeOf(type)) {
-                        String help = " (expression is already of the specified type)";
-                        if (that.getNot()) {
-                            if (intersectionType(type, knownType, unit).isNothing()) {
-                                that.addUsageWarning(Warning.redundantNarrowing,
-                                        "condition does not narrow type: intersection of '" + 
-                                        type.asString(unit) + 
-                                        "' and '" + 
-                                        knownType.asString(unit) + 
-                                        "' is empty" + 
-                                        help);
-                            }
-                            else if (knownType.isSubtypeOf(type)) {
-                                that.addError("condition tests assignability to bottom type 'Nothing': '" + 
-                                        knownType.asString(unit) + 
-                                        "' is a subtype of '" + 
-                                        type.asString(unit) + "'");
-                            }
-                        } 
-                        else {
-                            if (knownType.isSubtypeOf(type)) {
-                                that.addUsageWarning(Warning.redundantNarrowing,
-                                        "condition does not narrow type: '" + 
-                                        knownType.asString(unit) + 
-                                        "' is a subtype of '" + 
-                                        type.asString(unit) + "'" + 
-                                        help);
-                            }
+                    Type knownTypeWithNull = 
+                            hasUncheckedNulls(e) ? 
+                                unit.getOptionalType(knownType) : 
+                                knownType;
+                    String help = " (expression is already of the specified type)";
+                    if (that.getNot()) {
+                        if (intersectionType(type, knownTypeWithNull, unit)
+                                .isNothing()) {
+                            that.addUsageWarning(Warning.redundantNarrowing,
+                                    "condition does not narrow type: intersection of '" + 
+                                    type.asString(unit) + 
+                                    "' and '" + 
+                                    knownType.asString(unit) + 
+                                    "' is empty" + 
+                                    help);
+                        }
+                        else if (knownType.isSubtypeOf(type)) {
+                            that.addError("condition tests assignability to bottom type 'Nothing': '" + 
+                                    knownType.asString(unit) + 
+                                    "' is a subtype of '" + 
+                                    type.asString(unit) + "'");
+                        }
+                    } 
+                    else {
+                        if (knownTypeWithNull.isSubtypeOf(type)) {
+                            that.addUsageWarning(Warning.redundantNarrowing,
+                                    "condition does not narrow type: '" + 
+                                    knownType.asString(unit) + 
+                                    "' is a subtype of '" + 
+                                    type.asString(unit) + "'" + 
+                                    help);
                         }
                     }
                 }
