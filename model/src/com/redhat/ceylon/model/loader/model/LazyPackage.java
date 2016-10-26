@@ -1,20 +1,8 @@
 package com.redhat.ceylon.model.loader.model;
 
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
-import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberForBackend;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.JVMModuleUtil;
+import com.redhat.ceylon.common.NonNull;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.ModelLoader.DeclarationType;
 import com.redhat.ceylon.model.loader.NamingBase;
@@ -28,6 +16,19 @@ import com.redhat.ceylon.model.typechecker.model.Package;
 import com.redhat.ceylon.model.typechecker.model.Type;
 import com.redhat.ceylon.model.typechecker.model.TypeDeclaration;
 import com.redhat.ceylon.model.typechecker.model.Unit;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Callable;
+
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMember;
+import static com.redhat.ceylon.model.typechecker.model.ModelUtil.lookupMemberForBackend;
 
 /**
  * Represents a lazy Package declaration.
@@ -132,7 +133,7 @@ public class LazyPackage extends Package {
                     }
                     // if we're not looking for a backend, or we found the right backend, fine
                     // if not, keep looking
-                    if(isForBackend(d, backends))
+                    if (d != null && isForBackend(d, backends))
                         return d;
                 }
                 d = getDirectMemberFromSource(name, backends);
@@ -184,7 +185,7 @@ public class LazyPackage extends Package {
         });
     }
 
-    private boolean isForBackend(Declaration d, Backends backends) {
+    private boolean isForBackend(@NonNull Declaration d, @NonNull Backends backends) {
         return backends.none() 
                 || d.getNativeBackends().none() 
                 || backends.supports(d.getNativeBackends());

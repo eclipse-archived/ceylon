@@ -26,6 +26,7 @@ import com.redhat.ceylon.common.BooleanUtil;
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.Nullable;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -1764,10 +1765,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         return iface;
     }
 
+    @Nullable
     public Declaration convertToDeclaration(Module module, String typeName, DeclarationType declarationType)  {
         return convertToDeclaration(module, null, typeName, declarationType);
     }
 
+    @Nullable
     private Declaration convertToDeclaration(final Module theModule, final Declaration theContainer, final String theTypeName, final DeclarationType theDeclarationType)  {
         return synchronizedCall(new Callable<Declaration>() {
             @Override
