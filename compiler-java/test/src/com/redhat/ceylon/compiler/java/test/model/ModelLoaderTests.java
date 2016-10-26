@@ -689,7 +689,9 @@ public class ModelLoaderTests extends CompilerTests {
                 return;
             // make sure the flags are the same
             String name = validDeclaration.getQualifiedNameString();
-            Assert.assertEquals(name+" [variable]", validDeclaration.isVariable(), modelDeclaration.isVariable());
+            if (!validDeclaration.isParameter()) {
+                Assert.assertEquals(name+" [variable]", validDeclaration.isVariable(), modelDeclaration.isVariable());
+            }
             Assert.assertEquals(name+" [formal]", validDeclaration.isFormal(), modelDeclaration.isFormal());
             Assert.assertEquals(name+" [actual]", validDeclaration.isActual(), modelDeclaration.isActual());
             Assert.assertEquals(name+" [default]", validDeclaration.isDefault(), modelDeclaration.isDefault());
