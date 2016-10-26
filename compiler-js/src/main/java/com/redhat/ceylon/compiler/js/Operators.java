@@ -356,16 +356,12 @@ public class Operators {
         if (term instanceof Tree.NaturalLiteral) {
             long t = gen.parseNaturalLiteral((Tree.NaturalLiteral)term, true);
             gen.out("(", Long.toString(t), ")");
-            if (t == 0) {
-                //Force -0
-                gen.out(".negated");
-            }
             return;
         }
         final Type d = term.getTypeModel();
-        final boolean isint = (d != null && d.isSubtypeOf(that.getUnit().getIntegerType()))
-                || (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(that.getTerm().getTypeModel()));
-        Operators.unaryOp(that, isint?"(-":null, isint?")":".negated", gen);
+        final boolean useMinus = (d != null && d.isSubtypeOf(that.getUnit().getIntegerType()))
+                || (gen.isInDynamicBlock() && ModelUtil.isTypeUnknown(d));
+        Operators.unaryOp(that, useMinus?"(-":null, useMinus?")":".negated", gen);
     }
 
     static void generateSafeOp(final Tree.QualifiedMemberOrTypeExpression that,
