@@ -1291,14 +1291,12 @@ public class ClassTransformer extends AbstractTransformer {
     private void makeFieldForParameter(ClassDefinitionBuilder classBuilder,
             Parameter decl, Tree.Declaration annotated) {
         FunctionOrValue model = decl.getModel();
-        classBuilder.defs(make().VarDef(make().Modifiers(transformClassParameterDeclFlags(decl) | PRIVATE, 
-                makeAtIgnore().prependList(expressionGen().transformAnnotations(OutputElement.FIELD, annotated))),
-                names().fromString(Naming.quoteFieldName(decl.getName())), 
-                classGen().transformClassParameterType(decl), null));
-        
-        classBuilder.getInitBuilder().init(make().Exec(make().Assign(
-                naming.makeQualifiedName(naming.makeThis(), model, Naming.NA_IDENT), 
-                naming.makeName(model, Naming.NA_IDENT_PARAMETER_ALIASED))));
+        AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.field(this, annotated, decl.getName(), decl.getModel(), false);
+        adb.fieldAnnotations(makeAtIgnore().prependList(expressionGen().transformAnnotations(OutputElement.FIELD, annotated)));
+        adb.modifiers(transformClassParameterDeclFlags(decl) | PRIVATE);
+        adb.initialValue(naming.makeName(model, Naming.NA_IDENT_PARAMETER_ALIASED));
+        classBuilder.defs((List)adb.buildFields());
+        classBuilder.getInitBuilder().init(adb.buildInit(true));
     }
     
     /** 
@@ -2167,30 +2165,6 @@ public class ClassTransformer extends AbstractTransformer {
     private void addReifiedTypeInterface(ClassDefinitionBuilder classBuilder, ClassOrInterface model) {
         if(model.getExtendedType() == null || willEraseToObject(model.getExtendedType()) || !Decl.isCeylon(model.getExtendedType().getDeclaration()))
             classBuilder.reifiedType();
-    }
-
-    /**
-     * Transforms the type of the given class parameter
-     * @param decl
-     * @return
-     */
-    JCExpression transformClassParameterType(Parameter parameter) {
-        FunctionOrValue decl = parameter.getModel();
-        if (!(decl.getContainer() instanceof Class)) {
-            throw new BugException("expected parameter of Class");
-        }
-        JCExpression type;
-        FunctionOrValue attr = decl;
-        if (!Decl.isTransient(attr)) {
-            TypedReference typedRef = getTypedReference(attr);
-            TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
-            Type paramType = nonWideningType(typedRef, nonWideningTypedRef);
-            type = makeJavaType(nonWideningTypedRef.getDeclaration(), paramType, 0);
-        } else {
-            Type paramType = decl.getType();
-            type = makeJavaType(decl, paramType, 0);
-        }
-        return type;
     }
 
     private void transformInterface(Tree.ClassOrInterface def, 
