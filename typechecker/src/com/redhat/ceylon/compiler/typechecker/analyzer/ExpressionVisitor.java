@@ -826,7 +826,8 @@ public class ExpressionVisitor extends Visitor {
                 if (knownType!=null 
                         && !isTypeUnknown(knownType)) { //TODO: remove this if we make unknown a subtype of Anything) {
                     if (!isTypeUnknown(type)) {
-                        checkReified(t, type, knownType, that.getAssertion());
+                        checkReified(t, type, knownType, 
+                                that.getAssertion());
                     }
                     if (!hasUncheckedNulls(e) || 
                             !unit.getNullValueDeclaration()
@@ -839,7 +840,8 @@ public class ExpressionVisitor extends Visitor {
                                         "condition does not narrow type: intersection of '" + 
                                         type.asString(unit) + 
                                         "' and '" + 
-                                        knownType.asString(unit) + "' is empty" + 
+                                        knownType.asString(unit) + 
+                                        "' is empty" + 
                                         help);
                             }
                             else if (knownType.isSubtypeOf(type)) {
@@ -877,8 +879,10 @@ public class ExpressionVisitor extends Visitor {
                 }
                 else {
                     that.addError("condition tests assignability to bottom type 'Nothing': intersection of '" +
-                            knownType.asString(unit) + "' and '" + 
-                            type.asString(unit) + "' is empty");
+                            knownType.asString(unit) + 
+                            "' and '" + 
+                            type.asString(unit) + 
+                            "' is empty");
                 }
             }
             //do this *after* checking for disjointness!
