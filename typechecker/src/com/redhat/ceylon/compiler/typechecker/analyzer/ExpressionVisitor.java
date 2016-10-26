@@ -828,34 +828,36 @@ public class ExpressionVisitor extends Visitor {
                     if (!isTypeUnknown(type)) {
                         checkReified(t, type, knownType, that.getAssertion());
                     }
-                    if (hasUncheckedNulls(e)) {
-                        knownType = unit.getOptionalType(knownType);
-                    }
-                    String help = " (expression is already of the specified type)";
-                    if (that.getNot()) {
-                        if (intersectionType(type, knownType, unit).isNothing()) {
-                            that.addUsageWarning(Warning.redundantNarrowing,
-                                    "condition does not narrow type: intersection of '" + 
-                                    type.asString(unit) + 
-                                    "' and '" + 
-                                    knownType.asString(unit) + "' is empty" + 
-                                    help);
-                        }
-                        else if (knownType.isSubtypeOf(type)) {
-                            that.addError("condition tests assignability to bottom type 'Nothing': '" + 
-                                    knownType.asString(unit) + 
-                                    "' is a subtype of '" + 
-                                    type.asString(unit) + "'");
-                        }
-                    } 
-                    else {
-                        if (knownType.isSubtypeOf(type)) {
-                            that.addUsageWarning(Warning.redundantNarrowing,
-                                    "condition does not narrow type: '" + 
-                                    knownType.asString(unit) + 
-                                    "' is a subtype of '" + 
-                                    type.asString(unit) + "'" + 
-                                    help);
+                    if (!hasUncheckedNulls(e) || 
+                            !unit.getNullValueDeclaration()
+                                .getType()
+                                .isSubtypeOf(type)) {
+                        String help = " (expression is already of the specified type)";
+                        if (that.getNot()) {
+                            if (intersectionType(type, knownType, unit).isNothing()) {
+                                that.addUsageWarning(Warning.redundantNarrowing,
+                                        "condition does not narrow type: intersection of '" + 
+                                        type.asString(unit) + 
+                                        "' and '" + 
+                                        knownType.asString(unit) + "' is empty" + 
+                                        help);
+                            }
+                            else if (knownType.isSubtypeOf(type)) {
+                                that.addError("condition tests assignability to bottom type 'Nothing': '" + 
+                                        knownType.asString(unit) + 
+                                        "' is a subtype of '" + 
+                                        type.asString(unit) + "'");
+                            }
+                        } 
+                        else {
+                            if (knownType.isSubtypeOf(type)) {
+                                that.addUsageWarning(Warning.redundantNarrowing,
+                                        "condition does not narrow type: '" + 
+                                        knownType.asString(unit) + 
+                                        "' is a subtype of '" + 
+                                        type.asString(unit) + "'" + 
+                                        help);
+                            }
                         }
                     }
                 }
@@ -2655,24 +2657,40 @@ public class ExpressionVisitor extends Visitor {
 
     private void setTypeFromIterableType(
             Tree.LocalModifier local, 
-            Tree.SpecifierExpression se, Tree.Variable that) {
+            Tree.SpecifierExpression se, 
+            Tree.Variable that) {
         Tree.Expression e = se.getExpression();
         if (e!=null) {
             Type expressionType = e.getTypeModel();
             if (expressionType!=null) {
+                Value dec = 
+                        that.getDeclarationModel();
                 Type elementType = 
-                        unit.getIteratedType(expressionType);
+                        unit.getIteratedType(
+                                expressionType);
                 if (elementType==null) {
                     elementType = 
-                            unit.getJavaIteratedType(expressionType);
+                            unit.getJavaIteratedType(
+                                    expressionType);
+                    if (elementType!=null) {
+                        handleUncheckedNulls(local, 
+                                elementType, null, dec);
+                    }
                 }
                 if (elementType==null) {
-                    elementType = unit.getJavaArrayElementType(expressionType);
+                    elementType = 
+                            unit.getJavaArrayElementType(
+                                    expressionType);
+                    if (elementType!=null &&
+                        unit.isJavaObjectArrayType(
+                            expressionType)) {
+                        handleUncheckedNulls(local, 
+                                elementType, null, dec);
+                    }
                 }
                 if (elementType!=null) {
                     local.setTypeModel(elementType);
-                    that.getDeclarationModel()
-                        .setType(elementType);
+                    dec.setType(elementType);
                 }
             }
         }
@@ -2723,16 +2741,28 @@ public class ExpressionVisitor extends Visitor {
             Tree.LocalModifier local, 
             Tree.Expression ex,
             Declaration declaration) {
-        Type type = ex.getTypeModel();
+        if (hasUncheckedNulls(ex)) {
+            handleUncheckedNulls(local, 
+                    ex.getTypeModel(),
+                    ex.getTerm(),
+                    declaration);
+        }
+    }
+    
+    private void handleUncheckedNulls(
+            Tree.LocalModifier local, 
+            Type type, Tree.Term term,
+            Declaration declaration) {
         if (type!=null 
                 && !type.isNothing()
                 && !type.isUnknown()
-                && !unit.isOptionalType(type) 
-                && hasUncheckedNulls(ex)) {
+                && !unit.isOptionalType(type)) {
             if (declaration 
                     instanceof TypedDeclaration
-                && !type.isInteger() && !type.isFloat()
-                && !type.isBoolean() && !type.isByte()
+                && !type.isInteger() 
+                && !type.isFloat()
+                && !type.isBoolean() 
+                && !type.isByte()
                 && !type.isCharacter()) {
                 TypedDeclaration td =
                         (TypedDeclaration) 
@@ -2744,7 +2774,7 @@ public class ExpressionVisitor extends Visitor {
                 //a Ceylon-primitive instantiation of
                 //a Java generic type is assigned to
                 //an inferred value or function
-                warnUncheckedNulls(local, type, ex.getTerm());
+                warnUncheckedNulls(local, type, term);
             }
         }
     }
@@ -5069,12 +5099,20 @@ public class ExpressionVisitor extends Visitor {
             }
             Type at = a.getTypeModel();
             if (!isTypeUnknown(at) && 
-                    !isTypeUnknown(paramType)) {
-                if(model.isFunctional() && model.hasUncheckedNullType()){
-                    Type ret = unit.getCallableReturnType(paramType);
-                    Type args = unit.getCallableTuple(paramType);
+                !isTypeUnknown(paramType)) {
+                if (model.hasUncheckedNullType()
+                    && model.isFunctional()){
+                    Type ret = 
+                            unit.getCallableReturnType(
+                                    paramType);
+                    Type args = 
+                            unit.getCallableTuple(
+                                    paramType);
                     ret = unit.getOptionalType(ret);
-                    paramType = unit.getCallableDeclaration().appliedType(null, Arrays.asList(ret, args));
+                    paramType =
+                            unit.getCallableDeclaration()
+                                .appliedType(null, 
+                                    Arrays.asList(ret,args));
                 }
                 checkAssignable(at, paramType, a, 
                         "argument must be assignable to parameter " + 
@@ -5728,11 +5766,12 @@ public class ExpressionVisitor extends Visitor {
     private void visitAssignOperator(Tree.AssignOp that) {
         Type rhst = rightType(that);
         if (!isTypeUnknown(rhst)) {
-            if (that.getLeftTerm() 
+            Tree.Term leftTerm = that.getLeftTerm();
+            if (leftTerm 
                     instanceof Tree.IndexExpression) {
                 Tree.IndexExpression idx = 
                         (Tree.IndexExpression)
-                            that.getLeftTerm();
+                            leftTerm;
                 if (idx.getElementOrRange() 
                         instanceof Tree.Element) {
                     Type pt = type(idx);
@@ -5760,12 +5799,12 @@ public class ExpressionVisitor extends Visitor {
             else {
                 Type lhst = leftType(that);
                 if (!isTypeUnknown(lhst)) {
-                    Type leftHandType = lhst;
-                    // allow assigning null to java properties that could after all be null
-                    if (hasUncheckedNulls(that.getLeftTerm())) {
-                        leftHandType = 
-                                unit.getOptionalType(leftHandType);
-                    }
+                    Type leftHandType = 
+                            // allow assigning null to java properties 
+                            // that could after all be null
+                            hasUncheckedNulls(leftTerm) ?
+                                    unit.getOptionalType(lhst) : 
+                                    lhst;
                     checkAssignable(rhst, leftHandType, 
                             that.getRightTerm(), 
                             "assigned expression must be assignable to declared type", 

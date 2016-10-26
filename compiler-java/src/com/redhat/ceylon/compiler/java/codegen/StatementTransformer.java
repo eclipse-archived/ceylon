@@ -1665,9 +1665,10 @@ public class StatementTransformer extends AbstractTransformer {
     boolean requiresNullCheck(Tree.ForIterator forIterator) {
         Tree.Variable variable = ((Tree.ValueIterator) forIterator).getVariable();
         Type iterableType = forIterator.getSpecifierExpression().getExpression().getTypeModel();
-        return variable.getDeclarationModel() instanceof TypedDeclaration &&
+        Value decl = variable.getDeclarationModel();
+        return decl instanceof TypedDeclaration && !decl.hasUncheckedNullType() &&
                 (isJavaIterable(iterableType) || isJavaObjectArray(iterableType)) &&
-                variable.getDeclarationModel().getType().isSubtypeOf(typeFact().getObjectType());
+                decl.getType().isSubtypeOf(typeFact().getObjectType());
     }
     
     protected boolean isJavaIterable(Type iterableType) {
