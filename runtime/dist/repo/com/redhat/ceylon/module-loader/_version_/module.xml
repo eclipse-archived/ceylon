@@ -32,7 +32,7 @@
         <module name="com.redhat.ceylon.common" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.model" slot="@ceylon-version@"/>
         <module name="com.redhat.ceylon.module-resolver" slot="@ceylon-version@" export="true" services="export"/>
-        <module name="org.jboss.modules" slot="1.5.2.Final" optional="true"/>
+        <module name="org.jboss.modules" slot="1.4.4.Final" optional="true"/>
         <module name="java.base" slot="7" export="true"/>
     </dependencies>
 </module>

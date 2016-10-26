@@ -15,7 +15,7 @@ dependencies {
     compile project(':cmr-webdav')
     compile project(':cmr-js')
     compile 'org.jboss:jandex:2.0.0.Final'
-    compile 'org.jboss.modules:jboss-modules:1.5.2.Final'
+    compile 'org.jboss.modules:jboss-modules:1.4.4.Final'
 }
 
 sourceSets {

@@ -204,8 +204,4 @@ class SourceResourceLoader implements ResourceLoader {
             }
         }
     }
-    
-    @Override
-    public void close() {
-    }
 }
