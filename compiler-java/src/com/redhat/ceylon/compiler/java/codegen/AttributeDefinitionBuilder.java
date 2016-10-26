@@ -561,7 +561,7 @@ public class AttributeDefinitionBuilder {
     
     /** Make the declaration of the saved exception field */
     private List<JCStatement> makeExceptionField(List<JCStatement> stmts) {
-        List<JCStatement> result = List.of(owner.make().VarDef(
+        List<JCStatement> result = List.<JCStatement>of(owner.make().VarDef(
                 owner.make().Modifiers(exceptionFieldMods()),
                 owner.names().fromString(Naming.quoteIfJavaKeyword(Naming.getToplevelAttributeSavedExceptionName())),
                 owner.makeJavaType(owner.syms().throwableType.tsym),
@@ -576,7 +576,7 @@ public class AttributeDefinitionBuilder {
     
     /** Make the declaration of the value, initialization check and saved exception fields */
     private List<JCStatement> makeFields() {
-        List<JCStatement> stmts = List.of(makeValueField());
+        List<JCStatement> stmts = List.<JCStatement>of(makeValueField());
         stmts = initTest.makeInitCheckField(stmts);
         if (deferredInitError) {
             stmts = makeExceptionField(stmts);
@@ -767,7 +767,7 @@ public class AttributeDefinitionBuilder {
     protected List<JCStatement> makeMarkReinitialized(List<JCStatement> stmts) {
         JCExpression init = initTest.makeInitTest(false);
         if (init != null) {
-            stmts = List.of(
+            stmts = List.<JCStatement>of(
                     owner.make().If(
                         init,
                         owner.make().Block(0, stmts), 
