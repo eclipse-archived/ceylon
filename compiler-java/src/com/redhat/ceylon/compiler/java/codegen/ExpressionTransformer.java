@@ -252,6 +252,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(Tree.SpecifierOrInitializerExpression expr,
+            BoxingStrategy boxing, Type expectedType) {
+         return transformExpression(expr.getExpression(), boxing, expectedType);
+    }
+    
+    public JCExpression transform(Tree.SpecifierOrInitializerExpression expr,
             TypedDeclaration decl) {
         //TODO: is there missing logic for small here?
         //      see ClassTransformer.transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder)
