@@ -18,17 +18,33 @@
  efficient mutation of the array: [[set]], [[swap]], [[move]], 
  [[sortInPlace]], [[reverseInPlace]], and [[copyTo]].
  
- This class is provided primarily to support interoperation 
+ This class is provided primarily to ease interoperation 
  with Java, and for some performance-critical low-level 
  programming tasks.
  
- _Note: on the JVM, for \"primitive\" element types 
- [[Integer]], [[Float]], [[Byte]], [[Character]], and 
- [[Boolean]], `Array` is easily the most efficient sort of 
- `List` in Ceylon. However, certain performance 
- optimizations are impossible if the `Array` is assigned to 
- the generic type `List`. Peak efficiency is only obtained
- for algorithms coded to the static type `Array`._"
+ On the JVM, for \"primitive\" element types [[Integer]], 
+ [[Float]], [[Byte]], [[Character]], and [[Boolean]], 
+ `Array` is easily the most efficient sort of `List` in 
+ Ceylon. However, certain optimizations made by the compiler
+ are impossible if the `Array` is assigned to a more generic 
+ type such as [[Iterable]]. Peak efficiency is obtained for 
+ algorithms coded to the static type `Array`.
+ 
+ Furthermore, `Array` is itself a compromise between raw 
+ performance, polymorphism, and portability. An instance of
+ the Java primitive array type `java.lang.LongArray` 
+ (written `long[]` in Java) exhibits superior micro-level 
+ performance to an `Array<Integer>`, but:
+ 
+ - is not a `List`, and
+ - is not available except when compiling for the JVM.
+ 
+ Fortunately, given a Java primitive array, it's easy to 
+ obtain an `Array` backed by the primitive array:
+ 
+     //unportable JVM-specific code 
+     LongArray longArray = LongArray(size);
+     Array<Integer> array = longArray.integerArray;"
 tagged("Collections")
 shared final serializable native 
 class Array<Element>
