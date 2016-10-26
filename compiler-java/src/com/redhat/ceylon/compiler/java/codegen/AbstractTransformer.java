@@ -3900,6 +3900,35 @@ public abstract class AbstractTransformer implements Transformation {
         return expr;
     }
     
+    protected JCExpression javaBoxType(Type t) {
+        t = simplifyType(t);
+        if (t.isInteger()) {
+            return make().Type(syms().longObjectType);
+        } else if (t.isFloat()) {
+            return make().Type(syms().doubleObjectType);
+        } else if (t.isString()) {
+            return make().Type(syms().stringType);
+        } else if (t.isByte()) {
+            return makeQuotedQualIdentFromString("java.lang.Byte");
+        } else if (t.isBoolean()) {
+            return make().Type(syms().booleanObjectType);
+        } else {
+            throw BugException.unhandledTypeCase(t);
+        }
+    }
+    
+    JCExpression boxJavaType(JCExpression expr, Type type) {
+        type = simplifyType(type);
+        if (type.isSubtypeOf(typeFact().getNullType())) {
+            return expr;
+        } else if (type.isString()) {
+            return expr;
+        } else {
+            return make().Apply(null,
+                    makeSelect(javaBoxType(type), "valueOf"),
+                    List.<JCExpression>of(expr));
+        }
+    }
     
     JCExpression unboxJavaType(JCExpression expr, Type type) {
         String method;
@@ -6009,6 +6038,21 @@ public abstract class AbstractTransformer implements Transformation {
     
     public boolean isEe() {
         return ee;
+    }
+    
+    public boolean useJavaBox(Type attrType) {
+        if (isEe()
+                && typeFact().isOptionalType(attrType)) {
+            Type t = simplifyType(attrType);
+            if (t.isInteger() 
+                    || t.isFloat()
+                    || t.isString()
+                    || t.isByte()
+                    || t.isBoolean()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
