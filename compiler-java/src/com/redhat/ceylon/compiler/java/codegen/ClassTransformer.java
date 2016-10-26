@@ -4320,6 +4320,9 @@ public class ClassTransformer extends AbstractTransformer {
             if (includeAnnotations) {
                 methodBuilder.userAnnotations(expressionGen().transformAnnotations(OutputElement.METHOD, annotated));
                 methodBuilder.modelAnnotations(methodModel.getAnnotations());
+                if (!methodModel.isDefault() && isEe()) {
+                    methodBuilder.modelAnnotations(makeAtFinal());
+                }
             } else {
                 methodBuilder.ignoreModelAnnotations();
             }

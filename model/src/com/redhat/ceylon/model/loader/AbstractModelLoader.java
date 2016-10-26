@@ -141,6 +141,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     public static final String CEYLON_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Alias";
     public static final String CEYLON_TYPE_ALIAS_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.TypeAlias";
     public static final String CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.AnnotationInstantiation";
+    public static final String CEYLON_FINAL_ANNOTATION = "com.redhat.ceylon.compiler.java.metadata.Final";
     public static final String CEYLON_ANNOTATION_INSTANTIATION_ARGUMENTS_MEMBER = "arguments";
     public static final String CEYLON_ANNOTATION_INSTANTIATION_ANNOTATION_MEMBER = "primary";
     
@@ -4234,7 +4235,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             if (// for class members we rely on final/static bits
                 (klass instanceof Class
                         && !klass.isFinal() // a final class necessarily has final members
-                        && !methodMirror.isFinal() 
+                        && !(methodMirror.isFinal() ||  methodMirror.getAnnotation(CEYLON_FINAL_ANNOTATION) != null)
                         && !methodMirror.isStatic())
                 // Java interfaces are never final
                 || (klass instanceof Interface

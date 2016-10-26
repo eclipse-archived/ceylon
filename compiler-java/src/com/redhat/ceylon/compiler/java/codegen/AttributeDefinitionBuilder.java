@@ -360,6 +360,9 @@ public class AttributeDefinitionBuilder {
             if (this.modelAnnotations != null) {
                 getterBuilder.modelAnnotations(this.modelAnnotations.toList());
             }
+            if (owner.isEe() && !attrTypedDecl.isDefault()) {
+                getterBuilder.modelAnnotations(owner.makeAtFinal());
+            }
             if (this.userAnnotations != null) {
                 getterBuilder.userAnnotations(this.userAnnotations.toList());
             }
