@@ -1262,20 +1262,24 @@ public class ClassTransformer extends AbstractTransformer {
             if (Strategy.createField(decl, (Value)member)) {
                 // The field itself is created by when we transform the AttributeDeclaration 
                 // but it has to be initialized here so all the fields are initialized in parameter order
-                
+                at(parameterTree);
                 JCExpression parameterExpr = makeUnquotedIdent(Naming.getAliasedParameterName(decl));
                 TypedReference typedRef = getTypedReference(value);
                 TypedReference nonWideningTypedRef = nonWideningTypeDecl(typedRef);
                 Type paramType = nonWideningType(typedRef, nonWideningTypedRef);
+                AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.field(this, memberTree, value.getName(), value, false);
                 if (!paramType.isExactly(decl.getType())) {
                     // The parameter type follows normal erasure rules, not affected by inheritance
                     // but the attribute respects non-widening rules, so we may need to cast
                     // the parameter to the field type (see #1728)
-                    parameterExpr = make().TypeCast(classGen().transformClassParameterType(decl), parameterExpr);
+                    parameterExpr = make().TypeCast(adb.valueFieldType(), parameterExpr);
                 }
-                classBuilder.getInitBuilder().init(make().Exec(
-                        make().Assign(naming.makeQualifiedName(naming.makeThis(), value, Naming.NA_IDENT),
-                                parameterExpr)));
+                parameterExpr = boxUnboxIfNecessary(parameterExpr, 
+                        BoxingStrategy.UNBOXED, 
+                                paramType, 
+                                useJavaBox(paramType) ? BoxingStrategy.JAVA : BoxingStrategy.UNBOXED, paramType);
+                adb.initialValue(parameterExpr);
+                classBuilder.getInitBuilder().init(adb.buildInit(true));
             }
         }
     }
