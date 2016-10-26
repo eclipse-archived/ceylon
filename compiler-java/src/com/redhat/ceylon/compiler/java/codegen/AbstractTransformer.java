@@ -3788,7 +3788,7 @@ public abstract class AbstractTransformer implements Transformation {
      * Boxing
      */
     public enum BoxingStrategy {
-        UNBOXED, BOXED, INDIFFERENT;
+        UNBOXED, BOXED, JAVA, INDIFFERENT;
     }
 
     public boolean canUnbox(Type type){
@@ -3806,21 +3806,31 @@ public abstract class AbstractTransformer implements Transformation {
     JCExpression boxUnboxIfNecessary(JCExpression javaExpr, boolean exprBoxed,
             Type exprType,
             BoxingStrategy boxingStrategy) {
-        return boxUnboxIfNecessary(javaExpr, exprBoxed, exprType, boxingStrategy, exprType);
+        return boxUnboxIfNecessary(javaExpr, exprBoxed ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, exprType, boxingStrategy, exprType);
     }
     
-    JCExpression boxUnboxIfNecessary(JCExpression javaExpr, boolean exprBoxed,
+    JCExpression boxUnboxIfNecessary(JCExpression javaExpr, BoxingStrategy exprBoxed,
             Type exprType,
             BoxingStrategy boxingStrategy, Type expectedType) {
         if(boxingStrategy == BoxingStrategy.INDIFFERENT)
             return javaExpr;
-        boolean targetBoxed = boxingStrategy == BoxingStrategy.BOXED;
         // only box if the two differ
-        if(targetBoxed == exprBoxed)
+        if(boxingStrategy == exprBoxed)
             return javaExpr;
-        if (targetBoxed) {
+        if (boxingStrategy == BoxingStrategy.BOXED) {
             // box
             javaExpr = boxType(javaExpr, exprType);
+        } else if (boxingStrategy == BoxingStrategy.JAVA) {
+            if (exprBoxed == BoxingStrategy.BOXED) {
+                javaExpr = unboxType(javaExpr, exprType);
+            }
+            // box
+            javaExpr = boxJavaType(javaExpr, exprType);
+        } else if (exprBoxed == BoxingStrategy.JAVA) {
+            javaExpr = unboxJavaType(javaExpr, exprType);
+            if (boxingStrategy == BoxingStrategy.BOXED) {
+                javaExpr = boxType(javaExpr, exprType);
+            }
         } else {
             // unbox
             if (exprType.getDeclaration() instanceof TypeParameter) {
