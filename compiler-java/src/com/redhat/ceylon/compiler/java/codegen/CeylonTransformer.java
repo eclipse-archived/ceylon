@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.java.loader.SourceDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.tools.CeylonPhasedUnit;
@@ -626,7 +627,10 @@ public class CeylonTransformer extends AbstractTransformer {
         if (Decl.isNonTransientValue(declarationModel)
                 && !(expression instanceof Tree.LazySpecifierExpression)) {
             if (expression != null) {
-                initialValue = expressionGen().transform(expression, declarationModel);
+                initialValue = expressionGen().transform(
+                        expression, 
+                        useJavaBox(declarationModel.getType()) ? BoxingStrategy.JAVA : CodegenUtil.getBoxingStrategy(declarationModel),
+                        declarationModel.getType());
             } else {
                 Parameter p = CodegenUtil.findParamForDecl(attrName, declarationModel);
                 if (p != null) {

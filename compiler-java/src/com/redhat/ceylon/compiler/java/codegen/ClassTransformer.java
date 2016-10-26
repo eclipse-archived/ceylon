@@ -3471,8 +3471,8 @@ public class ClassTransformer extends AbstractTransformer {
                     err = makeThrowUnresolvedCompilationError(error.getErrorMessage().getMessage());
                 } else {
                     initialValue = expressionGen().transformExpression(expression, 
-                            CodegenUtil.getBoxingStrategy(model), 
-                            model.isStatic() ? typeFact().getAnythingType() : nonWideningType, flags);
+                            useJavaBox(nonWideningType) ? BoxingStrategy.JAVA : CodegenUtil.getBoxingStrategy(model), 
+                            model.isStatic() && nonWideningType.isTypeParameter() ? typeFact().getAnythingType() : nonWideningType, flags);
                 }
             }
 

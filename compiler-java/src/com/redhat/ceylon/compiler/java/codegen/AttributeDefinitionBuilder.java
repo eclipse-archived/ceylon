@@ -527,45 +527,25 @@ public class AttributeDefinitionBuilder {
         );
     }
     
-    private boolean useJavaBox() {
-        if (owner.isEe()
-                && owner.typeFact().isOptionalType(attrType)) {
-            Type t = owner.simplifyType(attrType);
-            if (t.isInteger() 
-                    || t.isFloat()
-                    || t.isString()
-                    || t.isByte()
-                    || t.isBoolean()) {
-                return true;
-            }
+    JCExpression valueFieldType() {
+        //owner.classGen().transformClassParameterType(attrTypedDecl);
+        if (attrTypedDecl.getContainer() instanceof Class
+                && attrTypedDecl.isParameter()
+                && Decl.isTransient(attrTypedDecl)) {
+                Type paramType = attrTypedDecl.getType();
+                return owner.makeJavaType(attrTypedDecl, paramType, 0);
         }
-        return false;
-    }
-    
-    private JCExpression valueFieldType() {
         if ((valueFieldModifiers() & Flags.STATIC) != 0
                 && attrType.isTypeParameter()) {
             return owner.make().Type(owner.syms().objectType);
         }
-        if (owner.isEe()) {
+        if (owner.useJavaBox(attrType)) {
             Type t = owner.simplifyType(attrType);
-            if (t.isInteger()) {
-                return owner.make().Type(owner.syms().longObjectType);
-            } else if (t.isFloat()) {
-                return owner.make().Type(owner.syms().doubleObjectType);
-            } else if (t.isString()) {
-                return owner.make().Type(owner.syms().stringType);
-            } else if (t.isByte()) {
-                return owner.makeQuotedQualIdentFromString("java.lang.Byte");
-            } else if (t.isBoolean()) {
-                return owner.make().Type(owner.syms().booleanObjectType);
-            } else {
-                // XXX Character?
-                return owner.makeJavaType(attrType, typeFlags);
-            }
+            return owner.javaBoxType(t);
         } else {
             return owner.makeJavaType(attrType, typeFlags);
         }
+
     }
 
     /** The modifiers for the value field */
@@ -679,7 +659,7 @@ public class AttributeDefinitionBuilder {
         // make sure we turn hash long to int properly
         if(isHash)
             returnExpr = owner.convertToIntForHashAttribute(returnExpr);
-        if (useJavaBox()) {
+        if (owner.useJavaBox(attrType)) {
             returnExpr = owner.make().Conditional(
                     owner.make().Binary(JCTree.Tag.EQ, makeValueFieldAccess(), owner.makeNull()), 
                     owner.makeNull(), 
@@ -728,7 +708,7 @@ public class AttributeDefinitionBuilder {
     private List<JCStatement> setter() {
         JCExpression fld = makeValueFieldAccess();
         JCExpression setValue = owner.makeQuotedIdent(setterParameterName());
-        if (useJavaBox()) {
+        if (owner.useJavaBox(attrType)) {
             setValue = owner.make().Conditional(
                     owner.make().Binary(JCTree.Tag.EQ, 
                             owner.makeQuotedIdent(setterParameterName()), 
