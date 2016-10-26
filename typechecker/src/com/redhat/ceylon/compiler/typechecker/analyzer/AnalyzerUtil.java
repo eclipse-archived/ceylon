@@ -590,8 +590,12 @@ public class AnalyzerUtil {
         type.collectDeclarations(declarations);
         otherType.collectDeclarations(declarations);
         Set<String> names = new HashSet<String>();
+        Set<String> ambiguousNames = new HashSet<String>();
         for (TypeDeclaration td: declarations) {
-            names.add(td.getName(unit));
+            String name = td.getName(unit);
+            if (!names.add(name)) {
+                ambiguousNames.add(name);
+            }
         }
         String unknownTypeError = 
                 type.getFirstUnknownTypeError(true);
@@ -600,14 +604,20 @@ public class AnalyzerUtil {
         String expandedTypeName;
         String expandedOtherTypeName;
         if (names.size()<declarations.size()) {
-            typeName = type.asQualifiedString();
-            otherTypeName = otherType.asQualifiedString();
+            typeName = 
+                    type.asString(unit, 
+                            ambiguousNames);
+            otherTypeName = 
+                    otherType.asString(unit, 
+                            ambiguousNames);
             expandedTypeName = 
                     type.resolveAliases()
-                        .asQualifiedString();
+                        .asString(unit, 
+                            ambiguousNames);
             expandedOtherTypeName = 
                     otherType.resolveAliases()
-                        .asQualifiedString();
+                        .asString(unit, 
+                            ambiguousNames);
         }
         else {
             typeName = type.asString(unit);

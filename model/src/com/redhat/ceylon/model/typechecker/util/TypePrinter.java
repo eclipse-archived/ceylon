@@ -22,10 +22,13 @@ import com.redhat.ceylon.model.typechecker.model.Unit;
  */
 public class TypePrinter {
 
-    public static final TypePrinter DEFAULT = 
-            new TypePrinter(true, true, false, true, false);
+    public static final TypePrinter UGLY =
+            new TypePrinter();
 
-    public static final TypePrinter ESCAPED = 
+    public static final TypePrinter DEFAULT =
+            new TypePrinter(true);
+
+    public static final TypePrinter ESCAPED =
             new TypePrinter(true, true, false, true, true);
 
     private final boolean printAbbreviated;
@@ -35,9 +38,10 @@ public class TypePrinter {
     private final boolean printQualifier;
     private final boolean printFullyQualified;
     private final boolean escapeLowercased;
+    private final boolean useUnitAliases;
     
     public TypePrinter() {
-        this(false, false, false, false, false, false, false);
+        this(false, false, false, false, false, false, false, false);
     }
 
     public TypePrinter(boolean printAbbreviated) {
@@ -63,6 +67,24 @@ public class TypePrinter {
             boolean escapeLowercased,
             boolean printFullyQualified,
             boolean printQualifier) {
+        this(printAbbreviated, 
+                printTypeParameters, 
+                printTypeParameterDetail, 
+                printQualifyingType, 
+                escapeLowercased,
+                printFullyQualified,
+                printQualifier,
+                true);
+    }
+    
+    public TypePrinter(boolean printAbbreviated, 
+            boolean printTypeParameters, 
+            boolean printTypeParameterDetail,
+            boolean printQualifyingType,
+            boolean escapeLowercased,
+            boolean printFullyQualified,
+            boolean printQualifier,
+            boolean useUnitAliases) {
         this.printAbbreviated = printAbbreviated;
         this.printTypeParameters = printTypeParameters;
         this.printTypeParameterDetail = printTypeParameterDetail;
@@ -70,6 +92,7 @@ public class TypePrinter {
         this.escapeLowercased = escapeLowercased;
         this.printFullyQualified = printFullyQualified;
         this.printQualifier = printQualifier;
+        this.useUnitAliases = useUnitAliases;
     }
     
     protected boolean printAbbreviated() {
@@ -92,8 +115,17 @@ public class TypePrinter {
         return printQualifier;
     }
 
-    protected boolean printFullyQualified() {
+    protected boolean printFullyQualified(
+            TypeDeclaration typeDeclaration) {
         return printFullyQualified;
+    }
+    
+    protected boolean useUnitAliases() {
+        return useUnitAliases;
+    }
+    
+    protected boolean escapeLowercased() {
+        return escapeLowercased;
     }
     
     protected String lt() {
@@ -223,132 +255,134 @@ public class TypePrinter {
                     }
                 }
             }
-            if (pt.isUnion()) {
-                StringBuilder name = new StringBuilder();
-                boolean first = true;
-                for (Type caseType: 
-                        pt.getCaseTypes()) {
-                    if (first) {
-                        first = false;
-                    }
-                    else {
-                        name.append("|");
-                    }
-                    if (caseType==null) {
-                        name.append("unknown");
-                    }
-                    else if (printAbbreviated() && 
-                            abbreviateEntry(caseType)) {
-                        name.append(lt())
-                            .append(print(caseType, unit))
-                            .append(gt());
-                    }
-                    else {
-                        name.append(print(caseType, unit));
-                    }
+            return printWithoutAbbreviation(pt, unit);
+        }
+    }
+
+    private String printWithoutAbbreviation(Type pt, Unit unit) {
+        if (pt.isUnion()) {
+            StringBuilder name = new StringBuilder();
+            boolean first = true;
+            for (Type caseType: 
+                    pt.getCaseTypes()) {
+                if (first) {
+                    first = false;
                 }
-                return name.toString();
+                else {
+                    name.append("|");
+                }
+                if (caseType==null) {
+                    name.append("unknown");
+                }
+                else if (printAbbreviated() && 
+                        abbreviateEntry(caseType)) {
+                    name.append(lt())
+                        .append(print(caseType, unit))
+                        .append(gt());
+                }
+                else {
+                    name.append(print(caseType, unit));
+                }
             }
-            else if (pt.isIntersection()) {
-                StringBuilder name = new StringBuilder();
-                boolean first = true;
-                for (Type satisfiedType: 
-                        pt.getSatisfiedTypes()) {
-                    if (first) {
-                        first = false;
-                    }
-                    else {
-                        name.append(amp());
-                    }
-                    if (satisfiedType==null) {
-                        name.append("unknown");
-                    }
-                    else if (printAbbreviated() && 
-                            abbreviateEntry(satisfiedType) || 
-                            satisfiedType.isUnion()) {
-                        name.append(lt())
-                            .append(print(satisfiedType, unit))
-                            .append(gt());
-                    }
-                    else {
-                        name.append(print(satisfiedType, unit));
-                    }
+            return name.toString();
+        }
+        else if (pt.isIntersection()) {
+            StringBuilder name = new StringBuilder();
+            boolean first = true;
+            for (Type satisfiedType: 
+                    pt.getSatisfiedTypes()) {
+                if (first) {
+                    first = false;
                 }
-                return name.toString();
+                else {
+                    name.append(amp());
+                }
+                if (satisfiedType==null) {
+                    name.append("unknown");
+                }
+                else if (printAbbreviated() && 
+                        abbreviateEntry(satisfiedType) || 
+                        satisfiedType.isUnion()) {
+                    name.append(lt())
+                        .append(print(satisfiedType, unit))
+                        .append(gt());
+                }
+                else {
+                    name.append(print(satisfiedType, unit));
+                }
             }
-            else if (pt.isTypeParameter()) {
-                StringBuilder name = new StringBuilder();
-                TypeParameter tp = 
-                        (TypeParameter) 
-                            pt.getDeclaration();
-
-                if (printTypeParameterDetail() && 
-                        tp.isContravariant()) {
-                    name.append("in ");
-                }
-                if (printTypeParameterDetail() && 
-                        tp.isCovariant()) {
-                    name.append("out ");
-                }
-
-                name.append(getSimpleProducedTypeName(pt, unit));
-
-                if (printTypeParameterDetail() && 
-                        tp.isDefaulted()) {
-                    Type dta = tp.getDefaultTypeArgument();
-                    if (dta == null) {
-                        name.append("=");
-                    }
-                    else {
-                        name.append(" = ")
-                            .append(print(dta, unit));
-                    }
-                }
-
-                return name.toString();
-            }
-            else {
-                TypeDeclaration declaration = 
+            return name.toString();
+        }
+        else if (pt.isTypeParameter()) {
+            StringBuilder name = new StringBuilder();
+            TypeParameter tp = 
+                    (TypeParameter) 
                         pt.getDeclaration();
-                if (declaration.isAlias() && 
-                        declaration.isAnonymous()) {
-                    StringBuilder name = new StringBuilder();
-                    if (pt.isTypeConstructor()) {
-                        name.append(lt());
-                        TypeParameter tpc = 
-                                pt.getTypeConstructorParameter();
-                        List<TypeParameter> params = 
-                                (tpc==null ? declaration : tpc)
-                                    .getTypeParameters();
-                        for (TypeParameter tp: params) {
-                            if (name.length()>lt().length()) {
-                                name.append(", ");
-                            }
-                            if (tp.isCovariant()) {
-                                name.append("out ");
-                            }
-                            if (tp.isContravariant()) {
-                                name.append("in ");
-                            }
-                            printDeclaration(name, tp, 
-                                    printFullyQualified(), 
-                                    unit);
+
+            if (printTypeParameterDetail() && 
+                    tp.isContravariant()) {
+                name.append("in ");
+            }
+            if (printTypeParameterDetail() && 
+                    tp.isCovariant()) {
+                name.append("out ");
+            }
+
+            name.append(getSimpleProducedTypeName(pt, unit));
+
+            if (printTypeParameterDetail() && 
+                    tp.isDefaulted()) {
+                Type dta = tp.getDefaultTypeArgument();
+                if (dta == null) {
+                    name.append("=");
+                }
+                else {
+                    name.append(" = ")
+                        .append(print(dta, unit));
+                }
+            }
+
+            return name.toString();
+        }
+        else {
+            TypeDeclaration declaration = 
+                    pt.getDeclaration();
+            if (declaration.isAlias() && 
+                    declaration.isAnonymous()) {
+                StringBuilder name = new StringBuilder();
+                if (pt.isTypeConstructor()) {
+                    name.append(lt());
+                    TypeParameter tpc = 
+                            pt.getTypeConstructorParameter();
+                    List<TypeParameter> params = 
+                            (tpc==null ? declaration : tpc)
+                                .getTypeParameters();
+                    for (TypeParameter tp: params) {
+                        if (name.length()>lt().length()) {
+                            name.append(", ");
                         }
-                        name.append(gt());
-                        appendConstraintsString(pt, name, unit);
-                        name.append(" =")
-                            .append(gt())
-                            .append(" ");
+                        if (tp.isCovariant()) {
+                            name.append("out ");
+                        }
+                        if (tp.isContravariant()) {
+                            name.append("in ");
+                        }
+                        printDeclaration(name, tp, false, unit);
                     }
-                    Type aliasedType =
-                            declaration.getExtendedType()
-                            .substitute(pt);
-                    name.append(print(aliasedType, unit));
-                    return name.toString();
+                    name.append(gt());
+                    appendConstraintsString(pt, name, unit);
+                    name.append(" =")
+                        .append(gt())
+                        .append(" ");
                 }
-                else {            
-                    return getSimpleProducedTypeName(pt, unit);
-                }
+                Type aliasedType =
+                        declaration.getExtendedType()
+                        .substitute(pt);
+                name.append(print(aliasedType, unit));
+                return name.toString();
+            }
+            else {            
+                return getSimpleProducedTypeName(pt, unit);
             }
         }
     }
@@ -385,8 +419,7 @@ public class TypePrinter {
 
     public static boolean abbreviateOptional(Type pt) {
         if (pt.isUnion()) {
-            TypeDeclaration dec = pt.getDeclaration();
-            Unit unit = dec.getUnit();
+            Unit unit = pt.getDeclaration().getUnit();
             Class nd = unit.getNullDeclaration();
             return pt.getCaseTypes().size()==2 &&
                     isElementOfUnion(pt, nd); /*&&
@@ -644,11 +677,14 @@ public class TypePrinter {
             Unit unit) {
         StringBuilder ptn = new StringBuilder();
 
-        boolean fullyQualified = printFullyQualified();
+        TypeDeclaration ptd = pt.getDeclaration();
+        
+        boolean fullyQualified;
         if (printQualifyingType()) {
             Type qt = pt.getQualifyingType();
             if (qt!=null && 
-                    qt.getDeclaration().isNamed()) {
+                    qt.getDeclaration()
+                        .isNamed()) {
 				boolean isComplex = 
 				        qt.isIntersection() || 
 				        qt.isUnion();
@@ -662,13 +698,20 @@ public class TypePrinter {
     			ptn.append(".");
     			fullyQualified = false;
             }
+            else {
+                fullyQualified = printFullyQualified(ptd);
+            }
+        }
+        else {
+            fullyQualified = printFullyQualified(ptd);
         }
 
-        TypeDeclaration ptd = pt.getDeclaration();
         printDeclaration(ptn, ptd, fullyQualified, unit);
         
-        List<Type> args = pt.getTypeArgumentList();
-        List<TypeParameter> params = ptd.getTypeParameters();
+        List<Type> args = 
+                pt.getTypeArgumentList();
+        List<TypeParameter> params = 
+                ptd.getTypeParameters();
         if (!pt.isTypeConstructor() && 
                 printTypeParameters(pt) && 
                 !args.isEmpty()) {
@@ -743,8 +786,11 @@ public class TypePrinter {
 
     protected String getSimpleDeclarationName(
             Declaration declaration, Unit unit) {
-        String name = declaration.getName(unit);
-        if (escapeLowercased) {
+        String name = 
+                useUnitAliases() ?
+                    declaration.getName(unit) :
+                    declaration.getName();
+        if (escapeLowercased()) {
             int firstCodePoint = name.codePointAt(0);
             if (!Character.isUpperCase(firstCodePoint)) {
                 name = "\\I" + name;
@@ -770,8 +816,7 @@ public class TypePrinter {
             boolean hasUpperBounds = !sts.isEmpty();
             if (hasUpperBounds || hasEnumeratedBounds) {
                 result.append(" given ");
-                printDeclaration(result, tp, 
-                        printFullyQualified(), unit);
+                printDeclaration(result, tp, false, unit);
                 if (hasEnumeratedBounds) {
                     result.append(" of ");
                     boolean first = true;

@@ -3268,91 +3268,25 @@ public class Type extends Reference {
                         .print(this, unit);
     }
 
-    private String qualifiedName() {
-        StringBuilder ptn = new StringBuilder();
-        if (isTypeConstructor()) {
-            return asString();
-        }
-        Type qt = getQualifyingType();
-        TypeDeclaration declaration = getDeclaration();
-        if (qt!=null) {
-            ptn.append(qt.asQualifiedString())
-               .append(".")
-               .append(declaration.getName());
-        }
-        //}
-        else {
-            ptn.append(declaration.getQualifiedNameString());
-        }
-        if (!getTypeArgumentList().isEmpty()) {
-            ptn.append("<");
-            boolean first = true;
-            for (Type t: getTypeArgumentList()) {
-                if (first) {
-                    first = false;
-                }
-                else {
-                    ptn.append(",");
-                }
-                if (t==null) {
-                    ptn.append("unknown");
-                }
-                else {
-                    ptn.append(t.asQualifiedString());
-                }
+    public String asString(final Unit unit, 
+            final Collection<String> ambiguousNames) {
+        return new TypePrinter(true) {
+            @Override
+            protected boolean printFullyQualified(
+                    TypeDeclaration typeDeclaration) {
+                return ambiguousNames.contains(
+                        typeDeclaration.getName(unit));
             }
-            ptn.append(">");
-        }
-        return ptn.toString();
+        }.print(this, unit);
     }
 
+    /**
+     * Get a really ugly representation of this type.
+     * 
+     * @deprecated please, please stop using this one!
+     */
     public String asQualifiedString() {
-        TypeDeclaration declaration = getDeclaration();
-        if (declaration==null) {
-            //unknown type
-            return null;
-        }
-        if (isUnion()) {
-            StringBuilder name = new StringBuilder();
-            boolean first = true;
-            for (Type pt: getCaseTypes()) {
-                if (first) {
-                    first = false;
-                }
-                else {
-                    name.append("|");
-                }
-                if (pt==null) {
-                    name.append("unknown");
-                }
-                else {
-                    name.append(pt.asQualifiedString());
-                }
-            }
-            return name.toString();
-        }
-        else if (isIntersection()) {
-            StringBuilder name = new StringBuilder();
-            boolean first = true;
-            for (Type pt: getSatisfiedTypes()) {
-                if (first) {
-                    first = false;
-                }
-                else {
-                    name.append("&");
-                }
-                if (pt==null) {
-                    name.append("unknown");
-                }
-                else {
-                    name.append(pt.asQualifiedString());
-                }
-            }
-            return name.toString();
-        }
-        else {            
-            return qualifiedName();
-        }
+        return TypePrinter.UGLY.print(this, null);
     }
     
     private Type unionOfCases;
