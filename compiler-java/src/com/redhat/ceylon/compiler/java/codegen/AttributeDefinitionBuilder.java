@@ -20,6 +20,8 @@
 
 package com.redhat.ceylon.compiler.java.codegen;
 
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
+import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.recovery.HasErrorException;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
@@ -33,6 +35,7 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCStatement;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCVariableDecl;
 import com.redhat.ceylon.langtools.tools.javac.util.List;
 import com.redhat.ceylon.langtools.tools.javac.util.ListBuffer;
+import com.redhat.ceylon.langtools.tools.javac.util.Name;
 import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.typechecker.model.Class;
 import com.redhat.ceylon.model.typechecker.model.ClassOrInterface;
@@ -100,7 +103,8 @@ public class AttributeDefinitionBuilder {
     private JCExpression getterClass;
     private boolean deferredInitError;
     private final InitTest initTest;
-    private final boolean useJavaBox; 
+    private final boolean useJavaBox;
+    private BoxingStrategy initialValueBoxing; 
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, Node node, TypedDeclaration attrType, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, String fieldName, boolean toplevel, boolean indirect, 
@@ -593,9 +597,28 @@ public class AttributeDefinitionBuilder {
     private List<JCStatement> initValueField() {
         List<JCStatement> stmts = List.<JCStatement>nil();
         if (initialValue != null) {
+            JCExpression initValue = this.initialValue;
+            if (useJavaBox && initialValueBoxing != BoxingStrategy.JAVA) {
+                SyntheticName temp =  owner.naming.temp();
+                JCExpression type = owner.makeJavaType(attrType, initialValueBoxing == BoxingStrategy.BOXED ? AbstractTransformer.JT_NO_PRIMITIVES : 0);
+                initValue = 
+                        owner.make().LetExpr(
+                                owner.makeVar(temp, 
+                                        type,
+                                        initValue),
+                        owner.make().Conditional(
+                        owner.make().Binary(JCTree.Tag.EQ, 
+                                temp.makeIdent(), 
+                                owner.makeNull()),
+                        owner.makeNull(),
+                        owner.make().Apply(null,
+                                owner.makeSelect(valueFieldType(), "valueOf"),
+                                List.<JCExpression>of(
+                        owner.unboxType(temp.makeIdent(), owner.simplifyType(attrType))))));
+            }
             stmts = stmts.prepend(owner.make().Exec(owner.make().Assign(
                     makeValueFieldAccess(),
-                    initialValue)));
+                    initValue)));
         }
         return stmts;
     }
@@ -883,8 +906,9 @@ public class AttributeDefinitionBuilder {
      * @param initialValue the initial value of the global.
      * @return this instance for method chaining
      */
-    public AttributeDefinitionBuilder initialValue(JCTree.JCExpression initialValue) {
+    public AttributeDefinitionBuilder initialValue(JCTree.JCExpression initialValue, BoxingStrategy initialValueBoxing) {
         this.initialValue = initialValue;
+        this.initialValueBoxing = initialValueBoxing;
         return this;
     }
     

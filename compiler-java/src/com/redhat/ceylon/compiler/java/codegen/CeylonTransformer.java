@@ -466,20 +466,32 @@ public class CeylonTransformer extends AbstractTransformer {
             .wrapped(this, attrClassName, null, attrName, declarationModel, declarationModel.isToplevel())
             .is(Flags.PUBLIC, declarationModel.isShared());
         
-        final JCExpression initialValue;
-        final HasErrorException expressionError;
+        JCExpression initialValue = null;
+        HasErrorException expressionError = null;
+        BoxingStrategy boxingStrategy = null;
         if (expression != null) {
             expressionError = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getExpression());
-            if (expressionError != null) {
-                initialValue = make().Erroneous();
-            } else {
-                initialValue = transformValueInit(
-                        declarationModel, attrName, expression);
-            }
+            
+        } 
+        if (expressionError != null) {
+            initialValue = make().Erroneous();
         } else {
-            expressionError = null;
-            initialValue = transformValueInit(
-                    declarationModel, attrName, expression);
+            if (Decl.isNonTransientValue(declarationModel)
+                    && !(expression instanceof Tree.LazySpecifierExpression)) {
+                if (expression != null) {
+                    boxingStrategy = useJavaBox(declarationModel.getType()) ? BoxingStrategy.JAVA : CodegenUtil.getBoxingStrategy(declarationModel);
+                    initialValue = expressionGen().transform(
+                            expression, 
+                            boxingStrategy,
+                            declarationModel.getType());
+                } else {
+                    Parameter p = CodegenUtil.findParamForDecl(attrName, declarationModel);
+                    if (p != null) {
+                        boxingStrategy = CodegenUtil.getBoxingStrategy(p.getModel());
+                        initialValue = naming.makeName(p.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED);
+                    }
+                }
+            }
         }
         
         
@@ -613,34 +625,13 @@ public class CeylonTransformer extends AbstractTransformer {
             if (expressionError != null) {
                 builder.initialValueError(expressionError);
             } else if(initialValue != null) {
-                builder.initialValue(initialValue);
+                builder.initialValue(initialValue, boxingStrategy);
             }
             builder.is(Flags.STATIC, true);
             return builder.build();
         }
     }
     
-    private JCTree.JCExpression transformValueInit(
-            TypedDeclaration declarationModel, String attrName,
-            final Tree.SpecifierOrInitializerExpression expression) {
-        JCTree.JCExpression initialValue = null;
-        if (Decl.isNonTransientValue(declarationModel)
-                && !(expression instanceof Tree.LazySpecifierExpression)) {
-            if (expression != null) {
-                initialValue = expressionGen().transform(
-                        expression, 
-                        useJavaBox(declarationModel.getType()) ? BoxingStrategy.JAVA : CodegenUtil.getBoxingStrategy(declarationModel),
-                        declarationModel.getType());
-            } else {
-                Parameter p = CodegenUtil.findParamForDecl(attrName, declarationModel);
-                if (p != null) {
-                    initialValue = naming.makeName(p.getModel(), Naming.NA_MEMBER | Naming.NA_ALIASED);
-                }
-            }
-        }
-        return initialValue;
-    }
-
     public JCExpression transformAttributeGetter(
             TypedDeclaration declarationModel,
             final JCExpression expression) {

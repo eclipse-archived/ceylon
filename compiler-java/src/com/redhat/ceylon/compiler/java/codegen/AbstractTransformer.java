@@ -6037,7 +6037,7 @@ public abstract class AbstractTransformer implements Transformation {
     }
     
     public boolean isEe() {
-        return ee;
+        return true;//ee;
     }
     
     public boolean useJavaBox(Type attrType) {

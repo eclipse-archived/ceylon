@@ -1275,14 +1275,17 @@ public class ClassTransformer extends AbstractTransformer {
                     parameterExpr = make().TypeCast(adb.valueFieldType(), parameterExpr);
                 }
                 at(parameterTree);
-                BoxingStrategy f = CodegenUtil.isUnBoxed((TypedDeclaration)member) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
+                BoxingStrategy exprBoxed = CodegenUtil.isUnBoxed((TypedDeclaration)member) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
+                BoxingStrategy boxingStrategy = useJavaBox(paramType) || 
+                        useJavaBox(((TypedDeclaration)value.getRefinedDeclaration()).getType())
+                            && !CodegenUtil.isUnBoxed((TypedDeclaration)value.getRefinedDeclaration()) ? 
+                                    BoxingStrategy.JAVA : exprBoxed;
                 parameterExpr = boxUnboxIfNecessary(parameterExpr, 
-                        f, 
+                                exprBoxed, 
                                 paramType, 
-                                useJavaBox(paramType) || 
-                                useJavaBox(((TypedDeclaration)value.getRefinedDeclaration()).getType())
-                                && !CodegenUtil.isUnBoxed((TypedDeclaration)value.getRefinedDeclaration()) ? BoxingStrategy.JAVA : f, paramType);
-                adb.initialValue(parameterExpr);
+                                boxingStrategy, 
+                                paramType);
+                adb.initialValue(parameterExpr, boxingStrategy);
                 classBuilder.getInitBuilder().init(adb.buildInit(true));
             }
         }
@@ -1298,13 +1301,14 @@ public class ClassTransformer extends AbstractTransformer {
         AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.field(this, annotated, decl.getName(), decl.getModel(), false);
         adb.fieldAnnotations(makeAtIgnore().prependList(expressionGen().transformAnnotations(OutputElement.FIELD, annotated)));
         adb.modifiers(transformClassParameterDeclFlags(decl) | PRIVATE);
-        BoxingStrategy f = CodegenUtil.isUnBoxed(model) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
+        BoxingStrategy exprBoxed = CodegenUtil.isUnBoxed(model) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
+        BoxingStrategy boxingStrategy = useJavaBox(model.getType()) ? BoxingStrategy.JAVA : exprBoxed;
         JCExpression paramExpr = boxUnboxIfNecessary(naming.makeName(model, Naming.NA_IDENT_PARAMETER_ALIASED),
-                f,
+                exprBoxed,
                 simplifyType(model.getType()),
-                useJavaBox(model.getType()) ? BoxingStrategy.JAVA : f,
+                boxingStrategy,
                 simplifyType(model.getType()));
-        adb.initialValue(paramExpr);
+        adb.initialValue(paramExpr, boxingStrategy);
         classBuilder.defs((List)adb.buildFields());
         classBuilder.getInitBuilder().init(adb.buildInit(true));
     }
@@ -3449,6 +3453,7 @@ public class ClassTransformer extends AbstractTransformer {
             }
             
             JCExpression initialValue = null;
+            BoxingStrategy boxingStrategy = null;
             if (decl.getSpecifierOrInitializerExpression() != null) {
                 Tree.Expression expression = decl.getSpecifierOrInitializerExpression().getExpression();
                 HasErrorException error = errors().getFirstExpressionErrorAndMarkBrokenness(expression.getTerm());
@@ -3458,8 +3463,9 @@ public class ClassTransformer extends AbstractTransformer {
                     initialValue = null;
                     err = makeThrowUnresolvedCompilationError(error.getErrorMessage().getMessage());
                 } else {
+                    boxingStrategy = useJavaBox(nonWideningType) ? BoxingStrategy.JAVA : CodegenUtil.getBoxingStrategy(model);
                     initialValue = expressionGen().transformExpression(expression, 
-                            useJavaBox(nonWideningType) ? BoxingStrategy.JAVA : CodegenUtil.getBoxingStrategy(model), 
+                            boxingStrategy, 
                             model.isStatic() && nonWideningType.isTypeParameter() ? typeFact().getAnythingType() : nonWideningType, flags);
                 }
             }
@@ -3498,7 +3504,7 @@ public class ClassTransformer extends AbstractTransformer {
                         if (useField) {
                             AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.field(this, null, attrName, model, Decl.isIndirect(decl)).
                                     fieldAnnotations(annos).
-                                    initialValue(initialValue).
+                                    initialValue(initialValue, boxingStrategy).
                                     fieldVisibilityModifiers(modifiers).
                                     modifiers(modifiers);
                             classBuilder.defs((List)adb.
@@ -5587,7 +5593,7 @@ public class ClassTransformer extends AbstractTransformer {
                     .userAnnotations(makeAtIgnore())
                     .userAnnotationsSetter(makeAtIgnore())
                     .immutable()
-                    .initialValue(makeNewClass(naming.makeName(model, Naming.NA_FQ | Naming.NA_WRAPPER)))
+                    .initialValue(makeNewClass(naming.makeName(model, Naming.NA_FQ | Naming.NA_WRAPPER)), BoxingStrategy.BOXED)
                     .is(PUBLIC, Decl.isShared(klass))
                     .is(STATIC, true);
             if (annotated != null) {

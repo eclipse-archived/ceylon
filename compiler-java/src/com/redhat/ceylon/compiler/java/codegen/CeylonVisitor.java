@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.redhat.ceylon.common.Backend;
+import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer.BoxingStrategy;
 import com.redhat.ceylon.compiler.java.codegen.Naming.DeclNameFlag;
 import com.redhat.ceylon.compiler.java.codegen.Naming.SyntheticName;
 import com.redhat.ceylon.compiler.java.codegen.recovery.Drop;
@@ -296,12 +297,12 @@ public class CeylonVisitor extends Visitor {
                     List.<JCExpression>of(
                             gen.make().TypeCast(
                                     gen.naming.makeNamedConstructorType(ctor.getEnumerated(), false),
-                            gen.makeNull())), null));
+                            gen.makeNull())), null), BoxingStrategy.BOXED);
             classBuilder.defs(adb.build());
         } else if (clz.isClassMember()){
             adb.modifiers(singletonModel.isShared() ? 0 : PRIVATE);
             // lazy
-            adb.initialValue(gen.makeNull());
+            adb.initialValue(gen.makeNull(), BoxingStrategy.BOXED);
             List<JCStatement> l = List.<JCStatement>of(
             gen.make().If(gen.make().Binary(JCTree.Tag.EQ, field.makeIdent(), gen.makeNull()),
                     gen.make().Exec(gen.make().Assign(field.makeIdent(),
