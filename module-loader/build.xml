@@ -188,57 +188,18 @@
     </target>
 
     <target name="compile.tests.setup">
-        <delete dir="${build.test}"/>
-        <mkdir dir="${build.test}"/>
-        <mkdir dir="${build.tools-test}"/>
     </target>
 
     <target name="compile.tests" depends="compile.tests.setup,compile.tests.quick">
     </target>
 
     <target name="compile.tests.quick">
-        <javac
-            srcdir="${test.src}"
-            destdir="${build.test}"
-            debug="true"
-            encoding="UTF-8"
-            classpathref="test.compile.classpath"
-            target="${compile.java.target}"
-            source="${compile.java.source}"
-            bootclasspath="${compile.java.bootclasspath}"
-            includeantruntime="false">
-            <include name="**/*.java"/>
-        </javac>
     </target>
     
-    <target name="test" depends="build,test.quick" description="compile and run the JVM tests">
+    <target name="test" depends="build,test-quick" description="compile and run the JVM tests">
     </target>
 
-    <target name="test.quick" depends="compile.tests">
-        
-        <mkdir dir="${test.reports}"/>
-        <junit printsummary="yes" haltonfailure="no" 
-            errorproperty="test.failed"
-            failureproperty="test.failed">
-          <classpath refid="test.run.classpath"/>
-          <formatter type="xml"/>
-
-          <batchtest fork="yes" todir="${test.reports}">
-            <fileset dir="${build.test}">
-              <include name="**/*Test.class"/>
-            </fileset>
-          </batchtest>
-        </junit>
-     
-        <!--<junitreport todir="${test.reports}">
-          <fileset dir="${test.reports}">
-            <include name="TEST-*.xml"/>
-          </fileset>
-          <report format="frames" todir="${test.reports}"/>
-        </junitreport>-->
-        
-        <fail message="Test failure detected, check test results." if="test.failed" />
-        
+    <target name="test-quick" depends="compile.tests">
     </target>
 
 </project>

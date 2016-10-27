@@ -31,6 +31,8 @@
 
     <property name="runtime-test.src" location="${basedir}/testsuite/src/test/java"/>
 
+    <property name="cli.build.test.classes" location="${basedir}/../cli/build/classes"/>
+
     <tstamp/>
 
     <!-- ceylon.runtime -->
@@ -56,6 +58,7 @@
     <path id="test.build.classpath">
         <path refid="compiler.classpath"/>
         <pathelement path="${build.classes}"/>
+        <pathelement path="${cli.build.test.classes}"/>
         <pathelement path="${shrinkwrap-api.lib}"/>
         <pathelement path="${junit.lib}"/>
     </path>
@@ -64,8 +67,10 @@
         <path refid="test.build.classpath"/>
         <pathelement path="${build.test}"/>
         <pathelement path="${build.dist}"/>
+        <pathelement path="${ceylon.classfile.lib}"/>
         <pathelement path="${shrinkwrap-impl-base.lib}"/>
         <pathelement path="${shrinkwrap-spi.lib}"/>
+        <pathelement path="${hamcrest.lib}"/>
     </path>
 
     <!-- ################################################################## -->
@@ -113,7 +118,7 @@
         <copy file="${ceylon.common.lib}" tofile="${build.dist.repo}/${ceylon.common.jar}"/>
         <copy file="${ceylon.model.lib}" tofile="${build.dist.repo}/${ceylon.model.jar}"/>
         <copy file="${ceylon.typechecker.lib}" tofile="${build.dist.repo}/${ceylon.typechecker.jar}"/>
-        <copy file="${ceylon.compiler.java.lib}" tofile="${build.dist.repo}/${ceylon.compiler.java.jar}"/>
+        <copy file="${ceylon.compiler.lib}" tofile="${build.dist.repo}/${ceylon.compiler.java.jar}"/>
         <copy file="${ceylon.language.lib}" tofile="${build.dist.repo}/${ceylon.language.car}"/>
         <copy file="${ceylon.module-resolver.lib}" tofile="${build.dist.repo}/${ceylon.module-resolver.jar}"/>
         <copy todir="${build.dist}">
@@ -310,16 +315,14 @@
 
     <target name="test-quick" depends="compile.tests,dist-for-tests" description="Runs the JUnit tests">
         <mkdir dir="${test.reports}"/>
-        <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed">
+        <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed" dir="${basedir}">
             <classpath refid="test.run.classpath"/>
             <formatter type="xml"/>
-            <batchtest fork="yes" todir="${test.reports}">
-                <fileset dir="${runtime-test.src}">
-                    <include name="**/*TestCase.java"/>
-                </fileset>
-            </batchtest>
+            <test
+                name="org.jboss.ceylon.test.modules.AllRuntimeTests"
+                fork="yes"
+                todir="${test.reports}" />
         </junit>
-
         <junitreport todir="${test.reports}">
             <fileset dir="${test.reports}">
                 <include name="TEST-*.xml"/>

@@ -107,6 +107,15 @@ Some super-charged ant tasks:
         </ant>
     </target>
     
+    <target name="test-quick">
+        <ant antfile="${ceylon.dist.dir}/build.xml"
+             target="test-quick"
+             inheritall="false"
+             useNativeBasedir="true">
+            <property name="buildid" value="${buildid}" />
+        </ant>
+    </target>
+    
     <!-- The following tasks all redirect to "dist/sdk-build.xml" -->
     
     <target name="setup-sdk">
