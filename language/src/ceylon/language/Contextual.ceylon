@@ -1,5 +1,3 @@
-import java.lang { ThreadLocal }
-
 """Stores values local to the current thread of execution
    meaning that each thread or process that accesses these
    values get to see their own copy. If the underlying
@@ -60,11 +58,20 @@ shared class Contextual<Element>() {
 
 native("jvm")
 shared class Contextual<Element>() {
+    
+    import java.lang { ThreadLocal }
+
     value threadLocal = ThreadLocal<Element>();
     
     native("jvm") shared Element get() {
-        assert (exists result = threadLocal.get());
-        return result;
+        if (exists result = threadLocal.get()) {
+            return result;
+        }
+        else {
+            "not properly initialized"
+            assert (is Element null);
+            return null;
+        }
     }
     
     native("jvm") shared class Using(Element|Element() newValue)
@@ -81,8 +88,8 @@ shared class Contextual<Element>() {
         }
         
         native("jvm") shared actual void release(Throwable? error) {
-            if (exists p=previous) {
-                threadLocal.set(p);
+            if (exists prev = previous) {
+                threadLocal.set(prev);
             } else {
                 threadLocal.remove();
             }
@@ -95,8 +102,14 @@ shared class Contextual<Element>() {
     variable Element? val = null;
     
     native("js") shared Element get() {
-        assert (exists result = val);
-        return result;
+        if (exists result = val) {
+            return result;
+        }
+        else {
+            "not properly initialized"
+            assert (is Element null);
+            return null;
+        }
     }
     
     native("js") shared class Using(Element|Element() newValue)
@@ -113,11 +126,7 @@ shared class Contextual<Element>() {
         }
         
         native("js") shared actual void release(Throwable? error) {
-            if (exists p=previous) {
-                val = p;
-            } else {
-                val = null;
-            }
+            val = previous;
         }
     }
 }
