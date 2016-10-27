@@ -1274,10 +1274,14 @@ public class ClassTransformer extends AbstractTransformer {
                     // the parameter to the field type (see #1728)
                     parameterExpr = make().TypeCast(adb.valueFieldType(), parameterExpr);
                 }
+                at(parameterTree);
+                BoxingStrategy f = CodegenUtil.isUnBoxed((TypedDeclaration)member) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
                 parameterExpr = boxUnboxIfNecessary(parameterExpr, 
-                        BoxingStrategy.UNBOXED, 
+                        f, 
                                 paramType, 
-                                useJavaBox(paramType) ? BoxingStrategy.JAVA : BoxingStrategy.UNBOXED, paramType);
+                                useJavaBox(paramType) || 
+                                useJavaBox(((TypedDeclaration)value.getRefinedDeclaration()).getType())
+                                && !CodegenUtil.isUnBoxed((TypedDeclaration)value.getRefinedDeclaration()) ? BoxingStrategy.JAVA : f, paramType);
                 adb.initialValue(parameterExpr);
                 classBuilder.getInitBuilder().init(adb.buildInit(true));
             }
@@ -1294,7 +1298,13 @@ public class ClassTransformer extends AbstractTransformer {
         AttributeDefinitionBuilder adb = AttributeDefinitionBuilder.field(this, annotated, decl.getName(), decl.getModel(), false);
         adb.fieldAnnotations(makeAtIgnore().prependList(expressionGen().transformAnnotations(OutputElement.FIELD, annotated)));
         adb.modifiers(transformClassParameterDeclFlags(decl) | PRIVATE);
-        adb.initialValue(naming.makeName(model, Naming.NA_IDENT_PARAMETER_ALIASED));
+        BoxingStrategy f = CodegenUtil.isUnBoxed(model) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
+        JCExpression paramExpr = boxUnboxIfNecessary(naming.makeName(model, Naming.NA_IDENT_PARAMETER_ALIASED),
+                f,
+                simplifyType(model.getType()),
+                useJavaBox(model.getType()) ? BoxingStrategy.JAVA : f,
+                simplifyType(model.getType()));
+        adb.initialValue(paramExpr);
         classBuilder.defs((List)adb.buildFields());
         classBuilder.getInitBuilder().init(adb.buildInit(true));
     }

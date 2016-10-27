@@ -99,7 +99,8 @@ public class AttributeDefinitionBuilder {
     private JCExpression setterClass;
     private JCExpression getterClass;
     private boolean deferredInitError;
-    private final InitTest initTest; 
+    private final InitTest initTest;
+    private final boolean useJavaBox; 
 
     private AttributeDefinitionBuilder(AbstractTransformer owner, Node node, TypedDeclaration attrType, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, String fieldName, boolean toplevel, boolean indirect, 
@@ -130,6 +131,10 @@ public class AttributeDefinitionBuilder {
             this.classBuilder = classBuilder;
         }
         this.attrType = nonWideningType;
+        this.useJavaBox = owner.useJavaBox(this.attrType) 
+                || 
+                (owner.useJavaBox(((TypedDeclaration)attrTypedDecl.getRefinedDeclaration()).getType())
+                && !CodegenUtil.isUnBoxed((TypedDeclaration)attrTypedDecl.getRefinedDeclaration()));
         this.typeFlags = typeFlags;
         this.attrName = attrName;
         this.fieldName = fieldName;
@@ -540,7 +545,7 @@ public class AttributeDefinitionBuilder {
                 && attrType.isTypeParameter()) {
             return owner.make().Type(owner.syms().objectType);
         }
-        if (owner.useJavaBox(attrType)) {
+        if (useJavaBox) {
             Type t = owner.simplifyType(attrType);
             return owner.javaBoxType(t);
         } else {
@@ -660,7 +665,7 @@ public class AttributeDefinitionBuilder {
         // make sure we turn hash long to int properly
         if(isHash)
             returnExpr = owner.convertToIntForHashAttribute(returnExpr);
-        if (owner.useJavaBox(attrType)) {
+        if (useJavaBox) {
             returnExpr = owner.make().Conditional(
                     owner.make().Binary(JCTree.Tag.EQ, makeValueFieldAccess(), owner.makeNull()), 
                     owner.makeNull(), 
@@ -709,7 +714,7 @@ public class AttributeDefinitionBuilder {
     private List<JCStatement> setter() {
         JCExpression fld = makeValueFieldAccess();
         JCExpression setValue = owner.makeQuotedIdent(setterParameterName());
-        if (owner.useJavaBox(attrType)) {
+        if (useJavaBox) {
             setValue = owner.make().Conditional(
                     owner.make().Binary(JCTree.Tag.EQ, 
                             owner.makeQuotedIdent(setterParameterName()), 
