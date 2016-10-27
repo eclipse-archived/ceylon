@@ -1,4 +1,4 @@
-/*@noanno
+@noanno
 class JavaBoxes(init) {
     shared String? init;
     shared variable Integer? i = 2;
@@ -20,14 +20,14 @@ shared variable Float? fJavaBoxes = 2.0;
 shared variable String? sJavaBoxes = javaBoxesGeneric<String>();
 shared variable Byte? oJavaBoxes = 2.byte;
 shared variable Boolean? bJavaBoxes = null;
-*/
-//class JavaBoxesP(shared Integer? x=1){
-//}
+
+class JavaBoxesP(shared Integer? x=1){
+}
 @noanno
 interface JavaBoxesI {
     shared formal Integer? x;
 }
 @noanno
 class JavaBoxesC(x) satisfies JavaBoxesI {
-    shared actual Integer x;
+    shared actual variable Integer x;
 }

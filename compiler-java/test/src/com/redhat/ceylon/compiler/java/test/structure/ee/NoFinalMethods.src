@@ -130,7 +130,7 @@ class NoFinalMethods implements .com.redhat.ceylon.compiler.java.runtime.model.R
     private .java.lang.String a;
     
     public .java.lang.String getA() {
-        return a;
+        return this.a;
     }
     
     public void setA(final .java.lang.String a) {

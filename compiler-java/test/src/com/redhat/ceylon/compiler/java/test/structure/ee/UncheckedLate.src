@@ -5,19 +5,19 @@ class UncheckedLate implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     UncheckedLate() {
         setA4(true);
     }
-    private .ceylon.language.String a1;
+    private .java.lang.String a1;
     
     public .ceylon.language.String getA1() {
-        return a1;
+        return this.a1 == null ? null : .ceylon.language.String.instance(this.a1);
     }
     
     public void setA1(final .ceylon.language.String a1) {
-        this.a1 = a1;
+        this.a1 = a1 == null ? null : .java.lang.String.valueOf(a1.toString());
     }
     private long a2;
     
     public long getA2() {
-        return a2;
+        return this.a2;
     }
     
     public void setA2(final long a2) {
@@ -26,7 +26,7 @@ class UncheckedLate implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     private double a3;
     
     public double getA3() {
-        return a3;
+        return this.a3;
     }
     
     public void setA3(final double a3) {
@@ -35,7 +35,7 @@ class UncheckedLate implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     private boolean a4;
     
     public boolean getA4() {
-        return a4;
+        return this.a4;
     }
     
     public void setA4(final boolean a4) {
@@ -52,13 +52,13 @@ final class uncheckedLateToplevel_ {
     
     private uncheckedLateToplevel_() {
     }
-    private static .ceylon.language.String value;
+    private static .java.lang.String value;
     
     public static .ceylon.language.String get_() {
-        return value;
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.uncheckedLateToplevel_.value == null ? null : .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.uncheckedLateToplevel_.value);
     }
     
     public static void set_(final .ceylon.language.String uncheckedLateToplevel) {
-        value = uncheckedLateToplevel;
+        .com.redhat.ceylon.compiler.java.test.structure.ee.uncheckedLateToplevel_.value = uncheckedLateToplevel == null ? null : .java.lang.String.valueOf(uncheckedLateToplevel.toString());
     }
 }

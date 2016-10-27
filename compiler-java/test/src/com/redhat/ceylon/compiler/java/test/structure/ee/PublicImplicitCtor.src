@@ -2,7 +2,7 @@ package com.redhat.ceylon.compiler.java.test.structure.ee;
 
 class PublicImplicitCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
-    PublicImplicitCtor() {
+    protected PublicImplicitCtor() {
         super();
     }
     
