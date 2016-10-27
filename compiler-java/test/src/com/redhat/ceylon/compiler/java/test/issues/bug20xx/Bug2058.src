@@ -14,11 +14,11 @@ public final class bug2058_ {
         }
         .java.lang.Object item$4;
         if ((item$4 = hm.get(.ceylon.language.String.instance(""))) == null || item$4 instanceof .ceylon.language.String) {
-            final .ceylon.language.String item$5 = (.ceylon.language.String)item$4;
+            final .java.lang.String item$5 = ((.ceylon.language.String)item$4).toString();
             .ceylon.language.print_.print((
                 let
                 {
-                    .ceylon.language.String $ceylontmp$6 = item$5;
+                    .ceylon.language.String $ceylontmp$6 = .ceylon.language.String.instance(item$5);
                 }
                 returning $ceylontmp$6 != null ? $ceylontmp$6 : .ceylon.language.String.instance("null");
             ));

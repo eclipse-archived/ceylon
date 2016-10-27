@@ -21,8 +21,8 @@ final class bug6143_ {
             .ceylon.language.print_.print(.ceylon.language.String.instance(element + ""));
         }
         loop_2: for (.ceylon.language.String element$iterator$$8 : jlist) {
-            final .java.lang.String element = ((.ceylon.language.String).com.redhat.ceylon.compiler.java.Util.checkNull(element$iterator$$8)).toString();
-            .ceylon.language.print_.print(.ceylon.language.String.instance(element + ""));
+            final .java.lang.String element = ((.ceylon.language.String)element$iterator$$8).toString();
+            .ceylon.language.print_.print(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(element) + ""));
         }
         .ceylon.language.Sequential<? extends .java.lang.Object> sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
             
@@ -100,7 +100,7 @@ final class bug6143_ {
                         if (element$exhausted$) {
                             return false;
                         } else {
-                            element = .com.redhat.ceylon.compiler.java.Util.checkNull($iterator$0.next());
+                            element = $iterator$0.next();
                             return true;
                         }
                     }
@@ -108,7 +108,7 @@ final class bug6143_ {
                     public final .java.lang.Object next() {
                         if (this.element()) {
                             final .ceylon.language.String element = this.element;
-                            return .ceylon.language.String.instance(element.toString() + "");
+                            return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(element).toString() + "");
                         } else return .ceylon.language.finished_.get_();
                     }
                 };
@@ -128,8 +128,8 @@ final class bug6143_ {
         }
         final .ceylon.language.String[] array$21 = jarray;
         loop_5: for (int i$23 = 0; i$23 < array$21.length; i$23++) {
-            final .java.lang.String element = .com.redhat.ceylon.compiler.java.Util.checkNull(array$21[i$23]).toString();
-            .ceylon.language.print_.print(.ceylon.language.String.instance(element + ""));
+            final .java.lang.String element = array$21[i$23].toString();
+            .ceylon.language.print_.print(.ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(element) + ""));
         }
         sequence = new .com.redhat.ceylon.compiler.java.language.AbstractIterable<.ceylon.language.String, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.union(.ceylon.language.Null.$TypeDescriptor$, .ceylon.language.String.$TypeDescriptor$), .ceylon.language.Null.$TypeDescriptor$){
             
@@ -210,7 +210,7 @@ final class bug6143_ {
                         if (element$exhausted$) {
                             return false;
                         } else {
-                            element = .com.redhat.ceylon.compiler.java.Util.checkNull($array$0[$iterator$0++]).toString();
+                            element = $array$0[$iterator$0++].toString();
                             return true;
                         }
                     }
@@ -218,7 +218,7 @@ final class bug6143_ {
                     public final .java.lang.Object next() {
                         if (this.element()) {
                             final .java.lang.String element = this.element;
-                            return .ceylon.language.String.instance(element + "");
+                            return .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.Util.checkNull(element) + "");
                         } else return .ceylon.language.finished_.get_();
                     }
                 };

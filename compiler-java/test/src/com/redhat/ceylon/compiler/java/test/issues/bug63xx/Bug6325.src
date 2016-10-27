@@ -8,7 +8,7 @@ final class bug6325_ {
     static void bug6325() {
         final .java.lang.Object coll = true ? new .java.util.HashSet<.ceylon.language.String>() : new .java.util.ArrayList<.ceylon.language.String>();
         loop_0: for (.ceylon.language.String x$iterator$$2 : (.java.lang.Iterable<.ceylon.language.String>)(.java.lang.Iterable)coll) {
-            final .java.lang.String x = ((.ceylon.language.String).com.redhat.ceylon.compiler.java.Util.checkNull(x$iterator$$2)).toString();
+            final .java.lang.String x = ((.ceylon.language.String)x$iterator$$2).toString();
         }
     }
 }

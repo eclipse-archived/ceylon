@@ -27,13 +27,13 @@ final class javaArrayInFor_ {
         long sum = 0L;
         final .ceylon.language.String[] array$1 = (.ceylon.language.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
         loop_0: for (int i$3 = 0; i$3 < array$1.length; i$3++) {
-            final .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.checkNull(array$1[i$3]).toString();
-            sum += .ceylon.language.String.hashCode(s);
+            final .java.lang.String s = array$1[i$3].toString();
+            sum += .ceylon.language.String.hashCode(.com.redhat.ceylon.compiler.java.Util.checkNull(s));
         }
         final .java.lang.String[] array$5 = (.java.lang.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
         loop_1: for (int i$7 = 0; i$7 < array$5.length; i$7++) {
-            final .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.checkNull(array$5[i$7]);
-            sum += s.hashCode();
+            final .java.lang.String s = array$5[i$7];
+            sum += .com.redhat.ceylon.compiler.java.Util.checkNull(s).hashCode();
         }
         final boolean[] array$9 = (boolean[])(.java.lang.Object).ceylon.language.nothing_.get_();
         loop_2: for (int i$11 = 0; i$11 < array$9.length; i$11++) {
@@ -77,13 +77,13 @@ final class javaArrayInFor_ {
         }
         final .ceylon.language.String[] array$41 = (.ceylon.language.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
         loop_10: for (int i$43 = 0; i$43 < array$41.length; i$43++) {
-            final .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.checkNull(array$41[i$43]).toString();
-            sum += .ceylon.language.String.hashCode(s);
+            final .java.lang.String s = array$41[i$43].toString();
+            sum += .ceylon.language.String.hashCode(.com.redhat.ceylon.compiler.java.Util.checkNull(s));
         }
         final .java.lang.String[] array$45 = (.java.lang.String[])(.java.lang.Object).ceylon.language.nothing_.get_();
         loop_11: for (int i$47 = 0; i$47 < array$45.length; i$47++) {
-            final .java.lang.String s = .com.redhat.ceylon.compiler.java.Util.checkNull(array$45[i$47]);
-            sum += s.hashCode();
+            final .java.lang.String s = array$45[i$47];
+            sum += .com.redhat.ceylon.compiler.java.Util.checkNull(s).hashCode();
         }
     }
 }
