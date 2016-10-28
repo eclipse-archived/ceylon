@@ -801,6 +801,15 @@ public class AnalyzerUtil {
     static String notAssignableMessage(Type type,
             Type supertype, Node node) {
         Unit unit = node.getUnit();
+        if (supertype.covers(type)) {
+            return ": the assigned type '" + 
+                    type.asString(unit) +
+                    "' is covered by, but not assignable to, the type '" + 
+                    supertype.asString(unit) +
+                    "' (explicitly narrow assigned expression using 'of " + 
+                    supertype.asString(unit) + 
+                    "')";
+        }
         String result = 
                 typingMessage(type,
                     " is not assignable to ",
