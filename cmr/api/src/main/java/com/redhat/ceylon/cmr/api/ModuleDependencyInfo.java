@@ -17,6 +17,7 @@
 package com.redhat.ceylon.cmr.api;
 
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 
 /**
  * Module info.
@@ -29,13 +30,21 @@ public final class ModuleDependencyInfo implements Comparable<ModuleDependencyIn
     private String version;
     private boolean optional;
     private boolean shared;
+    private ModuleScope scope;
 
-    public ModuleDependencyInfo(String namespace, String name, String version, boolean optional, boolean shared) {
+    public ModuleDependencyInfo(String namespace, String name, String version, 
+            boolean optional, boolean shared) {
+        this(namespace, name, version, optional, shared, ModuleScope.COMPILE);
+    }
+    
+    public ModuleDependencyInfo(String namespace, String name, String version, 
+            boolean optional, boolean shared, ModuleScope scope) {
         this.namespace = namespace;
         this.name = name;
         this.version = version;
         this.optional = optional;
         this.shared = shared;
+        this.scope = scope;
         assert(ModuleUtil.validNamespace(namespace));
     }
 
@@ -59,6 +68,10 @@ public final class ModuleDependencyInfo implements Comparable<ModuleDependencyIn
         return shared;
     }
 
+    public ModuleScope getModuleScope() {
+        return scope;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,6 +81,7 @@ public final class ModuleDependencyInfo implements Comparable<ModuleDependencyIn
         return that.name.equals(name)
                 && that.version.equals(version)
                 && that.shared == shared
+                && that.scope == scope
                 && that.optional == optional;
     }
 
@@ -85,6 +99,9 @@ public final class ModuleDependencyInfo implements Comparable<ModuleDependencyIn
                 res = Boolean.compare(shared, that.shared);
                 if (res == 0) {
                     res = Boolean.compare(optional, that.optional);
+                    if (res == 0) {
+                        res = scope.compareTo(that.scope);
+                    }
                 }
             }
         }
@@ -96,7 +113,9 @@ public final class ModuleDependencyInfo implements Comparable<ModuleDependencyIn
         return ((shared) ? "shared " : "") +
                 ((optional) ? "optional " : "") +
                 ((namespace != null) ? namespace + ":" : "") +
-                getModuleName();
+                getModuleName() +
+                ((scope != ModuleScope.COMPILE) ? scope+" " : "")
+                ;
     }
 
     public String getModuleName() {

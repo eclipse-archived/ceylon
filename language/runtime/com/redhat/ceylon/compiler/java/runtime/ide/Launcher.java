@@ -12,6 +12,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -179,6 +180,11 @@ public class Launcher {
             public Repository repository() {
                 // TODO Auto-generated method stub
                 return null;
+            }
+
+            @Override
+            public ModuleScope moduleScope() {
+                return ModuleScope.COMPILE;
             }
         };
     }

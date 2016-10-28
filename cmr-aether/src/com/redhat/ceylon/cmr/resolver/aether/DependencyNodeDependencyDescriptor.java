@@ -114,4 +114,24 @@ public class DependencyNodeDependencyDescriptor implements DependencyDescriptor 
             }
         }
     }
+
+    @Override
+    public boolean isProvidedScope() {
+        return JavaScopes.PROVIDED.equals(node.getDependency().getScope());
+    }
+
+    @Override
+    public boolean isCompileScope() {
+        return JavaScopes.COMPILE.equals(node.getDependency().getScope());
+    }
+
+    @Override
+    public boolean isRuntimeScope() {
+        return JavaScopes.RUNTIME.equals(node.getDependency().getScope());
+    }
+
+    @Override
+    public boolean isTestScope() {
+        return JavaScopes.TEST.equals(node.getDependency().getScope());
+    }
 }

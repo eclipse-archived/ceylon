@@ -24,6 +24,7 @@ import org.osgi.framework.wiring.BundleWiring;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -208,6 +209,11 @@ public class Activator implements BundleActivator {
             BundleWiring wiring = bundle.adapt(BundleWiring.class);
             path += "/";
             return Arrays.asList(wiring.listResources(path, "*", BundleWiring.LISTRESOURCES_LOCAL).toArray(new String[]{}));
+        }
+
+        @Override
+        public ModuleScope moduleScope() {
+            return ModuleScope.COMPILE;
         }
     }
 

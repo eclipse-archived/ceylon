@@ -45,6 +45,13 @@ public interface ArtifactResult {
     boolean exported();
 
     /**
+     * The module scope.
+     *
+     * @return the module scope
+     */
+    ModuleScope moduleScope();
+
+    /**
      * The result type.
      *
      * @return the type

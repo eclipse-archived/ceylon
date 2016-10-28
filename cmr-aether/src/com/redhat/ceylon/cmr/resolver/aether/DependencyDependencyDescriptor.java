@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.maven.model.Dependency;
+import org.eclipse.aether.util.artifact.JavaScopes;
 
 public class DependencyDependencyDescriptor implements DependencyDescriptor {
 
@@ -42,5 +43,25 @@ public class DependencyDependencyDescriptor implements DependencyDescriptor {
 	public boolean isOptional() {
 		return model.isOptional();
 	}
+
+    @Override
+    public boolean isProvidedScope() {
+        return JavaScopes.PROVIDED.equals(model.getScope());
+    }
+
+    @Override
+    public boolean isRuntimeScope() {
+        return JavaScopes.RUNTIME.equals(model.getScope());
+    }
+    
+    @Override
+    public boolean isCompileScope() {
+        return JavaScopes.COMPILE.equals(model.getScope());
+    }
+    
+    @Override
+    public boolean isTestScope() {
+        return JavaScopes.TEST.equals(model.getScope());
+    }
 
 }

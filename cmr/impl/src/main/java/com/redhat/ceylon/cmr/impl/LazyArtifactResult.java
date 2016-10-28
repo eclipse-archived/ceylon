@@ -8,6 +8,7 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -17,13 +18,15 @@ public class LazyArtifactResult extends AbstractArtifactResult {
     private RepositoryManager manager;
     private boolean optional;
     private boolean exported;
+    private ModuleScope scope;
 
     public LazyArtifactResult(RepositoryManager manager, String namespace, String name, String version, 
-            boolean exported, boolean optional) {
+            boolean exported, boolean optional, ModuleScope scope) {
         super(null, namespace, name, version);
         this.manager = manager;
         this.exported = exported;
         this.optional = optional;
+        this.scope = scope;
         assert(ModuleUtil.validNamespace(namespace));
     }
 
@@ -49,6 +52,11 @@ public class LazyArtifactResult extends AbstractArtifactResult {
     @Override
     public boolean optional() {
         return optional;
+    }
+ 
+    @Override
+    public ModuleScope moduleScope() {
+        return scope;
     }
     
     public ArtifactResultType type() {

@@ -21,6 +21,7 @@ import java.io.File;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -76,6 +77,11 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
         return false;
     }
 
+    @Override
+    public ModuleScope moduleScope() {
+        return ModuleScope.COMPILE;
+    }
+    
     @Override
     public VisibilityType visibilityType() {
         if (type() == ArtifactResultType.CEYLON) {

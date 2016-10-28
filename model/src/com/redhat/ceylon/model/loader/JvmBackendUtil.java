@@ -38,6 +38,7 @@ import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -617,6 +618,11 @@ public class JvmBackendUtil {
                     public Repository repository() {
                         return null;
                     }
+
+                    @Override
+                    public ModuleScope moduleScope() {
+                        return ModuleScope.COMPILE;
+                    }
                     
                 });
             }
@@ -765,6 +771,11 @@ public class JvmBackendUtil {
             @Override
             public String toString() {
                 return "StaticMetamodelArtifact for module "+name+"/"+version;
+            }
+
+            @Override
+            public ModuleScope moduleScope() {
+                return ModuleScope.COMPILE;
             }
         };
         staticMetamodelLoader.loadModule(module.getName(), module.getVersion(), artifact);

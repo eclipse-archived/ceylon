@@ -13,4 +13,8 @@ public interface DependencyDescriptor {
 	public String getVersion();
 	public boolean isOptional();
 	
+    public boolean isProvidedScope();
+    public boolean isCompileScope();
+    public boolean isRuntimeScope();
+    public boolean isTestScope();
 }

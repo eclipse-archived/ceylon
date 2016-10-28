@@ -92,7 +92,8 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
                     mi.getName(),
                     mi.getVersion(),
                     mi.isExport(),
-                    mi.isOptional()));
+                    mi.isOptional(),
+                    mi.getModuleScope()));
         }
         return results;
     }

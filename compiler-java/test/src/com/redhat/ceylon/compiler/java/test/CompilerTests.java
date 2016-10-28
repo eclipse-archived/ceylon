@@ -79,6 +79,7 @@ import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -782,6 +783,11 @@ public abstract class CompilerTests {
             public Repository repository() {
                 // TODO Auto-generated method stub
                 return null;
+            }
+
+            @Override
+            public ModuleScope moduleScope() {
+                return ModuleScope.COMPILE;
             }
         };
     }
