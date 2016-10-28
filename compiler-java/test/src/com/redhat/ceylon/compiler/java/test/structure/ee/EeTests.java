@@ -8,31 +8,42 @@ import com.redhat.ceylon.compiler.java.test.CompilerTests;
 
 public class EeTests extends CompilerTests {
 
-    @Override
-    protected void compareWithJavaSource(String java, String... ceylon) {
-        ArrayList<String> list = new ArrayList<String>(defaultOptions);
-        list.add("-ee");
-        compareWithJavaSource(list, java, ceylon);
-    }
     
     @Test
     public void testNoFinalMethods() {
-        compareWithJavaSource("NoFinalMethods");
+        ArrayList<String> list = new ArrayList<String>(defaultOptions);
+        list.add("-ee");
+        compareWithJavaSource(list, "NoFinalMethods.src", "NoFinalMethods.ceylon");
     }
     
     @Test
     public void testPublicImplicitCtor() {
-        compareWithJavaSource("PublicImplicitCtor");
+        ArrayList<String> list = new ArrayList<String>(defaultOptions);
+        list.add("-ee");
+        compareWithJavaSource(list, "PublicImplicitCtor.src", "PublicImplicitCtor.ceylon");
     }
     
     @Test
     public void testUncheckedLate() {
-        compareWithJavaSource("UncheckedLate");
+        ArrayList<String> list = new ArrayList<String>(defaultOptions);
+        list.add("-ee");
+        compareWithJavaSource(list, "UncheckedLate.src", "UncheckedLate.ceylon");
     }
     
     @Test
     public void testJavaBoxes() {
-        compareWithJavaSource("JavaBoxes");
+        ArrayList<String> list = new ArrayList<String>(defaultOptions);
+        list.add("-ee");
+        compareWithJavaSource(list, "JavaBoxes.src", "JavaBoxes.ceylon");
     }
     
+    @Test
+    public void testEeModeEnabling() {
+        compareWithJavaSource("enabledModule/Class");
+        compareWithJavaSource("enabledModuleMaven/Class");
+        compareWithJavaSource("enabledPackage/Class.src",
+                "enabledPackage/Class.ceylon",
+                "enabledPackage/package.ceylon");
+        compareWithJavaSource("enabledClass/enabledClass");
+    }
 }
