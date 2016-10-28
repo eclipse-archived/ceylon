@@ -403,6 +403,9 @@ public class JvmBackendUtil {
     
     public static SortedSet<String> listPackages(File jar, PathFilter pathFilter) throws IOException {
         SortedSet<String> packages = new TreeSet<String>();
+        // jarless modules don't have packages
+        if(ModuleUtil.isMavenJarlessModule(jar))
+            return packages;
         try(ZipFile zf = new ZipFile(jar)){
             Enumeration<? extends ZipEntry> entries = zf.entries();
             while(entries.hasMoreElements()){
