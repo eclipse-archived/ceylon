@@ -21,7 +21,6 @@ import java.io.File;
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
-import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -68,8 +67,13 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     }
 
     @Override
-    public ImportType importType() {
-        return ImportType.UNDEFINED;
+    public boolean exported() {
+        return false;
+    }
+    
+    @Override
+    public boolean optional() {
+        return false;
     }
 
     @Override

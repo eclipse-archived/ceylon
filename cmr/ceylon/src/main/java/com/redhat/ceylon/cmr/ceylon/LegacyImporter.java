@@ -33,7 +33,6 @@ import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.loader.JdkProvider;
 
 
@@ -547,7 +546,7 @@ public class LegacyImporter {
 		try{
 		for(ArtifactResult dep : result.dependencies()){
 			// skip non-shared dependencies
-			if(dep.importType() == ImportType.EXPORT){
+			if(dep.exported()){
 				// skip already-visited dependencies
 				if(!visited.add(dep.name()+"/"+dep.version()))
 					continue;

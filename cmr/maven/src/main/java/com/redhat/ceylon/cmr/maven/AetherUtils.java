@@ -58,7 +58,6 @@ import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
-import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 
@@ -427,8 +426,13 @@ class AetherUtils {
             private ArtifactResult result;
 
             @Override
-            public ImportType importType() {
-                return shared ? ImportType.EXPORT : (optional ? ImportType.OPTIONAL : ImportType.UNDEFINED);
+            public boolean exported() {
+                return shared;
+            }
+            
+            @Override
+            public boolean optional() {
+                return optional;
             }
 
             private synchronized ArtifactResult getResult() {
@@ -451,7 +455,8 @@ class AetherUtils {
     protected ArtifactResult createArtifactResult(RepositoryManager manager, final String module, final String dVersion, 
             final boolean shared, final boolean optional, final String repositoryDisplayString) {
 
-        return new LazyArtifactResult(manager, MavenRepository.NAMESPACE, module, dVersion, shared ? ImportType.EXPORT : (optional ? ImportType.OPTIONAL : ImportType.UNDEFINED));
+        return new LazyArtifactResult(manager, MavenRepository.NAMESPACE, module, dVersion, 
+                shared, optional);
     }
 
     private ArtifactResult fetchWithClassifier(CmrRepository repository, String groupId, String artifactId, String version, String classifier, String repositoryDisplayString) {

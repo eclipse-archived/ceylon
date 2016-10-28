@@ -77,7 +77,6 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.redhat.ceylon.launcher.Launcher;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
-import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.cmr.PathFilter;
@@ -749,9 +748,13 @@ public abstract class CompilerTests {
             }
             
             @Override
-            public ImportType importType() {
-                // TODO Auto-generated method stub
-                return null;
+            public boolean optional() {
+                return false;
+            }
+            
+            @Override
+            public boolean exported() {
+                return false;
             }
             
             @Override

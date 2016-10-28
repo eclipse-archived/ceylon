@@ -21,6 +21,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.MavenArtifactContext;
@@ -37,10 +40,6 @@ import com.redhat.ceylon.cmr.maven.AetherContentStore;
 import com.redhat.ceylon.cmr.maven.AetherRepository;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.ImportType;
-
-import org.junit.Assert;
-import org.junit.Test;
 
 /**
  * Aether tests.
@@ -145,7 +144,7 @@ public class AetherTestCase extends AbstractAetherTest {
             Assert.assertEquals("1.6.1", deps.get(0).version());
             Assert.assertEquals("org.osgi:org.osgi.core", deps.get(1).name());
             Assert.assertEquals("4.2.0", deps.get(1).version());
-            Assert.assertTrue(deps.get(1).importType() == ImportType.OPTIONAL);
+            Assert.assertTrue(deps.get(1).optional());
             log.debug("deps = " + deps);
         } finally {
             if (exists) {

@@ -38,7 +38,6 @@ import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
-import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -497,14 +496,10 @@ public class JvmBackendUtil {
         // skip dependencies of provided modules as they're not trusted
         if(!providedModules.contains(entry.name())){
             for (ArtifactResult dep : entry.dependencies()) {
-                switch(dep.importType()){
-                case EXPORT:
+                if(dep.exported())
                     metamodelOs.write("+");
-                    break;
-                case OPTIONAL:
+                if(dep.optional())
                     metamodelOs.write("?");
-                    break;
-                }
                 metamodelOs.write(dep.name()+"/"+dep.version()+"\n");
             }
         }
@@ -578,8 +573,13 @@ public class JvmBackendUtil {
                     }
 
                     @Override
-                    public ImportType importType() {
-                        return shared ? ImportType.EXPORT : (optional ? ImportType.OPTIONAL : ImportType.UNDEFINED);
+                    public boolean optional() {
+                        return optional;
+                    }
+
+                    @Override
+                    public boolean exported() {
+                        return shared;
                     }
 
                     @Override
@@ -674,10 +674,15 @@ public class JvmBackendUtil {
             public String name() {
                 return name;
             }
-            
+
             @Override
-            public ImportType importType() {
-                return ImportType.UNDEFINED;
+            public boolean exported() {
+                return false;
+            }
+
+            @Override
+            public boolean optional () {
+                return false;
             }
             
             @Override

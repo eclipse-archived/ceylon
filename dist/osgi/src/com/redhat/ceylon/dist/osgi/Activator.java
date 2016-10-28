@@ -24,7 +24,6 @@ import org.osgi.framework.wiring.BundleWiring;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
-import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -100,8 +99,12 @@ public class Activator implements BundleActivator {
             return bundle.getSymbolicName();
         }
         @Override
-        public ImportType importType() {
-            return ImportType.UNDEFINED;
+        public boolean exported() {
+            return false;
+        }
+        @Override
+        public boolean optional() {
+            return false;
         }
         @Override
         public List<ArtifactResult> dependencies() throws RepositoryException {

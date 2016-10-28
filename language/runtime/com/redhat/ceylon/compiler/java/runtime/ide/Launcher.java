@@ -12,7 +12,6 @@ import java.util.List;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
-import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -134,9 +133,13 @@ public class Launcher {
             }
 
             @Override
-            public ImportType importType() {
-                // TODO Auto-generated method stub
-                return null;
+            public boolean optional() {
+                return false;
+            }
+
+            @Override
+            public boolean exported() {
+                return false;
             }
 
             @Override

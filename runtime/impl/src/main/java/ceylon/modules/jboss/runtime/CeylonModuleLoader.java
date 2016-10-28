@@ -51,7 +51,6 @@ import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
-import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.RuntimeResolver;
 
@@ -408,7 +407,7 @@ public class CeylonModuleLoader extends ModuleLoader
 
                     boolean isDepMaven = MavenArtifactContext.NAMESPACE.equals(i.namespace());
 
-                    if (i.importType() == ImportType.OPTIONAL) {
+                    if (i.optional()) {
                         Node<ArtifactResult> current = root;
                         String[] tokens = name.split("\\.");
                         for (String token : tokens) {
@@ -426,7 +425,7 @@ public class CeylonModuleLoader extends ModuleLoader
 
                     ModuleIdentifier mi = createModuleIdentifier(i);
                     Graph.Vertex<ModuleIdentifier, Boolean> dv = graph.createVertex(mi, mi);
-                    Graph.Edge.create(i.importType() == ImportType.EXPORT || (exportMavenImports && isMaven && isDepMaven), vertex, dv);
+                    Graph.Edge.create(i.exported() || (exportMavenImports && isMaven && isDepMaven), vertex, dv);
                 }
                 if (root.isEmpty() == false) {
                     LocalLoader onDemandLoader = new OnDemandLocalLoader(moduleIdentifier, this, root);
@@ -563,13 +562,13 @@ public class CeylonModuleLoader extends ModuleLoader
             return JDK_DEPENDENCY;
 
         final ModuleIdentifier mi = createModuleIdentifier(i);
-        final boolean export = forceExport || (i.importType() == ImportType.EXPORT);
+        final boolean export = forceExport || i.exported();
         return DependencySpec.createModuleDependencySpec(
             PathFilters.getMetaInfSubdirectoriesWithoutMetaInfFilter(), // import everything?
             (export ? PathFilters.acceptAll() : PathFilters.rejectAll()),
             this,
             mi,
-            i.importType() == ImportType.OPTIONAL
+            i.optional()
         );
     }
 

@@ -31,11 +31,18 @@ public interface ArtifactResult {
     String version();
 
     /**
-     * Get import type.
+     * Optional.
      *
-     * @return the import type
+     * @return optional
      */
-    ImportType importType();
+    boolean optional();
+
+    /**
+     * exported.
+     *
+     * @return exported
+     */
+    boolean exported();
 
     /**
      * The result type.
