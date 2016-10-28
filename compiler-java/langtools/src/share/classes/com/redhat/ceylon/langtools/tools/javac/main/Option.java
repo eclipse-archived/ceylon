@@ -514,6 +514,7 @@ public enum Option {
     },
     CEYLONFLATCLASSPATH("-flat-classpath",  "opt.ceylonflatclasspath", OptionKind.STANDARD, OptionGroup.CEYLON),
     CEYLONAUTOEXPORTMAVENDEPENDENCIES("-auto-export-maven-dependencies", "opt.ceylonautoexportmavendependencies", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONFULLYEXPORTMAVENDEPENDENCIES("-fully-export-maven-dependencies", "opt.ceylonfullyexportmavendependencies", OptionKind.STANDARD, OptionGroup.CEYLON),
     BOOTSTRAPCEYLON("-Xbootstrapceylon", null, OptionKind.HIDDEN, OptionGroup.CEYLON),
     
     // End of Ceylon options: Option parsing code depends on SOURCEFILE being 
