@@ -36,4 +36,11 @@ public class EeTests extends CompilerTests {
                 "enabledPackage/package.ceylon");
         compareWithJavaSource("enabledClass/enabledClass");
     }
+    
+    @Test
+    public void testEntityExample() {
+        // don't want no stinkin' warnings about late and things not being properly initialized
+        compilesWithoutWarnings("EntityExample.ceylon");
+        compareWithJavaSource("EntityExample");
+    }
 }
