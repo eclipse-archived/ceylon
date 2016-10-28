@@ -47,6 +47,10 @@ public class EeVisitor extends Visitor {
             annotations.add("javax.xml.bind.annotation.XmlAccessorType");
             annotations.add("javax.persistence.Entity");
             annotations.add("javax.inject.Inject");
+            annotations.add("javax.ejb.Stateless");
+            annotations.add("javax.ejb.Stateful");
+            annotations.add("javax.ejb.MessageDriven");
+            annotations.add("javax.ejb.Singleton");
         }
     }
 
