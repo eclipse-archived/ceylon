@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
@@ -42,7 +43,6 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.eclipse.aether.ConfigurationProperties;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
-import org.eclipse.aether.RequestTrace;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.collection.CollectRequest;
@@ -66,9 +66,6 @@ import org.eclipse.aether.resolution.VersionRangeResolutionException;
 import org.eclipse.aether.resolution.VersionRangeResult;
 import org.eclipse.aether.spi.connector.RepositoryConnectorFactory;
 import org.eclipse.aether.spi.connector.transport.TransporterFactory;
-import org.eclipse.aether.transfer.TransferCancelledException;
-import org.eclipse.aether.transfer.TransferEvent;
-import org.eclipse.aether.transfer.TransferListener;
 import org.eclipse.aether.transport.file.FileTransporterFactory;
 import org.eclipse.aether.transport.http.HttpTransporterFactory;
 import org.eclipse.aether.util.artifact.JavaScopes;
@@ -306,21 +303,17 @@ public class AetherResolverImpl implements AetherResolver {
 //                
 //            }});
 
+        Artifact pomResultArtifact = null;
+        // I don't think POMs with a classifier exist, so let's not set it
+        DefaultArtifact pomArtifact = new DefaultArtifact( groupId, artifactId, null, "pom", version);
         if(extension == null){
-            // I don't think POMs with a classifier exist, so let's not set it
-            DefaultArtifact artifact = new DefaultArtifact( groupId, artifactId, null, "pom", version);
-            ArtifactRequest artifactRequest = new ArtifactRequest();
-            artifactRequest.setArtifact(artifact);
-            artifactRequest.setRepositories(repos);
-
-            Artifact resultArtifact;
             try {
-                resultArtifact = repoSystem.resolveArtifact(session, artifactRequest).getArtifact();
+                pomResultArtifact = resolveSingleArtifact(repoSystem, session, repos, pomArtifact);
             } catch (ArtifactResolutionException e) {
                 throw new AetherException(e);
             }
-            if(resultArtifact != null){
-                extension = findExtension(resultArtifact.getFile());
+            if(pomResultArtifact != null){
+                extension = findExtension(pomResultArtifact.getFile());
             }
             if(extension == null
                     // we only support jar/aar. ear/war/bundle will resolve as jar anyway
@@ -328,61 +321,119 @@ public class AetherResolverImpl implements AetherResolver {
                 extension = "jar";
         }
         DefaultArtifact artifact = new DefaultArtifact( groupId, artifactId, classifier, extension, version);
-        DependencyNode ret;
+        DependencyNode ret = null;
         
         if(!fetchSingleArtifact){
-            final Dependency dependency = new Dependency( artifact, JavaScopes.COMPILE );
-        	CollectRequest collectRequest = new CollectRequest();
-        	collectRequest.setRepositories(repos);
-        	collectRequest.setRoot( dependency );
-
-        	DependencyRequest dependencyRequest = new DependencyRequest();
-        	dependencyRequest.setCollectRequest(collectRequest);
-        	dependencyRequest.setFilter(new DependencyFilter(){
-        		@Override
-        		public boolean accept(DependencyNode dep, List<DependencyNode> parents) {
-        			return parents.size() == 0;
-        		}
-        	});
-
-        	// only get first-level dependencies, of both scopes
-        	session.setDependencySelector(new DependencySelector(){
-
-        		@Override
-        		public DependencySelector deriveChildSelector(DependencyCollectionContext ctx) {
-        			if(ctx.getDependency().equals(dependency))
-        				return this;
-        			return NoChildSelector;
-        		}
-
-        		@Override
-        		public boolean selectDependency(Dependency dep) {
-        			return !dep.isOptional()
-        					&& (JavaScopes.COMPILE.equals(dep.getScope())
-        					    || JavaScopes.PROVIDED.equals(dep.getScope()));
-        		}
-        	});
-
-        	try {
-				ret = repoSystem.resolveDependencies( session, dependencyRequest ).getRoot();
-			} catch (DependencyResolutionException e) {
-				throw new AetherException(e);
-			}
+            try {
+                ret = resolveArtifactWithDependencies(repoSystem, session, repos, artifact);
+            } catch (DependencyResolutionException e) {
+                if(pomResultArtifact == null)
+                    throw new AetherException(e);
+                // try a jar-less module
+            }
+            if(ret == null){
+                try {
+                    ret = resolveArtifactWithDependencies(repoSystem, session, repos, pomArtifact);
+                } catch (DependencyResolutionException e) {
+                    throw new AetherException(e);
+                }
+            }
         }else{
-            ArtifactRequest artifactRequest = new ArtifactRequest();
-            artifactRequest.setArtifact(artifact);
-        	artifactRequest.setRepositories(repos);
 
         	Artifact resultArtifact;
 			try {
-				resultArtifact = repoSystem.resolveArtifact(session, artifactRequest).getArtifact();
+			    resultArtifact = resolveSingleArtifact(repoSystem, session, repos, artifact);
 			} catch (ArtifactResolutionException e) {
-				throw new AetherException(e);
+			    if(pomResultArtifact == null)
+			        throw new AetherException(e);
+			    else // go with a jar-less module
+			        resultArtifact = pomResultArtifact;
 			}
         	ret = new DefaultDependencyNode(resultArtifact);
         }
         
-        return ret == null ? null : new DependencyNodeDependencyDescriptor(ret);
+        return ret == null ? null : new DependencyNodeDependencyDescriptor(this, ret);
+    }
+
+    private DependencyNode resolveArtifactWithDependencies(RepositorySystem repoSystem, 
+            DefaultRepositorySystemSession session, 
+            List<RemoteRepository> repos, 
+            DefaultArtifact artifact) 
+            throws DependencyResolutionException {
+        
+        final Dependency dependency = new Dependency( artifact, JavaScopes.COMPILE );
+        CollectRequest collectRequest = new CollectRequest();
+        collectRequest.setRepositories(repos);
+        collectRequest.setRoot( dependency );
+        
+        DependencyRequest dependencyRequest = new DependencyRequest();
+        dependencyRequest.setCollectRequest(collectRequest);
+        dependencyRequest.setFilter(new DependencyFilter(){
+            @Override
+            public boolean accept(DependencyNode dep, List<DependencyNode> parents) {
+                return parents.size() == 0;
+            }
+        });
+
+        // only get first-level dependencies, of both scopes
+        session.setDependencySelector(new DependencySelector(){
+
+            @Override
+            public DependencySelector deriveChildSelector(DependencyCollectionContext ctx) {
+                if(myEquals(ctx.getDependency(), dependency))
+                    return this;
+                return NoChildSelector;
+            }
+
+            @Override
+            public boolean selectDependency(Dependency dep) {
+                // Not System, though we could support it
+                return JavaScopes.COMPILE.equals(dep.getScope())
+                            || JavaScopes.RUNTIME.equals(dep.getScope())
+                            || JavaScopes.PROVIDED.equals(dep.getScope())
+                            || JavaScopes.TEST.equals(dep.getScope())
+                            ;
+            }
+        });
+
+        return repoSystem.resolveDependencies( session, dependencyRequest ).getRoot();
+    }
+
+    private Artifact resolveSingleArtifact(RepositorySystem repoSystem, 
+            DefaultRepositorySystemSession session, 
+            List<RemoteRepository> repos, 
+            DefaultArtifact artifact) throws ArtifactResolutionException {
+        
+        ArtifactRequest artifactRequest = new ArtifactRequest();
+        artifactRequest.setArtifact(artifact);
+        artifactRequest.setRepositories(repos);
+
+        return repoSystem.resolveArtifact(session, artifactRequest).getArtifact();
+    }
+
+    protected boolean myEquals(Dependency a, Dependency b) {
+        if(a == null && b == null)
+            return true;
+        if(a == null || b == null)
+            return false;
+        return myEquals(a.getArtifact(), b.getArtifact())
+                && a.isOptional() == b.isOptional()
+                && Objects.equals(a.getScope(), b.getScope());
+    }
+
+    protected boolean myEquals(Artifact a, Artifact b) {
+        if(a == null && b == null)
+            return true;
+        if(a == null || b == null)
+            return false;
+        // Don't use Artifact.equals because it compares Properties which we don't want
+        return Objects.equals(a.getArtifactId(), b.getArtifactId())
+                && Objects.equals(a.getGroupId(), b.getGroupId())
+                && Objects.equals(a.getVersion(), b.getVersion())
+                && Objects.equals(a.getClassifier(), b.getClassifier())
+                && Objects.equals(a.getExtension(), b.getExtension())
+                && Objects.equals(a.getFile(), b.getFile())
+                ;
     }
 
     private String findExtension(File pomFile) {
