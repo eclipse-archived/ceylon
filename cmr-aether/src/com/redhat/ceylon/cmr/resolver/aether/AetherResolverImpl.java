@@ -190,14 +190,22 @@ public class AetherResolverImpl implements AetherResolver {
         	        // policies
         	        org.apache.maven.settings.RepositoryPolicy repoReleasePolicy = repo.getReleases();
         	        if(repoReleasePolicy != null){
-        	        	RepositoryPolicy releasePolicy = new RepositoryPolicy(repoReleasePolicy.isEnabled(), repoReleasePolicy.getUpdatePolicy(), 
+        	            String updatePolicy = repoReleasePolicy.getUpdatePolicy();
+                        // This is the default anyway and saves us a message on STDERR
+        	            if(updatePolicy == null || updatePolicy.isEmpty())
+        	                updatePolicy = RepositoryPolicy.UPDATE_POLICY_NEVER;
+        	        	RepositoryPolicy releasePolicy = new RepositoryPolicy(repoReleasePolicy.isEnabled(), updatePolicy, 
         	        			repoReleasePolicy.getChecksumPolicy());
         	        	remoteRepo.setReleasePolicy(releasePolicy );
         	        }
         	        
         	        org.apache.maven.settings.RepositoryPolicy repoSnapshotPolicy = repo.getSnapshots();
         	        if(repoSnapshotPolicy != null){
-        	        	RepositoryPolicy snapshotPolicy = new RepositoryPolicy(repoSnapshotPolicy.isEnabled(), repoSnapshotPolicy.getUpdatePolicy(), 
+                        String updatePolicy = repoSnapshotPolicy.getUpdatePolicy();
+                        // This is the default anyway and saves us a message on STDERR
+                        if(updatePolicy == null || updatePolicy.isEmpty())
+                            updatePolicy = RepositoryPolicy.UPDATE_POLICY_NEVER;
+        	        	RepositoryPolicy snapshotPolicy = new RepositoryPolicy(repoSnapshotPolicy.isEnabled(), updatePolicy, 
         	        			repoSnapshotPolicy.getChecksumPolicy());
         	        	remoteRepo.setSnapshotPolicy(snapshotPolicy);
         	        }
