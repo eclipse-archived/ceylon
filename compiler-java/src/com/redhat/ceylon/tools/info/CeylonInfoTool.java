@@ -291,7 +291,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                 outputModules(module, modules);
             } else {
                 Collection<ModuleVersionDetails> versions = getModuleVersions(getRepositoryManager(), module.getName(), 
-                		module.getVersion(), queryType, 
+                		module.getVersion(), false, queryType, 
                 		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
                 if (versions.isEmpty()) {
                     // try from source
@@ -304,7 +304,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                                 (jvmBinaryMajor != null || jvmBinaryMinor != null || jsBinaryMajor != null || jsBinaryMinor != null)) {
                             // If we were called with a specific version and we didn't find a "compatible"
                             // artifact then lets see if we can find an "incompatible" one
-                            versions = getModuleVersions(getRepositoryManager(), module.getName(), module.getVersion(), 
+                            versions = getModuleVersions(getRepositoryManager(), module.getName(), module.getVersion(), false,
                             		queryType, null, null, null, null);
                         }
                         if (versions.isEmpty()) {
@@ -726,7 +726,7 @@ public class CeylonInfoTool extends RepoUsingTool {
         newline();
         
         if (recurse && !"ceylon.language".equals(dep.getName())) {
-            Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getName(), dep.getVersion(), queryType, 
+            Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getName(), dep.getVersion(), true, queryType, 
             		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
             if (!versions.isEmpty()) {
                 recurseDependencies(versions.iterator().next(), names, depth + 1);

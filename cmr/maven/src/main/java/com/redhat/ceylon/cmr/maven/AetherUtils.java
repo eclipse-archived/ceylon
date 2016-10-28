@@ -279,7 +279,7 @@ class AetherUtils {
     }
 
     public void search(String groupId, String artifactId, String version, 
-            ModuleVersionResult result, 
+            boolean exactVersionMatch, ModuleVersionResult result, 
     		Overrides overrides, String repositoryDisplayString){
 
     	try{
@@ -289,6 +289,8 @@ class AetherUtils {
     	            if(resolvedVersion != null && !resolvedVersion.isEmpty())
     	                addSearchResult(groupId, artifactId, resolvedVersion, result, overrides, repositoryDisplayString);
     	        }
+    	    }else if(exactVersionMatch){
+    	        addSearchResult(groupId, artifactId, version, result, overrides, repositoryDisplayString);
     	    }else{
     	        List<String> versions = impl.resolveVersionRange(groupId, artifactId, "["+version+",]");
     	        for(String resolvedVersion : versions){

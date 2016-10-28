@@ -114,6 +114,7 @@ public class AetherRepository extends MavenRepository {
         if(groupArtifactIds == null)
             return;
         // FIXME: does not respect paging or count
-        utils.search(groupArtifactIds[0], groupArtifactIds[1], lookup.getVersion(), result, getOverrides(), getDisplayString());
+        utils.search(groupArtifactIds[0], groupArtifactIds[1], lookup.getVersion(), lookup.isExactVersionMatch(), 
+                result, getOverrides(), getDisplayString());
     }
 }

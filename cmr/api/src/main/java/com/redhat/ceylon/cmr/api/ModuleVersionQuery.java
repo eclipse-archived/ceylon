@@ -3,6 +3,7 @@ package com.redhat.ceylon.cmr.api;
 public class ModuleVersionQuery extends ModuleQuery {
 
     private String version;
+    private boolean exactVersionMatch;
 
     public ModuleVersionQuery(String name, String version, Type type) {
         super(null, name, type);
@@ -14,6 +15,14 @@ public class ModuleVersionQuery extends ModuleQuery {
         this.version = version;
     }
 
+    public void setExactVersionMatch(boolean exactVersionMatch) {
+        this.exactVersionMatch = exactVersionMatch;
+    }
+    
+    public boolean isExactVersionMatch() {
+        return exactVersionMatch;
+    }
+    
     public String getVersion() {
         return version;
     }
