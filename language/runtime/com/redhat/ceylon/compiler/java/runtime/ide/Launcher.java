@@ -12,6 +12,7 @@ import java.util.List;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.Exclusion;
 import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
@@ -185,6 +186,11 @@ public class Launcher {
             @Override
             public ModuleScope moduleScope() {
                 return ModuleScope.COMPILE;
+            }
+
+            @Override
+            public List<Exclusion> getExclusions() {
+                return null;
             }
         };
     }

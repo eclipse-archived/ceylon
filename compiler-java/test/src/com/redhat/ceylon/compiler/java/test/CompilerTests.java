@@ -77,6 +77,7 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.redhat.ceylon.launcher.Launcher;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.Exclusion;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.cmr.ModuleScope;
@@ -788,6 +789,11 @@ public abstract class CompilerTests {
             @Override
             public ModuleScope moduleScope() {
                 return ModuleScope.COMPILE;
+            }
+
+            @Override
+            public List<Exclusion> getExclusions() {
+                return null;
             }
         };
     }

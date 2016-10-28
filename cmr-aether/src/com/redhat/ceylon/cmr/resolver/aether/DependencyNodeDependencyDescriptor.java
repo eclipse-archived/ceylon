@@ -10,17 +10,26 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.maven.model.Exclusion;
 import org.eclipse.aether.graph.DependencyNode;
+import org.eclipse.aether.util.artifact.JavaScopes;
 
 public class DependencyNodeDependencyDescriptor implements DependencyDescriptor {
 	private DependencyNode node;
 	private List<DependencyDescriptor> deps;
+    private List<ExclusionDescriptor> exclusions;
 	
-	DependencyNodeDependencyDescriptor(DependencyNode node){
+	DependencyNodeDependencyDescriptor(AetherResolverImpl resolver, DependencyNode node){
 	    this.node = node;
 	    deps = new ArrayList<>(node.getChildren().size());
 	    for(DependencyNode dep : node.getChildren()){
-	        deps.add(new DependencyNodeDependencyDescriptor(dep));
+	        deps.add(new DependencyNodeDependencyDescriptor(resolver, dep));
+	    }
+	    if(node.getDependency() != null){
+	        exclusions = new ArrayList<>(node.getDependency().getExclusions().size());
+	        for(org.eclipse.aether.graph.Exclusion x : node.getDependency().getExclusions()){
+	            exclusions.add(new GraphExclusionExclusionDescriptor(x));
+	        }
 	    }
 	}
 
@@ -133,5 +142,10 @@ public class DependencyNodeDependencyDescriptor implements DependencyDescriptor 
     @Override
     public boolean isTestScope() {
         return JavaScopes.TEST.equals(node.getDependency().getScope());
+    }
+
+    @Override
+    public List<ExclusionDescriptor> getExclusions() {
+        return exclusions;
     }
 }

@@ -87,4 +87,9 @@ public class ModelDependencyDescriptor implements DependencyDescriptor {
     public boolean isTestScope() {
         return false;
     }
+
+    @Override
+    public List<ExclusionDescriptor> getExclusions() {
+        return null;
+    }
 }

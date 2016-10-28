@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.Exclusion;
 import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
@@ -133,6 +134,11 @@ public class CachedTOCJarsTest {
         @Override
         public ModuleScope moduleScope() {
             return ModuleScope.COMPILE;
+        }
+
+        @Override
+        public List<Exclusion> getExclusions() {
+            return null;
         }
     }
 }

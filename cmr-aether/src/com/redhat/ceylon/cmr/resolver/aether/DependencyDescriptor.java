@@ -7,6 +7,7 @@ public interface DependencyDescriptor {
 	public File getFile();
 
 	public List<DependencyDescriptor> getDependencies();
+	public List<ExclusionDescriptor> getExclusions();
 
 	public String getGroupId();
 	public String getArtifactId();

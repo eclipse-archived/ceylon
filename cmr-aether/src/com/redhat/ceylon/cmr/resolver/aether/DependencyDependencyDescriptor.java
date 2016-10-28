@@ -4,14 +4,19 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.maven.model.Dependency;
+import org.apache.maven.model.Exclusion;
 import org.eclipse.aether.util.artifact.JavaScopes;
 
 public class DependencyDependencyDescriptor implements DependencyDescriptor {
 
 	private Dependency model;
+    private List<ExclusionDescriptor> exclusions;
 
 	DependencyDependencyDescriptor(Dependency model) {
 		this.model = model;
+		for(Exclusion x : model.getExclusions()){
+		    exclusions.add(new ExclusionExclusionDescriptor(x));
+		}
 	}
 
 	@Override
@@ -62,6 +67,11 @@ public class DependencyDependencyDescriptor implements DependencyDescriptor {
     @Override
     public boolean isTestScope() {
         return JavaScopes.TEST.equals(model.getScope());
+    }
+
+    @Override
+    public List<ExclusionDescriptor> getExclusions() {
+        return exclusions;
     }
 
 }

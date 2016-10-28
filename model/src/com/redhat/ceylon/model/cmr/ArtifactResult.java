@@ -105,4 +105,9 @@ public interface ArtifactResult {
      * @return the repository this result was resolved from.
      */
     Repository repository();
+    
+    /**
+     * List of Maven exclusions
+     */
+    List<Exclusion> getExclusions();
 }

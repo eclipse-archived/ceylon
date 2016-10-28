@@ -54,10 +54,12 @@ import com.redhat.ceylon.cmr.resolver.aether.AetherException;
 import com.redhat.ceylon.cmr.resolver.aether.AetherResolver;
 import com.redhat.ceylon.cmr.resolver.aether.AetherResolverImpl;
 import com.redhat.ceylon.cmr.resolver.aether.DependencyDescriptor;
+import com.redhat.ceylon.cmr.resolver.aether.ExclusionDescriptor;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.Exclusion;
 import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -238,7 +240,8 @@ class AetherUtils {
                                 export, optional, scope, repositoryDisplayString);
                     else
                         dr = createArtifactResult(manager, repository, dGroupId, dArtifactId, dVersion, 
-                                export, optional, scope, repositoryDisplayString);
+                                export, optional, scope, repositoryDisplayString,
+                                dep.getExclusions());
                     dependencies.add(dr);
                 }
 
@@ -247,7 +250,7 @@ class AetherUtils {
                         ArtifactContext dContext = addon.getArtifactContext();
                         String dVersion = overrides.getVersionOverride(dContext);
                         dependencies.add(createArtifactResult(manager, repository, dContext, dVersion, 
-                                addon.isShared(), addon.isOptional(), ModuleScope.COMPILE, repositoryDisplayString));
+                                addon.isShared(), addon.isOptional(), ModuleScope.COMPILE, repositoryDisplayString, null));
                         log.debug(String.format("[Maven-Overrides] Added %s to %s.", addon.getArtifactContext(), context));
                     }
                 }
@@ -430,23 +433,35 @@ class AetherUtils {
 
     protected ArtifactResult createArtifactResult(RepositoryManager manager, CmrRepository repository, 
             final ArtifactContext dCo, String version, 
-            final boolean shared, boolean optional, ModuleScope scope, final String repositoryDisplayString) {
+            final boolean shared, boolean optional, ModuleScope scope, final String repositoryDisplayString,
+            List<ExclusionDescriptor> exclusions) {
         String[] groupArtifactIds = nameToGroupArtifactIds(dCo.getName());
         if(groupArtifactIds == null)
             return createArtifactResult(manager, dCo.getName(), version, 
                     shared, optional, scope, repositoryDisplayString);
         return createArtifactResult(manager, repository, groupArtifactIds[0], groupArtifactIds[1], version, 
-                shared, optional, scope, repositoryDisplayString);
+                shared, optional, scope, repositoryDisplayString, exclusions);
     }
 
     protected ArtifactResult createArtifactResult(final RepositoryManager manager, CmrRepository repository, 
             final String groupId, final String artifactId, final String dVersion, 
-            final boolean shared, final boolean optional, final ModuleScope scope, final String repositoryDisplayString) {
+            final boolean shared, final boolean optional, final ModuleScope scope, final String repositoryDisplayString,
+            final List<ExclusionDescriptor> exclusions) {
         
         final String dName = toCanonicalForm(groupId, artifactId);
 
         return new MavenArtifactResult(repository, dName, dVersion, repositoryDisplayString) {
             private ArtifactResult result;
+            
+            {
+                if(exclusions != null){
+                    List<Exclusion> ret = new ArrayList<>(exclusions.size());
+                    for (ExclusionDescriptor xDescr : exclusions) {
+                        ret.add(new Exclusion(xDescr.getGroupId(), xDescr.getArtifactId()));
+                    }
+                    setExclusions(ret);
+                }
+            }
 
             @Override
             public boolean exported() {

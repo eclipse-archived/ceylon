@@ -38,6 +38,7 @@ import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
+import com.redhat.ceylon.model.cmr.Exclusion;
 import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
@@ -623,6 +624,11 @@ public class JvmBackendUtil {
                     public ModuleScope moduleScope() {
                         return ModuleScope.COMPILE;
                     }
+
+                    @Override
+                    public List<Exclusion> getExclusions() {
+                        return null;
+                    }
                     
                 });
             }
@@ -776,6 +782,11 @@ public class JvmBackendUtil {
             @Override
             public ModuleScope moduleScope() {
                 return ModuleScope.COMPILE;
+            }
+
+            @Override
+            public List<Exclusion> getExclusions() {
+                return null;
             }
         };
         staticMetamodelLoader.loadModule(module.getName(), module.getVersion(), artifact);
