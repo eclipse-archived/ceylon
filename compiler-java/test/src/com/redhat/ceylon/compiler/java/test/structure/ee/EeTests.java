@@ -1,7 +1,5 @@
 package com.redhat.ceylon.compiler.java.test.structure.ee;
 
-import java.util.ArrayList;
-
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.CompilerTests;
@@ -11,30 +9,22 @@ public class EeTests extends CompilerTests {
     
     @Test
     public void testNoFinalMethods() {
-        ArrayList<String> list = new ArrayList<String>(defaultOptions);
-        list.add("-ee");
-        compareWithJavaSource(list, "NoFinalMethods.src", "NoFinalMethods.ceylon");
+        compareWithJavaSource("NoFinalMethods");
     }
     
     @Test
     public void testPublicImplicitCtor() {
-        ArrayList<String> list = new ArrayList<String>(defaultOptions);
-        list.add("-ee");
-        compareWithJavaSource(list, "PublicImplicitCtor.src", "PublicImplicitCtor.ceylon");
+        compareWithJavaSource("PublicImplicitCtor");
     }
     
     @Test
     public void testUncheckedLate() {
-        ArrayList<String> list = new ArrayList<String>(defaultOptions);
-        list.add("-ee");
-        compareWithJavaSource(list, "UncheckedLate.src", "UncheckedLate.ceylon");
+        compareWithJavaSource("UncheckedLate");
     }
     
     @Test
     public void testJavaBoxes() {
-        ArrayList<String> list = new ArrayList<String>(defaultOptions);
-        list.add("-ee");
-        compareWithJavaSource(list, "JavaBoxes.src", "JavaBoxes.ceylon");
+        compareWithJavaSource("JavaBoxes");
     }
     
     @Test
