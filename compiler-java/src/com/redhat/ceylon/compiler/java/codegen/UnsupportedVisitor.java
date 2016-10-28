@@ -9,11 +9,17 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Annotation;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.compiler.typechecker.util.NativeUtil;
 import com.redhat.ceylon.model.loader.model.OutputElement;
+import com.redhat.ceylon.model.typechecker.model.Declaration;
 import com.redhat.ceylon.model.typechecker.model.Function;
 
 public class UnsupportedVisitor extends Visitor {
     
     static final String DYNAMIC_UNSUPPORTED_ERR = "dynamic is not supported on the JVM";
+    private final EeVisitor eeVisitor;
+
+    public UnsupportedVisitor(EeVisitor eeVisitor) {
+        this.eeVisitor = eeVisitor;
+    }
 
     @Override
     public void visit(Tree.Annotation that) {
@@ -131,7 +137,7 @@ public class UnsupportedVisitor extends Visitor {
             else
                 target = OutputElement.FIELD;
         }
-        Object useSite = annotated.getDeclarationModel();
+        Declaration useSite = annotated.getDeclarationModel();
         List<Annotation> annotations = annotationList.getAnnotations();
         for (Tree.Annotation annotation : annotations) {
             Function annoCtorDecl = ((Function)((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration());
@@ -140,9 +146,9 @@ public class UnsupportedVisitor extends Visitor {
             if(target != null){
                 addWarnings = !AnnotationUtil.isNaturalTarget(annoCtorDecl, useSite, target);
             }
-            AnnotationUtil.interopAnnotationTargeting(outputs, annotation, true, addWarnings, annotated.getDeclarationModel());
+            AnnotationUtil.interopAnnotationTargeting(eeVisitor.isEeMode(useSite), outputs, annotation, true, addWarnings, annotated.getDeclarationModel());
         }
-        AnnotationUtil.duplicateInteropAnnotation(outputs, annotations, annotated.getDeclarationModel());
+        AnnotationUtil.duplicateInteropAnnotation(eeVisitor.isEeMode(useSite), outputs, annotations, annotated.getDeclarationModel());
     }    
 
 }

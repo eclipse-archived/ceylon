@@ -165,6 +165,7 @@ public class EeVisitor extends Visitor {
     }
     
     public boolean isEeMode(Declaration d) {
+        d = Decl.getToplevelDeclarationContainer(d);
         return eeOption
                 || eeModeModules.contains(Decl.getModule(d))
                 || eeModePackages.contains(Decl.getPackage(d))

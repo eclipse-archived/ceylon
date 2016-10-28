@@ -7382,7 +7382,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 for (Tree.Annotation annotation : annotationList.getAnnotations()) {
                     Function annoCtorDecl = ((Function)((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration());
                     boolean isNaturalTarget = AnnotationUtil.isNaturalTarget(annoCtorDecl, useSite, target);
-                    EnumSet<OutputElement> possibleTargets = AnnotationUtil.interopAnnotationTargeting(outputs, annotation, false, false, useSite instanceof Declaration ? (Declaration)useSite : null);
+                    EnumSet<OutputElement> possibleTargets = AnnotationUtil.interopAnnotationTargeting(
+                            useSite instanceof Declaration ? isEe((Declaration)useSite) : false,
+                            outputs, annotation, false, false, useSite instanceof Declaration ? (Declaration)useSite : null);
                     if ((isNaturalTarget
                             && possibleTargets == null)
                             || 

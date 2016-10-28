@@ -60,7 +60,7 @@ public class AnnotationUtil {
      * could be applied to. If the {@code errors} flag is true then add 
      * warnings/errors to the tree about ambiguous/impossible targets.
      */
-    public static EnumSet<OutputElement> interopAnnotationTargeting(EnumSet<OutputElement> outputs,
+    public static EnumSet<OutputElement> interopAnnotationTargeting(boolean isEe, EnumSet<OutputElement> outputs,
             Tree.Annotation annotation, boolean errors, boolean warnings,
             Declaration d) {
         Declaration annoCtor = ((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration();
@@ -91,7 +91,7 @@ public class AnnotationUtil {
                     sb.append(" to disambiguate");
                     annotation.addUsageWarning(Warning.ambiguousAnnotation, sb.toString(), Backend.Java);
                 }
-                checkForLateFieldAnnotation(annotation, d, annoCtor, possibleTargets, actualTargets);
+                checkForLateFieldAnnotation(isEe, annotation, d, annoCtor, possibleTargets, actualTargets);
                 return null;
             } else if (actualTargets.size() == 0) {
                 if (errors) {
@@ -103,7 +103,7 @@ public class AnnotationUtil {
                 }
             }
             
-            checkForLateFieldAnnotation(annotation, d, annoCtor, possibleTargets, actualTargets);
+            checkForLateFieldAnnotation(isEe, annotation, d, annoCtor, possibleTargets, actualTargets);
         
             return actualTargets;
         } else {
@@ -111,10 +111,13 @@ public class AnnotationUtil {
         }
     }
 
-    protected static void checkForLateFieldAnnotation(Tree.Annotation annotation, Declaration d, Declaration annoCtor,
+    protected static void checkForLateFieldAnnotation(
+            boolean isEe,
+            Tree.Annotation annotation, Declaration d, Declaration annoCtor,
             EnumSet<OutputElement> possibleTargets, EnumSet<OutputElement> actualTargets) {
         if (actualTargets.contains(OutputElement.FIELD)
                 && d instanceof Value
+                && !isEe
                 && ((Value)d).isLate()
                 && (annotation.getUnit().isOptionalType(((Value)d).getType())
                         || ((Value)d).getType().isInteger()
@@ -124,7 +127,7 @@ public class AnnotationUtil {
                         || ((Value)d).getType().isCharacter())) {
             StringBuilder sb = new StringBuilder();
             sb.append("the 'late' attribute '").append(d.getName())
-              .append("' cannot be properly initialised just by setting the field value ")
+              .append("' cannot be properly initialized just by setting the field value ")
               .append("because ").append(annotation.getUnit().isOptionalType(((Value)d).getType()) ? "it has an optional type: " : "it is erased to a primitive type: ");
             sb.append("depending on the semantics of '"+annoCtor.getName()+"' consider "); 
             if (possibleTargets.contains(OutputElement.GETTER)) {
@@ -237,11 +240,11 @@ public class AnnotationUtil {
         return result;
     }
 
-    public static void duplicateInteropAnnotation(EnumSet<OutputElement> outputs, List<Annotation> annotations, Declaration d) {
+    public static void duplicateInteropAnnotation(boolean isEe, EnumSet<OutputElement> outputs, List<Annotation> annotations, Declaration d) {
         for (int i=0; i<annotations.size(); i++) {
             Tree.Annotation ann = annotations.get(i);
             Type t = ann.getTypeModel();
-            EnumSet<OutputElement> mainTargets = interopAnnotationTargeting(outputs, ann, false, false, d);
+            EnumSet<OutputElement> mainTargets = interopAnnotationTargeting(isEe, outputs, ann, false, false, d);
             if (t!=null && mainTargets != null) {
                 TypeDeclaration td = t.getDeclaration();
                 if (!ModelUtil.isCeylonDeclaration(td)) {
@@ -252,7 +255,7 @@ public class AnnotationUtil {
                             TypeDeclaration otd = ot.getDeclaration();
                             if (otd.equals(td)) {
                                 // check if they have the same targets (if not that's fine)
-                                EnumSet<OutputElement> dupeTargets = interopAnnotationTargeting(outputs, other, false, false, d);
+                                EnumSet<OutputElement> dupeTargets = interopAnnotationTargeting(isEe, outputs, other, false, false, d);
                                 if(dupeTargets != null){
                                     EnumSet<OutputElement> sameTargets = intersection(mainTargets, dupeTargets);
                                     if(!sameTargets.isEmpty()){
