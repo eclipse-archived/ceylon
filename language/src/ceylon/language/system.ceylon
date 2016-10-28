@@ -1,14 +1,3 @@
-import java.lang {
-    System { currentTimeMillis, nanoTime }
-}
-import java.util {
-    TimeZone { defaultTimeZone=default },
-    Locale { defaultLocale=default }
-}
-import java.nio.charset {
-    Charset { defaultCharset }
-}
-
 "Represents the system on which the current process is 
  executing.
  
@@ -44,17 +33,30 @@ shared native object system {
 
 shared native("jvm") object system {
     
+    import java.lang {
+        System
+    }
+    import java.util {
+        TimeZone,
+        Locale
+    }
+    import java.nio.charset {
+        Charset {
+            defaultCharset
+        }
+    }
+    
     shared native("jvm") Integer milliseconds 
-            => currentTimeMillis();
+            => System.currentTimeMillis();
     
     shared native("jvm") Integer nanoseconds 
-            => nanoTime();
+            => System.nanoTime();
     
     shared native("jvm") Integer timezoneOffset 
-            => defaultTimeZone.getOffset(milliseconds);
+            => TimeZone.default.getOffset(milliseconds);
     
     shared native("jvm") String locale 
-            => defaultLocale.toLanguageTag();
+            => Locale.default.toLanguageTag();
     
     shared native("jvm") String characterEncoding 
             => defaultCharset().name();

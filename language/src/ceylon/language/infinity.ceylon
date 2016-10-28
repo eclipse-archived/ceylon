@@ -1,5 +1,3 @@
-import java.lang { Double { POSITIVE_INFINITY } }
-
 "An instance of [[Float]] representing positive infinity, 
  \{#221E}, the result of dividing a positive number by zero. 
  Negative infinity, -\{#221E}, the result of dividing a
@@ -14,6 +12,16 @@ import java.lang { Double { POSITIVE_INFINITY } }
 tagged("Numbers")
 native shared Float infinity;
 
-native("jvm") shared Float infinity { return \iPOSITIVE_INFINITY; }
+native("jvm") shared Float infinity { 
+    import java.lang {
+        Double
+    }
 
-native("js") shared Float infinity { dynamic { return \iInfinity; } }
+    return Double.positiveInfinity;
+}
+
+native("js") shared Float infinity { 
+    dynamic {
+        return \iInfinity;
+    } 
+}

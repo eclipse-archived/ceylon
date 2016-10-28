@@ -59,7 +59,9 @@ shared class Contextual<Element>() {
 native("jvm")
 shared class Contextual<Element>() {
     
-    import java.lang { ThreadLocal }
+    import java.lang {
+        ThreadLocal
+    }
 
     value threadLocal = ThreadLocal<Element>();
     

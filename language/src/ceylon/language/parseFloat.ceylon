@@ -1,6 +1,3 @@
-import java.lang {
-    JDouble=Double
-}
 import ceylon.language {
     ParseFloatState {
         start, afterPlusMinus, digitsBeforeDecimal,
@@ -190,8 +187,15 @@ native
 Float? nativeParseFloat(String string);
 
 native("jvm")
-Float? nativeParseFloat(String string)
-    =>  JDouble.parseDouble(string);
+Float? nativeParseFloat(String string) {
+    import java.lang {
+        Double {
+            parseDouble
+        }
+    }
+
+    return parseDouble(string);
+}
 
 native("js")
 Float? nativeParseFloat(String string) {

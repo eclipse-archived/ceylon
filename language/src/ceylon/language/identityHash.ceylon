@@ -1,5 +1,3 @@
-import java.lang { System }
-
 "Return the system-defined identity hash value of the given 
  [[value|identifiable]]. This hash value is consistent with 
  [[identity equality|Identifiable.equals]]."
@@ -7,8 +5,13 @@ see (`function identical`)
 shared native Integer identityHash(Identifiable identifiable);
 
 shared native("jvm") 
-Integer identityHash(Identifiable identifiable)
-        => System.identityHashCode(identifiable);
+Integer identityHash(Identifiable identifiable) {
+    import java.lang {
+        System
+    }
+
+    return System.identityHashCode(identifiable);
+}
 
 native("js")
 variable Integer _BasicId = 0;
