@@ -48,6 +48,7 @@ import com.redhat.ceylon.compiler.java.codegen.CompilerBoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.codegen.CompilerBoxingVisitor;
 import com.redhat.ceylon.compiler.java.codegen.DeferredVisitor;
 import com.redhat.ceylon.compiler.java.codegen.DefiniteAssignmentVisitor;
+import com.redhat.ceylon.compiler.java.codegen.EeVisitor;
 import com.redhat.ceylon.compiler.java.codegen.InterfaceVisitor;
 import com.redhat.ceylon.compiler.java.codegen.JvmMissingNativeVisitor;
 import com.redhat.ceylon.compiler.java.codegen.SmallDeclarationVisitor;
@@ -640,6 +641,7 @@ public class CeylonEnter extends Enter {
         DefiniteAssignmentVisitor dav = new DefiniteAssignmentVisitor();
         TypeParameterCaptureVisitor tpCaptureVisitor = new TypeParameterCaptureVisitor();
         InterfaceVisitor localInterfaceVisitor = new InterfaceVisitor();
+        EeVisitor eeVisitor = gen.getEeVisitor();
         // Extra phases for the compiler
         
         // boxing visitor depends on boxing decl
@@ -670,6 +672,7 @@ public class CeylonEnter extends Enter {
             compilationUnit.visit(dav);
             compilationUnit.visit(tpCaptureVisitor);
             compilationUnit.visit(localInterfaceVisitor);
+            compilationUnit.visit(eeVisitor);
         }
         
         i=1;

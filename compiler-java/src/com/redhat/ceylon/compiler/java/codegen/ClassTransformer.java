@@ -210,6 +210,10 @@ public class ClassTransformer extends AbstractTransformer {
 
     public List<JCTree> transform(final Tree.ClassOrInterface def) {
         final ClassOrInterface model = def.getDeclarationModel();
+        if (model.isToplevel()
+                && isEe(model)) {
+            replaceModifierTransformation(new EeModifierTransformation());
+        }
         
         // we only create types for aliases so they can be imported with the model loader
         // and since we can't import local declarations let's just not create those types
@@ -375,6 +379,11 @@ public class ClassTransformer extends AbstractTransformer {
             result = trees.toList();
         } else {
             result = classBuilder.build();
+        }
+        
+        if (model.isToplevel()
+                && isEe(model)) {
+            replaceModifierTransformation(new ModifierTransformation());
         }
         
         return result;
@@ -1276,8 +1285,8 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 at(parameterTree);
                 BoxingStrategy exprBoxed = CodegenUtil.isUnBoxed((TypedDeclaration)member) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
-                BoxingStrategy boxingStrategy = useJavaBox(paramType) || 
-                        useJavaBox(((TypedDeclaration)value.getRefinedDeclaration()).getType())
+                BoxingStrategy boxingStrategy = useJavaBox(value, paramType) || 
+                        useJavaBox(value, ((TypedDeclaration)value.getRefinedDeclaration()).getType())
                             && !CodegenUtil.isUnBoxed((TypedDeclaration)value.getRefinedDeclaration()) ? 
                                     BoxingStrategy.JAVA : exprBoxed;
                 parameterExpr = boxUnboxIfNecessary(parameterExpr, 
@@ -1302,7 +1311,7 @@ public class ClassTransformer extends AbstractTransformer {
         adb.fieldAnnotations(makeAtIgnore().prependList(expressionGen().transformAnnotations(OutputElement.FIELD, annotated)));
         adb.modifiers(transformClassParameterDeclFlags(decl) | PRIVATE);
         BoxingStrategy exprBoxed = CodegenUtil.isUnBoxed(model) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
-        BoxingStrategy boxingStrategy = useJavaBox(model.getType()) ? BoxingStrategy.JAVA : exprBoxed;
+        BoxingStrategy boxingStrategy = useJavaBox(model, model.getType()) ? BoxingStrategy.JAVA : exprBoxed;
         JCExpression paramExpr = boxUnboxIfNecessary(naming.makeName(model, Naming.NA_IDENT_PARAMETER_ALIASED),
                 exprBoxed,
                 simplifyType(model.getType()),
@@ -3463,7 +3472,7 @@ public class ClassTransformer extends AbstractTransformer {
                     initialValue = null;
                     err = makeThrowUnresolvedCompilationError(error.getErrorMessage().getMessage());
                 } else {
-                    boxingStrategy = useJavaBox(nonWideningType) ? BoxingStrategy.JAVA : CodegenUtil.getBoxingStrategy(model);
+                    boxingStrategy = useJavaBox(model, nonWideningType) ? BoxingStrategy.JAVA : CodegenUtil.getBoxingStrategy(model);
                     initialValue = expressionGen().transformExpression(expression, 
                             boxingStrategy, 
                             model.isStatic() && nonWideningType.isTypeParameter() ? typeFact().getAnythingType() : nonWideningType, flags);
@@ -3520,7 +3529,7 @@ public class ClassTransformer extends AbstractTransformer {
                         } else {
                             
                             classBuilder.field(modifiers, attrName, type, initialValue, !useField, annos);
-                            if (!isEe() && model.isLate() && CodegenUtil.needsLateInitField(model, typeFact())) {
+                            if (!isEe(model) && model.isLate() && CodegenUtil.needsLateInitField(model, typeFact())) {
                                 classBuilder.field(PRIVATE | Flags.VOLATILE | Flags.TRANSIENT, Naming.getInitializationFieldName(attrName), 
                                         make().Type(syms().booleanType), 
                                         make().Literal(false), false, makeAtIgnore());
@@ -3890,12 +3899,14 @@ public class ClassTransformer extends AbstractTransformer {
         }
     }
     
-    ModifierTransformation modifierTransformation = null;
+    private ModifierTransformation modifierTransformation = new ModifierTransformation();
     ModifierTransformation modifierTransformation() {
-        if (modifierTransformation == null) {
-            modifierTransformation = isEe() ? new EeModifierTransformation() : new ModifierTransformation();
-        }
         return modifierTransformation;
+    }
+    ModifierTransformation replaceModifierTransformation(ModifierTransformation mt) {
+        ModifierTransformation old = this.modifierTransformation;
+        this.modifierTransformation = mt;
+        return old;
     }
     
     private AttributeDefinitionBuilder makeGetterOrSetter(Tree.AttributeDeclaration decl, boolean forCompanion, boolean lazy, 
@@ -4314,7 +4325,7 @@ public class ClassTransformer extends AbstractTransformer {
             if (includeAnnotations) {
                 methodBuilder.userAnnotations(expressionGen().transformAnnotations(OutputElement.METHOD, annotated));
                 methodBuilder.modelAnnotations(methodModel.getAnnotations());
-                if (!methodModel.isDefault() && isEe()) {
+                if (!methodModel.isDefault() && isEe(methodModel)) {
                     methodBuilder.modelAnnotations(makeAtFinal());
                 }
             } else {

@@ -135,9 +135,9 @@ public class AttributeDefinitionBuilder {
             this.classBuilder = classBuilder;
         }
         this.attrType = nonWideningType;
-        this.useJavaBox = owner.useJavaBox(this.attrType) 
+        this.useJavaBox = owner.useJavaBox(attrTypedDecl, this.attrType) 
                 || 
-                (owner.useJavaBox(((TypedDeclaration)attrTypedDecl.getRefinedDeclaration()).getType())
+                (owner.useJavaBox(attrTypedDecl, ((TypedDeclaration)attrTypedDecl.getRefinedDeclaration()).getType())
                 && !CodegenUtil.isUnBoxed((TypedDeclaration)attrTypedDecl.getRefinedDeclaration()));
         this.typeFlags = typeFlags;
         this.attrName = attrName;
@@ -151,7 +151,7 @@ public class AttributeDefinitionBuilder {
         
         // Make sure we use the declaration for building the getter/setter names, as we might be trying to
         // override a JavaBean property with an "isFoo" getter, or non-Ceylon casing, and we have to respect that.
-        this.initTest = owner.isEe() ? new NoInitTest() : 
+        this.initTest = owner.isEe(attrTypedDecl) ? new NoInitTest() : 
                         hasInitFlag ? new FieldInitTest() : 
                             new NullnessInitTest();
         if (!field) {
@@ -370,7 +370,7 @@ public class AttributeDefinitionBuilder {
             if (this.modelAnnotations != null) {
                 getterBuilder.modelAnnotations(this.modelAnnotations.toList());
             }
-            if (owner.isEe() && !attrTypedDecl.isDefault()) {
+            if (owner.isEe(attrTypedDecl) && !attrTypedDecl.isDefault()) {
                 getterBuilder.modelAnnotations(owner.makeAtFinal());
             }
             if (this.userAnnotations != null) {

@@ -1122,4 +1122,11 @@ public class Decl {
         }
         return outer;
     }
+
+    public static Declaration getToplevelDeclarationContainer(Declaration decl) {
+        while (!(decl.getContainer() instanceof Package)) {
+            decl = getDeclarationScope(decl.getContainer());
+        }
+        return decl;
+    }
 }

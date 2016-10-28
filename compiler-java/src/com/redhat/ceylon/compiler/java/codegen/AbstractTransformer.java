@@ -178,12 +178,14 @@ public abstract class AbstractTransformer implements Transformation {
     private Errors errors;
     private Stack<java.util.List<TypeParameter>> typeParameterSubstitutions = new Stack<java.util.List<TypeParameter>>();
     protected Map<String, Long> omittedModelAnnotations;
-
+    protected EeVisitor eeVisitor;
+    
+    public EeVisitor getEeVisitor() {
+        return gen().getEeVisitor();
+    }
     public boolean simpleAnnotationModels;
 
     private final Target target;
-
-    private boolean ee;
 
     public AbstractTransformer(Context context) {
         this.context = context;
@@ -196,7 +198,8 @@ public abstract class AbstractTransformer implements Transformation {
         naming = Naming.instance(context);
         simpleAnnotationModels = Options.instance(context).get(Option.BOOTSTRAPCEYLON) != null;
         target = Target.instance(context);
-        ee = Options.instance(context).get(Option.CEYLONEE) != null;
+        eeVisitor = new EeVisitor(Options.instance(context));
+                
     }
 
     Context getContext() {
@@ -6036,12 +6039,12 @@ public abstract class AbstractTransformer implements Transformation {
         }
     }
     
-    public boolean isEe() {
-        return true;//ee;
+    public boolean isEe(Declaration d) {
+        return getEeVisitor().isEeMode(Decl.getToplevelDeclarationContainer(d));
     }
     
-    public boolean useJavaBox(Type attrType) {
-        if (isEe()
+    public boolean useJavaBox(Declaration decl, Type attrType) {
+        if (isEe(decl)
                 && typeFact().isOptionalType(attrType)) {
             Type t = simplifyType(attrType);
             if (t.isInteger() 
