@@ -5,20 +5,20 @@ import java.lang.reflect.Method;
 import java.net.URL;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleNotFoundException;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
 import com.redhat.ceylon.common.JVMModuleUtil;
 import com.redhat.ceylon.compiler.java.Util;
 import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunner;
 import com.redhat.ceylon.compiler.java.runtime.tools.JavaRunnerOptions;
 import com.redhat.ceylon.compiler.java.runtime.tools.RunnerOptions;
-import com.redhat.ceylon.module.loader.BaseModuleLoaderImpl;
+import com.redhat.ceylon.module.loader.BaseRuntimeModuleLoaderImpl;
 import com.redhat.ceylon.module.loader.FlatpathModuleLoader;
-import com.redhat.ceylon.module.loader.ModuleNotFoundException;
 
 public class JavaRunnerImpl implements JavaRunner {
     private String module;
     
-    private BaseModuleLoaderImpl moduleLoader;
+    private BaseRuntimeModuleLoaderImpl moduleLoader;
     private ClassLoader moduleClassLoader;
     private String run;
     

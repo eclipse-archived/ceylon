@@ -1,6 +1,6 @@
 package com.redhat.ceylon.module.loader;
 
-import java.io.IOException;
+import java.util.Map;
 
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
@@ -8,8 +8,10 @@ import org.jboss.modules.ModuleLoadException;
 import org.jboss.modules.ModuleLoader;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleNotFoundException;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 
-public class JBossModuleLoader extends BaseModuleLoaderImpl {
+public class JBossModuleLoader extends BaseRuntimeModuleLoaderImpl {
 
     public JBossModuleLoader() {
         this(null, null);
@@ -19,35 +21,28 @@ public class JBossModuleLoader extends BaseModuleLoaderImpl {
      * Used by reflection in com.redhat.ceylon.common.tool.ToolLoader
      */
     public JBossModuleLoader(RepositoryManager repoManager, ClassLoader delegateClassLoader) {
-        this(repoManager, delegateClassLoader, false);
+        super(repoManager, delegateClassLoader);
     }
 
-    public JBossModuleLoader(RepositoryManager repositoryManager, ClassLoader delegateClassLoader, boolean verbose) {
-        super(repositoryManager, delegateClassLoader, verbose);
+    public JBossModuleLoader(RepositoryManager repositoryManager, ClassLoader delegateClassLoader, 
+            Map<String,String> extraModules, boolean verbose) {
+        super(repositoryManager, delegateClassLoader, extraModules, verbose);
     }
 
-    class JBossModuleLoaderContext extends ModuleLoaderContext {
+    class JBossModuleLoaderContext extends RuntimeModuleLoaderContext {
         ModuleLoader modLoader;
 
-        JBossModuleLoaderContext(String module, String version) throws ModuleNotFoundException {
-            super(module, version);
+        JBossModuleLoaderContext(String module, String version, ModuleScope lookupScope) throws ModuleNotFoundException {
+            super(module, version, lookupScope);
         }
 
         @Override
-        void initialise() throws ModuleNotFoundException {
+        protected void initialise() throws ModuleNotFoundException {
             preloadModules();
             initialiseMetamodel();
             moduleClassLoader = setupClassLoader();
         }
         
-        private void preloadModules() throws ModuleNotFoundException{
-            try {
-                loadModule(null, module, modver, false, false, null);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
         private ClassLoader setupClassLoader() {
             if (delegateClassLoader != null) {
                 modLoader = ModuleLoader.forClassLoader(delegateClassLoader);
@@ -65,7 +60,7 @@ public class JBossModuleLoader extends BaseModuleLoaderImpl {
     }
 
     @Override
-    ModuleLoaderContext createModuleLoaderContext(String name, String version) throws ModuleNotFoundException {
-        return new JBossModuleLoaderContext(name, version);
+    protected ModuleLoaderContext createModuleLoaderContext(String name, String version, ModuleScope lookupScope) throws ModuleNotFoundException {
+        return new JBossModuleLoaderContext(name, version, lookupScope);
     }
 }
