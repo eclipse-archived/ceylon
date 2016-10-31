@@ -37,6 +37,7 @@ import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.RepoUsingTool;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 
 @Summary("Prints information about modules in repositories")
 @Description("When passed a search query like `*foo*` it will look at all the modules in all " +
@@ -445,6 +446,8 @@ public class CeylonInfoTool extends RepoUsingTool {
             if (showDependencies) {
                 if (formatting == Formatting.fancy || !version.getDependencies().isEmpty()) {
                     for (ModuleDependencyInfo dep : version.getDependencies()) {
+                        if(dep.getModuleScope() == ModuleScope.TEST)
+                            continue;
                         if (formatting == Formatting.fancy) {
                             append(prefix).append("    ").append(dep);
                         } else {
@@ -707,6 +710,8 @@ public class CeylonInfoTool extends RepoUsingTool {
     
     private void recurseDependencies(ModuleVersionDetails version, Map<String, SortedSet<String>> names, final int depth) throws IOException {
         for (ModuleDependencyInfo dep : version.getDependencies()) {
+            if(dep.getModuleScope() == ModuleScope.TEST)
+                continue;
             dependency(dep, names, depth+1);
         }
     }
