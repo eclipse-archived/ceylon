@@ -123,6 +123,8 @@ public class RuntimeModuleManager extends ReflectionModuleManager implements Sta
 
             ModuleImport depImport = 
                     findImport(module, dependency);
+            // FIXME: apply overrides?
+            // FIXME: exclude optionals and TEST deps?
             if (depImport == null) {
                 ModuleImport moduleImport = 
                         new ModuleImport(dep.namespace(), dependency, dep.optional(), 
