@@ -43,11 +43,14 @@ import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
 import com.redhat.ceylon.compiler.java.loader.CompilerModuleLoader;
+import com.redhat.ceylon.compiler.java.tools.CeylonLog;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleHelper;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.ModuleScope;
@@ -67,16 +70,20 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
     private final String encoding;
 
     private StatusPrinter statusPrinter;
+    private boolean verbose;
+    private CeylonLog log;
 
-    public LazyModuleSourceMapper(Context context, LazyModuleManager moduleManager, StatusPrinter statusPrinter) {
-        super(context, moduleManager);
-        this.statusPrinter = statusPrinter;
-        this.encoding = null;
+    public LazyModuleSourceMapper(Context context, LazyModuleManager moduleManager, 
+            StatusPrinter statusPrinter, boolean verbose, CeylonLog log) {
+        this(context, moduleManager, statusPrinter, verbose, log, null);
     }
 
-    public LazyModuleSourceMapper(Context context, LazyModuleManager moduleManager, StatusPrinter statusPrinter, String encoding) {
+    public LazyModuleSourceMapper(Context context, LazyModuleManager moduleManager, 
+            StatusPrinter statusPrinter, boolean verbose, CeylonLog log, String encoding) {
         super(context, moduleManager);
         this.statusPrinter = statusPrinter;
+        this.verbose = verbose;
+        this.log = log;
         this.encoding = encoding;
     }
 
@@ -307,7 +314,9 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
             statusPrinter.clearLine();
             statusPrinter.log("Pre-resolving dependencies");
         }
-        // FIXME: support verbose logging and progress
+        if(verbose){
+            log.printRawLines(WriterKind.NOTICE, "[Pre-resolving dependencies]");
+        }
         Set<Module> compiledModules = getCompiledModules();
         Map<String,String> modules = new HashMap<>();
         for (Module module : compiledModules) {
@@ -322,20 +331,24 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
             statusPrinter.clearLine();
             statusPrinter.log("Pre-resolving found "+modules.size()+" to pre-resolve");
         }
+        if(verbose){
+            log.printRawLines(WriterKind.NOTICE, "[Pre-resolving "+modules.size()+" modules]");
+        }
         if(modules.isEmpty())
             return;
         Entry<String, String> first = modules.entrySet().iterator().next();
-        CompilerModuleLoader ml = new CompilerModuleLoader(repositoryManager, null, modules, false, statusPrinter);
+        CompilerModuleLoader ml = new CompilerModuleLoader(repositoryManager, null, modules, verbose, statusPrinter, log);
         try {
             ml.loadModule(first.getKey(), first.getValue(), ModuleScope.COMPILE);
         } catch (ModuleNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            // FIXME: log error (somewhere)
+            log.error("ceylon", "Pre-resolving of module failed: "+e.getMessage());
         }
         if(statusPrinter != null){
             statusPrinter.clearLine();
             statusPrinter.log("Pre-resolving resolved "+ml.getModuleCount());
+        }
+        if(verbose){
+            log.printRawLines(WriterKind.NOTICE, "[Pre-resolved "+ml.getModuleCount()+" modules]");
         }
         Overrides overrides = repositoryManager.getOverrides();
         if(overrides == null){

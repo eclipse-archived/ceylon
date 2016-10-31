@@ -428,7 +428,8 @@ public class CeylonDocTool extends OutputRepoUsingTool {
 
             @Override
             public ModuleSourceMapper createModuleManagerUtil(Context context, ModuleManager moduleManager) {
-                return new LazyModuleSourceMapper(context, (PhasedUnitsModuleManager) moduleManager, null, getEncoding());
+                return new LazyModuleSourceMapper(context, (PhasedUnitsModuleManager) moduleManager, 
+                        null, false, null, getEncoding());
             }
         });
         

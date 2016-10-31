@@ -13,7 +13,9 @@ import com.redhat.ceylon.cmr.ceylon.loader.ModuleNotFoundException;
 import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.StatusPrinter;
+import com.redhat.ceylon.compiler.java.tools.CeylonLog;
 import com.redhat.ceylon.compiler.java.tools.StatusPrinterAptProgressListener;
+import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.Exclusion;
 import com.redhat.ceylon.model.cmr.ModuleScope;
@@ -21,13 +23,20 @@ import com.redhat.ceylon.model.cmr.ModuleScope;
 public class CompilerModuleLoader extends BaseModuleLoaderImpl {
 
     private StatusPrinter statusPrinter;
+    private CeylonLog log;
 
     public CompilerModuleLoader(RepositoryManager repositoryManager,
-            ClassLoader delegateClassLoader, Map<String, String> extraModules, boolean verbose, StatusPrinter statusPrinter) {
+            ClassLoader delegateClassLoader, Map<String, String> extraModules, boolean verbose, 
+            StatusPrinter statusPrinter, CeylonLog log) {
         super(repositoryManager, delegateClassLoader, extraModules, verbose);
         this.statusPrinter = statusPrinter;
+        this.log = log;
     }
 
+    @Override
+    public void log(String string) {
+        log.printRawLines(WriterKind.NOTICE, "["+string+"]");
+    }
     
     public class CompilerModuleLoaderContext extends ModuleLoaderContext {
 
@@ -52,6 +61,8 @@ public class CompilerModuleLoader extends BaseModuleLoaderImpl {
 
         @Override
         protected void resolvingSuccess(ArtifactResult result) {
+            if(verbose)
+                log("Pre-resolved module: "+result);
             if(progressListener != null)
                 progressListener.retrievingModuleArtifactSuccess(toModuleSpec(result), result);
         }
@@ -62,12 +73,16 @@ public class CompilerModuleLoader extends BaseModuleLoaderImpl {
 
         @Override
         protected void resolvingFailed(ArtifactContext artifactContext) {
+            if(verbose)
+                log("Pre-resolving module failed for: "+artifactContext);
             if(progressListener != null)
                 progressListener.retrievingModuleArtifactFailed(toModuleSpec(artifactContext), artifactContext);
         }
 
         @Override
         protected void prepareContext(ArtifactContext artifactContext) {
+            if(verbose)
+                log("Pre-resolving module: "+artifactContext);
             if(progressListener != null)
                 progressListener.retrievingModuleArtifact(toModuleSpec(artifactContext), artifactContext);
         }
@@ -83,6 +98,8 @@ public class CompilerModuleLoader extends BaseModuleLoaderImpl {
                     if(module.artifact != null){
                         // record the version
                         overrides.addSetArtifact(module.name, module.version);
+                        if(verbose)
+                            log("Fixing version of module "+module.name+" to "+module.version);
                         // record Maven exclusions
                         for (ArtifactResult dep : module.artifact.dependencies()) {
                             if(!selectDependency(dep))
@@ -92,6 +109,8 @@ public class CompilerModuleLoader extends BaseModuleLoaderImpl {
                                     ArtifactContext artifactContext = Overrides.createMavenArtifactContext(exclusion.getGroupId(), exclusion.getArtifactId(), null, null, null);
                                     DependencyOverride doo = new DependencyOverride(artifactContext, Type.REMOVE, false, false);
                                     overrides.addRemovedArtifact(doo);
+                                    if(verbose)
+                                        log("Removing module "+exclusion.getGroupId()+":"+exclusion.getArtifactId());
                                 }
                             }
                         }
