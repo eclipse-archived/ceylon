@@ -202,19 +202,11 @@ public class ModuleGraph {
                             continue;
                         if(dep.getExclusions() != null){
                             exclusions.addAll(dep.getExclusions());
-                            for (Exclusion exclusion : dep.getExclusions()) {
-                                if(exclusion.getArtifactId().equals("jackson-dataformat-xml"))
-                                    System.err.println("Removed by "+module.name);
-                            }
                         }
                     }
                 }
             }
         });
-        System.err.println("Exclusions");
-        for (Exclusion exclusion : exclusions) {
-            System.err.println(exclusion);
-        }
         final List<Module> removedModules = new LinkedList<>();
         visit(new ModuleGraph.Visitor(){
             @Override
@@ -237,12 +229,9 @@ public class ModuleGraph {
                 }
             }
         });
-        System.err.println("Modules to remove:");
         for (Module module : removedModules) {
-            System.err.println(module.name);
             module.remove();
         }
-        
     }
 
     public void dump(){
