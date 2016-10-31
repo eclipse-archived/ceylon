@@ -43,7 +43,6 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
             this.module = module;
             this.modver = version;
             this.lookupScope = lookupScope;
-            initialise();
         }
 
         protected abstract void initialise() throws ModuleNotFoundException;
@@ -295,6 +294,7 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
         if (ctx == null) {
             // we want a CL so it's runtime
             ctx = createModuleLoaderContext(name, version, lookupScope);
+            ctx.initialise();
             contexts.put(key, ctx);
         }
         return ctx.moduleClassLoader;
