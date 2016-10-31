@@ -75,6 +75,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
     
     private List<ModuleSpec> modules;
+    private boolean includeOptional;
     private boolean showVersions;
     private boolean showDependencies;
     private Incompatible showIncompatible = Incompatible.auto;
@@ -126,6 +127,12 @@ public class CeylonInfoTool extends RepoUsingTool {
         this.modules = modules;
     }
     
+    @Option(longName="include-optional")
+    @Description("Include optional modules when traversing dependencies")
+    public void setIncludeOptional(boolean includeOptional) {
+        this.includeOptional = includeOptional;
+    }
+
     @Option(longName="show-versions")
     @Description("Show the versions when searching for modules")
     public void setShowVersions(boolean showVersions) {
@@ -709,6 +716,11 @@ public class CeylonInfoTool extends RepoUsingTool {
             append("  ");
         }
         append(dep);
+        // Don't even record optional deps if we don't want them recorded (just print)
+        if(dep.isOptional() && !includeOptional){
+            newline();
+            return;
+        }
         SortedSet<String> seenVersions = names.get(dep.getName());
         boolean recurse = this.depth == -1 || depth < this.depth;
         if(seenVersions != null){
