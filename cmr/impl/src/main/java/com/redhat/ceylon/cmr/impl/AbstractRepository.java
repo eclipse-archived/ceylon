@@ -42,6 +42,7 @@ import com.redhat.ceylon.cmr.api.Overrides;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.spi.Node;
 import com.redhat.ceylon.cmr.spi.OpenNode;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
@@ -174,6 +175,9 @@ public abstract class AbstractRepository implements CmrRepository {
             delegate.completeModules(query, result, getOverrides());
             return;
         }
+        // this is only for non-Maven modules
+        if(ModuleUtil.isMavenModule(query.getName()))
+            return;
         // we NEED the -1 limit here to get empty tokens
         String[] paths = query.getName().split("\\.", -1);
         // find the right parent
@@ -442,6 +446,9 @@ public abstract class AbstractRepository implements CmrRepository {
             delegate.completeVersions(lookup, result, getOverrides());
             return;
         }
+        // this is only for non-Maven modules
+        if(ModuleUtil.isMavenModule(lookup.getName()))
+            return;
         // FIXME: handle default module
         // FIXME: we should really get this splitting done somewhere in common
         String name = lookup.getName();
@@ -563,6 +570,9 @@ public abstract class AbstractRepository implements CmrRepository {
             delegate.searchModules(query, result, getOverrides());
             return;
         }
+        // this is only for non-Maven modules
+        if(ModuleUtil.isMavenModule(query.getName()))
+            return;
         // do the searching the hard way
         try {
             searchModules(root, query, result, new Ret());
