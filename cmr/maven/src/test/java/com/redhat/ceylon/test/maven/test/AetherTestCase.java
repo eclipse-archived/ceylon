@@ -92,6 +92,51 @@ public class AetherTestCase extends AbstractAetherTest {
     }
 
     @Test
+    public void testAetherFetchingDependenciesWithUselessProperties() throws Throwable {
+        CmrRepository repository = AetherRepository.createRepository(log, false, 60000);
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        ArtifactResult result = manager.getArtifactResult(MavenArtifactContext.NAMESPACE, "org.springframework.cloud:spring-cloud-starter-eureka", "1.1.2.RELEASE");
+        Assert.assertNotNull(result);
+        File artifact = result.artifact();
+        boolean exists = false;
+        try {
+            Assert.assertNotNull(artifact);
+            Assert.assertTrue(artifact.exists());
+            exists = true;
+            List<ArtifactResult> deps = result.dependencies();
+            Assert.assertEquals(10, deps.size());
+            log.debug("deps = " + deps);
+        } finally {
+            if (exists) {
+                Assert.assertTrue(artifact.delete()); // delete this one
+            }
+        }
+    }
+
+    @Test
+    public void testAetherJarless() throws Throwable {
+        CmrRepository repository = AetherRepository.createRepository(log, false, 60000);
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        ArtifactResult result = manager.getArtifactResult(MavenArtifactContext.NAMESPACE, "javax.mail:mail", "1.3.2");
+        Assert.assertNotNull(result);
+        File artifact = result.artifact();
+        boolean exists = false;
+        try {
+            Assert.assertNotNull(artifact);
+            Assert.assertTrue(artifact.exists());
+            Assert.assertTrue(ModuleUtil.isMavenJarlessModule(artifact));
+            exists = true;
+            List<ArtifactResult> deps = result.dependencies();
+            Assert.assertEquals(1, deps.size());
+            log.debug("deps = " + deps);
+        } finally {
+            if (exists) {
+                Assert.assertTrue(artifact.delete()); // delete this one
+            }
+        }
+    }
+
+    @Test
     public void testWithSources() throws Throwable {
         CmrRepository repository = AetherRepository.createRepository(log, false, 60000);
         RepositoryManager manager = new SimpleRepositoryManager(repository, log);
