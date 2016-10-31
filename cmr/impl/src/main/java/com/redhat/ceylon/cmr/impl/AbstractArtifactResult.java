@@ -136,6 +136,10 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
             } catch (RepositoryException ignored) {
             }
         }
+        if (moduleScope() != ModuleScope.COMPILE) {
+            txt.append(" ");
+            txt.append(moduleScope());
+        }
         txt.append("]");
         return txt.toString();
     }
