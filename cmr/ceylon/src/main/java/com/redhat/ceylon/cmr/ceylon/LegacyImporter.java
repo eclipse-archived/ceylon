@@ -33,6 +33,7 @@ import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.log.Logger;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.loader.JdkProvider;
 
 
@@ -463,88 +464,106 @@ public class LegacyImporter {
     private void checkDependencies(Set<ModuleDependencyInfo> dependencies, Set<String> visited) throws Exception {
         if (!dependencies.isEmpty()) {
             TreeSet<ModuleDependencyInfo> sortedDeps = new TreeSet<>(dependencies);
-            for (ModuleDependencyInfo dep : sortedDeps) {
-            	
-            	// skip already-visited dependencies based on name/version key
-            	if(!visited.add(dep.getModuleName()))
-            		continue;
-            	
-                feedback.beforeDependency(dep);
-                String name = dep.getName();
-                String version = dep.getVersion();
-                // missing dep is OK, it can be fixed later, but invalid module/dependency is not OK
-                if(name == null || name.isEmpty())
-                    feedback.dependencyError(DependencyErrors.DEPERR_INVALID_MODULE_NAME, dep);
-                if(ModuleUtil.isDefaultModule(name))
-                    feedback.dependencyError(DependencyErrors.DEPERR_INVALID_MODULE_DEFAULT, dep);
-                if(version == null || version.isEmpty())
-                    feedback.dependencyError(DependencyErrors.DEPERR_INVALID_MODULE_VERSION, dep);
-                
-                Usage usage = null;
-                if (jdkProvider.isJDKModule(name)) {
-                	usage = scanner.removeMatchingJdkClasses(name);
-                } else {
-                    ArtifactContext context = new ArtifactContext(dep.getNamespace(), name, version, ArtifactContext.CAR, ArtifactContext.JAR);
-                    ArtifactResult result = lookupRepoman.getArtifactResult(context);
-                    File artifact = result != null ? result.artifact() : null;
-                    if (artifact != null && artifact.exists()) {
-                        try {
-                            Set<String> importedClasses = JarUtils.gatherClassnamesFromJar(artifact);
-                            addTransitiveDependenciesClasses(result, importedClasses, visited, dep);
-                            usage = scanner.removeMatchingClasses(importedClasses);
-                        } catch (IOException e) {
-                            feedback.dependency(DependencyResults.DEP_CHECK_FAILED, dep);
-                            hasErrors = true;
-                        }
-                    } else {
-                        if(dep.isOptional()){
-                        	String key = ModuleUtil.makeModuleName(dep.getName(), dep.getVersion());
-                        	if(missingDependenciesPackages != null && missingDependenciesPackages.containsKey(key)){
-                        		List<Pattern> packages = missingDependenciesPackages.get(key);
-                        		usage = scanner.removeMatchingPackages(packages);
-                        	}
-                        }
-                        if(usage == null){
-                        	feedback.dependency(DependencyResults.DEP_NOT_FOUND, dep);
-                        	hasErrors = true;
-                        }
-                    }
-                }
-                if(usage != null){
-                    switch(usage) {
-                    case Used:
-                        if (!dep.isExport()) {
-                            feedback.dependency(DependencyResults.DEP_OK, dep);
-                        } else {
-                            dep = new ModuleDependencyInfo(null, dep.getName(), dep.getVersion(), dep.isOptional(), false);
-                            feedback.dependency(DependencyResults.DEP_MARK_UNSHARED, dep);
-                        }
-                        break;
-                    case UsedInPublicApi:
-                        if (dep.isExport()) {
-                            feedback.dependency(DependencyResults.DEP_OK, dep);
-                        } else {
-                            dep = new ModuleDependencyInfo(null, dep.getName(), dep.getVersion(), dep.isOptional(), true);
-                            feedback.dependency(DependencyResults.DEP_MARK_SHARED, dep);
-                            hasProblems = true;
-                        }
-                        break;
-                    default:
-                    	// not used at all
-                    	dep = new ModuleDependencyInfo(null, dep.getName(), dep.getVersion(), dep.isOptional(), false);
-                    	feedback.dependency(DependencyResults.DEP_OK_UNUSED, dep);
-                    }
-                }
-                feedback.afterDependency(dep);
-                expectedDependencies.add(dep);
-            }
+            // visit exported deps first, to make sure we don't visit a public type
+            // from a transitive dep of a non-exported dep, which would generate an error
+            // that would be avoided if we visited that public type from an exported dep
+            // first
+            checkDependencies(sortedDeps, visited, true);
+            // then non-exported dependencies
+            checkDependencies(sortedDeps, visited, false);
         }
 	}
 
-	private void addTransitiveDependenciesClasses(ArtifactResult result, Set<String> classes, Set<String> visited, ModuleDependencyInfo originalDependency) throws Exception {
+	private void checkDependencies(TreeSet<ModuleDependencyInfo> sortedDeps, Set<String> visited, boolean exported) throws Exception {
+        for (ModuleDependencyInfo dep : sortedDeps) {
+            // only do exported, or non-exported
+            if(exported != dep.isExport())
+                continue;
+            // skip test scope
+            if(dep.getModuleScope() == ModuleScope.TEST)
+                continue;
+            // skip already-visited dependencies based on name/version key
+            if(!visited.add(dep.getModuleName()))
+                continue;
+            
+            feedback.beforeDependency(dep);
+            String name = dep.getName();
+            String version = dep.getVersion();
+            // missing dep is OK, it can be fixed later, but invalid module/dependency is not OK
+            if(name == null || name.isEmpty())
+                feedback.dependencyError(DependencyErrors.DEPERR_INVALID_MODULE_NAME, dep);
+            if(ModuleUtil.isDefaultModule(name))
+                feedback.dependencyError(DependencyErrors.DEPERR_INVALID_MODULE_DEFAULT, dep);
+            if(version == null || version.isEmpty())
+                feedback.dependencyError(DependencyErrors.DEPERR_INVALID_MODULE_VERSION, dep);
+            
+            Usage usage = null;
+            if (jdkProvider.isJDKModule(name)) {
+                usage = scanner.removeMatchingJdkClasses(name);
+            } else {
+                ArtifactContext context = new ArtifactContext(dep.getNamespace(), name, version, ArtifactContext.CAR, ArtifactContext.JAR);
+                ArtifactResult result = lookupRepoman.getArtifactResult(context);
+                File artifact = result != null ? result.artifact() : null;
+                if (artifact != null && artifact.exists()) {
+                    try {
+                        Set<String> importedClasses = JarUtils.gatherClassnamesFromJar(artifact);
+                        addTransitiveDependenciesClasses(result, importedClasses, visited, dep);
+                        usage = scanner.removeMatchingClasses(importedClasses);
+                    } catch (IOException e) {
+                        feedback.dependency(DependencyResults.DEP_CHECK_FAILED, dep);
+                        hasErrors = true;
+                    }
+                } else {
+                    if(dep.isOptional()){
+                        String key = ModuleUtil.makeModuleName(dep.getName(), dep.getVersion());
+                        if(missingDependenciesPackages != null && missingDependenciesPackages.containsKey(key)){
+                            List<Pattern> packages = missingDependenciesPackages.get(key);
+                            usage = scanner.removeMatchingPackages(packages);
+                        }
+                    }
+                    if(usage == null){
+                        feedback.dependency(DependencyResults.DEP_NOT_FOUND, dep);
+                        hasErrors = true;
+                    }
+                }
+            }
+            if(usage != null){
+                switch(usage) {
+                case Used:
+                    if (!dep.isExport()) {
+                        feedback.dependency(DependencyResults.DEP_OK, dep);
+                    } else {
+                        dep = new ModuleDependencyInfo(null, dep.getName(), dep.getVersion(), dep.isOptional(), false);
+                        feedback.dependency(DependencyResults.DEP_MARK_UNSHARED, dep);
+                    }
+                    break;
+                case UsedInPublicApi:
+                    if (dep.isExport()) {
+                        feedback.dependency(DependencyResults.DEP_OK, dep);
+                    } else {
+                        dep = new ModuleDependencyInfo(null, dep.getName(), dep.getVersion(), dep.isOptional(), true);
+                        feedback.dependency(DependencyResults.DEP_MARK_SHARED, dep);
+                        hasProblems = true;
+                    }
+                    break;
+                default:
+                    // not used at all
+                    dep = new ModuleDependencyInfo(null, dep.getName(), dep.getVersion(), dep.isOptional(), false);
+                    feedback.dependency(DependencyResults.DEP_OK_UNUSED, dep);
+                }
+            }
+            feedback.afterDependency(dep);
+            expectedDependencies.add(dep);
+        }
+    }
+
+    private void addTransitiveDependenciesClasses(ArtifactResult result, Set<String> classes, Set<String> visited, ModuleDependencyInfo originalDependency) throws Exception {
 		log.info("Visiting transitive dependencies for "+result.name()+"/"+result.version());
 		try{
 		for(ArtifactResult dep : result.dependencies()){
+		    // Skip Test modules
+		    if(dep.moduleScope() == ModuleScope.TEST)
+		        continue;
 			// skip non-shared dependencies
 			if(dep.exported()){
 				// skip already-visited dependencies
