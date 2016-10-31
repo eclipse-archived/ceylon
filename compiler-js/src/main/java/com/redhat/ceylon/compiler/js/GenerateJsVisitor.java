@@ -2162,8 +2162,7 @@ public class GenerateJsVisitor extends Visitor {
         // Box the value
         final boolean fromNative = TypeUtils.isNativeJs(fromTerm);
         final Type fromType = fromTerm.getTypeModel();
-        final String fromTypeName = ModelUtil.isTypeUnknown(fromType) ? "UNKNOWN" : fromType.asQualifiedString();
-        if (fromNative != toNative || fromTypeName.startsWith("ceylon.language::Callable<")) {
+        if (fromNative != toNative || (fromType != null && fromType.isCallable())) {
             if (fromNative) {
                 // conversion from native value to Ceylon value
                 if (fromType.isInteger() || fromType.isFloat()) {
@@ -2172,7 +2171,7 @@ public class GenerateJsVisitor extends Visitor {
                     out("(");
                 } else if (fromType.isCharacter()) {
                     out(getClAlias(), "Character(");
-                } else if (fromTypeName.startsWith("ceylon.language::Callable<")) {
+                } else if (fromType.isCallable()) {
                     out(getClAlias(), "jsc$2(");
                     return 4;
                 } else {
@@ -2182,7 +2181,7 @@ public class GenerateJsVisitor extends Visitor {
             } else if (fromType.isFloat()) {
                 // conversion from Ceylon Float to native value
                 return toNative ? 2 : 1;
-            } else if (fromTypeName.startsWith("ceylon.language::Callable<")) {
+            } else if (fromType.isCallable()) {
                 Term _t = fromTerm;
                 if (_t instanceof Tree.InvocationExpression) {
                     _t = ((Tree.InvocationExpression)_t).getPrimary();
