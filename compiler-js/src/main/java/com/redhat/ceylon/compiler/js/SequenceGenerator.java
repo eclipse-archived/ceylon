@@ -134,7 +134,6 @@ public class SequenceGenerator {
             if (that.getTypeModel() != null && that.getTypeModel().asQualifiedString().startsWith("ceylon.language::Callable<")) {
                 TypeUtils.typeNameOrList(that, that.getTypeModel().getTypeArgumentList().get(0).getTypeArgumentList().get(0), gen, false);
             } else {
-                gen.out("FUCK");
                 TypeUtils.typeNameOrList(that, that.getTypeModel(), gen, false);
             }
             gen.out(")");
