@@ -42,7 +42,7 @@ public final class CeyloncCompilerDelegate implements
     public ModuleSourceMapper getModuleSourceMapper() {
         if(moduleSourceMapper == null){
             com.redhat.ceylon.compiler.typechecker.context.Context ceylonContext = LanguageCompiler.getCeylonContextInstance(context);
-            moduleSourceMapper = new LazyModuleSourceMapper(ceylonContext, getModuleManager());
+            moduleSourceMapper = new LazyModuleSourceMapper(ceylonContext, getModuleManager(), getStatusPrinter());
         }
         return moduleSourceMapper;
     }

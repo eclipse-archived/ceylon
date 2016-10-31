@@ -135,11 +135,14 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
             }
             if(verbose)
                 log("Resolving "+name+"/"+version);
+            prepareContext(artifactContext);
             ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
             if(!optional
                     && (result == null || result.artifact() == null || !result.artifact().exists())){
+                resolvingFailed(artifactContext);
                 throw new ModuleNotFoundException("Could not find module: "+ModuleUtil.makeModuleName(name, version));
             }
+            resolvingSuccess(result);
             // save even missing optional modules as nulls to not re-resolve them
             ModuleGraph.Module mod;
             if(dependent == null)
@@ -164,6 +167,15 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                     loadModule(dep.namespace(), dep.name(), dep.version(), dep.optional(), inCurrentClassLoader, mod);
                 }
             }
+        }
+
+        protected void resolvingSuccess(ArtifactResult result) {
+        }
+
+        protected void resolvingFailed(ArtifactContext artifactContext) {
+        }
+
+        protected void prepareContext(ArtifactContext artifactContext) {
         }
 
         @Override

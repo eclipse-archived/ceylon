@@ -38,6 +38,7 @@ import com.redhat.ceylon.cmr.ceylon.loader.ModuleNotFoundException;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
@@ -65,13 +66,17 @@ import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 public class LazyModuleSourceMapper extends ModuleSourceMapper {
     private final String encoding;
 
-    public LazyModuleSourceMapper(Context context, LazyModuleManager moduleManager) {
+    private StatusPrinter statusPrinter;
+
+    public LazyModuleSourceMapper(Context context, LazyModuleManager moduleManager, StatusPrinter statusPrinter) {
         super(context, moduleManager);
+        this.statusPrinter = statusPrinter;
         this.encoding = null;
     }
 
-    public LazyModuleSourceMapper(Context context, LazyModuleManager moduleManager, String encoding) {
+    public LazyModuleSourceMapper(Context context, LazyModuleManager moduleManager, StatusPrinter statusPrinter, String encoding) {
         super(context, moduleManager);
+        this.statusPrinter = statusPrinter;
         this.encoding = encoding;
     }
 
@@ -298,6 +303,10 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         AbstractModelLoader modelLoader = getModuleManager().getModelLoader();
         if(!modelLoader.isFullyExportMavenDependencies())
             return;
+        if(statusPrinter != null){
+            statusPrinter.clearLine();
+            statusPrinter.log("Pre-resolving dependencies");
+        }
         // FIXME: support verbose logging and progress
         Set<Module> compiledModules = getCompiledModules();
         Map<String,String> modules = new HashMap<>();
@@ -309,11 +318,14 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                 }
             }
         }
+        if(statusPrinter != null){
+            statusPrinter.clearLine();
+            statusPrinter.log("Pre-resolving found "+modules.size()+" to pre-resolve");
+        }
         if(modules.isEmpty())
             return;
-        System.err.println("Pre-resolving "+modules.size()+" modules");
         Entry<String, String> first = modules.entrySet().iterator().next();
-        CompilerModuleLoader ml = new CompilerModuleLoader(repositoryManager, null, modules, false);
+        CompilerModuleLoader ml = new CompilerModuleLoader(repositoryManager, null, modules, false, statusPrinter);
         try {
             ml.loadModule(first.getKey(), first.getValue(), ModuleScope.COMPILE);
         } catch (ModuleNotFoundException e) {
@@ -321,7 +333,10 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
             e.printStackTrace();
             // FIXME: log error (somewhere)
         }
-        System.err.println("Done");
+        if(statusPrinter != null){
+            statusPrinter.clearLine();
+            statusPrinter.log("Pre-resolving resolved "+ml.getModuleCount());
+        }
         Overrides overrides = repositoryManager.getOverrides();
         if(overrides == null){
             overrides = Overrides.create();

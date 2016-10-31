@@ -10,28 +10,70 @@ import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.loader.BaseModuleLoaderImpl;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
 import com.redhat.ceylon.cmr.ceylon.loader.ModuleNotFoundException;
+import com.redhat.ceylon.common.ModuleSpec;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.StatusPrinter;
+import com.redhat.ceylon.compiler.java.tools.StatusPrinterAptProgressListener;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.Exclusion;
 import com.redhat.ceylon.model.cmr.ModuleScope;
 
 public class CompilerModuleLoader extends BaseModuleLoaderImpl {
 
+    private StatusPrinter statusPrinter;
+
     public CompilerModuleLoader(RepositoryManager repositoryManager,
-            ClassLoader delegateClassLoader, Map<String, String> extraModules, boolean verbose) {
+            ClassLoader delegateClassLoader, Map<String, String> extraModules, boolean verbose, StatusPrinter statusPrinter) {
         super(repositoryManager, delegateClassLoader, extraModules, verbose);
+        this.statusPrinter = statusPrinter;
     }
 
     
     public class CompilerModuleLoaderContext extends ModuleLoaderContext {
 
+        private StatusPrinterAptProgressListener progressListener;
+
         CompilerModuleLoaderContext(String module, String version, ModuleScope lookupScope) throws ModuleNotFoundException {
             super(module, version, lookupScope);
+            if(statusPrinter != null){
+                progressListener = new StatusPrinterAptProgressListener(statusPrinter){
+                    @Override
+                    protected long getNumberOfModulesResolved() {
+                        return getModuleCount();
+                    }
+                };
+            }
         }
 
         @Override
         protected void initialise() throws ModuleNotFoundException {
             preloadModules();
+        }
+
+        @Override
+        protected void resolvingSuccess(ArtifactResult result) {
+            if(progressListener != null)
+                progressListener.retrievingModuleArtifactSuccess(toModuleSpec(result), result);
+        }
+
+        private ModuleSpec toModuleSpec(ArtifactResult result) {
+            return new ModuleSpec(result.name(), result.version());
+        }
+
+        @Override
+        protected void resolvingFailed(ArtifactContext artifactContext) {
+            if(progressListener != null)
+                progressListener.retrievingModuleArtifactFailed(toModuleSpec(artifactContext), artifactContext);
+        }
+
+        @Override
+        protected void prepareContext(ArtifactContext artifactContext) {
+            if(progressListener != null)
+                progressListener.retrievingModuleArtifact(toModuleSpec(artifactContext), artifactContext);
+        }
+        
+        private ModuleSpec toModuleSpec(ArtifactContext artifactContext) {
+            return new ModuleSpec(artifactContext.getName(), artifactContext.getVersion());
         }
 
         public void fillOverrides(final Overrides overrides){
@@ -84,5 +126,10 @@ public class CompilerModuleLoader extends BaseModuleLoaderImpl {
     public void setupOverrides(Overrides overrides) {
         CompilerModuleLoaderContext context = getContext();
         context.fillOverrides(overrides);
+    }
+
+    public int getModuleCount() {
+        CompilerModuleLoaderContext context = getContext();
+        return context.getModuleCount();
     }
 }
