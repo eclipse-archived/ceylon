@@ -111,6 +111,13 @@ public class Overrides {
     
     private Overrides() {}
     
+    /**
+     * Creates an empty overrides. Mostly useful to create a dynamic overrides.
+     */
+    public static Overrides create() {
+        return new Overrides();
+    }
+
     public static Overrides getDistOverrides() {
         return getDistOverrides(true);
     }

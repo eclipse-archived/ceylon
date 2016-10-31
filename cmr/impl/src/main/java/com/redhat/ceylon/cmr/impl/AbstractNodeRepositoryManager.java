@@ -634,4 +634,16 @@ public abstract class AbstractNodeRepositoryManager extends AbstractRepositoryMa
         }
         return false;
     }
+    
+    @Override
+    public void setOverrides(Overrides overrides) {
+        super.setOverrides(overrides);
+        for (CmrRepository repository : roots) {
+            // don't set up the cache twice if it's in the roots
+            if(repository != cache)
+                setupOverrides(repository);
+        }
+        if(cache != null)
+            setupOverrides(cache);
+    }
 }

@@ -323,10 +323,11 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         }
         System.err.println("Done");
         Overrides overrides = repositoryManager.getOverrides();
-        if(overrides == null)
-            System.err.println("WAAA NO OVERRIDES DAMNIT");
-        else
-            ml.setupOverrides(overrides);
+        if(overrides == null){
+            overrides = Overrides.create();
+            repositoryManager.setOverrides(overrides);
+        }
+        ml.setupOverrides(overrides);
         ml.cleanup();
     }
 }
