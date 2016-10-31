@@ -2858,7 +2858,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
                 successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), CodegenUtil.getBoxingStrategy(term));
             }
-            JCExpression assignment = transformAssignment(expr, term, successor);
+            JCExpression assignment = transformAssignment(expr, term, transformAssignmentLhs(expr, term), successor);
             stats = stats.prepend(at(expr).Exec(assignment));
 
             // $tmp
@@ -3016,7 +3016,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression value = make().Ident(varName);
             BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(term);
             value = applyErasureAndBoxing(value, returnType, boxResult, boxingStrategy, valueType);
-            JCExpression assignment = transformAssignment(operator, term, value);
+            JCExpression assignment = transformAssignment(operator, term, transformAssignmentLhs(operator, term), value);
             stats = stats.prepend(at(operator).Exec(assignment));
             
             // $tmp
@@ -6069,7 +6069,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         if (tmpInStatement) {
-            return transformAssignment(op, leftTerm, rhs);
+            return transformAssignment(op, leftTerm, transformAssignmentLhs(op, leftTerm), rhs);
         } else {
             Type valueType = rightTerm.getTypeModel();
             if(isNull(valueType))
@@ -6084,49 +6084,45 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    private JCExpression transformAssignment(final Node op, Tree.Term leftTerm, JCExpression rhs) {
+    private JCExpression transformAssignmentLhs(final Node op, Tree.Term leftTerm) {
         // left hand side can be either BaseMemberExpression, QualifiedMemberExpression or array access (M2)
         // TODO: array access (M2)
-        JCExpression expr = null;
+        JCExpression lhs = null;
         if(leftTerm instanceof Tree.BaseMemberExpression) {
             if (needDollarThis((Tree.BaseMemberExpression)leftTerm)) {
-                expr = naming.makeQuotedThis();
+                lhs = naming.makeQuotedThis();
             }
         } else if(leftTerm instanceof Tree.QualifiedMemberExpression) {
             Tree.QualifiedMemberExpression qualified = ((Tree.QualifiedMemberExpression)leftTerm);
             if (isPackageQualified(qualified)) {
-                expr = null;
+                lhs = null;
             } else if (isSuper(qualified.getPrimary())) {
-                expr = transformSuper(qualified);
+                lhs = transformSuper(qualified);
             } else if (isSuperOf(qualified.getPrimary())) {
-                expr = transformSuperOf(qualified, qualified.getPrimary(), qualified.getDeclaration().getName());
+                lhs = transformSuperOf(qualified, qualified.getPrimary(), qualified.getDeclaration().getName());
             } else if (isThis(qualified.getPrimary())
                     && !qualified.getDeclaration().isCaptured() 
                     && !qualified.getDeclaration().isShared() ) {
-                expr = null;
+                lhs = null;
             } else if (!qualified.getDeclaration().isStatic()) {
-                expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
+                lhs = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
                 if (Decl.isPrivateAccessRequiringUpcast(qualified)) {
-                    expr = makePrivateAccessUpcast(qualified, expr);
+                    lhs = makePrivateAccessUpcast(qualified, lhs);
                 }
             } else {
-                expr = makeJavaType(((ClassOrInterface)qualified.getDeclaration().getContainer()).getType(), JT_RAW);
+                lhs = makeJavaType(((ClassOrInterface)qualified.getDeclaration().getContainer()).getType(), JT_RAW);
             }
         } else if(leftTerm instanceof Tree.ParameterizedExpression) {
-            expr = null;
+            lhs = null;
         } else if(leftTerm instanceof Tree.IndexExpression) {
-            expr = null;
+            lhs = null;
         } else {
             return makeErroneous(op, "compiler bug: "+op.getNodeType() + " is not yet supported");
         }
-        return transformAssignment(op, leftTerm, expr, rhs);
+        return lhs;
     }
     
     private JCExpression transformAssignment(Node op, Tree.Term leftTerm, JCExpression lhs, JCExpression rhs) {
-        
-        
-
-        // FIXME: can this be anything else than a Tree.StaticMemberOrTypeExpression or Tree.ParameterizedExpression?
         TypedDeclaration decl;
         if (leftTerm instanceof Tree.StaticMemberOrTypeExpression) {
             decl = (TypedDeclaration) ((Tree.StaticMemberOrTypeExpression)leftTerm).getDeclaration();
@@ -6135,9 +6131,11 @@ public class ExpressionTransformer extends AbstractTransformer {
         } else if (leftTerm instanceof Tree.IndexExpression) {
             // in this case lhs is null anyway, so let's discard it
             return transformIndexAssignment(op, (Tree.IndexExpression)leftTerm, rhs);
-        } else {
+        } else if (leftTerm instanceof Tree.ParameterizedExpression) {
             // instanceof Tree.ParameterizedExpression
             decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)((Tree.ParameterizedExpression)leftTerm).getPrimary()).getDeclaration();
+        } else {
+            return makeErroneous(op, "Unexpected LHS in assignment: " + leftTerm.getNodeType());
         }
 
         boolean variable = decl.isVariable();
