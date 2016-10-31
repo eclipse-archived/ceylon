@@ -6123,8 +6123,8 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     private JCExpression transformAssignment(Node op, Tree.Term leftTerm, JCExpression lhs, JCExpression rhs) {
-        JCExpression result = null;
-        JCExpression varExpr = null;
+        
+        
 
         // FIXME: can this be anything else than a Tree.StaticMemberOrTypeExpression or Tree.ParameterizedExpression?
         TypedDeclaration decl;
@@ -6141,7 +6141,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         boolean variable = decl.isVariable();
-        
+        JCExpression varExpr = null;
         at(op);
         String selector = Naming.selector(decl, Naming.NA_SETTER);
         if (decl.isToplevel()) {
@@ -6149,9 +6149,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             lhs = naming.makeName(decl, Naming.NA_FQ | Naming.NA_WRAPPER);
         } else if (Decl.isGetter(decl)) {
             if (Decl.isTransient(decl) && !decl.isVariable()) {
-                JCExpression attr = gen().transformAttributeGetter(decl, rhs);
+                rhs = gen().transformAttributeGetter(decl, rhs);
                 varExpr = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER);
-                result = at(op).Assign(varExpr, attr);
             } else {
                 // must use the setter
                 if (Decl.isLocal(decl)) {
@@ -6165,11 +6164,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // Deferred method initialization of a local function
                 // The Callable field has the same name as the method, so use NA_MEMBER
                 varExpr = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER_UNQUOTED | Naming.NA_MEMBER);
-                result = at(op).Assign(varExpr, rhs);
             } else {
                 // Deferred method initialization of a class function
                 varExpr = naming.makeQualifiedName(lhs, decl, Naming.NA_MEMBER);
-                result = at(op).Assign(varExpr, rhs);
             }
         } else if ((variable || decl.isLate()) && (Decl.isClassAttribute(decl))) {
             // must use the setter, nothing to do, unless it's a java field
@@ -6177,47 +6174,42 @@ public class ExpressionTransformer extends AbstractTransformer {
                 if (decl.isStatic()) {
                     // static field
                     varExpr = naming.makeName(decl, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED);
-                    result = at(op).Assign(varExpr, rhs);
                 }else{
                     // normal field
                     varExpr = naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT);
-                    result = at(op).Assign(varExpr, rhs);
                 }
             }
-
         } else if (variable && (decl.isCaptured() || decl.isShared())) {
             // must use the qualified setter
             if (Decl.isBoxedVariable(decl)) {
                 varExpr = naming.makeName(decl, Naming.NA_Q_LOCAL_INSTANCE | Naming.NA_MEMBER | Naming.NA_SETTER);
-                result = at(op).Assign(varExpr, rhs);
             } else if (Decl.isLocalNotInitializer(decl)) {
                 lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER);
             } else if (isWithinSuperInvocation()
                     && decl.isCaptured()
                     && decl.isVariable()) {
-                lhs = naming.makeUnquotedIdent(Naming.getAliasedParameterName(((Value)decl).getInitializerParameter()));
-                varExpr = lhs;
-                result = at(op).Assign(varExpr, rhs);
+                varExpr = naming.makeUnquotedIdent(Naming.getAliasedParameterName(((Value)decl).getInitializerParameter()));
             }
         } else {
             varExpr = naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT);
-            result = at(op).Assign(varExpr, rhs);
         }
         
-        ListBuffer<JCExpression> typeArguments =  new ListBuffer<JCExpression>();
-        ListBuffer<JCExpression> reifiedTypeArguments =  new ListBuffer<JCExpression>();
-        if (decl.isStatic()
-                && ModelUtil.isCeylonDeclaration(decl)) {
-            Type primType = ((Tree.StaticMemberOrTypeExpression)leftTerm).getTarget().getQualifyingType();
-            if (primType != null) {
-                for (Type pt : primType.getTypeArgumentList()) {
-                    typeArguments.add(makeJavaType(pt, JT_TYPE_ARGUMENT));
-                    reifiedTypeArguments.add(makeReifiedTypeArgument(pt));
+        JCExpression result;
+        if (varExpr != null) {
+            result = at(op).Assign(varExpr, rhs);
+        } else {
+            ListBuffer<JCExpression> typeArguments =  new ListBuffer<JCExpression>();
+            ListBuffer<JCExpression> reifiedTypeArguments =  new ListBuffer<JCExpression>();
+            if (decl.isStatic()
+                    && ModelUtil.isCeylonDeclaration(decl)) {
+                Type primType = ((Tree.StaticMemberOrTypeExpression)leftTerm).getTarget().getQualifyingType();
+                if (primType != null) {
+                    for (Type pt : primType.getTypeArgumentList()) {
+                        typeArguments.add(makeJavaType(pt, JT_TYPE_ARGUMENT));
+                        reifiedTypeArguments.add(makeReifiedTypeArgument(pt));
+                    }
                 }
             }
-        }
-        
-        if (result == null) {
             result = make().Apply(typeArguments.toList(),
                     makeQualIdent(lhs, selector),
                     reifiedTypeArguments.toList().append(rhs));
