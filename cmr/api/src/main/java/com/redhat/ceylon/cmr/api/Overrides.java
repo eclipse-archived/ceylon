@@ -100,6 +100,7 @@ public class Overrides {
     private Map<ArtifactContext, ArtifactOverrides> overrides = new HashMap<>();
     private Map<String, ArtifactOverrides> overridesNoVersion = new HashMap<>();
     private Set<DependencyOverride> removed = new HashSet<DependencyOverride>();
+    private Set<ArtifactContext> added = new HashSet<ArtifactContext>();
 
     private Map<ArtifactContext, ArtifactContext> replaced = new HashMap<>();
     private Map<String, ArtifactContext> replacedNoVersion = new HashMap<>();
@@ -110,6 +111,13 @@ public class Overrides {
     
     private Overrides() {}
     
+    /**
+     * Creates an empty overrides. Mostly useful to create a dynamic overrides.
+     */
+    public static Overrides create() {
+        return new Overrides();
+    }
+
     public static Overrides getDistOverrides() {
         return getDistOverrides(true);
     }
@@ -147,7 +155,11 @@ public class Overrides {
         return ao;
     }
 
-    private void addRemovedArtifact(DependencyOverride context) {
+    public void addAddedArtifact(ArtifactContext context) {
+        added.add(context);
+    }
+
+    public void addRemovedArtifact(DependencyOverride context) {
         removed.add(context);
     }
 
@@ -206,7 +218,11 @@ public class Overrides {
     private void addSetArtifact(ArtifactContext context) {
         setVersions.put(context.getName(), context.getVersion());
     }
-    
+
+    public void addSetArtifact(String module, String version) {
+        setVersions.put(module, version);
+    }
+
     public String getVersionOverride(ArtifactContext context){
         String overriddenVersion = setVersions.get(context.getName());
         if(overriddenVersion != null)
@@ -358,6 +374,11 @@ public class Overrides {
             ArtifactContext context = getArtifactContext(artifact, true, interpolation);
             DependencyOverride doo = new DependencyOverride(context, Type.REMOVE, false, false);
             result.addRemovedArtifact(doo);
+        }
+        List<Element> addedArtifacts = getChildren(rootElement, "add");
+        for (Element artifact : addedArtifacts) {
+            ArtifactContext context = getArtifactContext(artifact, false, interpolation);
+            result.addAddedArtifact(context);
         }
         List<Element> replacedArtifacts = getChildren(rootElement, "replace");
         for (Element artifact : replacedArtifacts) {
@@ -636,5 +657,9 @@ public class Overrides {
             replacedContext.setVersion(versionOverride);
         }
         return replacedContext;
+    }
+
+    public Set<ArtifactContext> getAddedArtifacts() {
+        return added;
     }
 }

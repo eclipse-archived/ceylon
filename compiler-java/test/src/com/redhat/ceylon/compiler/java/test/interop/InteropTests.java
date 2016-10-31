@@ -926,4 +926,9 @@ public class InteropTests extends CompilerTests {
         p = pb.start();
         assertEquals(0, p.waitFor());
     }
+    
+    @Test
+    public void testBug6632() {
+        compareWithJavaSource("Bug6632");
+    }
 }

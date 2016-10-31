@@ -236,7 +236,7 @@ public abstract class AbstractTestTool extends RepoUsingTool {
     }
 
     private String findTestVersionInDependecies(ModuleDependencyInfo module, Queue<ModuleDependencyInfo> queue) {
-        Collection<ModuleVersionDetails> moduleDetailsCollection = getModuleVersions(module.getName(), module.getVersion(), 
+        Collection<ModuleVersionDetails> moduleDetailsCollection = getModuleVersions(module.getName(), module.getVersion(), false, 
         		type, jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
         Iterator<ModuleVersionDetails> moduleDetailsIterator = moduleDetailsCollection.iterator();
         if( moduleDetailsIterator.hasNext() ) {

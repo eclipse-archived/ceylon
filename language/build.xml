@@ -686,7 +686,7 @@
         <mkdir dir="${test.reports}"/>
         <junit printsummary="yes" haltonfailure="no" 
             errorproperty="test.fail.junit"
-            failureproperty="test.fail.junit">
+            failureproperty="test.fail.junit" dir="${basedir}">
           <classpath refid="test.run.classpath"/>
           <formatter type="xml"/>
 

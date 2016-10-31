@@ -262,19 +262,21 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         return query;
     }
 
-    protected Collection<ModuleVersionDetails> getModuleVersions(String name, String version, ModuleQuery.Type type, 
+    protected Collection<ModuleVersionDetails> getModuleVersions(String name, String version, boolean exactVersionMatch,
+            ModuleQuery.Type type, 
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
     		Integer jsBinaryMajor, Integer jsBinaryMinor) {
-        return getModuleVersions(getRepositoryManager(), name, version, type, 
+        return getModuleVersions(getRepositoryManager(), name, version, exactVersionMatch, type, 
         		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
     }
 
     protected Collection<ModuleVersionDetails> getModuleVersions(RepositoryManager repoMgr, String name, String version, 
-    		ModuleQuery.Type type, 
+            boolean exactVersionMatch, ModuleQuery.Type type, 
     		Integer jvmBinaryMajor, Integer jvmBinaryMinor,
     		Integer jsBinaryMajor, Integer jsBinaryMinor) {
         ModuleVersionQuery query = getModuleVersionQuery(name, version, type, 
         		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
+        query.setExactVersionMatch(exactVersionMatch);
         ModuleVersionResult result = repoMgr.completeVersions(query);
         NavigableMap<String, ModuleVersionDetails> versionMap = result.getVersions();
         return versionMap.values();
@@ -372,7 +374,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
         
         // find versions unless we have one in sources waiting to be compiled
         if (versions == null) {
-            versions = getModuleVersions(repoMgr, name, version, type, 
+            versions = getModuleVersions(repoMgr, name, version, false, type, 
             		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
             if (version != null && !versions.isEmpty()) {
                 // We have one or more matching versions, let's see if one is exactly the same
@@ -413,7 +415,7 @@ public abstract class RepoUsingTool extends CeylonBaseTool {
                 if (versions.isEmpty()) {
                     // Maybe the user specified the wrong version?
                     // Let's see if we can find any and suggest them
-                    versions = getModuleVersions(repoMgr, name, null, type, 
+                    versions = getModuleVersions(repoMgr, name, null, false, type, 
                     		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
                     suggested = true;
                 }

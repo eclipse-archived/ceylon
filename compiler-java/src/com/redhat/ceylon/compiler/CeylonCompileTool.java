@@ -194,6 +194,7 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private EnumSet<Warning> suppressWarnings = EnumUtil.enumsFromPossiblyInvalidStrings(Warning.class, DefaultToolOptions.getCompilerSuppressWarnings());
     private boolean flatClasspath = DefaultToolOptions.getDefaultFlatClasspath();
     private boolean autoExportMavenDependencies = DefaultToolOptions.getDefaultAutoExportMavenDependencies();
+    private boolean fullyExportMavenDependencies = DefaultToolOptions.getDefaultFullyExportMavenDependencies();
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
     private Long targetVersion = DefaultToolOptions.getCompilerTargetVersion();
     
@@ -246,6 +247,13 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
                  "Maven modules as shared.")
     public void setAutoExportMavenDependencies(boolean autoExportMavenDependencies) {
         this.autoExportMavenDependencies = autoExportMavenDependencies;
+    }
+
+    @Option(longName="fully-export-maven-dependencies")
+    @Description("When using JBoss Modules (the default), treats all module dependencies between " +
+                 "Maven modules as shared, even to Ceylon modules.")
+    public void setFullyExportMavenDependencies(boolean fullyExportMavenDependencies) {
+        this.fullyExportMavenDependencies = fullyExportMavenDependencies;
     }
 
     @Option(longName="no-osgi")
@@ -478,6 +486,10 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
 
         if (autoExportMavenDependencies) {
             arguments.add("-auto-export-maven-dependencies");
+        }
+
+        if (fullyExportMavenDependencies) {
+            arguments.add("-fully-export-maven-dependencies");
         }
 
         if (overrides != null) {

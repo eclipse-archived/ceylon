@@ -29,7 +29,6 @@ import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.tool.OptionArgumentException;
 import com.redhat.ceylon.common.tool.ToolModel;
 import com.redhat.ceylon.model.cmr.JDKUtils;
-import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.tools.info.CeylonInfoTool;
 
 public class InfoToolTests extends AbstractToolTests {
@@ -184,6 +183,18 @@ public class InfoToolTests extends AbstractToolTests {
         tool.run();
         Assert.assertTrue(b.toString().contains("Dependencies version conflicts (up to depth ∞):\n"
                 +"  org.jboss.logging: 3.1.2.GA, 3.1.3.GA\n"));
+    }
+
+    @Test
+    public void testOptionalDependencies() throws Exception {
+        ToolModel<CeylonInfoTool> model = pluginLoader.loadToolModel("info");
+        Assert.assertNotNull(model);
+        CeylonInfoTool tool = pluginFactory.bindArguments(model, getMainTool(), 
+                Arrays.asList("org.hibernate:hibernate-validator/5.3.0.Final"));
+        StringBuilder b = new StringBuilder();
+        tool.setOut(b);
+        tool.run();
+        Assert.assertTrue(b.toString().contains("joda-time"));
     }
 
     @Test

@@ -112,6 +112,7 @@ import com.redhat.ceylon.langtools.tools.javac.util.Position.LineMap;
 import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage;
 import com.redhat.ceylon.langtools.tools.javac.util.SourceLanguage.Language;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JvmBackendUtil;
 import com.redhat.ceylon.model.typechecker.model.Module;
@@ -918,6 +919,9 @@ public class LanguageCompiler extends JavaCompiler {
         ceylonEnter.addModuleToAptPath(moduleSpec, result);
 
         for(ArtifactResult dep : result.dependencies()){
+            // we are running deps, so we need compile/provided/runtime, but not test
+            if(dep.moduleScope() == ModuleScope.TEST)
+                continue;
             ModuleSpec depSpec = new ModuleSpec(dep.name(), dep.version());
             addDependenciesToAptPath(repositoryManager, depSpec, visited, progressListener);
         }

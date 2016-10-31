@@ -37,6 +37,7 @@ import com.redhat.ceylon.common.tool.StandardArgumentParsers;
 import com.redhat.ceylon.common.tool.Summary;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.RepoUsingTool;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 
 @Summary("Prints information about modules in repositories")
 @Description("When passed a search query like `*foo*` it will look at all the modules in all " +
@@ -75,6 +76,7 @@ public class CeylonInfoTool extends RepoUsingTool {
     }
     
     private List<ModuleSpec> modules;
+    private boolean includeOptional;
     private boolean showVersions;
     private boolean showDependencies;
     private Incompatible showIncompatible = Incompatible.auto;
@@ -126,6 +128,12 @@ public class CeylonInfoTool extends RepoUsingTool {
         this.modules = modules;
     }
     
+    @Option(longName="include-optional")
+    @Description("Include optional modules when traversing dependencies")
+    public void setIncludeOptional(boolean includeOptional) {
+        this.includeOptional = includeOptional;
+    }
+
     @Option(longName="show-versions")
     @Description("Show the versions when searching for modules")
     public void setShowVersions(boolean showVersions) {
@@ -291,7 +299,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                 outputModules(module, modules);
             } else {
                 Collection<ModuleVersionDetails> versions = getModuleVersions(getRepositoryManager(), module.getName(), 
-                		module.getVersion(), queryType, 
+                		module.getVersion(), false, queryType, 
                 		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
                 if (versions.isEmpty()) {
                     // try from source
@@ -304,7 +312,7 @@ public class CeylonInfoTool extends RepoUsingTool {
                                 (jvmBinaryMajor != null || jvmBinaryMinor != null || jsBinaryMajor != null || jsBinaryMinor != null)) {
                             // If we were called with a specific version and we didn't find a "compatible"
                             // artifact then lets see if we can find an "incompatible" one
-                            versions = getModuleVersions(getRepositoryManager(), module.getName(), module.getVersion(), 
+                            versions = getModuleVersions(getRepositoryManager(), module.getName(), module.getVersion(), false,
                             		queryType, null, null, null, null);
                         }
                         if (versions.isEmpty()) {
@@ -438,6 +446,8 @@ public class CeylonInfoTool extends RepoUsingTool {
             if (showDependencies) {
                 if (formatting == Formatting.fancy || !version.getDependencies().isEmpty()) {
                     for (ModuleDependencyInfo dep : version.getDependencies()) {
+                        if(dep.getModuleScope() == ModuleScope.TEST)
+                            continue;
                         if (formatting == Formatting.fancy) {
                             append(prefix).append("    ").append(dep);
                         } else {
@@ -700,6 +710,8 @@ public class CeylonInfoTool extends RepoUsingTool {
     
     private void recurseDependencies(ModuleVersionDetails version, Map<String, SortedSet<String>> names, final int depth) throws IOException {
         for (ModuleDependencyInfo dep : version.getDependencies()) {
+            if(dep.getModuleScope() == ModuleScope.TEST)
+                continue;
             dependency(dep, names, depth+1);
         }
     }
@@ -709,6 +721,11 @@ public class CeylonInfoTool extends RepoUsingTool {
             append("  ");
         }
         append(dep);
+        // Don't even record optional deps if we don't want them recorded (just print)
+        if(dep.isOptional() && !includeOptional){
+            newline();
+            return;
+        }
         SortedSet<String> seenVersions = names.get(dep.getName());
         boolean recurse = this.depth == -1 || depth < this.depth;
         if(seenVersions != null){
@@ -726,7 +743,7 @@ public class CeylonInfoTool extends RepoUsingTool {
         newline();
         
         if (recurse && !"ceylon.language".equals(dep.getName())) {
-            Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getName(), dep.getVersion(), queryType, 
+            Collection<ModuleVersionDetails> versions = getModuleVersions(dep.getName(), dep.getVersion(), true, queryType, 
             		jvmBinaryMajor, jvmBinaryMinor, jsBinaryMajor, jsBinaryMinor);
             if (!versions.isEmpty()) {
                 recurseDependencies(versions.iterator().next(), names, depth + 1);

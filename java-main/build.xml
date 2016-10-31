@@ -9,6 +9,8 @@
 
     <!-- The Java source files for the Java main classes -->
     <property name="java.main.src" location="src" />
+    <property name="test.src" location="test" />
+    <property name="test.reports" location="${build.dir}/test-reports" />
 
     <!-- Jarfiles everything ends up in -->
     <property name="ceylon.java.main.src" value="${ceylon.java.main.dir}/com.redhat.ceylon.java.main-${module.com.redhat.ceylon.java.main.version}.src" />
@@ -25,6 +27,13 @@
         <pathelement path="${ceylon.common.lib}"/>
         <pathelement path="${ceylon.language.lib}"/>
         <pathelement path="${ceylon.classfile.lib}"/>
+    </path>
+
+    <path id="test.run.classpath">
+        <path refid="java.main.classpath" />
+        <pathelement path="${build.classes}" />
+        <pathelement path="${hamcrest.lib}" />
+        <pathelement path="${junit.lib}" />
     </path>
 
     <!-- ################################################################## -->
@@ -190,13 +199,49 @@
             <param name="archivePath" value="${ceylon.java.main.lib}"/>
         </antcall>
     </target>
-	
+
+    <target name="compile.tests">
+        <mkdir dir="${build.classes}" />
+        <javac
+            srcdir="${test.src}"
+            destdir="${build.classes}"
+            debug="true"
+            encoding="UTF8"
+            classpathref="test.run.classpath"
+            target="${compile.java.target}"
+            source="${compile.java.source}"
+            bootclasspath="${compile.java.bootclasspath}">
+            <include name="**/*.java" />
+        </javac>
+        <copy todir="${build.classes}">
+            <fileset dir="${test.src}">
+                <exclude name="**/*.java" />
+            </fileset>
+        </copy>
+    </target>
+
     <target name="test">
         <echo>No tests available (yet)</echo>
     </target>
-	
-    <target name="test-quick">
-        <echo>No tests available (yet)</echo>
+
+    <target name="test-quick" depends="compile.tests">
+        <mkdir dir="${test.reports}" />
+        <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed" dir="${basedir}">
+            <classpath refid="test.run.classpath" />
+
+            <formatter type="xml" />
+            <test
+                name="com.redhat.ceylon.compiler.java.runtime.AllJavaMainTests"
+                fork="yes"
+                todir="${test.reports}" />
+        </junit>
+        <junitreport todir="${test.reports}">
+            <fileset dir="${test.reports}">
+                <include name="TEST-*.xml" />
+            </fileset>
+            <report format="frames" todir="${test.reports}" />
+        </junitreport>
+        <fail message="Test failure detected, check test results." if="test.failed" />
     </target>
 </project>
 

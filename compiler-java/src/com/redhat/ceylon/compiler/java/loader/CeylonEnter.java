@@ -701,9 +701,17 @@ public class CeylonEnter extends Enter {
                 }
                 @Override
                 protected void out(AnalysisError err) {
-                    setSource();
-                    Node node = getIdentifyingNode(err.getTreeNode());
-                    logError(getPosition(node), "ceylon", err.getMessage());
+                    if(err.isWarning()){
+                        if (reportWarnings) {
+                            setSource();
+                            Node node = getIdentifyingNode(err.getTreeNode());
+                            logWarning(getPosition(node), "ceylon", err.getMessage());
+                        }
+                    }else{
+                        setSource();
+                        Node node = getIdentifyingNode(err.getTreeNode());
+                        logError(getPosition(node), "ceylon", err.getMessage());
+                    }
                 }
                 @Override
                 protected void out(Node that, LexError err) {

@@ -217,12 +217,12 @@
     <target name="test-quick"
         depends="compile.tests">
         <mkdir dir="${test.reports}" />
-        <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed">
+        <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed" dir="${basedir}">
             <classpath refid="test.run.classpath" />
 
             <formatter type="xml" />
             <test
-                name="com.redhat.ceylon.model.test.AllTests"
+                name="com.redhat.ceylon.model.test.AllModelTests"
                 fork="yes"
                 todir="${test.reports}" />
         </junit>

@@ -1,4 +1,4 @@
-package com.redhat.ceylon.module.loader;
+package com.redhat.ceylon.cmr.ceylon.loader;
 
 public class ModuleNotFoundException extends Exception {
 

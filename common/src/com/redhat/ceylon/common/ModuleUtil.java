@@ -156,5 +156,8 @@ public abstract class ModuleUtil {
                 || (majorBinVer == Versions.V1_3_0_JVM_BINARY_MAJOR_VERSION
                 && minorBinVer >= Versions.V1_3_0_JVM_BINARY_MINOR_VERSION));
     }
-    
+
+    public static boolean isMavenJarlessModule(File jar) {
+        return jar.getName().toLowerCase().endsWith(".pom");
+    }
 }

@@ -1,6 +1,7 @@
 package main;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.compiler.typechecker.TypeChecker;
 import com.redhat.ceylon.compiler.typechecker.TypeCheckerBuilder;
 import com.redhat.ceylon.compiler.typechecker.io.ClosableVirtualFile;
 import com.redhat.ceylon.compiler.typechecker.io.cmr.impl.LeakingLogger;
@@ -22,13 +23,17 @@ public class MainForLanguage {
                 .systemRepo("../dist/dist/repo")
                 .logger(new LeakingLogger())
                 .buildManager();
-        new TypeCheckerBuilder()
+        TypeChecker typeChecker = new TypeCheckerBuilder()
                 .verbose(false)
                 .addSrcDirectory(latestZippedLanguageSourceFile)
                 .setRepositoryManager(repositoryManager)
-                .getTypeChecker()
-                .process();
+                .getTypeChecker();
+        typeChecker.process();
         latestZippedLanguageSourceFile.close();
+        
+        if (typeChecker.getErrors() > 0) {
+            System.exit(1);
+        }
     }
 
 }

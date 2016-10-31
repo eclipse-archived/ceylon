@@ -29,7 +29,6 @@ import com.redhat.ceylon.cmr.api.PathFilterParser;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
-import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -92,7 +91,9 @@ public abstract class AbstractCeylonArtifactResult extends AbstractArtifactResul
                     mi.getNamespace(),
                     mi.getName(),
                     mi.getVersion(),
-                    mi.isOptional() ? ImportType.OPTIONAL : (mi.isExport() ? ImportType.EXPORT : ImportType.UNDEFINED)));
+                    mi.isExport(),
+                    mi.isOptional(),
+                    mi.getModuleScope()));
         }
         return results;
     }

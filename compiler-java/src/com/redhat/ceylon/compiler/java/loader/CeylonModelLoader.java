@@ -763,6 +763,11 @@ public class CeylonModelLoader extends AbstractModelLoader {
     }
 
     @Override
+    public boolean isFullyExportMavenDependencies() {
+        return options.isSet(Option.CEYLONFULLYEXPORTMAVENDEPENDENCIES);
+    }
+
+    @Override
     protected void setAnnotationConstructor(LazyFunction method, MethodMirror meth) {
         annotationLoader.setAnnotationConstructor(method, meth);
     }

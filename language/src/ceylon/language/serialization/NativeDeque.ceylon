@@ -1,4 +1,3 @@
-import java.util{ArrayDeque, Deque}
 
 "A queue with a native implementation"
 native class NativeDeque() {
@@ -10,6 +9,11 @@ native class NativeDeque() {
 }
 
 native("jvm") class NativeDeque() {
+    import java.util {
+        ArrayDeque,
+        Deque
+    }
+
     Deque<Anything> deque = ArrayDeque<Anything>();
     shared native("jvm") void pushFront(Anything element) {
         deque.addFirst(element);

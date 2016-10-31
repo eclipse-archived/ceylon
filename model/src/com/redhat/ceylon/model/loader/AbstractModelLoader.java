@@ -6328,15 +6328,21 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return true;
         if(isImportedSpecialRules(moduleScope, importedModule))
             return true;
-        boolean isMaven = isAutoExportMavenDependencies() && isMavenModule(moduleScope);
-        if(isMaven && isMavenModule(importedModule))
+        boolean isMavenAutoExport = 
+                // export to a Maven module
+                (isAutoExportMavenDependencies() && isMavenModule(moduleScope))
+                // export to any module
+                || isFullyExportMavenDependencies();
+        // FIXME: this is dubious actually, that's more like a flat classpath since it does
+        // not check for imports
+        if(isMavenAutoExport && isMavenModule(importedModule))
             return true;
         Set<Module> visited = new HashSet<Module>();
         visited.add(moduleScope);
         for(ModuleImport imp : moduleScope.getImports()){
             if(ModelUtil.equalModules(imp.getModule(), importedModule))
                 return true;
-            if((imp.isExport() || isMaven) && isImportedTransitively(imp.getModule(), importedModule, visited))
+            if((imp.isExport() || isMavenAutoExport) && isImportedTransitively(imp.getModule(), importedModule, visited))
                 return true;
         }
         return false;
@@ -6376,10 +6382,14 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private boolean isImportedTransitively(Module moduleScope, Module importedModule, Set<Module> visited) {
         if(!visited.add(moduleScope))
             return false;
-        boolean isMaven = isAutoExportMavenDependencies() && isMavenModule(moduleScope);
+        boolean isMavenAutoExport = 
+                // export to a Maven module
+                (isAutoExportMavenDependencies() && isMavenModule(moduleScope))
+                // export to any module
+                || isFullyExportMavenDependencies();
         for(ModuleImport imp : moduleScope.getImports()){
             // only consider exported transitive deps
-            if(!imp.isExport() && !isMaven)
+            if(!imp.isExport() && !isMavenAutoExport)
                 continue;
             if(ModelUtil.equalModules(imp.getModule(), importedModule))
                 return true;
@@ -6414,6 +6424,13 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
      * To be overridden by subclasses, defaults to false.
      */
     protected boolean isAutoExportMavenDependencies(){
+        return false;
+    }
+
+    /**
+     * To be overridden by subclasses, defaults to false.
+     */
+    public boolean isFullyExportMavenDependencies(){
         return false;
     }
 

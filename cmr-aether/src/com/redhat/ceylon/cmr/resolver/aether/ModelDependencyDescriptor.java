@@ -68,4 +68,28 @@ public class ModelDependencyDescriptor implements DependencyDescriptor {
 		return false;
 	}
 
+    @Override
+    public boolean isProvidedScope() {
+        return false;
+    }
+
+    @Override
+    public boolean isCompileScope() {
+        return true;
+    }
+
+    @Override
+    public boolean isRuntimeScope() {
+        return false;
+    }
+
+    @Override
+    public boolean isTestScope() {
+        return false;
+    }
+
+    @Override
+    public List<ExclusionDescriptor> getExclusions() {
+        return null;
+    }
 }

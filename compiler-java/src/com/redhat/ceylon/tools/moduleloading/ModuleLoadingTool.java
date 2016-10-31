@@ -22,7 +22,6 @@ import com.redhat.ceylon.common.tool.ToolUsageError;
 import com.redhat.ceylon.common.tools.CeylonTool;
 import com.redhat.ceylon.common.tools.RepoUsingTool;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
 import com.redhat.ceylon.model.loader.JdkProvider;
@@ -130,7 +129,7 @@ public abstract class ModuleLoadingTool extends RepoUsingTool {
         loadedModules.put(key, result);
         if(result != null && !provided){
             for(ArtifactResult dep : result.dependencies()){
-                if(dep.importType() != ImportType.OPTIONAL){
+                if(!dep.optional()){
                     internalLoadModule(dep.namespace(), dep.name(), dep.version());
                 }
             }

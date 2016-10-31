@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.langtools.classfile.Attribute;
 import com.redhat.ceylon.langtools.classfile.ClassFile;
 import com.redhat.ceylon.langtools.classfile.ConstantPoolException;
@@ -117,6 +118,8 @@ public class Java9ModuleReader {
 
     private static ClassFile getClassFile(File jar){
         try{
+            if(ModuleUtil.isMavenJarlessModule(jar))
+                return null;
             try(ZipFile zipFile = new ZipFile(jar)){
                 ZipEntry entry = zipFile.getEntry("module-info.class");
                 if(entry != null){

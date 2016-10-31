@@ -31,11 +31,25 @@ public interface ArtifactResult {
     String version();
 
     /**
-     * Get import type.
+     * Optional.
      *
-     * @return the import type
+     * @return optional
      */
-    ImportType importType();
+    boolean optional();
+
+    /**
+     * exported.
+     *
+     * @return exported
+     */
+    boolean exported();
+
+    /**
+     * The module scope.
+     *
+     * @return the module scope
+     */
+    ModuleScope moduleScope();
 
     /**
      * The result type.
@@ -91,4 +105,9 @@ public interface ArtifactResult {
      * @return the repository this result was resolved from.
      */
     Repository repository();
+    
+    /**
+     * List of Maven exclusions
+     */
+    List<Exclusion> getExclusions();
 }
