@@ -403,4 +403,7 @@ public class ModuleSourceMapper {
 	public JdkProvider getJdkProvider() {
 		return defaultJdkProvider;
 	}
+
+    public void preResolveDependenciesIfRequired(RepositoryManager repositoryManager) {
+    }
 }

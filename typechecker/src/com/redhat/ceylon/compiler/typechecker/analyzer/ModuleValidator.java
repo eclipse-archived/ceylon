@@ -101,6 +101,7 @@ public class ModuleValidator {
                 LinkedList<Module> dependencyTree = new LinkedList<Module>();
                 // only verify modules we compile (and default/language), as that makes us traverse their dependencies anyways
                 Set<Module> compiledModules = moduleManagerUtil.getCompiledModules();
+                moduleManagerUtil.preResolveDependenciesIfRequired(context.getRepositoryManager());
                 Module jdkProviderModule = moduleManagerUtil.getJdkProviderModule();
                 List<Module> modules = new ArrayList<Module>(compiledModules.size()+2);
                 if(jdkProviderModule != null){

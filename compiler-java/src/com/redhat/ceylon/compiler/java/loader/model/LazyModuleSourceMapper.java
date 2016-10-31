@@ -292,4 +292,41 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
     public JdkProvider getJdkProvider() {
     	return getModuleManager().getModelLoader().getJdkProvider();
     }
+    
+    @Override
+    public void preResolveDependenciesIfRequired(RepositoryManager repositoryManager) {
+        AbstractModelLoader modelLoader = getModuleManager().getModelLoader();
+        if(!modelLoader.isFullyExportMavenDependencies())
+            return;
+        // FIXME: support verbose logging and progress
+        Set<Module> compiledModules = getCompiledModules();
+        Map<String,String> modules = new HashMap<>();
+        for (Module module : compiledModules) {
+            for (ModuleImport imp : module.getImports()) {
+                if(imp.getModule() == null
+                        || !compiledModules.contains(imp.getModule())){
+                    modules.put(imp.getModule().getNameAsString(), imp.getModule().getVersion());
+                }
+            }
+        }
+        if(modules.isEmpty())
+            return;
+        System.err.println("Pre-resolving "+modules.size()+" modules");
+        Entry<String, String> first = modules.entrySet().iterator().next();
+        CompilerModuleLoader ml = new CompilerModuleLoader(repositoryManager, null, modules, false);
+        try {
+            ml.loadModule(first.getKey(), first.getValue(), ModuleScope.COMPILE);
+        } catch (ModuleNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            // FIXME: log error (somewhere)
+        }
+        System.err.println("Done");
+        Overrides overrides = repositoryManager.getOverrides();
+        if(overrides == null)
+            System.err.println("WAAA NO OVERRIDES DAMNIT");
+        else
+            ml.setupOverrides(overrides);
+        ml.cleanup();
+    }
 }
