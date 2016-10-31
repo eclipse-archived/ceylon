@@ -114,7 +114,7 @@ public final class ModuleDependencyInfo implements Comparable<ModuleDependencyIn
                 ((optional) ? "optional " : "") +
                 ((namespace != null) ? namespace + ":" : "") +
                 getModuleName() +
-                ((scope != ModuleScope.COMPILE) ? scope+" " : "")
+                ((scope != ModuleScope.COMPILE) ? " "+scope : "")
                 ;
     }
 
