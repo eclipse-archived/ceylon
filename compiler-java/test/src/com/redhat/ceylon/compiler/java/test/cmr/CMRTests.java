@@ -838,6 +838,24 @@ public class CMRTests extends CompilerTests {
     }
 
     @Test
+    public void testMdlDependenciesFromMavenFullyExport() throws Throwable{
+        CompilerError[] errors = new CompilerError[]{
+        new CompilerError(1, "package not found in imported modules: 'javax.inject' (add module import to module descriptor of 'com.redhat.ceylon.compiler.java.test.cmr.modules.fullyexport')"),
+        new CompilerError(4, "function or value is not defined: 'inject' might be misspelled or is not imported"),
+        new CompilerError(10, "type is not defined: 'Provider' might be misspelled or is not imported"),
+        new CompilerError(11, "referenced declaration is not an interface"),
+        new CompilerError(11, "type is not defined: 'Provider' might be misspelled or is not imported"),
+        };
+
+        assertErrors("modules/fullyexport/foo", errors);
+        assertErrors("modules/fullyexport/foo",
+                Arrays.asList("-auto-export-maven-dependencies"),
+                null,
+                errors);
+        compile(Arrays.asList("-fully-export-maven-dependencies"), "modules/fullyexport/foo.ceylon");
+    }
+
+    @Test
     public void testMdlDependenciesFromMavenAutoExport() throws Throwable{
         Assume.assumeTrue("Runs on JDK8", JDKUtils.jdk == JDKUtils.JDK.JDK8);
         CeyloncTaskImpl ceylonTask = getCompilerTask(Arrays.asList("-out", destDir/*, "-verbose:cmr"*/), 
