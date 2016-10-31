@@ -131,7 +131,7 @@ public class SequenceGenerator {
                 gen.out("undefined");
             }
             gen.out(",");
-            if (that.getTypeModel() != null && that.getTypeModel().asQualifiedString().startsWith("ceylon.language::Callable<")) {
+            if (that.getTypeModel() != null && that.getTypeModel().isCallable()) {
                 TypeUtils.typeNameOrList(that, that.getTypeModel().getTypeArgumentList().get(0).getTypeArgumentList().get(0), gen, false);
             } else {
                 TypeUtils.typeNameOrList(that, that.getTypeModel(), gen, false);
@@ -173,7 +173,7 @@ public class SequenceGenerator {
                 elem = e.getValue();
             } else if (e.getKey().equals(that.getUnit().getIterableDeclaration().getTypeParameters().get(1))) {
                 //If it's Nothing, it's nonempty
-                nonempty = "ceylon.language::Nothing".equals(e.getValue().asQualifiedString());
+                nonempty = e.getValue().isNothing();
             }
         }
         if (elem == null) {
