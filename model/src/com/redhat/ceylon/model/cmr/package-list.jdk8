@@ -305,3 +305,12 @@ javax.lang.model.element
 javax.lang.model.type
 javax.lang.model.util
 javax.annotation.processing
+
+=jdk.jdi
+# imports jdk.attach
+# imports java.base
+com.sun.jdi
+com.sun.jdi.connect
+com.sun.jdi.connect.spi
+com.sun.jdi.event
+com.sun.jdi.request

@@ -485,3 +485,11 @@ javafx.embed.swing
 # imports java.base
 javafx.scene.web
 
+=jdk.jdi
+# imports jdk.attach
+# imports java.base
+com.sun.jdi
+com.sun.jdi.connect
+com.sun.jdi.connect.spi
+com.sun.jdi.event
+com.sun.jdi.request

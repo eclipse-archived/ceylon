@@ -108,15 +108,6 @@ com.sun.tools.jconsole
 # imports java.compiler
 com.sun.tools.javap
 
-=jdk.jdi
-# imports jdk.attach
-# imports java.base
-com.sun.jdi
-com.sun.jdi.connect
-com.sun.jdi.connect.spi
-com.sun.jdi.event
-com.sun.jdi.request
-
 =jdk.jdwp.agent
 # imports java.base
 
