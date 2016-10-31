@@ -12,6 +12,7 @@ import com.redhat.ceylon.model.cmr.Exclusion;
 public class ModuleGraph {
     
     Set<Module> roots = new HashSet<Module>();
+    private int count;
 
     public static interface DependencySelector {
         boolean selectDependency(ArtifactResult dep);
@@ -54,6 +55,7 @@ public class ModuleGraph {
                 dependency.dependents.remove(this);
             }
             dependencies.clear();
+            count--;
             // also 
             return replacement;
         }
@@ -92,6 +94,7 @@ public class ModuleGraph {
             Module mod = new Module(name, version);
             dependencies.add(mod);
             mod.dependents.add(this);
+            count++;
             return mod;
         }
 
@@ -115,12 +118,14 @@ public class ModuleGraph {
                 dependency.dependents.remove(this);
             }
             dependencies.clear();
+            count--;
         }
     }
     
     public Module addRoot(String module, String version){
         Module mod = new Module(module, version);
         roots.add(mod);
+        count++;
         return mod;
     }
 
@@ -182,6 +187,7 @@ public class ModuleGraph {
 
     public void clear() {
         roots.clear();
+        count = 0;
     }
 
     public void pruneExclusions(final DependencySelector selector) {
@@ -268,5 +274,9 @@ public class ModuleGraph {
             System.err.println();
             dump(level+1, visited, mod.dependencies, printDuplicates);
         }
+    }
+    
+    public int getCount() {
+        return count;
     }
 }

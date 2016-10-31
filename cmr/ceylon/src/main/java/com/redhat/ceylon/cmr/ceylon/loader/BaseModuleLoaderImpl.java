@@ -70,23 +70,17 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                 moduleGraph.pruneExclusions(this);
                 if(verbose){
                     moduleGraph.dump(false);
-                    final int[] count = new int[]{0};
-                    moduleGraph.visit(new ModuleGraph.Visitor(){
-                        @Override
-                        public void visit(ModuleGraph.Module module) {
-                            if(module.artifact != null){
-                                System.err.println(module);
-                                count[0]++;
-                            }
-                        }
-                    });
-                    System.err.println("Total: "+count[0]);
+                    System.err.println("Total: "+getModuleCount());
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
         
+        public int getModuleCount() {
+            return moduleGraph.getCount();
+        }
+
         protected void loadModule(String namespace, String name, String version, boolean optional, boolean inCurrentClassLoader, ModuleGraph.Module dependent) 
         		throws IOException, ModuleNotFoundException  {
         	
