@@ -142,7 +142,13 @@ public class IssuesTests_6500_6999 extends CompilerTests {
                 new String[]{"bug65xx/bug6592/bug6592.ceylon"}, 
                 expectSysError);
     }
-    
+
+    @Test
+    public void testBug6597() {
+        compile(Arrays.asList("-fully-export-maven-dependencies"), 
+                "bug65xx/bug6597/foo.ceylon");
+    }
+
     @Test
     public void testBug6606() {
         compareWithJavaSource("bug65xx/Bug6606");
