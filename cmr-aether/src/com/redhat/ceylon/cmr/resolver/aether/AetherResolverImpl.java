@@ -411,7 +411,7 @@ public class AetherResolverImpl implements AetherResolver {
         return repoSystem.resolveArtifact(session, artifactRequest).getArtifact();
     }
 
-    protected boolean myEquals(Dependency a, Dependency b) {
+    private boolean myEquals(Dependency a, Dependency b) {
         if(a == null && b == null)
             return true;
         if(a == null || b == null)
@@ -421,7 +421,7 @@ public class AetherResolverImpl implements AetherResolver {
                 && Objects.equals(a.getScope(), b.getScope());
     }
 
-    protected boolean myEquals(Artifact a, Artifact b) {
+    private boolean myEquals(Artifact a, Artifact b) {
         if(a == null && b == null)
             return true;
         if(a == null || b == null)

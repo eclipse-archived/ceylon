@@ -6,7 +6,7 @@ public class GraphExclusionExclusionDescriptor implements ExclusionDescriptor {
 
     private Exclusion x;
 
-    public GraphExclusionExclusionDescriptor(Exclusion x) {
+    GraphExclusionExclusionDescriptor(Exclusion x) {
         this.x = x;
     }
 

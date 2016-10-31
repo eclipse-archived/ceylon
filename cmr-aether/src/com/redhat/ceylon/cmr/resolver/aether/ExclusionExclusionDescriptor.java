@@ -6,7 +6,7 @@ public class ExclusionExclusionDescriptor implements ExclusionDescriptor {
 
     private Exclusion x;
 
-    public ExclusionExclusionDescriptor(Exclusion x) {
+    ExclusionExclusionDescriptor(Exclusion x) {
         this.x = x;
     }
 
