@@ -217,14 +217,13 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
             case COMPILE:
                 return dep.moduleScope() == ModuleScope.COMPILE;
             case RUNTIME:
+                // I _think_ Maven test scopes are only for running tests locally: maven does not
+                // produce test modules, or modules who when tested have additional deps
+            case TEST:
                 // FIXME: actually we may need two runtime scopes: CONTAINER and STANDALONE to
                 // decide if we keep PROVIDED deps
                 return dep.moduleScope() == ModuleScope.COMPILE
                     || dep.moduleScope() == ModuleScope.RUNTIME;
-            case TEST:
-                return dep.moduleScope() == ModuleScope.COMPILE
-                    || dep.moduleScope() == ModuleScope.RUNTIME
-                    || dep.moduleScope() == ModuleScope.TEST;
             }
             return false;
         }

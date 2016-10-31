@@ -52,6 +52,7 @@ import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.RuntimeResolver;
 
 import ceylon.modules.api.runtime.LogChecker;
@@ -393,6 +394,9 @@ public class CeylonModuleLoader extends ModuleLoader
             if (isDefault == false) {
                 Node<ArtifactResult> root = new Node<>();
                 for (ArtifactResult i : artifact.dependencies()) {
+                    // Skip test scopes
+                    if(i.moduleScope() == ModuleScope.TEST)
+                        continue;
                     final String name = i.name();
 
                     // route logging to JBoss LogManager
