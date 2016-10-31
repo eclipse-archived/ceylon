@@ -1503,7 +1503,7 @@ public class TypeUtils {
     }
 
     public static boolean isCallable(Type t) {
-        return t != null && !t.isUnknown() && t.asQualifiedString().startsWith("ceylon.language::Callable<");
+        return t != null && !t.isUnknown() && t.isCallable();
     }
 
     /**
