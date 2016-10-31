@@ -36,6 +36,8 @@ public class ModuleSourceMapper {
 
     public static class ModuleDependencyAnalysisError extends AnalysisError {
         
+        private boolean isError = true;
+        
         public ModuleDependencyAnalysisError(Node treeNode, String message, int code) {
             super(treeNode, message, code);
         }
@@ -47,9 +49,19 @@ public class ModuleSourceMapper {
         public ModuleDependencyAnalysisError(Node treeNode, String message) {
             super(treeNode, message);
         }
+
+        public ModuleDependencyAnalysisError(Node treeNode, String message, boolean isError) {
+            super(treeNode, message);
+            this.isError = isError;
+        }
         
         public ModuleDependencyAnalysisError(Node treeNode, String message, Backend backend) {
             super(treeNode, message, backend);
+        }
+        
+        @Override
+        public boolean isWarning() {
+            return !isError;
         }
     }
 
@@ -61,6 +73,8 @@ public class ModuleSourceMapper {
     private ModuleManager moduleManager;
     private Context context;
     private Modules modules;
+    private HashSet<String> reportedModuleConflictErrors = new HashSet<>();
+    private HashSet<String> reportedModuleConflictWarnings = new HashSet<>();
     private static Object PRESENT = new Object();
 
     public ModuleSourceMapper(Context context, ModuleManager moduleManager) {
@@ -157,8 +171,9 @@ public class ModuleSourceMapper {
         moduleDepDefinition.put(definition, PRESENT);
     }
 
-    public void attachErrorToDependencyDeclaration(ModuleImport moduleImport, List<Module> dependencyTree, String error) {
-        if (!attachErrorToDependencyDeclaration(moduleImport, error)) {
+    public void attachErrorToDependencyDeclaration(ModuleImport moduleImport, List<Module> dependencyTree, String error,
+            boolean isError) {
+        if (!attachErrorToDependencyDeclaration(moduleImport, error, isError)) {
             //This probably can happen if the missing dependency is found deep in the dependency structure (ie the binary version of a module)
             // in theory the first item in the dependency tree is the compiled module, and the second one is the import we have to add
             // the error to
@@ -169,7 +184,7 @@ public class ModuleSourceMapper {
                 for(ModuleImport imp : rootModule.getImports()){
                     if(imp.getModule() == originalImportedModule){
                         // found it, try to attach the error
-                        if(attachErrorToDependencyDeclaration(imp, error)){
+                        if(attachErrorToDependencyDeclaration(imp, error, isError)){
                             // we're done
                             return;
                         }else{
@@ -183,11 +198,11 @@ public class ModuleSourceMapper {
         }
     }
 
-    private boolean attachErrorToDependencyDeclaration(ModuleImport moduleImport, String error) {
+    private boolean attachErrorToDependencyDeclaration(ModuleImport moduleImport, String error, boolean isError) {
         WeakHashMap<Node, Object> moduleDepError = moduleImportToNode.get(moduleImport);
         if (moduleDepError != null) {
             for ( Node definition :  moduleDepError.keySet() ) {
-                definition.addError(new ModuleDependencyAnalysisError(definition, error));
+                definition.addError(new ModuleDependencyAnalysisError(definition, error, isError));
             }
             return true;
         }
@@ -272,6 +287,12 @@ public class ModuleSourceMapper {
     }
 
     //must be used *after* addLinkBetweenModuleAndNode has been set ie post ModuleVisitor visit
+    public void addConflictingModuleWarningToModule(String moduleName, Module module, Warning warningType, String error) {
+        if(reportedModuleConflictWarnings.add(moduleName))
+            addWarningToModule(module, warningType, error);
+    }
+    
+    //must be used *after* addLinkBetweenModuleAndNode has been set ie post ModuleVisitor visit
     public void addWarningToModule(Module module, Warning warningType, String error) {
         Node node = moduleToNode.get(module);
         if (node != null) {
@@ -284,6 +305,12 @@ public class ModuleSourceMapper {
         }
     }
 
+    protected void addConflictingModuleErrorToModule(String moduleName, Module module, String error) {
+        // only add the error if not already reported
+        if(reportedModuleConflictErrors.add(moduleName))
+            addErrorToModule(module, error);
+    }
+    
     //only used if we really don't know the version
     protected void addErrorToModule(List<String> moduleName, String error) {
         Set<String> errors = topLevelErrorsPerModuleName.get(moduleName);
@@ -323,7 +350,8 @@ public class ModuleSourceMapper {
             exceptionOnGetArtifact = e;
         }
         if ( sourceArtifact == null ) {
-            ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, dependencyTree, exceptionOnGetArtifact, this);
+            ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, 
+                    dependencyTree, exceptionOnGetArtifact, this, true);
         }
         else {
             
@@ -339,7 +367,7 @@ public class ModuleSourceMapper {
                 StringBuilder error = new StringBuilder("unable to read source artifact for ");
                 error.append(artifactContext.toString());
                 error.append( "\ndue to connection error: ").append(e.getMessage());
-                attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error.toString());
+                attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error.toString(), true);
             } finally {
                 if (virtualArtifact != null) {
                     virtualArtifact.close();
