@@ -2371,7 +2371,7 @@ public class GenerateJsVisitor extends Visitor {
                                     if (ps == null || ps.isSubtypeOf(moval.getUnit().getEmptyType())) {
                                         out("[],");
                                     } else {
-                                        out("[/*VALUE Callable params ", ps.asQualifiedString()+"*/],");
+                                        out("[/*VALUE Callable params ", ps.asString()+"*/],");
                                     }
                                 }
                                 TypeUtils.printTypeArguments(expr, expr.getTypeModel().getTypeArguments(),

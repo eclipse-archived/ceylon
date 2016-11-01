@@ -512,7 +512,8 @@ public class TypeUtils {
                 term.visit(gen);
                 gen.out(",'", t.isFloat() ? "f" : "i", "','",
                         term.getUnit().getFilename(), " ", term.getLocation(), "')");
-            } else if (t.asQualifiedString().startsWith("ceylon.language::Array<")) {
+            } else if (t.getDeclaration() != null &&
+                    t.getDeclaration().getQualifiedNameString().equals("ceylon.language::Array")) {
                 gen.out(gen.getClAlias(), "natc$(");
                 term.visit(gen);
                 gen.out(",");
@@ -741,7 +742,7 @@ public class TypeUtils {
                 metamodelTypeNameOrList(resolveTargs, node, gen.getCurrentPackage(), _tuple, null, gen);
                 _tuple=null;
             } else {
-                gen.out("\n/*WARNING3! Tuple is actually ", _tuple.asQualifiedString(), "*/");
+                gen.out("\n/*WARNING3! Tuple is actually ", _tuple.asString(), "*/");
                 if (pos > 100) {
                     break;
                 }
@@ -759,21 +760,21 @@ public class TypeUtils {
             Type _callable, GenerateJsVisitor gen) {
         if (_callable.getCaseTypes() != null) {
             for (Type pt : _callable.getCaseTypes()) {
-                if (pt.asQualifiedString().startsWith("ceylon.language::Callable<")) {
+                if (pt.isCallable()) {
                     _callable = pt;
                     break;
                 }
             }
         } else if (_callable.getSatisfiedTypes() != null) {
             for (Type pt : _callable.getSatisfiedTypes()) {
-                if (pt.asQualifiedString().startsWith("ceylon.language::Callable<")) {
+                if (pt.isCallable()) {
                     _callable = pt;
                     break;
                 }
             }
         }
-        if (!_callable.asQualifiedString().contains("ceylon.language::Callable<")) {
-            gen.out("[/*WARNING1: got ", _callable.asQualifiedString(), " instead of Callable*/]");
+        if (!_callable.isCallable()) {
+            gen.out("[/*WARNING1: got ", _callable.asString(), " instead of Callable*/]");
             return;
         }
         List<Type> targs = _callable.getTypeArgumentList();
