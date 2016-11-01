@@ -824,18 +824,21 @@ public class ExpressionVisitor extends Visitor {
                             e.getTypeModel();
                 //TODO: what to do here in case of !is
                 if (knownType!=null 
-                        && !isTypeUnknown(knownType)) { //TODO: remove this if we make unknown a subtype of Anything) {
+                        && !isTypeUnknown(knownType)) { //TODO: remove this if we make unknown a subtype of Anything
                     if (!isTypeUnknown(type)) {
                         checkReified(t, type, knownType, 
                                 that.getAssertion());
                     }
-                    Type knownTypeWithNull = 
-                            hasUncheckedNulls(e) ? 
-                                unit.getOptionalType(knownType) : 
-                                knownType;
-                    String help = " (expression is already of the specified type)";
+                    if (hasUncheckedNulls(e)) {
+                        // if the expression has unchecked nulls,
+                        // widen the known type to an optional
+                        // type, which allows idioms like an 
+                        // assert that simultaneously narrows
+                        // and widens to optional
+                        knownType = unit.getOptionalType(knownType);
+                    }
                     if (that.getNot()) {
-                        if (intersectionType(type, knownTypeWithNull, unit)
+                        if (intersectionType(type, knownType, unit)
                                 .isNothing()) {
                             that.addUsageWarning(Warning.redundantNarrowing,
                                     "condition does not narrow type: intersection of '" + 
@@ -843,7 +846,7 @@ public class ExpressionVisitor extends Visitor {
                                     "' and '" + 
                                     knownType.asString(unit) + 
                                     "' is empty" + 
-                                    help);
+                                    " (expression is already of the specified type)");
                         }
                         else if (knownType.isSubtypeOf(type)) {
                             that.addError("condition tests assignability to bottom type 'Nothing': '" + 
@@ -853,13 +856,13 @@ public class ExpressionVisitor extends Visitor {
                         }
                     } 
                     else {
-                        if (knownTypeWithNull.isSubtypeOf(type)) {
+                        if (knownType.isSubtypeOf(type)) {
                             that.addUsageWarning(Warning.redundantNarrowing,
                                     "condition does not narrow type: '" + 
                                     knownType.asString(unit) + 
                                     "' is a subtype of '" + 
                                     type.asString(unit) + "'" + 
-                                    help);
+                                    " (expression is already of the specified type)");
                         }
                     }
                 }
