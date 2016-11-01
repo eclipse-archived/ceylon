@@ -98,9 +98,8 @@ class ArrayIterationStatic implements .com.redhat.ceylon.compiler.java.runtime.m
         final .ceylon.language.Array<.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>> array$34 = array;
         final int length$35 = (int)array$34.getSize();
         loop_8: for (int i$36 = 0; i$36 < length$35; i$36++) {
-            final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float> entry$37 = (.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>)(.ceylon.language.Entry)array$34.unsafeItem(i$36);
-            final long i = entry$37.getKey().longValue();
-            final double f = entry$37.getItem().doubleValue();
+            final double f = ((.ceylon.language.Float)((.ceylon.language.Entry)(.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>)(.ceylon.language.Entry)array$34.unsafeItem(i$36)).getItem()).doubleValue();
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Entry)(.ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Float>)(.ceylon.language.Entry)array$34.unsafeItem(i$36)).getKey()).longValue();
             .ceylon.language.print_.print(.ceylon.language.Float.instance(i + f));
         }
     }

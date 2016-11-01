@@ -227,4 +227,9 @@ public class OptimizationTests extends CompilerTests {
     public void testLopOptimPrimitiveArrayIteration() {
         compareWithJavaSource("loop/optim/PrimitiveArrayIteration");
     }
+    
+    @Test
+    public void testLopOptimDestructureLoop() {
+        compareWithJavaSource("loop/optim/DestructureLoop");
+    }
 }

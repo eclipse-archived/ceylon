@@ -8,77 +8,36 @@ final class bug6632_ {
     static void bug6632(final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Callable<? extends .ceylon.language.Float>>[] entries, final .ceylon.language.Sequence<? extends .java.lang.Object>[] twoTuple, final .ceylon.language.Sequence<? extends .java.lang.Object>[] moreTuple) {
         final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Callable<? extends .ceylon.language.Float>>[] array$1 = entries;
         loop_0: for (int i$3 = 0; i$3 < array$1.length; i$3++) {
-            final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Callable<? extends .ceylon.language.Float>> entry$4 = .com.redhat.ceylon.compiler.java.Util.checkNull(array$1[i$3]);
-            final long i = .com.redhat.ceylon.compiler.java.Util.checkNull(entry$4.getKey()).longValue();
-            final .ceylon.language.Callable<? extends .ceylon.language.Float> aggregator = .com.redhat.ceylon.compiler.java.Util.checkNull(entry$4.getItem());
+            final .ceylon.language.Callable<? extends .ceylon.language.Float> aggregator = (.ceylon.language.Callable<? extends .ceylon.language.Float>)(.ceylon.language.Callable)((.ceylon.language.Entry).com.redhat.ceylon.compiler.java.Util.checkNull(array$1[i$3])).getItem();
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Entry).com.redhat.ceylon.compiler.java.Util.checkNull(array$1[i$3])).getKey()).longValue();
             aggregator.$call$((.java.lang.Object).ceylon.language.Integer.instance(i));
         }
-        final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Callable<? extends .ceylon.language.Float>>[] array$6 = entries;
-        loop_1: for (int i$8 = 0; i$8 < array$6.length; i$8++) {
-            final .ceylon.language.Entry<? extends .ceylon.language.Integer, ? extends .ceylon.language.Callable<? extends .ceylon.language.Float>> tuple$9 = .com.redhat.ceylon.compiler.java.Util.checkNull(array$6[i$8]);
-            final .ceylon.language.Callable<? extends .ceylon.language.Float> aggregator = .com.redhat.ceylon.compiler.java.Util.checkNull(tuple$9.getItem());
-            final long i = .com.redhat.ceylon.compiler.java.Util.checkNull(tuple$9.getKey()).longValue();
+        final .ceylon.language.Sequence<? extends .java.lang.Object>[] array$5 = (.ceylon.language.Sequence<? extends .java.lang.Object>[])(.ceylon.language.Sequence[])twoTuple;
+        loop_1: for (int i$7 = 0; i$7 < array$5.length; i$7++) {
+            final .ceylon.language.Callable<? extends .ceylon.language.Float> aggregator = (.ceylon.language.Callable<? extends .ceylon.language.Float>)(.ceylon.language.Callable)((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.checkNull(array$5[i$7])).getFromFirst(1);
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.checkNull(array$5[i$7])).getFromFirst(0)).longValue();
             aggregator.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
         }
-        final .ceylon.language.Sequence<? extends .java.lang.Object>[] array$11 = (.ceylon.language.Sequence<? extends .java.lang.Object>[])(.ceylon.language.Sequence[])twoTuple;
-        loop_2: for (int i$13 = 0; i$13 < array$11.length; i$13++) {
-            final .ceylon.language.Sequence entry$14 = .com.redhat.ceylon.compiler.java.Util.checkNull(array$11[i$13]);
-            final long i = ((.ceylon.language.Integer)entry$14.getFromFirst(0)).longValue();
-            final .ceylon.language.Callable<? extends .ceylon.language.Float> aggregator = (.ceylon.language.Callable<? extends .ceylon.language.Float>)(.ceylon.language.Callable)(.ceylon.language.Sequence<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>>)(.ceylon.language.Sequence)entry$14.getFromFirst(1);
+        final .ceylon.language.Sequence<? extends .java.lang.Object>[] array$9 = (.ceylon.language.Sequence<? extends .java.lang.Object>[])(.ceylon.language.Sequence[])moreTuple;
+        loop_2: for (int i$11 = 0; i$11 < array$9.length; i$11++) {
+            final .ceylon.language.Sequential<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>> aggregators = (.ceylon.language.Sequential<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>>)(.ceylon.language.Sequential)((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.checkNull(array$9[i$11])).skip(2).sequence();
+            final .ceylon.language.Callable<? extends .ceylon.language.Float> aggregator = (.ceylon.language.Callable<? extends .ceylon.language.Float>)(.ceylon.language.Callable)((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.checkNull(array$9[i$11])).getFromFirst(1);
+            final long i = ((.ceylon.language.Integer)((.ceylon.language.Sequence).com.redhat.ceylon.compiler.java.Util.checkNull(array$9[i$11])).getFromFirst(0)).longValue();
             aggregator.$call$((.java.lang.Object).ceylon.language.Integer.instance(i));
-        }
-        final .ceylon.language.Sequence<? extends .java.lang.Object>[] array$16 = (.ceylon.language.Sequence<? extends .java.lang.Object>[])(.ceylon.language.Sequence[])twoTuple;
-        loop_3: for (int i$18 = 0; i$18 < array$16.length; i$18++) {
-            final .ceylon.language.Sequence tuple$19 = .com.redhat.ceylon.compiler.java.Util.checkNull(array$16[i$18]);
-            final .ceylon.language.Callable<? extends .ceylon.language.Float> aggregator = .com.redhat.ceylon.compiler.java.Util.checkNull((.ceylon.language.Callable<? extends .ceylon.language.Float>)(.ceylon.language.Callable)tuple$19.getFromFirst(1));
-            final long i = .com.redhat.ceylon.compiler.java.Util.checkNull((.ceylon.language.Integer)tuple$19.getFromFirst(0)).longValue();
-            aggregator.$call$((.java.lang.Object).ceylon.language.Integer.instance(1L));
-        }
-        final .ceylon.language.Sequence<? extends .java.lang.Object>[] array$21 = (.ceylon.language.Sequence<? extends .java.lang.Object>[])(.ceylon.language.Sequence[])moreTuple;
-        loop_4: for (int i$23 = 0; i$23 < array$21.length; i$23++) {
-            final .ceylon.language.Sequence entry$27 = .com.redhat.ceylon.compiler.java.Util.checkNull(array$21[i$23]);
-            final long i = ((.ceylon.language.Integer)entry$27.getFromFirst(0)).longValue();
-            final .ceylon.language.Sequence<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>> aggregator = (.ceylon.language.Sequence<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>>)(.ceylon.language.Sequence)entry$27.getFromFirst(1);
-            boolean loopentered$24 = false;
-            .java.lang.Object elem$25;
-            .ceylon.language.Iterator<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>> agg$iterator$$26 = aggregator.iterator();
-            loop_5: while (!((elem$25 = agg$iterator$$26.next()) instanceof .ceylon.language.Finished)) {
-                loopentered$24 = true;
-                final .ceylon.language.Callable<? extends .ceylon.language.Float> agg = (.ceylon.language.Callable<? extends .ceylon.language.Float>)(.ceylon.language.Callable)elem$25;
-                agg.$call$((.java.lang.Object).ceylon.language.Integer.instance(i));
-            }
-            if (!loopentered$24) throw new .ceylon.language.AssertionError("nonempty Iterable with initial \'finished\' element");
-        }
-        final .ceylon.language.Sequence<? extends .java.lang.Object>[] array$29 = (.ceylon.language.Sequence<? extends .java.lang.Object>[])(.ceylon.language.Sequence[])moreTuple;
-        loop_6: for (int i$31 = 0; i$31 < array$29.length; i$31++) {
-            final .ceylon.language.Sequence entry$32 = .com.redhat.ceylon.compiler.java.Util.checkNull(array$29[i$31]);
-            final long i = ((.ceylon.language.Integer)entry$32.getFromFirst(0)).longValue();
-            final .ceylon.language.Sequence<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>> tuple$33 = (.ceylon.language.Sequence<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>>)(.ceylon.language.Sequence)entry$32.getFromFirst(1);
-            final .ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>>> aggregators = (.ceylon.language.Sequential<? extends .ceylon.language.Sequential<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>>>)(.ceylon.language.Sequential).com.redhat.ceylon.compiler.java.Util.checkNull((.ceylon.language.Callable<? extends .ceylon.language.Float>)(.ceylon.language.Callable)tuple$33.getFromFirst(1));
-            final .ceylon.language.Callable<? extends .ceylon.language.Float> aggregator = .com.redhat.ceylon.compiler.java.Util.checkNull((.ceylon.language.Callable<? extends .ceylon.language.Float>)(.ceylon.language.Callable)tuple$33.getFromFirst(0));
-            aggregator.$call$((.java.lang.Object).ceylon.language.Integer.instance(i));
-        }
-        final .ceylon.language.Sequence<? extends .java.lang.Object>[] array$35 = (.ceylon.language.Sequence<? extends .java.lang.Object>[])(.ceylon.language.Sequence[])moreTuple;
-        loop_7: for (int i$37 = 0; i$37 < array$35.length; i$37++) {
-            final .ceylon.language.Sequence tuple$45 = .com.redhat.ceylon.compiler.java.Util.checkNull(array$35[i$37]);
-            final .ceylon.language.Sequential<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>> aggregators = (.ceylon.language.Sequential<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>>)(.ceylon.language.Sequential).com.redhat.ceylon.compiler.java.Util.checkNull((.ceylon.language.Callable<? extends .ceylon.language.Float>)(.ceylon.language.Callable)tuple$45.getFromFirst(2));
-            final .ceylon.language.Callable<? extends .ceylon.language.Float> aggregator = .com.redhat.ceylon.compiler.java.Util.checkNull((.ceylon.language.Callable<? extends .ceylon.language.Float>)(.ceylon.language.Callable)tuple$45.getFromFirst(1));
-            final long i = .com.redhat.ceylon.compiler.java.Util.checkNull((.ceylon.language.Integer)tuple$45.getFromFirst(0)).longValue();
-            aggregator.$call$((.java.lang.Object).ceylon.language.Integer.instance(i));
-            final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>, ? extends .java.lang.Object> iterable$40 = aggregators;
-            final boolean isTuple$41 = iterable$40 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$40).$getArray$() != null;
-            .java.lang.Object elem$39 = null;
-            int i$42 = 0;
-            final int length$43;
-            if (isTuple$41) {
-                length$43 = (int)iterable$40.getSize();
+            final .ceylon.language.Iterable<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>, ? extends .java.lang.Object> iterable$14 = aggregators;
+            final boolean isTuple$15 = iterable$14 instanceof .ceylon.language.Tuple && ((.ceylon.language.Tuple)iterable$14).$getArray$() != null;
+            .java.lang.Object elem$13 = null;
+            int i$16 = 0;
+            final int length$17;
+            if (isTuple$15) {
+                length$17 = (int)iterable$14.getSize();
             } else {
-                length$43 = 0;
+                length$17 = 0;
             }
-            .ceylon.language.Iterator<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>> agg$iterator$$44 = isTuple$41 ? null : iterable$40.iterator();
-            loop_8: while (isTuple$41 ? i$42 < length$43 : !((elem$39 = agg$iterator$$44.next()) instanceof .ceylon.language.Finished)) {
-                if (isTuple$41) elem$39 = iterable$40.getFromFirst(i$42++);
-                final .ceylon.language.Callable<? extends .ceylon.language.Float> agg = (.ceylon.language.Callable<? extends .ceylon.language.Float>)(.ceylon.language.Callable)elem$39;
+            .ceylon.language.Iterator<? extends .ceylon.language.Callable<? extends .ceylon.language.Float>> agg$iterator$$18 = isTuple$15 ? null : iterable$14.iterator();
+            loop_3: while (isTuple$15 ? i$16 < length$17 : !((elem$13 = agg$iterator$$18.next()) instanceof .ceylon.language.Finished)) {
+                if (isTuple$15) elem$13 = iterable$14.getFromFirst(i$16++);
+                final .ceylon.language.Callable<? extends .ceylon.language.Float> agg = (.ceylon.language.Callable<? extends .ceylon.language.Float>)(.ceylon.language.Callable)elem$13;
                 agg.$call$((.java.lang.Object).ceylon.language.Integer.instance(i));
             }
         }
