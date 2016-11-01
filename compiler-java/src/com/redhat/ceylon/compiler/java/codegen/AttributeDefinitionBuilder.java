@@ -611,10 +611,9 @@ public class AttributeDefinitionBuilder {
                                 temp.makeIdent(), 
                                 owner.makeNull()),
                         owner.makeNull(),
-                        owner.make().Apply(null,
-                                owner.makeSelect(valueFieldType(), "valueOf"),
-                                List.<JCExpression>of(
-                        owner.unboxType(temp.makeIdent(), owner.simplifyType(attrType))))));
+                        owner.boxJavaType(
+                        owner.unboxType(temp.makeIdent(), owner.simplifyType(attrType)),
+                        owner.simplifyType(attrType))));
             }
             stmts = stmts.prepend(owner.make().Exec(owner.make().Assign(
                     makeValueFieldAccess(),

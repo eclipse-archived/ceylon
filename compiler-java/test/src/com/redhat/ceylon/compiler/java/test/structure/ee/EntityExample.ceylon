@@ -1,6 +1,6 @@
 import javax.persistence{entity, id, generatedValue, column}
 
-shared entity class Employee(name/*, year = null*/) {
+shared entity class Employee(name, year = null) {
     
     generatedValue id
     shared late Integer id;
@@ -9,6 +9,6 @@ shared entity class Employee(name/*, year = null*/) {
     shared String name;
     
     column
-    shared variable Integer? year = null;
+    shared variable Integer? year;
     
 }
