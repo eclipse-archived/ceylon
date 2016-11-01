@@ -1285,16 +1285,7 @@ public class ClassTransformer extends AbstractTransformer {
                 }
                 at(parameterTree);
                 BoxingStrategy exprBoxed = CodegenUtil.isUnBoxed((TypedDeclaration)member) ? BoxingStrategy.UNBOXED : BoxingStrategy.BOXED;
-                BoxingStrategy boxingStrategy = useJavaBox(value, paramType) || 
-                        useJavaBox(value, ((TypedDeclaration)value.getRefinedDeclaration()).getType())
-                            && !CodegenUtil.isUnBoxed((TypedDeclaration)value.getRefinedDeclaration()) ? 
-                                    BoxingStrategy.JAVA : exprBoxed;
-                parameterExpr = boxUnboxIfNecessary(parameterExpr, 
-                                exprBoxed, 
-                                paramType, 
-                                boxingStrategy, 
-                                paramType);
-                adb.initialValue(parameterExpr, boxingStrategy);
+                adb.initialValue(parameterExpr, exprBoxed);
                 classBuilder.getInitBuilder().init(adb.buildInit(true));
             }
         }
