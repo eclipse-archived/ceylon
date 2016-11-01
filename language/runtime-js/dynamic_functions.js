@@ -4,6 +4,7 @@ function dre$$(object, type, loc) {
   //If it's already dressed up as the type, leave it alone
   if (is$(object, type))return object;
   //If it's already of another type, throw
+  if (object===null || object===undefined)return object;
   if (object.$$ !== undefined && object.getT$all()[object.getT$name()].dynmem$===undefined) {
     if (loc===false)return object;
     throw new TypeError("Cannot modify the type of an object to "+qname$(type)+" at runtime " + loc);
