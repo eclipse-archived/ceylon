@@ -829,7 +829,9 @@ public class ExpressionVisitor extends Visitor {
                         checkReified(t, type, knownType, 
                                 that.getAssertion());
                     }
-                    if (hasUncheckedNulls(e)) {
+                    if (hasUncheckedNulls(e) 
+                            && unit.getNullType()
+                                .isSubtypeOf(type)) {
                         // if the expression has unchecked nulls,
                         // widen the known type to an optional
                         // type, which allows idioms like an 
