@@ -18,7 +18,7 @@ class JavaBoxes implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
             {
                 .ceylon.language.String $ceylontmp$0 = init;
             }
-            returning $ceylontmp$0 != null ? $ceylontmp$0.toString() : null;
+            returning $ceylontmp$0 == null ? null : $ceylontmp$0.toString();
         );
         this.i = .java.lang.Long.valueOf(2L);
         this.f = .java.lang.Double.valueOf(2.0);
@@ -115,12 +115,8 @@ final class javaBoxesGeneric_ {
         return null;
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
-        major = 8,
-        minor = 1)
 class JavaBoxesP implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     JavaBoxesP() {
         (
             let
@@ -132,36 +128,23 @@ class JavaBoxesP implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         );
     }
     
-    JavaBoxesP(@.com.redhat.ceylon.compiler.java.metadata.Name("x")
-    @.com.redhat.ceylon.compiler.java.metadata.Defaulted
-    @.com.redhat.ceylon.common.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
-    @.ceylon.language.SharedAnnotation$annotation$
-    final .ceylon.language.Integer x) {
+    JavaBoxesP(final .ceylon.language.Integer x) {
         this.x = .java.lang.Long.valueOf(x.longValue());
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.Long x;
     
-    @.ceylon.language.SharedAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Final
-    @.com.redhat.ceylon.common.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer?")
     public .ceylon.language.Integer getX() {
         return this.x == null ? null : .ceylon.language.Integer.instance(this.x.longValue());
     }
     
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static .ceylon.language.Integer $default$x() {
         return .ceylon.language.Integer.instance(1L);
     }
     
     @.java.lang.Override
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
         return .com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesP.$TypeDescriptor$;
     }
-    @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesP.class);
 }
 interface JavaBoxesI {
@@ -177,7 +160,13 @@ class JavaBoxesC implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     }
     
     JavaBoxesC(.ceylon.language.Integer x) {
-        this.x = .java.lang.Long.valueOf(x.longValue());
+        this.x = (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$2 = x;
+            }
+            returning $ceylontmp$2 == null ? null : .java.lang.Long.valueOf($ceylontmp$2.longValue());
+        );
     }
     private .java.lang.Long x;
     
@@ -195,6 +184,195 @@ class JavaBoxesC implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
         return .com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesC.$TypeDescriptor$;
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesC.class);
+}
+class JavaBoxesCCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesI, .java.io.Serializable {
+    
+    protected JavaBoxesCCtor() {
+        super();
+        this.x = null;
+        this.y = null;
+    }
+    private final .java.lang.Long x;
+    
+    @.java.lang.Override
+    public .ceylon.language.Integer getX() {
+        return this.x == null ? null : .ceylon.language.Integer.instance(this.x.longValue());
+    }
+    private final .java.lang.Long y;
+    
+    public .ceylon.language.Integer getY() {
+        return this.y == null ? null : .ceylon.language.Integer.instance(this.y.longValue());
+    }
+    
+    private static final class get_ {
+        
+        get_() {
+        }
+    }
+    
+    private JavaBoxesCCtor(.com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesCCtor.get_ $name$) {
+        x = .java.lang.Long.valueOf(1L);
+        y = .java.lang.Long.valueOf(2L);
+    }
+    private static final .com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesCCtor get;
+    static {
+        get = new JavaBoxesCCtor((.com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesCCtor.get_)null);
+    }
+    
+    public static final .com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesCCtor getJavaBoxesCCtor$get() {
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesCCtor.get;
+    }
+    public static final .com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesCCtor.foo_ foo_ = null;
+    
+    public static final class foo_ {
+        
+        foo_() {
+        }
+    }
+    
+    public JavaBoxesCCtor(.com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesCCtor.foo_ $name$, final .ceylon.language.Integer y$param$) {
+        x = .java.lang.Long.valueOf(0L);
+        this.y = .java.lang.Long.valueOf(y$param$.longValue());
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesCCtor.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesCCtor.class);
+    
+    private final .java.lang.Object writeReplace() {
+        final .java.lang.String $name$;
+        if (this == get) {
+            $name$ = "getJavaBoxesCCtor$get";
+        } else return this;
+        return new .com.redhat.ceylon.compiler.java.language.SerializationProxy(.com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesCCtor.class, $name$);
+    }
+}
+abstract class JavaBoxesActualParameterSuper implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    JavaBoxesActualParameterSuper() {
+    }
+    
+    public abstract .ceylon.language.String getS();
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesActualParameterSuper.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesActualParameterSuper.class);
+}
+class JavaBoxesActualParameter extends .com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesActualParameterSuper {
+    
+    protected JavaBoxesActualParameter() {
+        super();
+        this.string = null;
+        this.s = null;
+    }
+    
+    JavaBoxesActualParameter(final .java.lang.String string, final .ceylon.language.String s) {
+        super();
+        this.string = string;
+        this.s = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$3 = s;
+            }
+            returning $ceylontmp$3 == null ? null : $ceylontmp$3.toString();
+        );
+    }
+    private final .java.lang.String string;
+    
+    @.java.lang.Override
+    public .java.lang.String toString() {
+        return this.string;
+    }
+    private final .java.lang.String s;
+    
+    @.java.lang.Override
+    public .ceylon.language.String getS() {
+        return this.s == null ? null : .ceylon.language.String.instance(this.s);
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesActualParameter.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.ee.JavaBoxesActualParameter.class);
+}
+class DefaultedVariableAttribute implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    DefaultedVariableAttribute() {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$firstName$6 = .com.redhat.ceylon.compiler.java.test.structure.ee.DefaultedVariableAttribute.$default$firstName();
+                .ceylon.language.String $ceylontmp$lastName$7 = .com.redhat.ceylon.compiler.java.test.structure.ee.DefaultedVariableAttribute.$default$lastName($ceylontmp$firstName$6);
+                this($ceylontmp$firstName$6, $ceylontmp$lastName$7);
+            }
+            returning null;
+        );
+    }
+    
+    DefaultedVariableAttribute(.ceylon.language.String firstName) {
+        (
+            let
+            {
+                .ceylon.language.String $ceylontmp$lastName$8 = .com.redhat.ceylon.compiler.java.test.structure.ee.DefaultedVariableAttribute.$default$lastName(firstName);
+                this(firstName, $ceylontmp$lastName$8);
+            }
+            returning null;
+        );
+    }
+    
+    DefaultedVariableAttribute(.ceylon.language.String firstName, .ceylon.language.String lastName) {
+        this.firstName = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$4 = firstName;
+            }
+            returning $ceylontmp$4 == null ? null : $ceylontmp$4.toString();
+        );
+        this.lastName = (
+            let
+            {
+                .ceylon.language.String $ceylontmp$5 = lastName;
+            }
+            returning $ceylontmp$5 == null ? null : $ceylontmp$5.toString();
+        );
+    }
+    
+    public static .ceylon.language.String $default$firstName() {
+        return null;
+    }
+    
+    public static .ceylon.language.String $default$lastName(.ceylon.language.String firstName) {
+        return null;
+    }
+    private .java.lang.String firstName;
+    
+    public .ceylon.language.String getFirstName() {
+        return this.firstName == null ? null : .ceylon.language.String.instance(this.firstName);
+    }
+    
+    public void setFirstName(final .ceylon.language.String firstName) {
+        this.firstName = firstName == null ? null : .java.lang.String.valueOf(firstName.toString());
+    }
+    private .java.lang.String lastName;
+    
+    public .ceylon.language.String getLastName() {
+        return this.lastName == null ? null : .ceylon.language.String.instance(this.lastName);
+    }
+    
+    public void setLastName(final .ceylon.language.String lastName) {
+        this.lastName = lastName == null ? null : .java.lang.String.valueOf(lastName.toString());
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.DefaultedVariableAttribute.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.ee.DefaultedVariableAttribute.class);
 }
 public final class iJavaBoxes_ {
     
@@ -221,11 +399,6 @@ public final class iJavaBoxes_ {
         .com.redhat.ceylon.compiler.java.test.structure.ee.iJavaBoxes_.value = iJavaBoxes == null ? null : .java.lang.Long.valueOf(iJavaBoxes.longValue());
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
-        major = 8,
-        minor = 1)
-@.com.redhat.ceylon.compiler.java.metadata.Attribute
-@.com.redhat.ceylon.compiler.java.metadata.Name("fJavaBoxes")
 public final class fJavaBoxes_ {
     
     private fJavaBoxes_() {
@@ -242,28 +415,15 @@ public final class fJavaBoxes_ {
         }
     }
     
-    @.ceylon.language.SharedAnnotation$annotation$
-    @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Final
-    @.com.redhat.ceylon.common.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Float?")
     public static .ceylon.language.Float get_() {
         return .com.redhat.ceylon.compiler.java.test.structure.ee.fJavaBoxes_.value == null ? null : .ceylon.language.Float.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.fJavaBoxes_.value.doubleValue());
     }
     
-    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("fJavaBoxes")
-    @.com.redhat.ceylon.common.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Float?")
-    final .ceylon.language.Float fJavaBoxes) {
+    public static void set_(final .ceylon.language.Float fJavaBoxes) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         .com.redhat.ceylon.compiler.java.test.structure.ee.fJavaBoxes_.value = fJavaBoxes == null ? null : .java.lang.Double.valueOf(fJavaBoxes.doubleValue());
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
-        major = 8,
-        minor = 1)
-@.com.redhat.ceylon.compiler.java.metadata.Attribute
-@.com.redhat.ceylon.compiler.java.metadata.Name("sJavaBoxes")
 public final class sJavaBoxes_ {
     
     private sJavaBoxes_() {
@@ -280,28 +440,15 @@ public final class sJavaBoxes_ {
         }
     }
     
-    @.ceylon.language.SharedAnnotation$annotation$
-    @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Final
-    @.com.redhat.ceylon.common.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
     public static .ceylon.language.String get_() {
         return .com.redhat.ceylon.compiler.java.test.structure.ee.sJavaBoxes_.value == null ? null : .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.sJavaBoxes_.value);
     }
     
-    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("sJavaBoxes")
-    @.com.redhat.ceylon.common.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::String?")
-    final .ceylon.language.String sJavaBoxes) {
+    public static void set_(final .ceylon.language.String sJavaBoxes) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         .com.redhat.ceylon.compiler.java.test.structure.ee.sJavaBoxes_.value = sJavaBoxes == null ? null : .java.lang.String.valueOf(sJavaBoxes.toString());
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
-        major = 8,
-        minor = 1)
-@.com.redhat.ceylon.compiler.java.metadata.Attribute
-@.com.redhat.ceylon.compiler.java.metadata.Name("oJavaBoxes")
 public final class oJavaBoxes_ {
     
     private oJavaBoxes_() {
@@ -318,28 +465,15 @@ public final class oJavaBoxes_ {
         }
     }
     
-    @.ceylon.language.SharedAnnotation$annotation$
-    @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Final
-    @.com.redhat.ceylon.common.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Byte?")
     public static .ceylon.language.Byte get_() {
         return .com.redhat.ceylon.compiler.java.test.structure.ee.oJavaBoxes_.value == null ? null : .ceylon.language.Byte.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.oJavaBoxes_.value.byteValue());
     }
     
-    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("oJavaBoxes")
-    @.com.redhat.ceylon.common.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Byte?")
-    final .ceylon.language.Byte oJavaBoxes) {
+    public static void set_(final .ceylon.language.Byte oJavaBoxes) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         .com.redhat.ceylon.compiler.java.test.structure.ee.oJavaBoxes_.value = oJavaBoxes == null ? null : java.lang.Byte.valueOf(oJavaBoxes.byteValue());
     }
 }
-@.com.redhat.ceylon.compiler.java.metadata.Ceylon(
-        major = 8,
-        minor = 1)
-@.com.redhat.ceylon.compiler.java.metadata.Attribute
-@.com.redhat.ceylon.compiler.java.metadata.Name("bJavaBoxes")
 public final class bJavaBoxes_ {
     
     private bJavaBoxes_() {
@@ -356,19 +490,11 @@ public final class bJavaBoxes_ {
         }
     }
     
-    @.ceylon.language.SharedAnnotation$annotation$
-    @.ceylon.language.VariableAnnotation$annotation$
-    @.com.redhat.ceylon.compiler.java.metadata.Final
-    @.com.redhat.ceylon.common.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean?")
     public static .ceylon.language.Boolean get_() {
         return .com.redhat.ceylon.compiler.java.test.structure.ee.bJavaBoxes_.value == null ? null : .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.bJavaBoxes_.value.booleanValue());
     }
     
-    public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("bJavaBoxes")
-    @.com.redhat.ceylon.common.Nullable
-    @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean?")
-    final .ceylon.language.Boolean bJavaBoxes) {
+    public static void set_(final .ceylon.language.Boolean bJavaBoxes) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
         .com.redhat.ceylon.compiler.java.test.structure.ee.bJavaBoxes_.value = bJavaBoxes == null ? null : .java.lang.Boolean.valueOf(bJavaBoxes.booleanValue());
     }

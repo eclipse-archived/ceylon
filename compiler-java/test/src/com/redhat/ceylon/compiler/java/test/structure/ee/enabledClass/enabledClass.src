@@ -24,7 +24,7 @@ public class EnabledByXmlAccessorType implements .com.redhat.ceylon.compiler.jav
             {
                 .ceylon.language.String $ceylontmp$0 = s;
             }
-            returning $ceylontmp$0 != null ? $ceylontmp$0.toString() : null;
+            returning $ceylontmp$0 == null ? null : $ceylontmp$0.toString();
         );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -70,7 +70,7 @@ public class EnabledByEntity implements .com.redhat.ceylon.compiler.java.runtime
             {
                 .ceylon.language.String $ceylontmp$1 = s;
             }
-            returning $ceylontmp$1 != null ? $ceylontmp$1.toString() : null;
+            returning $ceylontmp$1 == null ? null : $ceylontmp$1.toString();
         );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -155,7 +155,7 @@ public class EnabledByAttrInject implements .com.redhat.ceylon.compiler.java.run
             {
                 .ceylon.language.String $ceylontmp$2 = s;
             }
-            returning $ceylontmp$2 != null ? $ceylontmp$2.toString() : null;
+            returning $ceylontmp$2 == null ? null : $ceylontmp$2.toString();
         );
     }
     @.javax.inject.Inject
@@ -201,7 +201,7 @@ public class EnabledByMethodInject implements .com.redhat.ceylon.compiler.java.r
             {
                 .ceylon.language.String $ceylontmp$3 = s;
             }
-            returning $ceylontmp$3 != null ? $ceylontmp$3.toString() : null;
+            returning $ceylontmp$3 == null ? null : $ceylontmp$3.toString();
         );
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore

@@ -1,5 +1,6 @@
 import javax.persistence{entity, id, generatedValue, column}
 
+@noanno
 shared entity class Employee(name, year = null) {
     
     generatedValue id
