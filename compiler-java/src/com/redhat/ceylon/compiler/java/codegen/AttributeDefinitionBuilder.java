@@ -688,7 +688,7 @@ public class AttributeDefinitionBuilder {
         // make sure we turn hash long to int properly
         if(isHash)
             returnExpr = owner.convertToIntForHashAttribute(returnExpr);
-        if (useJavaBox) {
+        if (useJavaBox && !owner.isJavaString(attrType)) {
             returnExpr = owner.make().Conditional(
                     owner.make().Binary(JCTree.Tag.EQ, makeValueFieldAccess(), owner.makeNull()), 
                     owner.makeNull(), 
@@ -737,7 +737,7 @@ public class AttributeDefinitionBuilder {
     private List<JCStatement> setter() {
         JCExpression fld = makeValueFieldAccess();
         JCExpression setValue = owner.makeQuotedIdent(setterParameterName());
-        if (useJavaBox) {
+        if (useJavaBox && !owner.isJavaString(attrType)) {
             setValue = owner.make().Conditional(
                     owner.make().Binary(JCTree.Tag.EQ, 
                             owner.makeQuotedIdent(setterParameterName()), 

@@ -2651,7 +2651,7 @@ public abstract class AbstractTransformer implements Transformation {
         return pt;
     }
     
-    private boolean isJavaString(Type type) {
+    boolean isJavaString(Type type) {
         return "java.lang.String".equals(type.getUnderlyingType());
     }
     
