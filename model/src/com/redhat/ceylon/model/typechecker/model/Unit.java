@@ -1516,6 +1516,17 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         return getNonemptyType(getDefiniteType(pt));
     }
     
+    public Type getElementType(Type expressionType) {
+        Type it = getIteratedType(expressionType);
+        if (it==null) {
+            it = getJavaIteratedType(expressionType);
+        }
+        if (it==null) {
+            it = getJavaArrayElementType(expressionType);
+        }
+        return it;
+    }
+
     public boolean isIterableType(Type pt) {
         return pt.getDeclaration()
                 .inherits(getIterableDeclaration());

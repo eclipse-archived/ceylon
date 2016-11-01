@@ -1223,7 +1223,7 @@ public class ExpressionVisitor extends Visitor {
             if (e!=null) {
                 Type et = e.getTypeModel();
                 if (!isTypeUnknown(et)) {
-                    Type it = unit.getIteratedType(et);
+                    Type it = unit.getElementType(et);
                     if (it!=null && !isTypeUnknown(it)) {
                         destructure(that.getPattern(), it);
                     }
@@ -1987,13 +1987,7 @@ public class ExpressionVisitor extends Visitor {
                 Type expressionType = e.getTypeModel();
                 if (!isTypeUnknown(vt) && 
                         !isTypeUnknown(expressionType)) {
-                    Type it = unit.getIteratedType(expressionType);
-                    if (it==null) {
-                        it = unit.getJavaIteratedType(expressionType);
-                    }
-                    if (it==null) {
-                        it = unit.getJavaArrayElementType(expressionType);
-                    }
+                    Type it = unit.getElementType(expressionType);
                     checkAssignable(it, vt, var, 
                             "iterable element type must be assignable to iterator variable type");
                 }
@@ -2663,36 +2657,20 @@ public class ExpressionVisitor extends Visitor {
             Tree.LocalModifier local, 
             Tree.SpecifierExpression se, 
             Tree.Variable that) {
-        Tree.Expression e = se.getExpression();
-        if (e!=null) {
-            Type expressionType = e.getTypeModel();
-            if (expressionType!=null) {
+        Tree.Expression ex = se.getExpression();
+        if (ex!=null) {
+            Type ext = ex.getTypeModel();
+            if (ext!=null) {
                 Value dec = 
                         that.getDeclarationModel();
                 Type elementType = 
-                        unit.getIteratedType(
-                                expressionType);
-                if (elementType==null) {
-                    elementType = 
-                            unit.getJavaIteratedType(
-                                    expressionType);
-                    if (elementType!=null) {
-                        handleUncheckedNulls(local, 
-                                elementType, null, dec);
-                    }
-                }
-                if (elementType==null) {
-                    elementType = 
-                            unit.getJavaArrayElementType(
-                                    expressionType);
-                    if (elementType!=null &&
-                        unit.isJavaObjectArrayType(
-                            expressionType)) {
-                        handleUncheckedNulls(local, 
-                                elementType, null, dec);
-                    }
-                }
+                        unit.getElementType(ext);
                 if (elementType!=null) {
+                    if (unit.isJavaIterableType(ext) || 
+                        unit.isJavaObjectArrayType(ext)) {
+                        handleUncheckedNulls(local,
+                                elementType, null, dec);
+                    }
                     local.setTypeModel(elementType);
                     dec.setType(elementType);
                 }
@@ -3041,24 +3019,8 @@ public class ExpressionVisitor extends Visitor {
                 return unit.getDefiniteType(type);
             }
             else if (op instanceof Tree.SpreadOp) {
-                if (unit.isIterableType(type)) {
-                    Type it = unit.getIteratedType(type);
-                    return it==null ?
-                            unit.getUnknownType() : it;
-                }
-                else if (unit.isJavaIterableType(type)) {
-                    Type it = unit.getJavaIteratedType(type);
-                    return it==null ?
-                            unit.getUnknownType() : it;
-                }
-                else if (unit.isJavaArrayType(type)) {
-                    Type it = unit.getJavaArrayElementType(type);
-                    return it==null ?
-                            unit.getUnknownType() : it;
-                }
-                else {
-                    return type;
-                }
+                Type it = unit.getElementType(type);
+                return it==null ? unit.getUnknownType() : it;
             }
             else {
                 return type;

@@ -1290,7 +1290,7 @@ public class AnalyzerUtil {
                 // transform any Iterable into a Sequence without
                 // losing the information that it is nonempty, in
                 // the case that we know that for sure
-                Type it = unit.getIteratedType(et);
+                Type it = unit.getElementType(et);
                 Type st = 
                         unit.isNonemptyIterableType(et) ?
                                 unit.getSequenceType(it) :
