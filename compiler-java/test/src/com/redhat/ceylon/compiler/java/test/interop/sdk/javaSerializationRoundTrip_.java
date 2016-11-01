@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.interop;
+package com.redhat.ceylon.compiler.java.test.interop.sdk;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -20,7 +20,7 @@ public class javaSerializationRoundTrip_ {
     }
     
     public static void javaSerializationRoundTrip() throws Exception {
-        Class cls = Class.forName("com.redhat.ceylon.compiler.java.test.interop.javaSerialization_");
+        Class cls = Class.forName("com.redhat.ceylon.compiler.java.test.interop.sdk.javaSerialization_");
         Method meth = cls.getMethod("javaSerialization");
         final Object o = meth.invoke(null);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -33,7 +33,7 @@ public class javaSerializationRoundTrip_ {
         ObjectInputStream ois = new ObjectInputStream(is);
         final Object read = ois.readObject();
         System.err.println("read: " +read);
-        cls = Class.forName("com.redhat.ceylon.compiler.java.test.interop.javaSerializationCompare_");
+        cls = Class.forName("com.redhat.ceylon.compiler.java.test.interop.sdk.javaSerializationCompare_");
         meth = cls.getMethod("javaSerializationCompare", Object.class, Object.class);
         meth.invoke(null, o, read);
     }

@@ -27,7 +27,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -51,7 +50,6 @@ import com.redhat.ceylon.tools.importjar.ImportJarException;
 
 public class ImportJarToolTests extends AbstractToolTests {
 
-    private final List<String> defaultOptions;
     private final File destDir;
     private final File cacheDir;
     
@@ -74,16 +72,14 @@ public class ImportJarToolTests extends AbstractToolTests {
         }
         this.destDir = new File(destDir);
         this.cacheDir = new File(cacheDir);
-        
-        defaultOptions = Arrays.asList("--out", destDir, "--cacherep", cacheDir, "--sysrep", getSysRepPath());
     }
 
-    private List<String> options(String... opts) {
-        List<String> allOpts = new ArrayList<String>(defaultOptions.size() + opts.length);
-        allOpts.addAll(defaultOptions);
-        allOpts.addAll(Arrays.asList(opts));
-        return allOpts;
+    protected List<String> toolOptions(String... opts) {
+        List<String> ret = super.toolOptions("--out", destDir.getPath());
+        ret.addAll(Arrays.asList(opts));
+        return ret;
     }
+    
     
     private File destFile(String f) {
         return new File(destDir, f);
@@ -98,7 +94,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
         try {
-            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options());
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions());
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Argument 'module' to command 'import-jar' should appear at least 1 time(s)", e.getMessage());
@@ -110,7 +106,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
         try {
-            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options("my.jar"));
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions("my.jar"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Invalid value 'my.jar' given for argument 'module' to command 'import-jar'", e.getMessage());
@@ -122,7 +118,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
         try {
-            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options("test", "my.jar"));
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions("test", "my.jar"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Invalid value 'test' given for argument 'module' to command 'import-jar'", e.getMessage());
@@ -134,7 +130,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
         try {
-            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options(
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
                     "test/1.0", "test/src/com/redhat/ceylon/tools/test/nonexistent.jar"));
             Assert.fail();
         } catch (ImportJarException e) {
@@ -152,7 +148,7 @@ public class ImportJarToolTests extends AbstractToolTests {
             CeylonImportJarTool tool = 
                     pluginFactory.bindArguments(model, 
                                                 getMainTool(), 
-                                                options("test/1.0",
+                                                toolOptions("test/1.0",
                                                         "test/src/com/redhat/ceylon/tools/test/test.jar",
                                                         "test/src/com/redhat/ceylon/tools/test/nonexistent-sources.jar"));
             Assert.fail();
@@ -168,7 +164,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
         try {
-            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options(
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
                     "--descriptor", "test/src/com/redhat/ceylon/tools/test/ImportJarToolTests.java",
                     "test/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
             Assert.fail();
@@ -182,7 +178,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         FileUtil.delete(destFile("importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
-        CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options("--force", "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
+        CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions("--force", "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
         tool.run();
         File f1 = destFile("importtest/1.0/importtest-1.0.jar");
         File f2 = destFile("importtest/1.0/importtest-1.0.jar.sha1");
@@ -194,7 +190,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         FileUtil.delete(destFile("importtest/imptest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
-        CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options("--verbose", "--force", "importtest.imptest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
+        CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions("--verbose", "--force", "importtest.imptest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
         tool.run();
         File f1 = destFile("importtest/imptest/1.0/importtest.imptest-1.0.jar");
         File f2 = destFile("importtest/imptest/1.0/importtest.imptest-1.0.jar.sha1");
@@ -208,7 +204,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         CeylonImportJarTool tool = 
                     pluginFactory.bindArguments(model, 
                                                 getMainTool(), 
-                                                options( "--force",
+                                                toolOptions( "--force",
                                                         "source.import.test/1.0",
                                                         "test/src/com/redhat/ceylon/tools/test/test.jar",
                                                         "test/src/com/redhat/ceylon/tools/test/test-source.jar"));
@@ -232,7 +228,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         CeylonImportJarTool tool = 
                     pluginFactory.bindArguments(model, 
                                                 getMainTool(), 
-                                                options( "--force",
+                                                toolOptions( "--force",
                                                          "--verbose",
                                                          "source.import.test/1.0",
                                                          "test/src/com/redhat/ceylon/tools/test/test.jar",
@@ -258,7 +254,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         
         try {
-            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options(
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
                     "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-nonexistent-descriptor.xml", 
                     "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
             tool.run();
@@ -277,7 +273,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         
         try {
-            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options(
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
                     "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-descriptor-broken.xml", 
                     "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
             tool.run();
@@ -294,7 +290,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         
         try {
-            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options(
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
                     "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-descriptor-broken.properties", 
                     "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
             tool.run();
@@ -309,7 +305,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         FileUtil.delete(destFile("importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
-        CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options(
+        CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
                 "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-descriptor.xml", 
                 "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
         tool.run();
@@ -325,7 +321,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         FileUtil.delete(destFile("importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
-        CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options(
+        CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
                 "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-descriptor.properties", 
                 "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
         tool.run();
@@ -347,7 +343,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         CeylonImportJarTool tool = 
                 pluginFactory.bindArguments(model,
                                             getMainTool(),
-                                            options("--descriptor",
+                                            toolOptions("--descriptor",
                                                     "test/src/com/redhat/ceylon/tools/test/test-descriptor.xml",
                                                     "source.import.test/1.0",
                                                     "test/src/com/redhat/ceylon/tools/test/test.jar",
@@ -374,7 +370,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         CeylonImportJarTool tool = 
                 pluginFactory.bindArguments(model,
                                             getMainTool(),
-                                            options("--descriptor",
+                                            toolOptions("--descriptor",
                                                     "test/src/com/redhat/ceylon/tools/test/test-descriptor.properties",
                                                     "source.import.test/1.0",
                                                     "test/src/com/redhat/ceylon/tools/test/test.jar",
@@ -401,7 +397,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
         try {
-            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options(
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
                     "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-descriptor-unknown.properties", 
                     "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
             tool.run();
@@ -416,7 +412,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         FileUtil.delete(destFile("importtest"));
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
-        CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options(
+        CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
                 "--dry-run",
                 "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-descriptor.properties", 
                 "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test.jar"));
@@ -437,7 +433,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         ToolModel<CeylonImportJarTool> model = pluginLoader.loadToolModel("import-jar");
         Assert.assertNotNull(model);
         try {
-            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), options(
+            CeylonImportJarTool tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
                     "--dry-run",
                     "--descriptor", "test/src/com/redhat/ceylon/tools/test/test-descriptor.properties", 
                     "importtest/1.0", "test/src/com/redhat/ceylon/tools/test/test2.jar"));
@@ -489,7 +485,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         StringBuilder b = new StringBuilder();
         // make sure we don't get a missing package with array shit in there: [Ljavax.servlet;
         try{
-        	tool = pluginFactory.bindArguments(model, getMainTool(), options(
+        	tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
         		"org.eclipse.jetty.jetty-server/9.3.2.v20150730", artifact.getAbsolutePath()));
         	tool.setOut(b);
         	tool.run();
@@ -524,13 +520,13 @@ public class ImportJarToolTests extends AbstractToolTests {
         	
 
         // all OK
-        tool = pluginFactory.bindArguments(model, getMainTool(), options(
+        tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
         		"--descriptor", "test/src/com/redhat/ceylon/tools/test/jetty-server-module.properties",
         		"org.eclipse.jetty.jetty-server/9.3.2.v20150730", artifact.getAbsolutePath()));
         tool.run();
 
         // with missing module
-        tool = pluginFactory.bindArguments(model, getMainTool(), options(
+        tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
         		"--descriptor", "test/src/com/redhat/ceylon/tools/test/jetty-server-missing-optional-module.properties",
         		// exact
         		"--missing-dependency-packages", "org.eclipse.jetty:jetty-jmxnotfound/9.3.2.v20150730=org.eclipse.jetty.jmx",
@@ -538,7 +534,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         tool.run();
 
         // with missing module
-        tool = pluginFactory.bindArguments(model, getMainTool(), options(
+        tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
         		"--descriptor", "test/src/com/redhat/ceylon/tools/test/jetty-server-missing-optional-module.properties",
         		// **
         		"--missing-dependency-packages", "org.eclipse.jetty:jetty-jmxnotfound/9.3.2.v20150730=org.**.jmx",
@@ -546,7 +542,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         tool.run();
 
         // with missing module
-        tool = pluginFactory.bindArguments(model, getMainTool(), options(
+        tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
         		"--descriptor", "test/src/com/redhat/ceylon/tools/test/jetty-server-missing-optional-module.properties",
         		// *
         		"--missing-dependency-packages", "org.eclipse.jetty:jetty-jmxnotfound/9.3.2.v20150730=org.eclipse.jetty.jm*",
@@ -555,7 +551,7 @@ public class ImportJarToolTests extends AbstractToolTests {
 
         try{
         	// with missing module
-        	tool = pluginFactory.bindArguments(model, getMainTool(), options(
+        	tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
         			"--descriptor", "test/src/com/redhat/ceylon/tools/test/jetty-server-missing-optional-module.properties",
         			// * with dots
         			"--missing-dependency-packages", "org.eclipse.jetty:jetty-jmxnotfound/9.3.2.v20150730=org.*.jmx",
@@ -567,7 +563,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         }
 
         // with missing module
-        tool = pluginFactory.bindArguments(model, getMainTool(), options(
+        tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
         		"--descriptor", "test/src/com/redhat/ceylon/tools/test/jetty-server-missing-optional-module.properties",
         		// ?
         		"--missing-dependency-packages", "org.eclipse.jetty:jetty-jmxnotfound/9.3.2.v20150730=org.eclipse.jetty.jm?",
@@ -576,7 +572,7 @@ public class ImportJarToolTests extends AbstractToolTests {
 
         try{
         	// with invalid pattern
-        	tool = pluginFactory.bindArguments(model, getMainTool(), options(
+        	tool = pluginFactory.bindArguments(model, getMainTool(), toolOptions(
         			"--descriptor", "test/src/com/redhat/ceylon/tools/test/jetty-server-missing-optional-module.properties",
         			"--missing-dependency-packages", "org.eclipse.jetty:jetty-jmxnotfound",
         			"org.eclipse.jetty.jetty-server/9.3.2.v20150730", artifact.getAbsolutePath()));
@@ -623,7 +619,7 @@ public class ImportJarToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
 
         CeylonImportJarTool tool;
-        List<String> options = options(
+        List<String> options = toolOptions(
         		"--dry-run", "--allow-cars",
         		"--descriptor", descr.getAbsolutePath(),
         		module+"/"+version, artifact.getAbsolutePath());

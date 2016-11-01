@@ -200,6 +200,7 @@
     </target>
 
     <target name="test-quick" depends="compile.tests">
+        <echo>No tests available (yet)</echo>
     </target>
 
 </project>

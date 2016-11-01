@@ -54,6 +54,7 @@ import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
@@ -100,6 +101,7 @@ public abstract class CompilerTests {
     protected final String cacheDir;
     protected final String moduleName;
     protected final List<String> defaultOptions;
+    protected final List<String> defaultToolOptions;
 
     private static final String jbmv = Versions.DEPENDENCY_JBOSS_MODULES_VERSION;
     
@@ -164,6 +166,9 @@ public abstract class CompilerTests {
                 "-g", 
                 "-cp", getClassPathAsPath(),
                 "-suppress-warnings", "compilerAnnotation"));
+        defaultToolOptions = new ArrayList<String>(Arrays.asList(
+                "--sysrep", getSysRepPath(),
+                "--cacherep", cacheDir));
     }
 
     public static String getClassPathAsPath() {
@@ -1287,5 +1292,35 @@ public abstract class CompilerTests {
                 Assert.fail("missing expected line: \"" + expectedLine + "\"");
             }
         }
+    }
+    
+    protected List<String> options(String... opts) {
+        List<String> options = new LinkedList<String>();
+        options.addAll(defaultOptions);
+        options.addAll(Arrays.asList(opts));
+        return options;
+    }
+    
+    protected List<String> toolOptions(String... opts) {
+        List<String> options = new LinkedList<String>();
+        options.addAll(defaultToolOptions);
+        options.addAll(Arrays.asList(opts));
+        return options;
+    }
+    
+    public static String script() {
+        if (OSUtil.isWindows()) {
+            return "../dist/dist/bin/ceylon.bat";
+        } else {
+            return "../dist/dist/bin/ceylon";
+        }
+    }
+    
+    public static boolean allowNetworkTests() {
+        return !"true".equalsIgnoreCase(System.getProperty("ceylon.tests.skip.networking"));
+    }
+    
+    public static boolean allowSdkTests() {
+        return !"true".equalsIgnoreCase(System.getProperty("ceylon.tests.skip.sdk"));
     }
 }

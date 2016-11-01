@@ -18,14 +18,14 @@
  * MA  02110-1301, USA.
  */
 native("jvm")
-module com.redhat.ceylon.compiler.java.test.interop "1" {
+module com.redhat.ceylon.compiler.java.test.interop.sdk "1" {
     import java.base "7";
     import javax.xml "7";
     import java.desktop "7";
     import oracle.jdk.httpserver "7";
     import javax.annotation "7";
     import java.management "7";
-//    import ceylon.interop.java "1.3.1-SNAPSHOT";
+    import ceylon.interop.java "1.3.1-SNAPSHOT";
     import javax.inject "1";
     import maven:"javax.validation:validation-api" "1.1.0.Final";
     import maven:"javax.ws.rs:javax.ws.rs-api" "2.0.1";

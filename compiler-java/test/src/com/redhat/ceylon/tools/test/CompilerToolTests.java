@@ -23,8 +23,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.InvalidObjectException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.jar.JarFile;
@@ -47,15 +45,9 @@ import com.redhat.ceylon.model.cmr.JDKUtils;
 
 public class CompilerToolTests extends AbstractToolTests {
     
-    private List<String> options(String... strings){
-        List<String> ret = new ArrayList<String>(strings.length+5);
-        for(String s : strings)
-            ret.add(s);
-        ret.add("--sysrep");
-        ret.add(getSysRepPath());
-        ret.add("--out");
-        ret.add(destDir);
-        ret.add("--javac=-cp="+getClassPathAsPath());
+    protected List<String> toolOptions(String... opts) {
+        List<String> ret = super.toolOptions("--out", destDir, "--javac=-cp="+getClassPathAsPath());
+        ret.addAll(Arrays.asList(opts));
         return ret;
     }
     
@@ -72,7 +64,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
+                toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }
 
@@ -80,7 +72,7 @@ public class CompilerToolTests extends AbstractToolTests {
     public void testIssueGH2117_suppress_warning_BindingRaisingIllegalArgumentEx()  throws Exception {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
-		pluginFactory.bindArguments(model, getMainTool(), options(
+		pluginFactory.bindArguments(model, getMainTool(), toolOptions(
 				"--src=test/src", "com.redhat.ceylon.tools.test.ceylon",
 				"--suppress-warning"));
     }
@@ -90,7 +82,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--src=test/src", "com.redhat.ceylon.tools.test.keywords.long.module"));
+                toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.keywords.long.module"));
         tool.run();
     }
 
@@ -132,7 +124,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--verbose", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
+                toolOptions("--verbose", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }
     
@@ -141,7 +133,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--src=test/src/com/redhat/ceylon/tools/test/deflt", "default"));
+                toolOptions("--src=test/src/com/redhat/ceylon/tools/test/deflt", "default"));
         tool.run();
     }
     
@@ -154,7 +146,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--src=test/src", "com.redhat.ceylon.tools.test.multiple.*"));
+                toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.multiple.*"));
         tool.run();
         assertTrue(carFile1.exists() && carFile2.exists());
     }
@@ -170,7 +162,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--src=test/src/com/redhat/ceylon/tools/test/bugCC59"));
+                toolOptions("--src=test/src/com/redhat/ceylon/tools/test/bugCC59"));
         tool.run();
         assertTrue(carFile1.exists() && carFile2.exists() && carFile3.exists());
     }
@@ -181,7 +173,7 @@ public class CompilerToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         try {
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    options("--src=test/src", "com.redhat.ceylon.tools.test.nosuchmodule"));
+                    toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.nosuchmodule"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Module com.redhat.ceylon.tools.test.nosuchmodule not found in source directories: test" + File.separator + "src", e.getMessage());   
@@ -194,7 +186,7 @@ public class CompilerToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         try {
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    options("--src=test/src", "com.redhat.ceylon.tools.test.nosuchmodule.java"));
+                    toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.nosuchmodule.java"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("file not found: com.redhat.ceylon.tools.test.nosuchmodule.java", e.getMessage());   
@@ -207,7 +199,7 @@ public class CompilerToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         try {
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    options("--src=test/src", "com.redhat.ceylon.tools.test.nosuchmodule.ceylon"));
+                    toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.nosuchmodule.ceylon"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("file not found: com.redhat.ceylon.tools.test.nosuchmodule.ceylon", e.getMessage());   
@@ -219,7 +211,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);        
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--src=test/src", "--encoding=UTF-8", "com.redhat.ceylon.tools.test.ceylon"));
+                toolOptions("--src=test/src", "--encoding=UTF-8", "com.redhat.ceylon.tools.test.ceylon"));
     }
     
     @Test
@@ -228,7 +220,7 @@ public class CompilerToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         try {
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    options("--src=test/src", "--encoding=foo", "com.redhat.ceylon.tools.test.ceylon"));
+                    toolOptions("--src=test/src", "--encoding=foo", "com.redhat.ceylon.tools.test.ceylon"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Unsupported encoding: foo", e.getMessage());   
@@ -241,7 +233,7 @@ public class CompilerToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         try {
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    options("--src=test/src", "com.redhat.ceylon.tools.test.ceylon/1.0"));
+                    toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.ceylon/1.0"));
             Assert.fail();
         } catch (OptionArgumentException e) {
             Assert.assertEquals("Invalid module name or source file: com.redhat.ceylon.tools.test.ceylon/1.0\n"
@@ -256,7 +248,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--src=test/src", "com.redhat.ceylon.tools.test.syntax"));
+                toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.syntax"));
         try{
             tool.run();
             Assert.fail("Tool should have thrown an exception");
@@ -273,7 +265,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--src=test/src", "com.redhat.ceylon.tools.test.analysis"));
+                toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.analysis"));
         try{
             tool.run();
             Assert.fail("Tool should have thrown an exception");
@@ -290,7 +282,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--src=test/src", "com.redhat.ceylon.tools.test.erroneous"));
+                toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.erroneous"));
         try{
             tool.run();
             Assert.fail("Tool should have thrown an exception");
@@ -307,7 +299,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--src=test/src", "com.redhat.ceylon.tools.test.runtimeex"));
+                toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.runtimeex"));
         try{
             tool.run();
             Assert.fail("Tool should have thrown an exception");
@@ -324,7 +316,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--src=test/src", "com.redhat.ceylon.tools.test.oome"));
+                toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.oome"));
         try{
             tool.run();
             Assert.fail("Tool should have thrown an exception");
@@ -338,7 +330,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--src=test/src", "com.redhat.ceylon.tools.test.stackoverflow"));
+                toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.stackoverflow"));
         try{
             tool.run();
             Assert.fail("Tool should have thrown an exception");
@@ -353,7 +345,7 @@ public class CompilerToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         try{
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    options("--src=test/src", "3"));
+                    toolOptions("--src=test/src", "3"));
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
             Assert.assertEquals("Invalid module name or source file: 3\n"
@@ -368,7 +360,7 @@ public class CompilerToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         try{
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    options("--javac=-target=foo", "com.example"));
+                    toolOptions("--javac=-target=foo", "com.example"));
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
             Assert.assertEquals("Invalid --javac option: -target: invalid target release: foo", x.getMessage());
@@ -376,7 +368,7 @@ public class CompilerToolTests extends AbstractToolTests {
         
         try{
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    options("--javac=-source=foo", "com.example"));
+                    toolOptions("--javac=-source=foo", "com.example"));
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
             Assert.assertEquals("Invalid --javac option: -source: invalid source release: foo", x.getMessage());
@@ -384,7 +376,7 @@ public class CompilerToolTests extends AbstractToolTests {
         
         try{
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    options("--javac=-monkey", "com.example"));
+                    toolOptions("--javac=-monkey", "com.example"));
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
             Assert.assertEquals("Unknown --javac option: -monkey", x.getMessage());
@@ -392,13 +384,13 @@ public class CompilerToolTests extends AbstractToolTests {
         
         {
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    options("--javac=-Xlint:cast", 
+                    toolOptions("--javac=-Xlint:cast", 
                             "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         }
         
         try{
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    options("--javac=-Xlint:monkey", 
+                    toolOptions("--javac=-Xlint:monkey", 
                             "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
             Assert.fail("Tool should have thrown an exception");
         }catch(OptionArgumentException x){
@@ -411,7 +403,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--src=test/src", "com.redhat.ceylon.tools.test.bug1183"));
+                toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.bug1183"));
         try {
             tool.run();
             Assert.fail("Tool should have thrown an exception");
@@ -426,7 +418,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--src=test/src", "com.redhat.ceylon.tools.test.badintegerliteral"));
+                toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.badintegerliteral"));
         try {
             tool.run();
             Assert.fail("Tool should have thrown an exception");
@@ -442,7 +434,7 @@ public class CompilerToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         try {
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    options("--src=test/src/com/redhat/ceylon/tools/test/empty"));
+                    toolOptions("--src=test/src/com/redhat/ceylon/tools/test/empty"));
             Assert.fail("Tool should have thrown an exception");
         } catch (NonFatalToolMessage e) {
             Assert.assertEquals("No modules or source files to compile", e.getMessage());
@@ -457,7 +449,7 @@ public class CompilerToolTests extends AbstractToolTests {
         
         try {
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    options("--suppress-warning=blah"));
+                    toolOptions("--suppress-warning=blah"));
             Assert.fail("Tool should have thrown an exception");
         } catch (OptionArgumentException e) {
         	Assert.assertEquals("Invalid value 'blah' given for option 'suppress-warning' to command 'compile'", e.getMessage());
@@ -472,7 +464,7 @@ public class CompilerToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         try {
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    options("--src=test/src/com/redhat/ceylon/tools/test/empty", "default"));
+                    toolOptions("--src=test/src/com/redhat/ceylon/tools/test/empty", "default"));
             tool.run();
             Assert.fail("Tool should have thrown an exception");
         } catch (ToolUsageError e) {
@@ -488,7 +480,7 @@ public class CompilerToolTests extends AbstractToolTests {
         ToolModel<CeylonCompileTool> model = pluginLoader.loadToolModel("compile");
         Assert.assertNotNull(model);
         CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                options("--src=test/src", "--target=8", "com.redhat.ceylon.tools.test.java8"));
+                toolOptions("--src=test/src", "--target=8", "com.redhat.ceylon.tools.test.java8"));
         tool.run();
         
     }
@@ -499,7 +491,7 @@ public class CompilerToolTests extends AbstractToolTests {
         Assert.assertNotNull(model);
         try {
             CeylonCompileTool tool = pluginFactory.bindArguments(model, getMainTool(),
-                    options("--src=test/src", "--target=56", "com.redhat.ceylon.tools.test.java8"));
+                    toolOptions("--src=test/src", "--target=56", "com.redhat.ceylon.tools.test.java8"));
         } catch (InvalidOptionValueException e) {
             Assert.assertEquals("Invalid value '56' given for option 'target' to command 'compile'", e.getMessage());
         }

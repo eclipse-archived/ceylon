@@ -1,7 +1,6 @@
 package com.redhat.ceylon.compiler.java.test.statement;
 
-import java.io.File;
-
+import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -18,6 +17,7 @@ public class OptimizationTests extends CompilerTests {
     
     @Override
     protected ModuleWithArtifact getDestModuleWithArtifact(String main) {
+        Assume.assumeTrue(allowSdkTests());
         return new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.statement.loop.optim", "1");
     }
     
@@ -85,6 +85,7 @@ public class OptimizationTests extends CompilerTests {
     @Test
     @Ignore("For benchmarking only")
     public void testLopOptimArrayIterationStaticBench(){
+        Assume.assumeTrue(allowSdkTests());
         compile("loop/optim/ArrayIterationStaticBench.ceylon");
         long java = arrayIterationStaticJava();
         java = arrayIterationStaticJava();

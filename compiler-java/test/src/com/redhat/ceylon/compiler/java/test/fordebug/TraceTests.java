@@ -2,6 +2,8 @@ package com.redhat.ceylon.compiler.java.test.fordebug;
 
 import java.io.File;
 
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.redhat.ceylon.compiler.java.test.fordebug.Tracer.HandlerResult;
@@ -10,6 +12,11 @@ import com.redhat.ceylon.compiler.java.test.fordebug.Tracer.MethodExit;
 import com.redhat.ceylon.compiler.java.test.fordebug.Tracer.Step;
 
 public class TraceTests extends DebuggerTests {
+    
+    @BeforeClass
+    public static void checkPreConditions() {
+        Assume.assumeTrue(allowNetworkTests());
+    }
     
     @Override
     protected String transformDestDir(String name) {

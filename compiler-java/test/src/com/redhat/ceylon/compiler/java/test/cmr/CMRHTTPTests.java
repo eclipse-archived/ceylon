@@ -38,6 +38,7 @@ import java.util.zip.ZipEntry;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -72,6 +73,11 @@ public class CMRHTTPTests extends CompilerTests {
     }
 
     private static AtomicInteger PORT_NUM_ALLOCATOR;
+    
+    @BeforeClass
+    public static void checkPreConditions() {
+        Assume.assumeTrue(allowNetworkTests());
+    }
     
     @BeforeClass
     public static void initPortAllocator() {

@@ -55,15 +55,6 @@ public class NewProjectToolTests extends AbstractToolTests {
         return ret;
     }
     
-    private List<String> options(String... strings){
-        List<String> ret = new ArrayList<String>(strings.length+2);
-        ret.add("--sysrep");
-        ret.add(getSysRepPath());
-        for(String s : strings)
-            ret.add(s);
-        return ret;
-    }
-    
     private void delete(File file) {
         if (file.isDirectory()) {
             for (File child : file.listFiles()) {
@@ -281,7 +272,7 @@ public class NewProjectToolTests extends AbstractToolTests {
             ToolModel<CeylonCompileTool> compileModel = pluginLoader.loadToolModel("compile");
             Assert.assertNotNull(compileModel);
             CeylonCompileTool compileTool = pluginFactory.bindArguments(compileModel, getMainTool(),
-                    options("--src=" + tmpDir.getAbsolutePath() + "/source",
+                    toolOptions("--src=" + tmpDir.getAbsolutePath() + "/source",
                             "--out=" + tmpDir.getAbsolutePath(),
                             "org.example.hello"));
             runTool(compileTool);

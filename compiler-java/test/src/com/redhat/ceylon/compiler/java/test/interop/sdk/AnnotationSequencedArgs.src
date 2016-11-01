@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.interop;
+package com.redhat.ceylon.compiler.java.test.interop.sdk;
 
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(
         major = 8,
@@ -9,14 +9,14 @@ final class annotationSequencedArgs_ {
     private annotationSequencedArgs_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationSequencedArgs({
+    @.com.redhat.ceylon.compiler.java.test.interop.sdk.JavaAnnotationSequencedArgs({
             "",
             ""})
-    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationSequencedArgs2(
+    @.com.redhat.ceylon.compiler.java.test.interop.sdk.JavaAnnotationSequencedArgs2(
             foo = {},
             bar = {
-                    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationSequencedArgs({""}),
-                    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationSequencedArgs({""})})
+                    @.com.redhat.ceylon.compiler.java.test.interop.sdk.JavaAnnotationSequencedArgs({""}),
+                    @.com.redhat.ceylon.compiler.java.test.interop.sdk.JavaAnnotationSequencedArgs({""})})
     static void annotationSequencedArgs() {
     }
 }
@@ -29,7 +29,7 @@ final class annotationSequencedArgs2_ {
     private annotationSequencedArgs2_() {
     }
     
-    @.com.redhat.ceylon.compiler.java.test.interop.JavaAnnotationSequencedArgs2(
+    @.com.redhat.ceylon.compiler.java.test.interop.sdk.JavaAnnotationSequencedArgs2(
             foo = {
                     "",
                     ""},

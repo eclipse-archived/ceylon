@@ -53,6 +53,7 @@ public class CopyToolTests extends AbstractToolTests {
                 Arrays.asList(
                         "--rep", getOutPath(),
                         "--out", getOutPath(),
+                        "--cacherep", getCachePath(),
                         "ceylon.openshift/1.1.1"));
         tool.run();
 
@@ -60,6 +61,7 @@ public class CopyToolTests extends AbstractToolTests {
                 Arrays.asList(
                         "--rep", getOutPath(),
                         "--out", getOutPath(),
+                        "--cacherep", getCachePath(),
                         "ceylon.openshift/1.1.1"));
         tool2.run();
 

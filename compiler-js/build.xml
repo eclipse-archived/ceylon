@@ -13,6 +13,7 @@
     <property name="src" location="${basedir}/src/main/java" />
     <property name="js-src" location="${basedir}/src/main/js" />
     <property name="runtime" value="${build.dir}/runtime" />
+    <property name="language.dir" location="${basedir}/../language" />
 
     <property name="jslangpath" value="ceylon/language/${module.com.redhat.ceylon.compiler.js.version}" />
     <property name="jslangmodule" value="${jslangpath}/ceylon.language-${module.com.redhat.ceylon.compiler.js.version}.js" />
@@ -158,12 +159,12 @@
     <target name="compiletest" depends="test-compile">
         <java classname="MainForJsTest" classpathref="test.run.classpath" failonerror="true">
             <sysproperty key="file.encoding" value="UTF-8" />
-            <arg value="src/test/ceylon"/>
-            <arg value="../language/test"/>
-            <arg value="X:../language/test/jvm"/>
-            <arg value="R:../language/test-resource" />
-            <arg value="r:../language/test-resource/resource.txt" />
-            <arg value="r:../language/test-resource/resmod/modres.txt" />
+            <arg value="${basedir}/src/test/ceylon"/>
+            <arg value="${language.dir}/test"/>
+            <arg value="X:${language.dir}/test/jvm"/>
+            <arg value="R:${language.dir}/test-resource" />
+            <arg value="r:${language.dir}/test-resource/resource.txt" />
+            <arg value="r:${language.dir}/test-resource/resmod/modres.txt" />
         </java>
     </target>
 

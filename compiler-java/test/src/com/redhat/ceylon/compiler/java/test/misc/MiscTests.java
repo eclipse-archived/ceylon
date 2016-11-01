@@ -460,14 +460,6 @@ public class MiscTests extends CompilerTests {
         Assert.assertFalse(JDKUtils.isOracleJDKAnyPackage("fr.epardaud"));
     }
     
-    private String script() {
-        if (OSUtil.isWindows()) {
-            return "../dist/dist/bin/ceylon.bat";
-        } else {
-            return "../dist/dist/bin/ceylon";
-        }
-    }
-    
     private void testLaunchDistCeylon(String sampleDir, String sampleModule, String sampleVersion) throws IOException, InterruptedException {
         String[] args1 = {
                 script(),

@@ -19,7 +19,7 @@
  */
 package com.redhat.ceylon.tools.test;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -30,14 +30,9 @@ import com.redhat.ceylon.common.tool.ToolModel;
 
 public class DocToolTests extends AbstractToolTests {
     
-    private List<String> options(String... strings){
-        List<String> ret = new ArrayList<String>(strings.length+4);
-        for(String s : strings)
-            ret.add(s);
-        ret.add("--sysrep");
-        ret.add(getSysRepPath());
-        ret.add("--out");
-        ret.add(destDir);
+    protected List<String> toolOptions(String... opts) {
+        List<String> ret = super.toolOptions("--out", destDir);
+        ret.addAll(Arrays.asList(opts));
         return ret;
     }
     
@@ -46,7 +41,7 @@ public class DocToolTests extends AbstractToolTests {
         ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
         Assert.assertNotNull(model);
         CeylonDocTool tool = pluginFactory.bindArguments(model, getMainTool(), 
-                options("--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
+                toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }
     
@@ -55,7 +50,7 @@ public class DocToolTests extends AbstractToolTests {
         ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
         Assert.assertNotNull(model);
         CeylonDocTool tool = pluginFactory.bindArguments(model, getMainTool(), 
-                options("--src=test/src", "com.redhat.ceylon.tools.test.multiple.*"));
+                toolOptions("--src=test/src", "com.redhat.ceylon.tools.test.multiple.*"));
         tool.run();
     }
     
@@ -64,7 +59,7 @@ public class DocToolTests extends AbstractToolTests {
         ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
         Assert.assertNotNull(model);
         CeylonDocTool tool = pluginFactory.bindArguments(model, getMainTool(), 
-                options("--non-shared", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
+                toolOptions("--non-shared", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }
     
@@ -73,7 +68,7 @@ public class DocToolTests extends AbstractToolTests {
         ToolModel<CeylonDocTool> model = pluginLoader.loadToolModel("doc");
         Assert.assertNotNull(model);
         CeylonDocTool tool = pluginFactory.bindArguments(model, getMainTool(), 
-                options("--source-code", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
+                toolOptions("--source-code", "--src=test/src", "com.redhat.ceylon.tools.test.ceylon"));
         tool.run();
     }
     
