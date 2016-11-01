@@ -4230,9 +4230,16 @@ public class ExpressionVisitor extends Visitor {
             else if (checkCallable(pt, primary, 
                     "invoked expression must be callable")) {
                 Interface cd = unit.getCallableDeclaration();
+                Type ct = pt.getSupertype(cd);
+                if (ct==null) {
+                    primary.addError(
+                            "invoked expression must be callable: type '" 
+                            + pt.asString(unit) + 
+                            "' involves a type function");
+                    return;
+                }
                 List<Type> typeArgs = 
-                        pt.getSupertype(cd)
-                            .getTypeArgumentList();
+                        ct.getTypeArgumentList();
                 if (!typeArgs.isEmpty()) {
                     that.setTypeModel(typeArgs.get(0));
                 }
