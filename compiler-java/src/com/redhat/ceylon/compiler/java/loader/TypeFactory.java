@@ -131,12 +131,12 @@ public class TypeFactory extends Unit {
         }
     }
 
-    public Declaration getBooleanTrueDeclaration() {
-        return getLanguageModuleDeclaration("true");
+    public TypedDeclaration getBooleanTrueDeclaration() {
+        return (TypedDeclaration)getLanguageModuleDeclaration("true");
     }
 
-    public Declaration getBooleanFalseDeclaration() {
-        return getLanguageModuleDeclaration("false");
+    public TypedDeclaration getBooleanFalseDeclaration() {
+        return (TypedDeclaration)getLanguageModuleDeclaration("false");
     }
 
     public TypeDeclaration getBooleanTrueClassDeclaration() {

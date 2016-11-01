@@ -3913,7 +3913,9 @@ public abstract class AbstractTransformer implements Transformation {
             return make().Type(syms().stringType);
         } else if (t.isByte()) {
             return makeQuotedQualIdentFromString("java.lang.Byte");
-        } else if (t.isBoolean()) {
+        } else if (t.isBoolean()
+                || typeFact().getBooleanTrueDeclaration().getType().isExactly(t)
+                || typeFact().getBooleanFalseDeclaration().getType().isExactly(t)) {
             return make().Type(syms().booleanObjectType);
         } else {
             throw BugException.unhandledTypeCase(t);
