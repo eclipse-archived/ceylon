@@ -1629,9 +1629,10 @@ public class StatementTransformer extends AbstractTransformer {
                 for (VarDefBuilder vdb : varsDefs) {
                     itemDecls = itemDecls.append(vdb.build());
                 }
-                Type elementType = typeFact().getJavaIteratedType(stmt.getForClause().getForIterator().getSpecifierExpression().getExpression().getTypeModel());
+                
+                Type t = typeFact().getIteratedType(forIterator.getSpecifierExpression().getExpression().getTypeModel());
                 loopvar = makeVar(iteratorVarName, makeJavaType(
-                        elementType, JT_NO_PRIMITIVES), null);
+                        t, JT_NO_PRIMITIVES), null);
             } else {
                 throw BugException.unhandledNodeCase(forIterator);
             }
@@ -1912,9 +1913,8 @@ public class StatementTransformer extends AbstractTransformer {
             } else if (forIterator instanceof Tree.PatternIterator) {
                 Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
                 Tree.Pattern pattern = patIter.getPattern();
-                for (VarDefBuilder vdb : transformPattern(pattern, elementGet)) {
-                    transformedBlock = transformedBlock.prepend(vdb.build());
-                }
+                transformedBlock = destructure(pattern, elementGet, 
+                        elementType, isIndexedAccessBoxed(), transformedBlock);
             } else {
                 transformedBlock = transformedBlock.prepend(makeErroneousStmt(forIterator, "unhandled iterator type " + forIterator.getNodeType()));
             }
@@ -1928,6 +1928,163 @@ public class StatementTransformer extends AbstractTransformer {
                     List.<JCExpressionStatement>of(make().Exec(iIncr)),
                     block)));
             return result;
+        }
+        
+        private List<JCStatement> destructure(Tree.Pattern pattern, 
+                JCExpression elementGet, 
+                Type elementType, boolean boxed,
+                List<JCStatement> transformedBlock) {
+            if (pattern instanceof Tree.VariablePattern) {
+                return destructureVariable(((Tree.VariablePattern)pattern).getVariable(), 
+                        elementGet, elementType, boxed, transformedBlock);
+            } else if (pattern instanceof Tree.KeyValuePattern) {
+                return destructureKeyValue((Tree.KeyValuePattern)pattern, elementGet, elementType, transformedBlock);
+            } else if (pattern instanceof Tree.TuplePattern) {
+                return destructureTuple((Tree.TuplePattern)pattern, elementGet, elementType, transformedBlock);
+            } else {
+                return transformedBlock.prepend(makeErroneousStmt(pattern, "unsupported pattern: " + pattern.getNodeType()));
+            }
+        }
+        
+        private List<JCStatement> destructureVariable(Tree.Variable var, 
+                JCExpression elementGet,
+                Type elementType,
+                boolean boxed,
+                List<JCStatement> stmts) {
+            at(var);
+            // Type entryType = elementType.getSupertype(typeFact().getEntryDeclaration());
+            /*
+             Type keyType = entryType.getTypeArgumentList().get(0);
+             Tree.Variable keyVar = ((Tree.VariablePattern)pat.getKey()).getVariable();
+             String keyName = Naming.getVariableName(keyVar);
+             Boolean keyUnboxed = keyVar.getDeclarationModel().getUnboxed();
+             BoxingStrategy keyBoxStrat = CodegenUtil.getBoxingStrategy(keyVar.getDeclarationModel());
+            JCStatement keyVariable = makeVar(FINAL,
+                    keyName,
+                    makeJavaType(keyType, BooleanUtil.isFalse(keyUnboxed) ? JT_NO_PRIMITIVES : 0),
+                    expressionGen().applyErasureAndBoxing(
+                            keyExpr,
+                            typeFact().getAnythingType(), true, keyBoxStrat, keyType));
+            */
+            
+            /*
+             Type valueType = entryType.getTypeArgumentList().get(1);
+             Tree.Variable valueVar = ((Tree.VariablePattern)pat.getValue()).getVariable();
+             String valueName = Naming.getVariableName(valueVar);
+             Boolean valueUnboxed = valueVar.getDeclarationModel().getUnboxed();
+             BoxingStrategy valueBoxStrat = CodegenUtil.getBoxingStrategy(valueVar.getDeclarationModel());
+            JCStatement valueVariable = makeVar(FINAL,
+                    valueName,
+                    makeJavaType(valueType, BooleanUtil.isFalse(valueUnboxed) ? JT_NO_PRIMITIVES : 0),
+                    expressionGen().applyErasureAndBoxing(
+                            itemExpr,
+                            typeFact().getAnythingType(), true, valueBoxStrat, valueType));
+             */
+            BoxingStrategy keyBoxStrat = CodegenUtil.getBoxingStrategy(var.getDeclarationModel());
+            //elementGet  = expressionGen().applyErasureAndBoxing(
+            //        elementGet,
+             //       typeFact().getAnythingType(), true, keyBoxStrat, elementType);
+            
+            JCStatement variable = transformVariable(var, elementGet, elementType, boxed).build();
+            // Prepend to the block
+            return stmts.prepend(variable);
+        }
+        
+        private List<JCStatement> destructureKeyValue(Tree.KeyValuePattern pat, 
+                JCExpression elementGet,
+                Type elementType,
+                List<JCStatement> transformedBlock) {
+            at(pat);
+            SyntheticName entryName = naming.alias("entry");
+            JCStatement entryVariable = makeVar(FINAL, entryName,
+                    makeJavaType(elementType),
+                    elementGet);
+            
+            
+            Type entryType = elementType.getSupertype(typeFact().getEntryDeclaration());
+            Type keyType;
+            Type itemType;
+            JCExpression keyExpr;
+            JCExpression itemExpr;
+            if (entryType != null) {
+                keyType = entryType.getTypeArgumentList().get(0);
+                keyExpr = make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getKey"), List.<JCExpression>nil());
+                if (requiresNullCheck(stmt.getForClause().getForIterator())) {
+                    keyExpr = utilInvocation().checkNull(keyExpr);
+                }
+                
+                itemType = entryType.getTypeArgumentList().get(1);
+                itemExpr = make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getItem"), List.<JCExpression>nil());
+                if (requiresNullCheck(stmt.getForClause().getForIterator())) {
+                    itemExpr = utilInvocation().checkNull(itemExpr);
+                }
+            } else {
+                Type tupleType = elementType.getSupertype(typeFact().getTupleDeclaration());
+                keyType = tupleType.getTypeArgumentList().get(1);
+                keyExpr = make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getFromFirst"), List.<JCExpression>of(make().Literal(0)));
+                keyExpr = expressionGen().applyErasureAndBoxing(keyExpr, typeFact().getAnythingType(), true, BoxingStrategy.BOXED, keyType);
+                
+                itemType = tupleType.getTypeArgumentList().get(2);
+                itemExpr = make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getFromFirst"), List.<JCExpression>of(make().Literal(1)));
+                itemExpr = expressionGen().applyErasureAndBoxing(itemExpr, typeFact().getAnythingType(), true, BoxingStrategy.BOXED, itemType);
+            }
+            
+            // Prepend to the block
+            transformedBlock = destructure(pat.getValue(), itemExpr, itemType, true, transformedBlock);
+            transformedBlock = destructure(pat.getKey(), keyExpr, keyType, true, transformedBlock);
+            transformedBlock = transformedBlock.prepend(entryVariable);
+            return transformedBlock;
+        }
+        
+        private List<JCStatement> destructureTuple(Tree.TuplePattern pattern, JCExpression elementGet, Type elementType,
+                List<JCStatement> transformedBlock) {
+            at(pattern);
+            SyntheticName tupleName = naming.alias("tuple");
+            JCStatement tupleVariable = makeVar(FINAL, tupleName,
+                    makeJavaType(elementType),
+                    elementGet);
+            Type entryType = elementType.getSupertype(typeFact().getEntryDeclaration());
+            Type tupleType = elementType.getSupertype(typeFact().getTupleDeclaration());
+            Type sequentialType = elementType.getSupertype(typeFact().getSequentialDeclaration());
+            int index = 0;
+            for (Tree.Pattern p : pattern.getPatterns()) {
+                Type tupleElementType;
+                JCExpression tupleElementGet;
+                if (entryType != null) {
+                    tupleElementType = entryType.getTypeArgumentList().get(index);
+                    tupleElementGet = make().Apply(null, naming.makeQualIdent(tupleName.makeIdent(), index == 0 ? "getKey" : "getItem"), List.<JCExpression>nil());
+                } else {
+                    if (tupleType != null) {
+                        tupleElementType = tupleType.getTypeArgumentList().get(1);
+                        Type rest = tupleType.getTypeArgumentList().get(2);
+                        if (rest.isTuple()) {
+                            tupleType = rest;
+                        } else if (rest.isSubtypeOf(typeFact().getSequentialType(typeFact().getAnythingType()))) {
+                            tupleType = null;
+                            sequentialType = rest;
+                        } else {
+                            transformedBlock = transformedBlock.prepend(makeErroneousStmt(p, "undetermined rest: " + rest));
+                            return transformedBlock;
+                        }
+                    } else if (sequentialType != null) {
+                        tupleElementType = sequentialType.getTypeArgumentList().get(0);
+                    } else {
+                        transformedBlock = transformedBlock.prepend(makeErroneousStmt(p, "unsupported pattern type: " + elementType));
+                        return transformedBlock;
+                    }
+                    tupleElementGet = make().Apply(null, naming.makeQualIdent(tupleName.makeIdent(), "getFromFirst"), List.<JCExpression>of(make().Literal(index)));
+                    tupleElementGet = expressionGen().applyErasureAndBoxing(tupleElementGet, typeFact().getAnythingType(), true, BoxingStrategy.BOXED, tupleElementType);
+                }
+                
+                if (requiresNullCheck(stmt.getForClause().getForIterator())) {
+                    tupleElementGet = utilInvocation().checkNull(tupleElementGet);
+                }
+                transformedBlock = destructure(p, tupleElementGet, tupleElementType, true, transformedBlock);
+                index++;
+            }
+            
+            transformedBlock = transformedBlock.prepend(tupleVariable);
+            return transformedBlock;
         }
         
         protected JCBinary stepCheck(final SyntheticName stepName) {
@@ -2076,18 +2233,14 @@ public class StatementTransformer extends AbstractTransformer {
             }
             elementGet = expressionGen().applyErasureAndBoxing(
                     elementGet, gotType, typeErased, exprBoxed, 
-                    isIndexedAccessBoxed() ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED,//CodegenUtil.getBoxingStrategy(getElementOrKeyVariable().getDeclarationModel()), 
+                    CodegenUtil.getBoxingStrategy(getElementOrKeyVariable().getDeclarationModel()), 
                     elementType, 0);
             return elementGet;
         }
         
         @Override
         protected boolean isIndexedAccessBoxed() {
-            if (getForIterator() instanceof Tree.ValueIterator) {
-                return getElementOrKeyVariable().getDeclarationModel().getUnboxed() == false;
-            } else {
-                return false;
-            }
+            return getElementOrKeyVariable().getDeclarationModel().getUnboxed() == false;
         }
     }
     
