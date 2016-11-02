@@ -202,7 +202,7 @@ public class AttributeDefinitionBuilder {
     public static AttributeDefinitionBuilder wrapped(AbstractTransformer owner, 
             String javaClassName, ClassDefinitionBuilder classBuilder, String attrName, TypedDeclaration attrType, 
             boolean toplevel) {
-        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, "value", toplevel, false, false, false);
+        return new AttributeDefinitionBuilder(owner, null, attrType, javaClassName, classBuilder, attrName, NamingBase.Unfix.$object$.toString(), toplevel, false, false, false);
     }
     
     public static AttributeDefinitionBuilder singleton(AbstractTransformer owner, 
