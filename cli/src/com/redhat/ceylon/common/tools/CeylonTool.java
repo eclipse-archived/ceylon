@@ -135,6 +135,7 @@ public class CeylonTool implements Tool {
     private Boolean paginate;
     private File cwd;
     private File config;
+    private boolean noConfig;
     private CeylonConfig oldConfig = null;
     private List<String> defines;
     private Boolean showHome;
@@ -210,6 +211,16 @@ public class CeylonTool implements Tool {
             "(default: `./.ceylon/config`)")
     public void setConfig(File config) {
         this.config = config;
+    }
+    
+    public boolean getNoConfig() {
+        return noConfig;
+    }
+    
+    @Option
+    @Description("Specifies that no configuration file should be loaded for this tool.")
+    public void setNoConfig(boolean noConfig) {
+        this.noConfig = noConfig;
     }
     
     @OptionArgument(shortName='D', argumentName = "key>=<value")
@@ -447,15 +458,20 @@ public class CeylonTool implements Tool {
     // (meaning either `cwd` or `config` was set for the main tool)
     private CeylonConfig setupConfig() throws IOException {
         File cwd = getCwd();
-        File cfgFile = getConfig();
-        if (cfgFile != null) {
-            File absCfgFile = FileUtil.applyCwd(cwd, cfgFile);
-            CeylonConfig config = CeylonConfigFinder.DEFAULT.loadConfigFromFile(absCfgFile);
-            return CeylonConfig.set(config);
-        }
-        if (cwd != null && cwd.isDirectory()) {
-            CeylonConfig config = CeylonConfigFinder.loadDefaultConfig(cwd);
-            return CeylonConfig.set(config);
+        if (!getNoConfig()) {
+            File cfgFile = getConfig();
+            if (cfgFile != null) {
+                File absCfgFile = FileUtil.applyCwd(cwd, cfgFile);
+                CeylonConfig config = CeylonConfigFinder.DEFAULT.loadConfigFromFile(absCfgFile);
+                return CeylonConfig.set(config);
+            }
+            if (cwd != null && cwd.isDirectory()) {
+                CeylonConfig config = CeylonConfigFinder.loadDefaultConfig(cwd);
+                return CeylonConfig.set(config);
+            }
+        } else {
+            // We're not loading any configuration file, so we set an empty one
+            return CeylonConfig.set(new CeylonConfig());
         }
         return null;
     }
