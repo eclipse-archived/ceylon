@@ -5,7 +5,7 @@ package com.redhat.ceylon.common.tool;
  */
 public class OptionModel<A> {
     public static enum ArgumentType {
-        NOT_ALLOWED,
+        BOOLEAN,
         OPTIONAL,
         REQUIRED
     }

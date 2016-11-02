@@ -128,7 +128,7 @@ public class DocBuilder {
             s1.setInvocation(Tools.progName());
             OptionModel<Boolean> option = new OptionModel();
             option.setLongName("version");
-            option.setArgumentType(ArgumentType.NOT_ALLOWED);
+            option.setArgumentType(ArgumentType.BOOLEAN);
             ArgumentModel<Boolean> argument = new ArgumentModel<>();
             argument.setMultiplicity(Multiplicity._1);
             argument.setType(Boolean.TYPE);

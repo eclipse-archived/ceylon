@@ -264,7 +264,7 @@ public class CeylonBashCompletionTool implements Tool {
         TreeSet<OptionModel<?>> sorted = new TreeSet<OptionModel<?>>(comparator);
         sorted.addAll(tool.getOptions());
         for (OptionModel<?> option : sorted) {
-            results.addResult("--" + option.getLongName() + (option.getArgumentType() == ArgumentType.NOT_ALLOWED ? "" : "\\="));
+            results.addResult("--" + option.getLongName() + (option.getArgumentType() == ArgumentType.BOOLEAN ? "" : "\\="));
         }
         return results;
     }

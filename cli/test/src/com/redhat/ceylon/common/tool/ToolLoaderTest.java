@@ -23,7 +23,7 @@ public class ToolLoaderTest {
         Assert.assertEquals(TestExampleTool.class.getMethod("setLongName", boolean.class), longOptionModel.getArgument().getSetter());
         Assert.assertEquals(longOptionModel, model.getOptionByShort('F'));
         Assert.assertEquals(null, longOptionModel.getArgument().getName());
-        Assert.assertEquals(ArgumentType.NOT_ALLOWED, longOptionModel.getArgumentType());
+        Assert.assertEquals(ArgumentType.BOOLEAN, longOptionModel.getArgumentType());
         Assert.assertEquals(0, longOptionModel.getArgument().getMultiplicity().getMin());
         Assert.assertEquals(1, longOptionModel.getArgument().getMultiplicity().getMax());
         
@@ -48,7 +48,7 @@ public class ToolLoaderTest {
         Assert.assertEquals("pure-option", pureOptionModel.getLongName());
         Assert.assertEquals(null, pureOptionModel.getShortName());
         Assert.assertEquals(null, pureOptionModel.getArgument().getName());
-        Assert.assertEquals(ArgumentType.NOT_ALLOWED, pureOptionModel.getArgumentType());
+        Assert.assertEquals(ArgumentType.BOOLEAN, pureOptionModel.getArgumentType());
         Assert.assertEquals(0, pureOptionModel.getArgument().getMultiplicity().getMin());
         Assert.assertEquals(1, pureOptionModel.getArgument().getMultiplicity().getMax());
         

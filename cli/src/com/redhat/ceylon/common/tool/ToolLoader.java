@@ -365,7 +365,7 @@ public abstract class ToolLoader {
         if (shortName != Option.NO_SHORT) {
             optionModel.setShortName(shortName);
         }
-        optionModel.setArgumentType(OptionModel.ArgumentType.NOT_ALLOWED);
+        optionModel.setArgumentType(OptionModel.ArgumentType.BOOLEAN);
         optionModel.setArgument(buildPureOption(toolModel, setter));
         optionModel.getArgument().setOption(optionModel);
         return optionModel;

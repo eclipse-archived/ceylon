@@ -211,7 +211,7 @@ public class HtmlVisitor implements Visitor {
         if (argumentType == ArgumentType.OPTIONAL) {
             html.text("[");
         }
-        if (argumentType != ArgumentType.NOT_ALLOWED) {
+        if (argumentType != ArgumentType.BOOLEAN) {
             html.text("=").text(argumentName);
         }
         if (argumentType == ArgumentType.OPTIONAL) {

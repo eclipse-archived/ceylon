@@ -138,7 +138,7 @@ public class DocBookVisitor implements Visitor {
         if (argumentType == ArgumentType.OPTIONAL) {
             docbook.text("[");
         }
-        if (argumentType != ArgumentType.NOT_ALLOWED) {
+        if (argumentType != ArgumentType.BOOLEAN) {
             docbook.text("=").open("replaceable").text(argumentName).close("replaceable");
         }
         if (argumentType == ArgumentType.OPTIONAL) {

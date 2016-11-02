@@ -219,7 +219,7 @@ public class PlainVisitor implements Visitor {
         if (argumentType == ArgumentType.OPTIONAL) {
             out.append("[");
         }
-        if (argumentType != ArgumentType.NOT_ALLOWED) {
+        if (argumentType != ArgumentType.BOOLEAN) {
             out.append("=<" + argumentName + ">");
         }
         if (argumentType == ArgumentType.OPTIONAL) {

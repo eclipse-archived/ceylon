@@ -57,7 +57,7 @@ public class Option implements Documentation {
     }
 
     public String getArgumentName() {
-        String argumentName = option.getArgumentType() == ArgumentType.NOT_ALLOWED ? null : option.getArgument().getName();
+        String argumentName = option.getArgumentType() == ArgumentType.BOOLEAN ? null : option.getArgument().getName();
         return argumentName;
     }
 

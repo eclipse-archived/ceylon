@@ -170,8 +170,11 @@ public class ToolFactory {
                         rest.add(arg);
                     } else {
                         switch (option.getArgumentType()) {
-                        case NOT_ALLOWED:
-                            argument = "true"; 
+                        case BOOLEAN:
+                            argument = getLongFormArgument(arg, null);
+                            if (argument == null) {
+                                argument = "true";
+                            }
                             break;
                         case OPTIONAL:
                         case REQUIRED:
@@ -202,7 +205,7 @@ public class ToolFactory {
                             continue argloop;
                         } 
                         switch (option.getArgumentType()) {
-                        case NOT_ALLOWED:
+                        case BOOLEAN:
                             argument = "true";
                             break;
                         case REQUIRED:
