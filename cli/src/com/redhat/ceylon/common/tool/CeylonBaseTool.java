@@ -2,6 +2,8 @@ package com.redhat.ceylon.common.tool;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.tools.CeylonTool;
@@ -54,6 +56,32 @@ public abstract class CeylonBaseTool implements Tool {
         return false;
     }
     
+    protected Set<String> getVerboseCategories(String... morecats) {
+        Set<String> categories = new TreeSet<String>();
+        categories.add("all");
+        categories.add("loader");
+        for (String cat : morecats) {
+            categories.add(cat);
+        }
+        return categories;
+    }
+    
+    private void validateVerbose(String verbose, Set<String> categories) {
+        if (verbose != null && !verbose.isEmpty()) {
+            for (String cat : verbose.split(",")){
+                if (!categories.contains(cat)) {
+                    String cats = categories.toString();
+                    cats = cats.substring(1, cats.length() - 1);
+                    throw new IllegalArgumentException("Unknown verbose category '" + cat + "', should be one of: " + cats);
+                }
+            }
+        }
+    }
+    
+    protected void validateVerbose(String verbose) {
+        validateVerbose(verbose, getVerboseCategories());
+    }
+    
     protected File validCwd() {
         return (cwd != null) ? cwd : new File(".");
     }
@@ -68,6 +96,6 @@ public abstract class CeylonBaseTool implements Tool {
 
     @Override
     public void initialize(CeylonTool mainTool) throws Exception {
-        // Empty default implementation for simple tools that don't need initialization
+        validateVerbose(verbose);
     }
 }

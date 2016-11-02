@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Constants;
@@ -356,6 +357,10 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             "Allowed flags include: `all`, `loader`, `ast`, `code`, `cmr`, `benchmark`.")
     public void setVerbose(String verbose) {
         super.setVerbose(verbose);
+    }
+    
+    protected Set<String> getVerboseCategories(String... morecats) {
+        return super.getVerboseCategories("ast", "code", "cmr", "benchmark");
     }
     
     @OptionArgument(argumentName="option")

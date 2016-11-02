@@ -43,6 +43,7 @@ import java.util.IdentityHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import com.redhat.ceylon.ceylondoc.Util.ReferenceableComparatorByName;
@@ -210,6 +211,20 @@ public class CeylonDocTool extends OutputRepoUsingTool {
 
     protected Logger createLogger() {
         return new CeylondLogger(false, isVerbose("cmr"));
+    }
+    
+    @Option(shortName='d')
+    @OptionArgument(argumentName = "flags")
+    @Description("Produce verbose output. " +
+            "If no `flags` are given then be verbose about everything, " +
+            "otherwise just be verbose about the flags which are present. " +
+            "Allowed flags include: `all`, `loader`, `cmr`.")
+    public void setVerbose(String verbose) {
+        super.setVerbose(verbose);
+    }
+    
+    protected Set<String> getVerboseCategories(String... morecats) {
+        return super.getVerboseCategories("cmr");
     }
     
     @OptionArgument(argumentName="encoding")

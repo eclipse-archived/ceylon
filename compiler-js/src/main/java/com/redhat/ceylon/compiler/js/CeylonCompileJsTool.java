@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.common.Backend;
@@ -100,6 +101,10 @@ public class CeylonCompileJsTool extends OutputRepoUsingTool {
             "Allowed flags include: `all`, `loader`, `ast`, `code`, `stitcher`.")
     public void setVerbose(String verbose) {
         this.verbose = verbose;
+    }
+    
+    protected Set<String> getVerboseCategories(String... morecats) {
+        return super.getVerboseCategories("ast", "code", "stitcher");
     }
     
     @OptionArgument(shortName='E', argumentName="encoding")

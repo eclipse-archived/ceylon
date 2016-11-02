@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
@@ -154,7 +155,9 @@ public class CeylonRunTool extends RepoUsingTool {
         super.setVerbose(verbose);
     }
     
-    
+    protected Set<String> getVerboseCategories(String... morecats) {
+        return super.getVerboseCategories("cmr");
+    }
     
     @Option
     @Description("Link modules which were compiled with a more recent "

@@ -116,6 +116,10 @@ public class CeylonCopyTool extends OutputRepoUsingTool {
         this.verbose = verbose;
     }
     
+    protected Set<String> getVerboseCategories(String... morecats) {
+        return super.getVerboseCategories("files");
+    }
+    
     @Override
     protected boolean needsSystemRepo() {
         return false;
