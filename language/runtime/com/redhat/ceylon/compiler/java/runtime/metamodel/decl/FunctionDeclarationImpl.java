@@ -307,13 +307,13 @@ public class FunctionDeclarationImpl
     @Override
     public java.lang.annotation.Annotation[] $getJavaAnnotations$() {
         // FIXME: this could be a FunctionalParameter!
-        return Metamodel.getJavaMethod((Function) declaration).getAnnotations();
+        return Metamodel.getJavaAnnotatedElement((Function) declaration).getAnnotations();
     }
     
     @Override
     @Ignore
     public boolean $isAnnotated$(java.lang.Class<? extends java.lang.annotation.Annotation> annotationType) {
-        final AnnotatedElement element = Metamodel.getJavaMethod((Function) declaration);
+        final AnnotatedElement element = Metamodel.getJavaAnnotatedElement((Function) declaration);
         return element != null ? element.isAnnotationPresent(annotationType) : false;
     }
     

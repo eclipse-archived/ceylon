@@ -68,6 +68,7 @@ import com.redhat.ceylon.model.loader.NamingBase;
 import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionClass;
 import com.redhat.ceylon.model.loader.impl.reflect.mirror.ReflectionMethod;
 import com.redhat.ceylon.model.loader.model.AnnotationProxyClass;
+import com.redhat.ceylon.model.loader.model.AnnotationProxyMethod;
 import com.redhat.ceylon.model.loader.model.FunctionOrValueInterface;
 import com.redhat.ceylon.model.loader.model.JavaMethod;
 import com.redhat.ceylon.model.loader.model.LazyClass;
@@ -857,6 +858,15 @@ public class Metamodel {
         return declaration.getName() == null || declaration.getName().isEmpty();
     }
 
+    public static java.lang.reflect.AnnotatedElement getJavaAnnotatedElement(com.redhat.ceylon.model.typechecker.model.Function declaration) {
+        if(declaration instanceof JavaMethod || declaration instanceof LazyFunction)
+            return getJavaMethod(declaration);
+        if(declaration instanceof AnnotationProxyMethod){
+            return getJavaClass(((AnnotationProxyMethod)declaration).proxyClass.iface);
+        }
+        throw Metamodel.newModelError("Unsupported declaration type: " + declaration);
+    }
+    
     public static java.lang.reflect.Method getJavaMethod(com.redhat.ceylon.model.typechecker.model.Function declaration) {
         if(declaration instanceof JavaMethod){
             ReflectionMethod methodMirror = (ReflectionMethod) ((JavaMethod) declaration).mirror;
