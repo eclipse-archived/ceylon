@@ -75,6 +75,7 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierStatement;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
+import com.redhat.ceylon.langtools.tools.javac.code.TypeTag;
 import com.redhat.ceylon.langtools.tools.javac.jvm.Target;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree;
 import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCAnnotation;
@@ -1704,7 +1705,7 @@ public class ClassTransformer extends AbstractTransformer {
                     nullOrZero = make().Literal(false);
                     break;
                 case CHAR:
-                    nullOrZero = make().Literal('\0');
+                    nullOrZero = make().Literal(TypeTag.CHAR, 0);
                     break;
                 default:
                     throw new RuntimeException();
