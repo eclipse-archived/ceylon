@@ -699,7 +699,10 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
         ret = applySelfTypeCasts(ret, exprType, exprBoxed, boxingStrategy, expectedType);
         ret = applyJavaTypeConversions(ret, exprType, expectedType, boxingStrategy, exprBoxed, exprSmall, flags);
-        ret = applyJavaCoercions(ret, exprType, expectedType);
+        // Don't rely on coerced member because for SOME reason this is called
+        // _after_ we reset it in transformExpression()
+        if((flags & EXPR_IS_COERCED) != 0)
+            ret = applyJavaCoercions(ret, exprType, expectedType);
         return ret;
     }
 
