@@ -1288,7 +1288,12 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(Tree.CharLiteral lit) {
-        return make().Literal(TypeTag.INT, literalValue(lit));
+        at(lit);
+        if (lit.getSmall()) {
+            return make().Literal(TypeTag.CHAR, literalValue(lit));
+        } else {
+            return make().Literal(TypeTag.INT, literalValue(lit));
+        }
     }
 
     public JCExpression transform(Tree.FloatLiteral lit) {
