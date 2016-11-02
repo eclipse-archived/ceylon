@@ -829,18 +829,24 @@ public class ExpressionVisitor extends Visitor {
                         checkReified(t, type, knownType, 
                                 that.getAssertion());
                     }
-                    if (hasUncheckedNulls(e) 
-                            && unit.getNullType()
-                                .isSubtypeOf(type)) {
+                    Type checkType;
+                    if (hasUncheckedNulls(e)) {
+                        checkType = unit.getOptionalType(knownType);
                         // if the expression has unchecked nulls,
                         // widen the known type to an optional
                         // type, which allows idioms like an 
                         // assert that simultaneously narrows
                         // and widens to optional
-                        knownType = unit.getOptionalType(knownType);
+                        if (unit.getNullType()
+                                .isSubtypeOf(type)) {
+                            knownType = checkType;
+                        }
+                    }
+                    else {
+                        checkType = knownType;
                     }
                     if (that.getNot()) {
-                        if (intersectionType(type, knownType, unit)
+                        if (intersectionType(type, checkType, unit)
                                 .isNothing()) {
                             that.addUsageWarning(Warning.redundantNarrowing,
                                     "condition does not narrow type: intersection of '" + 
@@ -850,7 +856,7 @@ public class ExpressionVisitor extends Visitor {
                                     "' is empty" + 
                                     " (expression is already of the specified type)");
                         }
-                        else if (knownType.isSubtypeOf(type)) {
+                        else if (checkType.isSubtypeOf(type)) {
                             that.addError("condition tests assignability to bottom type 'Nothing': '" + 
                                     knownType.asString(unit) + 
                                     "' is a subtype of '" + 
@@ -858,7 +864,7 @@ public class ExpressionVisitor extends Visitor {
                         }
                     } 
                     else {
-                        if (knownType.isSubtypeOf(type)) {
+                        if (checkType.isSubtypeOf(type)) {
                             that.addUsageWarning(Warning.redundantNarrowing,
                                     "condition does not narrow type: '" + 
                                     knownType.asString(unit) + 
