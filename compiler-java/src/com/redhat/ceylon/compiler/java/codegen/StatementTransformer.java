@@ -46,12 +46,14 @@ import com.redhat.ceylon.compiler.typechecker.tree.Tree.Continue;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Expression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.ForStatement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.IsCase;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.Pattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.RangeOp;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Return;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.SpecifierOrInitializerExpression;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Statement;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Switched;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Term;
+import com.redhat.ceylon.compiler.typechecker.tree.Tree.TuplePattern;
 import com.redhat.ceylon.compiler.typechecker.tree.Tree.Variable;
 import com.redhat.ceylon.compiler.typechecker.tree.Visitor;
 import com.redhat.ceylon.langtools.tools.javac.code.Flags;
@@ -1585,6 +1587,7 @@ public class StatementTransformer extends AbstractTransformer {
         if (transformation == null) {
             transformation = new ForStatementTransformation(stmt);
         }
+        at(stmt);
         return transformation.transform();
     }
 
@@ -1626,10 +1629,9 @@ public class StatementTransformer extends AbstractTransformer {
                 for (VarDefBuilder vdb : varsDefs) {
                     itemDecls = itemDecls.append(vdb.build());
                 }
-                
-                Type t = typeFact().getIteratedType(forIterator.getSpecifierExpression().getExpression().getTypeModel());
+                Type elementType = typeFact().getJavaIteratedType(stmt.getForClause().getForIterator().getSpecifierExpression().getExpression().getTypeModel());
                 loopvar = makeVar(iteratorVarName, makeJavaType(
-                        t, JT_NO_PRIMITIVES), null);
+                        elementType, JT_NO_PRIMITIVES), null);
             } else {
                 throw BugException.unhandledNodeCase(forIterator);
             }
@@ -1662,13 +1664,55 @@ public class StatementTransformer extends AbstractTransformer {
         
     }
 
-    boolean requiresNullCheck(Tree.ForIterator forIterator) {
-        Tree.Variable variable = ((Tree.ValueIterator) forIterator).getVariable();
-        Type iterableType = forIterator.getSpecifierExpression().getExpression().getTypeModel();
+    private boolean requiresNullCheck(Tree.KeyValuePattern pattern) {
+        return requiresNullCheck(pattern.getKey())
+                || requiresNullCheck(pattern.getValue());
+    }
+    
+    private boolean requiresNullCheck(Tree.TuplePattern pattern) {
+        for (Tree.Pattern p : pattern.getPatterns()) {
+            if (requiresNullCheck(p)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private boolean requiresNullCheck(Tree.VariablePattern pattern) {
+        return requiresNullCheck(pattern.getVariable());
+    }
+    
+    private boolean requiresNullCheck(Tree.Variable variable) {
         Value decl = variable.getDeclarationModel();
-        return decl instanceof TypedDeclaration && !decl.hasUncheckedNullType() &&
-                (isJavaIterable(iterableType) || isJavaObjectArray(iterableType)) &&
-                decl.getType().isSubtypeOf(typeFact().getObjectType());
+        return decl instanceof TypedDeclaration 
+                && !decl.hasUncheckedNullType() 
+                && decl.getType().isSubtypeOf(typeFact().getObjectType());
+    }
+    
+    private boolean requiresNullCheck(Tree.Pattern pattern) {
+        if (pattern instanceof Tree.KeyValuePattern) {
+            return requiresNullCheck(((Tree.KeyValuePattern)pattern));
+        } else if (pattern instanceof Tree.TuplePattern) {
+            return requiresNullCheck(((Tree.TuplePattern)pattern));
+        } else if (pattern instanceof Tree.VariablePattern) {
+            return requiresNullCheck(((Tree.VariablePattern)pattern));
+        } else {
+            return false;
+        }
+    }
+
+    boolean requiresNullCheck(Tree.ForIterator forIterator) {
+        Type iterableType = forIterator.getSpecifierExpression().getExpression().getTypeModel();
+        if (isJavaIterable(iterableType) || isJavaObjectArray(iterableType)) {
+            if (forIterator instanceof Tree.ValueIterator) {
+                return requiresNullCheck(((Tree.ValueIterator) forIterator).getVariable());
+            } else if (forIterator instanceof Tree.PatternIterator) {
+                return requiresNullCheck(((Tree.PatternIterator)forIterator).getPattern());
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
     
     protected boolean isJavaIterable(Type iterableType) {
@@ -1868,41 +1912,12 @@ public class StatementTransformer extends AbstractTransformer {
                 transformedBlock = transformedBlock.prepend(variable);
             } else if (forIterator instanceof Tree.PatternIterator) {
                 Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
-                Tree.KeyValuePattern pat = (Tree.KeyValuePattern)patIter.getPattern();
-                // FIXME DESCTRUCTURE
-                SyntheticName entryName = naming.alias("entry");
-                JCStatement entryVariable = makeVar(FINAL, entryName,
-                        makeJavaType(typeFact().getEntryType(typeFact().getAnythingType(), typeFact().getAnythingType()), JT_RAW),
-                        elementGet);
-                Type entryType = elementType.getSupertype(typeFact().getEntryDeclaration());
-                Type keyType = entryType.getTypeArgumentList().get(0);
-                Tree.Variable keyVar = ((Tree.VariablePattern)pat.getKey()).getVariable();
-                String keyName = Naming.getVariableName(keyVar);
-                Boolean keyUnboxed = keyVar.getDeclarationModel().getUnboxed();
-                BoxingStrategy keyBoxStrat = CodegenUtil.getBoxingStrategy(keyVar.getDeclarationModel());
-                JCStatement keyVariable = makeVar(FINAL,
-                        keyName,
-                        makeJavaType(keyType, BooleanUtil.isFalse(keyUnboxed) ? JT_NO_PRIMITIVES : 0),
-                        expressionGen().applyErasureAndBoxing(
-                                make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getKey"), List.<JCExpression>nil()),
-                                typeFact().getAnythingType(), true, keyBoxStrat, keyType));
-                Type valueType = entryType.getTypeArgumentList().get(1);
-                Tree.Variable valueVar = ((Tree.VariablePattern)pat.getValue()).getVariable();
-                String valueName = Naming.getVariableName(valueVar);
-                Boolean valueUnboxed = keyVar.getDeclarationModel().getUnboxed();
-                BoxingStrategy valueBoxStrat = CodegenUtil.getBoxingStrategy(valueVar.getDeclarationModel());
-                JCStatement valueVariable = makeVar(FINAL,
-                        valueName,
-                        makeJavaType(valueType, BooleanUtil.isFalse(valueUnboxed) ? JT_NO_PRIMITIVES : 0),
-                        expressionGen().applyErasureAndBoxing(
-                                make().Apply(null, naming.makeQualIdent(entryName.makeIdent(), "getItem"), List.<JCExpression>nil()),
-                                typeFact().getAnythingType(), true, valueBoxStrat, valueType));
-                // Prepend to the block
-                transformedBlock = transformedBlock.prepend(valueVariable);
-                transformedBlock = transformedBlock.prepend(keyVariable);
-                transformedBlock = transformedBlock.prepend(entryVariable);
+                Tree.Pattern pattern = patIter.getPattern();
+                for (VarDefBuilder vdb : transformPattern(pattern, elementGet)) {
+                    transformedBlock = transformedBlock.prepend(vdb.build());
+                }
             } else {
-                throw BugException.unhandledNodeCase(forIterator);
+                transformedBlock = transformedBlock.prepend(makeErroneousStmt(forIterator, "unhandled iterator type " + forIterator.getNodeType()));
             }
             if (needsLoopEnteredCheck()) {
                 transformedBlock = transformedBlock.prepend(makeLoopEntered());
@@ -1915,7 +1930,7 @@ public class StatementTransformer extends AbstractTransformer {
                     block)));
             return result;
         }
-
+        
         protected JCBinary stepCheck(final SyntheticName stepName) {
             return make().Binary(JCTree.Tag.LE, stepName.makeIdent(), make().Literal(0));
         }
@@ -2062,14 +2077,18 @@ public class StatementTransformer extends AbstractTransformer {
             }
             elementGet = expressionGen().applyErasureAndBoxing(
                     elementGet, gotType, typeErased, exprBoxed, 
-                    CodegenUtil.getBoxingStrategy(getElementOrKeyVariable().getDeclarationModel()), 
+                    isIndexedAccessBoxed() ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED,//CodegenUtil.getBoxingStrategy(getElementOrKeyVariable().getDeclarationModel()), 
                     elementType, 0);
             return elementGet;
         }
         
         @Override
         protected boolean isIndexedAccessBoxed() {
-            return getElementOrKeyVariable().getDeclarationModel().getUnboxed() == false;
+            if (getForIterator() instanceof Tree.ValueIterator) {
+                return getElementOrKeyVariable().getDeclarationModel().getUnboxed() == false;
+            } else {
+                return false;
+            }
         }
     }
     
@@ -5125,6 +5144,10 @@ public class StatementTransformer extends AbstractTransformer {
 
         JCExpression varType = makeJavaType(toType);
         return make().VarDef(make().Modifiers(FINAL), alias.asName(), varType, val);
+    }
+    
+    protected JCStatement makeErroneousStmt(Node node, String msg) {
+        return at(node).Exec(makeErroneous(node, msg));
     }
 }
 

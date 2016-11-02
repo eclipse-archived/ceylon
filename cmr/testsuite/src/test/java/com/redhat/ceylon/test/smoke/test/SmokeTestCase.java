@@ -61,7 +61,6 @@ import com.redhat.ceylon.cmr.spi.OpenNode;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.test.smoke.support.InMemoryContentStore;
 
 /**
@@ -418,7 +417,7 @@ public class SmokeTestCase extends AbstractTest {
         ArtifactResult dep = result.dependencies().get(0);
         Assert.assertEquals("hello", dep.name());
         Assert.assertEquals("1.0.0", dep.version());
-        Assert.assertEquals(ImportType.EXPORT, dep.importType());
+        Assert.assertTrue(dep.exported());
     }
 
     @Test
@@ -430,7 +429,7 @@ public class SmokeTestCase extends AbstractTest {
         ArtifactResult dep = result.dependencies().get(0);
         Assert.assertEquals("hello", dep.name());
         Assert.assertEquals("1.0.0", dep.version());
-        Assert.assertEquals(ImportType.OPTIONAL, dep.importType());
+        Assert.assertTrue(dep.optional());
     }
 
     @Test
@@ -569,7 +568,7 @@ public class SmokeTestCase extends AbstractTest {
             Assert.assertEquals(1, result.dependencies().size());
             ArtifactResult dep1 = result.dependencies().get(0);
             Assert.assertNotNull(dep1);
-            Assert.assertEquals(ImportType.OPTIONAL, dep1.importType());
+            Assert.assertTrue(dep1.optional());
         } finally {
             manager.removeArtifact(context);
         }
@@ -590,7 +589,7 @@ public class SmokeTestCase extends AbstractTest {
             Assert.assertEquals(1, result.dependencies().size());
             ArtifactResult dep1 = result.dependencies().get(0);
             Assert.assertNotNull(dep1);
-            Assert.assertEquals(ImportType.EXPORT, dep1.importType());
+            Assert.assertTrue(dep1.exported());
         } finally {
             manager.removeArtifact(context);
         }

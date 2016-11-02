@@ -237,8 +237,16 @@ public interface RepositoryManager {
      * Makes sure that content cached as "unavailable" is reasessed
      */
     void refresh(boolean recurse);
-    
+
+    /**
+     * Gets the overrides used in this repository manager
+     */
     Overrides getOverrides();
+    
+    /**
+     * Changes the overrides used in this repository manager
+     */
+    void setOverrides(Overrides overrides);
 
     /**
      * Determines if the given namespace is recognized by any of the configured repositories

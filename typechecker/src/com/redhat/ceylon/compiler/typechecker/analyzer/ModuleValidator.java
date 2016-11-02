@@ -101,6 +101,7 @@ public class ModuleValidator {
                 LinkedList<Module> dependencyTree = new LinkedList<Module>();
                 // only verify modules we compile (and default/language), as that makes us traverse their dependencies anyways
                 Set<Module> compiledModules = moduleManagerUtil.getCompiledModules();
+                moduleManagerUtil.preResolveDependenciesIfRequired(context.getRepositoryManager());
                 Module jdkProviderModule = moduleManagerUtil.getJdkProviderModule();
                 List<Module> modules = new ArrayList<Module>(compiledModules.size()+2);
                 if(jdkProviderModule != null){
@@ -244,7 +245,9 @@ public class ModuleValidator {
         }
     }
 
-    private void resolveModuleIfRequired(Module module, boolean forCompiledModule, ModuleImport moduleImport, ImportDepth importDepth, LinkedList<Module> dependencyTree, Map<Module, ArtifactResult> alreadySearchedArtifacts) {
+    private void resolveModuleIfRequired(Module module, boolean forCompiledModule, ModuleImport moduleImport, 
+            ImportDepth importDepth, LinkedList<Module> dependencyTree, 
+            Map<Module, ArtifactResult> alreadySearchedArtifacts) {
         if ( ! module.isAvailable()) {
             ArtifactResult artifact = null;
             boolean firstTime;
@@ -265,8 +268,14 @@ public class ModuleValidator {
                         exceptionOnGetArtifact = catchIfPossible(e);
                     }
                     if (artifact == null) {
+                        boolean error = true;
+                        if(ModuleUtil.isMavenModule(module.getNameAsString())
+                                && !dependencyTree.isEmpty()
+                                && ModuleUtil.isMavenModule(dependencyTree.peekLast().getNameAsString()))
+                            error = false;
                         //not there => error
-                        ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, dependencyTree, exceptionOnGetArtifact, moduleManagerUtil);
+                        ModuleHelper.buildErrorOnMissingArtifact(artifactContext, module, moduleImport, 
+                                dependencyTree, exceptionOnGetArtifact, moduleManagerUtil, error);
                         listener.retrievingModuleArtifactFailed(module, artifactContext);
                     }else{
                         listener.retrievingModuleArtifactSuccess(module, artifact);
@@ -277,7 +286,7 @@ public class ModuleValidator {
                     if (!"maven".equals(moduleImport.getNamespace())) {
                         msg += " (if this is a Maven import make sure to add a 'maven:' prefix)";
                     }
-                    moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, msg);
+                    moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, msg, true);
                 }
                 alreadySearchedArtifacts.put(module, artifact);
                 firstTime = true;
@@ -296,7 +305,8 @@ public class ModuleValidator {
                     module = moduleOverride;
                     if (importDepth.equals(ImportDepth.First)) {
                         moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, 
-                                "the module import should not be overridden, since it is explicitly imported by a project source module");
+                                "the module import should not be overridden, since it is explicitly imported by a project source module",
+                                true);
                     }
                 }
                 moduleManagerUtil.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
@@ -344,7 +354,7 @@ public class ModuleValidator {
                 .append("' (via import path '").append(importPathA)
                 .append("') and version '").append(versionB)
                 .append("' (via import path '").append(importPathB).append("')");
-                moduleManagerUtil.addErrorToModule(dependencyTree.getFirst(), error.toString());
+                moduleManagerUtil.addConflictingModuleErrorToModule(module.getNameAsString(), dependencyTree.getFirst(), error.toString());
             }else {
                 // just possibly a dupe
                 String moduleA;
@@ -367,7 +377,7 @@ public class ModuleValidator {
                 String error = "module (transitively) imports conflicting versions of similar dependencies '" + 
                         moduleA + "' (via import path '"+importPathA+"') and '"+ moduleB + 
                         "' (via import path '"+importPathB+"')";
-                moduleManagerUtil.addWarningToModule(dependencyTree.getFirst(), Warning.similarModule, error);
+                moduleManagerUtil.addConflictingModuleWarningToModule(moduleA, dependencyTree.getFirst(), Warning.similarModule, error);
             }
         }
         else {

@@ -109,7 +109,8 @@ public class MavenDependencyResolver extends AbstractDependencyResolver {
     private static ModuleInfo toModuleInfo(DependencyDescriptor descriptor, String name, String version, Overrides overrides) {
         Set<ModuleDependencyInfo> infos = new HashSet<>();
         for (DependencyDescriptor dep : descriptor.getDependencies()) {
-            infos.add(new ModuleDependencyInfo("maven", AetherUtils.toCanonicalForm(dep.getGroupId(), dep.getArtifactId()), dep.getVersion(), dep.isOptional(), false));
+            infos.add(new ModuleDependencyInfo("maven", AetherUtils.toCanonicalForm(dep.getGroupId(), 
+                    dep.getArtifactId()), dep.getVersion(), dep.isOptional(), false, AetherUtils.toModuleScope(dep)));
         }
         String descrName = descriptor.getGroupId()+":"+descriptor.getArtifactId();
         // if it's not the descriptor we wanted, let's not return it

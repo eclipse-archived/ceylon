@@ -54,6 +54,7 @@ import com.redhat.ceylon.cmr.impl.NodeUtils;
 import com.redhat.ceylon.common.Constants;
 import com.redhat.ceylon.common.FileUtil;
 import com.redhat.ceylon.common.ModuleSpec;
+import com.redhat.ceylon.common.OSUtil;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.compiler.java.codegen.AbstractTransformer;
 import com.redhat.ceylon.compiler.java.codegen.JavaPositionsRetriever;
@@ -77,9 +78,10 @@ import com.redhat.ceylon.langtools.tools.javac.tree.JCTree.JCCompilationUnit;
 import com.redhat.ceylon.launcher.Launcher;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
-import com.redhat.ceylon.model.cmr.ImportType;
+import com.redhat.ceylon.model.cmr.Exclusion;
 import com.redhat.ceylon.model.cmr.JDKUtils;
 import com.redhat.ceylon.model.cmr.JDKUtils.JDK;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -99,6 +101,7 @@ public abstract class CompilerTests {
     protected final String cacheDir;
     protected final String moduleName;
     protected final List<String> defaultOptions;
+    protected final List<String> defaultToolOptions;
 
     private static final String jbmv = Versions.DEPENDENCY_JBOSS_MODULES_VERSION;
     
@@ -163,6 +166,9 @@ public abstract class CompilerTests {
                 "-g", 
                 "-cp", getClassPathAsPath(),
                 "-suppress-warnings", "compilerAnnotation"));
+        defaultToolOptions = new ArrayList<String>(Arrays.asList(
+                "--sysrep", getSysRepPath(),
+                "--cacherep", cacheDir));
     }
 
     public static String getClassPathAsPath() {
@@ -749,9 +755,13 @@ public abstract class CompilerTests {
             }
             
             @Override
-            public ImportType importType() {
-                // TODO Auto-generated method stub
-                return null;
+            public boolean optional() {
+                return false;
+            }
+            
+            @Override
+            public boolean exported() {
+                return false;
             }
             
             @Override
@@ -778,6 +788,16 @@ public abstract class CompilerTests {
             @Override
             public Repository repository() {
                 // TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public ModuleScope moduleScope() {
+                return ModuleScope.COMPILE;
+            }
+
+            @Override
+            public List<Exclusion> getExclusions() {
                 return null;
             }
         };
@@ -1272,5 +1292,35 @@ public abstract class CompilerTests {
                 Assert.fail("missing expected line: \"" + expectedLine + "\"");
             }
         }
+    }
+    
+    protected List<String> options(String... opts) {
+        List<String> options = new LinkedList<String>();
+        options.addAll(defaultOptions);
+        options.addAll(Arrays.asList(opts));
+        return options;
+    }
+    
+    protected List<String> toolOptions(String... opts) {
+        List<String> options = new LinkedList<String>();
+        options.addAll(defaultToolOptions);
+        options.addAll(Arrays.asList(opts));
+        return options;
+    }
+    
+    public static String script() {
+        if (OSUtil.isWindows()) {
+            return "../dist/dist/bin/ceylon.bat";
+        } else {
+            return "../dist/dist/bin/ceylon";
+        }
+    }
+    
+    public static boolean allowNetworkTests() {
+        return !"true".equalsIgnoreCase(System.getProperty("ceylon.tests.skip.networking"));
+    }
+    
+    public static boolean allowSdkTests() {
+        return !"true".equalsIgnoreCase(System.getProperty("ceylon.tests.skip.sdk"));
     }
 }

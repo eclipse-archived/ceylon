@@ -425,6 +425,9 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
 
     @Override
     public void completeModules(final ModuleQuery query, final ModuleSearchResult result, Overrides overrides) {
+        // this is only for non-Maven modules
+        if(ModuleUtil.isMavenModule(query.getName()))
+            return;
         if(connectionAllowed() && isHerd() && herdCompleteModulesURL != null){
             // let's try Herd
             try{
@@ -515,6 +518,9 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
 
     @Override
     public void completeVersions(ModuleVersionQuery query, final ModuleVersionResult result, final Overrides overrides) {
+        // this is only for non-Maven modules
+        if(ModuleUtil.isMavenModule(query.getName()))
+            return;
         if(connectionAllowed() && isHerd() && herdCompleteVersionsURL != null){
             // let's try Herd
             try{
@@ -670,6 +676,9 @@ public abstract class URLContentStore extends AbstractRemoteContentStore {
 
     @Override
     public void searchModules(final ModuleQuery query, final ModuleSearchResult result, Overrides overrides) {
+        // this is only for non-Maven modules
+        if(ModuleUtil.isMavenModule(query.getName()))
+            return;
         if(connectionAllowed() && isHerd() && herdSearchModulesURL != null){
             // let's try Herd
             try{

@@ -160,7 +160,8 @@ public class CeylonP2Tool extends OutputRepoUsingTool {
             // is it the version we're after?
             return fromSource.getVersion();
         }else{
-            Collection<ModuleVersionDetails> versions = getModuleVersions(getRepositoryManager(), module.getName(), module.getVersion(), 
+            Collection<ModuleVersionDetails> versions = getModuleVersions(getRepositoryManager(), module.getName(), 
+                    module.getVersion(), false, 
                     ModuleQuery.Type.JVM, null, null, null, null);
             if (versions.isEmpty()) {
                 String err = getModuleNotFoundErrorMessage(getRepositoryManager(), module.getName(), module.getVersion());

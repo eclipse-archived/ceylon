@@ -1,4 +1,4 @@
-package com.redhat.ceylon.compiler.java.test.interop;
+package com.redhat.ceylon.compiler.java.test.interop.sdk;
 
 import java.lang.annotation.Target;
 import java.lang.annotation.ElementType;

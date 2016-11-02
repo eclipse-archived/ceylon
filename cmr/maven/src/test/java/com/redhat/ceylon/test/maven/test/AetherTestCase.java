@@ -19,28 +19,32 @@ package com.redhat.ceylon.test.maven.test;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NavigableSet;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.MavenArtifactContext;
+import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
+import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleVersionDetails;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.RepositoryManagerBuilder;
-import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.cmr.impl.MavenRepositoryHelper;
 import com.redhat.ceylon.cmr.impl.SimpleRepositoryManager;
 import com.redhat.ceylon.cmr.maven.AetherContentStore;
 import com.redhat.ceylon.cmr.maven.AetherRepository;
 import com.redhat.ceylon.cmr.spi.StructureBuilder;
+import com.redhat.ceylon.common.ModuleUtil;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.ImportType;
-
-import org.junit.Assert;
-import org.junit.Test;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 
 /**
  * Aether tests.
@@ -79,6 +83,51 @@ public class AetherTestCase extends AbstractAetherTest {
             Assert.assertTrue(artifact.exists());
             exists = true;
             List<ArtifactResult> deps = result.dependencies();
+            log.debug("deps = " + deps);
+        } finally {
+            if (exists) {
+                Assert.assertTrue(artifact.delete()); // delete this one
+            }
+        }
+    }
+
+    @Test
+    public void testAetherFetchingDependenciesWithUselessProperties() throws Throwable {
+        CmrRepository repository = AetherRepository.createRepository(log, false, 60000);
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        ArtifactResult result = manager.getArtifactResult(MavenArtifactContext.NAMESPACE, "org.springframework.cloud:spring-cloud-starter-eureka", "1.1.2.RELEASE");
+        Assert.assertNotNull(result);
+        File artifact = result.artifact();
+        boolean exists = false;
+        try {
+            Assert.assertNotNull(artifact);
+            Assert.assertTrue(artifact.exists());
+            exists = true;
+            List<ArtifactResult> deps = result.dependencies();
+            Assert.assertEquals(10, deps.size());
+            log.debug("deps = " + deps);
+        } finally {
+            if (exists) {
+                Assert.assertTrue(artifact.delete()); // delete this one
+            }
+        }
+    }
+
+    @Test
+    public void testAetherJarless() throws Throwable {
+        CmrRepository repository = AetherRepository.createRepository(log, false, 60000);
+        RepositoryManager manager = new SimpleRepositoryManager(repository, log);
+        ArtifactResult result = manager.getArtifactResult(MavenArtifactContext.NAMESPACE, "javax.mail:mail", "1.3.2");
+        Assert.assertNotNull(result);
+        File artifact = result.artifact();
+        boolean exists = false;
+        try {
+            Assert.assertNotNull(artifact);
+            Assert.assertTrue(artifact.exists());
+            Assert.assertTrue(ModuleUtil.isMavenJarlessModule(artifact));
+            exists = true;
+            List<ArtifactResult> deps = result.dependencies();
+            Assert.assertEquals(1, deps.size());
             log.debug("deps = " + deps);
         } finally {
             if (exists) {
@@ -140,13 +189,20 @@ public class AetherTestCase extends AbstractAetherTest {
             Assert.assertTrue(artifact.exists());
             exists = true;
             List<ArtifactResult> deps = result.dependencies();
-            Assert.assertEquals(deps.size(), 2);
-            Assert.assertEquals("org.slf4j:slf4j-api", deps.get(0).name());
-            Assert.assertEquals("1.6.1", deps.get(0).version());
-            Assert.assertEquals("org.osgi:org.osgi.core", deps.get(1).name());
-            Assert.assertEquals("4.2.0", deps.get(1).version());
-            Assert.assertTrue(deps.get(1).importType() == ImportType.OPTIONAL);
             log.debug("deps = " + deps);
+            List<ArtifactResult> compileDeps = new ArrayList<>(deps.size());
+            for (ArtifactResult dep : deps) {
+                if(dep.moduleScope() == ModuleScope.COMPILE
+                        || dep.moduleScope() == ModuleScope.PROVIDED)
+                    compileDeps.add(dep);
+            }
+            Assert.assertEquals(2, compileDeps.size());
+            Assert.assertEquals("org.slf4j:slf4j-api", compileDeps.get(0).name());
+            Assert.assertEquals("1.6.1", compileDeps.get(0).version());
+            Assert.assertEquals("org.osgi:org.osgi.core", compileDeps.get(1).name());
+            Assert.assertEquals("4.2.0", compileDeps.get(1).version());
+            Assert.assertTrue(compileDeps.get(1).optional());
+            log.debug("deps = " + compileDeps);
         } finally {
             if (exists) {
                 Assert.assertTrue(artifact.delete()); // delete this one
@@ -266,7 +322,14 @@ public class AetherTestCase extends AbstractAetherTest {
         for(ModuleVersionDetails res : result.getVersions().values()){
         	Assert.assertEquals("Spark\nA Sinatra inspired java web framework\nhttp://www.sparkjava.com", res.getDoc());
         	Assert.assertEquals("The Apache Software License, Version 2.0\nhttp://www.apache.org/licenses/LICENSE-2.0.txt", res.getLicense());
-        	Assert.assertEquals(4, res.getDependencies().size());
+        	NavigableSet<ModuleDependencyInfo> deps = res.getDependencies();
+            List<ModuleDependencyInfo> compileDeps = new ArrayList<>(deps.size());
+            for (ModuleDependencyInfo dep : res.getDependencies()) {
+                if(dep.getModuleScope() == ModuleScope.COMPILE
+                        || dep.getModuleScope() == ModuleScope.PROVIDED)
+                    compileDeps.add(dep);
+            }
+        	Assert.assertEquals(4, compileDeps.size());
         }
         lookup = new ModuleVersionQuery("com.sparkjava:spark-core", null, Type.JAR);
         result = manager.completeVersions(lookup);

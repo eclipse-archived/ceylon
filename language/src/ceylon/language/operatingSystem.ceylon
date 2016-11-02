@@ -1,4 +1,3 @@
-import java.lang { System }
 
 "Represents the operating system on which the current 
  process is running."
@@ -64,11 +63,15 @@ shared native object operatingSystem {
 
 shared native("jvm") object operatingSystem {
     
+    import java.lang {
+        System
+     }
+    
     shared native("jvm") String version 
             => process.propertyValue("os.version") 
                 else "Unknown";
     
-    shared native("jvm") String newline 
+    shared native("jvm") String newline
             => System.lineSeparator();
     
 }

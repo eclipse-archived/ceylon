@@ -824,18 +824,29 @@ public class ExpressionVisitor extends Visitor {
                             e.getTypeModel();
                 //TODO: what to do here in case of !is
                 if (knownType!=null 
-                        && !isTypeUnknown(knownType)) { //TODO: remove this if we make unknown a subtype of Anything) {
+                        && !isTypeUnknown(knownType)) { //TODO: remove this if we make unknown a subtype of Anything
                     if (!isTypeUnknown(type)) {
                         checkReified(t, type, knownType, 
                                 that.getAssertion());
                     }
-                    Type knownTypeWithNull = 
-                            hasUncheckedNulls(e) ? 
-                                unit.getOptionalType(knownType) : 
-                                knownType;
-                    String help = " (expression is already of the specified type)";
+                    Type checkType;
+                    if (hasUncheckedNulls(e)) {
+                        checkType = unit.getOptionalType(knownType);
+                        // if the expression has unchecked nulls,
+                        // widen the known type to an optional
+                        // type, which allows idioms like an 
+                        // assert that simultaneously narrows
+                        // and widens to optional
+                        if (unit.getNullType()
+                                .isSubtypeOf(type)) {
+                            knownType = checkType;
+                        }
+                    }
+                    else {
+                        checkType = knownType;
+                    }
                     if (that.getNot()) {
-                        if (intersectionType(type, knownTypeWithNull, unit)
+                        if (intersectionType(type, checkType, unit)
                                 .isNothing()) {
                             that.addUsageWarning(Warning.redundantNarrowing,
                                     "condition does not narrow type: intersection of '" + 
@@ -843,9 +854,9 @@ public class ExpressionVisitor extends Visitor {
                                     "' and '" + 
                                     knownType.asString(unit) + 
                                     "' is empty" + 
-                                    help);
+                                    " (expression is already of the specified type)");
                         }
-                        else if (knownType.isSubtypeOf(type)) {
+                        else if (checkType.isSubtypeOf(type)) {
                             that.addError("condition tests assignability to bottom type 'Nothing': '" + 
                                     knownType.asString(unit) + 
                                     "' is a subtype of '" + 
@@ -853,13 +864,13 @@ public class ExpressionVisitor extends Visitor {
                         }
                     } 
                     else {
-                        if (knownTypeWithNull.isSubtypeOf(type)) {
+                        if (checkType.isSubtypeOf(type)) {
                             that.addUsageWarning(Warning.redundantNarrowing,
                                     "condition does not narrow type: '" + 
                                     knownType.asString(unit) + 
                                     "' is a subtype of '" + 
                                     type.asString(unit) + "'" + 
-                                    help);
+                                    " (expression is already of the specified type)");
                         }
                     }
                 }
@@ -1223,7 +1234,7 @@ public class ExpressionVisitor extends Visitor {
             if (e!=null) {
                 Type et = e.getTypeModel();
                 if (!isTypeUnknown(et)) {
-                    Type it = unit.getIteratedType(et);
+                    Type it = unit.getElementType(et);
                     if (it!=null && !isTypeUnknown(it)) {
                         destructure(that.getPattern(), it);
                     }
@@ -1987,13 +1998,7 @@ public class ExpressionVisitor extends Visitor {
                 Type expressionType = e.getTypeModel();
                 if (!isTypeUnknown(vt) && 
                         !isTypeUnknown(expressionType)) {
-                    Type it = unit.getIteratedType(expressionType);
-                    if (it==null) {
-                        it = unit.getJavaIteratedType(expressionType);
-                    }
-                    if (it==null) {
-                        it = unit.getJavaArrayElementType(expressionType);
-                    }
+                    Type it = unit.getElementType(expressionType);
                     checkAssignable(it, vt, var, 
                             "iterable element type must be assignable to iterator variable type");
                 }
@@ -2663,36 +2668,20 @@ public class ExpressionVisitor extends Visitor {
             Tree.LocalModifier local, 
             Tree.SpecifierExpression se, 
             Tree.Variable that) {
-        Tree.Expression e = se.getExpression();
-        if (e!=null) {
-            Type expressionType = e.getTypeModel();
-            if (expressionType!=null) {
+        Tree.Expression ex = se.getExpression();
+        if (ex!=null) {
+            Type ext = ex.getTypeModel();
+            if (ext!=null) {
                 Value dec = 
                         that.getDeclarationModel();
                 Type elementType = 
-                        unit.getIteratedType(
-                                expressionType);
-                if (elementType==null) {
-                    elementType = 
-                            unit.getJavaIteratedType(
-                                    expressionType);
-                    if (elementType!=null) {
-                        handleUncheckedNulls(local, 
-                                elementType, null, dec);
-                    }
-                }
-                if (elementType==null) {
-                    elementType = 
-                            unit.getJavaArrayElementType(
-                                    expressionType);
-                    if (elementType!=null &&
-                        unit.isJavaObjectArrayType(
-                            expressionType)) {
-                        handleUncheckedNulls(local, 
-                                elementType, null, dec);
-                    }
-                }
+                        unit.getElementType(ext);
                 if (elementType!=null) {
+                    if (unit.isJavaIterableType(ext) || 
+                        unit.isJavaObjectArrayType(ext)) {
+                        handleUncheckedNulls(local,
+                                elementType, null, dec);
+                    }
                     local.setTypeModel(elementType);
                     dec.setType(elementType);
                 }
@@ -3041,24 +3030,8 @@ public class ExpressionVisitor extends Visitor {
                 return unit.getDefiniteType(type);
             }
             else if (op instanceof Tree.SpreadOp) {
-                if (unit.isIterableType(type)) {
-                    Type it = unit.getIteratedType(type);
-                    return it==null ?
-                            unit.getUnknownType() : it;
-                }
-                else if (unit.isJavaIterableType(type)) {
-                    Type it = unit.getJavaIteratedType(type);
-                    return it==null ?
-                            unit.getUnknownType() : it;
-                }
-                else if (unit.isJavaArrayType(type)) {
-                    Type it = unit.getJavaArrayElementType(type);
-                    return it==null ?
-                            unit.getUnknownType() : it;
-                }
-                else {
-                    return type;
-                }
+                Type it = unit.getElementType(type);
+                return it==null ? unit.getUnknownType() : it;
             }
             else {
                 return type;
@@ -4230,9 +4203,16 @@ public class ExpressionVisitor extends Visitor {
             else if (checkCallable(pt, primary, 
                     "invoked expression must be callable")) {
                 Interface cd = unit.getCallableDeclaration();
+                Type ct = pt.getSupertype(cd);
+                if (ct==null) {
+                    primary.addError(
+                            "invoked expression must be callable: type '" 
+                            + pt.asString(unit) + 
+                            "' involves a type function");
+                    return;
+                }
                 List<Type> typeArgs = 
-                        pt.getSupertype(cd)
-                            .getTypeArgumentList();
+                        ct.getTypeArgumentList();
                 if (!typeArgs.isEmpty()) {
                     that.setTypeModel(typeArgs.get(0));
                 }

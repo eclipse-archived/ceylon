@@ -17,11 +17,13 @@
 package com.redhat.ceylon.cmr.impl;
 
 import java.io.File;
+import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
-import com.redhat.ceylon.model.cmr.ImportType;
+import com.redhat.ceylon.model.cmr.Exclusion;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -44,6 +46,7 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     private PathFilter filter;
     
     private Repository repository;
+    private List<Exclusion> exclusions;
 
     protected AbstractArtifactResult(Repository repository, String namespace, String name, String version) {
         this.repository = repository;
@@ -68,10 +71,20 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     }
 
     @Override
-    public ImportType importType() {
-        return ImportType.UNDEFINED;
+    public boolean exported() {
+        return false;
+    }
+    
+    @Override
+    public boolean optional() {
+        return false;
     }
 
+    @Override
+    public ModuleScope moduleScope() {
+        return ModuleScope.COMPILE;
+    }
+    
     @Override
     public VisibilityType visibilityType() {
         if (type() == ArtifactResultType.CEYLON) {
@@ -123,6 +136,10 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
             } catch (RepositoryException ignored) {
             }
         }
+        if (moduleScope() != ModuleScope.COMPILE) {
+            txt.append(" ");
+            txt.append(moduleScope());
+        }
         txt.append("]");
         return txt.toString();
     }
@@ -130,6 +147,15 @@ public abstract class AbstractArtifactResult implements ArtifactResult {
     @Override
     public Repository repository() {
         return repository;
+    }
+    
+    @Override
+    public List<Exclusion> getExclusions() {
+        return exclusions;
+    }
+
+    public void setExclusions(List<Exclusion> exclusions) {
+        this.exclusions = exclusions;
     }
 }
 

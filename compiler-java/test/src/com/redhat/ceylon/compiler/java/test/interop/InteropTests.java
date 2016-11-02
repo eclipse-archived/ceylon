@@ -461,9 +461,10 @@ public class InteropTests extends CompilerTests {
     
     @Test
     public void testAnnotationInterop(){
-        compile("JavaAnnotation.java");
-        compareWithJavaSource("AnnotationInterop");
-        assertErrors("AnnotationInteropErrors",
+        Assume.assumeTrue(allowSdkTests());
+        compile("sdk/JavaAnnotation.java");
+        compareWithJavaSource("sdk/AnnotationInterop");
+        assertErrors("sdk/AnnotationInteropErrors",
                 new CompilerError(2, "function or value is not defined: 'javaAnnotationNoTarget__TYPE' might be misspelled or is not imported (did you mean 'javaAnnotationTypeTarget__TYPE'?)"),
                 new CompilerError(3, "function or value is not defined: 'javaAnnotationNoTarget__CONSTRUCTOR' might be misspelled or is not imported (did you mean 'javaAnnotationCtorTarget__CONSTRUCTOR'?)"),
                 new CompilerError(6, "function or value is not defined: 'javaAnnotationNoTarget__FIELD' might be misspelled or is not imported (did you mean 'javaAnnotationFieldTarget__FIELD'?)"),
@@ -481,8 +482,9 @@ public class InteropTests extends CompilerTests {
     
     @Test
     public void testAnnotationSequencedArgs(){
-        compile("JavaAnnotation.java");
-        compareWithJavaSource("AnnotationSequencedArgs");
+        Assume.assumeTrue(allowSdkTests());
+        compile("sdk/JavaAnnotation.java");
+        compareWithJavaSource("sdk/AnnotationSequencedArgs");
     }
     
     @Test
@@ -496,8 +498,9 @@ public class InteropTests extends CompilerTests {
     
     @Test
     public void testAnnotationsConstrainedClassCtor() {
-        compile("JavaAnnotation.java");
-        compareWithJavaSource("AnnotationsConstrainedClassCtor");
+        Assume.assumeTrue(allowSdkTests());
+        compile("sdk/JavaAnnotation.java");
+        compareWithJavaSource("sdk/AnnotationsConstrainedClassCtor");
     }
     
     @Test
@@ -614,11 +617,12 @@ public class InteropTests extends CompilerTests {
 
     @Test
     public void testIopJavaSerialization() throws Throwable{
-        compile("JavaSerialization.ceylon", "javaSerializationRoundTrip_.java");
+        Assume.assumeTrue(allowSdkTests());
+        compile("sdk/JavaSerialization.ceylon", "sdk/javaSerializationRoundTrip_.java");
         runInJBossModules("run",
-                "com.redhat.ceylon.compiler.java.test.interop",
+                "com.redhat.ceylon.compiler.java.test.interop.sdk",
                 Arrays.asList(//"com.redhat.ceylon.compiler.java.test.interop",
-                        "--run", "com.redhat.ceylon.compiler.java.test.interop.javaSerializationRoundTrip"));
+                        "--run", "com.redhat.ceylon.compiler.java.test.interop.sdk.javaSerializationRoundTrip"));
     }
     
     @Test
@@ -687,10 +691,11 @@ public class InteropTests extends CompilerTests {
     
     @Test
     public void testIopJavaArrayInForComprehension(){
-        compile("JavaArrayInForComprehension_util.ceylon");
-        compareWithJavaSource("JavaArrayInForComprehension");
-        run("com.redhat.ceylon.compiler.java.test.interop.javaArrayInForComprehension", 
-                getDestModuleWithArtifact(""),
+        Assume.assumeTrue(allowSdkTests());
+        compile("sdk/JavaArrayInForComprehension_util.ceylon");
+        compareWithJavaSource("sdk/JavaArrayInForComprehension");
+        run("com.redhat.ceylon.compiler.java.test.interop.sdk.javaArrayInForComprehension", 
+                new ModuleWithArtifact("com.redhat.ceylon.compiler.java.test.interop.sdk", "1"),
                 new ModuleWithArtifact("ceylon.interop.java", Versions.CEYLON_VERSION_NUMBER,
                         Repositories.get().getUserRepoDir().getAbsolutePath(),
                         "car"));
@@ -809,10 +814,11 @@ public class InteropTests extends CompilerTests {
     
     @Test
     public void testSdkBug571() throws Throwable{
-        compile("SdkBug571.ceylon");
+        Assume.assumeTrue(allowSdkTests());
+        compile("sdk/SdkBug571.ceylon");
         runInJBossModules("run", 
-                "com.redhat.ceylon.compiler.java.test.interop",
-                Arrays.asList("--run=com.redhat.ceylon.compiler.java.test.interop::sdkBug571_run"));
+                "com.redhat.ceylon.compiler.java.test.interop.sdk",
+                Arrays.asList("--run=com.redhat.ceylon.compiler.java.test.interop.sdk::sdkBug571_run"));
     }
 
     @Test
@@ -859,7 +865,8 @@ public class InteropTests extends CompilerTests {
 
     @Test
     public void testIopStaticEnumSet(){
-        compile("StaticEnumSet.ceylon");
+        Assume.assumeTrue(allowSdkTests());
+        compile("sdk/StaticEnumSet.ceylon");
     }
     
 
@@ -925,5 +932,10 @@ public class InteropTests extends CompilerTests {
         // Now run it again
         p = pb.start();
         assertEquals(0, p.waitFor());
+    }
+    
+    @Test
+    public void testBug6632() {
+        compareWithJavaSource("Bug6632");
     }
 }

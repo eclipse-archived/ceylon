@@ -342,7 +342,7 @@
 
     <!-- Runs the JUnit tests -->
     <target name="test.all" depends="-test.prepare">
-        <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed">
+        <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed" dir="${basedir}" outputtoformatters="false">
             <classpath refid="test.run.classpath" />
 
             <formatter type="xml" />

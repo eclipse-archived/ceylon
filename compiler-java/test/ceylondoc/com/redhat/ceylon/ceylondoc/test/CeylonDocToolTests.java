@@ -54,6 +54,7 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -320,6 +321,8 @@ public class CeylonDocToolTests {
     
     @Test
     public void externalLinksToRemoteRepoWithoutModuleNamePattern() throws Exception {
+        Assume.assumeTrue(CompilerTests.allowNetworkTests());
+        
         HttpServer stubServer = HttpServer.create(new InetSocketAddress(0), 1);
         stubServer.createContext("/repo", new HttpHandler() {
             @Override
@@ -535,6 +538,8 @@ public class CeylonDocToolTests {
 
     @Test
     public void ceylonSdk() throws Exception {
+        Assume.assumeTrue(CompilerTests.allowSdkTests());
+        
         File sdkDir = new File("../../ceylon-sdk");
         if (!sdkDir.exists()
                 || !sdkDir.isDirectory()) {

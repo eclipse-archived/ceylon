@@ -1,4 +1,3 @@
-import java.lang { System, Long, Double, Int=Integer, Math }
 
 "Represents the machine and virtual machine on which the 
  current process is executing.
@@ -105,6 +104,14 @@ shared native object runtime  {
 
 shared native("jvm") object runtime  {
     
+    import java.lang {
+        System, 
+        Long, 
+        Double, 
+        Int=Integer, 
+        Math
+    }
+
     shared native("jvm") String type => "jvm";
     shared native("jvm") String name => "jvm";
     shared native("jvm") String version 

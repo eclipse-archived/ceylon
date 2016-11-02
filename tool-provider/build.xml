@@ -37,6 +37,7 @@
     </path>
 
     <path id="test.compile.classpath">
+        <pathelement path="${build.classes}"/>
         <pathelement path="${build.tools-test}"/>
         <pathelement path="${ceylon.language.lib}"/>
         <pathelement path="${ceylon.common.lib}"/>
@@ -50,6 +51,7 @@
         <pathelement path="${build.test}"/>
         <pathelement path="${ceylon.typechecker.lib}"/>
         <pathelement path="${ceylon.compiler.lib}"/>
+        <pathelement path="${hamcrest.lib}"/>
     </path>
 
     <!-- ################################################################## -->
@@ -254,34 +256,27 @@
         <delete dir="${build.test}/modules/optional"/>
     </target>
     
-    <target name="test" depends="build,test.quick" description="compile and run the JVM tests">
+    <target name="test" depends="build,test-quick" description="compile and run the JVM tests">
     </target>
 
-    <target name="test.quick" depends="compile.tests">
-        
-        <mkdir dir="${test.reports}"/>
-        <junit printsummary="yes" haltonfailure="no" 
-            errorproperty="test.failed"
-            failureproperty="test.failed">
-          <classpath refid="test.run.classpath"/>
-          <formatter type="xml"/>
+    <target name="test-quick" depends="compile.tests">
+        <mkdir dir="${test.reports}" />
+        <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed" dir="${basedir}">
+            <classpath refid="test.run.classpath" />
 
-          <batchtest fork="yes" todir="${test.reports}">
-            <fileset dir="${build.test}">
-              <include name="**/*Test.class"/>
-            </fileset>
-          </batchtest>
+            <formatter type="xml" />
+            <test
+                name="com.redhat.ceylon.compiler.java.runtime.AllToolProviderTests"
+                fork="yes"
+                todir="${test.reports}" />
         </junit>
-     
-        <!--<junitreport todir="${test.reports}">
-          <fileset dir="${test.reports}">
-            <include name="TEST-*.xml"/>
-          </fileset>
-          <report format="frames" todir="${test.reports}"/>
-        </junitreport>-->
-        
+        <junitreport todir="${test.reports}">
+            <fileset dir="${test.reports}">
+                <include name="TEST-*.xml" />
+            </fileset>
+            <report format="frames" todir="${test.reports}" />
+        </junitreport>
         <fail message="Test failure detected, check test results." if="test.failed" />
-        
     </target>
 
 </project>

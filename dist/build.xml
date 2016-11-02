@@ -21,11 +21,30 @@
 
     <property name="modules" value="ceylon-common,ceylon-cli,ceylon-model,ceylon-module-loader,ceylon-module-resolver,ceylon-module-resolver-aether,ceylon-module-resolver-javascript,ceylon-module-resolver-webdav,ceylon-spec,ceylon-langtools-classfile,ceylon-compiler,ceylon-js,ceylon-tool-provider,ceylon-java-main,ceylon.language,ceylon-runtime" />
     <property name="moddirs" value="common,cli,model,module-loader,cmr,cmr-aether,cmr-js,cmr-webdav,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime,java-main" />
-    <property name="testdirs" value="common,cli,model,module-loader,cmr,cmr-aether,cmr-js,cmr-webdav,typechecker,langtools-classfile,compiler-java,compiler-js,tool-provider,language,runtime,java-main" />
+
+    <property name="projects.base.dir" location="${basedir}/.." />
+
+    <dirset id="testdirs" dir="${projects.base.dir}">
+        <include name="common" />
+        <include name="cli" />
+        <include name="model" />
+        <include name="module-loader" />
+        <include name="cmr" />
+        <include name="cmr-aether" />
+        <include name="cmr-js" />
+        <include name="cmr-webdav" />
+        <include name="typechecker" />
+        <include name="langtools-classfile" />
+        <include name="compiler-java" />
+        <include name="compiler-js" />
+        <include name="tool-provider" />
+        <include name="language" />
+        <include name="runtime" />
+        <include name="java-main" />
+    </dirset>
 
     <property name="ceylon-dist-osgi.dir" value="${basedir}/osgi"/>
 
-    <property name="projects.base.dir" location="${basedir}/.." />
     <property name="project-common.dir" location="${projects.base.dir}/common"/>
     <property name="project-cli.dir" location="${projects.base.dir}/cli"/>
     <property name="project-model.dir" location="${projects.base.dir}/model"/>
@@ -200,23 +219,13 @@ Some super-charged ant tasks:
         <antcall target="test-quick"/>
     </target>
     <target name="test-quick">
-        <foreach list="${testdirs}"
-                 target="test-item"
-                 param="project.item.name"
-                 inheritall="true" />
-    </target>
-    <target name="test-item">
         <fail unless="projects.base.dir" />
-        <fail unless="project.item.name" />
-        <echo>Running tests for ${project.item.name}</echo>
-        <ant antfile="${projects.base.dir}/${project.item.name}/build.xml"
-             target="test-quick"
-             dir="${projects.base.dir}/${project.item.name}"
-            inheritall="false">
+        <subant target="test-quick" failonerror="false">
             <property name="ceylon.repo.dir" value="${ceylon.repo.dir}"/>
             <property name="ceylon.bin.dir" value="${ceylon.bin.dir}"/>
             <property name="ceylon.dist.dir" value="${ceylon.dist.dir}"/>
-        </ant>
+            <dirset refid="testdirs"/>
+        </subant>
     </target>
 
     <target name="update" depends="git-update"

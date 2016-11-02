@@ -174,6 +174,9 @@ public class JavaCompilerImpl implements Compiler {
             if(javaOptions.isAutoExportMavenDependencies()) {
                 translatedOptions.add(Option.CEYLONAUTOEXPORTMAVENDEPENDENCIES.getText());
             }
+            if(javaOptions.isFullyExportMavenDependencies()) {
+                translatedOptions.add(Option.CEYLONFULLYEXPORTMAVENDEPENDENCIES.getText());
+            }
             if (javaOptions.getJdkProvider() != null) {
                 translatedOptions.add(Option.CEYLONJDKPROVIDER.getText());
                 translatedOptions.add(javaOptions.getJdkProvider());

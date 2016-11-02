@@ -21,6 +21,7 @@
     </path>
 
     <path id="test.run.classpath">
+        <path refid="classpath" />
         <pathelement path="${build.classes}" />
         <pathelement path="${hamcrest.lib}" />
         <pathelement path="${junit.lib}" />
@@ -255,7 +256,7 @@
 
     <target name="test-quick" depends="compile.tests">
         <mkdir dir="${test.reports}" />
-        <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed">
+        <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed" dir="${basedir}">
             <classpath refid="test.run.classpath" />
 
             <formatter type="xml" />

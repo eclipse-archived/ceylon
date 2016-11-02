@@ -13,7 +13,8 @@ import org.junit.Test;
 
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 import com.redhat.ceylon.model.cmr.ArtifactResultType;
-import com.redhat.ceylon.model.cmr.ImportType;
+import com.redhat.ceylon.model.cmr.Exclusion;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.PathFilter;
 import com.redhat.ceylon.model.cmr.Repository;
 import com.redhat.ceylon.model.cmr.RepositoryException;
@@ -106,8 +107,13 @@ public class CachedTOCJarsTest {
         }
 
         @Override
-        public ImportType importType() {
-            return null;
+        public boolean optional() {
+            return false;
+        }
+
+        @Override
+        public boolean exported() {
+            return false;
         }
 
         @Override
@@ -123,6 +129,16 @@ public class CachedTOCJarsTest {
         @Override
         public File artifact() throws RepositoryException {
             return artifactFile;
+        }
+
+        @Override
+        public ModuleScope moduleScope() {
+            return ModuleScope.COMPILE;
+        }
+
+        @Override
+        public List<Exclusion> getExclusions() {
+            return null;
         }
     }
 }

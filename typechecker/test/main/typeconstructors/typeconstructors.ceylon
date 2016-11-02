@@ -186,3 +186,12 @@ void f<T>(T<A,A> & T<B,B> x)
         given T<out U, in V> {
     T<A&B, A|B> y = x;
 }
+
+void callables() {
+    Integer(Integer) | <<T>=>T(T)> fun1 = identity;
+    <<T>=>T(T)> fun2 = identity;
+    Integer(Integer) fun3 = identity<Integer>;
+    @error fun1(10);
+    fun2(10);
+    fun3(10);
+}

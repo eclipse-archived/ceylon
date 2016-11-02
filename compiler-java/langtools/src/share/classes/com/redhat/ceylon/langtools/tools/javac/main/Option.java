@@ -529,6 +529,7 @@ public enum Option {
             return false;
         }
     },
+    CEYLONFULLYEXPORTMAVENDEPENDENCIES("-fully-export-maven-dependencies", "opt.ceylonfullyexportmavendependencies", OptionKind.STANDARD, OptionGroup.CEYLON),
     BOOTSTRAPCEYLON("-Xbootstrapceylon", null, OptionKind.HIDDEN, OptionGroup.CEYLON),
     
     // End of Ceylon options: Option parsing code depends on SOURCEFILE being 

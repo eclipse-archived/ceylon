@@ -21,29 +21,40 @@
 package com.redhat.ceylon.compiler.java.loader.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
 import com.redhat.ceylon.cmr.api.Overrides;
+import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.api.VersionComparator;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleNotFoundException;
 import com.redhat.ceylon.common.Backend;
 import com.redhat.ceylon.common.Backends;
 import com.redhat.ceylon.common.ModuleUtil;
+import com.redhat.ceylon.common.StatusPrinter;
 import com.redhat.ceylon.common.Versions;
 import com.redhat.ceylon.common.config.CeylonConfig;
 import com.redhat.ceylon.common.config.DefaultToolOptions;
+import com.redhat.ceylon.compiler.java.loader.CompilerModuleLoader;
+import com.redhat.ceylon.compiler.java.tools.CeylonLog;
+import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleHelper;
 import com.redhat.ceylon.compiler.typechecker.analyzer.ModuleSourceMapper;
 import com.redhat.ceylon.compiler.typechecker.analyzer.Warning;
 import com.redhat.ceylon.compiler.typechecker.context.Context;
 import com.redhat.ceylon.compiler.typechecker.context.PhasedUnits;
 import com.redhat.ceylon.compiler.typechecker.tree.Node;
+import com.redhat.ceylon.langtools.tools.javac.util.Log.WriterKind;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.ImportType;
 import com.redhat.ceylon.model.cmr.JDKUtils;
+import com.redhat.ceylon.model.cmr.ModuleScope;
+import com.redhat.ceylon.model.loader.AbstractModelLoader;
 import com.redhat.ceylon.model.loader.JdkProvider;
 import com.redhat.ceylon.model.loader.model.LazyModule;
 import com.redhat.ceylon.model.loader.model.LazyModuleManager;
@@ -58,13 +69,21 @@ import com.redhat.ceylon.model.typechecker.util.ModuleManager;
 public class LazyModuleSourceMapper extends ModuleSourceMapper {
     private final String encoding;
 
-    public LazyModuleSourceMapper(Context context, LazyModuleManager moduleManager) {
-        super(context, moduleManager);
-        this.encoding = null;
+    private StatusPrinter statusPrinter;
+    private boolean verbose;
+    private CeylonLog log;
+
+    public LazyModuleSourceMapper(Context context, LazyModuleManager moduleManager, 
+            StatusPrinter statusPrinter, boolean verbose, CeylonLog log) {
+        this(context, moduleManager, statusPrinter, verbose, log, null);
     }
 
-    public LazyModuleSourceMapper(Context context, LazyModuleManager moduleManager, String encoding) {
+    public LazyModuleSourceMapper(Context context, LazyModuleManager moduleManager, 
+            StatusPrinter statusPrinter, boolean verbose, CeylonLog log, String encoding) {
         super(context, moduleManager);
+        this.statusPrinter = statusPrinter;
+        this.verbose = verbose;
+        this.log = log;
         this.encoding = encoding;
     }
 
@@ -88,111 +107,30 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         LazyModuleManager moduleManager = getModuleManager();
         boolean moduleLoadedFromSource = moduleManager.isModuleLoadedFromSource(moduleName);
         boolean isLanguageModule = module == module.getLanguageModule();
-        if(moduleManager.getModelLoader().getJdkProviderModule() == module){
-        	moduleManager.getModelLoader().setupAlternateJdk(module, artifact);
+        AbstractModelLoader modelLoader = moduleManager.getModelLoader();
+        if(modelLoader.getJdkProviderModule() == module){
+        	modelLoader.setupAlternateJdk(module, artifact);
         }
         
         // if this is for a module we're compiling, or for an indirectly imported module, we need to check because the
         // module in question will be in the classpath
         if(moduleLoadedFromSource || forCompiledModule){
-            String standardisedModuleName = ModuleUtil.toCeylonModuleName(moduleName);
-            // check for an already loaded module with the same name but different version
-            for(Module loadedModule : getContext().getModules().getListOfModules()){
-                String loadedModuleName = loadedModule.getNameAsString();
-                String standardisedLoadedModuleName = ModuleUtil.toCeylonModuleName(loadedModuleName);
-                boolean sameModule = loadedModuleName.equals(moduleName);
-                boolean similarModule = standardisedLoadedModuleName.equals(standardisedModuleName);
-                if((sameModule || similarModule)
-                        && !loadedModule.getVersion().equals(module.getVersion())
-                        && moduleManager.getModelLoader().isModuleInClassPath(loadedModule)){
-                    // abort
-                    // we need this error thrown rather than the typechecker error because the typechecker currently
-                    // allows more than we do, such as having direct imports of the same module with different versions
-                    // as long as they are not reexported, but we don't support that since they all go in the same
-                    // classpath (direct imports of compiled modules)
-
-                    if(sameModule){
-                        String[] versions = VersionComparator.orderVersions(module.getVersion(), loadedModule.getVersion());
-                        String error = "source code imports two different versions of module '" + 
-                                moduleName + "': "+
-                                "version '" + versions[0] + "' and version '" + versions[1] +
-                                "'";
-                        addErrorToModule(dependencyTree.getFirst(), error);
-                    }else{
-                        String moduleA;
-                        String moduleB;
-                        if(loadedModuleName.compareTo(moduleName) < 0){
-                            moduleA = ModuleUtil.makeModuleName(loadedModuleName, loadedModule.getVersion());
-                            moduleB = ModuleUtil.makeModuleName(moduleName, module.getVersion());
-                        }else{
-                            moduleA = ModuleUtil.makeModuleName(moduleName, module.getVersion());
-                            moduleB = ModuleUtil.makeModuleName(loadedModuleName, loadedModule.getVersion());
-                        }
-                        String error = "source code imports two different versions of similar modules '" + 
-                                moduleA + "' and '"+ moduleB + "'";
-                        addWarningToModule(dependencyTree.getFirst(), Warning.similarModule, error);
-                    }
-                    return;
-                }
-            }
+            if(shouldAbortOnDuplicateModule(module, moduleName, modelLoader, dependencyTree))
+                return;
         }
         
         if(moduleLoadedFromSource){
             super.resolveModule(artifact, module, moduleImport, dependencyTree, phasedUnitsOfDependencies, forCompiledModule);
         }else if(forCompiledModule || isLanguageModule || moduleManager.shouldLoadTransitiveDependencies()){
             // we only add stuff to the classpath and load the modules if we need them to compile our modules
-            moduleManager.getModelLoader().addModuleToClassPath(module, artifact); // To be able to load it from the corresponding archive
-            if(!module.isDefaultModule() && !moduleManager.getModelLoader().loadCompiledModule(module)){
-                // we didn't find module.class so it must be a java module if it's not the default module
-                ((LazyModule)module).setJava(true);
-                module.setNativeBackends(Backend.Java.asSet());
-                
-                moduleManager.getModelLoader().loadJava9Module((LazyModule)module, artifact.artifact());
-                
-                List<ArtifactResult> deps = artifact.dependencies();
-                for (ArtifactResult dep : deps) {
-                    Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dep.name()), dep.version());
-
-                    ModuleImport depImport = moduleManager.findImport(module, dependency);
-                    if (depImport == null) {
-                        moduleImport = new ModuleImport(dep.namespace(), dependency, dep.importType() == ImportType.OPTIONAL, dep.importType() == ImportType.EXPORT, Backend.Java);
-                        module.addImport(moduleImport);
-                    }
-                }
-            }
+            modelLoader.addModuleToClassPath(module, artifact); // To be able to load it from the corresponding archive
             LazyModule lazyModule = (LazyModule) module;
-            if(!lazyModule.isJava() && !module.isDefaultModule()){
-                // it must be a Ceylon module
-                // default modules don't have any module descriptors so we can't check them
-                Overrides overrides = getContext().getRepositoryManager().getOverrides();
-                if (overrides != null) {
-                    Set<ModuleDependencyInfo> existingModuleDependencies = new HashSet<>();
-                    for (ModuleImport i : lazyModule.getImports()) {
-                        Module m = i.getModule();
-                        if (m != null) {
-                            existingModuleDependencies.add(new ModuleDependencyInfo(i.getNamespace(), m.getNameAsString(), m.getVersion(), i.isOptional(), i.isExport()));
-                        }
-                    }
-                    ModuleInfo sourceModuleInfo = new ModuleInfo(artifact.name(), artifact.version(), null, existingModuleDependencies);
-                    ModuleInfo newModuleInfo = overrides.applyOverrides(artifact.name(), artifact.version(), sourceModuleInfo);
-                    List<ModuleImport> newModuleImports = new ArrayList<>();
-                    for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {
-                        Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dep.getName()), dep.getVersion());
-                        Backends backends = dependency.getNativeBackends();
-                        ModuleImport newImport = new ModuleImport(dep.getNamespace(), dependency, dep.isOptional(), dep.isExport(), backends);
-                        newModuleImports.add(newImport);
-                    }
-                    module.overrideImports(newModuleImports);
-                }
-                if(!Versions.isJvmBinaryVersionSupported(lazyModule.getJvmMajor(), lazyModule.getJvmMinor())){
-                    attachErrorToDependencyDeclaration(moduleImport,
-                            dependencyTree,
-                            "version '"+ lazyModule.getVersion() + "' of module '" + module.getNameAsString() + 
-                            "' was compiled by an incompatible version of the compiler (binary version " +
-                            lazyModule.getJvmMajor() + "." + lazyModule.getJvmMinor() + 
-                            " of module is not compatible with binary version " + 
-                            Versions.JVM_BINARY_MAJOR_VERSION + "." + Versions.JVM_BINARY_MINOR_VERSION +
-                            " of this compiler)");
+
+            if(!module.isDefaultModule()){
+                if(!modelLoader.loadCompiledModule(module)){
+                    setupJavaModule(moduleImport, lazyModule, modelLoader, moduleManager, artifact);
+                }else{
+                    setupCeylonModule(moduleImport, lazyModule, modelLoader, moduleManager, artifact, dependencyTree);
                 }
             }
             // module is now available
@@ -200,8 +138,127 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
         }
     }
 
+    private void setupCeylonModule(ModuleImport moduleImport, LazyModule module, 
+            AbstractModelLoader modelLoader, ModuleManager moduleManager,
+            ArtifactResult artifact, LinkedList<Module> dependencyTree) {
+        // it must be a Ceylon module
+        // default modules don't have any module descriptors so we can't check them
+        Overrides overrides = getContext().getRepositoryManager().getOverrides();
+        if (overrides != null) {
+            Set<ModuleDependencyInfo> existingModuleDependencies = new HashSet<>();
+            for (ModuleImport i : module.getImports()) {
+                Module m = i.getModule();
+                if (m != null) {
+                    existingModuleDependencies.add(new ModuleDependencyInfo(i.getNamespace(), m.getNameAsString(), m.getVersion(), i.isOptional(), i.isExport()));
+                }
+            }
+            ModuleInfo sourceModuleInfo = new ModuleInfo(artifact.name(), artifact.version(), null, existingModuleDependencies);
+            ModuleInfo newModuleInfo = overrides.applyOverrides(artifact.name(), artifact.version(), sourceModuleInfo);
+            List<ModuleImport> newModuleImports = new ArrayList<>();
+            for (ModuleDependencyInfo dep : newModuleInfo.getDependencies()) {
+                Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dep.getName()), dep.getVersion());
+                Backends backends = dependency.getNativeBackends();
+                ModuleImport newImport = new ModuleImport(dep.getNamespace(), dependency, dep.isOptional(), dep.isExport(), backends);
+                newModuleImports.add(newImport);
+            }
+            module.overrideImports(newModuleImports);
+        }
+        if(!Versions.isJvmBinaryVersionSupported(module.getJvmMajor(), module.getJvmMinor())){
+            attachErrorToDependencyDeclaration(moduleImport,
+                    dependencyTree,
+                    "version '"+ module.getVersion() + "' of module '" + module.getNameAsString() + 
+                    "' was compiled by an incompatible version of the compiler (binary version " +
+                    module.getJvmMajor() + "." + module.getJvmMinor() + 
+                    " of module is not compatible with binary version " + 
+                    Versions.JVM_BINARY_MAJOR_VERSION + "." + Versions.JVM_BINARY_MINOR_VERSION +
+                    " of this compiler)",
+                    true);
+        }
+    }
+
+    private void setupJavaModule(ModuleImport moduleImport, LazyModule module, 
+            AbstractModelLoader modelLoader, ModuleManager moduleManager,
+            ArtifactResult artifact) {
+        
+        // we didn't find module.class so it must be a java module if it's not the default module
+        module.setJava(true);
+        module.setNativeBackends(Backend.Java.asSet());
+        
+        modelLoader.loadJava9Module(module, artifact.artifact());
+        
+        List<ArtifactResult> deps = artifact.dependencies();
+        boolean forceExport = ModuleUtil.isMavenModule(module.getNameAsString())
+                && modelLoader.isFullyExportMavenDependencies();
+        for (ArtifactResult dep : deps) {
+            // forget runtime, test and even provided
+            if(dep.moduleScope() != ModuleScope.COMPILE)
+                continue;
+            // Never load optional dependencies of Java modules, since those are supposed to not
+            // re-export them anyway
+            if(dep.optional())
+                continue;
+            Module dependency = moduleManager.getOrCreateModule(ModuleManager.splitModuleName(dep.name()), dep.version());
+
+            ModuleImport depImport = moduleManager.findImport(module, dependency);
+            if (depImport == null) {
+                moduleImport = new ModuleImport(dep.namespace(), dependency, 
+                        dep.optional(), 
+                        // allow forcing export but not for optional modules
+                        dep.exported() || (forceExport && !dep.optional()),
+                        Backend.Java);
+                module.addImport(moduleImport);
+            }
+        }
+    }
+
+    private boolean shouldAbortOnDuplicateModule(Module module, String moduleName,
+            AbstractModelLoader modelLoader, LinkedList<Module> dependencyTree) {
+        String standardisedModuleName = ModuleUtil.toCeylonModuleName(moduleName);
+        // check for an already loaded module with the same name but different version
+        for(Module loadedModule : getContext().getModules().getListOfModules()){
+            String loadedModuleName = loadedModule.getNameAsString();
+            String standardisedLoadedModuleName = ModuleUtil.toCeylonModuleName(loadedModuleName);
+            boolean sameModule = loadedModuleName.equals(moduleName);
+            boolean similarModule = standardisedLoadedModuleName.equals(standardisedModuleName);
+            if((sameModule || similarModule)
+                    && !loadedModule.getVersion().equals(module.getVersion())
+                    && modelLoader.isModuleInClassPath(loadedModule)){
+                // abort
+                // we need this error thrown rather than the typechecker error because the typechecker currently
+                // allows more than we do, such as having direct imports of the same module with different versions
+                // as long as they are not reexported, but we don't support that since they all go in the same
+                // classpath (direct imports of compiled modules)
+
+                if(sameModule){
+                    String[] versions = VersionComparator.orderVersions(module.getVersion(), loadedModule.getVersion());
+                    String error = "source code imports two different versions of module '" + 
+                            moduleName + "': "+
+                            "version '" + versions[0] + "' and version '" + versions[1] +
+                            "'";
+                    addConflictingModuleErrorToModule(moduleName, dependencyTree.getFirst(), error);
+                }else{
+                    String moduleA;
+                    String moduleB;
+                    if(loadedModuleName.compareTo(moduleName) < 0){
+                        moduleA = ModuleUtil.makeModuleName(loadedModuleName, loadedModule.getVersion());
+                        moduleB = ModuleUtil.makeModuleName(moduleName, module.getVersion());
+                    }else{
+                        moduleA = ModuleUtil.makeModuleName(moduleName, module.getVersion());
+                        moduleB = ModuleUtil.makeModuleName(loadedModuleName, loadedModule.getVersion());
+                    }
+                    String error = "source code imports two different versions of similar modules '" + 
+                            moduleA + "' and '"+ moduleB + "'";
+                    addConflictingModuleWarningToModule(moduleA, dependencyTree.getFirst(), Warning.similarModule, error);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
-    public void attachErrorToDependencyDeclaration(ModuleImport moduleImport, List<Module> dependencyTree, String error) {
+    public void attachErrorToDependencyDeclaration(ModuleImport moduleImport, List<Module> dependencyTree, 
+            String error, boolean isError) {
         // special case for the java modules, which we only get when using the wrong version
         String name = moduleImport.getModule().getNameAsString();
         JdkProvider jdkProvider = getJdkProvider();
@@ -210,7 +267,7 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
                     moduleImport.getModule().getVersion() +
                     "\"' and you're compiling with Java " + jdkProvider.getJDKVersion();
         }
-        super.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error);
+        super.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error, isError);
     }
 
     @Override
@@ -246,5 +303,59 @@ public class LazyModuleSourceMapper extends ModuleSourceMapper {
     @Override
     public JdkProvider getJdkProvider() {
     	return getModuleManager().getModelLoader().getJdkProvider();
+    }
+    
+    @Override
+    public void preResolveDependenciesIfRequired(RepositoryManager repositoryManager) {
+        AbstractModelLoader modelLoader = getModuleManager().getModelLoader();
+        if(!modelLoader.isFullyExportMavenDependencies())
+            return;
+        if(statusPrinter != null){
+            statusPrinter.clearLine();
+            statusPrinter.log("Pre-resolving dependencies");
+        }
+        if(verbose){
+            log.printRawLines(WriterKind.NOTICE, "[Pre-resolving dependencies]");
+        }
+        Set<Module> compiledModules = getCompiledModules();
+        Map<String,String> modules = new HashMap<>();
+        for (Module module : compiledModules) {
+            for (ModuleImport imp : module.getImports()) {
+                if(imp.getModule() == null
+                        || !compiledModules.contains(imp.getModule())){
+                    modules.put(imp.getModule().getNameAsString(), imp.getModule().getVersion());
+                }
+            }
+        }
+        if(statusPrinter != null){
+            statusPrinter.clearLine();
+            statusPrinter.log("Pre-resolving found "+modules.size()+" to pre-resolve");
+        }
+        if(verbose){
+            log.printRawLines(WriterKind.NOTICE, "[Pre-resolving "+modules.size()+" modules]");
+        }
+        if(modules.isEmpty())
+            return;
+        Entry<String, String> first = modules.entrySet().iterator().next();
+        CompilerModuleLoader ml = new CompilerModuleLoader(repositoryManager, null, modules, verbose, statusPrinter, log);
+        try {
+            ml.loadModule(first.getKey(), first.getValue(), ModuleScope.COMPILE);
+        } catch (ModuleNotFoundException e) {
+            log.error("ceylon", "Pre-resolving of module failed: "+e.getMessage());
+        }
+        if(statusPrinter != null){
+            statusPrinter.clearLine();
+            statusPrinter.log("Pre-resolving resolved "+ml.getModuleCount());
+        }
+        if(verbose){
+            log.printRawLines(WriterKind.NOTICE, "[Pre-resolved "+ml.getModuleCount()+" modules]");
+        }
+        Overrides overrides = repositoryManager.getOverrides();
+        if(overrides == null){
+            overrides = Overrides.create();
+            repositoryManager.setOverrides(overrides);
+        }
+        ml.setupOverrides(overrides);
+        ml.cleanup();
     }
 }

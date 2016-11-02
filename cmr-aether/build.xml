@@ -202,23 +202,6 @@
     </target>
 
     <target name="compile.tests">
-        <mkdir dir="${build.classes}" />
-        <javac
-            srcdir="${test.src}"
-            destdir="${build.classes}"
-            debug="true"
-            encoding="UTF8"
-            classpathref="test.run.classpath"
-            target="${compile.java.target}"
-            source="${compile.java.source}"
-            bootclasspath="${compile.java.bootclasspath}">
-            <include name="**/*.java" />
-        </javac>
-        <copy todir="${build.classes}">
-            <fileset dir="${test.src}">
-                <exclude name="**/*.java" />
-            </fileset>
-        </copy>
     </target>
 
     <target name="test"
@@ -226,22 +209,5 @@
     </target>
 
     <target name="test-quick" depends="compile.tests">
-        <mkdir dir="${test.reports}" />
-        <junit printsummary="yes" haltonfailure="no" failureproperty="test.failed">
-            <classpath refid="test.run.classpath" />
-
-            <formatter type="xml" />
-            <test
-                name="com.redhat.ceylon.common.test.ToolsSuite"
-                fork="yes"
-                todir="${test.reports}" />
-        </junit>
-        <junitreport todir="${test.reports}">
-            <fileset dir="${test.reports}">
-                <include name="TEST-*.xml" />
-            </fileset>
-            <report format="frames" todir="${test.reports}" />
-        </junitreport>
-        <fail message="Test failure detected, check test results." if="test.failed" />
     </target>
 </project>

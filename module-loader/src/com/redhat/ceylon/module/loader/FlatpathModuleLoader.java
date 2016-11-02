@@ -1,20 +1,20 @@
 package com.redhat.ceylon.module.loader;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import com.redhat.ceylon.cmr.api.RepositoryManager;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleNotFoundException;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.cmr.RepositoryException;
 
-public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
-    final Map<String, String> extraModules;
+public class FlatpathModuleLoader extends BaseRuntimeModuleLoaderImpl {
 
     public FlatpathModuleLoader() {
         this(null, null);
@@ -29,34 +29,20 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
 
     public FlatpathModuleLoader(RepositoryManager repositoryManager,
             ClassLoader delegateClassLoader, Map<String, String> extraModules, boolean verbose) {
-        super(repositoryManager, delegateClassLoader, verbose);
-        this.extraModules = extraModules;
+        super(repositoryManager, delegateClassLoader, extraModules, verbose);
     }
 
-    class FlatpathModuleLoaderContext extends ModuleLoaderContext {
+    class FlatpathModuleLoaderContext extends RuntimeModuleLoaderContext {
 
-        FlatpathModuleLoaderContext(String module, String version) throws ModuleNotFoundException {
-            super(module, version);
+        FlatpathModuleLoaderContext(String module, String version, ModuleScope lookupScope) throws ModuleNotFoundException {
+            super(module, version, lookupScope);
         }
 
         @Override
-        void initialise() throws ModuleNotFoundException {
+        protected void initialise() throws ModuleNotFoundException {
             preloadModules();
             moduleClassLoader = setupClassLoader();
             initialiseMetamodel();
-        }
-
-        private void preloadModules() throws ModuleNotFoundException {
-            try {
-                loadModule(null, module, modver, false, false, null);
-                if(extraModules != null){
-                    for(Entry<String,String> entry : extraModules.entrySet()){
-                        loadModule(null, entry.getKey(), entry.getValue(), false, false, null);
-                    }
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
 
         private ClassLoader setupClassLoader() {
@@ -99,7 +85,7 @@ public class FlatpathModuleLoader extends BaseModuleLoaderImpl {
     }
 
     @Override
-    ModuleLoaderContext createModuleLoaderContext(String name, String version) throws ModuleNotFoundException {
-        return new FlatpathModuleLoaderContext(name, version);
+    protected ModuleLoaderContext createModuleLoaderContext(String name, String version, ModuleScope lookupScope) throws ModuleNotFoundException {
+        return new FlatpathModuleLoaderContext(name, version, lookupScope);
     }
 }

@@ -37,7 +37,7 @@ import com.redhat.ceylon.model.cmr.RepositoryException;
 public abstract class AbstractRepositoryManager implements RepositoryManager {
 
     protected final Logger log;
-    protected final Overrides overrides;
+    protected Overrides overrides;
 
     public AbstractRepositoryManager(Logger log, Overrides overrides) {
         this.log = log;
@@ -202,5 +202,10 @@ public abstract class AbstractRepositoryManager implements RepositoryManager {
     @Override
     public Overrides getOverrides() {
         return overrides;
+    }
+    
+    @Override
+    public void setOverrides(Overrides overrides) {
+        this.overrides = overrides;
     }
 }

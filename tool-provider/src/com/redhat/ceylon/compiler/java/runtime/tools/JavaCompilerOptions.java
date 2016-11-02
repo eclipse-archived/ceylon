@@ -11,6 +11,7 @@ import java.util.List;
 public class JavaCompilerOptions extends CompilerOptions {
     private boolean flatClasspath;
     private boolean autoExportMavenDependencies;
+    private boolean fullyExportMavenDependencies;
     private String jdkProvider;
     private List<String> aptModules = new LinkedList<>();
     private List<String> javacOptions = new LinkedList<>();
@@ -98,5 +99,13 @@ public class JavaCompilerOptions extends CompilerOptions {
         JavaCompilerOptions options = new JavaCompilerOptions();
         options.mapOptions(config);
         return options;
+    }
+
+    public boolean isFullyExportMavenDependencies() {
+        return fullyExportMavenDependencies;
+    }
+
+    public void setFullyExportMavenDependencies(boolean fullyExportMavenDependencies) {
+        this.fullyExportMavenDependencies = fullyExportMavenDependencies;
     }
 }

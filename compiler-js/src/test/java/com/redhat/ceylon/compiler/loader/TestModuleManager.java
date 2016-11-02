@@ -221,7 +221,7 @@ public class TestModuleManager {
 
     public void compareTypes(Type t0, Type t1, ArrayList<String> stack) {
         if (stack == null) {
-            stack = new ArrayList<String>();
+            stack = new ArrayList<>();
         }
         if (t0 == null) {
             Assert.assertNull("not null " + t1, t1);
@@ -231,11 +231,11 @@ public class TestModuleManager {
         }
         Assert.assertEquals("stack: " + stack, t0.asString(), t1.asString());
         Assert.assertEquals(t0.getUnderlyingType(), t1.getUnderlyingType());
-        Assert.assertEquals(t0.asQualifiedString(), t1.asQualifiedString());
+        Assert.assertEquals(t0.asString(), t1.asString());
         Assert.assertEquals(t0.isFunctional(), t1.isFunctional());
         Assert.assertEquals(t0.isRaw(), t1.isRaw());
         Assert.assertEquals(t0.isWellDefined(), t1.isWellDefined());
-        final String t0ptqn = t0.asQualifiedString();
+        final String t0ptqn = t0.getDeclaration().getQualifiedNameString();
         stack.add(t0ptqn);
         if ("ceylon.language::Anything".equals(t0ptqn) || "ceylon.language::Null".equals(t0ptqn) || "ceylon.language::Basic".equals(t0ptqn) || "ceylon.language::Null".equals(t0ptqn)) {
             return;
@@ -248,9 +248,9 @@ public class TestModuleManager {
             for (Map.Entry<TypeParameter, Type> e : t0.getTypeArguments().entrySet()) {
                 Type tparm = parms1.get(e.getKey());
                 Assert.assertNotNull(tparm);
-                final String s0ppp = e.getValue().asQualifiedString();
+                final String s0ppp = e.getValue().asString();
                 if (stack.contains(s0ppp)) {
-                    Assert.assertEquals(s0ppp, tparm.asQualifiedString());
+                    Assert.assertEquals(s0ppp, tparm.asString());
                 } else {
                     compareTypes(e.getValue(), tparm, stack);
                 }
@@ -276,7 +276,7 @@ public class TestModuleManager {
         } else {
             if (t0.getSupertypes().size() != t1.getSupertypes().size()) {
                 System.out.println("SRC " + t0ptqn + "(" + t0.getDeclaration().getContainer().getQualifiedNameString() + ") supers " + t0.getSupertypes());
-                System.out.println("JS  " + t1.asQualifiedString() + "(" + t1.getDeclaration().getContainer().getQualifiedNameString() + ") supers " + t1.getSupertypes());
+                System.out.println("JS  " + t1.getDeclaration().getQualifiedNameString() + "(" + t1.getDeclaration().getContainer().getQualifiedNameString() + ") supers " + t1.getSupertypes());
             }
             Assert.assertEquals("supertypes differ for " + t0 + ": " + t0.getSupertypes() + " vs " + t1.getSupertypes(),
                     t0.getSupertypes().size(), t1.getSupertypes().size());
@@ -286,9 +286,9 @@ public class TestModuleManager {
                 if (s0 == t0) {
                     Assert.assertTrue(s1 == t1);
                 } else {
-                    final String s0ppp = s0.asQualifiedString();
+                    final String s0ppp = s0.asString();
                     if (stack.contains(s0ppp)) {
-                        Assert.assertEquals(s0ppp, s1.asQualifiedString());
+                        Assert.assertEquals(s0ppp, s1.asString());
                     } else {
                         compareTypes(s0, s1, stack);
                     }

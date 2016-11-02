@@ -19,10 +19,10 @@ package com.redhat.ceylon.cmr.maven;
 import java.util.List;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
+import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.ModuleQuery.Type;
 import com.redhat.ceylon.cmr.api.ModuleVersionQuery;
 import com.redhat.ceylon.cmr.api.ModuleVersionResult;
-import com.redhat.ceylon.cmr.api.CmrRepository;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.impl.MavenRepository;
 import com.redhat.ceylon.cmr.impl.NodeUtils;
@@ -114,6 +114,7 @@ public class AetherRepository extends MavenRepository {
         if(groupArtifactIds == null)
             return;
         // FIXME: does not respect paging or count
-        utils.search(groupArtifactIds[0], groupArtifactIds[1], lookup.getVersion(), result, getOverrides(), getDisplayString());
+        utils.search(groupArtifactIds[0], groupArtifactIds[1], lookup.getVersion(), lookup.isExactVersionMatch(), 
+                result, getOverrides(), getDisplayString());
     }
 }

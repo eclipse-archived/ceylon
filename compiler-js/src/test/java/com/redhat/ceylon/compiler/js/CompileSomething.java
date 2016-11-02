@@ -22,9 +22,9 @@ import com.redhat.ceylon.model.typechecker.context.TypeCache;
 public class CompileSomething {
 
     public static void main(String[] x) throws IOException {
-        final Options opts = new Options().outRepo("/tmp/modules").addRepo("build/runtime")
-                .addRepo("../../ceylon.ast/modules")
-                .addRepo("../../ceylon-sdk/modules").addRepo("build/test/proto")
+        final Options opts = new Options().outRepo("/tmp/modules").addRepo("compiler-js/build/runtime")
+                .addRepo("../ceylon.ast/modules")
+                .addRepo("../ceylon-sdk/modules").addRepo("compiler-js/build/test/proto")
                 .addRepo("npm:")
                 .optimize(true).verbose("all")
                 .generateSourceArchive(false)

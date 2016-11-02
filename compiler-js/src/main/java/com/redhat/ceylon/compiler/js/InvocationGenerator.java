@@ -370,7 +370,7 @@ public class InvocationGenerator {
         if (args.isEmpty()) {
             return Collections.emptyList();
         }
-        final List<String> argvars = new ArrayList<String>(args.size());
+        final List<String> argvars = new ArrayList<>(args.size());
         boolean first=true;
         boolean opened=false;
         Type sequencedType=null;

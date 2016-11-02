@@ -801,6 +801,15 @@ public class AnalyzerUtil {
     static String notAssignableMessage(Type type,
             Type supertype, Node node) {
         Unit unit = node.getUnit();
+        if (supertype.covers(type)) {
+            return ": the assigned type '" + 
+                    type.asString(unit) +
+                    "' is covered by, but not assignable to, the type '" + 
+                    supertype.asString(unit) +
+                    "' (explicitly narrow assigned expression using 'of " + 
+                    supertype.asString(unit) + 
+                    "')";
+        }
         String result = 
                 typingMessage(type,
                     " is not assignable to ",
@@ -1281,7 +1290,7 @@ public class AnalyzerUtil {
                 // transform any Iterable into a Sequence without
                 // losing the information that it is nonempty, in
                 // the case that we know that for sure
-                Type it = unit.getIteratedType(et);
+                Type it = unit.getElementType(et);
                 Type st = 
                         unit.isNonemptyIterableType(et) ?
                                 unit.getSequenceType(it) :

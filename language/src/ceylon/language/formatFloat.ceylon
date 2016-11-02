@@ -1,7 +1,3 @@
-import java.lang {
-    JVMMath=Math
-}
-
 "The string decimal representation of the given 
  [[floating point number|float]]. If the given number is 
  [[negative|Float.negative]], the string representation will 
@@ -247,8 +243,13 @@ native
 Float log10(Float num);
 
 native("jvm")
-Float log10(Float num)
-    =>  JVMMath.log10(num);
+Float log10(Float num) {
+    import java.lang {
+        Math
+    }
+    
+    return Math.log10(num);
+}
 
 native("js")
 Float log10(Float num) {

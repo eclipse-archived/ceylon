@@ -584,7 +584,7 @@
     </target>
 
     <target name="test-quick">
-        <java classname="main.MainForTest">
+        <java classname="main.MainForTest" dir="${basedir}" failonerror="true" fork="true">
             <classpath>
                 <pathelement location="${build.classes}"/>
                 <path refid="classpath"/>
@@ -598,7 +598,7 @@
     </target>
 
     <target name="test.language.quick">
-        <java classname="main.MainForLanguage">
+        <java classname="main.MainForLanguage" dir="${basedir}" failonerror="true" fork="true">
             <classpath>
                 <pathelement location="${build.classes}"/>
                 <path refid="classpath"/>

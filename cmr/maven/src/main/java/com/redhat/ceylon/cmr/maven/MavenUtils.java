@@ -19,6 +19,7 @@ import org.xml.sax.SAXException;
 
 import com.redhat.ceylon.cmr.api.ModuleDependencyInfo;
 import com.redhat.ceylon.cmr.api.ModuleInfo;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 
 /**
  * Utility class which does not depend on anything Aether (optional dep), so can be safely public
@@ -97,12 +98,23 @@ public class MavenUtils {
                     String depVersion = getText(dep, "version");
                     String depScope = getText(dep, "scope");
                     String depOptional = getText(dep, "optional");
+                    ModuleScope scope;
                     
-                    // keep compile, runtime, provided
+                    // keep compile, runtime, provided, test
                     if(depScope != null 
-                            && (depScope.equals("test") || depScope.equals("system")))
+                            && (depScope.equals("system")))
                         continue;
-                    ret.add(new ModuleDependencyInfo("maven", depGroupId+":"+depArtifactId, depVersion, "true".equals(depOptional), false));
+                    if("provided".equals(depScope))
+                        scope = ModuleScope.PROVIDED;
+                    else if("runtime".equals(depScope))
+                        scope = ModuleScope.RUNTIME;
+                    else if("test".equals(depScope))
+                        scope = ModuleScope.TEST;
+                    else
+                        scope = ModuleScope.COMPILE;
+
+                    ret.add(new ModuleDependencyInfo("maven", depGroupId+":"+depArtifactId, depVersion, 
+                            "true".equals(depOptional), false, scope));
                 }
             }
         }

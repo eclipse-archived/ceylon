@@ -1,4 +1,4 @@
-package com.redhat.ceylon.module.loader;
+package com.redhat.ceylon.cmr.ceylon.loader;
 
 import java.io.IOException;
 import java.net.URL;
@@ -6,46 +6,82 @@ import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Map.Entry;
 
 import com.redhat.ceylon.cmr.api.ArtifactContext;
 import com.redhat.ceylon.cmr.api.MavenVersionComparator;
 import com.redhat.ceylon.cmr.api.Overrides;
-import com.redhat.ceylon.cmr.api.OverridesRuntimeResolver;
 import com.redhat.ceylon.cmr.api.RepositoryManager;
 import com.redhat.ceylon.cmr.ceylon.CeylonUtils;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.DependencySelector;
+import com.redhat.ceylon.cmr.ceylon.loader.ModuleGraph.Module;
 import com.redhat.ceylon.cmr.impl.FlatRepository;
 import com.redhat.ceylon.common.ModuleUtil;
-import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
-import com.redhat.ceylon.model.cmr.ImportType;
+import com.redhat.ceylon.model.cmr.ModuleScope;
 import com.redhat.ceylon.model.loader.JdkProvider;
-import com.redhat.ceylon.module.loader.ModuleGraph.Module;
 
 public abstract class BaseModuleLoaderImpl implements ModuleLoader {
-    final RepositoryManager repositoryManager;
-    final ClassLoader delegateClassLoader;
-    final JdkProvider jdkProvider;
+    protected final RepositoryManager repositoryManager;
+    protected final ClassLoader delegateClassLoader;
+    protected final JdkProvider jdkProvider;
+    protected final Map<String, String> extraModules;
     
-    private Map<String, ModuleLoaderContext> contexts = new HashMap<String, ModuleLoaderContext>();
-    protected boolean verbose;
+    protected final Map<String, ModuleLoaderContext> contexts = new HashMap<String, ModuleLoaderContext>();
+    protected final boolean verbose;
 
-    abstract class ModuleLoaderContext {
-        final String module;
-        final String modver;
+    protected abstract class ModuleLoaderContext implements DependencySelector {
+        protected final String module;
+        protected final String modver;
+        protected final ModuleScope lookupScope;
         
-        final ModuleGraph moduleGraph = new ModuleGraph();
+        protected final ModuleGraph moduleGraph = new ModuleGraph();
         
-        ClassLoader moduleClassLoader;
+        protected ClassLoader moduleClassLoader;
         
-        ModuleLoaderContext(String module, String version) throws ModuleNotFoundException {
+        protected ModuleLoaderContext(String module, String version, ModuleScope lookupScope) throws ModuleNotFoundException {
             this.module = module;
             this.modver = version;
-            initialise();
+            this.lookupScope = lookupScope;
         }
 
-        abstract void initialise() throws ModuleNotFoundException;
+        protected abstract void initialise() throws ModuleNotFoundException;
         
-        void loadModule(String namespace, String name, String version, boolean optional, boolean inCurrentClassLoader, ModuleGraph.Module dependent) 
+        protected void preloadModules() throws ModuleNotFoundException{
+            try {
+                loadModule(ModuleUtil.getNamespaceFromUri(module), 
+                        ModuleUtil.getModuleNameFromUri(module), 
+                        modver, false, false, null);
+                if(extraModules != null){
+                    for(Entry<String,String> entry : extraModules.entrySet()){
+                        loadModule(ModuleUtil.getNamespaceFromUri(entry.getKey()), 
+                                ModuleUtil.getModuleNameFromUri(entry.getKey()),
+                                entry.getValue(), false, false, null);
+                    }
+                }
+                Overrides overrides = repositoryManager.getOverrides();
+                if(overrides != null){
+                    for (ArtifactContext context : overrides.getAddedArtifacts()) {
+                        loadModule(ModuleUtil.getNamespaceFromUri(context.getName()), 
+                                ModuleUtil.getModuleNameFromUri(context.getName()),
+                                context.getVersion(), false, false, null);
+                    }
+                }
+                moduleGraph.pruneExclusions(this);
+                if(verbose){
+                    moduleGraph.dump(false);
+                    System.err.println("Total: "+getModuleCount());
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        
+        public int getModuleCount() {
+            return moduleGraph.getCount();
+        }
+
+        protected void loadModule(String namespace, String name, String version, boolean optional, boolean inCurrentClassLoader, ModuleGraph.Module dependent) 
         		throws IOException, ModuleNotFoundException  {
         	
             ArtifactContext artifactContext = new ArtifactContext(namespace, name, version, ArtifactContext.CAR, ArtifactContext.JAR);
@@ -99,11 +135,14 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
             }
             if(verbose)
                 log("Resolving "+name+"/"+version);
+            prepareContext(artifactContext);
             ArtifactResult result = repositoryManager.getArtifactResult(artifactContext);
             if(!optional
                     && (result == null || result.artifact() == null || !result.artifact().exists())){
+                resolvingFailed(artifactContext);
                 throw new ModuleNotFoundException("Could not find module: "+ModuleUtil.makeModuleName(name, version));
             }
+            resolvingSuccess(result);
             // save even missing optional modules as nulls to not re-resolve them
             ModuleGraph.Module mod;
             if(dependent == null)
@@ -123,50 +162,77 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
                     // stop if we get removed at any point
                     if(mod.replaced)
                         break;
-                    loadModule(dep.namespace(), dep.name(), dep.version(), dep.importType() == ImportType.OPTIONAL, inCurrentClassLoader, mod);
+                    if(!selectDependency(dep))
+                        continue;
+                    loadModule(dep.namespace(), dep.name(), dep.version(), dep.optional(), inCurrentClassLoader, mod);
                 }
             }
         }
 
-        private void addDependency(Module from, Module to) {
+        protected void resolvingSuccess(ArtifactResult result) {
+        }
+
+        protected void resolvingFailed(ArtifactContext artifactContext) {
+        }
+
+        protected void prepareContext(ArtifactContext artifactContext) {
+        }
+
+        @Override
+        public boolean selectDependency(ArtifactResult dep) {
+            // FIXME: make configurable
+            if(dep.optional())
+                return false;
+            return includeDependencyInLookupScope(dep);
+        }
+        
+        @Override
+        public boolean canExclude(Module mod) {
+            // don't exclude our root
+            if(mod.name.equals(module)
+                    && mod.version.equals(modver))
+                return false;
+            // don't exclude extra modules
+            if(extraModules != null){
+                for(Entry<String,String> entry : extraModules.entrySet()){
+                    if(mod.name.equals(entry.getKey())
+                            && mod.version.equals(entry.getValue()))
+                        return false;
+                }
+            }
+            Overrides overrides = repositoryManager.getOverrides();
+            if(overrides != null){
+                for (ArtifactContext context : overrides.getAddedArtifacts()) {
+                    if(mod.name.equals(context.getName())
+                            && mod.version.equals(context.getVersion()))
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        @SuppressWarnings("incomplete-switch")
+        private boolean includeDependencyInLookupScope(ArtifactResult dep) {
+            switch(lookupScope){
+            case COMPILE:
+                return dep.moduleScope() == ModuleScope.COMPILE;
+            case RUNTIME:
+                // I _think_ Maven test scopes are only for running tests locally: maven does not
+                // produce test modules, or modules who when tested have additional deps
+            case TEST:
+                // FIXME: actually we may need two runtime scopes: CONTAINER and STANDALONE to
+                // decide if we keep PROVIDED deps
+                return dep.moduleScope() == ModuleScope.COMPILE
+                    || dep.moduleScope() == ModuleScope.RUNTIME;
+            }
+            return false;
+        }
+
+        private void addDependency(ModuleGraph.Module from, ModuleGraph.Module to) {
             if(from != null)
                 from.addDependency(to);
             else
                 moduleGraph.addRoot(to);
-        }
-
-        protected void initialiseMetamodel() {
-            Overrides overrides = repositoryManager.getOverrides();
-            Metamodel.resetModuleManager(new OverridesRuntimeResolver(overrides));
-            moduleGraph.visit(new ModuleGraph.Visitor(){
-                @Override
-                public void visit(Module module) {
-                    registerInMetamodel(module);
-                }
-            });
-        }
-
-        private void registerInMetamodel(ModuleGraph.Module module) {
-            // skip JDK modules
-            if(jdkProvider.isJDKModule(module.name))
-                return;
-            // use the one we got from the CMR rather than the one for dependencies mapping
-            ArtifactResult dependencyArtifact = module.artifact;
-            // it may be optional, we already dealt with those checks earlier
-            if(dependencyArtifact != null){
-                ClassLoader dependencyClassLoader;
-                if(module.inCurrentClassLoader)
-                    dependencyClassLoader = delegateClassLoader;
-                else
-                    dependencyClassLoader = moduleClassLoader;
-                registerInMetamodel(dependencyArtifact, dependencyClassLoader);
-            }
-        }
-        
-        private void registerInMetamodel(ArtifactResult artifact, ClassLoader classLoader) {
-            if(verbose)
-                log("Registering "+artifact.name()+"/"+artifact.version()+" in metamodel");
-            Metamodel.loadModule(artifact.name(), artifact.version(), artifact, classLoader);
         }
         
         public void cleanup() {
@@ -200,10 +266,11 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
     }
 
     public BaseModuleLoaderImpl(RepositoryManager repoManager, ClassLoader delegateClassLoader) {
-        this(repoManager, delegateClassLoader, false);
+        this(repoManager, delegateClassLoader, null, false);
     }
     
-    public BaseModuleLoaderImpl(RepositoryManager repositoryManager, ClassLoader delegateClassLoader, boolean verbose) {
+    public BaseModuleLoaderImpl(RepositoryManager repositoryManager, ClassLoader delegateClassLoader, 
+            Map<String,String> extraModules, boolean verbose) {
         if (repositoryManager == null) {
             this.repositoryManager = CeylonUtils.repoManager().buildManager();
         } else {
@@ -217,31 +284,34 @@ public abstract class BaseModuleLoaderImpl implements ModuleLoader {
         this.verbose = verbose;
         // FIXME: support alternate JDKs in time
         this.jdkProvider = new JdkProvider();
+        this.extraModules = extraModules;
     }
     
     @Override
     public ClassLoader loadModule(String name, String version) throws ModuleNotFoundException {
-        if (contexts == null) {
-            throw new ceylon.language.AssertionError("Cannot get load module after cleanup is called");
-        }
+        return loadModule(name, version, ModuleScope.RUNTIME);
+    }
+
+    @Override
+    public ClassLoader loadModule(String name, String version, ModuleScope lookupScope) throws ModuleNotFoundException {
         String key = name;
         ModuleLoaderContext ctx = contexts.get(key);
         if (ctx == null) {
-            ctx = createModuleLoaderContext(name, version);
+            // we want a CL so it's runtime
+            ctx = createModuleLoaderContext(name, version, lookupScope);
+            ctx.initialise();
             contexts.put(key, ctx);
         }
         return ctx.moduleClassLoader;
     }
-    
-    abstract ModuleLoaderContext createModuleLoaderContext(String name, String version) throws ModuleNotFoundException;
+
+    protected abstract ModuleLoaderContext createModuleLoaderContext(String name, String version, ModuleScope lookupScope) throws ModuleNotFoundException;
     
     public void cleanup() {
-        if (contexts != null) {
-            for (ModuleLoaderContext ctx : contexts.values()) {
-                ctx.cleanup();
-            }
-            contexts = null;
+        for (ModuleLoaderContext ctx : contexts.values()) {
+            ctx.cleanup();
         }
+        contexts.clear();
     }
     
     // For tests only

@@ -36,6 +36,7 @@ public class MainForTest {
                 .setRepositoryManager(repositoryManager)
                 .getTypeChecker();
         typeChecker.process();
+        int errors = typeChecker.getErrors();
         Tree.CompilationUnit compilationUnit = 
                 typeChecker.getPhasedUnitFromRelativePath(
                         "ceylon/language/Object.ceylon")
@@ -69,6 +70,7 @@ public class MainForTest {
                 .setRepositoryManager(repositoryManager)
                 .getTypeChecker();
         typeChecker.process();
+        errors += typeChecker.getErrors();
         compilationUnit = 
                 typeChecker.getPhasedUnitFromRelativePath(
                         "Capture.ceylon")
@@ -86,6 +88,7 @@ public class MainForTest {
                 .setRepositoryManager(repositoryManager)
                 .getTypeChecker();
         typeChecker.process();
+        errors += typeChecker.getErrors();
 
         ClosableVirtualFile latestZippedLanguageSourceFile = 
                 MainHelper.getLatestZippedLanguageSourceFile();
@@ -95,7 +98,12 @@ public class MainForTest {
                 .setRepositoryManager(repositoryManager)
                 .getTypeChecker();
         typeChecker.process();
+        errors += typeChecker.getErrors();
         latestZippedLanguageSourceFile.close();
         System.out.println("Tests took " + ( (System.nanoTime()-start) / 1000000 ) + " ms");
+        
+        if (errors > 0) {
+            System.exit(1);
+        }
     }
 }

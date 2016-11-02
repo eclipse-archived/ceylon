@@ -20,7 +20,8 @@ public class ModuleHelper {
             ModuleImport moduleImport,
             LinkedList<Module> dependencyTree,
             Exception exceptionOnGetArtifact,
-            ModuleSourceMapper moduleManagerUtil) {
+            ModuleSourceMapper moduleManagerUtil,
+            boolean isError) {
         StringBuilder error = new StringBuilder("cannot find module ");
         if (CeylonUtils.arrayContains(artifactContext.getSuffixes(), ArtifactContext.SRC)) {
             error.append("source ");
@@ -51,7 +52,7 @@ public class ModuleHelper {
         }
         else {
             //today we attach that to the module dependency
-            moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error.toString());
+            moduleManagerUtil.attachErrorToDependencyDeclaration(moduleImport, dependencyTree, error.toString(), isError);
         }
     }
 

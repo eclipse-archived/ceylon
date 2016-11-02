@@ -2,7 +2,6 @@ package com.redhat.ceylon.compiler.java.test.compat;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
@@ -10,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.redhat.ceylon.common.Versions;
@@ -28,23 +28,24 @@ public class CompatTests extends CompilerTests {
     protected String get120DistPath() {
         synchronized (CompatTests.class) { 
             if (ceylon120Dist == null) {
-            ceylon120Dist = System.getProperty("ceylon120Dist");
-            if (ceylon120Dist == null) {
-                ceylon120Dist = "/home/tom/Desktop/ceylon-1.2.0";
-            }
-            checkVersion(ceylon120Dist, "ceylon version 1.2.0");
+                ceylon120Dist = System.getProperty("ceylon120Dist");
+                if (ceylon120Dist == null) {
+                    Assume.assumeTrue(false);
+                }
+                checkVersion(ceylon120Dist, "ceylon version 1.2.0");
             }
         }
         return ceylon120Dist;
     }
+    
     protected String get121DistPath() {
         synchronized (CompatTests.class) { 
             if (ceylon121Dist == null) {
                 ceylon121Dist = System.getProperty("ceylon121Dist");
                 if (ceylon121Dist == null) {
-                    ceylon121Dist = "../dist/dist/";
+                    Assume.assumeTrue(false);
                 }
-                //checkVersion(ceylon121Dist, "ceylon version 1.2.1");
+                checkVersion(ceylon121Dist, "ceylon version 1.2.1");
             }
         }
         return ceylon121Dist;
