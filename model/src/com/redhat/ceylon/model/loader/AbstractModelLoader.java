@@ -4599,6 +4599,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
         }
     }
 
+    @SuppressWarnings("incomplete-switch")
     private Function loadFunctionCoercionParameter(Declaration decl, String paramName, TypeMirror typeMirror,
             Module moduleScope, Scope scope) {
         Function method = new Function();
@@ -4613,10 +4614,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                             scope, TypeLocation.TOPLEVEL, VarianceLocation.COVARIANT);
             switch(getUncheckedNullPolicy(false, functionalInterfaceType.getReturnType(), functionalMethod)){
             case Optional:
-                returnType = makeOptionalTypePreserveUnderlyingType(returnType, moduleScope);
-                break;
             case UncheckedNull:
-                method.setUncheckedNullType(true);
+                returnType = makeOptionalTypePreserveUnderlyingType(returnType, moduleScope);
                 break;
             }
             method.setType(returnType);
@@ -4625,7 +4624,6 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             int count = 0;
             List<VariableMirror> functionalParameters = functionalMethod.getParameters();
             for(TypeMirror parameterType : functionalInterfaceType.getParameterTypes()){
-                VariableMirror functionalParameter = functionalParameters.get(count);
                 Type modelParameterType = 
                         obtainType(moduleScope, parameterType, scope, 
                                 TypeLocation.TOPLEVEL, VarianceLocation.CONTRAVARIANT);
@@ -4634,12 +4632,12 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                 String name = "arg" + count++;
                 p.setName(name);
                 v.setName(name);
-                v.setType(modelParameterType);
                 v.setContainer(method);
                 v.setScope(method);
                 p.setModel(v);
                 v.setInitializerParameter(p);
 
+                // Java parameters are all optional unless primitives or annotated as such
                 switch(getUncheckedNullPolicy(false, parameterType, functionalMethod)){
                 case Optional:
                     modelParameterType = makeOptionalTypePreserveUnderlyingType(modelParameterType, moduleScope);
@@ -4648,6 +4646,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
                     v.setUncheckedNullType(true);
                     break;
                 }
+
+                v.setType(modelParameterType);
 
                 pl.getParameters().add(p);
                 method.addMember(v);
