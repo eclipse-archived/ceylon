@@ -11,6 +11,7 @@ void runTests() {
     print("** Running JVM Tests **");
     bug365();
     bug200();
+    bug6656();
     print("JVM Arrays");
     testArrays();
 }
