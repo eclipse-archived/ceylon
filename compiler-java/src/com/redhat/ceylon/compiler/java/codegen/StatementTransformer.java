@@ -1907,8 +1907,9 @@ public class StatementTransformer extends AbstractTransformer {
             Tree.ForIterator forIterator = getForIterator();
             if (forIterator instanceof Tree.ValueIterator) {
                 Tree.ValueIterator valIter = (Tree.ValueIterator)forIterator;
-                transformedBlock = destructureVariable(valIter.getVariable(), elementGet, 
-                        elementType, isIndexedAccessBoxed(), transformedBlock);
+                JCStatement variable = transformVariable(valIter.getVariable(), elementGet, elementType, isIndexedAccessBoxed()).build();
+                // Prepend to the block
+                transformedBlock = transformedBlock.prepend(variable);
             } else if (forIterator instanceof Tree.PatternIterator) {
                 Tree.PatternIterator patIter = (Tree.PatternIterator)forIterator;
                 Tree.Pattern pattern = patIter.getPattern();
