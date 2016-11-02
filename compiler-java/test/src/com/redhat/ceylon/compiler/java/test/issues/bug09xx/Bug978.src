@@ -13,7 +13,7 @@ class Bug978 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private final .ceylon.language.Sequential<? extends .ceylon.language.String> strings;
     
     private final .ceylon.language.Sequential<? extends .ceylon.language.String> getStrings$priv$() {
-        return strings;
+        return this.strings;
     }
     
     private final .java.lang.String join$priv$() {

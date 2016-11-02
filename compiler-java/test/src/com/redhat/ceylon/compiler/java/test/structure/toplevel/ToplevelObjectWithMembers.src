@@ -18,17 +18,17 @@ final class topLevelObjectWithMembers_ implements .java.io.Serializable, .com.re
     private final boolean valShared;
     
     public final boolean getValShared() {
-        return valShared;
+        return this.valShared;
     }
     private final boolean valCaptured;
     
     private final boolean getValCaptured$priv$() {
-        return valCaptured;
+        return this.valCaptured;
     }
     private boolean varShared;
     
     public final boolean getVarShared() {
-        return varShared;
+        return this.varShared;
     }
     
     public final void setVarShared(final boolean varShared) {
@@ -37,7 +37,7 @@ final class topLevelObjectWithMembers_ implements .java.io.Serializable, .com.re
     private boolean varCaptured;
     
     private final boolean getVarCaptured$priv$() {
-        return varCaptured;
+        return this.varCaptured;
     }
     
     private final void setVarCaptured$priv$(final boolean varCaptured) {
@@ -51,24 +51,24 @@ final class topLevelObjectWithMembers_ implements .java.io.Serializable, .com.re
     public final boolean yShared() {
         return getVarCaptured$priv$();
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_();
+            $object$ = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_();
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.$init$$object$ = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_ get_() {
-        if (topLevelObjectWithMembers_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectWithMembers_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelObjectWithMembers\' before it was set");

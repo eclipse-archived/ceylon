@@ -22,7 +22,7 @@ public final class bug2229_ {
                     private final long i;
                     
                     public final long getI() {
-                        return i;
+                        return this.i;
                     }
                     
                     @.java.lang.Override

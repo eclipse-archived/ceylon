@@ -11,12 +11,12 @@ abstract class ClassAttribute implements .com.redhat.ceylon.compiler.java.runtim
     private final .java.lang.String publicvar;
     
     public final .java.lang.String getPublicvar() {
-        return publicvar;
+        return this.publicvar;
     }
     private final .java.lang.String capturedvar;
     
     private final .java.lang.String getCapturedvar$priv$() {
-        return capturedvar;
+        return this.capturedvar;
     }
     
     public abstract .java.lang.String getFormalvar();
@@ -44,13 +44,13 @@ class SubClassAttribute extends .com.redhat.ceylon.compiler.java.test.structure.
     
     @.java.lang.Override
     public final .java.lang.String getFormalvar() {
-        return formalvar;
+        return this.formalvar;
     }
     private final .java.lang.String formalvarShortcut;
     
     @.java.lang.Override
     public final .java.lang.String getFormalvarShortcut() {
-        return formalvarShortcut;
+        return this.formalvarShortcut;
     }
     
     @.java.lang.Override

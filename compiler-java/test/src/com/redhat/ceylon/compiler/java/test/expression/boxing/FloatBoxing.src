@@ -8,7 +8,7 @@ class FloatBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     private double attrFloat;
     
     private final double getAttrFloat$priv$() {
-        return attrFloat;
+        return this.attrFloat;
     }
     
     private final void setAttrFloat$priv$(final double attrFloat) {

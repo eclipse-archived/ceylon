@@ -73,7 +73,7 @@ class JavaEntry<K, V> extends .java.lang.Object implements .com.redhat.ceylon.co
     private final .ceylon.language.Entry<? extends K, ? extends V> entry;
     
     private final .ceylon.language.Entry<? extends K, ? extends V> getEntry$priv$() {
-        return entry;
+        return this.entry;
     }
     
     @.java.lang.Override

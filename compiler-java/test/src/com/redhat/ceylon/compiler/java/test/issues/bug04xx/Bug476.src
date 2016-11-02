@@ -53,7 +53,7 @@ class Bug476Bottom<T, U> extends .com.redhat.ceylon.compiler.java.test.issues.bu
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A getAttr() {
-        return attr;
+        return this.attr;
     }
     
     public final void setAttr(final .com.redhat.ceylon.compiler.java.test.issues.bug04xx.Bug476A attr) {
@@ -611,7 +611,7 @@ public abstract class Bug476<T> implements .com.redhat.ceylon.compiler.java.runt
     
     @.java.lang.Override
     public final .java.lang.String toString() {
-        return string;
+        return this.string;
     }
     
     @.java.lang.Override

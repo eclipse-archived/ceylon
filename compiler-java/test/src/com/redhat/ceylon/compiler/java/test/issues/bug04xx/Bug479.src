@@ -9,12 +9,12 @@ class Bug479 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private final .java.lang.String baseString;
     
     private final .java.lang.String getBaseString$priv$() {
-        return baseString;
+        return this.baseString;
     }
     private final .java.lang.String _underscoredBaseString;
     
     private final .java.lang.String get_underscoredBaseString$priv$() {
-        return _underscoredBaseString;
+        return this._underscoredBaseString;
     }
     
     public final .java.lang.String getSimpleFoo() {

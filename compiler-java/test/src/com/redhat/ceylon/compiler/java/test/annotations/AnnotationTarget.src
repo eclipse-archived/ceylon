@@ -116,14 +116,14 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     private final .java.lang.String getParameter$priv$() {
-        return parameter;
+        return this.parameter;
     }
     private final boolean attribute;
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     @.ceylon.language.SharedAnnotation$annotation$
     public final boolean getAttribute() {
-        return attribute;
+        return this.attribute;
     }
     private boolean varAttribute;
     
@@ -131,7 +131,7 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
     public final boolean getVarAttribute() {
-        return varAttribute;
+        return this.varAttribute;
     }
     
     public final void setVarAttribute(final boolean varAttribute) {
@@ -192,7 +192,7 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
             
             @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
             private final .java.lang.String getParameter$priv$() {
-                return parameter;
+                return this.parameter;
             }
             
             @.java.lang.Override
@@ -213,7 +213,7 @@ class AnnotationTargetClass implements .com.redhat.ceylon.compiler.java.runtime.
         
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
         private final .java.lang.String getParameter$priv$() {
-            return parameter;
+            return this.parameter;
         }
         
         @.java.lang.Override
@@ -348,7 +348,7 @@ final class AnnotationTargetInterface$impl implements .java.io.Serializable {
         
         @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
         private final .java.lang.String getParameter$priv$() {
-            return parameter;
+            return this.parameter;
         }
         
         @.java.lang.Override
@@ -379,25 +379,25 @@ final class annotationTargetObject_ implements .java.io.Serializable, .com.redha
         return .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.class);
-    private static final .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_();
+            $object$ = new .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_();
+            .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.$init$$object$ = false;
         }
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_ get_() {
-        if (annotationTargetObject_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'annotationTargetObject\' before it was set");
@@ -413,25 +413,25 @@ final class annotationTargetValue_ {
     
     private annotationTargetValue_() {
     }
-    private static final boolean value;
-    private static volatile boolean $init$value = false;
+    private static final boolean $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = true;
+            $object$ = true;
+            .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetValue_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = false;
-            $init$value = false;
+            $object$ = false;
+            .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetValue_.$init$$object$ = false;
         }
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     public static boolean get_() {
-        if (annotationTargetValue_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.annotations.annotationTargetValue_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetValue_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'annotationTargetValue\' before it was set");

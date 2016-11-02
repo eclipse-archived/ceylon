@@ -252,6 +252,11 @@ public class ExpressionTransformer extends AbstractTransformer {
     }
     
     public JCExpression transform(Tree.SpecifierOrInitializerExpression expr,
+            BoxingStrategy boxing, Type expectedType) {
+         return transformExpression(expr.getExpression(), boxing, expectedType);
+    }
+    
+    public JCExpression transform(Tree.SpecifierOrInitializerExpression expr,
             TypedDeclaration decl) {
         //TODO: is there missing logic for small here?
         //      see ClassTransformer.transform(AttributeDeclaration decl, ClassDefinitionBuilder classBuilder)
@@ -678,7 +683,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             exprType = expectedType;
         }
         // we must do the boxing after the cast to the proper type
-        JCExpression ret = boxUnboxIfNecessary(result, exprBoxed, exprType, boxingStrategy, expectedType);
+        JCExpression ret = boxUnboxIfNecessary(result, exprBoxed ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, exprType, boxingStrategy, expectedType);
         
         // very special case for nothing that we need to "unbox" to a primitive type
         if(exprType != null
@@ -2853,7 +2858,7 @@ public class ExpressionTransformer extends AbstractTransformer {
                 // make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
                 successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), CodegenUtil.getBoxingStrategy(term));
             }
-            JCExpression assignment = transformAssignment(expr, term, successor);
+            JCExpression assignment = makeAssignment(expr, term, transformAssignmentLhs(expr, term), successor);
             stats = stats.prepend(at(expr).Exec(assignment));
 
             // $tmp
@@ -2909,7 +2914,8 @@ public class ExpressionTransformer extends AbstractTransformer {
                 //  make sure the result is boxed if necessary, the result of successor/predecessor is always boxed
                 successor = boxUnboxIfNecessary(successor, true, term.getTypeModel(), CodegenUtil.getBoxingStrategy(term));
             }
-            JCExpression assignment = transformAssignment(expr, term, isSuper ? transformSuper(qualified) : make().Ident(varEName), successor);
+            JCExpression assignment = makeAssignment(expr, term, 
+                    qualifyLhs(expr, term, isSuper ? transformSuper(qualified) : make().Ident(varEName)), successor);
             stats = stats.prepend(at(expr).Exec(assignment));
             
             // $tmpV
@@ -3011,7 +3017,7 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression value = make().Ident(varName);
             BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(term);
             value = applyErasureAndBoxing(value, returnType, boxResult, boxingStrategy, valueType);
-            JCExpression assignment = transformAssignment(operator, term, value);
+            JCExpression assignment = makeAssignment(operator, term, transformAssignmentLhs(operator, term), value);
             stats = stats.prepend(at(operator).Exec(assignment));
             
             // $tmp
@@ -3053,7 +3059,8 @@ public class ExpressionTransformer extends AbstractTransformer {
             JCExpression value = make().Ident(varVName);
             BoxingStrategy boxingStrategy = CodegenUtil.getBoxingStrategy(term);
             value = applyErasureAndBoxing(value, returnType, boxResult, boxingStrategy, valueType);
-            JCExpression assignment = transformAssignment(operator, term, isSuper ? transformSuper(qualified) : make().Ident(varEName), value);
+            JCExpression assignment = makeAssignment(operator, term, 
+                    qualifyLhs(operator, term, isSuper ? transformSuper(qualified) : make().Ident(varEName)), value);
             stats = stats.prepend(at(operator).Exec(assignment));
             
             // $tmpV
@@ -6058,6 +6065,13 @@ public class ExpressionTransformer extends AbstractTransformer {
             }
             int flags = decl.hasUncheckedNullType() ? EXPR_TARGET_ACCEPTS_NULL : 0;
             flags |= leftTerm.getSmall() && !rightTerm.getSmall() ? EXPR_UNSAFE_PRIMITIVE_TYPECAST_OK : 0;
+            if (decl.isMember()
+                    && useFieldInAssignment(op, null, decl)
+                    && !Decl.isLocalToInitializer(decl)
+                    && useJavaBox(decl, ((TypedDeclaration)decl.getRefinedDeclaration()).getType())) {
+                boxing = BoxingStrategy.JAVA;
+                flags |= EXPR_HAS_NULL_CHECK_FENCE;
+            }
             rhs = transformExpression(rightTerm, boxing, targetType, flags);
         } else if (leftTerm instanceof Tree.IndexExpression) {
             Tree.IndexExpression idx = (Tree.IndexExpression)leftTerm;
@@ -6083,7 +6097,7 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
 
         if (tmpInStatement) {
-            return transformAssignment(op, leftTerm, rhs);
+            return makeAssignment(op, leftTerm, transformAssignmentLhs(op, leftTerm), rhs);
         } else {
             Type valueType = rightTerm.getTypeModel();
             if(isNull(valueType))
@@ -6098,48 +6112,46 @@ public class ExpressionTransformer extends AbstractTransformer {
         }
     }
     
-    private JCExpression transformAssignment(final Node op, Tree.Term leftTerm, JCExpression rhs) {
+    private JCExpression transformAssignmentLhs(final Node op, Tree.Term leftTerm) {
         // left hand side can be either BaseMemberExpression, QualifiedMemberExpression or array access (M2)
         // TODO: array access (M2)
-        JCExpression expr = null;
+        JCExpression lhs = null;
         if(leftTerm instanceof Tree.BaseMemberExpression) {
             if (needDollarThis((Tree.BaseMemberExpression)leftTerm)) {
-                expr = naming.makeQuotedThis();
+                lhs = naming.makeQuotedThis();
             }
         } else if(leftTerm instanceof Tree.QualifiedMemberExpression) {
             Tree.QualifiedMemberExpression qualified = ((Tree.QualifiedMemberExpression)leftTerm);
             if (isPackageQualified(qualified)) {
-                expr = null;
+                lhs = null;
             } else if (isSuper(qualified.getPrimary())) {
-                expr = transformSuper(qualified);
+                lhs = transformSuper(qualified);
             } else if (isSuperOf(qualified.getPrimary())) {
-                expr = transformSuperOf(qualified, qualified.getPrimary(), qualified.getDeclaration().getName());
+                lhs = transformSuperOf(qualified, qualified.getPrimary(), qualified.getDeclaration().getName());
             } else if (isThis(qualified.getPrimary())
                     && !qualified.getDeclaration().isCaptured() 
                     && !qualified.getDeclaration().isShared() ) {
-                expr = null;
+                lhs = null;
             } else if (!qualified.getDeclaration().isStatic()) {
-                expr = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
+                lhs = transformExpression(qualified.getPrimary(), BoxingStrategy.BOXED, qualified.getTarget().getQualifyingType());
                 if (Decl.isPrivateAccessRequiringUpcast(qualified)) {
-                    expr = makePrivateAccessUpcast(qualified, expr);
+                    lhs = makePrivateAccessUpcast(qualified, lhs);
                 }
             } else {
-                expr = makeJavaType(((ClassOrInterface)qualified.getDeclaration().getContainer()).getType(), JT_RAW);
+                lhs = makeJavaType(((ClassOrInterface)qualified.getDeclaration().getContainer()).getType(), JT_RAW);
             }
         } else if(leftTerm instanceof Tree.ParameterizedExpression) {
-            expr = null;
+            lhs = null;
         } else if(leftTerm instanceof Tree.IndexExpression) {
-            expr = null;
+            lhs = null;
         } else {
             return makeErroneous(op, "compiler bug: "+op.getNodeType() + " is not yet supported");
         }
-        return transformAssignment(op, leftTerm, expr, rhs);
+        
+        return qualifyLhs(op, leftTerm, lhs);
     }
-    
-    private JCExpression transformAssignment(Node op, Tree.Term leftTerm, JCExpression lhs, JCExpression rhs) {
-        JCExpression result = null;
 
-        // FIXME: can this be anything else than a Tree.StaticMemberOrTypeExpression or Tree.ParameterizedExpression?
+    protected JCExpression qualifyLhs(final Node op, Tree.Term leftTerm, JCExpression lhs) {
         TypedDeclaration decl;
         if (leftTerm instanceof Tree.StaticMemberOrTypeExpression) {
             decl = (TypedDeclaration) ((Tree.StaticMemberOrTypeExpression)leftTerm).getDeclaration();
@@ -6147,23 +6159,19 @@ public class ExpressionTransformer extends AbstractTransformer {
             lhs = addThisOrObjectQualifierIfRequired(lhs, (Tree.StaticMemberOrTypeExpression)leftTerm, decl);
         } else if (leftTerm instanceof Tree.IndexExpression) {
             // in this case lhs is null anyway, so let's discard it
-            return transformIndexAssignment(op, (Tree.IndexExpression)leftTerm, rhs);
-        } else {
+            return lhs;
+        } else if (leftTerm instanceof Tree.ParameterizedExpression) {
             // instanceof Tree.ParameterizedExpression
             decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)((Tree.ParameterizedExpression)leftTerm).getPrimary()).getDeclaration();
+        } else {
+            return makeErroneous(op, "Unexpected LHS in assignment: " + leftTerm.getNodeType());
         }
-
-        boolean variable = decl.isVariable();
-        
-        at(op);
-        String selector = naming.selector(decl, Naming.NA_SETTER);
         if (decl.isToplevel()) {
             // must use top level setter
             lhs = naming.makeName(decl, Naming.NA_FQ | Naming.NA_WRAPPER);
         } else if (Decl.isGetter(decl)) {
             if (Decl.isTransient(decl) && !decl.isVariable()) {
-                JCExpression attr = gen().transformAttributeGetter(decl, rhs);
-                result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER), attr);
+                
             } else {
                 // must use the setter
                 if (Decl.isLocal(decl)) {
@@ -6173,62 +6181,156 @@ public class ExpressionTransformer extends AbstractTransformer {
                 }
             }
         } else if (decl instanceof Function && Decl.isDeferred(decl)) {
-            if (Decl.isLocal(decl)) {
-                // Deferred method initialization of a local function
-                // The Callable field has the same name as the method, so use NA_MEMBER
-                result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER_UNQUOTED | Naming.NA_MEMBER), rhs);
-            } else {
-                // Deferred method initialization of a class function
-                result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_MEMBER), rhs);
-            }
-        } else if ((variable || decl.isLate()) && (Decl.isClassAttribute(decl))) {
-            // must use the setter, nothing to do, unless it's a java field
-            if(Decl.isJavaField(decl)){
-                if (decl.isStatic()) {
-                    // static field
-                    result = at(op).Assign(naming.makeName(decl, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED), rhs);
-                }else{
-                    // normal field
-                    result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT), rhs);
-                }
-            }
-
-        } else if (variable && (decl.isCaptured() || decl.isShared())) {
+        } else if ((decl.isVariable() || decl.isLate()) && (Decl.isClassAttribute(decl))) {
+        } else if (decl.isVariable() && (decl.isCaptured() || decl.isShared())) {
             // must use the qualified setter
             if (Decl.isBoxedVariable(decl)) {
-                result = at(op).Assign(naming.makeName(decl, Naming.NA_Q_LOCAL_INSTANCE | Naming.NA_MEMBER | Naming.NA_SETTER), rhs);
+                
             } else if (Decl.isLocalNotInitializer(decl)) {
                 lhs = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER);
-            } else if (isWithinSuperInvocation()
-                    && decl.isCaptured()
-                    && decl.isVariable()) {
-                lhs = naming.makeUnquotedIdent(Naming.getAliasedParameterName(((Value)decl).getInitializerParameter()));
-                result = at(op).Assign(lhs, rhs);
             }
-        } else {
-            result = at(op).Assign(naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT), rhs);
         }
+        return lhs;
+    }
+    
+    private JCExpression adjustRhs(TypedDeclaration decl, JCExpression rhs) {
+        if (decl.isToplevel()) {
+        } else if (Decl.isGetter(decl)) {
+            if (Decl.isTransient(decl) && !decl.isVariable()) {
+                rhs = gen().transformAttributeGetter(decl, rhs);
+            }
+        }
+        return rhs;
+    }
+    
+    private JCExpression makeAssignment(Node op, Tree.Term leftTerm, 
+            final JCExpression lhs, 
+            JCExpression rhs) {
+        TypedDeclaration decl;
+        if (leftTerm instanceof Tree.StaticMemberOrTypeExpression) {
+            decl = (TypedDeclaration) ((Tree.StaticMemberOrTypeExpression)leftTerm).getDeclaration();
+        } else if (leftTerm instanceof Tree.IndexExpression) {
+            // in this case lhs is null anyway, so let's discard it
+            return transformIndexAssignment(op, (Tree.IndexExpression)leftTerm, rhs);
+        } else if (leftTerm instanceof Tree.ParameterizedExpression) {
+            // instanceof Tree.ParameterizedExpression
+            decl = (TypedDeclaration) ((Tree.MemberOrTypeExpression)((Tree.ParameterizedExpression)leftTerm).getPrimary()).getDeclaration();
+        } else {
+            return makeErroneous(op, "Unexpected LHS in assignment: " + leftTerm.getNodeType());
+        }
+        rhs = adjustRhs(decl, rhs);
         
-        ListBuffer<JCExpression> typeArguments =  new ListBuffer<JCExpression>();
-        ListBuffer<JCExpression> reifiedTypeArguments =  new ListBuffer<JCExpression>();
-        if (decl.isStatic()
-                && ModelUtil.isCeylonDeclaration(decl)) {
-            Type primType = ((Tree.StaticMemberOrTypeExpression)leftTerm).getTarget().getQualifyingType();
-            if (primType != null) {
-                for (Type pt : primType.getTypeArgumentList()) {
-                    typeArguments.add(makeJavaType(pt, JT_TYPE_ARGUMENT));
-                    reifiedTypeArguments.add(makeReifiedTypeArgument(pt));
+        JCExpression varExpr = makeAssignmentVariable(op, lhs, decl);
+        
+        JCExpression result;
+        if (varExpr != null) {
+            result = at(op).Assign(varExpr, rhs);
+        } else {
+            ListBuffer<JCExpression> typeArguments =  new ListBuffer<JCExpression>();
+            ListBuffer<JCExpression> reifiedTypeArguments =  new ListBuffer<JCExpression>();
+            if (decl.isStatic()
+                    && ModelUtil.isCeylonDeclaration(decl)) {
+                Type primType = ((Tree.StaticMemberOrTypeExpression)leftTerm).getTarget().getQualifyingType();
+                if (primType != null) {
+                    for (Type pt : primType.getTypeArgumentList()) {
+                        typeArguments.add(makeJavaType(pt, JT_TYPE_ARGUMENT));
+                        reifiedTypeArguments.add(makeReifiedTypeArgument(pt));
+                    }
                 }
             }
-        }
-        
-        if (result == null) {
+            String selector = Naming.selector(decl, Naming.NA_SETTER);
             result = make().Apply(typeArguments.toList(),
                     makeQualIdent(lhs, selector),
                     reifiedTypeArguments.toList().append(rhs));
         }
         
         return result;
+    }
+
+    protected JCExpression makeAssignmentVariable(Node op, final JCExpression lhs, TypedDeclaration decl) {
+        JCExpression varExpr = null;
+        at(op);
+        if (decl.isToplevel()) {
+        } else if (Decl.isGetter(decl)) {
+            if (Decl.isTransient(decl) && !decl.isVariable()) {
+                varExpr = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER);
+            }
+        } else if (decl instanceof Function && Decl.isDeferred(decl)) {
+            if (Decl.isLocal(decl)) {
+                // Deferred method initialization of a local function
+                // The Callable field has the same name as the method, so use NA_MEMBER
+                varExpr = naming.makeQualifiedName(lhs, decl, Naming.NA_WRAPPER_UNQUOTED | Naming.NA_MEMBER);
+            } else {
+                // Deferred method initialization of a class function
+                varExpr = naming.makeQualifiedName(lhs, decl, Naming.NA_MEMBER);
+            }
+        } else if ((decl.isVariable() || decl.isLate()) && (Decl.isClassAttribute(decl))) {
+            // must use the setter, nothing to do, unless it's a java field
+            if(Decl.isJavaField(decl)){
+                if (decl.isStatic()) {
+                    // static field
+                    varExpr = naming.makeName(decl, Naming.NA_FQ | Naming.NA_WRAPPER_UNQUOTED);
+                }else{
+                    // normal field
+                    varExpr = naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT);
+                }
+            }
+        } else if (decl.isVariable() && (decl.isCaptured() || decl.isShared())) {
+            // must use the qualified setter
+            if (Decl.isBoxedVariable(decl)) {
+                varExpr = naming.makeName(decl, Naming.NA_Q_LOCAL_INSTANCE | Naming.NA_MEMBER | Naming.NA_SETTER);
+            } else if (Decl.isLocalNotInitializer(decl)) {
+                
+            } else if (isWithinSuperInvocation()
+                    && decl.isCaptured()
+                    && decl.isVariable()) {
+                varExpr = naming.makeUnquotedIdent(Naming.getAliasedParameterName(((Value)decl).getInitializerParameter()));
+            }
+        } else {
+            varExpr = naming.makeQualifiedName(lhs, decl, Naming.NA_IDENT);
+        }
+        return varExpr;
+    }
+    
+    protected boolean useFieldInAssignment(Node op, final JCExpression lhs, TypedDeclaration decl) {
+        at(op);
+        if (decl.isToplevel()) {
+        } else if (Decl.isGetter(decl)) {
+            if (Decl.isTransient(decl) && !decl.isVariable()) {
+                return true;
+            }
+        } else if (decl instanceof Function && Decl.isDeferred(decl)) {
+            if (Decl.isLocal(decl)) {
+                return true;
+            } else {
+                return true;
+            }
+        } else if ((decl.isVariable() || decl.isLate()) && (Decl.isClassAttribute(decl))) {
+            // must use the setter, nothing to do, unless it's a java field
+            if(Decl.isJavaField(decl)){
+                if (decl.isStatic()) {
+                    // static field
+                    return true;
+                }else{
+                    // normal field
+                    return true;
+                }
+            }
+        } else if (decl.isVariable() && (decl.isCaptured() || decl.isShared())) {
+            // must use the qualified setter
+            if (Decl.isBoxedVariable(decl)) {
+                return false;
+            } else if (Decl.isLocalNotInitializer(decl)) {
+                
+            } else if (isWithinSuperInvocation()
+                    && decl.isCaptured()
+                    && decl.isVariable()) {
+                return true;
+            }
+        } else {
+            return true;
+        }
+        return false;
     }
 
     private JCExpression transformIndexAssignment(Node op, Tree.IndexExpression idx, JCExpression rhs) {
@@ -7396,7 +7498,9 @@ public class ExpressionTransformer extends AbstractTransformer {
                 for (Tree.Annotation annotation : annotationList.getAnnotations()) {
                     Function annoCtorDecl = ((Function)((Tree.BaseMemberExpression)annotation.getPrimary()).getDeclaration());
                     boolean isNaturalTarget = AnnotationUtil.isNaturalTarget(annoCtorDecl, useSite, target);
-                    EnumSet<OutputElement> possibleTargets = AnnotationUtil.interopAnnotationTargeting(outputs, annotation, false, false, useSite instanceof Declaration ? (Declaration)useSite : null);
+                    EnumSet<OutputElement> possibleTargets = AnnotationUtil.interopAnnotationTargeting(
+                            useSite instanceof Declaration ? isEe((Declaration)useSite) : false,
+                            outputs, annotation, false, false, useSite instanceof Declaration ? (Declaration)useSite : null);
                     if ((isNaturalTarget
                             && possibleTargets == null)
                             || 

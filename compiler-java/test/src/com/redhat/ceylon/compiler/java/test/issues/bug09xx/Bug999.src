@@ -45,7 +45,7 @@ class Bug999 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private final long i;
     
     private final long getI$priv$() {
-        return i;
+        return this.i;
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f;
     
@@ -76,13 +76,13 @@ class Bug999 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     @.java.lang.Override
     public final .ceylon.language.Boolean getAttr3() {
-        return attr3;
+        return this.attr3;
     }
     private final .ceylon.language.Boolean attr4;
     
     @.java.lang.Override
     public final .ceylon.language.Boolean getAttr4() {
-        return attr4;
+        return this.attr4;
     }
     
     @.java.lang.Override
@@ -98,13 +98,13 @@ class Bug999 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     @.java.lang.Override
     public final boolean getAttr7() {
-        return attr7;
+        return this.attr7;
     }
     private final boolean attr8;
     
     @.java.lang.Override
     public final boolean getAttr8() {
-        return attr8;
+        return this.attr8;
     }
     
     @.java.lang.Override

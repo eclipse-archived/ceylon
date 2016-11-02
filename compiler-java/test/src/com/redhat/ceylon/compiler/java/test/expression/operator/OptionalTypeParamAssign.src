@@ -10,7 +10,7 @@ class C<T> implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType
     private T t;
     
     public final T getT() {
-        return t;
+        return this.t;
     }
     
     public final void setT(final T t) {

@@ -20,7 +20,7 @@ class IntBoxer implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     
     @.java.lang.Override
     public final .ceylon.language.Integer getOne() {
-        return one;
+        return this.one;
     }
     
     @.java.lang.Override
@@ -31,7 +31,7 @@ class IntBoxer implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     
     @.java.lang.Override
     public final .ceylon.language.Integer getTwo() {
-        return two;
+        return this.two;
     }
     
     @.java.lang.Override

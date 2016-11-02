@@ -62,7 +62,7 @@ class ClassWithVariableParameter implements .com.redhat.ceylon.compiler.java.run
     private long i;
     
     public final long getI() {
-        return i;
+        return this.i;
     }
     
     public final void setI(final long i) {
@@ -137,7 +137,7 @@ class ClassWithHiddenVariableParameter implements .com.redhat.ceylon.compiler.ja
     private long i;
     
     public final long getI() {
-        return i;
+        return this.i;
     }
     
     public final void setI(final long i) {
@@ -164,7 +164,7 @@ class ClassWithVariableParameterCapturedInit implements .com.redhat.ceylon.compi
     private long i;
     
     private final long getI$priv$() {
-        return i;
+        return this.i;
     }
     
     private final void setI$priv$(final long i) {
@@ -211,7 +211,7 @@ class ClassWithVariableParameterCaptured implements .com.redhat.ceylon.compiler.
     private long i;
     
     public final long getI() {
-        return i;
+        return this.i;
     }
     
     public final void setI(final long i) {
@@ -258,7 +258,7 @@ class ClassWithHiddenVariableParameterCapturedInit implements .com.redhat.ceylon
     private long i;
     
     private final long getI$priv$() {
-        return i;
+        return this.i;
     }
     
     private final void setI$priv$(final long i) {
@@ -305,7 +305,7 @@ class ClassWithHiddenVariableParameterCaptured implements .com.redhat.ceylon.com
     private long i;
     
     public final long getI() {
-        return i;
+        return this.i;
     }
     
     public final void setI(final long i) {
@@ -360,7 +360,7 @@ class ClassWithVariableParameterCapturedInitSub extends .com.redhat.ceylon.compi
     private long i;
     
     private final long getI$priv$() {
-        return i;
+        return this.i;
     }
     
     private final void setI$priv$(final long i) {

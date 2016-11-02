@@ -19,7 +19,7 @@ class SerializableGenericClass<T> implements .com.redhat.ceylon.compiler.java.ru
     private final T t;
     
     public final T getT() {
-        return t;
+        return this.t;
     }
     
     @.java.lang.Override

@@ -21,7 +21,7 @@ class Li2423<Element> implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final .ceylon.language.Sequential<? extends Element> items;
     
     public final .ceylon.language.Sequential<? extends Element> getItems() {
-        return items;
+        return this.items;
     }
     
     @.java.lang.Override

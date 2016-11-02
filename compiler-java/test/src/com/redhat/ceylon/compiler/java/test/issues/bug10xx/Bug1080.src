@@ -15,24 +15,24 @@ final class bug1080Attr_ {
     
     private bug1080Attr_() {
     }
-    private static final .java.lang.Object value;
-    private static volatile boolean $init$value = false;
+    private static final .java.lang.Object $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = .ceylon.language.Integer.instance(1L);
+            $object$ = .ceylon.language.Integer.instance(1L);
+            .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1080Attr_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1080Attr_.$init$$object$ = false;
         }
     }
     
     public static .java.lang.Object get_() {
-        if (bug1080Attr_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1080Attr_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug10xx.bug1080Attr_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1080Attr\' before it was set");

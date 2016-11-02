@@ -21,7 +21,7 @@ class CallableArgumentParameterQualified implements .com.redhat.ceylon.compiler.
     private final .ceylon.language.Callable<? extends .java.lang.Object> bar;
     
     private final .ceylon.language.Callable<? extends .java.lang.Object> getBar$priv$() {
-        return bar;
+        return this.bar;
     }
     
     private final void m$priv$(final .com.redhat.ceylon.compiler.java.test.expression.invoke.CallableArgumentParameterQualified c) {

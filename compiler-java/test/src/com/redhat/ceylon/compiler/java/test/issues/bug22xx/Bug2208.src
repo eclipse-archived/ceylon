@@ -442,7 +442,7 @@ public abstract class DateRange implements .com.redhat.ceylon.compiler.java.runt
     
     @.java.lang.Override
     public final .ceylon.language.String getStep() {
-        return step;
+        return this.step;
     }
     
     @.java.lang.Override

@@ -13,7 +13,7 @@ public class Bug1370 implements .com.redhat.ceylon.compiler.java.runtime.model.R
     private final .ceylon.language.Callable<? extends .ceylon.language.String> f;
     
     public final .ceylon.language.Callable<? extends .ceylon.language.String> getF() {
-        return f;
+        return this.f;
     }
     
     @.java.lang.Override
@@ -38,7 +38,7 @@ public class Bug1370_B<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     private final .ceylon.language.Callable<? extends T> f;
     
     public final .ceylon.language.Callable<? extends T> getF() {
-        return f;
+        return this.f;
     }
     
     @.java.lang.Override
@@ -59,7 +59,7 @@ public class Bug1370_C implements .com.redhat.ceylon.compiler.java.runtime.model
     private final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> f;
     
     public final .ceylon.language.Callable<? extends .ceylon.language.Callable<? extends .ceylon.language.String>> getF() {
-        return f;
+        return this.f;
     }
     
     @.java.lang.Override

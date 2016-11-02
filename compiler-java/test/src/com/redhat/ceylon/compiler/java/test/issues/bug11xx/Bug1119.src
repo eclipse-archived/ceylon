@@ -37,7 +37,7 @@ final class bug1119Addition_ extends .com.redhat.ceylon.compiler.java.test.issue
     
     @.java.lang.Override
     public final .java.lang.String toString() {
-        return string;
+        return this.string;
     }
     
     @.java.lang.Override
@@ -46,24 +46,24 @@ final class bug1119Addition_ extends .com.redhat.ceylon.compiler.java.test.issue
         final boolean b2 = toString().equals(token) || "and".equals(token);
         return b2;
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_();
+            $object$ = new .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_();
+            .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.$init$$object$ = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_ get_() {
-        if (bug1119Addition_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug11xx.bug1119Addition_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1119Addition\' before it was set");

@@ -261,7 +261,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
     private long fieldInteger;
     
     private final long getFieldInteger$priv$() {
-        return fieldInteger;
+        return this.fieldInteger;
     }
     
     private final void setFieldInteger$priv$(final long fieldInteger) {
@@ -292,7 +292,7 @@ class Optim extends .com.redhat.ceylon.compiler.java.test.expression.operator.Op
             
             private localGetterInteger$setter$_() {
             }
-            private long value;
+            private long $object$;
             
             public void set_(final long localGetterInteger) {
             }
@@ -569,24 +569,24 @@ final class optimToplevelInteger_ {
     
     private optimToplevelInteger_() {
     }
-    private static long value;
-    private static volatile boolean $init$value = false;
+    private static long $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = 0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = 0L;
-            $init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$init$$object$ = false;
         }
     }
     
     public static long get_() {
-        if (optimToplevelInteger_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'optimToplevelInteger\' before it was set");
@@ -595,6 +595,6 @@ final class optimToplevelInteger_ {
     
     public static void set_(final long optimToplevelInteger) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = optimToplevelInteger;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.optimToplevelInteger_.$object$ = optimToplevelInteger;
     }
 }

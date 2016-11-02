@@ -514,6 +514,21 @@ public enum Option {
     },
     CEYLONFLATCLASSPATH("-flat-classpath",  "opt.ceylonflatclasspath", OptionKind.STANDARD, OptionGroup.CEYLON),
     CEYLONAUTOEXPORTMAVENDEPENDENCIES("-auto-export-maven-dependencies", "opt.ceylonautoexportmavendependencies", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONEE("-ee", "opt.ceylonee", OptionKind.STANDARD, OptionGroup.CEYLON),
+    CEYLONEEIMPORTS("-ee-import", "opt.ceyloneeimports", OptionKind.STANDARD, OptionGroup.CEYLON) {
+        @Override
+        public boolean process(OptionHelper helper, String option, String arg) {
+            helper.addMulti(option, arg);
+            return false;
+        }
+    },
+    CEYLONEEANNOTATIONS("-ee-annotation", "opt.ceyloneeannotations", OptionKind.STANDARD, OptionGroup.CEYLON) {
+        @Override
+        public boolean process(OptionHelper helper, String option, String arg) {
+            helper.addMulti(option, arg);
+            return false;
+        }
+    },
     CEYLONFULLYEXPORTMAVENDEPENDENCIES("-fully-export-maven-dependencies", "opt.ceylonfullyexportmavendependencies", OptionKind.STANDARD, OptionGroup.CEYLON),
     BOOTSTRAPCEYLON("-Xbootstrapceylon", null, OptionKind.HIDDEN, OptionGroup.CEYLON),
     

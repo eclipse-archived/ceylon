@@ -48,6 +48,7 @@ import com.redhat.ceylon.compiler.java.codegen.CompilerBoxingDeclarationVisitor;
 import com.redhat.ceylon.compiler.java.codegen.CompilerBoxingVisitor;
 import com.redhat.ceylon.compiler.java.codegen.DeferredVisitor;
 import com.redhat.ceylon.compiler.java.codegen.DefiniteAssignmentVisitor;
+import com.redhat.ceylon.compiler.java.codegen.EeVisitor;
 import com.redhat.ceylon.compiler.java.codegen.InterfaceVisitor;
 import com.redhat.ceylon.compiler.java.codegen.JvmMissingNativeVisitor;
 import com.redhat.ceylon.compiler.java.codegen.SmallDeclarationVisitor;
@@ -629,7 +630,8 @@ public class CeylonEnter extends Enter {
             }
         }
         
-        UnsupportedVisitor uv = new UnsupportedVisitor();
+        EeVisitor eeVisitor = gen.getEeVisitor();
+        UnsupportedVisitor uv = new UnsupportedVisitor(eeVisitor);
         JvmMissingNativeVisitor mnv = new JvmMissingNativeVisitor(modelLoader);
         BoxingDeclarationVisitor boxingDeclarationVisitor = new CompilerBoxingDeclarationVisitor(gen);
         BoxingVisitor boxingVisitor = new CompilerBoxingVisitor(gen);
@@ -640,6 +642,7 @@ public class CeylonEnter extends Enter {
         DefiniteAssignmentVisitor dav = new DefiniteAssignmentVisitor();
         TypeParameterCaptureVisitor tpCaptureVisitor = new TypeParameterCaptureVisitor();
         InterfaceVisitor localInterfaceVisitor = new InterfaceVisitor();
+        
         // Extra phases for the compiler
         
         // boxing visitor depends on boxing decl
@@ -647,6 +650,7 @@ public class CeylonEnter extends Enter {
         for (PhasedUnit pu : listOfUnits) {
             if(sp != null)
                 progressPreparation(2, i++, size, pu);
+            pu.getCompilationUnit().visit(eeVisitor);
             pu.getCompilationUnit().visit(uv);
         }
         i=1;

@@ -69,27 +69,27 @@ class Bug5779Use implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     @.com.redhat.ceylon.compiler.java.test.annotations.Bug5779$annotation$
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getP() {
-        return p;
+        return this.p;
     }
     private final long p2;
     
     @.com.redhat.ceylon.compiler.java.test.annotations.Bug5779$annotation$
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getP2() {
-        return p2;
+        return this.p2;
     }
     private final long a;
     
     @.com.redhat.ceylon.compiler.java.test.annotations.Bug5779$annotation$
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getA() {
-        return a;
+        return this.a;
     }
     private final long a2;
     
     @.com.redhat.ceylon.compiler.java.test.annotations.Bug5779$annotation$
     private final long getA2$priv$() {
-        return a2;
+        return this.a2;
     }
     
     @.java.lang.Override

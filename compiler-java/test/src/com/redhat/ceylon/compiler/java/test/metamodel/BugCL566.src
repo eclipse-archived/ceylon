@@ -26,7 +26,7 @@ class BugCl566 implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     @.com.redhat.ceylon.common.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public final .java.lang.Object getA() {
-        return a;
+        return this.a;
     }
     
     @.java.lang.Override

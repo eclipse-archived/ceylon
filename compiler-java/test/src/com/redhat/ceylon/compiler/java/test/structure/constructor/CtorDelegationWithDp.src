@@ -57,7 +57,7 @@ public class CtorDelegationWithDp implements .com.redhat.ceylon.compiler.java.ru
     }
     
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp getCtorDelegationWithDp$foo() {
-        return foo;
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.foo;
     }
     
     private static final class bar_ {
@@ -75,7 +75,7 @@ public class CtorDelegationWithDp implements .com.redhat.ceylon.compiler.java.ru
     }
     
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp getCtorDelegationWithDp$bar() {
-        return bar;
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.bar;
     }
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorDelegationWithDp.baz_ baz_ = null;
     

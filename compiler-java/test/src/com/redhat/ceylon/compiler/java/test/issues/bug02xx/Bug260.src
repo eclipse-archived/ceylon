@@ -45,7 +45,7 @@ class Bug260 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     @.java.lang.Override
     public final .ceylon.language.Integer getAttr() {
-        return attr;
+        return this.attr;
     }
     
     @.java.lang.Override
@@ -61,7 +61,7 @@ class Bug260 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 getAttr2() {
-        return attr2;
+        return this.attr2;
     }
     
     @.java.lang.Override
@@ -72,7 +72,7 @@ class Bug260 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.issues.bug02xx.Bug260_Interface2 getAttr3() {
-        return attr3;
+        return this.attr3;
     }
     
     @.java.lang.Override

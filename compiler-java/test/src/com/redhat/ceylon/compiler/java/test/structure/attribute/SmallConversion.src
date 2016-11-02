@@ -13,7 +13,7 @@ class SmallConversion implements .com.redhat.ceylon.compiler.java.runtime.model.
     private final long big;
     
     private final long getBig$priv$() {
-        return big;
+        return this.big;
     }
     
     public int getAr() {
@@ -86,7 +86,7 @@ class SmallConversion2 extends .com.redhat.ceylon.compiler.java.test.structure.a
     private final long big;
     
     private final long getBig$priv$() {
-        return big;
+        return this.big;
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> bigm;
     
@@ -97,7 +97,7 @@ class SmallConversion2 extends .com.redhat.ceylon.compiler.java.test.structure.a
     
     @.java.lang.Override
     public final int getAr() {
-        return ar;
+        return this.ar;
     }
     
     @.java.lang.Override
@@ -159,26 +159,27 @@ final class smallConversion1_ {
     
     private smallConversion1_() {
     }
-    private static int value;
-    private static volatile boolean $init$value = false;
+    private static int $object$;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = .com.redhat.ceylon.compiler.java.Util.toInt(.com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversionBig_.get_());
+            .com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversion1_.$object$ = .com.redhat.ceylon.compiler.java.Util.toInt(.com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversionBig_.get_());
+            .com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversion1_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = 0;
-            $init$value = false;
+            .com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversion1_.$object$ = 0;
+            .com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversion1_.$init$$object$ = false;
         }
     }
     
     @.ceylon.language.VariableAnnotation$annotation$
     @.ceylon.language.SmallAnnotation$annotation$
     public static int get_() {
-        if (smallConversion1_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversion1_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversion1_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'smallConversion1\' before it was set");
@@ -188,7 +189,7 @@ final class smallConversion1_ {
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("smallConversion1")
     final int smallConversion1) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = smallConversion1;
+        .com.redhat.ceylon.compiler.java.test.structure.attribute.smallConversion1_.$object$ = smallConversion1;
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(

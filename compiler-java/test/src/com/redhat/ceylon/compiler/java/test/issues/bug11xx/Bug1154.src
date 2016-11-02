@@ -29,7 +29,7 @@ public class Bug1154Bar<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     private final T element;
     
     public final T getElement() {
-        return element;
+        return this.element;
     }
     
     @.java.lang.Override
@@ -65,7 +65,7 @@ public class Bug1154<Element, First extends Element, Rest extends .ceylon.langua
     private final .ceylon.language.Sequence<? extends Element> tuple;
     
     public final .ceylon.language.Sequence<? extends Element> getTuple() {
-        return tuple;
+        return this.tuple;
     }
     
     public final <NewFirst>.com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154 withLeading(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$NewFirst, final .com.redhat.ceylon.compiler.java.test.issues.bug11xx.Bug1154Bar<NewFirst> newFirst) {

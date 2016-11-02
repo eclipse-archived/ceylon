@@ -539,7 +539,7 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final .java.lang.String toString() {
-        return string;
+        return this.string;
     }
     private final long hash;
     
@@ -548,7 +548,7 @@ abstract class Bug477_1<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (int)(
             let
             {
-                long $ceylontmp$hash$4 = hash;
+                long $ceylontmp$hash$4 = this.hash;
             }
             returning $ceylontmp$hash$4 ^ $ceylontmp$hash$4 >>> 32;
         );
@@ -1103,7 +1103,7 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
     
     @.java.lang.Override
     public final .java.lang.String toString() {
-        return string;
+        return this.string;
     }
     private final long hash;
     
@@ -1112,7 +1112,7 @@ abstract class Bug477_2<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         return (int)(
             let
             {
-                long $ceylontmp$hash$9 = hash;
+                long $ceylontmp$hash$9 = this.hash;
             }
             returning $ceylontmp$hash$9 ^ $ceylontmp$hash$9 >>> 32;
         );

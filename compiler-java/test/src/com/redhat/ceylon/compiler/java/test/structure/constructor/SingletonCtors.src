@@ -5,7 +5,7 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
     
     @.java.lang.Override
     public final .java.lang.String toString() {
-        return string;
+        return this.string;
     }
     
     public final long use(final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors inst) {
@@ -51,7 +51,7 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors getSingletonCtors$one() {
-        return one;
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.one;
     }
     
     private static final class two_ {
@@ -69,7 +69,7 @@ class SingletonCtors implements .com.redhat.ceylon.compiler.java.runtime.model.R
     }
     
     public static final .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors getSingletonCtors$two() {
-        return two;
+        return .com.redhat.ceylon.compiler.java.test.structure.constructor.SingletonCtors.two;
     }
     
     @.java.lang.Override
@@ -122,7 +122,7 @@ class ClassMemberSingletonCtors implements .com.redhat.ceylon.compiler.java.runt
         
         @.java.lang.Override
         public final .java.lang.String toString() {
-            return string;
+            return this.string;
         }
         
         private MemberClass(.com.redhat.ceylon.compiler.java.test.structure.constructor.ClassMemberSingletonCtors.MemberClass$one $name$) {
@@ -179,7 +179,7 @@ final class localSingletonCtors_ {
             
             @.java.lang.Override
             public final .java.lang.String toString() {
-                return string;
+                return this.string;
             }
             
             final class one_ {

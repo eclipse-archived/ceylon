@@ -12,7 +12,7 @@ class ComprehensionMemberQualClass implements .com.redhat.ceylon.compiler.java.r
     private final long i;
     
     public final long getI() {
-        return i;
+        return this.i;
     }
     
     private final void m$priv$() {
@@ -78,7 +78,7 @@ class ComprehensionMemberQualClass implements .com.redhat.ceylon.compiler.java.r
         private final long i;
         
         public final long getI() {
-            return i;
+            return this.i;
         }
         
         private final void m$priv$() {
@@ -289,7 +289,7 @@ final class comprehensionMemberQualLocal_ {
             private final long i;
             
             public final long getI() {
-                return i;
+                return this.i;
             }
             
             private final void m$priv$() {

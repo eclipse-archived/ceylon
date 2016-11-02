@@ -29,7 +29,7 @@ class SerializableMethodSpecification implements .com.redhat.ceylon.compiler.jav
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything()")
     private final .ceylon.language.Callable<? extends .java.lang.Object> getF$priv$() {
-        return f;
+        return this.f;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$

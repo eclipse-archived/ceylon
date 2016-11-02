@@ -85,7 +85,7 @@ class Bug1114 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final boolean test;
     
     private final boolean getTest$priv$() {
-        return test;
+        return this.test;
     }
     private final .com.redhat.ceylon.compiler.java.language.GetterDouble g_;
     

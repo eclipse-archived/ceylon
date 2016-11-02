@@ -175,7 +175,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
     private final .ceylon.language.Callable<? extends .java.lang.Object> noParam;
     
     private final .ceylon.language.Callable<? extends .java.lang.Object> getNoParam$priv$() {
-        return noParam;
+        return this.noParam;
     }
     
     private final .java.lang.Object noParam1$priv$() {
@@ -184,7 +184,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
     private final .ceylon.language.Callable<? extends .java.lang.Object> oneParam;
     
     private final .ceylon.language.Callable<? extends .java.lang.Object> getOneParam$priv$() {
-        return oneParam;
+        return this.oneParam;
     }
     
     private final .java.lang.Object oneParam1$priv$() {
@@ -193,7 +193,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
     private final .ceylon.language.Callable<? extends .java.lang.Object> oneSequencedParam;
     
     private final .ceylon.language.Callable<? extends .java.lang.Object> getOneSequencedParam$priv$() {
-        return oneSequencedParam;
+        return this.oneSequencedParam;
     }
     
     private final .java.lang.Object oneSequencedParam0$priv$() {
@@ -263,7 +263,7 @@ class MethodSpecifyingCallable implements .com.redhat.ceylon.compiler.java.runti
     private final .ceylon.language.Callable<? extends .java.lang.Object> secondSequencedParam;
     
     private final .ceylon.language.Callable<? extends .java.lang.Object> getSecondSequencedParam$priv$() {
-        return secondSequencedParam;
+        return this.secondSequencedParam;
     }
     
     private final .java.lang.Object secondSequencedParam0$priv$() {

@@ -778,7 +778,7 @@ class FunctionalParameterRef implements .com.redhat.ceylon.compiler.java.runtime
         private final .java.lang.String s;
         
         private final .java.lang.String getS$priv$() {
-            return s;
+            return this.s;
         }
         
         public final .java.lang.String m(final .java.lang.String s2) {

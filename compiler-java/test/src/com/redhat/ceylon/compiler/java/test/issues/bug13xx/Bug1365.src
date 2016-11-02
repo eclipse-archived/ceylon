@@ -35,7 +35,7 @@ class Bug1365_B extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug
     private final double f;
     
     private final double getF$priv$() {
-        return f;
+        return this.f;
     }
     
     @.java.lang.Override
@@ -64,7 +64,7 @@ class Bug1365_C extends .com.redhat.ceylon.compiler.java.test.issues.bug13xx.Bug
     private final double f;
     
     private final double getF$priv$() {
-        return f;
+        return this.f;
     }
     
     @.java.lang.Override

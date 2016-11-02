@@ -1,0 +1,32 @@
+package com.redhat.ceylon.compiler.java.test.structure.ee;
+
+class PublicImplicitCtor implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    protected PublicImplicitCtor() {
+        super();
+    }
+    
+    PublicImplicitCtor(final .java.lang.String s) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.PublicImplicitCtor.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.ee.PublicImplicitCtor.class);
+}
+public class PublicImplicitCtorShared implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public PublicImplicitCtorShared() {
+        super();
+    }
+    
+    public PublicImplicitCtorShared(final .java.lang.String s) {
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.PublicImplicitCtorShared.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.ee.PublicImplicitCtorShared.class);
+}

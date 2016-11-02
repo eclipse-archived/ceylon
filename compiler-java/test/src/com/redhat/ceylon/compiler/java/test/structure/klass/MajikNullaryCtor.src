@@ -40,7 +40,7 @@ class MajikNullaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getI() {
-        return i;
+        return this.i;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final int c;
@@ -48,14 +48,14 @@ class MajikNullaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Character")
     public final int getC() {
-        return c;
+        return this.c;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final boolean b;
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final boolean getB() {
-        return b;
+        return this.b;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final byte o;
@@ -63,14 +63,14 @@ class MajikNullaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Byte")
     public final byte getO() {
-        return o;
+        return this.o;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final double f;
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final double getF() {
-        return f;
+        return this.f;
     }
     
     @.java.lang.Override
@@ -238,7 +238,7 @@ class MajikNullaryCtorSequenced implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Integer[]")
     public final .ceylon.language.Sequential<? extends .ceylon.language.Integer> getVa() {
-        return va;
+        return this.va;
     }
     
     @.java.lang.Override
@@ -276,7 +276,7 @@ class MajikNullaryCtorSequencedNonempty implements .com.redhat.ceylon.compiler.j
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("[ceylon.language::Integer+]")
     public final .ceylon.language.Sequence<? extends .ceylon.language.Integer> getVa() {
-        return va;
+        return this.va;
     }
     
     @.java.lang.Override
@@ -322,7 +322,7 @@ class MajikNullaryCtorGeneric<T> implements .com.redhat.ceylon.compiler.java.run
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.DefaultAnnotation$annotation$
     public long getI() {
-        return i;
+        return this.i;
     }
     
     @.java.lang.Override
@@ -358,7 +358,7 @@ class MajikNullaryCtorGenericSub extends .com.redhat.ceylon.compiler.java.test.s
     @.ceylon.language.ActualAnnotation$annotation$
     @.java.lang.Override
     public final long getI() {
-        return i;
+        return this.i;
     }
     
     @.java.lang.Override
@@ -394,7 +394,7 @@ class MajikNullaryCtorMixin implements .com.redhat.ceylon.compiler.java.runtime.
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getI() {
-        return i;
+        return this.i;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     protected final .ceylon.language.Category$impl<.ceylon.language.String> $ceylon$language$Category$this$;
@@ -494,7 +494,7 @@ class MajikNullaryCtorValueCtor implements .com.redhat.ceylon.compiler.java.runt
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorValueCtor.val")
     @.com.redhat.ceylon.compiler.java.metadata.Name("val")
     public static final .com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtor getMajikNullaryCtorValueCtor$val() {
-        return val;
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtor.val;
     }
     
     @.java.lang.Override
@@ -552,7 +552,7 @@ class MajikNullaryCtorValueCtorAndDefault implements .com.redhat.ceylon.compiler
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorValueCtorAndDefault.val")
     @.com.redhat.ceylon.compiler.java.metadata.Name("val")
     public static final .com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndDefault getMajikNullaryCtorValueCtorAndDefault$val() {
-        return val;
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndDefault.val;
     }
     
     @.java.lang.Override
@@ -631,7 +631,7 @@ class MajikNullaryCtorValueCtorAndCallable implements .com.redhat.ceylon.compile
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::MajikNullaryCtorValueCtorAndCallable.val")
     @.com.redhat.ceylon.compiler.java.metadata.Name("val")
     public static final .com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndCallable getMajikNullaryCtorValueCtorAndCallable$val() {
-        return val;
+        return .com.redhat.ceylon.compiler.java.test.structure.klass.MajikNullaryCtorValueCtorAndCallable.val;
     }
     
     @.java.lang.Override
@@ -688,18 +688,19 @@ final class majikNullaryCtorValueCtorOf_ extends .com.redhat.ceylon.compiler.jav
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.class);
-    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_ $object$;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_();
+            $object$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_();
+            .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$init$$object$ = false;
         }
     }
     
@@ -707,8 +708,8 @@ final class majikNullaryCtorValueCtorOf_ extends .com.redhat.ceylon.compiler.jav
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::majikNullaryCtorValueCtorOf")
     static .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_ get_() {
-        if (majikNullaryCtorValueCtorOf_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'majikNullaryCtorValueCtorOf\' before it was set");

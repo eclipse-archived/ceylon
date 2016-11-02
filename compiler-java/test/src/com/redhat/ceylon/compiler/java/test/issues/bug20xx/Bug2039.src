@@ -9,7 +9,7 @@ class Bug2039 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final .ceylon.language.Callable<? extends .java.lang.Object> somefunc;
     
     public final .ceylon.language.Callable<? extends .java.lang.Object> getSomefunc() {
-        return somefunc;
+        return this.somefunc;
     }
     
     public Bug2039(final .ceylon.language.Callable<? extends .java.lang.Object> somefunc$param$) {

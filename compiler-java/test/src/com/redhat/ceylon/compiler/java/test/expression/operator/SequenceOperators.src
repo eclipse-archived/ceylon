@@ -559,17 +559,17 @@ public abstract class SequenceOperators implements .com.redhat.ceylon.compiler.j
     private final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> c1;
     
     private final .ceylon.language.Correspondence<? super .ceylon.language.Integer, ? extends .ceylon.language.String> getC1$priv$() {
-        return c1;
+        return this.c1;
     }
     private final .ceylon.language.IndexedCorrespondenceMutator<? super .ceylon.language.String> c1mut;
     
     private final .ceylon.language.IndexedCorrespondenceMutator<? super .ceylon.language.String> getC1mut$priv$() {
-        return c1mut;
+        return this.c1mut;
     }
     private final .ceylon.language.Sequential<? extends .ceylon.language.String> sequence;
     
     private final .ceylon.language.Sequential<? extends .ceylon.language.String> getSequence$priv$() {
-        return sequence;
+        return this.sequence;
     }
     
     private final <T>T box$priv$(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final T x) {

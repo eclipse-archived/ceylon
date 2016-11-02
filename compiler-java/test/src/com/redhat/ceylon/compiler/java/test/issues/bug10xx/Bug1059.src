@@ -16,7 +16,7 @@ public class Bug1059<SomeType> implements .com.redhat.ceylon.compiler.java.runti
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> i;
     
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> getI$priv$() {
-        return i;
+        return this.i;
     }
     
     public final .ceylon.language.Iterator<? extends SomeType> iterator() {

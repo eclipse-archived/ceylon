@@ -15,7 +15,7 @@ class MethodSpecifyingLambda implements .com.redhat.ceylon.compiler.java.runtime
     private final .ceylon.language.Callable<? extends .ceylon.language.String> m;
     
     public final .ceylon.language.Callable<? extends .ceylon.language.String> getM() {
-        return m;
+        return this.m;
     }
     
     @.java.lang.Override

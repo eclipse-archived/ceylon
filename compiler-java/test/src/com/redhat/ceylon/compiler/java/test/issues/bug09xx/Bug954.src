@@ -97,7 +97,7 @@ class Bug954 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private final long n;
     
     private final long getN$priv$() {
-        return n;
+        return this.n;
     }
     private .ceylon.language.Callable<? extends .ceylon.language.Integer> pubx;
     

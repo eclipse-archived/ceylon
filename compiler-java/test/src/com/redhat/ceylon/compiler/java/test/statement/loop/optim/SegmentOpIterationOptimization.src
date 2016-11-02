@@ -15,12 +15,12 @@ class OptimizedForWithSegment implements .com.redhat.ceylon.compiler.java.runtim
     private final long start;
     
     private final long getStart$priv$() {
-        return start;
+        return this.start;
     }
     private final long length;
     
     private final long getLength$priv$() {
-        return length;
+        return this.length;
     }
     
     private final void literals$priv$() {

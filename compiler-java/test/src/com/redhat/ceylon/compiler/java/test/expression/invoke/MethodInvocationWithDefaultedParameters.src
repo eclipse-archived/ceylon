@@ -17,17 +17,17 @@ class Fookls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private final long prop;
     
     public final long getProp() {
-        return prop;
+        return this.prop;
     }
     private final long privProp;
     
     private final long getPrivProp$priv$() {
-        return privProp;
+        return this.privProp;
     }
     private final long init;
     
     private final long getInit$priv$() {
-        return init;
+        return this.init;
     }
     
     public .java.lang.Object f1() {
@@ -725,7 +725,7 @@ class Barkls implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     
     @.java.lang.Override
     public final long getProp() {
-        return prop;
+        return this.prop;
     }
     
     public final .java.lang.Object f1() {

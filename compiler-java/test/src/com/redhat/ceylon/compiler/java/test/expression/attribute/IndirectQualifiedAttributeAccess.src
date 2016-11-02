@@ -9,12 +9,12 @@ class IndirectQualifiedAttributeAccess implements .com.redhat.ceylon.compiler.ja
     private final boolean b;
     
     private final boolean getB$priv$() {
-        return b;
+        return this.b;
     }
     private final .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess q;
     
     private final .com.redhat.ceylon.compiler.java.test.expression.attribute.IndirectQualifiedAttributeAccess getQ$priv$() {
-        return q;
+        return this.q;
     }
     
     private final boolean test$priv$() {

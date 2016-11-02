@@ -18,7 +18,7 @@ public class CtorSuper implements .com.redhat.ceylon.compiler.java.runtime.model
      // line 3
     @.ceylon.language.SharedAnnotation$annotation$ // line 3
     public final long getV2() { // line 3
-        return v2; // line 3
+        return this.v2; // line 3
     }
      // line 5
     @.ceylon.language.SharedAnnotation$annotation$ // line 5

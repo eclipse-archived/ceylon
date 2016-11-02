@@ -12,7 +12,7 @@ class SerializableCycle implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     public final .java.lang.Object getRef() {
         if (this.ref != null) {
-            return ref;
+            return this.ref;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'ref\'");
         }
@@ -21,9 +21,9 @@ class SerializableCycle implements .com.redhat.ceylon.compiler.java.runtime.mode
     public final void setRef(final .java.lang.Object ref) {
         if (this.ref == null) {
             this.ref = ref;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     
     @.java.lang.Override

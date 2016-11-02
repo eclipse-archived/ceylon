@@ -34,7 +34,7 @@ class Bug1818 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final .java.lang.String s;
     
     public final .java.lang.String getS() {
-        return s;
+        return this.s;
     }
     
     @.java.lang.Override

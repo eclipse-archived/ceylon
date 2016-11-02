@@ -1,11 +1,11 @@
 package com.redhat.ceylon.compiler.java.test.structure.attribute;
 
 public class StaticLate implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
-    private static .java.lang.Object entityManager;
+    private static .java.lang.String entityManager;
     
     private static final .java.lang.String getEntityManager$priv$() {
         if (.com.redhat.ceylon.compiler.java.test.structure.attribute.StaticLate.entityManager != null) {
-            return (.java.lang.String)entityManager;
+            return (.java.lang.String).com.redhat.ceylon.compiler.java.test.structure.attribute.StaticLate.entityManager;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'entityManager\'");
         }
@@ -14,9 +14,9 @@ public class StaticLate implements .com.redhat.ceylon.compiler.java.runtime.mode
     private static final void setEntityManager$priv$(final .java.lang.String entityManager) {
         if (.com.redhat.ceylon.compiler.java.test.structure.attribute.StaticLate.entityManager == null) {
             .com.redhat.ceylon.compiler.java.test.structure.attribute.StaticLate.entityManager = entityManager;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     
     public StaticLate() {

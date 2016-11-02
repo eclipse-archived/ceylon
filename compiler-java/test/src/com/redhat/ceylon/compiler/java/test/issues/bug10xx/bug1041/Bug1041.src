@@ -42,7 +42,7 @@ class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     private final .ceylon.language.String stringProp;
     
     public final .ceylon.language.String getStringProp() {
-        return stringProp;
+        return this.stringProp;
     }
     
     public final .ceylon.language.String stringMethod() {
@@ -51,7 +51,7 @@ class Bug1041<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     private final T taProp;
     
     public final T getTaProp() {
-        return taProp;
+        return this.taProp;
     }
     
     public final T taMethod() {

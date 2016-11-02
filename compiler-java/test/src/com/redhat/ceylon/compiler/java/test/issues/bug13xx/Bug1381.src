@@ -8,7 +8,7 @@ class Bug1381_Superclass implements .com.redhat.ceylon.compiler.java.runtime.mod
     private long a;
     
     private final long getA$priv$() {
-        return a;
+        return this.a;
     }
     
     private final void setA$priv$(final long a) {

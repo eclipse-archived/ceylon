@@ -12,7 +12,7 @@ class Bug6176 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final long i;
     
     public final long getI() {
-        return i;
+        return this.i;
     }
     
     @.java.lang.Override

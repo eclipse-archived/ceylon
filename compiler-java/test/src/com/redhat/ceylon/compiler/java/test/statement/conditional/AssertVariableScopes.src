@@ -31,12 +31,12 @@ class AssertVariableScopes implements .com.redhat.ceylon.compiler.java.runtime.m
     private final .java.lang.Object x;
     
     private final .java.lang.Object getX$priv$() {
-        return x;
+        return this.x;
     }
     private final .java.lang.Object y;
     
     private final .java.lang.Object getY$priv$() {
-        return y;
+        return this.y;
     }
     
     private final void m$priv$() {

@@ -8,7 +8,7 @@ class Bug1695T implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     private final .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T> c;
     
     public .ceylon.language.Sequential<? extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1695T> getC() {
-        return c;
+        return this.c;
     }
     
     @.java.lang.Override
@@ -44,7 +44,7 @@ class Bug1695B extends .com.redhat.ceylon.compiler.java.test.issues.bug16xx.Bug1
     
     @.java.lang.Override
     public final .ceylon.language.Sequential getC() {
-        return c;
+        return this.c;
     }
     
     private final void f$priv$() {

@@ -9,24 +9,25 @@ final class attr1_ {
     
     private attr1_() {
     }
-    private static final long value;
-    private static volatile boolean $init$value = false;
+    private static final long $object$;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = 1L;
+            $object$ = 1L;
+            .com.redhat.ceylon.compiler.java.test.annotations.attr1_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = 0L;
-            $init$value = false;
+            $object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.annotations.attr1_.$init$$object$ = false;
         }
     }
     
     public static long get_() {
-        if (attr1_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.annotations.attr1_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.annotations.attr1_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'attr1\' before it was set");
@@ -42,25 +43,26 @@ final class attr2_ {
     
     private attr2_() {
     }
-    private static long value;
-    private static volatile boolean $init$value = false;
+    private static long $object$;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = 1L;
+            .com.redhat.ceylon.compiler.java.test.annotations.attr2_.$object$ = 1L;
+            .com.redhat.ceylon.compiler.java.test.annotations.attr2_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = 0L;
-            $init$value = false;
+            .com.redhat.ceylon.compiler.java.test.annotations.attr2_.$object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.annotations.attr2_.$init$$object$ = false;
         }
     }
     
     @.ceylon.language.VariableAnnotation$annotation$
     public static long get_() {
-        if (attr2_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.annotations.attr2_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.annotations.attr2_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'attr2\' before it was set");
@@ -70,7 +72,7 @@ final class attr2_ {
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("attr2")
     final long attr2) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = attr2;
+        .com.redhat.ceylon.compiler.java.test.annotations.attr2_.$object$ = attr2;
     }
 }
 @.com.redhat.ceylon.compiler.java.metadata.Ceylon(

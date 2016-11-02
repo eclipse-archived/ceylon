@@ -9,12 +9,12 @@ class AnythingBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.R
     private final .java.lang.Object valueAnything;
     
     private final .java.lang.Object getValueAnything$priv$() {
-        return valueAnything;
+        return this.valueAnything;
     }
     private .java.lang.Object variableAnything;
     
     private final .java.lang.Object getVariableAnything$priv$() {
-        return variableAnything;
+        return this.variableAnything;
     }
     
     private final void setVariableAnything$priv$(final .java.lang.Object variableAnything) {

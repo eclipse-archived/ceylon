@@ -63,7 +63,7 @@ class Bug1507IntWrapper implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final long wrappedInt;
     
     public final long getWrappedInt() {
-        return wrappedInt;
+        return this.wrappedInt;
     }
     
     @.java.lang.Override

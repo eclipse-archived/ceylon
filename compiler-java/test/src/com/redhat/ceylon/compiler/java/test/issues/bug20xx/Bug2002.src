@@ -69,12 +69,13 @@ final class bug2002BuilderTest1_ {
     
     private bug2002BuilderTest1_() {
     }
-    private static final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> value;
-    private static volatile boolean $init$value = false;
+    private static final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> $object$;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (.ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>>).com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002Builder1_.<.ceylon.language.String, .ceylon.language.Integer>bug2002Builder1(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.instance("A"), .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002Builder1_.<.ceylon.language.Integer, .java.lang.Object>bug2002Builder1(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Integer.instance(1L), new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "[]()", (short)-1)
+            $object$ = (.ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>>).com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002Builder1_.<.ceylon.language.String, .ceylon.language.Integer>bug2002Builder1(.ceylon.language.String.$TypeDescriptor$, .ceylon.language.Integer.$TypeDescriptor$, .ceylon.language.String.instance("A"), .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002Builder1_.<.ceylon.language.Integer, .java.lang.Object>bug2002Builder1(.ceylon.language.Integer.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Integer.instance(1L), new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "[]()", (short)-1)
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
             @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
             @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -86,12 +87,12 @@ final class bug2002BuilderTest1_ {
                     return .ceylon.language.empty_.get_();
                 }
             }));
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest1_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest1_.$init$$object$ = false;
         }
     }
     
@@ -100,8 +101,8 @@ final class bug2002BuilderTest1_ {
             value = "<ceylon.language::String|ceylon.language::Integer>[]()",
             erased = true)
     public static .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .java.lang.Object>> get_() {
-        if (bug2002BuilderTest1_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest1_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest1_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2002BuilderTest1\' before it was set");
@@ -117,12 +118,13 @@ final class bug2002BuilderTest2_ {
     
     private bug2002BuilderTest2_() {
     }
-    private static final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>> value;
-    private static volatile boolean $init$value = false;
+    private static final .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>> $object$;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (.ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>).com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002Builder2_.<.ceylon.language.Boolean, .ceylon.language.Boolean>bug2002Builder2(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Boolean.instance(true), new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "[]()", (short)-1)
+            $object$ = (.ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>>).com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002Builder2_.<.ceylon.language.Boolean, .ceylon.language.Boolean>bug2002Builder2(.ceylon.language.Boolean.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, .ceylon.language.Boolean.instance(true), new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Empty>(.ceylon.language.Empty.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "[]()", (short)-1)
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
             @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1")
             @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -134,20 +136,20 @@ final class bug2002BuilderTest2_ {
                     return .ceylon.language.empty_.get_();
                 }
             });
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest2_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest2_.$init$$object$ = false;
         }
     }
     
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Boolean[]()")
     public static .ceylon.language.Callable<? extends .ceylon.language.Sequential<? extends .ceylon.language.Boolean>> get_() {
-        if (bug2002BuilderTest2_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest2_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.bug2002BuilderTest2_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2002BuilderTest2\' before it was set");

@@ -13,7 +13,7 @@ class ClassDefaultMemberClassSpecifier implements .com.redhat.ceylon.compiler.ja
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier other;
     
     private final .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier getOther$priv$() {
-        return other;
+        return this.other;
     }
     
     public .com.redhat.ceylon.compiler.java.test.structure.mcr.ClassDefaultMemberClassSpecifier.Member Member$new$() {

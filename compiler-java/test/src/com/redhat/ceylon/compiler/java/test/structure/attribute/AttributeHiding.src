@@ -8,7 +8,7 @@ class AttributeHiding implements .com.redhat.ceylon.compiler.java.runtime.model.
     private .java.lang.String name;
     
     public final .java.lang.String getName() {
-        return name;
+        return this.name;
     }
     
     public final void setName(final .java.lang.String name) {
@@ -35,7 +35,7 @@ class AttributeHidingSub extends .com.redhat.ceylon.compiler.java.test.structure
     private .java.lang.String name;
     
     private final .java.lang.String getName$priv$() {
-        return name;
+        return this.name;
     }
     
     private final void setName$priv$(final .java.lang.String name) {

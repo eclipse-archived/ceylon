@@ -9,12 +9,12 @@ class StaticMemberClass<T> implements .com.redhat.ceylon.compiler.java.runtime.m
         private final T t;
         
         public final T getT() {
-            return t;
+            return this.t;
         }
         private final U u;
         
         public final U getU() {
-            return u;
+            return this.u;
         }
         
         public Member(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$T, final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$U) {
@@ -84,7 +84,7 @@ class StaticMemberClassBoxing<T> implements .com.redhat.ceylon.compiler.java.run
         private final T t;
         
         private final T getT$priv$() {
-            return t;
+            return this.t;
         }
         
         public final T get() {

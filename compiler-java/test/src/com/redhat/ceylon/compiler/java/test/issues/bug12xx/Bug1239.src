@@ -24,12 +24,12 @@ final class bug1239_ {
     
     private bug1239_() {
     }
-    private static final .java.lang.Object value;
-    private static volatile boolean $init$value = false;
+    private static final .java.lang.Object $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.LazyMap<.ceylon.language.String, .ceylon.language.Callable<? extends .ceylon.language.String>>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$)), (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.Callable<? extends .ceylon.language.String>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
+            $object$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.LazyMap<.ceylon.language.String, .ceylon.language.Callable<? extends .ceylon.language.String>>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$)), (.ceylon.language.Iterable)new .com.redhat.ceylon.compiler.java.language.LazyIterable<.ceylon.language.Entry<? extends .ceylon.language.String, ? extends .ceylon.language.Callable<? extends .ceylon.language.String>>, .java.lang.Object>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Entry.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.Integer.$TypeDescriptor$))), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.NothingType, 2, false){
                 
                 @.java.lang.Override
                 protected final .java.lang.Object $evaluate$(int $index$) {
@@ -60,18 +60,18 @@ final class bug1239_ {
                     }
                 }
             });
+            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1239_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1239_.$init$$object$ = false;
         }
     }
     
     public static .java.lang.Object get_() {
-        if (bug1239_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1239_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1239_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1239\' before it was set");

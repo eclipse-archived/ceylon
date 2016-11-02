@@ -31,7 +31,7 @@ class Bug1124 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final long i;
     
     private final long getI$priv$() {
-        return i;
+        return this.i;
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Boolean> f;
     

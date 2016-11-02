@@ -48,24 +48,24 @@ final class bug6447obj_ implements .java.io.Serializable, .com.redhat.ceylon.com
             return .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.ObjMemberClass.class));
         }
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_();
+            $object$ = new .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_();
+            .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.$init$$object$ = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_ get_() {
-        if (bug6447obj_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug64xx.bug6447obj_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug6447obj\' before it was set");

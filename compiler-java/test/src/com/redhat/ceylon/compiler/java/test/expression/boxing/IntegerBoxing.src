@@ -8,7 +8,7 @@ class IntegerBoxing implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     private long attrInteger;
     
     private final long getAttrInteger$priv$() {
-        return attrInteger;
+        return this.attrInteger;
     }
     
     private final void setAttrInteger$priv$(final long attrInteger) {

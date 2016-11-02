@@ -10,7 +10,7 @@ class QualifiedAttributeAssign implements .com.redhat.ceylon.compiler.java.runti
     private boolean b;
     
     private final boolean getB$priv$() {
-        return b;
+        return this.b;
     }
     
     private final void setB$priv$(final boolean b) {
@@ -19,7 +19,7 @@ class QualifiedAttributeAssign implements .com.redhat.ceylon.compiler.java.runti
     private boolean b2;
     
     public final boolean getB2() {
-        return b2;
+        return this.b2;
     }
     
     public final void setB2(final boolean b2) {
@@ -28,7 +28,7 @@ class QualifiedAttributeAssign implements .com.redhat.ceylon.compiler.java.runti
     private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign q;
     
     private final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssign getQ$priv$() {
-        return q;
+        return this.q;
     }
     
     private final void m$priv$(final .com.redhat.ceylon.compiler.java.test.expression.attribute.QualifiedAttributeAssignFoo f) {
@@ -54,7 +54,7 @@ class QualifiedAttributeAssignFoo implements .com.redhat.ceylon.compiler.java.ru
     private boolean b;
     
     public final boolean getB() {
-        return b;
+        return this.b;
     }
     
     public final void setB(final boolean b) {

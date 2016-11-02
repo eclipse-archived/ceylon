@@ -10,7 +10,7 @@ class CtorUnsharedField implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final .java.lang.String who;
     
     private final .java.lang.String getWho$priv$() {
-        return who;
+        return this.who;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorUnsharedField.for_$delegation$_ for_$delegation$_ = null;
     

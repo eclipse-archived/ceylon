@@ -82,7 +82,7 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     @.java.lang.Override
     @.com.redhat.ceylon.common.NonNull
     public final .java.lang.String toString() {
-        return string;
+        return this.string;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .java.lang.String toString;
@@ -90,7 +90,7 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.common.NonNull
     public final .java.lang.String getToString() {
-        return toString;
+        return this.toString;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final long hash;
@@ -102,7 +102,7 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
         return (int)(
             let
             {
-                long $ceylontmp$hash$0 = hash;
+                long $ceylontmp$hash$0 = this.hash;
             }
             returning $ceylontmp$hash$0 ^ $ceylontmp$hash$0 >>> 32;
         );
@@ -112,7 +112,7 @@ final class Quoting implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getHashCode() {
-        return hashCode;
+        return this.hashCode;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$

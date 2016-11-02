@@ -16,7 +16,7 @@ class MethodInitializerParameter<T> implements .com.redhat.ceylon.compiler.java.
     private final T t;
     
     private final T getT$priv$() {
-        return t;
+        return this.t;
     }
     
     private final void unary$priv$(final .ceylon.language.Callable<? extends .java.lang.Object> m) {

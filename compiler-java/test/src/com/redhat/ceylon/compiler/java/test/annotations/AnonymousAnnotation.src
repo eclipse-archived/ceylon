@@ -30,7 +30,7 @@ class AnnonymousAnnotation implements .com.redhat.ceylon.compiler.java.runtime.m
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.common.NonNull
     public final .java.lang.String getS() {
-        return s;
+        return this.s;
     }
     
     @.ceylon.language.DocAnnotation$annotation$(description = "method doc")

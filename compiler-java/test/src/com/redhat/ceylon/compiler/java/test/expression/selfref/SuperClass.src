@@ -8,7 +8,7 @@ abstract class SuperClass implements .com.redhat.ceylon.compiler.java.runtime.mo
     private long a;
     
     public final long getA() {
-        return a;
+        return this.a;
     }
     
     public final void setA(final long a) {

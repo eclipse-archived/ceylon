@@ -270,7 +270,7 @@ class KeywordInForLoop3 implements .com.redhat.ceylon.compiler.java.runtime.mode
     private final long age;
     
     public final long getAge() {
-        return age;
+        return this.age;
     }
     
     @.java.lang.Override

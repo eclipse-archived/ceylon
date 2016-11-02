@@ -37,10 +37,13 @@ class Bug6606_2 implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug65xx.Bug6606_2.class);
 }
 class Bug6606_3 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
-    private static final .java.lang.Object equals = "";
+    private static final .java.lang.String equals;
+    static {
+        equals = "";
+    }
     
     private static final .java.lang.String getEquals$priv$() {
-        return (.java.lang.String)equals;
+        return (.java.lang.String).com.redhat.ceylon.compiler.java.test.issues.bug65xx.Bug6606_3.equals;
     }
     
     private final void string$priv$() {

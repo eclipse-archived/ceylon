@@ -16,7 +16,7 @@ class Box2306<T> implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     private final .java.lang.Object t;
     
     public final .java.lang.Object getT() {
-        return t;
+        return this.t;
     }
     
     @.java.lang.Override

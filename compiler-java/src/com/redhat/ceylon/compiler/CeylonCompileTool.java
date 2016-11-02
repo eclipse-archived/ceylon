@@ -198,6 +198,9 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
     private boolean fullyExportMavenDependencies = DefaultToolOptions.getDefaultFullyExportMavenDependencies();
     private boolean jigsaw = DefaultToolOptions.getCompilerGenerateModuleInfo();
     private Long targetVersion = DefaultToolOptions.getCompilerTargetVersion();
+    private boolean ee = DefaultToolOptions.getCompilerEe();
+    private List<String> eeImport = DefaultToolOptions.getCompilerEeImport();
+    private List<String> eeAnnotation = DefaultToolOptions.getCompilerEeAnnotation();
     
     private ModuleSpec jdkProvider;
     {
@@ -392,6 +395,38 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
         validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.TARGET, "-target", version.toString());
         validateWithJavac(com.redhat.ceylon.langtools.tools.javac.main.Option.SOURCE, "-source", version.toString());
         this.targetVersion = version;
+    }
+    
+    @Option
+    @Description("Enable \"EE mode\" globally for all declarations in the compilation")
+    public void setEe(boolean ee) {
+        this.ee = ee;
+    }
+    
+    @OptionArgument
+    @Description("Override the default module imports which trigger \"EE mode\" "
+            + "with the given module imports."
+            + "When a module *directly* imports any of the listed modules EE mode "
+            + "will be enabled for all declarations in the module."
+            + "For example if this option includes the value `javax.javaeeapi` "
+            + "or `maven:\"javax.javaee-api\"` then EE mode would be "
+            + "enabled for any declaration in any module which had that *direct* "
+            + "module import.")
+    public void setEeImport(List<String> eeImports) {
+        this.eeImport = eeImports;
+    }
+    
+    @OptionArgument
+    @Description("Override the default annotation types which trigger \"EE mode\" "
+            + "with the given fully-qualified Java annotation type name."
+            + "When a declaration is annotated with any of the listed annotations EE "
+            + "module will be enabled for the top-level declaration containing "
+            + "that annotated declaration. "
+            + "For example if this option includes the value `javax.inject.Inject` "
+            + "then EE mode would be enabled for any class with an attribute annotated"
+            + "with `javax.inject::inject`.")
+    public void setEeAnnotation(List<String> eeAnnotations) {
+        this.eeAnnotation = eeAnnotations;
     }
 
     private List<String> arguments;
@@ -597,6 +632,24 @@ public class CeylonCompileTool extends OutputRepoUsingTool {
             arguments.add(targetVersion.toString());
             arguments.add("-target");
             arguments.add(targetVersion.toString());
+        }
+        
+        if (ee) {
+            arguments.add("-ee");
+        }
+        
+        if (eeImport != null) {
+            for (String eeImport: this.eeImport) {
+                arguments.add("-ee-import");
+                arguments.add(eeImport);
+            }
+        }
+        
+        if (eeAnnotation != null) {
+            for (String eeAnnotation: this.eeAnnotation) {
+                arguments.add("-ee-annotation");
+                arguments.add(eeAnnotation);
+            }
         }
         
         addJavacArguments(arguments, javac);

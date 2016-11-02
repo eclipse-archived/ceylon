@@ -336,7 +336,7 @@ class Bug626 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
         return (int)(
             let
             {
-                long $ceylontmp$hash$1 = hash;
+                long $ceylontmp$hash$1 = this.hash;
             }
             returning $ceylontmp$hash$1 ^ $ceylontmp$hash$1 >>> 32;
         );

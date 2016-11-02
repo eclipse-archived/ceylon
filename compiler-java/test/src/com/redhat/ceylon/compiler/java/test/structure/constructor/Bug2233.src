@@ -23,7 +23,7 @@ class Test2233<F> extends .com.redhat.ceylon.compiler.java.test.structure.constr
     private final F f;
     
     public final F getF() {
-        return f;
+        return this.f;
     }
     private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.Test2233.bar$delegation$_ bar$delegation$_ = null;
     

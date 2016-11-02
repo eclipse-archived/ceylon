@@ -18,7 +18,7 @@ class UnaryCtor implements .com.redhat.ceylon.compiler.java.runtime.model.Reifie
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.common.NonNull
     public final .java.lang.String getS() {
-        return s;
+        return this.s;
     }
     
     private final void use$priv$() {

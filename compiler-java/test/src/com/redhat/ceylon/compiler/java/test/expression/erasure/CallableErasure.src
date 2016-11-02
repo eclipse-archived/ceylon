@@ -33,12 +33,12 @@ public class CE_MethodClass implements .com.redhat.ceylon.compiler.java.runtime.
     private final .java.lang.Object erasedMethod;
     
     public final .java.lang.Object getErasedMethod() {
-        return erasedMethod;
+        return this.erasedMethod;
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> nonErasedMethod;
     
     public final .ceylon.language.Callable<? extends .ceylon.language.Integer> getNonErasedMethod() {
-        return nonErasedMethod;
+        return this.nonErasedMethod;
     }
     
     public static void main(.java.lang.String[] args) {
@@ -84,17 +84,17 @@ public class CE_MethodInterfaceImpl implements .com.redhat.ceylon.compiler.java.
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodClass c;
     
     private final .com.redhat.ceylon.compiler.java.test.expression.erasure.CE_MethodClass getC$priv$() {
-        return c;
+        return this.c;
     }
     private final .java.lang.Object erased;
     
     private final .java.lang.Object getErased$priv$() {
-        return erased;
+        return this.erased;
     }
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> nonErased;
     
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> getNonErased$priv$() {
-        return nonErased;
+        return this.nonErased;
     }
     private final .java.lang.Object m1$specifier$;
     

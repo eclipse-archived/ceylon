@@ -41,13 +41,13 @@ class TPECLeft implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     
     @.java.lang.Override
     public final long getTopAttribute() {
-        return topAttribute;
+        return this.topAttribute;
     }
     private final long leftAttribute;
     
     @.java.lang.Override
     public final long getLeftAttribute() {
-        return leftAttribute;
+        return this.leftAttribute;
     }
     
     @.java.lang.Override
@@ -82,19 +82,19 @@ class TPECMiddle implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     
     @.java.lang.Override
     public final long getTopAttribute() {
-        return topAttribute;
+        return this.topAttribute;
     }
     private final long leftAttribute;
     
     @.java.lang.Override
     public final long getLeftAttribute() {
-        return leftAttribute;
+        return this.leftAttribute;
     }
     private final long rightAttribute;
     
     @.java.lang.Override
     public final long getRightAttribute() {
-        return rightAttribute;
+        return this.rightAttribute;
     }
     
     @.java.lang.Override

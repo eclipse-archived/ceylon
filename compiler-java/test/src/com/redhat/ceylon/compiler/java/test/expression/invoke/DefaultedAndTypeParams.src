@@ -16,7 +16,7 @@ class DefaultedAndTypeParams<X> implements .com.redhat.ceylon.compiler.java.runt
     private final X init;
     
     private final X getInit$priv$() {
-        return init;
+        return this.init;
     }
     
     public final <Y>void m(final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $reified$Y, final Y y) {

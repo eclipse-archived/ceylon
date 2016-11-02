@@ -4,12 +4,12 @@ final class toplevel_ {
     
     private toplevel_() {
     }
-    private static final .ceylon.language.Callable<? extends .ceylon.language.String> value;
-    private static volatile boolean $init$value = false;
+    private static final .ceylon.language.Callable<? extends .ceylon.language.String> $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1){
+            $object$ = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.String>(.ceylon.language.String.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .ceylon.language.String.$TypeDescriptor$), "String(String)", (short)-1){
                 
                 @.java.lang.Override
                 public .ceylon.language.String $call$(final .java.lang.Object $param$0) {
@@ -17,18 +17,18 @@ final class toplevel_ {
                     return .ceylon.language.String.instance("hello " + name2);
                 }
             };
+            .com.redhat.ceylon.compiler.java.test.expression.lambda.toplevel_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.expression.lambda.toplevel_.$init$$object$ = false;
         }
     }
     
     public static .ceylon.language.Callable<? extends .ceylon.language.String> get_() {
-        if (toplevel_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.lambda.toplevel_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.expression.lambda.toplevel_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevel\' before it was set");

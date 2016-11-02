@@ -33,7 +33,7 @@ final class AnnotationClassCharacter implements .com.redhat.ceylon.compiler.java
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final int getC() {
-        return c;
+        return this.c;
     }
     
     @.java.lang.Override
@@ -80,7 +80,7 @@ final class AnnotationClassCharacterDefaulted implements .com.redhat.ceylon.comp
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final int getC() {
-        return c;
+        return this.c;
     }
     
     public static int $default$c() {

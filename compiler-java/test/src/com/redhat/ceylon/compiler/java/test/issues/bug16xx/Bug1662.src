@@ -13,7 +13,7 @@ class Bug1662 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     private final double $float;
     
     private final double getFloat$priv$() {
-        return $float;
+        return this.$float;
     }
     
     @.java.lang.Override

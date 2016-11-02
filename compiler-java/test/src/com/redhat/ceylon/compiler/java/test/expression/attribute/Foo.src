@@ -20,22 +20,22 @@ class Foo implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     private final .java.lang.String param;
     
     private final .java.lang.String getParam$priv$() {
-        return param;
+        return this.param;
     }
     private final .java.lang.String sharedParam;
     
     public final .java.lang.String getSharedParam() {
-        return sharedParam;
+        return this.sharedParam;
     }
     private final .java.lang.String init;
     
     private final .java.lang.String getInit$priv$() {
-        return init;
+        return this.init;
     }
     private final .java.lang.String sharedInit;
     
     public final .java.lang.String getSharedInit() {
-        return sharedInit;
+        return this.sharedInit;
     }
     
     public final void m() {
@@ -91,12 +91,12 @@ class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     private final .ceylon.language.String init;
     
     private final .ceylon.language.String getInit$priv$() {
-        return init;
+        return this.init;
     }
     private .ceylon.language.String variableInit;
     
     private final .ceylon.language.String getVariableInit$priv$() {
-        return variableInit;
+        return this.variableInit;
     }
     
     private final void setVariableInit$priv$(final .ceylon.language.String variableInit) {
@@ -105,7 +105,7 @@ class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     private .ceylon.language.String variableAttr;
     
     private final .ceylon.language.String getVariableAttr$priv$() {
-        return variableAttr;
+        return this.variableAttr;
     }
     
     private final void setVariableAttr$priv$(final .ceylon.language.String variableAttr) {
@@ -114,7 +114,7 @@ class Bar implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType,
     private final .ceylon.language.String attr;
     
     private final .ceylon.language.String getAttr$priv$() {
-        return attr;
+        return this.attr;
     }
     
     public final void m() {

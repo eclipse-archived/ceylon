@@ -63,7 +63,7 @@ class Bug998 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedTy
     private final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> rows;
     
     public final .ceylon.language.Sequential<? extends .ceylon.language.Boolean> getRows() {
-        return rows;
+        return this.rows;
     }
     
     @.java.lang.Override

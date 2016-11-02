@@ -69,7 +69,7 @@ class Bug5898 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         @.java.lang.Override
         @.com.redhat.ceylon.common.NonNull
         public final .java.lang.String toString() {
-            return string;
+            return this.string;
         }
         
         @.ceylon.language.SharedAnnotation$annotation$

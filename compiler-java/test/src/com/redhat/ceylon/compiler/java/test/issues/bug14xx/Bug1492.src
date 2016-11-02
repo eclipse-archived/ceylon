@@ -30,12 +30,12 @@ class Bug1492_1a implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     private final .java.lang.Object a;
     
     public final .java.lang.Object getA() {
-        return a;
+        return this.a;
     }
     private final .java.lang.Object b;
     
     public final .java.lang.Object getB() {
-        return b;
+        return this.b;
     }
     
     @.java.lang.Override
@@ -70,12 +70,12 @@ class Bug1492_1b implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
     private final .java.lang.Object a;
     
     public final .java.lang.Object getA() {
-        return a;
+        return this.a;
     }
     private final .java.lang.Object b;
     
     public final .java.lang.Object getB() {
-        return b;
+        return this.b;
     }
     
     public static .java.lang.Object $default$b(final .java.lang.Object a) {

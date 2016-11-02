@@ -11,7 +11,7 @@ abstract class ClassVariable implements .com.redhat.ceylon.compiler.java.runtime
     private .java.lang.String publicvar;
     
     public final .java.lang.String getPublicvar() {
-        return publicvar;
+        return this.publicvar;
     }
     
     public final void setPublicvar(final .java.lang.String publicvar) {
@@ -20,7 +20,7 @@ abstract class ClassVariable implements .com.redhat.ceylon.compiler.java.runtime
     private .java.lang.String capturedvar;
     
     private final .java.lang.String getCapturedvar$priv$() {
-        return capturedvar;
+        return this.capturedvar;
     }
     
     private final void setCapturedvar$priv$(final .java.lang.String capturedvar) {
@@ -51,7 +51,7 @@ class SubClassVariable extends .com.redhat.ceylon.compiler.java.test.structure.a
     
     @.java.lang.Override
     public final .java.lang.String getFormalvar() {
-        return formalvar;
+        return this.formalvar;
     }
     
     @.java.lang.Override

@@ -24,12 +24,12 @@ public class Bug6420 implements .com.redhat.ceylon.compiler.java.runtime.model.R
         private final long supAlias;
         
         public final long getSupAlias() {
-            return supAlias;
+            return this.supAlias;
         }
         private final int subAlias;
         
         public final int getSubAlias() {
-            return subAlias;
+            return this.subAlias;
         }
         
         public final class SubAlias {

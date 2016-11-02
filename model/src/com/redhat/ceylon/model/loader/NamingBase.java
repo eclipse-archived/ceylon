@@ -65,7 +65,8 @@ public class NamingBase {
         $references$,
         $set$,
         reference,
-        instance, $isMember$
+        instance, $isMember$,
+        $object$
     }
     
     /**

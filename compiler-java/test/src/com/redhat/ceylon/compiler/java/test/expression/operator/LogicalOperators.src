@@ -32,7 +32,7 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
     private boolean b1;
     
     public final boolean getB1() {
-        return b1;
+        return this.b1;
     }
     
     public final void setB1(final boolean b1) {
@@ -41,7 +41,7 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
     private boolean b2;
     
     public final boolean getB2() {
-        return b2;
+        return this.b2;
     }
     
     public final void setB2(final boolean b2) {
@@ -51,7 +51,7 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
     
     @.java.lang.Override
     public final .ceylon.language.Boolean getBoxedB1() {
-        return boxedB1;
+        return this.boxedB1;
     }
     
     @.java.lang.Override
@@ -62,7 +62,7 @@ public class LogicalOperators extends .com.redhat.ceylon.compiler.java.test.expr
     
     @.java.lang.Override
     public final .ceylon.language.Boolean getBoxedB2() {
-        return boxedB2;
+        return this.boxedB2;
     }
     
     @.java.lang.Override

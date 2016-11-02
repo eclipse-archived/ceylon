@@ -22,7 +22,7 @@ class VarianceClass implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     private final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle classAttr;
     
     public .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle getClassAttr() {
-        return classAttr;
+        return this.classAttr;
     }
     
     public .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle m(final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceMiddle param) {
@@ -50,7 +50,7 @@ class VarianceSubClass extends .com.redhat.ceylon.compiler.java.test.structure.k
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.structure.klass.VarianceBottom getClassAttr() {
-        return classAttr;
+        return this.classAttr;
     }
     
     @.java.lang.Override

@@ -25,24 +25,24 @@ final class random_ extends .java.util.Random implements .java.io.Serializable, 
     public final int next(final int i) {
         return super.next(i);
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_();
+            $object$ = new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_();
+            .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_.$init$$object$ = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_ get_() {
-        if (random_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.random_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'random\' before it was set");

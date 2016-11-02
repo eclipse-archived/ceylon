@@ -108,7 +108,7 @@ class SBug2062<Element> implements .com.redhat.ceylon.compiler.java.runtime.mode
     
     @.java.lang.Override
     public final .ceylon.language.Sequence<? extends Element> getElements() {
-        return elements;
+        return this.elements;
     }
     protected final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.IBug2062$impl<Element> $com$redhat$ceylon$compiler$java$test$issues$bug20xx$IBug2062$this$;
     

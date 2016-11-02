@@ -24,7 +24,7 @@ class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getAttribute() {
-        return attribute;
+        return this.attribute;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private long variableAttribute;
@@ -32,7 +32,7 @@ class LitClass implements .com.redhat.ceylon.compiler.java.runtime.model.Reified
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
     public final long getVariableAttribute() {
-        return variableAttribute;
+        return this.variableAttribute;
     }
     
     public final void setVariableAttribute(@.com.redhat.ceylon.compiler.java.metadata.Name("variableAttribute")
@@ -136,7 +136,7 @@ class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getParameterAndSharedAttribute() {
-        return parameterAndSharedAttribute;
+        return this.parameterAndSharedAttribute;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter;
@@ -151,7 +151,7 @@ class LitClassWithParameters implements .com.redhat.ceylon.compiler.java.runtime
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getSharedAttributeAndParameter() {
-        return sharedAttributeAndParameter;
+        return this.sharedAttributeAndParameter;
     }
     
     @.java.lang.Override
@@ -215,7 +215,7 @@ class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compi
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getParameterAndSharedAttribute() {
-        return parameterAndSharedAttribute;
+        return this.parameterAndSharedAttribute;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private final .ceylon.language.Callable<? extends .ceylon.language.Integer> sharedMethodAndParameter;
@@ -230,7 +230,7 @@ class LitParameterisedClassWithParameters<T> implements .com.redhat.ceylon.compi
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getSharedAttributeAndParameter() {
-        return sharedAttributeAndParameter;
+        return this.sharedAttributeAndParameter;
     }
     
     @.java.lang.Override
@@ -275,7 +275,7 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getAttribute() {
-        return attribute;
+        return this.attribute;
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private long variableAttribute;
@@ -283,7 +283,7 @@ class LitParameterisedClass<T> implements .com.redhat.ceylon.compiler.java.runti
     @.ceylon.language.SharedAnnotation$annotation$
     @.ceylon.language.VariableAnnotation$annotation$
     public final long getVariableAttribute() {
-        return variableAttribute;
+        return this.variableAttribute;
     }
     
     public final void setVariableAttribute(@.com.redhat.ceylon.compiler.java.metadata.Name("variableAttribute")
@@ -749,7 +749,7 @@ public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.com
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getAttribute() {
-        return attribute;
+        return this.attribute;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -765,18 +765,19 @@ public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.com
     final T t) {
         return t;
     }
-    private static final .com.redhat.ceylon.compiler.java.test.metamodel.obj_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.metamodel.obj_ $object$;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.metamodel.obj_();
+            $object$ = new .com.redhat.ceylon.compiler.java.test.metamodel.obj_();
+            .com.redhat.ceylon.compiler.java.test.metamodel.obj_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.metamodel.obj_.$init$$object$ = false;
         }
     }
     
@@ -785,8 +786,8 @@ public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.com
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.metamodel::obj")
     public static .com.redhat.ceylon.compiler.java.test.metamodel.obj_ get_() {
-        if (obj_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.metamodel.obj_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.metamodel.obj_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'obj\' before it was set");
@@ -849,7 +850,7 @@ class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     @.ceylon.language.SharedAnnotation$annotation$
     @.com.redhat.ceylon.common.NonNull
     public final .java.lang.String getStr() {
-        return str;
+        return this.str;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -861,7 +862,7 @@ class RelativeLiterals<T> implements .com.redhat.ceylon.compiler.java.runtime.mo
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getInteger() {
-        return integer;
+        return this.integer;
     }
     
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
@@ -1072,24 +1073,25 @@ final class litValue_ {
     
     private litValue_() {
     }
-    private static final long value;
-    private static volatile boolean $init$value = false;
+    private static final long $object$;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = 2L;
+            $object$ = 2L;
+            .com.redhat.ceylon.compiler.java.test.metamodel.litValue_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = 0L;
-            $init$value = false;
+            $object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.metamodel.litValue_.$init$$object$ = false;
         }
     }
     
     public static long get_() {
-        if (litValue_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.metamodel.litValue_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.metamodel.litValue_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'litValue\' before it was set");
@@ -1105,25 +1107,26 @@ final class litVariable_ {
     
     private litVariable_() {
     }
-    private static long value;
-    private static volatile boolean $init$value = false;
+    private static long $object$;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = 2L;
+            .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$object$ = 2L;
+            .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = 0L;
-            $init$value = false;
+            .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$init$$object$ = false;
         }
     }
     
     @.ceylon.language.VariableAnnotation$annotation$
     public static long get_() {
-        if (litVariable_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'litVariable\' before it was set");
@@ -1133,6 +1136,6 @@ final class litVariable_ {
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("litVariable")
     final long litVariable) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        value = litVariable;
+        .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$object$ = litVariable;
     }
 }

@@ -67,24 +67,24 @@ final class ctorMemberClassOfNestedAnonymousClass_ {
     
     private ctorMemberClassOfNestedAnonymousClass_() {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass().getMemberObject().Ctor$new$((.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor$other)null);
+            $object$ = new .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass().getMemberObject().Ctor$new$((.com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor$other)null);
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.ctorMemberClassOfNestedAnonymousClass_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.structure.constructor.ctorMemberClassOfNestedAnonymousClass_.$init$$object$ = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.structure.constructor.CtorMemberClassOfNestedAnonymousClass.memberObject_.Ctor get_() {
-        if (ctorMemberClassOfNestedAnonymousClass_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.constructor.ctorMemberClassOfNestedAnonymousClass_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.structure.constructor.ctorMemberClassOfNestedAnonymousClass_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'ctorMemberClassOfNestedAnonymousClass\' before it was set");

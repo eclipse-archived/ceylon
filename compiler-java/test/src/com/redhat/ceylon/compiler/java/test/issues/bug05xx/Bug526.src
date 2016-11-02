@@ -15,12 +15,12 @@ abstract class Bug526Top implements .com.redhat.ceylon.compiler.java.runtime.mod
     private final long defaultAttr;
     
     public long getDefaultAttr() {
-        return defaultAttr;
+        return this.defaultAttr;
     }
     private long defaultVar;
     
     public long getDefaultVar() {
-        return defaultVar;
+        return this.defaultVar;
     }
     
     public void setDefaultVar(final long defaultVar) {
@@ -59,7 +59,7 @@ class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx
     
     @.java.lang.Override
     public final long getFormalAttr() {
-        return formalAttr;
+        return this.formalAttr;
     }
     
     public final void setFormalAttr(final long formalAttr) {
@@ -69,7 +69,7 @@ class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx
     
     @.java.lang.Override
     public final long getFormalVar() {
-        return formalVar;
+        return this.formalVar;
     }
     
     @.java.lang.Override
@@ -80,7 +80,7 @@ class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx
     
     @.java.lang.Override
     public final long getDefaultAttr() {
-        return defaultAttr;
+        return this.defaultAttr;
     }
     
     public final void setDefaultAttr(final long defaultAttr) {
@@ -90,7 +90,7 @@ class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx
     
     @.java.lang.Override
     public final long getDefaultVar() {
-        return defaultVar;
+        return this.defaultVar;
     }
     
     @.java.lang.Override
@@ -101,7 +101,7 @@ class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx
     
     @.java.lang.Override
     public final long getDefaultGetter() {
-        return defaultGetter;
+        return this.defaultGetter;
     }
     
     public final void setDefaultGetter(final long defaultGetter) {
@@ -111,7 +111,7 @@ class Bug526Bottom1 extends .com.redhat.ceylon.compiler.java.test.issues.bug05xx
     
     @.java.lang.Override
     public final long getDefaultSetter() {
-        return defaultSetter;
+        return this.defaultSetter;
     }
     
     @.java.lang.Override

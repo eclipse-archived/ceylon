@@ -1,0 +1,66 @@
+package com.redhat.ceylon.compiler.java.test.structure.ee;
+
+public class Employee implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedType, .java.io.Serializable {
+    
+    public Employee(final .java.lang.String name) {
+        (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$year$1 = .com.redhat.ceylon.compiler.java.test.structure.ee.Employee.$default$year(name);
+                this(name, $ceylontmp$year$1);
+            }
+            returning null;
+        );
+    }
+    
+    public Employee() {
+        super();
+        this.id = 0L;
+        this.name = null;
+        this.year = null;
+    }
+    
+    public Employee(final .java.lang.String name, .ceylon.language.Integer year$param$) {
+        this.name = name;
+        this.year = (
+            let
+            {
+                .ceylon.language.Integer $ceylontmp$0 = year$param$;
+            }
+            returning $ceylontmp$0 == null ? null : .java.lang.Long.valueOf($ceylontmp$0.longValue());
+        );
+    }
+    
+    public static .ceylon.language.Integer $default$year(final .java.lang.String name) {
+        return null;
+    }
+    private long id;
+    
+    public long getId() {
+        return this.id;
+    }
+    
+    public void setId(final long id) {
+        this.id = id;
+    }
+    private final .java.lang.String name;
+    
+    public .java.lang.String getName() {
+        return this.name;
+    }
+    private .java.lang.Long year;
+    
+    public .ceylon.language.Integer getYear() {
+        return this.year == null ? null : .ceylon.language.Integer.instance(this.year.longValue());
+    }
+    
+    public void setYear(final .ceylon.language.Integer year) {
+        this.year = year == null ? null : .java.lang.Long.valueOf(year.longValue());
+    }
+    
+    @.java.lang.Override
+    public .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $getType$() {
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.Employee.$TypeDescriptor$;
+    }
+    public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.ee.Employee.class);
+}

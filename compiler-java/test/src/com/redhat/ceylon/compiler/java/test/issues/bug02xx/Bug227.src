@@ -8,7 +8,7 @@ public class Bug227 implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     private long _num;
     
     private final long get_num$priv$() {
-        return _num;
+        return this._num;
     }
     
     private final void set_num$priv$(final long _num) {

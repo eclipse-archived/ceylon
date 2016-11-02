@@ -57,7 +57,7 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     
     @.java.lang.Override
     public final boolean getBooleanWithGet() {
-        return booleanWithGet;
+        return this.booleanWithGet;
     }
     
     @.java.lang.Override
@@ -68,7 +68,7 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     
     @.java.lang.Override
     public final boolean isBooleanWithIs() {
-        return booleanWithIs;
+        return this.booleanWithIs;
     }
     
     @.java.lang.Override
@@ -79,7 +79,7 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     
     @.java.lang.Override
     public final .java.lang.String getURL() {
-        return url;
+        return this.url;
     }
     
     @.java.lang.Override
@@ -90,7 +90,7 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     
     @.java.lang.Override
     public final .java.lang.String getURLEncoderForHTML() {
-        return urlEncoderForHTML;
+        return this.urlEncoderForHTML;
     }
     
     @.java.lang.Override
@@ -101,7 +101,7 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     
     @.java.lang.Override
     public final boolean isConfusedAttr1() {
-        return confusedAttr1;
+        return this.confusedAttr1;
     }
     
     @.java.lang.Override
@@ -117,7 +117,7 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     
     @.java.lang.Override
     public final long getConfusedAttr2() {
-        return confusedAttr2;
+        return this.confusedAttr2;
     }
     
     @.java.lang.Override
@@ -133,7 +133,7 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     
     @.java.lang.Override
     public final boolean isConfusedAttr3() {
-        return confusedAttr3;
+        return this.confusedAttr3;
     }
     
     @.java.lang.Override
@@ -153,7 +153,7 @@ class CeylonAttributes extends .com.redhat.ceylon.compiler.java.test.interop.Jav
     
     @.java.lang.Override
     public final long getConfusedAttr4() {
-        return confusedAttr4;
+        return this.confusedAttr4;
     }
     
     @.java.lang.Override

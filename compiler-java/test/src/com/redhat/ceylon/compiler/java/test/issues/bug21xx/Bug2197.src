@@ -4,12 +4,12 @@ final class bug2197_copyTo_ {
     
     private bug2197_copyTo_() {
     }
-    private static final .java.lang.Object value;
-    private static volatile boolean $init$value = false;
+    private static final .java.lang.Object $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (
+            $object$ = (
                 let
                 {
                     final .java.lang.String $instance$ = "";
@@ -71,18 +71,18 @@ final class bug2197_copyTo_ {
                     }
                 };
             );
+            .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2197_copyTo_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2197_copyTo_.$init$$object$ = false;
         }
     }
     
     public static .java.lang.Object get_() {
-        if (bug2197_copyTo_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2197_copyTo_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2197_copyTo_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2197_copyTo\' before it was set");

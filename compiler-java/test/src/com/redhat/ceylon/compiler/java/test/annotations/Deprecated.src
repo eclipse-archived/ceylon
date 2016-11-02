@@ -139,7 +139,7 @@ public class DeprecatedMembers implements .com.redhat.ceylon.compiler.java.runti
     @.ceylon.language.SharedAnnotation$annotation$
     @.java.lang.Deprecated
     public static final .com.redhat.ceylon.compiler.java.test.annotations.DeprecatedMembers getDeprecatedMembers$val() {
-        return val;
+        return .com.redhat.ceylon.compiler.java.test.annotations.DeprecatedMembers.val;
     }
     
     public static void main(.java.lang.String[] args) {

@@ -46,6 +46,9 @@ public class DefaultToolOptions {
     // JVM-only, not needing backward compatibility (all new options should go here)
     public final static String COMPILER_TARGET_VERSION = "compiler.jvm.target";
     public final static String COMPILER_JAVAC = "compiler.jvm.javac";
+    public final static String COMPILER_EE = "compiler.jvm.ee";
+    public final static String COMPILER_EE_IMPORT = "compiler.jvm.eeimport";
+    public final static String COMPILER_EE_ANNOTATION = "compiler.jvm.eeannotation";
     
     public final static String SECTION_RUNTOOL = "runtool";
     
@@ -351,6 +354,32 @@ public class DefaultToolOptions {
 
     public static long getCompilerTargetVersion(CeylonConfig config) {
         return config.getNumberOption(COMPILER_TARGET_VERSION, getDefaultTarget());
+    }
+    
+    public static boolean getCompilerEe() {
+        return getCompilerEe(CeylonConfig.get());
+    }
+
+    public static boolean getCompilerEe(CeylonConfig config) {
+        return config.getBoolOption(COMPILER_EE, false);
+    }
+    
+    public static List<String> getCompilerEeImport() {
+        return getCompilerEeImport(CeylonConfig.get());
+    }
+
+    public static List<String> getCompilerEeImport(CeylonConfig config) {
+        String[] values = config.getOptionValues(COMPILER_EE_IMPORT);
+        return values != null ? Arrays.asList(values) : null;
+    }
+    
+    public static List<String> getCompilerEeAnnotation() {
+        return getCompilerEeAnnotation(CeylonConfig.get());
+    }
+
+    public static List<String> getCompilerEeAnnotation(CeylonConfig config) {
+        String[] values = config.getOptionValues(COMPILER_EE_ANNOTATION);
+        return values != null ? Arrays.asList(values) : null;
     }
 
     public static String getRunToolCompileFlags() {

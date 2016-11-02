@@ -8,7 +8,7 @@ class ExceptionAttr implements .com.redhat.ceylon.compiler.java.runtime.model.Re
     private .java.lang.Exception e;
     
     public final .java.lang.Exception getE() {
-        return e;
+        return this.e;
     }
     
     public final void setE(final .java.lang.Exception e) {

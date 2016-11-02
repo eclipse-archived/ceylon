@@ -96,6 +96,10 @@ public class StructureTests2 extends CompilerTests {
         compareWithJavaSource("toplevel/ToplevelObjectWithSupertypes");
     }
     @Test
+    public void testTopToplevelObjectWithValueMember(){
+        compareWithJavaSource("toplevel/ToplevelObjectWithValueMember");
+    }
+    @Test
     public void testTopToplevelVariable(){
         compareWithJavaSource("toplevel/ToplevelVariable");
     }

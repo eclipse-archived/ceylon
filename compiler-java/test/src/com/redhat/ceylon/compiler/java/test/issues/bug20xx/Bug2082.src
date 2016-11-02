@@ -43,24 +43,24 @@ final class eBug2082_ implements .java.io.Serializable, .com.redhat.ceylon.compi
     public final boolean isNeat(final .java.lang.String val) {
         return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$this$.isNeat(val);
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_();
+            $object$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_();
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_.$init$$object$ = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_ get_() {
-        if (eBug2082_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.eBug2082_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'eBug2082\' before it was set");
@@ -93,24 +93,24 @@ final class fBug2082_ implements .java.io.Serializable, .com.redhat.ceylon.compi
     public final boolean isNeat(final .java.lang.String val) {
         return $com$redhat$ceylon$compiler$java$test$issues$bug20xx$Bug2082$this$.isNeat(val);
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_();
+            $object$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_();
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_.$init$$object$ = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_ get_() {
-        if (fBug2082_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.fBug2082_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'fBug2082\' before it was set");

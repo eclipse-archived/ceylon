@@ -40,13 +40,13 @@ final class CollidingLiteralDefaults implements .com.redhat.ceylon.compiler.java
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getI1() {
-        return i1;
+        return this.i1;
     }
     private final long i2;
     
     @.ceylon.language.SharedAnnotation$annotation$
     public final long getI2() {
-        return i2;
+        return this.i2;
     }
     
     @.java.lang.Override

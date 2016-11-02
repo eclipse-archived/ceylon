@@ -79,12 +79,12 @@ final class bug2338J_ {
     
     private bug2338J_() {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (
+            $object$ = (
                 let
                 {
                     
@@ -113,18 +113,18 @@ final class bug2338J_ {
                 }
                 returning new anonymous_1_();
             ).getJ();
+            .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338J_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338J_.$init$$object$ = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J get_() {
-        if (bug2338J_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338J_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338J_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2338J\' before it was set");
@@ -135,12 +135,12 @@ final class bug2338NewC_ {
     
     private bug2338NewC_() {
     }
-    private static final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C> value;
-    private static volatile boolean $init$value = false;
+    private static final .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C> $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C.class)), .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J.class))), "Bug2338I.J.C()(Bug2338I.J)", (short)-1){
+            $object$ = new .com.redhat.ceylon.compiler.java.language.AbstractCallable<.ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C>>(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.ceylon.language.Callable.class, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J.class)), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C.class)), .ceylon.language.Empty.$TypeDescriptor$), .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.tuple(false, false, -1, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.member(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I.$TypeDescriptor$, .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$J.class))), "Bug2338I.J.C()(Bug2338I.J)", (short)-1){
                 
                 @.java.lang.Override
                 public .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C> $call$(final .java.lang.Object $param$0) {
@@ -154,18 +154,18 @@ final class bug2338NewC_ {
                     };
                 }
             }.$call$(.com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338J_.get_());
+            .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338NewC_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338NewC_.$init$$object$ = false;
         }
     }
     
     public static .ceylon.language.Callable<? extends .com.redhat.ceylon.compiler.java.test.issues.bug23xx.Bug2338I$impl.J$impl.C> get_() {
-        if (bug2338NewC_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338NewC_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug23xx.bug2338NewC_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2338NewC\' before it was set");

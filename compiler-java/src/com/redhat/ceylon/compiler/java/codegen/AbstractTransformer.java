@@ -178,7 +178,11 @@ public abstract class AbstractTransformer implements Transformation {
     private Errors errors;
     private Stack<java.util.List<TypeParameter>> typeParameterSubstitutions = new Stack<java.util.List<TypeParameter>>();
     protected Map<String, Long> omittedModelAnnotations;
-
+    protected EeVisitor eeVisitor;
+    
+    public EeVisitor getEeVisitor() {
+        return gen().getEeVisitor();
+    }
     public boolean simpleAnnotationModels;
 
     private final Target target;
@@ -194,6 +198,8 @@ public abstract class AbstractTransformer implements Transformation {
         naming = Naming.instance(context);
         simpleAnnotationModels = Options.instance(context).get(Option.BOOTSTRAPCEYLON) != null;
         target = Target.instance(context);
+        eeVisitor = new EeVisitor(Options.instance(context));
+                
     }
 
     Context getContext() {
@@ -2645,7 +2651,7 @@ public abstract class AbstractTransformer implements Transformation {
         return pt;
     }
     
-    private boolean isJavaString(Type type) {
+    boolean isJavaString(Type type) {
         return "java.lang.String".equals(type.getUnderlyingType());
     }
     
@@ -3161,6 +3167,10 @@ public abstract class AbstractTransformer implements Transformation {
     
     List<JCAnnotation> makeAtEnumerated() {
         return makeModelAnnotation(syms().ceylonAtEnumeratedType, List.<JCExpression>nil());
+    }
+    
+    List<JCAnnotation> makeAtFinal() {
+        return makeModelAnnotation(syms().ceylonAtFinalType, List.<JCExpression>nil());
     }
 
     List<JCAnnotation> makeAtAlias(Type type, Constructor constructor) {
@@ -3781,7 +3791,7 @@ public abstract class AbstractTransformer implements Transformation {
      * Boxing
      */
     public enum BoxingStrategy {
-        UNBOXED, BOXED, INDIFFERENT;
+        UNBOXED, BOXED, JAVA, INDIFFERENT;
     }
 
     public boolean canUnbox(Type type){
@@ -3799,21 +3809,31 @@ public abstract class AbstractTransformer implements Transformation {
     JCExpression boxUnboxIfNecessary(JCExpression javaExpr, boolean exprBoxed,
             Type exprType,
             BoxingStrategy boxingStrategy) {
-        return boxUnboxIfNecessary(javaExpr, exprBoxed, exprType, boxingStrategy, exprType);
+        return boxUnboxIfNecessary(javaExpr, exprBoxed ? BoxingStrategy.BOXED : BoxingStrategy.UNBOXED, exprType, boxingStrategy, exprType);
     }
     
-    JCExpression boxUnboxIfNecessary(JCExpression javaExpr, boolean exprBoxed,
+    JCExpression boxUnboxIfNecessary(JCExpression javaExpr, BoxingStrategy exprBoxed,
             Type exprType,
             BoxingStrategy boxingStrategy, Type expectedType) {
         if(boxingStrategy == BoxingStrategy.INDIFFERENT)
             return javaExpr;
-        boolean targetBoxed = boxingStrategy == BoxingStrategy.BOXED;
         // only box if the two differ
-        if(targetBoxed == exprBoxed)
+        if(boxingStrategy == exprBoxed)
             return javaExpr;
-        if (targetBoxed) {
+        if (boxingStrategy == BoxingStrategy.BOXED) {
             // box
             javaExpr = boxType(javaExpr, exprType);
+        } else if (boxingStrategy == BoxingStrategy.JAVA) {
+            if (exprBoxed == BoxingStrategy.BOXED) {
+                javaExpr = unboxType(javaExpr, exprType);
+            }
+            // box
+            javaExpr = boxJavaType(javaExpr, exprType);
+        } else if (exprBoxed == BoxingStrategy.JAVA) {
+            javaExpr = unboxJavaType(javaExpr, exprType);
+            if (boxingStrategy == BoxingStrategy.BOXED) {
+                javaExpr = boxType(javaExpr, exprType);
+            }
         } else {
             // unbox
             if (exprType.getDeclaration() instanceof TypeParameter) {
@@ -3881,6 +3901,57 @@ public abstract class AbstractTransformer implements Transformation {
             }
         }
         return expr;
+    }
+    
+    protected JCExpression javaBoxType(Type t) {
+        t = simplifyType(t);
+        if (t.isInteger()) {
+            return make().Type(syms().longObjectType);
+        } else if (t.isFloat()) {
+            return make().Type(syms().doubleObjectType);
+        } else if (t.isString()) {
+            return make().Type(syms().stringType);
+        } else if (t.isByte()) {
+            return makeQuotedQualIdentFromString("java.lang.Byte");
+        } else if (t.isBoolean()
+                || typeFact().getBooleanTrueDeclaration().getType().isExactly(t)
+                || typeFact().getBooleanFalseDeclaration().getType().isExactly(t)) {
+            return make().Type(syms().booleanObjectType);
+        } else {
+            throw BugException.unhandledTypeCase(t);
+        }
+    }
+    
+    JCExpression boxJavaType(JCExpression expr, Type type) {
+        type = simplifyType(type);
+        if (type.isSubtypeOf(typeFact().getNullType())) {
+            return expr;
+        } else if (type.isString()) {
+            return expr;
+        } else {
+            return make().Apply(null,
+                    makeSelect(javaBoxType(type), "valueOf"),
+                    List.<JCExpression>of(expr));
+        }
+    }
+    
+    JCExpression unboxJavaType(JCExpression expr, Type type) {
+        String method;
+        if (type.isString()) {
+            return expr;
+        } else if (type.isInteger()) {
+            method = "longValue";
+        } else if (type.isFloat()) {
+            method = "doubleValue";
+        } else if (type.isByte()) {
+            method = "byteValue";
+        } else if (type.isBoolean()) {
+            method = "booleanValue";
+        } else {
+            return expr;// ??
+        }
+        return make().Apply(null, 
+                makeSelect(expr, method), List.<JCExpression>nil());
     }
     
     private JCTree.JCMethodInvocation boxInteger(JCExpression value) {
@@ -5968,6 +6039,25 @@ public abstract class AbstractTransformer implements Transformation {
             return utilInvocation().sequentialWrapperCopy(typeArg, makeReifiedTypeArgument(seqElemType), 
                     makeQuotedIdent(lastParameter.getName()));
         }
+    }
+    
+    public boolean isEe(Declaration d) {
+        return getEeVisitor().isEeMode(Decl.getToplevelDeclarationContainer(d));
+    }
+    
+    public boolean useJavaBox(Declaration decl, Type attrType) {
+        if (isEe(decl)
+                && typeFact().isOptionalType(attrType)) {
+            Type t = simplifyType(attrType);
+            if (t.isInteger() 
+                    || t.isFloat()
+                    || t.isString()
+                    || t.isByte()
+                    || t.isBoolean()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

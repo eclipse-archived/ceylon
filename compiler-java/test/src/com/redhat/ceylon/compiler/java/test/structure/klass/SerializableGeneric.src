@@ -42,7 +42,7 @@ class GenericWrapper<Value> implements .com.redhat.ceylon.compiler.java.runtime.
     @.com.redhat.ceylon.common.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("Value?")
     public final Value getVal() {
-        return val;
+        return this.val;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$

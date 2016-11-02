@@ -272,7 +272,7 @@ class OptionalInterface<X> extends .com.redhat.ceylon.compiler.java.test.interop
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface getProp1() {
-        return prop1;
+        return this.prop1;
     }
     
     @.java.lang.Override
@@ -283,7 +283,7 @@ class OptionalInterface<X> extends .com.redhat.ceylon.compiler.java.test.interop
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface getProp2() {
-        return prop2;
+        return this.prop2;
     }
     
     @.java.lang.Override
@@ -294,7 +294,7 @@ class OptionalInterface<X> extends .com.redhat.ceylon.compiler.java.test.interop
     
     @.java.lang.Override
     public final .java.lang.String getStringProp1() {
-        return stringProp1;
+        return this.stringProp1;
     }
     
     @.java.lang.Override
@@ -305,7 +305,7 @@ class OptionalInterface<X> extends .com.redhat.ceylon.compiler.java.test.interop
     
     @.java.lang.Override
     public final .java.lang.String getStringProp2() {
-        return stringProp2;
+        return this.stringProp2;
     }
     
     @.java.lang.Override
@@ -315,7 +315,7 @@ class OptionalInterface<X> extends .com.redhat.ceylon.compiler.java.test.interop
     private .ceylon.language.String bla;
     
     private final .ceylon.language.String getBla$priv$() {
-        return bla;
+        return this.bla;
     }
     
     private final void setBla$priv$(final .ceylon.language.String bla) {
@@ -336,13 +336,13 @@ class OptionalInterface<X> extends .com.redhat.ceylon.compiler.java.test.interop
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface getProp3() {
-        return prop3;
+        return this.prop3;
     }
     private final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface prop4;
     
     @.java.lang.Override
     public final .com.redhat.ceylon.compiler.java.test.interop.JavaOptionalInterface getProp4() {
-        return prop4;
+        return this.prop4;
     }
     
     @.java.lang.Override
@@ -380,7 +380,7 @@ final class classSubClass_ extends .com.redhat.ceylon.compiler.java.test.interop
     @.com.redhat.ceylon.common.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::OptionalityClass?")
     private final .com.redhat.ceylon.compiler.java.test.interop.OptionalityClass getRealClass$priv$() {
-        return realClass;
+        return this.realClass;
     }
     
     @.ceylon.language.SharedAnnotation$annotation$
@@ -423,18 +423,19 @@ final class classSubClass_ extends .com.redhat.ceylon.compiler.java.test.interop
             returning $ceylontmp$24 != null ? $ceylontmp$24.toString() : null;
         );
     }
-    private static final .com.redhat.ceylon.compiler.java.test.interop.classSubClass_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.interop.classSubClass_ $object$;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.interop.classSubClass_();
+            $object$ = new .com.redhat.ceylon.compiler.java.test.interop.classSubClass_();
+            .com.redhat.ceylon.compiler.java.test.interop.classSubClass_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.interop.classSubClass_.$init$$object$ = false;
         }
     }
     
@@ -442,8 +443,8 @@ final class classSubClass_ extends .com.redhat.ceylon.compiler.java.test.interop
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.interop::classSubClass")
     static .com.redhat.ceylon.compiler.java.test.interop.classSubClass_ get_() {
-        if (classSubClass_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.interop.classSubClass_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.interop.classSubClass_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'classSubClass\' before it was set");

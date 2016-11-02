@@ -166,12 +166,12 @@ public class Html implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head head;
     
     public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Head getHead() {
-        return head;
+        return this.head;
     }
     private final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body body;
     
     public final .com.redhat.ceylon.compiler.java.test.issues.bug08xx.Body getBody() {
-        return body;
+        return this.body;
     }
     
     @.java.lang.Override
@@ -251,7 +251,7 @@ public class Head implements .com.redhat.ceylon.compiler.java.runtime.model.Reif
     private final .ceylon.language.String title;
     
     public final .ceylon.language.String getTitle() {
-        return title;
+        return this.title;
     }
     
     @.java.lang.Override
@@ -342,7 +342,7 @@ public class Container<TagType extends .com.redhat.ceylon.compiler.java.test.iss
     private final .ceylon.language.Sequential tags;
     
     public final .ceylon.language.Sequential getTags() {
-        return tags;
+        return this.tags;
     }
     
     @.java.lang.Override

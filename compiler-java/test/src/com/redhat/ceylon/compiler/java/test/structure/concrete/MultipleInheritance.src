@@ -108,7 +108,7 @@ class MultipleInheritanceImplSub extends .com.redhat.ceylon.compiler.java.test.s
     
     @.java.lang.Override
     public final long getA() {
-        return a;
+        return this.a;
     }
     
     @.java.lang.Override
@@ -138,7 +138,7 @@ class MultipleInheritanceSubImplSub extends .com.redhat.ceylon.compiler.java.tes
     
     @.java.lang.Override
     public final long getA() {
-        return a;
+        return this.a;
     }
     
     @.java.lang.Override

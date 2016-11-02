@@ -12,24 +12,24 @@ public final class bug1225available_ implements .java.io.Serializable, .com.redh
         return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.class);
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_();
+            $object$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_();
+            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.$init$$object$ = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_ get_() {
-        if (bug1225available_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225available_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1225available\' before it was set");
@@ -50,24 +50,24 @@ public final class bug1225unavailableBy_O_ implements .java.io.Serializable, .co
         return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_.class);
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_();
+            $object$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_();
+            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_.$init$$object$ = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_ get_() {
-        if (bug1225unavailableBy_O_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_O_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1225unavailableBy_O\' before it was set");
@@ -88,24 +88,24 @@ public final class bug1225unavailableBy_X_ implements .java.io.Serializable, .co
         return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_.class);
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_();
+            $object$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_();
+            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_.$init$$object$ = true;
             $initException$ = null;
-            $init$value = true;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            $init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_.$init$$object$ = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_ get_() {
-        if (bug1225unavailableBy_X_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1225unavailableBy_X_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1225unavailableBy_X\' before it was set");

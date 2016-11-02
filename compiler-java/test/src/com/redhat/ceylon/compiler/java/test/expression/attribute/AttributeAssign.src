@@ -9,7 +9,7 @@ class AttributeAssign implements .com.redhat.ceylon.compiler.java.runtime.model.
     private boolean b1;
     
     private final boolean getB1$priv$() {
-        return b1;
+        return this.b1;
     }
     
     private final void setB1$priv$(final boolean b1) {
@@ -18,7 +18,7 @@ class AttributeAssign implements .com.redhat.ceylon.compiler.java.runtime.model.
     private boolean b2;
     
     public final boolean getB2() {
-        return b2;
+        return this.b2;
     }
     
     public final void setB2(final boolean b2) {

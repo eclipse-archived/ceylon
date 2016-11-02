@@ -588,13 +588,13 @@ public abstract class Bug966<Element extends .ceylon.language.Enumerable<Element
     
     @.java.lang.Override
     public final Element getFirst() {
-        return first;
+        return this.first;
     }
     private final Element last;
     
     @.java.lang.Override
     public final Element getLast() {
-        return last;
+        return this.last;
     }
     
     @.java.lang.Override

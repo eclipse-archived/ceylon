@@ -39,12 +39,12 @@ class Bug1878 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     private boolean foo;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private volatile transient boolean $init$foo;
+    private volatile transient boolean $init$foo = false;
     
     @.ceylon.language.LateAnnotation$annotation$
     private final boolean getFoo$priv$() {
         if (this.$init$foo) {
-            return foo;
+            return this.foo;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'foo\'");
         }
@@ -56,9 +56,9 @@ class Bug1878 implements .com.redhat.ceylon.compiler.java.runtime.model.ReifiedT
         if (!this.$init$foo) {
             this.foo = foo;
             this.$init$foo = true;
-            return;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
     
     private final void loopInit$priv$() {
@@ -97,13 +97,14 @@ final class bug1878_ {
     
     private bug1878_() {
     }
-    private static boolean value;
-    private static volatile boolean $init$value = false;
+    private static boolean $object$;
+    @.com.redhat.ceylon.compiler.java.metadata.Ignore
+    private static volatile boolean $init$$object$ = false;
     
     @.ceylon.language.LateAnnotation$annotation$
     public static boolean get_() {
-        if (bug1878_.$init$value) {
-            return value;
+        if (.com.redhat.ceylon.compiler.java.test.statement.loop.bug1878_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.statement.loop.bug1878_.$object$;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'bug1878\'");
         }
@@ -112,11 +113,11 @@ final class bug1878_ {
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("bug1878")
     final boolean bug1878) {
-        if (!bug1878_.$init$value) {
-            value = bug1878;
-            bug1878_.$init$value = true;
-            return;
+        if (!.com.redhat.ceylon.compiler.java.test.statement.loop.bug1878_.$init$$object$) {
+            .com.redhat.ceylon.compiler.java.test.statement.loop.bug1878_.$object$ = bug1878;
+            .com.redhat.ceylon.compiler.java.test.statement.loop.bug1878_.$init$$object$ = true;
+        } else {
+            throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
-        throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
     }
 }
