@@ -46,7 +46,8 @@ public class SmallVisitor extends Visitor {
         if (Decl.isSmall(assigning) && 
                 term != null &&
                 !term.getSmall() && 
-                (term instanceof Tree.NaturalLiteral || 
+                (term instanceof Tree.CharLiteral ||
+                 term instanceof Tree.NaturalLiteral ||
                 (term instanceof Tree.NegativeOp &&  
                     ((Tree.NegativeOp)term).getTerm() instanceof Tree.NaturalLiteral))) {
             term.addUsageWarning(Warning.literalNotSmall, 
@@ -326,6 +327,14 @@ public class SmallVisitor extends Visitor {
         super.visit(that);
         if (isAssigningSmall() &&
                 that.getLetClause().getExpression().getTerm().getSmall()) {
+            markSmall(that);
+        }
+    }
+    
+    @Override
+    public void visit(Tree.CharLiteral that) {
+        if (isAssigningSmall() &&
+                Character.isBmpCodePoint(ExpressionTransformer.literalValue(that))) {
             markSmall(that);
         }
     }
