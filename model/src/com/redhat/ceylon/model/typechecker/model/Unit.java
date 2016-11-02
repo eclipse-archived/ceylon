@@ -546,6 +546,16 @@ public class Unit implements LanguageModuleProvider, ImportScope {
         }
     }
 
+    public Class getJavaClassDeclaration() {
+        Package lang = getJavaLangPackage();
+        if (lang==null) {
+            return null;
+        }
+        else {
+            return (Class) lang.getMember("Class", null, false);
+        }
+    }
+
     public Interface getJavaCollectionDeclaration() {
         Package util = getJavaUtilPackage();
         if (util==null) {
@@ -2767,7 +2777,11 @@ public class Unit implements LanguageModuleProvider, ImportScope {
     public Type getClassDeclarationType() {
         return getType(getLanguageModuleDeclarationTypeDeclaration("ClassDeclaration"));
     }
-    
+
+    public Type getClassOrInterfaceDeclarationType() {
+        return getType(getLanguageModuleDeclarationTypeDeclaration("ClassOrInterfaceDeclaration"));
+    }
+
     public Type getClassDeclarationType(Class clazz) {
         return clazz.hasConstructors() || clazz.hasEnumerated() || clazz.isAnonymous() ?
                 getType(getLanguageModuleDeclarationTypeDeclaration("ClassWithConstructorsDeclaration")) :

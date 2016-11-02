@@ -228,7 +228,9 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     
     private static final TypeMirror STRING_TYPE = simpleJDKObjectType("java.lang.String");
     private static final TypeMirror CEYLON_STRING_TYPE = simpleCeylonObjectType("ceylon.language.String");
-    
+
+    private static final TypeMirror CLASS_TYPE = simpleJDKObjectType("java.lang.Class");
+
     private static final TypeMirror PRIM_BOOLEAN_TYPE = simpleJDKObjectType("boolean");
     private static final TypeMirror CEYLON_BOOLEAN_TYPE = simpleCeylonObjectType("ceylon.language.Boolean");
     
@@ -3950,6 +3952,8 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private boolean isCoercedType(TypeMirror type) {
         if(sameType(type, CHAR_SEQUENCE_TYPE))
             return true;
+        if(sameType(type, CLASS_TYPE))
+            return true;
         if(isFunctionCercion(type))
             return true;
         return false;
@@ -4666,8 +4670,11 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
     private Type applyTypeCoercion(TypeMirror type, Module module, Scope scope) {
         if(sameType(type, CHAR_SEQUENCE_TYPE))
             return typeFactory.getStringType();
-        else
-            return getFunctionalInterfaceAsCallable(module, scope, type);
+        if(sameType(type, CLASS_TYPE)){
+            // Note we lose the upper bound (method had type Class<? extends Foo>), see #5918
+            return typeFactory.getClassOrInterfaceDeclarationType();
+        }
+        return getFunctionalInterfaceAsCallable(module, scope, type);
     }
     
     private Type makeOptionalTypePreserveUnderlyingType(Type type, Module module) {
@@ -5225,7 +5232,7 @@ public abstract class AbstractModelLoader implements ModelCompleter, ModelLoader
             return iterableType;
         } else if ("java.lang::Class".equals(type.getDeclaration().getQualifiedNameString())) {
             // Note we lose the upper bound (method had type Class<? extends Foo>), see #5918
-            return ((TypeDeclaration)unit.getLanguageModuleDeclarationDeclaration("ClassOrInterfaceDeclaration")).getType();
+            return typeFactory.getClassOrInterfaceDeclarationType();
         } else {
             return type;
         }

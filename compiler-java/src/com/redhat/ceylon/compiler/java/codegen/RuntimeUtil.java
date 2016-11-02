@@ -277,4 +277,8 @@ class RuntimeUtil {
     public JCExpression toIterable(JCExpression javaIterable) {
         return makeUtilInvocation(null, "toIterable", List.of(javaIterable));
     }
+
+    public JCExpression javaClassForDeclaration(JCExpression metamodelDeclaration) {
+        return makeUtilInvocation(null, "javaClassForDeclaration", List.of(metamodelDeclaration));
+    }
 }

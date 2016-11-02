@@ -715,6 +715,29 @@ public class ExpressionTransformer extends AbstractTransformer {
         if(isJavaCharSequence(exprType) && expectedType.isExactly(typeFact().getStringDeclaration().getType())){
             return make().Apply(null, makeQualIdent(ret, "toString"), List.<JCTree.JCExpression>nil());
         }
+        if(isCeylonClassOrInterfaceDeclaration(exprType) && isJavaClass(expectedType)){
+            // FIXME: perhaps cast as RAW?
+            JCTree arg = ret;
+            // try to turn (.ceylon.language.meta.declaration.ClassWithInitializerDeclaration)
+            //  .com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(
+            //  .com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class))
+            // into .com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class
+            while(arg instanceof JCTree.JCTypeCast)
+                arg = ((JCTree.JCTypeCast)arg).getExpression();
+            if(arg instanceof JCTree.JCMethodInvocation){
+                JCExpression methodSelect = ((JCTree.JCMethodInvocation) arg).getMethodSelect();
+                if(methodSelect instanceof JCTree.JCFieldAccess){
+                    JCTree.JCFieldAccess methodField = (JCTree.JCFieldAccess) methodSelect;
+                    if(methodField.getIdentifier().toString().equals("getOrCreateMetamodel")
+                            && methodField.getExpression() instanceof JCTree.JCFieldAccess
+                            && ((JCTree.JCFieldAccess)methodField.getExpression()).sym == syms().ceylonMetamodelType.tsym){
+                        // that one takes a class literal as param, just return it
+                        return ((JCTree.JCMethodInvocation) arg).getArguments().get(0);
+                    }
+                }
+            }
+            return utilInvocation().javaClassForDeclaration(ret);
+        }
         return ret;
     }
 

@@ -15,6 +15,7 @@ import com.redhat.ceylon.compiler.java.metadata.Class;
 import com.redhat.ceylon.compiler.java.metadata.Name;
 import com.redhat.ceylon.compiler.java.metadata.TypeInfo;
 import com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel;
+import com.redhat.ceylon.compiler.java.runtime.metamodel.decl.ClassOrInterfaceDeclarationImpl;
 import com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor;
 import com.redhat.ceylon.model.cmr.ArtifactResult;
 
@@ -34,6 +35,7 @@ import ceylon.language.Tuple;
 import ceylon.language.empty_;
 import ceylon.language.finished_;
 import ceylon.language.sequence_;
+import ceylon.language.meta.declaration.ClassOrInterfaceDeclaration;
 
 /**
  * Helper class for generated Ceylon code that needs to call implementation logic.
@@ -2224,5 +2226,23 @@ public class Util {
             }
         };
     }
-
+    
+    // Copied from ceylon.interop.java
+    public static java.lang.Class<? extends java.lang.Object> javaClassForDeclaration(ClassOrInterfaceDeclaration decl) {
+        if(decl instanceof ClassOrInterfaceDeclarationImpl){
+                ClassOrInterfaceDeclarationImpl ci =
+                        (ClassOrInterfaceDeclarationImpl) decl;
+            return erase(ci.getJavaClass());
+        }
+        throw new ceylon.language.AssertionError("Unsupported declaration type: "+decl);
+    }
+    
+    // Copied from ceylon.interop.java
+    @SuppressWarnings("unchecked")
+    private static <T> java.lang.Class<? extends T> erase(java.lang.Class<? extends T> klass){
+      // dirty but keeps the logic in one place
+      return (java.lang.Class<? extends T>)
+              TypeDescriptor.klass(klass)
+                  .getArrayElementClass();
+    }
 }

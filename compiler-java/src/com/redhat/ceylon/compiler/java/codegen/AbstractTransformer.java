@@ -1635,6 +1635,10 @@ public abstract class AbstractTransformer implements Transformation {
         return false;
     }
 
+    boolean isCeylonClassOrInterfaceDeclaration(Type type){
+        return type != null && type.isSubtypeOf(typeFact().getClassOrInterfaceDeclarationType());
+    }
+    
     boolean isCeylonString(Type type) {
         return type != null && type.isExactly(typeFact.getStringType());
     }
@@ -2279,6 +2283,19 @@ public abstract class AbstractTransformer implements Transformation {
         if(javaCharSequenceDeclaration == null)
             return false;
         return type.isExactly(javaCharSequenceDeclaration.getType());
+    }
+
+    boolean isJavaClass(Type type) {
+        if(type == null)
+            return false;
+        Class javaClassDeclaration = typeFact.getJavaClassDeclaration();
+        // Frankly this is weird, but it happens
+        if(javaClassDeclaration == null)
+            return false;
+        // can't check subtyping as that class is generic, so check raw type
+        return type.isClass()
+                // there are no subtypes of Class
+                && type.getDeclaration().equals(javaClassDeclaration);
     }
 
     public boolean isJavaArray(Type type) {
