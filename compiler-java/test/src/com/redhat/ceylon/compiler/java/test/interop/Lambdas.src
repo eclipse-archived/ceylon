@@ -849,6 +849,11 @@ final class lambdas_ {
         j.charSequences();
         j.charSequences(.ceylon.language.String.instance("a").toString());
         j.charSequences(.ceylon.language.String.instance("a").toString(), .ceylon.language.String.instance("b").toString());
+        j.setKlass(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class);
+        j.klassMethod(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class);
+        final .ceylon.language.meta.declaration.ClassWithInitializerDeclaration klass = (.ceylon.language.meta.declaration.ClassWithInitializerDeclaration).com.redhat.ceylon.compiler.java.runtime.metamodel.Metamodel.getOrCreateMetamodel(.com.redhat.ceylon.compiler.java.test.interop.LambdasJava.class);
+        j.setKlass(.com.redhat.ceylon.compiler.java.Util.javaClassForDeclaration(klass));
+        j.klassMethod(.com.redhat.ceylon.compiler.java.Util.javaClassForDeclaration(klass));
         j.intConsumer(null);
         new .com.redhat.ceylon.compiler.java.test.interop.LambdasJava(null);
         j.intConsumer(new .java.util.function.IntConsumer(){

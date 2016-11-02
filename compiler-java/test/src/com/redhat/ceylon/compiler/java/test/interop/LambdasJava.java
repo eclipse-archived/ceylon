@@ -82,6 +82,11 @@ public class LambdasJava {
     public void consumeTwoIntegers(ConsumeTwoIntegers f){
     }
 
+    public void klassMethod(Class<?> k){}
+    
+    public Class<?> getKlass(){ return null; }
+    public void setKlass(Class<?> k){}
+    
     public void charSequences(CharSequence... cs){
     }
 

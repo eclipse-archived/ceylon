@@ -84,6 +84,14 @@ void lambdas() {
     j.charSequences();
     j.charSequences("a");
     j.charSequences("a", "b");
+    
+    // use constants
+    j.setKlass(`class LambdasJava`);
+    j.klassMethod(`class LambdasJava`);
+    value klass = `class LambdasJava`;
+    // use Util function
+    j.setKlass(klass);
+    j.klassMethod(klass);
 
     // make sure overloading prefers non-coerced methods in doubt
     j.intConsumer(null);
