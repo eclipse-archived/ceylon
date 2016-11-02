@@ -651,7 +651,7 @@ public class Metamodel {
                 reifiedArguments = TypeDescriptor.NothingType;
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
 
-            if(declaration.isToplevel() || isLocalType(declaration))
+            if(declaration.isToplevel() || isLocalType(declaration) || declaration.isStatic())
                 return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.ClassImpl(reifiedType, reifiedArguments, pt, null, null);
             
             TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
@@ -659,7 +659,7 @@ public class Metamodel {
         }
         if(declaration instanceof com.redhat.ceylon.model.typechecker.model.Interface){
             TypeDescriptor reifiedType = getTypeDescriptorForProducedType(pt);
-            if(declaration.isToplevel() || isLocalType(declaration))
+            if(declaration.isToplevel() || isLocalType(declaration) || declaration.isStatic())
                 return new com.redhat.ceylon.compiler.java.runtime.metamodel.meta.InterfaceImpl<T>(reifiedType, pt, null, null);
 
             TypeDescriptor reifiedContainer = getTypeDescriptorForProducedType(pt.getQualifyingType());
