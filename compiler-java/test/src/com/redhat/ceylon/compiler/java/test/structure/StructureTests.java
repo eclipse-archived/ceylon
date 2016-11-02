@@ -150,6 +150,12 @@ public class StructureTests extends CompilerTests {
     }
     
     @Test
+    public void testAtrSmallCharacterError(){
+        assertErrors("attribute/SmallCharacterError", true,
+                CompilerError.warning(3, "literal value is not small but is assignable to small declaration 'c'"));
+    }
+    
+    @Test
     public void testAtrLateToplevel(){
         compareWithJavaSource("attribute/LateToplevel");
     }
