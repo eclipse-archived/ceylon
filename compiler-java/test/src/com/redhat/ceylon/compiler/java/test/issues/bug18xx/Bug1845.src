@@ -87,13 +87,13 @@ final class bug1845_1_ {
     
     private bug1845_1_() {
     }
-    private static final .java.lang.Object value;
+    private static final .java.lang.Object $object$;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static volatile boolean $init$value = false;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
+            $object$ = new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
             @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#0")
             @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -124,20 +124,20 @@ final class bug1845_1_ {
                     return null;
                 }
             };
-            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_1_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_1_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_1_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_1_.$init$$object$ = false;
         }
     }
     
     @.com.redhat.ceylon.common.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static .java.lang.Object get_() {
-        if (.com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_1_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_1_.value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_1_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_1_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1845_1\' before it was set");
@@ -154,13 +154,13 @@ final class bug1845_2_ {
     
     private bug1845_2_() {
     }
-    private static final .java.lang.Object value;
+    private static final .java.lang.Object $object$;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static volatile boolean $init$value = false;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
+            $object$ = new @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1") @.com.redhat.ceylon.compiler.java.metadata.Method .com.redhat.ceylon.compiler.java.language.AbstractCallable<.java.lang.Object>(.ceylon.language.Anything.$TypeDescriptor$, .ceylon.language.Empty.$TypeDescriptor$, "Anything()", (short)-1)
             @.com.redhat.ceylon.compiler.java.metadata.LocalDeclaration
             @.com.redhat.ceylon.compiler.java.metadata.Name("anonymous#1")
             @.com.redhat.ceylon.compiler.java.metadata.Method
@@ -191,20 +191,20 @@ final class bug1845_2_ {
                     return null;
                 }
             };
-            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_2_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_2_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_2_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_2_.$init$$object$ = false;
         }
     }
     
     @.com.redhat.ceylon.common.Nullable
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("ceylon.language::Anything")
     public static .java.lang.Object get_() {
-        if (.com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_2_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_2_.value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_2_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.bug1845_2_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1845_2\' before it was set");

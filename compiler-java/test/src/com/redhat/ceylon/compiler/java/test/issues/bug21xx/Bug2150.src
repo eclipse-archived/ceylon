@@ -21,24 +21,24 @@ final class bug2150True_ extends .com.redhat.ceylon.compiler.java.test.issues.bu
         return .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_.class);
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_();
-            .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_.$init$value = true;
+            $object$ = new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_();
+            .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_.$init$$object$ = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_ get_() {
-        if (.com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_.value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150True_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2150True\' before it was set");
@@ -60,24 +60,24 @@ final class bug2150False_ extends .com.redhat.ceylon.compiler.java.test.issues.b
         return .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_.class);
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_();
-            .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_.$init$value = true;
+            $object$ = new .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_();
+            .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_.$init$$object$ = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_ get_() {
-        if (.com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_.value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2150False_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug2150False\' before it was set");

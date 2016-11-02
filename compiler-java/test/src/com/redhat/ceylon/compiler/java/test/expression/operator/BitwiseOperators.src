@@ -328,7 +328,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             
             private getterN1$setter$_() {
             }
-            private long value;
+            private long $object$;
             
             public void set_(final long getterN1) {
                 n1.ref = getterN1;
@@ -351,7 +351,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             
             private getterN2$setter$_() {
             }
-            private long value;
+            private long $object$;
             
             public void set_(final long getterN2) {
                 n2.ref = getterN2;
@@ -374,7 +374,7 @@ class BitwiseOperators implements .com.redhat.ceylon.compiler.java.runtime.model
             
             private getterI1$setter$_() {
             }
-            private long value;
+            private long $object$;
             
             public void set_(final long getterI1) {
                 i1.ref = getterI1;
@@ -485,24 +485,24 @@ final class bwToplevelN1_ {
     
     private bwToplevelN1_() {
     }
-    private static long value;
-    private static volatile boolean $init$value = false;
+    private static long $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.value = 0L;
-            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.$object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.value = 0L;
-            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.$object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.$init$$object$ = false;
         }
     }
     
     public static long get_() {
-        if (.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bwToplevelN1\' before it was set");
@@ -511,31 +511,31 @@ final class bwToplevelN1_ {
     
     public static void set_(final long bwToplevelN1) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.value = bwToplevelN1;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN1_.$object$ = bwToplevelN1;
     }
 }
 final class bwToplevelN2_ {
     
     private bwToplevelN2_() {
     }
-    private static long value;
-    private static volatile boolean $init$value = false;
+    private static long $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.value = 0L;
-            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.$object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.value = 0L;
-            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.$object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.$init$$object$ = false;
         }
     }
     
     public static long get_() {
-        if (.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bwToplevelN2\' before it was set");
@@ -544,31 +544,31 @@ final class bwToplevelN2_ {
     
     public static void set_(final long bwToplevelN2) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.value = bwToplevelN2;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelN2_.$object$ = bwToplevelN2;
     }
 }
 final class bwToplevelI1_ {
     
     private bwToplevelI1_() {
     }
-    private static long value;
-    private static volatile boolean $init$value = false;
+    private static long $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.value = 0L;
-            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.$object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.value = 0L;
-            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.$object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.$init$$object$ = false;
         }
     }
     
     public static long get_() {
-        if (.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bwToplevelI1\' before it was set");
@@ -577,7 +577,7 @@ final class bwToplevelI1_ {
     
     public static void set_(final long bwToplevelI1) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.value = bwToplevelI1;
+        .com.redhat.ceylon.compiler.java.test.expression.operator.bwToplevelI1_.$object$ = bwToplevelI1;
     }
 }
 final class bwToplevelGetterN1_ {

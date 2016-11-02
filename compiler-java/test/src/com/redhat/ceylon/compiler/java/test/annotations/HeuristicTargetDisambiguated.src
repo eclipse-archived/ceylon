@@ -77,19 +77,19 @@ final class ambiguousObject_ implements .java.io.Serializable, .com.redhat.ceylo
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_.class);
     @.com.redhat.ceylon.compiler.java.test.annotations.FieldOrMethodTarget
-    private static final .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_ value;
+    private static final .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_ $object$;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static volatile boolean $init$value = false;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_();
-            .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_.$init$value = true;
+            $object$ = new .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_();
+            .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_.$init$$object$ = false;
         }
     }
     
@@ -97,8 +97,8 @@ final class ambiguousObject_ implements .java.io.Serializable, .com.redhat.ceylo
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.annotations::ambiguousObject")
     static .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_ get_() {
-        if (.com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_.value;
+        if (.com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.annotations.ambiguousObject_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'ambiguousObject\' before it was set");

@@ -20,24 +20,24 @@ final class i1824_ {
     
     private i1824_() {
     }
-    private static long value;
-    private static volatile boolean $init$value = false;
+    private static long $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.value = 0L;
-            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.$object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.value = 0L;
-            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.$object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.$init$$object$ = false;
         }
     }
     
     public static long get_() {
-        if (.com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'i1824\' before it was set");
@@ -46,6 +46,6 @@ final class i1824_ {
     
     public static void set_(final long i1824) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.value = i1824;
+        .com.redhat.ceylon.compiler.java.test.issues.bug18xx.i1824_.$object$ = i1824;
     }
 }

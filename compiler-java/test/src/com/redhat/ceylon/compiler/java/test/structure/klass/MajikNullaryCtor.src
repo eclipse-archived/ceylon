@@ -688,19 +688,19 @@ final class majikNullaryCtorValueCtorOf_ extends .com.redhat.ceylon.compiler.jav
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.class);
-    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_ value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_ $object$;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static volatile boolean $init$value = false;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_();
-            .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$init$value = true;
+            $object$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_();
+            .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$init$$object$ = false;
         }
     }
     
@@ -708,8 +708,8 @@ final class majikNullaryCtorValueCtorOf_ extends .com.redhat.ceylon.compiler.jav
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::majikNullaryCtorValueCtorOf")
     static .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_ get_() {
-        if (.com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.structure.klass.majikNullaryCtorValueCtorOf_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'majikNullaryCtorValueCtorOf\' before it was set");

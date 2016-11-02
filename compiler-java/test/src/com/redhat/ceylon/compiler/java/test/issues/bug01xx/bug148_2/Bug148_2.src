@@ -19,24 +19,24 @@ final class f_ {
     
     private f_() {
     }
-    private static long value;
-    private static volatile boolean $init$value = false;
+    private static long $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            .bug148_2.f_.value = 2L;
-            .bug148_2.f_.$init$value = true;
+            .bug148_2.f_.$object$ = 2L;
+            .bug148_2.f_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            .bug148_2.f_.value = 0L;
-            .bug148_2.f_.$init$value = false;
+            .bug148_2.f_.$object$ = 0L;
+            .bug148_2.f_.$init$$object$ = false;
         }
     }
     
     public static long get_() {
-        if (.bug148_2.f_.$init$value) {
-            return .bug148_2.f_.value;
+        if (.bug148_2.f_.$init$$object$) {
+            return .bug148_2.f_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'f\' before it was set");
@@ -45,6 +45,6 @@ final class f_ {
     
     public static void set_(final long f) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        .bug148_2.f_.value = f;
+        .bug148_2.f_.$object$ = f;
     }
 }

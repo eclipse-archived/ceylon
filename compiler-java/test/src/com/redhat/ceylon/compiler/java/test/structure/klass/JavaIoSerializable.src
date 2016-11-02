@@ -81,19 +81,19 @@ final class javaIoSerializableObject_ extends .java.lang.Object implements .java
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.class);
-    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_ value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_ $object$;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static volatile boolean $init$value = false;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_();
-            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$init$value = true;
+            $object$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_();
+            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$init$$object$ = false;
         }
     }
     
@@ -101,8 +101,8 @@ final class javaIoSerializableObject_ extends .java.lang.Object implements .java
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::javaIoSerializableObject")
     static .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_ get_() {
-        if (.com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableObject_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'javaIoSerializableObject\' before it was set");
@@ -133,19 +133,19 @@ final class javaIoSerializableBasic_ extends .java.lang.Object implements .java.
     }
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.class);
-    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_ value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_ $object$;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static volatile boolean $init$value = false;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_();
-            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$init$value = true;
+            $object$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_();
+            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$init$$object$ = false;
         }
     }
     
@@ -153,8 +153,8 @@ final class javaIoSerializableBasic_ extends .java.lang.Object implements .java.
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::javaIoSerializableBasic")
     static .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_ get_() {
-        if (.com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableBasic_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'javaIoSerializableBasic\' before it was set");
@@ -597,19 +597,19 @@ final class javaIoSerializableQuoting_ implements .java.io.Serializable, .com.re
     @.ceylon.language.SharedAnnotation$annotation$
     public final void $readResolve() {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_ value;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_ $object$;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static volatile boolean $init$value = false;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_();
-            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$init$value = true;
+            $object$ = new .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_();
+            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$init$$object$ = false;
         }
     }
     
@@ -617,8 +617,8 @@ final class javaIoSerializableQuoting_ implements .java.io.Serializable, .com.re
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.structure.klass::javaIoSerializableQuoting")
     static .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_ get_() {
-        if (.com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.structure.klass.javaIoSerializableQuoting_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'javaIoSerializableQuoting\' before it was set");

@@ -19,7 +19,7 @@ class ObjectInSetter implements .com.redhat.ceylon.compiler.java.runtime.model.R
             
             private foo$setter$_() {
             }
-            private .java.lang.String value;
+            private .java.lang.String $object$;
             
             public void set_(final .java.lang.String foo) {
                 if (true) {

@@ -14,21 +14,21 @@ final class toplevelAttributeLate_ {
     
     private toplevelAttributeLate_() {
     }
-    private static long value;
-    private static volatile boolean $init$value = false;
+    private static long $object$;
+    private static volatile boolean $init$$object$ = false;
     
     public static long get_() {
-        if (.com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.$object$;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'toplevelAttributeLate\'");
         }
     }
     
     public static void set_(final long toplevelAttributeLate) {
-        if (!.com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.$init$value) {
-            .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.value = toplevelAttributeLate;
-            .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.$init$value = true;
+        if (!.com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.$init$$object$) {
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.$object$ = toplevelAttributeLate;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLate_.$init$$object$ = true;
         } else {
             throw new .ceylon.language.InitializationError("Re-initialization of \'late\' attribute");
         }
@@ -38,19 +38,19 @@ final class toplevelAttributeLateVariable_ {
     
     private toplevelAttributeLateVariable_() {
     }
-    private static long value;
-    private static volatile boolean $init$value = false;
+    private static long $object$;
+    private static volatile boolean $init$$object$ = false;
     
     public static long get_() {
-        if (.com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.$object$;
         } else {
             throw new .ceylon.language.InitializationError("Accessing uninitialized \'late\' attribute \'toplevelAttributeLateVariable\'");
         }
     }
     
     public static void set_(final long toplevelAttributeLateVariable) {
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.value = toplevelAttributeLateVariable;
-        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.$init$value = true;
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.$object$ = toplevelAttributeLateVariable;
+        .com.redhat.ceylon.compiler.java.test.structure.toplevel.toplevelAttributeLateVariable_.$init$$object$ = true;
     }
 }

@@ -63,7 +63,7 @@ class SmallFloat implements .com.redhat.ceylon.compiler.java.runtime.model.Reifi
             
             private localfloatgs$setter$_() {
             }
-            private float value;
+            private float $object$;
             
             public void set_(final float localfloatgs) {
             }

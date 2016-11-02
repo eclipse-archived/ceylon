@@ -765,19 +765,19 @@ public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.com
     final T t) {
         return t;
     }
-    private static final .com.redhat.ceylon.compiler.java.test.metamodel.obj_ value;
+    private static final .com.redhat.ceylon.compiler.java.test.metamodel.obj_ $object$;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static volatile boolean $init$value = false;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.metamodel.obj_();
-            .com.redhat.ceylon.compiler.java.test.metamodel.obj_.$init$value = true;
+            $object$ = new .com.redhat.ceylon.compiler.java.test.metamodel.obj_();
+            .com.redhat.ceylon.compiler.java.test.metamodel.obj_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.metamodel.obj_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.metamodel.obj_.$init$$object$ = false;
         }
     }
     
@@ -786,8 +786,8 @@ public final class obj_ implements .java.io.Serializable, .com.redhat.ceylon.com
     @.com.redhat.ceylon.common.NonNull
     @.com.redhat.ceylon.compiler.java.metadata.TypeInfo("com.redhat.ceylon.compiler.java.test.metamodel::obj")
     public static .com.redhat.ceylon.compiler.java.test.metamodel.obj_ get_() {
-        if (.com.redhat.ceylon.compiler.java.test.metamodel.obj_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.metamodel.obj_.value;
+        if (.com.redhat.ceylon.compiler.java.test.metamodel.obj_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.metamodel.obj_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'obj\' before it was set");
@@ -1073,25 +1073,25 @@ final class litValue_ {
     
     private litValue_() {
     }
-    private static final long value;
+    private static final long $object$;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static volatile boolean $init$value = false;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = 2L;
-            .com.redhat.ceylon.compiler.java.test.metamodel.litValue_.$init$value = true;
+            $object$ = 2L;
+            .com.redhat.ceylon.compiler.java.test.metamodel.litValue_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = 0L;
-            .com.redhat.ceylon.compiler.java.test.metamodel.litValue_.$init$value = false;
+            $object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.metamodel.litValue_.$init$$object$ = false;
         }
     }
     
     public static long get_() {
-        if (.com.redhat.ceylon.compiler.java.test.metamodel.litValue_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.metamodel.litValue_.value;
+        if (.com.redhat.ceylon.compiler.java.test.metamodel.litValue_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.metamodel.litValue_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'litValue\' before it was set");
@@ -1107,26 +1107,26 @@ final class litVariable_ {
     
     private litVariable_() {
     }
-    private static long value;
+    private static long $object$;
     @.com.redhat.ceylon.compiler.java.metadata.Ignore
-    private static volatile boolean $init$value = false;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.value = 2L;
-            .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$object$ = 2L;
+            .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.value = 0L;
-            .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$init$$object$ = false;
         }
     }
     
     @.ceylon.language.VariableAnnotation$annotation$
     public static long get_() {
-        if (.com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.value;
+        if (.com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'litVariable\' before it was set");
@@ -1136,6 +1136,6 @@ final class litVariable_ {
     public static void set_(@.com.redhat.ceylon.compiler.java.metadata.Name("litVariable")
     final long litVariable) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.value = litVariable;
+        .com.redhat.ceylon.compiler.java.test.metamodel.litVariable_.$object$ = litVariable;
     }
 }

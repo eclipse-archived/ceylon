@@ -378,124 +378,124 @@ public final class iJavaBoxes_ {
     
     private iJavaBoxes_() {
     }
-    private static .java.lang.Long value;
+    private static .java.lang.Long $object$;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            .com.redhat.ceylon.compiler.java.test.structure.ee.iJavaBoxes_.value = .java.lang.Long.valueOf(2L);
+            .com.redhat.ceylon.compiler.java.test.structure.ee.iJavaBoxes_.$object$ = .java.lang.Long.valueOf(2L);
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            .com.redhat.ceylon.compiler.java.test.structure.ee.iJavaBoxes_.value = null;
+            .com.redhat.ceylon.compiler.java.test.structure.ee.iJavaBoxes_.$object$ = null;
         }
     }
     
     public static .ceylon.language.Integer get_() {
-        return .com.redhat.ceylon.compiler.java.test.structure.ee.iJavaBoxes_.value == null ? null : .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.iJavaBoxes_.value.longValue());
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.iJavaBoxes_.$object$ == null ? null : .ceylon.language.Integer.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.iJavaBoxes_.$object$.longValue());
     }
     
     public static void set_(final .ceylon.language.Integer iJavaBoxes) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        .com.redhat.ceylon.compiler.java.test.structure.ee.iJavaBoxes_.value = iJavaBoxes == null ? null : .java.lang.Long.valueOf(iJavaBoxes.longValue());
+        .com.redhat.ceylon.compiler.java.test.structure.ee.iJavaBoxes_.$object$ = iJavaBoxes == null ? null : .java.lang.Long.valueOf(iJavaBoxes.longValue());
     }
 }
 public final class fJavaBoxes_ {
     
     private fJavaBoxes_() {
     }
-    private static .java.lang.Double value;
+    private static .java.lang.Double $object$;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            .com.redhat.ceylon.compiler.java.test.structure.ee.fJavaBoxes_.value = .java.lang.Double.valueOf(2.0);
+            .com.redhat.ceylon.compiler.java.test.structure.ee.fJavaBoxes_.$object$ = .java.lang.Double.valueOf(2.0);
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            .com.redhat.ceylon.compiler.java.test.structure.ee.fJavaBoxes_.value = null;
+            .com.redhat.ceylon.compiler.java.test.structure.ee.fJavaBoxes_.$object$ = null;
         }
     }
     
     public static .ceylon.language.Float get_() {
-        return .com.redhat.ceylon.compiler.java.test.structure.ee.fJavaBoxes_.value == null ? null : .ceylon.language.Float.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.fJavaBoxes_.value.doubleValue());
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.fJavaBoxes_.$object$ == null ? null : .ceylon.language.Float.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.fJavaBoxes_.$object$.doubleValue());
     }
     
     public static void set_(final .ceylon.language.Float fJavaBoxes) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        .com.redhat.ceylon.compiler.java.test.structure.ee.fJavaBoxes_.value = fJavaBoxes == null ? null : .java.lang.Double.valueOf(fJavaBoxes.doubleValue());
+        .com.redhat.ceylon.compiler.java.test.structure.ee.fJavaBoxes_.$object$ = fJavaBoxes == null ? null : .java.lang.Double.valueOf(fJavaBoxes.doubleValue());
     }
 }
 public final class sJavaBoxes_ {
     
     private sJavaBoxes_() {
     }
-    private static .java.lang.String value;
+    private static .java.lang.String $object$;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            .com.redhat.ceylon.compiler.java.test.structure.ee.sJavaBoxes_.value = ((.ceylon.language.String).com.redhat.ceylon.compiler.java.test.structure.ee.javaBoxesGeneric_.<.ceylon.language.String>javaBoxesGeneric(.ceylon.language.String.$TypeDescriptor$)).toString();
+            .com.redhat.ceylon.compiler.java.test.structure.ee.sJavaBoxes_.$object$ = ((.ceylon.language.String).com.redhat.ceylon.compiler.java.test.structure.ee.javaBoxesGeneric_.<.ceylon.language.String>javaBoxesGeneric(.ceylon.language.String.$TypeDescriptor$)).toString();
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            .com.redhat.ceylon.compiler.java.test.structure.ee.sJavaBoxes_.value = null;
+            .com.redhat.ceylon.compiler.java.test.structure.ee.sJavaBoxes_.$object$ = null;
         }
     }
     
     public static .ceylon.language.String get_() {
-        return .com.redhat.ceylon.compiler.java.test.structure.ee.sJavaBoxes_.value == null ? null : .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.sJavaBoxes_.value);
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.sJavaBoxes_.$object$ == null ? null : .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.sJavaBoxes_.$object$);
     }
     
     public static void set_(final .ceylon.language.String sJavaBoxes) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        .com.redhat.ceylon.compiler.java.test.structure.ee.sJavaBoxes_.value = sJavaBoxes == null ? null : .java.lang.String.valueOf(sJavaBoxes.toString());
+        .com.redhat.ceylon.compiler.java.test.structure.ee.sJavaBoxes_.$object$ = sJavaBoxes == null ? null : .java.lang.String.valueOf(sJavaBoxes.toString());
     }
 }
 public final class oJavaBoxes_ {
     
     private oJavaBoxes_() {
     }
-    private static java.lang.Byte value;
+    private static java.lang.Byte $object$;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            .com.redhat.ceylon.compiler.java.test.structure.ee.oJavaBoxes_.value = java.lang.Byte.valueOf((byte)2L);
+            .com.redhat.ceylon.compiler.java.test.structure.ee.oJavaBoxes_.$object$ = java.lang.Byte.valueOf((byte)2L);
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            .com.redhat.ceylon.compiler.java.test.structure.ee.oJavaBoxes_.value = null;
+            .com.redhat.ceylon.compiler.java.test.structure.ee.oJavaBoxes_.$object$ = null;
         }
     }
     
     public static .ceylon.language.Byte get_() {
-        return .com.redhat.ceylon.compiler.java.test.structure.ee.oJavaBoxes_.value == null ? null : .ceylon.language.Byte.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.oJavaBoxes_.value.byteValue());
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.oJavaBoxes_.$object$ == null ? null : .ceylon.language.Byte.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.oJavaBoxes_.$object$.byteValue());
     }
     
     public static void set_(final .ceylon.language.Byte oJavaBoxes) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        .com.redhat.ceylon.compiler.java.test.structure.ee.oJavaBoxes_.value = oJavaBoxes == null ? null : java.lang.Byte.valueOf(oJavaBoxes.byteValue());
+        .com.redhat.ceylon.compiler.java.test.structure.ee.oJavaBoxes_.$object$ = oJavaBoxes == null ? null : java.lang.Byte.valueOf(oJavaBoxes.byteValue());
     }
 }
 public final class bJavaBoxes_ {
     
     private bJavaBoxes_() {
     }
-    private static .java.lang.Boolean value;
+    private static .java.lang.Boolean $object$;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            .com.redhat.ceylon.compiler.java.test.structure.ee.bJavaBoxes_.value = null;
+            .com.redhat.ceylon.compiler.java.test.structure.ee.bJavaBoxes_.$object$ = null;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            .com.redhat.ceylon.compiler.java.test.structure.ee.bJavaBoxes_.value = null;
+            .com.redhat.ceylon.compiler.java.test.structure.ee.bJavaBoxes_.$object$ = null;
         }
     }
     
     public static .ceylon.language.Boolean get_() {
-        return .com.redhat.ceylon.compiler.java.test.structure.ee.bJavaBoxes_.value == null ? null : .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.bJavaBoxes_.value.booleanValue());
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.bJavaBoxes_.$object$ == null ? null : .ceylon.language.Boolean.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.bJavaBoxes_.$object$.booleanValue());
     }
     
     public static void set_(final .ceylon.language.Boolean bJavaBoxes) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        .com.redhat.ceylon.compiler.java.test.structure.ee.bJavaBoxes_.value = bJavaBoxes == null ? null : .java.lang.Boolean.valueOf(bJavaBoxes.booleanValue());
+        .com.redhat.ceylon.compiler.java.test.structure.ee.bJavaBoxes_.$object$ = bJavaBoxes == null ? null : .java.lang.Boolean.valueOf(bJavaBoxes.booleanValue());
     }
 }

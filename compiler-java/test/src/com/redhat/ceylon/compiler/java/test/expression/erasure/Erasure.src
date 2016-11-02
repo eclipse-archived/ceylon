@@ -710,24 +710,24 @@ final class topLevelLeftAttribute_ {
     
     private topLevelLeftAttribute_() {
     }
-    private static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left value;
-    private static volatile boolean $init$value = false;
+    private static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            .com.redhat.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.value = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft();
-            .com.redhat.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$object$ = new .com.redhat.ceylon.compiler.java.test.expression.erasure.CLeft();
+            .com.redhat.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            .com.redhat.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.value = null;
-            .com.redhat.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$init$value = false;
+            .com.redhat.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$object$ = null;
+            .com.redhat.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$init$$object$ = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.expression.erasure.Left get_() {
-        if (.com.redhat.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.value;
+        if (.com.redhat.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelLeftAttribute\' before it was set");
@@ -736,6 +736,6 @@ final class topLevelLeftAttribute_ {
     
     public static void set_(final .com.redhat.ceylon.compiler.java.test.expression.erasure.Left topLevelLeftAttribute) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        .com.redhat.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.value = topLevelLeftAttribute;
+        .com.redhat.ceylon.compiler.java.test.expression.erasure.topLevelLeftAttribute_.$object$ = topLevelLeftAttribute;
     }
 }

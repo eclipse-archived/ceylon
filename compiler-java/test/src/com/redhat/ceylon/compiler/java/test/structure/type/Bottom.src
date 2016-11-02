@@ -33,24 +33,24 @@ final class toplevelObject_ {
     
     private toplevelObject_() {
     }
-    private static final .java.lang.Object value;
-    private static volatile boolean $init$value = false;
+    private static final .java.lang.Object $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = .ceylon.language.nothing_.get_();
-            .com.redhat.ceylon.compiler.java.test.structure.type.toplevelObject_.$init$value = true;
+            $object$ = .ceylon.language.nothing_.get_();
+            .com.redhat.ceylon.compiler.java.test.structure.type.toplevelObject_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.structure.type.toplevelObject_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.structure.type.toplevelObject_.$init$$object$ = false;
         }
     }
     
     public static .java.lang.Object get_() {
-        if (.com.redhat.ceylon.compiler.java.test.structure.type.toplevelObject_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.structure.type.toplevelObject_.value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.type.toplevelObject_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.structure.type.toplevelObject_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelObject\' before it was set");
@@ -61,24 +61,24 @@ final class toplevelInteger_ {
     
     private toplevelInteger_() {
     }
-    private static final long value;
-    private static volatile boolean $init$value = false;
+    private static final long $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
-            .com.redhat.ceylon.compiler.java.test.structure.type.toplevelInteger_.$init$value = true;
+            $object$ = ((.ceylon.language.Integer)(.java.lang.Object).ceylon.language.nothing_.get_()).longValue();
+            .com.redhat.ceylon.compiler.java.test.structure.type.toplevelInteger_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = 0L;
-            .com.redhat.ceylon.compiler.java.test.structure.type.toplevelInteger_.$init$value = false;
+            $object$ = 0L;
+            .com.redhat.ceylon.compiler.java.test.structure.type.toplevelInteger_.$init$$object$ = false;
         }
     }
     
     public static long get_() {
-        if (.com.redhat.ceylon.compiler.java.test.structure.type.toplevelInteger_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.structure.type.toplevelInteger_.value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.type.toplevelInteger_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.structure.type.toplevelInteger_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'toplevelInteger\' before it was set");

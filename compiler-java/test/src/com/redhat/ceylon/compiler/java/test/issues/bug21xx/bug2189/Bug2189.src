@@ -18,24 +18,24 @@ final class null_ {
     
     private null_() {
     }
-    private static final .ceylon.language.Sequential<? extends .java.lang.Object> value;
-    private static volatile boolean $init$value = false;
+    private static final .ceylon.language.Sequential<? extends .java.lang.Object> $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
-            .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2189.null_.$init$value = true;
+            $object$ = (.ceylon.language.Sequential<? extends .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();
+            .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2189.null_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2189.null_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2189.null_.$init$$object$ = false;
         }
     }
     
     public static .ceylon.language.Sequential<? extends .java.lang.Object> get_() {
-        if (.com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2189.null_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2189.null_.value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2189.null_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug21xx.bug2189.null_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'null\' before it was set");

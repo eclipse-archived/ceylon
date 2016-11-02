@@ -163,24 +163,24 @@ final class bug1286_objectDefinition_ extends .java.lang.Object implements .java
     
     private final void m$priv$(final .java.lang.String setterArgument, final .ceylon.language.Callable<? extends .java.lang.Object> methodArgument, final .java.lang.Object objectArgument) {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_();
-            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.$init$value = true;
+            $object$ = new .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_();
+            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.$init$$object$ = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_ get_() {
-        if (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_objectDefinition_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1286_objectDefinition\' before it was set");
@@ -410,7 +410,7 @@ final class bug1286_getterSetter_ {
             
             private getterSetter$setter$_() {
             }
-            private .java.lang.String value;
+            private .java.lang.String $object$;
             
             public void set_(final .java.lang.String getterSetter) {
                 final .com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$$setter$1getterSetter$Consumer_<? super .java.lang.Object> times1 = (.com.redhat.ceylon.compiler.java.test.issues.bug12xx.bug1286_getterSetter$$setter$1getterSetter$Consumer_<? super .java.lang.Object>)(.java.lang.Object).ceylon.language.nothing_.get_();

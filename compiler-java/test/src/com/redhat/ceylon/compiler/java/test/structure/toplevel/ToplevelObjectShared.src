@@ -12,24 +12,24 @@ public final class topLevelObjectShared_ implements .java.io.Serializable, .com.
     
     public final void y() {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_();
-            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.$init$value = true;
+            $object$ = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_();
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.$init$$object$ = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_ get_() {
-        if (.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObjectShared_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelObjectShared\' before it was set");

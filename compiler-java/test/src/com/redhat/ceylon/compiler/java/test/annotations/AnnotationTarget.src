@@ -379,25 +379,25 @@ final class annotationTargetObject_ implements .java.io.Serializable, .com.redha
         return .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.get_();
     }
     public static final .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor $TypeDescriptor$ = .com.redhat.ceylon.compiler.java.runtime.model.TypeDescriptor.klass(.com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.class);
-    private static final .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_();
-            .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.$init$value = true;
+            $object$ = new .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_();
+            .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.$init$$object$ = false;
         }
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     static .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_ get_() {
-        if (.com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.value;
+        if (.com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetObject_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'annotationTargetObject\' before it was set");
@@ -413,25 +413,25 @@ final class annotationTargetValue_ {
     
     private annotationTargetValue_() {
     }
-    private static final boolean value;
-    private static volatile boolean $init$value = false;
+    private static final boolean $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = true;
-            .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetValue_.$init$value = true;
+            $object$ = true;
+            .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetValue_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = false;
-            .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetValue_.$init$value = false;
+            $object$ = false;
+            .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetValue_.$init$$object$ = false;
         }
     }
     
     @.com.redhat.ceylon.compiler.java.test.annotations.AnnotationTarget$annotation$
     public static boolean get_() {
-        if (.com.redhat.ceylon.compiler.java.test.annotations.annotationTargetValue_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetValue_.value;
+        if (.com.redhat.ceylon.compiler.java.test.annotations.annotationTargetValue_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.annotations.annotationTargetValue_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'annotationTargetValue\' before it was set");

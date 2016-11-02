@@ -12,30 +12,30 @@ final class bug1593_anything_ {
     
     private bug1593_anything_() {
     }
-    private static final .java.lang.Object value;
-    private static volatile boolean $init$value = false;
+    private static final .java.lang.Object $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = (
+            $object$ = (
                 let
                 {
                     .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_noArguments_.bug1593_noArguments();
                 }
                 returning null;
             );
-            .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_anything_.$init$value = true;
+            .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_anything_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_anything_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_anything_.$init$$object$ = false;
         }
     }
     
     public static .java.lang.Object get_() {
-        if (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_anything_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_anything_.value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_anything_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_anything_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1593_anything\' before it was set");
@@ -46,24 +46,24 @@ final class bug1593_empty_ {
     
     private bug1593_empty_() {
     }
-    private static final .ceylon.language.Empty value;
-    private static volatile boolean $init$value = false;
+    private static final .ceylon.language.Empty $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = .ceylon.language.empty_.get_();
-            .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_empty_.$init$value = true;
+            $object$ = .ceylon.language.empty_.get_();
+            .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_empty_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_empty_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_empty_.$init$$object$ = false;
         }
     }
     
     public static .ceylon.language.Empty get_() {
-        if (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_empty_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_empty_.value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_empty_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug15xx.bug1593_empty_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1593_empty\' before it was set");

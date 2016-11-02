@@ -52,13 +52,13 @@ final class uncheckedLateToplevel_ {
     
     private uncheckedLateToplevel_() {
     }
-    private static .java.lang.String value;
+    private static .java.lang.String $object$;
     
     public static .ceylon.language.String get_() {
-        return .com.redhat.ceylon.compiler.java.test.structure.ee.uncheckedLateToplevel_.value == null ? null : .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.uncheckedLateToplevel_.value);
+        return .com.redhat.ceylon.compiler.java.test.structure.ee.uncheckedLateToplevel_.$object$ == null ? null : .ceylon.language.String.instance(.com.redhat.ceylon.compiler.java.test.structure.ee.uncheckedLateToplevel_.$object$);
     }
     
     public static void set_(final .ceylon.language.String uncheckedLateToplevel) {
-        .com.redhat.ceylon.compiler.java.test.structure.ee.uncheckedLateToplevel_.value = uncheckedLateToplevel == null ? null : .java.lang.String.valueOf(uncheckedLateToplevel.toString());
+        .com.redhat.ceylon.compiler.java.test.structure.ee.uncheckedLateToplevel_.$object$ = uncheckedLateToplevel == null ? null : .java.lang.String.valueOf(uncheckedLateToplevel.toString());
     }
 }

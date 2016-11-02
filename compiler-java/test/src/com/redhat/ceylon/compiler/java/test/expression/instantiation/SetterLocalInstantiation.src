@@ -19,7 +19,7 @@ class SetterLocalInstantiation implements .com.redhat.ceylon.compiler.java.runti
             
             private i$setter$_() {
             }
-            private long value;
+            private long $object$;
             
             public void set_(final long i) {
                 

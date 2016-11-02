@@ -119,26 +119,26 @@ final class javaxInjectInjectSetter_ {
     private javaxInjectInjectSetter_() {
     }
     @.javax.inject.Inject
-    private static .java.lang.String value;
+    private static .java.lang.String $object$;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectSetter_.value = "";
+            .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectSetter_.$object$ = "";
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectSetter_.value = null;
+            .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectSetter_.$object$ = null;
         }
     }
     
     @.ceylon.language.VariableAnnotation$annotation$
     public static .java.lang.String get_() {
-        return .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectSetter_.value;
+        return .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectSetter_.$object$;
     }
     
     public static void set_(final .java.lang.String javaxInjectInjectSetter) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectSetter_.value = javaxInjectInjectSetter;
+        .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectSetter_.$object$ = javaxInjectInjectSetter;
     }
 }
 final class javaxInjectInjectField_ {
@@ -146,25 +146,25 @@ final class javaxInjectInjectField_ {
     private javaxInjectInjectField_() {
     }
     @.javax.inject.Inject
-    private static .java.lang.String value;
+    private static .java.lang.String $object$;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectField_.value = "";
+            .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectField_.$object$ = "";
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectField_.value = null;
+            .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectField_.$object$ = null;
         }
     }
     
     @.ceylon.language.VariableAnnotation$annotation$
     public static .java.lang.String get_() {
-        return .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectField_.value;
+        return .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectField_.$object$;
     }
     
     public static void set_(final .java.lang.String javaxInjectInjectField) {
         if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
-        .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectField_.value = javaxInjectInjectField;
+        .com.redhat.ceylon.compiler.java.test.interop.javaxInjectInjectField_.$object$ = javaxInjectInjectField;
     }
 }

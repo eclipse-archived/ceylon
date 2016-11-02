@@ -19,7 +19,7 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
             
             private f$setter$_() {
             }
-            private .java.lang.String value;
+            private .java.lang.String $object$;
             
             public void set_(final .java.lang.String f) {
             }
@@ -42,7 +42,7 @@ abstract class ClassAttributeGetterSetter implements .com.redhat.ceylon.compiler
             
             private f6$setter$_() {
             }
-            private .java.lang.String value;
+            private .java.lang.String $object$;
             
             public void set_(final .java.lang.String f6) {
                 (

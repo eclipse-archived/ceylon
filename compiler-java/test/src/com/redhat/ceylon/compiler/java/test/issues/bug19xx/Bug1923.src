@@ -150,24 +150,24 @@ public final class bug1923_ implements .java.io.Serializable, .com.redhat.ceylon
     public .java.lang.Object f() {
         return $com$redhat$ceylon$compiler$java$test$issues$bug19xx$Bug1923$this$.f();
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_();
-            .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.$init$value = true;
+            $object$ = new .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_();
+            .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.$init$$object$ = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_ get_() {
-        if (.com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug19xx.bug1923_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'bug1923\' before it was set");

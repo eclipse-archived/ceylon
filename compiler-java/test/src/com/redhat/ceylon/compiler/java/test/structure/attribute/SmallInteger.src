@@ -63,7 +63,7 @@ class SmallInteger implements .com.redhat.ceylon.compiler.java.runtime.model.Rei
             
             private localintgs$setter$_() {
             }
-            private int value;
+            private int $object$;
             
             public void set_(final int localintgs) {
             }

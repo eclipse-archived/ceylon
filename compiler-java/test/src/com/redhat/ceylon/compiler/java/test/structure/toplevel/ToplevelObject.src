@@ -12,24 +12,24 @@ final class topLevelObject_ implements .java.io.Serializable, .com.redhat.ceylon
     
     public final void y() {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_ value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_ $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_();
-            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.$init$value = true;
+            $object$ = new .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_();
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.$init$$object$ = false;
         }
     }
     
     static .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_ get_() {
-        if (.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.value;
+        if (.com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.structure.toplevel.topLevelObject_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'topLevelObject\' before it was set");

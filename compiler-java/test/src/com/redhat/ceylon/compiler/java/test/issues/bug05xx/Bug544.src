@@ -168,24 +168,24 @@ final class s_ {
     
     private s_() {
     }
-    private static final .java.lang.String value;
-    private static volatile boolean $init$value = false;
+    private static final .java.lang.String $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = "";
-            .com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.$init$value = true;
+            $object$ = "";
+            .com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.$init$$object$ = false;
         }
     }
     
     public static .java.lang.String get_() {
-        if (.com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug05xx.s_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'s\' before it was set");

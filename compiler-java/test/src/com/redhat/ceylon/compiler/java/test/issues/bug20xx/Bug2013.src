@@ -109,24 +109,24 @@ final class d_ {
     
     private d_() {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Trucker();
-            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.d_.$init$value = true;
+            $object$ = new .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013Trucker();
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.d_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.d_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.d_.$init$$object$ = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013ExperiencedDriver get_() {
-        if (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.d_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.d_.value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.d_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.d_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'d\' before it was set");
@@ -137,24 +137,24 @@ final class carBigB_ {
     
     private carBigB_() {
     }
-    private static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar value;
-    private static volatile boolean $init$value = false;
+    private static final .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar $object$;
+    private static volatile boolean $init$$object$ = false;
     private static final .java.lang.Throwable $initException$;
     static {
         try {
-            value = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.d_.get_().driveCar();
-            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.carBigB_.$init$value = true;
+            $object$ = .com.redhat.ceylon.compiler.java.test.issues.bug20xx.d_.get_().driveCar();
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.carBigB_.$init$$object$ = true;
             $initException$ = null;
         } catch (.java.lang.Throwable x) {
             $initException$ = x;
-            value = null;
-            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.carBigB_.$init$value = false;
+            $object$ = null;
+            .com.redhat.ceylon.compiler.java.test.issues.bug20xx.carBigB_.$init$$object$ = false;
         }
     }
     
     public static .com.redhat.ceylon.compiler.java.test.issues.bug20xx.Bug2013BigCar get_() {
-        if (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.carBigB_.$init$value) {
-            return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.carBigB_.value;
+        if (.com.redhat.ceylon.compiler.java.test.issues.bug20xx.carBigB_.$init$$object$) {
+            return .com.redhat.ceylon.compiler.java.test.issues.bug20xx.carBigB_.$object$;
         } else {
             if ($initException$ != null) .com.redhat.ceylon.compiler.java.Util.rethrow($initException$);
             throw new .ceylon.language.InitializationError("Cyclic initialization trying to read the value of \'carBigB\' before it was set");
