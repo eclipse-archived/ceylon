@@ -3319,6 +3319,25 @@ public class ExpressionTransformer extends AbstractTransformer {
                                 sequential = utilInvocation().castSequentialToSequence(sequential, iteratedType);
                             }
                             exprAndType = new ExpressionAndType(sequential, exprAndType.type);
+                        } else if (typeFact().isJavaArrayType(argType)) {
+                            exprAndType = transformArgument(invocation, argIndex,
+                                    boxingStrategy);
+                            JCExpression iterable;
+                            if (typeFact().isJavaPrimitiveArrayType(argType)) {
+                                iterable = utilInvocation().toIterable(
+                                        exprAndType.expression);
+                            } else {
+                                Type elementType = typeFact().getJavaArrayElementType(argType);
+                                iterable = utilInvocation().toIterable(
+                                        makeJavaType(elementType, JT_TYPE_ARGUMENT),
+                                        makeReifiedTypeArgument(elementType),
+                                        exprAndType.expression);
+                            }
+                            exprAndType = new ExpressionAndType(
+                                    make().Apply(null,
+                                    makeSelect(iterable, "sequence"),
+                                    List.<JCExpression>nil()),
+                                    makeJavaType(argType));
                         } else {
                             exprAndType = new ExpressionAndType(makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"), makeErroneous(invocation.getNode(), "compiler bug: unexpected spread argument"));
                         }
